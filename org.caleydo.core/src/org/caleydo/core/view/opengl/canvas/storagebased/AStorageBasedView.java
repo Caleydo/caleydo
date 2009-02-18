@@ -382,7 +382,7 @@ public abstract class AStorageBasedView
 		reactOnVAChanges(delta);
 		selectionManager.setVADelta(delta);
 		
-		reactOnExternalSelection();
+//		reactOnExternalSelection();
 		setDisplayListDirty();
 	}
 

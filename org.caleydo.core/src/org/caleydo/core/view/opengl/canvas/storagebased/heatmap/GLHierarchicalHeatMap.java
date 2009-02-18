@@ -126,6 +126,8 @@ public class GLHierarchicalHeatMap
 
 	private boolean bIsHeatmapInFocus = false;
 
+	private boolean bRedrawTextures = false;
+	
 	// dragging stuff
 	private boolean bIsDraggingActive = false;
 	private int iDraggedCursor = 0;
@@ -225,7 +227,7 @@ public class GLHierarchicalHeatMap
 		if ((2 * iSamplesPerTexture) > iNumberOfElements)
 			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 2);
 
-		initTextures();
+		initTextures(gl);
 		initPosCursor();
 	}
 
@@ -385,7 +387,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param
 	 */
-	private void initTextures()
+	private void initTextures(GL gl)
 	{
 		fAlXDistances.clear();
 		renderStyle.updateFieldSizes();
@@ -614,10 +616,31 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta)
 	{
-		// FIXME: this does not work - it is not possible to create/update textures without a active gl object!
-//		initTextures();
-		setDisplayListDirty();
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
+		bRedrawTextures = true;
+		
+		Set<Integer> setMouseOverElements = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+
+		AlExpMouseOver.clear();
+		if (setMouseOverElements.size() >= 0)
+		{
+			for (Integer iSelectedID : setMouseOverElements)
+			{
+				AlExpMouseOver.add(iSelectedID);
+			}
+		}
+
+		Set<Integer> setSelectionElements = storageSelectionManager.getElements(ESelectionType.SELECTION);
+
+		AlExpSelected.clear();
+		if (setSelectionElements.size() >= 0)
+		{
+			for (Integer iSelectedID : setSelectionElements)
+			{
+				AlExpSelected.add(iSelectedID);
+			}
+		}
+		setDisplayListDirty();
 
 	}
 
@@ -1474,6 +1497,12 @@ public class GLHierarchicalHeatMap
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 
+		if (bRedrawTextures)
+		{
+			initTextures(gl);
+			bRedrawTextures = false;
+		}
+		
 		if (bHasFrustumChanged)
 		{
 			glHeatMapView.setDisplayListDirty();
@@ -1579,50 +1608,42 @@ public class GLHierarchicalHeatMap
 		{
 			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(
 					selectionDelta));
-
-			// TODO: BERNHARD: why is this here? incoming events are resent.
-//			triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-//					new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 
-		// // selected experiments
-		// privateMediator.triggerEvent(this, new
-		// SelectionCommandEventContainer(
-		// EIDType.EXPERIMENT_INDEX, new
-		// SelectionCommand(ESelectionCommandType.RESET)));
-		//		
-		// IVirtualArrayDelta deltaExp = new
-		// VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
-		// ISelectionDelta selectionDeltaEx = new
-		// SelectionDelta(EIDType.EXPERIMENT_INDEX);
-		//
-		// IVirtualArray currentVirtualArrayEx = set.getVA(iStorageVAID);
-		//
-		// for (int index = 0; index < currentVirtualArrayEx.size(); index++)
-		// {
-		// iContentIndex = currentVirtualArray.get(iIndex);
-		//
-		// deltaExp.add(VADeltaItem.append(iContentIndex));
-		// // set elements selected in embedded heatMap
-		// for (HeatMapSelection selection : AlSelection)
-		// {
-		// if (selection.getContentIndex() == iContentIndex)
-		// selectionDeltaEx.addSelection(iContentIndex,
-		// selection.getSelectionType());
-		// }
-		// }
-		//
-		// privateMediator.triggerEvent(this, new
-		// DeltaEventContainer<IVirtualArrayDelta>(deltaExp));
-		// if (selectionDeltaEx.size() > 0)
-		// {
-		// privateMediator.triggerEvent(this, new
-		// DeltaEventContainer<ISelectionDelta>(
-		// selectionDeltaEx));
-		//
-		// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-		// new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
-		// }
+		 // selected experiments
+		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(
+				EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.RESET)));
+
+		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+		ISelectionDelta selectionDeltaEx = new SelectionDelta(EIDType.EXPERIMENT_INDEX);
+
+		IVirtualArray currentVirtualArrayEx = set.getVA(iStorageVAID);
+
+		for (int index = 0; index < currentVirtualArrayEx.size(); index++)
+		{
+			iContentIndex = currentVirtualArrayEx.get(index);
+
+			deltaExp.add(VADeltaItem.append(iContentIndex));
+			// set elements selected in embedded heatMap
+			for (Integer selection : AlExpMouseOver)
+			{
+				if (selection == iContentIndex)
+					selectionDeltaEx.addSelection(iContentIndex, ESelectionType.MOUSE_OVER);
+			}
+			for (Integer selection : AlExpSelected)
+			{
+				if (selection == iContentIndex)
+					selectionDeltaEx.addSelection(iContentIndex, ESelectionType.SELECTION);
+			}
+		}
+
+		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(
+				deltaExp));
+		if (selectionDeltaEx.size() > 0)
+		{
+			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(
+					selectionDeltaEx));
+		}
 
 	}
 
