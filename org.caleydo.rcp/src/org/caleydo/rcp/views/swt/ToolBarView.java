@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
+import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.info.InfoArea;
@@ -52,6 +53,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
@@ -62,7 +64,7 @@ public class ToolBarView
 {
 	public static final String ID = "org.caleydo.rcp.views.ToolBarView";
 
-	public static final int TOOLBAR_WIDTH = 240;
+	public static final int TOOLBAR_WIDTH = 170;
 	public static final int TOOLBAR_HEIGHT = 150;	
 
 	private Composite parentComposite;
@@ -553,21 +555,25 @@ public class ToolBarView
 	    
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
+		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
-		toolBarManager.add(new TakeSnapshotAction());
-		toolBarManager.update(true);
-
-//		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-//		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-//		toolBarManager2.add(new ExportDataAction());
-//		toolBarManager2.add(new TakeSnapshotAction());
-//		toolBarManager2.update(true);
 
 		if (bHorizontal)
 		{
+			final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
+			ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
+			toolBarManager2.add(new TakeSnapshotAction());
+			toolBarManager2.update(true);
+
 			Label spacer = new Label(group, SWT.NULL);
 			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
 		}
+		else
+		{
+			toolBarManager.add(new TakeSnapshotAction());			
+		}
+
+		toolBarManager.update(true);
 		
 		Label label = new Label(group, SWT.CENTER);
 		label.setText("General");
@@ -610,9 +616,7 @@ public class ToolBarView
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
 		// TODO Auto-generated method stub
-
 	}
-	
 
 //	@Override
 //	public int computePreferredSize(boolean width, int availableParallel,

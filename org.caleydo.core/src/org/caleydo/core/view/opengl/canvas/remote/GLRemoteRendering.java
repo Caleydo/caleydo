@@ -101,9 +101,11 @@ public class GLRemoteRendering
 	private RemoteLevel poolLevel;
 	private RemoteLevel transitionLevel;
 	private RemoteLevel spawnLevel;
-	private RemoteLevel selectionLevel;
+	private RemoteLevel externalSelectionLevel;
 
 	private ArrayList<SlerpAction> arSlerpActions;
+	
+	private GLHeatMap glExternalSelectionHeatMap;
 
 	private Time time;
 
@@ -142,8 +144,6 @@ public class GLRemoteRendering
 	private int iActiveViewID = -1;
 
 	// private int iGLDisplayList;
-
-	private GLSelectionPanel glSelectionPanel;
 
 	private ISelectionDelta lastSelectionDelta;
 
@@ -214,7 +214,7 @@ public class GLRemoteRendering
 		}
 
 		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
-		selectionLevel = layoutRenderStyle.initMemoLevel();
+		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
@@ -254,11 +254,11 @@ public class GLRemoteRendering
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
 				.getCommandManager().createCommandByType(
-						ECommandType.CREATE_GL_PANEL_SELECTION);
+						ECommandType.CREATE_GL_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
 				null, -1);
 		cmdCreateGLView.doCommand();
-		glSelectionPanel = (GLSelectionPanel) cmdCreateGLView.getCreatedObject();
+		glExternalSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
 
 		// Registration to event system
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
@@ -303,12 +303,10 @@ public class GLRemoteRendering
 
 		initializeContainedViews(gl);
 
-		selectionLevel.getElementByPositionIndex(0).setContainedElementID(
-				glSelectionPanel.getID());
-		// selectionLevel.setElementVisibilityById(true,
-		// glSelectionPanel.getID());
+		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(
+				glExternalSelectionHeatMap.getID());
 
-		glSelectionPanel.initRemote(gl, getID(), pickingTriggerMouseAdapter,
+		glExternalSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
 				remoteRenderingGLCanvas);
 
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
@@ -366,7 +364,7 @@ public class GLRemoteRendering
 
 			// Prevent user from dragging element onto selection level
 			if (!RemoteElementManager.get().hasItem(iMouseOverObjectID)
-					|| !selectionLevel.containsElement(RemoteElementManager.get().getItem(
+					|| !externalSelectionLevel.containsElement(RemoteElementManager.get().getItem(
 							iMouseOverObjectID)))
 			{
 				RemoteLevelElement mouseOverElement = null;
@@ -495,7 +493,7 @@ public class GLRemoteRendering
 			renderRemoteLevel(gl, transitionLevel);
 			renderRemoteLevel(gl, spawnLevel);
 			renderRemoteLevel(gl, poolLevel);
-//			renderRemoteLevel(gl, selectionLevel);
+			renderRemoteLevel(gl, externalSelectionLevel);
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -768,7 +766,7 @@ public class GLRemoteRendering
 		// return;
 		// }
 
-		if (level != selectionLevel && level != poolLevel)
+		if (level != externalSelectionLevel && level != poolLevel)
 		{
 			if (level.equals(focusLevel))
 				renderBucketWall(gl, false, element);
@@ -811,7 +809,7 @@ public class GLRemoteRendering
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
 		if (!level.equals(transitionLevel) && !level.equals(spawnLevel)
-				&& !level.equals(poolLevel) && !level.equals(selectionLevel))
+				&& !level.equals(poolLevel) && !level.equals(externalSelectionLevel))
 		{
 			renderBucketWall(gl, true, element);
 		}
@@ -1707,7 +1705,7 @@ public class GLRemoteRendering
 			// }
 			// }
 		}
-		else if (destinationLevel == poolLevel || destinationLevel == selectionLevel)
+		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel)
 		{
 			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 
@@ -2437,7 +2435,7 @@ public class GLRemoteRendering
 		focusLevel = layoutRenderStyle.initFocusLevel();
 		stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
 		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
-		selectionLevel = layoutRenderStyle.initMemoLevel();
+		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
@@ -2603,24 +2601,24 @@ public class GLRemoteRendering
 
 			gl.glPopName();
 
-			// // Render memo pad background
-			// gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
-			// gl.glLineWidth(1);
-			// gl.glBegin(GL.GL_POLYGON);
-			// gl.glVertex3f(2 / fAspectRatio, -2, 4);
-			// gl.glVertex3f(2 / fAspectRatio, 2, 4);
-			// gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
-			// gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
-			// gl.glEnd();
-			//
-			// gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
-			// gl.glLineWidth(1);
-			// gl.glBegin(GL.GL_LINE_LOOP);
-			// gl.glVertex3f(2 / fAspectRatio, -2, 4);
-			// gl.glVertex3f(2 / fAspectRatio, 2, 4);
-			// gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
-			// gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
-			// gl.glEnd();
+			 // Render memo pad background
+			 gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
+			 gl.glLineWidth(1);
+			 gl.glBegin(GL.GL_POLYGON);
+			 gl.glVertex3f(2 / fAspectRatio, -2, 4);
+			 gl.glVertex3f(2 / fAspectRatio, 2, 4);
+			 gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
+			 gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
+			 gl.glEnd();
+			
+			 gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
+			 gl.glLineWidth(1);
+			 gl.glBegin(GL.GL_LINE_LOOP);
+			 gl.glVertex3f(2 / fAspectRatio, -2, 4);
+			 gl.glVertex3f(2 / fAspectRatio, 2, 4);
+			 gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
+			 gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
+			 gl.glEnd();
 		}
 
 		// Render caption

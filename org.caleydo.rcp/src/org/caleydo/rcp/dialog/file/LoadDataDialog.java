@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Marc Streit
  */
-public class FileLoadDataDialog
+public class LoadDataDialog
 	extends Dialog
 {
 
@@ -21,7 +21,7 @@ public class FileLoadDataDialog
 	/**
 	 * Constructor.
 	 */
-	public FileLoadDataDialog(Shell parentShell)
+	public LoadDataDialog(Shell parentShell)
 	{
 		super(parentShell);
 
@@ -66,7 +66,7 @@ public class FileLoadDataDialog
 	public static void main(String[] args)
 	{
 
-		FileLoadDataDialog dialog = new FileLoadDataDialog(new Shell());
+		LoadDataDialog dialog = new LoadDataDialog(new Shell());
 		dialog.open();
 	}
 }

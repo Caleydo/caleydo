@@ -94,20 +94,37 @@ public class InfoArea
 //		lblViewInfo.setFont(font);
 //	    lblViewInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		lblViewInfoContent.setText("");
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-		gridData.minimumWidth = 150;
-		gridData.widthHint = 150;
-		gridData.minimumHeight = 72;
-	    lblViewInfoContent.setLayoutData(gridData);
-
 //		lblDetailInfo.setText("Selection Info");
 //		lblDetailInfo.setFont(font);
 //	    lblDetailInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		lblViewInfoContent.setText("");
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+
+		if (ToolBarView.bHorizontal)
+		{
+			gridData.minimumWidth = 200;
+		}
+		else
+		{
+			gridData.minimumWidth = 100;
+		}
+
+		gridData.minimumHeight = 72;
+	    lblViewInfoContent.setLayoutData(gridData);
 
 		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.minimumWidth = 200;
-		gridData.minimumHeight = 72;
+		if (ToolBarView.bHorizontal)
+		{
+			gridData.minimumWidth = 200;
+			gridData.minimumHeight = 72;
+		}
+		else
+		{
+			gridData.minimumWidth = 100;
+			gridData.minimumHeight = 82;
+		}
+		
 	    selectionTree.setLayoutData(gridData);
 
 	    //		selectionTree.setItemCount(2);
@@ -135,7 +152,7 @@ public class InfoArea
 //		pathwayTree.setText("Pathways");
 //		pathwayTree.setExpanded(false);
 //		pathwayTree.setData(-1);
-		
+	
 		return parent;
 	}
 
@@ -213,7 +230,12 @@ public class InfoArea
 							if (!bIsExisting)
 							{
 								TreeItem item = new TreeItem(selectionTree, SWT.NONE);
-								item.setText(sGeneSymbol + " - " +sRefSeqID);
+								
+								if (ToolBarView.bHorizontal)
+									item.setText(sGeneSymbol + " - " +sRefSeqID);
+								else
+									item.setText(sGeneSymbol + "\n" +sRefSeqID);
+								
 								item.setBackground(color);
 								item.setData(selectionItem.getPrimaryID());
 								item.setData("selection_type", selectionItem.getSelectionType());

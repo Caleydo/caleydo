@@ -20,7 +20,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
+import org.caleydo.rcp.dialog.file.LoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -134,7 +134,7 @@ public class FileLoadDataAction
 		// must be created.
 		if (parentComposite == null && window != null)
 		{
-			FileLoadDataDialog loadDataFileDialog = new FileLoadDataDialog(window.getShell());
+			LoadDataDialog loadDataFileDialog = new LoadDataDialog(window.getShell());
 			loadDataFileDialog.open();
 		}
 		else
@@ -1061,7 +1061,7 @@ public class FileLoadDataAction
 	public static void main(String[] args)
 	{
 
-		FileLoadDataDialog dialog = new FileLoadDataDialog(new Shell());
+		LoadDataDialog dialog = new LoadDataDialog(new Shell());
 		dialog.open();
 	}
 
