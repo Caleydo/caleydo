@@ -60,12 +60,12 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ToolBarView
 	extends ViewPart
-	implements IMediatorReceiver//, ISizeProvider
+	implements IMediatorReceiver, ISizeProvider
 {
 	public static final String ID = "org.caleydo.rcp.views.ToolBarView";
 
-	public static final int TOOLBAR_WIDTH = 170;
-	public static final int TOOLBAR_HEIGHT = 150;	
+	public static final int TOOLBAR_WIDTH = 173;
+	public static final int TOOLBAR_HEIGHT = 123;	
 
 	private Composite parentComposite;
 
@@ -118,7 +118,10 @@ public class ToolBarView
 		Image viewIcon = null;
 
 	    Group group = new Group(parentComposite, SWT.NULL);
-	    group.setLayout(new GridLayout(1, false));
+	    GridLayout layout = new GridLayout(1, false);
+	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
+	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    group.setLayout(layout);
 	    
 	    if (bHorizontal)
 	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
@@ -352,11 +355,22 @@ public class ToolBarView
 	private void addSearchBar()
 	{
 	    Group group = new Group(parentComposite, SWT.NULL);
-	    group.setLayout(new GridLayout(1, false));
+	    GridLayout layout = new GridLayout(1, false);
+	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
+	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    group.setLayout(layout);
+	    GridData gridData;
 	    if (bHorizontal)
-	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+	    {
+	    	gridData = new GridData(GridData.FILL_VERTICAL);
+	    	gridData.minimumWidth = 230;
+	    	gridData.widthHint = 230;
+	    }
 	    else
-	    	group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    {
+	    	gridData = new GridData(GridData.FILL_HORIZONTAL);
+	    }
+    	group.setLayoutData(gridData);
 	    
 		// Trigger gene/pathway search command
 		CmdViewCreateDataEntitySearcher cmd = (CmdViewCreateDataEntitySearcher) GeneralManager
@@ -367,17 +381,19 @@ public class ToolBarView
 
 		Composite searchComposite = new Composite(group, SWT.NULL);
 		searchComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-	    if (bHorizontal)
-			searchComposite.setLayout(new GridLayout(2, false));
+		if (bHorizontal)
+		    layout = new GridLayout(2, false);
 	    else
-			searchComposite.setLayout(new GridLayout(1, false));
-		
+		    layout = new GridLayout(1, false);
+
+	    layout.marginHeight = layout.marginWidth = 0;
+	    searchComposite.setLayout(layout);
+	    
 		Label searchInputLabel = new Label(searchComposite, SWT.NULL);
 		searchInputLabel.setText("Pathway");
-//		searchInputLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final SearchBox searchBox = new SearchBox(searchComposite, SWT.BORDER);
-
+	    
 		String items[] = { "No pathways available!" };
 		searchBox.setItems(items);
 		searchBox.setTextLimit(21);
@@ -441,8 +457,8 @@ public class ToolBarView
 //		entitySearchLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Text geneSearchText = new Text(searchComposite, SWT.BORDER | SWT.SINGLE);
-		geneSearchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		geneSearchText.addFocusListener(new FocusAdapter()
+	    geneSearchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));		
+	    geneSearchText.addFocusListener(new FocusAdapter()
 		{
 			@Override
 			public void focusGained(FocusEvent e)
@@ -491,14 +507,17 @@ public class ToolBarView
 	private void addColorMappingBar()
 	{
 	    Group group = new Group(parentComposite, SWT.NULL);
-	    group.setLayout(new GridLayout(1, false));
+	    GridLayout layout = new GridLayout(1, false);
+	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
+	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    group.setLayout(layout);
 
 	    GridData gridData;
 	    if (bHorizontal)
 	    {
 	    	gridData = new GridData(GridData.FILL_VERTICAL);
-	    	gridData.minimumWidth = 140;
-	    	gridData.widthHint = 140;
+	    	gridData.minimumWidth = 110;
+	    	gridData.widthHint = 110;
 	    }
 	    else
 	    {
@@ -547,7 +566,10 @@ public class ToolBarView
 	private void addGeneralToolBar()
 	{
 	    Group group = new Group(parentComposite, SWT.NULL);
-	    group.setLayout(new GridLayout(1, false));
+	    GridLayout layout = new GridLayout(1, false);
+	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
+	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    group.setLayout(layout);
 	    if (bHorizontal)
 	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 	    else
@@ -584,7 +606,10 @@ public class ToolBarView
 	private void addInfoBar()
 	{
 	    Group group = new Group(parentComposite, SWT.NULL);
-	    group.setLayout(new GridLayout(1, false));
+	    GridLayout layout = new GridLayout(1, false);
+	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
+	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    group.setLayout(layout);
 	    if (bHorizontal)
 	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 	    else
@@ -592,11 +617,17 @@ public class ToolBarView
 	    
 		Composite infoComposite = new Composite(group, SWT.NULL);
 		infoComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-	    if (bHorizontal)
-	    	infoComposite.setLayout(new GridLayout(2, false));
-	    else
-	    	infoComposite.setLayout(new GridLayout(1, false));
 	    
+		if (bHorizontal)
+		    layout = new GridLayout(2, false);
+	    else
+		    layout = new GridLayout(1, false);
+
+		layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
+	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    layout.marginHeight = layout.marginWidth = 0;
+	    
+	    infoComposite.setLayout(layout);
 		InfoArea infoArea = new InfoArea();
 		infoArea.createControl(infoComposite);
 		
@@ -618,20 +649,20 @@ public class ToolBarView
 		// TODO Auto-generated method stub
 	}
 
-//	@Override
-//	public int computePreferredSize(boolean width, int availableParallel,
-//			int availablePerpendicular, int preferredResult)
-//	{
-//		// Set minimum size of the view
-//		if (width == true)
-//			return (int)(ToolBarView.TOOLBAR_WIDTH * 1.25f);
-//		
-//		return 1000;
-//	}
-//
-//	@Override
-//	public int getSizeFlags(boolean width)
-//	{
-//		return SWT.MIN;
-//	}
+	@Override
+	public int computePreferredSize(boolean width, int availableParallel,
+			int availablePerpendicular, int preferredResult)
+	{
+		// Set minimum size of the view
+		if (width == true)
+			return (int)(ToolBarView.TOOLBAR_WIDTH);
+		
+		return (int)(ToolBarView.TOOLBAR_HEIGHT);
+	}
+
+	@Override
+	public int getSizeFlags(boolean width)
+	{
+		return SWT.MIN;
+	}
 }

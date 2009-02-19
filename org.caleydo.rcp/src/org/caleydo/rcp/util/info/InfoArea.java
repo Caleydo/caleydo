@@ -19,7 +19,6 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,7 +31,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * 
@@ -75,20 +73,21 @@ public class InfoArea
 
 //		Label lblViewInfo = null;
 //		Label lblDetailInfo = null;
-		if (ToolBarView.bHorizontal)
-		{
-//			lblViewInfo = new Label(parent, SWT.NONE);
-//			lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
+//		if (ToolBarView.bHorizontal)
+//		{
+////			lblViewInfo = new Label(parent, SWT.NONE);
+////			lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
+//			lblViewInfoContent = new Label(parent, SWT.WRAP);
+//			selectionTree = new Tree(parent, SWT.BORDER);			
+//		}
+//		else
+//		{
+////			lblViewInfo = new Label(parent, SWT.NONE);
 			lblViewInfoContent = new Label(parent, SWT.WRAP);
-			selectionTree = new Tree(parent, SWT.BORDER);			
-		}
-		else
-		{
-//			lblViewInfo = new Label(parent, SWT.NONE);
-			lblViewInfoContent = new Label(parent, SWT.WRAP);
-//			lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
+			lblViewInfoContent.setAlignment(SWT.CENTER);
+////			lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
 			selectionTree = new Tree(parent, SWT.BORDER);						
-		}
+//		}
 		
 //		lblViewInfo.setText("View Info");
 //		lblViewInfo.setFont(font);
@@ -103,28 +102,25 @@ public class InfoArea
 
 		if (ToolBarView.bHorizontal)
 		{
-			gridData.minimumWidth = 200;
+			gridData.minimumWidth = 150;
+			gridData.widthHint = 150;
 		}
 		else
 		{
 			gridData.minimumWidth = 100;
+			gridData.widthHint = 150;
 		}
 
 		gridData.minimumHeight = 72;
+		gridData.heightHint = 72;
 	    lblViewInfoContent.setLayoutData(gridData);
 
 		gridData = new GridData(GridData.FILL_BOTH);
-		if (ToolBarView.bHorizontal)
-		{
-			gridData.minimumWidth = 200;
-			gridData.minimumHeight = 72;
-		}
-		else
-		{
-			gridData.minimumWidth = 100;
-			gridData.minimumHeight = 82;
-		}
-		
+		gridData.heightHint = 62;
+		gridData.minimumHeight = 62;
+		gridData.widthHint = 120;
+		gridData.minimumWidth = 120;
+
 	    selectionTree.setLayoutData(gridData);
 
 	    //		selectionTree.setItemCount(2);
@@ -230,12 +226,10 @@ public class InfoArea
 							if (!bIsExisting)
 							{
 								TreeItem item = new TreeItem(selectionTree, SWT.NONE);
-								
-								if (ToolBarView.bHorizontal)
-									item.setText(sGeneSymbol + " - " +sRefSeqID);
-								else
+//								if (ToolBarView.bHorizontal)
+//									item.setText(sGeneSymbol + " - " +sRefSeqID);
+//								else
 									item.setText(sGeneSymbol + "\n" +sRefSeqID);
-								
 								item.setBackground(color);
 								item.setData(selectionItem.getPrimaryID());
 								item.setData("selection_type", selectionItem.getSelectionType());
