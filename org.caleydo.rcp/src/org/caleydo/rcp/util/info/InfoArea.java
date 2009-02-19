@@ -86,7 +86,7 @@ public class InfoArea
 			lblViewInfoContent = new Label(parent, SWT.WRAP);
 			lblViewInfoContent.setAlignment(SWT.CENTER);
 ////			lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
-			selectionTree = new Tree(parent, SWT.BORDER);						
+			selectionTree = new Tree(parent, SWT.NULL);						
 //		}
 		
 //		lblViewInfo.setText("View Info");

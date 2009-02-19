@@ -121,6 +121,7 @@ public class ToolBarView
 	    GridLayout layout = new GridLayout(1, false);
 	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
 	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    layout.marginHeight = layout.marginWidth = 3;
 	    group.setLayout(layout);
 	    
 	    if (bHorizontal)
@@ -358,6 +359,7 @@ public class ToolBarView
 	    GridLayout layout = new GridLayout(1, false);
 	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
 	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    layout.marginHeight = layout.marginWidth = 3;
 	    group.setLayout(layout);
 	    GridData gridData;
 	    if (bHorizontal)
@@ -492,10 +494,17 @@ public class ToolBarView
 			}
 		});
 		
+		Label spacer = new Label(group, SWT.NULL);
 		if (bHorizontal)
 		{
-			Label spacer = new Label(group, SWT.NULL);
 			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
+		}
+		else
+		{
+			GridData data = new GridData(GridData.FILL_HORIZONTAL);
+			data.minimumHeight = 10;
+			data.heightHint = 10;
+			spacer.setLayoutData(data);
 		}
 		
 		Label label = new Label(group, SWT.CENTER);
@@ -510,6 +519,7 @@ public class ToolBarView
 	    GridLayout layout = new GridLayout(1, false);
 	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
 	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    layout.marginHeight = layout.marginWidth = 3;
 	    group.setLayout(layout);
 
 	    GridData gridData;
@@ -525,7 +535,7 @@ public class ToolBarView
 	    }
     	group.setLayoutData(gridData);
 	    
-		CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_IN);
+		CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_NONE);
 		// colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
 		colorMappingPreviewLabel.setText("");
 		
@@ -551,10 +561,17 @@ public class ToolBarView
 			}
 		});
 
+		Label spacer = new Label(group, SWT.NULL);
 		if (bHorizontal)
 		{
-			Label spacer = new Label(group, SWT.NULL);
 			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
+		}
+		else
+		{
+			GridData data = new GridData(GridData.FILL_HORIZONTAL);
+			data.minimumHeight = 10;
+			data.heightHint = 10;
+			spacer.setLayoutData(data);
 		}
 		
 		Label label = new Label(group, SWT.CENTER);
@@ -569,6 +586,7 @@ public class ToolBarView
 	    GridLayout layout = new GridLayout(1, false);
 	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
 	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    layout.marginHeight = layout.marginWidth = 3;
 	    group.setLayout(layout);
 	    if (bHorizontal)
 	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
@@ -609,6 +627,7 @@ public class ToolBarView
 	    GridLayout layout = new GridLayout(1, false);
 	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
 	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
+	    layout.marginHeight = layout.marginWidth = 3;
 	    group.setLayout(layout);
 	    if (bHorizontal)
 	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
