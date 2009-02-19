@@ -52,6 +52,7 @@ public class Application
 	// The command line arguments overrule the preference store
 	public static boolean bNoPathwayData = false;
 	public static boolean bLoadPathwayData = false;
+	public static boolean bIsWindowsOS = false;
 	
 	public static EApplicationMode applicationMode = EApplicationMode.STANDARD;
 
@@ -66,7 +67,11 @@ public class Application
 	public Object start(IApplicationContext context) throws Exception
 	{
 		// System.out.println("Start Caleydo...");
-
+		// System.out.println("OS Name:" +System.getProperty("os.name"));
+		
+		if (System.getProperty("os.name").contains("Win"))
+			bIsWindowsOS = true;
+		
 		alStartViews = new ArrayList<EStartViewType>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();

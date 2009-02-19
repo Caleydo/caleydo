@@ -23,7 +23,7 @@ public class GenomePerspective
 		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
 		float fRatio = (float)rectDisplay.width / rectDisplay.height;
 
-		if (fRatio > 1.35)
+//		if (fRatio > 1.35)
 			bIsWideScreen = true;
 
 		if (bIsWideScreen)

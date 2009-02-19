@@ -19,6 +19,7 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -118,8 +119,18 @@ public class InfoArea
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.heightHint = 62;
 		gridData.minimumHeight = 62;
-		gridData.widthHint = 120;
-		gridData.minimumWidth = 120;
+		
+		if (Application.bIsWindowsOS)
+		{
+			// In windows the list needs more space because of no multi line support
+			gridData.widthHint = 145;
+			gridData.minimumWidth = 145;
+		}
+		else
+		{
+			gridData.widthHint = 120;
+			gridData.minimumWidth = 120;
+		}			
 
 	    selectionTree.setLayoutData(gridData);
 
@@ -226,9 +237,9 @@ public class InfoArea
 							if (!bIsExisting)
 							{
 								TreeItem item = new TreeItem(selectionTree, SWT.NONE);
-//								if (ToolBarView.bHorizontal)
-//									item.setText(sGeneSymbol + " - " +sRefSeqID);
-//								else
+								if (ToolBarView.bHorizontal && Application.bIsWindowsOS)
+									item.setText(sGeneSymbol + " - " +sRefSeqID);
+								else
 									item.setText(sGeneSymbol + "\n" +sRefSeqID);
 								item.setBackground(color);
 								item.setData(selectionItem.getPrimaryID());
