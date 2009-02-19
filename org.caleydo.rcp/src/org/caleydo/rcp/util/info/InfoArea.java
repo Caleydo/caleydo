@@ -378,7 +378,7 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		switch (eventContainer.getEventType())
 		{

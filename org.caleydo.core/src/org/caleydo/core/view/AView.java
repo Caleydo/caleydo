@@ -81,16 +81,25 @@ public abstract class AView
 		}
 	}
 	
+	@Override
 	public synchronized void addSet(ISet set)
 	{
 		alSets.add(set);
 	}
+	
+	@Override
+	public synchronized void addSets(ArrayList<ISet> alSets)
+	{
+		this.alSets.addAll(alSets);
+	}
 
+	@Override
 	public synchronized void addSet(int iSetID)
 	{
 		alSets.add(generalManager.getSetManager().getItem(iSetID));		
 	}
 
+	@Override
 	public synchronized void removeSets(ESetType setType)
 	{
 		Iterator<ISet> iter = alSets.iterator();
@@ -101,6 +110,7 @@ public abstract class AView
 		}
 	}
 
+	@Override
 	public synchronized void clearSets()
 	{
 		alSets.clear();

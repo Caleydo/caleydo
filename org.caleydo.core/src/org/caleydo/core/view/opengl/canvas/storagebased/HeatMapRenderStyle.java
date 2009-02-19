@@ -1,11 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.util.HashMap;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
@@ -19,13 +16,15 @@ public class HeatMapRenderStyle
 	extends GeneralRenderStyle
 {
 
-	public static final float FIELD_Z = 0.0f;
+	public static final float FIELD_Z = 0.001f;
 
 	public static final float SELECTION_Z = 0.005f;
 
 	private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
 	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	private float fSelectedFieldWidth = 1.0f;
+
+	private static final float LIST_SELECTED_FIELD_WIDTH = 0.3f;
 
 	private float fMamximumNormalFieldWidth = fSelectedFieldWidth / 3 * 2;
 
@@ -41,17 +40,15 @@ public class HeatMapRenderStyle
 
 	private HashMap<Integer, Float> hashLevelToWidth;
 
+	GLHeatMap heatMap;
 
-	
-	AStorageBasedView heatMap;
-
-	public HeatMapRenderStyle(AStorageBasedView heatMap, IViewFrustum viewFrustum)
+	public HeatMapRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum)
 	{
 
 		super(viewFrustum);
 
 		this.heatMap = heatMap;
-	
+
 		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
@@ -73,23 +70,24 @@ public class HeatMapRenderStyle
 
 	}
 
-//	public void setDetailLevel(EDetailLevel detailLevel)
-//	{
-//		// make sure that widht and height are completely reiinitialized
-//
-//		this.detailLevel = detailLevel;
-//	}
+	// public void setDetailLevel(EDetailLevel detailLevel)
+	// {
+	// // make sure that widht and height are completely reiinitialized
+	//
+	// this.detailLevel = detailLevel;
+	// }
 
-//	/**
-//	 * Set the active virtual array of the heat map here, when it changed during
-//	 * runtime. Needed to calculate the widht and height of an element.
-//	 * 
-//	 * @param iContentVAID the id of the content virtual array
-//	 */
-//	public void setActiveVirtualArray(int iContentVAID)
-//	{
-//		this.iContentVAID = iContentVAID;
-//	}
+	// /**
+	// * Set the active virtual array of the heat map here, when it changed
+	// during
+	// * runtime. Needed to calculate the widht and height of an element.
+	// *
+	// * @param iContentVAID the id of the content virtual array
+	// */
+	// public void setActiveVirtualArray(int iContentVAID)
+	// {
+	// this.iContentVAID = iContentVAID;
+	// }
 
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays
@@ -101,7 +99,7 @@ public class HeatMapRenderStyle
 				.getNumberOfElements(ESelectionType.MOUSE_OVER);
 		iNumberSelected += heatMap.contentSelectionManager
 				.getNumberOfElements(ESelectionType.SELECTION);
-		
+
 		int iNumberTotal = heatMap.set.getVA(heatMap.getContentVAID()).size();
 
 		float fSelecteFieldWidthPercentage = SELECTED_FIELD_WIDTH_PERCENTAGE;
@@ -119,16 +117,27 @@ public class HeatMapRenderStyle
 			fNormalFieldWidth = (getRenderWidth() - iNumberSelected * fSelectedFieldWidth)
 					/ (iNumberTotal - iNumberSelected);
 
-			fFieldHeight = getRenderHeight() / heatMap.set.getVA(heatMap.getStorageVAID()).size();
+			fFieldHeight = getRenderHeight()
+					/ heatMap.set.getVA(heatMap.getStorageVAID()).size();
 		}
 		else
 		{
-			fSelectedFieldWidth = getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE
-					* fSelecteFieldWidthPercentage;
-			fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
-					/ (iNumberTotal - iNumberSelected);
+			if (heatMap.bIsInListMode)
+			{
 
-			fFieldHeight = (getRenderWidth() / heatMap.set.getVA(heatMap.getStorageVAID()).size());
+				fSelectedFieldWidth = LIST_SELECTED_FIELD_WIDTH;
+				fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
+						/ (iNumberTotal - iNumberSelected);
+			}
+			else
+			{
+				fSelectedFieldWidth = getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE
+						* fSelecteFieldWidthPercentage;
+				fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
+						/ (iNumberTotal - iNumberSelected);
+			}
+			fFieldHeight = (getRenderWidth() / heatMap.set.getVA(heatMap.getStorageVAID())
+					.size());
 		}
 
 		fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
@@ -176,13 +185,19 @@ public class HeatMapRenderStyle
 		return 0.3f;
 	}
 
-//	public void setBRenderStorageHorizontally(boolean bRenderStorageHorizontally)
-//	{
-//		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-//	}
+	// public void setBRenderStorageHorizontally(boolean
+	// bRenderStorageHorizontally)
+	// {
+	// this.bRenderStorageHorizontally = bRenderStorageHorizontally;
+	// }
 
 	private float getRenderWidth()
 	{
+		if (heatMap instanceof GLHeatMap)
+		{
+			if (heatMap.bIsInListMode)
+				return viewFrustum.getWidth() - 0.1f;
+		}
 		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getWidth() - 2.4f * getXSpacing();
 		return viewFrustum.getWidth();

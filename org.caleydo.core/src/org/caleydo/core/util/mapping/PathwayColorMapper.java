@@ -1,19 +1,5 @@
 package org.caleydo.core.util.mapping;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.util.graph.EGraphItemProperty;
 
 /**
  * Class is responsible for mapping gene expression data to color from one

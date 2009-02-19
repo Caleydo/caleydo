@@ -208,8 +208,8 @@ public class GLPathway
 	public synchronized void display(final GL gl)
 	{
 		checkForHits(gl);
-		
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		// TODO: also put this in global DL
 		renderPathwayById(gl, iPathwayID);
@@ -308,10 +308,10 @@ public class GLPathway
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta)
 	{
-//		generalManager.getLogger().log(
-//				Level.INFO,
-//				"Update called by " + eventTrigger.getClass().getSimpleName()
-//						+ ", received in: " + this.getClass().getSimpleName());
+		// generalManager.getLogger().log(
+		// Level.INFO,
+		// "Update called by " + eventTrigger.getClass().getSimpleName()
+		// + ", received in: " + this.getClass().getSimpleName());
 
 		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
@@ -361,46 +361,48 @@ public class GLPathway
 
 			if (iDavidID == -1)
 				continue;
-			
+
 			Set<Integer> iSetRefSeq = idMappingManager.getMultiID(
 					EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
-			
+
 			if (iSetRefSeq == null)
 			{
-				generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " +iDavidID);
+				generalManager.getLogger().log(Level.SEVERE,
+						"No RefSeq IDs found for David: " + iDavidID);
 				continue;
 			}
-			
+
 			for (int iRefSeqID : iSetRefSeq)
 			{
-				alRefSeqID.add(iRefSeqID);				
+				alRefSeqID.add(iRefSeqID);
 			}
 		}
 
 		return alRefSeqID;
 	}
 
-//	private ArrayList<Integer> getRefSeqFromPathwayVertexGraphItemRep(
-//			int iPathwayVertexGraphItemRepID)
-//	{
-//		ArrayList<Integer> alRefSeq = new ArrayList<Integer>();
-//
-//		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager()
-//				.getItem(iPathwayVertexGraphItemRepID).getAllItemsByProp(
-//						EGraphItemProperty.ALIAS_PARENT))
-//		{
-//			int iRefSeqID = generalManager.getPathwayItemManager()
-//					.getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
-//
-//			if (iDavidID == -1)
-//				continue;
-//
-//			alRefSeq.add(iDavidID);
-//		}
-//
-//		return alRefSeq;
-//	}
-	
+	// private ArrayList<Integer> getRefSeqFromPathwayVertexGraphItemRep(
+	// int iPathwayVertexGraphItemRepID)
+	// {
+	// ArrayList<Integer> alRefSeq = new ArrayList<Integer>();
+	//
+	// for (IGraphItem pathwayVertexGraphItem :
+	// generalManager.getPathwayItemManager()
+	// .getItem(iPathwayVertexGraphItemRepID).getAllItemsByProp(
+	// EGraphItemProperty.ALIAS_PARENT))
+	// {
+	// int iRefSeqID = generalManager.getPathwayItemManager()
+	// .getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
+	//
+	// if (iDavidID == -1)
+	// continue;
+	//
+	// alRefSeq.add(iDavidID);
+	// }
+	//
+	// return alRefSeq;
+	// }
+
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
@@ -408,13 +410,13 @@ public class GLPathway
 		for (SelectionDeltaItem item : selectionDelta)
 		{
 			for (int iRefSeqID : getRefSeqIDsFromPathwayVertexGraphItemRep(item.getPrimaryID()))
-			{	
-				newSelectionDelta.addSelection((Integer)iRefSeqID, item.getSelectionType(), item
-					.getPrimaryID());
-					
+			{
+				newSelectionDelta.addSelection((Integer) iRefSeqID, item.getSelectionType(),
+						item.getPrimaryID());
+
 				for (Integer iConnectionID : item.getConnectionID())
 				{
-					newSelectionDelta.addConnectionID((Integer)iRefSeqID, iConnectionID);
+					newSelectionDelta.addConnectionID((Integer) iRefSeqID, iConnectionID);
 				}
 			}
 		}
@@ -432,16 +434,16 @@ public class GLPathway
 		int iPathwayVertexGraphItemID = 0;
 
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
-		
+
 		for (SelectionDeltaItem item : selectionDelta)
 		{
 			iRefSeqID = item.getPrimaryID();
 
 			iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
-			
+
 			if (iDavidID == null)
 				throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
-			
+
 			iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
 					.getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
@@ -687,7 +689,7 @@ public class GLPathway
 				{
 					break;
 				}
-				
+
 				selectionManager.clearSelection(eSelectionType);
 
 				// Add new vertex to internal selection manager
@@ -712,7 +714,7 @@ public class GLPathway
 
 				break;
 		}
-		
+
 		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
@@ -749,7 +751,7 @@ public class GLPathway
 	{
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.REFSEQ_MRNA_INT);
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
-		
+
 		// TODO: Move to own method (outside this class)
 		Iterator<IGraphItem> iterPathwayVertexGraphItemRep = (generalManager
 				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(
@@ -782,17 +784,18 @@ public class GLPathway
 
 				Set<Integer> iSetRefSeq = idMappingManager.getMultiID(
 						EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
-				
+
 				if (iSetRefSeq == null)
 				{
-					generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " +iDavidID);
+					generalManager.getLogger().log(Level.SEVERE,
+							"No RefSeq IDs found for David: " + iDavidID);
 					continue;
 				}
-				
+
 				for (Object iRefSeqID : iSetRefSeq)
 				{
-					delta.add(VADeltaItem.create(type, (Integer)iRefSeqID));
-				}				
+					delta.add(VADeltaItem.create(type, (Integer) iRefSeqID));
+				}
 			}
 		}
 
@@ -897,7 +900,8 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		switch (eventContainer.getEventType())
 		{
@@ -918,8 +922,7 @@ public class GLPathway
 
 	public void destroy()
 	{
-		generalManager.getPathwayManager().setPathwayVisibilityStateByID(
-					iPathwayID, false);
+		generalManager.getPathwayManager().setPathwayVisibilityStateByID(iPathwayID, false);
 
 		super.destroy();
 	}

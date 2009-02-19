@@ -52,84 +52,32 @@ public class EventPublisher
 
 	}
 
-	// @Override
-	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
-	// IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-	// Collection<SelectionCommand> colSelectionCommand)
-	// {
-	// if (!hashMediatorType2Mediator.containsKey(eMediatorType))
-	// {
-	// if (eMediatorType != EMediatorType.ALL_REGISTERED)
-	// throw new IllegalStateException("Sender " + eventTrigger.getID()
-	// + " is not a sender in the mediator group " + eMediatorType);
-	// }
-	// if (eMediatorType == EMediatorType.ALL_REGISTERED)
-	// {
-	// for (EMediatorType eTempMediatorType :
-	// hashMediatorType2Mediator.keySet())
-	// {
-	// if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
-	// (IMediatorSender) eventTrigger))
-	// {
-	// hashMediatorType2Mediator.get(eTempMediatorType).triggerUpdate(
-	// eventTrigger, selectionDelta, colSelectionCommand);
-	// }
-	// }
-	// }
-	// else
-	// {
-	// hashMediatorType2Mediator.get(eMediatorType).triggerUpdate(eventTrigger,
-	// selectionDelta, colSelectionCommand);
-	// }
-	// }
-	//
-	// @Override
-	// public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject
-	// eventTrigger,
-	// IVirtualArrayDelta delta, Collection<SelectionCommand>
-	// colSelectionCommand)
-	// {
-	// if (!hashMediatorType2Mediator.containsKey(eMediatorType))
-	// {
-	// if (eMediatorType != EMediatorType.ALL_REGISTERED)
-	// throw new IllegalStateException("Sender " + eventTrigger.getID()
-	// + " is not a sender in the mediator group " + eMediatorType);
-	// }
-	// if (eMediatorType == EMediatorType.ALL_REGISTERED)
-	// {
-	// for (EMediatorType eTempMediatorType :
-	// hashMediatorType2Mediator.keySet())
-	// {
-	// if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
-	// (IMediatorSender) eventTrigger))
-	// {
-	// hashMediatorType2Mediator.get(eTempMediatorType).triggerVAUpdate(
-	// eventTrigger, delta, colSelectionCommand);
-	// }
-	// }
-	// }
-	// else
-	// {
-	// hashMediatorType2Mediator.get(eMediatorType).triggerVAUpdate(eventTrigger,
-	// delta,
-	// colSelectionCommand);
-	// }
-	// }
-
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
 			IEventContainer eventContainer)
 	{
-		// TODO FIXME add support for ALL_REGISTERED
 
 		if (!(eventTrigger instanceof IMediatorSender))
 		{
 			throw new IllegalArgumentException(
 					"triggerEvent called by an object which does not implement IMediatorSender");
 		}
-		for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
+
+		if (eMediatorType == EMediatorType.ALL_REGISTERED)
 		{
-			IMediator tempMediator = hashMediatorType2Mediator.get(eTempMediatorType);
+
+			for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
+			{
+				IMediator tempMediator = hashMediatorType2Mediator.get(eTempMediatorType);
+				if (tempMediator.hasSender((IMediatorSender) eventTrigger))
+				{
+					tempMediator.triggerEvent(eventTrigger, eventContainer);
+				}
+			}
+		}
+		else
+		{
+			IMediator tempMediator = hashMediatorType2Mediator.get(eMediatorType);
 			if (tempMediator.hasSender((IMediatorSender) eventTrigger))
 			{
 				tempMediator.triggerEvent(eventTrigger, eventContainer);

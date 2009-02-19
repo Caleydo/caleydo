@@ -2,8 +2,6 @@ package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
-import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;

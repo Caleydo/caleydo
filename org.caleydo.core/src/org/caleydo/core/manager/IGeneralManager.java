@@ -17,6 +17,7 @@ import org.eclipse.jface.preference.PreferenceStore;
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
+ * @author Alexander Lex
  */
 public interface IGeneralManager
 {

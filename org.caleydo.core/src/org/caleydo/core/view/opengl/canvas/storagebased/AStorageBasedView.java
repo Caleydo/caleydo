@@ -21,7 +21,6 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -114,7 +113,8 @@ public abstract class AStorageBasedView
 		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
+//		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
 	}
 
@@ -175,17 +175,18 @@ public abstract class AStorageBasedView
 			// Only apply only_context when pathways are loaded
 			if (GeneralManager.get().getPathwayManager().size() > 100)
 			{
-				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;			
+				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 			}
 			else
 			{
 				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-			}		}
+			}
+		}
 		else
 		{
 			throw new IllegalStateException("Unknown data filter level");
 		}
-		
+
 		if (!mapVAIDs.isEmpty())
 		{
 
@@ -276,21 +277,21 @@ public abstract class AStorageBasedView
 		{
 			alUseInRandomSampling = new ArrayList<Boolean>();
 			int iCount = 0;
-			for(; iCount < iNumberOfRandomElements; iCount++)
+			for (; iCount < iNumberOfRandomElements; iCount++)
 			{
 				alUseInRandomSampling.add(true);
 			}
-			for(; iCount < alTempList.size(); iCount++)
+			for (; iCount < alTempList.size(); iCount++)
 			{
 				alUseInRandomSampling.add(false);
 			}
 			Collections.shuffle(alUseInRandomSampling);
-//			if (alTempList.size() > iNumberOfRandomElements)
-//			{
-//				ArrayList<Integer> alNewList = new ArrayList<Integer>();
-//				alNewList.addAll(alTempList.subList(0, iNumberOfRandomElements));
-//				alTempList = alNewList;
-//			}
+			// if (alTempList.size() > iNumberOfRandomElements)
+			// {
+			// ArrayList<Integer> alNewList = new ArrayList<Integer>();
+			// alNewList.addAll(alTempList.subList(0, iNumberOfRandomElements));
+			// alTempList = alNewList;
+			// }
 
 		}
 
@@ -321,10 +322,10 @@ public abstract class AStorageBasedView
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta)
 	{
-//		generalManager.getLogger().log(
-//				Level.INFO,
-//				"Update called by " + eventTrigger.getClass().getSimpleName()
-//						+ ", received in: " + this.getClass().getSimpleName());
+		// generalManager.getLogger().log(
+		// Level.INFO,
+		// "Update called by " + eventTrigger.getClass().getSimpleName()
+		// + ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
@@ -353,10 +354,10 @@ public abstract class AStorageBasedView
 
 	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
 	{
-//		generalManager.getLogger().log(
-//				Level.INFO,
-//				"VA Update called by " + eventTrigger.getClass().getSimpleName()
-//						+ ", received in: " + this.getClass().getSimpleName());
+		// generalManager.getLogger().log(
+		// Level.INFO,
+		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
+		// + ", received in: " + this.getClass().getSimpleName());
 
 		GenericSelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)
@@ -365,8 +366,7 @@ public abstract class AStorageBasedView
 		}
 		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
 		{
-			delta = DeltaConverter.convertDelta(
-					EIDType.EXPRESSION_INDEX, delta);
+			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 			selectionManager = contentSelectionManager;
 		}
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
@@ -377,11 +377,11 @@ public abstract class AStorageBasedView
 		{
 			return;
 		}
-		
+
 		reactOnVAChanges(delta);
 		selectionManager.setVADelta(delta);
-		
-//		reactOnExternalSelection();
+
+		// reactOnExternalSelection();
 		setDisplayListDirty();
 	}
 
@@ -393,14 +393,16 @@ public abstract class AStorageBasedView
 	{
 
 	}
-	
+
 	/**
-	 * Is called any time a virtual array is changed. Can be implemented by inheriting views if some action is necessary
+	 * Is called any time a virtual array is changed. Can be implemented by
+	 * inheriting views if some action is necessary
+	 * 
 	 * @param delta
 	 */
 	protected void reactOnVAChanges(IVirtualArrayDelta delta)
 	{
-		
+
 	}
 
 	/**
@@ -435,7 +437,6 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
-
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
@@ -444,7 +445,8 @@ public abstract class AStorageBasedView
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		switch (eventContainer.getEventType())
 		{
@@ -454,6 +456,9 @@ public abstract class AStorageBasedView
 						.getSelectionDelta());
 				break;
 			case VA_UPDATE:
+				if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
+						&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR)
+					break;
 				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer = (DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
 				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
 				break;
@@ -474,7 +479,7 @@ public abstract class AStorageBasedView
 				}
 				break;
 			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer = (ViewCommandEventContainer)eventContainer;
+				ViewCommandEventContainer viewCommandEventContainer = (ViewCommandEventContainer) eventContainer;
 				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW)
 					setDisplayListDirty();
 				break;
@@ -528,7 +533,8 @@ public abstract class AStorageBasedView
 						idType = EIDType.EXPERIMENT_INDEX;
 					}
 					else
-						throw new InvalidAttributeValueException("Can not handle data type: " +selectionDelta.getIDType());
+						throw new InvalidAttributeValueException("Can not handle data type: "
+								+ selectionDelta.getIDType());
 
 					if (iStorageIndex == -1)
 						throw new IllegalArgumentException("No internal ID in selection delta");

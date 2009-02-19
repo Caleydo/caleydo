@@ -1,7 +1,6 @@
 package org.caleydo.rcp.command.handler;
 
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;

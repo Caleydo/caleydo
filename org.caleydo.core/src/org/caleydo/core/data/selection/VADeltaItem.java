@@ -1,6 +1,5 @@
 package org.caleydo.core.data.selection;
 
-import javax.swing.tree.ExpandVetoException;
 
 /**
  * A VADeltaItem contains all information for the modification of a single item

@@ -4,10 +4,8 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
-
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.general.GeneralManager;

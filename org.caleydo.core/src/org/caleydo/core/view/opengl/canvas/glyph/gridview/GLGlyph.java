@@ -1046,6 +1046,7 @@ public class GLGlyph
 						brushSelect(g, !keyListener_.isControlDown());
 
 					generalManager.getViewGLCanvasManager()
+
 							.getConnectedElementRepresentationManager().clear(
 									EIDType.EXPERIMENT_INDEX);
 
@@ -1053,6 +1054,7 @@ public class GLGlyph
 							new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
 									new SelectionCommand(ESelectionCommandType.CLEAR,
 											ESelectionType.MOUSE_OVER)));
+
 
 					triggerSelectionUpdate();
 
@@ -1076,10 +1078,10 @@ public class GLGlyph
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
 
-		generalManager.getLogger().log(
-				Level.INFO,
-				sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getSimpleName());
+		// generalManager.getLogger().log(Level.INFO,
+		// sLabel + ": Update called by " +
+		// eventTrigger.getClass().getSimpleName());
+
 
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);
@@ -1120,7 +1122,8 @@ public class GLGlyph
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		generalManager.getLogger().log(
 				Level.INFO,
@@ -1132,6 +1135,7 @@ public class GLGlyph
 			case SELECTION_UPDATE:
 				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
 				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
+
 						.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
 				break;
 
@@ -1192,11 +1196,13 @@ public class GLGlyph
 
 			vecGlyphPos = getGlyphPosition(actualGlyph);
 
+
 			SelectedElementRep rep = new SelectedElementRep(EIDType.EXPERIMENT_INDEX,
 					iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z());
 
 			for (Integer iConnectionID : item.getConnectionID())
 				connectedElementRepresentationManager.addSelection(iConnectionID, rep);
+
 		}
 	}
 

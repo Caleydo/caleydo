@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.renderstyle.layout;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -367,7 +366,7 @@ public class BucketLayoutRenderStyle
 	{
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.12f, -2,
-			4.01f));
+			4.02f));
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
 			fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
 

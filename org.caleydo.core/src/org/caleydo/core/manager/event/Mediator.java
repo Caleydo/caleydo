@@ -146,7 +146,7 @@ public class Mediator
 				if (receiver instanceof IMediatorReceiver)
 				{
 					IMediatorReceiver eventReceiver = (IMediatorReceiver) receiver;
-					eventReceiver.handleExternalEvent(eventTrigger, eventContainer);
+					eventReceiver.handleExternalEvent(eventTrigger, eventContainer, eType);
 				}
 			}
 		}

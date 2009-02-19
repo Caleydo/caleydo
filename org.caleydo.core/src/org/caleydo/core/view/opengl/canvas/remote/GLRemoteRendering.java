@@ -46,7 +46,6 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.panel.GLSelectionPanel;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
@@ -104,7 +103,7 @@ public class GLRemoteRendering
 	private RemoteLevel externalSelectionLevel;
 
 	private ArrayList<SlerpAction> arSlerpActions;
-	
+
 	private GLHeatMap glExternalSelectionHeatMap;
 
 	private Time time;
@@ -159,7 +158,7 @@ public class GLRemoteRendering
 	private boolean bEnableConnectinLines = true;
 
 	private boolean bRightMouseClickEventInvalid = false;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -253,8 +252,7 @@ public class GLRemoteRendering
 
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
-				.getCommandManager().createCommandByType(
-						ECommandType.CREATE_GL_HEAT_MAP_3D);
+				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
 				null, -1);
 		cmdCreateGLView.doCommand();
@@ -306,8 +304,16 @@ public class GLRemoteRendering
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(
 				glExternalSelectionHeatMap.getID());
 
+		glExternalSelectionHeatMap.addSets(alSets);
+		glExternalSelectionHeatMap.setToListMode(true);
 		glExternalSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
 				remoteRenderingGLCanvas);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.PROPAGATION_MEDIATOR,
+				glExternalSelectionHeatMap);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				glExternalSelectionHeatMap);
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				glExternalSelectionHeatMap);
 
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
@@ -319,13 +325,14 @@ public class GLRemoteRendering
 	public synchronized void displayLocal(final GL gl)
 	{
 		if ((pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener
-				.isZoomedIn()) && !bRightMouseClickEventInvalid
+				.isZoomedIn())
+				&& !bRightMouseClickEventInvalid
 				&& !(layoutRenderStyle instanceof ListLayoutRenderStyle))
 		{
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
-			
+
 			bRightMouseClickEventInvalid = true;
-			
+
 			if (glConnectionLineRenderer != null)
 				glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
 		}
@@ -333,7 +340,7 @@ public class GLRemoteRendering
 		{
 			bRightMouseClickEventInvalid = false;
 		}
-		
+
 		pickingManager.handlePicking(iUniqueID, gl);
 
 		// if (bIsDisplayListDirtyLocal)
@@ -364,8 +371,8 @@ public class GLRemoteRendering
 
 			// Prevent user from dragging element onto selection level
 			if (!RemoteElementManager.get().hasItem(iMouseOverObjectID)
-					|| !externalSelectionLevel.containsElement(RemoteElementManager.get().getItem(
-							iMouseOverObjectID)))
+					|| !externalSelectionLevel.containsElement(RemoteElementManager.get()
+							.getItem(iMouseOverObjectID)))
 			{
 				RemoteLevelElement mouseOverElement = null;
 
@@ -450,8 +457,8 @@ public class GLRemoteRendering
 		time.update();
 
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
-		// layoutRenderStyle.initStackLevel(false);
-		// layoutRenderStyle.initMemoLevel();
+//		 layoutRenderStyle.initStackLevel(false);
+//		 layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
 				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -991,7 +998,7 @@ public class GLRemoteRendering
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(sText, 2 / fScalingFactor
 				- (float) textRenderer.getBounds(sText).getWidth() / 2f * fTextScalingFactor,
-				2.02f, 0, fTextScalingFactor);
+				2.02f, 0f, fTextScalingFactor);
 		textRenderer.end3DRendering();
 
 		if (bUpsideDown)
@@ -1863,7 +1870,8 @@ public class GLRemoteRendering
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 
 		switch (eventContainer.getEventType())
@@ -1882,11 +1890,13 @@ public class GLRemoteRendering
 
 					for (Integer iRefSeqID : idContainer.getIDs())
 					{
-						iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
-						
+						iDavidID = idMappingManager.getID(
+								EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+
 						if (iDavidID == null || iDavidID == -1)
-							throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
-						
+							throw new IllegalStateException(
+									"Cannot resolve RefSeq ID to David ID.");
+
 						iGraphItemID = generalManager.getPathwayItemManager()
 								.getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
@@ -2043,8 +2053,9 @@ public class GLRemoteRendering
 								.getViewGLCanvasManager().getGLEventListener(
 										element.getContainedElementID()));
 
-//						// Unregister all elements of the view that is removed
-//						glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+						// // Unregister all elements of the view that is
+						// removed
+						// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 						removeView(glEventListener);
 
@@ -2399,7 +2410,7 @@ public class GLRemoteRendering
 			// Register specialized bucket mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
-			
+
 			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel,
 					stackLevel, poolLevel);
 		}
@@ -2463,7 +2474,7 @@ public class GLRemoteRendering
 	{
 		enableBusyMode(false);
 		pickingManager.enablePicking(true);
-		
+
 		iAlUninitializedPathwayIDs.clear();
 		arSlerpActions.clear();
 
@@ -2472,8 +2483,9 @@ public class GLRemoteRendering
 		clearRemoteLevel(focusLevel);
 		clearRemoteLevel(stackLevel);
 		clearRemoteLevel(poolLevel);
-		
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
+
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clearAll();
 	}
 
 	private void clearRemoteLevel(RemoteLevel remoteLevel)
@@ -2601,24 +2613,24 @@ public class GLRemoteRendering
 
 			gl.glPopName();
 
-			 // Render memo pad background
-			 gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
-			 gl.glLineWidth(1);
-			 gl.glBegin(GL.GL_POLYGON);
-			 gl.glVertex3f(2 / fAspectRatio, -2, 4);
-			 gl.glVertex3f(2 / fAspectRatio, 2, 4);
-			 gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
-			 gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
-			 gl.glEnd();
-			
-			 gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
-			 gl.glLineWidth(1);
-			 gl.glBegin(GL.GL_LINE_LOOP);
-			 gl.glVertex3f(2 / fAspectRatio, -2, 4);
-			 gl.glVertex3f(2 / fAspectRatio, 2, 4);
-			 gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
-			 gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
-			 gl.glEnd();
+			// Render memo pad background
+			gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
+			gl.glLineWidth(1);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, 2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, -2, 4);
+			gl.glEnd();
+
+			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
+			gl.glLineWidth(1);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, 2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, -2, 4);
+			gl.glEnd();
 		}
 
 		// Render caption

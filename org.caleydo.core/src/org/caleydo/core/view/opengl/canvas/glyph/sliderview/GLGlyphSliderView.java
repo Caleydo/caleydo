@@ -422,7 +422,8 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		// TODO Auto-generated method stub
 

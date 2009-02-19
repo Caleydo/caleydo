@@ -123,7 +123,7 @@ public class TabularDataViewRep
 
 	private Button lastRemoveContent;
 	private Button lastRemoveStorage;
-	
+
 	private int[] iArCurrentColumnOrder;
 
 	/**
@@ -195,7 +195,7 @@ public class TabularDataViewRep
 			// Only apply only_context when pathways are loaded
 			if (GeneralManager.get().getPathwayManager().size() > 100)
 			{
-				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;			
+				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 			}
 			else
 			{
@@ -578,48 +578,50 @@ public class TabularDataViewRep
 					}
 				}
 			});
-			
-//			column.addListener(SWT.Move, new Listener() {
-//
-//				@Override
-//				public void handleEvent(Event event)
-//				{
-//					if (iArCurrentColumnOrder == null)
-//					{
-//						return;
-//					}
-//					
-//					int iLastColumnPos = 0;
-//					int iNewColumnPos = 0;
-//					int[] iArNewColumnOrder = contentTable.getColumnOrder();
-//					for (int iColumnIndex = 0; iColumnIndex < iArCurrentColumnOrder.length; iColumnIndex++)
-//					{
-//						iLastColumnPos = iArCurrentColumnOrder[iColumnIndex];
-//						iNewColumnPos = iArNewColumnOrder[iColumnIndex];
-//						
-//						if (iLastColumnPos != iNewColumnPos)
-//						{
-//							// Move left detected
-//							if (iLastColumnPos == iArNewColumnOrder[iColumnIndex+1])
-//							{
-//								for 
-//								
-//								set.getVA(iStorageVAID).move(iLastColumnPos, iNewColumnPos);
-//							}
-//							
-//							
-//							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
-//							vaDelta.add(VADeltaItem.move(iLastColumnPos, iNewColumnPos));
-//							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-//									new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
-//						}
-//					}
-//					
-//					iArCurrentColumnOrder = iArNewColumnOrder;
-//				}
-//			});
+
+			// column.addListener(SWT.Move, new Listener() {
+			//
+			// @Override
+			// public void handleEvent(Event event)
+			// {
+			// if (iArCurrentColumnOrder == null)
+			// {
+			// return;
+			// }
+			//					
+			// int iLastColumnPos = 0;
+			// int iNewColumnPos = 0;
+			// int[] iArNewColumnOrder = contentTable.getColumnOrder();
+			// for (int iColumnIndex = 0; iColumnIndex <
+			// iArCurrentColumnOrder.length; iColumnIndex++)
+			// {
+			// iLastColumnPos = iArCurrentColumnOrder[iColumnIndex];
+			// iNewColumnPos = iArNewColumnOrder[iColumnIndex];
+			//						
+			// if (iLastColumnPos != iNewColumnPos)
+			// {
+			// // Move left detected
+			// if (iLastColumnPos == iArNewColumnOrder[iColumnIndex+1])
+			// {
+			// for
+			//								
+			// set.getVA(iStorageVAID).move(iLastColumnPos, iNewColumnPos);
+			// }
+			//							
+			//							
+			// IVirtualArrayDelta vaDelta = new
+			// VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+			// vaDelta.add(VADeltaItem.move(iLastColumnPos, iNewColumnPos));
+			// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+			// new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+			// }
+			// }
+			//					
+			// iArCurrentColumnOrder = iArNewColumnOrder;
+			// }
+			// });
 		}
-		
+
 		iArCurrentColumnOrder = contentTable.getColumnOrder();
 
 		IVirtualArray storageVA = set.getVA(iStorageVAID);
@@ -721,7 +723,8 @@ public class TabularDataViewRep
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		switch (eventContainer.getEventType())
 		{
@@ -768,7 +771,7 @@ public class TabularDataViewRep
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 		{
 			storageSelectionManager.setDelta(selectionDelta);
-			
+
 			reactOnExternalSelection();
 		}
 	}

@@ -11,31 +11,16 @@ import org.caleydo.core.data.IUniqueObject;
 public interface IMediatorReceiver
 {
 	/**
-	 * Update called by Mediator triggered by IMediatorSender.
+	 * Interface for objects that are event receivers. Updates of all sorts are
+	 * transmitted via this interface
 	 * 
-	 * @param eventTrigger Calling object, that created the update
-	 * @param selectionDelta the differences in the selections
-	 * @param colSelectionCommand TODO
+	 * @param eventTrigger the id of the object that triggered the event
+	 * @param eventContainer the container that holds all the information on the
+	 *            event
+	 * @param eMediatorType the type of the mediator that was used to transmit
+	 *            this event. Can be null in case of a private mediator.
 	 */
-	// public void handleSelectionUpdate(IUniqueObject eventTrigger,
-	// ISelectionDelta selectionDelta,
-	// Collection<SelectionCommand> colSelectionCommand, EMediatorType
-	// eMediatorType);
-	//
-	// /**
-	// * Update concerning virtual arrays. The details about what to do with the
-	// * update are specified in the delta.
-	// *
-	// * @param eMediatorType for which mediator
-	// * @param eventTrigger the caller
-	// * @param delta the delta containing all operations to be executed
-	// * @param colSelectionCommand TODO
-	// */
-	// public void handleVAUpdate(EMediatorType eMediatorType, IUniqueObject
-	// eventTrigger,
-	// IVirtualArrayDelta delta, Collection<SelectionCommand>
-	// colSelectionCommand);
-	//	
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer);
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType);
 
 }

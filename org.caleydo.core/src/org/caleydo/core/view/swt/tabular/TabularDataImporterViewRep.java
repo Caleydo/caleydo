@@ -36,8 +36,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -480,7 +478,8 @@ public class TabularDataImporterViewRep
 		lblPreview.setText("Data preview:");
 		lblPreview.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
 
-		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
+				| SWT.VIRTUAL);
 		previewTable.setLinesVisible(false);
 		previewTable.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -530,27 +529,29 @@ public class TabularDataImporterViewRep
 			{
 				// TODO Auto-generated method stub
 				super.widgetSelected(e);
-//
-//				String sSelection = e.item.toString();
-//				Integer iSelectedRowIndex = new Integer(sSelection.substring(sSelection
-//						.lastIndexOf(' ') + 1, sSelection.lastIndexOf('}')));
-//
-//				Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
-//						EMappingType.EXPRESSION_INDEX_2_DAVID, iSelectedRowIndex);
-//
-//				if (iDavidID == null || iDavidID == -1)
-//					return;
-//
-//				SelectionDelta tmpDelta = new SelectionDelta(EIDType.DAVID);
-//				tmpDelta.addSelection(iDavidID, ESelectionType.MOUSE_OVER);
-//
-//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-//						new SelectionCommandEventContainer(EIDType.DAVID,
-//								new SelectionCommand(ESelectionCommandType.CLEAR,
-//										ESelectionType.MOUSE_OVER)));
-//
-//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-//						new DeltaEventContainer<ISelectionDelta>(tmpDelta));
+				//
+				// String sSelection = e.item.toString();
+				// Integer iSelectedRowIndex = new
+				// Integer(sSelection.substring(sSelection
+				// .lastIndexOf(' ') + 1, sSelection.lastIndexOf('}')));
+				//
+				// Integer iDavidID =
+				// GeneralManager.get().getIDMappingManager().getID(
+				// EMappingType.EXPRESSION_INDEX_2_DAVID, iSelectedRowIndex);
+				//
+				// if (iDavidID == null || iDavidID == -1)
+				// return;
+				//
+				// SelectionDelta tmpDelta = new SelectionDelta(EIDType.DAVID);
+				// tmpDelta.addSelection(iDavidID, ESelectionType.MOUSE_OVER);
+				//
+				// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				// new SelectionCommandEventContainer(EIDType.DAVID,
+				// new SelectionCommand(ESelectionCommandType.CLEAR,
+				// ESelectionType.MOUSE_OVER)));
+				//
+				// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				// new DeltaEventContainer<ISelectionDelta>(tmpDelta));
 
 			}
 		});
@@ -658,9 +659,9 @@ public class TabularDataImporterViewRep
 					column = new TableColumn(previewTable, SWT.NONE);
 					column.setText("Bal");
 					column.setWidth(100);
-				    column.setMoveable(true);
-//				    column.addListener(SWT.Move, listener);
-					
+					column.setMoveable(true);
+					// column.addListener(SWT.Move, listener);
+
 					item.setText(iColIndex + 1, sTmpNextToken);
 					// item.setBackground(iColCount, Display.getCurrent()
 					// .getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
@@ -1065,7 +1066,8 @@ public class TabularDataImporterViewRep
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		// TODO Auto-generated method stub
 

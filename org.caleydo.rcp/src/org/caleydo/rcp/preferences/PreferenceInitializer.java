@@ -4,7 +4,6 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
-
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;

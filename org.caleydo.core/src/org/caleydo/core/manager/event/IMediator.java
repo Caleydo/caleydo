@@ -70,38 +70,16 @@ public interface IMediator
 	public boolean hasSender(IMediatorSender sender);
 
 	/**
-	 * Trigger an update concerning selections. The details about what to do
-	 * with the update are specified in the delta.
-	 * 
-	 * @param eventTrigger the caller
-	 * @param selectionDelta the delta containing all operations to be executed
-	 * @param colSelectionCommand a command to be executed on the selection
-	 *            manager (can be null if not necessary)
-	 */
-	// public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta
-	// selectionDelta,
-	// Collection<SelectionCommand> colSelectionCommand);
-	//
-	// /**
-	// * Trigger an update concerning virtual arrays. The details about what to
-	// do
-	// * with the update are specified in the delta.
-	// *
-	// * @param eventTrigger the caller
-	// * @param delta the delta containing all operations to be executed
-	// * @param colSelectionCommand a command to be executed on the manager (can
-	// * be null if not necessary)
-	// */
-	// public void triggerVAUpdate(IUniqueObject eventTrigger,
-	// IVirtualArrayDelta delta,
-	// Collection<SelectionCommand> colSelectionCommand);
-	/**
 	 * Triggers an event, signals that something has happened and sends data
 	 * along
 	 * 
+ 	 * @param eMediatorType the type of mediator that is used to process this
+	 *            event
 	 * @param eventTrigger the caller
 	 * @param eventContainer containing the information on the type of the event
 	 *            {@link EEventType} and possibly data associated
+
 	 */
-	public void triggerEvent(IUniqueObject eventTrigger, IEventContainer eventContainer);
+	public void triggerEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer);
 }

@@ -256,7 +256,8 @@ public class GLCell
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		// generalManager.getLogger().log(Level.FINE,
 		// "Update called by " + eventTrigger.getClass().getSimpleName());

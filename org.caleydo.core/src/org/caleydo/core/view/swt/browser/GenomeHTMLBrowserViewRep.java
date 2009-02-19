@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.util.ArrayList;
-import java.util.Set;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -9,6 +8,7 @@ import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -163,17 +163,17 @@ public class GenomeHTMLBrowserViewRep
 					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
 							|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION)
 					{
-						String sRefSeqID = GeneralManager.get().getIDMappingManager()
-							.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+						String sRefSeqID = GeneralManager.get().getIDMappingManager().getID(
+								EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
 								selectionDeltaItem.getPrimaryID());
 
-						Integer iDavidID = GeneralManager.get().getIDMappingManager()
-							.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID,
+						Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
+								EMappingType.REFSEQ_MRNA_INT_2_DAVID,
 								selectionDeltaItem.getPrimaryID());
-						
+
 						if (iItemsToLoad == 0)
 						{
-							String sURL = urlGenerator.createURL(eBrowserQueryType,iDavidID);
+							String sURL = urlGenerator.createURL(eBrowserQueryType, iDavidID);
 
 							browser.setUrl(sURL);
 							browser.update();
@@ -186,8 +186,7 @@ public class GenomeHTMLBrowserViewRep
 						String sOutput = "";
 						sOutput = sOutput
 								+ GeneralManager.get().getIDMappingManager().getID(
-										EMappingType.DAVID_2_GENE_SYMBOL,
-										iDavidID);
+										EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
 						sOutput = sOutput + "\n";
 						sOutput = sOutput + sRefSeqID;
@@ -210,7 +209,8 @@ public class GenomeHTMLBrowserViewRep
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger,
+			IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		switch (eventContainer.getEventType())
 		{

@@ -79,7 +79,7 @@ public class GLHierarchicalHeatMap
 
 	private int iSamplesPerHeatmap = 0;
 
-	private HeatMapRenderStyle renderStyle;
+	// private HeatMapRenderStyle renderStyle;
 
 	private ColorMapping colorMapper;
 
@@ -124,7 +124,7 @@ public class GLHierarchicalHeatMap
 	private boolean bIsHeatmapInFocus = false;
 
 	private boolean bRedrawTextures = false;
-	
+
 	// dragging stuff
 	private boolean bIsDraggingActive = false;
 	private int iDraggedCursor = 0;
@@ -387,7 +387,7 @@ public class GLHierarchicalHeatMap
 	private void initTextures(GL gl)
 	{
 		fAlXDistances.clear();
-		renderStyle.updateFieldSizes();
+		// renderStyle.updateFieldSizes();
 
 		iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size() / iSamplesPerTexture);
 
@@ -498,8 +498,8 @@ public class GLHierarchicalHeatMap
 	public synchronized void setDetailLevel(EDetailLevel detailLevel)
 	{
 		super.setDetailLevel(detailLevel);
-//		renderStyle.setDetailLevel(detailLevel);
-		renderStyle.updateFieldSizes();
+		// renderStyle.setDetailLevel(detailLevel);
+		// renderStyle.updateFieldSizes();
 	}
 
 	@Override
@@ -615,8 +615,9 @@ public class GLHierarchicalHeatMap
 	{
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		bRedrawTextures = true;
-		
-		Set<Integer> setMouseOverElements = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+
+		Set<Integer> setMouseOverElements = storageSelectionManager
+				.getElements(ESelectionType.MOUSE_OVER);
 
 		AlExpMouseOver.clear();
 		if (setMouseOverElements.size() >= 0)
@@ -627,7 +628,8 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		Set<Integer> setSelectionElements = storageSelectionManager.getElements(ESelectionType.SELECTION);
+		Set<Integer> setSelectionElements = storageSelectionManager
+				.getElements(ESelectionType.SELECTION);
 
 		AlExpSelected.clear();
 		if (setSelectionElements.size() >= 0)
@@ -788,39 +790,6 @@ public class GLHierarchicalHeatMap
 
 		TextureMaskNeg.disable();
 		gl.glPopAttrib();
-	}
-
-	/**
-	 * Render the symbol of the view instead of the view
-	 * 
-	 * @param gl
-	 */
-	private void renderSymbol(GL gl)
-	{
-		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
-		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl,
-				EIconTextures.HEAT_MAP_SYMBOL);
-		tempTexture.enable();
-		tempTexture.bind();
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
-
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
-		gl.glEnd();
-		gl.glPopAttrib();
-		tempTexture.disable();
 	}
 
 	/**
@@ -1493,13 +1462,12 @@ public class GLHierarchicalHeatMap
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
-
 		if (bRedrawTextures)
 		{
 			initTextures(gl);
 			bRedrawTextures = false;
 		}
-		
+
 		if (bHasFrustumChanged)
 		{
 			glHeatMapView.setDisplayListDirty();
@@ -1507,62 +1475,55 @@ public class GLHierarchicalHeatMap
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		if (contentSelectionManager.getNumberOfElements() == 0)
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glLoadIdentity();
+
+		// background color
+		gl.glColor4f(0, 0, 0, 0.15f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(0, 0, -0.1f);
+		gl.glVertex3f(viewFrustum.getRight(), 0, -0.1f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getHeight(), -0.1f);
+		gl.glVertex3f(0, viewFrustum.getHeight(), -0.1f);
+		gl.glEnd();
+
+		// padding along borders
+		viewFrustum.setTop(viewFrustum.getTop() - 0.6f);
+		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
+		gl.glTranslatef(0.1f, 0.4f, 0);
+
+		handleTexturePicking(gl);
+
+		// all stuff for rendering level 1 (overview bar)
+		renderOverviewBar(gl);
+		renderMarkerOverviewBar(gl);
+		renderSelectedElementsOverviewBar(gl);
+
+		gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
+
+		if (bIsHeatmapInFocus)
 		{
-			renderSymbol(gl);
+			fAnimationScale = 0.2f;
 		}
 		else
 		{
-			gl.glMatrixMode(GL.GL_MODELVIEW);
-			gl.glLoadIdentity();
-
-			// background color
-			gl.glColor4f(0, 0, 0, 0.15f);
-			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(0, 0, -0.1f);
-			gl.glVertex3f(viewFrustum.getRight(), 0, -0.1f);
-			gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getHeight(), -0.1f);
-			gl.glVertex3f(0, viewFrustum.getHeight(), -0.1f);
-			gl.glEnd();
-
-			// padding along borders
-			viewFrustum.setTop(viewFrustum.getTop() - 0.6f);
-			viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
-			gl.glTranslatef(0.1f, 0.4f, 0);
-
-			handleTexturePicking(gl);
-
-			// all stuff for rendering level 1 (overview bar)
-			renderOverviewBar(gl);
-			renderMarkerOverviewBar(gl);
-			renderSelectedElementsOverviewBar(gl);
-
-			gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
-
-			if (bIsHeatmapInFocus)
-			{
-				fAnimationScale = 0.2f;
-			}
-			else
-			{
-				fAnimationScale = 1.0f;
-			}
-
-			// all stuff for rendering level 2 (textures)
-			renderTextureHeatMap(gl);
-			renderMarkerTexture(gl);
-			renderSelectedElementsTexture(gl);
-			renderCursor(gl);
-
-			viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
-			viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
-			gl.glTranslatef(-0.1f, -0.4f, 0);
-
-			gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
-
-			gl.glDisable(GL.GL_STENCIL_TEST);
-
+			fAnimationScale = 1.0f;
 		}
+
+		// all stuff for rendering level 2 (textures)
+		renderTextureHeatMap(gl);
+		renderMarkerTexture(gl);
+		renderSelectedElementsTexture(gl);
+		renderCursor(gl);
+
+		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
+		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
+		gl.glTranslatef(-0.1f, -0.4f, 0);
+
+		gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
+
+		gl.glDisable(GL.GL_STENCIL_TEST);
+
 		gl.glEndList();
 	}
 
@@ -1607,7 +1568,7 @@ public class GLHierarchicalHeatMap
 					selectionDelta));
 		}
 
-		 // selected experiments
+		// selected experiments
 		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(
 				EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.RESET)));
 
@@ -1680,10 +1641,10 @@ public class GLHierarchicalHeatMap
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
 
-//		if (renderStyle != null)
-//		{
-//			renderStyle.setActiveVirtualArray(iContentVAID);
-//		}
+		// if (renderStyle != null)
+		// {
+		// renderStyle.setActiveVirtualArray(iContentVAID);
+		// }
 
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
@@ -1709,9 +1670,7 @@ public class GLHierarchicalHeatMap
 			// }
 		}
 
-		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-	
-		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
+		// vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
 		// Handling action ResetView in hierarchical heatmap
 		// iSelectorBar = 1;
@@ -2036,80 +1995,9 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
-	{
-		// renderStyle.updateFieldSizes();
-		// fAlXDistances.clear();
-		// float fDistance = 0;
-		//
-		// for (Integer iStorageIndex : set.getVA(iContentVAID))
-		// {
-		// fAlXDistances.add(fDistance);
-		// if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-		// iStorageIndex)
-		// || contentSelectionManager.checkStatus(ESelectionType.SELECTION,
-		// iStorageIndex))
-		// // if(selectionDelta.)
-		// {
-		// fDistance += renderStyle.getSelectedFieldWidth();
-		// }
-		// else
-		// {
-		// fDistance += renderStyle.getNormalFieldWidth();
-		// }
-		// // contentSelectionManager.addToType(ESelectionType.SELECTION,
-		// // iStorageIndex);
-		//
-		// }
-		// super.handleConnectedElementRep(selectionDelta);
-	}
-
-	@Override
 	protected SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
-			throws InvalidAttributeValueException
 	{
-		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,
-		// 0.0f, 0.0f, 0.0f);
-
-		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
-		if (iContentIndex == -1)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"No element in virtual array for storage index");
-
-			return null;
-		}
-		// renderStyle.resetFieldWidths();
-		// Vec2f vecFieldWithAndHeight =
-		// renderStyle.getFieldWidthAndHeight(iContentIndex);
-
-		// for (int iCount = 0; iCount <= iContentIndex; iCount++)
-		// {
-		// vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
-		// }
-
-		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth()
-				/ 2;// + renderStyle.getXSpacing();
-
-		float fYValue = renderStyle.getYCenter();// + vecFieldWithAndHeight.y()
-		// * set.getVA(iContentVAID).size() / 2;
-
-		if (bRenderStorageHorizontally)
-		{
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue,
-					fYValue, 0);
-
-		}
-		else
-		{
-			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
-			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint
-					.x(), vecPoint.y(), 0);
-
-		}
-		return elementRep;
+		return null;
 	}
 
 	@Override
@@ -2123,10 +2011,6 @@ public class GLHierarchicalHeatMap
 	public void broadcastElements()
 	{
 		throw new IllegalStateException("broadcast elements of the contained heat map or all?");
-		// IVirtualArrayDelta delta =
-		// contentSelectionManager.getBroadcastVADelta();
-		// triggerVAUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
-		// setDisplayListDirty();
 	}
 
 	@Override

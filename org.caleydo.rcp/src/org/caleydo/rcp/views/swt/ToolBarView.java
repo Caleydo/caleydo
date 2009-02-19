@@ -6,6 +6,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -663,7 +664,7 @@ public class ToolBarView
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
 		// TODO Auto-generated method stub
 	}

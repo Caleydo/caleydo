@@ -1,7 +1,6 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.command.ECommandType;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;

@@ -1,7 +1,6 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
-
 import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
 import org.caleydo.rcp.action.toolbar.view.pathway.NeighborhoodAction;
 import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
