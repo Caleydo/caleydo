@@ -12,10 +12,13 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
@@ -177,6 +180,9 @@ public class GLGlyphSliderView
 	@Override
 	public void initLocal(GL gl)
 	{
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
+		
 		init(gl);
 	}
 
@@ -328,16 +334,30 @@ public class GLGlyphSliderView
 					if (isselected)
 						selectionManager.addToType(ESelectionType.SELECTION, g.getID());
 					else
-						selectionManager.addToType(ESelectionType.NORMAL, g.getID());
+						selectionManager.addToType(ESelectionType.DESELECTED, g.getID());
 
 				}
 
 				generalManager.getViewGLCanvasManager()
 						.getConnectedElementRepresentationManager().clear(
 								EIDType.EXPERIMENT_INDEX);
-
+				
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
+						new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
+								new SelectionCommand(ESelectionCommandType.CLEAR,
+										ESelectionType.SELECTION)));
+
+				
+				ISelectionDelta selectionDelta = selectionManager.getDelta();
+				if (selectionDelta.getAllItems().size() > 0)
+				{
+
+					generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+				}
+				
+//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+//						new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
 
 			}
 		}

@@ -165,7 +165,10 @@ public class GlyphManager
 	{
 		if (hmLoadedStoraged.containsKey(storagename))
 			return;
-
+		
+		for(GlyphEntry e: glyphlist.values())
+			e.select();
+		
 		hmGlyphList.putAll(glyphlist);
 		hmLoadedStoraged.put(storagename, null);
 	}

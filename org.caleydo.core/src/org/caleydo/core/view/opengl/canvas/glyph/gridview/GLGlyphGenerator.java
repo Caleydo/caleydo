@@ -23,24 +23,25 @@ public class GLGlyphGenerator
 {
 	private GlyphManager gman;
 
-	private static HashMap<Integer, GlyphObjectDefinition> objectModels = new HashMap<Integer, GlyphObjectDefinition>();
+	private static HashMap<Integer, GlyphObjectDefinition> objectModels =
+		new HashMap<Integer, GlyphObjectDefinition>();
 
 	private DETAILLEVEL iDetailLevel;
 
-	private boolean isInit;
+	private boolean bIsInit;
+	private boolean bIsLocal;
 
 	static public enum DETAILLEVEL
 	{
-		LEVEL_MIN,
-		LEVEL_MID,
-		LEVEL_MAX,
+		LEVEL_MIN, LEVEL_MID, LEVEL_MAX,
 	}
 
-	public GLGlyphGenerator()
+	public GLGlyphGenerator(boolean isLocal)
 	{
 		gman = GeneralManager.get().getGlyphManager();
 
-		isInit = false;
+		bIsInit = false;
+		bIsLocal = isLocal;
 	}
 
 	public static void setDetailLevelModel(GlyphObjectDefinition glyphDefinition)
@@ -74,7 +75,7 @@ public class GLGlyphGenerator
 
 	public int generateGlyph(GL gl, GlyphEntry glyph, boolean selected)
 	{
-		if (!isInit)
+		if (!bIsInit)
 		{
 			for (GlyphObjectDefinition modelDefinition : objectModels.values())
 			{
@@ -82,7 +83,7 @@ public class GLGlyphGenerator
 				for (String partname : partnames)
 					modelDefinition.getObjectPart(partname).init(gl);
 			}
-			isInit = true;
+			bIsInit = true;
 		}
 
 		return generateSingleObject(gl, glyph, selected);
@@ -104,7 +105,7 @@ public class GLGlyphGenerator
 	}
 
 	private int generateSingleObjectDetailLevel(GL gl, GlyphEntry glyph, boolean selected,
-			int level)
+		int level)
 	{
 		if (level < 0)
 			return -1;
@@ -124,13 +125,14 @@ public class GLGlyphGenerator
 		// rotate object (because the coordinate systems are not the same)
 		gl.glRotatef(+90f, 1, 0, 0);
 
-		HashMap<String, ObjectDimensions> objectDimensions = new HashMap<String, ObjectDimensions>();
+		HashMap<String, ObjectDimensions> objectDimensions =
+			new HashMap<String, ObjectDimensions>();
 
 		ArrayList<String> partnames = modelDefinition.getObjectPartNames();
 		for (String partname : partnames)
 		{
-			GlyphObjectDefinitionPart partdef = modelDefinition
-					.getObjectPartDefinition(partname);
+			GlyphObjectDefinitionPart partdef =
+				modelDefinition.getObjectPartDefinition(partname);
 			if (partdef == null)
 				continue;
 
@@ -156,9 +158,9 @@ public class GLGlyphGenerator
 					if (color != null && tc >= 0)
 					{
 						if (color.get(0) != -1.0f && color.get(1) != -1.0f
-								&& color.get(2) != -1.0f)
+							&& color.get(2) != -1.0f)
 							gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2)
-									- nv, color.get(3));
+								- nv, color.get(3));
 						// else, do nothing (keep old color)
 
 					}
@@ -176,19 +178,19 @@ public class GLGlyphGenerator
 				}
 			}
 
-//			ObjectDimensions og = group.getDimensions();
+			// ObjectDimensions og = group.getDimensions();
 
 			// TODO scale x
 			// TODO scale z
 			// scale part
 			if (partdef.canScale(DIRECTION.Z))
 			{
-				int index = partdef.getParameterIndexInternal(EGlyphSettingIDs.SCALE,
-						DIRECTION.Z);
+				int index =
+					partdef.getParameterIndexInternal(EGlyphSettingIDs.SCALE, DIRECTION.Z);
 				if (index >= 0)
 				{
-					GlyphAttributeType glyphAttributeType = gman
-							.getGlyphAttributeTypeWithInternalColumnNumber(index);
+					GlyphAttributeType glyphAttributeType =
+						gman.getGlyphAttributeTypeWithInternalColumnNumber(index);
 
 					float scale = glyph.getParameter(index);
 
@@ -281,7 +283,7 @@ public class GLGlyphGenerator
 	private void initEnviroment(GL gl)
 	{
 		// gl.glEnable(GL.GL_BLEND);
-		gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
+		gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
 
 		float[] mat_ambient = { 1.0f, 1.0f, 1.0f, 1.0f };
 		float[] mat_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -289,23 +291,22 @@ public class GLGlyphGenerator
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, mat_diffuse, 0);
 		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, mat_ambient, 0);
 
-		gl.glEnable(GL.GL_AUTO_NORMAL);
+		// gl.glEnable(GL.GL_AUTO_NORMAL);
 		gl.glEnable(GL.GL_NORMALIZE);
 
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glEnable(GL.GL_CULL_FACE);
-		// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glEnable(GL.GL_LINE_SMOOTH);
+		// gl.glEnable(GL.GL_LINE_SMOOTH);
 
 		gl.glEnable(GL.GL_COLOR_MATERIAL);
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_FILL);
+		gl.glPolygonMode(GL.GL_FRONT, GL.GL_FILL);
 
 		// light
 		gl.glEnable(GL.GL_LIGHTING);
 		gl.glEnable(GL.GL_LIGHT0);
 		gl.glEnable(GL.GL_LIGHT1);
 		gl.glEnable(GL.GL_LIGHT2);
-
+		
 		float lc = 0.1f;
 
 		float[] diffuse_light0 = { 5 * lc, 5 * lc, 5 * lc, 1.0f };

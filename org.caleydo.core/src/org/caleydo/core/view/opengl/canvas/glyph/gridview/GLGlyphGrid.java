@@ -60,7 +60,7 @@ public class GLGlyphGrid
 
 	private GLGlyphGenerator glyphGenerator;
 
-	public GLGlyphGrid(GlyphRenderStyle renderStyle)
+	public GLGlyphGrid(GlyphRenderStyle renderStyle, boolean isLocal)
 	{
 		this.generalManager = GeneralManager.get();
 		this.renderStyle = renderStyle;
@@ -87,7 +87,7 @@ public class GLGlyphGrid
 
 		setGridSize(50, 100);
 
-		glyphGenerator = new GLGlyphGenerator();
+		glyphGenerator = new GLGlyphGenerator(isLocal);
 	}
 
 	/*
@@ -468,10 +468,7 @@ public class GLGlyphGrid
 			glyphDataLoader.loadGlyphs(glyphData);
 		}
 
-		if (gman.getSelectedGlyphs().size() > 0)
-			glyphs_ = gman.getSelectedGlyphs();
-		else
-			glyphs_ = gman.getGlyphs();
+		glyphs_ = gman.getSelectedGlyphs();
 
 		// setGridSize(glyphs_.size(), glyphs_.size() + 10);
 

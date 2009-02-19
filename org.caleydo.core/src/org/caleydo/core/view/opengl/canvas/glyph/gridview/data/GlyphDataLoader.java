@@ -3,11 +3,15 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.caleydo.core.data.collection.INominalStorage;
+import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -46,6 +50,8 @@ public class GlyphDataLoader
 		if (gman.storageLoaded(glyphData.getLabel()))
 			return;
 
+		Logger logger = this.generalManager.getLogger();
+
 		glyphs = new HashMap<Integer, GlyphEntry>();
 
 		ArrayList<int[]> aliStoreMapped = new ArrayList<int[]>();
@@ -63,58 +69,67 @@ public class GlyphDataLoader
 				if (glyphAttributeType != null)
 				{ // input column is defined
 
-					if (tmpStorage instanceof NominalStorage
-							&& tmpStorage.getRawDataType() == ERawDataType.STRING)
+					// INumericalStorage numericalStorage = (INumericalStorage)
+					// tmpStorage;
+					int[] temp2 = new int[tmpStorage.size()];
+					String value = "";
+
+					for (int i = 0; i < tmpStorage.size(); ++i)
 					{
-
-						INominalStorage<String> nominalStorage = (INominalStorage<String>) tmpStorage;
-						int[] temp2 = new int[nominalStorage.size()];
-
-						for (int i = 0; i < nominalStorage.size(); ++i)
+						// get value from storage
+						if (tmpStorage instanceof NominalStorage)
 						{
-
-							if (nominalStorage.getRaw(i) == null)
+							INominalStorage<String> storage = (INominalStorage<String>) tmpStorage;
+							if (storage.getRaw(i) == null)
 							{
-								this.generalManager
-										.getLogger()
-										.log(Level.WARNING,
-												"GlyphDataLoader: no String data found - empty line in csv file?????");
+								logger.log(Level.WARNING,
+										"GlyphDataLoader: no numerical data found"
+												+ " - empty line in csv file?????");
 								temp2[i] = -1;
+								continue;
 							}
-
-							int t2 = glyphAttributeType.getIndex(nominalStorage.getRaw(i));
-
-							if (glyphAttributeType.doesAutomaticAttribute() && t2 == -1)
-							{
-								try
-								{
-									t2 = Integer.parseInt(nominalStorage.getRaw(i));
-								}
-								catch (NumberFormatException ex)
-								{
-								}
-								glyphAttributeType.addAttribute(t2, nominalStorage.getRaw(i),
-										t2);
-							}
-
-							if (t2 == -1 && !(nominalStorage.getRaw(i)).equals("-1"))
-								this.generalManager.getLogger().log(
-										Level.WARNING,
-										"GlyphDataLoader: No data mapping found for "
-												+ tmpStorage.getLabel() + " value "
-												+ nominalStorage.getRaw(i));
-
-							temp2[i] = t2;
-
-							glyphAttributeType.incDistribution(t2);
+							value = storage.getRaw(i);
+							
 						}
-						aliStoreMapped.add(temp2);
+						else if (tmpStorage instanceof NumericalStorage)
+						{
+							INumericalStorage storage = (INumericalStorage) tmpStorage;
+							if (storage.get(EDataRepresentation.RAW, i) == null)
+							{
+								logger.log(Level.WARNING,
+										"GlyphDataLoader: no numerical data found"
+												+ " - empty line in csv file?????");
+								temp2[i] = -1;
+								continue;
+							}
+							value = storage.get(EDataRepresentation.RAW, i).toString();
+						}
+
+						int t2 = glyphAttributeType.getIndex(value);
+
+						if (glyphAttributeType.doesAutomaticAttribute() && t2 == -1)
+						{
+							try
+							{
+								t2 = Integer.parseInt(value);
+							}
+							catch (NumberFormatException ex)
+							{
+							}
+							glyphAttributeType.addAttribute(t2, value, t2);
+						}
+
+						if (t2 == -1 && !value.equals("-1"))
+							this.generalManager.getLogger().log(
+									Level.WARNING,
+									"GlyphDataLoader: No data mapping found for "
+											+ tmpStorage.getLabel() + " value " + value);
+
+						temp2[i] = t2;
+
+						glyphAttributeType.incDistribution(t2);
 					}
-					else
-					{
-						throw new RuntimeException(
-								"GlyphDataLoader: ERROR. There should be only STRING values in the storage");
-					}
+					aliStoreMapped.add(temp2);
 
 					glyphAttributeType.setInternalColumnNumber(pcounter);
 					++pcounter;
