@@ -600,12 +600,12 @@ public class GLParallelCoordinates
 			{
 				renderPolylines(gl, ESelectionType.MOUSE_OVER);
 				renderPolylines(gl, ESelectionType.SELECTION);
-				renderPolylines(gl, ESelectionType.DESELECTED);
+//				renderPolylines(gl, ESelectionType.DESELECTED);
 				renderPolylines(gl, ESelectionType.NORMAL);
 			}
 			else
 			{
-				renderPolylines(gl, ESelectionType.DESELECTED);
+//				renderPolylines(gl, ESelectionType.DESELECTED);
 				renderPolylines(gl, ESelectionType.NORMAL);
 				renderPolylines(gl, ESelectionType.MOUSE_OVER);
 				renderPolylines(gl, ESelectionType.SELECTION);
@@ -641,8 +641,10 @@ public class GLParallelCoordinates
 
 		if (renderMode == ESelectionType.DESELECTED || renderMode == ESelectionType.NORMAL)
 		{
-			iDisplayEveryNthPolyline = set.getVA(iContentVAID).size()
-					/ iNumberOfRandomElements;
+//			iDisplayEveryNthPolyline = set.getVA(iContentVAID).size()
+//					/ iNumberOfRandomElements;
+			iDisplayEveryNthPolyline = (polylineSelectionManager.getNumberOfElements() - polylineSelectionManager.getNumberOfElements(ESelectionType.DESELECTED)) / 
+			iNumberOfRandomElements;
 			if (iDisplayEveryNthPolyline == 0)
 				iDisplayEveryNthPolyline = 1;
 		}
@@ -1361,6 +1363,9 @@ public class GLParallelCoordinates
 
 	private void renderGlobalBrush(GL gl)
 	{
+		if(detailLevel != EDetailLevel.HIGH)
+			return;
+		
 		gl.glColor4f(0, 0, 0, 1f);
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 		// gl.glPushName(iPickingID);

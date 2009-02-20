@@ -135,10 +135,10 @@ public class ListLayoutRenderStyle
 		selectionLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		// Init color bar position
-		fColorBarXPos = 1.1f / fAspectRatio;
-		fColorBarYPos = -1;
-		fColorBarWidth = 0.1f;
-		fColorBarHeight = 2.8f;
+//		fColorBarXPos = 1.1f / fAspectRatio;
+//		fColorBarYPos = -1;
+//		fColorBarWidth = 0.1f;
+//		fColorBarHeight = 2.8f;
 
 		return selectionLevel;
 	}

@@ -50,10 +50,10 @@ public abstract class ARemoteViewLayoutRenderStyle
 	protected float fTrashCanWidth;
 	protected float fTrashCanHeight;
 
-	protected float fColorBarXPos;
-	protected float fColorBarYPos;
-	protected float fColorBarWidth;
-	protected float fColorBarHeight;
+//	protected float fColorBarXPos;
+//	protected float fColorBarYPos;
+//	protected float fColorBarWidth;
+//	protected float fColorBarHeight;
 
 	/**
 	 * Constructor.
@@ -157,25 +157,25 @@ public abstract class ARemoteViewLayoutRenderStyle
 		return fTrashCanHeight;
 	}
 
-	public float getColorBarXPos()
-	{
-		return fColorBarXPos;
-	}
-
-	public float getColorBarYPos()
-	{
-		return fColorBarYPos;
-	}
-
-	public float getColorBarWidth()
-	{
-		return fColorBarWidth;
-	}
-
-	public float getColorBarHeight()
-	{
-		return fColorBarHeight;
-	}
+//	public float getColorBarXPos()
+//	{
+//		return fColorBarXPos;
+//	}
+//
+//	public float getColorBarYPos()
+//	{
+//		return fColorBarYPos;
+//	}
+//
+//	public float getColorBarWidth()
+//	{
+//		return fColorBarWidth;
+//	}
+//
+//	public float getColorBarHeight()
+//	{
+//		return fColorBarHeight;
+//	}
 
 	public void setAspectRatio(final float fAspectRatio)
 	{

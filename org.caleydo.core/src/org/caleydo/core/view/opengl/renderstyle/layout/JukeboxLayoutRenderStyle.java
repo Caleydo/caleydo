@@ -155,10 +155,10 @@ public class JukeboxLayoutRenderStyle
 		fTrashCanWidth = 0.3f;
 		fTrashCanHeight = 0.35f;
 
-		fColorBarXPos = -0.1f / fAspectRatio;
-		fColorBarYPos = -0.9f;
-		fColorBarWidth = 0.1f;
-		fColorBarHeight = 2f;
+//		fColorBarXPos = -0.1f / fAspectRatio;
+//		fColorBarYPos = -0.9f;
+//		fColorBarWidth = 0.1f;
+//		fColorBarHeight = 2f;
 
 		return selectionLevel;
 	}

@@ -365,7 +365,7 @@ public class BucketLayoutRenderStyle
 	public RemoteLevel initMemoLevel()
 	{
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.12f, -2,
+		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.12f, -2.01f,
 			4.02f));
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
 			fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
@@ -373,10 +373,10 @@ public class BucketLayoutRenderStyle
 		selectionLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		// Init color bar position
-		fColorBarXPos = 2.05f / fAspectRatio;
-		fColorBarYPos = -1;
-		fColorBarWidth = 0.1f;
-		fColorBarHeight = 2f;
+//		fColorBarXPos = 2.05f / fAspectRatio;
+//		fColorBarYPos = -1;
+//		fColorBarWidth = 0.1f;
+//		fColorBarHeight = 2f;
 
 		return selectionLevel;
 	}

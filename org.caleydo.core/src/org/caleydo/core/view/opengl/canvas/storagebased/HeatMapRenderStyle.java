@@ -25,6 +25,10 @@ public class HeatMapRenderStyle
 	private float fSelectedFieldWidth = 1.0f;
 
 	private static final float LIST_SELECTED_FIELD_WIDTH = 0.3f;
+	
+	public static final float LIST_SPACING = 0.05f;
+	
+	public static final int NUMBER_OF_LIST_ITEMS_PER_PAGE = 30;
 
 	private float fMamximumNormalFieldWidth = fSelectedFieldWidth / 3 * 2;
 
@@ -70,24 +74,6 @@ public class HeatMapRenderStyle
 
 	}
 
-	// public void setDetailLevel(EDetailLevel detailLevel)
-	// {
-	// // make sure that widht and height are completely reiinitialized
-	//
-	// this.detailLevel = detailLevel;
-	// }
-
-	// /**
-	// * Set the active virtual array of the heat map here, when it changed
-	// during
-	// * runtime. Needed to calculate the widht and height of an element.
-	// *
-	// * @param iContentVAID the id of the content virtual array
-	// */
-	// public void setActiveVirtualArray(int iContentVAID)
-	// {
-	// this.iContentVAID = iContentVAID;
-	// }
 
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays
@@ -193,11 +179,10 @@ public class HeatMapRenderStyle
 
 	private float getRenderWidth()
 	{
-		if (heatMap instanceof GLHeatMap)
-		{
-			if (heatMap.bIsInListMode)
-				return viewFrustum.getWidth() - 0.1f;
-		}
+
+		if (heatMap.bIsInListMode)
+			return viewFrustum.getWidth() -  LIST_SPACING;
+
 		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getWidth() - 2.4f * getXSpacing();
 		return viewFrustum.getWidth();
@@ -205,6 +190,8 @@ public class HeatMapRenderStyle
 
 	public float getRenderHeight()
 	{
+		if (heatMap.bIsInListMode)
+			return viewFrustum.getHeight() - 3 * LIST_SPACING;
 		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getHeight() - 2 * getYSpacing();
 		return viewFrustum.getHeight();

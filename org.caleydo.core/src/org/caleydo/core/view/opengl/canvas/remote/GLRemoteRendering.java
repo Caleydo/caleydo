@@ -133,7 +133,7 @@ public class GLRemoteRendering
 
 	private BucketMouseWheelListener bucketMouseWheelListener;
 
-	private GLColorMappingBarMiniView colorMappingBarMiniView;
+//	private GLColorMappingBarMiniView colorMappingBarMiniView;
 
 	private ArrayList<Integer> iAlContainedViewIDs;
 
@@ -248,7 +248,7 @@ public class GLRemoteRendering
 
 		// TODO: the genome mapper should be stored centralized instead of newly
 		// created
-		colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
+//		colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
 
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
@@ -315,8 +315,8 @@ public class GLRemoteRendering
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
 				glExternalSelectionHeatMap);
 
-		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
-		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
+//		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
+//		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
 
 		glOffScreenRenderer.init(gl);
 	}
@@ -458,7 +458,7 @@ public class GLRemoteRendering
 
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
 //		 layoutRenderStyle.initStackLevel(false);
-//		 layoutRenderStyle.initMemoLevel();
+		 layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
 				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))

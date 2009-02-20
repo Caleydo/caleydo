@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
@@ -202,7 +203,6 @@ public class GLHeatMap
 	@Override
 	public synchronized void displayRemote(GL gl)
 	{
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		if (set == null)
 			return;
 
@@ -250,27 +250,15 @@ public class GLHeatMap
 		else
 		{
 
-			// FIXME: bad hack, normalize frustum to 0:1 to avoid that
-			// clipToFrustum(gl);
-			// float fLeftOffset = 0;
-			// if (remoteRenderingGLCanvas == null)
-			// fLeftOffset = 0.05f;
-			// else
-			// fLeftOffset = 0.15f;
-			// GLHelperFunctions.drawAxis(gl);
-			// if (detailLevel == EDetailLevel.HIGH)
-			// {
-			// colorMappingBar.render(gl, fLeftOffset,
-			// (viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2,
-			// 0.2f);
-			// gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
-			// }
-
-			// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
+			float fSpacing = 0;
 			if (!bRenderStorageHorizontally)
 			{
-				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight(), vecTranslation
-						.z());
+				if (bIsInListMode)
+				{
+					fSpacing = HeatMapRenderStyle.LIST_SPACING;
+				}
+				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight() - fSpacing,
+						vecTranslation.z());
 				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation
 						.w());
 			}
@@ -288,14 +276,9 @@ public class GLHeatMap
 			{
 				gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation
 						.w());
-				gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight(), -vecTranslation
-						.z());
+				gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight() + fSpacing,
+						-vecTranslation.z());
 			}
-
-			// if (detailLevel == EDetailLevel.HIGH)
-			// {
-			// gl.glTranslatef(-fLeftOffset, 0, 0);
-			// }
 
 			gl.glDisable(GL.GL_STENCIL_TEST);
 		}
@@ -362,11 +345,6 @@ public class GLHeatMap
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
 
-		// if (renderStyle != null)
-		// {
-		// renderStyle.setActiveVirtualArray(iContentVAID);
-		// }
-
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
 
@@ -383,7 +361,6 @@ public class GLHeatMap
 		}
 
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-		// renderStyle.setDetailLevel(detailLevel);
 		super.renderStyle = renderStyle;
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
@@ -400,12 +377,6 @@ public class GLHeatMap
 	@Override
 	public String getDetailedInfo()
 	{
-		// StringBuffer sInfoText = new StringBuffer();
-		// sInfoText.append("Heat Map");
-		// sInfoText.append(set.getVA(iContentVAID).size() +
-		// " gene expression values");
-		// return sInfoText.toString();
-
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
@@ -638,7 +609,7 @@ public class GLHeatMap
 					if (currentType == ESelectionType.SELECTION)
 					{
 						renderElement(gl, iStorageIndex, iContentIndex, fXPosition
-								+ fFieldWidth / 3, fYPosition, fFieldWidth / 2, fFieldHeight);
+								+ (fFieldWidth / 3), fYPosition, fFieldWidth / 2, fFieldHeight);
 					}
 					else
 					{
@@ -671,7 +642,7 @@ public class GLHeatMap
 			}
 
 			// render line captions
-			if (fFieldWidth > 0.03f)
+			if (fFieldWidth > 0.1f)
 			{
 				boolean bRenderRefSeq = false;
 				if (fFieldWidth < 0.2f)
@@ -723,7 +694,9 @@ public class GLHeatMap
 							gl.glBegin(GL.GL_POLYGON);
 
 							gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
-							gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin, 0.0005f);
+							gl
+									.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin,
+											0.0005f);
 							gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin
 									+ fSlectionFieldHeight, 0.0005f);
 							gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin
@@ -740,7 +713,7 @@ public class GLHeatMap
 							textRenderer.draw3D(sContent, 0, 0, 0.016f, fTextScalingFactor);
 							textRenderer.end3DRendering();
 							gl.glRotatef(-fLineDegrees, 0, 0, 1);
-							gl.glTranslatef(-fXPosition - fFieldWidth / 2, -fYSelectionOrigin
+							gl.glTranslatef(-fXPosition - fFieldWidth / 1.5f, -fYSelectionOrigin
 									- fTextSpacing, 0);
 							// textRenderer.begin3DRendering();
 							gl.glPopAttrib();
@@ -748,9 +721,8 @@ public class GLHeatMap
 						else
 						{
 
-							renderCaption(gl, sContent, fXPosition + fFieldWidth / 2
-									, 0 + 0.1f, fLineDegrees,
-									fFontScaling);
+							renderCaption(gl, sContent, fXPosition + fFieldWidth / 2 - 0.01f,
+									0 + 0.01f, fLineDegrees, fFontScaling);
 						}
 					}
 					else
@@ -938,7 +910,10 @@ public class GLHeatMap
 		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
 		if (iContentIndex == -1)
 		{
-			throw new IllegalStateException("No element in virtual array for storage index");
+			// throw new
+			// IllegalStateException("No such element in virtual array");
+			// TODO this shouldn't happen here.
+			return null;
 		}
 
 		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth()
