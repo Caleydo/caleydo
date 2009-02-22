@@ -1,10 +1,9 @@
 package org.caleydo.rcp.action.toolbar.general;
 
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.rcp.action.file.FileLoadDataAction;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.dialog.file.LoadDataDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class LoadDataAction
@@ -31,7 +30,6 @@ public class LoadDataAction
 	{
 		super.run();
 
-		LoadDataDialog dialog = new LoadDataDialog(new Shell());
-		dialog.open();
+		new FileLoadDataAction(null).run();
 	}
 }

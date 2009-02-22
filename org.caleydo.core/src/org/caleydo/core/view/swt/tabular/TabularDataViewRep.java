@@ -829,6 +829,9 @@ public class TabularDataViewRep
 		{
 			public void run()
 			{
+				if (contentTable.isDisposed())
+					return;
+				
 				contentTable.deselectAll();
 				labelTable.deselectAll();
 

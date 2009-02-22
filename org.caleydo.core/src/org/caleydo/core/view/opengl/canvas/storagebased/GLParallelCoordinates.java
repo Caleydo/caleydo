@@ -62,6 +62,7 @@ import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -180,6 +181,8 @@ public class GLParallelCoordinates
 	protected ParCoordsRenderStyle renderStyle;
 
 	private int iDisplayEveryNthPolyline = 1;
+	
+	private GLHeatMap glSelectionHeatMap;
 
 	/**
 	 * Constructor.
@@ -207,6 +210,8 @@ public class GLParallelCoordinates
 		alAxisSpacing = new ArrayList<Float>();
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+		
+		glSelectionHeatMap = ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
 	}
 
 	@Override
@@ -220,8 +225,12 @@ public class GLParallelCoordinates
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		
+		glSelectionHeatMap.addSets(alSets);
+		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
+				remoteRenderingGLCanvas);			
+		
 		init(gl);
-
 	}
 
 	@Override
@@ -244,7 +253,6 @@ public class GLParallelCoordinates
 	@Override
 	public void init(final GL gl)
 	{
-
 		initData();
 		initGates();
 
@@ -276,9 +284,11 @@ public class GLParallelCoordinates
 
 		checkForHits(gl);
 		display(gl);
-
+		
+		//glSelectionHeatMap.displayRemote(gl);		
+		
 		if (eBusyModeState != EBusyModeState.OFF)
-			renderBusyMode(gl);
+			renderBusyMode(gl);		
 	}
 
 	@Override

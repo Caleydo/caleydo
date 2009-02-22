@@ -3,6 +3,7 @@ package org.caleydo.rcp.wizard.firststart;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.rcp.Application;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
@@ -133,8 +134,7 @@ public final class FetchPathwayDataPage
 		});
 
 		final Label lblNote = new Label(composite, SWT.NONE);
-		lblNote
-				.setText("Note: Depending on your internet connection, this process can take several minutes.");
+		lblNote.setText("Note: Depending on your internet connection, this process can take several minutes.");
 
 		return composite;
 	}
@@ -213,5 +213,5 @@ public final class FetchPathwayDataPage
 
 		btnNoProxy.addSelectionListener(selectionListener);
 		btnUseProxy.addSelectionListener(selectionListener);
-	}
+	}	
 }

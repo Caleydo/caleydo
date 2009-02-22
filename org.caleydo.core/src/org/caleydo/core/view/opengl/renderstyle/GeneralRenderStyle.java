@@ -2,6 +2,8 @@ package org.caleydo.core.view.opengl.renderstyle;
 
 import java.text.DecimalFormat;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Render Styles for the whole system
@@ -25,8 +27,12 @@ public class GeneralRenderStyle
 	public static final float MINIVEW_Z = 0.02f;
 
 	public static final float[] SELECTED_COLOR = { 1, 0, 1, 1 };
-
+	public static final Color SELECTED_COLOR_SWT = new Color(Display.getCurrent(), 255, 0, 255);
+	public static final java.awt.Color SELECTED_COLOR_AWT = new java.awt.Color(255, 0, 255);
+	
 	public static final float[] MOUSE_OVER_COLOR = { 1, 1, 0, 1 };
+	public static final Color MOUSE_OVER_COLOR_SWT = new Color(Display.getCurrent(), 255, 255, 0);
+	public static final java.awt.Color MOUSE_OVER_COLOR_AWT = new java.awt.Color(255, 255, 0, 0);
 
 	private static final float[] BACKGROUND_COLOR = { 0.7f, 0.7f, 0.7f, 1f };
 

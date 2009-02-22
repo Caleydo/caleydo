@@ -79,8 +79,8 @@ public class GLRemoteRenderingView
 		// alToolbar.add(takeSnapshotAction);
 		IAction closeOrResetContainedViews = new CloseOrResetContainedViews(iViewID);
 		alToolbar.add(closeOrResetContainedViews);
-		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
-		alToolbar.add(toggleLayoutAction);
+//		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
+//		alToolbar.add(toggleLayoutAction);
 		IAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(iViewID);
 		alToolbar.add(toggleConnectionLinesAction);		
 	}

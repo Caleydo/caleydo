@@ -1,5 +1,6 @@
 package org.caleydo.rcp.dialog.file;
 
+import org.caleydo.rcp.action.file.FileLoadDataAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -44,8 +45,8 @@ public class LoadDataDialog
 	@Override
 	protected Control createDialogArea(Composite parent)
 	{
-		// fileLoadDataAction = new FileLoadDataAction(parent);
-		// fileLoadDataAction.run();
+		FileLoadDataAction fileLoadDataAction = new FileLoadDataAction(parent);
+		fileLoadDataAction.run();
 
 		return parent;
 	}

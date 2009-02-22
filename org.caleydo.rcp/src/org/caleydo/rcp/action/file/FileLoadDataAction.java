@@ -53,7 +53,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -70,8 +69,6 @@ public class FileLoadDataAction
 	public final static String ID = "org.caleydo.rcp.FileLoadDataAction";
 
 	private Composite parentComposite;
-
-	private IWorkbenchWindow window;
 
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 
@@ -131,9 +128,9 @@ public class FileLoadDataAction
 	{
 		// Check if load data GUI is embedded in a wizard or if a own dialog
 		// must be created.
-		if (parentComposite == null && window != null)
+		if (parentComposite == null)
 		{
-			LoadDataDialog loadDataFileDialog = new LoadDataDialog(window.getShell());
+			LoadDataDialog loadDataFileDialog = new LoadDataDialog(new Shell());
 			loadDataFileDialog.open();
 		}
 		else

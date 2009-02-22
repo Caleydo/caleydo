@@ -13,7 +13,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
@@ -38,6 +37,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -53,8 +53,8 @@ import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRender
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
-import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.JukeboxLayoutRenderStyle;
@@ -104,7 +104,7 @@ public class GLRemoteRendering
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
-	private GLHeatMap glExternalSelectionHeatMap;
+	private GLHeatMap glSelectionHeatMap;
 
 	private Time time;
 
@@ -244,20 +244,12 @@ public class GLRemoteRendering
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
-		// trashCan = new TrashCan();
-
 		// TODO: the genome mapper should be stored centralized instead of newly
 		// created
-//		colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
+		// colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
 
-		// Create selection panel
-		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
-				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
-				null, -1);
-		cmdCreateGLView.doCommand();
-		glExternalSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
-
+		glSelectionHeatMap = ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
+		
 		// Registration to event system
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
 				(IMediatorSender) this);
@@ -302,18 +294,11 @@ public class GLRemoteRendering
 		initializeContainedViews(gl);
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(
-				glExternalSelectionHeatMap.getID());
-
-		glExternalSelectionHeatMap.addSets(alSets);
-		glExternalSelectionHeatMap.setToListMode(true);
-		glExternalSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
+				glSelectionHeatMap.getID());
+		
+		glSelectionHeatMap.addSets(alSets);
+		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
 				remoteRenderingGLCanvas);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.PROPAGATION_MEDIATOR,
-				glExternalSelectionHeatMap);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				glExternalSelectionHeatMap);
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-				glExternalSelectionHeatMap);
 
 //		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 //		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
@@ -683,7 +668,7 @@ public class GLRemoteRendering
 
 		if (level == poolLevel)
 		{
-			String sRenderText = glEventListener.getShortInfo();
+			String sRenderText = glEventListener.getShortInfo();		
 
 			// Limit pathway name in length
 			int iMaxChars;
@@ -694,27 +679,7 @@ public class GLRemoteRendering
 
 			if (sRenderText.length() > iMaxChars && scale.x() < 0.03f)
 				sRenderText = sRenderText.subSequence(0, iMaxChars - 3) + "...";
-
-			if (element.getID() == iMouseOverObjectID)
-				textRenderer.setColor(1, 1, 1, 1);
-			else
-				textRenderer.setColor(0, 0, 0, 1);
-
-			if (glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER) > 0)
-			{
-				textRenderer.setColor(1, 0, 0, 1);
-				// sRenderText =
-				// glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER)
-				// + " - " + sRenderText;
-			}
-			else if (glEventListener.getNumberOfSelections(ESelectionType.SELECTION) > 0)
-			{
-				textRenderer.setColor(0, 1, 0, 1);
-				// sRenderText =
-				// glEventListener.getNumberOfSelections(ESelectionType.SELECTION)
-				// + " - " + sRenderText;
-			}
-
+			
 			float fTextScalingFactor = 0.09f;
 			float fTextXPosition = 0f;
 
@@ -760,9 +725,78 @@ public class GLRemoteRendering
 				fTextXPosition = 9.5f;
 			}
 
+			int iNumberOfGenesSelected = glEventListener.getNumberOfSelections(ESelectionType.SELECTION);
+			int iNumberOfGenesMouseOver = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER);
+			
 			textRenderer.begin3DRendering();
-			textRenderer.draw3D(sRenderText, fTextXPosition, 3, 0, fTextScalingFactor);
+			
+			if (element.getID() == iMouseOverObjectID)
+				textRenderer.setColor(1, 1, 1, 1);
+			else
+				textRenderer.setColor(0, 0, 0, 1);
+
+			if (iNumberOfGenesMouseOver == 0 && iNumberOfGenesSelected == 0)
+				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0, fTextScalingFactor);
+			else
+				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0, fTextScalingFactor);
+				
 			textRenderer.end3DRendering();
+			
+			gl.glLineWidth(4);
+			
+			if (element.getID() == iMouseOverObjectID)
+				gl.glTranslatef(2.2f, 0.5f, 0);
+			
+			if (iNumberOfGenesMouseOver > 0)
+			{
+				if (element.getID() == iMouseOverObjectID)
+					gl.glTranslatef(-2.5f, 0, 0);					
+				
+				textRenderer.begin3DRendering();
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesMouseOver), fTextXPosition + 9, 2.4f, 0, fTextScalingFactor);
+				textRenderer.end3DRendering();
+
+				if (element.getID() == iMouseOverObjectID)
+					gl.glTranslatef(2.5f, 0, 0);	
+				
+				gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(10, 2.7f, 0f);
+				gl.glVertex3f(18, 2.7f, 0f);
+				gl.glVertex3f(20, 2.7f, 0f);
+				gl.glVertex3f(29, 2.7f, 0f);
+				gl.glEnd();				
+			}
+			
+			if (iNumberOfGenesSelected > 0)
+			{
+				if (iNumberOfGenesMouseOver > 0)
+					gl.glTranslatef(0, -1.8f, 0);
+
+				if (element.getID() == iMouseOverObjectID)
+					gl.glTranslatef(-2.5f, 0, 0);					
+
+				textRenderer.begin3DRendering();
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesSelected), fTextXPosition + 9, 2.5f, 0, fTextScalingFactor);
+				textRenderer.end3DRendering();
+
+				if (element.getID() == iMouseOverObjectID)
+					gl.glTranslatef(2.5f, 0, 0);			
+				
+				gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(10, 2.9f, 0f);
+				gl.glVertex3f(18, 2.9f, 0f);
+				gl.glVertex3f(20, 2.9f, 0f);
+				gl.glVertex3f(29, 2.9f, 0f);
+				gl.glEnd();
+				
+				if (iNumberOfGenesMouseOver > 0)
+					gl.glTranslatef(0, 1.8f, 0);
+			}
+			
+			if (element.getID() == iMouseOverObjectID)
+				gl.glTranslatef(-2.2f, -0.5f, 0);
 		}
 
 		// Prevent rendering of view textures when simple list view
@@ -2392,8 +2426,8 @@ public class GLRemoteRendering
 	public synchronized void toggleLayoutMode()
 	{
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
-		// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
+//			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
+		 layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
 		else
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
@@ -2467,7 +2501,8 @@ public class GLRemoteRendering
 	 */
 	public void removeView(AGLEventListener glEventListener)
 	{
-		glEventListener.destroy();
+		if (glEventListener != null)
+			glEventListener.destroy();
 	}
 
 	public synchronized void clearAll()

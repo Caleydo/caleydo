@@ -15,6 +15,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaConverter;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -32,10 +33,12 @@ import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -47,6 +50,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -704,7 +708,7 @@ public class GLPathway
 				createConnectionLines(eSelectionType, iConnectionID);
 
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new SelectionCommandEventContainer(EIDType.DAVID,
+						new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
 								new SelectionCommand(ESelectionCommandType.CLEAR,
 										eSelectionType)));
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
@@ -910,7 +914,35 @@ public class GLPathway
 				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
 						.getSelectionDelta());
 				break;
+			case VA_UPDATE:
+				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer = (DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
+				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
+				break;
+			case TRIGGER_SELECTION_COMMAND:
+				SelectionCommandEventContainer commandEventContainer = (SelectionCommandEventContainer) eventContainer;
+				switch (commandEventContainer.getIDType())
+				{
+					case DAVID:
+					case REFSEQ_MRNA_INT:
+					case EXPRESSION_INDEX:
+						selectionManager.executeSelectionCommands(commandEventContainer
+								.getSelectionCommands());
+						break;
+				}
+				break;
+			case VIEW_COMMAND:
+				ViewCommandEventContainer viewCommandEventContainer = (ViewCommandEventContainer) eventContainer;
+				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW)
+					setDisplayListDirty();
+				break;
 		}
+	}
+	
+	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
+	{
+		selectionManager.setVADelta(delta);
+		// reactOnExternalSelection();
+		setDisplayListDirty();
 	}
 
 	@Override

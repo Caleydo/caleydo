@@ -49,11 +49,9 @@ public class CaleydoProjectWizard
 	@Override
 	public boolean performFinish()
 	{
-
 		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
 				.isPageComplete())
 		{
-
 			NewOrExistingProjectPage page = ((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME));
 
 			if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE)

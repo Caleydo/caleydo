@@ -37,21 +37,7 @@ public class PartListener
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef)
 	{
-		IWorkbenchPart activePart = partRef.getPart(false);
 
-		if (!(activePart instanceof AGLViewPart))
-			return;
-		
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
-			return;
-		
-		AGLViewPart glView = (AGLViewPart) activePart;
-		
-		ToolBarView toolBarView = ((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.findView(ToolBarView.ID));
-		toolBarView.removeAllViewSpecificToolBars();
-		toolBarView.addViewSpecificToolBar(glView
-				.getGLEventListener().getID());
 	}
 	
 	@Override
@@ -85,7 +71,7 @@ public class PartListener
 	{
 		IWorkbenchPart activePart = partRef.getPart(false);
 		
-		System.out.println("Visible: " +partRef.getTitle());
+//		System.out.println("Visible: " +partRef.getTitle());
 		
 		if (!(activePart instanceof AGLViewPart))
 			return;
@@ -165,7 +151,7 @@ public class PartListener
 	{	
 		IWorkbenchPart activePart = partRef.getPart(false);
 		
-		System.out.println("Hide: " +partRef.getTitle());
+//		System.out.println("Hide: " +partRef.getTitle());
 		
 		if (!(activePart instanceof AGLViewPart))
 			return;
@@ -196,27 +182,7 @@ public class PartListener
 	@Override
 	public void partActivated(IWorkbenchPartReference partRef)
 	{
-//		IWorkbenchPart activePart = partRef.getPart(false);
-//
-//		System.out.println("Activated:" +activePart);
-//		
-////		lastOpenedWorkbenchPart = null;
-//		
-//		if (!(activePart instanceof AGLViewPart))
-//			return;
-//
-//		AGLViewPart glView = (AGLViewPart) activePart;
-//		
-//		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//				.findView(ToolBarView.ID)).removeAllViewSpecificToolBars();
-//		
-//		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//				.findView(ToolBarView.ID)).addViewSpecificToolBar(glView
-//				.getGLEventListener().getID());
-//		
-//		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//				.findView(ToolBarView.ID)).highlightViewSpecificToolBar(glView
-//				.getGLEventListenerID());
+
 	}
 
 	@Override

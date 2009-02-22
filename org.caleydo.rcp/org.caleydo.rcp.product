@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.4"?>
+<?pde version="3.5"?>
 
 <product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
 
@@ -10,7 +10,7 @@
 Check out www.caleydo.org
 
 (c) Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
-Graz University of Technology - 2008.
+Graz University of Technology - 2009.
 All Rights Reserved.
       </text>
    </aboutInfo>
@@ -19,7 +19,7 @@ All Rights Reserved.
    </configIni>
 
    <launcherArgs>
-      <programArgs>browser remote parcoords</programArgs>
+      <programArgs>browser remote</programArgs>
       <vmArgs>-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties
 -Xss16384k</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
@@ -41,11 +41,13 @@ All Rights Reserved.
    <vm>
    </vm>
 
+
    <plugins>
    </plugins>
 
    <features>
       <feature id="org.caleydo.rcp.feature" version="1.0.0"/>
    </features>
+
 
 </product>

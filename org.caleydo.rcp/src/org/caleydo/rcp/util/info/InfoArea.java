@@ -68,7 +68,7 @@ public class InfoArea
 
 	public Control createControl(final Composite parent)
 	{
-		Font font = new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD);
+//		Font font = new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD);
 
 		parentComposite = parent;
 
@@ -105,15 +105,18 @@ public class InfoArea
 		{
 			gridData.minimumWidth = 150;
 			gridData.widthHint = 150;
+			gridData.minimumHeight = 72;
+			gridData.heightHint = 72;
 		}
 		else
 		{
 			gridData.minimumWidth = 100;
 			gridData.widthHint = 150;
+			gridData.minimumHeight = 82;
+			gridData.heightHint = 82;
 		}
 
-		gridData.minimumHeight = 72;
-		gridData.heightHint = 72;
+
 	    lblViewInfoContent.setLayoutData(gridData);
 
 		gridData = new GridData(GridData.FILL_BOTH);

@@ -7,13 +7,16 @@ import java.util.logging.Level;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -68,6 +71,13 @@ public class ViewManager
 	private ConnectedElementRepresentationManager selectionManager;
 
 	private GLInfoAreaManager infoAreaManager;
+	
+	/**
+	 * Heat map that is embedded in views like bucket or parcoords to show a
+	 * selection of genes. 
+	 * TODO: maybe the view manager is not the perfect place to create/store this view
+	 */
+	private GLHeatMap glSelectionHeatMap;
 
 	/**
 	 * Constructor.
@@ -407,5 +417,29 @@ public class ViewManager
 	public void unregisterGLCanvasFromAnimator(final int iGLCanvasID)
 	{
 		fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
+	}
+	
+	public void createSelectionHeatMap()
+	{
+		// Create selection panel
+		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
+				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_HEAT_MAP_3D);
+		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
+				null, -1);
+		cmdCreateGLView.doCommand();
+		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
+		glSelectionHeatMap.setToListMode(true);
+		
+		generalManager.getEventPublisher().addReceiver(EMediatorType.PROPAGATION_MEDIATOR,
+				glSelectionHeatMap);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				glSelectionHeatMap);
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				glSelectionHeatMap);		
+	}
+	
+	public GLHeatMap getSelectionHeatMap()
+	{
+		return glSelectionHeatMap;
 	}
 }

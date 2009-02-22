@@ -115,6 +115,20 @@ public class ToolBarView
 
 	public void addViewSpecificToolBar(int iViewID)
 	{
+		// Check if toolbar is already present
+		for (Group group : viewSpecificGroups)
+		{
+			// Only one pathway toolbar for all pathways is allowed
+			if (group.getData("view") instanceof GLPathway
+					&& GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+							iViewID) instanceof GLPathway)
+				return;
+
+			if (group.getData("viewID") != null
+					&& ((Integer) group.getData("viewID")).intValue() == iViewID)
+				return;
+		}
+		
 		String sViewTitle = "";
 		Image viewIcon = null;
 
@@ -402,13 +416,19 @@ public class ToolBarView
 		searchBox.setTextLimit(21);
 		searchBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
-		if (!Application.bNoPathwayData || Application.bLoadPathwayData)
+		if (Application.bLoadPathwayData)
 		{
 			searchBox.addFocusListener(new FocusAdapter()
 			{
 				@Override
 				public void focusGained(FocusEvent e)
 				{
+					if (!Application.bLoadPathwayData)
+					{
+						searchBox.setEnabled(false);
+						return;
+					}
+						
 					Collection<PathwayGraph> allPathways = GeneralManager.get()
 							.getPathwayManager().getAllItems();
 					String[] sArSearchItems = new String[allPathways.size()];

@@ -19,6 +19,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -65,16 +66,17 @@ public class GenomeHTMLBrowserViewRep
 	{
 		Composite composite = new Composite(parentComposite, SWT.NONE);
 
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
 
-		Composite leftColumnComposite = new Composite(composite, SWT.NONE);
-		GridLayout leftColumnLayout = new GridLayout(1, false);
-		leftColumnComposite.setLayout(leftColumnLayout);
-		leftColumnComposite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+//		Composite leftColumnComposite = new Composite(composite, SWT.NONE);
+//		GridLayout leftColumnLayout = new GridLayout(1, false);
+//		leftColumnComposite.setLayout(leftColumnLayout);
+//		leftColumnComposite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
-		Group groupQueryType = new Group(leftColumnComposite, SWT.SHADOW_ETCHED_IN);
+		Group groupQueryType = new Group(composite, SWT.SHADOW_ETCHED_IN); // leftColumnComposite
 		groupQueryType.setText("Database type");
+		groupQueryType.setLayout(new RowLayout(SWT.HORIZONTAL));
 		buttonKEGG = new Button(groupQueryType, SWT.RADIO);
 		buttonKEGG.setText(EBrowserQueryType.KEGG.toString());
 		buttonBioCarta = new Button(groupQueryType, SWT.RADIO);
@@ -89,7 +91,6 @@ public class GenomeHTMLBrowserViewRep
 
 		SelectionListener queryTypeListener = new SelectionAdapter()
 		{
-
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
@@ -113,16 +114,16 @@ public class GenomeHTMLBrowserViewRep
 		buttonEntrez.addSelectionListener(queryTypeListener);
 		buttonGeneCards.addSelectionListener(queryTypeListener);
 
-		GridData data = new GridData();
-		data.widthHint = 130;
-		groupQueryType.setLayoutData(data);
-		groupQueryType.setLayout(new GridLayout(1, false));
+//		GridData data = new GridData();
+//		data.widthHint = 130;
+//		groupQueryType.setLayoutData(data);
+//		groupQueryType.setLayout(new GridLayout(1, false));
 
-		list = new List(leftColumnComposite, SWT.SINGLE | SWT.BORDER);
-		data = new GridData(GridData.FILL_VERTICAL);
-		data.grabExcessVerticalSpace = true;
-		data.widthHint = 130;
-		list.setLayoutData(data);
+		list = new List(composite, SWT.SINGLE | SWT.BORDER); // leftColumnComposite
+//		data = new GridData(GridData.FILL_VERTICAL);
+//		data.grabExcessVerticalSpace = true;
+//		data.widthHint = 130;
+//		list.setLayoutData(data);
 
 		list.addSelectionListener(new SelectionAdapter()
 		{
@@ -139,6 +140,8 @@ public class GenomeHTMLBrowserViewRep
 			}
 		});
 
+		list.setVisible(false);
+		
 		super.initViewSWTComposite(composite);
 	}
 

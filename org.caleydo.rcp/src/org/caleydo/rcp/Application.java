@@ -7,11 +7,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
-import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
@@ -47,11 +47,9 @@ public class Application
 	public static boolean bIsWebstart = false;
 	public static boolean bDoExit = false;
 	
-	// When both boolean variables are false the loadPathwayData 
-	// flag from the preference file is taken
-	// The command line arguments overrule the preference store
-	public static boolean bNoPathwayData = false;
-	public static boolean bLoadPathwayData = false;
+	// The command line arguments overrules the preference store
+	public static boolean bLoadPathwayData = true;
+	public static boolean bOverrulePrefStoreLoadPathwayData = false;
 	public static boolean bIsWindowsOS = false;
 	
 	public static EApplicationMode applicationMode = EApplicationMode.STANDARD;
@@ -90,11 +88,13 @@ public class Application
 					}
 					else if (sArParam[iParamIndex].equals("no_pathways"))
 					{
-						bNoPathwayData = true;
+						bLoadPathwayData = false;
+						bOverrulePrefStoreLoadPathwayData = true;
 					}
 					else if (sArParam[iParamIndex].equals("load_pathways"))
 					{
 						bLoadPathwayData = true;
+						bOverrulePrefStoreLoadPathwayData = true;
 					}
 					else if (sArParam[iParamIndex].equals(EStartViewType.PARALLEL_COORDINATES
 							.getCommandLineArgument()))
@@ -144,14 +144,14 @@ public class Application
 
 		Display display = PlatformUI.createDisplay();
 
-		// Check if Caleydo will be started the first time
-		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-				PreferenceConstants.PATHWAY_DATA_OK))
-		{
-			WizardDialog firstStartWizard = new WizardDialog(display.getActiveShell(),
-					new FirstStartWizard());
-			firstStartWizard.open();
-		}
+//		// Check if Caleydo will be started the first time
+//		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+//				PreferenceConstants.PATHWAY_DATA_OK))
+//		{
+//			WizardDialog firstStartWizard = new WizardDialog(display.getActiveShell(),
+//					new FirstStartWizard());
+//			firstStartWizard.open();
+//		}
 
 		// if (bIsWebstart && !bDoExit)
 		// {
@@ -180,7 +180,7 @@ public class Application
 				{
 					GeneralManager.get().getLogger().log(Level.INFO,
 							"Save Caleydo preferences...");
-					GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
+//					GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
 					GeneralManager.get().getPreferenceStore().save();
 				}
 				catch (IOException e)
@@ -278,13 +278,21 @@ public class Application
 			caleydoCore.setXmlFileName(sCaleydoXMLfile);
 			caleydoCore.start();
 		}
+		
+		// Check if Caleydo will be started the first time
+		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+				PreferenceConstants.PATHWAY_DATA_OK) && bLoadPathwayData)
+		{
+			WizardDialog firstStartWizard = new WizardDialog(new Shell(), new FirstStartWizard());
+			firstStartWizard.open();
+		}
 
 		initializeColorMapping();
 		// initializeViewSettings();
 
-		openViewsInRCP();
+		openRCPViews();
 
-		if (!bDoExit && (!bNoPathwayData || bLoadPathwayData))
+		if (!bDoExit && bLoadPathwayData)
 		{
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
@@ -312,24 +320,46 @@ public class Application
 		ColorMappingManager.get().initiFromPreferenceStore();
 	}
 
-	private static void openViewsInRCP()
+	private static void openRCPViews()
 	{
-		if (applicationMode == EApplicationMode.PATHWAY_VIEWER)
+		// Create view list dynamically when not specified via the command line
+		if (alStartViews.isEmpty())
 		{
-			// Filter all views except remote and browser in case of pathway
-			// viewer mode
-			Iterator<EStartViewType> iterStartViewsType = alStartViews.iterator();
-			EStartViewType type;
-			while (iterStartViewsType.hasNext())
+			alStartViews.add(EStartViewType.BROWSER);
+			
+			// Only show bucket when pathway data is loaded
+			if (bLoadPathwayData)
+				alStartViews.add(EStartViewType.REMOTE);
+			
+			if (applicationMode != EApplicationMode.PATHWAY_VIEWER)
 			{
-				type = iterStartViewsType.next();
-				if (type != EStartViewType.REMOTE && type != EStartViewType.BROWSER)
-				{
-					iterStartViewsType.remove();
-				}
+				alStartViews.add(EStartViewType.TABULAR);
+				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
+				
+				((ViewManager)GeneralManager.get().getViewGLCanvasManager()).createSelectionHeatMap();
+				
+				alStartViews.add(EStartViewType.HEATMAP);
 			}
 		}
-
+		else
+		{
+			if (applicationMode == EApplicationMode.PATHWAY_VIEWER)
+			{
+				// Filter all views except remote and browser in case of pathway
+				// viewer mode
+				Iterator<EStartViewType> iterStartViewsType = alStartViews.iterator();
+				EStartViewType type;
+				while (iterStartViewsType.hasNext())
+				{
+					type = iterStartViewsType.next();
+					if (type != EStartViewType.REMOTE && type != EStartViewType.BROWSER)
+					{
+						iterStartViewsType.remove();
+					}
+				}
+			}	
+		}
+		
 		// Open Views in RCP
 		try
 		{
@@ -337,13 +367,13 @@ public class Application
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 					ToolBarView.ID);
 
-			if (alStartViews.contains(EStartViewType.REMOTE))
-			{
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-						GLRemoteRenderingView.ID);
-
-				alStartViews.remove(EStartViewType.REMOTE);
-			}
+//			if (alStartViews.contains(EStartViewType.REMOTE))
+//			{
+//				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+//						GLRemoteRenderingView.ID);
+//
+//				alStartViews.remove(EStartViewType.REMOTE);
+//			}
 
 			for (EStartViewType startViewsMode : alStartViews)
 			{
@@ -353,8 +383,7 @@ public class Application
 		}
 		catch (PartInitException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}		
 	}
 }
