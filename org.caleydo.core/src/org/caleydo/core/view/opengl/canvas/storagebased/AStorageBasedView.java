@@ -505,10 +505,9 @@ public abstract class AStorageBasedView
 			{
 				for (SelectionDeltaItem item : selectionDelta)
 				{
-					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER || item
-							.getSelectionType() == ESelectionType.SELECTION))
-						// if (!(item.getSelectionType() ==
-						// ESelectionType.MOUSE_OVER))
+//					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER
+//							|| item.getSelectionType() == ESelectionType.SELECTION))
+					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER))
 						continue;
 
 					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)

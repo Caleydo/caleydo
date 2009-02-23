@@ -182,7 +182,7 @@ public class GLParallelCoordinates
 
 	private int iDisplayEveryNthPolyline = 1;
 	
-	private GLHeatMap glSelectionHeatMap;
+//	private GLHeatMap glSelectionHeatMap;
 
 	/**
 	 * Constructor.
@@ -211,7 +211,7 @@ public class GLParallelCoordinates
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
 		
-		glSelectionHeatMap = ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
+//		glSelectionHeatMap = ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
 	}
 
 	@Override
@@ -226,9 +226,9 @@ public class GLParallelCoordinates
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		
-		glSelectionHeatMap.addSets(alSets);
-		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
-				remoteRenderingGLCanvas);			
+//		glSelectionHeatMap.addSets(alSets);
+//		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
+//				remoteRenderingGLCanvas);			
 		
 		init(gl);
 	}

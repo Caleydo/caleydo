@@ -334,10 +334,7 @@ public class Application
 			if (applicationMode != EApplicationMode.PATHWAY_VIEWER)
 			{
 				alStartViews.add(EStartViewType.TABULAR);
-				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
-				
-				((ViewManager)GeneralManager.get().getViewGLCanvasManager()).createSelectionHeatMap();
-				
+				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);				
 				alStartViews.add(EStartViewType.HEATMAP);
 			}
 		}
@@ -359,6 +356,8 @@ public class Application
 				}
 			}	
 		}
+		
+		((ViewManager)GeneralManager.get().getViewGLCanvasManager()).createSelectionHeatMap();
 		
 		// Open Views in RCP
 		try
