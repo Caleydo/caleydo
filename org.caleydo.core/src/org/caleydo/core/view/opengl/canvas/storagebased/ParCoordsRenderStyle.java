@@ -89,11 +89,12 @@ public class ParCoordsRenderStyle
 	public static final float AXIS_MARKER_WIDTH = 0.01f;
 
 	// gates
-	private static final float GATE_WIDTH = 0.005f;
+	private static final float GATE_WIDTH = 0.05f;
+	public static final float GATE_BOTTOM_HEIGHT = 0.01f;
 
 	private static final float GATE_NEGATIVE_Y_OFFSET = -0.015f;
 
-	private static final float GATE_TIP_HEIGHT = 0.015f;
+	private static final float GATE_TIP_HEIGHT = 0.08f;
 
 	// buttons below axis
 	public static final float AXIS_BUTTONS_Y_OFFSET = 0.1f;
@@ -187,7 +188,7 @@ public class ParCoordsRenderStyle
 	public float getGateWidth()
 	{
 
-		return GATE_WIDTH * getScaling();
+		return GATE_WIDTH;
 	}
 
 	public float getGateYOffset()
@@ -209,7 +210,7 @@ public class ParCoordsRenderStyle
 	public float getGateTipHeight()
 	{
 
-		return GATE_TIP_HEIGHT * getAxisHeight();
+		return GATE_TIP_HEIGHT;
 	}
 
 	public float getAxisCaptionSpacing()

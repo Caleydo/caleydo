@@ -6,11 +6,29 @@ public enum EIconTextures
 	ARROW_RIGHT("resources/icons/view/remote/arrow-right.png"),
 	ARROW_UP("resources/icons/view/remote/arrow-up.png"),
 	ARROW_DOWN("resources/icons/view/remote/arrow-down.png"),
-	
-	MOUSE_OVER_DROP("resources/icons/view/storagebased/parcoords/drop.png"),
-	SMALL_DROP("resources/icons/view/storagebased/parcoords/drop_small.png"),
+
 	LOCK("resources/icons/view/remote/lock.png"),
+	
+	
+	// Parallel Coordinates
+	DROP_NORMAL("resources/icons/view/storagebased/parcoords/drop_normal.png"),
+	DROP_DELETE("resources/icons/view/storagebased/parcoords/drop_delete.png"),
+	DROP_DUPLICATE("resources/icons/view/storagebased/parcoords/drop_duplicate.png"),
+	DROP_MOVE("resources/icons/view/storagebased/parcoords/drop_move.png"),
+	SMALL_DROP("resources/icons/view/storagebased/parcoords/drop_small.png"),
+	ADD_GATE("resources/icons/view/storagebased/parcoords/add_gate.png"),
 	DUPLICATE("resources/icons/view/storagebased/parcoords/axis_copy.png"),
+	
+	GATE_BOTTOM("resources/icons/view/storagebased/parcoords/gate_bottom.png"),
+	GATE_BOTTOM_MENUE("resources/icons/view/storagebased/parcoords/gate_bottom_menue.png"),
+	
+	GATE_TOP("resources/icons/view/storagebased/parcoords/gate_top.png"),
+	GATE_TOP_MENUE("resources/icons/view/storagebased/parcoords/gate_top_menue.png"),
+	
+	GATE_BODY("resources/icons/view/storagebased/parcoords/gate_body.png"),
+	
+	
+	
 //	POLYLINE_TO_AXIS("resources/icons/general/no_icon_available.png"),
 //	PREVENT_OCCLUSION("resources/icons/general/no_icon_available.png"),
 //	RENDER_SELECTION("resources/icons/general/no_icon_available.png"),

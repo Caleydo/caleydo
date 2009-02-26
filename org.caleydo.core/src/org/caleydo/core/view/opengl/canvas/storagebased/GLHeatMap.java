@@ -876,6 +876,10 @@ public class GLHeatMap
 	@Override
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
 	{
+		// FIXME: should not be necessary here, incorrect init.
+		if(renderStyle == null)
+			return;
+		
 		renderStyle.updateFieldSizes();
 		fAlXDistances.clear();
 		float fDistance = 0;
