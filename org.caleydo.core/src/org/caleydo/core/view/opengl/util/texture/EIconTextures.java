@@ -17,16 +17,11 @@ public enum EIconTextures
 	DROP_MOVE("resources/icons/view/storagebased/parcoords/drop_move.png"),
 	SMALL_DROP("resources/icons/view/storagebased/parcoords/drop_small.png"),
 	ADD_GATE("resources/icons/view/storagebased/parcoords/add_gate.png"),
-	DUPLICATE("resources/icons/view/storagebased/parcoords/axis_copy.png"),
 	
 	GATE_BOTTOM("resources/icons/view/storagebased/parcoords/gate_bottom.png"),
-	GATE_BOTTOM_MENUE("resources/icons/view/storagebased/parcoords/gate_bottom_menue.png"),
-	
 	GATE_TOP("resources/icons/view/storagebased/parcoords/gate_top.png"),
-	GATE_TOP_MENUE("resources/icons/view/storagebased/parcoords/gate_top_menue.png"),
-	
-	GATE_BODY("resources/icons/view/storagebased/parcoords/gate_body.png"),
-	
+	GATE_MENUE("resources/icons/view/storagebased/parcoords/gate_menue.png"),	
+	GATE_BODY("resources/icons/view/storagebased/parcoords/gate_body.png"),	
 	
 	
 //	POLYLINE_TO_AXIS("resources/icons/general/no_icon_available.png"),

@@ -6,7 +6,6 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderSt
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_BODY_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_TIP_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
@@ -1224,79 +1223,45 @@ public class GLParallelCoordinates
 		Float fBottom = gate.getFirst();
 		Float fTop = gate.getSecond();
 
-		float[] fArGateColor;
+		
 
-		if ((bIsGateMouseOver || bIsDraggingActive) && iGateID == iDraggedGateNumber
-				&& draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
-		{
-			fArGateColor = POLYLINE_SELECTED_COLOR;
-			bIsGateMouseOver = false;
-		}
-		else
-		{
-			fArGateColor = GATE_TIP_COLOR;
-		}
+//		if ((bIsGateMouseOver || bIsDraggingActive) && iGateID == iDraggedGateNumber
+//				&& draggedObject == EPickingType.GATE_TIP_SELECTION)
+//		{
+//		
+//			bIsGateMouseOver = false;
+//		}
+//		else
+//		{
+//			fArGateColor = GATE_TIP_COLOR;
+//		}
 
 		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_TOP);
-
 		tempTexture.enable();
 		tempTexture.bind();
-
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
 		gl.glColor4f(1, 1, 1, 1);
-
-		// The tip of the gate (which is pickable)
+		// The tip of the gate
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.LOWER_GATE_TIP_SELECTION, iGateID));
+				EPickingType.GATE_TIP_SELECTION, iGateID));
 		gl.glBegin(GL.GL_POLYGON);
-		// variable
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, 0.001f);
-
-		// variable
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(fCurrentPosition + 0.1828f - fGateWidth, fTop - fGateTipHeight, 0.001f);
-
-		// variable
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(fCurrentPosition + 0.1828f - fGateWidth, fTop, 0.001f);
-
-		// variable
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop, 0.001f);
 		gl.glEnd();
-		
 		tempTexture.disable();
-
-		// // invisible part, for better picking
-		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		//
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glColor4f(0, 0, 0, 0f);
-		// gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fTop -
-		// fGateTipHeight, 0.001f);
-		// gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fTop +
-		// fGateTipHeight, 0.001f);
-		// gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fTop +
-		// fGateTipHeight, 0.001f);
-		// gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fTop -
-		// fGateTipHeight, 0.001f);
-		// gl.glEnd();
 		
-//		iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.LOWER_GATE_TIP_SELECTION, iGateID);
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM_MENUE);
+		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
 		tempTexture.enable();
 		tempTexture.bind();
-
 		texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1, 1, 1, 1);
-//		gl.glPushName(iPickingID);
-
 		float fMenuHeight = 8 * renderStyle.getGateWidth() / 3.5f;
-
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(fCurrentPosition - 7 * renderStyle.getGateWidth(), fTop, 0.001f);
@@ -1313,16 +1278,13 @@ public class GLParallelCoordinates
 		textRenderer.setColor(1, 1, 1, 1);
 		float fValue = (float) set.getRawForNormalized(fTop / renderStyle.getAxisHeight());
 		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 4
-				* renderStyle.getGateWidth(), fTop);
+				* renderStyle.getGateWidth(), fTop + 0.02f);
 
-//		gl.glPopName();
-//		gl.glPopAttrib();
 		tempTexture.disable();
-		
-		
 		gl.glPopAttrib();
 		gl.glPopName();
 
+		// invisible part for picking the remove button
 		gl.glColor4f(1, 1, 1, 0f);
 		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_GATE,
 				iGateID);
@@ -1335,127 +1297,123 @@ public class GLParallelCoordinates
 		gl.glEnd();
 		gl.glPopName();
 
-		if (detailLevel == EDetailLevel.HIGH)
-		{
-			if (set.isSetHomogeneous())
-			{
-				// renderBoxedYValues(gl, fCurrentPosition, fTop,
-				// getDecimalFormat().format(
-				// set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
-				// ESelectionType.NORMAL);
-			}
-			else
-			{
-				// TODO storage based acces
-			}
-
-		}
+		// if (detailLevel == EDetailLevel.HIGH)
+		// {
+		// if (set.isSetHomogeneous())
+		// {
+		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
+		// // getDecimalFormat().format(
+		// // set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
+		// // ESelectionType.NORMAL);
+		// }
+		// else
+		// {
+		// // TODO storage based acces
+		// }
+		//
+		// }
 
 		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
-
 		tempTexture.enable();
 		tempTexture.bind();
-
 		texCoords = tempTexture.getImageTexCoords();
-
 		gl.glColor4f(1, 1, 1, 1);
-		// The body of the gate
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.LOWER_GATE_BODY_SELECTION, iGateID));
+				EPickingType.GATE_BODY_SELECTION, iGateID));
 		gl.glBegin(GL.GL_POLYGON);
-		// bottom
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom
 				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, 0.0001f);
-		// constant
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom
 				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, 0.0001f);
-		// top
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(fCurrentPosition + fGateWidth, fTop - fGateTipHeight, 0.0001f);
-		// top
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, 0.0001f);
 		gl.glEnd();
 		gl.glPopName();
 		tempTexture.disable();
 
+		
+
+//		if ((bIsGateMouseOver || bIsDraggingActive) && iGateID == iDraggedGateNumber
+//				&& draggedObject == EPickingType.GATE_BOTTOM_SELECTION)
+//		{
+//			fArGateColor = POLYLINE_SELECTED_COLOR;
+//			bIsGateMouseOver = false;
+//		}
+//		else
+//		{
+//			fArGateColor = GATE_TIP_COLOR;
+//		}
+
+		
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.LOWER_GATE_BOTTOM_SELECTION, iGateID));
-
-		if ((bIsGateMouseOver || bIsDraggingActive) && iGateID == iDraggedGateNumber
-				&& draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
-		{
-			fArGateColor = POLYLINE_SELECTED_COLOR;
-			bIsGateMouseOver = false;
-		}
-		else
-		{
-			fArGateColor = GATE_TIP_COLOR;
-		}
-
+				EPickingType.GATE_BOTTOM_SELECTION, iGateID));
 		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
-
 		tempTexture.enable();
 		tempTexture.bind();
-
 		texCoords = tempTexture.getImageTexCoords();
-
 		gl.glColor4f(1, 1, 1, 1);
-		// The bottom of the gate
 		gl.glBegin(GL.GL_POLYGON);
-		// variable
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom, 0.001f);
-		// variable
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom, 0.001f);
-		// variable
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom
 				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, 0.001f);
-
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom
 				+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, 0.001f);
 		gl.glEnd();
+		
+		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
+		tempTexture.enable();
+		tempTexture.bind();
+		texCoords = tempTexture.getImageTexCoords();
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fCurrentPosition - 7 * renderStyle.getGateWidth(), fBottom, 0.001f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fCurrentPosition + renderStyle.getGateWidth(), fBottom, 0.001f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fCurrentPosition + renderStyle.getGateWidth(), fBottom - fMenuHeight,
+				0.001f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fCurrentPosition - 7 * renderStyle.getGateWidth(), fBottom - fMenuHeight,
+				0.001f);
+		gl.glEnd();
 
-		// // invisible part, for better picking
-		// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		//
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glColor4f(0, 0, 0, 0.0f);
-		// gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fBottom, 0.001f);
-		// gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fBottom +
-		// fGateTipHeight, 0.001f);
-		// gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fBottom +
-		// fGateTipHeight, 0.001f);
-		// gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fBottom, 0.001f);
-		// gl.glEnd();
-		// gl.glPopAttrib();
-		//
-		 gl.glPopName();
+		textRenderer.setColor(1, 1, 1, 1);
+		fValue = (float) set.getRawForNormalized(fBottom / renderStyle.getAxisHeight());
+		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 4
+				* renderStyle.getGateWidth(),fBottom - fMenuHeight + 0.02f);
 
+		tempTexture.disable();
 		
 		
+		
+		gl.glPopName();
 
-		if (detailLevel == EDetailLevel.HIGH)
-		{
-			if (set.isSetHomogeneous())
-			{
-//				float fValue = (float) set.getRawForNormalized(fBottom
-//						/ renderStyle.getAxisHeight());
-				// if (fValue > set.getMin())
-				// renderBoxedYValues(gl, fCurrentPosition, fBottom,
-				// getDecimalFormat()
-				// .format(fValue), ESelectionType.NORMAL);
-			}
-			else
-			{
-				// TODO storage based access
-			}
-		}
+//		if (detailLevel == EDetailLevel.HIGH)
+//		{
+//			if (set.isSetHomogeneous())
+//			{
+//				// float fValue = (float) set.getRawForNormalized(fBottom
+//				// / renderStyle.getAxisHeight());
+//				// if (fValue > set.getMin())
+//				// renderBoxedYValues(gl, fCurrentPosition, fBottom,
+//				// getDecimalFormat()
+//				// .format(fValue), ESelectionType.NORMAL);
+//			}
+//			else
+//			{
+//				// TODO storage based access
+//			}
+//		}
 	}
 
 	private void renderGlobalBrush(GL gl)
@@ -1621,15 +1579,15 @@ public class GLParallelCoordinates
 		// - renderStyle.getGateTipHeight();
 		float fBottomUpperLimit = fTop - 2 * renderStyle.getGateTipHeight();
 
-		if (draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
+		if (draggedObject == EPickingType.GATE_TIP_SELECTION)
 		{
 			gate.setSecond(height);
 		}
-		else if (draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
+		else if (draggedObject == EPickingType.GATE_BOTTOM_SELECTION)
 		{
 			gate.setFirst(height);
 		}
-		else if (draggedObject == EPickingType.LOWER_GATE_BODY_SELECTION)
+		else if (draggedObject == EPickingType.GATE_BODY_SELECTION)
 		{
 			gate.setSecond(height + fGateTopSpacing);
 			gate.setFirst(height - fGateBottomSpacing);
@@ -1961,64 +1919,64 @@ public class GLParallelCoordinates
 				setDisplayListDirty();
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
-			case LOWER_GATE_TIP_SELECTION:
+			case GATE_TIP_SELECTION:
 				switch (ePickingMode)
 				{
 					case MOUSE_OVER:
 						bIsGateMouseOver = true;
 						iDraggedGateNumber = iExternalID;
-						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
+						draggedObject = EPickingType.GATE_TIP_SELECTION;
 						setDisplayListDirty();
 
 						// System.out.println("Lower gate mouse over");
 						break;
 					case CLICKED:
 						bIsDraggingActive = true;
-						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
+						draggedObject = EPickingType.GATE_TIP_SELECTION;
 						iDraggedGateNumber = iExternalID;
 
 						System.out.println("Lower gate top click");
 						break;
 					// case DRAGGED:
 					// bIsDraggingActive = true;
-					// draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
+					// draggedObject = EPickingType.GATE_TIP_SELECTION;
 					// iDraggedGateNumber = iExternalID;
 					// break;
 
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
-			case LOWER_GATE_BOTTOM_SELECTION:
+			case GATE_BOTTOM_SELECTION:
 				switch (ePickingMode)
 				{
 					case MOUSE_OVER:
 						bIsGateMouseOver = true;
 						iDraggedGateNumber = iExternalID;
-						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+						draggedObject = EPickingType.GATE_BOTTOM_SELECTION;
 						setDisplayListDirty();
 						break;
 					case CLICKED:
 						bIsDraggingActive = true;
-						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+						draggedObject = EPickingType.GATE_BOTTOM_SELECTION;
 						iDraggedGateNumber = iExternalID;
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
-			case LOWER_GATE_BODY_SELECTION:
+			case GATE_BODY_SELECTION:
 				switch (ePickingMode)
 				{
 					case MOUSE_OVER:
 						bIsGateMouseOver = true;
 						iDraggedGateNumber = iExternalID;
-						draggedObject = EPickingType.LOWER_GATE_BODY_SELECTION;
+						draggedObject = EPickingType.GATE_BODY_SELECTION;
 						setDisplayListDirty();
 						break;
 					case CLICKED:
 						bIsDraggingActive = true;
 						bIsGateDraggingFirstTime = true;
-						draggedObject = EPickingType.LOWER_GATE_BODY_SELECTION;
+						draggedObject = EPickingType.GATE_BODY_SELECTION;
 						iDraggedGateNumber = iExternalID;
 						break;
 				}

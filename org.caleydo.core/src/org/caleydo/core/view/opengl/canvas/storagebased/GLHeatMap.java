@@ -226,6 +226,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void display(GL gl)
 	{
+		clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -1094,6 +1095,11 @@ public class GLHeatMap
 	public boolean isInDefaultOrientation()
 	{
 		return bRenderStorageHorizontally;
+	}
+	
+	public boolean isInListMode()
+	{
+		return bIsInListMode;
 	}
 
 }

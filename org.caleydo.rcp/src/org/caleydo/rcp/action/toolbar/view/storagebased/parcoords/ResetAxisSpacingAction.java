@@ -10,7 +10,7 @@ public class ResetAxisSpacingAction
 	extends AToolBarAction
 {
 	public static final String TEXT = "Reset Axis Spacing";
-	public static final String ICON = "resources/icons/view/storagebased/parcoords/axis_copy.png";
+	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
 
 	/**
 	 * Constructor.

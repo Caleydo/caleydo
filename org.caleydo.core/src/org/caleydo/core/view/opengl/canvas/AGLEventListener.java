@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -101,7 +102,7 @@ public abstract class AGLEventListener
 	private static final int NUMBER_OF_FRAMES = 15;
 
 	protected EBusyModeState eBusyModeState = EBusyModeState.OFF;
-	
+
 	protected IIDMappingManager idMappingManager;
 
 	/**
@@ -115,7 +116,7 @@ public abstract class AGLEventListener
 	 * set
 	 */
 	protected int iStorageVAID = -1;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -130,7 +131,7 @@ public abstract class AGLEventListener
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null)
 		{
 			// Register GL event listener view to GL canvas
-//			parentGLCanvas.addGLEventListener(this);
+			// parentGLCanvas.addGLEventListener(this);
 
 			// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
 			// parentGLCanvas.getID(), this);
@@ -261,29 +262,32 @@ public abstract class AGLEventListener
 	 */
 	protected void clipToFrustum(GL gl)
 	{
-//		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-//		gl.glColorMask(false, false, false, false);
-//		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-//		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-//		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-//		gl.glEnable(GL.GL_STENCIL_TEST);
-//		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-//		gl.glDisable(GL.GL_DEPTH_TEST);
-//
-//		// Clip region that renders in stencil buffer (in this case the
-//		// frustum)
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
-//		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
-//		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-//		gl.glEnd();
-//
-//		gl.glEnable(GL.GL_DEPTH_TEST);
-//		gl.glColorMask(true, true, true, true);
-//		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		if (this instanceof GLHeatMap && ((GLHeatMap) this).isInListMode())
+			return;
+
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false, false, false, false);
+		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		// Clip region that renders in stencil buffer (in this case the
+		// frustum)
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		gl.glEnd();
+
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 	}
 
 	/**
@@ -351,8 +355,9 @@ public abstract class AGLEventListener
 	}
 
 	/**
-	 * This class uses the pickingManager to check if any events have occurred it
-	 * calls the abstract handleEvents method where the events should be handled
+	 * This class uses the pickingManager to check if any events have occurred
+	 * it calls the abstract handleEvents method where the events should be
+	 * handled
 	 * 
 	 * @param gl
 	 */
@@ -381,7 +386,7 @@ public abstract class AGLEventListener
 					int iPickingID = tempPick.getPickingID();
 					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID,
 							iPickingID);
-					
+
 					if (iExternalID == -1)
 						continue;
 
@@ -571,32 +576,32 @@ public abstract class AGLEventListener
 	 * 
 	 */
 	public abstract int getNumberOfSelections(ESelectionType eSelectionType);
-	
+
 	public float getAspectRatio()
 	{
 		return fAspectRatio;
 	}
-	
+
 	public int getContentVAID()
 	{
 		return iContentVAID;
 	}
-	
+
 	public int getStorageVAID()
 	{
 		return iStorageVAID;
 	}
-	
+
 	public EDetailLevel getDetailLevel()
 	{
 		return detailLevel;
 	}
-	
+
 	public void destroy()
 	{
 		// Propagate remove action of elements to other views
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
-		
+
 		if (this instanceof IMediatorSender)
 		{
 			generalManager.getEventPublisher().removeSenderFromAllGroups(
@@ -609,15 +614,15 @@ public abstract class AGLEventListener
 					(IMediatorReceiver) this);
 		}
 
-//		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-//				.clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
+		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+		// .clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
 
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-		
-		generalManager.getViewGLCanvasManager().unregisterGLEventListener(
-				iUniqueID);
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clearAll();
+
+		generalManager.getViewGLCanvasManager().unregisterGLEventListener(iUniqueID);
 	}
-	
+
 	@Override
 	public synchronized void addSet(ISet set)
 	{
