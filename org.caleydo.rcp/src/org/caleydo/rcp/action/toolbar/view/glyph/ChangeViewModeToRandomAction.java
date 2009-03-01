@@ -37,6 +37,8 @@ public class ChangeViewModeToRandomAction
 		if (parent != null)
 			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
 					.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		
+		parent.getSecondaryAction().setAction(this);
 
 		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.GLYPH_VIEWMODE_RANDOM);
 	};

@@ -7,6 +7,7 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.rcp.action.toolbar.view.glyph.ChangeSelectionBrushAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeAction;
+import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeSecondaryAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.EnterViewNameAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.OpenDataExportAction;
@@ -60,9 +61,13 @@ public class GLGlyphView
 		alToolbar.add(new EnterViewNameAction(iViewID));
 
 		alToolbar.add(new OpenDataExportAction(iViewID));
-
-		alToolbar.add(new ChangeViewModeAction(iViewID));
-
+		
+		ChangeViewModeSecondaryAction cvm2a = new ChangeViewModeSecondaryAction(iViewID);
+		cvm2a.setAction(null);
+		
+		alToolbar.add(new ChangeViewModeAction(iViewID, cvm2a));
+		alToolbar.add(cvm2a);
+		
 		// only if standalone or explicitly requested
 		if (glyphview.isRenderedRemote()
 				&& GeneralManager.get().getPreferenceStore().getBoolean(

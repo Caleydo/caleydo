@@ -537,6 +537,11 @@ public class GLGlyphGrid
 		return iPositionType;
 	}
 
+	public GlyphGridPositionModel getGlyphPositionModel(EIconIDs model)
+	{
+		return positionModels.get(iPositionType);
+	}
+	
 	public void setGlyphPositions()
 	{
 		setGlyphPositions(iPositionType);

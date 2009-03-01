@@ -22,13 +22,17 @@ public class ChangeViewModeAction
 	private Menu menu;
 	private int iViewID;
 	private GLGlyph glyphview;
+	private ChangeViewModeSecondaryAction cvm2a;
 
 	/**
 	 * Constructor.
+	 * 
+	 * @param cvm2a
 	 */
-	public ChangeViewModeAction(int iViewID)
+	public ChangeViewModeAction(int iViewID, ChangeViewModeSecondaryAction cvm2a)
 	{
 		super(iViewID);
+		this.cvm2a = cvm2a;
 		setViewID(iViewID);
 
 		EIconIDs type = EIconIDs.DISPLAY_RECTANGLE;
@@ -48,17 +52,18 @@ public class ChangeViewModeAction
 		{
 			usedText = ChangeViewModeToPlusModelAction.TEXT;
 			usedImage = ChangeViewModeToPlusModelAction.ICON;
+			cvm2a.setAction(new ChangeViewModeToPlusModelAction(iViewID,this));
 		}
 		if (type == EIconIDs.DISPLAY_RANDOM)
 		{
 			usedText = ChangeViewModeToRandomAction.TEXT;
 			usedImage = ChangeViewModeToRandomAction.ICON;
-
 		}
 		if (type == EIconIDs.DISPLAY_SCATTERPLOT)
 		{
 			usedText = ChangeViewModeToScatterplotAction.TEXT;
 			usedImage = ChangeViewModeToScatterplotAction.ICON;
+			cvm2a.setAction(new ChangeViewModeToScatterplotAction(iViewID,this));
 		}
 
 		setText(usedText);
@@ -68,6 +73,11 @@ public class ChangeViewModeAction
 
 		setMenuCreator(this);
 
+	}
+
+	public ChangeViewModeSecondaryAction getSecondaryAction()
+	{
+		return cvm2a;
 	}
 
 	private void setViewID(int id)

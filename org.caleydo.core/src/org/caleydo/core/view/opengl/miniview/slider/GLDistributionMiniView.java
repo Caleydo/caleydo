@@ -27,8 +27,8 @@ public class GLDistributionMiniView
 
 	private ALIGN alignment = ALIGN.LEFT;
 
-	private Vec4f vDistributionColor = new Vec4f(0.0f, 0.75f, 0.0f, 1.0f);
-	private Vec4f vDistributionSelectedColor = new Vec4f(0.0f, 0.5f, 0.0f, 1.0f);
+	private Vec4f vDistributionColor = new Vec4f(0.0f, 0.5f, 0.0f, 1.0f);
+	private Vec4f vDistributionSelectedColor = new Vec4f(0.0f, 0.75f, 0.0f, 1.0f);
 
 	private ArrayList<Float> alNormalicedDistribution = null;
 	private ArrayList<Float> alNormalicedSelectedDistribution = null;

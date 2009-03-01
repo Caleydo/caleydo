@@ -12,11 +12,23 @@ public class GlyphGridPositionModelPlus
 	extends GlyphGridPositionModel
 {
 	private GlyphManager gman = null;
+	private int yIndex = -1;
+	private int xIndex = -1;
 
 	public GlyphGridPositionModelPlus(GlyphRenderStyle renderStyle)
 	{
 		super(renderStyle);
 		gman = (GlyphManager) generalManager.getGlyphManager();
+	}
+
+	public void setParameterWithInternalColnumX(int value)
+	{
+		xIndex = value;
+	}
+
+	public void setParameterWithInternalColnumY(int value)
+	{
+		yIndex = value;
 	}
 
 	@Override
@@ -48,11 +60,13 @@ public class GlyphGridPositionModelPlus
 		glyphCenterGrid.setXY(centerX, centerY);
 		glyphCenterWorld.set(glyphMap_.get(centerX).get(centerY).getGridPosition().toVec2f());
 
-		// TODO read this from configuration
-		int yIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(9)
-				.getInternalColumnNumber();
-		int xIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(6)
-				.getInternalColumnNumber();
+		if (xIndex == -1 && yIndex == -1)
+		{
+			yIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(9)
+					.getInternalColumnNumber();
+			xIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(6)
+					.getInternalColumnNumber();
+		}
 
 		for (GlyphEntry ge : gg)
 		{

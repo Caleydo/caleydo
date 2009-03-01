@@ -64,11 +64,6 @@ public class GlyphMappingConfigurationViewRep
 	Color headerBackgroundColor = new Color(null, 153, 153, 153);
 	Color bodyBackgroundColor = new Color(null, 255, 255, 255);
 
-	Composite compositeScatterplotBody = null;
-
-	CCombo ccomboScatterplotX = null;
-	CCombo ccomboScatterplotY = null;
-
 	private HashMap<Integer, Composite> composites = null;
 	private HashMap<CCombo, DataPack> comboBoxes = null;
 
@@ -132,31 +127,9 @@ public class GlyphMappingConfigurationViewRep
 
 			public void widgetSelected(SelectionEvent event)
 			{
-				if (event.widget == ccomboScatterplotX)
-				{
-					int selectedindex = ccomboScatterplotX.getSelectionIndex();
-					String selectedCol = String.valueOf(arrayIndexToExtColNum
-							.get(selectedindex));
-					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTX,
-							selectedCol);
-				}
-
-				if (event.widget == ccomboScatterplotY)
-				{
-					int selectedindex = ccomboScatterplotY.getSelectionIndex();
-					String selectedCol = String.valueOf(arrayIndexToExtColNum
-							.get(selectedindex));
-
-					// System.out.println(selectedCol);
-
-					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTY,
-							selectedCol);
-				}
 
 				DataPack box = comboBoxes.get(event.widget);
 
-				// TODO remove if, after removing scatterplot axis definition
-				// from this view
 				if (box != null)
 				{
 					if (box.parameterType == EGlyphSettingIDs.SCALE
@@ -186,8 +159,6 @@ public class GlyphMappingConfigurationViewRep
 		GridLayout layout = new GridLayout();
 		parentComposite.setBackground(new Color(null, 255, 255, 255));
 
-		addHeaderScatterplot(parentComposite);
-		addBodyScatterplotAxisDefinition(parentComposite);
 
 		for (int i = 0; i < 30; ++i)
 		{
@@ -250,30 +221,6 @@ public class GlyphMappingConfigurationViewRep
 		}
 	}
 
-	private void addHeaderScatterplot(Composite parent)
-	{
-		Composite comp = getHeaderComposite(parent);
-		// Image bgimg = new Image(null,
-		// "C:\\dev\\Eclipse workspace\\test_window_001\\src\\icon.gif");
-
-		Button button = new Button(comp, SWT.PUSH);
-		button.setText("+");
-
-		// button.setImage(bgimg);
-
-		button.addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				switchBody(compositeScatterplotBody);
-			}
-		});
-		CLabel label = new CLabel(comp, SWT.LEFT);
-		label.setText("Scatterplot Axis Definition");
-		label.setBackground(headerBackgroundColor);
-		label.computeSize(300, 30);
-	}
 
 	/**
 	 * Creates a header line, defined with the Glyph model
@@ -394,30 +341,6 @@ public class GlyphMappingConfigurationViewRep
 		composites.put(model.getDetailLevel(), comp);
 	}
 
-	private void addBodyScatterplotAxisDefinition(Composite parent)
-	{
-		Composite comp = getBodyComposite(parent);
-
-		GridLayout layout = new GridLayout();
-		GridData gd = new GridData();
-		gd.horizontalAlignment = GridData.FILL;
-		gd.grabExcessHorizontalSpace = true;
-
-		// 1st line
-		{
-			String id = gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX);
-			int sid = extColNumToArrayIndex.get(Integer.parseInt(id));
-			ccomboScatterplotX = makeLabelComboBoxLine(layout, gd, comp, sid, "X Axis: ");
-		}
-
-		// 2nd line
-		{
-			String id = gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY);
-			int sid = extColNumToArrayIndex.get(Integer.parseInt(id));
-			ccomboScatterplotY = makeLabelComboBoxLine(layout, gd, comp, sid, "Y Axis: ");
-		}
-		compositeScatterplotBody = comp;
-	}
 
 	/**
 	 * Creates a generic Body component

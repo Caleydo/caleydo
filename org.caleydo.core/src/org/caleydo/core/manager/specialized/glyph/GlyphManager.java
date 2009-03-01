@@ -2,6 +2,7 @@ package org.caleydo.core.manager.specialized.glyph;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
@@ -134,6 +135,25 @@ public class GlyphManager
 		return dataTypesExt.values();
 	}
 
+	public HashMap<String, Integer> getGlyphAttributeComboboxEntryList()
+	{
+		HashMap<String, Integer> list = new HashMap<String, Integer>();
+
+		// get all combo box entrys
+		Iterator<GlyphAttributeType> it = this.getGlyphAttributes().iterator();
+		while (it.hasNext())
+		{
+			GlyphAttributeType at = it.next();
+
+			if (at.doesAutomaticAttribute())
+				continue;
+			
+			list.put(at.getName(), at.getInternalColumnNumber());
+		}
+
+		return list;
+	}
+
 	public GlyphAttributeType getGlyphAttributeTypeWithExternalColumnNumber(int colnum)
 	{
 
@@ -151,6 +171,17 @@ public class GlyphManager
 		return null;
 	}
 
+	public String getGlyphAttributeInfoStringWithInternalColumnNumber(int parameterIndex,
+			int parameterValue)
+	{
+		GlyphAttributeType type = getGlyphAttributeTypeWithInternalColumnNumber(parameterIndex);
+
+		if (type != null)
+			return type.getName() + ": " + type.getParameterString(parameterValue);
+
+		return "";
+	}
+
 	public void addGlyph(int id, GlyphEntry glyph)
 	{
 		hmGlyphList.put(id, glyph);
@@ -165,10 +196,10 @@ public class GlyphManager
 	{
 		if (hmLoadedStoraged.containsKey(storagename))
 			return;
-		
-		for(GlyphEntry e: glyphlist.values())
+
+		for (GlyphEntry e : glyphlist.values())
 			e.select();
-		
+
 		hmGlyphList.putAll(glyphlist);
 		hmLoadedStoraged.put(storagename, null);
 	}
@@ -194,4 +225,5 @@ public class GlyphManager
 			return true;
 		return false;
 	}
+
 }

@@ -42,6 +42,8 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelPlus;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -160,6 +162,40 @@ public class GLGlyph
 		if (grid_ != null)
 			return grid_.getGlyphPositions();
 		return EIconIDs.DISPLAY_RECTANGLE;
+	}
+
+	/**
+	 * Sets the axis mapping of a position model
+	 * 
+	 * @param positionmodel
+	 * @param axisnumber
+	 * @param internal column number
+	 */
+	public synchronized void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value)
+	{
+		if(positionmodel == EIconIDs.DISPLAY_SCATTERPLOT) {
+			GlyphGridPositionModelScatterplot model = (GlyphGridPositionModelScatterplot)grid_.getGlyphPositionModel(positionmodel);
+			switch(axisnumber) {
+				case 0:
+					model.setParameterWithInternalColnumX(value);
+					break;
+				case 1:
+					model.setParameterWithInternalColnumY(value);
+					break;
+			}
+		}
+		if(positionmodel == EIconIDs.DISPLAY_PLUS) {
+			GlyphGridPositionModelPlus model = (GlyphGridPositionModelPlus)grid_.getGlyphPositionModel(positionmodel);
+			switch(axisnumber) {
+				case 0:
+					model.setParameterWithInternalColnumX(value);
+					break;
+				case 1:
+					model.setParameterWithInternalColnumY(value);
+					break;
+			}
+		}
+		this.forceRebuild();
 	}
 
 	/**
@@ -1047,14 +1083,13 @@ public class GLGlyph
 
 					generalManager.getViewGLCanvasManager()
 
-							.getConnectedElementRepresentationManager().clear(
-									EIDType.EXPERIMENT_INDEX);
+					.getConnectedElementRepresentationManager()
+							.clear(EIDType.EXPERIMENT_INDEX);
 
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 							new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
 									new SelectionCommand(ESelectionCommandType.CLEAR,
 											ESelectionType.MOUSE_OVER)));
-
 
 					triggerSelectionUpdate();
 
@@ -1081,7 +1116,6 @@ public class GLGlyph
 		// generalManager.getLogger().log(Level.INFO,
 		// sLabel + ": Update called by " +
 		// eventTrigger.getClass().getSimpleName());
-
 
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);
@@ -1136,7 +1170,7 @@ public class GLGlyph
 				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
 				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
 
-						.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
+				.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
 				break;
 
 			case TRIGGER_SELECTION_COMMAND:
@@ -1195,7 +1229,6 @@ public class GLGlyph
 				continue;
 
 			vecGlyphPos = getGlyphPosition(actualGlyph);
-
 
 			SelectedElementRep rep = new SelectedElementRep(EIDType.EXPERIMENT_INDEX,
 					iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z());

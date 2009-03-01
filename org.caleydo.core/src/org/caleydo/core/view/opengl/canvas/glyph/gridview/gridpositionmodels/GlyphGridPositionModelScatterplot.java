@@ -22,6 +22,19 @@ public class GlyphGridPositionModelScatterplot
 	private HashMap<Integer, HashMap<Integer, Vec2i>> scatterpointmap = null;
 	private GlyphManager gman = null;
 
+	private int iScatterParameterX = -1;
+	private int iScatterParameterY = -1;
+
+	public void setParameterWithInternalColnumX(int index)
+	{
+		iScatterParameterX = index;
+	}
+
+	public void setParameterWithInternalColnumY(int index)
+	{
+		iScatterParameterY = index;
+	}
+
 	public GlyphGridPositionModelScatterplot(GlyphRenderStyle renderStyle)
 	{
 		super(renderStyle);
@@ -44,19 +57,31 @@ public class GlyphGridPositionModelScatterplot
 		int maxx = worldLimit.x();// - (worldLimit.x() / 5);
 		int maxy = maxx;// worldLimit.y() - (worldLimit.y() / 5);
 
-		int scatterParamX = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX));
-		int scatterParamY = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY));
+		if (iScatterParameterX == -1 && iScatterParameterY == -1)
+		{
+			iScatterParameterX = Integer.parseInt(gman
+					.getSetting(EGlyphSettingIDs.SCATTERPLOTX));
+			iScatterParameterY = Integer.parseInt(gman
+					.getSetting(EGlyphSettingIDs.SCATTERPLOTY));
+			GlyphAttributeType xdata = gman
+					.getGlyphAttributeTypeWithExternalColumnNumber(iScatterParameterX);
+			GlyphAttributeType ydata = gman
+					.getGlyphAttributeTypeWithExternalColumnNumber(iScatterParameterY);
+			iScatterParameterX = xdata.getInternalColumnNumber();
+			iScatterParameterY = ydata.getInternalColumnNumber();
+		}
+
 		GlyphAttributeType xdata = gman
-				.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamX);
+				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterX);
 		GlyphAttributeType ydata = gman
-				.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamY);
+				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
 
 		if (xdata == null || ydata == null)
 		{
 			generalManager.getLogger().log(
 					Level.WARNING,
-					"Scatterplot axix definition corrupt! (" + scatterParamX + ", "
-							+ scatterParamY + ")");
+					"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", "
+							+ iScatterParameterY + ")");
 			return;
 		}
 
@@ -242,14 +267,10 @@ public class GlyphGridPositionModelScatterplot
 		GlyphGridPositionModelCircle posModel = new GlyphGridPositionModelCircle(renderStyle);
 		posModel.setWorldLimit(worldLimit.x(), worldLimit.y());
 
-		int scatterParamXe = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX));
-		int scatterParamYe = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY));
 		GlyphAttributeType tx = gman
-				.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamXe);
+				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterX);
 		GlyphAttributeType ty = gman
-				.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamYe);
-		int scatterParamX = tx.getInternalColumnNumber();
-		int scatterParamY = ty.getInternalColumnNumber();
+				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
 
 		if (tx == null || ty == null)
 		{
@@ -264,8 +285,8 @@ public class GlyphGridPositionModelScatterplot
 		for (GlyphEntry g : gg)
 		{
 			ArrayList<GlyphEntry> alge = new ArrayList<GlyphEntry>();
-			int xp = g.getParameter(scatterParamX);
-			int yp = g.getParameter(scatterParamY);
+			int xp = g.getParameter(iScatterParameterX);
+			int yp = g.getParameter(iScatterParameterY);
 
 			if (xp < 0)
 				xp = maxX + 1;

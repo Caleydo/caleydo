@@ -2,6 +2,7 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 
 /**
@@ -57,6 +58,38 @@ public class CmdExternalObjectSetter
 					{
 						String name = (String) object;
 						glyphview.setPersonalName(name);
+					}
+					return;
+					
+				case GLYPH_CHANGE_SCATTERPLOT_AXIS_X:
+					if (object instanceof Integer)
+					{
+						int value = (Integer) object;
+						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_SCATTERPLOT, 0, value);
+					}
+					return;
+					
+				case GLYPH_CHANGE_SCATTERPLOT_AXIS_Y:
+					if (object instanceof Integer)
+					{
+						int value = (Integer) object;
+						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_SCATTERPLOT, 1, value);
+					}
+					return;
+					
+				case GLYPH_CHANGE_PLUSMODEL_AXIS_X:
+					if (object instanceof Integer)
+					{
+						int value = (Integer) object;
+						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_PLUS, 0, value);
+					}
+					return;
+					
+				case GLYPH_CHANGE_PLUSMODEL_AXIS_Y:
+					if (object instanceof Integer)
+					{
+						int value = (Integer) object;
+						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_PLUS, 1, value);
 					}
 					return;
 			}

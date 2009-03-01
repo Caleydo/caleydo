@@ -38,6 +38,8 @@ public class ChangeViewModeToRectangleAction
 			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
 					.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 
+		parent.getSecondaryAction().setAction(this);
+
 		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.GLYPH_VIEWMODE_RECTANGLE);
 	}
 }
