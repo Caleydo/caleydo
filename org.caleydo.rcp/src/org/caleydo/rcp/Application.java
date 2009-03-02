@@ -357,7 +357,6 @@ public class Application
 			}	
 		}
 		
-		((ViewManager)GeneralManager.get().getViewGLCanvasManager()).createSelectionHeatMap();
 		
 		// Open Views in RCP
 		try

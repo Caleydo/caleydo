@@ -312,6 +312,7 @@ public class InfoArea
 							// find right glyph
 							GlyphEntry entry = gman.getGlyphs().get(
 									selectionItem.getPrimaryID());
+							
 
 							for (int i = 0; i < entry.getNumberOfParameters(); ++i)
 							{

@@ -40,6 +40,7 @@ public enum EPickingType
 	DUPLICATE_AXIS(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 	ANGULAR_UPPER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 	ANGULAR_LOWER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
+	PCS_VIEW_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, true),
 
 	// pathway manager
 	PATHWAY_ELEMENT_SELECTION(EManagedObjectType.GL_PATHWAY, false),

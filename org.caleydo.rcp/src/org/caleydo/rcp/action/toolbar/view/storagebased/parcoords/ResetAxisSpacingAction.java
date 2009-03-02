@@ -6,6 +6,12 @@ import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * Action that resets the spacing of the axis in the PCs
+ * 
+ * @author Alexander
+ *
+ */
 public class ResetAxisSpacingAction
 	extends AToolBarAction
 {

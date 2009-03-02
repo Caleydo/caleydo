@@ -419,27 +419,5 @@ public class ViewManager
 		fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
 	}
 	
-	public void createSelectionHeatMap()
-	{
-		// Create selection panel
-		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
-				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
-				null, -1);
-		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setToListMode(true);
-		
-		generalManager.getEventPublisher().addReceiver(EMediatorType.PROPAGATION_MEDIATOR,
-				glSelectionHeatMap);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				glSelectionHeatMap);
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-				glSelectionHeatMap);		
-	}
-	
-	public GLHeatMap getSelectionHeatMap()
-	{
-		return glSelectionHeatMap;
-	}
+
 }

@@ -1,5 +1,7 @@
 Done since last commit:
 
+Switching drop textures on mouse over
+
 
 
 

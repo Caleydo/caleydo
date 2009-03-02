@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -201,6 +202,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void displayRemote(GL gl)
 	{
+		
 		if (set == null)
 			return;
 
@@ -230,7 +232,7 @@ public class GLHeatMap
 
 		gl.glCallList(iGLDisplayListToCall);
 
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+//		buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)

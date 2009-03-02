@@ -114,6 +114,7 @@ public class HeatMapRenderStyle
 				fSelectedFieldWidth = LIST_SELECTED_FIELD_WIDTH;
 				fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
 						/ (iNumberTotal - iNumberSelected);
+				
 			}
 			else
 			{
@@ -126,7 +127,7 @@ public class HeatMapRenderStyle
 					.size());
 		}
 
-		fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
+		fNormalFieldWidth = (fNormalFieldWidth > fSelectedFieldWidth) ? fSelectedFieldWidth
 				: fNormalFieldWidth;
 	}
 

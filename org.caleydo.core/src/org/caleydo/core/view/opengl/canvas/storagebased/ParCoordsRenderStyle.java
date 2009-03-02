@@ -13,6 +13,14 @@ public class ParCoordsRenderStyle
 	extends GeneralRenderStyle
 {
 
+	// Z Values
+	public static final float POLYLINE_NORMAL_Z = 0.001f;
+	public static final float POLYLINE_SELECTED_Z = 0.002f;
+	public static final float POLYLINE_DESELECTED_Z = 0;
+	public static final float GATE_Z = 0.003f;
+
+	public static final float AXIS_Z = 0.0f;
+
 	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	public static final float[] POLYLINE_SELECTED_COLOR = SELECTED_COLOR; // {
@@ -38,15 +46,13 @@ public class ParCoordsRenderStyle
 
 	public static final float Y_AXIS_SELECTED_LINE_WIDTH = 4.0f;
 
-	public static final float[] Y_AXIS_MOUSE_OVER_COLOR = POLYLINE_MOUSE_OVER_COLOR;//MOUSE_OVER_COLOR;
+	public static final float[] Y_AXIS_MOUSE_OVER_COLOR = POLYLINE_MOUSE_OVER_COLOR;// MOUSE_OVER_COLOR;
 
 	public static final float Y_AXIS_MOUSE_OVER_LINE_WIDTH = 4.0f;
 
 	public static final float[] X_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 	public static final float X_AXIS_LINE_WIDTH = 3.0f;
-
-	public static final float AXIS_Z = 0.0f;
 
 	public static final float[] CANVAS_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -91,9 +97,7 @@ public class ParCoordsRenderStyle
 	// gates
 	private static final float GATE_WIDTH = 0.05f;
 	public static final float GATE_BOTTOM_HEIGHT = 0.01f;
-
-	private static final float GATE_NEGATIVE_Y_OFFSET = -0.015f;
-
+	private static final float GATE_NEGATIVE_Y_OFFSET = 0;
 	private static final float GATE_TIP_HEIGHT = 0.08f;
 
 	// buttons below axis
@@ -104,18 +108,20 @@ public class ParCoordsRenderStyle
 	private static final float fMinAxisSpacingForText = 0.1f;
 
 	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
-	
+
 	private static final float fXAxisOverlap = 0.1f;
+
+	private GLParallelCoordinates pcs;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param viewFrustum
 	 */
-	public ParCoordsRenderStyle(IViewFrustum viewFrustum)
+	public ParCoordsRenderStyle(GLParallelCoordinates pcs, IViewFrustum viewFrustum)
 	{
-
 		super(viewFrustum);
+		this.pcs = pcs;
 	}
 
 	public float[] getPolylineOcclusionPrevColor(int iNumberOfRenderedLines)
@@ -137,25 +143,28 @@ public class ParCoordsRenderStyle
 	public float getAxisSpacing(final int iNumberOfAxis)
 	{
 
-		fAxisSpacing =
-				getWidthOfCoordinateSystem() / (iNumberOfAxis - 1);
+		fAxisSpacing = getWidthOfCoordinateSystem() / (iNumberOfAxis - 1);
 
 		if (fAxisSpacing < fAxisSpacingLowerLimit * getScaling())
 			return fAxisSpacingLowerLimit * getScaling();
 
 		return fAxisSpacing;
 	}
-	
+
 	public float getWidthOfCoordinateSystem()
 	{
-		return (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling());
+		if (pcs.bShowSelectionHeatMap)
+			return (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling() - pcs.glSelectionHeatMap
+					.getViewFrustum().getWidth());
+		else
+			return (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling());
 	}
-	
+
 	public float getXAxisStart()
 	{
 		return -fXAxisOverlap;
 	}
-	
+
 	public float getXAxisEnd()
 	{
 		return getWidthOfCoordinateSystem() + fXAxisOverlap;
@@ -232,8 +241,6 @@ public class ParCoordsRenderStyle
 	{
 		return BACKGROUND_COLOR;
 	}
-	
-
 
 	// GATE_WIDTH = 0.015f;
 	// private static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;

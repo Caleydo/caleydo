@@ -69,6 +69,12 @@ public class InteractiveSplashHandler
 		versionLabel.setBounds(185, 177, 300, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
 
+//		Label tuLabel = new Label(splash, SWT.NONE);
+//		tuLabel.setText("Graz University of Technology: Marc Streit, Alexander Lex, Michael Kalkusch, \n Bernhard Schlegl, Dieter Schmalstieg");
+//		tuLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
+//		tuLabel.setBounds(30, 275, 500, 40);
+//		tuLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+//		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
 				progressMessageLabel);
 	}

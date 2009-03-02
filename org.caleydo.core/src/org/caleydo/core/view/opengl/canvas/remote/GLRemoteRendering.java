@@ -13,6 +13,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
@@ -133,7 +134,7 @@ public class GLRemoteRendering
 
 	private BucketMouseWheelListener bucketMouseWheelListener;
 
-//	private GLColorMappingBarMiniView colorMappingBarMiniView;
+	// private GLColorMappingBarMiniView colorMappingBarMiniView;
 
 	private ArrayList<Integer> iAlContainedViewIDs;
 
@@ -248,8 +249,7 @@ public class GLRemoteRendering
 		// created
 		// colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
 
-		glSelectionHeatMap = ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
-		
+		 createSelectionHeatMap();
 		// Registration to event system
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
 				(IMediatorSender) this);
@@ -260,6 +260,8 @@ public class GLRemoteRendering
 		iPoolLevelCommonID = generalManager.getIDManager().createID(
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
+
+
 
 	@Override
 	public void initLocal(final GL gl)
@@ -295,15 +297,34 @@ public class GLRemoteRendering
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(
 				glSelectionHeatMap.getID());
-		
+
 		glSelectionHeatMap.addSets(alSets);
 		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter,
 				remoteRenderingGLCanvas);
 
-//		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
-//		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
+		// colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
+		// colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
 
 		glOffScreenRenderer.init(gl);
+	}
+	
+	private void createSelectionHeatMap()
+	{
+		// Create selection panel
+		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
+				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_HEAT_MAP_3D);
+		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
+				null, -1);
+		cmdCreateGLView.doCommand();
+		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
+		glSelectionHeatMap.setToListMode(true);
+
+		generalManager.getEventPublisher().addReceiver(EMediatorType.PROPAGATION_MEDIATOR,
+				glSelectionHeatMap);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				glSelectionHeatMap);
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				glSelectionHeatMap);
 	}
 
 	@Override
@@ -442,8 +463,8 @@ public class GLRemoteRendering
 		time.update();
 
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
-//		 layoutRenderStyle.initStackLevel(false);
-		 layoutRenderStyle.initMemoLevel();
+		// layoutRenderStyle.initStackLevel(false);
+		layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
 				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -668,7 +689,7 @@ public class GLRemoteRendering
 
 		if (level == poolLevel)
 		{
-			String sRenderText = glEventListener.getShortInfo();		
+			String sRenderText = glEventListener.getShortInfo();
 
 			// Limit pathway name in length
 			int iMaxChars;
@@ -679,7 +700,7 @@ public class GLRemoteRendering
 
 			if (sRenderText.length() > iMaxChars && scale.x() < 0.03f)
 				sRenderText = sRenderText.subSequence(0, iMaxChars - 3) + "...";
-			
+
 			float fTextScalingFactor = 0.09f;
 			float fTextXPosition = 0f;
 
@@ -725,11 +746,13 @@ public class GLRemoteRendering
 				fTextXPosition = 9.5f;
 			}
 
-			int iNumberOfGenesSelected = glEventListener.getNumberOfSelections(ESelectionType.SELECTION);
-			int iNumberOfGenesMouseOver = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER);
-			
+			int iNumberOfGenesSelected = glEventListener
+					.getNumberOfSelections(ESelectionType.SELECTION);
+			int iNumberOfGenesMouseOver = glEventListener
+					.getNumberOfSelections(ESelectionType.MOUSE_OVER);
+
 			textRenderer.begin3DRendering();
-			
+
 			if (element.getID() == iMouseOverObjectID)
 				textRenderer.setColor(1, 1, 1, 1);
 			else
@@ -739,50 +762,52 @@ public class GLRemoteRendering
 				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0, fTextScalingFactor);
 			else
 				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0, fTextScalingFactor);
-				
+
 			textRenderer.end3DRendering();
-			
+
 			gl.glLineWidth(4);
-			
+
 			if (element.getID() == iMouseOverObjectID)
 				gl.glTranslatef(2.2f, 0.5f, 0);
-			
+
 			if (iNumberOfGenesMouseOver > 0)
 			{
 				if (element.getID() == iMouseOverObjectID)
-					gl.glTranslatef(-2.5f, 0, 0);					
-				
+					gl.glTranslatef(-2.5f, 0, 0);
+
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(Integer.toString(iNumberOfGenesMouseOver), fTextXPosition + 9, 2.4f, 0, fTextScalingFactor);
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesMouseOver),
+						fTextXPosition + 9, 2.4f, 0, fTextScalingFactor);
 				textRenderer.end3DRendering();
 
 				if (element.getID() == iMouseOverObjectID)
-					gl.glTranslatef(2.5f, 0, 0);	
-				
+					gl.glTranslatef(2.5f, 0, 0);
+
 				gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(10, 2.7f, 0f);
 				gl.glVertex3f(18, 2.7f, 0f);
 				gl.glVertex3f(20, 2.7f, 0f);
 				gl.glVertex3f(29, 2.7f, 0f);
-				gl.glEnd();				
+				gl.glEnd();
 			}
-			
+
 			if (iNumberOfGenesSelected > 0)
 			{
 				if (iNumberOfGenesMouseOver > 0)
 					gl.glTranslatef(0, -1.8f, 0);
 
 				if (element.getID() == iMouseOverObjectID)
-					gl.glTranslatef(-2.5f, 0, 0);					
+					gl.glTranslatef(-2.5f, 0, 0);
 
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(Integer.toString(iNumberOfGenesSelected), fTextXPosition + 9, 2.5f, 0, fTextScalingFactor);
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesSelected),
+						fTextXPosition + 9, 2.5f, 0, fTextScalingFactor);
 				textRenderer.end3DRendering();
 
 				if (element.getID() == iMouseOverObjectID)
-					gl.glTranslatef(2.5f, 0, 0);			
-				
+					gl.glTranslatef(2.5f, 0, 0);
+
 				gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(10, 2.9f, 0f);
@@ -790,11 +815,11 @@ public class GLRemoteRendering
 				gl.glVertex3f(20, 2.9f, 0f);
 				gl.glVertex3f(29, 2.9f, 0f);
 				gl.glEnd();
-				
+
 				if (iNumberOfGenesMouseOver > 0)
 					gl.glTranslatef(0, 1.8f, 0);
 			}
-			
+
 			if (element.getID() == iMouseOverObjectID)
 				gl.glTranslatef(-2.2f, -0.5f, 0);
 		}
@@ -2426,8 +2451,8 @@ public class GLRemoteRendering
 	public synchronized void toggleLayoutMode()
 	{
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-//			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
-		 layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
+			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
+			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
 		else
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 

@@ -745,6 +745,8 @@ public class GenericSelectionManager
 		HashMap<Integer, Integer> tempHash;
 		for (ESelectionType selectionType : alSelectionTypes)
 		{
+			if(selectionType == ESelectionType.DESELECTED)
+				continue;
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet())
 			{
