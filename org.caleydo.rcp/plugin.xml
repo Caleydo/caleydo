@@ -126,6 +126,13 @@
             id="org.caleydo.rcp.views.ToolBarView"
             name="Tool Bar">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.opengl.GLRadialHierarchyView"
+            id="org.caleydo.rcp.views.GLRadialHierarchyView"
+            name="Radial Hierarchy">
+      </view>
 
       
    </extension>   
@@ -254,6 +261,11 @@
             id="org.caleydo.rcp.command.openviews.toolbar"
             name="Open Tool Bar">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenRadialHierarchyHandler"
+            id="org.caleydo.rcp.command.openviews.radial_hierarchy"
+            name="Open Radial Hierarchy">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -362,6 +374,12 @@
                         style="push">
                   </command>
                </menu>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
+                     icon="resources/icons/view/heatmap.png"
+                     label="Radial Hierarchy"
+                     style="push">
+               </command>
             </menu>
          </menu>
          <menu

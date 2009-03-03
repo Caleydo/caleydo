@@ -165,6 +165,7 @@ public class CommandFactory
 			case CREATE_GL_CELL:
 			case CREATE_GL_REMOTE_GLYPH:
 			case CREATE_GL_PANEL_SELECTION:
+			case CREATE_GL_RADIAL_HIERARCHY:
 			{
 				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
