@@ -28,26 +28,33 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * 
- * Listener for events that are related to view changes (detach, visible, hide, activate, etc.)
+ * Listener for events that are related to view changes (detach, visible, hide,
+ * activate, etc.)
  * 
  * @author Marc Streit
- *
  */
 public class PartListener
 	implements IPartListener2
-{	
+{
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef)
 	{
+		IWorkbenchPart activePart = partRef.getPart(false);
 
+		if (activePart instanceof AGLViewPart)
+		{
+			// Make sure that each view is activated for a short time to
+			// initialize properly
+			partVisible(partRef);
+			partHidden(partRef);
+		}
 	}
-	
+
 	@Override
 	public void partClosed(IWorkbenchPartReference partRef)
 	{
 		IWorkbenchPart activePart = partRef.getPart(false);
-		
+
 		if (!(activePart instanceof AGLViewPart))
 			return;
 
@@ -60,8 +67,9 @@ public class PartListener
 			return;
 
 		// Remove view specific toolbar from general toolbar view
-		ToolBarView toolBarView = ((ToolBarView) PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().findView(ToolBarView.ID));
+		ToolBarView toolBarView =
+			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.findView(ToolBarView.ID));
 
 		if (toolBarView == null)
 			return;
@@ -73,41 +81,41 @@ public class PartListener
 	public void partVisible(IWorkbenchPartReference partRef)
 	{
 		IWorkbenchPart activePart = partRef.getPart(false);
-		
-//		System.out.println("Visible: " +partRef.getTitle());
-		
+
+		// System.out.println("Visible: " +partRef.getTitle());
+
 		if (!(activePart instanceof CaleydoViewPart))
 			return;
 
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
-		
+
 		if (viewPart instanceof AGLViewPart)
 		{
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
-				((AGLViewPart)viewPart).getGLCanvas().getID());			
+				((AGLViewPart) viewPart).getGLCanvas().getID());
 		}
-		
+
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
 			return;
-		
-		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars()
-				.getToolBarManager();
+
+		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
 
 		toolBarManager.removeAll();
-				
-		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.findView(ToolBarView.ID)).removeAllViewSpecificToolBars();
 
-		// Check if view is inside the workbench or detached to a separate window
+		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(ToolBarView.ID))
+			.removeAllViewSpecificToolBars();
+
+		// Check if view is inside the workbench or detached to a separate
+		// window
 		if (!activePart.getSite().getShell().getText().equals("Caleydo"))
 		{
 			createViewSpecificToolbar(viewPart, toolBarManager);
-			
+
 			if (viewPart instanceof AGLViewPart)
 			{
 				IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
-				AGLEventListener glEventListener = viewGLCanvasManager.getGLEventListener(((AGLViewPart)viewPart)
-						.getGLEventListener().getID());
+				AGLEventListener glEventListener =
+					viewGLCanvasManager.getGLEventListener(((AGLViewPart) viewPart).getGLEventListener().getID());
 
 				if (glEventListener instanceof GLRemoteRendering)
 				{
@@ -115,22 +123,21 @@ public class PartListener
 					GLRemoteRenderingView.createToolBarItems(viewPart.getViewID());
 					viewPart.fillToolBar();
 
-					// Add toolbars of remote rendered views to remote view toolbar
-					for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glEventListener)
-							.getRemoteRenderedViews())
+					// Add toolbars of remote rendered views to remote view
+					// toolbar
+					for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glEventListener).getRemoteRenderedViews())
 					{
-						glSubEventListener = viewGLCanvasManager
-								.getGLEventListener(iRemoteRenderedGLViewID);
+						glSubEventListener = viewGLCanvasManager.getGLEventListener(iRemoteRenderedGLViewID);
 						toolBarManager.add(new Separator());
 						createViewSpecificToolbar(glSubEventListener, toolBarManager);
 					}
-				}	
-			}			
+				}
+			}
 		}
 		else
 		{
-			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().findView(ToolBarView.ID)).addViewSpecificToolBar(viewPart);			
+			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.findView(ToolBarView.ID)).addViewSpecificToolBar(viewPart);
 		}
 
 		Display.getCurrent().asyncExec(new Runnable()
@@ -139,7 +146,7 @@ public class PartListener
 			{
 				toolBarManager.update(true);
 			}
-		});		
+		});
 	}
 
 	@Override
@@ -149,30 +156,28 @@ public class PartListener
 
 	@Override
 	public void partHidden(IWorkbenchPartReference partRef)
-	{	
+	{
 		IWorkbenchPart activePart = partRef.getPart(false);
-		
-//		System.out.println("Hide: " +partRef.getTitle());
-		
+
+		// System.out.println("Hide: " +partRef.getTitle());
+
 		if (!(activePart instanceof AGLViewPart))
 			return;
 
 		AGLViewPart glViewPart = (AGLViewPart) activePart;
 
-		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvasFromAnimator(
-				glViewPart.getGLCanvas().getID());
+		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvasFromAnimator(glViewPart.getGLCanvas().getID());
 
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
 			return;
-		
+
 		// Check if view is inside the workbench or detached to a separate
 		// window
 		if (activePart.getSite().getShell().getText().equals("Caleydo") && glViewPart != null)
 		{
-			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().findView(ToolBarView.ID)).removeViewSpecificToolBar(glViewPart
-							.getGLEventListener().getID());
-		}	
+			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.findView(ToolBarView.ID)).removeViewSpecificToolBar(glViewPart.getGLEventListener().getID());
+		}
 	}
 
 	@Override
@@ -191,26 +196,24 @@ public class PartListener
 	{
 	}
 
-	private void createViewSpecificToolbar(CaleydoViewPart viewPart,
-		IToolBarManager toolBarManager)
+	private void createViewSpecificToolbar(CaleydoViewPart viewPart, IToolBarManager toolBarManager)
 	{
 		if (viewPart instanceof AGLViewPart)
 		{
-			AGLEventListener glEventListener = ((AGLViewPart)viewPart).getGLEventListener();
-			createViewSpecificToolbar(glEventListener, toolBarManager);			
+			AGLEventListener glEventListener = ((AGLViewPart) viewPart).getGLEventListener();
+			createViewSpecificToolbar(glEventListener, toolBarManager);
 		}
 		else if (viewPart instanceof HTMLBrowserView)
 		{
-//			HTMLBrowserView.createToolBarItems(viewPart.getViewID());
-//			HTMLBrowserView.fillToolBar(toolBarManager);
+			// HTMLBrowserView.createToolBarItems(viewPart.getViewID());
+			// HTMLBrowserView.fillToolBar(toolBarManager);
 		}
 	}
-	
-	private void createViewSpecificToolbar(AGLEventListener glEventListener,
-		IToolBarManager toolBarManager)
+
+	private void createViewSpecificToolbar(AGLEventListener glEventListener, IToolBarManager toolBarManager)
 	{
 		int iGLEvenntListenerID = glEventListener.getID();
-		
+
 		if (glEventListener instanceof GLPathway)
 		{
 			GLPathwayView.createToolBarItems(iGLEvenntListenerID);
@@ -235,6 +238,6 @@ public class PartListener
 		{
 			GLGlyphView.createToolBarItems(iGLEvenntListenerID);
 			GLGlyphView.fillToolBar(toolBarManager);
-		}	
+		}
 	}
 }

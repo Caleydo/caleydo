@@ -81,6 +81,8 @@ public class GLHeatMap
 
 	boolean bUseDetailLevel = true;
 
+	int iCurrentMouseOverElement = -1;
+
 	/**
 	 * Constructor.
 	 * 
@@ -89,8 +91,7 @@ public class GLHeatMap
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
+	public GLHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 		super(setType, iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
@@ -100,15 +101,13 @@ public class GLHeatMap
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
-				.externalIDType(EIDType.REFSEQ_MRNA_INT).mappingType(
-						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
-				.build();
+		contentSelectionManager =
+			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(EIDType.REFSEQ_MRNA_INT)
+				.mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+					EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		fAlXDistances = new ArrayList<Float>();
 	}
@@ -138,8 +137,8 @@ public class GLHeatMap
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
+		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		bRenderOnlyContext = true;
 
@@ -202,7 +201,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void displayRemote(GL gl)
 	{
-		
+
 		if (set == null)
 			return;
 
@@ -228,11 +227,12 @@ public class GLHeatMap
 	@Override
 	public synchronized void display(GL gl)
 	{
-//		clipToFrustum(gl);
+
+		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
 
-//		buildDisplayList(gl, iGLDisplayListIndexRemote);
+		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
@@ -258,10 +258,8 @@ public class GLHeatMap
 				{
 					fSpacing = HeatMapRenderStyle.LIST_SPACING;
 				}
-				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight() - fSpacing,
-						vecTranslation.z());
-				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation
-						.w());
+				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight() - fSpacing, vecTranslation.z());
+				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
 			}
 
 			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
@@ -275,10 +273,8 @@ public class GLHeatMap
 
 			if (!bRenderStorageHorizontally)
 			{
-				gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation
-						.w());
-				gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight() + fSpacing,
-						-vecTranslation.z());
+				gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
+				gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight() + fSpacing, -vecTranslation.z());
 			}
 
 			gl.glDisable(GL.GL_STENCIL_TEST);
@@ -295,8 +291,7 @@ public class GLHeatMap
 	{
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl,
-				EIconTextures.HEAT_MAP_SYMBOL);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -371,8 +366,8 @@ public class GLHeatMap
 	@Override
 	public String getShortInfo()
 	{
-		return "Heat Map (" + set.getVA(iContentVAID).size() + " genes / "
-				+ set.getVA(iStorageVAID).size() + " experiments)";
+		return "Heat Map (" + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
+			+ " experiments)";
 	}
 
 	@Override
@@ -382,23 +377,21 @@ public class GLHeatMap
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
 		if (bRenderStorageHorizontally)
-			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
-					+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and " + set.getVA(iStorageVAID).size()
+				+ " experiments in rows.\n");
 		else
-			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
-					+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and " + set.getVA(iStorageVAID).size()
+				+ " experiments in columns.\n");
 
 		if (bRenderOnlyContext)
 		{
-			sInfoText
-					.append("Showing only genes which occur in one of the other views in focus\n");
+			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
 		}
 		else
 		{
 			if (bUseRandomSampling)
 			{
-				sInfoText.append("Random sampling active, sample size: "
-						+ iNumberOfRandomElements + "\n");
+				sInfoText.append("Random sampling active, sample size: " + iNumberOfRandomElements + "\n");
 			}
 			else
 			{
@@ -410,16 +403,14 @@ public class GLHeatMap
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
 				sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
-				sInfoText
-						.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
+				sInfoText.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
 		}
 
 		return sInfoText.toString();
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick)
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick)
 	{
 		if (detailLevel == EDetailLevel.VERY_LOW)
 		{
@@ -430,14 +421,13 @@ public class GLHeatMap
 		switch (ePickingType)
 		{
 			case HEAT_MAP_LINE_SELECTION:
-
+				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode)
 				{
 					case DOUBLE_CLICKED:
-						IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
-								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
-						idListEventContainer.addID(IDMappingHelper.get()
-								.getRefSeqFromStorageIndex(iExternalID));
+						IDListEventContainer<Integer> idListEventContainer =
+							new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
+						idListEventContainer.addID(IDMappingHelper.get().getRefSeqFromStorageIndex(iExternalID));
 						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 						// intentionally no break
 
@@ -450,15 +440,12 @@ public class GLHeatMap
 
 						// Check if mouse over element is already selected ->
 						// ignore
-						if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
-								iExternalID))
+						if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID))
 						{
 							contentSelectionManager.clearSelection(eSelectionType);
-							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-									new SelectionCommandEventContainer(
-											EIDType.EXPRESSION_INDEX, new SelectionCommand(
-													ESelectionCommandType.CLEAR,
-													eSelectionType)));
+							triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+								EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
+									eSelectionType)));
 							pickingManager.flushHits(iUniqueID, ePickingType);
 							setDisplayListDirty();
 							return;
@@ -480,30 +467,27 @@ public class GLHeatMap
 
 				// Resolve multiple spotting on chip and add all to the
 				// selection manager.
-				Integer iRefSeqID = idMappingManager.getID(
-						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+				Integer iRefSeqID =
+					idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
 				for (Object iExpressionIndex : idMappingManager.getMultiID(
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
+					EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 				{
-					contentSelectionManager.addToType(eSelectionType,
-							(Integer) iExpressionIndex);
+					contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
 				}
 
-				contentSelectionManager.addConnectionID(generalManager.getIDManager()
-						.createID(EManagedObjectType.CONNECTION), iExternalID);
+				contentSelectionManager.addConnectionID(generalManager.getIDManager().createID(
+					EManagedObjectType.CONNECTION), iExternalID);
 
 				if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 				{
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
-									new SelectionCommand(ESelectionCommandType.CLEAR,
-											eSelectionType)));
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+						EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 
 					handleConnectedElementRep(selectionDelta);
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+						selectionDelta));
 				}
 
 				setDisplayListDirty();
@@ -522,15 +506,12 @@ public class GLHeatMap
 
 						// Check if mouse over element is already selected ->
 						// ignore
-						if (storageSelectionManager.checkStatus(ESelectionType.SELECTION,
-								iExternalID))
+						if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID))
 						{
 							storageSelectionManager.clearSelection(eSelectionType);
-							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-									new SelectionCommandEventContainer(
-											EIDType.EXPERIMENT_INDEX, new SelectionCommand(
-													ESelectionCommandType.CLEAR,
-													eSelectionType)));
+							triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+								EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
+									eSelectionType)));
 							pickingManager.flushHits(iUniqueID, ePickingType);
 							setDisplayListDirty();
 							return;
@@ -551,13 +532,11 @@ public class GLHeatMap
 				if (eStorageDataType == EIDType.EXPERIMENT_INDEX)
 				{
 
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
-									new SelectionCommand(ESelectionCommandType.CLEAR,
-											eSelectionType)));
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+						EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 					ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+						selectionDelta));
 				}
 				setDisplayListDirty();
 				break;
@@ -581,16 +560,17 @@ public class GLHeatMap
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
 			iCount++;
-			if (contentSelectionManager.checkStatus(ESelectionType.NORMAL, iContentIndex))
+			// we treat normal and deselected the same atm
+			if (contentSelectionManager.checkStatus(ESelectionType.NORMAL, iContentIndex)
+				|| contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex))
 			{
 				fFieldWidth = renderStyle.getNormalFieldWidth();
 				fFieldHeight = renderStyle.getFieldHeight();
 				currentType = ESelectionType.NORMAL;
+
 			}
-			else if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
-					iContentIndex)
-					|| contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-							iContentIndex))
+			else if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
+				|| contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
 			{
 				fFieldWidth = renderStyle.getSelectedFieldWidth();
 				fFieldHeight = renderStyle.getFieldHeight();
@@ -601,7 +581,10 @@ public class GLHeatMap
 				continue;
 			}
 
-			fYPosition = 0;
+			if (bIsInListMode)
+				fYPosition = HeatMapRenderStyle.LIST_SPACING;
+			else
+				fYPosition = 0;
 
 			for (Integer iStorageIndex : set.getVA(iStorageVAID))
 			{
@@ -609,19 +592,26 @@ public class GLHeatMap
 				{
 					if (currentType == ESelectionType.SELECTION)
 					{
-						renderElement(gl, iStorageIndex, iContentIndex, fXPosition
-								+ (fFieldWidth / 3), fYPosition, fFieldWidth / 2, fFieldHeight);
+						if (iCurrentMouseOverElement == iContentIndex)
+						{
+							renderElement(gl, iStorageIndex, iContentIndex, fXPosition + (fFieldWidth / 3), fYPosition,
+								fFieldWidth / 2, fFieldHeight);
+						}
+						else
+						{
+							renderElement(gl, iStorageIndex, iContentIndex, fXPosition + (fFieldWidth / 2f),
+								fYPosition, fFieldWidth / 2.5f, fFieldHeight);
+						}
 					}
 					else
 					{
-						renderElement(gl, iStorageIndex, iContentIndex, fXPosition
-								+ (fFieldWidth / 2), fYPosition, fFieldWidth / 2, fFieldHeight);
+						renderElement(gl, iStorageIndex, iContentIndex, fXPosition + (fFieldWidth / 2), fYPosition,
+							fFieldWidth / 2, fFieldHeight);
 					}
 				}
 				else
 				{
-					renderElement(gl, iStorageIndex, iContentIndex, fXPosition, fYPosition,
-							fFieldWidth, fFieldHeight);
+					renderElement(gl, iStorageIndex, iContentIndex, fXPosition, fYPosition, fFieldWidth, fFieldHeight);
 				}
 				fYPosition += fFieldHeight;
 
@@ -646,18 +636,19 @@ public class GLHeatMap
 			if (fFieldWidth > 0.1f)
 			{
 				boolean bRenderRefSeq = false;
-				if (fFieldWidth < 0.2f)
-				{
-					fFontScaling = renderStyle.getSmallFontScalingFactor();
-				}
-				else
-				{
-					bRenderRefSeq = true;
-					fFontScaling = renderStyle.getHeadingFontScalingFactor();
-				}
+				// if (fFieldWidth < 0.2f)
+				// {
+				fFontScaling = renderStyle.getSmallFontScalingFactor();
+				// }
+				// else
+				// {
+				// bRenderRefSeq = true;
+				// fFontScaling = renderStyle.getHeadingFontScalingFactor();
+				// }
 
 				if (detailLevel == EDetailLevel.HIGH)
 				{
+					bRenderRefSeq = true;
 					String sContent;
 
 					sContent = IDMappingHelper.get().getShortNameFromDavid(iContentIndex);
@@ -668,8 +659,7 @@ public class GLHeatMap
 					{
 						sContent += " | ";
 						// Render heat map element name
-						sContent += IDMappingHelper.get().getRefSeqStringFromStorageIndex(
-								iContentIndex);
+						sContent += IDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 					}
 
 					if (bIsInListMode)
@@ -677,59 +667,102 @@ public class GLHeatMap
 
 						if (currentType == ESelectionType.SELECTION)
 						{
+							if (iCurrentMouseOverElement == iContentIndex)
+							{
+								iCurrentMouseOverElement = -1;
+								float fTextScalingFactor = 0.0035f;
 
-							float fTextScalingFactor = 0.0035f;
+								float fTextSpacing = 0.1f;
+								float fYSelectionOrigin =
+									-2 * fTextSpacing - (float) textRenderer.getBounds(sContent).getWidth()
+										* fTextScalingFactor;
+								float fSlectionFieldHeight = -fYSelectionOrigin + renderStyle.getRenderHeight();
 
-							float fTextSpacing = 0.1f;
-							float fYSelectionOrigin = -2 * fTextSpacing
-									- (float) textRenderer.getBounds(sContent).getWidth()
-									* fTextScalingFactor;
-							float fSlectionFieldHeight = -fYSelectionOrigin
-									+ renderStyle.getRenderHeight();
+								// renderSelectionHighLight(gl, fXPosition,
+								// fYSelectionOrigin,
+								// fFieldWidth, fSlectionFieldHeight);
 
-							// renderSelectionHighLight(gl, fXPosition,
-							// fYSelectionOrigin,
-							// fFieldWidth, fSlectionFieldHeight);
+								gl.glColor3f(0.25f, 0.25f, 0.25f);
+								gl.glBegin(GL.GL_POLYGON);
 
-							gl.glColor3f(0.25f, 0.25f, 0.25f);
-							gl.glBegin(GL.GL_POLYGON);
+								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
+								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin, 0.0005f);
+								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin + fSlectionFieldHeight,
+									0.0005f);
+								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin + fSlectionFieldHeight, 0.0005f);
 
-							gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
-							gl
-									.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin,
-											0.0005f);
-							gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin
-									+ fSlectionFieldHeight, 0.0005f);
-							gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin
-									+ fSlectionFieldHeight, 0.0005f);
+								gl.glEnd();
 
-							gl.glEnd();
+								textRenderer.setColor(1, 1, 1, 1);
+								gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+								gl.glTranslatef(fXPosition + fFieldWidth / 1.5f, fYSelectionOrigin + fTextSpacing, 0);
+								gl.glRotatef(+fLineDegrees, 0, 0, 1);
+								textRenderer.begin3DRendering();
+								textRenderer.draw3D(sContent, 0, 0, 0.016f, fTextScalingFactor);
+								textRenderer.end3DRendering();
+								gl.glRotatef(-fLineDegrees, 0, 0, 1);
+								gl.glTranslatef(-fXPosition - fFieldWidth / 1.5f, -fYSelectionOrigin - fTextSpacing, 0);
+								// textRenderer.begin3DRendering();
+								gl.glPopAttrib();
+							}
+							else
+							{
+								float fTextScalingFactor = 0.0035f;
 
-							textRenderer.setColor(1, 1, 1, 1);
-							gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-							gl.glTranslatef(fXPosition + fFieldWidth / 1.5f, fYSelectionOrigin
-									+ fTextSpacing, 0);
-							gl.glRotatef(+fLineDegrees, 0, 0, 1);
-							textRenderer.begin3DRendering();
-							textRenderer.draw3D(sContent, 0, 0, 0.016f, fTextScalingFactor);
-							textRenderer.end3DRendering();
-							gl.glRotatef(-fLineDegrees, 0, 0, 1);
-							gl.glTranslatef(-fXPosition - fFieldWidth / 1.5f, -fYSelectionOrigin
-									- fTextSpacing, 0);
-							// textRenderer.begin3DRendering();
-							gl.glPopAttrib();
+								float fTextSpacing = 0.1f;
+								float fYSelectionOrigin = 0;
+								float fSlectionFieldHeight = -fYSelectionOrigin + renderStyle.getRenderHeight();
+
+								// renderSelectionHighLight(gl, fXPosition,
+								// fYSelectionOrigin,
+								// fFieldWidth, fSlectionFieldHeight);
+
+								gl.glColor3f(0.25f, 0.25f, 0.25f);
+								gl.glBegin(GL.GL_POLYGON);
+
+								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
+								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin, 0.0005f);
+								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin + fSlectionFieldHeight,
+									0.0005f);
+								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin + fSlectionFieldHeight, 0.0005f);
+
+								gl.glEnd();
+
+								// textRenderer.setColor(1, 1, 1, 1);
+								// gl.glPushAttrib(GL.GL_CURRENT_BIT |
+								// GL.GL_LINE_BIT);
+								// gl.glTranslatef(fXPosition + fFieldWidth /
+								// 1.5f,
+								// fYSelectionOrigin + fTextSpacing, 0);
+								// gl.glRotatef(+fLineDegrees, 0, 0, 1);
+								// textRenderer.begin3DRendering();
+								// textRenderer
+								// .draw3D(sContent, 0, 0, 0.016f,
+								// fTextScalingFactor);
+								// textRenderer.end3DRendering();
+								// gl.glRotatef(-fLineDegrees, 0, 0, 1);
+								// gl.glTranslatef(-fXPosition - fFieldWidth /
+								// 1.5f,
+								// -fYSelectionOrigin - fTextSpacing, 0);
+								// // textRenderer.begin3DRendering()
+								textRenderer.setColor(1, 1, 1, 1);
+								renderCaption(gl, sContent, fXPosition + fFieldWidth / 2.2f - 0.01f,
+									0 + 0.01f + HeatMapRenderStyle.LIST_SPACING, 0.02f, fLineDegrees, fFontScaling);
+								gl.glPopAttrib();
+							}
 						}
 						else
 						{
-
+							textRenderer.setColor(0, 0, 0, 1);
 							renderCaption(gl, sContent, fXPosition + fFieldWidth / 2 - 0.01f,
-									0 + 0.01f, fLineDegrees, fFontScaling);
+								0 + 0.01f + HeatMapRenderStyle.LIST_SPACING, 0, fLineDegrees, fFontScaling);
 						}
 					}
 					else
 					{
-						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f,
-								fYPosition + 0.1f, fLineDegrees, fFontScaling);
+						textRenderer.setColor(0, 0, 0, 1);
+						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.1f, 0,
+							fLineDegrees, fFontScaling);
 					}
 				}
 
@@ -747,9 +780,8 @@ public class GLHeatMap
 					fYPosition = 0;
 					for (Integer iStorageIndex : set.getVA(iStorageVAID))
 					{
-						renderCaption(gl, set.get(iStorageIndex).getLabel(),
-								fXPosition + 0.1f, fYPosition + fFieldHeight / 2,
-								fColumnDegrees, renderStyle.getSmallFontScalingFactor());
+						renderCaption(gl, set.get(iStorageIndex).getLabel(), fXPosition + 0.1f, fYPosition
+							+ fFieldHeight / 2, 0, fColumnDegrees, renderStyle.getSmallFontScalingFactor());
 						fYPosition += fFieldHeight;
 					}
 				}
@@ -757,19 +789,16 @@ public class GLHeatMap
 		}
 	}
 
-	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
-			final float fXPosition, final float fYPosition, final float fFieldWidth,
-			final float fFieldHeight)
+	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex, final float fXPosition,
+		final float fYPosition, final float fFieldWidth, final float fFieldHeight)
 	{
 
-		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-				iContentIndex);
+		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 0;
 		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-				|| contentSelectionManager
-						.checkStatus(ESelectionType.SELECTION, iContentIndex)
-				|| detailLevel.compareTo(EDetailLevel.LOW) > 0)
+			|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
+			|| detailLevel.compareTo(EDetailLevel.LOW) > 0)
 			fOpacity = 1f;
 		else
 			fOpacity = 0.3f;
@@ -778,10 +807,8 @@ public class GLHeatMap
 
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
@@ -831,10 +858,8 @@ public class GLHeatMap
 
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(fXPosition, fYPosition, SELECTION_Z);
-					gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(),
-							fYPosition, SELECTION_Z);
-					gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition
-							+ fHeight, SELECTION_Z);
+					gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition, SELECTION_Z);
+					gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition + fHeight, SELECTION_Z);
 					gl.glVertex3f(fXPosition, fYPosition + fHeight, SELECTION_Z);
 					gl.glEnd();
 
@@ -864,8 +889,9 @@ public class GLHeatMap
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(0, fYPosition, SELECTION_Z);
 					gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition, SELECTION_Z);
-					gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition
-							+ renderStyle.getFieldHeight(), SELECTION_Z);
+					gl
+						.glVertex3f(renderStyle.getRenderHeight(), fYPosition + renderStyle.getFieldHeight(),
+							SELECTION_Z);
 					gl.glVertex3f(0, fYPosition + renderStyle.getFieldHeight(), SELECTION_Z);
 					gl.glEnd();
 				}
@@ -880,9 +906,9 @@ public class GLHeatMap
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
 	{
 		// FIXME: should not be necessary here, incorrect init.
-		if(renderStyle == null)
+		if (renderStyle == null)
 			return;
-		
+
 		renderStyle.updateFieldSizes();
 		fAlXDistances.clear();
 		float fDistance = 0;
@@ -891,8 +917,7 @@ public class GLHeatMap
 		{
 			fAlXDistances.add(fDistance);
 			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
-					|| contentSelectionManager.checkStatus(ESelectionType.SELECTION,
-							iStorageIndex))
+				|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iStorageIndex))
 			{
 				fDistance += renderStyle.getSelectedFieldWidth();
 			}
@@ -907,7 +932,7 @@ public class GLHeatMap
 
 	@Override
 	protected SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
-			throws InvalidAttributeValueException
+		throws InvalidAttributeValueException
 	{
 
 		SelectedElementRep elementRep;
@@ -921,15 +946,14 @@ public class GLHeatMap
 			return null;
 		}
 
-		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth()
-				/ 2;
+		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth() / 2;
 
 		float fYValue = renderStyle.getYCenter();
 
 		if (bRenderStorageHorizontally)
 		{
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue
-					+ fAnimationTranslation, fYValue, 0);
+			elementRep =
+				new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue + fAnimationTranslation, fYValue, 0);
 
 		}
 		else
@@ -937,8 +961,9 @@ public class GLHeatMap
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint
-					.x(), vecPoint.y() - fAnimationTranslation, 0);
+			elementRep =
+				new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
+					- fAnimationTranslation, 0);
 
 		}
 		return elementRep;
@@ -947,7 +972,8 @@ public class GLHeatMap
 	/**
 	 * Re-position a view centered on a element, specified by the element ID
 	 * 
-	 * @param iElementID the ID of the element that should be in the center
+	 * @param iElementID
+	 *            the ID of the element that should be in the center
 	 */
 	protected void rePosition(int iElementID)
 	{
@@ -959,14 +985,12 @@ public class GLHeatMap
 			iSelection = iStorageVAID;
 		// TODO test this
 
-		float fCurrentPosition = set.getVA(iSelection).indexOf(iElementID)
-				* renderStyle.getNormalFieldWidth();// +
+		float fCurrentPosition = set.getVA(iSelection).indexOf(iElementID) * renderStyle.getNormalFieldWidth();// +
 		// renderStyle.getXSpacing(
 		// );
 
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
-		float fLength = (set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth()
-				+ 1.5f; // MARC
+		float fLength = (set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
 		// :
 		// 1.5
 		// =
@@ -980,10 +1004,8 @@ public class GLHeatMap
 			fAnimationTargetTranslation = -(fLength - fFrustumLength + 2 * 0.00f);
 		else if (fAnimationTargetTranslation > 0)
 			fAnimationTargetTranslation = 0;
-		else if (-fAnimationTargetTranslation < -fAnimationTranslation + fFrustumLength / 2
-				- 0.00f
-				&& -fAnimationTargetTranslation > -fAnimationTranslation - fFrustumLength / 2
-						+ 0.00f)
+		else if (-fAnimationTargetTranslation < -fAnimationTranslation + fFrustumLength / 2 - 0.00f
+			&& -fAnimationTargetTranslation > -fAnimationTranslation - fFrustumLength / 2 + 0.00f)
 		{
 			fAnimationTargetTranslation = fAnimationTranslation;
 			return;
@@ -1047,8 +1069,20 @@ public class GLHeatMap
 
 	}
 
-	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin,
-			float fRotation, float fFontScaling)
+	/*
+	 * *
+	 * @deprecated Use {@link
+	 * #renderCaption(GL,String,float,float,float,float,float)} instead
+	 */
+	// private void renderCaption(GL gl, String sLabel, float fXOrigin, float
+	// fYOrigin,
+	// float fRotation, float fFontScaling)
+	// {
+	// renderCaption(gl, sLabel, fXOrigin, fYOrigin, 0, fRotation,
+	// fFontScaling);
+	// }
+	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fZOrigin, float fRotation,
+		float fFontScaling)
 	{
 
 		if (sLabel.length() > HeatMapRenderStyle.NUM_CHAR_LIMIT + 1)
@@ -1057,15 +1091,15 @@ public class GLHeatMap
 			sLabel = sLabel + "..";
 		}
 
-		textRenderer.setColor(0, 0, 0, 1);
+		// textRenderer.setColor(0, 0, 0, 1);
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glTranslatef(fXOrigin, fYOrigin, 0);
+		gl.glTranslatef(fXOrigin, fYOrigin, fZOrigin);
 		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(sLabel, 0, 0, 0, fFontScaling);
 		textRenderer.end3DRendering();
 		gl.glRotatef(-fRotation, 0, 0, 1);
-		gl.glTranslatef(-fXOrigin, -fYOrigin, 0);
+		gl.glTranslatef(-fXOrigin, -fYOrigin, -fZOrigin);
 		// textRenderer.begin3DRendering();
 		gl.glPopAttrib();
 	}
@@ -1074,8 +1108,7 @@ public class GLHeatMap
 	public synchronized void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new DeltaEventContainer<ISelectionDelta>(delta));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(delta));
 		setDisplayListDirty();
 	}
 
@@ -1098,7 +1131,7 @@ public class GLHeatMap
 	{
 		return bRenderStorageHorizontally;
 	}
-	
+
 	public boolean isInListMode()
 	{
 		return bIsInListMode;

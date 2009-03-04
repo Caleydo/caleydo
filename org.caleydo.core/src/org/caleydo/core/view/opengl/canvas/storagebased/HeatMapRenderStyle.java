@@ -125,6 +125,8 @@ public class HeatMapRenderStyle
 			}
 			fFieldHeight = (getRenderWidth() / heatMap.set.getVA(heatMap.getStorageVAID())
 					.size());
+			
+			
 		}
 
 		fNormalFieldWidth = (fNormalFieldWidth > fSelectedFieldWidth) ? fSelectedFieldWidth
@@ -182,7 +184,7 @@ public class HeatMapRenderStyle
 	{
 
 		if (heatMap.bIsInListMode)
-			return viewFrustum.getWidth() -  LIST_SPACING;
+			return viewFrustum.getWidth() -  2 * LIST_SPACING;
 
 		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getWidth() - 2.4f * getXSpacing();

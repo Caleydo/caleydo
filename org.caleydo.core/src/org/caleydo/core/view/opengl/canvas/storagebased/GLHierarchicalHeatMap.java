@@ -1984,9 +1984,6 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode)
 				{
 					case MOUSE_OVER:
-
-						// System.out.println("Selected external heat map mouse over");
-
 						break;
 
 					case CLICKED:

@@ -365,7 +365,7 @@ public class BucketLayoutRenderStyle
 	public RemoteLevel initMemoLevel()
 	{
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.12f, -2.01f,
+		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.10f, -2.01f,
 			4.02f));
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
 			fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));

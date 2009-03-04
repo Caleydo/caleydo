@@ -187,7 +187,7 @@ public class VirtualArray
 	@Override
 	public int indexOf(int iElement)
 	{
-		System.out.println("Costly indexof operation on a va of size: " + size());
+//		System.out.println("Costly indexof operation on a va of size: " + size());
 		return iAlVirtualArray.indexOf(iElement);
 	}
 	

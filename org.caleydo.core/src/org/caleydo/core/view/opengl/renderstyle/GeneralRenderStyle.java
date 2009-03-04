@@ -35,6 +35,8 @@ public class GeneralRenderStyle
 	public static final java.awt.Color MOUSE_OVER_COLOR_AWT = new java.awt.Color(255, 255, 0, 0);
 
 	private static final float[] BACKGROUND_COLOR = { 0.7f, 0.7f, 0.7f, 1f };
+	
+	public static final float[] PANEL_BACKGROUN_COLOR = {0.85f, 0.85f, 0.85f, 1f};
 
 	public static final float LOADING_BOX_HALF_WIDTH = 1f;
 

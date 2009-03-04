@@ -4,14 +4,17 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
+
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
@@ -38,7 +41,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -72,6 +74,7 @@ import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -313,11 +316,12 @@ public class GLRemoteRendering
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
+		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20,
 				null, -1);
 		cmdCreateGLView.doCommand();
 		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setToListMode(true);
+		
 
 		generalManager.getEventPublisher().addReceiver(EMediatorType.PROPAGATION_MEDIATOR,
 				glSelectionHeatMap);
@@ -462,9 +466,9 @@ public class GLRemoteRendering
 	{
 		time.update();
 
-		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
+//		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
 		// layoutRenderStyle.initStackLevel(false);
-		layoutRenderStyle.initMemoLevel();
+//		layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
 				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -2644,7 +2648,7 @@ public class GLRemoteRendering
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.REMOTE_LEVEL_ELEMENT, iPoolLevelCommonID));
 
-			gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
+			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, 4);
@@ -2674,7 +2678,7 @@ public class GLRemoteRendering
 			gl.glPopName();
 
 			// Render memo pad background
-			gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
+			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
