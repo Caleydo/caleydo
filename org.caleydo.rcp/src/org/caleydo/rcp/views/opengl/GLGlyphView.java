@@ -1,6 +1,7 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -20,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 public class GLGlyphView
 	extends AGLViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.GLGlyphView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.GLGlyphView";
 
 	public static int viewCount = 0;
 

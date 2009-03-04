@@ -1,9 +1,8 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
@@ -23,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 public class GLParCoordsView
 	extends AGLViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.GLParCoordsView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.GLParCoordsView";
 
 	/**
 	 * Constructor.
@@ -55,8 +54,8 @@ public class GLParCoordsView
 
 	public static void createToolBarItems(int iViewID)
 	{
-		GLParallelCoordinates pcs = (GLParallelCoordinates) GeneralManager.get()
-				.getViewGLCanvasManager().getGLEventListener(iViewID);
+//		GLParallelCoordinates pcs = (GLParallelCoordinates) GeneralManager.get()
+//				.getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 

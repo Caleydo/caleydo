@@ -9,6 +9,7 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
+import org.caleydo.rcp.views.CaleydoViewPart;
 import org.caleydo.rcp.views.opengl.AGLViewPart;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
 import org.caleydo.rcp.views.opengl.GLHeatMapView;
@@ -16,9 +17,11 @@ import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -73,18 +76,21 @@ public class PartListener
 		
 //		System.out.println("Visible: " +partRef.getTitle());
 		
-		if (!(activePart instanceof AGLViewPart))
+		if (!(activePart instanceof CaleydoViewPart))
 			return;
 
-		AGLViewPart glView = (AGLViewPart) activePart;
+		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		
-		GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
-				glView.getGLCanvas().getID());
+		if (viewPart instanceof AGLViewPart)
+		{
+			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
+				((AGLViewPart)viewPart).getGLCanvas().getID());			
+		}
 		
 		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
 			return;
 		
-		final IToolBarManager toolBarManager = glView.getViewSite().getActionBars()
+		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars()
 				.getToolBarManager();
 
 		toolBarManager.removeAll();
@@ -92,47 +98,42 @@ public class PartListener
 		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.findView(ToolBarView.ID)).removeAllViewSpecificToolBars();
 
-		// Check if view is inside the workbench or detached to a separate
-		// window
-		if (!activePart.getSite().getShell().getText()
-				.equals("Caleydo"))
+		// Check if view is inside the workbench or detached to a separate window
+		if (!activePart.getSite().getShell().getText().equals("Caleydo"))
 		{
-			IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
-			AGLEventListener glEventListener = viewGLCanvasManager.getGLEventListener(glView
-					.getGLEventListener().getID());
-
-			createViewSpecificToolbar(glEventListener, toolBarManager);
-
-			if (glEventListener instanceof GLRemoteRendering)
+			createViewSpecificToolbar(viewPart, toolBarManager);
+			
+			if (viewPart instanceof AGLViewPart)
 			{
-				AGLEventListener glSubEventListener;
-				GLRemoteRenderingView.createToolBarItems(glView.getGLEventListener().getID());
-				glView.fillToolBar();
+				IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
+				AGLEventListener glEventListener = viewGLCanvasManager.getGLEventListener(((AGLViewPart)viewPart)
+						.getGLEventListener().getID());
 
-				// Add toolbars of remote rendered views to remote view toolbar
-				for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glEventListener)
-						.getRemoteRenderedViews())
+				if (glEventListener instanceof GLRemoteRendering)
 				{
-					glSubEventListener = viewGLCanvasManager
-							.getGLEventListener(iRemoteRenderedGLViewID);
-					toolBarManager.add(new Separator());
-					createViewSpecificToolbar(glSubEventListener, toolBarManager);
-				}
-			}
+					AGLEventListener glSubEventListener;
+					GLRemoteRenderingView.createToolBarItems(viewPart.getViewID());
+					viewPart.fillToolBar();
 
-//			// Remove view specific toolbar from general toolbar view
-//			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-//					.getActivePage().findView(ToolBarView.ID))
-//					.removeViewSpecificToolBar(glView.getGLEventListenerID());
+					// Add toolbars of remote rendered views to remote view toolbar
+					for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glEventListener)
+							.getRemoteRenderedViews())
+					{
+						glSubEventListener = viewGLCanvasManager
+								.getGLEventListener(iRemoteRenderedGLViewID);
+						toolBarManager.add(new Separator());
+						createViewSpecificToolbar(glSubEventListener, toolBarManager);
+					}
+				}	
+			}			
 		}
 		else
 		{
 			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-					.getActivePage().findView(ToolBarView.ID)).addViewSpecificToolBar(glView
-							.getGLEventListener().getID());			
+					.getActivePage().findView(ToolBarView.ID)).addViewSpecificToolBar(viewPart);			
 		}
 
-		glView.getSWTComposite().getDisplay().asyncExec(new Runnable()
+		Display.getCurrent().asyncExec(new Runnable()
 		{
 			public void run()
 			{
@@ -190,11 +191,26 @@ public class PartListener
 	{
 	}
 
+	private void createViewSpecificToolbar(CaleydoViewPart viewPart,
+		IToolBarManager toolBarManager)
+	{
+		if (viewPart instanceof AGLViewPart)
+		{
+			AGLEventListener glEventListener = ((AGLViewPart)viewPart).getGLEventListener();
+			createViewSpecificToolbar(glEventListener, toolBarManager);			
+		}
+		else if (viewPart instanceof HTMLBrowserView)
+		{
+//			HTMLBrowserView.createToolBarItems(viewPart.getViewID());
+//			HTMLBrowserView.fillToolBar(toolBarManager);
+		}
+	}
+	
 	private void createViewSpecificToolbar(AGLEventListener glEventListener,
-			IToolBarManager toolBarManager)
+		IToolBarManager toolBarManager)
 	{
 		int iGLEvenntListenerID = glEventListener.getID();
-
+		
 		if (glEventListener instanceof GLPathway)
 		{
 			GLPathwayView.createToolBarItems(iGLEvenntListenerID);
@@ -219,6 +235,6 @@ public class PartListener
 		{
 			GLGlyphView.createToolBarItems(iGLEvenntListenerID);
 			GLGlyphView.fillToolBar(toolBarManager);
-		}
+		}	
 	}
 }

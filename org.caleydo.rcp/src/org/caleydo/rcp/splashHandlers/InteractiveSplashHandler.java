@@ -61,20 +61,44 @@ public class InteractiveSplashHandler
 		progressMessageLabel.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
 		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
 		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(
-				SWT.COLOR_DARK_GRAY));
+				SWT.COLOR_WHITE));
 
 		Label versionLabel = new Label(splash, SWT.NONE);
-		versionLabel.setText("Version " + Activator.sBundleVersion + " BETA");
-		versionLabel.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
-		versionLabel.setBounds(185, 177, 300, 20);
-		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+		versionLabel.setText("Version " + Activator.sBundleVersion);// + " BETA");
+		versionLabel.setFont(new Font(splash.getDisplay(), "Arial", 9, SWT.NONE));
+		versionLabel.setBounds(336, 185, 300, 20);
+		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-//		Label tuLabel = new Label(splash, SWT.NONE);
-//		tuLabel.setText("Graz University of Technology: Marc Streit, Alexander Lex, Michael Kalkusch, \n Bernhard Schlegl, Dieter Schmalstieg");
-//		tuLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
-//		tuLabel.setBounds(30, 275, 500, 40);
-//		tuLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-//		
+		Label brandingLabelTUGCaption = new Label(splash, SWT.NONE);
+		brandingLabelTUGCaption.setText("Graz University of Technology");
+		brandingLabelTUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
+		brandingLabelTUGCaption.setBounds(20, 268, 500, 15);
+		brandingLabelTUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
+		Label brandingLabelTUGNames = new Label(splash, SWT.NONE);
+		brandingLabelTUGNames.setText("Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, Dieter Schmalstieg");
+		brandingLabelTUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
+		brandingLabelTUGNames.setBounds(20, 280, 500, 14);
+		brandingLabelTUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
+		Label brandingLabelMUGCaption = new Label(splash, SWT.NONE);
+		brandingLabelMUGCaption.setText("Medical Uiversity of Graz");
+		brandingLabelMUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
+		brandingLabelMUGCaption.setBounds(20, 298, 500, 15);
+		brandingLabelMUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
+		Label brandingLabelMUGNames = new Label(splash, SWT.NONE);
+		brandingLabelMUGNames.setText("Heimo Müller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
+		brandingLabelMUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
+		brandingLabelMUGNames.setBounds(20, 310, 300, 14);
+		brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
+		Label copyrightLabel = new Label(splash, SWT.NONE);
+		copyrightLabel.setText("© 2005 - 2009 - www.caleydo.org");
+		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
+		copyrightLabel.setBounds(390, 310, 200, 14);
+		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
 				progressMessageLabel);
 	}

@@ -23,7 +23,7 @@ public class GenomePerspective
 		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
 		float fRatio = (float)rectDisplay.width / rectDisplay.height;
 
-//		if (fRatio > 1.35)
+		if (fRatio > 1.35)
 			bIsWideScreen = true;
 
 		if (bIsWideScreen)
@@ -31,7 +31,7 @@ public class GenomePerspective
 			fRatio = (float) ToolBarView.TOOLBAR_WIDTH
 				/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().width;			
 
-			layout.addStandaloneView("org.caleydo.rcp.views.ToolBarView", false, IPageLayout.LEFT,
+			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.LEFT,
 					fRatio, IPageLayout.ID_EDITOR_AREA);
 			layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio,
 					IPageLayout.ID_EDITOR_AREA);
@@ -41,7 +41,7 @@ public class GenomePerspective
 			fRatio = (float) ToolBarView.TOOLBAR_HEIGHT
 				/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().height;
 
-			layout.addStandaloneView("org.caleydo.rcp.views.ToolBarView", false, IPageLayout.TOP,
+			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP,
 					fRatio, IPageLayout.ID_EDITOR_AREA);
 			layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
 					IPageLayout.ID_EDITOR_AREA);

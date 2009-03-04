@@ -228,7 +228,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void display(GL gl)
 	{
-		clipToFrustum(gl);
+//		clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
 

@@ -25,7 +25,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLHeatMapView"
             icon="resources/icons/view/heatmap.png"
-            id="org.caleydo.rcp.views.GLHeatMapView"
+            id="org.caleydo.rcp.views.opengl.GLHeatMapView"
             name="Heat Map">
       </view>
       
@@ -34,7 +34,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
             icon="resources/icons/view/heatmap.png"
-            id="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
+            id="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
             name="Heat Map">
       </view>      
 
@@ -43,7 +43,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLParCoordsView"
             icon="resources/icons/view/parcoords.png"
-            id="org.caleydo.rcp.views.GLParCoordsView"
+            id="org.caleydo.rcp.views.opengl.GLParCoordsView"
             name="Parallel Coordinates">
       </view>
       <view
@@ -51,7 +51,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView"
             icon="resources/icons/view/parcoords.png"
-            id="org.caleydo.rcp.views.ClinicalGLParCoordsView"
+            id="org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView"
             name="Clinical Parallel Coordinates">
       </view>         
       
@@ -60,7 +60,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLPathwayView"
             icon="resources/icons/view/pathway.png"
-            id="org.caleydo.rcp.views.GLPathwayView"
+            id="org.caleydo.rcp.views.opengl.GLPathwayView"
             name="Pathway">
       </view> 
       
@@ -69,12 +69,12 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLRemoteRenderingView"
             icon="resources/icons/view/remote.png"
-            id="org.caleydo.rcp.views.GLRemoteRenderingView"
+            id="org.caleydo.rcp.views.opengl.GLRemoteRenderingView"
             name="Bucket">
       </view> 
       
       <view
-            id="org.caleydo.rcp.views.HTMLBrowserView"
+            id="org.caleydo.rcp.views.swt.HTMLBrowserView"
             name="Browser"
             icon="resources/icons/view/browser.png"
             class="org.caleydo.rcp.views.swt.HTMLBrowserView"
@@ -85,7 +85,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLGlyphView"
             icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.GLGlyphView"
+            id="org.caleydo.rcp.views.opengl.GLGlyphView"
             name="Glyph">
       </view>
       <view
@@ -93,7 +93,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
             icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.GLGlyphSliderView"
+            id="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
             name="Glyph Slider">
       </view>
       <view
@@ -101,7 +101,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
             icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
+            id="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
             name="Glyph Mapping Configuration">
       </view>
       <view
@@ -109,21 +109,21 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.swt.SWTGlyphDataExportView"
             icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.SWTGlyphDataExportView"
+            id="org.caleydo.rcp.views.swt.SWTGlyphDataExportView"
             name="Glyph Data Export">
       </view>
       <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.swt.TabularDataView"
             icon="resources/icons/view/tabular_data_viewer.png"
-            id="org.caleydo.rcp.views.TabularDataView"
+            id="org.caleydo.rcp.views.swt.TabularDataView"
             name="Tabular Data Viewer">
       </view>
       <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.swt.ToolBarView"
             icon="resources/icons/view/browser.png"
-            id="org.caleydo.rcp.views.ToolBarView"
+            id="org.caleydo.rcp.views.swt.ToolBarView"
             name="Tool Bar">
       </view>
       <view
@@ -169,7 +169,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2008.&#x0A;All Rights Reserved.">
+               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2009.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>

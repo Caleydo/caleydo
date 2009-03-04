@@ -1,6 +1,7 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
+
 import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
 import org.caleydo.rcp.action.toolbar.view.pathway.NeighborhoodAction;
 import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
@@ -9,7 +10,7 @@ import org.eclipse.jface.action.IAction;
 public class GLPathwayView
 	extends AGLViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.GLPathwayView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.GLPathwayView";
 
 	/**
 	 * Constructor.

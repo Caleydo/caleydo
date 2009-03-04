@@ -11,7 +11,7 @@ import org.eclipse.ui.part.ViewPart;
 public class TabularDataView
 	extends ViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.TabularDataView";
+	public static final String ID = "org.caleydo.rcp.views.swt.TabularDataView";
 
 	private TabularDataViewRep tabularDataView;
 

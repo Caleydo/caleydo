@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.5"?>
+<?pde version="3.4"?>
 
 <product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
 
@@ -9,7 +9,7 @@
          Caleydo Visualization Framework
 Check out www.caleydo.org
 
-(c) Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
+© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
 Graz University of Technology - 2009.
 All Rights Reserved.
       </text>
@@ -41,13 +41,11 @@ All Rights Reserved.
    <vm>
    </vm>
 
-
    <plugins>
    </plugins>
 
    <features>
       <feature id="org.caleydo.rcp.feature" version="1.0.0"/>
    </features>
-
 
 </product>

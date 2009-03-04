@@ -2,6 +2,7 @@ package org.caleydo.rcp.views.swt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.data.IUniqueObject;
@@ -11,11 +12,9 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.rcp.Application;
@@ -25,6 +24,8 @@ import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.util.search.SearchBox;
+import org.caleydo.rcp.views.CaleydoViewPart;
+import org.caleydo.rcp.views.opengl.AGLViewPart;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
 import org.caleydo.rcp.views.opengl.GLHeatMapView;
 import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
@@ -63,10 +64,12 @@ public class ToolBarView
 	extends ViewPart
 	implements IMediatorReceiver, ISizeProvider
 {
-	public static final String ID = "org.caleydo.rcp.views.ToolBarView";
+	public static final String ID = "org.caleydo.rcp.views.swt.ToolBarView";
 
 	public static final int TOOLBAR_WIDTH = 173;
 	public static final int TOOLBAR_HEIGHT = 123;	
+
+	public static boolean bHorizontal = false;
 
 	private Composite parentComposite;
 
@@ -75,8 +78,11 @@ public class ToolBarView
 	// private HTMLBrowserViewRep browserView;
 	
 	private ArrayList<Group> viewSpecificGroups;
-
-	public static boolean bHorizontal = false;
+	
+	private boolean bIsBucketViewActive = false;
+	
+	private Label pathwaySearchLabel;
+	private SearchBox pathwaySearchBox;
 	
 	@Override
 	public void createPartControl(Composite parent)
@@ -113,13 +119,44 @@ public class ToolBarView
 		super.dispose();
 	}
 
-	public void addViewSpecificToolBar(int iViewID)
+	public void addViewSpecificToolBar(CaleydoViewPart viewPart)
+	{
+		addViewSpecificToolBar(viewPart.getViewID(), 
+			viewPart.getClass().getName());
+		
+		if (viewPart instanceof GLRemoteRenderingView)
+		{	
+			// Add toolbars of remote rendered views
+			for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) ((AGLViewPart)viewPart).getGLEventListener())
+					.getRemoteRenderedViews())
+			{
+				AGLEventListener glView = GeneralManager.get().getViewGLCanvasManager()
+					.getGLEventListener(iRemoteRenderedGLViewID);
+				
+				String sViewType = "";
+				
+				if (glView instanceof GLHeatMap)
+					sViewType = GLHeatMapView.ID;
+				else if (glView instanceof GLPathway)
+					sViewType = GLPathwayView.ID;
+				else if (glView instanceof GLParallelCoordinates)
+					sViewType = GLParCoordsView.ID;
+				else 
+					break;
+				
+				addViewSpecificToolBar(iRemoteRenderedGLViewID, sViewType);
+			}
+		}
+		
+	}
+	
+	public void addViewSpecificToolBar(int iViewID, String sViewType)
 	{
 		// Check if toolbar is already present
 		for (Group group : viewSpecificGroups)
 		{
 			// Only one pathway toolbar for all pathways is allowed
-			if (group.getData("view") instanceof GLPathway
+			if (group.getData("viewType").equals(GLPathwayView.ID)
 					&& GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 							iViewID) instanceof GLPathway)
 				return;
@@ -160,69 +197,81 @@ public class ToolBarView
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
-
-		AGLEventListener glView = GeneralManager.get().getViewGLCanvasManager()
-				.getGLEventListener(iViewID);
-
-		if (glView instanceof GLRemoteRendering)
+		
+		if (sViewType.equals(GLRemoteRenderingView.ID))
 		{
 			GLRemoteRenderingView.createToolBarItems(iViewID);
 			GLRemoteRenderingView.fillToolBar(alToolBarManager);
-
+			
 			sViewTitle = "Bucket";
 			viewIcon = GeneralManager.get().getResourceLoader().getImage(
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/remote/remote.png");
+			
+			bIsBucketViewActive = true;
+			updateSearchBar(true);
 		}
-		else if (glView instanceof GLHeatMap)
+		else if (sViewType.equals(GLHeatMapView.ID))
 		{
 			GLHeatMapView.createToolBarItems(iViewID);
 			GLHeatMapView.fillToolBar(alToolBarManager);
-
+			
 			sViewTitle = "Heat Map";
 			viewIcon = GeneralManager.get().getResourceLoader().getImage(
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/storagebased/heatmap/heatmap.png");
 		}
-		else if (glView instanceof GLHierarchicalHeatMap)
+		else if (sViewType.equals(GLHierarchicalHeatMapView.ID))
 		{
 			GLHierarchicalHeatMapView.createToolBarItems(iViewID);
 			GLHierarchicalHeatMapView.fillToolBar(alToolBarManager);
-
+			
 			sViewTitle = "Full Heat Map";
 			viewIcon = GeneralManager.get().getResourceLoader().getImage(
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/storagebased/heatmap/heatmap.png");
 		}
-		else if (glView instanceof GLParallelCoordinates)
+		else if (sViewType.equals(GLParCoordsView.ID))
 		{
 			GLParCoordsView.createToolBarItems(iViewID);
 			GLParCoordsView.fillToolBar(alToolBarManager);
-
+			
 			sViewTitle = "Parallel Coordinates";
 			viewIcon = GeneralManager.get().getResourceLoader().getImage(
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/storagebased/parcoords/parcoords.png");
 		}
-		else if (glView instanceof GLGlyph)
+		else if (sViewType.equals(GLGlyphView.ID))
 		{
 			GLGlyphView.createToolBarItems(iViewID);
 			GLGlyphView.fillToolBar(alToolBarManager);
-
+			
 			sViewTitle = "Glyph";
 			viewIcon = GeneralManager.get().getResourceLoader().getImage(
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/glyph/glyph.png");
 		}
-		else if (glView instanceof GLPathway)
+		else if (sViewType.equals(GLPathwayView.ID))
 		{
 			GLPathwayView.createToolBarItems(iViewID);
 			GLPathwayView.fillToolBar(alToolBarManager);
-
+			
 			sViewTitle = "Pathway";
 			viewIcon = GeneralManager.get().getResourceLoader().getImage(
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/pathway/pathway.png");
+		}
+		else if (sViewType.equals(HTMLBrowserView.ID))
+		{
+			toolBar.dispose();
+		
+			((HTMLBrowserView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findView(HTMLBrowserView.ID)).createToolBarItems(iViewID, group);
+			
+			sViewTitle = "Browser";
+			viewIcon = GeneralManager.get().getResourceLoader().getImage(
+					PlatformUI.getWorkbench().getDisplay(),
+					"resources/icons/view/browser/browser.png");			
 		}
 		else
 		{
@@ -236,16 +285,6 @@ public class ToolBarView
 		else
 			toolBarManager2.update(true);
 
-		if (glView instanceof GLRemoteRendering)
-		{
-			// Add toolbars of remote rendered views
-			for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glView)
-					.getRemoteRenderedViews())
-			{
-				addViewSpecificToolBar(iRemoteRenderedGLViewID);
-			}
-		}
-		
 		if (bHorizontal)
 		{
 			Label spacer = new Label(group, SWT.NULL);
@@ -257,8 +296,8 @@ public class ToolBarView
     	label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 		
-		group.setData("view", glView);
-		group.setData("viewID", glView.getID());
+		group.setData("viewType", sViewType);
+		group.setData("viewID", iViewID);
 		
 		group.layout();
 		parentComposite.layout();
@@ -295,6 +334,10 @@ public class ToolBarView
 			{
 				removeViewSpecificToolBar(iRemoteRenderedGLViewID);
 			}
+			
+			// Update search bar
+			bIsBucketViewActive = false;
+			updateSearchBar(false);
 		}
 	}
 	
@@ -306,6 +349,10 @@ public class ToolBarView
 		}
 		
 		viewSpecificGroups.clear();
+		
+		// Update search bar
+		bIsBucketViewActive = false;
+		updateSearchBar(false);
 	}
 
 //	public void highlightViewSpecificToolBar(int iViewID)
@@ -370,12 +417,13 @@ public class ToolBarView
 
 	private void addSearchBar()
 	{
-	    Group group = new Group(parentComposite, SWT.NULL);
+		Group searchGroup = new Group(parentComposite, SWT.NULL);
+
 	    GridLayout layout = new GridLayout(1, false);
 	    layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight =
 	    	layout.horizontalSpacing = layout.verticalSpacing = 0;
 	    layout.marginHeight = layout.marginWidth = 3;
-	    group.setLayout(layout);
+	    searchGroup.setLayout(layout);
 	    GridData gridData;
 	    if (bHorizontal)
 	    {
@@ -387,7 +435,7 @@ public class ToolBarView
 	    {
 	    	gridData = new GridData(GridData.FILL_HORIZONTAL);
 	    }
-    	group.setLayoutData(gridData);
+    	searchGroup.setLayoutData(gridData);
 	    
 		// Trigger gene/pathway search command
 		CmdViewCreateDataEntitySearcher cmd = (CmdViewCreateDataEntitySearcher) GeneralManager
@@ -396,7 +444,7 @@ public class ToolBarView
 		cmd.doCommand();
 		dataEntitySearcher = cmd.getCreatedObject();
 
-		Composite searchComposite = new Composite(group, SWT.NULL);
+		Composite searchComposite = new Composite(searchGroup, SWT.NULL);
 		searchComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		if (bHorizontal)
 		    layout = new GridLayout(2, false);
@@ -406,26 +454,26 @@ public class ToolBarView
 	    layout.marginHeight = layout.marginWidth = 0;
 	    searchComposite.setLayout(layout);
 	    
-		Label searchInputLabel = new Label(searchComposite, SWT.NULL);
-		searchInputLabel.setText("Pathway");
+		pathwaySearchLabel = new Label(searchComposite, SWT.NULL);
+		pathwaySearchLabel.setText("Pathway");
 
-		final SearchBox searchBox = new SearchBox(searchComposite, SWT.BORDER);
+		pathwaySearchBox = new SearchBox(searchComposite, SWT.BORDER);
 	    
 		String items[] = { "No pathways available!" };
-		searchBox.setItems(items);
-		searchBox.setTextLimit(21);
-		searchBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		pathwaySearchBox.setItems(items);
+		pathwaySearchBox.setTextLimit(21);
+		pathwaySearchBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		if (Application.bLoadPathwayData)
 		{
-			searchBox.addFocusListener(new FocusAdapter()
+			pathwaySearchBox.addFocusListener(new FocusAdapter()
 			{
 				@Override
 				public void focusGained(FocusEvent e)
 				{
 					if (!Application.bLoadPathwayData)
 					{
-						searchBox.setEnabled(false);
+						pathwaySearchBox.setEnabled(false);
 						return;
 					}
 						
@@ -450,23 +498,23 @@ public class ToolBarView
 						iIndex++;
 					}
 
-					searchBox.setItems(sArSearchItems);
-					searchBox.removeFocusListener(this);
+					pathwaySearchBox.setItems(sArSearchItems);
+					pathwaySearchBox.removeFocusListener(this);
 				}
 			});
 		}
 		else
 		{
-			searchInputLabel.setEnabled(false);
-			searchBox.setEnabled(false);
+			pathwaySearchLabel.setEnabled(false);
+			pathwaySearchBox.setEnabled(false);
 		}
 
-		searchBox.addSelectionListener(new SelectionAdapter()
+		pathwaySearchBox.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
+				String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox.getSelectionIndex());
 				// sSearchEntity = sSearchEntity.substring(0,
 				// sSearchEntity.indexOf(" ("));
 
@@ -477,7 +525,6 @@ public class ToolBarView
 		// Gene search
 		Label entitySearchLabel = new Label(searchComposite, SWT.NULL);
 		entitySearchLabel.setText("Gene");
-//		entitySearchLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Text geneSearchText = new Text(searchComposite, SWT.BORDER | SWT.SINGLE);
 	    geneSearchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));		
@@ -515,7 +562,7 @@ public class ToolBarView
 			}
 		});
 		
-		Label spacer = new Label(group, SWT.NULL);
+		Label spacer = new Label(searchGroup, SWT.NULL);
 		if (bHorizontal)
 		{
 			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
@@ -528,12 +575,19 @@ public class ToolBarView
 			spacer.setLayoutData(data);
 		}
 		
-		Label label = new Label(group, SWT.CENTER);
-		label.setText("Search");
+		Label label = new Label(searchGroup, SWT.CENTER);
+		label.setText("Gene search");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
+	private void updateSearchBar(boolean bIsVisible)
+	{
+		pathwaySearchBox.setVisible(bIsVisible);
+		pathwaySearchLabel.setVisible(bIsVisible);
+		parentComposite.layout();
+	}
+	
 	private void addColorMappingBar()
 	{
 	    Group group = new Group(parentComposite, SWT.NULL);

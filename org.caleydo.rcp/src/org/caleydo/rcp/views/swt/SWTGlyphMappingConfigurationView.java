@@ -11,7 +11,7 @@ import org.eclipse.ui.part.ViewPart;
 public class SWTGlyphMappingConfigurationView
 	extends ViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.SWTGlyphMappingConfigurationView";
+	public static final String ID = "org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView";
 
 	// private HTMLBrowserViewRep browserView;
 	private GlyphMappingConfigurationViewRep GMCview;

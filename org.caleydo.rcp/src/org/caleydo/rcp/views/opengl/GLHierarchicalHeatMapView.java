@@ -1,6 +1,7 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
@@ -14,7 +15,7 @@ import org.eclipse.swt.widgets.Shell;
 public class GLHierarchicalHeatMapView
 	extends AGLViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.GLHierarchicalHeatMapView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView";
 
 	/**
 	 * Constructor.

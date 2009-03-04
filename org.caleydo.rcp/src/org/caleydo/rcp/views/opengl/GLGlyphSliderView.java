@@ -1,6 +1,7 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.command.ECommandType;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
@@ -8,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 public class GLGlyphSliderView
 	extends AGLViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.GLGlyphSliderView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.GLGlyphSliderView";
 
 	/**
 	 * Constructor.

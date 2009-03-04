@@ -11,7 +11,7 @@ import org.eclipse.ui.part.ViewPart;
 public class SWTGlyphDataExportView
 	extends ViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.SWTGlyphDataExportView";
+	public static final String ID = "org.caleydo.rcp.views.swt.SWTGlyphDataExportView";
 
 	private GlyphDataExportViewRep GDEview;
 
