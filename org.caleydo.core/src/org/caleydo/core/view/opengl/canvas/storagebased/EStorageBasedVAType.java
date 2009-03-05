@@ -18,6 +18,11 @@ public enum EStorageBasedVAType
 	 * All elements in the storage (initially)
 	 */
 	COMPLETE_SELECTION,
+	
+	/**
+	 * All elements in the storage (clustered)
+	 */
+	COMPLETE_CLUSTERED_SELECTION,
 
 	/**
 	 * All storages (initially)

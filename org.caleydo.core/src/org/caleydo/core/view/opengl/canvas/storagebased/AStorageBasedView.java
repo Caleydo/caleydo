@@ -86,6 +86,9 @@ public abstract class AStorageBasedView
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
 	protected boolean bUseRandomSampling = true;
+	
+	// clustering stuff
+	protected boolean bUseClusteredVA = false;
 
 	protected int iNumberOfRandomElements = 100;
 
@@ -299,6 +302,14 @@ public abstract class AStorageBasedView
 		int iVAID = set.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
 
+		// Cluster data
+		ArrayList<Integer> alClusterList = new ArrayList<Integer>(set.depth());
+		iVAID = set.createStorageVA(alClusterList);
+		int iContentToClusterVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		set.cluster(iContentToClusterVAID, iVAID, true);
+		mapVAIDs.put(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION, iVAID);
+		// Cluster data 
+		
 		setDisplayListDirty();
 	}
 

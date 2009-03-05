@@ -192,6 +192,9 @@ public class GLHierarchicalHeatMap
 		privateMediator = generalManager.getEventPublisher().getPrivateMediator();
 		privateMediator.addSender(this);
 		privateMediator.addReceiver(this);
+		
+		// activate clustering 
+		bUseClusteredVA = true;
 	}
 
 	@Override
@@ -1639,7 +1642,18 @@ public class GLHierarchicalHeatMap
 		// .getElements(ESelectionType.MOUSE_OVER);
 
 		if (bRenderOnlyContext)
+		{
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		}
+		else if (bUseClusteredVA)
+		{
+			System.out.println("not implemented yet, instead use default VA");
+			//iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
+			
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+				initCompleteList();
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		}
 		else
 		{
 			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))

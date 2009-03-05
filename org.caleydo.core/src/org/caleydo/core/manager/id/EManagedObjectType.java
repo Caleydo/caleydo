@@ -77,7 +77,9 @@ public enum EManagedObjectType
 	/**
 	 * Type for ids used to connect different elements that have different ids.
 	 */
-	CONNECTION(70);
+	CONNECTION(70), 
+	
+	HIERARCHYGRAPH(80);
 
 	private int iIdPrefix;
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ESetType;
@@ -18,6 +19,9 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.util.clusterer.HierarchicalClusterer;
+import org.caleydo.core.util.clusterer.HierarchyGraph;
+import org.caleydo.util.graph.IGraph;
 
 /**
  * Implementation of the ISet interface
@@ -49,6 +53,11 @@ public class Set
 
 	private HashMap<Integer, IVirtualArray> hashStorageVAs;
 	private HashMap<Integer, IVirtualArray> hashSetVAs;
+	
+	// clustering stuff
+	private HashMap<Integer, IGraph> hashVAIdToGraph;
+	private IGraph clusteredGraph = new HierarchyGraph("Hierarchy", 0, 0);
+	private ArrayList<Integer> alClusteredList = new ArrayList<Integer>(depth());
 
 	private EExternalDataRepresentation externalDataRep;
 
@@ -63,6 +72,7 @@ public class Set
 		alStorages = new ArrayList<IStorage>();
 		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
 		hashSetVAs = new HashMap<Integer, IVirtualArray>();
+		hashVAIdToGraph = new HashMap<Integer, IGraph>();
 	}
 
 	@Override
@@ -496,6 +506,22 @@ public class Set
 	{
 		SetExporter exporter = new SetExporter();
 		exporter.export(this, sFileName, bExportBucketInternal);
+	}
+
+	@Override
+	public void cluster(Integer iVAIdOriginal, Integer iVAIdClustered, boolean hierarchicalClustering)
+	{
+		if (hierarchicalClustering)
+		{
+			HierarchicalClusterer clusterer = new HierarchicalClusterer();
+			clusteredGraph = clusterer.cluster(this, iVAIdOriginal);
+			
+			hashVAIdToGraph.put(iVAIdClustered, clusteredGraph);
+		}
+		else
+		{
+			// KMeansClusterer clusterer = new KMeansClusterer();
+		}
 	}
 
 }

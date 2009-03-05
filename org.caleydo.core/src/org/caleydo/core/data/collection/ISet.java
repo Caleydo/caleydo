@@ -244,4 +244,11 @@ public interface ISet
 	 */
 	public void export(String sFileName, boolean bExportBucketInternal);
 
+	/**
+	 * Clusters a Storage
+	 * @param iVAId
+	 * @param bHierarchicalClustering
+	 */
+	public void cluster(Integer iVAIdOriginal, Integer iVAIdClustered, boolean bHierarchicalClustering);
+	
 }
