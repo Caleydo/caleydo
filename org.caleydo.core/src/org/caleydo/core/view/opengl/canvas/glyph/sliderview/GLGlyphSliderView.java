@@ -428,4 +428,11 @@ public class GLGlyphSliderView
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void clearAllSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

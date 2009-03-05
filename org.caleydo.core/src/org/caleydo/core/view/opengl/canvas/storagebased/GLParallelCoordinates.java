@@ -6,8 +6,11 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderSt
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NAN_Y_OFFSET;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR;
@@ -61,6 +64,7 @@ import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
+import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -120,15 +124,24 @@ public class GLParallelCoordinates
 	 * lower gate tip
 	 */
 	private HashMap<Integer, Pair<Float, Float>> hashGates;
+	private HashMap<Integer, ArrayList<Integer>> hashIsGateBlocking;
 	/**
 	 * Hashes how many gates are used on a axis
 	 */
 	private HashMap<Integer, Integer> hashNumberOfGatesPerAxisID;
 
+	/**
+	 * HashMap for the gates that are used to remove selections across all axes,
+	 * when the set is homogeneous
+	 */
 	private HashMap<Integer, Pair<Float, Float>> hashMasterGates;
 	private int iNumberOfMasterGates;
 
-	private HashMap<Integer, ArrayList<Integer>> hashIsGateBlocking;
+	/**
+	 * HashMap that has flags for all the axes that have NAN
+	 */
+	private HashMap<Integer, Boolean> hashExcludeNAN;
+	private HashMap<Integer, ArrayList<Integer>> hashIsNANBlocking;
 
 	private ArrayList<ArrayList<Integer>> alIsAngleBlocking;
 
@@ -309,7 +322,7 @@ public class GLParallelCoordinates
 		}
 
 		pickingManager.handlePicking(iUniqueID, gl);
-		checkUnselection();
+		handleUnselection();
 		if (bIsDisplayListDirtyLocal)
 		{
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -335,7 +348,7 @@ public class GLParallelCoordinates
 		{
 			doTranslation();
 		}
-		checkUnselection();
+		handleUnselection();
 		if (bIsDisplayListDirtyRemote)
 		{
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -400,7 +413,6 @@ public class GLParallelCoordinates
 			handleGateDragging(gl);
 			// if (pickingTriggerMouseAdapter.wasMouseReleased())
 			// {
-			// System.out.println("Mouse released in view");
 			// bIsDraggingActive = false;
 			// }
 		}
@@ -493,7 +505,7 @@ public class GLParallelCoordinates
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		initContentVariables();
 		// initGates();
-		resetSelections();
+		clearAllSelections();
 
 		setDisplayListDirty();
 	}
@@ -513,7 +525,7 @@ public class GLParallelCoordinates
 	 * Reset all selections and deselections
 	 */
 	@Override
-	public synchronized void resetSelections()
+	public synchronized void clearAllSelections()
 	{
 
 		initGates();
@@ -535,7 +547,7 @@ public class GLParallelCoordinates
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 		if (glSelectionHeatMap != null)
-			glSelectionHeatMap.resetSelections();
+			glSelectionHeatMap.clearAllSelections();
 
 		// triggerEvent(EMediatorType.PROPAGATION_MEDIATOR,
 		// new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
@@ -586,7 +598,7 @@ public class GLParallelCoordinates
 		// polylineSelectionManager.moveType(ESelectionType.DESELECTED,
 		// ESelectionType.REMOVE);
 		polylineSelectionManager.removeElements(ESelectionType.DESELECTED);
-		resetSelections();
+		clearAllSelections();
 		setDisplayListDirty();
 	}
 
@@ -677,6 +689,8 @@ public class GLParallelCoordinates
 			hashMasterGates = new HashMap<Integer, Pair<Float, Float>>();
 			iNumberOfMasterGates = 0;
 		}
+		hashExcludeNAN = new HashMap<Integer, Boolean>();
+		hashIsNANBlocking = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
 	/**
@@ -890,7 +904,7 @@ public class GLParallelCoordinates
 				fCurrentYValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
 				if (Float.isNaN(fCurrentYValue))
 				{
-					fCurrentYValue = renderStyle.getNaNYOffset();
+					fCurrentYValue = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 				}
 				if (iVertexCount != 0)
 				{
@@ -1004,13 +1018,54 @@ public class GLParallelCoordinates
 
 			gl.glEnd();
 			gl.glDisable(GL.GL_LINE_STIPPLE);
+
 			if (detailLevel != EDetailLevel.HIGH || !renderStyle.isEnoughSpaceForText(iNumberAxis))
 			{
 				// pop the picking id here when we don't want to include the
 				// axis label
 				gl.glPopName();
 			}
-			else
+
+			// NaN Button
+			float fXButtonOrigin = alAxisSpacing.get(iCount);
+
+			Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAN);
+
+			tempTexture.enable();
+			tempTexture.bind();
+
+			TextureCoords texCoords = tempTexture.getImageTexCoords();
+			int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_NAN, axisVA.get(iCount));
+			// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+			gl.glColor4f(1, 1, 1, 1f);
+			gl.glPushName(iPickingID);
+
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl
+				.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+			gl
+				.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
+			gl
+				.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			gl
+				.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+			gl.glEnd();
+
+			gl.glPopName();
+
+			// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
+			// gl.glPopAttrib();
+			tempTexture.disable();
+
+			if (detailLevel == EDetailLevel.HIGH)
 			{
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
@@ -1101,47 +1156,44 @@ public class GLParallelCoordinates
 
 				// render Buttons
 
-				float fXButtonOrigin = 0;
-				float fYDropOrigin = 0;
-				int iPickingID = -1;
-
-				fXButtonOrigin = alAxisSpacing.get(iCount);
-				fYDropOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET;
+				
+				iPickingID = -1;
+				float fYDropOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET;
 
 				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+				// the gate add button
+				float fYGateAddOrigin = renderStyle.getAxisHeight();
+				iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.ADD_GATE, axisVA.get(iCount));
+				tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
+
+				tempTexture.enable();
+				tempTexture.bind();
+				texCoords = tempTexture.getImageTexCoords();
+
+				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				gl.glColor4f(1, 1, 1, 1f);
+				gl.glPushName(iPickingID);
+
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+				gl.glEnd();
+
+				gl.glPopName();
+
+				// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
+				// gl.glPopAttrib();
+				tempTexture.disable();
+				
 				if (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount)))
 				{
-					// the gate add button
-					float fYGateAddOrigin = renderStyle.getAxisHeight();
-					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.ADD_GATE, axisVA.get(iCount));
-					Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
-
-					tempTexture.enable();
-					tempTexture.bind();
-
-					TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-					// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-					gl.glColor4f(1, 1, 1, 1f);
-					gl.glPushName(iPickingID);
-
-					gl.glBegin(GL.GL_POLYGON);
-					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-					gl.glVertex3f(fXButtonOrigin - 0.05f, fYGateAddOrigin, AXIS_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-					gl.glVertex3f(fXButtonOrigin + 0.05f, fYGateAddOrigin, AXIS_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.top());
-					gl.glVertex3f(fXButtonOrigin + 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
-					gl.glTexCoord2f(texCoords.left(), texCoords.top());
-					gl.glVertex3f(fXButtonOrigin - 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
-					gl.glEnd();
-
-					gl.glPopName();
-
-					// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
-					// gl.glPopAttrib();
-					tempTexture.disable();
-
 					// the mouse over drop
 					if (iChangeDropOnAxisNumber == iCount)
 					{
@@ -1209,11 +1261,11 @@ public class GLParallelCoordinates
 				else
 				{
 					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.MOVE_AXIS, iCount);
-					Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
+					tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
 					tempTexture.enable();
 					tempTexture.bind();
 
-					TextureCoords texCoords = tempTexture.getImageTexCoords();
+					texCoords = tempTexture.getImageTexCoords();
 
 					gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 					gl.glColor4f(1, 1, 1, 1);
@@ -1308,8 +1360,8 @@ public class GLParallelCoordinates
 
 	private void renderSingleGate(GL gl, Pair<Float, Float> gate, int iAxisID, int iGateID, float fCurrentPosition)
 	{
-		final float fGateWidth = renderStyle.getGateWidth();
-		final float fGateTipHeight = renderStyle.getGateTipHeight();
+		// final float fGateWidth = renderStyle.;
+		// final float fGateTipHeight = renderStyle.GATE_TIP_HEIGHT;
 
 		Float fBottom = gate.getFirst();
 		Float fTop = gate.getSecond();
@@ -1330,10 +1382,10 @@ public class GLParallelCoordinates
 		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_GATE, iGateID);
 		gl.glPushName(iPickingID);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fCurrentPosition + fGateWidth, fTop - fGateTipHeight, GATE_Z);
-		gl.glVertex3f(fCurrentPosition + 0.1828f - fGateWidth, fTop - fGateTipHeight, GATE_Z);
-		gl.glVertex3f(fCurrentPosition + 0.1828f - fGateWidth, fTop, GATE_Z);
-		gl.glVertex3f(fCurrentPosition + fGateWidth, fTop, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop, GATE_Z);
 		gl.glEnd();
 		gl.glPopName();
 
@@ -1346,13 +1398,13 @@ public class GLParallelCoordinates
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_TIP_SELECTION, iGateID));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + 0.1828f - fGateWidth, fTop - fGateTipHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + 0.1828f - fGateWidth, fTop, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop, GATE_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop, GATE_Z);
 		gl.glEnd();
 		tempTexture.disable();
 
@@ -1360,22 +1412,22 @@ public class GLParallelCoordinates
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
-		float fMenuHeight = 8 * renderStyle.getGateWidth() / 3.5f;
+		float fMenuHeight = 8 * GATE_WIDTH / 3.5f;
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - 7 * renderStyle.getGateWidth(), fTop, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fTop, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + renderStyle.getGateWidth(), fTop, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + renderStyle.getGateWidth(), fTop + fMenuHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop + fMenuHeight, GATE_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - 7 * renderStyle.getGateWidth(), fTop + fMenuHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fTop + fMenuHeight, GATE_Z);
 		gl.glEnd();
 
 		textRenderer.setColor(1, 1, 1, 1);
 		float fValue = (float) set.getRawForNormalized(fTop / renderStyle.getAxisHeight());
-		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 4 * renderStyle.getGateWidth(), fTop + 0.02f);
+		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fTop + 0.02f);
 
 		tempTexture.disable();
 		gl.glPopAttrib();
@@ -1405,13 +1457,13 @@ public class GLParallelCoordinates
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BODY_SELECTION, iGateID));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + fGateWidth, fTop - fGateTipHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
 		gl.glEnd();
 		gl.glPopName();
 		tempTexture.disable();
@@ -1436,13 +1488,13 @@ public class GLParallelCoordinates
 		gl.glColor4f(1, 1, 1, 1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		gl.glEnd();
 
 		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
@@ -1452,19 +1504,19 @@ public class GLParallelCoordinates
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - 7 * renderStyle.getGateWidth(), fBottom, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fBottom, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + renderStyle.getGateWidth(), fBottom, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom, GATE_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + renderStyle.getGateWidth(), fBottom - fMenuHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom - fMenuHeight, GATE_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - 7 * renderStyle.getGateWidth(), fBottom - fMenuHeight, GATE_Z);
+		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fBottom - fMenuHeight, GATE_Z);
 		gl.glEnd();
 
 		textRenderer.setColor(1, 1, 1, 1);
 		fValue = (float) set.getRawForNormalized(fBottom / renderStyle.getAxisHeight());
-		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 4 * renderStyle.getGateWidth(), fBottom
-			- fMenuHeight + 0.02f);
+		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fBottom - fMenuHeight
+			+ 0.02f);
 
 		tempTexture.disable();
 
@@ -1641,10 +1693,10 @@ public class GLParallelCoordinates
 			bIsGateDraggingFirstTime = false;
 		}
 		float fTipUpperLimit = renderStyle.getAxisHeight();
-		float fTipLowerLimit = fBottom + 2 * renderStyle.getGateTipHeight();
-		float fBottomLowerLimit = renderStyle.getGateMinimumValue();
+		float fTipLowerLimit = fBottom + GATE_TIP_HEIGHT;
+		float fBottomLowerLimit = 0;
 		// - renderStyle.getGateTipHeight();
-		float fBottomUpperLimit = fTop - 2 * renderStyle.getGateTipHeight();
+		float fBottomUpperLimit = fTop - GATE_TIP_HEIGHT;
 
 		if (draggedObject == EPickingType.GATE_TIP_SELECTION)
 		{
@@ -1672,11 +1724,11 @@ public class GLParallelCoordinates
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new InfoAreaUpdateEventContainer(iUniqueID));
 
 		if (pickingTriggerMouseAdapter.wasMouseReleased())
 		{
 			bIsDraggingActive = false;
-			System.out.println("Mouse released in view");
 		}
 
 	}
@@ -1712,7 +1764,7 @@ public class GLParallelCoordinates
 				}
 
 				if (Float.isNaN(fCurrentValue))
-					fCurrentValue = renderStyle.getNaNYOffset();
+					continue;
 
 				if (fCurrentValue <= (gate.getSecond() - 0.0000000001f) / renderStyle.getAxisHeight()
 					&& fCurrentValue >= gate.getFirst() / renderStyle.getAxisHeight())
@@ -1720,6 +1772,33 @@ public class GLParallelCoordinates
 					alCurrentGateBlocks.add(iPolylineIndex);
 				}
 			}
+		}
+	}
+
+	private void handleNANUnselection()
+	{
+		float fCurrentValue = 0;
+		hashIsNANBlocking.clear();
+		for (Integer iAxisID : hashExcludeNAN.keySet())
+		{
+			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
+			for (int iPolylineIndex : set.getVA(iPolylineVAID))
+			{
+				if (bRenderStorageHorizontally)
+				{
+					fCurrentValue = set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisID);
+				}
+				else
+				{
+					fCurrentValue = set.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+				}
+
+				if (Float.isNaN(fCurrentValue))
+				{
+					alDeselectedLines.add(iPolylineIndex);
+				}
+			}
+			hashIsNANBlocking.put(iAxisID, alDeselectedLines);
 		}
 	}
 
@@ -1750,7 +1829,7 @@ public class GLParallelCoordinates
 					}
 
 					if (Float.isNaN(fCurrentValue))
-						fCurrentValue = renderStyle.getNaNYOffset();
+						continue;
 
 					if (fCurrentValue <= (gate.getSecond() - 0.0000000001f) / renderStyle.getAxisHeight()
 						&& fCurrentValue >= gate.getFirst() / renderStyle.getAxisHeight())
@@ -1772,7 +1851,7 @@ public class GLParallelCoordinates
 	@Override
 	protected void reactOnExternalSelection()
 	{
-		checkUnselection();
+		handleUnselection();
 		resetAxisSpacing();
 	}
 
@@ -1804,36 +1883,52 @@ public class GLParallelCoordinates
 
 	// TODO: revise this, not very performance friendly, especially the clearing
 	// of the DESELECTED
-	private void checkUnselection()
+	private void handleUnselection()
 	{
 
 		handleGateUnselection();
+		handleNANUnselection();
 		handleMasterGateUnselection();
 
-		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
+		// HashMap<Integer, Boolean> hashDeselectedPolylines = new
+		// HashMap<Integer, Boolean>();
+
+		polylineSelectionManager.clearSelection(ESelectionType.DESELECTED);
 
 		for (ArrayList<Integer> alCurrent : hashIsGateBlocking.values())
 		{
-			for (Integer iCurrent : alCurrent)
-			{
-				hashDeselectedPolylines.put(iCurrent, true);
-			}
+			polylineSelectionManager.addToType(ESelectionType.DESELECTED, alCurrent);
+			// for (Integer iCurrent : alCurrent)
+			// {
+			// hashDeselectedPolylines.put(iCurrent, null);
+			// }
 		}
 
 		for (ArrayList<Integer> alCurrent : alIsAngleBlocking)
 		{
-			for (Integer iCurrent : alCurrent)
-			{
-				hashDeselectedPolylines.put(iCurrent, true);
-			}
+			polylineSelectionManager.addToType(ESelectionType.DESELECTED, alCurrent);
+			// for (Integer iCurrent : alCurrent)
+			// {
+			// hashDeselectedPolylines.put(iCurrent, null);
+			// }
 		}
 
-		polylineSelectionManager.clearSelection(ESelectionType.DESELECTED);
-
-		for (int iCurrent : hashDeselectedPolylines.keySet())
+		for (ArrayList<Integer> alCurrent : hashIsNANBlocking.values())
 		{
-			polylineSelectionManager.addToType(ESelectionType.DESELECTED, iCurrent);
+			polylineSelectionManager.addToType(ESelectionType.DESELECTED, alCurrent);
+			// for (Integer iCurrent : alCurrent)
+			// {
+			// hashDeselectedPolylines.put(iCurrent, null);
+			// }
 		}
+
+		// for (int iCurrent : hashDeselectedPolylines.keySet())
+		// {
+		// polylineSelectionManager.addToType(ESelectionType.DESELECTED,
+		// alCurrent);
+		// polylineSelectionManager.addToType(ESelectionType.DESELECTED,
+		// iCurrent);
+		// }
 	}
 
 	@Override
@@ -1984,15 +2079,11 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						draggedObject = EPickingType.GATE_TIP_SELECTION;
 						setDisplayListDirty();
-
-						// System.out.println("Lower gate mouse over");
 						break;
 					case CLICKED:
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.GATE_TIP_SELECTION;
 						iDraggedGateNumber = iExternalID;
-
-						System.out.println("Lower gate top click");
 						break;
 					// case DRAGGED:
 					// bIsDraggingActive = true;
@@ -2190,7 +2281,22 @@ public class GLParallelCoordinates
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.ANGULAR_LOWER);
 				break;
+			case REMOVE_NAN:
+				switch (ePickingMode)
+				{
+					case CLICKED:
 
+						if (hashExcludeNAN.containsKey(iExternalID))
+							hashExcludeNAN.remove(iExternalID);
+						else
+							hashExcludeNAN.put(iExternalID, null);
+						setDisplayListDirty();
+						break;
+
+				}
+				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_NAN);
+
+				break;
 		}
 	}
 
@@ -2220,7 +2326,7 @@ public class GLParallelCoordinates
 
 			if (Float.isNaN(fYValue))
 			{
-				fYValue = renderStyle.getNaNYOffset() * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
+				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 			}
 			else
 			{
@@ -2235,11 +2341,22 @@ public class GLParallelCoordinates
 	@Override
 	public synchronized String getShortInfo()
 	{
-		int iNumLines = set.getVA(iContentVAID).size();
-		String message =
-			"Parallel Coordinates (" + iNumLines + " genes / " + set.getVA(iStorageVAID).size() + " experiments)";
-		if (iDisplayEveryNthPolyline != 1)
-			message += ", rendering a sample of " + (int) iNumLines / iDisplayEveryNthPolyline;
+		String message;
+		int iNumLines =
+			contentSelectionManager.getNumberOfElements(ESelectionType.NORMAL)
+				+ contentSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER)
+				+ contentSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
+		if (iDisplayEveryNthPolyline == 1)
+		{
+			message =
+				"Parallel Coordinates - " + iNumLines + " genes / " + set.getVA(iStorageVAID).size() + " experiments";
+		}
+		else
+		{
+			message =
+				"Parallel Coordinates - a sample of " + iNumLines / iDisplayEveryNthPolyline + " out of " + iNumLines
+					+ " genes / \n " + set.getVA(iStorageVAID).size() + " experiments";
+		}
 		return message;
 
 	}
@@ -2547,8 +2664,6 @@ public class GLParallelCoordinates
 		{
 			bIsAngularDraggingActive = false;
 			// bIsAngularBrushingActive = false;
-
-			System.out.println("Mouse released in view");
 		}
 
 	}

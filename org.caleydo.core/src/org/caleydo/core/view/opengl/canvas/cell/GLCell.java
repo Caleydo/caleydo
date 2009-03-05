@@ -293,4 +293,11 @@ public class GLCell
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
+	@Override
+	public void clearAllSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

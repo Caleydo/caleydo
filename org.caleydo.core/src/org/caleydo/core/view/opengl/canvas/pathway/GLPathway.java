@@ -958,4 +958,10 @@ public class GLPathway
 
 		super.destroy();
 	}
+
+	@Override
+	public void clearAllSelections()
+	{
+		selectionManager.clearSelections();		
+	}
 }

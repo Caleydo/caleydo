@@ -366,8 +366,8 @@ public class GLHeatMap
 	@Override
 	public String getShortInfo()
 	{
-		return "Heat Map (" + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
-			+ " experiments)";
+		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
+			+ " experiments";
 	}
 
 	@Override
@@ -1112,13 +1112,13 @@ public class GLHeatMap
 		setDisplayListDirty();
 	}
 
-	@Override
-	public synchronized void resetSelections()
-	{
-		contentSelectionManager.clearSelections();
-		storageSelectionManager.clearSelections();
-		setDisplayListDirty();
-	}
+//	@Override
+//	public synchronized void clear()
+//	{
+//		contentSelectionManager.clearSelections();
+//		storageSelectionManager.clearSelections();
+//		setDisplayListDirty();
+//	}
 
 	@Override
 	public void changeOrientation(boolean defaultOrientation)

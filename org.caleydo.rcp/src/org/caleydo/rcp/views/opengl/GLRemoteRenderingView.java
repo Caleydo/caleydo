@@ -10,6 +10,7 @@ import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
+import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
@@ -82,7 +83,9 @@ public class GLRemoteRenderingView
 //		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
 //		alToolbar.add(toggleLayoutAction);
 		IAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(iViewID);
-		alToolbar.add(toggleConnectionLinesAction);		
+		alToolbar.add(toggleConnectionLinesAction);	
+		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
+		alToolbar.add(clearSelectionsAction);
 	}
 
 	@Override

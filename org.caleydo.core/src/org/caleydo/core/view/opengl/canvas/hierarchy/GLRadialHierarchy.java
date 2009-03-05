@@ -285,4 +285,11 @@ extends AGLEventListener
 		return null;
 	}
 
+	@Override
+	public void clearAllSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

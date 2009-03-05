@@ -2038,7 +2038,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void resetSelections()
+	public synchronized void clearAllSelections()
 	{
 		AlSelection.clear();
 		AlExpMouseOver.clear();

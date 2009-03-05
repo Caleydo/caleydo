@@ -28,6 +28,6 @@ public class ClearSelectionsAction
 	{
 		super.run();
 
-		triggerCmdExternalAction(EExternalActionType.STORAGEBASED_CLEAR_SELECTIONS);
+		triggerCmdExternalAction(EExternalActionType.CLEAR_SELECTIONS);
 	};
 }

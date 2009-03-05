@@ -41,6 +41,7 @@ public enum EPickingType
 	ANGULAR_UPPER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 	ANGULAR_LOWER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 	PCS_VIEW_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, true),
+	REMOVE_NAN(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 
 	// pathway manager
 	PATHWAY_ELEMENT_SELECTION(EManagedObjectType.GL_PATHWAY, false),

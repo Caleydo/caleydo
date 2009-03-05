@@ -18,6 +18,7 @@ public class ParCoordsRenderStyle
 	public static final float POLYLINE_SELECTED_Z = 0.002f;
 	public static final float POLYLINE_DESELECTED_Z = 0;
 	public static final float GATE_Z = 0.003f;
+	public static final float NAN_Z = 0.003f;
 
 	public static final float AXIS_Z = 0.0f;
 
@@ -69,7 +70,7 @@ public class ParCoordsRenderStyle
 
 	public static final int NUMBER_AXIS_MARKERS = 9;
 
-	private static final float NAN_Y_OFFSET = -0.03f;
+	public static final float NAN_Y_OFFSET = -0.08f;
 
 	// modifiable colors
 	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -95,13 +96,13 @@ public class ParCoordsRenderStyle
 	public static final float AXIS_MARKER_WIDTH = 0.01f;
 
 	// gates
-	private static final float GATE_WIDTH = 0.05f;
+	public static final float GATE_WIDTH = 0.05f;
 	public static final float GATE_BOTTOM_HEIGHT = 0.01f;
-	private static final float GATE_NEGATIVE_Y_OFFSET = 0;
-	private static final float GATE_TIP_HEIGHT = 0.08f;
+//	private static final float GATE_NEGATIVE_Y_OFFSET = 0;
+	public static final float GATE_TIP_HEIGHT = 0.08f;
 
 	// buttons below axis
-	public static final float AXIS_BUTTONS_Y_OFFSET = 0.1f;
+	public static final float AXIS_BUTTONS_Y_OFFSET = 0.12f;
 
 	private static final float fAxisSpacingLowerLimit = 0.001f;
 
@@ -194,33 +195,36 @@ public class ParCoordsRenderStyle
 		return AXIS_BUTTONS_Y_OFFSET * getScaling();
 	}
 
-	public float getGateWidth()
-	{
+//	public float getGateWidth()
+//	{
+//
+//		return GATE_WIDTH;
+//	}
 
-		return GATE_WIDTH;
-	}
+//	public float getGateYOffset()
+//	{
+//
+//		return GATE_NEGATIVE_Y_OFFSET * getAxisHeight();
+//	}
 
-	public float getGateYOffset()
-	{
+//	@Deprecated // not used anymore?
+//	public float getGateMinimumValue()
+//	{
+//		return NAN_Y_OFFSET * getAxisHeight();
+//	}
 
-		return GATE_NEGATIVE_Y_OFFSET * getAxisHeight();
-	}
+//	@Deprecated
+//	public float getNaNYOffset()
+//	{
+//		return NAN_Y_OFFSET;
+//	}
 
-	public float getGateMinimumValue()
-	{
-		return NAN_Y_OFFSET * getAxisHeight();
-	}
-
-	public float getNaNYOffset()
-	{
-		return NAN_Y_OFFSET;
-	}
-
-	public float getGateTipHeight()
-	{
-
-		return GATE_TIP_HEIGHT;
-	}
+//	@Deprecated
+//	public float getGateTipHeight()
+//	{
+//
+//		return GATE_TIP_HEIGHT;
+//	}
 
 	public float getAxisCaptionSpacing()
 	{

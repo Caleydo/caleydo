@@ -3,6 +3,8 @@ package org.caleydo.rcp.views.opengl;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
@@ -49,29 +51,34 @@ public class GLHeatMapView
 
 	public static void createToolBarItems(int iViewID)
 	{
-//		GLHeatMap heatMap = (GLHeatMap) GeneralManager.get().getViewGLCanvasManager()
-//				.getGLEventListener(iViewID);
+		 GLHeatMap heatMap = (GLHeatMap)
+		 GeneralManager.get().getViewGLCanvasManager()
+		 .getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 
 		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
 		alToolbar.add(switchAxesToPolylinesAction);
-		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
-		alToolbar.add(clearSelectionsAction);
-		IAction resetViewAction = new ResetViewAction(iViewID);
-		alToolbar.add(resetViewAction);
-		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
-		alToolbar.add(propagateSelectionAction);
+		if (!heatMap.isRenderedRemote())
+		{
+			IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
+			alToolbar.add(clearSelectionsAction);
+			IAction resetViewAction = new ResetViewAction(iViewID);
+			alToolbar.add(resetViewAction);
+			IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
+			alToolbar.add(propagateSelectionAction);
+		}
 
-//		if (heatMap.isRenderedRemote()
-//				&& GeneralManager.get().getPreferenceStore().getBoolean(
-//						PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT))
-//			return;
-//
-//		IAction toggleRenderContextAction = new RenderContextAction(iViewID);
-//		alToolbar.add(toggleRenderContextAction);
-//		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
-//		alToolbar.add(useRandomSamplingAction);
+		// if (heatMap.isRenderedRemote()
+		// && GeneralManager.get().getPreferenceStore().getBoolean(
+		// PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT))
+		// return;
+		//
+		// IAction toggleRenderContextAction = new RenderContextAction(iViewID);
+		// alToolbar.add(toggleRenderContextAction);
+		// IAction useRandomSamplingAction = new
+		// UseRandomSamplingAction(iViewID);
+		// alToolbar.add(useRandomSamplingAction);
 
 	}
 }

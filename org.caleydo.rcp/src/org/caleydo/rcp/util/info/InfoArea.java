@@ -1,6 +1,5 @@
 package org.caleydo.rcp.util.info;
 
-import java.util.logging.Level;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -18,6 +17,7 @@ import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -29,7 +29,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -38,10 +37,11 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * Info area that is located in the sidebar. It shows the current view and the
+ * Info area that is located in the side-bar. It shows the current view and the
  * current selection (in a tree).
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class InfoArea
 	implements IMediatorReceiver
@@ -59,6 +59,8 @@ public class InfoArea
 
 	private GlyphManager glyphManager;
 	private IIDMappingManager idMappingManager;
+
+	private String shortInfo;
 
 	/**
 	 * Constructor.
@@ -221,7 +223,8 @@ public class InfoArea
 								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, selectionItem
 									.getPrimaryID());
 
-							Integer iDavidID =idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem
+							Integer iDavidID =
+								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem
 									.getPrimaryID());
 
 							String sGeneSymbol = idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
@@ -263,42 +266,50 @@ public class InfoArea
 						}
 					}
 				}
-//				else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
-//				{
-//					lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
-//
-//					for (SelectionDeltaItem selectionItem : selectionDelta)
-//					{
-//						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER)
-//						{
-//							// we only show 1 item
-//							for (TreeItem child : selectionTree.getItems())
-//							{
-//								if (child.getData("mapping_type") != null)
-//									if (child.getData("mapping_type").equals(
-//										EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString()))
-//										child.dispose();
-//							}
-//
-//							String id = Integer.toString(selectionItem.getPrimaryID());
-//							if (idMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
-//							{
-//								id = idMappingManager.getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, id);
-//							}
-//
-//							TreeItem item = new TreeItem(selectionTree, SWT.NONE);
-//							item.setText(id);
-//							item.setData(selectionItem.getPrimaryID());
-//							item.setData("mapping_type", EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
-//							item.setData("selection_type", selectionItem.getSelectionType());
-//
-//							addGlyphInfo(selectionItem, item);
-//
-//							item.setExpanded(true);
-//
-//						}
-//					}
-//				}
+				// else if (selectionDelta.getIDType() ==
+				// EIDType.EXPERIMENT_INDEX)
+				// {
+				// lblViewInfoContent.setText(((AGLEventListener)
+				// eventTrigger).getShortInfo());
+				//
+				// for (SelectionDeltaItem selectionItem : selectionDelta)
+				// {
+				// if (selectionItem.getSelectionType() ==
+				// ESelectionType.MOUSE_OVER)
+				// {
+				// // we only show 1 item
+				// for (TreeItem child : selectionTree.getItems())
+				// {
+				// if (child.getData("mapping_type") != null)
+				// if (child.getData("mapping_type").equals(
+				// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString()))
+				// child.dispose();
+				// }
+				//
+				// String id = Integer.toString(selectionItem.getPrimaryID());
+				// if
+				// (idMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
+				// {
+				// id =
+				// idMappingManager.getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
+				// id);
+				// }
+				//
+				// TreeItem item = new TreeItem(selectionTree, SWT.NONE);
+				// item.setText(id);
+				// item.setData(selectionItem.getPrimaryID());
+				// item.setData("mapping_type",
+				// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
+				// item.setData("selection_type",
+				// selectionItem.getSelectionType());
+				//
+				// addGlyphInfo(selectionItem, item);
+				//
+				// item.setExpanded(true);
+				//
+				// }
+				// }
+				// }
 			}
 		});
 	}
@@ -372,6 +383,7 @@ public class InfoArea
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType)
 	{
@@ -429,10 +441,24 @@ public class InfoArea
 
 						break;
 					case EXPERIMENT_INDEX:
-						// storageSelectionManager.executeSelectionCommands(commandEventContainer
-						// .getSelectionCommands());
-						// break;
+
+						break;
 				}
+				break;
+			case INFO_AREA_UPDATE:
+				InfoAreaUpdateEventContainer infoEventContainer = (InfoAreaUpdateEventContainer) eventContainer;
+				AGLEventListener view =
+					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(infoEventContainer.getViewID());
+
+				shortInfo = view.getShortInfo();
+				parentComposite.getDisplay().asyncExec(new Runnable()
+				{
+					public void run()
+					{
+						lblViewInfoContent.setText(shortInfo);
+					}
+				});
+				break;
 		}
 	}
 }

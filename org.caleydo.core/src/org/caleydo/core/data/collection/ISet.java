@@ -236,7 +236,7 @@ public interface ISet
 	 * @return the virtual array associated with the unique ID
 	 */
 	public IVirtualArray getVA(int iUniqueID);
-
+	
 	/**
 	 * Export a manipulated subset of the data to the destination specifiedn in sFileName. Determine whether 
 	 * @param sFileName

@@ -35,6 +35,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Marc Streit
  */
+@Deprecated // use heat map with list mode instead
 public class GLSelectionPanel
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
@@ -381,6 +382,13 @@ public class GLSelectionPanel
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	}
+
+	@Override
+	public void clearAllSelections()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

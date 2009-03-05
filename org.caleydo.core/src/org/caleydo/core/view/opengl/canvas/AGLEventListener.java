@@ -338,6 +338,15 @@ public abstract class AGLEventListener
 	 * @param gl
 	 */
 	public abstract void displayRemote(final GL gl);
+	
+	/**
+	 * Clears all selections, meaning that no element is selected or deselected
+	 * after this method was called. Everything returns to "normal". Note that
+	 * virtual array manipulations are not considered selections and are
+	 * therefore not reset.
+	 */
+	public abstract void clearAllSelections();	
+	
 
 	public final GLCaleydoCanvas getParentGLCanvas()
 	{

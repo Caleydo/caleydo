@@ -2,6 +2,7 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -31,8 +32,10 @@ public class CmdExternalActionTrigger
 	@Override
 	public void doCommand()
 	{
-		Object viewObject = generalManager.getViewGLCanvasManager()
-				.getGLEventListener(iViewId);
+		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
+
+		if (externalActionType == EExternalActionType.CLEAR_SELECTIONS)
+			viewObject.clearAllSelections();
 
 		if (viewObject instanceof GLRemoteRendering)
 		{
@@ -46,7 +49,7 @@ public class CmdExternalActionTrigger
 					return;
 				case REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE:
 					((GLRemoteRendering) viewObject).toggleConnectionLines();
-					return;					
+					return;
 			}
 		}
 		else if (viewObject instanceof AStorageBasedView)
@@ -55,9 +58,6 @@ public class CmdExternalActionTrigger
 			{
 				case STORAGEBASED_PROPAGATE_SELECTIONS:
 					((AStorageBasedView) viewObject).broadcastElements();
-					return;
-				case STORAGEBASED_CLEAR_SELECTIONS:
-					((AStorageBasedView) viewObject).resetSelections();
 					return;
 				case STORAGEBASED_RESET_VIEW:
 					((AStorageBasedView) viewObject).resetView();

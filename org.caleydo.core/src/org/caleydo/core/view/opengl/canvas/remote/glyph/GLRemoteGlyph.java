@@ -228,4 +228,11 @@ public class GLRemoteGlyph
 	{
 		return 0;
 	}
+
+	@Override
+	public void clearAllSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

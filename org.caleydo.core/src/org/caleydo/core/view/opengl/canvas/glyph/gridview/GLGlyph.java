@@ -1332,4 +1332,11 @@ public class GLGlyph
 		// throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 
+	@Override
+	public void clearAllSelections()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

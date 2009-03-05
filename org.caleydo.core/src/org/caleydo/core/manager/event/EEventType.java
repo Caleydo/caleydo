@@ -7,12 +7,10 @@ import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 
 /**
  * Types of events that can be send from a {@link IMediatorSender} to a
- * {@link IMediatorReceiver}
- * 
- * Document every type, including a reference to the implementing class
+ * {@link IMediatorReceiver} Document every type, including a reference to the
+ * implementing class
  * 
  * @author Alexander Lex
- * 
  */
 public enum EEventType
 {
@@ -38,6 +36,13 @@ public enum EEventType
 	 * type
 	 */
 	VA_UPDATE,
-
-	VIEW_COMMAND
+	/**
+	 * Type for {@link ViewCommandEventContainer}. Used to signal views for
+	 * example to redraw
+	 */
+	VIEW_COMMAND,
+	/**
+	 * 
+	 */
+	INFO_AREA_UPDATE
 }

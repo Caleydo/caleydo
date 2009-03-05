@@ -17,6 +17,7 @@ public enum EIconTextures
 	DROP_MOVE("resources/icons/view/storagebased/parcoords/drop_move.png"),
 	SMALL_DROP("resources/icons/view/storagebased/parcoords/drop_small.png"),
 	ADD_GATE("resources/icons/view/storagebased/parcoords/add_gate.png"),
+	NAN("resources/icons/view/storagebased/parcoords/nan.png"),
 	
 	GATE_BOTTOM("resources/icons/view/storagebased/parcoords/gate_bottom.png"),
 	GATE_TOP("resources/icons/view/storagebased/parcoords/gate_top.png"),

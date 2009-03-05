@@ -30,7 +30,7 @@ public abstract class AGLViewPart
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected AGLEventListener glEventListener;
-	
+
 	/**
 	 * Contains view IDs for initially contained remote rendered views
 	 */
@@ -46,9 +46,9 @@ public abstract class AGLViewPart
 
 	protected void createGLCanvas()
 	{
-		CmdViewCreateRcpGLCanvas cmdCanvas = (CmdViewCreateRcpGLCanvas) GeneralManager.get()
-				.getCommandManager()
-				.createCommandByType(ECommandType.CREATE_VIEW_RCP_GLCANVAS);
+		CmdViewCreateRcpGLCanvas cmdCanvas =
+			(CmdViewCreateRcpGLCanvas) GeneralManager.get().getCommandManager().createCommandByType(
+				ECommandType.CREATE_VIEW_RCP_GLCANVAS);
 		cmdCanvas.setAttributes(-1, false, false, false);
 		cmdCanvas.doCommand();
 
@@ -66,9 +66,9 @@ public abstract class AGLViewPart
 	 *            the id of canvas where you want to render
 	 * @param bRegisterToOverallMediator
 	 *            true if you want this to listen and send to main mediator
+	 * @return the ID of the view
 	 */
-	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID,
-			boolean bRegisterToOverallMediator)
+	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID, boolean bRegisterToOverallMediator)
 	{
 		IGeneralManager generalManager = GeneralManager.get();
 
@@ -78,23 +78,22 @@ public abstract class AGLViewPart
 			iAlSets.add(set.getID());
 		}
 
-		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) generalManager
-				.getCommandManager().createCommandByType(glViewType);
+		CmdCreateGLEventListener cmdView =
+			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(glViewType);
 
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D)
 		{
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f,
-					2.87f, 100, iAlSets, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f, 2.87f, 100, iAlSets,
+				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH)
 		{
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100,
-					iAlSets, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iAlSets, iParentCanvasID,
+				0, 0, -8, 0, 0, 0, 0);
 		}
 		else
 		{
-			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iAlSets,
-					iParentCanvasID);
+			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iAlSets, iParentCanvasID);
 		}
 
 		cmdView.doCommand();
@@ -114,7 +113,7 @@ public abstract class AGLViewPart
 	}
 
 	protected int createGLRemoteEventListener(ECommandType glViewType, int iParentCanvasID,
-			boolean bRegisterToOverallMediator, ArrayList<Integer> iAlContainedViewIDs)
+		boolean bRegisterToOverallMediator, ArrayList<Integer> iAlContainedViewIDs)
 	{
 		this.iAlContainedViewIDs = iAlContainedViewIDs;
 		return createGLEventListener(glViewType, iParentCanvasID, bRegisterToOverallMediator);
@@ -158,14 +157,14 @@ public abstract class AGLViewPart
 	{
 		super.dispose();
 
-		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID).destroy();		
+		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID).destroy();
 	}
-	
+
 	public AGLEventListener getGLEventListener()
 	{
 		return glEventListener;
 	}
-	
+
 	public GLCaleydoCanvas getGLCanvas()
 	{
 		return glCanvas;
