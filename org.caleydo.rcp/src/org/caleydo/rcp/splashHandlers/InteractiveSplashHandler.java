@@ -66,7 +66,7 @@ public class InteractiveSplashHandler
 		Label versionLabel = new Label(splash, SWT.NONE);
 		versionLabel.setText("Version " + Activator.sBundleVersion);// + " BETA");
 		versionLabel.setFont(new Font(splash.getDisplay(), "Arial", 9, SWT.NONE));
-		versionLabel.setBounds(336, 185, 300, 20);
+		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelTUGCaption = new Label(splash, SWT.NONE);
@@ -96,7 +96,7 @@ public class InteractiveSplashHandler
 		Label copyrightLabel = new Label(splash, SWT.NONE);
 		copyrightLabel.setText("© 2005 - 2009 - www.caleydo.org");
 		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-		copyrightLabel.setBounds(390, 310, 200, 14);
+		copyrightLabel.setBounds(390, 310, 175, 14);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,

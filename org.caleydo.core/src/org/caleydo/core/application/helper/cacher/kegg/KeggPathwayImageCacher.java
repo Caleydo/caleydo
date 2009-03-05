@@ -85,9 +85,7 @@ public class KeggPathwayImageCacher
 		{
 			// job.setUrl(new
 			// URL("http://www.genome.ad.jp/dbget-bin/get_pathway?org_name=hsa&mapno=00500"));
-			job
-					.setUrl(new URL(
-							"http://www.genome.ad.jp/kegg-bin/show_organism?menu_type=pathway_maps&org=hsa"));
+			job.setUrl(new URL("http://www.genome.ad.jp/kegg-bin/show_organism?menu_type=pathway_maps&org=hsa"));
 		}
 		catch (MalformedURLException e)
 		{

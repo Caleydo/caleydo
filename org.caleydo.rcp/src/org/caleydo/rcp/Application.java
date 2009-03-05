@@ -142,13 +142,55 @@ public class Application
 		// Create Caleydo core
 		caleydoCore = new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
 
+		// If no file is provided as command line argument a XML file open
+		// dialog is opened
+		if (sCaleydoXMLfile.equals(""))
+		{
+			Display display = PlatformUI.createDisplay();
+			Shell shell = new Shell(display);
+			// shell.setActive();
+			// shell.setFocus();
+
+			WizardDialog projectWizardDialog = new WizardDialog(shell,
+					new CaleydoProjectWizard(shell));
+
+			if (WizardDialog.CANCEL == projectWizardDialog.open())
+			{
+				bDoExit = true;
+//				return;
+			}
+
+			if (sCaleydoXMLfile.equals(""))
+			{
+				switch (applicationMode)
+				{
+					case PATHWAY_VIEWER:
+						sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
+						break;
+					case SAMPLE_DATA_RANDOM:
+						sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
+						break;
+					default:
+						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+				}
+			}
+			
+			// Check if Caleydo will be started the first time
+			if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+					PreferenceConstants.PATHWAY_DATA_OK) && bLoadPathwayData)
+			{
+				WizardDialog firstStartWizard = new WizardDialog(shell, new FirstStartWizard());
+				firstStartWizard.open();
+			}
+		}
+
 		Display display = PlatformUI.createDisplay();
 
 //		// Check if Caleydo will be started the first time
 //		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
 //				PreferenceConstants.PATHWAY_DATA_OK))
 //		{
-//			WizardDialog firstStartWizard = new WizardDialog(display.getActiveShell(),
+//			WizardDialog firstStartWizard = new WizardDialog(new Shell(display),
 //					new FirstStartWizard());
 //			firstStartWizard.open();
 //		}
@@ -217,76 +259,31 @@ public class Application
 
 	public static void startCaleydoCore()
 	{
-		// If no file is provided as command line argument a XML file open
-		// dialog is opened
-		if (sCaleydoXMLfile.equals(""))
+		caleydoCore.setXmlFileName(sCaleydoXMLfile);
+		caleydoCore.start();
+		
+		Shell shell = new Shell();
+//		if (applicationMode == EApplicationMode.STANDARD)
+//		{
+//			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
+//					shell));
+//
+//			if (WizardDialog.CANCEL == dataImportWizard.open())
+//			{
+//				bDoExit = true;
+//			}
+//		}
+		if (applicationMode == EApplicationMode.SAMPLE_DATA_REAL)
 		{
-			Display display = PlatformUI.createDisplay();
-			Shell shell = new Shell(display);
-			// shell.setActive();
-			// shell.setFocus();
+			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
+					shell, REAL_DATA_SAMPLE_FILE));
 
-			WizardDialog projectWizardDialog = new WizardDialog(shell,
-					new CaleydoProjectWizard(shell));
-
-			if (WizardDialog.CANCEL == projectWizardDialog.open())
+			if (WizardDialog.CANCEL == dataImportWizard.open())
 			{
 				bDoExit = true;
-				return;
 			}
-
-			switch (applicationMode)
-			{
-				case PATHWAY_VIEWER:
-					sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
-					break;
-				case SAMPLE_DATA_RANDOM:
-					sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
-					break;
-				default:
-					sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-
-			}
-			caleydoCore.setXmlFileName(sCaleydoXMLfile);
-			caleydoCore.start();
-
-			if (applicationMode == EApplicationMode.STANDARD)
-			{
-				WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
-						shell));
-
-				if (WizardDialog.CANCEL == dataImportWizard.open())
-				{
-					bDoExit = true;
-				}
-			}
-			else if (applicationMode == EApplicationMode.SAMPLE_DATA_REAL)
-			{
-				WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
-						shell, REAL_DATA_SAMPLE_FILE));
-
-				if (WizardDialog.CANCEL == dataImportWizard.open())
-				{
-					bDoExit = true;
-				}
-			}
-
-			shell.dispose();
-		}
-		else
-		{
-			caleydoCore.setXmlFileName(sCaleydoXMLfile);
-			caleydoCore.start();
 		}
 		
-		// Check if Caleydo will be started the first time
-		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-				PreferenceConstants.PATHWAY_DATA_OK) && bLoadPathwayData)
-		{
-			WizardDialog firstStartWizard = new WizardDialog(new Shell(), new FirstStartWizard());
-			firstStartWizard.open();
-		}
-
 		initializeColorMapping();
 		// initializeViewSettings();
 

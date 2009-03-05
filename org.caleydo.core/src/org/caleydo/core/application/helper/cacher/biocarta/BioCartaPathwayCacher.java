@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import de.phleisch.app.itsucks.constants.ApplicationConstants;
 import de.phleisch.app.itsucks.core.Dispatcher;
 import de.phleisch.app.itsucks.filter.download.impl.DownloadJobFilter;

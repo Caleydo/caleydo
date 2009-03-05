@@ -17,7 +17,6 @@ import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
-import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -39,15 +38,6 @@ public class PartListener
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef)
 	{
-		IWorkbenchPart activePart = partRef.getPart(false);
-
-		if (activePart instanceof AGLViewPart)
-		{
-			// Make sure that each view is activated for a short time to
-			// initialize properly
-			partVisible(partRef);
-			partHidden(partRef);
-		}
 	}
 
 	@Override
@@ -203,11 +193,11 @@ public class PartListener
 			AGLEventListener glEventListener = ((AGLViewPart) viewPart).getGLEventListener();
 			createViewSpecificToolbar(glEventListener, toolBarManager);
 		}
-		else if (viewPart instanceof HTMLBrowserView)
-		{
-			// HTMLBrowserView.createToolBarItems(viewPart.getViewID());
-			// HTMLBrowserView.fillToolBar(toolBarManager);
-		}
+//		else if (viewPart instanceof HTMLBrowserView)
+//		{
+////			HTMLBrowserView.createToolBarItems(viewPart.getViewID());
+////			HTMLBrowserView.fillToolBar(toolBarManager);
+//		}
 	}
 
 	private void createViewSpecificToolbar(AGLEventListener glEventListener, IToolBarManager toolBarManager)

@@ -266,6 +266,11 @@
             id="org.caleydo.rcp.command.openviews.radial_hierarchy"
             name="Open Radial Hierarchy">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.LoadDataHandler"
+            id="org.caleydo.rcp.command.load_data"
+            name="Load Data">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -277,7 +282,7 @@
                id="fileMenu"
                label="File">
             <command
-                  commandId="org.caleydo.rcp.command.openviews.tabulardata"
+                  commandId="org.caleydo.rcp.command.load_data"
                   label="Load Data"
                   style="push">
             </command>

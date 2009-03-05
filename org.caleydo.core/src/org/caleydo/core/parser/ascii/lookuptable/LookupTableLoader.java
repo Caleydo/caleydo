@@ -223,8 +223,7 @@ public class LookupTableLoader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				swtGuiManager
-						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
+				swtGuiManager.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 	}

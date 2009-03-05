@@ -170,10 +170,7 @@ public class GeneralManager
 			preferenceStore.load();
 		}
 		catch (IOException e)
-		{
-			logger.log(Level.INFO, "Create new preference store at "
-					+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
-
+		{			
 			// Create .caleydo folder
 			if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).exists()))
 			{
@@ -181,7 +178,15 @@ public class GeneralManager
 					throw new IllegalStateException(
 							"Unable to create home folder .caleydo. Check user permissions!");
 			}
+			
+			// Create log folder in .caleydo
+			if (!(new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs()))
+				throw new IllegalStateException(
+						"Unable to create log folder .caleydo/log. Check user permissions!");
 
+			logger.log(Level.INFO, "Create new preference store at "
+				+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
+			
 			try
 			{
 //				preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
@@ -194,9 +199,6 @@ public class GeneralManager
 				throw new IllegalStateException("Unable to save preference file.");
 			}
 		}
-
-		// Create log folder in .caleydo
-		new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs();
 	}
 
 	/**

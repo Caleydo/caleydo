@@ -47,15 +47,14 @@ public abstract class APathwayCacher
 				{
 					iDownloadCount++;
 
-					display.asyncExec(new Runnable()
+					progressBar.getDisplay().asyncExec(new Runnable()
 					{
 						public void run()
 						{
 							if (progressBar.isDisposed())
 								return;
 
-							progressBar
-									.setSelection((int) (iDownloadCount * 100f / iExpectedDownloads));
+							progressBar.setSelection((int) (iDownloadCount * 100f / iExpectedDownloads));
 
 							// System.out.println("Download count: "
 							// +iDownloadCount);

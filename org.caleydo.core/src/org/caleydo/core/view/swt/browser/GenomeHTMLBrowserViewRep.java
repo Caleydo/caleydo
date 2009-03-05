@@ -20,6 +20,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.List;
 
 /**
@@ -35,11 +36,11 @@ public class GenomeHTMLBrowserViewRep
 
 //	private List list;
 
-	private Button buttonKEGG;
-	private Button buttonBioCarta;
-	private Button buttonPubMed;
-	private Button buttonEntrez;
-	private Button buttonGeneCards;
+//	private Button buttonKEGG;
+//	private Button buttonBioCarta;
+//	private Button buttonPubMed;
+//	private Button buttonEntrez;
+//	private Button buttonGeneCards;
 
 	private ArrayList<Integer> iAlDavidID;
 
@@ -108,7 +109,7 @@ public class GenomeHTMLBrowserViewRep
 		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
-		parentComposite.getDisplay().asyncExec(new Runnable()
+		Display.getDefault().asyncExec(new Runnable()
 		{
 			public void run()
 			{

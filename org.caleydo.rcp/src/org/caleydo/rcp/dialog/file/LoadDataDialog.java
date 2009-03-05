@@ -25,14 +25,7 @@ public class LoadDataDialog
 	public LoadDataDialog(Shell parentShell)
 	{
 		super(parentShell);
-
 		parentShell.setText("Open project file");
-		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
-		Rectangle bounds = primary.getBounds();
-		Rectangle rect = parentShell.getBounds();
-		int x = bounds.x + (bounds.width - rect.width) / 2;
-		int y = bounds.y + (bounds.height - rect.height) / 2;
-		parentShell.setLocation(x, y);
 	}
 
 	@Override
@@ -40,6 +33,7 @@ public class LoadDataDialog
 	{
 		super.configureShell(newShell);
 		newShell.setText("Open Text Data File");
+		newShell.setMaximized(true);
 	}
 
 	@Override
@@ -66,7 +60,6 @@ public class LoadDataDialog
 	 */
 	public static void main(String[] args)
 	{
-
 		LoadDataDialog dialog = new LoadDataDialog(new Shell());
 		dialog.open();
 	}

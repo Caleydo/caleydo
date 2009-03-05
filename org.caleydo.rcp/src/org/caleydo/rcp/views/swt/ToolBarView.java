@@ -3,6 +3,8 @@ package org.caleydo.rcp.views.swt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.media.opengl.GLEventListener;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.data.IUniqueObject;
@@ -50,6 +52,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -60,6 +63,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
 
+/**
+ * 
+ * Toolbar view containing all toolbars contributed dynamically by views.
+ * This view is implemented as IMediatorReceiver because it highlights the active
+ * view toolbar when an event is coming in.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class ToolBarView
 	extends ViewPart
 	implements IMediatorReceiver, ISizeProvider
@@ -79,7 +91,7 @@ public class ToolBarView
 	
 	private ArrayList<Group> viewSpecificGroups;
 	
-	private boolean bIsBucketViewActive = false;
+//	private boolean bIsBucketViewActive = false;
 	
 	private Label pathwaySearchLabel;
 	private SearchBox pathwaySearchBox;
@@ -87,6 +99,8 @@ public class ToolBarView
 	@Override
 	public void createPartControl(Composite parent)
 	{
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
+		
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
 		if (!GenomePerspective.bIsWideScreen)
@@ -117,6 +131,8 @@ public class ToolBarView
 	public void dispose()
 	{
 		super.dispose();
+		
+		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	public void addViewSpecificToolBar(CaleydoViewPart viewPart)
@@ -208,7 +224,7 @@ public class ToolBarView
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/remote/remote.png");
 			
-			bIsBucketViewActive = true;
+//			bIsBucketViewActive = true;
 			updateSearchBar(true);
 		}
 		else if (sViewType.equals(GLHeatMapView.ID))
@@ -336,7 +352,7 @@ public class ToolBarView
 			}
 			
 			// Update search bar
-			bIsBucketViewActive = false;
+//			bIsBucketViewActive = false;
 			updateSearchBar(false);
 		}
 	}
@@ -351,7 +367,7 @@ public class ToolBarView
 		viewSpecificGroups.clear();
 		
 		// Update search bar
-		bIsBucketViewActive = false;
+//		bIsBucketViewActive = false;
 		updateSearchBar(false);
 	}
 
@@ -738,9 +754,40 @@ public class ToolBarView
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer, EMediatorType eMediatorType)
+	public void handleExternalEvent(final IUniqueObject eventTrigger, IEventContainer eventContainer, EMediatorType eMediatorType)
 	{
-		// TODO Auto-generated method stub
+		if (eventTrigger instanceof AGLEventListener)
+		{
+			final int iViewID = ((AGLEventListener)eventTrigger).getID();
+	
+			parentComposite.getDisplay().asyncExec(new Runnable()
+			{
+				public void run()
+				{
+					// Check if toolbar is present
+					for (Group group : viewSpecificGroups)
+					{
+						for(Control subControl : group.getChildren())
+						{
+							if (subControl instanceof Label)
+							{
+								if ((group.getData("viewID") != null
+									&& ((Integer) group.getData("viewID")).intValue() == iViewID)
+									|| (eventTrigger instanceof GLPathway && group.getData("viewType") == GLPathwayView.ID))
+								{
+									((Label)subControl).setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY));
+								}
+								else
+								{
+									((Label)subControl).setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));									
+								}
+								
+							}
+						}
+					}
+				}
+			});			
+		}
 	}
 
 	@Override

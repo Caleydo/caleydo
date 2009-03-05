@@ -1,7 +1,10 @@
 package org.caleydo.rcp.wizard.project;
 
+import java.lang.reflect.Method;
+
+import javax.swing.JOptionPane;
+
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.wizard.firststart.FetchPathwayDataPage;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -11,6 +14,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
@@ -25,16 +29,14 @@ public class NewOrExistingProjectPage
 {
 
 	public static final String PAGE_NAME = "Project Wizard";
-	
+
+	private static final String HCC_SAMPLE_DATASET_PAPER_LINK = "http://www.ncbi.nlm.nih.gov/pubmed/17241883";
+
 	public Wizard parentWizard = null;
 
 	public enum EProjectType
 	{
-		NEW_PROJECT,
-		EXISTING_PROJECT,
-		PATHWAY_VIEWER_MODE,
-		SAMPLE_DATA_RANDOM,
-		SAMPLE_DATA_REAL
+		NEW_PROJECT, EXISTING_PROJECT, PATHWAY_VIEWER_MODE, SAMPLE_DATA_RANDOM, SAMPLE_DATA_REAL
 	}
 
 	private EProjectType projectType = EProjectType.SAMPLE_DATA_REAL;
@@ -46,32 +48,68 @@ public class NewOrExistingProjectPage
 	{
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
-				.getResource("resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
+			"resources/wizard/wizard.png")));
 
 		this.setDescription("Do you want to create a new project or load an existing one?");
 
-		parentWizard = (Wizard)this.getWizard();
-		
+		parentWizard = (Wizard) this.getWizard();
+
 		setPageComplete(false);
 	}
 
 	public void createControl(Composite parent)
 	{
-		parentWizard = (Wizard)this.getWizard();
-		
+		parentWizard = (Wizard) this.getWizard();
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout(SWT.VERTICAL));
-		
+
 		Button buttonSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonSampleDataMode
-				.setText("Start with sample gene expression data\n(see: http://www.ncbi.nlm.nih.gov/pubmed/17241883)");
+		buttonSampleDataMode.setText("Start with sample gene expression data");
 		// buttonSampleDataMode.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 		buttonSampleDataMode.setSelection(true);
 
+		Link link = new Link(composite, SWT.NULL);
+		link.setText("(see: <a href=\"HCC_SAMPLE_DATASET_PAPER_LINK\">" +HCC_SAMPLE_DATASET_PAPER_LINK +"</a>)");
+		link.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				String osName = System.getProperty("os.name");
+				try
+				{
+					if (osName.startsWith("Mac OS"))
+					{
+						Class fileMgr = Class.forName("com.apple.eio.FileManager");
+						Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
+						openURL.invoke(null, new Object[] { HCC_SAMPLE_DATASET_PAPER_LINK });
+					}
+					else if (osName.startsWith("Windows"))
+						Runtime.getRuntime().exec(
+							"rundll32 url.dll,FileProtocolHandler " + HCC_SAMPLE_DATASET_PAPER_LINK);
+					else
+					{
+						// assume Unix or Linux
+						String[] browsers = { "firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
+						String browser = null;
+						for (int count = 0; count < browsers.length && browser == null; count++)
+							if (Runtime.getRuntime().exec(new String[] { "which", browsers[count] }).waitFor() == 0)
+								browser = browsers[count];
+						if (browser == null)
+							throw new Exception("Could not find web browser");
+						else
+							Runtime.getRuntime().exec(new String[] { browser, HCC_SAMPLE_DATASET_PAPER_LINK });
+					}
+				}
+				catch (Exception exception)
+				{
+				}
+			}
+		});
 		Button buttonRandomSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonRandomSampleDataMode
-				.setText("Start with random generated sample gene expression data");
+		buttonRandomSampleDataMode.setText("Start with random generated sample gene expression data");
 
 		Button buttonNewProject = new Button(composite, SWT.RADIO);
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
@@ -92,28 +130,28 @@ public class NewOrExistingProjectPage
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				boolean bLoadPathwayData = ((Button) e.widget).getSelection();	
-				
+				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
+
 				if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData)
 				{
 					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
 					messageBox.setText("Load KEGG and BioCarta pathway data");
 					messageBox
-							.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
+						.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
 					messageBox.open();
 
 					((Button) e.widget).setSelection(true);
-					
+
 					return;
 				}
 
 				Application.bLoadPathwayData = bLoadPathwayData;
-				
-//				if (bLoadPathwayData)
-//				{
-//					parentWizard.addPage(new FetchPathwayDataPage());
-//					parentWizard.getContainer().updateButtons();
-//				}
+
+				// if (bLoadPathwayData)
+				// {
+				// parentWizard.addPage(new FetchPathwayDataPage());
+				// parentWizard.getContainer().updateButtons();
+				// }
 			}
 		});
 

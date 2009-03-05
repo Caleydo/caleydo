@@ -27,7 +27,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
- * Action responsible for importing data to current Caleydo project.
+ * Action responsible for exporting data to current Caleydo project.
  * 
  * @author Marc Streit
  */
@@ -36,7 +36,7 @@ public class ExportDataAction
 	implements ActionFactory.IWorkbenchAction
 {
 
-	public final static String ID = "org.caleydo.rcp.FileLoadDataAction";
+	public final static String ID = "org.caleydo.rcp.ExportDataAction";
 
 	private Composite parentComposite;
 

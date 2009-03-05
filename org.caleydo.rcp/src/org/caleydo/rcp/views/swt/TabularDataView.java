@@ -5,11 +5,11 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
+import org.caleydo.rcp.views.CaleydoViewPart;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
 public class TabularDataView
-	extends ViewPart
+	extends CaleydoViewPart
 {
 	public static final String ID = "org.caleydo.rcp.views.swt.TabularDataView";
 

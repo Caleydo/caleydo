@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.logging.Level;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -53,7 +54,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -121,8 +121,8 @@ public class TabularDataViewRep
 	private TableViewer contentTableViewer;
 	private TableCursor contentTableCursor;
 
-	private Button lastRemoveContent;
-	private Button lastRemoveStorage;
+	private Label lastRemoveContent;
+	private Label lastRemoveStorage;
 
 	private int[] iArCurrentColumnOrder;
 
@@ -432,6 +432,8 @@ public class TabularDataViewRep
 			public void handleEvent(Event event)
 			{
 				labelTable.setTopIndex(contentTable.getTopIndex());
+				lastRemoveContent.dispose();
+				lastRemoveStorage.dispose();
 			}
 		});
 		// Horizontal bar on second table takes up a little extra space.
@@ -796,7 +798,6 @@ public class TabularDataViewRep
 							contentTable.getColumn(iVAIndex).dispose();
 						}
 					});
-
 				}
 			}
 		}
@@ -943,10 +944,10 @@ public class TabularDataViewRep
 
 	private void addContentRemoveIcon(int iRowIndex)
 	{
-		final Button lblRemove = new Button(labelTable, SWT.CENTER);
-		// lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		final Label lblRemove = new Label(labelTable, SWT.CENTER);
+		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
-				"resources/icons/general/remove.png"));
+				"resources/icons/view/tabular/remove.png"));
 		lblRemove.setData(set.getVA(iContentVAID).get(iRowIndex));
 
 		// Only one remove icon should be shown at a time
@@ -987,10 +988,10 @@ public class TabularDataViewRep
 
 	private void addStorageRemoveIcon(int iStorageIndex)
 	{
-		final Button lblRemove = new Button(storageRemoverTable, SWT.CENTER);
-		// lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		final Label lblRemove = new Label(storageRemoverTable, SWT.CENTER);
+		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
-				"resources/icons/general/remove.png"));
+			"resources/icons/view/tabular/remove.png"));
 		lblRemove.setData(set.getVA(iStorageVAID).get(iStorageIndex));
 
 		// Only one remove icon should be shown at a time
@@ -1030,5 +1031,4 @@ public class TabularDataViewRep
 			}
 		});
 	}
-
 }

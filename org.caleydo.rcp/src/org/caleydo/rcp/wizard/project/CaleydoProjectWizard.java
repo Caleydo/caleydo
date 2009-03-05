@@ -107,8 +107,7 @@ public class CaleydoProjectWizard
 			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
 					.getProjectType() == EProjectType.EXISTING_PROJECT)
 			{
-				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this
-						.getShell());
+				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
 				fileOpenProjectAction.run();
 
 				this.performFinish();

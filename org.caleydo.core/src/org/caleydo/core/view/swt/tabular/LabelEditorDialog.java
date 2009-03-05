@@ -3,6 +3,7 @@ package org.caleydo.core.view.swt.tabular;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -11,6 +12,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -32,9 +34,8 @@ public class LabelEditorDialog
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
 		shell.setText("Change Label");
-
 		shell.setLayout(new GridLayout(2, false));
-
+		
 		Label label = new Label(shell, SWT.NULL);
 		label.setText("Enter caption:");
 
@@ -108,6 +109,15 @@ public class LabelEditorDialog
 		});
 
 		shell.pack();
+		
+		// Set shell to open in the center of the screen
+		Monitor primary = Display.getCurrent().getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		Rectangle rect = shell.getBounds ();
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		shell.setLocation (x, y);
+		
 		shell.open();
 
 		Display display = parent.getDisplay();

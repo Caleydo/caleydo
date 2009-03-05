@@ -3,7 +3,6 @@ package org.caleydo.rcp.wizard.firststart;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.Application;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
@@ -22,6 +21,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Wizard for fetching pathway data from public databases.
