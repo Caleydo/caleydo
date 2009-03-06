@@ -4,11 +4,14 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyl
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Set;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
@@ -48,6 +51,7 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -2020,7 +2024,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	protected SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
+	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 	{
 		return null;
 	}

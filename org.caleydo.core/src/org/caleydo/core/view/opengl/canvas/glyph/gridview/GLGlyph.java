@@ -127,8 +127,7 @@ public class GLGlyph
 
 		gman = generalManager.getGlyphManager();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
-				.build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		viewType = EManagedObjectType.GL_GLYPH;
 
 		// TODO change this to real parameter
@@ -150,8 +149,8 @@ public class GLGlyph
 		grid_.setGlyphPositions(iconIDs);
 		forceRebuild();
 
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-				.clear(EIDType.EXPERIMENT_INDEX);
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
+			EIDType.EXPERIMENT_INDEX);
 	}
 
 	/**
@@ -169,13 +168,17 @@ public class GLGlyph
 	 * 
 	 * @param positionmodel
 	 * @param axisnumber
-	 * @param internal column number
+	 * @param internal
+	 *            column number
 	 */
 	public synchronized void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value)
 	{
-		if(positionmodel == EIconIDs.DISPLAY_SCATTERPLOT) {
-			GlyphGridPositionModelScatterplot model = (GlyphGridPositionModelScatterplot)grid_.getGlyphPositionModel(positionmodel);
-			switch(axisnumber) {
+		if (positionmodel == EIconIDs.DISPLAY_SCATTERPLOT)
+		{
+			GlyphGridPositionModelScatterplot model =
+				(GlyphGridPositionModelScatterplot) grid_.getGlyphPositionModel(positionmodel);
+			switch (axisnumber)
+			{
 				case 0:
 					model.setParameterWithInternalColnumX(value);
 					break;
@@ -184,9 +187,11 @@ public class GLGlyph
 					break;
 			}
 		}
-		if(positionmodel == EIconIDs.DISPLAY_PLUS) {
-			GlyphGridPositionModelPlus model = (GlyphGridPositionModelPlus)grid_.getGlyphPositionModel(positionmodel);
-			switch(axisnumber) {
+		if (positionmodel == EIconIDs.DISPLAY_PLUS)
+		{
+			GlyphGridPositionModelPlus model = (GlyphGridPositionModelPlus) grid_.getGlyphPositionModel(positionmodel);
+			switch (axisnumber)
+			{
 				case 0:
 					model.setParameterWithInternalColnumX(value);
 					break;
@@ -201,8 +206,10 @@ public class GLGlyph
 	/**
 	 * Sets the Selection Brush
 	 * 
-	 * @param enable / disable selection brush
-	 * @param size of the brush
+	 * @param enable
+	 *            / disable selection brush
+	 * @param size
+	 *            of the brush
 	 */
 	public synchronized void setSelectionBrush(int size)
 	{
@@ -244,8 +251,8 @@ public class GLGlyph
 		{
 			handleConnectedElementRep(selectionDelta);
 
-			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-					this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR, this,
+				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 	}
 
@@ -293,8 +300,7 @@ public class GLGlyph
 
 		// position /scale camera
 		Rotf t = new Rotf();
-		t.set(new Vec3f(-1, 0, 0), (float) (Math.PI / 4.0 - 2.0 * Math.PI * (-(fInitZoom + 3))
-				/ 360.0));
+		t.set(new Vec3f(-1, 0, 0), (float) (Math.PI / 4.0 - 2.0 * Math.PI * (-(fInitZoom + 3)) / 360.0));
 		this.getViewCamera().setCameraRotation(t);
 		this.getViewCamera().addCameraPosition(new Vec3f(0, 0, fInitZoom));
 
@@ -336,16 +342,15 @@ public class GLGlyph
 
 	@Override
 	public synchronized void initRemote(final GL gl, final int iRemoteViewID,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
+		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{
 
 		bIsLocal = false;
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager()
-				.getAllGLCanvasUsers();
+		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
 		for (GLCaleydoCanvas c : cc)
 		{
@@ -410,8 +415,7 @@ public class GLGlyph
 			{
 				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN)
 				{
-					grid_.getGlyphGenerator().setDetailLevel(
-							GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN);
+					grid_.getGlyphGenerator().setDetailLevel(GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
@@ -419,8 +423,7 @@ public class GLGlyph
 			{
 				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX)
 				{
-					grid_.getGlyphGenerator().setDetailLevel(
-							GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX);
+					grid_.getGlyphGenerator().setDetailLevel(GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
@@ -428,8 +431,7 @@ public class GLGlyph
 			{
 				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MID)
 				{
-					grid_.getGlyphGenerator().setDetailLevel(
-							GLGlyphGenerator.DETAILLEVEL.LEVEL_MID);
+					grid_.getGlyphGenerator().setDetailLevel(GLGlyphGenerator.DETAILLEVEL.LEVEL_MID);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
@@ -547,8 +549,7 @@ public class GLGlyph
 				continue;
 
 			gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.GLYPH_FIELD_SELECTION, ge.getID()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GLYPH_FIELD_SELECTION, ge.getID()));
 			gl.glCallList(ge.getGlList(gl));
 			gl.glPopName();
 			gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
@@ -620,8 +621,7 @@ public class GLGlyph
 	{
 		float fXButtonOrigin = 1.3f * renderStyle.getScaling();
 		float fYButtonOrigin = 1.3f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager
-				.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -652,10 +652,14 @@ public class GLGlyph
 	 * (aspect ratio of the screen). It uses ImagieIO, so the file extension
 	 * defines the written picture format.
 	 * 
-	 * @param gl context
-	 * @param file to write
-	 * @param width of the picture
-	 * @param height of the picture
+	 * @param gl
+	 *            context
+	 * @param file
+	 *            to write
+	 * @param width
+	 *            of the picture
+	 * @param height
+	 *            of the picture
 	 */
 	@SuppressWarnings("unused")
 	private void renderToImage(GL gl, File outFile, int width, int height)
@@ -743,17 +747,17 @@ public class GLGlyph
 		gl.glGenTextures(1, colorBuffer, 0); // Create 1 Texture
 		gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]); // Bind The Texture
 		gl.glTexImage2D(
-				// Build Texture Using Information In data
-				GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, width, height, 0, GL.GL_RGBA,
-				GL.GL_UNSIGNED_BYTE, BufferUtil.newByteBuffer(width * height * 4));
+		// Build Texture Using Information In data
+			GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, width, height, 0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, BufferUtil
+				.newByteBuffer(width * height * 4));
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 
 		// Attach the texture to the frame buffer as the color attachment. This
 		// will cause the results of rendering to the FBO to be written in the
 		// blur texture.
-		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT,
-				GL.GL_TEXTURE_2D, colorBuffer[0], 0);
+		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D,
+			colorBuffer[0], 0);
 
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
 
@@ -762,12 +766,11 @@ public class GLGlyph
 		int[] depthBuffer = new int[1];
 		gl.glGenRenderbuffersEXT(1, depthBuffer, 0);
 		gl.glBindRenderbufferEXT(GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
-		gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, width,
-				height);
+		gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, width, height);
 
 		// Attach the newly created depth buffer to the FBO.
-		gl.glFramebufferRenderbufferEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_DEPTH_ATTACHMENT_EXT,
-				GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
+		gl.glFramebufferRenderbufferEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_DEPTH_ATTACHMENT_EXT, GL.GL_RENDERBUFFER_EXT,
+			depthBuffer[0]);
 
 		// Make sure the framebuffer object is complete (i.e. set up correctly)
 		int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
@@ -847,7 +850,8 @@ public class GLGlyph
 	 * in the grid class.
 	 * 
 	 * @param gl
-	 * @param used scale
+	 * @param used
+	 *            scale
 	 */
 	private void handleMouseListenerRubberband(GL gl, float scale)
 	{
@@ -920,8 +924,10 @@ public class GLGlyph
 	 * This method handles selection per brushing. It selects glyphs around the
 	 * given Glyph, acording to the Brush size (iSelectionBrushSize).
 	 * 
-	 * @param a Glyph Entry (the middle one of the brush)
-	 * @param select (true) or deselect (false) mode?
+	 * @param a
+	 *            Glyph Entry (the middle one of the brush)
+	 * @param select
+	 *            (true) or deselect (false) mode?
 	 */
 	private void brushSelect(GlyphEntry glyph, boolean selectDeselect)
 	{
@@ -1040,8 +1046,8 @@ public class GLGlyph
 	}
 
 	@Override
-	protected synchronized void handleEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick)
+	protected synchronized void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick)
 	{
 
 		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION)
@@ -1054,7 +1060,7 @@ public class GLGlyph
 					if (g == null)
 					{
 						generalManager.getLogger().log(Level.WARNING,
-								"Glyph with external ID " + iExternalID + " not found!");
+							"Glyph with external ID " + iExternalID + " not found!");
 						pickingManager.flushHits(iUniqueID, pickingType);
 						return;
 					}
@@ -1068,28 +1074,24 @@ public class GLGlyph
 
 					selectionManager.clearSelections();
 					if (oldMouseOverGlyphEntry != null)
-						selectionManager.addToType(ESelectionType.NORMAL,
-								oldMouseOverGlyphEntry.getID());
+						selectionManager.addToType(ESelectionType.NORMAL, oldMouseOverGlyphEntry.getID());
 
 					selectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 
 					oldMouseOverGlyphEntry = g;
 
 					selectionManager.addConnectionID(generalManager.getIDManager().createID(
-							EManagedObjectType.CONNECTION), iExternalID);
+						EManagedObjectType.CONNECTION), iExternalID);
 
 					if (bEnableSelection)
 						brushSelect(g, !keyListener_.isControlDown());
 
-					generalManager.getViewGLCanvasManager()
+					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
+						EIDType.EXPERIMENT_INDEX);
 
-					.getConnectedElementRepresentationManager()
-							.clear(EIDType.EXPERIMENT_INDEX);
-
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
-									new SelectionCommand(ESelectionCommandType.CLEAR,
-											ESelectionType.MOUSE_OVER)));
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+						EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
+							ESelectionType.MOUSE_OVER)));
 
 					triggerSelectionUpdate();
 
@@ -1107,8 +1109,8 @@ public class GLGlyph
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, EMediatorType eMediatorType)
+	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+		EMediatorType eMediatorType)
 	{
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
@@ -1156,18 +1158,19 @@ public class GLGlyph
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void handleExternalEvent(IUniqueObject eventTrigger,
-			IEventContainer eventContainer, EMediatorType eMediatorType)
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+		EMediatorType eMediatorType)
 	{
 		generalManager.getLogger().log(
-				Level.INFO,
-				sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
-						+ eventTrigger.getClass().getSimpleName());
+			Level.INFO,
+			sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
+				+ eventTrigger.getClass().getSimpleName());
 
 		switch (eventContainer.getEventType())
 		{
 			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
+					(DeltaEventContainer<ISelectionDelta>) eventContainer;
 				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
 
 				.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
@@ -1178,8 +1181,7 @@ public class GLGlyph
 				switch (commandEventContainer.getIDType())
 				{
 					case EXPERIMENT_INDEX:
-						selectionManager.executeSelectionCommands(commandEventContainer
-								.getSelectionCommands());
+						selectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
 						break;
 				}
 				break;
@@ -1211,8 +1213,8 @@ public class GLGlyph
 		if (!bDrawConnectionRepLines)
 			return;
 
-		ConnectedElementRepresentationManager connectedElementRepresentationManager = generalManager
-				.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		ConnectedElementRepresentationManager connectedElementRepresentationManager =
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		Vec3f vecGlyphPos;
 		GlyphEntry actualGlyph = null;
@@ -1230,8 +1232,9 @@ public class GLGlyph
 
 			vecGlyphPos = getGlyphPosition(actualGlyph);
 
-			SelectedElementRep rep = new SelectedElementRep(EIDType.EXPERIMENT_INDEX,
-					iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z());
+			SelectedElementRep rep =
+				new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(),
+					vecGlyphPos.z());
 
 			for (Integer iConnectionID : item.getConnectionID())
 				connectedElementRepresentationManager.addSelection(iConnectionID, rep);
@@ -1267,7 +1270,8 @@ public class GLGlyph
 	/**
 	 * Temporary fix
 	 * 
-	 * @param addHeader you want a header?
+	 * @param addHeader
+	 *            you want a header?
 	 * @param viewName
 	 * @return
 	 */
@@ -1309,8 +1313,7 @@ public class GLGlyph
 
 			for (int i = 0; i < ge.getNumberOfParameters(); ++i)
 			{
-				GlyphAttributeType type = gman
-						.getGlyphAttributeTypeWithInternalColumnNumber(i);
+				GlyphAttributeType type = gman.getGlyphAttributeTypeWithInternalColumnNumber(i);
 
 				line += "; " + type.getParameterString(ge.getParameter(i));
 			}
@@ -1336,7 +1339,7 @@ public class GLGlyph
 	public void clearAllSelections()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -1156,7 +1156,6 @@ public class GLParallelCoordinates
 
 				// render Buttons
 
-				
 				iPickingID = -1;
 				float fYDropOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET;
 
@@ -1191,7 +1190,7 @@ public class GLParallelCoordinates
 				// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
 				// gl.glPopAttrib();
 				tempTexture.disable();
-				
+
 				if (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount)))
 				{
 					// the mouse over drop
@@ -1978,10 +1977,12 @@ public class GLParallelCoordinates
 						return;
 
 				}
-				connectedElementRepresentationManager.clear(ePolylineDataType);
+			
 
 				if (polylineSelectionManager.checkStatus(eSelectionType, iExternalID))
 					break;
+				
+				connectedElementRepresentationManager.clear(ePolylineDataType);
 
 				polylineSelectionManager.clearSelection(eSelectionType);
 
@@ -1996,19 +1997,23 @@ public class GLParallelCoordinates
 						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 					}
+					int iConnectionID = generalManager.getIDManager().createID(
+						EManagedObjectType.CONNECTION);
 					for (Object iExpressionIndex : idMappingManager.getMultiID(
 						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 					{
-						contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+						polylineSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+						polylineSelectionManager.addConnectionID(iConnectionID, (Integer) iExpressionIndex);
 					}
 				}
 				else
 				{
 					polylineSelectionManager.addToType(eSelectionType, iExternalID);
+					polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
+						EManagedObjectType.CONNECTION), iExternalID);
 				}
 
-				polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
-					EManagedObjectType.CONNECTION), iExternalID);
+				
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline)
 				{
@@ -2301,10 +2306,11 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	protected SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
+	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException
 	{
-		// TODO only for one element atm
+
+		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>();
 
 		float fXValue = 0;
 		float fYValue = 0;
@@ -2312,10 +2318,14 @@ public class GLParallelCoordinates
 		if ((bRenderStorageHorizontally && idType == EIDType.EXPRESSION_INDEX)
 			|| (!bRenderStorageHorizontally && idType == EIDType.EXPERIMENT_INDEX))
 		{
-			fXValue =
-				set.getVA(iAxisVAID).indexOf(iStorageIndex) * renderStyle.getAxisSpacing(set.getVA(iAxisVAID).size());
-			fXValue = fXValue + renderStyle.getXSpacing();
-			fYValue = renderStyle.getBottomSpacing();
+			for (int iAxisNumber : set.getVA(iAxisVAID).indicesOf(iStorageIndex))
+			{
+
+				fXValue = iAxisNumber * renderStyle.getAxisSpacing(set.getVA(iAxisVAID).size());
+				fXValue = fXValue + renderStyle.getXSpacing();
+				fYValue = renderStyle.getBottomSpacing();
+				alElementReps.add(new SelectedElementRep(idType, iUniqueID, fXValue, fYValue, 0.0f));
+			}
 		}
 		else
 		{
@@ -2332,10 +2342,10 @@ public class GLParallelCoordinates
 			{
 				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 			}
+			alElementReps.add(new SelectedElementRep(idType, iUniqueID, fXValue, fYValue, 0.0f));
 		}
 
-		SelectedElementRep elementRep = new SelectedElementRep(idType, iUniqueID, fXValue, fYValue, 0.0f);
-		return elementRep;
+		return alElementReps;
 	}
 
 	@Override

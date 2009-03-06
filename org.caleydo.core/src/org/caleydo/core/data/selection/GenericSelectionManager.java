@@ -617,6 +617,9 @@ public class GenericSelectionManager
 		{
 
 			returnDelta = new SelectionDelta(externalIDType, internalIDType);
+			
+			
+			// Here we have a problem when 
 			for (SelectionDeltaItem item : selectionDelta)
 			{
 				Integer iExternalID = GeneralManager.get().getIDMappingManager().getID(
@@ -988,6 +991,7 @@ public class GenericSelectionManager
 
 		hashConnectionToElementID.get(iConnectionID).add(iSelectionID);
 
+		
 		for (SelectionDeltaItem item : selectionDelta)
 		{
 			if (item.getPrimaryID() == iSelectionID)

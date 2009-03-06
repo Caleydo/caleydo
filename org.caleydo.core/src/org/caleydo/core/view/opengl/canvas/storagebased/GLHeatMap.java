@@ -469,14 +469,17 @@ public class GLHeatMap
 				// selection manager.
 				Integer iRefSeqID =
 					idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+				
+				Integer iMappingID = generalManager.getIDManager().createID(
+					EManagedObjectType.CONNECTION);
 				for (Object iExpressionIndex : idMappingManager.getMultiID(
 					EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 				{
 					contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+					contentSelectionManager.addConnectionID(iMappingID, (Integer)iExpressionIndex);
 				}
 
-				contentSelectionManager.addConnectionID(generalManager.getIDManager().createID(
-					EManagedObjectType.CONNECTION), iExternalID);
+				
 
 				if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 				{
@@ -807,8 +810,8 @@ public class GLHeatMap
 
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
@@ -931,42 +934,54 @@ public class GLHeatMap
 	}
 
 	@Override
-	protected SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
+	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException
 	{
 
 		SelectedElementRep elementRep;
+		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
-		if (iContentIndex == -1)
+		for (int iContentIndex : set.getVA(iContentVAID).indicesOf(iStorageIndex))
 		{
-			// throw new
-			// IllegalStateException("No such element in virtual array");
-			// TODO this shouldn't happen here.
-			return null;
+			if (iContentIndex == -1)
+			{
+				// throw new
+				// IllegalStateException("No such element in virtual array");
+				// TODO this shouldn't happen here.
+				continue;
+			}
+
+			float fXValue = fAlXDistances.get(iContentIndex); //+ renderStyle.getSelectedFieldWidth() / 2;
+//			float fYValue = 0;
+			float fYValue = renderStyle.getYCenter();
+
+//			Set<Integer> mouseOver = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+//			for (int iLineIndex : mouseOver)
+//			{
+//				fYValue = set.getVA(iStorageVAID).indexOf(iLineIndex) * renderStyle.getFieldHeight() + renderStyle.getFieldHeight()/2;
+//				break;
+//			}
+
+			if (bRenderStorageHorizontally)
+			{
+				elementRep =
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue + fAnimationTranslation,
+						fYValue, 0);
+
+			}
+			else
+			{
+				Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
+				vecPoint.setY(vecPoint.y() + vecTranslation.y());
+				elementRep =
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
+						- fAnimationTranslation, 0);
+
+			}
+			alElementReps.add(elementRep);
 		}
-
-		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth() / 2;
-
-		float fYValue = renderStyle.getYCenter();
-
-		if (bRenderStorageHorizontally)
-		{
-			elementRep =
-				new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue + fAnimationTranslation, fYValue, 0);
-
-		}
-		else
-		{
-			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
-			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep =
-				new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
-					- fAnimationTranslation, 0);
-
-		}
-		return elementRep;
+		return alElementReps;
 	}
 
 	/**
@@ -1112,13 +1127,13 @@ public class GLHeatMap
 		setDisplayListDirty();
 	}
 
-//	@Override
-//	public synchronized void clear()
-//	{
-//		contentSelectionManager.clearSelections();
-//		storageSelectionManager.clearSelections();
-//		setDisplayListDirty();
-//	}
+	// @Override
+	// public synchronized void clear()
+	// {
+	// contentSelectionManager.clearSelections();
+	// storageSelectionManager.clearSelections();
+	// setDisplayListDirty();
+	// }
 
 	@Override
 	public void changeOrientation(boolean defaultOrientation)
