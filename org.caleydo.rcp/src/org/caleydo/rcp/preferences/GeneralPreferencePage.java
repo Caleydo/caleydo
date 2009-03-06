@@ -1,13 +1,20 @@
 package org.caleydo.rcp.preferences;
 
+import java.util.Collection;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -23,6 +30,7 @@ public class GeneralPreferencePage
 
 	private RadioGroupFieldEditor dataFilterLevelFE;
 	private BooleanFieldEditor enableXPClassicStyleMode;
+	private IntegerFieldEditor numRandomSamplesFE;
 
 	public GeneralPreferencePage()
 	{
@@ -40,11 +48,12 @@ public class GeneralPreferencePage
 	@Override
 	public void createFieldEditors()
 	{
+		Composite mainComp = new Composite(getFieldEditorParent(), SWT.NULL);
 		// Create the layout.
 		RowLayout layout = new RowLayout();
 		// Optionally set layout fields.
-		layout.wrap = true;
-		getFieldEditorParent().setLayout(layout);
+//		layout.wrap = true;
+		mainComp.setLayout(layout);
 		// numRandomSamplesFE = new IntegerFieldEditor(
 		// PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT,
 		// "Number of Random Samples:",
@@ -52,28 +61,42 @@ public class GeneralPreferencePage
 		// numRandomSamplesFE.loadDefault();
 		// addField(numRandomSamplesFE);
 
-		enableXPClassicStyleMode = new BooleanFieldEditor(
-				PreferenceConstants.XP_CLASSIC_STYLE_MODE,
-				"Use Windows XP classic style mode", getFieldEditorParent());
-		enableXPClassicStyleMode.loadDefault();
-		addField(enableXPClassicStyleMode);
+//		enableXPClassicStyleMode =
+//			new BooleanFieldEditor(PreferenceConstants.XP_CLASSIC_STYLE_MODE, "Use Windows XP classic style mode",
+//				getFieldEditorParent());
+//		enableXPClassicStyleMode.loadDefault();
+//		addField(enableXPClassicStyleMode);
 
-		dataFilterLevelFE = new RadioGroupFieldEditor(PreferenceConstants.DATA_FILTER_LEVEL,
-				"Filter level for gene expression data.", 1, new String[][] {
-						{ "No Filtering", "complete" },
+		dataFilterLevelFE =
+			new RadioGroupFieldEditor(PreferenceConstants.DATA_FILTER_LEVEL, "Filter level for gene expression data.",
+				1, new String[][] { { "No Filtering", "complete" },
 						{ "Use only values that have a DAVID ID Mapping", "only_mapping" },
-						{ "Use only values that occur in pathways", "only_context" } },
-				getFieldEditorParent());
+						{ "Use only values that occur in pathways", "only_context" } }, mainComp);
 		dataFilterLevelFE.loadDefault();
 		addField(dataFilterLevelFE);
 
-		org.eclipse.swt.widgets.Label label = new org.eclipse.swt.widgets.Label(
-				getFieldEditorParent(), SWT.NONE);
-		label.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		Label label = new Label(mainComp, SWT.NONE);
+//		label.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
 		label
-				.setText("Note that this only applies for standalone views. \nViews in bucket show only elements that occur in pathways \nby default (You will have to restart for this to take effect)");
+			.setText("Note that this only applies for standalone views. \nViews in bucket show only elements that occur in pathways \nby default (You will have to restart for this to take effect)");
 
-		getFieldEditorParent().pack();
+		
+		// Group sampleGroup = new Group(getFieldEditorParent(),
+		// SWT.SHADOW_ETCHED_IN);
+		Label separator = new Label(mainComp, SWT.SEPARATOR | SWT.HORIZONTAL);
+		
+		Composite sampleComposite = new Composite(mainComp, SWT.NULL);
+
+		numRandomSamplesFE =
+			new IntegerFieldEditor(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, "Number of Random Samples:",
+				sampleComposite);
+		numRandomSamplesFE.loadDefault();
+		addField(numRandomSamplesFE);
+		
+		
+		// sampleGroup.pack();
+//		getFieldEditorParent().pack();
+
 	}
 
 	@Override
@@ -93,6 +116,20 @@ public class GeneralPreferencePage
 	{
 
 		boolean bReturn = super.performOk();
+
+		Collection<AGLEventListener> eventListeners =
+			GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
+		for (AGLEventListener eventListener : eventListeners)
+		{
+			if (eventListener instanceof GLParallelCoordinates)
+			{
+				GLParallelCoordinates parCoords = (GLParallelCoordinates) eventListener;
+				// if(!heatMap.isRenderedRemote())
+				// {
+				parCoords.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
+				// }
+			}
+		}
 
 		return bReturn;
 	}

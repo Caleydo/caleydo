@@ -343,6 +343,8 @@ public class ColorMappingPreferencePage
 		store = GeneralManager.get().getPreferenceStore();
 		int iNumberOfMarkerPoints = store
 				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+		
+
 
 		Color[] alColor = new Color[iNumberOfMarkerPoints];
 		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];

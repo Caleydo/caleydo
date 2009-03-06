@@ -438,16 +438,6 @@
             name="Color Mapping">
       </page>
             <page
-                  class="org.caleydo.rcp.preferences.HeatMapPreferencePage"
-                  id="org.caleydo.rcp.HeatMapPreferences"
-                  name="Heat Map">
-            </page>
-            <page
-                  class="org.caleydo.rcp.preferences.ParCoordsPreferencePage"
-                  id="org.caleydo.rcp.ParCoordsPreferences"
-                  name="Parallel Coordinates">
-            </page>
-            <page
                   class="org.caleydo.rcp.preferences.PathwayUpdatePreferencePage"
                   id="org.caleydo.rcp.PathwayUpdatePreferences"
                   name="Update Pathways">
