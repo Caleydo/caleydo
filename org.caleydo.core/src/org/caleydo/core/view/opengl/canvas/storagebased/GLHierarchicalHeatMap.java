@@ -2090,4 +2090,12 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 	}
+	
+	@Override
+	public synchronized void initData()
+	{
+		super.initData();
+		
+		bRedrawTextures = true;
+	}
 }

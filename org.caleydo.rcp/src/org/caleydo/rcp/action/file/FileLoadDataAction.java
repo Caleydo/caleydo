@@ -129,19 +129,19 @@ public class FileLoadDataAction
 	@Override
 	public void run()
 	{
-		// Check if load data GUI is embedded in a wizard or if a own dialog
-		// must be created.
-		if (parentComposite == null)
-		{
-			Shell shell = new Shell();
-			shell.setMaximized(true);
-			LoadDataDialog loadDataFileDialog = new LoadDataDialog(shell);
-			loadDataFileDialog.open();
-		}
-		else
-		{
+//		// Check if load data GUI is embedded in a wizard or if a own dialog
+//		// must be created.
+//		if (parentComposite == null)
+//		{
+//			Shell shell = new Shell();
+////			shell.setMaximized(true);
+//			LoadDataDialog loadDataFileDialog = new LoadDataDialog(shell);
+//			loadDataFileDialog.open();
+//		}
+//		else
+//		{
 			createGUI();
-		}
+//		}
 	}
 
 	private void createGUI()
@@ -1078,7 +1078,7 @@ public class FileLoadDataAction
 	public static void main(String[] args)
 	{
 		Shell shell = new Shell();
-		shell.setMaximized(true);
+//		shell.setMaximized(true);
 		LoadDataDialog dialog = new LoadDataDialog(shell);
 		dialog.open();
 	}

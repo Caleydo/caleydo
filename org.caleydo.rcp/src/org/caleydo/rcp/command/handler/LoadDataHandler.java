@@ -14,7 +14,7 @@ public class LoadDataHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException
 	{
 		Shell shell = new Shell();
-		shell.setMaximized(true);
+//		shell.setMaximized(true);
 		LoadDataDialog dialog = new LoadDataDialog(shell);
 		dialog.open();
 		

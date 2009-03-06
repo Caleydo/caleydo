@@ -4,24 +4,24 @@ import org.caleydo.rcp.Application;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Wizard that appears when Caleydo is started the first time.
+ * Wizard that appears when Caleydo is started the first time and detects no internet connection.
  * 
  * @author Marc Streit
  */
-public class FirstStartWizard
+public class InternetConfigurationWizard
 	extends Wizard
 {
 
 	/**
 	 * Constructor.
 	 */
-	public FirstStartWizard()
+	public InternetConfigurationWizard()
 	{
 		super();
 	}
@@ -29,9 +29,9 @@ public class FirstStartWizard
 	@Override
 	public void addPages()
 	{
-		addPage(new FetchPathwayDataPage());
+		addPage(new ProxyConfigurationPage());
 
-		setWindowTitle("Caleydo First Start Wizard");
+		setWindowTitle("Internet Configuration Wizard");
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class FirstStartWizard
 	@Override
 	public boolean performCancel()
 	{
-		Application.bDoExit = true;
-
+//		Application.bDoExit = true;
+		
 		return true;
 	}
 
@@ -53,7 +53,7 @@ public class FirstStartWizard
 	{
 		return null;
 	}
-
+	
 	/**
 	 * For testing purposes
 	 */
@@ -65,7 +65,7 @@ public class FirstStartWizard
 		Shell shell = new Shell(display);
 
 		// Create the dialog
-		WizardDialog firstStartWizard = new WizardDialog(shell, new FirstStartWizard());
+		WizardDialog firstStartWizard = new WizardDialog(shell, new InternetConfigurationWizard());
 		firstStartWizard.open();
 
 		// Dispose the display

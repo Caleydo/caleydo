@@ -1,19 +1,22 @@
 package org.caleydo.rcp;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
+
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.views.swt.ToolBarView;
-import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
+import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
+import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
+import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
 import org.eclipse.equinox.app.IApplication;
@@ -51,6 +54,7 @@ public class Application
 	public static boolean bLoadPathwayData = true;
 	public static boolean bOverrulePrefStoreLoadPathwayData = false;
 	public static boolean bIsWindowsOS = false;
+	public static boolean bIsInterentConnectionOK = false;
 	
 	public static EApplicationMode applicationMode = EApplicationMode.STANDARD;
 
@@ -134,20 +138,26 @@ public class Application
 			}
 		}
 
-		// System.setProperty("network.proxy_host", "webproxy.kages.at");
-		// System.setProperty("network.proxy_port", "80");
-
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
 		caleydoCore = new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
 
+		Display display = PlatformUI.createDisplay();
+		Shell shell = new Shell(display);
+		
+		// Check if Caleydo will be started the first time and no internet connection is detected
+		if (caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+				PreferenceConstants.FIRST_START) && !isInternetConnectionOK())
+		{
+			WizardDialog internetConfigurationWizard= new WizardDialog(shell, new InternetConfigurationWizard());
+			internetConfigurationWizard.open();
+		}
+		
 		// If no file is provided as command line argument a XML file open
 		// dialog is opened
 		if (sCaleydoXMLfile.equals(""))
 		{
-			Display display = PlatformUI.createDisplay();
-			Shell shell = new Shell(display);
 			// shell.setActive();
 			// shell.setFocus();
 
@@ -156,8 +166,7 @@ public class Application
 
 			if (WizardDialog.CANCEL == projectWizardDialog.open())
 			{
-				bDoExit = true;
-//				return;
+				shutDown();
 			}
 
 			if (sCaleydoXMLfile.equals(""))
@@ -175,30 +184,16 @@ public class Application
 				}
 			}
 			
-			// Check if Caleydo will be started the first time
 			if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
 					PreferenceConstants.PATHWAY_DATA_OK) && bLoadPathwayData)
+//					&& !caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+//						PreferenceConstants.FIRST_START))
 			{
-				WizardDialog firstStartWizard = new WizardDialog(shell, new FirstStartWizard());
+				WizardDialog firstStartWizard = new WizardDialog(shell, new FetchPathwayWizard());
 				firstStartWizard.open();
 			}
 		}
 
-		Display display = PlatformUI.createDisplay();
-
-//		// Check if Caleydo will be started the first time
-//		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-//				PreferenceConstants.PATHWAY_DATA_OK))
-//		{
-//			WizardDialog firstStartWizard = new WizardDialog(new Shell(display),
-//					new FirstStartWizard());
-//			firstStartWizard.open();
-//		}
-
-		// if (bIsWebstart && !bDoExit)
-		// {
-		// startCaleydoCore();
-		// }
 		try
 		{
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
@@ -206,6 +201,8 @@ public class Application
 			int returnCode = PlatformUI.createAndRunWorkbench(display,
 					applicationWorkbenchAdvisor);
 
+			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
+			
 			if (returnCode == PlatformUI.RETURN_RESTART)
 			{
 				return IApplication.EXIT_RESTART;
@@ -216,26 +213,28 @@ public class Application
 		finally
 		{
 			if (!bDoExit)
-			{
-				// Save preferences before shutdown
-				try
-				{
-					GeneralManager.get().getLogger().log(Level.INFO,
-							"Save Caleydo preferences...");
-//					GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
-					GeneralManager.get().getPreferenceStore().save();
-				}
-				catch (IOException e)
-				{
-					throw new IllegalStateException("Unable to save preference file.");
-				}
-			}
-
-			GeneralManager.get().getLogger().log(Level.INFO, "Bye bye!");
-			display.dispose();
+				shutDown();
 		}
 	}
 
+	private void shutDown()
+	{
+		// Save preferences before shutdown
+		try
+		{
+			GeneralManager.get().getLogger().log(Level.INFO,
+					"Save Caleydo preferences...");
+			GeneralManager.get().getPreferenceStore().save();
+		}
+		catch (IOException e)
+		{
+			throw new IllegalStateException("Unable to save preference file.");
+		}
+
+		GeneralManager.get().getLogger().log(Level.INFO, "Bye bye!");
+//		display.dispose();
+	}
+	
 	@Override
 	public void stop()
 	{
@@ -263,16 +262,7 @@ public class Application
 		caleydoCore.start();
 		
 		Shell shell = new Shell();
-//		if (applicationMode == EApplicationMode.STANDARD)
-//		{
-//			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
-//					shell));
-//
-//			if (WizardDialog.CANCEL == dataImportWizard.open())
-//			{
-//				bDoExit = true;
-//			}
-//		}
+
 		if (applicationMode == EApplicationMode.SAMPLE_DATA_REAL)
 		{
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
@@ -380,5 +370,22 @@ public class Application
 		{
 			e.printStackTrace();
 		}		
+	}
+	
+	public static boolean isInternetConnectionOK()
+	{
+		// Check internet connection
+		try
+		{
+			InetAddress.getByName(ProxyConfigurationPage.TEST_URL);
+		}
+		catch (Exception e)
+		{
+			Application.bIsInterentConnectionOK = false;
+			return false;
+		}
+
+		bIsInterentConnectionOK = true;
+		return true;
 	}
 }

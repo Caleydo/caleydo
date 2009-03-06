@@ -189,7 +189,7 @@ public class GeneralManager
 			
 			try
 			{
-//				preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
+				preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
 				preferenceStore.setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
 				preferenceStore.setValue(PreferenceConstants.LOAD_PATHWAY_DATA, true);
 				preferenceStore.save();

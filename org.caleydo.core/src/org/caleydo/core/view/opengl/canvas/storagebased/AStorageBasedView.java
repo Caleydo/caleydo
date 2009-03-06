@@ -152,7 +152,7 @@ public abstract class AStorageBasedView
 	// this.dataFilterLevel = dataFilterLevel;
 	// }
 
-	public synchronized final void initData()
+	public synchronized void initData()
 	{
 		set = null;
 

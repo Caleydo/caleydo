@@ -32,10 +32,11 @@ public class PreferenceConstants
 	public static final String LOAD_PATHWAY_DATA = "loadPathwayData";
 	
 	// General
-//	public static final String FIRST_START = "firstStart";
+	public static final String FIRST_START = "firstStart";
 	
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
 
+	@ Deprecated
 	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
 
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";

@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 import javax.swing.JOptionPane;
 
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
@@ -125,6 +126,16 @@ public class NewOrExistingProjectPage
 		final Button btnLoadPathwayData = new Button(composite, SWT.CHECK);
 		btnLoadPathwayData.setText("Load KEGG and BioCarta pathway data");
 		btnLoadPathwayData.setSelection(true);
+		btnLoadPathwayData.setEnabled(false);
+		
+		if (Application.caleydoCore.getGeneralManager().getPreferenceStore()
+			.getBoolean(PreferenceConstants.PATHWAY_DATA_OK)
+			|| Application.caleydoCore.getGeneralManager().getPreferenceStore()
+			.getBoolean(PreferenceConstants.FIRST_START) && Application.isInternetConnectionOK())
+		{
+			btnLoadPathwayData.setEnabled(true);
+		}
+		
 		btnLoadPathwayData.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -136,8 +147,7 @@ public class NewOrExistingProjectPage
 				{
 					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
 					messageBox.setText("Load KEGG and BioCarta pathway data");
-					messageBox
-						.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
+					messageBox.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
 					messageBox.open();
 
 					((Button) e.widget).setSelection(true);

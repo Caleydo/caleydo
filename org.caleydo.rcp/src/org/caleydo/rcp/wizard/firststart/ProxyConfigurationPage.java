@@ -1,9 +1,12 @@
 package org.caleydo.rcp.wizard.firststart;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.system.CmdFetchPathwayData;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.eclipse.jface.dialogs.DialogPage;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.URL;
+
+import org.caleydo.rcp.Application;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -15,33 +18,37 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Wizard for fetching pathway data from public databases.
+ * Wizard page for configuring and checking internet connection.
  * 
  * @author Marc Streit
  */
-public final class FetchPathwayDataPage
+public final class ProxyConfigurationPage
 	extends WizardPage
 {
-	public static final String PAGE_NAME = "Fetch Pathway Data";
+	public static final String PAGE_NAME = "Proxy Configuration Page";
 
+	public static final String TEST_URL = "www.google.com";
+	
 	public final WizardPage thisPage;
 
 	private Text txtProxyServer;
 	private Text txtProxyPort;
-	private boolean bProxyEnable;
+	private boolean bUseProxy;
+	
+	private Label connectionOKLabel;
 
 	/**
 	 * Constructor.
 	 */
-	public FetchPathwayDataPage()
+	public ProxyConfigurationPage()
 	{
 		super(PAGE_NAME, PAGE_NAME, null);
 
@@ -63,81 +70,55 @@ public final class FetchPathwayDataPage
 		layout.center = true;
 		layout.spacing = 15;
 		composite.setLayout(layout);
-		createContent(composite, this);
-		createProxySettingsContent(composite);
+		createContent(composite);
 
 		setControl(composite);
 	}
 
-	public Composite createContent(final Composite composite, final DialogPage parentPage)
+	public Composite createContent(final Composite composite)
 	{
-		Group progressBarGroup = new Group(composite, SWT.NONE);
-		progressBarGroup.setLayout(new GridLayout(2, false));
-		progressBarGroup.setText("Fetch Progress");
+		connectionOKLabel = new Label(composite, SWT.CENTER | SWT.BORDER);
+		connectionOKLabel.setText("OK");
+		connectionOKLabel.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+		
+		updateInternetStatusLabel();
+		
+		createProxySettingsContent(composite);
 
-		final Button buttonStartFetch = new Button(composite, SWT.NONE);
-		buttonStartFetch.setText("Start pathway download");
-		buttonStartFetch.setAlignment(SWT.CENTER);
-
-		Label lblKeggPathwayCacher = new Label(progressBarGroup, SWT.NULL);
-		lblKeggPathwayCacher.setText("KEGG Pathway Data Download Status:");
-		lblKeggPathwayCacher.setAlignment(SWT.RIGHT);
-		lblKeggPathwayCacher.setBounds(10, 10, 80, 20);
-
-		final ProgressBar progressBarKeggPathwayCacher = new ProgressBar(progressBarGroup,
-				SWT.SMOOTH);
-		progressBarKeggPathwayCacher.setBounds(10, 10, 200, 32);
-
-		Label lblKeggImagePathwayCacher = new Label(progressBarGroup, SWT.NULL);
-		lblKeggImagePathwayCacher.setText("KEGG Image Download Status:");
-		lblKeggImagePathwayCacher.setAlignment(SWT.RIGHT);
-		lblKeggImagePathwayCacher.setBounds(10, 10, 80, 20);
-
-		final ProgressBar progressBarKeggImagePathwayCacher = new ProgressBar(
-				progressBarGroup, SWT.SMOOTH);
-		progressBarKeggImagePathwayCacher.setBounds(10, 10, 200, 32);
-
-		Label lblBioCartaPathwayCacher = new Label(progressBarGroup, SWT.NULL);
-		lblBioCartaPathwayCacher.setText("BioCarta Data and Image Download Status:");
-		lblBioCartaPathwayCacher.setAlignment(SWT.RIGHT);
-		lblBioCartaPathwayCacher.setBounds(10, 10, 80, 20);
-
-		final ProgressBar progressBarBioCartaPathwayCacher = new ProgressBar(progressBarGroup,
-				SWT.SMOOTH);
-		progressBarBioCartaPathwayCacher.setBounds(10, 10, 200, 32);
-
-		buttonStartFetch.addSelectionListener(new SelectionAdapter()
-		{
-
+		Button checkConnectionButton = new Button(composite, SWT.PUSH);
+		checkConnectionButton.setText("Test");
+		checkConnectionButton.addSelectionListener(new SelectionAdapter(){
+		
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				CmdFetchPathwayData cmdPathwayFetch = (CmdFetchPathwayData) GeneralManager
-						.get().getCommandManager().createCommandByType(
-								ECommandType.FETCH_PATHWAY_DATA);
-
-				cmdPathwayFetch.setAttributes(composite.getDisplay(),
-						progressBarKeggPathwayCacher, progressBarKeggImagePathwayCacher,
-						progressBarBioCartaPathwayCacher, parentPage);
-
-				if (bProxyEnable)
-				{
-					cmdPathwayFetch.setProxySettings(txtProxyServer.getText(), Integer
-							.valueOf(txtProxyPort.getText()));
-				}
-
-				cmdPathwayFetch.doCommand();
-
-				buttonStartFetch.setEnabled(false);
+				updateInternetStatusLabel();
 			}
 		});
-
-		final Label lblNote = new Label(composite, SWT.NONE);
-		lblNote.setText("Note: Depending on your internet connection, this process can take several minutes.");
 
 		return composite;
 	}
 
+	private void updateInternetStatusLabel()
+	{
+		int color;
+		String sText = "";
+		
+		if(isInternetConnectionOK())
+		{
+			color = SWT.COLOR_GREEN;
+			sText = "Internet Connection OK";
+		}
+		else
+		{
+			color = SWT.COLOR_RED;
+			sText = "No internet connection found";
+		}
+			
+		connectionOKLabel.setBackground(Display.getCurrent().getSystemColor(color));
+		connectionOKLabel.setText(sText);
+	}
+	
 	private void createProxySettingsContent(Composite parent)
 	{
 		Group groupProxySettings = new Group(parent, SWT.SHADOW_ETCHED_IN);
@@ -199,18 +180,59 @@ public final class FetchPathwayDataPage
 			public void widgetSelected(SelectionEvent e)
 			{
 				if (e.widget == btnNoProxy)
-					bProxyEnable = false;
+					bUseProxy = false;
 				else
-					bProxyEnable = true;
+					bUseProxy = true;
 
-				lblProxyServer.setEnabled(bProxyEnable);
-				lblProxyPort.setEnabled(bProxyEnable);
-				txtProxyServer.setEnabled(bProxyEnable);
-				txtProxyPort.setEnabled(bProxyEnable);
+				lblProxyServer.setEnabled(bUseProxy);
+				lblProxyPort.setEnabled(bUseProxy);
+				txtProxyServer.setEnabled(bUseProxy);
+				txtProxyPort.setEnabled(bUseProxy);
+				
+//				if (bProxyEnable)
+//				{
+//					 System.setProperty("network.proxy_host", txtProxyServer.getText());
+//					 System.setProperty("network.proxy_port", txtProxyPort.getText());
+//				}
 			}
 		};
 
 		btnNoProxy.addSelectionListener(selectionListener);
 		btnUseProxy.addSelectionListener(selectionListener);
 	}	
+	
+	private boolean isInternetConnectionOK()
+	{
+		// Check internet connection
+		try
+		{
+			if (bUseProxy)
+			{
+		        InetAddress proxyAddr;
+		        proxyAddr = InetAddress.getByName(txtProxyServer.getText());
+		        InetSocketAddress iSockAddr;
+		        iSockAddr = new InetSocketAddress(proxyAddr, Integer.parseInt(txtProxyPort.getText()));
+		        Proxy proxy = new Proxy(Proxy.Type.HTTP, iSockAddr);	
+		        
+		        URL url = new URL("http://" +TEST_URL);
+		        HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);
+		        conn.connect();
+		        conn.disconnect();
+			}
+			else
+			{
+				InetAddress.getByName(TEST_URL);
+			}
+		}
+		catch (Exception e)
+		{
+			Application.bIsInterentConnectionOK = false;
+			setPageComplete(false);
+			return false;
+		}
+
+		Application.bIsInterentConnectionOK = true;
+		setPageComplete(true);
+		return true;
+	}
 }

@@ -16,8 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 public class LoadDataDialog
 	extends Dialog
 {
-
-	// private FileLoadDataAction fileLoadDataAction;
+	 private FileLoadDataAction fileLoadDataAction;
 
 	/**
 	 * Constructor.
@@ -33,13 +32,13 @@ public class LoadDataDialog
 	{
 		super.configureShell(newShell);
 		newShell.setText("Open Text Data File");
-		newShell.setMaximized(true);
+//		newShell.setMaximized(true);
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent)
 	{
-		FileLoadDataAction fileLoadDataAction = new FileLoadDataAction(parent);
+		fileLoadDataAction = new FileLoadDataAction(parent);
 		fileLoadDataAction.run();
 
 		return parent;
@@ -48,7 +47,7 @@ public class LoadDataDialog
 	@Override
 	protected void okPressed()
 	{
-		// fileLoadDataAction.execute();
+		fileLoadDataAction.execute();
 
 		super.okPressed();
 	}
