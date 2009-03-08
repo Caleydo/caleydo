@@ -39,8 +39,9 @@ public class PreferenceConstants
 	@ Deprecated
 	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
 
+	public static final String USE_PROXY = "useProxy";
+	public static final String PROXY_SERVER = "proxyServer";
+	public static final String PROXY_PORT = "proxyPort";
+	
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
-	
-	
-
 }

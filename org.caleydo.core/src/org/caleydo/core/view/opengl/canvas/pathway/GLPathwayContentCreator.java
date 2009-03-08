@@ -418,21 +418,14 @@ public class GLPathwayContentCreator
 	private void extractVertices(final GL gl, final IUniqueObject containingView,
 			PathwayGraph pathwayToExtract)
 	{
-
-		Iterator<IGraphItem> vertexIterator = pathwayToExtract.getAllItemsByKind(
-				EGraphItemKind.NODE).iterator();
-		;
-		IGraphItem vertexRep;
-
-		while (vertexIterator.hasNext())
+		for (IGraphItem vertexRep : pathwayToExtract.getAllItemsByKind(
+			EGraphItemKind.NODE))
 		{
-			vertexRep = vertexIterator.next();
-
-			if (vertexRep != null)
-			{
-				createVertex(gl, containingView, (PathwayVertexGraphItemRep) vertexRep,
-						pathwayToExtract);
-			}
+			if (vertexRep == null)
+				continue;
+			
+			createVertex(gl, containingView, (PathwayVertexGraphItemRep) vertexRep,
+					pathwayToExtract);
 		}
 	}
 

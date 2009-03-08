@@ -527,7 +527,6 @@ public class ToolBarView
 			pathwaySearchLabel.setEnabled(false);
 			pathwaySearchBox.setEnabled(false);
 		}
-
 		pathwaySearchBox.addSelectionListener(new SelectionAdapter()
 		{
 			@Override

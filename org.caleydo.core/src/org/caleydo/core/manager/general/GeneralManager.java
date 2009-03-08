@@ -192,6 +192,7 @@ public class GeneralManager
 				preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
 				preferenceStore.setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
 				preferenceStore.setValue(PreferenceConstants.LOAD_PATHWAY_DATA, true);
+				preferenceStore.setValue(PreferenceConstants.USE_PROXY, false);
 				preferenceStore.save();
 			}
 			catch (IOException e1)
@@ -199,6 +200,12 @@ public class GeneralManager
 				throw new IllegalStateException("Unable to save preference file.");
 			}
 		}
+		
+		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY))
+		{
+			System.setProperty("network.proxy_host", preferenceStore.getString(PreferenceConstants.PROXY_SERVER));
+			System.setProperty("network.proxy_port", preferenceStore.getString(PreferenceConstants.PROXY_PORT));	
+		}		
 	}
 
 	/**

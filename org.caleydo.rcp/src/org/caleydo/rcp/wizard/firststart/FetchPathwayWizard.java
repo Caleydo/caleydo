@@ -2,7 +2,6 @@ package org.caleydo.rcp.wizard.firststart;
 
 import java.net.InetAddress;
 
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;

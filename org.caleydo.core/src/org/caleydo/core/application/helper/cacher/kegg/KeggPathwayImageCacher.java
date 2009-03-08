@@ -21,7 +21,7 @@ import de.phleisch.app.itsucks.job.download.impl.DownloadJobFactory;
 import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
 
 /**
- * Fetch tool for KEGG XML files.
+ * Fetch tool for KEGG images files.
  * 
  * @author Marc Streit
  */
@@ -38,7 +38,7 @@ public class KeggPathwayImageCacher
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
 
-		iExpectedDownloads = 642;
+		iExpectedDownloads = 610;
 	}
 
 	@Override

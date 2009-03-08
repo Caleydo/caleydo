@@ -126,14 +126,15 @@ public class NewOrExistingProjectPage
 		final Button btnLoadPathwayData = new Button(composite, SWT.CHECK);
 		btnLoadPathwayData.setText("Load KEGG and BioCarta pathway data");
 		btnLoadPathwayData.setSelection(true);
-		btnLoadPathwayData.setEnabled(false);
+		btnLoadPathwayData.setEnabled(true);
 		
+//		Application.caleydoCore.getGeneralManager().getPreferenceStore()
+//		.getBoolean(PreferenceConstants.PATHWAY_DATA_OK)
+//		|| 
 		if (Application.caleydoCore.getGeneralManager().getPreferenceStore()
-			.getBoolean(PreferenceConstants.PATHWAY_DATA_OK)
-			|| Application.caleydoCore.getGeneralManager().getPreferenceStore()
-			.getBoolean(PreferenceConstants.FIRST_START) && Application.isInternetConnectionOK())
+			.getBoolean(PreferenceConstants.FIRST_START) && !Application.isInternetConnectionOK())
 		{
-			btnLoadPathwayData.setEnabled(true);
+			btnLoadPathwayData.setEnabled(false);
 		}
 		
 		btnLoadPathwayData.addSelectionListener(new SelectionAdapter()

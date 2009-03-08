@@ -6,7 +6,9 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -93,6 +95,18 @@ public final class ProxyConfigurationPage
 			public void widgetSelected(SelectionEvent e)
 			{
 				updateInternetStatusLabel();
+				
+				PreferenceStore prefStore = Application.caleydoCore.getGeneralManager().getPreferenceStore();
+				prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
+				
+				if (bUseProxy)
+				{	
+					prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
+					prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());	
+					
+					System.setProperty("network.proxy_host", prefStore.getString(PreferenceConstants.PROXY_SERVER));
+					System.setProperty("network.proxy_port", prefStore.getString(PreferenceConstants.PROXY_PORT));	
+				}
 			}
 		});
 
@@ -188,12 +202,6 @@ public final class ProxyConfigurationPage
 				lblProxyPort.setEnabled(bUseProxy);
 				txtProxyServer.setEnabled(bUseProxy);
 				txtProxyPort.setEnabled(bUseProxy);
-				
-//				if (bProxyEnable)
-//				{
-//					 System.setProperty("network.proxy_host", txtProxyServer.getText());
-//					 System.setProperty("network.proxy_port", txtProxyPort.getText());
-//				}
 			}
 		};
 
