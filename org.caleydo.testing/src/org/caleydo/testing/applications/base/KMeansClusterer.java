@@ -5,12 +5,12 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import weka.clusterers.ClusterEvaluation;
-import weka.clusterers.Cobweb;
+import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 
-// Code from: http://weka.wiki.sourceforge.net/Use+Weka+in+your+Java+code
+public class KMeansClusterer {
 
-public class WekaTest {
+	private static int NRCLUSTER = 5;
 
 	public static void main(String[] args) throws Exception {
 
@@ -23,12 +23,11 @@ public class WekaTest {
 
 		// System.out.println(data.toString());
 
-		Cobweb clusterer = new Cobweb();
+		SimpleKMeans clusterer = new SimpleKMeans();
+		clusterer.setNumClusters(NRCLUSTER);
 
 		// train the clusterer
 		clusterer.buildClusterer(data);
-
-		// System.out.println(clusterer.numberOfClusters());
 
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
@@ -36,54 +35,43 @@ public class WekaTest {
 
 		// System.out.print("eval.getNumClusters():  ");
 		// System.out.println(eval.getNumClusters());
-		//		
+
 		// System.out.print("eval.clusterResultsToString():  ");
 		// System.out.println(eval.clusterResultsToString());
 
-		double[] test = eval.getClusterAssignments();
-		int nrclusters = eval.getNumClusters();
-
+		double[] ClusterAssignments = eval.getClusterAssignments();
 		// System.out.println(test.length);
 		// for (int i = 0; i < test.length; i++) {
 		// System.out.println(test[i]);
 		// }
-		
-		ArrayList<Integer> temp = new ArrayList<Integer>();
-		
+
 		// Arraylist holding # of elements per cluster
 		ArrayList<Integer> count = new ArrayList<Integer>();
 		
-		for (int i = 0; i < nrclusters; i++)
-			temp.add(0);
+		for (int i = 0; i < NRCLUSTER; i++)
+			count.add(0);
 
-		// Arraylist with indexes according to the clusters
+		// Arraylist with ordered indexes according to the clusters
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
 		
-		for (int cluster = 0; cluster < nrclusters; cluster++) {
+		for (int cluster = 0; cluster < NRCLUSTER; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
-				if (test[i] == cluster) {
+				if (ClusterAssignments[i] == cluster) {
 					indexes.add(i);
-					temp.set(cluster, temp.get(cluster) + 1);
+					count.set(cluster, count.get(cluster) + 1);
 				}
 			}
 		}
 
-//		for (Integer iter : indexes) {
-//			System.out.print(iter + " ");
-//		}
-//		System.out.println(" ");
-
-		for (Integer iter : temp) {
-			if (iter > 0)
-				count.add(iter);
+		for (Integer iter : indexes) {
+			System.out.print(iter + " ");
 		}
+		System.out.println(" ");
 
-//		int i = 0;
-//		for (Integer iter : count) {
-//			System.out.println("cluster Nr:" + i + " has " + iter + " elements");
-//			i++;
-//		}
-//		IVirtualArray va = new VirtualArray(count.size(), count);
-		
+		int i = 0;
+		for (Integer iter : count) {
+			System.out.println("cluster Nr:" + i + " has " + iter + " elements");
+			i++;
+		}
 	}
 }
