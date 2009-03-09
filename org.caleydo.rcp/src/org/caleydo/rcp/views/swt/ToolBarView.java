@@ -16,8 +16,10 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
@@ -160,6 +162,8 @@ public class ToolBarView
 					sViewType = GLPathwayView.ID;
 				else if (glView instanceof GLParallelCoordinates)
 					sViewType = GLParCoordsView.ID;
+				else if (glView instanceof GLGlyph)
+					sViewType = GLGlyphView.ID;
 				else
 					break;
 

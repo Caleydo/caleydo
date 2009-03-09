@@ -135,7 +135,7 @@ public class CmdExternalFlagSetter
 					return;
 				case GLYPH_SELECTION:
 					if (!bFlag)
-						glyphview.resetSelection();
+						glyphview.clearAllSelections();
 					else
 						glyphview.removeUnselected();
 

@@ -13,7 +13,7 @@ import org.eclipse.jface.action.Action;
 public class AToolBarAction
 	extends Action
 {
-	private int iViewID;
+	protected int iViewID;
 
 	/**
 	 * Constructor.

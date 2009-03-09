@@ -18,7 +18,8 @@ public class ChangeViewModeSecondaryAction
 	public static final String TEXT_SCATTERPLOT = "Scatterplot Axis Definition";
 	public static final String TEXT_PLUSMODEL = "Distribution Model Axis Definition";
 	
-	public static final String ICON = ChangeViewModeToScatterplotAction.ICON;
+//	public static final String ICON = ChangeViewModeToScatterplotAction.ICON;
+	public static final String ICON = "resources/icons/view/glyph/xy_mapping.png";
 
 	private Menu menu;
 	private int iViewID;
@@ -33,10 +34,8 @@ public class ChangeViewModeSecondaryAction
 		this.iViewID = iViewID;
 
 		setToolTipText(TEXT);
-		// setImageDescriptor(ImageDescriptor.createFromImage(new
-		// ResourceLoader()
-		// .getImage(PlatformUI.getWorkbench().getDisplay(),
-		// ChangeViewModeToScatterplotAction.ICON)));
+		 setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
+			.getDisplay(), ICON)));
 
 		setMenuCreator(this);
 	}
@@ -49,9 +48,9 @@ public class ChangeViewModeSecondaryAction
 		{
 			setToolTipText(TEXT_SCATTERPLOT);
 
-			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-					PlatformUI.getWorkbench().getDisplay(),
-					ChangeViewModeToScatterplotAction.ICON)));
+//			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+//					PlatformUI.getWorkbench().getDisplay(),
+//					ChangeViewModeToScatterplotAction.ICON)));
 
 			this.setEnabled(true);
 		}
@@ -59,9 +58,9 @@ public class ChangeViewModeSecondaryAction
 		{
 			setToolTipText(TEXT_PLUSMODEL);
 
-			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-					PlatformUI.getWorkbench().getDisplay(),
-					ChangeViewModeToPlusModelAction.ICON)));
+//			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+//					PlatformUI.getWorkbench().getDisplay(),
+//					ChangeViewModeToPlusModelAction.ICON)));
 
 			this.setEnabled(true);
 		}

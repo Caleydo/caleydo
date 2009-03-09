@@ -1,6 +1,9 @@
 package org.caleydo.rcp.action.toolbar.view.glyph;
 
 import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.util.glyph.TextInputDialog;
@@ -30,12 +33,32 @@ public class EnterViewNameAction
 	{
 		super.run();
 
-		Shell shell = new Shell();
-		TextInputDialog dialog = new TextInputDialog(shell);
-		String name = dialog.open();
+		GLGlyph glyphview = null;
 
-		if (name != null)
-			triggerCmdExternalObjectSetter(name,
+		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
+				.getAllGLEventListeners())
+		{
+			if (view instanceof GLGlyph)
+			{
+				if (view.getID() == iViewID)
+					glyphview = (GLGlyph) view;
+			}
+		}
+
+		if (glyphview == null)
+		{
+			throw new IllegalStateException(
+					"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
+		}
+		
+		String oldname = glyphview.getPersonalName();
+
+		Shell shell = new Shell();
+		TextInputDialog dialog = new TextInputDialog(shell, oldname);
+		String newname = dialog.open();
+
+		if (newname != null)
+			triggerCmdExternalObjectSetter(newname,
 					EExternalObjectSetterType.GLYPH_CHANGEPERSONALNAME);
 
 	};

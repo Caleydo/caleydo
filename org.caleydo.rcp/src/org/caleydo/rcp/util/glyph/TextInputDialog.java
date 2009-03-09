@@ -29,6 +29,12 @@ public class TextInputDialog
 		value = "";
 	}
 
+	public TextInputDialog(Shell parent, String text)
+	{
+		super(parent);
+		value = text;
+	}
+	
 	public String open()
 	{
 		Shell parent = getParent();
@@ -41,12 +47,15 @@ public class TextInputDialog
 		label.setText("Please enter a name:");
 
 		final Text text = new Text(shell, SWT.SINGLE | SWT.BORDER);
+		text.setText(value);
+		text.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
 		final Button buttonOK = new Button(shell, SWT.PUSH);
 		buttonOK.setText("Ok");
-		buttonOK.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
+		buttonOK.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 		Button buttonCancel = new Button(shell, SWT.PUSH);
 		buttonCancel.setText("Cancel");
+		buttonCancel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
 		text.addListener(SWT.Modify, new Listener()
 		{
@@ -90,7 +99,6 @@ public class TextInputDialog
 			}
 		});
 
-		text.setText("");
 		shell.pack();
 		shell.open();
 

@@ -5,8 +5,11 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
 import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,13 +19,16 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
@@ -31,6 +37,7 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -1242,15 +1249,6 @@ public class GLGlyph
 		}
 	}
 
-	public synchronized void resetSelection()
-	{
-		for (GlyphEntry g : gman.getGlyphs().values())
-			g.select();
-
-		grid_.loadData(null);
-		forceRebuild();
-	}
-
 	public synchronized void removeUnselected()
 	{
 		grid_.loadData(null);
@@ -1328,6 +1326,90 @@ public class GLGlyph
 		return content;
 	}
 
+	/**
+	 * Temporary fix
+	 * 
+	 * @param addHeader
+	 *            you want a header?
+	 * @param selectionOnly
+	 *            export selected glyphs only
+	 * @param originalData
+	 *            unused now
+	 * @return
+	 */
+	@Deprecated
+	public void exportAsCSV(final String sFileName, final boolean addHeader, final boolean selectionOnly,
+		final boolean originalData)
+	{
+		Collection<GlyphEntry> list = grid_.getGlyphList().values();
+		// String tab = "; ";
+		String tab = "\t";
+
+		try
+		{
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
+
+			// make header
+			if (addHeader)
+			{
+				out.print("ID");
+
+				for (int i = 1; i < gman.getGlyphAttributes().size(); ++i)
+				{
+					String name = gman.getGlyphAttributeTypeWithInternalColumnNumber(i).getName();
+					out.print(tab + name);
+				}
+
+				GlyphEntry ge = (GlyphEntry) list.toArray()[0];
+				ArrayList<String> names = ge.getStringParameterColumnNames();
+
+				for (String name : names)
+				{
+					out.print(tab + name);
+				}
+				out.println("");
+			}
+
+			for (GlyphEntry ge : list)
+			{
+				if (selectionOnly && !ge.isSelected())
+					continue;
+
+				if (GeneralManager.get().getIDMappingManager().hasMapping(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT))
+				{
+					String id =
+						GeneralManager.get().getIDMappingManager().getID(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT,
+							ge.getID());
+
+					out.print(id);
+				}
+				else
+				{
+					out.print(ge.getID());
+				}
+
+				for (int i = 0; i < ge.getNumberOfParameters(); ++i)
+				{
+					GlyphAttributeType type = gman.getGlyphAttributeTypeWithInternalColumnNumber(i);
+
+					out.print(tab + type.getParameterString(ge.getParameter(i)));
+				}
+
+				for (String name : ge.getStringParameterColumnNames())
+				{
+					out.print(tab + ge.getStringParameter(name));
+				}
+				out.println("");
+			}
+
+			out.close();
+		}
+		catch (IOException e)
+		{
+
+		}
+	}
+
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{
@@ -1338,8 +1420,11 @@ public class GLGlyph
 	@Override
 	public void clearAllSelections()
 	{
-		// TODO Auto-generated method stub
+		for (GlyphEntry g : gman.getGlyphs().values())
+			g.select();
 
+		grid_.loadData(null);
+		forceRebuild();
 	}
 
 }

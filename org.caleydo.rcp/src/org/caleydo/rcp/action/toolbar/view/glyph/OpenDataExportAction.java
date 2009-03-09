@@ -2,10 +2,9 @@ package org.caleydo.rcp.action.toolbar.view.glyph;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.views.swt.SWTGlyphDataExportView;
+import org.caleydo.rcp.dialog.file.ExportClinicalDataDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenDataExportAction
@@ -30,16 +29,18 @@ public class OpenDataExportAction
 	{
 		super.run();
 
-		try
-		{
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-					SWTGlyphDataExportView.ID, SWTGlyphDataExportView.ID,
-					IWorkbenchPage.VIEW_CREATE);
-		}
-		catch (PartInitException e)
-		{
-			e.printStackTrace();
-		}
+		ExportClinicalDataDialog dialog = new ExportClinicalDataDialog(new Shell(), iViewID);
+		dialog.open();
+//		try
+//		{
+//			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+//					SWTGlyphDataExportView.ID, SWTGlyphDataExportView.ID,
+//					IWorkbenchPage.VIEW_CREATE);
+//		}
+//		catch (PartInitException e)
+//		{
+//			e.printStackTrace();
+//		}
 
 	};
 }
