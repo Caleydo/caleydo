@@ -6,6 +6,7 @@ import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.SetIterator;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.util.clusterer.CNode;
 
 /**
  * Interface for Sets
@@ -246,9 +247,24 @@ public interface ISet
 
 	/**
 	 * Clusters a Storage
-	 * @param iVAId
+	 * @param iVAIdOriginal
+	 * @param iVAIdStorage
 	 * @param bHierarchicalClustering
+	 * @return ArrayList<Integer> Ids of virtual arrays holding cluster result
 	 */
-	public void cluster(Integer iVAIdOriginal, Integer iVAIdClustered, boolean bHierarchicalClustering);
+	public ArrayList<Integer> cluster(Integer iVAIdOriginal, Integer iVAIdStorage, boolean bHierarchicalClustering);
+	
+	/**
+	 * Returns clustered graph
+	 * @param 
+	 * @return CNode
+	 */
+	public CNode getClusteredGraph();
+	
+	/**
+	 * Sets clustered graph
+	 * @param CNode
+	 */
+	public void setClusteredGraph(CNode clusteredGraph);
 	
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.Cobweb;
+import weka.core.Instance;
 import weka.core.Instances;
 
 // Code from: http://weka.wiki.sourceforge.net/Use+Weka+in+your+Java+code
@@ -21,8 +22,13 @@ public class WekaTest {
 		// class index negative --> no class defined --> unsupervised learning
 		data.setClassIndex(-1);
 
-		// System.out.println(data.toString());
-
+//		System.out.println(data.toString());
+				
+//		double[] array = {3.2, 4, 5, 7, 8.6, 6.00};
+//		data.add(new Instance(1.0, array));	
+//		Instance tempIn = new Instance(1.0, array);
+//		System.out.println(tempIn);
+		
 		Cobweb clusterer = new Cobweb();
 
 		// train the clusterer

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.logging.Level;
+
 import javax.management.InvalidAttributeValueException;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -17,6 +19,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
@@ -33,6 +36,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -298,14 +302,6 @@ public abstract class AStorageBasedView
 		// TODO: remove possible old virtual array
 		int iVAID = set.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
-
-		// Cluster data
-		ArrayList<Integer> alClusterList = new ArrayList<Integer>(set.depth());
-		iVAID = set.createStorageVA(alClusterList);
-		int iContentToClusterVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-		set.cluster(iContentToClusterVAID, iVAID, true);
-		mapVAIDs.put(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION, iVAID);
-		// Cluster data
 
 		setDisplayListDirty();
 	}

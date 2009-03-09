@@ -19,8 +19,10 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.util.clusterer.CNode;
 import org.caleydo.core.util.clusterer.HierarchicalClusterer;
 import org.caleydo.core.util.clusterer.HierarchyGraph;
+import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.util.graph.IGraph;
 
 /**
@@ -53,11 +55,10 @@ public class Set
 
 	private HashMap<Integer, IVirtualArray> hashStorageVAs;
 	private HashMap<Integer, IVirtualArray> hashSetVAs;
-	
+
 	// clustering stuff
 	private HashMap<Integer, IGraph> hashVAIdToGraph;
-	private IGraph clusteredGraph = new HierarchyGraph("Hierarchy", 0, 0);
-	private ArrayList<Integer> alClusteredList = new ArrayList<Integer>(depth());
+	private CNode clusteredGraph = null;
 
 	private EExternalDataRepresentation externalDataRep;
 
@@ -93,8 +94,7 @@ public class Set
 		IStorageManager storageManager = GeneralManager.get().getStorageManager();
 
 		if (!storageManager.hasItem(iStorageID))
-			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID
-					+ " does not exist.");
+			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID + " does not exist.");
 
 		addStorage(storageManager.getItem(iStorageID));
 	}
@@ -126,13 +126,11 @@ public class Set
 			// CaleydoRuntimeExceptionType.DATAHANDLING);
 			if (!bIsNumerical && storage instanceof INumericalStorage)
 				throw new IllegalArgumentException(
-						"All storages in a set must be of the same basic type (nunmerical or nominal)");
+					"All storages in a set must be of the same basic type (nunmerical or nominal)");
 			if (rawDataType != storage.getRawDataType())
-				throw new IllegalArgumentException(
-						"All storages in a set must have the same raw data type");
+				throw new IllegalArgumentException("All storages in a set must have the same raw data type");
 			if (iDepth != storage.size())
-				throw new IllegalArgumentException(
-						"All storages in a set must be of the same length");
+				throw new IllegalArgumentException("All storages in a set must be of the same length");
 		}
 		alStorages.add(storage);
 	}
@@ -160,8 +158,7 @@ public class Set
 		}
 		else
 		{
-			throw new IllegalArgumentException("No such virtual array " + iUniqueID
-					+ " registered for storages");
+			throw new IllegalArgumentException("No such virtual array " + iUniqueID + " registered for storages");
 		}
 	}
 
@@ -179,8 +176,7 @@ public class Set
 		else if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID).size();
 		else
-			throw new IllegalArgumentException("No such virtual array has been registered:"
-					+ iUniqueID);
+			throw new IllegalArgumentException("No such virtual array has been registered:" + iUniqueID);
 
 	}
 
@@ -213,9 +209,8 @@ public class Set
 			}
 			else
 			{
-				throw new UnsupportedOperationException(
-						"Tried to normalize globally on a set wich"
-								+ "contains nominal storages, currently not supported!");
+				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
+					+ "contains nominal storages, currently not supported!");
 			}
 		}
 	}
@@ -273,7 +268,7 @@ public class Set
 	{
 		if (!bIsSetHomogeneous)
 			throw new IllegalStateException(
-					"Can not produce raw data on set level for inhomogenous sets. Access via storages");
+				"Can not produce raw data on set level for inhomogenous sets. Access via storages");
 
 		if (dNormalized == 0)
 			return getMin();
@@ -286,11 +281,10 @@ public class Set
 	{
 		if (!bIsSetHomogeneous)
 			throw new IllegalStateException(
-					"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
+				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
 
 		if (dRaw < getMin() || dRaw > getMax())
-			throw new IllegalArgumentException(
-					"Value may not be smaller than min or larger than max");
+			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
 
 		return (dRaw - getMin()) / (getMax() - getMin());
 	}
@@ -307,9 +301,8 @@ public class Set
 			}
 			else
 			{
-				throw new UnsupportedOperationException(
-						"Tried to calcualte log values on a set wich has"
-								+ "contains nominal storages. This is not possible!");
+				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
+					+ "contains nominal storages. This is not possible!");
 			}
 		}
 	}
@@ -327,9 +320,8 @@ public class Set
 			}
 			else
 			{
-				throw new UnsupportedOperationException(
-						"Tried to calcualte log values on a set wich has"
-								+ "contains nominal storages. This is not possible!");
+				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
+					+ "contains nominal storages. This is not possible!");
 			}
 		}
 	}
@@ -403,8 +395,7 @@ public class Set
 		else if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID);
 		else
-			throw new IllegalArgumentException("No Virtual Array for the unique id: "
-					+ iUniqueID);
+			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
 	}
 
 	private void calculateGlobalExtrema()
@@ -425,8 +416,7 @@ public class Set
 		}
 		else if (alStorages.get(0) instanceof INominalStorage)
 		{
-			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
-					+ "on nominal data");
+			throw new UnsupportedOperationException("No minimum or maximum can be calculated " + "on nominal data");
 
 		}
 	}
@@ -443,8 +433,7 @@ public class Set
 	}
 
 	@Override
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
-			boolean bIsSetHomogeneous)
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous)
 	{
 		this.bIsSetHomogeneous = bIsSetHomogeneous;
 		if (externalDataRep == this.externalDataRep)
@@ -508,20 +497,59 @@ public class Set
 		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
-	@Override
-	public void cluster(Integer iVAIdOriginal, Integer iVAIdClustered, boolean hierarchicalClustering)
+	public ArrayList<Integer> cluster(Integer iVAIdOriginal, Integer iVAIdStorage, boolean bHierarchicalClustering)
 	{
-		if (hierarchicalClustering)
+		ArrayList<Integer> VAIds = new ArrayList<Integer>();
+
+		long tic, toc, duration;
+
+		if (bHierarchicalClustering)
 		{
-			HierarchicalClusterer clusterer = new HierarchicalClusterer();
-			clusteredGraph = clusterer.cluster(this, iVAIdOriginal);
+			System.out.println("hierarchical clustering ...");
 			
-			hashVAIdToGraph.put(iVAIdClustered, clusteredGraph);
+			tic = System.currentTimeMillis();
+
+			HierarchicalClusterer clusterer = new HierarchicalClusterer();
+			VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
+
+			toc = System.currentTimeMillis();
 		}
 		else
 		{
-			// KMeansClusterer clusterer = new KMeansClusterer();
+			System.out.println("KMeans clustering ...");
+			tic = System.currentTimeMillis();
+
+			KMeansClusterer clusterer = new KMeansClusterer();
+			VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
+
+			toc = System.currentTimeMillis();
 		}
+		duration = (toc - tic) / 1000;
+		System.out.println("cluster duration: ~" + duration + "sec");
+
+		if (VAIds.size() != 2)
+		{
+			throw new IllegalStateException("Problems during clustering!!");
+		}
+
+		IVirtualArray virtualArray = getVA(VAIds.get(0));
+		hashSetVAs.put(virtualArray.getID(), virtualArray);
+		VAIds.add(VAIds.get(0));
+
+		virtualArray = getVA(VAIds.get(1));
+		hashSetVAs.put(virtualArray.getID(), virtualArray);
+		VAIds.add(VAIds.get(1));
+
+		return VAIds;
 	}
 
+	public void setClusteredGraph(CNode clusteredGraph)
+	{
+		this.clusteredGraph = clusteredGraph;
+	}
+
+	public CNode getClusteredGraph()
+	{
+		return clusteredGraph;
+	}
 }
