@@ -4,18 +4,16 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
- * Design Pattern "Command" ; behavior pattern Is combined with Design Pattern
- * "IMemento" to provide Do-Undo Base interface.
+ * Design Pattern "Command" ; behavior pattern Is combined with Design Pattern "IMemento" to provide Do-Undo
+ * Base interface.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public interface ICommand
-	extends IUniqueObject
-{
+	extends IUniqueObject {
 	/**
 	 * Execute a command.
-	 * 
 	 */
 	public abstract void doCommand();
 
@@ -36,8 +34,8 @@ public interface ICommand
 	public abstract ECommandType getCommandType();
 
 	/**
-	 * Method returns a description of the command. This is mainly used for the
-	 * UNDO/REDO GUI component to show what the command is about.
+	 * Method returns a description of the command. This is mainly used for the UNDO/REDO GUI component to show
+	 * what the command is about.
 	 * 
 	 * @return
 	 */

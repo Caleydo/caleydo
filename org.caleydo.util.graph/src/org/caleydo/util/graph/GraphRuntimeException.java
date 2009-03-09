@@ -10,8 +10,7 @@ package org.caleydo.util.graph;
  * @author Michael Kalkusch
  */
 public final class GraphRuntimeException
-	extends RuntimeException
-{
+	extends RuntimeException {
 
 	/**
 	 * id for serialization.
@@ -21,16 +20,14 @@ public final class GraphRuntimeException
 	/**
 	 * @param message
 	 */
-	public GraphRuntimeException(String message)
-	{
+	public GraphRuntimeException(String message) {
 		super(message);
 	}
 
 	/**
 	 * @param cause
 	 */
-	public GraphRuntimeException(Throwable cause)
-	{
+	public GraphRuntimeException(Throwable cause) {
 		super(cause);
 	}
 
@@ -38,8 +35,7 @@ public final class GraphRuntimeException
 	 * @param message
 	 * @param cause
 	 */
-	public GraphRuntimeException(String message, Throwable cause)
-	{
+	public GraphRuntimeException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

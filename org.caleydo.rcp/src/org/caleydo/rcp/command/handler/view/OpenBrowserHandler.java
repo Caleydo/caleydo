@@ -7,12 +7,10 @@ import org.eclipse.core.commands.IHandler;
 
 public class OpenBrowserHandler
 	extends AbstractHandler
-	implements IHandler
-{
+	implements IHandler {
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException
-	{
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench()
 		// .getBrowserSupport();
 		//

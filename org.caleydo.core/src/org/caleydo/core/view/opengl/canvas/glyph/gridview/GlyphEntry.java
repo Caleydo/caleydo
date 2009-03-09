@@ -3,7 +3,9 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -15,8 +17,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeTyp
  * 
  * @author Steve
  */
-public class GlyphEntry
-{
+public class GlyphEntry {
 
 	private IGeneralManager generalManager;
 
@@ -34,8 +35,7 @@ public class GlyphEntry
 
 	private int glListSelected_ = 0;
 
-	public GlyphEntry(int id)
-	{
+	public GlyphEntry(int id) {
 		this.generalManager = GeneralManager.get();
 		gman = (GlyphManager) generalManager.getGlyphManager();
 		id_ = id;
@@ -44,69 +44,60 @@ public class GlyphEntry
 	}
 
 	/**
-	 * Returns the internal mapping id of the glyhp. Use the IDMappingManager to
-	 * get the id inside the given csv file
+	 * Returns the internal mapping id of the glyhp. Use the IDMappingManager to get the id inside the given csv
+	 * file
 	 * 
 	 * @return the id of the glyph.
 	 */
-	public int getID()
-	{
+	public int getID() {
 		return id_;
 	}
 
-	public void select()
-	{
+	public void select() {
 		if (selected_)
 			return;
 
 		selected_ = true;
 		for (int i = 0; i < parameter_.size(); ++i)
 			generalManager.getGlyphManager().getGlyphAttributeTypeWithInternalColumnNumber(i)
-					.incSelectedDistribution(parameter_.get(i));
+				.incSelectedDistribution(parameter_.get(i));
 	}
 
-	public void deSelect()
-	{
+	public void deSelect() {
 		if (!selected_)
 			return;
 
 		selected_ = false;
 		for (int i = 0; i < parameter_.size(); ++i)
 			generalManager.getGlyphManager().getGlyphAttributeTypeWithInternalColumnNumber(i)
-					.decSelectedDistribution(parameter_.get(i));
+				.decSelectedDistribution(parameter_.get(i));
 	}
 
-	public boolean isSelected()
-	{
+	public boolean isSelected() {
 		return selected_;
 	}
 
-	public int getGlList(GL gl)
-	{
-		if (selected_)
-		{
+	public int getGlList(GL gl) {
+		if (selected_) {
 			return glListSelected_;
 		}
 
 		return glList_;
 	}
 
-	public void addParameter(int value)
-	{
+	public void addParameter(int value) {
 
 		parameter_.add(value);
 	}
 
-	public void addStringParameter(String column, String value)
-	{
+	public void addStringParameter(String column, String value) {
 
 		if (vsParameterString.containsKey(column))
 			vsParameterString.remove(column);
 		vsParameterString.put(column, value);
 	}
 
-	public int getParameter(int index)
-	{
+	public int getParameter(int index) {
 		if (index < 0)
 			return -1;
 		if (parameter_.size() <= index)
@@ -114,33 +105,28 @@ public class GlyphEntry
 		return parameter_.get(index);
 	}
 
-	public int getNumberOfParameters()
-	{
+	public int getNumberOfParameters() {
 		return parameter_.size();
 	}
 
-	public String getStringParameter(String colname)
-	{
+	public String getStringParameter(String colname) {
 
 		if (!vsParameterString.containsKey(colname))
 			return "";
 		return vsParameterString.get(colname);
 	}
 
-	public ArrayList<String> getStringParameterColumnNames()
-	{
+	public ArrayList<String> getStringParameterColumnNames() {
 		ArrayList<String> temp = new ArrayList<String>();
 		temp.addAll(vsParameterString.keySet());
 		return temp;
 	}
 
-	public int getNumberOfStringParameters()
-	{
+	public int getNumberOfStringParameters() {
 		return vsParameterString.size();
 	}
 
-	public void generateGLLists(GL gl, GLGlyphGenerator generator)
-	{
+	public void generateGLLists(GL gl, GLGlyphGenerator generator) {
 
 		glListSelected_ = generator.generateGlyph(gl, this, true);
 		glList_ = generator.generateGlyph(gl, this, false);
@@ -149,26 +135,23 @@ public class GlyphEntry
 	/**
 	 * This method returns a String representation of the holding data
 	 * 
-	 * @param seperator between the data fields
+	 * @param seperator
+	 *          between the data fields
 	 * @return data text
 	 */
-	public String getGlyphDescription(String seperator)
-	{
+	public String getGlyphDescription(String seperator) {
 		StringBuffer sInfoText = new StringBuffer();
 		String name;
 		String value;
 
 		sInfoText.append("ID "
-				+ GeneralManager.get().getIDMappingManager().getID(
-						EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, id_) + seperator);
+			+ GeneralManager.get().getIDMappingManager().getID(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, id_)
+			+ seperator);
 
-		for (int iAttributeIndex = 1; iAttributeIndex < gman.getGlyphAttributes().size(); ++iAttributeIndex)
-		{
+		for (int iAttributeIndex = 1; iAttributeIndex < gman.getGlyphAttributes().size(); ++iAttributeIndex) {
 
-			name = gman.getGlyphAttributeTypeWithInternalColumnNumber(iAttributeIndex)
-					.getName();
-			GlyphAttributeType type = gman
-					.getGlyphAttributeTypeWithInternalColumnNumber(iAttributeIndex);
+			name = gman.getGlyphAttributeTypeWithInternalColumnNumber(iAttributeIndex).getName();
+			GlyphAttributeType type = gman.getGlyphAttributeTypeWithInternalColumnNumber(iAttributeIndex);
 
 			value = type.getParameterString(getParameter(iAttributeIndex));
 

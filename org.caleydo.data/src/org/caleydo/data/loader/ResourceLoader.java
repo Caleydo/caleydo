@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.xml.sax.InputSource;
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
@@ -18,27 +20,19 @@ import com.sun.opengl.util.texture.TextureIO;
  * Utility classes to load resources within the Caleydo project.
  * 
  * @author Marc Streit
- * 
  */
-public class ResourceLoader
-{
-	public BufferedReader getResource(String sFileName)
-	{
+public class ResourceLoader {
+	public BufferedReader getResource(String sFileName) {
 		BufferedReader file;
 
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-		{
-			file = new BufferedReader(new InputStreamReader(
-					loadResourceAsInputStream(sFileName)));
+		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+			file = new BufferedReader(new InputStreamReader(loadResourceAsInputStream(sFileName)));
 		}
-		else
-		{
-			try
-			{
+		else {
+			try {
 				file = new BufferedReader(new FileReader(sFileName));
 			}
-			catch (FileNotFoundException e)
-			{
+			catch (FileNotFoundException e) {
 				throw new IllegalStateException("Cannot load resource: " + sFileName);
 			}
 		}
@@ -49,22 +43,17 @@ public class ResourceLoader
 		return file;
 	}
 
-	public InputSource getInputSource(String sFileName)
-	{
+	public InputSource getInputSource(String sFileName) {
 		InputSource inputSource;
 
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-		{
+		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
 		}
-		else
-		{
-			try
-			{
+		else {
+			try {
 				inputSource = new InputSource(new FileReader(new File(sFileName)));
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				throw new IllegalStateException("Cannot load resource: " + sFileName);
 			}
 		}
@@ -75,16 +64,12 @@ public class ResourceLoader
 		return inputSource;
 	}
 
-	public Image getImage(Display display, String sFileName)
-	{
+	public Image getImage(Display display, String sFileName) {
 		Image image;
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-		{
-			image = new Image(display, this.getClass().getClassLoader().getResourceAsStream(
-					sFileName));
+		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+			image = new Image(display, this.getClass().getClassLoader().getResourceAsStream(sFileName));
 		}
-		else
-		{
+		else {
 			image = new Image(display, sFileName);
 		}
 
@@ -94,8 +79,7 @@ public class ResourceLoader
 		return image;
 	}
 
-	public URL getResourceURL(String sFileName)
-	{
+	public URL getResourceURL(String sFileName) {
 		URL url = this.getClass().getClassLoader().getResource(sFileName);
 
 		if (url == null)
@@ -104,25 +88,19 @@ public class ResourceLoader
 		return url;
 	}
 
-	public Texture getTexture(String sFileName)
-	{
+	public Texture getTexture(String sFileName) {
 		Texture texture;
 
-		try
-		{
-			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-			{
-				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						loadResourceAsInputStream(sFileName), true, "GIF"));
+		try {
+			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+				texture =
+					TextureIO.newTexture(TextureIO.newTextureData(loadResourceAsInputStream(sFileName), true, "GIF"));
 			}
-			else
-			{
-				texture = TextureIO.newTexture(TextureIO.newTextureData(new File(sFileName),
-						true, "GIF"));
+			else {
+				texture = TextureIO.newTexture(TextureIO.newTextureData(new File(sFileName), true, "GIF"));
 			}
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			throw new IllegalStateException("Cannot load texture: " + sFileName);
 		}
 
@@ -132,8 +110,7 @@ public class ResourceLoader
 		return texture;
 	}
 
-	private InputStream loadResourceAsInputStream(String sFileName)
-	{
+	private InputStream loadResourceAsInputStream(String sFileName) {
 		InputStream file;
 		// try
 		// {

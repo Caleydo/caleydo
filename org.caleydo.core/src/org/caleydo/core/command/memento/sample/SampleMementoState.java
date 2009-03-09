@@ -1,23 +1,23 @@
 package org.caleydo.core.command.memento.sample;
 
 import java.io.Serializable;
+
 import org.caleydo.core.command.memento.IMementoState;
 
 /**
- * Sample code for a IMemento state. Implementation of Design Pattern "IMemento"
- * \sa SampleMementoApplicationCmd
+ * Sample code for a IMemento state. Implementation of Design Pattern "IMemento" \sa
+ * SampleMementoApplicationCmd
  * 
  * @author Michael Kalkusch
  */
 public class SampleMementoState
-	implements IMementoState, Serializable
-{
+	implements IMementoState, Serializable {
 
 	static final long serialVersionUID = 8300;
 
 	/**
-	 * Data stored, in order to be able to restore the state of the
-	 * SampleMementoObject. \sa SampleMementoObject::iMyData
+	 * Data stored, in order to be able to restore the state of the SampleMementoObject. \sa
+	 * SampleMementoObject::iMyData
 	 */
 	private int iData;
 
@@ -29,8 +29,7 @@ public class SampleMementoState
 	/**
 	 * Constructor.
 	 */
-	public SampleMementoState(int iSetData)
-	{
+	public SampleMementoState(int iSetData) {
 
 		iData = iSetData;
 	}
@@ -38,8 +37,7 @@ public class SampleMementoState
 	/**
 	 * ISet any data required to restore the state of the object...
 	 */
-	public void setPostData(float fSetData)
-	{
+	public void setPostData(float fSetData) {
 
 		fData = fSetData;
 	}
@@ -47,8 +45,7 @@ public class SampleMementoState
 	/**
 	 * Get any data required to restore the state of the object...
 	 */
-	public int getData()
-	{
+	public int getData() {
 
 		return iData;
 	}
@@ -56,22 +53,19 @@ public class SampleMementoState
 	/**
 	 * Get any data required to restore the state of the object...
 	 */
-	public float getPostData()
-	{
+	public float getPostData() {
 
 		return fData;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 
 		return new String("{data=" + iData + " postData=" + fData + "}");
 	}
 
 	@Override
-	public String toStringRecursive()
-	{
+	public String toStringRecursive() {
 
 		return new String("[" + this.toString() + " no recursive data]");
 	}

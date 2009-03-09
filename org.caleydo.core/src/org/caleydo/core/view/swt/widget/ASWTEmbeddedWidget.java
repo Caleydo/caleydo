@@ -1,6 +1,7 @@
 package org.caleydo.core.view.swt.widget;
 
 import java.awt.Frame;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.layout.GridData;
@@ -11,8 +12,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class ASWTEmbeddedWidget
-	extends ASWTWidget
-{
+	extends ASWTWidget {
 
 	/**
 	 * Embedded AWT Frame.
@@ -26,8 +26,7 @@ public abstract class ASWTEmbeddedWidget
 	/**
 	 * @param parentComposite
 	 */
-	public ASWTEmbeddedWidget(Composite parentComposite)
-	{
+	public ASWTEmbeddedWidget(Composite parentComposite) {
 
 		super(parentComposite);
 
@@ -37,8 +36,7 @@ public abstract class ASWTEmbeddedWidget
 		embeddedFrameComposite = null;
 	}
 
-	public void createEmbeddedComposite()
-	{
+	public void createEmbeddedComposite() {
 
 		embeddedFrameComposite = new Composite(parentComposite, SWT.EMBEDDED);
 
@@ -59,8 +57,7 @@ public abstract class ASWTEmbeddedWidget
 	 * 
 	 * @return The embedded composite.
 	 */
-	public final Composite getEmbeddedFrameComposite()
-	{
+	public final Composite getEmbeddedFrameComposite() {
 
 		return embeddedFrameComposite;
 	}
@@ -70,8 +67,7 @@ public abstract class ASWTEmbeddedWidget
 	 * 
 	 * @return The parent composite.
 	 */
-	public final Composite getParentComposite()
-	{
+	public final Composite getParentComposite() {
 
 		return parentComposite;
 	}

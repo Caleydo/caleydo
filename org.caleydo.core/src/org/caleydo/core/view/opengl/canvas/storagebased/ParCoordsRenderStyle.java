@@ -10,8 +10,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
  */
 
 public class ParCoordsRenderStyle
-	extends GeneralRenderStyle
-{
+	extends GeneralRenderStyle {
 
 	// Z Values
 	public static final float POLYLINE_NORMAL_Z = 0.001f;
@@ -98,7 +97,7 @@ public class ParCoordsRenderStyle
 	// gates
 	public static final float GATE_WIDTH = 0.05f;
 	public static final float GATE_BOTTOM_HEIGHT = 0.01f;
-//	private static final float GATE_NEGATIVE_Y_OFFSET = 0;
+	// private static final float GATE_NEGATIVE_Y_OFFSET = 0;
 	public static final float GATE_TIP_HEIGHT = 0.08f;
 
 	// buttons below axis
@@ -119,14 +118,12 @@ public class ParCoordsRenderStyle
 	 * 
 	 * @param viewFrustum
 	 */
-	public ParCoordsRenderStyle(GLParallelCoordinates pcs, IViewFrustum viewFrustum)
-	{
+	public ParCoordsRenderStyle(GLParallelCoordinates pcs, IViewFrustum viewFrustum) {
 		super(viewFrustum);
 		this.pcs = pcs;
 	}
 
-	public float[] getPolylineOcclusionPrevColor(int iNumberOfRenderedLines)
-	{
+	public float[] getPolylineOcclusionPrevColor(int iNumberOfRenderedLines) {
 
 		fOcclusionPrevAlpha = (float) (6 / Math.sqrt(iNumberOfRenderedLines));
 
@@ -135,14 +132,12 @@ public class ParCoordsRenderStyle
 		return polylineOcclusionPrevColor;
 	}
 
-	public float[] getPolylineDeselectedOcclusionPrevColor(int iNumberOfRenderedLines)
-	{
+	public float[] getPolylineDeselectedOcclusionPrevColor(int iNumberOfRenderedLines) {
 		polylineDeselectedColor[3] = (float) (0.2 / Math.sqrt(iNumberOfRenderedLines));
 		return polylineDeselectedColor;
 	}
 
-	public float getAxisSpacing(final int iNumberOfAxis)
-	{
+	public float getAxisSpacing(final int iNumberOfAxis) {
 
 		fAxisSpacing = getWidthOfCoordinateSystem() / (iNumberOfAxis - 1);
 
@@ -152,97 +147,86 @@ public class ParCoordsRenderStyle
 		return fAxisSpacing;
 	}
 
-	public float getWidthOfCoordinateSystem()
-	{
+	public float getWidthOfCoordinateSystem() {
 		if (pcs.bShowSelectionHeatMap)
-			return (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling() - pcs.glSelectionHeatMap
-					.getViewFrustum().getWidth());
+			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling()
+				- pcs.glSelectionHeatMap.getViewFrustum().getWidth();
 		else
-			return (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling());
+			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling();
 	}
 
-	public float getXAxisStart()
-	{
+	public float getXAxisStart() {
 		return -fXAxisOverlap;
 	}
 
-	public float getXAxisEnd()
-	{
+	public float getXAxisEnd() {
 		return getWidthOfCoordinateSystem() + fXAxisOverlap;
 	}
 
-	public float getAxisHeight()
-	{
-		return viewFrustum.getHeight() - (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING)
-				* getScaling();
+	public float getAxisHeight() {
+		return viewFrustum.getHeight() - (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING) * getScaling();
 	}
 
-	public float getXSpacing()
-	{
+	public float getXSpacing() {
 
 		return COORDINATE_SIDE_SPACING * getScaling();
 	}
 
-	public float getBottomSpacing()
-	{
+	public float getBottomSpacing() {
 
 		return COORDINATE_BOTTOM_SPACING * getScaling();
 	}
 
-	public float getAxisButtonYOffset()
-	{
+	public float getAxisButtonYOffset() {
 
 		return AXIS_BUTTONS_Y_OFFSET * getScaling();
 	}
 
-//	public float getGateWidth()
-//	{
-//
-//		return GATE_WIDTH;
-//	}
+	// public float getGateWidth()
+	// {
+	//
+	// return GATE_WIDTH;
+	// }
 
-//	public float getGateYOffset()
-//	{
-//
-//		return GATE_NEGATIVE_Y_OFFSET * getAxisHeight();
-//	}
+	// public float getGateYOffset()
+	// {
+	//
+	// return GATE_NEGATIVE_Y_OFFSET * getAxisHeight();
+	// }
 
-//	@Deprecated // not used anymore?
-//	public float getGateMinimumValue()
-//	{
-//		return NAN_Y_OFFSET * getAxisHeight();
-//	}
+	// @Deprecated // not used anymore?
+	// public float getGateMinimumValue()
+	// {
+	// return NAN_Y_OFFSET * getAxisHeight();
+	// }
 
-//	@Deprecated
-//	public float getNaNYOffset()
-//	{
-//		return NAN_Y_OFFSET;
-//	}
+	// @Deprecated
+	// public float getNaNYOffset()
+	// {
+	// return NAN_Y_OFFSET;
+	// }
 
-//	@Deprecated
-//	public float getGateTipHeight()
-//	{
-//
-//		return GATE_TIP_HEIGHT;
-//	}
+	// @Deprecated
+	// public float getGateTipHeight()
+	// {
+	//
+	// return GATE_TIP_HEIGHT;
+	// }
 
-	public float getAxisCaptionSpacing()
-	{
+	public float getAxisCaptionSpacing() {
 
 		return COORDINATE_TOP_SPACING / 3 * getScaling();
 	}
 
-	public boolean isEnoughSpaceForText(int iNumberOfAxis)
-	{
-		float fScaling = getScaling();
+	public boolean isEnoughSpaceForText(int iNumberOfAxis) {
+		getScaling();
 		if (getAxisSpacing(iNumberOfAxis) > fMinAxisSpacingForText)
 			return true;
 		return false;
 	}
 
 	@Override
-	public float[] getBackgroundColor()
-	{
+	public float[] getBackgroundColor() {
 		return BACKGROUND_COLOR;
 	}
 

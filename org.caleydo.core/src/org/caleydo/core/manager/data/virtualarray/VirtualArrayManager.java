@@ -10,11 +10,9 @@ import org.caleydo.core.manager.data.IVirtualArrayManager;
  * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
- * 
  */
 public class VirtualArrayManager
 	extends AManager<IVirtualArray>
-	implements IVirtualArrayManager
-{
+	implements IVirtualArrayManager {
 
 }

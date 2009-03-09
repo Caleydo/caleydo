@@ -7,8 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class TextureAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Turn on/off pathway textures";
 	public static final String ICON = "resources/icons/view/pathway/texture_on_off.png";
 
@@ -17,20 +16,18 @@ public class TextureAction
 	/**
 	 * Constructor.
 	 */
-	public TextureAction(int iViewID)
-	{
+	public TextureAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 		setChecked(bEnable);
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		bEnable = !bEnable;

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingDataType;
@@ -20,28 +21,23 @@ import org.caleydo.core.util.collection.MultiHashMap;
  * @author Alexander Lex
  */
 public class IDMappingManager
-	implements IIDMappingManager
-{
+	implements IIDMappingManager {
 	protected HashMap<EMappingType, Map<?, ?>> hashType2Mapping;
 
 	private IGeneralManager generalManager = GeneralManager.get();
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public IDMappingManager()
-	{
+	public IDMappingManager() {
 		hashType2Mapping = new HashMap<EMappingType, Map<?, ?>>();
 	}
 
 	@Override
-	public void createMap(EMappingType type, EMappingDataType dataType)
-	{
+	public void createMap(EMappingType type, EMappingDataType dataType) {
 		generalManager.getLogger().log(Level.INFO, "Create lookup table for type=" + type);
 
-		switch (dataType)
-		{
+		switch (dataType) {
 			case INT2INT:
 				hashType2Mapping.put(type, new HashMap<Integer, Integer>());
 				break;
@@ -71,62 +67,50 @@ public class IDMappingManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <SrcType, DestType> void createReverseMap(EMappingType srcType,
-			EMappingType reverseType)
-	{
+	public <SrcType, DestType> void createReverseMap(EMappingType srcType, EMappingType reverseType) {
 		Map<DestType, SrcType> reverseMap;
 
-		if (srcType.isMultiMap())
-		{
-			MultiHashMap<SrcType, DestType> sourceMap = (MultiHashMap<SrcType, DestType>) hashType2Mapping
-					.get(srcType);
+		if (srcType.isMultiMap()) {
+			MultiHashMap<SrcType, DestType> sourceMap =
+				(MultiHashMap<SrcType, DestType>) hashType2Mapping.get(srcType);
 
-			if (reverseType.isMultiMap())
-			{
+			if (reverseType.isMultiMap()) {
 				hashType2Mapping.put(reverseType, new MultiHashMap<DestType, SrcType>());
 
-				reverseMap = (MultiHashMap<DestType, SrcType>) hashType2Mapping
-						.get(reverseType);
+				reverseMap = (MultiHashMap<DestType, SrcType>) hashType2Mapping.get(reverseType);
 			}
-			else
-			{
+			else {
 				hashType2Mapping.put(reverseType, new HashMap<DestType, SrcType>());
 
 				reverseMap = (HashMap<DestType, SrcType>) hashType2Mapping.get(reverseType);
 			}
 
-			for (SrcType key : sourceMap.keySet())
-			{
-				for (DestType value : sourceMap.getAll(key))
-				{
+			for (SrcType key : sourceMap.keySet()) {
+				for (DestType value : sourceMap.getAll(key)) {
 					reverseMap.put(value, key);
 				}
 			}
 		}
-		else
-		{
+		else {
 			hashType2Mapping.put(reverseType, new HashMap<DestType, SrcType>());
 
 			reverseMap = (HashMap<DestType, SrcType>) hashType2Mapping.get(reverseType);
-			Map<SrcType, DestType> sourceMap = (HashMap<SrcType, DestType>) hashType2Mapping
-					.get(srcType);
+			Map<SrcType, DestType> sourceMap = (HashMap<SrcType, DestType>) hashType2Mapping.get(srcType);
 
-			for (SrcType key : sourceMap.keySet())
-			{
+			for (SrcType key : sourceMap.keySet()) {
 				reverseMap.put(sourceMap.get(key), key);
 			}
 		}
 	}
 
 	/**
-	 * Method takes a map that contains identifier codes and creates a new
-	 * resolved codes. Resolving means mapping from code to internal ID.
+	 * Method takes a map that contains identifier codes and creates a new resolved codes. Resolving means
+	 * mapping from code to internal ID.
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
-			EMappingType destMappingType)
-	{
+		EMappingType destMappingType) {
 		Map codeResolvedMap = null;
 		int iMappingErrors = 0;
 
@@ -135,51 +119,38 @@ public class IDMappingManager
 		EIDType destKeyType = destMappingType.getTypeOrigin();
 		EIDType destValueType = destMappingType.getTypeTarget();
 
-		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashType2Mapping
-				.get(mappingType);
+		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashType2Mapping.get(mappingType);
 
-		if (mappingType != EMappingType.REFSEQ_MRNA_2_DAVID)
-		{
+		if (mappingType != EMappingType.REFSEQ_MRNA_2_DAVID) {
 			// Remove old unresolved map
 			hashType2Mapping.remove(mappingType);
 		}
-			
-		if (originKeyType == destKeyType)
-		{
-			if (originValueType != destValueType)
-			{
-				if (originKeyType.getStorageType() == EStorageType.INT
-						&& destValueType.getStorageType() == EStorageType.INT)
-				{
-					codeResolvedMap = new HashMap<Integer, Integer>();
-					EMappingType conversionType = EMappingType.valueOf(originValueType + "_2_"
-							+ destValueType);
 
-					if (!mappingType.isMultiMap())
-					{
+		if (originKeyType == destKeyType) {
+			if (originValueType != destValueType) {
+				if (originKeyType.getStorageType() == EStorageType.INT
+					&& destValueType.getStorageType() == EStorageType.INT) {
+					codeResolvedMap = new HashMap<Integer, Integer>();
+					EMappingType conversionType = EMappingType.valueOf(originValueType + "_2_" + destValueType);
+
+					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
-						for (KeyType key : srcMap.keySet())
-						{
-							codeResolvedMap.put(key, generalManager.getIDMappingManager()
-									.getID(conversionType, srcMap.get(key)));
+						for (KeyType key : srcMap.keySet()) {
+							codeResolvedMap.put(key, generalManager.getIDMappingManager().getID(conversionType,
+								srcMap.get(key)));
 						}
 					}
-					else
-					{
+					else {
 						codeResolvedMap = new MultiHashMap<Integer, Integer>();
 						MultiHashMap<Integer, String> srcMultiMap = (MultiHashMap<Integer, String>) srcMap;
 						Integer iID = 0;
 
-						for (KeyType key : srcMap.keySet())
-						{
-							for (String sID : srcMultiMap.getAll(key))
-							{
-								iID = generalManager.getIDMappingManager().getID(
-										conversionType, sID);
+						for (KeyType key : srcMap.keySet()) {
+							for (String sID : srcMultiMap.getAll(key)) {
+								iID = generalManager.getIDMappingManager().getID(conversionType, sID);
 
-								if (iID == null || iID == -1)
-								{
+								if (iID == null || iID == -1) {
 									continue;
 									// throw new
 									// IllegalStateException("No DAVID mapping for RefSeq "
@@ -192,50 +163,39 @@ public class IDMappingManager
 					}
 				}
 				else if (originKeyType.getStorageType() == EStorageType.INT
-						&& destValueType.getStorageType() == EStorageType.STRING)
-				{
+					&& destValueType.getStorageType() == EStorageType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
 				else if (originKeyType.getStorageType() == EStorageType.STRING
-						&& destValueType.getStorageType() == EStorageType.STRING)
-				{
+					&& destValueType.getStorageType() == EStorageType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
 				else if (originKeyType.getStorageType() == EStorageType.STRING
-						&& destValueType.getStorageType() == EStorageType.INT)
-				{
-					EMappingType conversionType = EMappingType.valueOf(originValueType + "_2_"
-							+ destValueType);
+					&& destValueType.getStorageType() == EStorageType.INT) {
+					EMappingType conversionType = EMappingType.valueOf(originValueType + "_2_" + destValueType);
 
-					if (!mappingType.isMultiMap())
-					{
+					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
 
-						for (KeyType key : srcMap.keySet())
-						{
-							codeResolvedMap.put(key, generalManager.getIDMappingManager()
-									.getID(conversionType, srcMap.get(key)));
+						for (KeyType key : srcMap.keySet()) {
+							codeResolvedMap.put(key, generalManager.getIDMappingManager().getID(conversionType,
+								srcMap.get(key)));
 						}
 					}
-					else
-					{
+					else {
 						codeResolvedMap = new MultiHashMap<String, Integer>();
 						MultiHashMap<String, String> srcMultiMap = (MultiHashMap<String, String>) srcMap;
 						Integer iID = 0;
 
-						for (KeyType key : srcMap.keySet())
-						{
-							for (String sID : srcMultiMap.getAll(key))
-							{
-								iID = generalManager.getIDMappingManager().getID(
-										conversionType, sID);
+						for (KeyType key : srcMap.keySet()) {
+							for (String sID : srcMultiMap.getAll(key)) {
+								iID = generalManager.getIDMappingManager().getID(conversionType, sID);
 
-								if (iID == null || iID == -1)
-								{
+								if (iID == null || iID == -1) {
 									continue;
 									// throw new
 									// IllegalStateException("No DAVID mapping for RefSeq "
@@ -249,50 +209,37 @@ public class IDMappingManager
 				}
 			}
 		}
-		else
-		{
-			if (originValueType == destValueType)
-			{
+		else {
+			if (originValueType == destValueType) {
 				if (destKeyType.getStorageType() == EStorageType.INT
-						&& destValueType.getStorageType() == EStorageType.INT)
-				{
+					&& destValueType.getStorageType() == EStorageType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
-					EMappingType conversionType = EMappingType.valueOf(originKeyType + "_2_"
-							+ destKeyType);
+					EMappingType conversionType = EMappingType.valueOf(originKeyType + "_2_" + destKeyType);
 
-					if (!mappingType.isMultiMap())
-					{
+					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
-						for (KeyType key : srcMap.keySet())
-						{
-							codeResolvedMap.put(generalManager.getIDMappingManager().getID(
-									conversionType, key), srcMap.get(key));
+						for (KeyType key : srcMap.keySet()) {
+							codeResolvedMap.put(generalManager.getIDMappingManager().getID(conversionType, key), srcMap
+								.get(key));
 						}
 					}
-					else
-					{
+					else {
 						codeResolvedMap = new MultiHashMap<Integer, Integer>();
 						MultiHashMap<String, Integer> srcMultiMap = (MultiHashMap<String, Integer>) srcMap;
 						Integer iResolvedID = 0;
 
-						for (KeyType key : srcMap.keySet())
-						{
-							iResolvedID = generalManager.getIDMappingManager().getID(
-									conversionType, key);
+						for (KeyType key : srcMap.keySet()) {
+							iResolvedID = generalManager.getIDMappingManager().getID(conversionType, key);
 
-							if (iResolvedID == null)
-							{
-								generalManager.getLogger().log(
-										Level.WARNING,
-										iMappingErrors++ + ": No DAVID mapping for RefSeq "
-												+ key);
+							if (iResolvedID == null) {
+								generalManager.getLogger().log(Level.WARNING,
+									iMappingErrors++ + ": No DAVID mapping for RefSeq " + key);
 								continue;
 							}
 
-							for (Integer iID : srcMultiMap.getAll(key))
-							{
+							for (Integer iID : srcMultiMap.getAll(key)) {
 								if (iID == null)
 									continue;
 
@@ -302,29 +249,24 @@ public class IDMappingManager
 					}
 				}
 				else if (destKeyType.getStorageType() == EStorageType.INT
-						&& destValueType.getStorageType() == EStorageType.STRING)
-				{
+					&& destValueType.getStorageType() == EStorageType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
-					EMappingType conversionType = EMappingType.valueOf(originKeyType + "_2_"
-							+ destKeyType);
+					EMappingType conversionType = EMappingType.valueOf(originKeyType + "_2_" + destKeyType);
 
-					for (KeyType key : srcMap.keySet())
-					{
-						codeResolvedMap.put(generalManager.getIDMappingManager().getID(
-								conversionType, key), srcMap.get(key));
+					for (KeyType key : srcMap.keySet()) {
+						codeResolvedMap.put(generalManager.getIDMappingManager().getID(conversionType, key), srcMap
+							.get(key));
 					}
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING
-						&& destValueType.getStorageType() == EStorageType.STRING)
-				{
+					&& destValueType.getStorageType() == EStorageType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING
-						&& destValueType.getStorageType() == EStorageType.INT)
-				{
+					&& destValueType.getStorageType() == EStorageType.INT) {
 					codeResolvedMap = new HashMap<String, Integer>();
 
 					throw new RuntimeException("Not implemented!");
@@ -338,29 +280,25 @@ public class IDMappingManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> Map<KeyType, ValueType> getMapping(EMappingType type)
-	{
+	public <KeyType, ValueType> Map<KeyType, ValueType> getMapping(EMappingType type) {
 		return (Map<KeyType, ValueType>) hashType2Mapping.get(type);
 	}
 
 	@Override
-	public final boolean hasMapping(EMappingType type)
-	{
+	public final boolean hasMapping(EMappingType type) {
 		return hashType2Mapping.containsKey(type);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key)
-	{
+	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key) {
 		Map<KeyType, ValueType> tmpMap;
 		tmpMap = (HashMap<KeyType, ValueType>) hashType2Mapping.get(type);
 		return tmpMap.get(key);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key)
-	{
+	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key) {
 		MultiHashMap<KeyType, ValueType> tmpMap;
 		tmpMap = (MultiHashMap<KeyType, ValueType>) hashType2Mapping.get(type);
 		return tmpMap.getAll(key);

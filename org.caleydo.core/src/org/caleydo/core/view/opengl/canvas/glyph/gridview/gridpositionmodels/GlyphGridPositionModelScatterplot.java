@@ -2,48 +2,47 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Vec2i;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class GlyphGridPositionModelScatterplot
-	extends GlyphGridPositionModel
-{
+	extends GlyphGridPositionModel {
 	private HashMap<Integer, HashMap<Integer, Vec2i>> scatterpointmap = null;
 	private GlyphManager gman = null;
 
 	private int iScatterParameterX = -1;
 	private int iScatterParameterY = -1;
 
-	public void setParameterWithInternalColnumX(int index)
-	{
+	public void setParameterWithInternalColnumX(int index) {
 		iScatterParameterX = index;
 	}
 
-	public void setParameterWithInternalColnumY(int index)
-	{
+	public void setParameterWithInternalColnumY(int index) {
 		iScatterParameterY = index;
 	}
 
-	public GlyphGridPositionModelScatterplot(GlyphRenderStyle renderStyle)
-	{
+	public GlyphGridPositionModelScatterplot(GlyphRenderStyle renderStyle) {
 		super(renderStyle);
 		gman = (GlyphManager) generalManager.getGlyphManager();
 	}
 
 	@Override
-	public void buildGrid(Vector<Vector<GlyphGridPosition>> glyphMap, GL gl)
-	{
+	public void buildGrid(Vector<Vector<GlyphGridPosition>> glyphMap, GL gl) {
 		if (!gman.isActive())
 			return;
 
@@ -57,31 +56,21 @@ public class GlyphGridPositionModelScatterplot
 		int maxx = worldLimit.x();// - (worldLimit.x() / 5);
 		int maxy = maxx;// worldLimit.y() - (worldLimit.y() / 5);
 
-		if (iScatterParameterX == -1 && iScatterParameterY == -1)
-		{
-			iScatterParameterX = Integer.parseInt(gman
-					.getSetting(EGlyphSettingIDs.SCATTERPLOTX));
-			iScatterParameterY = Integer.parseInt(gman
-					.getSetting(EGlyphSettingIDs.SCATTERPLOTY));
-			GlyphAttributeType xdata = gman
-					.getGlyphAttributeTypeWithExternalColumnNumber(iScatterParameterX);
-			GlyphAttributeType ydata = gman
-					.getGlyphAttributeTypeWithExternalColumnNumber(iScatterParameterY);
+		if (iScatterParameterX == -1 && iScatterParameterY == -1) {
+			iScatterParameterX = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX));
+			iScatterParameterY = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY));
+			GlyphAttributeType xdata = gman.getGlyphAttributeTypeWithExternalColumnNumber(iScatterParameterX);
+			GlyphAttributeType ydata = gman.getGlyphAttributeTypeWithExternalColumnNumber(iScatterParameterY);
 			iScatterParameterX = xdata.getInternalColumnNumber();
 			iScatterParameterY = ydata.getInternalColumnNumber();
 		}
 
-		GlyphAttributeType xdata = gman
-				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterX);
-		GlyphAttributeType ydata = gman
-				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
+		GlyphAttributeType xdata = gman.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterX);
+		GlyphAttributeType ydata = gman.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
 
-		if (xdata == null || ydata == null)
-		{
-			generalManager.getLogger().log(
-					Level.WARNING,
-					"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", "
-							+ iScatterParameterY + ")");
+		if (xdata == null || ydata == null) {
+			generalManager.getLogger().log(Level.WARNING,
+				"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", " + iScatterParameterY + ")");
 			return;
 		}
 
@@ -90,11 +79,11 @@ public class GlyphGridPositionModelScatterplot
 		xaxisdescription.remove(0); // remove NAV
 		yaxisdescription.remove(0); // remove NAV
 
-		float incx = (float) maxx / (float) (xaxisdescription.size());
-		float incy = (float) maxy / (float) (yaxisdescription.size());
-		float linex = (yaxisdescription.size()) * incy; // we always get NAV
+		float incx = (float) maxx / (float) xaxisdescription.size();
+		float incy = (float) maxy / (float) yaxisdescription.size();
+		float linex = yaxisdescription.size() * incy; // we always get NAV
 		// first
-		float liney = (xaxisdescription.size()) * incx; // we always get NAV
+		float liney = xaxisdescription.size() * incx; // we always get NAV
 		// first
 
 		// if(incx<1.0f) incx = 1.0f;
@@ -120,26 +109,22 @@ public class GlyphGridPositionModelScatterplot
 		gl.glRotatef(-45f, 0, 0, 1);
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-				.get(3));
+		gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_.get(3));
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, linex, 0);
 		gl.glEnd();
 
-		for (int i = 0; i < xaxisdescription.size(); ++i)
-		{
+		for (int i = 0; i < xaxisdescription.size(); ++i) {
 			pointsX.add(incx * i + incx / 2.0f);
 			gl.glTranslatef(incx, 0f, 0f);
 
 			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-					.get(3));
+			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(0, linex, 0);
 			gl.glEnd();
 
-			if (i % drawLabelEveryLineX == 0)
-			{
+			if (i % drawLabelEveryLineX == 0) {
 				gl.glTranslatef(-incx / 2.0f, -2.0f, 0f);
 				textRenderer.begin3DRendering();
 				textRenderer.draw3D(xaxisdescription.get(i), 0, 0, 0, 0.1f);
@@ -162,26 +147,22 @@ public class GlyphGridPositionModelScatterplot
 		gl.glRotatef(-90f, 0, 0, 1);
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-				.get(3));
+		gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_.get(3));
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, liney, 0);
 		gl.glEnd();
 
-		for (int i = 0; i < yaxisdescription.size(); ++i)
-		{
+		for (int i = 0; i < yaxisdescription.size(); ++i) {
 			pointsY.add(incy * i + incy / 2.0f);
 			gl.glTranslatef(-incy, 0f, 0f);
 
 			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-					.get(3));
+			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_.get(3));
 			gl.glVertex3f(0, 0, 0);
 			gl.glVertex3f(0, liney, 0);
 			gl.glEnd();
 
-			if (i % drawLabelEveryLineY == 0)
-			{
+			if (i % drawLabelEveryLineY == 0) {
 				gl.glTranslatef(+incy / 2.0f, -2.0f, 0f);
 				textRenderer.begin3DRendering();
 				textRenderer.draw3D(yaxisdescription.get(i), 0, 0, 0, 0.1f);
@@ -204,12 +185,10 @@ public class GlyphGridPositionModelScatterplot
 
 		scatterpointmap = new HashMap<Integer, HashMap<Integer, Vec2i>>();
 
-		for (int i = 0; i < pointsX.size(); ++i)
-		{
+		for (int i = 0; i < pointsX.size(); ++i) {
 			HashMap<Integer, Vec2i> temp = new HashMap<Integer, Vec2i>();
 			scatterpointmap.put(i, temp);
-			for (int j = 0; j < pointsY.size(); ++j)
-			{
+			for (int j = 0; j < pointsY.size(); ++j) {
 				Vec2i temp2 = new Vec2i();
 
 				// transform point
@@ -226,23 +205,19 @@ public class GlyphGridPositionModelScatterplot
 				double dist = 10000000000000.0;
 				Iterator<Vector<GlyphGridPosition>> it1 = glyphMap.iterator();
 				Iterator<GlyphGridPosition> it2;
-				while (it1.hasNext())
-				{
+				while (it1.hasNext()) {
 					Vector<GlyphGridPosition> vggp = it1.next();
 					it2 = vggp.iterator();
 
-					while (it2.hasNext())
-					{
+					while (it2.hasNext()) {
 						GlyphGridPosition ggp = it2.next();
 						Vec2i pos = ggp.getGridPosition();
 
 						int x2 = pos.x();
 						int y2 = pos.y();
 
-						double dist2 = java.lang.Math.sqrt((x1t - x2) * (x1t - x2)
-								+ (y1t - y2) * (y1t - y2));
-						if (dist2 < dist)
-						{
+						double dist2 = java.lang.Math.sqrt((x1t - x2) * (x1t - x2) + (y1t - y2) * (y1t - y2));
+						if (dist2 < dist) {
 							dist = dist2;
 							temp2 = ggp.getPosition();
 						}
@@ -255,35 +230,29 @@ public class GlyphGridPositionModelScatterplot
 		gl.glEndList();
 
 		glyphCenterGrid.setXY(maxx / 2, maxx / 2);
-		glyphCenterWorld.set(glyphMap.get(glyphCenterGrid.x()).get(glyphCenterGrid.y())
-				.getGridPosition().toVec2f());
+		glyphCenterWorld.set(glyphMap.get(glyphCenterGrid.x()).get(glyphCenterGrid.y()).getGridPosition()
+			.toVec2f());
 
 	}
 
 	@Override
-	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap,
-			ArrayList<GlyphEntry> gg)
-	{
+	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap, ArrayList<GlyphEntry> gg) {
 		GlyphGridPositionModelCircle posModel = new GlyphGridPositionModelCircle(renderStyle);
 		posModel.setWorldLimit(worldLimit.x(), worldLimit.y());
 
-		GlyphAttributeType tx = gman
-				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterX);
-		GlyphAttributeType ty = gman
-				.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
+		GlyphAttributeType tx = gman.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterX);
+		GlyphAttributeType ty = gman.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
 
-		if (tx == null || ty == null)
-		{
+		if (tx == null || ty == null) {
 			generalManager.getLogger().log(Level.WARNING,
-					"setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!");
+				"setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!");
 			return;
 		}
 
 		int maxX = tx.getMaxIndex();
 		int maxY = ty.getMaxIndex();
 
-		for (GlyphEntry g : gg)
-		{
+		for (GlyphEntry g : gg) {
 			ArrayList<GlyphEntry> alge = new ArrayList<GlyphEntry>();
 			int xp = g.getParameter(iScatterParameterX);
 			int yp = g.getParameter(iScatterParameterY);

@@ -6,14 +6,12 @@ import org.caleydo.util.graph.EGraphProperty;
 import org.caleydo.util.graph.IGraph;
 
 /**
- * Base Class for all IGraph implementations handling EGraphProperty and
- * GraphTypeId
+ * Base Class for all IGraph implementations handling EGraphProperty and GraphTypeId
  * 
  * @author Michael Kalkusch
  */
 public abstract class AGraph
-	implements IGraph
-{
+	implements IGraph {
 	/**
 	 * initial size of org.caleydo.util.graph.core.AGraph#hashGraphProperties
 	 * 
@@ -31,10 +29,8 @@ public abstract class AGraph
 	 * HashMap for EGraphProperty.
 	 * 
 	 * @see org.caleydo.util.graph.core.AGraph#hasGraphProperty(EGraphProperty)
-	 * @see org.caleydo.util.graph.core.AGraph#setGraphProperty(EGraphProperty,
-	 *      boolean)
-	 * @see org.caleydo.util.graph.IGraph#setGraphProperty(EGraphProperty,
-	 *      boolean)
+	 * @see org.caleydo.util.graph.core.AGraph#setGraphProperty(EGraphProperty, boolean)
+	 * @see org.caleydo.util.graph.IGraph#setGraphProperty(EGraphProperty, boolean)
 	 * @see org.caleydo.util.graph.IGraph#hasGraphProperty(EGraphProperty)
 	 */
 	private HashMap<EGraphProperty, Boolean> hashGraphProperties;
@@ -42,29 +38,24 @@ public abstract class AGraph
 	/**
 	 * 
 	 */
-	protected AGraph(final int id)
-	{
+	protected AGraph(final int id) {
 		hashGraphProperties = new HashMap<EGraphProperty, Boolean>(iInitialSizeProperties);
 
 		this.iGraphId = id;
 	}
 
 	@Override
-	public final int getId()
-	{
+	public final int getId() {
 		return iGraphId;
 	}
 
 	@Override
-	public final boolean hasGraphProperty(EGraphProperty test)
-	{
+	public final boolean hasGraphProperty(EGraphProperty test) {
 		return hashGraphProperties.containsKey(test);
 	}
 
-	public final void setGraphProperty(final EGraphProperty prop, final boolean value)
-	{
-		if (value)
-		{
+	public final void setGraphProperty(final EGraphProperty prop, final boolean value) {
+		if (value) {
 			hashGraphProperties.put(prop, new Boolean(value));
 			return;
 		}
@@ -72,10 +63,8 @@ public abstract class AGraph
 	}
 
 	@Override
-	public final void setId(int type)
-	{
-		if (type >= 0)
-		{
+	public final void setId(int type) {
+		if (type >= 0) {
 			iGraphId = type;
 			return;
 		}
@@ -84,16 +73,13 @@ public abstract class AGraph
 	}
 
 	/**
-	 * Empty method by definition. For details see
-	 * org.caleydo.util.graph.IGraphComponent#disposeItem().
+	 * Empty method by definition. For details see org.caleydo.util.graph.IGraphComponent#disposeItem().
 	 * 
 	 * @see org.caleydo.util.graph.IGraphComponent#disposeItem()
 	 */
-	public final void disposeItem()
-	{
+	public final void disposeItem() {
 		/**
-		 * Graph does not dispose other objects; only IGraphItem need to dispose
-		 * objects
+		 * Graph does not dispose other objects; only IGraphItem need to dispose objects
 		 */
 	}
 

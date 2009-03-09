@@ -1,8 +1,10 @@
 package org.caleydo.core.view.opengl.util.drag;
 
 import java.awt.Point;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 
@@ -11,43 +13,36 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
  * 
  * @author Marc Streit
  */
-public class GLDragAndDrop
-{
+public class GLDragAndDrop {
 	private int iDragObjectId = -1;
 
 	private boolean bDragActionRunning = false;
 
 	private float[] fArCurrentMousePos;
 
-	public GLDragAndDrop()
-	{
+	public GLDragAndDrop() {
 		fArCurrentMousePos = new float[2];
 	}
 
-	public int getDraggedObjectedId()
-	{
+	public int getDraggedObjectedId() {
 		return iDragObjectId;
 	}
 
-	public void startDragAction(final int iDragObjectId)
-	{
+	public void startDragAction(final int iDragObjectId) {
 		bDragActionRunning = true;
 		this.iDragObjectId = iDragObjectId;
 	}
 
-	public void stopDragAction()
-	{
+	public void stopDragAction() {
 		bDragActionRunning = false;
 		iDragObjectId = -1;
 	}
 
-	public boolean isDragActionRunning()
-	{
+	public boolean isDragActionRunning() {
 		return bDragActionRunning;
 	}
 
-	public void setCurrentMousePos(final GL gl, final Point currentMousePos)
-	{
+	public void setCurrentMousePos(final GL gl, final Point currentMousePos) {
 		double mvmatrix[] = new double[16];
 		double projmatrix[] = new double[16];
 		int realy = 0;// GL y coord pos
@@ -63,27 +58,23 @@ public class GLDragAndDrop
 
 		GLU glu = new GLU();
 		glu.gluUnProject(currentMousePos.x, realy, 0.0, //
-				mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
+			mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
 
 		fArCurrentMousePos[0] = (float) wcoord[0];
 		fArCurrentMousePos[1] = (float) wcoord[1];
 	}
 
-	public void renderDragThumbnailTexture(final GL gl)
-	{
+	public void renderDragThumbnailTexture(final GL gl) {
 		float fOffset = 0.02f;
 
 		gl.glPushMatrix();
 		gl.glTranslatef(fArCurrentMousePos[0] + fOffset, fArCurrentMousePos[1] + fOffset, 5);
 		gl.glScalef(0.05f, 0.05f, 0.05f);
 
-		int iGLEventListenerID = RemoteElementManager.get().getItem(iDragObjectId)
-				.getContainedElementID();
+		int iGLEventListenerID = RemoteElementManager.get().getItem(iDragObjectId).getContainedElementID();
 
-		if (iGLEventListenerID != -1)
-		{
-			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-					iGLEventListenerID).displayRemote(gl);
+		if (iGLEventListenerID != -1) {
+			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID).displayRemote(gl);
 		}
 
 		gl.glPopMatrix();

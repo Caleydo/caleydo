@@ -12,8 +12,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
  * @author Marc Streit
  */
 public abstract class ARemoteViewLayoutRenderStyle
-	extends GeneralRenderStyle
-{
+	extends GeneralRenderStyle {
 	public final static float NAVIGATION_OVERLAY_TRANSPARENCY = 1f;
 
 	protected RemoteElementManager remoteElementManager;
@@ -22,11 +21,8 @@ public abstract class ARemoteViewLayoutRenderStyle
 	protected float fZoomFactor = 0.0f;
 	protected float fPoolLayerWidth = 0.8f;
 
-	public enum LayoutMode
-	{
-		BUCKET,
-		JUKEBOX,
-		LIST
+	public enum LayoutMode {
+		BUCKET, JUKEBOX, LIST
 	}
 
 	protected RemoteLevel focusLevel;
@@ -50,18 +46,17 @@ public abstract class ARemoteViewLayoutRenderStyle
 	protected float fTrashCanWidth;
 	protected float fTrashCanHeight;
 
-//	protected float fColorBarXPos;
-//	protected float fColorBarYPos;
-//	protected float fColorBarWidth;
-//	protected float fColorBarHeight;
+	// protected float fColorBarXPos;
+	// protected float fColorBarYPos;
+	// protected float fColorBarWidth;
+	// protected float fColorBarHeight;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param generalManager
 	 */
-	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum)
-	{
+	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);
 
 		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
@@ -75,12 +70,10 @@ public abstract class ARemoteViewLayoutRenderStyle
 	}
 
 	/**
-	 * Constructor. Copies layers from previous layer. Used for toggle between
-	 * layouts.
+	 * Constructor. Copies layers from previous layer. Used for toggle between layouts.
 	 */
 	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum,
-			final ARemoteViewLayoutRenderStyle previousLayoutStyle)
-	{
+		final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
 		super(viewFrustum);
 		focusLevel = previousLayoutStyle.getUnderInteractionLayer();
 		stackLevel = previousLayoutStyle.getStackLayer();
@@ -102,98 +95,83 @@ public abstract class ARemoteViewLayoutRenderStyle
 
 	public abstract RemoteLevel initSpawnLevel();
 
-	public RemoteLevel getUnderInteractionLayer()
-	{
+	public RemoteLevel getUnderInteractionLayer() {
 		return focusLevel;
 	}
 
-	public RemoteLevel getStackLayer()
-	{
+	public RemoteLevel getStackLayer() {
 		return stackLevel;
 	}
 
-	public RemoteLevel getPoolLayer()
-	{
+	public RemoteLevel getPoolLayer() {
 		return poolLevel;
 	}
 
-	public RemoteLevel getTransitionLayer()
-	{
+	public RemoteLevel getTransitionLayer() {
 		return transitionLevel;
 	}
 
-	public RemoteLevel getSpawnLayer()
-	{
+	public RemoteLevel getSpawnLayer() {
 		return spawnLevel;
 	}
 
-	public RemoteLevel getMemoLayer()
-	{
+	public RemoteLevel getMemoLayer() {
 		return selectionLevel;
 	}
 
-	public EProjectionMode getProjectionMode()
-	{
+	public EProjectionMode getProjectionMode() {
 		return eProjectionMode;
 	}
 
-	public float getTrashCanXPos()
-	{
+	public float getTrashCanXPos() {
 		return fTrashCanXPos;
 	}
 
-	public float getTrashCanYPos()
-	{
+	public float getTrashCanYPos() {
 		return fTrashCanYPos;
 	}
 
-	public float getTrashCanWidth()
-	{
+	public float getTrashCanWidth() {
 		return fTrashCanWidth;
 	}
 
-	public float getTrashCanHeight()
-	{
+	public float getTrashCanHeight() {
 		return fTrashCanHeight;
 	}
 
-//	public float getColorBarXPos()
-//	{
-//		return fColorBarXPos;
-//	}
-//
-//	public float getColorBarYPos()
-//	{
-//		return fColorBarYPos;
-//	}
-//
-//	public float getColorBarWidth()
-//	{
-//		return fColorBarWidth;
-//	}
-//
-//	public float getColorBarHeight()
-//	{
-//		return fColorBarHeight;
-//	}
+	// public float getColorBarXPos()
+	// {
+	// return fColorBarXPos;
+	// }
+	//
+	// public float getColorBarYPos()
+	// {
+	// return fColorBarYPos;
+	// }
+	//
+	// public float getColorBarWidth()
+	// {
+	// return fColorBarWidth;
+	// }
+	//
+	// public float getColorBarHeight()
+	// {
+	// return fColorBarHeight;
+	// }
 
-	public void setAspectRatio(final float fAspectRatio)
-	{
+	public void setAspectRatio(final float fAspectRatio) {
 		this.fAspectRatio = fAspectRatio;
 	}
 
-	public float getAspectRatio()
-	{
+	public float getAspectRatio() {
 		return fAspectRatio;
 	}
 
-	public void setZoomFactor(final float fZoomFactor)
-	{
+	public void setZoomFactor(final float fZoomFactor) {
 		this.fZoomFactor = fZoomFactor;
 	}
 
-	public float getZoomFactor()
-	{
+	public float getZoomFactor() {
 		return fZoomFactor;
 	}
 }

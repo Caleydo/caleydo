@@ -12,33 +12,28 @@ import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
  * @author Sauer Stefan
  */
 public class CmdViewCreateGlyphConfiguration
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 	int iNumberOfSliders = 1;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateGlyphConfiguration(final ECommandType cmdType)
-	{
+	public CmdViewCreateGlyphConfiguration(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1)
-		{
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
-					iParentContainerId);
+		if (iExternalID != -1) {
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
-		GlyphMappingConfigurationViewRep view = (GlyphMappingConfigurationViewRep) viewManager
-				.createView(EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION,
-						iParentContainerId, sLabel);
+		GlyphMappingConfigurationViewRep view =
+			(GlyphMappingConfigurationViewRep) viewManager.createView(
+				EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION, iParentContainerId, sLabel);
 
 		viewManager.registerItem(view);
 
@@ -46,8 +41,7 @@ public class CmdViewCreateGlyphConfiguration
 		view.initView();
 		view.drawView();
 
-		if (iExternalID != -1)
-		{
+		if (iExternalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(view.getID(), iExternalID);
 		}
 
@@ -55,8 +49,7 @@ public class CmdViewCreateGlyphConfiguration
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

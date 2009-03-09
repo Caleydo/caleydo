@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
+
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.IStorage;
@@ -22,12 +23,10 @@ import org.caleydo.core.parser.ascii.IParserObject;
  */
 public class TabularAsciiDataReader
 	extends AbstractLoader
-	implements IParserObject
-{
+	implements IParserObject {
 
 	/**
-	 * Imports data from file to this set. uses first storage and overwrites
-	 * first selection.
+	 * Imports data from file to this set. uses first storage and overwrites first selection.
 	 */
 	protected ArrayList<IStorage> alTargetStorages;
 
@@ -42,8 +41,7 @@ public class TabularAsciiDataReader
 	/**
 	 * Constructor.
 	 */
-	public TabularAsciiDataReader(final String sFileName)
-	{
+	public TabularAsciiDataReader(final String sFileName) {
 		super(sFileName);
 
 		alTargetStorages = new ArrayList<IStorage>();
@@ -59,8 +57,7 @@ public class TabularAsciiDataReader
 	/**
 	 * Defines a pattern for parsing
 	 */
-	public final boolean setTokenPattern(final String tokenPattern)
-	{
+	public final boolean setTokenPattern(final String tokenPattern) {
 
 		boolean bAllTokensProper = true;
 
@@ -68,40 +65,32 @@ public class TabularAsciiDataReader
 
 		final String sTokenPatternParserSeperator = IGeneralManager.sDelimiter_Parser_DataType;
 
-		while (tokenizer.hasMoreTokens())
-		{
+		while (tokenizer.hasMoreTokens()) {
 			String sBuffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
-			if (sBuffer.equalsIgnoreCase("abort"))
-			{
+			if (sBuffer.equalsIgnoreCase("abort")) {
 				alColumnDataTypes.add(EStorageType.ABORT);
 
 				return bAllTokensProper;
 			}
-			else if (sBuffer.equalsIgnoreCase("skip"))
-			{
+			else if (sBuffer.equalsIgnoreCase("skip")) {
 				alColumnDataTypes.add(EStorageType.SKIP);
 			}
-			else if (sBuffer.equalsIgnoreCase("int"))
-			{
+			else if (sBuffer.equalsIgnoreCase("int")) {
 				alColumnDataTypes.add(EStorageType.INT);
 
 			}
-			else if (sBuffer.equalsIgnoreCase("float"))
-			{
+			else if (sBuffer.equalsIgnoreCase("float")) {
 				alColumnDataTypes.add(EStorageType.FLOAT);
 
 			}
-			else if (sBuffer.equalsIgnoreCase("string"))
-			{
+			else if (sBuffer.equalsIgnoreCase("string")) {
 				alColumnDataTypes.add(EStorageType.STRING);
 			}
-			else
-			{
+			else {
 				bAllTokensProper = false;
 
-				GeneralManager.get().getLogger().log(Level.WARNING,
-					"Unknown column data type: " + tokenPattern);
+				GeneralManager.get().getLogger().log(Level.WARNING, "Unknown column data type: " + tokenPattern);
 			}
 
 		} // end of while
@@ -109,47 +98,37 @@ public class TabularAsciiDataReader
 		return bAllTokensProper;
 	}
 
-	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId)
-	{
-		for (int iStorageId : iAlTargetStorageId)
-		{
+	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId) {
+		for (int iStorageId : iAlTargetStorageId) {
 			alTargetStorages.add(GeneralManager.get().getStorageManager().getItem(iStorageId));
 		}
 	}
 
-	protected void allocateStorageBufferForTokenPattern()
-	{
+	protected void allocateStorageBufferForTokenPattern() {
 
-		for (EStorageType storageType : alColumnDataTypes)
-		{
-			switch (storageType)
-			{
+		for (EStorageType storageType : alColumnDataTypes) {
+			switch (storageType) {
 				case INT:
 					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case FLOAT:
-					alFloatBuffers
-						.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case STRING:
-					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
-						- iStartParsingAtLine + 1));
+					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
 					break;
 				case SKIP:
 					break;
 				case ABORT:
 					return;
 				default:
-					throw new IllegalStateException("Unknown token pattern detected: "
-						+ storageType.toString());
+					throw new IllegalStateException("Unknown token pattern detected: " + storageType.toString());
 			}
 		}
 	}
 
 	@Override
-	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
-		throws IOException
-	{
+	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile) throws IOException {
 
 		allocateStorageBufferForTokenPattern();
 
@@ -161,11 +140,9 @@ public class TabularAsciiDataReader
 		int iColumnIndex = 0;
 		float fProgressBarFactor = 100f / iStopParsingAtLine;
 
-		while (((sLine = brFile.readLine()) != null) && (iLineInFile < iStopParsingAtLine))
-		{
+		while ((sLine = brFile.readLine()) != null && iLineInFile < iStopParsingAtLine) {
 			// Check if line should be ignored
-			if (iLineInFile < this.iStartParsingAtLine)
-			{
+			if (iLineInFile < this.iStartParsingAtLine) {
 				iLineInFile++;
 				continue;
 			}
@@ -186,12 +163,9 @@ public class TabularAsciiDataReader
 
 			iColumnIndex = 0;
 
-			for (EStorageType columnDataType : alColumnDataTypes)
-			{
-				if (strTokenLine.hasMoreTokens())
-				{
-					switch (columnDataType)
-					{
+			for (EStorageType columnDataType : alColumnDataTypes) {
+				if (strTokenLine.hasMoreTokens()) {
+					switch (columnDataType) {
 						case INT:
 							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
 								Integer.valueOf(strTokenLine.nextToken()).intValue();
@@ -199,16 +173,13 @@ public class TabularAsciiDataReader
 							break;
 						case FLOAT:
 							Float fValue;
-							try
-							{
+							try {
 								fValue = Float.valueOf(strTokenLine.nextToken()).floatValue();
 							}
-							catch (NumberFormatException nfe)
-							{
+							catch (NumberFormatException nfe) {
 								fValue = Float.NaN;
 							}
-							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
-								fValue;
+							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = fValue;
 							iColumnIndex++;
 							break;
 						case STRING:
@@ -222,8 +193,7 @@ public class TabularAsciiDataReader
 							iColumnIndex = alColumnDataTypes.size();
 							break;
 						default:
-							throw new IllegalStateException("Unknown token pattern detected: "
-								+ columnDataType.toString());
+							throw new IllegalStateException("Unknown token pattern detected: " + columnDataType.toString());
 					}
 
 					// Check if the line is finished or early aborted
@@ -235,46 +205,38 @@ public class TabularAsciiDataReader
 			iLineInFile++;
 
 			// Update progress bar only on each 100th line
-			if (iLineInFile % 1000 == 0)
-			{
-				swtGuiManager
-					.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
+			if (iLineInFile % 1000 == 0) {
+				swtGuiManager.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 	}
 
 	@Override
-	protected void setArraysToStorages()
-	{
+	protected void setArraysToStorages() {
 
 		int iIntArrayIndex = 0;
 		int iFloatArrayIndex = 0;
 		int iStringArrayIndex = 0;
 		int iStorageIndex = 0;
 
-		for (EStorageType storageType : alColumnDataTypes)
-		{
+		for (EStorageType storageType : alColumnDataTypes) {
 			// if(iStorageIndex + 1 == alTargetStorages.size())
 			// break;
-			switch (storageType)
-			{
+			switch (storageType) {
 				case INT:
-					alTargetStorages.get(iStorageIndex).setRawData(
-						alIntBuffers.get(iIntArrayIndex));
+					alTargetStorages.get(iStorageIndex).setRawData(alIntBuffers.get(iIntArrayIndex));
 					iIntArrayIndex++;
 					iStorageIndex++;
 					break;
 				case FLOAT:
-					alTargetStorages.get(iStorageIndex).setRawData(
-						alFloatBuffers.get(iFloatArrayIndex));
+					alTargetStorages.get(iStorageIndex).setRawData(alFloatBuffers.get(iFloatArrayIndex));
 					iFloatArrayIndex++;
 					iStorageIndex++;
 					break;
 				case STRING:
-					((INominalStorage<String>) alTargetStorages.get(iStorageIndex))
-						.setRawNominalData(alStringBuffers.get(iStringArrayIndex));
-					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
-						- iStartParsingAtLine + 1));
+					((INominalStorage<String>) alTargetStorages.get(iStorageIndex)).setRawNominalData(alStringBuffers
+						.get(iStringArrayIndex));
+					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
 					iStringArrayIndex++;
 					iStorageIndex++;
 					break;
@@ -283,8 +245,7 @@ public class TabularAsciiDataReader
 				case ABORT:
 					return;
 				default:
-					throw new IllegalStateException("Unknown token pattern detected: "
-						+ storageType.toString());
+					throw new IllegalStateException("Unknown token pattern detected: " + storageType.toString());
 			}
 		}
 	}
@@ -294,8 +255,7 @@ public class TabularAsciiDataReader
 	 * 
 	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
 	 */
-	public void init()
-	{
+	public void init() {
 
 		iLineInFile = 0;
 	}

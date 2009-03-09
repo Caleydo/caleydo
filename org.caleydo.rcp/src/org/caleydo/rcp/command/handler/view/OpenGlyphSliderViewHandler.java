@@ -10,18 +10,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenGlyphSliderViewHandler
 	extends AbstractHandler
-	implements IHandler
-{
+	implements IHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException
-	{
-		try
-		{
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
-					GLGlyphSliderView.ID);
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLGlyphSliderView.ID);
 		}
-		catch (PartInitException e)
-		{
+		catch (PartInitException e) {
 			e.printStackTrace();
 		}
 

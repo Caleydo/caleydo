@@ -19,8 +19,7 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLGlyphView
-	extends AGLViewPart
-{
+	extends AGLViewPart {
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLGlyphView";
 
 	public static int viewCount = 0;
@@ -28,25 +27,21 @@ public class GLGlyphView
 	/**
 	 * Constructor.
 	 */
-	public GLGlyphView()
-	{
+	public GLGlyphView() {
 		super();
 		viewCount++;
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID(), true);
 	}
 
-	public static void createToolBarItems(int iViewID)
-	{
-		GLGlyph glyphview = (GLGlyph) GeneralManager.get().getViewGLCanvasManager()
-				.getGLEventListener(iViewID);
+	public static void createToolBarItems(int iViewID) {
+		GLGlyph glyphview = (GLGlyph) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 		alToolbarContributions = new ArrayList<IContributionItem>();
@@ -62,17 +57,16 @@ public class GLGlyphView
 		alToolbar.add(new EnterViewNameAction(iViewID));
 
 		alToolbar.add(new OpenDataExportAction(iViewID));
-		
+
 		ChangeViewModeSecondaryAction cvm2a = new ChangeViewModeSecondaryAction(iViewID);
 		cvm2a.setAction(null);
-		
+
 		alToolbar.add(new ChangeViewModeAction(iViewID, cvm2a));
 		alToolbar.add(cvm2a);
-		
+
 		// only if standalone or explicitly requested
 		if (glyphview.isRenderedRemote()
-				&& GeneralManager.get().getPreferenceStore().getBoolean(
-						PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
+			&& GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
 			return;
 
 	}

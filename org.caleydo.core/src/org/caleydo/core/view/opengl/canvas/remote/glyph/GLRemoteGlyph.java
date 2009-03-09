@@ -1,9 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.remote.glyph;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -25,26 +28,22 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
  */
 
 public class GLRemoteGlyph
-	extends AGLEventListener
-{
+	extends AGLEventListener {
 
 	private static final long serialVersionUID = 5300993249138796018L;
 
 	private ArrayList<Integer> viewIDs_;
 
-//	private GlyphMouseListener mouseWheelListener_;
+	// private GlyphMouseListener mouseWheelListener_;
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public GLRemoteGlyph(final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
-	{
+	public GLRemoteGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_GLYPH;
 		viewIDs_ = new ArrayList<Integer>();
-//		mouseWheelListener_ = new GlyphMouseListener(this);
+		// mouseWheelListener_ = new GlyphMouseListener(this);
 
 		// Unregister standard mouse wheel listener
 		// parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
@@ -53,19 +52,17 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void init(GL gl)
-	{
+	public void init(GL gl) {
 
 		retrieveContainedViews(gl);
 
 		Iterator<Integer> it = viewIDs_.iterator();
 		int iViewId;
 
-		while (it.hasNext())
-		{
+		while (it.hasNext()) {
 			iViewId = it.next();
-			AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager
-					.getViewGLCanvasManager().getItem(iViewId));
+			AGLEventListener tmpCanvasUser =
+				(AGLEventListener) generalManager.getViewGLCanvasManager().getItem(iViewId);
 
 			if (tmpCanvasUser == null)
 				throw new RuntimeException("Cannot render canvas object which is null!");
@@ -74,24 +71,21 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void initLocal(GL gl)
-	{
+	public void initLocal(GL gl) {
 
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
-	{
+		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
 
 		// not implemented for a remote view
 	}
 
 	@Override
-	public void displayLocal(GL gl)
-	{
+	public void displayLocal(GL gl) {
 
 		pickingManager.handlePicking(iUniqueID, gl);
 
@@ -100,8 +94,7 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void displayRemote(GL gl)
-	{
+	public void displayRemote(GL gl) {
 
 		display(gl);
 		checkForHits(gl);
@@ -109,8 +102,7 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void display(GL gl)
-	{
+	public void display(GL gl) {
 
 		gl.glTranslatef(0f, 0f, -5f);
 
@@ -136,14 +128,11 @@ public class GLRemoteGlyph
 		gl.glPushMatrix();
 
 		int counter = 0;
-		while (it.hasNext())
-		{
+		while (it.hasNext()) {
 			iViewId = it.next();
 
-			gl.glTranslatef(pos.get(counter).get(0), pos.get(counter).get(1), pos.get(counter)
-					.get(2));
-			gl.glScalef(scale.get(counter).get(0), scale.get(counter).get(1), scale.get(
-					counter).get(2));
+			gl.glTranslatef(pos.get(counter).get(0), pos.get(counter).get(1), pos.get(counter).get(2));
+			gl.glScalef(scale.get(counter).get(0), scale.get(counter).get(1), scale.get(counter).get(2));
 
 			GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 			renderViewByID(gl, iViewId);
@@ -159,33 +148,30 @@ public class GLRemoteGlyph
 		// mouseWheelListener_.render();
 	}
 
-	private void retrieveContainedViews(final GL gl)
-	{
+	private void retrieveContainedViews(final GL gl) {
 
-		Iterator<AGLEventListener> iterGLEventListener = generalManager
-				.getViewGLCanvasManager().getAllGLEventListeners().iterator();
+		Iterator<AGLEventListener> iterGLEventListener =
+			generalManager.getViewGLCanvasManager().getAllGLEventListeners().iterator();
 
 		viewIDs_ = new ArrayList<Integer>();
 
-		while (iterGLEventListener.hasNext())
-		{
+		while (iterGLEventListener.hasNext()) {
 			AGLEventListener tmpGLEventListener = iterGLEventListener.next();
 
 			if (tmpGLEventListener == this || tmpGLEventListener.getClass() != GLGlyph.class)
 				continue;
 
-			int iViewID = (tmpGLEventListener).getID();
+			int iViewID = tmpGLEventListener.getID();
 
 			viewIDs_.add(iViewID);
 		}
 
 	}
 
-	private void renderViewByID(final GL gl, final int iViewID)
-	{
+	private void renderViewByID(final GL gl, final int iViewID) {
 
-		AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager
-				.getViewGLCanvasManager().getItem(iViewID));
+		AGLEventListener tmpCanvasUser =
+			(AGLEventListener) generalManager.getViewGLCanvasManager().getItem(iViewID);
 
 		if (tmpCanvasUser == null)
 			throw new RuntimeException("Cannot render canvas object which is null!");
@@ -196,14 +182,12 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public String getShortInfo()
-	{
+	public String getShortInfo() {
 		return "Glyph Bucket";
 	}
 
 	@Override
-	public String getDetailedInfo()
-	{
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Type: Glyph Map");
 		sInfoText.append("GL: Showing test clinical data");
@@ -211,28 +195,23 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick)
-	{
+	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type)
-	{
+	public void broadcastElements(EVAOperation type) {
 
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType)
-	{
+	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		return 0;
 	}
 
 	@Override
-	public void clearAllSelections()
-	{
+	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -8,8 +8,7 @@ import java.io.Serializable;
  * @author Marc Streit
  */
 public class PathwayDatabase
-	implements Serializable
-{
+	implements Serializable {
 	private static final String USER_HOME = "user.home";
 
 	private static final long serialVersionUID = 1L;
@@ -25,9 +24,8 @@ public class PathwayDatabase
 	/**
 	 * Constructor.
 	 */
-	public PathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath,
-			final String sImagePath, final String sImageMapPath)
-	{
+	public PathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath, final String sImagePath,
+		final String sImageMapPath) {
 		this.type = type;
 		this.sXMLPath = sXMLPath;
 		this.sImagePath = sImagePath;
@@ -45,37 +43,31 @@ public class PathwayDatabase
 			this.sImageMapPath = sImageMapPath.replace(USER_HOME, sUserHomePath);
 	}
 
-	public final EPathwayDatabaseType getType()
-	{
+	public final EPathwayDatabaseType getType() {
 		return type;
 	}
 
-	public final String getName()
-	{
+	public final String getName() {
 		return type.getName();
 	}
 
-	public final String getURL()
-	{
+	public final String getURL() {
 		return type.getURL();
 	}
 
-	public final String getXMLPath()
-	{
+	public final String getXMLPath() {
 		assert sXMLPath.length() != 0 : "Pathway XML path is not set!";
 
 		return sXMLPath;
 	}
 
-	public final String getImagePath()
-	{
+	public final String getImagePath() {
 		assert sImagePath.length() != 0 : "Pathway image path is not set!";
 
 		return sImagePath;
 	}
 
-	public final String getImageMapPath()
-	{
+	public final String getImageMapPath() {
 		assert sImageMapPath.length() != 0 : "Pathway imagemap path is not set!";
 
 		return sImageMapPath;

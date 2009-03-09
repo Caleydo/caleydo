@@ -7,30 +7,26 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class UseRandomSamplingAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 
 	public boolean bFlag = true;
 	public static final String TEXT = "Use random sampling";
 	public static final String ICON = "resources/icons/view/storagebased/random_sampling.png";
 
-	public UseRandomSamplingAction(int iViewID)
-	{
+	public UseRandomSamplingAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 		setChecked(bFlag);
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 		bFlag = !bFlag;
-		triggerCmdExternalFlagSetter(bFlag,
-				EExternalFlagSetterType.STORAGEBASED_USE_RANDOM_SAMPLING);
+		triggerCmdExternalFlagSetter(bFlag, EExternalFlagSetterType.STORAGEBASED_USE_RANDOM_SAMPLING);
 	};
 }

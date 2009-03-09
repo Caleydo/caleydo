@@ -41,7 +41,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TableEditor;
@@ -73,8 +72,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabularDataViewRep
 	extends ASWTView
-	implements IView, ISWTView, IMediatorReceiver, IMediatorSender
-{
+	implements IView, ISWTView, IMediatorReceiver, IMediatorSender {
 	protected ISet set;
 	protected ESetType setType;
 
@@ -94,14 +92,12 @@ public class TabularDataViewRep
 	protected GenericSelectionManager storageSelectionManager;
 
 	/**
-	 * The id of the virtual array that manages the contents (the indices) in
-	 * the storages
+	 * The id of the virtual array that manages the contents (the indices) in the storages
 	 */
 	protected int iContentVAID = -1;
 
 	/**
-	 * The id of the virtual array that manages the storage references in the
-	 * set
+	 * The id of the virtual array that manages the storage references in the set
 	 */
 	protected int iStorageVAID = -1;
 
@@ -118,7 +114,6 @@ public class TabularDataViewRep
 	private Table contentTable;
 	private Table storageRemoverTable;
 
-	private TableViewer contentTableViewer;
 	private TableCursor contentTableCursor;
 
 	private Label lastRemoveContent;
@@ -129,32 +124,27 @@ public class TabularDataViewRep
 	/**
 	 * Constructor.
 	 */
-	public TabularDataViewRep(final int iParentContainerId, final String sLabel)
-	{
+	public TabularDataViewRep(final int iParentContainerId, final String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
+			EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-				this);
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				this);
+		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
 		setType = ESetType.GENE_EXPRESSION_DATA;
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
-		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
-				.externalIDType(EIDType.REFSEQ_MRNA_INT).mappingType(
-						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
-				.build();
+		contentSelectionManager =
+			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(EIDType.REFSEQ_MRNA_INT)
+				.mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+					EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 		composite = new Composite(parentComposite, SWT.NULL);
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
@@ -165,56 +155,45 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 
 	}
 
-	public void initData()
-	{
+	public void initData() {
 		set = null;
 
-		for (ISet currentSet : alSets)
-		{
+		for (ISet currentSet : alSets) {
 			if (currentSet.getSetType() == setType)
 				set = currentSet;
 		}
 
-		String sLevel = GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.DATA_FILTER_LEVEL);
-		if (sLevel.equals("complete"))
-		{
+		String sLevel =
+			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
+		if (sLevel.equals("complete")) {
 			dataFilterLevel = EDataFilterLevel.COMPLETE;
 		}
-		else if (sLevel.equals("only_mapping"))
-		{
+		else if (sLevel.equals("only_mapping")) {
 			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		}
-		else if (sLevel.equals("only_context"))
-		{
+		else if (sLevel.equals("only_context")) {
 			// Only apply only_context when pathways are loaded
-			if (GeneralManager.get().getPathwayManager().size() > 100)
-			{
+			if (GeneralManager.get().getPathwayManager().size() > 100) {
 				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 			}
-			else
-			{
+			else {
 				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 			}
 		}
-		else
-		{
+		else {
 			throw new IllegalStateException("Unknown data filter level");
 		}
 
-		if (!mapVAIDs.isEmpty())
-		{
+		if (!mapVAIDs.isEmpty()) {
 
 			// This should be done once we get some thread safety, memory leak,
 			// and a big one
 
-			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
-			{
+			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
 				if (mapVAIDs.containsKey(eSelectionType))
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 			}
@@ -223,8 +202,7 @@ public class TabularDataViewRep
 			mapVAIDs.clear();
 		}
 
-		if (set == null)
-		{
+		if (set == null) {
 			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
@@ -238,8 +216,7 @@ public class TabularDataViewRep
 
 		alTempList = new ArrayList<Integer>();
 
-		for (int iCount = 0; iCount < set.size(); iCount++)
-		{
+		for (int iCount = 0; iCount < set.size(); iCount++) {
 			alTempList.add(iCount);
 		}
 
@@ -264,54 +241,46 @@ public class TabularDataViewRep
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
 
-		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++)
-		{
+		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
 			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
 
 		}
 
 		// this for loop executes one per axis
-		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
-		{
+		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
 			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
 		}
 	}
 
 	/**
-	 * Initializes a virtual array with all elements, according to the data
-	 * filters, as defined in {@link EDataFilterLevel}.
+	 * Initializes a virtual array with all elements, according to the data filters, as defined in
+	 * {@link EDataFilterLevel}.
 	 */
-	protected final void initCompleteList()
-	{
+	protected final void initCompleteList() {
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 
-		for (int iCount = 0; iCount < set.depth(); iCount++)
-		{
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE)
-			{
+		for (int iCount = 0; iCount < set.depth(); iCount++) {
+			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
 				// Here we get mapping data for all values
 				// FIXME: not general, only for genes
 				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
-				if (iDavidID == -1)
-				{
-					generalManager.getLogger().log(Level.FINE,
-							"Cannot resolve gene to DAVID ID!");
+				if (iDavidID == -1) {
+					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");
 					continue;
 				}
 
-				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
-				{
+				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 					// Here all values are contained within pathways as well
-					int iGraphItemID = generalManager.getPathwayItemManager()
-							.getPathwayVertexGraphItemIdByDavidId(iDavidID);
+					int iGraphItemID =
+						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
 					if (iGraphItemID == -1)
 						continue;
 
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
-							.getPathwayItemManager().getItem(iGraphItemID));
+					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
+						(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
 
 					if (tmpPathwayVertexGraphItem == null)
 						continue;
@@ -326,8 +295,7 @@ public class TabularDataViewRep
 
 	}
 
-	private void createPreviewTable()
-	{
+	private void createPreviewTable() {
 		Composite labelTableComposite = new Composite(composite, SWT.NULL);
 		GridData data = new GridData();
 		data.widthHint = 250;
@@ -339,8 +307,7 @@ public class TabularDataViewRep
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		labelTableComposite.setLayout(layout);
 
-		labelTable = new Table(labelTableComposite, SWT.MULTI | SWT.BORDER
-				| SWT.FULL_SELECTION | SWT.VIRTUAL);
+		labelTable = new Table(labelTableComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		labelTable.setLinesVisible(true);
 		labelTable.setHeaderVisible(true);
 
@@ -365,8 +332,7 @@ public class TabularDataViewRep
 		// data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		// contentComposite.setLayoutData(data);
 
-		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
-				| SWT.VIRTUAL);
+		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		contentTable.setLinesVisible(true);
 		contentTable.setHeaderVisible(true);
 		data = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -378,17 +344,13 @@ public class TabularDataViewRep
 		contentTable.removeAll();
 
 		// Make selection the same in both tables
-		labelTable.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		labelTable.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				contentTable.setSelection(labelTable.getSelectionIndices());
 			}
 		});
-		contentTable.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		contentTable.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				labelTable.setSelection(contentTable.getSelectionIndices());
 			}
 		});
@@ -396,18 +358,13 @@ public class TabularDataViewRep
 		// To make both tables appear in focus, draw teh selection background
 		// here.
 		// This part only works on version 3.2 or later.
-		Listener eraseListener = new Listener()
-		{
-			public void handleEvent(Event event)
-			{
-				if ((event.detail & SWT.SELECTED) != 0)
-				{
+		Listener eraseListener = new Listener() {
+			public void handleEvent(Event event) {
+				if ((event.detail & SWT.SELECTED) != 0) {
 					GC gc = event.gc;
 					Rectangle rect = event.getBounds();
-					gc.setForeground(Display.getCurrent().getSystemColor(
-							SWT.COLOR_LIST_SELECTION_TEXT));
-					gc.setBackground(Display.getCurrent().getSystemColor(
-							SWT.COLOR_LIST_SELECTION));
+					gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
+					gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION));
 					gc.fillRectangle(rect);
 					event.detail &= ~SWT.SELECTED;
 				}
@@ -418,19 +375,15 @@ public class TabularDataViewRep
 		contentTable.addListener(SWT.EraseItem, eraseListener);
 		// Make vertical scrollbars scroll together
 		ScrollBar vBarLeft = labelTable.getVerticalBar();
-		vBarLeft.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		vBarLeft.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				contentTable.setTopIndex(labelTable.getTopIndex());
 			}
 		});
 
 		ScrollBar vBarRight = contentTable.getVerticalBar();
-		vBarRight.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		vBarRight.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				labelTable.setTopIndex(contentTable.getTopIndex());
 				lastRemoveContent.dispose();
 				lastRemoveStorage.dispose();
@@ -446,8 +399,7 @@ public class TabularDataViewRep
 		spacer.setVisible(false);
 		composite.setBackground(labelTable.getBackground());
 
-		for (TableColumn tmpColumn : contentTable.getColumns())
-		{
+		for (TableColumn tmpColumn : contentTable.getColumns()) {
 			tmpColumn.dispose();
 		}
 
@@ -455,11 +407,9 @@ public class TabularDataViewRep
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
 
-		contentTable.addSelectionListener(new SelectionAdapter()
-		{
+		contentTable.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				super.widgetSelected(e);
 
 				// TableItem selectedItem = ((TableItem)e.item);
@@ -472,10 +422,8 @@ public class TabularDataViewRep
 			}
 		});
 
-		contentTable.addListener(SWT.MouseDown, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		contentTable.addListener(SWT.MouseDown, new Listener() {
+			public void handleEvent(Event event) {
 				Rectangle clientArea = contentTable.getClientArea();
 				Point pt = new Point(event.x, event.y);
 
@@ -483,26 +431,20 @@ public class TabularDataViewRep
 
 				boolean visible = false;
 				final TableItem item = contentTable.getItem(index);
-				for (int iColIndex = 1; iColIndex < contentTable.getColumnCount(); iColIndex++)
-				{
+				for (int iColIndex = 1; iColIndex < contentTable.getColumnCount(); iColIndex++) {
 					Rectangle rect = item.getBounds(iColIndex);
-					if (rect.contains(pt))
-					{
+					if (rect.contains(pt)) {
 						final int column = iColIndex;
 						final Text text = new Text(contentTable, SWT.NONE);
-						Listener textListener = new Listener()
-						{
-							public void handleEvent(final Event e)
-							{
-								switch (e.type)
-								{
+						Listener textListener = new Listener() {
+							public void handleEvent(final Event e) {
+								switch (e.type) {
 									case SWT.FocusOut:
 										item.setText(column, text.getText());
 										text.dispose();
 										break;
 									case SWT.Traverse:
-										switch (e.detail)
-										{
+										switch (e.detail) {
 											case SWT.TRAVERSE_RETURN:
 												item.setText(column, text.getText());
 
@@ -525,8 +467,7 @@ public class TabularDataViewRep
 						return;
 					}
 
-					if (!visible && rect.intersects(clientArea))
-					{
+					if (!visible && rect.intersects(clientArea)) {
 						visible = true;
 					}
 				}
@@ -553,30 +494,25 @@ public class TabularDataViewRep
 		column.setText("Gene Symbol");
 		column.setWidth(110);
 
-		for (final Integer iStorageIndex : set.getVA(iStorageVAID))
-		{
+		for (final Integer iStorageIndex : set.getVA(iStorageVAID)) {
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText(set.get(iStorageIndex).getLabel());
 			column.setWidth(120);
 			column.setMoveable(true);
-			column.addSelectionListener(new SelectionAdapter()
-			{
+			column.addSelectionListener(new SelectionAdapter() {
 				@Override
-				public void widgetSelected(SelectionEvent e)
-				{
+				public void widgetSelected(SelectionEvent e) {
 					LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
 					String sLabel = dialog.open(set.get(iStorageIndex).getLabel());
 
-					if (sLabel != null && !sLabel.isEmpty())
-					{
+					if (sLabel != null && !sLabel.isEmpty()) {
 						set.get(iStorageIndex).setLabel(sLabel);
 						contentTable.getColumn(iStorageIndex).setText(sLabel);
 
-						ViewCommandEventContainer viewCommandEventContainer = new ViewCommandEventContainer(
-								EViewCommand.REDRAW);
+						ViewCommandEventContainer viewCommandEventContainer =
+							new ViewCommandEventContainer(EViewCommand.REDRAW);
 
-						triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-								viewCommandEventContainer);
+						triggerEvent(EMediatorType.SELECTION_MEDIATOR, viewCommandEventContainer);
 					}
 				}
 			});
@@ -630,23 +566,21 @@ public class TabularDataViewRep
 
 		int iRefSeqID = 0;
 		String sGeneSymbol = "";
-		for (Integer iContentIndex : set.getVA(iContentVAID))
-		{
+		for (Integer iContentIndex : set.getVA(iContentVAID)) {
 			// line number
 			item = new TableItem(labelTable, SWT.NONE);
 			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(iContentIndex));
 
-			iRefSeqID = idMappingManager.getID(
-					EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+			iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
 
 			// RefSeq ID
-			item.setText(1, (String) idMappingManager.getID(
-					EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID));
+			item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID));
 
 			// Gene Symbol
-			sGeneSymbol = (String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL,
-					idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
+			sGeneSymbol =
+				(String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, idMappingManager.getID(
+					EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
 
 			if (sGeneSymbol != null)
 				item.setText(2, sGeneSymbol);
@@ -655,10 +589,8 @@ public class TabularDataViewRep
 
 			item = new TableItem(contentTable, SWT.NONE);
 
-			for (Integer iStorageIndex : storageVA)
-			{
-				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex);
+			for (Integer iStorageIndex : storageVA) {
+				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 				item.setText(iStorageIndex, Float.toString(fValue));
 			}
@@ -668,13 +600,12 @@ public class TabularDataViewRep
 		}
 
 		contentTableCursor = new TableCursor(contentTable, SWT.NONE);
-		contentTableCursor.addSelectionListener(new SelectionAdapter()
-		{
+		contentTableCursor.addSelectionListener(new SelectionAdapter() {
 			// when the TableEditor is over a cell, select the corresponding row
 			// in
 			// the table
-			public void widgetSelected(SelectionEvent e)
-			{
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 				int iColIndex = contentTableCursor.getColumn();
 				int iRowIndex = contentTable.indexOf(contentTableCursor.getRow());
 				contentTable.setSelection(iRowIndex);
@@ -691,8 +622,7 @@ public class TabularDataViewRep
 			}
 		});
 
-		storageRemoverTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
-				| SWT.VIRTUAL);
+		storageRemoverTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		storageRemoverTable.setLinesVisible(false);
 		storageRemoverTable.setHeaderVisible(false);
 		data = new GridData();
@@ -700,118 +630,97 @@ public class TabularDataViewRep
 		data.grabExcessVerticalSpace = false;
 		storageRemoverTable.setLayoutData(data);
 
-		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++)
-		{
+		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++) {
 			column = new TableColumn(storageRemoverTable, SWT.NONE);
 			column.setWidth(120);
 		}
 		item = new TableItem(storageRemoverTable, SWT.NONE);
-		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++)
-		{
+		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++) {
 			item.setText(iStorageIndex, "");
 		}
 
 		// Make horizontal scrollbar of storage remover table scroll together
 		ScrollBar hScroolBar = contentTable.getHorizontalBar();
-		hScroolBar.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
-				storageRemoverTable.getHorizontalBar().setSelection(
-						contentTable.getHorizontalBar().getSelection());
+		hScroolBar.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				storageRemoverTable.getHorizontalBar().setSelection(contentTable.getHorizontalBar().getSelection());
 			}
 		});
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger,
-			IEventContainer eventContainer, EMediatorType eMediatorType)
-	{
-		switch (eventContainer.getEventType())
-		{
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+		EMediatorType eMediatorType) {
+		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
-						.getSelectionDelta());
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
+					(DeltaEventContainer<ISelectionDelta>) eventContainer;
+				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer.getSelectionDelta());
 				break;
 			case VA_UPDATE:
-				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer = (DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
+				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
+					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
 				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
 				break;
 			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer = (SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType())
-				{
+				SelectionCommandEventContainer commandEventContainer =
+					(SelectionCommandEventContainer) eventContainer;
+				switch (commandEventContainer.getIDType()) {
 					case DAVID:
 					case REFSEQ_MRNA_INT:
 					case EXPRESSION_INDEX:
-						contentSelectionManager.executeSelectionCommands(commandEventContainer
-								.getSelectionCommands());
+						contentSelectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
 						break;
 					case EXPERIMENT_INDEX:
-						storageSelectionManager.executeSelectionCommands(commandEventContainer
-								.getSelectionCommands());
+						storageSelectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
 						break;
 				}
 		}
 	}
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta)
-	{
+	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta) {
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
-				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
-		{
+			|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			contentSelectionManager.setDelta(selectionDelta);
 			// ISelectionDelta internalDelta =
 			// contentSelectionManager.getCompleteDelta();
 			reactOnExternalSelection();
 		}
 
-		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
-		{
+		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			storageSelectionManager.setDelta(selectionDelta);
 
 			reactOnExternalSelection();
 		}
 	}
 
-	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
-	{
+	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta) {
 		GenericSelectionManager selectionManager;
-		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)
-		{
+		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			selectionManager = storageSelectionManager;
 
-			for (VADeltaItem deltaItem : delta.getAllItems())
-			{
+			for (VADeltaItem deltaItem : delta.getAllItems()) {
 				final int iVAIndex = deltaItem.getIndex();
 
-				if (deltaItem.getType() == EVAOperation.REMOVE)
-				{
-					composite.getDisplay().asyncExec(new Runnable()
-					{
-						public void run()
-						{
+				if (deltaItem.getType() == EVAOperation.REMOVE) {
+					composite.getDisplay().asyncExec(new Runnable() {
+						public void run() {
 							contentTable.getColumn(iVAIndex).dispose();
 						}
 					});
 				}
 			}
 		}
-		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-		{
+		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
 			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 			selectionManager = contentSelectionManager;
 		}
-		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
-		{
+		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			selectionManager = contentSelectionManager;
 		}
-		else
-		{
+		else {
 			return;
 		}
 
@@ -821,25 +730,21 @@ public class TabularDataViewRep
 	}
 
 	/**
-	 * Highlight the selected cell in the table. Only the first element is
-	 * taken, since we cannot handle multiple selections ATM.
+	 * Highlight the selected cell in the table. Only the first element is taken, since we cannot handle
+	 * multiple selections ATM.
 	 */
-	private void reactOnExternalSelection()
-	{
-		composite.getDisplay().asyncExec(new Runnable()
-		{
-			public void run()
-			{
+	private void reactOnExternalSelection() {
+		composite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
 				if (contentTable.isDisposed())
 					return;
-				
+
 				contentTable.deselectAll();
 				labelTable.deselectAll();
 
-				Iterator<Integer> iterContentIndex = contentSelectionManager.getElements(
-						ESelectionType.SELECTION).iterator();
-				while (iterContentIndex.hasNext())
-				{
+				Iterator<Integer> iterContentIndex =
+					contentSelectionManager.getElements(ESelectionType.SELECTION).iterator();
+				while (iterContentIndex.hasNext()) {
 					int iRowIndex = set.getVA(iContentVAID).indexOf(iterContentIndex.next());
 					int iColIndex = contentTableCursor.getColumn();
 					contentTableCursor.setSelection(iRowIndex, iColIndex);
@@ -851,10 +756,9 @@ public class TabularDataViewRep
 					// labelTable.setSelection(iRowIndex);
 				}
 
-				Iterator<Integer> iterStorageIndex = storageSelectionManager.getElements(
-						ESelectionType.SELECTION).iterator();
-				if (iterStorageIndex.hasNext())
-				{
+				Iterator<Integer> iterStorageIndex =
+					storageSelectionManager.getElements(ESelectionType.SELECTION).iterator();
+				if (iterStorageIndex.hasNext()) {
 					int iStorageIndex = iterStorageIndex.next();
 					int iRowIndex = contentTable.indexOf(contentTableCursor.getRow());
 					contentTableCursor.setSelection(iRowIndex, iStorageIndex);
@@ -892,8 +796,7 @@ public class TabularDataViewRep
 	// }
 	// }
 
-	private void triggerContentSelectionEvent(int iContentIndex, ESelectionType eSelectionType)
-	{
+	private void triggerContentSelectionEvent(int iContentIndex, ESelectionType eSelectionType) {
 		if (contentSelectionManager.checkStatus(eSelectionType, iContentIndex))
 			return;
 
@@ -901,26 +804,22 @@ public class TabularDataViewRep
 
 		// Resolve multiple spotting on chip and add all to the
 		// selection manager.
-		Integer iRefSeqID = idMappingManager.getID(
-				EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+		Integer iRefSeqID =
+			idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
 		for (Object iExpressionIndex : idMappingManager.getMultiID(
-				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
-		{
+			EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
 			contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
 		}
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-				EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR,
-						eSelectionType)));
+			EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 	}
 
-	private void triggerStorageSelectionEvent(int iStorageIndex, ESelectionType eSelectionType)
-	{
+	private void triggerStorageSelectionEvent(int iStorageIndex, ESelectionType eSelectionType) {
 		if (storageSelectionManager.checkStatus(eSelectionType, iStorageIndex))
 			return;
 
@@ -928,31 +827,26 @@ public class TabularDataViewRep
 		storageSelectionManager.addToType(eSelectionType, iStorageIndex);
 
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-				EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-						eSelectionType)));
+			EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 
 	}
 
-	private void addContentRemoveIcon(int iRowIndex)
-	{
+	private void addContentRemoveIcon(int iRowIndex) {
 		final Label lblRemove = new Label(labelTable, SWT.CENTER);
 		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
-				"resources/icons/view/tabular/remove.png"));
+			"resources/icons/view/tabular/remove.png"));
 		lblRemove.setData(set.getVA(iContentVAID).get(iRowIndex));
 
 		// Only one remove icon should be shown at a time
-		if (lastRemoveContent != null)
-		{
+		if (lastRemoveContent != null) {
 			lastRemoveContent.dispose();
 		}
 
@@ -962,11 +856,9 @@ public class TabularDataViewRep
 		editor.grabHorizontal = true;
 		editor.setEditor(lblRemove, labelTable.getItem(iRowIndex), 0);
 
-		lblRemove.addMouseListener(new MouseAdapter()
-		{
+		lblRemove.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseDown(MouseEvent e)
-			{
+			public void mouseDown(MouseEvent e) {
 				Integer iExpressionIndex = (Integer) lblRemove.getData();
 
 				IVirtualArray contentVA = set.getVA(iContentVAID);
@@ -974,8 +866,7 @@ public class TabularDataViewRep
 
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
 				vaDelta.add(VADeltaItem.remove(iExpressionIndex));
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
 
 				// Dispose the removed row
 				TableItem item = (TableItem) e.widget.getData();
@@ -986,8 +877,7 @@ public class TabularDataViewRep
 		});
 	}
 
-	private void addStorageRemoveIcon(int iStorageIndex)
-	{
+	private void addStorageRemoveIcon(int iStorageIndex) {
 		final Label lblRemove = new Label(storageRemoverTable, SWT.CENTER);
 		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
@@ -995,8 +885,7 @@ public class TabularDataViewRep
 		lblRemove.setData(set.getVA(iStorageVAID).get(iStorageIndex));
 
 		// Only one remove icon should be shown at a time
-		if (lastRemoveStorage != null)
-		{
+		if (lastRemoveStorage != null) {
 			lastRemoveStorage.dispose();
 		}
 
@@ -1006,11 +895,9 @@ public class TabularDataViewRep
 		editor.grabHorizontal = true;
 		editor.setEditor(lblRemove, storageRemoverTable.getItem(0), iStorageIndex);
 
-		lblRemove.addMouseListener(new MouseAdapter()
-		{
+		lblRemove.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseDown(MouseEvent e)
-			{
+			public void mouseDown(MouseEvent e) {
 				Integer iStorageIndex = (Integer) lblRemove.getData();
 
 				IVirtualArray storageVA = set.getVA(iStorageVAID);
@@ -1018,8 +905,7 @@ public class TabularDataViewRep
 
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 				vaDelta.add(VADeltaItem.remove(iStorageIndex));
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
 
 				// Dispose the removed row
 				editor.getEditor().dispose();

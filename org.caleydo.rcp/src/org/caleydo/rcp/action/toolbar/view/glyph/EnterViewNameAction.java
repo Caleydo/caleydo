@@ -12,45 +12,38 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class EnterViewNameAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 
 	public static final String TEXT = "Enter a name for this view";
 	public static final String ICON = "resources/icons/view/glyph/glyph_rename.png";
 
-	public EnterViewNameAction(int iViewID)
-	{
+	public EnterViewNameAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		GLGlyph glyphview = null;
 
-		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			if (view instanceof GLGlyph)
-			{
+		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+			if (view instanceof GLGlyph) {
 				if (view.getID() == iViewID)
 					glyphview = (GLGlyph) view;
 			}
 		}
 
-		if (glyphview == null)
-		{
+		if (glyphview == null) {
 			throw new IllegalStateException(
-					"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
+				"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
 		}
-		
+
 		String oldname = glyphview.getPersonalName();
 
 		Shell shell = new Shell();
@@ -58,8 +51,7 @@ public class EnterViewNameAction
 		String newname = dialog.open();
 
 		if (newname != null)
-			triggerCmdExternalObjectSetter(newname,
-					EExternalObjectSetterType.GLYPH_CHANGEPERSONALNAME);
+			triggerCmdExternalObjectSetter(newname, EExternalObjectSetterType.GLYPH_CHANGEPERSONALNAME);
 
 	};
 }

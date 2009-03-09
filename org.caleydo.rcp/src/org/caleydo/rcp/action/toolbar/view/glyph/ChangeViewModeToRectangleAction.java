@@ -7,8 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ChangeViewModeToRectangleAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Switch View To Rectangle";
 	public static final String ICON = "resources/icons/view/glyph/sort_zickzack.png";
 
@@ -18,25 +17,23 @@ public class ChangeViewModeToRectangleAction
 	/**
 	 * Constructor.
 	 */
-	public ChangeViewModeToRectangleAction(int iViewID, ChangeViewModeAction parent)
-	{
+	public ChangeViewModeToRectangleAction(int iViewID, ChangeViewModeAction parent) {
 		super(iViewID);
 		this.parent = parent;
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		if (parent != null)
-			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-					.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+				.getWorkbench().getDisplay(), ICON)));
 
 		parent.getSecondaryAction().setAction(this);
 

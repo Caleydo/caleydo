@@ -3,6 +3,7 @@ package org.caleydo.core.view.swt.browser;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -12,8 +13,6 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -30,8 +29,7 @@ import org.eclipse.swt.widgets.ToolItem;
  */
 public class HTMLBrowserViewRep
 	extends ASWTView
-	implements ISWTView
-{
+	implements ISWTView {
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
 
 	protected Browser browser;
@@ -50,23 +48,20 @@ public class HTMLBrowserViewRep
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel)
-	{
+	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
+			EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
 	}
 
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel, int iViewID)
-	{
+	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel, int iViewID) {
 		super(iParentContainerId, sLabel, iViewID);
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 		Composite composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
@@ -83,19 +78,19 @@ public class HTMLBrowserViewRep
 
 		goButton = new ToolItem(toolbar, SWT.PUSH);
 		goButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
-				EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
+			EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
 
 		backButton = new ToolItem(toolbar, SWT.PUSH);
 		backButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
-				EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
+			EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
 
 		stopButton = new ToolItem(toolbar, SWT.PUSH);
 		stopButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
-				EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
+			EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
 
 		homeButton = new ToolItem(toolbar, SWT.PUSH);
 		homeButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
-				EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
+			EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
 
 		textURL = new Text(browserBarComposite, SWT.BORDER);
 
@@ -112,28 +107,22 @@ public class HTMLBrowserViewRep
 		data.heightHint = 45;
 		browserBarComposite.setLayoutData(data);
 
-		Listener listener = new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		Listener listener = new Listener() {
+			public void handleEvent(Event event) {
 				if (!checkInternetConnection())
 					return;
 
 				ToolItem item = (ToolItem) event.widget;
-				if (item.equals(backButton))
-				{
+				if (item.equals(backButton)) {
 					browser.back();
 				}
-				else if (item.equals(stopButton))
-				{
+				else if (item.equals(stopButton)) {
 					browser.stop();
 				}
-				else if (item.equals(goButton))
-				{
+				else if (item.equals(goButton)) {
 					sUrl = textURL.getText();
 				}
-				else if (item.equals(homeButton))
-				{
+				else if (item.equals(homeButton)) {
 					sUrl = "www.caleydo.org";
 					textURL.setText(CALEYDO_HOME);
 					browser.setUrl(sUrl);
@@ -146,22 +135,18 @@ public class HTMLBrowserViewRep
 		stopButton.addListener(SWT.Selection, listener);
 		homeButton.addListener(SWT.Selection, listener);
 
-		textURL.addListener(SWT.DefaultSelection, new Listener()
-		{
-			public void handleEvent(Event e)
-			{
+		textURL.addListener(SWT.DefaultSelection, new Listener() {
+			public void handleEvent(Event e) {
 				sUrl = textURL.getText();
 				drawView();
 			}
 		});
 
-		parentComposite.getDisplay().addFilter(SWT.FocusIn, new Listener()
-		{
+		parentComposite.getDisplay().addFilter(SWT.FocusIn, new Listener() {
 
-			public void handleEvent(Event event)
-			{
+			public void handleEvent(Event event) {
 
-				if (!(event.widget.getClass().equals(this.getClass())))
+				if (!event.widget.getClass().equals(this.getClass()))
 					return;
 			}
 		});
@@ -176,17 +161,13 @@ public class HTMLBrowserViewRep
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 		generalManager.getLogger().log(Level.INFO, "Load " + sUrl);
 
-		try
-		{
-			parentComposite.getDisplay().asyncExec(new Runnable()
-			{
+		try {
+			parentComposite.getDisplay().asyncExec(new Runnable() {
 
-				public void run()
-				{
+				public void run() {
 					if (!checkInternetConnection())
 						return;
 
@@ -196,30 +177,25 @@ public class HTMLBrowserViewRep
 				}
 			});
 		}
-		catch (SWTException swte)
-		{
+		catch (SWTException swte) {
 			generalManager.getLogger().log(Level.SEVERE, "Error while loading " + sUrl);
 		}
 	}
 
-	public void setUrl(String sUrl)
-	{
+	public void setUrl(String sUrl) {
 		this.sUrl = sUrl;
 
 		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
 	}
 
-	protected boolean checkInternetConnection()
-	{
+	protected boolean checkInternetConnection() {
 		// Check internet connection
-		try
-		{
+		try {
 			InetAddress.getByName("www.google.at");
 
 		}
-		catch (UnknownHostException e)
-		{
+		catch (UnknownHostException e) {
 			textURL.setText("No internet connection available!");
 			return false;
 		}

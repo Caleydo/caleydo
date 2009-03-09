@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util.slerp;
 
 import gleem.linalg.open.Slerp;
+
 import org.caleydo.core.util.sound.SoundPlayer;
 
 /**
@@ -9,19 +10,16 @@ import org.caleydo.core.util.sound.SoundPlayer;
  * @author Marc Streit
  */
 public class SlerpMod
-	extends Slerp
-{
+	extends Slerp {
 
 	private static final String SLERP_SOUND = "resources/sounds/slerp.wav";
 
-	public SlerpMod()
-	{
+	public SlerpMod() {
 
 		super();
 	}
 
-	public void playSlerpSound()
-	{
+	public void playSlerpSound() {
 
 		SoundPlayer.playSoundByFilename(SLERP_SOUND);
 	}

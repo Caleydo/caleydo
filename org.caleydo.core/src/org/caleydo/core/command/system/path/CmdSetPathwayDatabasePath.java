@@ -12,8 +12,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Marc Streit
  */
 public class CmdSetPathwayDatabasePath
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	private EPathwayDatabaseType type;
 
@@ -26,19 +25,17 @@ public class CmdSetPathwayDatabasePath
 	/**
 	 * Constructor.
 	 */
-	public CmdSetPathwayDatabasePath(final ECommandType cmdType)
-	{
+	public CmdSetPathwayDatabasePath(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	/**
-	 * Set pathway file paths in PathwayManager. Relevant paths are: - XML
-	 * sources - Image maps - Background overlay images/textures
+	 * Set pathway file paths in PathwayManager. Relevant paths are: - XML sources - Image maps - Background
+	 * overlay images/textures
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		IPathwayManager pathwayManager = generalManager.getPathwayManager();
 
@@ -48,15 +45,13 @@ public class CmdSetPathwayDatabasePath
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		assert parameterHandler != null : "can not handle null object!";
 
 		super.setParameterHandler(parameterHandler);
@@ -69,12 +64,11 @@ public class CmdSetPathwayDatabasePath
 	}
 
 	/**
-	 * Sets the pathway file paths from software side. This method is needed
-	 * when the command is triggered inside the system during runtime.
+	 * Sets the pathway file paths from software side. This method is needed when the command is triggered
+	 * inside the system during runtime.
 	 */
 	public void setAttributes(final EPathwayDatabaseType type, final String sPathwayXMLPath,
-			final String sPathwayImagePath, final String sPathwayImageMapPath)
-	{
+		final String sPathwayImagePath, final String sPathwayImageMapPath) {
 
 		this.type = type;
 		this.sXMLPath = sPathwayXMLPath;

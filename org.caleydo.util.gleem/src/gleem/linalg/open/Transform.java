@@ -10,40 +10,33 @@ import gleem.linalg.Vec3f;
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class Transform
-{
+public class Transform {
 
 	private Rotf rotation = new Rotf();
 	private Vec3f translation = new Vec3f();
 	private Vec3f scale = new Vec3f();
 
-	public void setRotation(Rotf rotation)
-	{
+	public void setRotation(Rotf rotation) {
 		this.rotation = rotation;
 	}
 
-	public void setTranslation(Vec3f translation)
-	{
+	public void setTranslation(Vec3f translation) {
 		this.translation = translation;
 	}
 
-	public void setScale(Vec3f scale)
-	{
+	public void setScale(Vec3f scale) {
 		this.scale = scale;
 	}
 
-	public Rotf getRotation()
-	{
+	public Rotf getRotation() {
 		return rotation;
 	}
 
-	public Vec3f getTranslation()
-	{
+	public Vec3f getTranslation() {
 		return translation;
 	}
 
-	public Vec3f getScale()
-	{
+	public Vec3f getScale() {
 		return scale;
 	}
 
@@ -52,8 +45,7 @@ public class Transform
 	 * 
 	 * @return matrix with rotation, translation and scale
 	 */
-	public synchronized Mat4f getMatrix()
-	{
+	public synchronized Mat4f getMatrix() {
 		Mat4f resultMatrix = new Mat4f();
 		rotation.toMatrix(resultMatrix);
 		resultMatrix.setTranslation(translation);

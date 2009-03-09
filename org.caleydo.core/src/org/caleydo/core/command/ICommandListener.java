@@ -9,8 +9,7 @@ import org.caleydo.core.manager.ICommandManager;
  * @author Michael Kalkusch
  */
 public interface ICommandListener
-	extends ICommandActionListener, IMementoNetEventXML
-{
+	extends ICommandActionListener, IMementoNetEventXML {
 
 	/**
 	 * Get the reference to the parent manager of all ICommandListener objects.

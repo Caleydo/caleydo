@@ -8,15 +8,13 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 
 /**
- * Command for triggering simple actions from the RCP interface that are
- * executed in org.caleydo.core.
+ * Command for triggering simple actions from the RCP interface that are executed in org.caleydo.core.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class CmdExternalActionTrigger
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 	private EExternalActionType externalActionType;
 
 	private int iViewId;
@@ -24,23 +22,19 @@ public class CmdExternalActionTrigger
 	/**
 	 * Constructor.
 	 */
-	public CmdExternalActionTrigger(final ECommandType cmdType)
-	{
+	public CmdExternalActionTrigger(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
 		if (externalActionType == EExternalActionType.CLEAR_SELECTIONS)
 			viewObject.clearAllSelections();
 
-		if (viewObject instanceof GLRemoteRendering)
-		{
-			switch (externalActionType)
-			{
+		if (viewObject instanceof GLRemoteRendering) {
+			switch (externalActionType) {
 				case CLOSE_OR_RESET_CONTAINED_VIEWS:
 					((GLRemoteRendering) viewObject).clearAll();
 					return;
@@ -52,10 +46,8 @@ public class CmdExternalActionTrigger
 					return;
 			}
 		}
-		else if (viewObject instanceof AStorageBasedView)
-		{
-			switch (externalActionType)
-			{
+		else if (viewObject instanceof AStorageBasedView) {
+			switch (externalActionType) {
 				case STORAGEBASED_PROPAGATE_SELECTIONS:
 					((AStorageBasedView) viewObject).broadcastElements();
 					return;
@@ -63,10 +55,8 @@ public class CmdExternalActionTrigger
 					((AStorageBasedView) viewObject).resetView();
 			}
 
-			if (viewObject instanceof GLParallelCoordinates)
-			{
-				switch (externalActionType)
-				{
+			if (viewObject instanceof GLParallelCoordinates) {
+				switch (externalActionType) {
 					case PARCOORDS_ANGULAR_BRUSHING:
 						((GLParallelCoordinates) viewObject).triggerAngularBrushing();
 						return;
@@ -84,13 +74,11 @@ public class CmdExternalActionTrigger
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
-	public void setAttributes(final int iViewId, final EExternalActionType externalActionType)
-	{
+	public void setAttributes(final int iViewId, final EExternalActionType externalActionType) {
 		this.externalActionType = externalActionType;
 		this.iViewId = iViewId;
 	}

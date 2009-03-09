@@ -5,19 +5,15 @@ import org.caleydo.core.manager.event.EEventType;
 
 @SuppressWarnings("unchecked")
 public class DeltaEventContainer<T extends IDelta>
-	extends AEventContainer
-{
+	extends AEventContainer {
 	T delta;
 
-	public DeltaEventContainer(T delta)
-	{
-		super((delta instanceof ISelectionDelta) ? EEventType.SELECTION_UPDATE
-				: EEventType.VA_UPDATE);
+	public DeltaEventContainer(T delta) {
+		super(delta instanceof ISelectionDelta ? EEventType.SELECTION_UPDATE : EEventType.VA_UPDATE);
 		this.delta = delta;
 	}
 
-	public T getSelectionDelta()
-	{
+	public T getSelectionDelta() {
 		return delta;
 	}
 }

@@ -2,6 +2,7 @@ package org.caleydo.core.command.view.swt;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
@@ -14,23 +15,20 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Marc Streit
  */
 public class CmdViewCreatePathway
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 	private ArrayList<Integer> iArSetIDs;
 
 	/**
 	 * Constructor
 	 */
-	public CmdViewCreatePathway(final ECommandType cmdType)
-	{
+	public CmdViewCreatePathway(final ECommandType cmdType) {
 		super(cmdType);
 
 		iArSetIDs = new ArrayList<Integer>();
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		// IViewManager viewManager = ((IViewManager) generalManager
 		// .getManagerByObjectType(ManagerObjectType.VIEW));
@@ -58,8 +56,7 @@ public class CmdViewCreatePathway
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		// TODO: load browser ID dynamically
@@ -74,23 +71,20 @@ public class CmdViewCreatePathway
 		// Read SET IDs (Data and Selection)
 		String sPathwaySets = "";
 		parameterHandler.setValueAndTypeAndDefault("sPathwaySets", parameterHandler
-				.getValueString(ECommandType.TAG_DETAIL.getXmlKey()),
-				IParameterHandler.ParameterHandlerType.STRING, "-1");
+			.getValueString(ECommandType.TAG_DETAIL.getXmlKey()), IParameterHandler.ParameterHandlerType.STRING,
+			"-1");
 
 		sPathwaySets = parameterHandler.getValueString("sPathwaySets");
 
-		StringTokenizer setToken = new StringTokenizer(sPathwaySets,
-				IGeneralManager.sDelimiter_Parser_DataItems);
+		StringTokenizer setToken = new StringTokenizer(sPathwaySets, IGeneralManager.sDelimiter_Parser_DataItems);
 
-		while (setToken.hasMoreTokens())
-		{
+		while (setToken.hasMoreTokens()) {
 			iArSetIDs.add(Integer.valueOf(setToken.nextToken()).intValue());
 		}
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

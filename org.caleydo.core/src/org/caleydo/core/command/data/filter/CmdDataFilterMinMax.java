@@ -6,17 +6,14 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 
 /**
- * This class calculates the min and the max value of a storage or a set It is
- * implemented as a command and as a filter.
- * 
- * TODO: Min max for set not implemented yet
+ * This class calculates the min and the max value of a storage or a set It is implemented as a command and as
+ * a filter. TODO: Min max for set not implemented yet
  * 
  * @author Alexander Lex
  */
 
 public class CmdDataFilterMinMax
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	private ISet mySet = null;
 
@@ -31,32 +28,26 @@ public class CmdDataFilterMinMax
 	 * 
 	 * @param cmdType
 	 */
-	public CmdDataFilterMinMax(ECommandType cmdType)
-	{
+	public CmdDataFilterMinMax(ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	/**
-	 * Calculates the minimum and the maximum of either a set or a storage
-	 * depending on what has been set using the setAttributes methods
+	 * Calculates the minimum and the maximum of either a set or a storage depending on what has been set using
+	 * the setAttributes methods
 	 */
-	public void doCommand()
-	{
+	public void doCommand() {
 
-		if (myStorage == null && mySet != null)
-		{
+		if (myStorage == null && mySet != null) {
 			dMinValue = mySet.getMin();
 			dMaxValue = mySet.getMax();
 		}
-		else if (myStorage != null && mySet == null)
-		{
+		else if (myStorage != null && mySet == null) {
 			dMinValue = myStorage.getMin();
 			dMaxValue = myStorage.getMax();
 		}
-		else
-		{
-			throw new IllegalStateException(
-					"You have to initialize the filter before using it");
+		else {
+			throw new IllegalStateException("You have to initialize the filter before using it");
 		}
 
 		commandManager.runDoCommand(this);
@@ -64,45 +55,40 @@ public class CmdDataFilterMinMax
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	/**
-	 * You have to set the attributes of the command before executing
-	 * doCommand() This is done here if you want to calculate the min and max on
-	 * a storage
+	 * You have to set the attributes of the command before executing doCommand() This is done here if you want
+	 * to calculate the min and max on a storage
 	 * 
-	 * @param myStorage The storage
+	 * @param myStorage
+	 *          The storage
 	 */
-	public void setAttributes(INumericalStorage myStorage)
-	{
+	public void setAttributes(INumericalStorage myStorage) {
 
 		this.myStorage = myStorage;
 	}
 
 	/**
-	 * You have to set the attributes of the command before executing
-	 * doCommand() This is done here if you want to calculate the min and max on
-	 * a storage
+	 * You have to set the attributes of the command before executing doCommand() This is done here if you want
+	 * to calculate the min and max on a storage
 	 * 
-	 * @param mySet The set
+	 * @param mySet
+	 *          The set
 	 */
-	public void setAttributes(ISet mySet)
-	{
+	public void setAttributes(ISet mySet) {
 
 		this.mySet = mySet;
 	}
 
-	public double getMin()
-	{
+	public double getMin() {
 
 		return dMinValue;
 	}
 
-	public double getMax()
-	{
+	public double getMax() {
 
 		return dMaxValue;
 	}

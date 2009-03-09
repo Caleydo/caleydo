@@ -7,8 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ChangeSelectionBrush
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 
 	private Integer iBrushSize = 0;
 
@@ -20,17 +19,17 @@ public class ChangeSelectionBrush
 	/**
 	 * Constructor.
 	 */
-	public ChangeSelectionBrush(int iViewID, ChangeSelectionBrushAction parent,
-			int iBrushSize, String text, String iconresource)
-	{
+	public ChangeSelectionBrush(int iViewID, ChangeSelectionBrushAction parent, int iBrushSize, String text,
+		String iconresource) {
 		super(iViewID);
 		this.parent = parent;
 
 		this.iBrushSize = iBrushSize;
 
 		this.sText = text;
-		this.idIcon = ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-				.getWorkbench().getDisplay(), iconresource));
+		this.idIcon =
+			ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
+				iconresource));
 
 		setText(text);
 		setToolTipText(sText);
@@ -39,14 +38,12 @@ public class ChangeSelectionBrush
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		if (parent != null)
 			parent.setImageDescriptor(idIcon);
 
-		triggerCmdExternalObjectSetter(iBrushSize,
-				EExternalObjectSetterType.GLYPH_SELECTIONBRUSH);
+		triggerCmdExternalObjectSetter(iBrushSize, EExternalObjectSetterType.GLYPH_SELECTIONBRUSH);
 	};
 }

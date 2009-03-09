@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.event;
 
 import java.util.HashMap;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IEventPublisher;
 
@@ -11,28 +12,23 @@ import org.caleydo.core.manager.IEventPublisher;
  * @author Alexander Lex
  */
 public class EventPublisher
-	implements IEventPublisher
-{
+	implements IEventPublisher {
 	private HashMap<EMediatorType, IMediator> hashMediatorType2Mediator;
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public EventPublisher()
-	{
+	public EventPublisher() {
 		hashMediatorType2Mediator = new HashMap<EMediatorType, IMediator>();
 	}
 
 	@Override
-	public IMediator getPrivateMediator()
-	{
+	public IMediator getPrivateMediator() {
 		return new Mediator();
 	}
 
 	@Override
-	public void addSender(EMediatorType eMediatorType, IMediatorSender sender)
-	{
+	public void addSender(EMediatorType eMediatorType, IMediatorSender sender) {
 		// Lazy mediator creation
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			hashMediatorType2Mediator.put(eMediatorType, new Mediator(eMediatorType));
@@ -42,8 +38,7 @@ public class EventPublisher
 	}
 
 	@Override
-	public void addReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver)
-	{
+	public void addReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver) {
 		// Lazy mediator creation
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			hashMediatorType2Mediator.put(eMediatorType, new Mediator(eMediatorType));
@@ -54,40 +49,32 @@ public class EventPublisher
 
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			IEventContainer eventContainer)
-	{
+		IEventContainer eventContainer) {
 
-		if (!(eventTrigger instanceof IMediatorSender))
-		{
+		if (!(eventTrigger instanceof IMediatorSender)) {
 			throw new IllegalArgumentException(
-					"triggerEvent called by an object which does not implement IMediatorSender");
+				"triggerEvent called by an object which does not implement IMediatorSender");
 		}
 
-		if (eMediatorType == EMediatorType.ALL_REGISTERED)
-		{
+		if (eMediatorType == EMediatorType.ALL_REGISTERED) {
 
-			for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
-			{
+			for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet()) {
 				IMediator tempMediator = hashMediatorType2Mediator.get(eTempMediatorType);
-				if (tempMediator.hasSender((IMediatorSender) eventTrigger))
-				{
+				if (tempMediator.hasSender((IMediatorSender) eventTrigger)) {
 					tempMediator.triggerEvent(eventTrigger, eventContainer);
 				}
 			}
 		}
-		else
-		{
+		else {
 			IMediator tempMediator = hashMediatorType2Mediator.get(eMediatorType);
-			if (tempMediator.hasSender((IMediatorSender) eventTrigger))
-			{
+			if (tempMediator.hasSender((IMediatorSender) eventTrigger)) {
 				tempMediator.triggerEvent(eventTrigger, eventContainer);
 			}
 		}
 	}
 
 	@Override
-	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender)
-	{
+	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender) {
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			return;
 
@@ -95,8 +82,7 @@ public class EventPublisher
 	}
 
 	@Override
-	public void removeReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver)
-	{
+	public void removeReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver) {
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			return;
 
@@ -104,19 +90,15 @@ public class EventPublisher
 	}
 
 	@Override
-	public void removeSenderFromAllGroups(IMediatorSender sender)
-	{
-		for (IMediator mediator : hashMediatorType2Mediator.values())
-		{
+	public void removeSenderFromAllGroups(IMediatorSender sender) {
+		for (IMediator mediator : hashMediatorType2Mediator.values()) {
 			mediator.removeSender(sender);
 		}
 	}
 
 	@Override
-	public void removeReceiverFromAllGroups(IMediatorReceiver receiver)
-	{
-		for (IMediator mediator : hashMediatorType2Mediator.values())
-		{
+	public void removeReceiverFromAllGroups(IMediatorReceiver receiver) {
+		for (IMediator mediator : hashMediatorType2Mediator.values()) {
 			mediator.removeReceiver(receiver);
 		}
 	}

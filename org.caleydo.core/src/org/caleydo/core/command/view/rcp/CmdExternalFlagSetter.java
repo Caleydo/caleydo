@@ -17,8 +17,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
  * @author Marc Streit
  */
 public class CmdExternalFlagSetter
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	private boolean bFlag = false;
 
@@ -29,31 +28,25 @@ public class CmdExternalFlagSetter
 	/**
 	 * Constructor.
 	 */
-	public CmdExternalFlagSetter(final ECommandType cmdType)
-	{
+	public CmdExternalFlagSetter(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		commandManager.runDoCommand(this);
 
-		Object viewObject = generalManager.getViewGLCanvasManager()
-				.getGLEventListener(iViewId);
+		Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
-		if (viewObject instanceof GLPathway)
-		{
+		if (viewObject instanceof GLPathway) {
 			// Pathway settings should apply to all pathways
 			for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager()
-					.getAllGLEventListeners())
-			{
+				.getAllGLEventListeners()) {
 				if (!(glEventListener instanceof GLPathway))
 					continue;
 
-				switch (externalFlagSetterType)
-				{
+				switch (externalFlagSetterType) {
 					case PATHWAY_GENE_MAPPING:
 						((GLPathway) glEventListener).enableGeneMapping(bFlag);
 						break;
@@ -68,11 +61,9 @@ public class CmdExternalFlagSetter
 
 		}
 
-		if (viewObject instanceof AStorageBasedView)
-		{
+		if (viewObject instanceof AStorageBasedView) {
 			AStorageBasedView sbView = (AStorageBasedView) viewObject;
-			switch (externalFlagSetterType)
-			{
+			switch (externalFlagSetterType) {
 				case STORAGEBASED_USE_RANDOM_SAMPLING:
 					sbView.useRandomSampling(bFlag);
 					return;
@@ -87,11 +78,9 @@ public class CmdExternalFlagSetter
 			}
 		}
 
-		if (viewObject instanceof GLParallelCoordinates)
-		{
+		if (viewObject instanceof GLParallelCoordinates) {
 			GLParallelCoordinates parCoords = (GLParallelCoordinates) viewObject;
-			switch (externalFlagSetterType)
-			{
+			switch (externalFlagSetterType) {
 				case PARCOORDS_OCCLUSION_PREVENTION:
 					parCoords.preventOcclusion(bFlag);
 					return;
@@ -113,11 +102,9 @@ public class CmdExternalFlagSetter
 		// }
 		// }
 
-		if (viewObject instanceof GLGlyph)
-		{
+		if (viewObject instanceof GLGlyph) {
 			GLGlyph glyphview = (GLGlyph) viewObject;
-			switch (externalFlagSetterType)
-			{
+			switch (externalFlagSetterType) {
 				case GLYPH_VIEWMODE_SCATTERLOT:
 					glyphview.setPositionModel(EIconIDs.DISPLAY_SCATTERPLOT);
 					return;
@@ -147,14 +134,12 @@ public class CmdExternalFlagSetter
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	public void setAttributes(final int iViewId, final boolean bFlag,
-			final EExternalFlagSetterType externalFlagSetterType)
-	{
+		final EExternalFlagSetterType externalFlagSetterType) {
 		this.bFlag = bFlag;
 		this.externalFlagSetterType = externalFlagSetterType;
 		this.iViewId = iViewId;

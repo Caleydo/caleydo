@@ -9,11 +9,9 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class FullScreenHandler
 	extends AbstractHandler
-	implements IHandler
-{
+	implements IHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException
-	{
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 		// Toggle full screen status
 		Shell shell = HandlerUtil.getActiveShell(event).getShell();
 		shell.setFullScreen(!shell.getFullScreen());

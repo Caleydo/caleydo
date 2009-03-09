@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.event;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.IUniqueObject;
 
 /**
@@ -11,8 +12,7 @@ import org.caleydo.core.data.IUniqueObject;
  * @author Marc Streit
  */
 public class Mediator
-	implements IMediator, IUniqueObject
-{
+	implements IMediator, IUniqueObject {
 	private EMediatorType eType;
 
 	protected ArrayList<IMediatorReceiver> alReceiver;
@@ -21,8 +21,7 @@ public class Mediator
 	/**
 	 * Constructor.
 	 */
-	Mediator()
-	{
+	Mediator() {
 		alReceiver = new ArrayList<IMediatorReceiver>();
 		alSender = new ArrayList<IMediatorSender>();
 	}
@@ -30,26 +29,22 @@ public class Mediator
 	/**
 	 * Constructor.
 	 */
-	Mediator(EMediatorType eType)
-	{
+	Mediator(EMediatorType eType) {
 		this();
 		this.eType = eType;
 	}
 
 	@Override
-	public EMediatorType getType()
-	{
+	public EMediatorType getType() {
 		return eType;
 	}
 
 	@Override
-	public final boolean addSender(IMediatorSender sender)
-	{
+	public final boolean addSender(IMediatorSender sender) {
 		if (sender == null)
 			throw new IllegalArgumentException("Sender to be registered was null");
 
-		if (alSender.contains(sender))
-		{
+		if (alSender.contains(sender)) {
 			return false;
 		}
 
@@ -58,13 +53,11 @@ public class Mediator
 	}
 
 	@Override
-	public final boolean addReceiver(IMediatorReceiver receiver)
-	{
+	public final boolean addReceiver(IMediatorReceiver receiver) {
 		if (receiver == null)
 			throw new IllegalArgumentException("Receiver to be registered was null");
 
-		if (alReceiver.contains(receiver))
-		{
+		if (alReceiver.contains(receiver)) {
 			return false;
 		}
 
@@ -73,26 +66,22 @@ public class Mediator
 	}
 
 	@Override
-	public final boolean removeSender(IMediatorSender sender)
-	{
+	public final boolean removeSender(IMediatorSender sender) {
 		return alSender.remove(sender);
 	}
 
 	@Override
-	public final boolean removeReceiver(IMediatorReceiver receiver)
-	{
+	public final boolean removeReceiver(IMediatorReceiver receiver) {
 		return alReceiver.remove(receiver);
 	}
 
 	@Override
-	public final boolean hasReceiver(IMediatorReceiver receiver)
-	{
+	public final boolean hasReceiver(IMediatorReceiver receiver) {
 		return alReceiver.contains(receiver);
 	}
 
 	@Override
-	public final boolean hasSender(IMediatorSender sender)
-	{
+	public final boolean hasSender(IMediatorSender sender) {
 		return alSender.contains(sender);
 	}
 
@@ -129,22 +118,17 @@ public class Mediator
 	// }
 	//
 	@Override
-	public int getID()
-	{
+	public int getID() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public void triggerEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
-	{
-		for (IMediatorReceiver receiver : alReceiver)
-		{
+	public void triggerEvent(IUniqueObject eventTrigger, IEventContainer eventContainer) {
+		for (IMediatorReceiver receiver : alReceiver) {
 			// Prevent circular updates
-			if (!receiver.equals(eventTrigger))
-			{
-				if (receiver instanceof IMediatorReceiver)
-				{
+			if (!receiver.equals(eventTrigger)) {
+				if (receiver instanceof IMediatorReceiver) {
 					IMediatorReceiver eventReceiver = (IMediatorReceiver) receiver;
 					eventReceiver.handleExternalEvent(eventTrigger, eventContainer, eType);
 				}

@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.renderstyle;
 
 import java.text.DecimalFormat;
+
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -11,8 +12,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GeneralRenderStyle
-{
+public class GeneralRenderStyle {
 
 	private static final float VERY_SMALL_FONT_SCALING_FACTOR = 0.0004f;
 
@@ -29,14 +29,14 @@ public class GeneralRenderStyle
 	public static final float[] SELECTED_COLOR = { 1, 0, 1, 1 };
 	public static final Color SELECTED_COLOR_SWT = new Color(Display.getCurrent(), 255, 0, 255);
 	public static final java.awt.Color SELECTED_COLOR_AWT = new java.awt.Color(255, 0, 255);
-	
+
 	public static final float[] MOUSE_OVER_COLOR = { 1, 1, 0, 1 };
 	public static final Color MOUSE_OVER_COLOR_SWT = new Color(Display.getCurrent(), 255, 255, 0);
 	public static final java.awt.Color MOUSE_OVER_COLOR_AWT = new java.awt.Color(255, 255, 0, 0);
 
 	private static final float[] BACKGROUND_COLOR = { 0.7f, 0.7f, 0.7f, 1f };
-	
-	public static final float[] PANEL_BACKGROUN_COLOR = {0.85f, 0.85f, 0.85f, 1f};
+
+	public static final float[] PANEL_BACKGROUN_COLOR = { 0.85f, 0.85f, 0.85f, 1f };
 
 	public static final float LOADING_BOX_HALF_WIDTH = 1f;
 
@@ -69,15 +69,13 @@ public class GeneralRenderStyle
 	/**
 	 * Default constructor.
 	 */
-	private GeneralRenderStyle()
-	{
+	private GeneralRenderStyle() {
 	}
 
 	/**
 	 * Constructor.
 	 */
-	public GeneralRenderStyle(IViewFrustum viewFrustum)
-	{
+	public GeneralRenderStyle(IViewFrustum viewFrustum) {
 		this();
 		decimalFormat = new DecimalFormat("#####.#");
 		this.viewFrustum = viewFrustum;
@@ -87,60 +85,50 @@ public class GeneralRenderStyle
 
 	}
 
-	public float getXCenter()
-	{
+	public float getXCenter() {
 		return (viewFrustum.getRight() - viewFrustum.getLeft()) / 2;
 	}
 
-	public float getYCenter()
-	{
+	public float getYCenter() {
 		return (viewFrustum.getTop() - viewFrustum.getBottom()) / 2;
 	}
 
-	public static DecimalFormat getDecimalFormat()
-	{
+	public static DecimalFormat getDecimalFormat() {
 		return decimalFormat;
 	}
 
-	public float getSmallFontScalingFactor()
-	{
+	public float getSmallFontScalingFactor() {
 		float fScaling = SMALL_FONT_SCALING_FACTOR * getScaling();
 		return fScaling;
 
 	}
 
-	public float getVerySmallFontScalingFactor()
-	{
+	public float getVerySmallFontScalingFactor() {
 
 		return VERY_SMALL_FONT_SCALING_FACTOR * getScaling();
 	}
 
-	public float getHeadingFontScalingFactor()
-	{
+	public float getHeadingFontScalingFactor() {
 
 		return HEADING_FONT_SCALING_FACTOR * getScaling();
 	}
 
-	public float getVerySmallSpacing()
-	{
+	public float getVerySmallSpacing() {
 
 		return BUTTONS_SPACING / 5 * getScaling();
 	}
 
-	public float getSmallSpacing()
-	{
+	public float getSmallSpacing() {
 
 		return BUTTONS_SPACING * getScaling();
 	}
 
-	public float getButtonWidht()
-	{
+	public float getButtonWidht() {
 
 		return BUTTON_WIDTH * getScaling();
 	}
 
-	public float getScaling()
-	{
+	public float getScaling() {
 		float fScaling;
 		if (viewFrustum.getWidth() > viewFrustum.getHeight())
 			fScaling = viewFrustum.getWidth();
@@ -149,8 +137,7 @@ public class GeneralRenderStyle
 		return fScaling;
 	}
 
-	public float[] getBackgroundColor()
-	{
+	public float[] getBackgroundColor() {
 		return BACKGROUND_COLOR;
 	}
 

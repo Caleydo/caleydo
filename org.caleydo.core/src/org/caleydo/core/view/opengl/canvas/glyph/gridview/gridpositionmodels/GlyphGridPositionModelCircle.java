@@ -2,33 +2,29 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
 
 public class GlyphGridPositionModelCircle
-	extends GlyphGridPositionModel
-{
+	extends GlyphGridPositionModel {
 
-	public GlyphGridPositionModelCircle(GlyphRenderStyle renderStyle)
-	{
+	public GlyphGridPositionModelCircle(GlyphRenderStyle renderStyle) {
 		super(renderStyle);
 	}
 
 	@Override
-	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap,
-			ArrayList<GlyphEntry> gg)
-	{
+	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap, ArrayList<GlyphEntry> gg) {
 		setGlyphPositions(glyphMap, gg, (worldLimit.x() - 2) / 2, (worldLimit.y() - 2) / 2);
 	}
 
 	@Override
-	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_,
-			ArrayList<GlyphEntry> gg, int centerX, int centerY)
+	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg,
+		int centerX, int centerY)
 
 	{
-		if (centerX == 0 && centerY == 0)
-		{
+		if (centerX == 0 && centerY == 0) {
 			int num = gg.size();
 			int x_max = (int) java.lang.Math.sqrt(num);
 			centerX = x_max / 2 + 1;
@@ -52,17 +48,14 @@ public class GlyphGridPositionModelCircle
 		int x = centerX;
 		int y = centerY;
 
-		for (GlyphEntry g : gg)
-		{
+		for (GlyphEntry g : gg) {
 			boolean isfree = false;
 
 			if (x >= 0 && y >= 0 && x < this.worldLimit.x() && y < this.worldLimit.y())
 				isfree = glyphMap_.get(x).get(y).isPositionFree();
 
-			while (!isfree)
-			{
-				switch (d % 4)
-				{
+			while (!isfree) {
+				switch (d % 4) {
 					case 0:
 						++x;
 						break;
@@ -77,13 +70,11 @@ public class GlyphGridPositionModelCircle
 						break;
 				}
 				++c;
-				if (c == cm)
-				{
+				if (c == cm) {
 					++d;
 					c = 0;
 					++k;
-					if (k == 2)
-					{
+					if (k == 2) {
 						++cm;
 						k = 0;
 					}

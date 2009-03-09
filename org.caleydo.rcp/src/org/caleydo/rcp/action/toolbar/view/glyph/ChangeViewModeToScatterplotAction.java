@@ -7,8 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ChangeViewModeToScatterplotAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Switch View To Scatterplot";
 	public static final String ICON = "resources/icons/view/glyph/sort_scatterplot.png";
 
@@ -18,31 +17,28 @@ public class ChangeViewModeToScatterplotAction
 	/**
 	 * Constructor.
 	 */
-	public ChangeViewModeToScatterplotAction(int iViewID, ChangeViewModeAction parent)
-	{
+	public ChangeViewModeToScatterplotAction(int iViewID, ChangeViewModeAction parent) {
 		super(iViewID);
 		this.parent = parent;
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		if (parent != null)
-			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-					.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+				.getWorkbench().getDisplay(), ICON)));
 
 		parent.getSecondaryAction().setAction(this);
 
-		triggerCmdExternalFlagSetter(bEnable,
-				EExternalFlagSetterType.GLYPH_VIEWMODE_SCATTERLOT);
+		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.GLYPH_VIEWMODE_SCATTERLOT);
 	};
 
 }

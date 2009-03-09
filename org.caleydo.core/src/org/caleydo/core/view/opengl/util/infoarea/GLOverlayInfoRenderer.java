@@ -6,21 +6,22 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+
 import org.caleydo.core.view.opengl.renderstyle.infoarea.AInfoOverlayRenderStyle;
+
 import com.sun.opengl.util.j2d.Overlay;
 
 /**
  * Class implements the overlay info area.
  * 
  * @author Marc Streit
- * 
  * @deprecated Use status line + tooltip approach
  */
 @Deprecated
-public class GLOverlayInfoRenderer
-{
+public class GLOverlayInfoRenderer {
 
 	private Overlay glOverlay;
 
@@ -31,14 +32,12 @@ public class GLOverlayInfoRenderer
 	/**
 	 * Constructor.
 	 */
-	public GLOverlayInfoRenderer()
-	{
+	public GLOverlayInfoRenderer() {
 		font = new Font("Courier", Font.BOLD, 16);
 		sAlContent = new ArrayList<String>();
 	}
 
-	public void init(final GLAutoDrawable drawable)
-	{
+	public void init(final GLAutoDrawable drawable) {
 
 		glOverlay = new Overlay(drawable);
 	}
@@ -50,14 +49,12 @@ public class GLOverlayInfoRenderer
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(final ArrayList<String> sAlContent)
-	{
+	public void setData(final ArrayList<String> sAlContent) {
 
 		this.sAlContent = sAlContent;
 	}
 
-	public void render(final GLAutoDrawable drawable)
-	{
+	public void render(final GLAutoDrawable drawable) {
 
 		GL gl = drawable.getGL();
 
@@ -87,7 +84,7 @@ public class GLOverlayInfoRenderer
 		// Flush info area
 		g2d.setColor(new Color(1, 1, 1, 0));
 		g2d.fillRect(iXPos, iYPos, AInfoOverlayRenderStyle.OVERLAY_WIDTH,
-				AInfoOverlayRenderStyle.MAX_OVERLAY_HEIGHT);
+			AInfoOverlayRenderStyle.MAX_OVERLAY_HEIGHT);
 
 		g2d.setColor(AInfoOverlayRenderStyle.backgroundColor);
 		g2d.fillRect(iXPos, iYPos, AInfoOverlayRenderStyle.OVERLAY_WIDTH, panelHeight);
@@ -100,18 +97,16 @@ public class GLOverlayInfoRenderer
 
 		Iterator<String> iterContentCreator = sAlContent.iterator();
 
-		while (iterContentCreator.hasNext())
-		{
+		while (iterContentCreator.hasNext()) {
 			iLineCount++;
 			g2d.drawString(iterContentCreator.next(),
-					(viewport[2] - AInfoOverlayRenderStyle.OVERLAY_WIDTH) / 2 + 10, iLineCount
-							* AInfoOverlayRenderStyle.LINE_HEIGHT);
+				(viewport[2] - AInfoOverlayRenderStyle.OVERLAY_WIDTH) / 2 + 10, iLineCount
+					* AInfoOverlayRenderStyle.LINE_HEIGHT);
 		}
 
 		// render all the overlay to the screen
 		glOverlay.markDirty((viewport[2] - AInfoOverlayRenderStyle.OVERLAY_WIDTH) / 2, 0,
-				AInfoOverlayRenderStyle.OVERLAY_WIDTH,
-				AInfoOverlayRenderStyle.MAX_OVERLAY_HEIGHT);
+			AInfoOverlayRenderStyle.OVERLAY_WIDTH, AInfoOverlayRenderStyle.MAX_OVERLAY_HEIGHT);
 		glOverlay.drawAll();
 		g2d.dispose();
 	}

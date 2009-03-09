@@ -10,8 +10,7 @@ import javax.media.opengl.GL;
  * @author Alexander Lex
  */
 public class ViewFrustum
-	implements IViewFrustum
-{
+	implements IViewFrustum {
 	private EProjectionMode eProjectionMode;
 
 	private float fLeft;
@@ -34,9 +33,8 @@ public class ViewFrustum
 	 * @param fNear
 	 * @param fFar
 	 */
-	public ViewFrustum(EProjectionMode eProjectionMode, float fLeft, float fRight,
-			float fBottom, float fTop, float fNear, float fFar)
-	{
+	public ViewFrustum(EProjectionMode eProjectionMode, float fLeft, float fRight, float fBottom, float fTop,
+		float fNear, float fFar) {
 		this.eProjectionMode = eProjectionMode;
 
 		this.fLeft = fLeft;
@@ -48,127 +46,108 @@ public class ViewFrustum
 	}
 
 	@Override
-	public EProjectionMode getProjectionMode()
-	{
+	public EProjectionMode getProjectionMode() {
 		return eProjectionMode;
 	}
 
 	@Override
-	public void setProjectionMode(final EProjectionMode eProjectionMode)
-	{
+	public void setProjectionMode(final EProjectionMode eProjectionMode) {
 		this.eProjectionMode = eProjectionMode;
 	}
 
 	@Override
-	public float getLeft()
-	{
+	public float getLeft() {
 
 		return fLeft;
 	}
 
 	@Override
-	public float getRight()
-	{
+	public float getRight() {
 
 		return fRight;
 	}
 
 	@Override
-	public float getTop()
-	{
+	public float getTop() {
 
 		return fTop;
 	}
 
 	@Override
-	public float getBottom()
-	{
+	public float getBottom() {
 		return fBottom;
 	}
 
 	@Override
-	public float getNear()
-	{
+	public float getNear() {
 
 		return fNear;
 	}
 
 	@Override
-	public float getFar()
-	{
+	public float getFar() {
 
 		return fFar;
 	}
 
 	@Override
-	public float getWidth()
-	{
+	public float getWidth() {
 		return fRight - fLeft;
 	}
 
 	@Override
-	public float getHeight()
-	{
+	public float getHeight() {
 		return fTop - fBottom;
 	}
 
 	@Override
-	public void setLeft(final float fLeft)
-	{
+	public void setLeft(final float fLeft) {
 
 		this.fLeft = fLeft;
 	}
 
 	@Override
-	public void setRight(final float fRight)
-	{
+	public void setRight(final float fRight) {
 
 		this.fRight = fRight;
 	}
 
 	@Override
-	public void setTop(final float fTop)
-	{
+	public void setTop(final float fTop) {
 
 		this.fTop = fTop;
 	}
 
 	@Override
-	public void setBottom(final float fBottom)
-	{
+	public void setBottom(final float fBottom) {
 
 		this.fBottom = fBottom;
 	}
 
 	@Override
-	public void setNear(final float fNear)
-	{
+	public void setNear(final float fNear) {
 
 		this.fNear = fNear;
 	}
 
 	@Override
-	public void setFar(final float fFar)
-	{
+	public void setFar(final float fFar) {
 
 		this.fFar = fFar;
 	}
 
 	@Override
-	public void considerAspectRatio(boolean bConsiderAspectRatio)
-	{
+	public void considerAspectRatio(boolean bConsiderAspectRatio) {
 		this.bConsiderAspectRatio = bConsiderAspectRatio;
 	}
 
 	@Override
-	public void setProjectionMatrix(GL gl)
-	{
+	public void setProjectionMatrix(GL gl) {
 		setProjectionMatrix(gl, 1);
 	}
 
 	@Override
-	public void setProjectionMatrix(GL gl, float fAspectRatio)
-	{
+	public void setProjectionMatrix(GL gl, float fAspectRatio) {
 		// fAspectRatio = (float) height / (float) width;
 
 		float fLeft = getLeft();
@@ -176,29 +155,24 @@ public class ViewFrustum
 		float fBottom = getBottom();
 		float fTop = getTop();
 
-		if (bConsiderAspectRatio)
-		{
-			if (fAspectRatio < 1.0f)
-			{
+		if (bConsiderAspectRatio) {
+			if (fAspectRatio < 1.0f) {
 				fLeft /= fAspectRatio;
 				fRight /= fAspectRatio;
 			}
-			else
-			{
+			else {
 				fBottom *= fAspectRatio;
 				fTop *= fAspectRatio;
 			}
-			
-//			System.out.println("Aspect ratio:" +fAspectRatio);
-//			System.out.println(fLeft + "," +fRight + "," +fTop + "," +fBottom);
+
+			// System.out.println("Aspect ratio:" +fAspectRatio);
+			// System.out.println(fLeft + "," +fRight + "," +fTop + "," +fBottom);
 		}
 
-		if (getProjectionMode().equals(EProjectionMode.ORTHOGRAPHIC))
-		{
+		if (getProjectionMode().equals(EProjectionMode.ORTHOGRAPHIC)) {
 			gl.glOrtho(fLeft, fRight, fBottom, fTop, getNear(), getFar());
 		}
-		else
-		{
+		else {
 			gl.glFrustum(fLeft, fRight, fBottom, fTop, getNear(), getFar());
 		}
 

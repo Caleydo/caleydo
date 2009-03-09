@@ -2,8 +2,10 @@ package org.caleydo.core.util.wii;
 
 import java.util.LinkedList;
 import java.util.Queue;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.graphics.Point;
+
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.values.IRSource;
@@ -21,48 +23,43 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
-public class WiiRemote
-{
+public class WiiRemote {
 	private static float SMOOTH_RANGE = 40;
 
 	private Queue<float[]> posInputQueue = new LinkedList<float[]>();
 	private Queue<Float> distanceInputQueue = new LinkedList<Float>();
-	
+
 	private boolean bInitOK = false;
 
 	/**
 	 * Constructor.
 	 */
-	public WiiRemote()
-	{
+	public WiiRemote() {
 		float[] point = new float[2];
 		point[0] = 0;
 		point[1] = 0;
 
 		// Initialize IR position input queue
-		for (int i = 0; i < SMOOTH_RANGE; i++)
-		{
+		for (int i = 0; i < SMOOTH_RANGE; i++) {
 			posInputQueue.add(point);
 			distanceInputQueue.add(2f);
 		}
 	}
 
-	public void connect()
-	{
+	public void connect() {
 		Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
-		
-		// Return if no Wii remote was detected. In this case the input is simulated with fixed values for testing purposes.
+
+		// Return if no Wii remote was detected. In this case the input is simulated with fixed values for testing
+		// purposes.
 		if (wiimotes.length == 0)
 			return;
-		
+
 		bInitOK = true;
-		
+
 		wiimotes[0].activateIRTRacking();
-		wiimotes[0].addWiiMoteEventListeners(new WiimoteListener()
-		{
+		wiimotes[0].addWiiMoteEventListeners(new WiimoteListener() {
 			@Override
-			public void onIrEvent(IREvent arg0)
-			{
+			public void onIrEvent(IREvent arg0) {
 				if (arg0.getIRPoints().length != 2)
 					return;
 
@@ -104,28 +101,28 @@ public class WiiRemote
 				float angle = radiansPerPixel * pointDist / 2;
 				// in units of screen height since the box is a unit cube and
 				// box height is 1
-				float fHeadDistance = movementScaling
-						* (float) ((dotDistanceInMM / 2) / Math.tan(angle)) / screenHeightinMM;
+				float fHeadDistance =
+					movementScaling * (float) (dotDistanceInMM / 2 / Math.tan(angle)) / screenHeightinMM;
 
 				float avgX = (firstPoint.x + secondPoint.x) / 2.0f;
 				float avgY = (firstPoint.y + secondPoint.y) / 2.0f;
 
-				headX = (float) (movementScaling
-						* Math.sin(radiansPerPixel * (avgX - m_dwWidth / 2f)) * fHeadDistance);
+				headX =
+					(float) (movementScaling * Math.sin(radiansPerPixel * (avgX - m_dwWidth / 2f)) * fHeadDistance);
 
 				relativeVerticalAngle = (avgY - m_dwHeight / 2f) * radiansPerPixel;// relative
 
 				if (cameraIsAboveScreen)
-					headY = .5f + (float) (movementScaling
-							* Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
+					headY =
+						.5f + (float) (movementScaling * Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
 				else
-					headY = -.5f
-							+ (float) (movementScaling
-									* Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
+					headY =
+						-.5f
+							+ (float) (movementScaling * Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
 
-//				System.out.println("Distance: " + fHeadDistance);
-//				System.out.println("Head position: " + headX + "/" + headY);
-//				System.out.println("Head distance: " + fHeadDistance + "\n");
+				// System.out.println("Distance: " + fHeadDistance);
+				// System.out.println("Head position: " + headX + "/" + headY);
+				// System.out.println("Head distance: " + fHeadDistance + "\n");
 
 				float[] point = new float[2];
 				point[0] = headX;
@@ -133,86 +130,71 @@ public class WiiRemote
 				posInputQueue.add(point);
 				distanceInputQueue.add(fHeadDistance);
 
-				if (posInputQueue.size() > SMOOTH_RANGE)
-				{
+				if (posInputQueue.size() > SMOOTH_RANGE) {
 					posInputQueue.remove();
 					distanceInputQueue.remove();
 				}
 			}
 
 			@Override
-			public void onButtonsEvent(WiimoteButtonsEvent arg0)
-			{
+			public void onButtonsEvent(WiimoteButtonsEvent arg0) {
 			}
 
 			@Override
-			public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent arg0)
-			{
+			public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent arg0) {
 			}
 
 			@Override
-			public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent arg0)
-			{
+			public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent arg0) {
 			}
 
 			@Override
-			public void onDisconnectionEvent(DisconnectionEvent arg0)
-			{
+			public void onDisconnectionEvent(DisconnectionEvent arg0) {
 			}
 
 			@Override
-			public void onExpansionEvent(ExpansionEvent arg0)
-			{
+			public void onExpansionEvent(ExpansionEvent arg0) {
 			}
 
 			@Override
-			public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0)
-			{
+			public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {
 			}
 
 			@Override
-			public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0)
-			{
+			public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {
 			}
 
 			@Override
-			public void onMotionSensingEvent(MotionSensingEvent arg0)
-			{
+			public void onMotionSensingEvent(MotionSensingEvent arg0) {
 			}
 
 			@Override
-			public void onNunchukInsertedEvent(NunchukInsertedEvent arg0)
-			{
+			public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {
 			}
 
 			@Override
-			public void onNunchukRemovedEvent(NunchukRemovedEvent arg0)
-			{
+			public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) {
 			}
 
 			@Override
-			public void onStatusEvent(StatusEvent arg0)
-			{
+			public void onStatusEvent(StatusEvent arg0) {
 			}
 
 		});
 	}
 
-	public float[] getCurrentSmoothHeadPosition()
-	{
+	public float[] getCurrentSmoothHeadPosition() {
 		float[] fArTmpPoint;
-		float[] fArSmoothedPoint = new float[]{-1.3f, 0.1f};
-		
-		if (!GeneralManager.get().isWiiModeActive() || !bInitOK)
-		{
+		float[] fArSmoothedPoint = new float[] { -1.3f, 0.1f };
+
+		if (!GeneralManager.get().isWiiModeActive() || !bInitOK) {
 			return fArSmoothedPoint;
 		}
-		
-		for (int i = 0; i < SMOOTH_RANGE; i++)
-		{
+
+		for (int i = 0; i < SMOOTH_RANGE; i++) {
 			if (posInputQueue.size() < SMOOTH_RANGE)
 				break;
-			
+
 			fArTmpPoint = ((LinkedList<float[]>) posInputQueue).get(i);
 			fArSmoothedPoint[0] += fArTmpPoint[0];
 			fArSmoothedPoint[1] += fArTmpPoint[1];
@@ -220,23 +202,20 @@ public class WiiRemote
 
 		fArSmoothedPoint[0] /= SMOOTH_RANGE;
 		fArSmoothedPoint[1] /= SMOOTH_RANGE;
-		
-//		System.out.println("Head position: " +fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
+
+		// System.out.println("Head position: " +fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
 
 		return fArSmoothedPoint;
 	}
 
-	public float getCurrentHeadDistance()
-	{
+	public float getCurrentHeadDistance() {
 		float fSmoothedHeadDistance = 8;
-		
-		if (!GeneralManager.get().isWiiModeActive() || !bInitOK)
-		{
+
+		if (!GeneralManager.get().isWiiModeActive() || !bInitOK) {
 			return fSmoothedHeadDistance;
 		}
 
-		for (int i = 0; i < SMOOTH_RANGE; i++)
-		{
+		for (int i = 0; i < SMOOTH_RANGE; i++) {
 			fSmoothedHeadDistance += ((LinkedList<Float>) distanceInputQueue).get(i);
 		}
 

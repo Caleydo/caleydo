@@ -1,24 +1,19 @@
 package org.caleydo.core.data.selection;
 
 import java.util.Collection;
+
 import org.caleydo.core.data.mapping.EIDType;
 
 /**
- * 
- * Interface for all deltas that contain information on changes and are used to
- * submit information to other views.
- * 
- * A delta contains a number of {@link IDeltaItem}s.
+ * Interface for all deltas that contain information on changes and are used to submit information to other
+ * views. A delta contains a number of {@link IDeltaItem}s.
  * 
  * @author Alexander Lex
- * 
  */
 public interface IDelta<T extends IDeltaItem>
-	extends Iterable<T>
-{
+	extends Iterable<T> {
 	/**
-	 * Return an array list of {@link SelectionDeltaItem}. This contains data on
-	 * what selections have changed
+	 * Return an array list of {@link SelectionDeltaItem}. This contains data on what selections have changed
 	 * 
 	 * @return
 	 */
@@ -32,8 +27,8 @@ public interface IDelta<T extends IDeltaItem>
 	public EIDType getIDType();
 
 	/**
-	 * Get the type of the secondary ID, which has to be listed in
-	 * {@link EIDType}. Returns null if no internal ID type was set
+	 * Get the type of the secondary ID, which has to be listed in {@link EIDType}. Returns null if no internal
+	 * ID type was set
 	 * 
 	 * @return the type of the internal id
 	 */
@@ -49,7 +44,8 @@ public interface IDelta<T extends IDeltaItem>
 	/**
 	 * Add a new item to the delta
 	 * 
-	 * @param deltaItem the delta item
+	 * @param deltaItem
+	 *          the delta item
 	 */
 	public void add(T deltaItem);
 

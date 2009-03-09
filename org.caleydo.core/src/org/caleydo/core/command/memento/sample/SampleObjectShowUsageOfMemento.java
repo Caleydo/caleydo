@@ -5,14 +5,13 @@ import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.command.memento.IMementoCreator;
 
 /**
- * Sample code for IMemento objects. Implementation of Desing Pattern "IMemento"
- * \sa SampleMementoApplicationCmd
+ * Sample code for IMemento objects. Implementation of Desing Pattern "IMemento" \sa
+ * SampleMementoApplicationCmd
  * 
  * @author Michael Kalkusch
  */
 public class SampleObjectShowUsageOfMemento
-	implements IMementoCreator
-{
+	implements IMementoCreator {
 
 	/**
 	 * Data stored in this class.
@@ -27,14 +26,12 @@ public class SampleObjectShowUsageOfMemento
 	/**
 	 * Default constructor.
 	 */
-	public SampleObjectShowUsageOfMemento()
-	{
+	public SampleObjectShowUsageOfMemento() {
 
 	}
 
 	@Override
-	public IMemento createMemento()
-	{
+	public IMemento createMemento() {
 
 		// Create new state object, which stores the current state...
 		SampleMementoState myMementoState = new SampleMementoState(iMyData);
@@ -58,8 +55,7 @@ public class SampleObjectShowUsageOfMemento
 	}
 
 	@Override
-	public void setMemento(IMemento setMemento)
-	{
+	public void setMemento(IMemento setMemento) {
 
 		SampleMementoState bufferMementoState = null;
 
@@ -86,8 +82,7 @@ public class SampleObjectShowUsageOfMemento
 	/**
 	 * Any method of this object.
 	 */
-	public void doSomething()
-	{
+	public void doSomething() {
 
 	}
 
@@ -96,8 +91,7 @@ public class SampleObjectShowUsageOfMemento
 	 * 
 	 * @return
 	 */
-	public int getData()
-	{
+	public int getData() {
 
 		return iMyData;
 	}
@@ -105,8 +99,7 @@ public class SampleObjectShowUsageOfMemento
 	/**
 	 * Placeholder for any data stored in this class.
 	 */
-	public void setData(int iSetData)
-	{
+	public void setData(int iSetData) {
 
 		fMyData = iMyData + iSetData * 0.5f;
 		iMyData = iSetData;

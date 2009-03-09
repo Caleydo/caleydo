@@ -7,8 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ChangeViewModeToPlusModelAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Switch View To Distribution Orientation";
 	public static final String ICON = "resources/icons/view/glyph/sort_age_pyramid.png";
 
@@ -18,25 +17,23 @@ public class ChangeViewModeToPlusModelAction
 	/**
 	 * Constructor.
 	 */
-	public ChangeViewModeToPlusModelAction(int iViewID, ChangeViewModeAction parent)
-	{
+	public ChangeViewModeToPlusModelAction(int iViewID, ChangeViewModeAction parent) {
 		super(iViewID);
 		this.parent = parent;
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		if (parent != null)
-			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-					.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+				.getWorkbench().getDisplay(), ICON)));
 
 		parent.getSecondaryAction().setAction(this);
 

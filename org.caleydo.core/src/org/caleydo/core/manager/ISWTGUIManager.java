@@ -8,14 +8,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 
-public interface ISWTGUIManager
-{
+public interface ISWTGUIManager {
+
+	public ISWTWidget createWidget(final EManagedObjectType useWidgetType, int iUniqueParentWindowId);
 
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			int iUniqueParentWindowId);
-
-	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			final Composite externalParentComposite);
+		final Composite externalParentComposite);
 
 	/**
 	 * Method creates a shell with a given label and layout.
@@ -25,11 +23,9 @@ public interface ISWTGUIManager
 	public int createWindow(String sLabel, String sLayoutAttributes);
 
 	/**
-	 * Searches for the parent window and creates a new composite in that
-	 * window.
+	 * Searches for the parent window and creates a new composite in that window.
 	 */
-	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
-			String sLayoutAttributes);
+	public void createComposite(int iUniqueId, int iUniqueParentContainerId, String sLayoutAttributes);
 
 	public void runApplication();
 

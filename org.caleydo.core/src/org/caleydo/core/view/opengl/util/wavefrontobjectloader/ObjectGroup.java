@@ -2,9 +2,12 @@ package org.caleydo.core.view.opengl.util.wavefrontobjectloader;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec3i;
+
 import java.util.ArrayList;
 import java.util.logging.Level;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
@@ -12,8 +15,7 @@ import org.caleydo.core.manager.general.GeneralManager;
  * 
  * @author Stefan Sauer
  */
-public class ObjectGroup
-{
+public class ObjectGroup {
 	private String sName;
 	private ObjectModel model;
 
@@ -23,8 +25,7 @@ public class ObjectGroup
 
 	private int iDisplayList;
 
-	public ObjectGroup(ObjectModel model, String name)
-	{
+	public ObjectGroup(ObjectModel model, String name) {
 		this.model = model;
 		this.sName = name;
 		faces = new ArrayList<ArrayList<Vec3i>>();
@@ -32,43 +33,36 @@ public class ObjectGroup
 		iDisplayList = -1;
 	}
 
-	public void addFace(ArrayList<Vec3i> face)
-	{
+	public void addFace(ArrayList<Vec3i> face) {
 		faces.add(face);
 
 		// update dimensions
-		for (Vec3i faceIndices : face)
-		{
+		for (Vec3i faceIndices : face) {
 			dim.updateX(model.getGeometricVertex(faceIndices.get(0)).get(0));
 			dim.updateY(model.getGeometricVertex(faceIndices.get(0)).get(1));
 			dim.updateZ(model.getGeometricVertex(faceIndices.get(0)).get(2));
 		}
 	}
 
-	public ObjectDimensions getDimensions()
-	{
+	public ObjectDimensions getDimensions() {
 		return new ObjectDimensions(dim);
 	}
 
-	public void draw(GL gl)
-	{
-		if (iDisplayList < 0)
-		{
+	public void draw(GL gl) {
+		if (iDisplayList < 0) {
 			GeneralManager.get().getLogger().log(Level.WARNING,
-					this.getClass().toString() + ": display list was drawn, before init!");
+				this.getClass().toString() + ": display list was drawn, before init!");
 			init(gl);
 		}
 
 		gl.glCallList(iDisplayList);
 	}
 
-	public boolean isInit()
-	{
-		return ((iDisplayList < 0) ? false : true);
+	public boolean isInit() {
+		return iDisplayList < 0 ? false : true;
 	}
 
-	public void init(GL gl)
-	{
+	public void init(GL gl) {
 		if (iDisplayList >= 0)
 			gl.glDeleteLists(iDisplayList, 1);
 
@@ -78,8 +72,7 @@ public class ObjectGroup
 		gl.glPushMatrix();
 
 		// render faces
-		for (ArrayList<Vec3i> face : faces)
-		{
+		for (ArrayList<Vec3i> face : faces) {
 			// check face type
 			if (face.size() == 3)
 				gl.glBegin(GL.GL_TRIANGLES);
@@ -89,42 +82,38 @@ public class ObjectGroup
 				gl.glBegin(GL.GL_POLYGON);
 
 			// calculate normal for this face
-			if (face.size() >= 3)
-			{
-				//we need only 3 points
+			if (face.size() >= 3) {
+				// we need only 3 points
 				Vec3f p0 = model.getGeometricVertex(face.get(0).get(0));
 				Vec3f p1 = model.getGeometricVertex(face.get(1).get(0));
 				Vec3f p2 = model.getGeometricVertex(face.get(2).get(0));
-				
-				//to get 2 vectors
+
+				// to get 2 vectors
 				Vec3f v1 = new Vec3f();
 				Vec3f v2 = new Vec3f();
-				v1.sub(p1,p0);
-				v2.sub(p2,p1);
-				
-				//to make the normal vector
+				v1.sub(p1, p0);
+				v2.sub(p2, p1);
+
+				// to make the normal vector
 				Vec3f normal = new Vec3f();
 				normal.cross(v1, v2);
 				normal.normalize();
-				
+
 				gl.glNormal3f(normal.get(0), normal.get(1), normal.get(2));
 			}
 
-			for (Vec3i faceIndices : face)
-			{
+			for (Vec3i faceIndices : face) {
 
 				// render normals (if present). This might be the wrong way
 				// (normals for every point of the face?)
-				if (faceIndices.get(2) != 0)
-				{
+				if (faceIndices.get(2) != 0) {
 					Vec3f normal = model.getNormalVertex(faceIndices.get(2));
 					if (normal != null)
 						gl.glNormal3f(normal.get(0), normal.get(1), normal.get(2));
 				}
 
 				// render texture
-				if (faceIndices.get(1) != 0)
-				{
+				if (faceIndices.get(1) != 0) {
 					Vec3f texture = model.getTextureVertex(faceIndices.get(1));
 					if (texture != null)
 						gl.glTexCoord3f(texture.get(0), texture.get(1), texture.get(2));
@@ -147,8 +136,7 @@ public class ObjectGroup
 		gl.glEndList();
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return sName;
 	}
 

@@ -6,19 +6,15 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.PlatformUI;
 
 public class RCPBridge
-	implements IGUIBridge
-{
+	implements IGUIBridge {
 	private String sFileNameCurrentDataSet;
 
 	@Override
-	public void closeApplication()
-	{
-		try
-		{
+	public void closeApplication() {
+		try {
 			new ExitHandler().execute(null);
 		}
-		catch (ExecutionException e)
-		{
+		catch (ExecutionException e) {
 			throw new IllegalStateException("Cannot execute exit command.");
 		}
 	}
@@ -89,20 +85,17 @@ public class RCPBridge
 	// }
 
 	@Override
-	public void setShortInfo(String sMessage)
-	{
+	public void setShortInfo(String sMessage) {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	}
 
 	@Override
-	public void setFileNameCurrentDataSet(String sFileName)
-	{
+	public void setFileNameCurrentDataSet(String sFileName) {
 		this.sFileNameCurrentDataSet = sFileName;
 	}
 
 	@Override
-	public String getFileNameCurrentDataSet()
-	{
+	public String getFileNameCurrentDataSet() {
 		return sFileNameCurrentDataSet;
 	}
 }

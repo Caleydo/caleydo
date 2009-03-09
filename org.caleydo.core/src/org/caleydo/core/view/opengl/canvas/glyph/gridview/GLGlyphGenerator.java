@@ -1,9 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.Vec4f;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -14,13 +17,12 @@ import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectDimensions;
 import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectGroup;
 
 /**
- * This class is the generator for all glyphs. Here the object file is linked
- * with all the data parameters and drawn.
+ * This class is the generator for all glyphs. Here the object file is linked with all the data parameters and
+ * drawn.
  * 
  * @author Steve
  */
-public class GLGlyphGenerator
-{
+public class GLGlyphGenerator {
 	private GlyphManager gman;
 
 	private static HashMap<Integer, GlyphObjectDefinition> objectModels =
@@ -29,56 +31,44 @@ public class GLGlyphGenerator
 	private DETAILLEVEL iDetailLevel;
 
 	private boolean bIsInit;
-	private boolean bIsLocal;
 
-	static public enum DETAILLEVEL
-	{
+	static public enum DETAILLEVEL {
 		LEVEL_MIN, LEVEL_MID, LEVEL_MAX,
 	}
 
-	public GLGlyphGenerator(boolean isLocal)
-	{
+	public GLGlyphGenerator(boolean isLocal) {
 		gman = GeneralManager.get().getGlyphManager();
 
 		bIsInit = false;
-		bIsLocal = isLocal;
 	}
 
-	public static void setDetailLevelModel(GlyphObjectDefinition glyphDefinition)
-	{
+	public static void setDetailLevelModel(GlyphObjectDefinition glyphDefinition) {
 		int level = glyphDefinition.getDetailLevel();
-		if (objectModels.containsKey(level))
-		{
+		if (objectModels.containsKey(level)) {
 			objectModels.remove(level);
 			// TODO force refresh
 		}
 		objectModels.put(level, glyphDefinition);
 	}
 
-	public static GlyphObjectDefinition getDetailLevelModel(int level)
-	{
+	public static GlyphObjectDefinition getDetailLevelModel(int level) {
 		if (objectModels.containsKey(level))
 			return objectModels.get(level);
 
 		return null;
 	}
 
-	public void setDetailLevel(DETAILLEVEL detail)
-	{
+	public void setDetailLevel(DETAILLEVEL detail) {
 		iDetailLevel = detail;
 	}
 
-	public DETAILLEVEL getDetailLevel()
-	{
+	public DETAILLEVEL getDetailLevel() {
 		return iDetailLevel;
 	}
 
-	public int generateGlyph(GL gl, GlyphEntry glyph, boolean selected)
-	{
-		if (!bIsInit)
-		{
-			for (GlyphObjectDefinition modelDefinition : objectModels.values())
-			{
+	public int generateGlyph(GL gl, GlyphEntry glyph, boolean selected) {
+		if (!bIsInit) {
+			for (GlyphObjectDefinition modelDefinition : objectModels.values()) {
 				ArrayList<String> partnames = modelDefinition.getObjectPartNames();
 				for (String partname : partnames)
 					modelDefinition.getObjectPart(partname).init(gl);
@@ -89,8 +79,7 @@ public class GLGlyphGenerator
 		return generateSingleObject(gl, glyph, selected);
 	}
 
-	private int generateSingleObject(GL gl, GlyphEntry glyph, boolean selected)
-	{
+	private int generateSingleObject(GL gl, GlyphEntry glyph, boolean selected) {
 		if (iDetailLevel == DETAILLEVEL.LEVEL_MIN)
 			return generateSingleObjectDetailLevel(gl, glyph, selected, 0);
 
@@ -104,9 +93,7 @@ public class GLGlyphGenerator
 		return generateSingleObjectDetailLevel(gl, glyph, selected, 1);
 	}
 
-	private int generateSingleObjectDetailLevel(GL gl, GlyphEntry glyph, boolean selected,
-		int level)
-	{
+	private int generateSingleObjectDetailLevel(GL gl, GlyphEntry glyph, boolean selected, int level) {
 		if (level < 0)
 			return -1;
 		if (objectModels.size() <= level)
@@ -125,14 +112,11 @@ public class GLGlyphGenerator
 		// rotate object (because the coordinate systems are not the same)
 		gl.glRotatef(+90f, 1, 0, 0);
 
-		HashMap<String, ObjectDimensions> objectDimensions =
-			new HashMap<String, ObjectDimensions>();
+		HashMap<String, ObjectDimensions> objectDimensions = new HashMap<String, ObjectDimensions>();
 
 		ArrayList<String> partnames = modelDefinition.getObjectPartNames();
-		for (String partname : partnames)
-		{
-			GlyphObjectDefinitionPart partdef =
-				modelDefinition.getObjectPartDefinition(partname);
+		for (String partname : partnames) {
+			GlyphObjectDefinitionPart partdef = modelDefinition.getObjectPartDefinition(partname);
 			if (partdef == null)
 				continue;
 
@@ -145,8 +129,7 @@ public class GLGlyphGenerator
 			// color
 			{
 				int index = partdef.getParameterIndexInternal(EGlyphSettingIDs.COLOR, null);
-				if (index >= 0)
-				{
+				if (index >= 0) {
 					float nv = 0.0f;
 					// if the box isn't selected color will be darker
 					if (!selected)
@@ -155,12 +138,9 @@ public class GLGlyphGenerator
 					int tc = glyph.getParameter(index);
 					Vec4f color = partdef.getColor(tc);
 
-					if (color != null && tc >= 0)
-					{
-						if (color.get(0) != -1.0f && color.get(1) != -1.0f
-							&& color.get(2) != -1.0f)
-							gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2)
-								- nv, color.get(3));
+					if (color != null && tc >= 0) {
+						if (color.get(0) != -1.0f && color.get(1) != -1.0f && color.get(2) != -1.0f)
+							gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color.get(3));
 						// else, do nothing (keep old color)
 
 					}
@@ -168,8 +148,7 @@ public class GLGlyphGenerator
 						gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f); // Annoying gray
 
 				}
-				else
-				{
+				else {
 					// base color
 					if (selected)
 						gl.glColor4f(0.1f, 0.6f, 0.1f, 1.0f);
@@ -183,14 +162,10 @@ public class GLGlyphGenerator
 			// TODO scale x
 			// TODO scale z
 			// scale part
-			if (partdef.canScale(DIRECTION.Z))
-			{
-				int index =
-					partdef.getParameterIndexInternal(EGlyphSettingIDs.SCALE, DIRECTION.Z);
-				if (index >= 0)
-				{
-					GlyphAttributeType glyphAttributeType =
-						gman.getGlyphAttributeTypeWithInternalColumnNumber(index);
+			if (partdef.canScale(DIRECTION.Z)) {
+				int index = partdef.getParameterIndexInternal(EGlyphSettingIDs.SCALE, DIRECTION.Z);
+				if (index >= 0) {
+					GlyphAttributeType glyphAttributeType = gman.getGlyphAttributeTypeWithInternalColumnNumber(index);
 
 					float scale = glyph.getParameter(index);
 
@@ -213,12 +188,10 @@ public class GLGlyphGenerator
 			{
 				String place = null;
 				place = partdef.getAnchorPlace(ANCHOR.BOTTOM);
-				if (place != null)
-				{
+				if (place != null) {
 					ObjectDimensions pdim = objectDimensions.get(place);
 
-					if (pdim != null)
-					{
+					if (pdim != null) {
 						float pyh = pdim.getHighestY(true);
 						// float pyl = pdim.getLowestY(true);
 						// float cyh = dim.getHighestY(false);
@@ -280,8 +253,7 @@ public class GLGlyphGenerator
 		return dltemp;
 	}
 
-	private void initEnviroment(GL gl)
-	{
+	private void initEnviroment(GL gl) {
 		// gl.glEnable(GL.GL_BLEND);
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);
 
@@ -306,7 +278,7 @@ public class GLGlyphGenerator
 		gl.glEnable(GL.GL_LIGHT0);
 		gl.glEnable(GL.GL_LIGHT1);
 		gl.glEnable(GL.GL_LIGHT2);
-		
+
 		float lc = 0.1f;
 
 		float[] diffuse_light0 = { 5 * lc, 5 * lc, 5 * lc, 1.0f };

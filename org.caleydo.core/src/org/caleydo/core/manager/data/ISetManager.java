@@ -10,8 +10,7 @@ import org.caleydo.core.manager.IManager;
  * @author Michael Kalkusch
  */
 public interface ISetManager
-	extends IManager<ISet>
-{
+	extends IManager<ISet> {
 
 	public ISet createSet(final ESetType setType);
 

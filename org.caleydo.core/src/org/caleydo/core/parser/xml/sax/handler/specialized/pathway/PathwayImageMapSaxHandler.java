@@ -2,6 +2,7 @@ package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.xml.sax.Attributes;
@@ -14,15 +15,13 @@ import org.xml.sax.SAXException;
  * @author Michael Kalkusch
  */
 public class PathwayImageMapSaxHandler
-	extends AXmlParserHandler
-{
+	extends AXmlParserHandler {
 
 	protected Attributes attributes;
 
 	protected String sAttributeName = "";
 
-	public PathwayImageMapSaxHandler()
-	{
+	public PathwayImageMapSaxHandler() {
 		super();
 
 		setXmlActivationTag("imagemap");
@@ -30,19 +29,16 @@ public class PathwayImageMapSaxHandler
 
 	@Override
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
-			Attributes attributes) throws SAXException
-	{
+		Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
 
-		if ("".equals(sElementName))
-		{
+		if ("".equals(sElementName)) {
 			sElementName = sQualifiedName; // namespaceAware = false
 		}
 
-		if (attributes != null)
-		{
+		if (attributes != null) {
 			if (sElementName.equals("imagemap"))
 				handleImageMapTag();
 			else if (sElementName.equals("area"))
@@ -51,21 +47,16 @@ public class PathwayImageMapSaxHandler
 	}
 
 	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-			throws SAXException
-	{
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
 
 		// emit("</"+sName+">");
 
-		String eName = ("".equals(sSimpleName)) ? sQualifiedName : sSimpleName;
+		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 
-		if (null != eName)
-		{
-			if (eName.equals(sOpeningTag))
-			{
+		if (null != eName) {
+			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from
-				 * IXmlParserManager
+				 * section (xml block) finished, call callback function from IXmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
@@ -73,18 +64,15 @@ public class PathwayImageMapSaxHandler
 	}
 
 	/**
-	 * Reacts on the elements of the imagemap tag. An example imagemap tag looks
-	 * like this:
+	 * Reacts on the elements of the imagemap tag. An example imagemap tag looks like this:
 	 */
-	protected void handleImageMapTag()
-	{
+	protected void handleImageMapTag() {
 
 		String sImageLink = "";
 
 		sAttributeName = attributes.getLocalName(0);
 
-		if (sAttributeName.equals(""))
-		{
+		if (sAttributeName.equals("")) {
 			sAttributeName = attributes.getQName(0);
 		}
 
@@ -99,24 +87,20 @@ public class PathwayImageMapSaxHandler
 	}
 
 	/**
-	 * Reacts on the elements of the area tag. An example area tag looks like
-	 * this: <area shape="rect" coords="439,63,558,98"
-	 * link="data/XML/pathways/map01196.html" />
+	 * Reacts on the elements of the area tag. An example area tag looks like this: <area shape="rect"
+	 * coords="439,63,558,98" link="data/XML/pathways/map01196.html" />
 	 */
-	protected void handleAreaTag()
-	{
+	protected void handleAreaTag() {
 
 		String sCoords = "";
 		String sImageLink = "";
 		String sShape = "";
 		Rectangle rectArea = new Rectangle();
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
@@ -140,8 +124,8 @@ public class PathwayImageMapSaxHandler
 		rectArea.y = Integer.parseInt(token.nextToken());
 		rectArea.add(Integer.parseInt(token.nextToken()), Integer.parseInt(token.nextToken()));
 
-		((PathwayManager) (generalManager.getPathwayManager())).getCurrentPathwayImageMap()
-				.addArea(rectArea, sImageLink);
+		((PathwayManager) generalManager.getPathwayManager()).getCurrentPathwayImageMap().addArea(rectArea,
+			sImageLink);
 	}
 
 	/**
@@ -149,8 +133,7 @@ public class PathwayImageMapSaxHandler
 	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 */
 	@Override
-	public void destroyHandler()
-	{
+	public void destroyHandler() {
 
 		super.destroyHandler();
 	}

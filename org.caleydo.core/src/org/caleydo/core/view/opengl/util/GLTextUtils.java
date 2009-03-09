@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util;
 
 import javax.media.opengl.GL;
+
 import com.sun.opengl.util.GLUT;
 
 /**
@@ -9,18 +10,15 @@ import com.sun.opengl.util.GLUT;
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class GLTextUtils
-{
+public class GLTextUtils {
 
-	public static void renderText(final GL gl, final String showText, final int iSize,
-			final float fx, final float fy, final float fz)
-	{
+	public static void renderText(final GL gl, final String showText, final int iSize, final float fx,
+		final float fy, final float fz) {
 
 		GLUT glut = new GLUT();
 		gl.glRasterPos3f(fx, fy, fz);
 
-		switch (iSize)
-		{
+		switch (iSize) {
 			case 10:
 				glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, showText);
 				break;
@@ -35,9 +33,8 @@ public class GLTextUtils
 		}
 	}
 
-	public static void renderStaticText(final GL gl, final String showText,
-			final int iWindowPosX, final int iWindowPosY)
-	{
+	public static void renderStaticText(final GL gl, final String showText, final int iWindowPosX,
+		final int iWindowPosY) {
 
 		GLUT glut = new GLUT();
 
@@ -54,10 +51,8 @@ public class GLTextUtils
 
 	}
 
-	public static void renderTextInRegion(final GL gl, String showText, final int iSize,
-			final float fx, final float fy, final float fz, final float fWidth,
-			final float fHeight)
-	{
+	public static void renderTextInRegion(final GL gl, String showText, final int iSize, final float fx,
+		final float fy, final float fz, final float fWidth, final float fHeight) {
 
 		int iMaxLineChars = (int) (fWidth / 0.006f);
 
@@ -69,15 +64,12 @@ public class GLTextUtils
 		int iTotalLines = showText.length() / iMaxLineChars;
 		String sTmpText;
 
-		for (int iLineIndex = 0; iLineIndex <= iTotalLines; iLineIndex++)
-		{
-			if (showText.length() <= iMaxLineChars)
-			{
+		for (int iLineIndex = 0; iLineIndex <= iTotalLines; iLineIndex++) {
+			if (showText.length() <= iMaxLineChars) {
 				renderText(gl, showText, iSize, fx, fy - iLineIndex * fLineHeight, fz);
 				showText = "";
 			}
-			else
-			{
+			else {
 				sTmpText = showText.subSequence(0, iMaxLineChars).toString();
 
 				if (sTmpText.contains(" "))

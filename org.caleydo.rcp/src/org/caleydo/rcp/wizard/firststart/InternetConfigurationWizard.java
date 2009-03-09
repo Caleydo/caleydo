@@ -1,12 +1,9 @@
 package org.caleydo.rcp.wizard.firststart;
 
-import org.caleydo.rcp.Application;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -15,50 +12,43 @@ import org.eclipse.swt.widgets.Shell;
  * @author Marc Streit
  */
 public class InternetConfigurationWizard
-	extends Wizard
-{
+	extends Wizard {
 
 	/**
 	 * Constructor.
 	 */
-	public InternetConfigurationWizard()
-	{
+	public InternetConfigurationWizard() {
 		super();
 	}
 
 	@Override
-	public void addPages()
-	{
+	public void addPages() {
 		addPage(new ProxyConfigurationPage());
 
 		setWindowTitle("Internet Configuration Wizard");
 	}
 
 	@Override
-	public boolean performFinish()
-	{
+	public boolean performFinish() {
 		return true;
 	}
 
 	@Override
-	public boolean performCancel()
-	{
-//		Application.bDoExit = true;
-		
+	public boolean performCancel() {
+		// Application.bDoExit = true;
+
 		return true;
 	}
 
 	@Override
-	public IWizardPage getNextPage(IWizardPage page)
-	{
+	public IWizardPage getNextPage(IWizardPage page) {
 		return null;
 	}
-	
+
 	/**
 	 * For testing purposes
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Display display = new Display();
 
 		// Create the parent shell for the dialog, but don't show it

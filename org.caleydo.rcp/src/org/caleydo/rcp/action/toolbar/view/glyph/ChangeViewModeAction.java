@@ -16,8 +16,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class ChangeViewModeAction
 	extends AToolBarAction
-	implements IMenuCreator
-{
+	implements IMenuCreator {
 
 	private Menu menu;
 	private int iViewID;
@@ -29,8 +28,7 @@ public class ChangeViewModeAction
 	 * 
 	 * @param cvm2a
 	 */
-	public ChangeViewModeAction(int iViewID, ChangeViewModeSecondaryAction cvm2a)
-	{
+	public ChangeViewModeAction(int iViewID, ChangeViewModeSecondaryAction cvm2a) {
 		super(iViewID);
 		this.cvm2a = cvm2a;
 		setViewID(iViewID);
@@ -43,66 +41,55 @@ public class ChangeViewModeAction
 		if (glyphview != null)
 			type = glyphview.getPositionModel();
 
-		if (type == EIconIDs.DISPLAY_CIRCLE)
-		{
+		if (type == EIconIDs.DISPLAY_CIRCLE) {
 			usedText = ChangeViewModeToCircleAction.TEXT;
 			usedImage = ChangeViewModeToCircleAction.ICON;
 		}
-		if (type == EIconIDs.DISPLAY_PLUS)
-		{
+		if (type == EIconIDs.DISPLAY_PLUS) {
 			usedText = ChangeViewModeToPlusModelAction.TEXT;
 			usedImage = ChangeViewModeToPlusModelAction.ICON;
-			cvm2a.setAction(new ChangeViewModeToPlusModelAction(iViewID,this));
+			cvm2a.setAction(new ChangeViewModeToPlusModelAction(iViewID, this));
 		}
-		if (type == EIconIDs.DISPLAY_RANDOM)
-		{
+		if (type == EIconIDs.DISPLAY_RANDOM) {
 			usedText = ChangeViewModeToRandomAction.TEXT;
 			usedImage = ChangeViewModeToRandomAction.ICON;
 		}
-		if (type == EIconIDs.DISPLAY_SCATTERPLOT)
-		{
+		if (type == EIconIDs.DISPLAY_SCATTERPLOT) {
 			usedText = ChangeViewModeToScatterplotAction.TEXT;
 			usedImage = ChangeViewModeToScatterplotAction.ICON;
-			cvm2a.setAction(new ChangeViewModeToScatterplotAction(iViewID,this));
+			cvm2a.setAction(new ChangeViewModeToScatterplotAction(iViewID, this));
 		}
 
 		setText(usedText);
 		setToolTipText(usedText);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), usedImage)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), usedImage)));
 
 		setMenuCreator(this);
 
 	}
 
-	public ChangeViewModeSecondaryAction getSecondaryAction()
-	{
+	public ChangeViewModeSecondaryAction getSecondaryAction() {
 		return cvm2a;
 	}
 
-	private void setViewID(int id)
-	{
+	private void setViewID(int id) {
 		this.iViewID = id;
 		glyphview = null;
-		for (AGLEventListener l : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
+		for (AGLEventListener l : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			if (l.getID() == iViewID && l instanceof GLGlyph)
 				glyphview = (GLGlyph) l;
 		}
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 	}
 
 	@Override
-	public void dispose()
-	{
-		if (menu != null)
-		{
+	public void dispose() {
+		if (menu != null) {
 			menu.dispose();
 			menu = null;
 		}
@@ -111,8 +98,7 @@ public class ChangeViewModeAction
 	/**
 	 * This is called in a tool bar
 	 */
-	public Menu getMenu(Control parent)
-	{
+	public Menu getMenu(Control parent) {
 		if (menu != null)
 			menu.dispose();
 
@@ -130,13 +116,11 @@ public class ChangeViewModeAction
 	/**
 	 * This is called in a menu bar
 	 */
-	public Menu getMenu(Menu parent)
-	{
+	public Menu getMenu(Menu parent) {
 		return null;
 	}
 
-	protected void addActionToMenu(Menu parent, IAction action)
-	{
+	protected void addActionToMenu(Menu parent, IAction action) {
 		ActionContributionItem item = new ActionContributionItem(action);
 		item.fill(parent, -1);
 	}

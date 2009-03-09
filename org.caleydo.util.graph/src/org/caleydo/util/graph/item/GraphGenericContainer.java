@@ -5,23 +5,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import org.caleydo.util.graph.GraphRuntimeException;
 import org.caleydo.util.graph.IGraphComponent;
 
 /**
- * General generic container for IGraph and IGraphItem objects. GraphEnum has to
- * be an Enumeration of type EGraphItemProperty or EGraphItemHierarchy. Note:
- * <GraphComponent extends IGraphComponent,..> ensures, that generic
- * "GraphComponent" extends IGraphComponent; this is required for the method
- * disposeItem().
+ * General generic container for IGraph and IGraphItem objects. GraphEnum has to be an Enumeration of type
+ * EGraphItemProperty or EGraphItemHierarchy. Note: <GraphComponent extends IGraphComponent,..> ensures, that
+ * generic "GraphComponent" extends IGraphComponent; this is required for the method disposeItem().
  * 
  * @see org.caleydo.util.graph.EGraphItemProperty
  * @see org.caleydo.util.graph.EGraphItemHierarchy
  * @author Michael Kalkusch
  */
 public class GraphGenericContainer<GraphComponent extends IGraphComponent, GraphEnum>
-	implements Serializable
-{
+	implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -38,13 +36,12 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	/**
 	 * Constructor.
 	 * 
-	 * @param colGraphEnum List of all Enumeration that will be used; Skip type
-	 *            NONE or GRAPH_NONE
-	 * @param iInitialSizeGraphComponents specify initial size of
-	 *            ArrayList<GraphComponent>
+	 * @param colGraphEnum
+	 *          List of all Enumeration that will be used; Skip type NONE or GRAPH_NONE
+	 * @param iInitialSizeGraphComponents
+	 *          specify initial size of ArrayList<GraphComponent>
 	 */
-	public GraphGenericContainer(List<GraphEnum> colGraphEnum, int iInitialSizeGraphComponents)
-	{
+	public GraphGenericContainer(List<GraphEnum> colGraphEnum, int iInitialSizeGraphComponents) {
 
 		assert colGraphEnum != null : "Can not create a GraphGenericContainer with no GraphEnum elements and empty List";
 
@@ -53,17 +50,14 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 		assert iCountGraphEnumItems > 0 : "can not create a GraphGenericContainer with no GraphEnum elements";
 
 		/* create new HashMap */
-		type2ArrayList = new HashMap<GraphEnum, ArrayList<GraphComponent>>(
-				iCountGraphEnumItems);
+		type2ArrayList = new HashMap<GraphEnum, ArrayList<GraphComponent>>(iCountGraphEnumItems);
 
 		/* iterator for all GraphEnum items ... */
 		Iterator<GraphEnum> iter = colGraphEnum.iterator();
 
 		/* fill hierarchy HashMap ... */
-		while (iter.hasNext())
-		{
-			type2ArrayList.put(iter.next(), new ArrayList<GraphComponent>(
-					iInitialSizeHierarchyArray));
+		while (iter.hasNext()) {
+			type2ArrayList.put(iter.next(), new ArrayList<GraphComponent>(iInitialSizeHierarchyArray));
 		}
 
 		// keyList = new ArrayList <GraphEnum> (iCountGraphEnumItems);
@@ -71,27 +65,22 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 
 	/**
 	 * Same as
-	 * {@link org.caleydo.util.graph.item.GraphGenericContainer#addGraphComponent(IGraphComponent, Object)}
-	 * but it will be checked if the element is already added. In this case an
-	 * assertion will be triggered.
+	 * {@link org.caleydo.util.graph.item.GraphGenericContainer#addGraphComponent(IGraphComponent, Object)} but
+	 * it will be checked if the element is already added. In this case an assertion will be triggered.
 	 */
-	public void addGraphComponentChecked(GraphComponent item, final GraphEnum key)
-	{
+	public void addGraphComponentChecked(GraphComponent item, final GraphEnum key) {
 
 		/* add to hierarchy... */
 		ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
 
-		if (arrayBuffer == null)
-		{
+		if (arrayBuffer == null) {
 			throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString());
 		}
 
-		if (!arrayBuffer.contains(item))
-		{
+		if (!arrayBuffer.contains(item)) {
 			arrayBuffer.add(item);
 		}
-		else
-		{
+		else {
 			assert false : "Try to add existing element!";
 			throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString());
 		}
@@ -103,19 +92,16 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * @see org.caleydo.util.graph.item.GraphItem#addItem(org.caleydo.util.graph.IGraphItem,
 	 *      org.caleydo.util.graph.EGraphItemProperty)
 	 */
-	public void addGraphComponent(GraphComponent item, final GraphEnum key)
-	{
+	public void addGraphComponent(GraphComponent item, final GraphEnum key) {
 
 		/* add to hierarchy... */
 		ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
 
-		if (arrayBuffer == null)
-		{
+		if (arrayBuffer == null) {
 			throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString());
 		}
 
-		if (!arrayBuffer.contains(item))
-		{
+		if (!arrayBuffer.contains(item)) {
 			arrayBuffer.add(item);
 		}
 	}
@@ -126,22 +112,17 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * @see org.caleydo.util.graph.item.GraphItem#containsItem(org.caleydo.util.graph.IGraphItem,
 	 *      org.caleydo.util.graph.EGraphItemProperty)
 	 */
-	public boolean containsGraphComponent(final GraphComponent item, final GraphEnum key)
-	{
+	public boolean containsGraphComponent(final GraphComponent item, final GraphEnum key) {
 
-		try
-		{
+		try {
 			return type2ArrayList.get(key).contains(item);
 		}
-		catch (NullPointerException npe)
-		{
+		catch (NullPointerException npe) {
 			/** Handle case if type2ArrayList.get(key) returns null */
 
-			throw new GraphRuntimeException(
-					" key: "
-							+ key.toString()
-							+ " is not registered. Check type and Constructor GraphGenericContainer(..,..); ERROR= "
-							+ npe.toString());
+			throw new GraphRuntimeException(" key: " + key.toString()
+				+ " is not registered. Check type and Constructor GraphGenericContainer(..,..); ERROR= "
+				+ npe.toString());
 		}
 	}
 
@@ -151,14 +132,11 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * @see org.caleydo.util.graph.item.GraphItem#containsItem(org.caleydo.util.graph.IGraphItem,
 	 *      org.caleydo.util.graph.EGraphItemProperty)
 	 */
-	public boolean containsGraphComponentAtAll(final GraphComponent item)
-	{
+	public boolean containsGraphComponentAtAll(final GraphComponent item) {
 		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values().iterator();
 
-		while (iter.hasNext())
-		{
-			if (iter.next().contains(item))
-			{
+		while (iter.hasNext()) {
+			if (iter.next().contains(item)) {
 				return true;
 			}
 		}
@@ -170,19 +148,15 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * @see org.caleydo.util.graph.item.GraphItem#getAllGraphByType(org.caleydo.util.graph.EGraphItemHierarchy)
 	 * @see org.caleydo.util.graph.item.GraphItem#getAllItemsByProp(org.caleydo.util.graph.EGraphItemProperty)
 	 */
-	public List<GraphComponent> getAllGraphComponent(final GraphEnum key)
-	{
+	public List<GraphComponent> getAllGraphComponent(final GraphEnum key) {
 
-		if (key == null)
-		{
+		if (key == null) {
 			/** special case: return all GraphComponent from all ArrayList's */
 
 			/** Calculate total size .. */
 			int iTotalSize = 0;
-			Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList.values()
-					.iterator();
-			while (bufferArrayListIter.hasNext())
-			{
+			Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList.values().iterator();
+			while (bufferArrayListIter.hasNext()) {
 				iTotalSize += bufferArrayListIter.next().size();
 			}
 
@@ -191,8 +165,7 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 
 			/** fill result array .. */
 			bufferArrayListIter = type2ArrayList.values().iterator();
-			while (bufferArrayListIter.hasNext())
-			{
+			while (bufferArrayListIter.hasNext()) {
 				resultList.addAll(bufferArrayListIter.next());
 			}
 
@@ -202,7 +175,7 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 		/** regular case */
 		List<GraphComponent> buffer = type2ArrayList.get(key);
 
-		return (buffer != null) ? buffer : new ArrayList<GraphComponent>(0);
+		return buffer != null ? buffer : new ArrayList<GraphComponent>(0);
 	}
 
 	/**
@@ -211,23 +184,18 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * @see org.caleydo.util.graph.item.GraphItem#removeItem(org.caleydo.util.graph.IGraphItem,
 	 *      org.caleydo.util.graph.EGraphItemProperty)
 	 */
-	public boolean removeGraphComponent(final GraphComponent item, GraphEnum key)
-	{
+	public boolean removeGraphComponent(final GraphComponent item, GraphEnum key) {
 
-		if (key == null)
-		{
+		if (key == null) {
 			/** special case: remove GraphComponent from all ArrayList's */
 
 			/** test if item will be removed from any ArrayList .. */
 			boolean bRemovedFromAnyList = false;
 
 			/** fill result array .. */
-			Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList.values()
-					.iterator();
-			while (bufferArrayListIter.hasNext())
-			{
-				if (bufferArrayListIter.next().remove(item))
-				{
+			Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList.values().iterator();
+			while (bufferArrayListIter.hasNext()) {
+				if (bufferArrayListIter.next().remove(item)) {
 					bRemovedFromAnyList = true;
 				}
 			}
@@ -238,23 +206,19 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 		/** regular case */
 		List<GraphComponent> buffer = type2ArrayList.get(key);
 
-		return (buffer != null) ? buffer.remove(item) : false;
+		return buffer != null ? buffer.remove(item) : false;
 	}
 
 	/**
 	 * @see org.caleydo.util.graph.item.GraphItem#disposeItem()
 	 */
-	public void disposeItem()
-	{
+	public void disposeItem() {
 		/** fill result array .. */
-		Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList.values()
-				.iterator();
-		while (bufferArrayListIter.hasNext())
-		{
+		Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList.values().iterator();
+		while (bufferArrayListIter.hasNext()) {
 			Iterator<GraphComponent> innerIter = bufferArrayListIter.next().iterator();
 
-			while (innerIter.hasNext())
-			{
+			while (innerIter.hasNext()) {
 				((IGraphComponent) innerIter).disposeItem();
 			}
 		}
@@ -265,14 +229,11 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * 
 	 * @return TRUE if at least one item is stored
 	 */
-	public boolean isEmpty()
-	{
+	public boolean isEmpty() {
 		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values().iterator();
 
-		while (iter.hasNext())
-		{
-			if (!iter.next().isEmpty())
-			{
+		while (iter.hasNext()) {
+			if (!iter.next().isEmpty()) {
 				return false;
 			}
 		}

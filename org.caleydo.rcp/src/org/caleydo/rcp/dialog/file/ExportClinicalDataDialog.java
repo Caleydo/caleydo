@@ -1,7 +1,6 @@
 package org.caleydo.rcp.dialog.file;
 
 import org.caleydo.rcp.action.file.ExportClinicalDataAction;
-import org.caleydo.rcp.action.file.ExportDataAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -15,8 +14,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Marc Streit
  */
 public class ExportClinicalDataDialog
-	extends Dialog
-{
+	extends Dialog {
 
 	private ExportClinicalDataAction exportDataAction;
 	private int iViewID;
@@ -24,8 +22,7 @@ public class ExportClinicalDataDialog
 	/**
 	 * Constructor.
 	 */
-	public ExportClinicalDataDialog(Shell parentShell, int iViewID)
-	{
+	public ExportClinicalDataDialog(Shell parentShell, int iViewID) {
 		super(parentShell);
 		this.iViewID = iViewID;
 
@@ -39,23 +36,20 @@ public class ExportClinicalDataDialog
 	}
 
 	@Override
-	protected void configureShell(Shell newShell)
-	{
+	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Export Data");
 	}
 
 	@Override
-	protected Control createDialogArea(Composite parent)
-	{
+	protected Control createDialogArea(Composite parent) {
 		exportDataAction = new ExportClinicalDataAction(parent, iViewID);
 		exportDataAction.run();
 		return parent;
 	}
 
 	@Override
-	protected void okPressed()
-	{
+	protected void okPressed() {
 		exportDataAction.execute();
 
 		super.okPressed();

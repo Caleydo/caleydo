@@ -7,27 +7,23 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchWindowAdvisor
-	extends WorkbenchWindowAdvisor
-{
+	extends WorkbenchWindowAdvisor {
 
 	/**
 	 * Constructor.
 	 */
-	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer)
-	{
+	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
 	}
 
 	@Override
-	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer)
-	{
+	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
 
 		return new ApplicationActionBarAdvisor(configurer);
 	}
 
 	@Override
-	public void preWindowOpen()
-	{
+	public void preWindowOpen() {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		// configurer.setInitialSize(new Point(400, 300));
 		configurer.setShowCoolBar(false);
@@ -37,19 +33,17 @@ public class ApplicationWorkbenchWindowAdvisor
 	}
 
 	@Override
-	public void postWindowCreate()
-	{
+	public void postWindowCreate() {
 		super.postWindowCreate();
 
 		getWindowConfigurer().getWindow().getShell().setMaximized(true);
 
 		// Set status line in caleydo core
 		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
-				getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
-				getWindowConfigurer().getWindow().getShell().getDisplay());
+			getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
+			getWindowConfigurer().getWindow().getShell().getDisplay());
 
-		if (Application.bIsWebstart && !Application.bDoExit)
-		{
+		if (Application.bIsWebstart && !Application.bDoExit) {
 			Application.startCaleydoCore();
 		}
 	}

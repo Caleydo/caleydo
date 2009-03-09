@@ -3,6 +3,7 @@ package org.caleydo.core.data.selection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -11,7 +12,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * Implementation of IVirtualArray
  * 
  * @author Alexander Lex
- * 
  */
 
 public class VirtualArray
@@ -20,7 +20,6 @@ public class VirtualArray
 
 {
 	ArrayList<Integer> iAlVirtualArray;
-	
 
 	int iLength;
 	/**
@@ -31,10 +30,10 @@ public class VirtualArray
 	/**
 	 * Constructor. Pass the length of the managed collection
 	 * 
-	 * @param iLength the length of the managed collection
+	 * @param iLength
+	 *          the length of the managed collection
 	 */
-	public VirtualArray(int iLength)
-	{
+	public VirtualArray(int iLength) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 
 		this.iLength = iLength;
@@ -42,15 +41,13 @@ public class VirtualArray
 	}
 
 	/**
-	 * Constructor. Pass the length of the managed collection and a predefined
-	 * array list of indices on the collection. This will serve as the starting
-	 * point for the virtual array.
+	 * Constructor. Pass the length of the managed collection and a predefined array list of indices on the
+	 * collection. This will serve as the starting point for the virtual array.
 	 * 
 	 * @param iLength
 	 * @param iLVirtualArray
 	 */
-	public VirtualArray(int iLength, List<Integer> iLVirtualArray)
-	{
+	public VirtualArray(int iLength, List<Integer> iLVirtualArray) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.iLength = iLength;
 		this.iAlVirtualArray = new ArrayList<Integer>();
@@ -58,32 +55,27 @@ public class VirtualArray
 	}
 
 	@Override
-	public VAIterator iterator()
-	{
+	public VAIterator iterator() {
 		return new VAIterator(this);
 	}
 
 	@Override
-	public Integer get(int iIndex)
-	{
+	public Integer get(int iIndex) {
 		return iAlVirtualArray.get(iIndex);
 	}
 
 	@Override
-	public void append(Integer iNewElement)
-	{
+	public void append(Integer iNewElement) {
 		if (iNewElement < iLength)
 			iAlVirtualArray.add(iNewElement);
 		else
-			throw new IllegalArgumentException(
-					"Tried to add a element to a virtual array that is not within the "
-							+ "allowed range (which is determined by the length of the collection "
-							+ "on which the virtual array is applied");
+			throw new IllegalArgumentException("Tried to add a element to a virtual array that is not within the "
+				+ "allowed range (which is determined by the length of the collection "
+				+ "on which the virtual array is applied");
 	}
 
 	@Override
-	public boolean appendUnique(Integer iNewElement)
-	{
+	public boolean appendUnique(Integer iNewElement) {
 		if (indexOf(iNewElement) != -1)
 			return false;
 
@@ -93,45 +85,38 @@ public class VirtualArray
 	}
 
 	@Override
-	public void add(int iIndex, Integer iNewElement)
-	{
+	public void add(int iIndex, Integer iNewElement) {
 		if (iNewElement < iLength)
 			iAlVirtualArray.add(iIndex, iNewElement);
 		else
-			throw new IllegalArgumentException(
-					"Tried to add a element to a virtual array that is not within the "
-							+ "allowed range (which is determined by the length of the collection "
-							+ "on which the virtual array is applied");
+			throw new IllegalArgumentException("Tried to add a element to a virtual array that is not within the "
+				+ "allowed range (which is determined by the length of the collection "
+				+ "on which the virtual array is applied");
 	}
 
 	@Override
-	public void set(int iIndex, Integer iNewElement)
-	{
+	public void set(int iIndex, Integer iNewElement) {
 		if (iNewElement < iLength)
 			iAlVirtualArray.set(iIndex, iNewElement);
 		else
-			throw new IllegalArgumentException(
-					"Tried to add a element to a virtual array that is not within the "
-							+ "allowed range (which is determined by the length of the collection "
-							+ "on which the virtual array is applied");
+			throw new IllegalArgumentException("Tried to add a element to a virtual array that is not within the "
+				+ "allowed range (which is determined by the length of the collection "
+				+ "on which the virtual array is applied");
 	}
 
 	@Override
-	public void copy(int iIndex)
-	{
+	public void copy(int iIndex) {
 		iAlVirtualArray.add(iIndex + 1, iAlVirtualArray.get(iIndex));
 	}
 
 	@Override
-	public void move(int iSrcIndex, int iTargetIndex)
-	{
+	public void move(int iSrcIndex, int iTargetIndex) {
 		Integer iElement = iAlVirtualArray.remove(iSrcIndex);
 		iAlVirtualArray.add(iTargetIndex, iElement);
 	}
 
 	@Override
-	public void moveLeft(int iIndex)
-	{
+	public void moveLeft(int iIndex) {
 		if (iIndex == 0)
 			return;
 		int iTemp = iAlVirtualArray.get(iIndex - 1);
@@ -140,8 +125,7 @@ public class VirtualArray
 	}
 
 	@Override
-	public void moveRight(int iIndex)
-	{
+	public void moveRight(int iIndex) {
 		if (iIndex == size() - 1)
 			return;
 		int iTemp = iAlVirtualArray.get(iIndex + 1);
@@ -150,77 +134,63 @@ public class VirtualArray
 	}
 
 	@Override
-	public Integer remove(int iIndex)
-	{
+	public Integer remove(int iIndex) {
 		return iAlVirtualArray.remove(iIndex);
 	}
 
 	@Override
-	public void removeByElement(int iElement)
-	{
+	public void removeByElement(int iElement) {
 		Iterator<Integer> iter = iAlVirtualArray.iterator();
-		while (iter.hasNext())
-		{
+		while (iter.hasNext()) {
 			if (iter.next() == iElement)
 				iter.remove();
 		}
 	}
 
 	@Override
-	public Integer size()
-	{
+	public Integer size() {
 		return iAlVirtualArray.size();
 	}
 
 	@Override
-	public void reset()
-	{
+	public void reset() {
 		init();
 	}
 
 	@Override
-	public void clear()
-	{
+	public void clear() {
 		iAlVirtualArray.clear();
 	}
 
 	@Override
-	public int indexOf(int iElement)
-	{
-//		System.out.println("Costly indexof operation on a va of size: " + size());
+	public int indexOf(int iElement) {
+		// System.out.println("Costly indexof operation on a va of size: " + size());
 		return iAlVirtualArray.indexOf(iElement);
 	}
-	
+
 	@Override
-	public ArrayList<Integer> indicesOf(int iElement)
-	{
+	public ArrayList<Integer> indicesOf(int iElement) {
 		ArrayList<Integer> alIndices = new ArrayList<Integer>();
 		int iCount = 0;
-		for(Integer iCompareElement : iAlVirtualArray)
-		{
-			if(iCompareElement == iElement)
-			{
+		for (Integer iCompareElement : iAlVirtualArray) {
+			if (iCompareElement == iElement) {
 				alIndices.add(iCount);
 			}
 			iCount++;
 		}
-				
+
 		return alIndices;
 	}
 
 	@Override
-	public ArrayList<Integer> getIndexList()
-	{
+	public ArrayList<Integer> getIndexList() {
 		return iAlVirtualArray;
 	}
 
 	@Override
-	public void setDelta(IVirtualArrayDelta delta)
-	{
-		for (VADeltaItem item : delta)
-		{
-			switch (item.getType())
-			{
+	public void setDelta(IVirtualArrayDelta delta) {
+		for (VADeltaItem item : delta) {
+			switch (item.getType()) {
 				case ADD:
 					add(item.getIndex(), item.getPrimaryID());
 					break;
@@ -234,7 +204,7 @@ public class VirtualArray
 					int iIndex = item.getIndex();
 					if (iIndex < iLastRemovedIndex)
 						throw new IllegalStateException(
-								"Index of remove operation was smaller than previously used index. This is likely not intentional. Take care to remove indices from back to front.");
+							"Index of remove operation was smaller than previously used index. This is likely not intentional. Take care to remove indices from back to front.");
 					iLastRemovedIndex = iIndex;
 					remove(item.getIndex());
 					break;
@@ -254,19 +224,16 @@ public class VirtualArray
 					moveRight(item.getIndex());
 					break;
 				default:
-					throw new IllegalStateException("Unhandled EVAOperation: "
-							+ item.getType());
+					throw new IllegalStateException("Unhandled EVAOperation: " + item.getType());
 			}
 		}
 		iLastRemovedIndex = -1;
 	}
 
 	@Override
-	public int containsElement(int iElement)
-	{
+	public int containsElement(int iElement) {
 		int iCount = 0;
-		for (Integer iCompareElement : iAlVirtualArray)
-		{
+		for (Integer iCompareElement : iAlVirtualArray) {
 			if (iCompareElement == iElement)
 				iCount++;
 		}
@@ -276,12 +243,10 @@ public class VirtualArray
 	/**
 	 * Initialize Virtual Array
 	 */
-	private void init()
-	{
+	private void init() {
 		iAlVirtualArray = new ArrayList<Integer>(iLength);
 
-		for (int iCount = 0; iCount < iLength; iCount++)
-		{
+		for (int iCount = 0; iCount < iLength; iCount++) {
 			iAlVirtualArray.add(iCount);
 		}
 	}

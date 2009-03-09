@@ -3,6 +3,7 @@ package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -19,16 +20,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow
- * the KGML. The class triggers the calls in the PathwayManager that actually
- * creates the pathway graph and the items + item reps.
+ * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow the KGML. The class triggers
+ * the calls in the PathwayManager that actually creates the pathway graph and the items + item reps.
  * 
  * @author Marc Streit
  */
 public class KgmlSaxHandler
 	extends AXmlParserHandler
-	implements IXmlParserHandler
-{
+	implements IXmlParserHandler {
 	private IPathwayItemManager pathwayItemManager;
 	private IPathwayManager pathwayManager;
 
@@ -57,8 +56,7 @@ public class KgmlSaxHandler
 	/**
 	 * Constructor.
 	 */
-	public KgmlSaxHandler()
-	{
+	public KgmlSaxHandler() {
 		super();
 
 		hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
@@ -75,19 +73,16 @@ public class KgmlSaxHandler
 
 	@Override
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
-			Attributes attributes) throws SAXException
-	{
+		Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
 
-		if ("".equals(sElementName))
-		{
+		if ("".equals(sElementName)) {
 			sElementName = sQualifiedName; // namespaceAware = false
 		}
 
-		if (attributes != null)
-		{
+		if (attributes != null) {
 			if (sElementName.equals("pathway"))
 				handlePathwayTag();
 			else if (sElementName.equals("entry"))
@@ -108,19 +103,14 @@ public class KgmlSaxHandler
 	}
 
 	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-			throws SAXException
-	{
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
 
-		String eName = ("".equals(sSimpleName)) ? sQualifiedName : sSimpleName;
+		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 
-		if (null != eName)
-		{
-			if (eName.equals(sOpeningTag))
-			{
+		if (null != eName) {
+			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from
-				 * IXmlParserManager
+				 * section (xml block) finished, call callback function from IXmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
@@ -128,14 +118,12 @@ public class KgmlSaxHandler
 	}
 
 	/**
-	 * Reacts on the elements of the pathway tag. An example pathway tag looks
-	 * like this: <pathway name="path:map00271" org="map" number="00271"
-	 * title="Methionine metabolism"
+	 * Reacts on the elements of the pathway tag. An example pathway tag looks like this: <pathway
+	 * name="path:map00271" org="map" number="00271" title="Methionine metabolism"
 	 * image="http://www.genome.jp/kegg/pathway/map/map00271.gif"
 	 * link="http://www.genome.jp/dbget-bin/show_pathway?map00271">
 	 */
-	protected void handlePathwayTag()
-	{
+	protected void handlePathwayTag() {
 
 		String sName = "";
 		String sTitle = "";
@@ -143,33 +131,27 @@ public class KgmlSaxHandler
 		String sExternalLink = "";
 		// int iKeggId = 0;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("name"))
-			{
+			if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
 			}
-			else if (sAttributeName.equals("title"))
-			{
+			else if (sAttributeName.equals("title")) {
 				sTitle = attributes.getValue(iAttributeIndex);
 			}
 			// else if (sAttributeName.equals("number"))
 			// {
 			// iKeggId = new Integer(attributes.getValue(iAttributeIndex));
 			// }
-			else if (sAttributeName.equals("image"))
-			{
+			else if (sAttributeName.equals("image")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
 			}
-			else if (sAttributeName.equals("link"))
-			{
+			else if (sAttributeName.equals("link")) {
 				sExternalLink = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -179,53 +161,45 @@ public class KgmlSaxHandler
 
 		// Find out pathway texture width and height
 		// TODO: Find faster solution for extracting width and height
-		String sPathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1,
-				sImageLink.length());
+		String sPathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
 
-		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, sName,
-				sTitle, sPathwayTexturePath, sExternalLink);
+		currentPathway =
+			pathwayManager.createPathway(EPathwayDatabaseType.KEGG, sName, sTitle, sPathwayTexturePath,
+				sExternalLink);
 	}
 
 	/**
-	 * Reacts on the elements of the entry tag. An example entry tag looks like
-	 * this: <entry id="1" name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
+	 * Reacts on the elements of the entry tag. An example entry tag looks like this: <entry id="1"
+	 * name="ec:1.8.4.1" type="enzyme" reaction="rn:R01292"
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
 	 */
-	protected void handleEntryTag()
-	{
+	protected void handleEntryTag() {
 		int iEntryId = 0;
 		String sName = "";
 		String sType = "";
 		String sExternalLink = "";
 		String sReactionId = "";
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("id"))
-			{
+			if (sAttributeName.equals("id")) {
 				iEntryId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 			}
-			else if (sAttributeName.equals("name"))
-			{
+			else if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
 			}
-			else if (sAttributeName.equals("type"))
-			{
+			else if (sAttributeName.equals("type")) {
 				sType = attributes.getValue(iAttributeIndex);
 			}
-			else if (sAttributeName.equals("link"))
-			{
+			else if (sAttributeName.equals("link")) {
 				sExternalLink = attributes.getValue(iAttributeIndex);
 			}
-			else if (sAttributeName.equals("reaction"))
-			{
+			else if (sAttributeName.equals("reaction")) {
 				sReactionId = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -233,25 +207,22 @@ public class KgmlSaxHandler
 		iCurrentEntryId = iEntryId;
 		alCurrentVertex.clear();
 
-		if (sType.equals("gene"))
-		{
+		if (sType.equals("gene")) {
 			StringTokenizer sTokenText = new StringTokenizer(sName, " ");
 			Integer iDavidId = -1;
 			String sTmpVertexName = "";
 
-			while (sTokenText.hasMoreTokens())
-			{
+			while (sTokenText.hasMoreTokens()) {
 				sTmpVertexName = sTokenText.nextToken();
 
 				if (sTmpVertexName.substring(4).equals(""))
 					continue;
 
-				iDavidId = generalManager.getIDMappingManager().getID(
-						EMappingType.ENTREZ_GENE_ID_2_DAVID,
+				iDavidId =
+					generalManager.getIDMappingManager().getID(EMappingType.ENTREZ_GENE_ID_2_DAVID,
 						Integer.valueOf(sTmpVertexName.substring(4)));
 
-				if (iDavidId == null)
-				{
+				if (iDavidId == null) {
 					// TODO: what should we do in this case?
 					// generalManager.getLogger().log(
 					// Level.WARNING,
@@ -261,28 +232,25 @@ public class KgmlSaxHandler
 					continue;
 				}
 
-				currentVertex = pathwayItemManager.createVertexGene(sTmpVertexName, sType,
-						sExternalLink, sReactionId, iDavidId);
+				currentVertex =
+					pathwayItemManager.createVertexGene(sTmpVertexName, sType, sExternalLink, sReactionId, iDavidId);
 
 				alCurrentVertex.add(currentVertex);
 			}
 		}
-		else
-		{
-			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink,
-					sReactionId);
+		else {
+			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink, sReactionId);
 
 			alCurrentVertex.add(currentVertex);
 		}
 	}
 
 	/**
-	 * Reacts on the elements of the graphics tag. An example graphics tag looks
-	 * like this: <graphics name="1.8.4.1" fgcolor="#000000" bgcolor="#FFFFFF"
-	 * type="rectangle" x="142" y="304" width="45" height="17"/>
+	 * Reacts on the elements of the graphics tag. An example graphics tag looks like this: <graphics
+	 * name="1.8.4.1" fgcolor="#000000" bgcolor="#FFFFFF" type="rectangle" x="142" y="304" width="45"
+	 * height="17"/>
 	 */
-	protected void handleGraphicsTag()
-	{
+	protected void handleGraphicsTag() {
 
 		String sName = "";
 		String sShapeType = "";
@@ -291,86 +259,70 @@ public class KgmlSaxHandler
 		short shXPosition = 0;
 		short shYPosition = 0;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("name"))
-			{
+			if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
 			}
-			else if (sAttributeName.equals("height"))
-			{
+			else if (sAttributeName.equals("height")) {
 				shHeight = new Short(attributes.getValue(iAttributeIndex));
 			}
-			else if (sAttributeName.equals("width"))
-			{
+			else if (sAttributeName.equals("width")) {
 				shWidth = new Short(attributes.getValue(iAttributeIndex));
 			}
-			else if (sAttributeName.equals("x"))
-			{
+			else if (sAttributeName.equals("x")) {
 				shXPosition = new Short(attributes.getValue(iAttributeIndex));
 			}
-			else if (sAttributeName.equals("y"))
-			{
+			else if (sAttributeName.equals("y")) {
 				shYPosition = new Short(attributes.getValue(iAttributeIndex));
 			}
-			else if (sAttributeName.equals("type"))
-			{
+			else if (sAttributeName.equals("type")) {
 				sShapeType = attributes.getValue(iAttributeIndex);
 			}
 		}
 
-		if (alCurrentVertex.isEmpty())
-		{
+		if (alCurrentVertex.isEmpty()) {
 			// TODO: investigate!
 			return;
 		}
 
-		IGraphItem vertexRep = pathwayItemManager.createVertexRep(currentPathway,
-				alCurrentVertex, sName, sShapeType, shXPosition, shYPosition, shWidth,
-				shHeight);
+		IGraphItem vertexRep =
+			pathwayItemManager.createVertexRep(currentPathway, alCurrentVertex, sName, sShapeType, shXPosition,
+				shYPosition, shWidth, shHeight);
 
 		hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
-		hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getName(),
-				vertexRep);
-		hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem) currentVertex)
-				.getReactionId(), vertexRep);
+		hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getName(), vertexRep);
+		hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getReactionId(), vertexRep);
 	}
 
 	/**
-	 * Reacts on the elements of the relation tag. An example relation tag looks
-	 * like this: <relation entry1="28" entry2="32" type="ECrel">
+	 * Reacts on the elements of the relation tag. An example relation tag looks like this: <relation
+	 * entry1="28" entry2="32" type="ECrel">
 	 */
-	protected void handleRelationTag()
-	{
+	protected void handleRelationTag() {
 
 		int iSourceVertexId = 0;
 		int iTargetVertexId = 0;
 		String sType = "";
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
 			if (sAttributeName.equals("type"))
 				sType = attributes.getValue(iAttributeIndex);
 			else if (sAttributeName.equals("entry1"))
-				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex))
-						.intValue();
+				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 			else if (sAttributeName.equals("entry2"))
-				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex))
-						.intValue();
+				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 
 			// System.out.println("Attribute name: " +sAttributeName);
 			// System.out.println("Attribute value: "
@@ -381,15 +333,13 @@ public class KgmlSaxHandler
 		IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
 
 		// Create edge (data)
-		IGraphItem relationEdge = pathwayItemManager.createRelationEdge(
-				((PathwayVertexGraphItemRep) graphItemIn)
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
-				((PathwayVertexGraphItemRep) graphItemOut)
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
+		IGraphItem relationEdge =
+			pathwayItemManager.createRelationEdge(((PathwayVertexGraphItemRep) graphItemIn)
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), ((PathwayVertexGraphItemRep) graphItemOut)
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
 
 		// Create edge representation
-		pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge, graphItemIn,
-				graphItemOut);
+		pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge, graphItemIn, graphItemOut);
 
 	}
 
@@ -439,86 +389,74 @@ public class KgmlSaxHandler
 	// }
 	//    
 	/**
-	 * Reacts on the elements of the reaction tag. An example reaction tag looks
-	 * like this: <reaction name="rn:R01001" type="irreversible">
+	 * Reacts on the elements of the reaction tag. An example reaction tag looks like this: <reaction
+	 * name="rn:R01001" type="irreversible">
 	 */
-	protected void handleReactionTag()
-	{
+	protected void handleReactionTag() {
 
 		String sReactionName = "";
 		String sReactionType = "";
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("type"))
-			{
+			if (sAttributeName.equals("type")) {
 				sReactionType = attributes.getValue(iAttributeIndex);
 			}
-			else if (sAttributeName.equals("name"))
-			{
+			else if (sAttributeName.equals("name")) {
 				sReactionName = attributes.getValue(iAttributeIndex);
 			}
 		}
 
-		currentReactionSubstrateEdgeRep = pathwayItemManager.createReactionEdge(
-				currentPathway, sReactionName, sReactionType);
+		currentReactionSubstrateEdgeRep =
+			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
 
-		currentReactionProductEdgeRep = pathwayItemManager.createReactionEdge(currentPathway,
-				sReactionName, sReactionType);
+		currentReactionProductEdgeRep =
+			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
 
 	}
 
 	/**
-	 * Reacts on the elements of the reaction substrate tag. An example reaction
-	 * substrate tag looks like this: <substrate name="cpd:C01118"/>
+	 * Reacts on the elements of the reaction substrate tag. An example reaction substrate tag looks like this:
+	 * <substrate name="cpd:C01118"/>
 	 */
-	protected void handleReactionSubstrateTag()
-	{
+	protected void handleReactionSubstrateTag() {
 
 		String sReactionSubstrateName = "";
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("name"))
-			{
+			if (sAttributeName.equals("name")) {
 				sReactionSubstrateName = attributes.getValue(iAttributeIndex);
 			}
 		}
 
 		IGraphItem graphItemIn = hashKgmlNameToVertexRepId.get(sReactionSubstrateName);
 
-		IGraphItem graphItemOut = hashKgmlReactionIdToVertexRepId
-				.get(((PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
-						.getReactionId());
+		IGraphItem graphItemOut =
+			hashKgmlReactionIdToVertexRepId.get(((PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
 
-		if (graphItemIn == null || graphItemOut == null)
-		{
+		if (graphItemIn == null || graphItemOut == null) {
 			return;
 		}
 
-		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn,
-				EGraphItemProperty.INCOMING);
+		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
 
-		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
-				EGraphItemProperty.OUTGOING);
+		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
 
-		IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
+		IGraphItem tmpReactionEdge =
+			(PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).get(0);
 
 		if (tmpReactionEdge == null)
 			return;
@@ -526,36 +464,32 @@ public class KgmlSaxHandler
 		if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
 			return;
 
-		tmpReactionEdge.addItemDoubleLinked(graphItemIn.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
+		tmpReactionEdge.addItemDoubleLinked(
+			graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
 
 		if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
 			return;
 
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
+			EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}
 
 	/**
-	 * Reacts on the elements of the reaction product tag. An example reaction
-	 * product tag looks like this: <product name="cpd:C02291"/>
+	 * Reacts on the elements of the reaction product tag. An example reaction product tag looks like this:
+	 * <product name="cpd:C02291"/>
 	 */
-	protected void handleReactionProductTag()
-	{
+	protected void handleReactionProductTag() {
 
 		String sReactionProductName = "";
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			sAttributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName))
-			{
+			if ("".equals(sAttributeName)) {
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("name"))
-			{
+			if (sAttributeName.equals("name")) {
 				sReactionProductName = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -564,24 +498,21 @@ public class KgmlSaxHandler
 		IGraphItem graphItemOut = hashKgmlNameToVertexRepId.get(sReactionProductName);
 
 		// Enzyme
-		IGraphItem graphItemIn = hashKgmlReactionIdToVertexRepId
-				.get(((PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
-						.getReactionId());
+		IGraphItem graphItemIn =
+			hashKgmlReactionIdToVertexRepId.get(((PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
 
-		if (graphItemIn == null || graphItemOut == null)
-		{
+		if (graphItemIn == null || graphItemOut == null) {
 			return;
 		}
 
-		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn,
-				EGraphItemProperty.INCOMING);
+		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
 
-		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut,
-				EGraphItemProperty.OUTGOING);
+		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
 
-		IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
+		IGraphItem tmpReactionEdge =
+			(PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).get(0);
 
 		if (tmpReactionEdge == null)
 			return;
@@ -590,13 +521,13 @@ public class KgmlSaxHandler
 			return;
 
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemIn.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
+			EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
 
 		if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
 			return;
 
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
+			EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}
 
 	/**
@@ -604,8 +535,7 @@ public class KgmlSaxHandler
 	 * @see org.caleydo.core.parser.handler.AXmlParserHandler#destroyHandler()
 	 */
 	@Override
-	public void destroyHandler()
-	{
+	public void destroyHandler() {
 
 		super.destroyHandler();
 

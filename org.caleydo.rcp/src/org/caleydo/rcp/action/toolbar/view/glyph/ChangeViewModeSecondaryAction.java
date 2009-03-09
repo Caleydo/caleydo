@@ -12,13 +12,12 @@ import org.eclipse.ui.PlatformUI;
 
 public class ChangeViewModeSecondaryAction
 	extends AToolBarAction
-	implements IMenuCreator
-{
+	implements IMenuCreator {
 	public static final String TEXT = "disabled";
 	public static final String TEXT_SCATTERPLOT = "Scatterplot Axis Definition";
 	public static final String TEXT_PLUSMODEL = "Distribution Model Axis Definition";
-	
-//	public static final String ICON = ChangeViewModeToScatterplotAction.ICON;
+
+	// public static final String ICON = ChangeViewModeToScatterplotAction.ICON;
 	public static final String ICON = "resources/icons/view/glyph/xy_mapping.png";
 
 	private Menu menu;
@@ -28,60 +27,52 @@ public class ChangeViewModeSecondaryAction
 	/**
 	 * Constructor.
 	 */
-	public ChangeViewModeSecondaryAction(int iViewID)
-	{
+	public ChangeViewModeSecondaryAction(int iViewID) {
 		super(iViewID);
 		this.iViewID = iViewID;
 
 		setToolTipText(TEXT);
-		 setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
-			.getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 
 		setMenuCreator(this);
 	}
 
-	public void setAction(AToolBarAction action)
-	{
+	public void setAction(AToolBarAction action) {
 		primaryAction = action;
 
-		if (action instanceof ChangeViewModeToScatterplotAction)
-		{
+		if (action instanceof ChangeViewModeToScatterplotAction) {
 			setToolTipText(TEXT_SCATTERPLOT);
 
-//			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-//					PlatformUI.getWorkbench().getDisplay(),
-//					ChangeViewModeToScatterplotAction.ICON)));
+			// setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+			// PlatformUI.getWorkbench().getDisplay(),
+			// ChangeViewModeToScatterplotAction.ICON)));
 
 			this.setEnabled(true);
 		}
-		else if (primaryAction instanceof ChangeViewModeToPlusModelAction)
-		{
+		else if (primaryAction instanceof ChangeViewModeToPlusModelAction) {
 			setToolTipText(TEXT_PLUSMODEL);
 
-//			setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-//					PlatformUI.getWorkbench().getDisplay(),
-//					ChangeViewModeToPlusModelAction.ICON)));
+			// setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+			// PlatformUI.getWorkbench().getDisplay(),
+			// ChangeViewModeToPlusModelAction.ICON)));
 
 			this.setEnabled(true);
 		}
-		else
-		{
+		else {
 			this.setEnabled(false);
 		}
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 	}
 
 	@Override
-	public void dispose()
-	{
-		if (menu != null)
-		{
+	public void dispose() {
+		if (menu != null) {
 			menu.dispose();
 			menu = null;
 		}
@@ -90,25 +81,21 @@ public class ChangeViewModeSecondaryAction
 	/**
 	 * This is called in a tool bar
 	 */
-	public Menu getMenu(Control parent)
-	{
+	public Menu getMenu(Control parent) {
 		if (menu != null)
 			menu.dispose();
 
 		menu = new Menu(parent);
 
-		if (primaryAction instanceof ChangeViewModeToScatterplotAction)
-		{
+		if (primaryAction instanceof ChangeViewModeToScatterplotAction) {
 			addActionToMenu(menu, new ChangeViewModeSecondaryScatterplotAxisAction(iViewID, 0));
 			addActionToMenu(menu, new ChangeViewModeSecondaryScatterplotAxisAction(iViewID, 1));
 		}
-		else if (primaryAction instanceof ChangeViewModeToPlusModelAction)
-		{
+		else if (primaryAction instanceof ChangeViewModeToPlusModelAction) {
 			addActionToMenu(menu, new ChangeViewModeSecondaryPlusModelAxisAction(iViewID, 0));
 			addActionToMenu(menu, new ChangeViewModeSecondaryPlusModelAxisAction(iViewID, 1));
 		}
-		else
-		{
+		else {
 		}
 
 		return menu;
@@ -117,13 +104,11 @@ public class ChangeViewModeSecondaryAction
 	/**
 	 * This is called in a menu bar
 	 */
-	public Menu getMenu(Menu parent)
-	{
+	public Menu getMenu(Menu parent) {
 		return null;
 	}
 
-	protected void addActionToMenu(Menu parent, IAction action)
-	{
+	protected void addActionToMenu(Menu parent, IAction action) {
 		ActionContributionItem item = new ActionContributionItem(action);
 		item.fill(parent, -1);
 	}

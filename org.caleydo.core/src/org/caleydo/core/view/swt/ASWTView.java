@@ -7,13 +7,11 @@ import org.eclipse.swt.widgets.Composite;
 
 public abstract class ASWTView
 	extends AView
-	implements ISWTView
-{
+	implements ISWTView {
 	/**
 	 * Constructor.
 	 */
-	public ASWTView(int iParentContainerID, String sLabel, int iViewID)
-	{
+	public ASWTView(int iParentContainerID, String sLabel, int iViewID) {
 		super(iParentContainerID, sLabel, iViewID);
 	}
 
@@ -24,22 +22,20 @@ public abstract class ASWTView
 	public abstract void initViewSWTComposite(Composite parentComposite);
 
 	@Override
-	public final void initViewRCP(Composite parentComposite)
-	{
+	public final void initViewRCP(Composite parentComposite) {
 		this.parentComposite = parentComposite;
 		initViewSWTComposite(parentComposite);
 	}
 
 	@Override
-	public void initView()
-	{
+	public void initView() {
 		/**
-		 * Method uses the parent container ID to retrieve the GUI widget by
-		 * calling the createWidget method from the SWT GUI Manager. formally
-		 * this was the method: retrieveGUIContainer()
+		 * Method uses the parent container ID to retrieve the GUI widget by calling the createWidget method from
+		 * the SWT GUI Manager. formally this was the method: retrieveGUIContainer()
 		 */
-		SWTNativeWidget sWTNativeWidget = (SWTNativeWidget) generalManager.getSWTGUIManager()
-				.createWidget(EManagedObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId);
+		SWTNativeWidget sWTNativeWidget =
+			(SWTNativeWidget) generalManager.getSWTGUIManager().createWidget(
+				EManagedObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId);
 
 		parentComposite = sWTNativeWidget.getSWTWidget();
 

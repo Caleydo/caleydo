@@ -19,32 +19,27 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
 public class ClinicalGLParCoordsView
-	extends AGLViewPart
-{
+	extends AGLViewPart {
 	public static final String ID = "org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView";
 
 	/**
 	 * Constructor.
 	 */
-	public ClinicalGLParCoordsView()
-	{
+	public ClinicalGLParCoordsView() {
 		super();
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_CLINICAL, glCanvas
-				.getID(), true);
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_CLINICAL, glCanvas.getID(), true);
 	}
 
-	public static void createToolBarItems(int iViewID)
-	{
-		GLParallelCoordinates pcs = (GLParallelCoordinates) GeneralManager.get()
-				.getViewGLCanvasManager().getGLEventListener(iViewID);
+	public static void createToolBarItems(int iViewID) {
+		GLParallelCoordinates pcs =
+			(GLParallelCoordinates) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 
@@ -65,8 +60,7 @@ public class ClinicalGLParCoordsView
 		alToolbar.add(propagateSelectionAction);
 		// only if standalone or explicitly requested
 		if (pcs.isRenderedRemote()
-				&& GeneralManager.get().getPreferenceStore().getBoolean(
-						PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
+			&& GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
 			return;
 
 		IAction toggleRenderContextAction = new RenderContextAction(iViewID);

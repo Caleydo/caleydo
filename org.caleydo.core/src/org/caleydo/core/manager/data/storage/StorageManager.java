@@ -15,21 +15,17 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  */
 public class StorageManager
 	extends AManager<IStorage>
-	implements IStorageManager
-{
+	implements IStorageManager {
 	@Override
-	public IStorage createStorage(final EManagedObjectType type)
-	{
-		switch (type)
-		{
+	public IStorage createStorage(final EManagedObjectType type) {
+		switch (type) {
 			case STORAGE_NUMERICAL:
 				return new NumericalStorage();
 			case STORAGE_NOMINAL:
 				return new NominalStorage<String>();
 
 			default:
-				throw new IllegalStateException("Failed due to unhandled type ["
-						+ type.toString() + "]");
+				throw new IllegalStateException("Failed due to unhandled type [" + type.toString() + "]");
 		}
 	}
 

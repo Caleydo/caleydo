@@ -10,33 +10,28 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Marc Streit
  */
 public class CmdLoadPathwayData
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	/**
 	 * Constructor.
 	 */
-	public CmdLoadPathwayData(final ECommandType cmdType)
-	{
+	public CmdLoadPathwayData(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		generalManager.getPathwayManager().triggerParsingPathwayDatabases();
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 	}
 }

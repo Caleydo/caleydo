@@ -21,25 +21,21 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 public class GLParCoordsView
-	extends AGLViewPart
-{
+	extends AGLViewPart {
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLParCoordsView";
-	
+
 	/**
 	 * Constructor.
 	 */
-	public GLParCoordsView()
-	{
+	public GLParCoordsView() {
 		super();
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
-		{
+		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create parallel coordinates in pathway viewer mode!");
 			alert.open();
@@ -49,30 +45,27 @@ public class GLParCoordsView
 		}
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION,
-				glCanvas.getID(), true);
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, glCanvas.getID(), true);
 	}
 
-	public static void createToolBarItems(int iViewID)
-	{
-		GLParallelCoordinates pcs = (GLParallelCoordinates) GeneralManager.get()
-				.getViewGLCanvasManager().getGLEventListener(iViewID);
+	public static void createToolBarItems(int iViewID) {
+		GLParallelCoordinates pcs =
+			(GLParallelCoordinates) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 
 		// all pc views
 		IAction angularBrushingAction = new AngularBrushingAction(iViewID);
 		alToolbar.add(angularBrushingAction);
-//		IAction occlusionPreventionAction = new OcclusionPreventionAction(iViewID);
-//		alToolbar.add(occlusionPreventionAction);
+		// IAction occlusionPreventionAction = new OcclusionPreventionAction(iViewID);
+		// alToolbar.add(occlusionPreventionAction);
 		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
 		alToolbar.add(switchAxesToPolylinesAction);
-	
+
 		IAction resetAxisSpacing = new ResetAxisSpacingAction(iViewID);
 		alToolbar.add(resetAxisSpacing);
-		
-		if (!pcs.isRenderedRemote())
-		{
+
+		if (!pcs.isRenderedRemote()) {
 			IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
 			alToolbar.add(clearSelectionsAction);
 			IAction saveSelectionsAction = new SaveSelectionsAction(iViewID);
@@ -82,18 +75,18 @@ public class GLParCoordsView
 			IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
 			alToolbar.add(propagateSelectionAction);
 		}
-//
-//		// only if standalone or explicitly requested
-//		if (pcs.isRenderedRemote()
-//				&& GeneralManager.get().getPreferenceStore().getBoolean(
-//						PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
-//			return;
-//
-//		IAction toggleRenderContextAction = new RenderContextAction(iViewID);
-//		alToolbar.add(toggleRenderContextAction);
-//
-//		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
-//		alToolbar.add(useRandomSamplingAction);
+		//
+		// // only if standalone or explicitly requested
+		// if (pcs.isRenderedRemote()
+		// && GeneralManager.get().getPreferenceStore().getBoolean(
+		// PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
+		// return;
+		//
+		// IAction toggleRenderContextAction = new RenderContextAction(iViewID);
+		// alToolbar.add(toggleRenderContextAction);
+		//
+		// IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
+		// alToolbar.add(useRandomSamplingAction);
 
 	}
 }

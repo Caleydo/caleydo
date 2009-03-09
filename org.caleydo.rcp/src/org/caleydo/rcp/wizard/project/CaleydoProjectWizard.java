@@ -20,14 +20,12 @@ import org.eclipse.swt.widgets.Shell;
  * @author Marc Streit
  */
 public class CaleydoProjectWizard
-	extends Wizard
-{
+	extends Wizard {
 
 	/**
 	 * Constructor.
 	 */
-	public CaleydoProjectWizard(final Shell parentShell)
-	{
+	public CaleydoProjectWizard(final Shell parentShell) {
 		super();
 
 		parentShell.setText("Open project file");
@@ -41,29 +39,22 @@ public class CaleydoProjectWizard
 	}
 
 	@Override
-	public void addPages()
-	{
+	public void addPages() {
 		addPage(new NewOrExistingProjectPage());
 	}
 
 	@Override
-	public boolean performFinish()
-	{
-		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-				.isPageComplete())
-		{
-			NewOrExistingProjectPage page = ((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME));
+	public boolean performFinish() {
+		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete()) {
+			NewOrExistingProjectPage page = (NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME);
 
-			if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE)
-			{
+			if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
 				Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
 			}
-			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM)
-			{
+			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
 				Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
 			}
-			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL)
-			{
+			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
 				Application.applicationMode = EApplicationMode.SAMPLE_DATA_REAL;
 			}
 
@@ -74,17 +65,13 @@ public class CaleydoProjectWizard
 	}
 
 	@Override
-	public boolean performCancel()
-	{
+	public boolean performCancel() {
 		return true;
 	}
 
 	@Override
-	public boolean canFinish()
-	{
-		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-				.isPageComplete())
-		{
+	public boolean canFinish() {
+		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete()) {
 			return true;
 		}
 
@@ -92,48 +79,33 @@ public class CaleydoProjectWizard
 	}
 
 	@Override
-	public IWizardPage getNextPage(IWizardPage page)
-	{
-		if (page instanceof NewOrExistingProjectPage)
-		{
-			if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-					.getProjectType() == EProjectType.NEW_PROJECT)
-			{
-				NewProjectImportDataPage nextPage = (NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (page instanceof NewOrExistingProjectPage) {
+			if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.NEW_PROJECT) {
+				NewProjectImportDataPage nextPage =
+					(NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
 
 				nextPage.setPageComplete(true);
 				return nextPage;
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-					.getProjectType() == EProjectType.EXISTING_PROJECT)
-			{
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.EXISTING_PROJECT) {
 				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
 				fileOpenProjectAction.run();
 
 				this.performFinish();
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-					.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM)
-			{
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-					.getProjectType() == EProjectType.SAMPLE_DATA_REAL)
-			{
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-					.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE)
-			{
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
 				// Remove heatmap and par coord views
-				for (AGLEventListener glEventListener : GeneralManager.get()
-						.getViewGLCanvasManager().getAllGLEventListeners())
-				{
-					if (glEventListener instanceof GLHeatMap
-							|| glEventListener instanceof GLParallelCoordinates)
-					{
-						GeneralManager.get().getViewGLCanvasManager()
-								.unregisterGLEventListener(glEventListener.getID());
+				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
+					.getAllGLEventListeners()) {
+					if (glEventListener instanceof GLHeatMap || glEventListener instanceof GLParallelCoordinates) {
+						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(glEventListener.getID());
 					}
 				}
 

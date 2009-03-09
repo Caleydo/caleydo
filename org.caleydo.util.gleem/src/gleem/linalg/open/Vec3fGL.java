@@ -9,21 +9,17 @@ import javax.media.opengl.GL;
  * @author Michael Kalkusch
  */
 public final class Vec3fGL
-	extends Vec3f
-{
+	extends Vec3f {
 
-	public Vec3fGL()
-	{
+	public Vec3fGL() {
 		super();
 	}
 
-	public Vec3fGL(Vec3fGL arg)
-	{
+	public Vec3fGL(Vec3fGL arg) {
 		super(arg);
 	}
 
-	public Vec3fGL(float x, float y, float z)
-	{
+	public Vec3fGL(float x, float y, float z) {
 		super(x, y, z);
 	}
 
@@ -32,33 +28,27 @@ public final class Vec3fGL
 	 * 
 	 * @param arg
 	 */
-	public Vec3fGL(Vec4f arg)
-	{
+	public Vec3fGL(Vec4f arg) {
 		super(arg.x(), arg.y(), arg.z());
 	}
 
-	public Vec3fGL(Vec3f arg)
-	{
+	public Vec3fGL(Vec3f arg) {
 		super(arg);
 	}
 
-	public static final void setGlVertex(final GL gl, final Vec3f vertex)
-	{
+	public static final void setGlVertex(final GL gl, final Vec3f vertex) {
 		gl.glVertex3f(vertex.x(), vertex.y(), vertex.z());
 	}
 
-	public static final void setGlColor(final GL gl, final Vec3f vertex)
-	{
+	public static final void setGlColor(final GL gl, final Vec3f vertex) {
 		gl.glColor3f(vertex.x(), vertex.y(), vertex.z());
 	}
 
-	public final void glColor3f(final GL gl)
-	{
+	public final void glColor3f(final GL gl) {
 		gl.glColor3f(x(), y(), z());
 	}
 
-	public final void glVertex3f(final GL gl)
-	{
+	public final void glVertex3f(final GL gl) {
 		gl.glVertex3f(x(), y(), z());
 	}
 

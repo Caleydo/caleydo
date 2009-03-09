@@ -11,22 +11,19 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Sauer Stefan
  */
 public class CmdLoadGlyphDefinition
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	private String sXMLPath = "";
 
 	/**
 	 * Constructor.
 	 */
-	public CmdLoadGlyphDefinition(final ECommandType cmdType)
-	{
+	public CmdLoadGlyphDefinition(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		GlyphManager gm = generalManager.getGlyphManager();
 
 		gm.loadGlyphDefinitaion(sXMLPath);
@@ -35,14 +32,12 @@ public class CmdLoadGlyphDefinition
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		sXMLPath = this.sAttribute1;
@@ -53,8 +48,7 @@ public class CmdLoadGlyphDefinition
 	 * 
 	 * @param sPathwayXMLPath
 	 */
-	public void setAttributes(final String sPathwayXMLPath)
-	{
+	public void setAttributes(final String sPathwayXMLPath) {
 		this.sXMLPath = sPathwayXMLPath;
 	}
 }

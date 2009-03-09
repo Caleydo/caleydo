@@ -5,20 +5,13 @@ package org.caleydo.core.data.mapping;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- * 
  * @TODO: replace this type by generics
  */
-public enum EMappingDataType
-{
-	INT2INT(false, false),
-	INT2STRING(false, false),
-	STRING2INT(false, false),
-	STRING2STRING(false, false),
+public enum EMappingDataType {
+	INT2INT(false, false), INT2STRING(false, false), STRING2INT(false, false), STRING2STRING(false, false),
 
-	MULTI_INT2INT(true, false),
-	MULTI_STRING2STRING(true, false),
-	MULTI_STRING2INT(true, false),
-	MULTI_INT2STRING(true, false),
+	MULTI_INT2INT(true, false), MULTI_STRING2STRING(true, false), MULTI_STRING2INT(true, false), MULTI_INT2STRING(
+		true, false),
 
 	NONE(false, false);
 
@@ -26,8 +19,7 @@ public enum EMappingDataType
 
 	private final boolean bIsLokupTable;
 
-	private EMappingDataType(boolean bEnableUseMultiMap, boolean bEnableIsLokupTable)
-	{
+	private EMappingDataType(boolean bEnableUseMultiMap, boolean bEnableIsLokupTable) {
 		this.bUseMultiMap = bEnableUseMultiMap;
 		this.bIsLokupTable = bEnableIsLokupTable;
 	}
@@ -37,8 +29,7 @@ public enum EMappingDataType
 	 * 
 	 * @return TRUE if it is a multi map
 	 */
-	public boolean isMultiMapUsed()
-	{
+	public boolean isMultiMapUsed() {
 		return bUseMultiMap;
 	}
 
@@ -47,8 +38,7 @@ public enum EMappingDataType
 	 * 
 	 * @return TRUE for lookup tables
 	 */
-	public boolean isLookupTable()
-	{
+	public boolean isLookupTable() {
 		return bIsLokupTable;
 	}
 }

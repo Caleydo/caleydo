@@ -2,6 +2,7 @@ package org.caleydo.rcp.action.file;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
@@ -30,8 +31,7 @@ import org.eclipse.ui.actions.ActionFactory;
  */
 public class ExportClinicalDataAction
 	extends Action
-	implements ActionFactory.IWorkbenchAction
-{
+	implements ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.rcp.ExportClinicalDataAction";
 
@@ -53,50 +53,41 @@ public class ExportClinicalDataAction
 	/**
 	 * Constructor.
 	 */
-	public ExportClinicalDataAction(final Composite parentComposite, final int iViewID)
-	{
+	public ExportClinicalDataAction(final Composite parentComposite, final int iViewID) {
 		super("Load Data");
 		setId(ID);
 		setToolTipText("Export Clinical Data");
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), OpenDataExportAction.ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), OpenDataExportAction.ICON)));
 
 		this.parentComposite = parentComposite;
 
-		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			if (view instanceof GLGlyph)
-			{
+		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+			if (view instanceof GLGlyph) {
 				if (view.getID() == iViewID)
 					glyphview = (GLGlyph) view;
 			}
 		}
 
-		if (glyphview == null)
-		{
+		if (glyphview == null) {
 			throw new IllegalStateException(
-					"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
+				"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
 		}
 
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		// Check if load data GUI is embedded in a wizard or if a own dialog
 		// must be created.
-		if (parentComposite == null && window != null)
-		{
+		if (parentComposite == null && window != null) {
 		}
-		else
-		{
+		else {
 			createGUI();
 		}
 	}
 
-	private void createGUI()
-	{
+	private void createGUI() {
 
 		final String name = glyphview.getPersonalName();
 
@@ -109,20 +100,18 @@ public class ExportClinicalDataAction
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 
-		buttonFileChooser.addSelectionListener(new SelectionAdapter()
-		{
+		buttonFileChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent event)
-			{
+			public void widgetSelected(SelectionEvent event) {
 				FileDialog fileDialog = new FileDialog(parentComposite.getShell(), SWT.SAVE);
 				fileDialog.setText("Save");
 				fileDialog.setFilterPath(sFilePath);
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
 
-				String sFilePath = "caleydo_export_"
-						+ new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
-						+ "_clinical_" + name + ".csv";
+				String sFilePath =
+					"caleydo_export_" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + "_clinical_" + name
+						+ ".csv";
 
 				fileDialog.setFileName(sFilePath);
 				sFileName = fileDialog.open();
@@ -136,17 +125,14 @@ public class ExportClinicalDataAction
 		radios[0].setText("Export Selected Data");
 		radios[0].setBounds(10, 30, 75, 30);
 		radios[0].setEnabled(true);
-		radios[0].addSelectionListener(new SelectionListener()
-		{
+		radios[0].addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
+			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				radios[0].setSelection(true);
 				radios[1].setSelection(false);
 			}
@@ -158,74 +144,69 @@ public class ExportClinicalDataAction
 		radios[1].setBounds(10, 30, 75, 30);
 		radios[1].setEnabled(true);
 		radios[1].setSelection(true);
-		radios[1].addSelectionListener(new SelectionListener()
-		{
+		radios[1].addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
+			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				radios[0].setSelection(false);
 				radios[1].setSelection(true);
 			}
 
 		});
 
-//		radios[2] = new Button(composite, SWT.RADIO);
-//		radios[2].setText("Export Original Data");
-//		radios[2].setBounds(10, 30, 75, 30);
-//		radios[2].setEnabled(true);
-//		radios[2].addSelectionListener(new SelectionListener()
-//		{
-//
-//			@Override
-//			public void widgetDefaultSelected(SelectionEvent e)
-//			{
-//			}
-//
-//			@Override
-//			public void widgetSelected(SelectionEvent e)
-//			{
-//				radios[2].setSelection(true);
-//				radios[3].setSelection(false);
-//			}
-//
-//		});
-//
-//		radios[3] = new Button(composite, SWT.RADIO);
-//		radios[3].setText("Export Modefied Data");
-//		radios[3].setBounds(10, 30, 75, 30);
-//		radios[3].setEnabled(true);
-//		radios[3].setSelection(true);
-//		radios[3].addSelectionListener(new SelectionListener()
-//		{
-//
-//			@Override
-//			public void widgetDefaultSelected(SelectionEvent e)
-//			{
-//			}
-//
-//			@Override
-//			public void widgetSelected(SelectionEvent e)
-//			{
-//				radios[2].setSelection(false);
-//				radios[3].setSelection(true);
-//			}
-//
-//		});
+		// radios[2] = new Button(composite, SWT.RADIO);
+		// radios[2].setText("Export Original Data");
+		// radios[2].setBounds(10, 30, 75, 30);
+		// radios[2].setEnabled(true);
+		// radios[2].addSelectionListener(new SelectionListener()
+		// {
+		//
+		// @Override
+		// public void widgetDefaultSelected(SelectionEvent e)
+		// {
+		// }
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e)
+		// {
+		// radios[2].setSelection(true);
+		// radios[3].setSelection(false);
+		// }
+		//
+		// });
+		//
+		// radios[3] = new Button(composite, SWT.RADIO);
+		// radios[3].setText("Export Modefied Data");
+		// radios[3].setBounds(10, 30, 75, 30);
+		// radios[3].setEnabled(true);
+		// radios[3].setSelection(true);
+		// radios[3].addSelectionListener(new SelectionListener()
+		// {
+		//
+		// @Override
+		// public void widgetDefaultSelected(SelectionEvent e)
+		// {
+		// }
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e)
+		// {
+		// radios[2].setSelection(false);
+		// radios[3].setSelection(true);
+		// }
+		//
+		// });
 	}
 
-	public void execute()
-	{
+	public void execute() {
 		glyphview.exportAsCSV(sFileName, true, radios[0].getSelection(), false);
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 }

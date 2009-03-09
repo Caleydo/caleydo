@@ -17,66 +17,57 @@ import org.eclipse.swt.widgets.Shell;
  * @author Marc Streit
  */
 public class FetchPathwayWizard
-	extends Wizard
-{
+	extends Wizard {
 
 	/**
 	 * Constructor.
 	 */
-	public FetchPathwayWizard()
-	{
+	public FetchPathwayWizard() {
 		super();
 	}
 
 	@Override
-	public void addPages()
-	{
+	public void addPages() {
 		// Check if Caleydo will be started the first time and no internet connection is detected
-		if (!isInternetConnectionOK())
-		{
+		if (!isInternetConnectionOK()) {
 			addPage(new ProxyConfigurationPage());
 		}
-		
+
 		addPage(new FetchPathwayDataPage());
 
 		setWindowTitle("Pathway Wizard");
 	}
 
 	@Override
-	public boolean performFinish()
-	{
+	public boolean performFinish() {
 		return true;
 	}
 
 	@Override
-	public boolean performCancel()
-	{
+	public boolean performCancel() {
 		Application.bLoadPathwayData = false;
 
 		MessageBox messageBox = new MessageBox(new Shell(), SWT.ERROR);
 		messageBox.setText("No internet connection found");
-		messageBox.setMessage("It is not possible to fetch pathways. " +
-				"Caleydo will start without pathway data. \nAlso the integrated web browser might not work as expected.");
+		messageBox
+			.setMessage("It is not possible to fetch pathways. "
+				+ "Caleydo will start without pathway data. \nAlso the integrated web browser might not work as expected.");
 		messageBox.open();
-		
+
 		return true;
 	}
 
 	@Override
-	public IWizardPage getNextPage(IWizardPage page)
-	{
+	public IWizardPage getNextPage(IWizardPage page) {
 		return null;
 	}
 
-	private boolean isInternetConnectionOK()
-	{
+	private boolean isInternetConnectionOK() {
 		// Check internet connection
-		try
-		{
+		try {
 			InetAddress.getByName(ProxyConfigurationPage.TEST_URL);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			Application.bIsInterentConnectionOK = false;
 			return false;
 		}
@@ -84,12 +75,11 @@ public class FetchPathwayWizard
 		Application.bIsInterentConnectionOK = true;
 		return true;
 	}
-	
+
 	/**
 	 * For testing purposes
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Display display = new Display();
 
 		// Create the parent shell for the dialog, but don't show it

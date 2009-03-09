@@ -1,8 +1,8 @@
-
 package org.caleydo.util.graph.algorithm;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 
@@ -13,38 +13,31 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class GraphVisitorGetLinkedGraphItems
 	extends AGraphVisitorSearch
-	implements IGraphVisitorSearch
-{
+	implements IGraphVisitorSearch {
 
 	/**
 	 * 
 	 */
-	public GraphVisitorGetLinkedGraphItems(final IGraphItem itemSource, final int iSearchDepth)
-	{
+	public GraphVisitorGetLinkedGraphItems(final IGraphItem itemSource, final int iSearchDepth) {
 		super(itemSource, iSearchDepth);
 	}
 
-	protected List<IGraphItem> getSearchResultFromGraphItem(IGraphItem item)
-	{
+	protected List<IGraphItem> getSearchResultFromGraphItem(IGraphItem item) {
 		List<IGraphItem> buffer = item.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
 
 		List<IGraphItem> resultBuffer = null;
 
 		Iterator<IGraphItem> iter = buffer.iterator();
 
-		while (iter.hasNext())
-		{
-			List<IGraphItem> listAllChildren_fromParent = iter.next().getAllItemsByProp(
-					EGraphItemProperty.ALIAS_CHILD);
+		while (iter.hasNext()) {
+			List<IGraphItem> listAllChildren_fromParent =
+				iter.next().getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 
-			if (!listAllChildren_fromParent.isEmpty())
-			{
-				if (resultBuffer == null)
-				{
+			if (!listAllChildren_fromParent.isEmpty()) {
+				if (resultBuffer == null) {
 					resultBuffer = listAllChildren_fromParent;
 				}
-				else
-				{
+				else {
 					resultBuffer.addAll(listAllChildren_fromParent);
 				}
 			}
@@ -54,29 +47,24 @@ public class GraphVisitorGetLinkedGraphItems
 	}
 
 	@Override
-	public final boolean init()
-	{
+	public final boolean init() {
 		return false;
 	}
 
 	@Override
-	public final void search()
-	{
+	public final void search() {
 		/** algorithm is done inside method getSearchResult() */
 	}
 
 	@Override
-	public final void wipeTemporalDataFromGraph()
-	{
+	public final void wipeTemporalDataFromGraph() {
 		/** not temporal data was created inside the graphs. */
 	}
 
 	@Override
-	public List<IGraphItem> getSearchResult()
-	{
+	public List<IGraphItem> getSearchResult() {
 
-		if (this.iSearchDepth == 1)
-		{
+		if (this.iSearchDepth == 1) {
 			return getSearchResultFromGraphItem(this.itemSource);
 		}
 
@@ -86,8 +74,7 @@ public class GraphVisitorGetLinkedGraphItems
 	}
 
 	@Override
-	public List<List<IGraphItem>> getSearchResultDepthOrdered()
-	{
+	public List<List<IGraphItem>> getSearchResultDepthOrdered() {
 
 		assert false : "not implemented yet";
 

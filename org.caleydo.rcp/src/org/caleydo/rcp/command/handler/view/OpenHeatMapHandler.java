@@ -10,18 +10,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenHeatMapHandler
 	extends AbstractHandler
-	implements IHandler
-{
+	implements IHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException
-	{
-		try
-		{
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
-					GLHeatMapView.ID);
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLHeatMapView.ID);
 		}
-		catch (PartInitException e)
-		{
+		catch (PartInitException e) {
 			e.printStackTrace();
 		}
 

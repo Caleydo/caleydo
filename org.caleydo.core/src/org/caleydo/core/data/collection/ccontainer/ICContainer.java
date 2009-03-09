@@ -5,8 +5,7 @@ package org.caleydo.core.data.collection.ccontainer;
  * 
  * @author Alexander Lex
  */
-public interface ICContainer
-{
+public interface ICContainer {
 
 	/**
 	 * Returns the size of the container
@@ -16,8 +15,8 @@ public interface ICContainer
 	public int size();
 
 	/**
-	 * Brings any dataset into a format between 0 and 1. This is used for
-	 * drawing. For nominal data the first value is 0, the last value is 1
+	 * Brings any dataset into a format between 0 and 1. This is used for drawing. For nominal data the first
+	 * value is 0, the last value is 1
 	 */
 	public FloatCContainer normalize();
 

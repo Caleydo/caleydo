@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.miniview.slider;
 
 import gleem.linalg.Vec4f;
+
 import javax.media.opengl.GL;
 
 /**
@@ -8,26 +9,22 @@ import javax.media.opengl.GL;
  * 
  * @author Stefan Sauer
  */
-public class SliderSeperatorBond
-{
+public class SliderSeperatorBond {
 	private int iID = 0;
 	private SliderSeperator seperator1 = null;
 	private SliderSeperator seperator2 = null;
 
-	public SliderSeperatorBond(int id, SliderSeperator seperator1, SliderSeperator seperator2)
-	{
+	public SliderSeperatorBond(int id, SliderSeperator seperator1, SliderSeperator seperator2) {
 		iID = id;
 		this.seperator1 = seperator1;
 		this.seperator2 = seperator2;
 	}
 
-	public int getID()
-	{
+	public int getID() {
 		return iID;
 	}
 
-	public void render(GL gl, float sizeX, float sizeY, Vec4f color)
-	{
+	public void render(GL gl, float sizeX, float sizeY, Vec4f color) {
 		float bottom = getBottom();
 		float top = getTop();
 		float height = top - bottom;
@@ -49,8 +46,7 @@ public class SliderSeperatorBond
 		gl.glPopMatrix();
 	}
 
-	public float getTop()
-	{
+	public float getTop() {
 		float p1 = seperator1.getPos();
 		float p2 = seperator2.getPos();
 		if (p1 < p2)
@@ -59,8 +55,7 @@ public class SliderSeperatorBond
 			return p1;
 	}
 
-	public float getBottom()
-	{
+	public float getBottom() {
 		float p1 = seperator1.getPos();
 		float p2 = seperator2.getPos();
 		if (p1 > p2)

@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.mouse;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -11,6 +12,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 /**
@@ -22,8 +24,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
  */
 
 public class JoglMouseListener
-	implements MouseListener, MouseMotionListener, MouseWheelListener
-{
+	implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	protected ArrayList<AGLEventListener> alGlCanvas;
 
@@ -45,19 +46,16 @@ public class JoglMouseListener
 	protected boolean bEnableZoom = true;
 
 	/**
-	 * Define mouse sensitivity. Higher value indicates more degrees of
-	 * rotation. Default value 1.0
+	 * Define mouse sensitivity. Higher value indicates more degrees of rotation. Default value 1.0
 	 */
 	protected float fMouseSensitivityRotation = 1.0f;
 
-	public JoglMouseListener()
-	{
+	public JoglMouseListener() {
 		alGlCanvas = new ArrayList<AGLEventListener>();
 	}
 
 	/**
-	 * Register this Listener to the canvas as MouseListener and
-	 * MouseMotionListener.
+	 * Register this Listener to the canvas as MouseListener and MouseMotionListener.
 	 * 
 	 * @param canvas
 	 */
@@ -67,66 +65,54 @@ public class JoglMouseListener
 	// }
 	/* Methods required for the implementation of MouseListener */
 	@Override
-	public void mouseEntered(MouseEvent e)
-	{
+	public void mouseEntered(MouseEvent e) {
 
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e)
-	{
+	public void mouseExited(MouseEvent e) {
 
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e)
-	{
+	public void mouseClicked(MouseEvent e) {
 
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e)
-	{
+	public void mouseMoved(MouseEvent e) {
 
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e)
-	{
+	public void mousePressed(MouseEvent e) {
 		prevMouseX = e.getX();
 		prevMouseY = e.getY();
 
-		if (e.getClickCount() > 1)
-		{
+		if (e.getClickCount() > 1) {
 			bMouseDoubleClick = true;
 			// System.out.println("Double click!");
 		}
 
 		/* --- Left -- Mouse Button --- */
-		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
-		{
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
 			// System.err.println(" -- Left --");
 			this.bMouseLeftButtonDown = true;
 		}
 
 		/* --- Right -- Mouse Button --- */
-		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
-		{
+		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
 			// System.err.println(" -- Right --");
 
-			if (bMouseLeft_StandbyZoom)
-			{
+			if (bMouseLeft_StandbyZoom) {
 				/*
-				 * first button pressed was "middle" and it is still pressed,
-				 * but also "right" button is pressed now..
+				 * first button pressed was "middle" and it is still pressed, but also "right" button is pressed now..
 				 */
 				bMouseMiddleButtonDown = true;
 			}
-			else
-			{
+			else {
 				/*
-				 * first button pressed was NOT "middle" and but now "right"
-				 * button is pressed..
+				 * first button pressed was NOT "middle" and but now "right" button is pressed..
 				 */
 
 				bMouseRightButtonDown = true;
@@ -135,20 +121,17 @@ public class JoglMouseListener
 		}
 
 		/* --- Middle -- Mouse Button --- */
-		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0)
-		{
+		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
 			bMouseMiddleButtonDown = true;
 			// System.err.println(" -- Middle --");
 
-			if (bMouseRight_StandbyRotate)
-			{
+			if (bMouseRight_StandbyRotate) {
 				/*
 				 * first button was "right" and "right"-button is still pressed
 				 */
 				bMouseRightButtonDown = false;
 			}
-			else
-			{
+			else {
 				/*
 				 * enable standby zoom... First button pressed is "middle"
 				 */
@@ -158,78 +141,64 @@ public class JoglMouseListener
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		bMouseDoubleClick = false;
 
-		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
-		{
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0) {
 			bMouseLeft_StandbyZoom = false;
 			bMouseMiddleButtonDown = false;
 
-			if (bMouseRight_StandbyRotate)
-			{
+			if (bMouseRight_StandbyRotate) {
 				/*
-				 * first button pressed was "right" and now "left" button is
-				 * released ==> same state as if only "right" button was
-				 * pressed.
+				 * first button pressed was "right" and now "left" button is released ==> same state as if only
+				 * "right" button was pressed.
 				 */
 				bMouseRightButtonDown = true;
 			}
 		}
 
-		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
-		{
+		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0) {
 
-			if (bMouseLeft_StandbyZoom)
-			{
+			if (bMouseLeft_StandbyZoom) {
 				/*
-				 * First "left" button was pressed and not released since and
-				 * "right" button was pressed now ==> emmulate "middle" button
+				 * First "left" button was pressed and not released since and "right" button was pressed now ==>
+				 * emmulate "middle" button
 				 */
 				bMouseMiddleButtonDown = false;
 			}
-			else
-			{
+			else {
 				bMouseRightButtonDown = false;
 
 				/*
-				 * Now "right" button is released ==> no more standby
-				 * RightButton.
+				 * Now "right" button is released ==> no more standby RightButton.
 				 */
 				bMouseRight_StandbyRotate = false;
 			}
 		}
 
-		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0)
-		{
+		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0) {
 			bMouseMiddleButtonDown = false;
 		}
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent event)
-	{
+	public void mouseDragged(MouseEvent event) {
 
 		int x = event.getX();
 		int y = event.getY();
 		Dimension size = event.getComponent().getSize();
 
-		if (!bMouseRightButtonDown)
-		{
-			if (!bMouseMiddleButtonDown && bEnableRotate)
-			{
+		if (!bMouseRightButtonDown) {
+			if (!bMouseMiddleButtonDown && bEnableRotate) {
 				/**
 				 * --- ROTATION ---
 				 */
 				Rotf currentRotX = new Rotf();
 				Rotf currentRotY = new Rotf();
 
-				float fpercentX = (float) (x - prevMouseX) / (float) (size.width)
-						* fMouseSensitivityRotation;
+				float fpercentX = (float) (x - prevMouseX) / (float) size.width * fMouseSensitivityRotation;
 
-				float fpercentY = (float) (y - prevMouseY) / (float) (size.height)
-						* fMouseSensitivityRotation;
+				float fpercentY = (float) (y - prevMouseY) / (float) size.height * fMouseSensitivityRotation;
 
 				currentRotX.set(new Vec3f(0, 1, 0), fpercentX * (float) Math.PI);
 
@@ -244,13 +213,11 @@ public class JoglMouseListener
 				/* set new paramters to ViewCamera */
 				Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
 
-				while (iterGLCanvas.hasNext())
-				{
+				while (iterGLCanvas.hasNext()) {
 					iterGLCanvas.next().getViewCamera().addCameraRotation(currentRotX);
 				}
 			}
-			else if (bEnableZoom)
-			{
+			else if (bEnableZoom) {
 				/**
 				 * --- ZOOMING ---
 				 */
@@ -258,8 +225,7 @@ public class JoglMouseListener
 				float zoomY = fZoomScale * (prevMouseY - y);
 
 				/* take abs(zoomX) */
-				if ((zoomX < 0.0f) && (zoomY > 0.0f))
-				{
+				if (zoomX < 0.0f && zoomY > 0.0f) {
 					zoomX = -zoomX;
 				}
 
@@ -269,21 +235,18 @@ public class JoglMouseListener
 				/* set new paramters to ViewCamera */
 				Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
 
-				while (iterGLCanvas.hasNext())
-				{
-					iterGLCanvas.next().getViewCamera().addCameraScale(
-							new Vec3f(0, 0, zoomY + zoomX));
+				while (iterGLCanvas.hasNext()) {
+					iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, zoomY + zoomX));
 				}
 			}
 		}
-		else if (bEnablePan)
-		{
+		else if (bEnablePan) {
 			/**
 			 * --- PANING ---
 			 */
-			Vec3f addVec3f = new Vec3f(fPanScale
-					* ((float) (x - prevMouseX) / (float) size.width), fPanScale
-					* ((float) (prevMouseY - y) / (float) size.height), 0.0f);
+			Vec3f addVec3f =
+				new Vec3f(fPanScale * (float) (x - prevMouseX) / (float) size.width, fPanScale
+					* (float) (prevMouseY - y) / (float) size.height, 0.0f);
 
 			prevMouseX = x;
 			prevMouseY = y;
@@ -291,22 +254,19 @@ public class JoglMouseListener
 			/* set new paramters to ViewCamera */
 			Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
 
-			while (iterGLCanvas.hasNext())
-			{
+			while (iterGLCanvas.hasNext()) {
 				iterGLCanvas.next().getViewCamera().addCameraPosition(addVec3f);
 			}
 		}
 	}
 
-	public void addGLCanvas(final AGLEventListener gLCanvas)
-	{
+	public void addGLCanvas(final AGLEventListener gLCanvas) {
 
 		alGlCanvas.add(gLCanvas);
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e)
-	{
+	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (!bEnableZoom)
 			return;
 
@@ -317,15 +277,12 @@ public class JoglMouseListener
 
 		Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
 
-		while (iterGLCanvas.hasNext())
-		{
+		while (iterGLCanvas.hasNext()) {
 			iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, fZoom));
 		}
 	}
 
-	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate,
-			boolean bEnableZoom)
-	{
+	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom) {
 		this.bEnablePan = bEnablePan;
 		this.bEnableRotate = bEnableRotate;
 		this.bEnableZoom = bEnableZoom;

@@ -3,6 +3,7 @@ package org.caleydo.rcp.action.toolbar.view;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -16,27 +17,24 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class TakeSnapshotAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Take snapshot";
 	public static final String ICON = "resources/icons/general/snapshot.png";
 
 	/**
 	 * Constructor.
 	 */
-	public TakeSnapshotAction()
-	{
+	public TakeSnapshotAction() {
 		super(-1);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		String sFilePath = "screenshot_" + getDateTime() + ".png";
@@ -63,8 +61,7 @@ public class TakeSnapshotAction
 		// messageBox.open();
 	}
 
-	private String getDateTime()
-	{
+	private String getDateTime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");
 		Date date = new Date();
 		return dateFormat.format(date);

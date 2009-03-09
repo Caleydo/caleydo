@@ -1,18 +1,15 @@
 package org.caleydo.core.parser.xml.sax.handler;
 
 /**
- * Interface for all XML Handler's registered to the
- * org.caleydo.core.manager.IXmlParserManager
+ * Interface for all XML Handler's registered to the org.caleydo.core.manager.IXmlParserManager
  * 
  * @see org.caleydo.core.manager.IXmlParserManager
  * @author Michael Kalkusch
  */
 public interface IXmlParserHandler
-	extends IXmlBaseHandler
-{
+	extends IXmlBaseHandler {
 	/**
-	 * Initilization of handler. Called once by Manager before using the
-	 * handler.
+	 * Initilization of handler. Called once by Manager before using the handler.
 	 * 
 	 * @see org.caleydo.core.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
@@ -24,13 +21,10 @@ public interface IXmlParserHandler
 	public void destroyHandler();
 
 	/**
-	 * Get the XmlActivationTag, which makes this Handler the current
-	 * XMLHandler, that receives all events from the
-	 * org.caleydo.core.manager.IXmlParserManager. XmlActivationTag is set via
-	 * the Constructor.
+	 * Get the XmlActivationTag, which makes this Handler the current XMLHandler, that receives all events from
+	 * the org.caleydo.core.manager.IXmlParserManager. XmlActivationTag is set via the Constructor.
 	 * 
-	 * @return tag that enables this Handler inside the
-	 *         org.caleydo.core.manager.IXmlParserManager
+	 * @return tag that enables this Handler inside the org.caleydo.core.manager.IXmlParserManager
 	 */
 	public String getXmlActivationTag();
 
@@ -51,7 +45,6 @@ public interface IXmlParserHandler
 	 * @see org.caleydo.core.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @param setHandlerDestoryedAfterClosingTag
 	 */
-	public void setHandlerDestoryedAfterClosingTag(
-			final boolean setHandlerDestoryedAfterClosingTag);
+	public void setHandlerDestoryedAfterClosingTag(final boolean setHandlerDestoryedAfterClosingTag);
 
 }

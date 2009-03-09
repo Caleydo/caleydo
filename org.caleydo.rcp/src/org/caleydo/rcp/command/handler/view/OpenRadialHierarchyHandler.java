@@ -10,18 +10,13 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenRadialHierarchyHandler
 	extends AbstractHandler
-	implements IHandler
-{
+	implements IHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException
-	{
-		try
-		{
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
-					GLRadialHierarchyView.ID);
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLRadialHierarchyView.ID);
 		}
-		catch (PartInitException e)
-		{
+		catch (PartInitException e) {
 			e.printStackTrace();
 		}
 

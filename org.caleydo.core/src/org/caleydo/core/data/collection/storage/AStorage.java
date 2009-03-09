@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
@@ -16,15 +17,13 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
- * Abstact Storage class. Implements all of the methods the different IStorages
- * share
+ * Abstact Storage class. Implements all of the methods the different IStorages share
  * 
  * @author Alexander lex
  */
 public abstract class AStorage
 	extends AUniqueObject
-	implements IStorage
-{
+	implements IStorage {
 	protected EnumMap<EDataRepresentation, ICContainer> hashCContainers;
 	protected HashMap<Integer, IVirtualArray> hashVirtualArrays;
 
@@ -39,43 +38,37 @@ public abstract class AStorage
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AStorage(int iUniqueID)
-	{
+	public AStorage(int iUniqueID) {
 		super(iUniqueID);
 
 		GeneralManager.get().getStorageManager().registerItem(this);
 
-		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(
-				EDataRepresentation.class);
+		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(EDataRepresentation.class);
 		hashVirtualArrays = new HashMap<Integer, IVirtualArray>();
 		sLabel = new String("Not specified");
 	}
 
 	@Override
-	public ERawDataType getRawDataType()
-	{
+	public ERawDataType getRawDataType() {
 		return rawDataType;
 	}
 
 	@Override
-	public void setLabel(String sLabel)
-	{
+	public void setLabel(String sLabel) {
 		this.sLabel = sLabel;
 	}
 
 	@Override
-	public String getLabel()
-	{
+	public String getLabel() {
 		return sLabel;
 	}
 
 	@Override
-	public void setRawData(float[] fArRawData)
-	{
+	public void setRawData(float[] fArRawData) {
 
 		if (bRawDataSet)
 			throw new IllegalStateException("Raw data was already set in Storage " + iUniqueID
-					+ " , tried to set again.");
+				+ " , tried to set again.");
 
 		rawDataType = ERawDataType.FLOAT;
 		bRawDataSet = true;
@@ -85,8 +78,7 @@ public abstract class AStorage
 	}
 
 	@Override
-	public void setRawData(int[] iArRawData)
-	{
+	public void setRawData(int[] iArRawData) {
 
 		if (bRawDataSet)
 			throw new IllegalStateException("Raw data was already set, tried to set again.");
@@ -99,8 +91,7 @@ public abstract class AStorage
 	}
 
 	@Override
-	public float getFloat(EDataRepresentation storageKind, int iIndex)
-	{
+	public float getFloat(EDataRepresentation storageKind, int iIndex) {
 		if (!hashCContainers.containsKey(storageKind))
 			throw new IllegalArgumentException("Requested storage kind not produced");
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
@@ -111,8 +102,7 @@ public abstract class AStorage
 	}
 
 	@Override
-	public FloatCContainerIterator floatIterator(EDataRepresentation storageKind)
-	{
+	public FloatCContainerIterator floatIterator(EDataRepresentation storageKind) {
 
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type float");
@@ -122,15 +112,12 @@ public abstract class AStorage
 	}
 
 	@Override
-	public float getFloatVA(EDataRepresentation storageKind, int iIndex, int iUniqueID)
-	{
+	public float getFloatVA(EDataRepresentation storageKind, int iIndex, int iUniqueID) {
 		return getFloat(storageKind, hashVirtualArrays.get(iUniqueID).get(iIndex));
 	}
 
 	@Override
-	public FloatCContainerIterator floatVAIterator(EDataRepresentation storageKind,
-			int iUniqueID)
-	{
+	public FloatCContainerIterator floatVAIterator(EDataRepresentation storageKind, int iUniqueID) {
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type float");
 
@@ -139,8 +126,7 @@ public abstract class AStorage
 	}
 
 	@Override
-	public int getInt(EDataRepresentation storageKind, int iIndex)
-	{
+	public int getInt(EDataRepresentation storageKind, int iIndex) {
 		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type int");
 
@@ -149,8 +135,7 @@ public abstract class AStorage
 	}
 
 	@Override
-	public IntCContainerIterator intIterator(EDataRepresentation storageKind)
-	{
+	public IntCContainerIterator intIterator(EDataRepresentation storageKind) {
 		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type int");
 
@@ -159,14 +144,12 @@ public abstract class AStorage
 	}
 
 	@Override
-	public int getIntVA(EDataRepresentation storageKind, int iIndex, int iUniqueID)
-	{
+	public int getIntVA(EDataRepresentation storageKind, int iIndex, int iUniqueID) {
 		return getInt(storageKind, hashVirtualArrays.get(iUniqueID).get(iIndex));
 	}
 
 	@Override
-	public IntCContainerIterator intVAIterator(EDataRepresentation storageKind, int iUniqueID)
-	{
+	public IntCContainerIterator intVAIterator(EDataRepresentation storageKind, int iUniqueID) {
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
 			throw new IllegalArgumentException("Requested storage kind is not of type float");
 
@@ -175,76 +158,61 @@ public abstract class AStorage
 	}
 
 	@Override
-	public Number get(EDataRepresentation storageKind, int iIndex)
-	{
+	public Number get(EDataRepresentation storageKind, int iIndex) {
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
-			throw new IllegalArgumentException(
-					"Requested storage kind is not a subtype of Number");
+			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers
-				.get(storageKind);
+		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
 		return container.get(iIndex);
 	}
 
 	@Override
-	public Iterator<? extends Number> iterator(EDataRepresentation storageKind)
-	{
+	public Iterator<? extends Number> iterator(EDataRepresentation storageKind) {
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
-			throw new IllegalArgumentException(
-					"Requested storage kind is not a subtype of Number");
+			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers
-				.get(storageKind);
+		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
 		return container.iterator();
 	}
 
 	@Override
-	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID)
-	{
+	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID) {
 		int iContainerIndex = hashVirtualArrays.get(iUniqueID).get(iIndex);
 		return get(storageKind, iContainerIndex);
 	}
 
 	@Override
-	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID)
-	{
+	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID) {
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
-			throw new IllegalArgumentException(
-					"Requested storage kind is not a subtype of Number");
+			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
-		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers
-				.get(storageKind);
+		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);
 		return container.iterator();
 	}
 
 	@Override
-	public void setRawData(ArrayList<? super Number> alNumber)
-	{
+	public void setRawData(ArrayList<? super Number> alNumber) {
 		// TODO Auto-generated method stub
 		throw new IllegalStateException("Not implemented");
 	}
 
 	@Override
-	public int size()
-	{
+	public int size() {
 		return hashCContainers.get(EDataRepresentation.RAW).size();
 	}
 
 	@Override
-	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray)
-	{
+	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray) {
 		hashVirtualArrays.put(iUniqueID, virtualArray);
 	}
 
 	@Override
-	public void removeVirtualArray(int iUniqueID)
-	{
+	public void removeVirtualArray(int iUniqueID) {
 		hashVirtualArrays.remove(iUniqueID);
 	}
 
 	@Override
-	public void resetVirtualArray(int uniqueID)
-	{
+	public void resetVirtualArray(int uniqueID) {
 		hashVirtualArrays.get(iUniqueID).reset();
 	}
 

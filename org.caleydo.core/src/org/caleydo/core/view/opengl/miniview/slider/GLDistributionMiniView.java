@@ -1,12 +1,16 @@
 package org.caleydo.core.view.opengl.miniview.slider;
 
 import gleem.linalg.Vec4f;
+
 import java.awt.Font;
 import java.util.ArrayList;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.IBorderRenderStyle;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -15,14 +19,10 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Stefan Sauer
  */
 public class GLDistributionMiniView
-	extends AGLMiniView
-{
+	extends AGLMiniView {
 
-	public enum ALIGN
-	{
-		LEFT,
-		RIGHT,
-		CENTER;
+	public enum ALIGN {
+		LEFT, RIGHT, CENTER;
 	}
 
 	private ALIGN alignment = ALIGN.LEFT;
@@ -37,9 +37,8 @@ public class GLDistributionMiniView
 
 	private IBorderRenderStyle borderStyle;
 
-	public GLDistributionMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final int iViewID, final int iDistributionID)
-	{
+	public GLDistributionMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
+		final int iDistributionID) {
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.setSmoothing(false);
@@ -49,18 +48,15 @@ public class GLDistributionMiniView
 	}
 
 	@Override
-	public void setHeight(final float fHeight)
-	{
+	public void setHeight(final float fHeight) {
 		this.fHeight = fHeight;
 	}
 
-	public void setNormalicedDistribution(final ArrayList<Float> values)
-	{
+	public void setNormalicedDistribution(final ArrayList<Float> values) {
 		alNormalicedDistribution = values;
 	}
 
-	public void setDistribution(final ArrayList<Float> values)
-	{
+	public void setDistribution(final ArrayList<Float> values) {
 
 		// alAxisScaleNominal = new ArrayList<String>();
 		// float realinc = 1000 / (values.size());
@@ -77,32 +73,27 @@ public class GLDistributionMiniView
 		// ++inccounter;
 		// }
 
-		throw (new RuntimeException("not implemented yet"));
+		throw new RuntimeException("not implemented yet");
 	}
 
-	public void setNormalicedSelectedDistribution(final ArrayList<Float> values)
-	{
+	public void setNormalicedSelectedDistribution(final ArrayList<Float> values) {
 		alNormalicedSelectedDistribution = values;
 	}
 
-	public void setSelectedDistribution(final ArrayList<Float> values)
-	{
-		throw (new RuntimeException("not implemented yet"));
+	public void setSelectedDistribution(final ArrayList<Float> values) {
+		throw new RuntimeException("not implemented yet");
 	}
 
-	public void setBorderStyle(IBorderRenderStyle borderStyle)
-	{
+	public void setBorderStyle(IBorderRenderStyle borderStyle) {
 		this.borderStyle = borderStyle;
 	}
 
-	public void setDistributionAlign(ALIGN align)
-	{
+	public void setDistributionAlign(ALIGN align) {
 		alignment = align;
 	}
 
 	@Override
-	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin)
-	{
+	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
 		gl.glPushMatrix();
 		// draw helplines
 		// GLHelperFunctions.drawAxis(gl);
@@ -113,8 +104,7 @@ public class GLDistributionMiniView
 		gl.glPopMatrix();
 	}
 
-	private void drawBorder(GL gl)
-	{
+	private void drawBorder(GL gl) {
 		if (borderStyle == null)
 			return;
 		gl.glScalef(fWidth, fHeight, 1.0f);
@@ -123,27 +113,24 @@ public class GLDistributionMiniView
 
 	}
 
-	private void drawDistribution(GL gl)
-	{
-		if (alNormalicedDistribution != null)
-		{
+	private void drawDistribution(GL gl) {
+		if (alNormalicedDistribution != null) {
 
 			float increment = fHeight / alNormalicedDistribution.size();
 
 			gl.glPushMatrix();
 			gl.glTranslatef(0, 0, -0.01f);
 
-			gl.glColor4f(vDistributionColor.get(0), vDistributionColor.get(1),
-					vDistributionColor.get(2), vDistributionColor.get(3));
+			gl.glColor4f(vDistributionColor.get(0), vDistributionColor.get(1), vDistributionColor.get(2),
+				vDistributionColor.get(3));
 
-			for (float value : alNormalicedDistribution)
-			{
+			for (float value : alNormalicedDistribution) {
 				float posx = 0;
 				float width = fWidth * value;
 				if (alignment == ALIGN.RIGHT)
 					posx = fWidth - width;
 				if (alignment == ALIGN.CENTER)
-					posx = (fWidth / 2.0f) - (width / 2.0f);
+					posx = fWidth / 2.0f - width / 2.0f;
 
 				gl.glBegin(GL.GL_QUADS);
 				gl.glNormal3i(0, 1, 0);
@@ -159,24 +146,22 @@ public class GLDistributionMiniView
 			gl.glPopMatrix();
 		}
 
-		if (alNormalicedSelectedDistribution != null)
-		{
+		if (alNormalicedSelectedDistribution != null) {
 			float increment = fHeight / alNormalicedSelectedDistribution.size();
 
 			gl.glPushMatrix();
 			// gl.glTranslatef(0, 0, -0.75f);
 
 			gl.glColor4f(vDistributionSelectedColor.get(0), vDistributionSelectedColor.get(1),
-					vDistributionSelectedColor.get(2), vDistributionSelectedColor.get(3));
+				vDistributionSelectedColor.get(2), vDistributionSelectedColor.get(3));
 
-			for (float value : alNormalicedSelectedDistribution)
-			{
+			for (float value : alNormalicedSelectedDistribution) {
 				float posx = 0;
 				float width = fWidth * value;
 				if (alignment == ALIGN.RIGHT)
 					posx = fWidth - width;
 				if (alignment == ALIGN.CENTER)
-					posx = (fWidth / 2.0f) - (width / 2.0f);
+					posx = fWidth / 2.0f - width / 2.0f;
 
 				gl.glBegin(GL.GL_QUADS);
 				gl.glNormal3i(0, 1, 0);

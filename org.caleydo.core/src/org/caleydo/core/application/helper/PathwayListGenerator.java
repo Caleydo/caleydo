@@ -6,18 +6,18 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.swing.ImageIcon;
+
 import org.caleydo.core.manager.IGeneralManager;
 
 /**
- * Helper tool can load a pathway list from a local folder. This is needed
- * because the folder.listFiles method does not work in deployed RCP
- * applications.
+ * Helper tool can load a pathway list from a local folder. This is needed because the folder.listFiles method
+ * does not work in deployed RCP applications.
  * 
  * @author Marc Streit
  */
-public class PathwayListGenerator
-{
+public class PathwayListGenerator {
 	public final static String INPUT_FOLDER_PATH_KEGG = "www.genome.jp/kegg/KGML/KGML_v0.6.1/hsa/";
 	public final static String INPUT_IMAGE_PATH_KEGG = "www.genome.ad.jp/kegg/pathway/hsa/";
 	public final static String OUTPUT_FILE_NAME_KEGG = "pathway_list_KEGG.txt";
@@ -28,8 +28,7 @@ public class PathwayListGenerator
 	private PrintWriter outputWriter;
 
 	public void run(String sInputFolderPath, String sInputImagePath, String sOutputFileName)
-			throws FileNotFoundException
-	{
+		throws FileNotFoundException {
 		sInputFolderPath = IGeneralManager.CALEYDO_HOME_PATH + sInputFolderPath;
 		sInputImagePath = IGeneralManager.CALEYDO_HOME_PATH + sInputImagePath;
 		sOutputFileName = IGeneralManager.CALEYDO_HOME_PATH + sOutputFileName;
@@ -40,8 +39,7 @@ public class PathwayListGenerator
 		File[] arFiles = folder.listFiles();
 		String sOutput = "";
 
-		for (File tmpFile : arFiles)
-		{
+		for (File tmpFile : arFiles) {
 			if (tmpFile.toString().endsWith(".svn"))
 				continue;
 
@@ -52,52 +50,37 @@ public class PathwayListGenerator
 			// Cut off path
 			sOutput = tmpFile.toString();
 			String sPathDelimiter = "";
-			if (sOutput.contains("\\"))
-			{
+			if (sOutput.contains("\\")) {
 				sPathDelimiter = "\\";
 			}
-			else if (sOutput.contains("/"))
-			{
+			else if (sOutput.contains("/")) {
 				sPathDelimiter = "/";
 			}
-			else
-			{
+			else {
 				throw new IllegalStateException("Problem with detecting path separator.");
 			}
 
-			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput
-					.length());
+			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput.length());
 
 			String sImagePath = "";
-			if (tmpFile.toString().contains(".xml"))
-			{
-				sImagePath = sInputImagePath
-						+ tmpFile.toString().substring(
-								tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
-								tmpFile.toString().length() - 4) + ".gif";
+			if (tmpFile.toString().contains(".xml")) {
+				sImagePath =
+					sInputImagePath
+						+ tmpFile.toString().substring(tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
+							tmpFile.toString().length() - 4) + ".gif";
 			}
 			// find out image path of biocarta pathway - necessary because xml
 			// path != image path
-			else
-			{
+			else {
 				BufferedReader brFile = new BufferedReader(new FileReader(tmpFile.toString()));
 
 				String sLine = "";
-				try
-				{
-					while ((sLine = brFile.readLine()) != null)
-					{
-						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/"))
-						{
-							sImagePath = sLine
-									.substring(
-											sLine
-													.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
-											sLine
-													.indexOf(
-															".gif",
-															sLine
-																	.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
+				try {
+					while ((sLine = brFile.readLine()) != null) {
+						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) {
+							sImagePath =
+								sLine.substring(sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42, sLine
+									.indexOf(".gif", sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
 
 							sImagePath = sInputImagePath + sImagePath;
 
@@ -105,21 +88,18 @@ public class PathwayListGenerator
 						}
 					}
 				}
-				catch (IOException e)
-				{
-					throw new IllegalStateException("Cannot open pathway list file at "
-							+ tmpFile.toString());
+				catch (IOException e) {
+					throw new IllegalStateException("Cannot open pathway list file at " + tmpFile.toString());
 				}
 
 			}
 			ImageIcon img = new ImageIcon(sImagePath);
 			int iWidth = img.getIconWidth();
 			int iHeight = img.getIconHeight();
-			
-			if (iWidth != -1 && iHeight != -1)
-			{
+
+			if (iWidth != -1 && iHeight != -1) {
 				outputWriter.append(sOutput + " ");
-				outputWriter.append(img.getIconWidth() + " " + img.getIconHeight());				
+				outputWriter.append(img.getIconWidth() + " " + img.getIconHeight());
 				outputWriter.append("\n");
 			}
 
@@ -130,19 +110,14 @@ public class PathwayListGenerator
 		outputWriter.close();
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
-		try
-		{
-			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG, INPUT_IMAGE_PATH_KEGG,
-					OUTPUT_FILE_NAME_KEGG);
-			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA,
-					OUTPUT_FILE_NAME_BIOCARTA);
+		try {
+			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG, INPUT_IMAGE_PATH_KEGG, OUTPUT_FILE_NAME_KEGG);
+			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA, OUTPUT_FILE_NAME_BIOCARTA);
 		}
-		catch (FileNotFoundException e)
-		{
+		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

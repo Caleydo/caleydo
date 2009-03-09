@@ -2,6 +2,7 @@ package org.caleydo.core.manager;
 
 import java.util.Map;
 import java.util.Set;
+
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 
@@ -10,18 +11,15 @@ import org.caleydo.core.data.mapping.EMappingType;
  * 
  * @author Marc Streit
  * @author Alexander Lex
- * 
  * @TODO documentation
  */
-public interface IIDMappingManager
-{
+public interface IIDMappingManager {
 	public void createMap(EMappingType type, EMappingDataType dataType);
 
-	public <SrcType, DestType> void createReverseMap(EMappingType sourceType,
-			EMappingType reverseType);
+	public <SrcType, DestType> void createReverseMap(EMappingType sourceType, EMappingType reverseType);
 
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
-			EMappingType destMappingType);
+		EMappingType destMappingType);
 
 	public <KeyType, ValueType> Map<KeyType, ValueType> getMapping(EMappingType type);
 

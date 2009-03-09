@@ -10,38 +10,32 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenNewWindowAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 
 	public static final String TEXT = "Open new GlyphWindow";
 	public static final String ICON = "resources/icons/view/glyph/glyph_new_window.png";
 
-	public OpenNewWindowAction(int iViewID)
-	{
+	public OpenNewWindowAction(int iViewID) {
 		super(iViewID);
 
 		setText("New");
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
-		try
-		{
+		try {
 			String rcpid = EStartViewType.GLYPHVIEW.getRCPViewID();
 
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-					rcpid, rcpid + Integer.toString(GLGlyphView.viewCount),
-					IWorkbenchPage.VIEW_CREATE);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(rcpid,
+				rcpid + Integer.toString(GLGlyphView.viewCount), IWorkbenchPage.VIEW_CREATE);
 
 		}
-		catch (PartInitException e)
-		{
+		catch (PartInitException e) {
 			e.printStackTrace();
 		}
 

@@ -8,8 +8,7 @@ import java.util.HashMap;
 /**
  * @author Michael Kalkusch
  */
-public final class GraphItemDataSequenzer
-{
+public final class GraphItemDataSequenzer {
 
 	private static final int iInitialSize = 3;
 
@@ -25,8 +24,7 @@ public final class GraphItemDataSequenzer
 	/**
 	 * Hide constructor.
 	 */
-	private GraphItemDataSequenzer()
-	{
+	private GraphItemDataSequenzer() {
 		/** hide constructor */
 	}
 
@@ -35,51 +33,41 @@ public final class GraphItemDataSequenzer
 	 * 
 	 * @return TRUE if method is called for the first time, FLASE else
 	 */
-	public static final boolean init()
-	{
+	public static final boolean init() {
 
 		boolean successfulInit = true;
 
-		if (identifier_key_value == null)
-		{
+		if (identifier_key_value == null) {
 			identifier_key_value = new HashMap<String, Integer>(iInitialSize);
 		}
-		else
-		{
+		else {
 			successfulInit = false;
 		}
 
-		if (identifier_key_value_reverse == null)
-		{
+		if (identifier_key_value_reverse == null) {
 			identifier_key_value_reverse = new HashMap<Integer, String>(iInitialSize);
 		}
-		else
-		{
+		else {
 			successfulInit = false;
 		}
 
 		return successfulInit;
 	}
 
-	public static final int getIdentifier(final String key)
-	{
+	public static final int getIdentifier(final String key) {
 		return identifier_key_value.get(key).intValue();
 	}
 
-	public static final boolean setIdentifier(final String key, final int value)
-	{
-		if (identifier_key_value.containsKey(key))
-		{
+	public static final boolean setIdentifier(final String key, final int value) {
+		if (identifier_key_value.containsKey(key)) {
 			return false;
 		}
 		identifier_key_value.put(key, new Integer(value));
 		return true;
 	}
 
-	public static final boolean removeIdentifier(final String key)
-	{
-		if (identifier_key_value.containsKey(key))
-		{
+	public static final boolean removeIdentifier(final String key) {
+		if (identifier_key_value.containsKey(key)) {
 			Integer buffer = identifier_key_value.remove(key);
 			identifier_key_value_reverse.remove(buffer);
 			return true;
@@ -87,8 +75,7 @@ public final class GraphItemDataSequenzer
 		return false;
 	}
 
-	public static final void removeAllIdentifier()
-	{
+	public static final void removeAllIdentifier() {
 		identifier_key_value.clear();
 		identifier_key_value_reverse.clear();
 	}

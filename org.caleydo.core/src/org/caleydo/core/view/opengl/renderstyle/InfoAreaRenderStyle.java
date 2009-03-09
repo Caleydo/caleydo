@@ -9,8 +9,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
  */
 
 public class InfoAreaRenderStyle
-	extends GeneralRenderStyle
-{
+	extends GeneralRenderStyle {
 
 	public static final float[] INFO_AREA_BORDER_COLOR = { 0.1f, 0.1f, 0.1f, 1 };
 
@@ -20,14 +19,12 @@ public class InfoAreaRenderStyle
 
 	private static final float SPACING = 0.005f;
 
-	public InfoAreaRenderStyle(IViewFrustum viewFrustum)
-	{
+	public InfoAreaRenderStyle(IViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 	}
 
-	public float getSpacing()
-	{
+	public float getSpacing() {
 
 		return SPACING * getScaling();
 	}

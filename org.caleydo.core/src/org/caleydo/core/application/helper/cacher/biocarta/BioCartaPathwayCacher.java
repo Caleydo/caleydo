@@ -25,32 +25,28 @@ import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
  * Fetch tool for BioCarta HTML and image files.
  * 
  * @author Marc Streit
- * 
  */
 public class BioCartaPathwayCacher
-	extends APathwayCacher
-{
+	extends APathwayCacher {
 	/**
 	 * Constructor.
 	 */
 	public BioCartaPathwayCacher(final Display display, final ProgressBar progressBar,
-			final CmdFetchPathwayData triggeringCommand)
-	{
+		final CmdFetchPathwayData triggeringCommand) {
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
 
-		iExpectedDownloads = 870;//888;
+		iExpectedDownloads = 870;// 888;
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		// load spring application context
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
+		ClassPathXmlApplicationContext context =
+			new ClassPathXmlApplicationContext(ApplicationConstants.CORE_SPRING_CONFIG_FILE);
 
 		// load dispatcher from spring
 		Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
@@ -65,8 +61,8 @@ public class BioCartaPathwayCacher
 		dispatcher.addJobFilter(downloadFilter);
 
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
-		RegExpFilterRule regExpFilterRule = new RegExpJobFilter.RegExpFilterRule(
-				".*Gene.*|.*m_.*|.*Kegg.*,.*Tissues.*|.*SAGE.*");
+		RegExpFilterRule regExpFilterRule =
+			new RegExpJobFilter.RegExpFilterRule(".*Gene.*|.*m_.*|.*Kegg.*,.*Tissues.*|.*SAGE.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
@@ -80,18 +76,16 @@ public class BioCartaPathwayCacher
 		// create an job factory
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
-		String sOutputFileName = System.getProperty("user.home")
-				+ System.getProperty("file.separator") + "/.caleydo";
+		String sOutputFileName =
+			System.getProperty("user.home") + System.getProperty("file.separator") + "/.caleydo";
 
 		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();
 
-		try
-		{
+		try {
 			job.setUrl(new URL("http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways"));
 		}
-		catch (MalformedURLException e)
-		{
+		catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 
@@ -109,19 +103,15 @@ public class BioCartaPathwayCacher
 	}
 
 	@Override
-	protected void triggerPathwayListGeneration()
-	{
+	protected void triggerPathwayListGeneration() {
 		// Trigger pathway list generation
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
-		try
-		{
+		try {
 			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA,
-					PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
-					PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
+				PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA, PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
 		}
-		catch (FileNotFoundException fnfe)
-		{
+		catch (FileNotFoundException fnfe) {
 			throw new RuntimeException("Cannot generate BioCarta pathway list.");
 		}
 	}

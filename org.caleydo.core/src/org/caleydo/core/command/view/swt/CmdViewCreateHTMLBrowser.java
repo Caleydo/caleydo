@@ -15,41 +15,36 @@ import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
  * @author Marc Streit
  */
 public class CmdViewCreateHTMLBrowser
-	extends ACmdCreational<HTMLBrowserViewRep>
-{
+	extends ACmdCreational<HTMLBrowserViewRep> {
 	private EBrowserType browserType;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateHTMLBrowser(final ECommandType cmdType)
-	{
+	public CmdViewCreateHTMLBrowser(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1)
-		{
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
-					iParentContainerId);
+		if (iExternalID != -1) {
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
 		HTMLBrowserViewRep browserView = null;
 
-		if (browserType == EBrowserType.GENOME)
-		{
-			browserView = (HTMLBrowserViewRep) viewManager.createView(
-					EManagedObjectType.VIEW_SWT_BROWSER_GENOME, iParentContainerId, sLabel);
+		if (browserType == EBrowserType.GENOME) {
+			browserView =
+				(HTMLBrowserViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_BROWSER_GENOME,
+					iParentContainerId, sLabel);
 		}
-		else
-		{
-			browserView = (HTMLBrowserViewRep) viewManager.createView(
-					EManagedObjectType.VIEW_SWT_BROWSER_GENERAL, iParentContainerId, sLabel);
+		else {
+			browserView =
+				(HTMLBrowserViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_BROWSER_GENERAL,
+					iParentContainerId, sLabel);
 		}
 
 		viewManager.registerItem(browserView);
@@ -57,18 +52,15 @@ public class CmdViewCreateHTMLBrowser
 		browserView.initView();
 		browserView.drawView();
 
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(browserView.getID(),
-					iExternalID);
+		if (iExternalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(browserView.getID(), iExternalID);
 		}
 
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		String sBrowserType = sDetail;
@@ -79,14 +71,12 @@ public class CmdViewCreateHTMLBrowser
 			browserType = EBrowserType.GENERAL;
 	}
 
-	public void setAttributes(EBrowserType browserType)
-	{
+	public void setAttributes(EBrowserType browserType) {
 		this.browserType = browserType;
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

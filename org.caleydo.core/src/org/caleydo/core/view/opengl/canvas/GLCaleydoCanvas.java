@@ -1,11 +1,13 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import java.util.logging.Level;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -14,16 +16,15 @@ import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Class implements a GL canvas. The canvas is registered in the
- * ViewGLCanvasManager and automatically rendered in the animator loop.
+ * Class implements a GL canvas. The canvas is registered in the ViewGLCanvasManager and automatically
+ * rendered in the animator loop.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class GLCaleydoCanvas
 	extends GLCanvas
-	implements GLEventListener, IUniqueObject
-{
+	implements GLEventListener, IUniqueObject {
 	private static final long serialVersionUID = 1L;
 
 	private int iGLCanvasID;
@@ -37,15 +38,13 @@ public class GLCaleydoCanvas
 	/**
 	 * Constructor.
 	 */
-	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
-	{
+	public GLCaleydoCanvas(final GLCapabilities glCapabilities) {
 		super(glCapabilities);
 		// this.getContext().setSynchronized(true);
 
 		joglMouseListener = new PickingJoglMouseListener();
 
-		this.iGLCanvasID = GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_GL_CANVAS);
+		this.iGLCanvasID = GeneralManager.get().getIDManager().createID(EManagedObjectType.VIEW_GL_CANVAS);
 
 		// Register mouse listener to GL canvas
 		this.addMouseListener(joglMouseListener);
@@ -55,12 +54,11 @@ public class GLCaleydoCanvas
 	}
 
 	@Override
-	public void init(GLAutoDrawable drawable)
-	{
+	public void init(GLAutoDrawable drawable) {
 		GeneralManager.get().getLogger().log(
-				Level.INFO,
-				"Creating canvas with ID " + iGLCanvasID + "." + "\nOpenGL capabilities:"
-						+ drawable.getChosenGLCapabilities());
+			Level.INFO,
+			"Creating canvas with ID " + iGLCanvasID + "." + "\nOpenGL capabilities:"
+				+ drawable.getChosenGLCapabilities());
 
 		GL gl = drawable.getGL();
 
@@ -81,13 +79,13 @@ public class GLCaleydoCanvas
 
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-	
+
 		// gl.glEnable(GL.GL_POINT_SMOOTH);
 		// gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-//		gl.glEnable(GL.GL_POLYGON_SMOOTH);
-//		gl.glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+		// gl.glEnable(GL.GL_POLYGON_SMOOTH);
+		// gl.glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
 
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
@@ -96,15 +94,13 @@ public class GLCaleydoCanvas
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
-	{
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		// Implemented in registered GLEventListener classes
 	}
 
 	@Override
-	public void display(GLAutoDrawable drawable)
-	{
+	public void display(GLAutoDrawable drawable) {
 		final GL gl = drawable.getGL();
 
 		// turn this on during debugging if anything changes in the init() code
@@ -121,36 +117,28 @@ public class GLCaleydoCanvas
 	}
 
 	@Override
-	public void displayChanged(GLAutoDrawable drawable, final boolean modeChanged,
-			final boolean deviceChanged)
-	{
+	public void displayChanged(GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
 
 	}
 
-	public final PickingJoglMouseListener getJoglMouseListener()
-	{
+	public final PickingJoglMouseListener getJoglMouseListener() {
 		return joglMouseListener;
 	}
 
 	@Override
-	public int getID()
-	{
+	public int getID() {
 		return iGLCanvasID;
 	}
 
-	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate,
-			boolean bEnableZoom)
-	{
+	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom) {
 		joglMouseListener.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
 	}
 
-	public void setParentComposite(Composite composite)
-	{
+	public void setParentComposite(Composite composite) {
 		parentComposite = composite;
 	}
 
-	public Composite getParentComposite()
-	{
+	public Composite getParentComposite() {
 		return parentComposite;
 	}
 }

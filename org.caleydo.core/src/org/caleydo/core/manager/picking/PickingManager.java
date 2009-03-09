@@ -4,37 +4,37 @@ import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+
 import com.sun.opengl.util.BufferUtil;
 
 /**
  * <p>
- * Manages Picking IDs in a system-wide unique way and stores them locally Do
- * NOT store picking IDs
+ * Manages Picking IDs in a system-wide unique way and stores them locally Do NOT store picking IDs
  * </p>
  * <p>
- * A picking ID is constructed from the type, which is the ordinal of values of
- * {@link EPickingType}. This value may be only up to two digits long thereby
- * limiting the number of possible picking types to 100. The rest Syntax for
- * Picking IDs 2* last digits: type rest: counter C*TT
+ * A picking ID is constructed from the type, which is the ordinal of values of {@link EPickingType}. This
+ * value may be only up to two digits long thereby limiting the number of possible picking types to 100. The
+ * rest Syntax for Picking IDs 2* last digits: type rest: counter C*TT
  * </p>
  * <p>
  * The picking IDs are stored associated with a view
  * </p>
  * <p>
- * The {@link #handlePicking(int, GL)} method has to be called in every render
- * step and calculates the ray-tracing
+ * The {@link #handlePicking(int, GL)} method has to be called in every render step and calculates the
+ * ray-tracing
  * </p>
  * 
  * @author Alexander Lex
  */
-public class PickingManager
-{
+public class PickingManager {
 
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToPickingIDHashMap;
 
@@ -53,8 +53,7 @@ public class PickingManager
 	/**
 	 * Constructor
 	 */
-	public PickingManager()
-	{
+	public PickingManager() {
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 		hashSignatureToExternalIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
@@ -63,18 +62,19 @@ public class PickingManager
 	}
 
 	/**
-	 * Returns a unique picking ID based on the ViewID and a special type and
-	 * stores it in a hash map with the external id DO NOT store picking id's
-	 * locally
+	 * Returns a unique picking ID based on the ViewID and a special type and stores it in a hash map with the
+	 * external id DO NOT store picking id's locally
 	 * 
-	 * @param iViewID the ID of the calling view
-	 * @param ePickingType the type determining what was picked
-	 * @param iExternalID an arbitrary integer
-	 * @return the picking id, use {@link #getExternalIDFromPickingID(int, int)}
-	 *         to retrieve the corresponding external id
+	 * @param iViewID
+	 *          the ID of the calling view
+	 * @param ePickingType
+	 *          the type determining what was picked
+	 * @param iExternalID
+	 *          an arbitrary integer
+	 * @return the picking id, use {@link #getExternalIDFromPickingID(int, int)} to retrieve the corresponding
+	 *         external id
 	 */
-	public int getPickingID(int iViewID, EPickingType ePickingType, int iExternalID)
-	{
+	public int getPickingID(int iViewID, EPickingType ePickingType, int iExternalID) {
 
 		int iType = ePickingType.ordinal();
 		checkType(iType);
@@ -83,14 +83,12 @@ public class PickingManager
 
 		int iSignature = getSignature(iViewID, iType);
 
-		if (hashSignatureToPickingIDHashMap.get(iSignature) == null)
-		{
+		if (hashSignatureToPickingIDHashMap.get(iSignature) == null) {
 			hashSignatureToPickingIDHashMap.put(iSignature, new HashMap<Integer, Integer>());
 			hashSignatureToExternalIDHashMap.put(iSignature, new HashMap<Integer, Integer>());
 
 		}
-		else if (hashSignatureToExternalIDHashMap.get(iSignature).get(iExternalID) != null)
-		{
+		else if (hashSignatureToExternalIDHashMap.get(iSignature).get(iExternalID) != null) {
 			return hashSignatureToExternalIDHashMap.get(iSignature).get(iExternalID);
 		}
 
@@ -102,22 +100,22 @@ public class PickingManager
 	}
 
 	/**
-	 * This method has to be called in every display step. It is responsible for
-	 * the picking. It needs the ID of the calling view and a gl context.
+	 * This method has to be called in every display step. It is responsible for the picking. It needs the ID of
+	 * the calling view and a gl context.
 	 * 
-	 * @param iViewID the id of the calling view
-	 * @param gl the GL context
+	 * @param iViewID
+	 *          the id of the calling view
+	 * @param gl
+	 *          the GL context
 	 */
-	public void handlePicking(final int iViewID, final GL gl)
-	{
+	public void handlePicking(final int iViewID, final GL gl) {
 
 		if (bEnablePicking == false)
 			return;
 
-		AGLEventListener canvasUser = (GeneralManager.get().getViewGLCanvasManager()
-				.getGLEventListener(iViewID));
-		PickingJoglMouseListener pickingTriggerMouseAdapter = canvasUser.getParentGLCanvas()
-				.getJoglMouseListener();
+		AGLEventListener canvasUser = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+		PickingJoglMouseListener pickingTriggerMouseAdapter =
+			canvasUser.getParentGLCanvas().getJoglMouseListener();
 
 		Point pickPoint = null;
 
@@ -127,13 +125,11 @@ public class PickingManager
 
 		EPickingMode ePickingMode = EPickingMode.CLICKED;
 
-		if (pickingTriggerMouseAdapter.wasMouseDoubleClicked())
-		{
+		if (pickingTriggerMouseAdapter.wasMouseDoubleClicked()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			ePickingMode = EPickingMode.DOUBLE_CLICKED;
 		}
-		else if (pickingTriggerMouseAdapter.wasMouseDragged())
-		{
+		else if (pickingTriggerMouseAdapter.wasMouseDragged()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			ePickingMode = EPickingMode.DRAGGED;
 		}
@@ -144,8 +140,7 @@ public class PickingManager
 			// bIsMouseOverPickingEvent = false;
 			ePickingMode = EPickingMode.CLICKED;
 		}
-		else if (pickingTriggerMouseAdapter.wasMouseMoved())
-		{
+		else if (pickingTriggerMouseAdapter.wasMouseMoved()) {
 			// Restart timer
 			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
 			// System.nanoTime());
@@ -154,7 +149,7 @@ public class PickingManager
 		}
 		else if (hashViewIDToIsMouseOverPickingEvent.get(iViewID) != null
 		// && hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null
-				&& hashViewIDToIsMouseOverPickingEvent.get(iViewID) == true)
+			&& hashViewIDToIsMouseOverPickingEvent.get(iViewID) == true)
 		// && System.nanoTime() -
 		// hashViewIDToLastMouseMovedTimeStamp.get(iViewID) >= 0)// 1e9
 		// )
@@ -165,8 +160,7 @@ public class PickingManager
 			ePickingMode = EPickingMode.MOUSE_OVER;
 		}
 
-		if (pickPoint == null)
-		{
+		if (pickPoint == null) {
 			return;
 		}
 
@@ -194,11 +188,10 @@ public class PickingManager
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
 		glu.gluPickMatrix(pickPoint.x, (viewport[3] - pickPoint.y),// 
-				5.0, 5.0, viewport, 0); // pick width and height is set to 5
+			5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
-		float fAspectRatio = (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]);
+		float fAspectRatio = (float) (viewport[3] - viewport[1]) / (float) (viewport[2] - viewport[0]);
 
 		IViewFrustum viewFrustum = canvasUser.getViewFrustum();
 
@@ -224,10 +217,9 @@ public class PickingManager
 		// ePickingMode);
 		ArrayList<Integer> iAlPickedObjectId = processHits(iHitCount, iArPickingBuffer);
 
-		if (iAlPickedObjectId.size() > 0)
-		{
-			processPicks(iAlPickedObjectId, iViewID, ePickingMode, tmpPickPoint,
-					pickingTriggerMouseAdapter.getPickedPointDragStart());
+		if (iAlPickedObjectId.size() > 0) {
+			processPicks(iAlPickedObjectId, iViewID, ePickingMode, tmpPickPoint, pickingTriggerMouseAdapter
+				.getPickedPointDragStart());
 		}
 	}
 
@@ -238,8 +230,7 @@ public class PickingManager
 	 * @param iType
 	 * @return null if no Hits, else the ArrayList<Integer> with the hits
 	 */
-	public ArrayList<Pick> getHits(int iViewID, EPickingType ePickingType)
-	{
+	public ArrayList<Pick> getHits(int iViewID, EPickingType ePickingType) {
 
 		int iType = ePickingType.ordinal();
 		checkType(iType);
@@ -254,15 +245,15 @@ public class PickingManager
 	}
 
 	/**
-	 * Returns the external ID (the id with which you initialized
-	 * getPickingID()) when you provide the picking ID
+	 * Returns the external ID (the id with which you initialized getPickingID()) when you provide the picking
+	 * ID
 	 * 
 	 * @param uniqueManagedObject
-	 * @param iPickingID the picking ID
+	 * @param iPickingID
+	 *          the picking ID
 	 * @return the ID, null if no entry for that pickingID
 	 */
-	public int getExternalIDFromPickingID(int iViewID, int iPickingID)
-	{
+	public int getExternalIDFromPickingID(int iViewID, int iPickingID) {
 		int iSignature = getSignatureFromPickingID(iPickingID, iViewID);
 		HashMap<Integer, Integer> hashMap = hashSignatureToPickingIDHashMap.get(iSignature);
 		if (hashMap == null)
@@ -272,17 +263,16 @@ public class PickingManager
 	}
 
 	/**
-	 * Returns the external ID (the id with which you initialized
-	 * getPickingID()) when you provide the hit count, meaning the n-th element
-	 * in the hit list.
+	 * Returns the external ID (the id with which you initialized getPickingID()) when you provide the hit
+	 * count, meaning the n-th element in the hit list.
 	 * 
 	 * @param uniqueManagedObject
-	 * @param iType the type, >= 0, <100
+	 * @param iType
+	 *          the type, >= 0, <100
 	 * @param iHitCount
 	 * @return the ID, null if no entry for that hit count
 	 */
-	public int getExternalIDFromHitCount(int iViewID, int iType, int iHitCount)
-	{
+	public int getExternalIDFromHitCount(int iViewID, int iType, int iHitCount) {
 
 		// TODO: exceptions
 		int iSignature = getSignature(iViewID, iType);
@@ -292,14 +282,14 @@ public class PickingManager
 	}
 
 	/**
-	 * Removes the picking IDs form internal storage and from the hit list You
-	 * should do that when you close a view, remember to do it for all types
+	 * Removes the picking IDs form internal storage and from the hit list You should do that when you close a
+	 * view, remember to do it for all types
 	 * 
-	 * @param iViewID the id of the calling view
+	 * @param iViewID
+	 *          the id of the calling view
 	 * @param iType
 	 */
-	public void flushPickingIDs(int iViewID, int iType)
-	{
+	public void flushPickingIDs(int iViewID, int iType) {
 		int iSignature = getSignature(iViewID, iType);
 		hashSignatureToExternalIDHashMap.remove(iSignature);
 		hashSignatureToHitList.remove(iSignature);
@@ -309,19 +299,18 @@ public class PickingManager
 	/**
 	 * Flush a particular hit list
 	 * 
-	 * @param iViewID the id of the calling view
-	 * @param ePickingType the picking type determining which hits should be
-	 *            flushed
+	 * @param iViewID
+	 *          the id of the calling view
+	 * @param ePickingType
+	 *          the picking type determining which hits should be flushed
 	 */
-	public void flushHits(int iViewID, EPickingType ePickingType)
-	{
+	public void flushHits(int iViewID, EPickingType ePickingType) {
 
 		int iType = ePickingType.ordinal();
 		checkType(iType);
 		checkViewID(iViewID);
 
-		if (hashSignatureToHitList.get(getSignature(iViewID, iType)) != null)
-		{
+		if (hashSignatureToHitList.get(getSignature(iViewID, iType)) != null) {
 			hashSignatureToHitList.get(getSignature(iViewID, iType)).clear();
 		}
 	}
@@ -329,24 +318,23 @@ public class PickingManager
 	/**
 	 * Calculates the picking id, based on a type
 	 * 
-	 * @param iType the type
+	 * @param iType
+	 *          the type
 	 * @return a unique ID
 	 */
-	private int calculateID(int iType)
-	{
+	private int calculateID(int iType) {
 		iIDCounter++;
-		return (iIDCounter * 100 + iType);
+		return iIDCounter * 100 + iType;
 	}
 
 	/**
-	 * Extracts the nearest hit from the provided iArPickingBuffer Stores it
-	 * internally Can process only one hit at at time at the moment
+	 * Extracts the nearest hit from the provided iArPickingBuffer Stores it internally Can process only one hit
+	 * at at time at the moment
 	 * 
 	 * @param iHitCount
 	 * @param iArPickingBuffer
 	 */
-	private ArrayList<Integer> processHits(int iHitCount, int[] iArPickingBuffer)
-	{
+	private ArrayList<Integer> processHits(int iHitCount, int[] iArPickingBuffer) {
 
 		int iPickingBufferCounter = 0;
 
@@ -356,18 +344,15 @@ public class PickingManager
 		int iMinimumZValue = Integer.MAX_VALUE;
 		int iNumberOfNames = 0;
 		int iNearestObjectIndex = 0;
-		for (int iCount = 0; iCount < iHitCount; iCount++)
-		{
+		for (int iCount = 0; iCount < iHitCount; iCount++) {
 			// if first object is no hit skip z values
-			if (iArPickingBuffer[iPickingBufferCounter] == 0)
-			{
+			if (iArPickingBuffer[iPickingBufferCounter] == 0) {
 				iPickingBufferCounter += 3;
 				continue;
 			}
 			// iPickingBufferCounter++;
 			// Check if object is nearer than previous objects
-			if (iArPickingBuffer[iPickingBufferCounter + 1] < iMinimumZValue)
-			{
+			if (iArPickingBuffer[iPickingBufferCounter + 1] < iMinimumZValue) {
 				// first element is number of names on name stack
 				// second element is min Z Value
 				iMinimumZValue = iArPickingBuffer[iPickingBufferCounter + 1];
@@ -377,15 +362,13 @@ public class PickingManager
 				// iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3
 				// ]);
 			}
-			iPickingBufferCounter = iPickingBufferCounter + 3
-					+ iArPickingBuffer[iPickingBufferCounter];
+			iPickingBufferCounter = iPickingBufferCounter + 3 + iArPickingBuffer[iPickingBufferCounter];
 
 		}
 
 		iNumberOfNames = iArPickingBuffer[iNearestObjectIndex];
 
-		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++)
-		{
+		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++) {
 			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3 + iNameCount]);
 		}
 
@@ -395,9 +378,8 @@ public class PickingManager
 		// return iPickedObjectId;
 	}
 
-	private void processPicks(ArrayList<Integer> alPickingIDs, int iViewID,
-			EPickingMode myMode, Point pickedPoint, Point dragStartPoint)
-	{
+	private void processPicks(ArrayList<Integer> alPickingIDs, int iViewID, EPickingMode myMode,
+		Point pickedPoint, Point dragStartPoint) {
 
 		// we here have two cases: a view is rendered remote, than
 		// eType.canContainOtherPicks() has to be true, or a view is rendered
@@ -411,47 +393,39 @@ public class PickingManager
 		int iSignature = 0;
 		int iMasterSignature = 0;
 		int iOrigianlPickingID = 0;
-		for (int iResultCounter = 0; iResultCounter < alPickingIDs.size(); iResultCounter++)
-		{
+		for (int iResultCounter = 0; iResultCounter < alPickingIDs.size(); iResultCounter++) {
 			iPickingID = alPickingIDs.get(iResultCounter);
 
 			int iType = getTypeFromPickingID(iPickingID);
 
 			EPickingType eType = EPickingType.values()[iType];
-			if (eType.canContainOtherPicks())
-			{
+			if (eType.canContainOtherPicks()) {
 				iSignature = getSignatureFromPickingID(iPickingID, iViewID);
 				iMasterSignature = iSignature;
 
 				iOrigianlPickingID = iPickingID;
 			}
-			else
-			{
+			else {
 				// if (bIsMaster && iResultCounter == 0)
-				if (iResultCounter == 0)
-				{
+				if (iResultCounter == 0) {
 					iSignature = getSignatureFromPickingID(iPickingID, iViewID);
 
 					iOrigianlPickingID = iPickingID;
 					iMasterSignature = iSignature;
 				}
-				else
-				{
+				else {
 					// int iValue = getSignatureFromPickingID(iPickingID,
 					// iViewID);
-					HashMap<Integer, Integer> signatureToPickingID = hashSignatureToPickingIDHashMap
-							.get(iMasterSignature);
+					HashMap<Integer, Integer> signatureToPickingID =
+						hashSignatureToPickingIDHashMap.get(iMasterSignature);
 
 					if (signatureToPickingID == null)
 						continue;
 
-					Integer iViewUnderInteractionID = signatureToPickingID
-							.get(iOrigianlPickingID);
+					Integer iViewUnderInteractionID = signatureToPickingID.get(iOrigianlPickingID);
 					if (iViewUnderInteractionID == null)
 						continue;
-					if (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-							iViewUnderInteractionID) == null)
-					{
+					if (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewUnderInteractionID) == null) {
 						iViewUnderInteractionID = iViewID;
 					}
 					iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
@@ -459,18 +433,15 @@ public class PickingManager
 				}
 			}
 
-			if (hashSignatureToHitList.get(iSignature) == null)
-			{
+			if (hashSignatureToHitList.get(iSignature) == null) {
 				ArrayList<Pick> tempList = new ArrayList<Pick>();
 				tempList.add(new Pick(iPickingID, myMode, pickedPoint, dragStartPoint));
 				hashSignatureToHitList.put(iSignature, tempList);
 
 			}
-			else
-			{
+			else {
 				hashSignatureToHitList.get(iSignature).clear();
-				hashSignatureToHitList.get(iSignature).add(
-						new Pick(iPickingID, myMode, pickedPoint, dragStartPoint));
+				hashSignatureToHitList.get(iSignature).add(new Pick(iPickingID, myMode, pickedPoint, dragStartPoint));
 			}
 		}
 	}
@@ -482,45 +453,37 @@ public class PickingManager
 	 * @param iType
 	 * @return
 	 */
-	private int getSignature(int iViewID, int iType)
-	{
+	private int getSignature(int iViewID, int iType) {
 
-		return (iViewID * 100 + iType);
+		return iViewID * 100 + iType;
 	}
 
-	private int getSignatureFromPickingID(int iPickingID, int iViewID)
-	{
+	private int getSignatureFromPickingID(int iPickingID, int iViewID) {
 
 		int iType = getTypeFromPickingID(iPickingID);
 
-		return (getSignature(iViewID, iType));
+		return getSignature(iViewID, iType);
 	}
 
-	private int getTypeFromPickingID(int iPickingID)
-	{
+	private int getTypeFromPickingID(int iPickingID) {
 
 		int iTemp = iPickingID / 100;
-		return (iPickingID - iTemp * 100);
+		return iPickingID - iTemp * 100;
 	}
 
-	private void checkViewID(int iViewID)
-	{
+	private void checkViewID(int iViewID) {
 
-		if (iViewID > 9999999 || iViewID < 100)
-		{
-			throw new IllegalArgumentException(
-					"PickingManager: The view id has to be in a range between "
-							+ "9,999,999 and 100, but was: " + iViewID);
+		if (iViewID > 9999999 || iViewID < 100) {
+			throw new IllegalArgumentException("PickingManager: The view id has to be in a range between "
+				+ "9,999,999 and 100, but was: " + iViewID);
 		}
 	}
 
-	private void checkType(int iType)
-	{
+	private void checkType(int iType) {
 
-		if (iType > 99 || iType < 0)
-		{
+		if (iType > 99 || iType < 0) {
 			throw new IllegalArgumentException(
-					"PickingManager: Type has to be larger then or exactly 0 and less than 100");
+				"PickingManager: Type has to be larger then or exactly 0 and less than 100");
 		}
 	}
 
@@ -529,8 +492,7 @@ public class PickingManager
 	 * 
 	 * @param bEnablePicking
 	 */
-	public void enablePicking(final boolean bEnablePicking)
-	{
+	public void enablePicking(final boolean bEnablePicking) {
 		this.bEnablePicking = bEnablePicking;
 	}
 

@@ -14,13 +14,11 @@ import org.xml.sax.helpers.LocatorImpl;
  */
 public abstract class ASaxParserHandler
 	extends DefaultHandler
-	implements ISaxParserHandler
-{
+	implements ISaxParserHandler {
 
 	/**
 	 * Buffer for error messages. An error message always sets the flag
-	 * org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing
-	 * true.
+	 * org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing true.
 	 * 
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#sInfoMessage
@@ -38,19 +36,18 @@ public abstract class ASaxParserHandler
 	protected IMementoCallbackXML parentMementoCaller = null;
 
 	/**
-	 * This variabel defines, if a parsing error shall throw a
-	 * org.xml.sax.SAXParseException. If an parsing error occurs the variabel
-	 * org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing is
-	 * set to true.
+	 * This variabel defines, if a parsing error shall throw a org.xml.sax.SAXParseException. If an parsing
+	 * error occurs the variabel org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler#bErrorWhileParsing is set
+	 * to true.
 	 * 
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
 	 */
 	protected boolean bErrorHaltParsingOnError = true;
 
 	/**
-	 * This variable indicates, that an error has occurred. With respect to the
-	 * variabel org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler#
-	 * bError_HaltParsingOnError the parsing is interrupted.
+	 * This variable indicates, that an error has occurred. With respect to the variabel
+	 * org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler# bError_HaltParsingOnError the parsing is
+	 * interrupted.
 	 * 
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#bErrorHaltParsingOnError
 	 */
@@ -59,8 +56,7 @@ public abstract class ASaxParserHandler
 	/**
 	 * Default Constructor. Sets bEnableHaltOnParsingError = false.
 	 */
-	public ASaxParserHandler()
-	{
+	public ASaxParserHandler() {
 
 		super();
 		reset();
@@ -70,10 +66,10 @@ public abstract class ASaxParserHandler
 	/**
 	 * Constructor with bEnableHaltOnParsingError.
 	 * 
-	 * @param bEnableHaltOnParsingError enabels or disables halting on errors
+	 * @param bEnableHaltOnParsingError
+	 *          enabels or disables halting on errors
 	 */
-	public ASaxParserHandler(final boolean bEnableHaltOnParsingError)
-	{
+	public ASaxParserHandler(final boolean bEnableHaltOnParsingError) {
 
 		super();
 		reset();
@@ -88,8 +84,7 @@ public abstract class ASaxParserHandler
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#bErrorHaltParsingOnError
 	 * @return true if a parsing error will cause an parsing abortion
 	 */
-	final protected boolean isHaltOnParsingErrorSet()
-	{
+	final protected boolean isHaltOnParsingErrorSet() {
 
 		return bErrorHaltParsingOnError;
 	}
@@ -101,8 +96,7 @@ public abstract class ASaxParserHandler
 	 * @see org.xml.sax.Locator
 	 * @param setLocator
 	 */
-	final protected void setSaxHandlerLocator(LocatorImpl setLocator)
-	{
+	final protected void setSaxHandlerLocator(LocatorImpl setLocator) {
 
 		assert setLocator != null : "setSaxHandlerLocator() Error due to null-pointer";
 
@@ -115,41 +109,34 @@ public abstract class ASaxParserHandler
 	 * 
 	 * @return current line and column number
 	 */
-	final protected String detailsOnLocationInXML()
-	{
+	final protected String detailsOnLocationInXML() {
 
 		return " line=" + locator.getLineNumber() + ":" + locator.getColumnNumber();
 	}
 
 	/**
-	 * Append an error message and set the "error-has-occurred"-flag true. In
-	 * comparision
-	 * org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler#appandInfoMsg(String)
-	 * sets an info message without setting the "error-has-occurred"-flag true.
+	 * Append an error message and set the "error-has-occurred"-flag true. In comparision
+	 * org.caleydo.core.net.dwt.swing.DParseBaseSaxHandler#appandInfoMsg(String) sets an info message without
+	 * setting the "error-has-occurred"-flag true.
 	 * 
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#appandInfoMsg(String)
-	 * @param errorMessage new error message
+	 * @param errorMessage
+	 *          new error message
 	 */
-	final protected void appandErrorMsg(final String errorMessage)
-	{
+	final protected void appandErrorMsg(final String errorMessage) {
 
-		if (sErrorMessage.length() > 1)
-		{
+		if (sErrorMessage.length() > 1) {
 			sErrorMessage += "\n";
 		}
 		sErrorMessage += errorMessage + detailsOnLocationInXML();
 
-		if (bErrorHaltParsingOnError)
-		{
-			try
-			{
-				this.fatalError(new SAXParseException("ParseException due to " + errorMessage,
-						locator));
+		if (bErrorHaltParsingOnError) {
+			try {
+				this.fatalError(new SAXParseException("ParseException due to " + errorMessage, locator));
 			}
-			catch (SAXException s_e)
-			{
+			catch (SAXException s_e) {
 				throw new IllegalStateException(s_e.toString());
 			}
 		}
@@ -164,42 +151,38 @@ public abstract class ASaxParserHandler
 	 * @return TRUE if an error occurred on parsing.
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#getErrorMessage()
 	 */
-	public final boolean hasErrorWhileParsing()
-	{
+	public final boolean hasErrorWhileParsing() {
 
 		return bErrorWhileParsing;
 	}
 
 	/**
-	 * Important: all derived classes must call super.reset() inside their
-	 * reset() call to not cause side effects!
+	 * Important: all derived classes must call super.reset() inside their reset() call to not cause side
+	 * effects!
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.ISaxParserHandler#reset()
 	 */
-	public void reset()
-	{
+	public void reset() {
 
 		sErrorMessage = "";
 		bErrorWhileParsing = false;
 	}
 
 	/**
-	 * Sets the reference to the calling memento object. Used to tigger a
-	 * callback event
+	 * Sets the reference to the calling memento object. Used to tigger a callback event
 	 * 
 	 * @see
-	 * @param setRefParent reference to the parent obejct or the object, that
-	 *            sould be triggert in case of a callback action
+	 * @param setRefParent
+	 *          reference to the parent obejct or the object, that sould be triggert in case of a callback
+	 *          action
 	 */
-	public void setParentMementoCaller(IMementoCallbackXML setRefParent)
-	{
+	public void setParentMementoCaller(IMementoCallbackXML setRefParent) {
 
 		parentMementoCaller = setRefParent;
 	}
 
 	@Override
-	public abstract void startElement(String uri, String localName, String qName,
-			Attributes attributes);
+	public abstract void startElement(String uri, String localName, String qName, Attributes attributes);
 
 	@Override
 	public abstract void endElement(String uri, String localName, String qName);

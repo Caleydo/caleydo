@@ -10,7 +10,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * @author Alexander Lex
  */
 public interface IStorageManager
-	extends IManager<IStorage>
-{
+	extends IManager<IStorage> {
 	public IStorage createStorage(final EManagedObjectType useStorageType);
 }

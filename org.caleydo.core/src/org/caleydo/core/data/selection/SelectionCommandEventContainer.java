@@ -1,6 +1,7 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.AEventContainer;
 import org.caleydo.core.manager.event.EEventType;
@@ -9,22 +10,19 @@ import org.caleydo.core.manager.event.EEventType;
  * Event Container for SelectionCommands
  * 
  * @author Alexander Lex
- * 
  */
 public class SelectionCommandEventContainer
-	extends AEventContainer
-{
+	extends AEventContainer {
 	ArrayList<SelectionCommand> alSelectionCommands;
 	EIDType iDType;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param iDType used to identify the selection manager associated with the
-	 *            id type
+	 * @param iDType
+	 *          used to identify the selection manager associated with the id type
 	 */
-	public SelectionCommandEventContainer(EIDType iDType)
-	{
+	public SelectionCommandEventContainer(EIDType iDType) {
 		super(EEventType.TRIGGER_SELECTION_COMMAND);
 		alSelectionCommands = new ArrayList<SelectionCommand>();
 		this.iDType = iDType;
@@ -34,12 +32,12 @@ public class SelectionCommandEventContainer
 	/**
 	 * Constructor
 	 * 
-	 * @param iDType used to identify the selection manager associated with the
-	 *            id type
-	 * @param selectionCommand shortcut when only used with one command
+	 * @param iDType
+	 *          used to identify the selection manager associated with the id type
+	 * @param selectionCommand
+	 *          shortcut when only used with one command
 	 */
-	public SelectionCommandEventContainer(EIDType iDType, SelectionCommand selectionCommand)
-	{
+	public SelectionCommandEventContainer(EIDType iDType, SelectionCommand selectionCommand) {
 		this(iDType);
 		addSelectionCommand(selectionCommand);
 	}
@@ -47,10 +45,10 @@ public class SelectionCommandEventContainer
 	/**
 	 * Adds a selection command
 	 * 
-	 * @param selectionCommand the command to add
+	 * @param selectionCommand
+	 *          the command to add
 	 */
-	public void addSelectionCommand(SelectionCommand selectionCommand)
-	{
+	public void addSelectionCommand(SelectionCommand selectionCommand) {
 		alSelectionCommands.add(selectionCommand);
 	}
 
@@ -59,8 +57,7 @@ public class SelectionCommandEventContainer
 	 * 
 	 * @return the id type
 	 */
-	public EIDType getIDType()
-	{
+	public EIDType getIDType() {
 		return iDType;
 	}
 
@@ -69,8 +66,7 @@ public class SelectionCommandEventContainer
 	 * 
 	 * @return
 	 */
-	public ArrayList<SelectionCommand> getSelectionCommands()
-	{
+	public ArrayList<SelectionCommand> getSelectionCommands() {
 		return alSelectionCommands;
 	}
 

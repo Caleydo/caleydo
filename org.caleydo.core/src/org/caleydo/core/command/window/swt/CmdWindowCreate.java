@@ -11,8 +11,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Michael Kalkusch
  */
 public class CmdWindowCreate
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 	protected String sLayoutAttributes;
 
 	/**
@@ -20,19 +19,15 @@ public class CmdWindowCreate
 	 * 
 	 * @param cmdType
 	 */
-	public CmdWindowCreate(final ECommandType cmdType)
-	{
+	public CmdWindowCreate(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
-		int iShellID = generalManager.getSWTGUIManager().createWindow(sLabel,
-				sLayoutAttributes);
+	public void doCommand() {
+		int iShellID = generalManager.getSWTGUIManager().createWindow(sLabel, sLayoutAttributes);
 
-		if (iExternalID != -1)
-		{
+		if (iExternalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(iShellID, iExternalID);
 		}
 
@@ -40,15 +35,13 @@ public class CmdWindowCreate
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		sLayoutAttributes = sAttribute1;

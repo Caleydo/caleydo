@@ -6,8 +6,7 @@ package org.caleydo.core.data.collection;
  * @author Alexander Lex
  * @author Michael Kalkusch
  */
-public interface ICollection
-{
+public interface ICollection {
 	/**
 	 * Return a Label of the item.
 	 * 
@@ -18,21 +17,24 @@ public interface ICollection
 	/**
 	 * Sets the label for this item.
 	 * 
-	 * @param setLabel label text
+	 * @param setLabel
+	 *          label text
 	 */
 	public void setLabel(final String setLabel);
 
 	/**
 	 * Deletes the virtual arrays associated with the unique id
 	 * 
-	 * @param iUniqueID the unique ID associated with the virtual array
+	 * @param iUniqueID
+	 *          the unique ID associated with the virtual array
 	 */
 	public void removeVirtualArray(int iUniqueID);
 
 	/**
 	 * Resets the virtual arrays to the original values
 	 * 
-	 * @param iUniqueID the unique ID associated with the virtual array
+	 * @param iUniqueID
+	 *          the unique ID associated with the virtual array
 	 */
 	public void resetVirtualArray(int iUniqueID);
 }

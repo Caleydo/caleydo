@@ -10,30 +10,26 @@ import org.eclipse.ui.PlatformUI;
  * Action that resets the spacing of the axis in the PCs
  * 
  * @author Alexander
- *
  */
 public class ResetAxisSpacingAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Reset Axis Spacing";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/reset_axis_spacing.png";
 
 	/**
 	 * Constructor.
 	 */
-	public ResetAxisSpacingAction(int iViewID)
-	{
+	public ResetAxisSpacingAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		triggerCmdExternalAction(EExternalActionType.PARCOORDS_RESET_AXIS_SPACING);

@@ -1,16 +1,13 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
 /**
- * The level of data filtering. Determines whether all information contained in
- * a storage (meaning put in the virtual array), or only information with some
- * contextual information, such as mapping or occurence in other data structures
- * should be loaded.
+ * The level of data filtering. Determines whether all information contained in a storage (meaning put in the
+ * virtual array), or only information with some contextual information, such as mapping or occurence in other
+ * data structures should be loaded.
  * 
  * @author Alexander Lex
- * 
  */
-public enum EDataFilterLevel
-{
+public enum EDataFilterLevel {
 	/**
 	 * All data in the storage is used
 	 */

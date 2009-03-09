@@ -12,13 +12,11 @@ import org.caleydo.rcp.views.swt.TabularDataView;
  * 
  * @author Marc Streit
  */
-public enum EStartViewType
-{
+public enum EStartViewType {
 
-	GLYPHVIEW("glyphview", GLGlyphView.ID), PARALLEL_COORDINATES("parcoords",
-			GLParCoordsView.ID), HEATMAP("heatmap", GLHierarchicalHeatMapView.ID), REMOTE(
-			"remote", GLRemoteRenderingView.ID), BROWSER("browser", HTMLBrowserView.ID), TABULAR(
-			"tabular", TabularDataView.ID);
+	GLYPHVIEW("glyphview", GLGlyphView.ID), PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID), HEATMAP(
+		"heatmap", GLHierarchicalHeatMapView.ID), REMOTE("remote", GLRemoteRenderingView.ID), BROWSER("browser",
+		HTMLBrowserView.ID), TABULAR("tabular", TabularDataView.ID);
 
 	private String sCommandLineArgument;
 	private String sRCPViewID;
@@ -28,19 +26,16 @@ public enum EStartViewType
 	 * 
 	 * @param sTriggerCommand
 	 */
-	private EStartViewType(String sTriggerCommand, String sRCPViewID)
-	{
+	private EStartViewType(String sTriggerCommand, String sRCPViewID) {
 		this.sCommandLineArgument = sTriggerCommand;
 		this.sRCPViewID = sRCPViewID;
 	}
 
-	public String getCommandLineArgument()
-	{
+	public String getCommandLineArgument() {
 		return sCommandLineArgument;
 	}
 
-	public String getRCPViewID()
-	{
+	public String getRCPViewID() {
 		return sRCPViewID;
 	}
 }

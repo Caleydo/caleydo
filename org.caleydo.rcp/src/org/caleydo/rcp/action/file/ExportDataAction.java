@@ -2,6 +2,7 @@ package org.caleydo.rcp.action.file;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -33,8 +34,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class ExportDataAction
 	extends Action
-	implements ActionFactory.IWorkbenchAction
-{
+	implements ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.rcp.ExportDataAction";
 
@@ -51,41 +51,34 @@ public class ExportDataAction
 	private String sFileName = "";
 	private String sFilePath = "";
 
-	private int iCreatedSetID = -1;
-
 	/**
 	 * Constructor.
 	 */
-	public ExportDataAction(final Composite parentComposite)
-	{
+	public ExportDataAction(final Composite parentComposite) {
 		super("Load Data");
 		setId(ID);
 		setToolTipText("Import data from text file");
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-				IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
+			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
 
 		this.parentComposite = parentComposite;
 
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		// Check if load data GUI is embedded in a wizard or if a own dialog
 		// must be created.
-		if (parentComposite == null && window != null)
-		{
+		if (parentComposite == null && window != null) {
 			LoadDataDialog loadDataFileDialog = new LoadDataDialog(window.getShell());
 			loadDataFileDialog.open();
 		}
-		else
-		{
+		else {
 			createGUI();
 		}
 	}
 
-	private void createGUI()
-	{
+	private void createGUI() {
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
@@ -96,20 +89,18 @@ public class ExportDataAction
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 
-		buttonFileChooser.addSelectionListener(new SelectionAdapter()
-		{
+		buttonFileChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent event)
-			{
+			public void widgetSelected(SelectionEvent event) {
 				FileDialog fileDialog = new FileDialog(parentComposite.getShell(), SWT.SAVE);
 				fileDialog.setText("Save");
 				fileDialog.setFilterPath(sFilePath);
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
-				
-				String sFilePath = "caleydo_export_"
-					+ new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + ".csv";
-				
+
+				String sFilePath =
+					"caleydo_export_" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + ".csv";
+
 				fileDialog.setFileName(sFilePath);
 				sFileName = fileDialog.open();
 
@@ -120,16 +111,12 @@ public class ExportDataAction
 
 		boolean bDoesBucketExist = false;
 		boolean bDoesStandaloneStorageBasedExist = false;
-		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			if (view instanceof GLRemoteRendering)
-			{
+		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
+			if (view instanceof GLRemoteRendering) {
 				bDoesBucketExist = true;
 			}
 			if ((view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap)
-					&& !view.isRenderedRemote())
-			{
+				&& !view.isRenderedRemote()) {
 				bDoesStandaloneStorageBasedExist = true;
 			}
 		}
@@ -137,35 +124,28 @@ public class ExportDataAction
 		radios[0] = new Button(composite, SWT.RADIO);
 		radios[0].setText("Export Bucket Contents");
 		radios[0].setBounds(10, 5, 75, 30);
-		if (!bDoesBucketExist)
-		{
+		if (!bDoesBucketExist) {
 			radios[0].setEnabled(false);
 		}
-		else
-		{
+		else {
 			radios[0].setSelection(true);
 		}
 
 		radios[1] = new Button(composite, SWT.RADIO);
 		radios[1].setText("Export All Data");
 		radios[1].setBounds(10, 30, 75, 30);
-		if (!bDoesStandaloneStorageBasedExist)
-		{
+		if (!bDoesStandaloneStorageBasedExist) {
 			radios[1].setEnabled(false);
 		}
-		else if (!bDoesBucketExist)
-		{
+		else if (!bDoesBucketExist) {
 			radios[1].setSelection(true);
 		}
 
 	}
 
-	public void execute()
-	{
-		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
-		{
-			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
-			{
+	public void execute() {
+		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
+			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 				if (radios[0].getSelection())
 					set.export(sFileName, true);
 				else
@@ -182,15 +162,13 @@ public class ExportDataAction
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 
 		LoadDataDialog dialog = new LoadDataDialog(new Shell());
 		dialog.open();
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 }

@@ -9,8 +9,7 @@ import org.osgi.framework.Constants;
  * The activator class controls the plug-in life cycle
  */
 public class Activator
-	extends AbstractUIPlugin
-{
+	extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.caleydo.rcp";
@@ -23,21 +22,18 @@ public class Activator
 	/**
 	 * The constructor
 	 */
-	public Activator()
-	{
+	public Activator() {
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception
-	{
+	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		sBundleVersion = getBundle().getHeaders().get(Constants.BUNDLE_VERSION).toString();
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception
-	{
+	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}
@@ -47,21 +43,18 @@ public class Activator
 	 * 
 	 * @return the shared instance
 	 */
-	public static Activator getDefault()
-	{
+	public static Activator getDefault() {
 		return plugin;
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given plug-in
-	 * relative path
+	 * Returns an image descriptor for the image file at the given plug-in relative path
 	 * 
 	 * @param path
-	 *            the path
+	 *          the path
 	 * @return the image descriptor
 	 */
-	public static ImageDescriptor getImageDescriptor(String path)
-	{
+	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 

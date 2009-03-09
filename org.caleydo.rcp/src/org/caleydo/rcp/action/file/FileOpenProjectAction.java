@@ -15,8 +15,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class FileOpenProjectAction
 	extends Action
-	implements ActionFactory.IWorkbenchAction
-{
+	implements ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.rcp.FileOpenProjectAction";
 
@@ -25,22 +24,20 @@ public class FileOpenProjectAction
 	/**
 	 * Constructor.
 	 */
-	public FileOpenProjectAction(final Composite parentComposite)
-	{
+	public FileOpenProjectAction(final Composite parentComposite) {
 
 		super("Open Project");
 
 		setId(ID);
 		setToolTipText("Open Caleydo Project");
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-				IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
+			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
 
 		this.parentComposite = parentComposite;
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 
 		String sFilePath = "";
 		FileDialog fileDialog = new FileDialog(parentComposite.getShell());
@@ -61,8 +58,7 @@ public class FileOpenProjectAction
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 
 		// nothing to do
 	}

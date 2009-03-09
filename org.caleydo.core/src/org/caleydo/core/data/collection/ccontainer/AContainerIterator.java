@@ -7,21 +7,17 @@ import org.caleydo.core.data.selection.VAIterator;
  * Abstract container iterator for all ICContainers. Supports virtual arrays.
  * 
  * @author Alexander Lex
- * 
  */
 public class AContainerIterator
-	implements ICContainerIterator
-{
+	implements ICContainerIterator {
 	protected IVirtualArray virtualArray = null;
 	protected VAIterator vaIterator = null;
 	protected int iIndex = 0;
 	protected int iSize = 0;
 
 	@Override
-	public boolean hasNext()
-	{
-		if (virtualArray == null)
-		{
+	public boolean hasNext() {
+		if (virtualArray == null) {
 			if (iIndex < iSize - 1)
 				return true;
 			else
@@ -32,11 +28,10 @@ public class AContainerIterator
 	}
 
 	@Override
-	public void remove()
-	{
+	public void remove() {
 		if (virtualArray == null)
 			throw new IllegalStateException(
-					"Remove is only defined if a virtual array is enabled, which is currently not the case");
+				"Remove is only defined if a virtual array is enabled, which is currently not the case");
 		else
 			vaIterator.remove();
 	}

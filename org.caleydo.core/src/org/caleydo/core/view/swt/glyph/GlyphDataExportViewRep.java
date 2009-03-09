@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -33,8 +34,7 @@ import org.eclipse.swt.widgets.TableItem;
 // FIXME again bad hack, does not implement IMediator interfaces
 public class GlyphDataExportViewRep
 	extends ASWTView
-	implements ISWTView
-{
+	implements ISWTView {
 
 	@SuppressWarnings("unused")
 	private GlyphManager gman = null;
@@ -60,10 +60,9 @@ public class GlyphDataExportViewRep
 	/**
 	 * Constructor.
 	 */
-	public GlyphDataExportViewRep(int iParentContainerId, String sLabel)
-	{
+	public GlyphDataExportViewRep(int iParentContainerId, String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_GLYPH_DATAEXPORT));
+			EManagedObjectType.VIEW_SWT_GLYPH_DATAEXPORT));
 
 		gman = generalManager.getGlyphManager();
 
@@ -71,19 +70,16 @@ public class GlyphDataExportViewRep
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 		initComponents();
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 
 	}
 
-	private void initComponents()
-	{
+	private void initComponents() {
 		parentComposite.setBackground(new Color(null, 255, 0, 0));
 
 		GridLayout layout = new GridLayout();
@@ -95,11 +91,9 @@ public class GlyphDataExportViewRep
 
 		// button.setImage(bgimg);
 
-		button.addSelectionListener(new SelectionAdapter()
-		{
+		button.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				FileDialog dialog = new FileDialog(parentComposite.getShell(), SWT.SAVE);
 				dialog.setFilterNames(new String[] { "CSV" });
 				dialog.setFilterExtensions(new String[] { "*.csv" });
@@ -123,19 +117,16 @@ public class GlyphDataExportViewRep
 
 	}
 
-	private void createViewTable(Composite parent)
-	{
+	private void createViewTable(Composite parent) {
 		Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		myViews.clear();
 
-		Collection<AGLEventListener> views = GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners();
+		Collection<AGLEventListener> views =
+			GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
 
-		for (AGLEventListener v : views)
-		{
-			if (v instanceof GLGlyph)
-			{
+		for (AGLEventListener v : views) {
+			if (v instanceof GLGlyph) {
 				TableItem item = new TableItem(table, SWT.NONE);
 
 				GLGlyph view = (GLGlyph) v;
@@ -147,8 +138,7 @@ public class GlyphDataExportViewRep
 
 				if (text == null)
 					item.setText("missing view info");
-				else
-				{
+				else {
 					item.setText(text);
 
 					myViews.put(text, view);
@@ -159,28 +149,23 @@ public class GlyphDataExportViewRep
 	}
 
 	/**
-	 * This writes all the data to the file. TODO: change this to save storage
-	 * if thats finished
+	 * This writes all the data to the file. TODO: change this to save storage if thats finished
 	 * 
 	 * @param filename
 	 */
-	protected void writeFile(String filename)
-	{
+	protected void writeFile(String filename) {
 		System.out.println("Save to: " + filename);
 
-		try
-		{
+		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(filename));
 
 			// for(int i=0;i<10;++i)
 			// out.write("test " + i + "\r\n");
 
 			boolean first = true;
-			for (TableItem item : viewTable.getItems())
-			{
+			for (TableItem item : viewTable.getItems()) {
 
-				if (item.getChecked())
-				{
+				if (item.getChecked()) {
 
 					String text = item.getText();
 
@@ -198,13 +183,11 @@ public class GlyphDataExportViewRep
 			out.close();
 
 		}
-		catch (FileNotFoundException e)
-		{
+		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -10,8 +10,7 @@ import gleem.linalg.Vec3f;
 /**
  * @author Michael Kalkusch
  */
-public class Mat4f_GeneralRotf
-{
+public class Mat4f_GeneralRotf {
 
 	private static final float EPSILON = 0.00000001f;
 
@@ -28,16 +27,14 @@ public class Mat4f_GeneralRotf
 	/**
 	 * 
 	 */
-	public Mat4f_GeneralRotf()
-	{
+	public Mat4f_GeneralRotf() {
 
 		centerOfRotation = new Vec3f(0, 0, 0);
 		rotation = new Rotf();
 		matrix = new Mat4f();
 	}
 
-	public Mat4f_GeneralRotf(final Mat4f_GeneralRotf copy)
-	{
+	public Mat4f_GeneralRotf(final Mat4f_GeneralRotf copy) {
 		this();
 
 		setAllAndUpdate(copy.getCenterOfRotation(), copy.getRotation());
@@ -46,24 +43,21 @@ public class Mat4f_GeneralRotf
 	/**
 	 * 
 	 */
-	public Mat4f_GeneralRotf(final Vec3f centerOfRotation, final Rotf rotation)
-	{
+	public Mat4f_GeneralRotf(final Vec3f centerOfRotation, final Rotf rotation) {
 
 		this();
 
 		setAllAndUpdate(centerOfRotation, rotation);
 	}
 
-	protected static final float grad_2_rad(float rad)
-	{
+	protected static final float grad_2_rad(float rad) {
 		return (float) Math.PI / 180.0f * rad;
 	}
 
 	/**
 	 * debug message
 	 */
-	protected void debugInfo(Mat4f matrix)
-	{
+	protected void debugInfo(Mat4f matrix) {
 		if (!showMatrix)
 			return;
 
@@ -74,35 +68,32 @@ public class Mat4f_GeneralRotf
 	/**
 	 * @return the rotation
 	 */
-	public final Rotf getRotation()
-	{
+	public final Rotf getRotation() {
 
 		return new Rotf(rotation);
 	}
 
 	/**
-	 * @param rotation the rotation to set
+	 * @param rotation
+	 *          the rotation to set
 	 */
-	public final void setRotation(final Rotf rotation)
-	{
+	public final void setRotation(final Rotf rotation) {
 
 		this.rotation.set(rotation);
 
-		if (Math.abs(rotation.get(new Vec3f())) < EPSILON)
-		{
+		if (Math.abs(rotation.get(new Vec3f())) < EPSILON) {
 			bNoRotation = true;
 		}
-		else
-		{
+		else {
 			bNoRotation = false;
 		}
 	}
 
 	/**
-	 * @param rotation the rotation to set
+	 * @param rotation
+	 *          the rotation to set
 	 */
-	public final void setAllAndUpdate(final Vec3f centerOfRotation, final Rotf rotation)
-	{
+	public final void setAllAndUpdate(final Vec3f centerOfRotation, final Rotf rotation) {
 
 		this.rotation.set(rotation);
 		this.centerOfRotation.set(centerOfRotation);
@@ -113,17 +104,16 @@ public class Mat4f_GeneralRotf
 	/**
 	 * @return the centerOfRotation
 	 */
-	public final Vec3f getCenterOfRotation()
-	{
+	public final Vec3f getCenterOfRotation() {
 
 		return new Vec3f(centerOfRotation);
 	}
 
 	/**
-	 * @param centerOfRoation the centerOfRotation to set
+	 * @param centerOfRoation
+	 *          the centerOfRotation to set
 	 */
-	public final void setCenterOfRotation(final Vec3f centerOfRoation)
-	{
+	public final void setCenterOfRotation(final Vec3f centerOfRoation) {
 
 		this.centerOfRotation.set(centerOfRoation);
 	}
@@ -133,8 +123,7 @@ public class Mat4f_GeneralRotf
 	 * 
 	 * @return the matrix
 	 */
-	public final Mat4f getMatrix()
-	{
+	public final Mat4f getMatrix() {
 
 		Mat4f result = new Mat4f(matrix);
 		return result;
@@ -150,8 +139,7 @@ public class Mat4f_GeneralRotf
 	// this.matrix = new Mat4f(matrix);
 	// }
 
-	public void debugTestRun()
-	{
+	public void debugTestRun() {
 
 		Vec3f axis = new Vec3f(1, 0, 0);
 		float angle = grad_2_rad(45);
@@ -160,16 +148,15 @@ public class Mat4f_GeneralRotf
 		this.setRotation(new Rotf(axis, angle));
 		this.update();
 
-		System.out.println("CENTER: " + centerOfRotation.toString() + "\nROT: "
-				+ rotation.toString() + "\n ---\n");
+		System.out.println("CENTER: " + centerOfRotation.toString() + "\nROT: " + rotation.toString()
+			+ "\n ---\n");
 
 		Vec3f inPoint = new Vec3f(7, 3, 5);
 		float xStart = (int) inPoint.x();
 		int iLength = 5;
 
-		for (int i = 0; i < iLength; i++)
-		{
-			inPoint.setX((float) (i) + xStart);
+		for (int i = 0; i < iLength; i++) {
+			inPoint.setX((float) i + xStart);
 			Vec3f outPoint = this.xformPt(inPoint);
 
 			System.out.println("IN: " + inPoint.toString() + "\nOUT: " + outPoint.toString());
@@ -181,8 +168,7 @@ public class Mat4f_GeneralRotf
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 
 		Mat4f_GeneralRotf test = new Mat4f_GeneralRotf();
 		test.debugTestRun();
@@ -193,11 +179,11 @@ public class Mat4f_GeneralRotf
 	 * 
 	 * @see gleem.linalg.Mat4f#xformPt(Vec3f, Vec3f)
 	 * @see gleem.linalg.open.Mat4f_GeneralRotf#xformPt(Vec3f, Vec3f)
-	 * @param src point to be transformed
+	 * @param src
+	 *          point to be transformed
 	 * @return point transformed by internal Mat4f; creates a new Vec3f() object
 	 */
-	public final Vec3f xformPt(final Vec3f src)
-	{
+	public final Vec3f xformPt(final Vec3f src) {
 		Vec3f result = new Vec3f();
 		matrix.xformPt(src, result);
 		return result;
@@ -206,36 +192,31 @@ public class Mat4f_GeneralRotf
 	/**
 	 * @see gleem.linalg.Mat4f#xformPt(Vec3f, Vec3f)
 	 * @param src
-	 * @param dest result; note this Vec3f must not be null!
+	 * @param dest
+	 *          result; note this Vec3f must not be null!
 	 */
-	public final void xformPt(final Vec3f src, Vec3f dest)
-	{
+	public final void xformPt(final Vec3f src, Vec3f dest) {
 		matrix.xformPt(src, dest);
 	}
 
-	public void reset()
-	{
+	public void reset() {
 		centerOfRotation.set(0, 0, 0);
 		rotation.set(new Vec3f(-1, 0, 0), 0.0f);
 	}
 
-	public void update()
-	{
+	public void update() {
 
 		Mat4f T = new Mat4f(Mat4f.MAT4F_UNITY);
 		Mat4f T_inv = new Mat4f(Mat4f.MAT4F_UNITY);
 		Mat4f R = new Mat4f();
 
 		T.setTranslation(centerOfRotation);
-		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation.y(),
-				-centerOfRotation.z()));
+		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation.y(), -centerOfRotation.z()));
 
-		if (bNoRotation)
-		{
+		if (bNoRotation) {
 			R.makeIdent();
 		}
-		else
-		{
+		else {
 			rotation.toMatrix(R);
 			/* set missing homogeneous coordinate */
 			R.set(3, 3, 1.0f);

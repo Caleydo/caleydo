@@ -9,8 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ChangeOrientationAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Switch dimensions";
 	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
 
@@ -19,25 +18,23 @@ public class ChangeOrientationAction
 	/**
 	 * Constructor.
 	 */
-	public ChangeOrientationAction(int iViewID)
-	{
+	public ChangeOrientationAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
-		bEnable = ((AStorageBasedView) GeneralManager.get().getViewGLCanvasManager()
-				.getGLEventListener(iViewID)).isInDefaultOrientation();
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
+		bEnable =
+			((AStorageBasedView) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
+				.isInDefaultOrientation();
 		setChecked(bEnable);
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 		bEnable = !bEnable;
-		triggerCmdExternalFlagSetter(bEnable,
-				EExternalFlagSetterType.STORAGEBASED_CHANGE_ORIENTATION);
+		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_CHANGE_ORIENTATION);
 	};
 }

@@ -10,8 +10,7 @@ import java.util.StringTokenizer;
 /**
  * @author Marc Streit
  */
-public class DAVIDWhiteListFilter
-{
+public class DAVIDWhiteListFilter {
 
 	protected PrintWriter writer;
 
@@ -21,36 +20,31 @@ public class DAVIDWhiteListFilter
 	private static final String FILE_NAME = "DAVID2GOTERM_CC_ALL.txt";
 
 	public DAVIDWhiteListFilter()
-		throws IOException
-	{
+		throws IOException {
 
 		writer = new PrintWriter("data/genome/mapping/david/HOMO_SAPIENS_" + FILE_NAME);
 	}
 
-	protected void convertData() throws IOException
-	{
+	protected void convertData() throws IOException {
 
 		// Reading input by lines
-		BufferedReader in = new BufferedReader(new FileReader("data/genome/mapping/david/"
-				+ FILE_NAME));
+		BufferedReader in = new BufferedReader(new FileReader("data/genome/mapping/david/" + FILE_NAME));
 
 		String sInputLine = "";
 		String sFilter = "";
 
-		BufferedReader whitelist = new BufferedReader(new FileReader(
-				"data/genome/mapping/david/DAVID_HOMO_SAPIENS.txt"));
+		BufferedReader whitelist =
+			new BufferedReader(new FileReader("data/genome/mapping/david/DAVID_HOMO_SAPIENS.txt"));
 
 		ArrayList<Integer> alFilter = new ArrayList<Integer>();
 
-		while ((sFilter = whitelist.readLine()) != null)
-		{
+		while ((sFilter = whitelist.readLine()) != null) {
 			alFilter.add(Integer.valueOf(sFilter).intValue());
 		}
 		whitelist.close();
 
 		StringTokenizer tokenizer;
-		while ((sInputLine = in.readLine()) != null)
-		{
+		while ((sInputLine = in.readLine()) != null) {
 			tokenizer = new StringTokenizer(sInputLine, "\t");
 
 			if (alFilter.contains(Integer.valueOf(tokenizer.nextToken()).intValue()))// &&
@@ -66,18 +60,15 @@ public class DAVIDWhiteListFilter
 		writer.close();
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 
-		try
-		{
+		try {
 			DAVIDWhiteListFilter whitelistFilter = new DAVIDWhiteListFilter();
 
 			whitelistFilter.convertData();
 
 		}
-		catch (IOException ioe)
-		{
+		catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}

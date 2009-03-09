@@ -11,14 +11,12 @@ import org.caleydo.util.graph.core.Graph;
  * @author Michael Kalkusch
  */
 public class SampleGraph
-	extends Graph
-{
+	extends Graph {
 
 	/**
 	 * 
 	 */
-	public SampleGraph(final int id)
-	{
+	public SampleGraph(final int id) {
 		super(id);
 
 		/** extend the Graph based on your requirements */

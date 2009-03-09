@@ -1,40 +1,35 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003
- * Kenneth B. Russell (kbrussel@alum.mit.edu) Copying, distribution and use of
- * this software in source and binary forms, with or without modification, is
- * permitted provided that the following conditions are met: Distributions of
- * source code must reproduce the copyright notice, this list of conditions and
- * the following disclaimer in the source code header files; and Distributions
- * of binary code must reproduce the copyright notice, this list of conditions
- * and the following disclaimer in the documentation, Read me file, license file
- * and/or other materials provided with the software distribution. The names of
- * Sun Microsystems, Inc. ("Sun") and/or the copyright holder may not be used to
- * endorse or promote products derived from this software without specific prior
- * written permission. THIS SOFTWARE IS PROVIDED "AS IS," WITHOUT A WARRANTY OF
- * ANY KIND. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES,
- * INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- * PURPOSE, NON-INTERFERENCE, ACCURACY OF INFORMATIONAL CONTENT OR
- * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. THE COPYRIGHT HOLDER, SUN AND SUN'S
- * LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A
- * RESULT OF USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
- * IN NO EVENT WILL THE COPYRIGHT HOLDER, SUN OR SUN'S LICENSORS BE LIABLE FOR
- * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS
- * OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. YOU
- * ACKNOWLEDGE THAT THIS SOFTWARE IS NOT DESIGNED, LICENSED OR INTENDED FOR USE
- * IN THE DESIGN, CONSTRUCTION, OPERATION OR MAINTENANCE OF ANY NUCLEAR
- * FACILITY. THE COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS DISCLAIM ANY EXPRESS
- * OR IMPLIED WARRANTY OF FITNESS FOR SUCH USES.
+ * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
+ * without modification, is permitted provided that the following conditions are met: Distributions of source
+ * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
+ * source code header files; and Distributions of binary code must reproduce the copyright notice, this list
+ * of conditions and the following disclaimer in the documentation, Read me file, license file and/or other
+ * materials provided with the software distribution. The names of Sun Microsystems, Inc. ("Sun") and/or the
+ * copyright holder may not be used to endorse or promote products derived from this software without specific
+ * prior written permission. THIS SOFTWARE IS PROVIDED "AS IS," WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR
+ * IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, NON-INTERFERENCE, ACCURACY OF INFORMATIONAL CONTENT OR NON-INFRINGEMENT,
+ * ARE HEREBY EXCLUDED. THE COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
+ * SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES. IN
+ * NO EVENT WILL THE COPYRIGHT HOLDER, SUN OR SUN'S LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA,
+ * OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. YOU ACKNOWLEDGE THAT THIS SOFTWARE IS NOT DESIGNED, LICENSED OR
+ * INTENDED FOR USE IN THE DESIGN, CONSTRUCTION, OPERATION OR MAINTENANCE OF ANY NUCLEAR FACILITY. THE
+ * COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS DISCLAIM ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR SUCH
+ * USES.
  */
 
 package gleem;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -43,23 +38,19 @@ import javax.media.opengl.glu.GLU;
 
 /** Tests the Examiner Viewer. */
 @SuppressWarnings("all")
-public class TestExaminerViewer
-{
+public class TestExaminerViewer {
 	private static final int X_SIZE = 400;
 	private static final int Y_SIZE = 400;
 
 	static class HandleBoxManipBSphereProvider
-		implements BSphereProvider
-	{
+		implements BSphereProvider {
 		private HandleBoxManip manip;
 
-		private HandleBoxManipBSphereProvider(HandleBoxManip manip)
-		{
+		private HandleBoxManipBSphereProvider(HandleBoxManip manip) {
 			this.manip = manip;
 		}
 
-		public BSphere getBoundingSphere()
-		{
+		public BSphere getBoundingSphere() {
 			BSphere bsph = new BSphere();
 			bsph.setCenter(manip.getTranslation());
 			Vec3f scale0 = manip.getScale();
@@ -74,14 +65,12 @@ public class TestExaminerViewer
 	}
 
 	static class Listener
-		implements GLEventListener
-	{
+		implements GLEventListener {
 		private GLU glu = new GLU();
 		private CameraParameters params = new CameraParameters();
 		private ExaminerViewer viewer;
 
-		public void init(GLAutoDrawable drawable)
-		{
+		public void init(GLAutoDrawable drawable) {
 			GL gl = drawable.getGL();
 
 			gl.glClearColor(0, 0, 0, 0);
@@ -125,34 +114,26 @@ public class TestExaminerViewer
 			viewer.viewAll(gl);
 		}
 
-		public void display(GLAutoDrawable drawable)
-		{
+		public void display(GLAutoDrawable drawable) {
 			GL gl = drawable.getGL();
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 			viewer.update(gl);
-			ManipManager.getManipManager().updateCameraParameters(drawable,
-					viewer.getCameraParameters());
+			ManipManager.getManipManager().updateCameraParameters(drawable, viewer.getCameraParameters());
 			ManipManager.getManipManager().render(drawable, gl);
 		}
 
 		// Unused routines
-		public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h)
-		{
+		public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
 		}
 
-		public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-				boolean deviceChanged)
-		{
+		public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
 		}
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Frame frame = new Frame("ExaminerViewer Test");
-		frame.addWindowListener(new WindowAdapter()
-		{
-			public void windowClosing(WindowEvent e)
-			{
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});

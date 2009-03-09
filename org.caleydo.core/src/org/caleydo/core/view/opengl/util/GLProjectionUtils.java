@@ -3,12 +3,9 @@ package org.caleydo.core.view.opengl.util;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-public class GLProjectionUtils
-{
+public class GLProjectionUtils {
 
-	public static void orthogonalStart(final GL gl, final float fWindowWidth,
-			final float fWindowHeight)
-	{
+	public static void orthogonalStart(final GL gl, final float fWindowWidth, final float fWindowHeight) {
 
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPushMatrix();
@@ -20,8 +17,7 @@ public class GLProjectionUtils
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 	}
 
-	public static void orthogonalEnd(final GL gl)
-	{
+	public static void orthogonalEnd(final GL gl) {
 
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();

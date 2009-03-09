@@ -6,8 +6,7 @@ package org.caleydo.core.data;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public interface IUniqueObject
-{
+public interface IUniqueObject {
 	/**
 	 * Get the unique ID
 	 * 

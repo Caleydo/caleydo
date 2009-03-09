@@ -1,29 +1,27 @@
 package org.caleydo.core.view.opengl.util.spline;
 
 /**
- * Author: Skip Balk version: 2.2
- * 
- * Copyright: Skip Balk (c) 2005 License: you may use this source-code freely as
- * long as you don't say it's yours or hold me responsible for anything.
+ * Author: Skip Balk version: 2.2 Copyright: Skip Balk (c) 2005 License: you may use this source-code freely
+ * as long as you don't say it's yours or hold me responsible for anything.
  */
 import gleem.linalg.Vec3f;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class Spline3D
-{
+public class Spline3D {
 	/**
 	 * Constructor.
 	 * 
-	 * @param points Input points
-	 * @param accuracy Accuracy works very smooth when using 0.001-0.010. The
-	 *            higher the rougher, cheaper in first calc, same speed (!) when
-	 *            cached.
-	 * @param margin Margin defines the margin-of-error the actual answer.
-	 *            measured in units.
+	 * @param points
+	 *          Input points
+	 * @param accuracy
+	 *          Accuracy works very smooth when using 0.001-0.010. The higher the rougher, cheaper in first
+	 *          calc, same speed (!) when cached.
+	 * @param margin
+	 *          Margin defines the margin-of-error the actual answer. measured in units.
 	 */
-	public Spline3D(Vec3f[] points, float accuracy, float margin)
-	{
+	public Spline3D(Vec3f[] points, float accuracy, float margin) {
 		n0 = points.length;
 		n1 = n0 - 1;
 
@@ -37,8 +35,7 @@ public class Spline3D
 		float[] y = new float[n0];
 		float[] z = new float[n0];
 
-		for (int i = 0; i < n0; i++)
-		{
+		for (int i = 0; i < n0; i++) {
 			x[i] = points[i].x();
 			y[i] = points[i].y();
 			z[i] = points[i].z();
@@ -57,8 +54,7 @@ public class Spline3D
 	 * POINT COUNT
 	 */
 
-	public final int pointCount()
-	{
+	public final int pointCount() {
 		return n0;
 	}
 
@@ -66,15 +62,13 @@ public class Spline3D
 	 * POSITION
 	 */
 
-	public final Vec3f getPositionAt(float param)
-	{
+	public final Vec3f getPositionAt(float param) {
 		Vec3f v = new Vec3f();
 		this.getPositionAt(param, v);
 		return v;
 	}
 
-	public final void getPositionAt(float param, Vec3f result)
-	{
+	public final void getPositionAt(float param, Vec3f result) {
 		// clamp
 		if (param < 0.0F)
 			param = 0.0F;
@@ -95,15 +89,13 @@ public class Spline3D
 	 * POSITION AT DISTANCE
 	 */
 
-	public final Vec3f getPositionAtDistance(float dist)
-	{
+	public final Vec3f getPositionAtDistance(float dist) {
 		Vec3f v = new Vec3f();
 		this.getPositionAtDistance(dist, v);
 		return v;
 	}
 
-	public final void getPositionAtDistance(float dist, Vec3f result)
-	{
+	public final void getPositionAtDistance(float dist, Vec3f result) {
 		// System.out.println(cacheToFloat.size());
 		this.getPositionAt(this.getParameterAtDistance(dist), result);
 	}
@@ -112,8 +104,7 @@ public class Spline3D
 	 * DISTANCE
 	 */
 
-	public final float getDistanceAt(float param)
-	{
+	public final float getDistanceAt(float param) {
 		return this.getDistanceForInterval(0.0F, param, false);
 	}
 
@@ -121,20 +112,16 @@ public class Spline3D
 	 * PARAMETER AT DISTANCE
 	 */
 
-	private final float getParameterAtDistance(float dist)
-	{
+	private final float getParameterAtDistance(float dist) {
 		return this.getParameterAtDistance(0.0F, n1, 0.0F, dist);
 	}
 
-	private final float getParameterAtDistance(float t0, float t1, float accDistance,
-			float findDistance)
-	{
+	private final float getParameterAtDistance(float t0, float t1, float accDistance, float findDistance) {
 		final float half = (t1 - t0) * 0.5F;
 		final float th = t0 + half;
 
 		// margins too small
-		if (EasyMath.equals(t0, t1, accuracy)
-				|| EasyMath.equals(accDistance, findDistance, margin))
+		if (EasyMath.equals(t0, t1, accuracy) || EasyMath.equals(accDistance, findDistance, margin))
 			return t0;
 
 		//
@@ -156,8 +143,7 @@ public class Spline3D
 
 	private float length = -1;
 
-	public final float getLength()
-	{
+	public final float getLength() {
 		if (length != -1)
 			return length;
 
@@ -174,13 +160,11 @@ public class Spline3D
 	private final float cacheUpToRange;
 	private Cache cacheKey;
 
-	private final float getDistanceForInterval(float t0, float t1, boolean cache)
-	{
+	private final float getDistanceForInterval(float t0, float t1, boolean cache) {
 		// only cache upto a certain range
-		boolean caching = cache && (t1 - t0) > cacheUpToRange;
+		boolean caching = cache && t1 - t0 > cacheUpToRange;
 
-		if (caching)
-		{
+		if (caching) {
 			cacheKey = new Cache(t0, t1);
 			Float f = cacheToFloat.get(cacheKey);
 
@@ -199,8 +183,7 @@ public class Spline3D
 		this.getPositionAt(t0, lastV);
 
 		float t = t0;
-		for (int i = 1; i < steps; i++)
-		{
+		for (int i = 1; i < steps; i++) {
 			t += step;
 
 			this.getPositionAt(t, currV);
@@ -209,8 +192,7 @@ public class Spline3D
 		}
 
 		// cache the result
-		if (caching)
-		{
+		if (caching) {
 			cacheToFloat.put(cacheKey, new Float(distance));
 
 			// clear cache if it grows way out of control
@@ -225,13 +207,11 @@ public class Spline3D
 	 * CACHE CLASS
 	 */
 
-	private class Cache
-	{
+	private class Cache {
 		final float t0, t1;
 		final int id;
 
-		private Cache(float t0, float t1)
-		{
+		private Cache(float t0, float t1) {
 			this.t0 = t0;
 			this.t1 = t1;
 
@@ -239,20 +219,18 @@ public class Spline3D
 		}
 
 		@Override
-		public int hashCode()
-		{
+		public int hashCode() {
 			return id;
 		}
 
 		@Override
-		public boolean equals(Object other)
-		{
+		public boolean equals(Object other) {
 			if (other == null || !(other instanceof Cache))
 				return false;
 
 			Cache that = (Cache) other;
 
-			return (this.t0 == that.t0) && (this.t1 == that.t1);
+			return this.t0 == that.t0 && this.t1 == that.t1;
 		}
 	}
 
@@ -260,10 +238,8 @@ public class Spline3D
 	 * CURVE CLASS
 	 */
 
-	private static class Curve
-	{
-		static final Cubic[] calcCurve(int n, float[] axis)
-		{
+	private static class Curve {
+		static final Cubic[] calcCurve(int n, float[] axis) {
 			float[] gamma = new float[n + 1];
 			float[] delta = new float[n + 1];
 			float[] d = new float[n + 1];
@@ -287,14 +263,12 @@ public class Spline3D
 				d[i] = delta[i] - gamma[i] * d[i + 1];
 
 			// c
-			for (int i = 0; i < n; i++)
-			{
+			for (int i = 0; i < n; i++) {
 				float x0 = axis[i];
 				float x1 = axis[i + 1];
 				float d0 = d[i];
 				float d1 = d[i + 1];
-				c[i] = new Cubic(x0, d0, 3.0F * (x1 - x0) - 2.0F * d0 - d1, 2.0F * (x0 - x1)
-						+ d0 + d1);
+				c[i] = new Cubic(x0, d0, 3.0F * (x1 - x0) - 2.0F * d0 - d1, 2.0F * (x0 - x1) + d0 + d1);
 			}
 			return c;
 		}
@@ -304,21 +278,18 @@ public class Spline3D
 	 * CUBIC CLASS
 	 */
 
-	private static class Cubic
-	{
+	private static class Cubic {
 		private final float a, b, c, d;
 
-		private Cubic(float a, float b, float c, float d)
-		{
+		private Cubic(float a, float b, float c, float d) {
 			this.a = a;
 			this.b = b;
 			this.c = c;
 			this.d = d;
 		}
 
-		final float eval(float u)
-		{
-			return (((d * u) + c) * u + b) * u + a;
+		final float eval(float u) {
+			return ((d * u + c) * u + b) * u + a;
 		}
 	}
 
@@ -326,10 +297,8 @@ public class Spline3D
 	 * COPIED METHODS FROM UTILITY CLASSES
 	 */
 
-	static class VecMath
-	{
-		public static final float distance3D(Vec3f a, Vec3f b)
-		{
+	static class VecMath {
+		public static final float distance3D(Vec3f a, Vec3f b) {
 			float x = a.x() - b.x();
 			float y = a.y() - b.y();
 			float z = a.z() - b.z();
@@ -338,10 +307,8 @@ public class Spline3D
 		}
 	}
 
-	static class EasyMath
-	{
-		public static final boolean equals(float a, float b, float error)
-		{
+	static class EasyMath {
+		public static final boolean equals(float a, float b, float error) {
 			if (a == b)
 				return true;
 

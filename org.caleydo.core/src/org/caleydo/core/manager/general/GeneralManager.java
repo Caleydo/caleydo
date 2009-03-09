@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.bridge.gui.standalone.SWTStandaloneBridge;
 import org.caleydo.core.manager.ICommandManager;
@@ -43,8 +44,7 @@ import org.eclipse.jface.preference.PreferenceStore;
  * @author Marc Streit
  */
 public class GeneralManager
-	implements IGeneralManager
-{
+	implements IGeneralManager {
 
 	/**
 	 * General manager as a singleton
@@ -52,8 +52,7 @@ public class GeneralManager
 	private static IGeneralManager generalManager;
 
 	/**
-	 * Preferences store enables storing and restoring of application specific
-	 * preference data.
+	 * Preferences store enables storing and restoring of application specific preference data.
 	 */
 	private PreferenceStore preferenceStore;
 
@@ -84,28 +83,24 @@ public class GeneralManager
 	private IGUIBridge guiBridge;
 
 	private ResourceLoader resourceLoader;
-	
+
 	private WiiRemote wiiRemote;
-	
+
 	private boolean bIsWiiMode = false;
 
 	@Override
-	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge)
-	{
+	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge) {
 		this.init(bIsStandalone);
 
 		this.guiBridge = externalGUIBridge;
 	}
 
 	@Override
-	public void init(boolean bIsStandalone)
-	{
+	public void init(boolean bIsStandalone) {
 		this.bIsStandalone = bIsStandalone;
 
-		if (bAllManagersInitialized)
-		{
-			throw new IllegalStateException(
-					"Tried to initialize managers multiple times. Abort.");
+		if (bAllManagersInitialized) {
+			throw new IllegalStateException("Tried to initialize managers multiple times. Abort.");
 		}
 
 		bAllManagersInitialized = true;
@@ -135,108 +130,89 @@ public class GeneralManager
 		resourceLoader = new ResourceLoader();
 
 		// Init Standalone GUI Bridge if in standalone mode
-		if (bIsStandalone)
-		{
+		if (bIsStandalone) {
 			guiBridge = new SWTStandaloneBridge();
 		}
-		
+
 		wiiRemote = new WiiRemote();
-		if (GeneralManager.get().isWiiModeActive())
-		{
+		if (GeneralManager.get().isWiiModeActive()) {
 			wiiRemote.connect();
 		}
 	}
 
 	/**
-	 * Returns the general method as a singleton object. When first called the
-	 * general manager is created (lazy).
+	 * Returns the general method as a singleton object. When first called the general manager is created
+	 * (lazy).
 	 */
-	public static IGeneralManager get()
-	{
-		if (generalManager == null)
-		{
+	public static IGeneralManager get() {
+		if (generalManager == null) {
 			generalManager = new GeneralManager();
 		}
 		return generalManager;
 	}
 
-	private void initPreferences()
-	{
-		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH
-				+ PREFERENCE_FILE_NAME);
+	private void initPreferences() {
+		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
 
-		try
-		{
+		try {
 			preferenceStore.load();
 		}
-		catch (IOException e)
-		{			
+		catch (IOException e) {
 			// Create .caleydo folder
-			if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).exists()))
-			{
-				if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir()))
-					throw new IllegalStateException(
-							"Unable to create home folder .caleydo. Check user permissions!");
+			if (!new File(IGeneralManager.CALEYDO_HOME_PATH).exists()) {
+				if (!new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir())
+					throw new IllegalStateException("Unable to create home folder .caleydo. Check user permissions!");
 			}
-			
-			// Create log folder in .caleydo
-			if (!(new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs()))
-				throw new IllegalStateException(
-						"Unable to create log folder .caleydo/log. Check user permissions!");
 
-			logger.log(Level.INFO, "Create new preference store at "
-				+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
-			
-			try
-			{
+			// Create log folder in .caleydo
+			if (!new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs())
+				throw new IllegalStateException("Unable to create log folder .caleydo/log. Check user permissions!");
+
+			logger.log(Level.INFO, "Create new preference store at " + IGeneralManager.CALEYDO_HOME_PATH
+				+ PREFERENCE_FILE_NAME);
+
+			try {
 				preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
 				preferenceStore.setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
 				preferenceStore.setValue(PreferenceConstants.LOAD_PATHWAY_DATA, true);
 				preferenceStore.setValue(PreferenceConstants.USE_PROXY, false);
 				preferenceStore.save();
 			}
-			catch (IOException e1)
-			{
+			catch (IOException e1) {
 				throw new IllegalStateException("Unable to save preference file.");
 			}
 		}
-		
-		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY))
-		{
+
+		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
 			System.setProperty("network.proxy_host", preferenceStore.getString(PreferenceConstants.PROXY_SERVER));
-			System.setProperty("network.proxy_port", preferenceStore.getString(PreferenceConstants.PROXY_PORT));	
-		}		
+			System.setProperty("network.proxy_port", preferenceStore.getString(PreferenceConstants.PROXY_PORT));
+		}
 	}
 
 	/**
 	 * Initialize the Java internal logger
 	 */
-	private void initLogger()
-	{
+	private void initLogger() {
 		logger = Logger.getLogger("Caleydo Log");
 	}
 
 	@Override
-	public final Logger getLogger()
-	{
+	public final Logger getLogger() {
 		return logger;
 	}
 
 	@Override
-	public ResourceLoader getResourceLoader()
-	{
+	public ResourceLoader getResourceLoader() {
 		return resourceLoader;
 	}
 
 	@Override
-	public IMementoManager getMementoManager()
-	{
+	public IMementoManager getMementoManager() {
 		return mementoManager;
 	}
 
 	@Override
-	public IStorageManager getStorageManager()
-	{
+	public IStorageManager getStorageManager() {
 		return storageManager;
 	}
 
@@ -249,98 +225,82 @@ public class GeneralManager
 	// }
 
 	@Override
-	public ISetManager getSetManager()
-	{
+	public ISetManager getSetManager() {
 		return setManager;
 	}
 
 	@Override
-	public IViewManager getViewGLCanvasManager()
-	{
+	public IViewManager getViewGLCanvasManager() {
 		return viewGLCanvasManager;
 	}
 
 	@Override
-	public IPathwayManager getPathwayManager()
-	{
+	public IPathwayManager getPathwayManager() {
 		return pathwayManager;
 	}
 
 	@Override
-	public IPathwayItemManager getPathwayItemManager()
-	{
+	public IPathwayItemManager getPathwayItemManager() {
 		return pathwayItemManager;
 	}
 
 	@Override
-	public ISWTGUIManager getSWTGUIManager()
-	{
+	public ISWTGUIManager getSWTGUIManager() {
 		return sWTGUIManager;
 	}
 
 	@Override
-	public IEventPublisher getEventPublisher()
-	{
+	public IEventPublisher getEventPublisher() {
 		return eventPublisher;
 	}
 
 	@Override
-	public IXmlParserManager getXmlParserManager()
-	{
+	public IXmlParserManager getXmlParserManager() {
 		return this.xmlParserManager;
 	}
 
 	@Override
-	public IIDMappingManager getIDMappingManager()
-	{
+	public IIDMappingManager getIDMappingManager() {
 		return this.genomeIdManager;
 	}
 
 	@Override
-	public ICommandManager getCommandManager()
-	{
+	public ICommandManager getCommandManager() {
 		return commandManager;
 	}
 
 	@Override
-	public GlyphManager getGlyphManager()
-	{
+	public GlyphManager getGlyphManager() {
 		return glyphManager;
 	}
 
 	@Override
-	public PreferenceStore getPreferenceStore()
-	{
+	public PreferenceStore getPreferenceStore() {
 		return preferenceStore;
 	}
 
 	@Override
-	public IDManager getIDManager()
-	{
+	public IDManager getIDManager() {
 		return IDManager;
 	}
 
 	@Override
-	public boolean isStandalone()
-	{
+	public boolean isStandalone() {
 		return bIsStandalone;
 	}
 
 	@Override
-	public IGUIBridge getGUIBridge()
-	{
+	public IGUIBridge getGUIBridge() {
 		return guiBridge;
 	}
 
 	@Override
-	public boolean isWiiModeActive()
-	{
+	public boolean isWiiModeActive() {
 		return bIsWiiMode;
 	}
-	
+
 	@Override
-	public WiiRemote getWiiRemote()
-	{
+	public WiiRemote getWiiRemote() {
 		return wiiRemote;
-	}	
+	}
 }

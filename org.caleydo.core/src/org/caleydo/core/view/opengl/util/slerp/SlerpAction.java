@@ -7,8 +7,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
  * 
  * @author Marc Streit
  */
-public class SlerpAction
-{
+public class SlerpAction {
 	private int iElementID = -1;
 
 	private RemoteLevelElement originRemoteLevelElement;
@@ -19,8 +18,7 @@ public class SlerpAction
 	 * Constructor.
 	 */
 	public SlerpAction(int iElementID, RemoteLevelElement originRemoteLevelElement,
-			RemoteLevelElement destinationRemoteLevelElement)
-	{
+		RemoteLevelElement destinationRemoteLevelElement) {
 		this.originRemoteLevelElement = originRemoteLevelElement;
 		this.destinationRemoteLevelElement = destinationRemoteLevelElement;
 		this.iElementID = iElementID;
@@ -28,41 +26,34 @@ public class SlerpAction
 
 	/**
 	 * Constructor.
-	 * 
 	 */
 	public SlerpAction(RemoteLevelElement originRemoteLevelElement,
-			RemoteLevelElement destinationRemoteLevelElement)
-	{
+		RemoteLevelElement destinationRemoteLevelElement) {
 		this.originRemoteLevelElement = originRemoteLevelElement;
 		this.destinationRemoteLevelElement = destinationRemoteLevelElement;
 		this.iElementID = originRemoteLevelElement.getContainedElementID();
 	}
 
-	public void start()
-	{
+	public void start() {
 		originRemoteLevelElement.setContainedElementID(-1);
 	}
 
-	public void finished()
-	{
+	public void finished() {
 		destinationRemoteLevelElement.setContainedElementID(iElementID);
 	}
 
-	public int getElementId()
-	{
+	public int getElementId() {
 		return iElementID;
 	}
 
-	public RemoteLevelElement getOriginRemoteLevelElement()
-	{
+	public RemoteLevelElement getOriginRemoteLevelElement() {
 		if (originRemoteLevelElement == null)
 			throw new IllegalStateException("Slerp origin layer is null!");
 
 		return originRemoteLevelElement;
 	}
 
-	public RemoteLevelElement getDestinationRemoteLevelElement()
-	{
+	public RemoteLevelElement getDestinationRemoteLevelElement() {
 		if (destinationRemoteLevelElement == null)
 			throw new IllegalStateException("Slerp destination layer is null!");
 

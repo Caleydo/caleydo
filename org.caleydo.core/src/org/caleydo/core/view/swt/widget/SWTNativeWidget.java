@@ -5,24 +5,22 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Class takes a composite in the constructor and provides this composite over
- * the getSWTWidget() method.
+ * Class takes a composite in the constructor and provides this composite over the getSWTWidget() method.
  * 
  * @author Marc Streit
  */
 public class SWTNativeWidget
-	extends ASWTWidget
-{
+	extends ASWTWidget {
 
 	protected Composite composite;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param parent Reference to the composite that is supposed to be filled.
+	 * @param parent
+	 *          Reference to the composite that is supposed to be filled.
 	 */
-	public SWTNativeWidget(Composite parentComposite)
-	{
+	public SWTNativeWidget(Composite parentComposite) {
 
 		super(parentComposite);
 
@@ -43,8 +41,7 @@ public class SWTNativeWidget
 	 * 
 	 * @return SWT container
 	 */
-	final public Composite getSWTWidget()
-	{
+	final public Composite getSWTWidget() {
 
 		return composite;
 	}

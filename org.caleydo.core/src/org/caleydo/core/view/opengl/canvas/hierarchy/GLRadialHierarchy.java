@@ -1,12 +1,13 @@
 package org.caleydo.core.view.opengl.canvas.hierarchy;
 
-import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
+
 import java.util.ArrayList;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -30,28 +31,10 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
  * @author Marc Streit
  */
 public class GLRadialHierarchy
-extends AGLEventListener
-{
-	private RadialHierarchyRenderStyle renderStyle;
-
+	extends AGLEventListener {
 	private ColorMapping colorMapper;
 
-	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
-	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
-
-	// private boolean bRenderHorizontally = false;
-
 	private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
-
-	private Vec3f vecTranslation;
-
-	private float fAnimationTranslation = 0;
-
-	private boolean bIsTranslationAnimationActive = false;
-
-	private float fAnimationTargetTranslation = 0;
-
-	
 
 	boolean bIsInListMode = false;
 
@@ -67,8 +50,7 @@ extends AGLEventListener
 	 * @param viewFrustum
 	 */
 	public GLRadialHierarchy(ESetType setType, final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
-	{
+		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		viewType = EManagedObjectType.GL_RADIAL_HIERARCHY;
@@ -78,29 +60,20 @@ extends AGLEventListener
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		
+		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
-
-		
 	}
 
 	@Override
-	public void init(GL gl)
-	{
-		
+	public void init(GL gl) {
 
 		if (set == null)
 			return;
 	}
 
 	@Override
-	public void initLocal(GL gl)
-	{
-		
-		
-		
+	public void initLocal(GL gl) {
+
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
@@ -108,13 +81,10 @@ extends AGLEventListener
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
-	{
-		
+		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 
@@ -124,8 +94,7 @@ extends AGLEventListener
 
 	}
 
-	public synchronized void setToListMode(boolean bSetToListMode)
-	{
+	public synchronized void setToListMode(boolean bSetToListMode) {
 		this.bIsInListMode = bSetToListMode;
 		super.setDetailLevel(EDetailLevel.HIGH);
 		bUseDetailLevel = false;
@@ -133,21 +102,18 @@ extends AGLEventListener
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel)
-	{
+	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel)
 			super.setDetailLevel(detailLevel);
 		// renderStyle.setDetailLevel(detailLevel);
-		
+
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl)
-	{
+	public synchronized void displayLocal(GL gl) {
 		pickingManager.handlePicking(iUniqueID, gl);
 
-		if (bIsDisplayListDirtyLocal)
-		{
+		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -161,10 +127,8 @@ extends AGLEventListener
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl)
-	{
-		if (bIsDisplayListDirtyRemote)
-		{
+	public synchronized void displayRemote(GL gl) {
+		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -177,26 +141,22 @@ extends AGLEventListener
 	}
 
 	@Override
-	public synchronized void display(GL gl)
-	{
+	public synchronized void display(GL gl) {
 		GLHelperFunctions.drawAxis(gl);
 		render(gl);
-//		clipToFrustum(gl);
-//
-//		gl.glCallList(iGLDisplayListToCall);
+		// clipToFrustum(gl);
+		//
+		// gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
-	{
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
-		
 	}
 
-	private void render(GL gl)
-	{
-		
+	private void render(GL gl) {
+
 		gl.glColor4f(1, 0, 0, 1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, 0, 0);
@@ -204,41 +164,28 @@ extends AGLEventListener
 		gl.glVertex3f(1, 1, 0);
 		gl.glVertex3f(1, 0, 0);
 		gl.glEnd();
-		
 
 	}
-	
 
-	
 	@Override
-	public String getDetailedInfo()
-	{
+	public String getDetailedInfo() {
 		return new String("");
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick)
-	{
-		if (detailLevel == EDetailLevel.VERY_LOW)
-		{
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
-		ESelectionType eSelectionType;
-		switch (ePickingType)
-		{
-			
+		switch (ePickingType) {
+
 			case HEAT_MAP_STORAGE_SELECTION:
 
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
-						eSelectionType = ESelectionType.SELECTION;
 						break;
 					case MOUSE_OVER:
-
-						eSelectionType = ESelectionType.MOUSE_OVER;
 
 						break;
 					default:
@@ -246,7 +193,6 @@ extends AGLEventListener
 						return;
 				}
 
-				
 				setDisplayListDirty();
 				break;
 		}
@@ -254,42 +200,32 @@ extends AGLEventListener
 		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
-
-
-	
-	
-	
-	public boolean isInListMode()
-	{
+	public boolean isInListMode() {
 		return bIsInListMode;
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type)
-	{
+	public void broadcastElements(EVAOperation type) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType selectionType)
-	{
+	public int getNumberOfSelections(ESelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public String getShortInfo()
-	{
+	public String getShortInfo() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void clearAllSelections()
-	{
+	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

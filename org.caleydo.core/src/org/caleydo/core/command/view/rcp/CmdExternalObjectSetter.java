@@ -13,8 +13,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
  * @author Stefan Sauer
  */
 public class CmdExternalObjectSetter
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	private Object object;
 
@@ -25,69 +24,58 @@ public class CmdExternalObjectSetter
 	/**
 	 * Constructor.
 	 */
-	public CmdExternalObjectSetter(final ECommandType cmdType)
-	{
+	public CmdExternalObjectSetter(final ECommandType cmdType) {
 		super(cmdType);
 		object = null;
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		commandManager.runDoCommand(this);
 
-		Object viewObject = generalManager.getViewGLCanvasManager()
-				.getGLEventListener(iViewId);
+		Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
-		if (viewObject instanceof GLGlyph)
-		{
+		if (viewObject instanceof GLGlyph) {
 			GLGlyph glyphview = (GLGlyph) viewObject;
-			switch (externalSetterType)
-			{
+			switch (externalSetterType) {
 				case GLYPH_SELECTIONBRUSH:
-					if (object instanceof Integer)
-					{
+					if (object instanceof Integer) {
 						int size = (Integer) object;
 						glyphview.setSelectionBrush(size);
 					}
 					return;
 
 				case GLYPH_CHANGEPERSONALNAME:
-					if (object instanceof String)
-					{
+					if (object instanceof String) {
 						String name = (String) object;
 						glyphview.setPersonalName(name);
 					}
 					return;
-					
+
 				case GLYPH_CHANGE_SCATTERPLOT_AXIS_X:
-					if (object instanceof Integer)
-					{
+					if (object instanceof Integer) {
 						int value = (Integer) object;
 						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_SCATTERPLOT, 0, value);
 					}
 					return;
-					
+
 				case GLYPH_CHANGE_SCATTERPLOT_AXIS_Y:
-					if (object instanceof Integer)
-					{
+					if (object instanceof Integer) {
 						int value = (Integer) object;
 						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_SCATTERPLOT, 1, value);
 					}
 					return;
-					
+
 				case GLYPH_CHANGE_PLUSMODEL_AXIS_X:
-					if (object instanceof Integer)
-					{
+					if (object instanceof Integer) {
 						int value = (Integer) object;
 						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_PLUS, 0, value);
 					}
 					return;
-					
+
 				case GLYPH_CHANGE_PLUSMODEL_AXIS_Y:
-					if (object instanceof Integer)
-					{
+					if (object instanceof Integer) {
 						int value = (Integer) object;
 						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_PLUS, 1, value);
 					}
@@ -99,14 +87,12 @@ public class CmdExternalObjectSetter
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	public void setAttributes(final int iViewId, final Object object,
-			final EExternalObjectSetterType externalSetterType)
-	{
+		final EExternalObjectSetterType externalSetterType) {
 		this.object = object;
 		this.externalSetterType = externalSetterType;
 		this.iViewId = iViewId;

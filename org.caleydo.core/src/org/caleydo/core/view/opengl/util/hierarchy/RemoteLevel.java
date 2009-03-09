@@ -6,10 +6,8 @@ import java.util.ArrayList;
  * Representation of a remote rendered level.
  * 
  * @author Marc Streit
- * 
  */
-public class RemoteLevel
-{
+public class RemoteLevel {
 	private int iCapacity;
 
 	private String sName;
@@ -24,9 +22,7 @@ public class RemoteLevel
 	 * 
 	 * @param iCapacity
 	 */
-	public RemoteLevel(final int iCapacity, String sName, RemoteLevel parentLevel,
-			RemoteLevel childLevel)
-	{
+	public RemoteLevel(final int iCapacity, String sName, RemoteLevel parentLevel, RemoteLevel childLevel) {
 		this.sName = sName;
 		this.iCapacity = iCapacity;
 		this.parentLevel = parentLevel;
@@ -35,34 +31,28 @@ public class RemoteLevel
 		alRemoteLevelElement = new ArrayList<RemoteLevelElement>();
 
 		// Intialize elements
-		for (int iElementIndex = 0; iElementIndex < iCapacity; iElementIndex++)
-		{
+		for (int iElementIndex = 0; iElementIndex < iCapacity; iElementIndex++) {
 			addElement(new RemoteLevelElement(this));
 		}
 	}
 
-	public int getCapacity()
-	{
+	public int getCapacity() {
 		return iCapacity;
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return sName;
 	}
 
-	public RemoteLevel getParentLevel()
-	{
+	public RemoteLevel getParentLevel() {
 		return parentLevel;
 	}
 
-	public RemoteLevel getChildLevel()
-	{
+	public RemoteLevel getChildLevel() {
 		return childLevel;
 	}
 
-	public void addElement(RemoteLevelElement element)
-	{
+	public void addElement(RemoteLevelElement element) {
 		alRemoteLevelElement.add(element);
 	}
 
@@ -74,33 +64,28 @@ public class RemoteLevel
 	// alRemoteLevelElement.remove(element);
 	// }
 
-	public boolean containsElement(RemoteLevelElement element)
-	{
+	public boolean containsElement(RemoteLevelElement element) {
 		return alRemoteLevelElement.contains(element);
 	}
 
-	public void replaceElement(RemoteLevelElement newElement, int iPositionIndex)
-	{
+	public void replaceElement(RemoteLevelElement newElement, int iPositionIndex) {
 		if (alRemoteLevelElement.size() < iPositionIndex)
 			addElement(newElement);
 		else
 			alRemoteLevelElement.set(iPositionIndex, newElement);
 	}
 
-	public void replaceElement(RemoteLevelElement newElement, RemoteLevelElement oldElement)
-	{
+	public void replaceElement(RemoteLevelElement newElement, RemoteLevelElement oldElement) {
 		if (!alRemoteLevelElement.contains(oldElement))
 			return;
 
 		alRemoteLevelElement.set(alRemoteLevelElement.indexOf(oldElement), newElement);
 	}
 
-	public boolean hasFreePosition()
-	{
+	public boolean hasFreePosition() {
 		boolean bHasFree = false;
 
-		for (RemoteLevelElement element : alRemoteLevelElement)
-		{
+		for (RemoteLevelElement element : alRemoteLevelElement) {
 			bHasFree = element.isFree();
 
 			if (bHasFree == true)
@@ -110,10 +95,8 @@ public class RemoteLevel
 		return bHasFree;
 	}
 
-	public RemoteLevelElement getNextFree()
-	{
-		for (RemoteLevelElement element : alRemoteLevelElement)
-		{
+	public RemoteLevelElement getNextFree() {
+		for (RemoteLevelElement element : alRemoteLevelElement) {
 			if (element.isFree())
 				return element;
 		}
@@ -121,18 +104,15 @@ public class RemoteLevel
 		throw new IllegalStateException("No empty space left in " + sName);
 	}
 
-	public ArrayList<RemoteLevelElement> getAllElements()
-	{
+	public ArrayList<RemoteLevelElement> getAllElements() {
 		return alRemoteLevelElement;
 	}
 
-	public RemoteLevelElement getElementByPositionIndex(int iPositionIndex)
-	{
+	public RemoteLevelElement getElementByPositionIndex(int iPositionIndex) {
 		return alRemoteLevelElement.get(iPositionIndex);
 	}
 
-	public int getPositionIndexByElementID(RemoteLevelElement element)
-	{
+	public int getPositionIndexByElementID(RemoteLevelElement element) {
 		return alRemoteLevelElement.indexOf(element);
 	}
 }

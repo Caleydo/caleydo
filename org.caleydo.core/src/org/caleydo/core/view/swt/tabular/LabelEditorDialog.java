@@ -17,25 +17,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class LabelEditorDialog
-	extends Dialog
-{
+	extends Dialog {
 	String sLabel;
 
 	/**
 	 * @param parent
 	 */
-	public LabelEditorDialog(Shell parent)
-	{
+	public LabelEditorDialog(Shell parent) {
 		super(parent);
 	}
 
-	public String open(String sInitialLabel)
-	{
+	public String open(String sInitialLabel) {
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
 		shell.setText("Change Label");
 		shell.setLayout(new GridLayout(2, false));
-		
+
 		Label label = new Label(shell, SWT.NULL);
 		label.setText("Enter caption:");
 
@@ -45,12 +42,10 @@ public class LabelEditorDialog
 		text.setText(sInitialLabel);
 		text.selectAll();
 
-		text.addKeyListener(new KeyAdapter()
-		{
-			public void keyPressed(KeyEvent event)
-			{
-				switch (event.keyCode)
-				{
+		text.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent event) {
+				switch (event.keyCode) {
 					case SWT.CR:
 						sLabel = text.getText();
 					case SWT.ESC:
@@ -66,63 +61,52 @@ public class LabelEditorDialog
 		Button buttonCancel = new Button(shell, SWT.PUSH);
 		buttonCancel.setText("Cancel");
 
-		text.addListener(SWT.Modify, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
-				try
-				{
+		text.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event event) {
+				try {
 					sLabel = text.getText();
 					buttonOK.setEnabled(true);
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					buttonOK.setEnabled(false);
 				}
 			}
 		});
 
-		buttonOK.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		buttonOK.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				shell.dispose();
 			}
 		});
 
-		buttonCancel.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		buttonCancel.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				sLabel = null;
 				shell.dispose();
 			}
 		});
 
-		shell.addListener(SWT.Traverse, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		shell.addListener(SWT.Traverse, new Listener() {
+			public void handleEvent(Event event) {
 				if (event.detail == SWT.TRAVERSE_ESCAPE)
 					event.doit = false;
 			}
 		});
 
 		shell.pack();
-		
+
 		// Set shell to open in the center of the screen
-		Monitor primary = Display.getCurrent().getPrimaryMonitor ();
-		Rectangle bounds = primary.getBounds ();
-		Rectangle rect = shell.getBounds ();
+		Monitor primary = Display.getCurrent().getPrimaryMonitor();
+		Rectangle bounds = primary.getBounds();
+		Rectangle rect = shell.getBounds();
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
-		shell.setLocation (x, y);
-		
+		shell.setLocation(x, y);
+
 		shell.open();
 
 		Display display = parent.getDisplay();
-		while (!shell.isDisposed())
-		{
+		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
@@ -130,8 +114,7 @@ public class LabelEditorDialog
 		return sLabel;
 	}
 
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Shell shell = new Shell();
 		LabelEditorDialog dialog = new LabelEditorDialog(shell);
 		System.out.println(dialog.open("old"));

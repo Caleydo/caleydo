@@ -9,13 +9,13 @@ import org.caleydo.core.command.ICommand;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public interface ICommandFactory
-{
+public interface ICommandFactory {
 
 	/**
 	 * Create a new Command assigned to a cmdType.
 	 * 
-	 * @param cmdType specify the ICommand to be created.
+	 * @param cmdType
+	 *          specify the ICommand to be created.
 	 * @return new ICommand
 	 */
 	public ICommand createCommandByType(final ECommandType cmdType);

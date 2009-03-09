@@ -17,23 +17,19 @@ import org.eclipse.swt.widgets.Label;
  */
 public class ImageViewRep
 	extends ASWTView
-	implements ISWTView
-{
+	implements ISWTView {
 	protected String sImagePath;
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public ImageViewRep(int iParentContainerId, String sLabel)
-	{
+	public ImageViewRep(int iParentContainerId, String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_IMAGE));
+			EManagedObjectType.VIEW_SWT_IMAGE));
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 		Image image = new Image(parentComposite.getDisplay(), sImagePath);
 
 		Label label = new Label(parentComposite, SWT.BORDER);
@@ -41,13 +37,11 @@ public class ImageViewRep
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 
 	}
 
-	public void setAttributes(String sImagePath)
-	{
+	public void setAttributes(String sImagePath) {
 		this.sImagePath = sImagePath;
 	}
 }

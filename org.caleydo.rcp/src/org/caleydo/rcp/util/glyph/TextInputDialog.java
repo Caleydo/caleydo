@@ -13,30 +13,25 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class TextInputDialog
-	extends Dialog
-{
+	extends Dialog {
 	protected String value;
 
-	public TextInputDialog(Shell parent)
-	{
+	public TextInputDialog(Shell parent) {
 		super(parent);
 		value = "";
 	}
 
-	public TextInputDialog(Shell parent, int style)
-	{
+	public TextInputDialog(Shell parent, int style) {
 		super(parent, style);
 		value = "";
 	}
 
-	public TextInputDialog(Shell parent, String text)
-	{
+	public TextInputDialog(Shell parent, String text) {
 		super(parent);
 		value = text;
 	}
-	
-	public String open()
-	{
+
+	public String open() {
 		Shell parent = getParent();
 		final Shell shell = new Shell(parent, SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
 		shell.setText("Name Input Dialog");
@@ -57,43 +52,33 @@ public class TextInputDialog
 		buttonCancel.setText("Cancel");
 		buttonCancel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 
-		text.addListener(SWT.Modify, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
-				try
-				{
+		text.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event event) {
+				try {
 					value = text.getText().trim();
 					buttonOK.setEnabled(true);
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					buttonOK.setEnabled(false);
 				}
 			}
 		});
 
-		buttonOK.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		buttonOK.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				shell.dispose();
 			}
 		});
 
-		buttonCancel.addListener(SWT.Selection, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		buttonCancel.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
 				value = null;
 				shell.dispose();
 			}
 		});
 
-		shell.addListener(SWT.Traverse, new Listener()
-		{
-			public void handleEvent(Event event)
-			{
+		shell.addListener(SWT.Traverse, new Listener() {
+			public void handleEvent(Event event) {
 				if (event.detail == SWT.TRAVERSE_ESCAPE)
 					event.doit = false;
 			}
@@ -103,8 +88,7 @@ public class TextInputDialog
 		shell.open();
 
 		Display display = parent.getDisplay();
-		while (!shell.isDisposed())
-		{
+		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}

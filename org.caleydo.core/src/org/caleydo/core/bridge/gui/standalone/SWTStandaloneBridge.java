@@ -4,11 +4,9 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 
 // TODO: doku
 public class SWTStandaloneBridge
-	implements IGUIBridge
-{
+	implements IGUIBridge {
 	@Override
-	public void closeApplication()
-	{
+	public void closeApplication() {
 		// TODO Auto-generated method stub
 	}
 
@@ -21,22 +19,19 @@ public class SWTStandaloneBridge
 	// }
 
 	@Override
-	public void setShortInfo(String sMessage)
-	{
+	public void setShortInfo(String sMessage) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setFileNameCurrentDataSet(String fileName)
-	{
+	public void setFileNameCurrentDataSet(String fileName) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public String getFileNameCurrentDataSet()
-	{
+	public String getFileNameCurrentDataSet() {
 		// TODO Auto-generated method stub
 		return null;
 	}

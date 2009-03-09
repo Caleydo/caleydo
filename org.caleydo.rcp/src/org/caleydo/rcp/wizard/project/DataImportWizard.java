@@ -14,16 +14,14 @@ import org.eclipse.swt.widgets.Shell;
  * @author Marc Streit
  */
 public class DataImportWizard
-	extends Wizard
-{
+	extends Wizard {
 
 	private String sInputFile;
 
 	/**
 	 * Constructor.
 	 */
-	public DataImportWizard(final Shell parentShell)
-	{
+	public DataImportWizard(final Shell parentShell) {
 		super();
 
 		parentShell.setText("Open project file");
@@ -39,27 +37,22 @@ public class DataImportWizard
 	/**
 	 * Constructor.
 	 */
-	public DataImportWizard(final Shell parentShell, String sInputFile)
-	{
+	public DataImportWizard(final Shell parentShell, String sInputFile) {
 		this(parentShell);
 
 		this.sInputFile = sInputFile;
 	}
 
 	@Override
-	public void addPages()
-	{
+	public void addPages() {
 		addPage(new NewProjectImportDataPage(sInputFile));
 	}
 
 	@Override
-	public boolean performFinish()
-	{
-		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
-				.isPageComplete())
-		{
-			((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
-					.getFileLoadDataAction().execute();
+	public boolean performFinish() {
+		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete()) {
+			((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).getFileLoadDataAction()
+				.execute();
 			Application.applicationMode = EApplicationMode.STANDARD;
 			return true;
 		}
@@ -68,17 +61,13 @@ public class DataImportWizard
 	}
 
 	@Override
-	public boolean performCancel()
-	{
+	public boolean performCancel() {
 		return true;
 	}
 
 	@Override
-	public boolean canFinish()
-	{
-		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
-				.isPageComplete())
-		{
+	public boolean canFinish() {
+		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete()) {
 			return true;
 		}
 
@@ -86,8 +75,7 @@ public class DataImportWizard
 	}
 
 	@Override
-	public IWizardPage getNextPage(IWizardPage page)
-	{
+	public IWizardPage getNextPage(IWizardPage page) {
 		return null;
 
 	}

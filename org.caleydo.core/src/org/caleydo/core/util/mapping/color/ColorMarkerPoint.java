@@ -2,40 +2,37 @@ package org.caleydo.core.util.mapping.color;
 
 /**
  * <p>
- * A point that represents an inflection point in a color range. For example,
- * when a color map would go from red at 0 to green at 1 the points 0 and 1 and
- * their associated colors would be a ColorMarkerPoint
+ * A point that represents an inflection point in a color range. For example, when a color map would go from
+ * red at 0 to green at 1 the points 0 and 1 and their associated colors would be a ColorMarkerPoint
  * </p>
  * <p>
- * Works with float[] because this allows the values to be plugged directly into
- * OpenGL calls, without accessing each point separately.
+ * Works with float[] because this allows the values to be plugged directly into OpenGL calls, without
+ * accessing each point separately.
  * 
  * @author Alexander Lex
- * 
  */
 public class ColorMarkerPoint
-	implements Comparable<ColorMarkerPoint>
-{
+	implements Comparable<ColorMarkerPoint> {
 	private float fValue;
 	private float[] fArColor;
 
 	/**
-	 * Constructor. To create a new marker point pass two variables, fValue and
-	 * fArColor.
+	 * Constructor. To create a new marker point pass two variables, fValue and fArColor.
 	 * <p>
-	 * fValue represents the where on the mapping range the point is situated.
-	 * Values are considered to be normalized between 0 and 1.
+	 * fValue represents the where on the mapping range the point is situated. Values are considered to be
+	 * normalized between 0 and 1.
 	 * </p>
 	 * <p>
-	 * fArColor has to be a float array of length 3, with values representing
-	 * the red, green and blue component. The values have to be between 0 and 1
+	 * fArColor has to be a float array of length 3, with values representing the red, green and blue component.
+	 * The values have to be between 0 and 1
 	 * </p>
 	 * 
-	 * @param fValue the inflection point on the color field
-	 * @param fArColor the color array
+	 * @param fValue
+	 *          the inflection point on the color field
+	 * @param fArColor
+	 *          the color array
 	 */
-	public ColorMarkerPoint(float fValue, float[] fArColor)
-	{
+	public ColorMarkerPoint(float fValue, float[] fArColor) {
 		init(fValue, fArColor);
 	}
 
@@ -47,13 +44,16 @@ public class ColorMarkerPoint
 	 * Values are specified one by one instead of as an array
 	 * </p>
 	 * 
-	 * @param fValue the inflection point on the color field
-	 * @param fRed red component of the color
-	 * @param fGreen green component of the color
-	 * @param fBlue blue component of the color
+	 * @param fValue
+	 *          the inflection point on the color field
+	 * @param fRed
+	 *          red component of the color
+	 * @param fGreen
+	 *          green component of the color
+	 * @param fBlue
+	 *          blue component of the color
 	 */
-	public ColorMarkerPoint(float fValue, float fRed, float fGreen, float fBlue)
-	{
+	public ColorMarkerPoint(float fValue, float fRed, float fGreen, float fBlue) {
 		float[] fArColor = new float[3];
 		fArColor[0] = fRed;
 		fArColor[1] = fGreen;
@@ -66,8 +66,7 @@ public class ColorMarkerPoint
 	 * 
 	 * @return the infleciton point
 	 */
-	public float getValue()
-	{
+	public float getValue() {
 		return fValue;
 	}
 
@@ -76,25 +75,20 @@ public class ColorMarkerPoint
 	 * 
 	 * @return the color
 	 */
-	public float[] getColor()
-	{
+	public float[] getColor() {
 		return fArColor;
 	}
 
-	private void init(float fValue, float[] fArColor)
-	{
+	private void init(float fValue, float[] fArColor) {
 		if (fArColor.length != 3)
 			throw new IllegalArgumentException("Invalid length of color array fColor");
 
 		if (fValue > 1 || fValue < 0)
-			throw new IllegalArgumentException(
-					"Invalid value for fValue. Has to be between 0 and 1");
+			throw new IllegalArgumentException("Invalid value for fValue. Has to be between 0 and 1");
 
-		for (float fColorValue : fArColor)
-		{
+		for (float fColorValue : fArColor) {
 			if (fColorValue > 1 || fColorValue < 0)
-				throw new IllegalArgumentException(
-						"Invalid value in fArColor. Has to be between 0 and 1");
+				throw new IllegalArgumentException("Invalid value in fArColor. Has to be between 0 and 1");
 		}
 
 		this.fValue = fValue;
@@ -102,8 +96,7 @@ public class ColorMarkerPoint
 	}
 
 	@Override
-	public int compareTo(ColorMarkerPoint colorMarkerPoint)
-	{
+	public int compareTo(ColorMarkerPoint colorMarkerPoint) {
 		return new Float(fValue).compareTo(colorMarkerPoint.getValue());
 	}
 }

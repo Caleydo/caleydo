@@ -7,20 +7,16 @@ import org.caleydo.util.graph.item.GraphItem;
 
 public class ACaleydoGraphItem
 	extends GraphItem
-	implements ICaleydoGraphItem
-{
+	implements ICaleydoGraphItem {
 	/**
 	 * Constructor
 	 */
-	public ACaleydoGraphItem(EGraphItemKind kind)
-	{
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GRAPH_ITEM),
-				kind);
+	public ACaleydoGraphItem(EGraphItemKind kind) {
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GRAPH_ITEM), kind);
 	}
 
 	@Override
-	public int getID()
-	{
+	public int getID() {
 		return super.getId();
 	}
 

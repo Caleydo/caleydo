@@ -10,8 +10,7 @@ import java.util.HashMap;
  * @author Michael Kalkusch
  */
 public abstract class AGraphDataHandler
-	implements IGraphDataHandler
-{
+	implements IGraphDataHandler {
 	private static final int iInitialSize = 3;
 
 	protected final HashMap<Integer, Object> key_2_data;
@@ -19,59 +18,51 @@ public abstract class AGraphDataHandler
 	/**
 	 * 
 	 */
-	protected AGraphDataHandler()
-	{
+	protected AGraphDataHandler() {
 		this(iInitialSize);
 	}
 
 	/**
-	 * @param initialSize define initial size and number of expected objects.
+	 * @param initialSize
+	 *          define initial size and number of expected objects.
 	 */
-	protected AGraphDataHandler(int initialSize)
-	{
+	protected AGraphDataHandler(int initialSize) {
 		key_2_data = new HashMap<Integer, Object>(initialSize);
 	}
 
 	@Override
-	public final boolean containsData(int key)
-	{
+	public final boolean containsData(int key) {
 		return key_2_data.containsKey(new Integer(key));
 	}
 
 	@Override
-	public final boolean containsDataObject(Object data)
-	{
+	public final boolean containsDataObject(Object data) {
 		return key_2_data.containsValue(data);
 	}
 
 	@Override
-	public final Collection<Object> getAllData()
-	{
+	public final Collection<Object> getAllData() {
 		return key_2_data.values();
 	}
 
 	@Override
-	public final Object getData(int key)
-	{
+	public final Object getData(int key) {
 		return key_2_data.get(new Integer(key));
 	}
 
 	@Override
-	public final void removeAllData()
-	{
+	public final void removeAllData() {
 		key_2_data.clear();
 	}
 
 	@Override
-	public final Object removeData(int key)
-	{
+	public final Object removeData(int key) {
 		return key_2_data.remove(new Integer(key));
 	}
 
 	@Override
-	public final boolean setData(int key, Object data)
-	{
-		return (key_2_data.put(new Integer(key), data) == null) ? false : true;
+	public final boolean setData(int key, Object data) {
+		return key_2_data.put(new Integer(key), data) == null ? false : true;
 	}
 
 }

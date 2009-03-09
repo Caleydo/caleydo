@@ -7,14 +7,12 @@ package org.caleydo.core.command.memento;
  * @author Michael Kalkusch
  */
 public class IGeneralMemento
-	implements IMemento
-{
+	implements IMemento {
 
 	/**
-	 * Stores all information needed to reset an object to a previous state.
-	 * Must only be used by the object, that created the IMemento! Object which
-	 * creates the IMemento must derive a class from MementoStateInterface and
-	 * cast to the derived class once the object receives the
+	 * Stores all information needed to reset an object to a previous state. Must only be used by the object,
+	 * that created the IMemento! Object which creates the IMemento must derive a class from
+	 * MementoStateInterface and cast to the derived class once the object receives the
 	 * MementoStateInterface-object.
 	 */
 	protected IMementoState mementoState = null;
@@ -34,10 +32,10 @@ public class IGeneralMemento
 	/**
 	 * Constructor.
 	 * 
-	 * @param setMementoCreator creator of memento
+	 * @param setMementoCreator
+	 *          creator of memento
 	 */
-	public IGeneralMemento(final Object setMementoCreator)
-	{
+	public IGeneralMemento(final Object setMementoCreator) {
 
 		assert setMementoCreator != null : "IMemento(Object)Can not creat a memento with null-pointer as parent";
 
@@ -47,11 +45,12 @@ public class IGeneralMemento
 	/**
 	 * Constructor.
 	 * 
-	 * @param setMementoCreator creator of memento
-	 * @param setMementoData data from the creator object
+	 * @param setMementoCreator
+	 *          creator of memento
+	 * @param setMementoData
+	 *          data from the creator object
 	 */
-	public IGeneralMemento(final Object setMementoCreator, final IMementoState setMementoData)
-	{
+	public IGeneralMemento(final Object setMementoCreator, final IMementoState setMementoData) {
 
 		assert setMementoCreator != null : "IMemento(Object,MementoType) Can not creat a memento with null-pointer as parent";
 
@@ -62,13 +61,15 @@ public class IGeneralMemento
 	/**
 	 * Constructor.
 	 * 
-	 * @param setMementoCreator creator of memento
-	 * @param setMementoData data from the creator object
-	 * @param setMementoType type of memento; used for memento manger
+	 * @param setMementoCreator
+	 *          creator of memento
+	 * @param setMementoData
+	 *          data from the creator object
+	 * @param setMementoType
+	 *          type of memento; used for memento manger
 	 */
 	public IGeneralMemento(final Object setMementoCreator, final IMementoState setMementoData,
-			final MementoType setMementoType)
-	{
+		final MementoType setMementoType) {
 
 		assert setMementoCreator != null : "IMemento(Object,MementoType,IMementoState)Can not creat a memento with null-pointer as parent";
 
@@ -78,21 +79,17 @@ public class IGeneralMemento
 	}
 
 	@Override
-	public final MementoType getMementoType()
-	{
+	public final MementoType getMementoType() {
 
 		return mementoType;
 	}
 
 	@Override
-	public void setMementoState(final Object setMementoCreator,
-			final IMementoState setMemetoState)
-	{
+	public void setMementoState(final Object setMementoCreator, final IMementoState setMemetoState) {
 
-		if (mementoCreator != setMementoCreator)
-		{
+		if (mementoCreator != setMementoCreator) {
 			throw new IllegalStateException(
-					"IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.");
+				"IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.");
 		}
 		// assert mementoCreator == setMementoCreator:
 		// "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento."
@@ -102,8 +99,7 @@ public class IGeneralMemento
 	}
 
 	@Override
-	public IMementoState getMementoState(final Object setMementoCreator)
-	{
+	public IMementoState getMementoState(final Object setMementoCreator) {
 
 		assert setMementoCreator != mementoCreator : "getMemento() can only ba called by the creator of the memento!";
 
@@ -117,15 +113,13 @@ public class IGeneralMemento
 	 */
 	// public int getSizeMemento();
 	@Override
-	public String toString()
-	{
+	public String toString() {
 
 		return mementoState.toString();
 	}
 
 	@Override
-	public String toStringRecursive()
-	{
+	public String toStringRecursive() {
 
 		return mementoState.toStringRecursive();
 	}

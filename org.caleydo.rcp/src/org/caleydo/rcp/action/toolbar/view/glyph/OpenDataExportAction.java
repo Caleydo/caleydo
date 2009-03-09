@@ -8,39 +8,36 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenDataExportAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 
 	public static final String TEXT = "Open Glyph Data Export Tool";
 	public static final String ICON = "resources/icons/view/glyph/glyph_generate_report.png";
 
-	public OpenDataExportAction(int iViewID)
-	{
+	public OpenDataExportAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		ExportClinicalDataDialog dialog = new ExportClinicalDataDialog(new Shell(), iViewID);
 		dialog.open();
-//		try
-//		{
-//			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-//					SWTGlyphDataExportView.ID, SWTGlyphDataExportView.ID,
-//					IWorkbenchPage.VIEW_CREATE);
-//		}
-//		catch (PartInitException e)
-//		{
-//			e.printStackTrace();
-//		}
+		// try
+		// {
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+		// SWTGlyphDataExportView.ID, SWTGlyphDataExportView.ID,
+		// IWorkbenchPage.VIEW_CREATE);
+		// }
+		// catch (PartInitException e)
+		// {
+		// e.printStackTrace();
+		// }
 
 	};
 }

@@ -26,8 +26,7 @@ import org.eclipse.swt.widgets.ProgressBar;
  * @author Marc Streit
  */
 public final class FetchPathwayDataPage
-	extends WizardPage
-{
+	extends WizardPage {
 	public static final String PAGE_NAME = "Fetch Pathway Data";
 
 	public final WizardPage thisPage;
@@ -35,20 +34,18 @@ public final class FetchPathwayDataPage
 	/**
 	 * Constructor.
 	 */
-	public FetchPathwayDataPage()
-	{
+	public FetchPathwayDataPage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
-				.getResource("resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
+			"resources/wizard/wizard.png")));
 
 		thisPage = this;
 
 		setPageComplete(false);
 	}
 
-	public void createControl(Composite parent)
-	{
+	public void createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		RowLayout layout = new RowLayout(SWT.VERTICAL);
 		layout.wrap = true;
@@ -62,8 +59,7 @@ public final class FetchPathwayDataPage
 		setControl(composite);
 	}
 
-	public Composite createContent(final Composite composite, final DialogPage parentPage)
-	{
+	public Composite createContent(final Composite composite, final DialogPage parentPage) {
 		Group progressBarGroup = new Group(composite, SWT.NONE);
 		progressBarGroup.setLayout(new GridLayout(2, false));
 		progressBarGroup.setText("Fetch Progress");
@@ -77,8 +73,7 @@ public final class FetchPathwayDataPage
 		lblKeggPathwayCacher.setAlignment(SWT.RIGHT);
 		lblKeggPathwayCacher.setBounds(10, 10, 80, 20);
 
-		final ProgressBar progressBarKeggPathwayCacher = new ProgressBar(progressBarGroup,
-				SWT.SMOOTH);
+		final ProgressBar progressBarKeggPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 		progressBarKeggPathwayCacher.setBounds(10, 10, 200, 32);
 
 		Label lblKeggImagePathwayCacher = new Label(progressBarGroup, SWT.NULL);
@@ -86,8 +81,7 @@ public final class FetchPathwayDataPage
 		lblKeggImagePathwayCacher.setAlignment(SWT.RIGHT);
 		lblKeggImagePathwayCacher.setBounds(10, 10, 80, 20);
 
-		final ProgressBar progressBarKeggImagePathwayCacher = new ProgressBar(
-				progressBarGroup, SWT.SMOOTH);
+		final ProgressBar progressBarKeggImagePathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 		progressBarKeggImagePathwayCacher.setBounds(10, 10, 200, 32);
 
 		Label lblBioCartaPathwayCacher = new Label(progressBarGroup, SWT.NULL);
@@ -95,27 +89,22 @@ public final class FetchPathwayDataPage
 		lblBioCartaPathwayCacher.setAlignment(SWT.RIGHT);
 		lblBioCartaPathwayCacher.setBounds(10, 10, 80, 20);
 
-		final ProgressBar progressBarBioCartaPathwayCacher = new ProgressBar(progressBarGroup,
-				SWT.SMOOTH);
+		final ProgressBar progressBarBioCartaPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 		progressBarBioCartaPathwayCacher.setBounds(10, 10, 200, 32);
 
-		buttonStartFetch.addSelectionListener(new SelectionAdapter()
-		{
+		buttonStartFetch.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				CmdFetchPathwayData cmdPathwayFetch = (CmdFetchPathwayData) GeneralManager
-						.get().getCommandManager().createCommandByType(
-								ECommandType.FETCH_PATHWAY_DATA);
+			public void widgetSelected(SelectionEvent e) {
+				CmdFetchPathwayData cmdPathwayFetch =
+					(CmdFetchPathwayData) GeneralManager.get().getCommandManager().createCommandByType(
+						ECommandType.FETCH_PATHWAY_DATA);
 
-				cmdPathwayFetch.setAttributes(composite.getDisplay(),
-						progressBarKeggPathwayCacher, progressBarKeggImagePathwayCacher,
-						progressBarBioCartaPathwayCacher, parentPage);
+				cmdPathwayFetch.setAttributes(composite.getDisplay(), progressBarKeggPathwayCacher,
+					progressBarKeggImagePathwayCacher, progressBarBioCartaPathwayCacher, parentPage);
 
 				PreferenceStore prefStore = Application.caleydoCore.getGeneralManager().getPreferenceStore();
-				
-				if (prefStore.getBoolean(PreferenceConstants.USE_PROXY))
-				{
+
+				if (prefStore.getBoolean(PreferenceConstants.USE_PROXY)) {
 					String sProxyServer = prefStore.getString(PreferenceConstants.PROXY_SERVER);
 					String sProxyPort = prefStore.getString(PreferenceConstants.PROXY_PORT);
 					cmdPathwayFetch.setProxySettings(sProxyServer, Integer.parseInt(sProxyPort));

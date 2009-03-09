@@ -4,8 +4,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class PathwayRenderStyle
-	extends GeneralRenderStyle
-{
+	extends GeneralRenderStyle {
 	public static final int neighborhoodNodeColorArraysize = 4;
 
 	public static final float SCALING_FACTOR_X = 0.0025f;
@@ -25,28 +24,21 @@ public class PathwayRenderStyle
 	public static final float[] MAPLINK_EDGE_COLOR = new float[] { 1, 0, 1, 1 };
 
 	/**
-	 * The color of the neighborhood node with the distance to the clicked node
-	 * of [1..neighborhoodNodeColorArraysize]
+	 * The color of the neighborhood node with the distance to the clicked node of
+	 * [1..neighborhoodNodeColorArraysize]
 	 */
 	private float[][] neighborhoodNodeColorArray;
 
-	public enum NodeShape
-	{
-		RECTANGULAR,
-		ROUND,
-		ROUNDRECTANGULAR
+	public enum NodeShape {
+		RECTANGULAR, ROUND, ROUNDRECTANGULAR
 	};
 
-	public enum EdgeLineStyle
-	{
-		NORMAL,
-		DASHED
+	public enum EdgeLineStyle {
+		NORMAL, DASHED
 	};
 
-	public enum EdgeArrowHeadStyle
-	{
-		FILLED,
-		EMPTY
+	public enum EdgeArrowHeadStyle {
+		FILLED, EMPTY
 	};
 
 	protected NodeShape enzymeNodeShape;
@@ -67,18 +59,15 @@ public class PathwayRenderStyle
 
 	protected EdgeArrowHeadStyle mapEdgeArrowHeadStyle;
 
-	public PathwayRenderStyle(IViewFrustum viewFrustum)
-	{
+	public PathwayRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);
 		init();
 	}
 
 	/**
-	 * Constructor. Initializes the pathway render style. TODO: load pathway
-	 * style from XML file.
+	 * Constructor. Initializes the pathway render style. TODO: load pathway style from XML file.
 	 */
-	private void init()
-	{
+	private void init() {
 		// TODO: use float[] constants for colors
 
 		enzymeNodeShape = NodeShape.RECTANGULAR;
@@ -100,74 +89,60 @@ public class PathwayRenderStyle
 		mapEdgeArrowHeadStyle = EdgeArrowHeadStyle.EMPTY;
 	}
 
-	public NodeShape getCompoundNodeShape()
-	{
+	public NodeShape getCompoundNodeShape() {
 		return compoundNodeShape;
 	}
 
-	public NodeShape getEnzymeNodeShape()
-	{
+	public NodeShape getEnzymeNodeShape() {
 		return enzymeNodeShape;
 	}
 
-	public EdgeArrowHeadStyle getMaplinkEdgeArrowHeadStyle()
-	{
+	public EdgeArrowHeadStyle getMaplinkEdgeArrowHeadStyle() {
 		return mapEdgeArrowHeadStyle;
 	}
 
-	public EdgeLineStyle getMaplinkEdgeLineStyle()
-	{
+	public EdgeLineStyle getMaplinkEdgeLineStyle() {
 		return maplinkEdgeLineStyle;
 	}
 
-	public void setMaplinkEdgeLineStyle(EdgeLineStyle maplinkEdgeLineStyle)
-	{
+	public void setMaplinkEdgeLineStyle(EdgeLineStyle maplinkEdgeLineStyle) {
 		this.maplinkEdgeLineStyle = maplinkEdgeLineStyle;
 	}
 
-	public NodeShape getPathwayNodeShape()
-	{
+	public NodeShape getPathwayNodeShape() {
 		return pathwayNodeShape;
 	}
 
-	public EdgeArrowHeadStyle getReactionEdgeArrowHeadStyle()
-	{
+	public EdgeArrowHeadStyle getReactionEdgeArrowHeadStyle() {
 		return reactionEdgeArrowHeadStyle;
 	}
 
-	public void setReactionEdgeArrowHeadStyle(EdgeArrowHeadStyle reactionEdgeArrowHeadStyle)
-	{
+	public void setReactionEdgeArrowHeadStyle(EdgeArrowHeadStyle reactionEdgeArrowHeadStyle) {
 		this.reactionEdgeArrowHeadStyle = reactionEdgeArrowHeadStyle;
 	}
 
-	public EdgeLineStyle getReactionEdgeLineStyle()
-	{
+	public EdgeLineStyle getReactionEdgeLineStyle() {
 		return reactionEdgeLineStyle;
 	}
 
-	public EdgeArrowHeadStyle getRelationEdgeArrowHeadStyle()
-	{
+	public EdgeArrowHeadStyle getRelationEdgeArrowHeadStyle() {
 		return relationEdgeArrowHeadStyle;
 	}
 
-	public EdgeLineStyle getRelationEdgeLineStyle()
-	{
+	public EdgeLineStyle getRelationEdgeLineStyle() {
 		return relationEdgeLineStyle;
 	}
 
 	/**
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#neighborhoodNodeColorArraysize
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#highlightedNodeColor
-	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0
-	 *            highlightedNodeColor is returned
+	 * @param depth
+	 *          [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0 highlightedNodeColor is returned
 	 * @return
 	 */
-	public float[] getNeighborhoodNodeColorByDepth(final int depth)
-	{
-		if (depth >= neighborhoodNodeColorArraysize)
-		{
-			throw new IllegalStateException("getNeighborhoodNodeColorByDepth(" + depth
-					+ ") exceed range!");
+	public float[] getNeighborhoodNodeColorByDepth(final int depth) {
+		if (depth >= neighborhoodNodeColorArraysize) {
+			throw new IllegalStateException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
 		}
 		return this.neighborhoodNodeColorArray[depth];
 	}

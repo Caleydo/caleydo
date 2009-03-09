@@ -2,6 +2,7 @@ package org.caleydo.core.view.swt.data.search;
 
 import java.util.Set;
 import java.util.logging.Level;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
@@ -25,43 +26,35 @@ import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * 
  * Data entity searcher.
  * 
  * @author Marc Streit
- * 
  */
 public class DataEntitySearcherViewRep
 	extends ASWTView
-	implements ISWTView, IMediatorSender
-{
+	implements ISWTView, IMediatorSender {
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public DataEntitySearcherViewRep(final int iParentContainerId, final String sLabel)
-	{
+	public DataEntitySearcherViewRep(final int iParentContainerId, final String sLabel) {
 
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER));
+			EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER));
 
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-				this);
+		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
-	public boolean searchForEntity(final String sEntity)
-	{
+	public boolean searchForEntity(final String sEntity) {
 
-		if (searchForPathway(sEntity) || searchForNCBIGeneId(sEntity)
-				|| searchForGeneShortName(sEntity) || searchForRefSeq(sEntity))
+		if (searchForPathway(sEntity) || searchForNCBIGeneId(sEntity) || searchForGeneShortName(sEntity)
+			|| searchForRefSeq(sEntity))
 			return true;
 
 		return false;
 	}
 
-	private boolean searchForPathway(String sEntity)
-	{
+	private boolean searchForPathway(String sEntity) {
 		EPathwayDatabaseType ePathwayDatabaseType;
 
 		if (sEntity.contains("KEGG"))
@@ -73,14 +66,13 @@ public class DataEntitySearcherViewRep
 
 		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
 
-		int iPathwayID = generalManager.getPathwayManager().searchPathwayIdByName(sEntity,
-				ePathwayDatabaseType);
+		int iPathwayID = generalManager.getPathwayManager().searchPathwayIdByName(sEntity, ePathwayDatabaseType);
 
 		if (iPathwayID == -1)
 			return false;
 
-		IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
-				EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
+		IDListEventContainer<Integer> idListEventContainer =
+			new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
 		idListEventContainer.addID(iPathwayID);
 
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
@@ -88,48 +80,43 @@ public class DataEntitySearcherViewRep
 		return true;
 	}
 
-	private boolean searchForRefSeq(final String sEntity)
-	{
-		Integer iRefSeqID = generalManager.getIDMappingManager().getID(
-				EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT, sEntity.toUpperCase());
-		
+	private boolean searchForRefSeq(final String sEntity) {
+		Integer iRefSeqID =
+			generalManager.getIDMappingManager().getID(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT,
+				sEntity.toUpperCase());
+
 		if (iRefSeqID == null || iRefSeqID == -1)
 			return false;
-	
+
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
 		selectionDelta.addSelection(iRefSeqID, ESelectionType.SELECTION);
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		return true;
 	}
 
-	private boolean searchForNCBIGeneId(final String sNCBIGeneId)
-	{
+	private boolean searchForNCBIGeneId(final String sNCBIGeneId) {
 		Integer iNCBIGeneID = 0;
-		try
-		{
+		try {
 			iNCBIGeneID = Integer.valueOf(sNCBIGeneId);
 		}
-		catch (NumberFormatException nfe)
-		{
+		catch (NumberFormatException nfe) {
 			return false;
 		}
 
-		Integer iDavidID = generalManager.getIDMappingManager().getID(
-				EMappingType.ENTREZ_GENE_ID_2_DAVID, iNCBIGeneID);
+		Integer iDavidID =
+			generalManager.getIDMappingManager().getID(EMappingType.ENTREZ_GENE_ID_2_DAVID, iNCBIGeneID);
 
 		if (iDavidID == null || iDavidID == -1)
 			return false;
-		
+
 		triggerSearchResult(iDavidID);
-		
+
 		return true;
 	}
 
-	private boolean searchForGeneShortName(final String sEntity)
-	{
-		Integer iDavidID = generalManager.getIDMappingManager().getID(
-				EMappingType.GENE_SYMBOL_2_DAVID, sEntity.toUpperCase());
+	private boolean searchForGeneShortName(final String sEntity) {
+		Integer iDavidID =
+			generalManager.getIDMappingManager().getID(EMappingType.GENE_SYMBOL_2_DAVID, sEntity.toUpperCase());
 
 		if (iDavidID == null || iDavidID == -1)
 			return false;
@@ -138,45 +125,36 @@ public class DataEntitySearcherViewRep
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
-	
-	private boolean triggerSearchResult(int iDavidID)
-	{
-		Set<Integer> iSetRefSeq = generalManager.getIDMappingManager().getMultiID(
-				EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
-		
-		if (iSetRefSeq == null)
-		{
-			generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " +iDavidID);
+
+	private boolean triggerSearchResult(int iDavidID) {
+		Set<Integer> iSetRefSeq =
+			generalManager.getIDMappingManager().getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+
+		if (iSetRefSeq == null) {
+			generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
 			return false;
 		}
-		
+
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
-		for (Object iRefSeqID : iSetRefSeq)
-		{
-			selectionDelta.add(new SelectionDeltaItem((Integer)iRefSeqID, ESelectionType.SELECTION));
+		for (Object iRefSeqID : iSetRefSeq) {
+			selectionDelta.add(new SelectionDeltaItem((Integer) iRefSeqID, ESelectionType.SELECTION));
 		}
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new SelectionCommandEventContainer(EIDType.EXPRESSION_INDEX,
-						new SelectionCommand(ESelectionCommandType.CLEAR,
-								ESelectionType.SELECTION)));
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
-		
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+			EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION)));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+
 		return true;
 	}
 }

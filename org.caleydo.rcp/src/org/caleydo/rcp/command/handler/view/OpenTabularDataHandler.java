@@ -10,19 +10,14 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenTabularDataHandler
 	extends AbstractHandler
-	implements IHandler
-{
+	implements IHandler {
 
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException
-	{
-		try
-		{
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
-					TabularDataView.ID);
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(TabularDataView.ID);
 		}
-		catch (PartInitException e)
-		{
+		catch (PartInitException e) {
 			e.printStackTrace();
 		}
 

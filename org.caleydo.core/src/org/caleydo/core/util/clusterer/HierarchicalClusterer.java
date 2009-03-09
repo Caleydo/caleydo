@@ -11,17 +11,15 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import weka.clusterers.ClusterEvaluation;
 import weka.core.Instances;
 
-public class HierarchicalClusterer
-{
+public class HierarchicalClusterer {
 	private Cobweb clusterer = new Cobweb();
 
-	public HierarchicalClusterer()
-	{
+	public HierarchicalClusterer() {
 		clusterer = new Cobweb();
 	}
 
-	public ArrayList<Integer> cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered, Integer iVAIdStorage)
-	{
+	public ArrayList<Integer> cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered,
+		Integer iVAIdStorage) {
 
 		ArrayList<Integer> alClusterResult = new ArrayList<Integer>();
 
@@ -48,11 +46,9 @@ public class HierarchicalClusterer
 
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 
-		for (Integer iContentIndex : contentVA)
-		{
+		for (Integer iContentIndex : contentVA) {
 			IVirtualArray storageVA = set.getVA(iVAIdStorage);
-			for (Integer iStorageIndex : storageVA)
-			{
+			for (Integer iStorageIndex : storageVA) {
 				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex) + ", ");
 			}
 			buffer.append("\n");
@@ -61,12 +57,10 @@ public class HierarchicalClusterer
 		// System.out.println(buffer.toString());
 
 		Instances data = null;
-		try
-		{
+		try {
 			data = new Instances(new StringReader(buffer.toString()));
 		}
-		catch (IOException e1)
-		{
+		catch (IOException e1) {
 			e1.printStackTrace();
 		}
 
@@ -75,13 +69,11 @@ public class HierarchicalClusterer
 
 		// System.out.println(data.toString());
 
-		try
-		{
+		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -89,12 +81,10 @@ public class HierarchicalClusterer
 
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
-		try
-		{
+		try {
 			eval.evaluateClusterer(data);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -106,20 +96,16 @@ public class HierarchicalClusterer
 		for (int i = 0; i < nrclusters; i++)
 			temp.add(0);
 
-		for (int cluster = 0; cluster < nrclusters; cluster++)
-		{
-			for (int i = 0; i < data.numInstances(); i++)
-			{
-				if (test[i] == cluster)
-				{
+		for (int cluster = 0; cluster < nrclusters; cluster++) {
+			for (int i = 0; i < data.numInstances(); i++) {
+				if (test[i] == cluster) {
 					indexes.add(i);
 					temp.set(cluster, temp.get(cluster) + 1);
 				}
 			}
 		}
 
-		for (Integer iter : temp)
-		{
+		for (Integer iter : temp) {
 			if (iter > 0)
 				count.add(iter);
 		}
@@ -142,9 +128,9 @@ public class HierarchicalClusterer
 
 		Integer clusterSizeVAId = set.createStorageVA(count);
 		alClusterResult.add(clusterSizeVAId);
-		
-//		set.setClusteredGraph(clusterer.getGraph());
-		
+
+		// set.setClusteredGraph(clusterer.getGraph());
+
 		return alClusterResult;
 	}
 }

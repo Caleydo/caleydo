@@ -7,8 +7,7 @@ import java.awt.Color;
  * 
  * @author Marc Streit
  */
-public class AInfoOverlayRenderStyle
-{
+public class AInfoOverlayRenderStyle {
 
 	public final static int MAX_OVERLAY_HEIGHT = 300;
 
@@ -22,10 +21,7 @@ public class AInfoOverlayRenderStyle
 
 	public final static Color borderColor = Color.DARK_GRAY;
 
-	public enum VerticalPosition
-	{
-		TOP,
-		CENTER,
-		BOTTOM
+	public enum VerticalPosition {
+		TOP, CENTER, BOTTOM
 	}
 }

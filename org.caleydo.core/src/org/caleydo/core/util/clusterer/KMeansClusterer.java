@@ -12,34 +12,30 @@ import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 
-public class KMeansClusterer
-{
+public class KMeansClusterer {
 
 	private SimpleKMeans clusterer = null;
 
 	private int iNrCluster = 15;
 
-	public KMeansClusterer()
-	{
+	public KMeansClusterer() {
 		clusterer = new SimpleKMeans();
 	}
 
-	public ArrayList<Integer> cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered, Integer iVAIdStorage)
-	{
+	public ArrayList<Integer> cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered,
+		Integer iVAIdStorage) {
 
 		ArrayList<Integer> alClusterResult = new ArrayList<Integer>();
-		
+
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
 		// Arraylist holding # of elements per cluster
 		ArrayList<Integer> count = new ArrayList<Integer>();
-		
-		try
-		{
+
+		try {
 			clusterer.setNumClusters(iNrCluster);
 		}
-		catch (Exception e2)
-		{
+		catch (Exception e2) {
 			e2.printStackTrace();
 		}
 
@@ -61,11 +57,9 @@ public class KMeansClusterer
 
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 
-		for (Integer iContentIndex : contentVA)
-		{
+		for (Integer iContentIndex : contentVA) {
 			IVirtualArray storageVA = set.getVA(iVAIdStorage);
-			for (Integer iStorageIndex : storageVA)
-			{
+			for (Integer iStorageIndex : storageVA) {
 				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex) + ", ");
 			}
 			buffer.append("\n");
@@ -74,13 +68,11 @@ public class KMeansClusterer
 		// System.out.println(buffer.toString());
 
 		Instances data = null;
-				
-		try
-		{
+
+		try {
 			data = new Instances(new StringReader(buffer.toString()));
 		}
-		catch (IOException e1)
-		{
+		catch (IOException e1) {
 			e1.printStackTrace();
 		}
 
@@ -89,31 +81,27 @@ public class KMeansClusterer
 
 		// System.out.println(data.toString());
 
-		try
-		{
+		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
-		try
-		{
+		try {
 			eval.evaluateClusterer(data);
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		// System.out.println(clusterer);
-	
+
 		double[] ClusterAssignments = eval.getClusterAssignments();
-	
+
 		for (int i = 0; i < iNrCluster; i++)
 			count.add(0);
 
@@ -126,18 +114,18 @@ public class KMeansClusterer
 			}
 		}
 
-//		int i = 0;
-//		for (Integer iter : count) {
-//			System.out.println("cluster Nr: " + i + " has " + iter + " elements");
-//			i++;
-//		}
-		
+		// int i = 0;
+		// for (Integer iter : count) {
+		// System.out.println("cluster Nr: " + i + " has " + iter + " elements");
+		// i++;
+		// }
+
 		Integer clusteredVAId = set.createStorageVA(indexes);
 		alClusterResult.add(clusteredVAId);
 
 		Integer clusterSizeVAId = set.createStorageVA(count);
 		alClusterResult.add(clusterSizeVAId);
-		
+
 		return alClusterResult;
 	}
 }

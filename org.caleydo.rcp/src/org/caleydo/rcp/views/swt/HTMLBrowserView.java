@@ -16,55 +16,50 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class HTMLBrowserView
-	extends CaleydoViewPart
-{
+	extends CaleydoViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.HTMLBrowserView";
 
 	private HTMLBrowserViewRep browserView;
-	
+
 	@Override
-	public void createPartControl(Composite parent)
-	{	
-		browserView = (HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager()
-				.createView(EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
+	public void createPartControl(Composite parent) {
+		browserView =
+			(HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
+				EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
 
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 		iViewID = browserView.getID();
-		
+
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				(IMediatorReceiver) browserView);
+			(IMediatorReceiver) browserView);
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(browserView);
 	}
 
 	@Override
-	public void setFocus()
-	{
+	public void setFocus() {
 
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getEventPublisher().removeReceiver(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) browserView);
+		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
+			(IMediatorReceiver) browserView);
 
-		GeneralManager.get().getEventPublisher().removeReceiver(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) browserView);
+		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
+			(IMediatorReceiver) browserView);
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(browserView.getID());
 	}
-	
-	public HTMLBrowserViewRep getHTMLBrowserViewRep()
-	{
+
+	public HTMLBrowserViewRep getHTMLBrowserViewRep() {
 		return browserView;
 	}
-	
-	public void createToolBarItems(int iViewID, Composite group)
-	{
+
+	public void createToolBarItems(int iViewID, Composite group) {
 		final Button buttonKEGG = new Button(group, SWT.RADIO);
 		buttonKEGG.setText(EBrowserQueryType.KEGG.toString());
 		final Button buttonBioCarta = new Button(group, SWT.RADIO);
@@ -77,8 +72,7 @@ public class HTMLBrowserView
 		final Button buttonGeneCards = new Button(group, SWT.RADIO);
 		buttonGeneCards.setText(EBrowserQueryType.GeneCards.toString());
 
-		switch (((GenomeHTMLBrowserViewRep)browserView).getCurrentBrowserQueryType())
-		{
+		switch (((GenomeHTMLBrowserViewRep) browserView).getCurrentBrowserQueryType()) {
 			case KEGG:
 				buttonKEGG.setSelection(true);
 				buttonBioCarta.setSelection(false);
@@ -117,15 +111,13 @@ public class HTMLBrowserView
 			default:
 				break;
 		}
-		
-		SelectionListener queryTypeListener = new SelectionAdapter()
-		{
+
+		SelectionListener queryTypeListener = new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				((GenomeHTMLBrowserViewRep)browserView).changeQueryType(
-					EBrowserQueryType.valueOf(((Button) e.widget).getText()));
-				
+			public void widgetSelected(SelectionEvent e) {
+				((GenomeHTMLBrowserViewRep) browserView).changeQueryType(EBrowserQueryType
+					.valueOf(((Button) e.widget).getText()));
+
 			}
 		};
 

@@ -6,20 +6,20 @@ package org.caleydo.core.data.collection.ccontainer;
  * @author Alexander Lex
  */
 public interface INumericalCContainer
-	extends ICContainer
-{
+	extends ICContainer {
 
 	/**
-	 * Execute the normalize method, where values in the container are
-	 * normalized to values between 0 and 1, but do not take min max from the
-	 * range calculated internally, but use those specified in dMin, dMax Take
-	 * care that dMin and dMax are smaller resp. bigger than the smallest resp.
-	 * biggest value in the data.
+	 * Execute the normalize method, where values in the container are normalized to values between 0 and 1, but
+	 * do not take min max from the range calculated internally, but use those specified in dMin, dMax Take care
+	 * that dMin and dMax are smaller resp. bigger than the smallest resp. biggest value in the data.
 	 * 
-	 * @param dMin the minimum
-	 * @param dMax the maximum
+	 * @param dMin
+	 *          the minimum
+	 * @param dMax
+	 *          the maximum
 	 * @return a container with the normalized values
-	 * @throws IllegalAttributeException when iMin is >= iMax
+	 * @throws IllegalAttributeException
+	 *           when iMin is >= iMax
 	 */
 	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax);
 
@@ -47,8 +47,7 @@ public interface INumericalCContainer
 	// public FloatCContainer log10();
 
 	/**
-	 * Calculates a logarithmic representation of a base for the data, which it
-	 * returns as a new ICContainer
+	 * Calculates a logarithmic representation of a base for the data, which it returns as a new ICContainer
 	 * 
 	 * @return
 	 */

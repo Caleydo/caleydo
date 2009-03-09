@@ -9,20 +9,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class SWTGlyphMappingConfigurationView
-	extends ViewPart
-{
+	extends ViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView";
 
 	// private HTMLBrowserViewRep browserView;
 	private GlyphMappingConfigurationViewRep GMCview;
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
-		GMCview = (GlyphMappingConfigurationViewRep) GeneralManager.get()
-				.getViewGLCanvasManager().createView(
-						EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION, -1,
-						"Glyph Mapping Configuration");
+	public void createPartControl(Composite parent) {
+		GMCview =
+			(GlyphMappingConfigurationViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
+				EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION, -1, "Glyph Mapping Configuration");
 
 		GMCview.initViewRCP(parent);
 		GMCview.drawView();
@@ -31,18 +28,16 @@ public class SWTGlyphMappingConfigurationView
 	}
 
 	@Override
-	public void setFocus()
-	{
+	public void setFocus() {
 
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getEventPublisher().removeReceiver(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) GMCview);
+		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
+			(IMediatorReceiver) GMCview);
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(GMCview.getID());
 	}

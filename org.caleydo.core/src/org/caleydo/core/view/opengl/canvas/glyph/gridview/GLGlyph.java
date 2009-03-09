@@ -4,6 +4,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
+
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,11 +16,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
@@ -28,7 +30,6 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
@@ -55,6 +56,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.Screenshot;
 import com.sun.opengl.util.texture.Texture;
@@ -67,8 +69,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver
-{
+	implements IMediatorSender, IMediatorReceiver {
 
 	private static final long serialVersionUID = -7899479912218913482L;
 
@@ -121,8 +122,7 @@ public class GLGlyph
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
-	{
+	public GLGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		this.sLabel = sLabel;
@@ -151,8 +151,7 @@ public class GLGlyph
 	 * 
 	 * @param iconIDs
 	 */
-	public synchronized void setPositionModel(EIconIDs iconIDs)
-	{
+	public synchronized void setPositionModel(EIconIDs iconIDs) {
 		grid_.setGlyphPositions(iconIDs);
 		forceRebuild();
 
@@ -163,8 +162,7 @@ public class GLGlyph
 	/**
 	 * Gets the used positioning model
 	 */
-	public synchronized EIconIDs getPositionModel()
-	{
+	public synchronized EIconIDs getPositionModel() {
 		if (grid_ != null)
 			return grid_.getGlyphPositions();
 		return EIconIDs.DISPLAY_RECTANGLE;
@@ -176,16 +174,13 @@ public class GLGlyph
 	 * @param positionmodel
 	 * @param axisnumber
 	 * @param internal
-	 *            column number
+	 *          column number
 	 */
-	public synchronized void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value)
-	{
-		if (positionmodel == EIconIDs.DISPLAY_SCATTERPLOT)
-		{
+	public synchronized void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value) {
+		if (positionmodel == EIconIDs.DISPLAY_SCATTERPLOT) {
 			GlyphGridPositionModelScatterplot model =
 				(GlyphGridPositionModelScatterplot) grid_.getGlyphPositionModel(positionmodel);
-			switch (axisnumber)
-			{
+			switch (axisnumber) {
 				case 0:
 					model.setParameterWithInternalColnumX(value);
 					break;
@@ -194,11 +189,10 @@ public class GLGlyph
 					break;
 			}
 		}
-		if (positionmodel == EIconIDs.DISPLAY_PLUS)
-		{
-			GlyphGridPositionModelPlus model = (GlyphGridPositionModelPlus) grid_.getGlyphPositionModel(positionmodel);
-			switch (axisnumber)
-			{
+		if (positionmodel == EIconIDs.DISPLAY_PLUS) {
+			GlyphGridPositionModelPlus model =
+				(GlyphGridPositionModelPlus) grid_.getGlyphPositionModel(positionmodel);
+			switch (axisnumber) {
 				case 0:
 					model.setParameterWithInternalColnumX(value);
 					break;
@@ -214,14 +208,12 @@ public class GLGlyph
 	 * Sets the Selection Brush
 	 * 
 	 * @param enable
-	 *            / disable selection brush
+	 *          / disable selection brush
 	 * @param size
-	 *            of the brush
+	 *          of the brush
 	 */
-	public synchronized void setSelectionBrush(int size)
-	{
-		if (size <= 0)
-		{
+	public synchronized void setSelectionBrush(int size) {
+		if (size <= 0) {
 			bEnableSelection = false;
 			ArrayList<Integer> ids = null;
 			if (size == -1)
@@ -244,18 +236,15 @@ public class GLGlyph
 
 			bRedrawDisplayListGlyph = true;
 		}
-		else
-		{
+		else {
 			bEnableSelection = true;
 			iSelectionBrushSize = size;
 		}
 	}
 
-	private void triggerSelectionUpdate()
-	{
+	private void triggerSelectionUpdate() {
 		ISelectionDelta selectionDelta = selectionManager.getDelta();
-		if (selectionDelta.getAllItems().size() > 0)
-		{
+		if (selectionDelta.getAllItems().size() > 0) {
 			handleConnectedElementRep(selectionDelta);
 
 			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR, this,
@@ -264,14 +253,11 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void init(GL gl)
-	{
+	public synchronized void init(GL gl) {
 		ISet glyphData = null;
 
-		for (ISet tmpSet : alSets)
-		{
-			if (tmpSet != null)
-			{
+		for (ISet tmpSet : alSets) {
+			if (tmpSet != null) {
 				if (tmpSet.getLabel().equals("Set for clinical data"))
 					glyphData = tmpSet;
 			}
@@ -296,8 +282,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void initLocal(GL gl)
-	{
+	public synchronized void initLocal(GL gl) {
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
@@ -307,7 +292,7 @@ public class GLGlyph
 
 		// position /scale camera
 		Rotf t = new Rotf();
-		t.set(new Vec3f(-1, 0, 0), (float) (Math.PI / 4.0 - 2.0 * Math.PI * (-(fInitZoom + 3)) / 360.0));
+		t.set(new Vec3f(-1, 0, 0), (float) (Math.PI / 4.0 - 2.0 * Math.PI * -(fInitZoom + 3) / 360.0));
 		this.getViewCamera().setCameraRotation(t);
 		this.getViewCamera().addCameraPosition(new Vec3f(0, 0, fInitZoom));
 
@@ -317,22 +302,19 @@ public class GLGlyph
 		// affect the picking!
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
-			for (MouseListener l : ml)
-			{
+			for (MouseListener l : ml) {
 				if (l instanceof JoglMouseListener)
 					((JoglMouseListener) l).setNavigationModes(false, false, false);
 			}
 		}
 
 		// Register specialized mouse wheel listener
-		if (mouseListener_ != null)
-		{
+		if (mouseListener_ != null) {
 			parentGLCanvas.addMouseListener(mouseListener_);
 			mouseListener_.setNavigationModes(true, false, true);
 		}
 
-		if (iViewRole != 2 && mouseListener_ != null)
-		{
+		if (iViewRole != 2 && mouseListener_ != null) {
 			parentGLCanvas.addMouseMotionListener(mouseListener_);
 			parentGLCanvas.addMouseWheelListener(mouseListener_);
 
@@ -359,8 +341,7 @@ public class GLGlyph
 
 		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
-		for (GLCaleydoCanvas c : cc)
-		{
+		for (GLCaleydoCanvas c : cc) {
 			c.addKeyListener(keyListener_);
 		}
 
@@ -373,8 +354,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl)
-	{
+	public synchronized void displayLocal(GL gl) {
 		pickingManager.handlePicking(iUniqueID, gl);
 
 		display(gl);
@@ -383,61 +363,49 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl)
-	{
+	public synchronized void displayRemote(GL gl) {
 
 		display(gl);
 		checkForHits(gl);
 	}
 
 	@Override
-	public synchronized void display(GL gl)
-	{
-		if (grid_ == null)
-		{
+	public synchronized void display(GL gl) {
+		if (grid_ == null) {
 			renderSymbol(gl);
 			return;
 		}
 
-		if (grid_.getGlyphList() == null)
-		{
+		if (grid_.getGlyphList() == null) {
 			renderSymbol(gl);
 			return;
 		}
 
-		if (grid_.getGlyphList().keySet().size() == 0)
-		{
+		if (grid_.getGlyphList().keySet().size() == 0) {
 			renderSymbol(gl);
 			return;
 		}
 
 		// switch between detail level
-		if (mouseListener_ != null && !isRenderedRemote())
-		{
+		if (mouseListener_ != null && !isRenderedRemote()) {
 			float height = -mouseListener_.getCameraHeight();
 
 			// System.out.println(height);
 
-			if (height > 20)
-			{
-				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN)
-				{
+			if (height > 20) {
+				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN) {
 					grid_.getGlyphGenerator().setDetailLevel(GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
-			else if (height < 4)
-			{
-				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX)
-				{
+			else if (height < 4) {
+				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX) {
 					grid_.getGlyphGenerator().setDetailLevel(GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
-			else
-			{
-				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MID)
-				{
+			else {
+				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MID) {
 					grid_.getGlyphGenerator().setDetailLevel(GLGlyphGenerator.DETAILLEVEL.LEVEL_MID);
 					bRedrawDisplayListGlyph = true;
 				}
@@ -499,22 +467,19 @@ public class GLGlyph
 	 * 
 	 * @param gl
 	 */
-	private void initDisplayLists(GL gl)
-	{
+	private void initDisplayLists(GL gl) {
 		gl.glPushMatrix();
 		Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
 
 		GLGlyphGenerator generator = grid_.getGlyphGenerator();
 
-		while (git.hasNext())
-		{
+		while (git.hasNext()) {
 			GlyphEntry e = git.next();
 			e.generateGLLists(gl, generator);
 		}
 		gl.glPopMatrix();
 
-		if (bRedrawDisplayListGrid)
-		{
+		if (bRedrawDisplayListGrid) {
 			gl.glPushMatrix();
 			grid_.buildGrids(gl);
 			grid_.setGlyphPositions();
@@ -529,8 +494,7 @@ public class GLGlyph
 	 * 
 	 * @param gl
 	 */
-	private void redrawView(GL gl)
-	{
+	private void redrawView(GL gl) {
 		gl.glPushMatrix();
 
 		gl.glDeleteLists(displayList_, 1);
@@ -538,8 +502,7 @@ public class GLGlyph
 		displayList_ = gl.glGenLists(1);
 		gl.glNewList(displayList_, GL.GL_COMPILE);
 
-		if (grid_.getGlyphList() == null)
-		{
+		if (grid_.getGlyphList() == null) {
 			// something is wrong (no data?)
 			gl.glPopMatrix();
 			return;
@@ -547,8 +510,7 @@ public class GLGlyph
 
 		Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
 
-		while (git.hasNext())
-		{
+		while (git.hasNext()) {
 			GlyphEntry ge = git.next();
 
 			Vec2i pos = grid_.getGridPosition(ge);
@@ -573,16 +535,14 @@ public class GLGlyph
 	 * 
 	 * @param gl
 	 */
-	private void renderSelectionBrush(GL gl)
-	{
+	private void renderSelectionBrush(GL gl) {
 		int size = alSelectionBrushCornerPoints.size();
 
 		Vec2i oldpoint = null;
 		if (size > 1)
 			oldpoint = alSelectionBrushCornerPoints.get(size - 1);
 
-		for (Vec2i point : alSelectionBrushCornerPoints)
-		{
+		for (Vec2i point : alSelectionBrushCornerPoints) {
 			gl.glPushMatrix();
 			gl.glTranslatef(point.x(), -point.y(), 0);
 
@@ -598,8 +558,7 @@ public class GLGlyph
 			gl.glVertex3f(0, 0, 1);
 			gl.glEnd();
 
-			if (oldpoint != null)
-			{
+			if (oldpoint != null) {
 				int x = point.x() - oldpoint.x();
 				int y = point.y() - oldpoint.y();
 
@@ -624,8 +583,7 @@ public class GLGlyph
 	 * 
 	 * @param gl
 	 */
-	private void renderSymbol(GL gl)
-	{
+	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 1.3f * renderStyle.getScaling();
 		float fYButtonOrigin = 1.3f * renderStyle.getScaling();
 		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
@@ -653,32 +611,29 @@ public class GLGlyph
 	}
 
 	/**
-	 * This method saves either an high resolution screenshot, or the current
-	 * view if no framebuffer is available. You can either give it an resolution
-	 * (no aspect ratio correction!) or use -1 as width & height to use 4096x?
-	 * (aspect ratio of the screen). It uses ImagieIO, so the file extension
-	 * defines the written picture format.
+	 * This method saves either an high resolution screenshot, or the current view if no framebuffer is
+	 * available. You can either give it an resolution (no aspect ratio correction!) or use -1 as width & height
+	 * to use 4096x? (aspect ratio of the screen). It uses ImagieIO, so the file extension defines the written
+	 * picture format.
 	 * 
 	 * @param gl
-	 *            context
+	 *          context
 	 * @param file
-	 *            to write
+	 *          to write
 	 * @param width
-	 *            of the picture
+	 *          of the picture
 	 * @param height
-	 *            of the picture
+	 *          of the picture
 	 */
 	@SuppressWarnings("unused")
-	private void renderToImage(GL gl, File outFile, int width, int height)
-	{
+	private void renderToImage(GL gl, File outFile, int width, int height) {
 		int viewport[] = new int[4];
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 
-		if (height <= 0 && width <= 0)
-		{
+		if (height <= 0 && width <= 0) {
 			width = 4096;
 
-			float aspect = (float) (viewport[3]) / (float) (viewport[2]);
+			float aspect = (float) viewport[3] / (float) viewport[2];
 			height = (int) (width * aspect);
 		}
 
@@ -686,18 +641,14 @@ public class GLGlyph
 			iFrameBufferObject = createFrameBufferObject(gl, width, height);
 
 		// we don't have an framebuffer, so we just save the current screen
-		if (iFrameBufferObject < 0)
-		{
-			try
-			{
+		if (iFrameBufferObject < 0) {
+			try {
 				Screenshot.writeToFile(outFile, viewport[2], viewport[3]);
 			}
-			catch (GLException e)
-			{
+			catch (GLException e) {
 				e.printStackTrace();
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 			System.out.println("damn");
@@ -714,16 +665,13 @@ public class GLGlyph
 
 		display(gl);
 
-		try
-		{
+		try {
 			Screenshot.writeToFile(outFile, width, height);
 		}
-		catch (GLException e)
-		{
+		catch (GLException e) {
 			e.printStackTrace();
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -734,15 +682,12 @@ public class GLGlyph
 	}
 
 	/**
-	 * Creates a frame buffer object with the given size. This is from an
-	 * example of Nehe Productions Lession 36 (Radial Blur & Rendering To A
-	 * Texture).
+	 * Creates a frame buffer object with the given size. This is from an example of Nehe Productions Lession 36
+	 * (Radial Blur & Rendering To A Texture).
 	 * 
-	 * @return the newly created frame buffer object is or -1 if a frame buffer
-	 *         object could not be created
+	 * @return the newly created frame buffer object is or -1 if a frame buffer object could not be created
 	 */
-	private int createFrameBufferObject(GL gl, int width, int height)
-	{
+	private int createFrameBufferObject(GL gl, int width, int height) {
 		// Create the FBO
 		int[] frameBuffer = new int[1];
 		gl.glGenFramebuffersEXT(1, frameBuffer, 0);
@@ -776,23 +721,20 @@ public class GLGlyph
 		gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, width, height);
 
 		// Attach the newly created depth buffer to the FBO.
-		gl.glFramebufferRenderbufferEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_DEPTH_ATTACHMENT_EXT, GL.GL_RENDERBUFFER_EXT,
-			depthBuffer[0]);
+		gl.glFramebufferRenderbufferEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_DEPTH_ATTACHMENT_EXT,
+			GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
 
 		// Make sure the framebuffer object is complete (i.e. set up correctly)
 		int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
-		if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT)
-		{
+		if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT) {
 			return frameBuffer[0];
 		}
-		else
-		{
+		else {
 			// No matter what goes wrong, we simply delete the frame buffer
 			// object
 			// This switch statement simply serves to list all possible error
 			// codes
-			switch (status)
-			{
+			switch (status) {
 				case GL.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
 					// One of the attachments is incomplete
 				case GL.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
@@ -822,14 +764,12 @@ public class GLGlyph
 		}
 	}
 
-	private void organizeGlyphsForViewRole()
-	{
+	private void organizeGlyphsForViewRole() {
 		if (iViewRole != 2)
 			return;
 
 		HashMap<Integer, GlyphEntry> tmp = new HashMap<Integer, GlyphEntry>();
-		for (GlyphEntry g : gman.getGlyphs().values())
-		{
+		for (GlyphEntry g : gman.getGlyphs().values()) {
 			if (g.isSelected())
 				tmp.put(g.getID(), g);
 		}
@@ -852,16 +792,14 @@ public class GLGlyph
 	}
 
 	/**
-	 * Handles the Rubberband Selection. This method does only the
-	 * transformation/scale/rotation of the view. The real rubberband is drawn
-	 * in the grid class.
+	 * Handles the Rubberband Selection. This method does only the transformation/scale/rotation of the view.
+	 * The real rubberband is drawn in the grid class.
 	 * 
 	 * @param gl
 	 * @param used
-	 *            scale
+	 *          scale
 	 */
-	private void handleMouseListenerRubberband(GL gl, float scale)
-	{
+	private void handleMouseListenerRubberband(GL gl, float scale) {
 		ArrayList<Vec3f> points = mouseListener_.getRubberBandPoints();
 		if (points.size() < 2)
 			return;
@@ -896,14 +834,12 @@ public class GLGlyph
 	}
 
 	/**
-	 * Gives the Position of a Glyph in relation to the "normal" World, without
-	 * view interferences
+	 * Gives the Position of a Glyph in relation to the "normal" World, without view interferences
 	 * 
 	 * @param glyph
 	 * @return the center position ot the glyph
 	 */
-	private Vec3f getGlyphPosition(GlyphEntry glyph)
-	{
+	private Vec3f getGlyphPosition(GlyphEntry glyph) {
 		// Vec2i gridpos = grid_.getGridPosition( glyph.getX(), glyph.getY() );
 		Vec2i gridpos = grid_.getGridPosition(glyph);
 		gridpos.setY(-gridpos.y());
@@ -918,7 +854,7 @@ public class GLGlyph
 		syy += (float) (iCornerOffset * Math.sin(w));
 
 		// translate to glyph center
-		syy += (float) (Math.sin(w));
+		syy += (float) Math.sin(w);
 
 		Vec3f realpos = new Vec3f();
 		realpos.set(sxx, syy, 1.0f);
@@ -928,52 +864,45 @@ public class GLGlyph
 	}
 
 	/**
-	 * This method handles selection per brushing. It selects glyphs around the
-	 * given Glyph, acording to the Brush size (iSelectionBrushSize).
+	 * This method handles selection per brushing. It selects glyphs around the given Glyph, acording to the
+	 * Brush size (iSelectionBrushSize).
 	 * 
 	 * @param a
-	 *            Glyph Entry (the middle one of the brush)
+	 *          Glyph Entry (the middle one of the brush)
 	 * @param select
-	 *            (true) or deselect (false) mode?
+	 *          (true) or deselect (false) mode?
 	 */
-	private void brushSelect(GlyphEntry glyph, boolean selectDeselect)
-	{
+	private void brushSelect(GlyphEntry glyph, boolean selectDeselect) {
 		Vec2i pos = grid_.getPosition(glyph);
 		alSelectionBrushCornerPoints.clear();
 
 		int k = (iSelectionBrushSize - 1) * 2 + 1;
 		int[] selectedGridHeight = new int[k];
 
-		if (pos.y() % 2 == 0)
-		{
+		if (pos.y() % 2 == 0) {
 			int u = 0, v = k - 1;
 			for (int i = 0; i < k; ++i) // generates 1,3,4,2,0
 			{
-				if (i % 2 == 0)
-				{
+				if (i % 2 == 0) {
 					selectedGridHeight[v] = i;
 					v--;
 				}
-				else
-				{
+				else {
 					selectedGridHeight[u] = i;
 					u++;
 				}
 			}
 
 		}
-		else
-		{
+		else {
 			int u = 0, v = k - 1;
 			for (int i = 0; i < k; ++i) // generates 0,2,4,3,1
 			{
-				if (i % 2 == 0)
-				{
+				if (i % 2 == 0) {
 					selectedGridHeight[u] = i;
 					u++;
 				}
-				else
-				{
+				else {
 					selectedGridHeight[v] = i;
 					v--;
 				}
@@ -982,21 +911,18 @@ public class GLGlyph
 		}
 
 		ArrayList<Integer> glyphIDs = new ArrayList<Integer>();
-		for (int x = -iSelectionBrushSize + 1; x <= iSelectionBrushSize - 1; ++x)
-		{
+		for (int x = -iSelectionBrushSize + 1; x <= iSelectionBrushSize - 1; ++x) {
 			int ymax = selectedGridHeight[x + iSelectionBrushSize - 1];
 			for (int y = -ymax; y <= ymax; ++y)
 				glyphIDs.add(grid_.getGlyphID(pos.x() + x, pos.y() - y));
 		}
 
-		if (selectDeselect)
-		{
+		if (selectDeselect) {
 			for (int id : glyphIDs)
 				if (id >= 0)
 					grid_.getGlyph(id).select();
 		}
-		else
-		{
+		else {
 			for (int id : glyphIDs)
 				if (id >= 0)
 					grid_.getGlyph(id).deSelect();
@@ -1014,29 +940,28 @@ public class GLGlyph
 
 		{ // top
 			temp = new Vec2i(gridPos);
-			temp.setX(gridPos.x() + (iSelectionBrushSize - 0));
+			temp.setX(gridPos.x() + iSelectionBrushSize - 0);
 			temp.setY(gridPos.y() - (iSelectionBrushSize - 0));
 			alSelectionBrushCornerPoints.add(temp);
 		}
 
 		{ // right
 			temp = new Vec2i(gridPos);
-			temp.setX(gridPos.x() + (iSelectionBrushSize - 0));
-			temp.setY(gridPos.y() + (iSelectionBrushSize - 1));
+			temp.setX(gridPos.x() + iSelectionBrushSize - 0);
+			temp.setY(gridPos.y() + iSelectionBrushSize - 1);
 			alSelectionBrushCornerPoints.add(temp);
 		}
 
 		{ // bottom
 			temp = new Vec2i(gridPos);
 			temp.setX(gridPos.x() - (iSelectionBrushSize - 1));
-			temp.setY(gridPos.y() + (iSelectionBrushSize - 1));
+			temp.setY(gridPos.y() + iSelectionBrushSize - 1);
 			alSelectionBrushCornerPoints.add(temp);
 		}
 	}
 
 	@Override
-	public synchronized String getShortInfo()
-	{
+	public synchronized String getShortInfo() {
 		if (sLabelPersonal != null)
 			return "Glpyh - " + sLabelPersonal;
 
@@ -1044,8 +969,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized String getDetailedInfo()
-	{
+	public synchronized String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Type: Glyph Map");
 		sInfoText.append("GL: Showing Glyphs for clinical data");
@@ -1053,19 +977,15 @@ public class GLGlyph
 	}
 
 	@Override
-	protected synchronized void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
-		Pick pick)
-	{
+	protected synchronized void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
+		int iExternalID, Pick pick) {
 
-		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION)
-		{
-			switch (pickingMode)
-			{
+		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
+			switch (pickingMode) {
 				case MOUSE_OVER:
 					GlyphEntry g = grid_.getGlyph(iExternalID);
 
-					if (g == null)
-					{
+					if (g == null) {
 						generalManager.getLogger().log(Level.WARNING,
 							"Glyph with external ID " + iExternalID + " not found!");
 						pickingManager.flushHits(iUniqueID, pickingType);
@@ -1073,8 +993,7 @@ public class GLGlyph
 					}
 
 					// nothing changed, we don't need to do anything
-					if (g == oldMouseOverGlyphEntry)
-					{
+					if (g == oldMouseOverGlyphEntry) {
 						pickingManager.flushHits(iUniqueID, pickingType);
 						return;
 					}
@@ -1117,8 +1036,7 @@ public class GLGlyph
 	}
 
 	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-		EMediatorType eMediatorType)
-	{
+		EMediatorType eMediatorType) {
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
 
@@ -1140,8 +1058,7 @@ public class GLGlyph
 		// grid_.deSelectAll();
 
 		GlyphEntry actualGlyph = null;
-		for (SelectionDeltaItem item : selectionDelta)
-		{
+		for (SelectionDeltaItem item : selectionDelta) {
 			actualGlyph = grid_.getGlyph(item.getPrimaryID());
 
 			if (actualGlyph == null) // not glyph to this id found
@@ -1158,23 +1075,20 @@ public class GLGlyph
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType)
-	{
+		EMediatorType eMediatorType) {
 		generalManager.getLogger().log(
 			Level.INFO,
 			sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
 				+ eventTrigger.getClass().getSimpleName());
 
-		switch (eventContainer.getEventType())
-		{
+		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
 				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
 					(DeltaEventContainer<ISelectionDelta>) eventContainer;
@@ -1184,9 +1098,9 @@ public class GLGlyph
 				break;
 
 			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer = (SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType())
-				{
+				SelectionCommandEventContainer commandEventContainer =
+					(SelectionCommandEventContainer) eventContainer;
+				switch (commandEventContainer.getIDType()) {
 					case EXPERIMENT_INDEX:
 						selectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
 						break;
@@ -1200,23 +1114,20 @@ public class GLGlyph
 	/**
 	 * This method forces a rebuild of every display list in this view
 	 */
-	public synchronized void forceRebuild()
-	{
+	public synchronized void forceRebuild() {
 		bRedrawDisplayListGrid = true;
 		bRedrawDisplayListGlyph = true;
 	}
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type)
-	{
+	public synchronized void broadcastElements(EVAOperation type) {
 
 	}
 
 	/**
 	 * Handles the creation of {@link SelectedElementRep} uses selection delta
 	 */
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
-	{
+	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
 		if (!bDrawConnectionRepLines)
 			return;
 
@@ -1227,8 +1138,7 @@ public class GLGlyph
 		GlyphEntry actualGlyph = null;
 
 		Collection<SelectionDeltaItem> selection = selectionDelta.getAllItems();
-		for (SelectionDeltaItem item : selection)
-		{
+		for (SelectionDeltaItem item : selection) {
 			actualGlyph = grid_.getGlyph(item.getPrimaryID());
 
 			if (actualGlyph == null)
@@ -1249,19 +1159,16 @@ public class GLGlyph
 		}
 	}
 
-	public synchronized void removeUnselected()
-	{
+	public synchronized void removeUnselected() {
 		grid_.loadData(null);
 		forceRebuild();
 	}
 
-	public void setPersonalName(String name)
-	{
+	public void setPersonalName(String name) {
 		sLabelPersonal = name;
 	}
 
-	public String getPersonalName()
-	{
+	public String getPersonalName() {
 		return sLabelPersonal;
 	}
 
@@ -1269,24 +1176,21 @@ public class GLGlyph
 	 * Temporary fix
 	 * 
 	 * @param addHeader
-	 *            you want a header?
+	 *          you want a header?
 	 * @param viewName
 	 * @return
 	 */
 	@Deprecated
-	public String getContainingDataAsCSV(boolean addHeader, String viewName)
-	{
+	public String getContainingDataAsCSV(boolean addHeader, String viewName) {
 		Collection<GlyphEntry> list = grid_.getGlyphList().values();
 
 		String content = "";
 
 		// make header
-		if (addHeader)
-		{
+		if (addHeader) {
 			content += "GROUP; ID";
 
-			for (int i = 1; i < gman.getGlyphAttributes().size(); ++i)
-			{
+			for (int i = 1; i < gman.getGlyphAttributes().size(); ++i) {
 				String name = gman.getGlyphAttributeTypeWithInternalColumnNumber(i).getName();
 
 				content += "; " + name;
@@ -1295,29 +1199,25 @@ public class GLGlyph
 			GlyphEntry ge = (GlyphEntry) list.toArray()[0];
 			ArrayList<String> names = ge.getStringParameterColumnNames();
 
-			for (String name : names)
-			{
+			for (String name : names) {
 				content += "; " + name;
 			}
 			content += "\r\n";
 		}
 
-		for (GlyphEntry ge : list)
-		{
+		for (GlyphEntry ge : list) {
 			String line = viewName;// + "; ";
 			//
 			// line += GeneralManager.get().getIDMappingManager().getID(
 			// EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, ge.getID());
 
-			for (int i = 0; i < ge.getNumberOfParameters(); ++i)
-			{
+			for (int i = 0; i < ge.getNumberOfParameters(); ++i) {
 				GlyphAttributeType type = gman.getGlyphAttributeTypeWithInternalColumnNumber(i);
 
 				line += "; " + type.getParameterString(ge.getParameter(i));
 			}
 
-			for (String name : ge.getStringParameterColumnNames())
-			{
+			for (String name : ge.getStringParameterColumnNames()) {
 				line += "; " + ge.getStringParameter(name);
 			}
 			content += line + "\r\n";
@@ -1330,32 +1230,28 @@ public class GLGlyph
 	 * Temporary fix
 	 * 
 	 * @param addHeader
-	 *            you want a header?
+	 *          you want a header?
 	 * @param selectionOnly
-	 *            export selected glyphs only
+	 *          export selected glyphs only
 	 * @param originalData
-	 *            unused now
+	 *          unused now
 	 * @return
 	 */
 	@Deprecated
 	public void exportAsCSV(final String sFileName, final boolean addHeader, final boolean selectionOnly,
-		final boolean originalData)
-	{
+		final boolean originalData) {
 		Collection<GlyphEntry> list = grid_.getGlyphList().values();
 		// String tab = "; ";
 		String tab = "\t";
 
-		try
-		{
+		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
 
 			// make header
-			if (addHeader)
-			{
+			if (addHeader) {
 				out.print("ID");
 
-				for (int i = 1; i < gman.getGlyphAttributes().size(); ++i)
-				{
+				for (int i = 1; i < gman.getGlyphAttributes().size(); ++i) {
 					String name = gman.getGlyphAttributeTypeWithInternalColumnNumber(i).getName();
 					out.print(tab + name);
 				}
@@ -1363,40 +1259,34 @@ public class GLGlyph
 				GlyphEntry ge = (GlyphEntry) list.toArray()[0];
 				ArrayList<String> names = ge.getStringParameterColumnNames();
 
-				for (String name : names)
-				{
+				for (String name : names) {
 					out.print(tab + name);
 				}
 				out.println("");
 			}
 
-			for (GlyphEntry ge : list)
-			{
+			for (GlyphEntry ge : list) {
 				if (selectionOnly && !ge.isSelected())
 					continue;
 
-				if (GeneralManager.get().getIDMappingManager().hasMapping(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT))
-				{
+				if (GeneralManager.get().getIDMappingManager().hasMapping(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT)) {
 					String id =
 						GeneralManager.get().getIDMappingManager().getID(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT,
 							ge.getID());
 
 					out.print(id);
 				}
-				else
-				{
+				else {
 					out.print(ge.getID());
 				}
 
-				for (int i = 0; i < ge.getNumberOfParameters(); ++i)
-				{
+				for (int i = 0; i < ge.getNumberOfParameters(); ++i) {
 					GlyphAttributeType type = gman.getGlyphAttributeTypeWithInternalColumnNumber(i);
 
 					out.print(tab + type.getParameterString(ge.getParameter(i)));
 				}
 
-				for (String name : ge.getStringParameterColumnNames())
-				{
+				for (String name : ge.getStringParameterColumnNames()) {
 					out.print(tab + ge.getStringParameter(name));
 				}
 				out.println("");
@@ -1404,22 +1294,19 @@ public class GLGlyph
 
 			out.close();
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 
 		}
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType)
-	{
+	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		return selectionManager.getElements(eSelectionType).size();
 		// throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 
 	@Override
-	public void clearAllSelections()
-	{
+	public void clearAllSelections() {
 		for (GlyphEntry g : gman.getGlyphs().values())
 			g.select();
 

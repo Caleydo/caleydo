@@ -2,62 +2,57 @@ package org.caleydo.core.manager.picking;
 
 import org.caleydo.core.manager.id.EManagedObjectType;
 
-public enum EPickingType
-{
+public enum EPickingType {
 	// bucket
-	BUCKET_MOVE_IN_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, true),
-	BUCKET_MOVE_OUT_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, true),
-	BUCKET_MOVE_LEFT_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, true),
-	BUCKET_MOVE_RIGHT_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, true),
-	BUCKET_LOCK_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, false),
-	BUCKET_REMOVE_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, false),
-	BUCKET_DRAG_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, false),
+	BUCKET_MOVE_IN_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, true), BUCKET_MOVE_OUT_ICON_SELECTION(
+		EManagedObjectType.GL_REMOTE_RENDERING, true), BUCKET_MOVE_LEFT_ICON_SELECTION(
+		EManagedObjectType.GL_REMOTE_RENDERING, true), BUCKET_MOVE_RIGHT_ICON_SELECTION(
+		EManagedObjectType.GL_REMOTE_RENDERING, true), BUCKET_LOCK_ICON_SELECTION(
+		EManagedObjectType.GL_REMOTE_RENDERING, false), BUCKET_REMOVE_ICON_SELECTION(
+		EManagedObjectType.GL_REMOTE_RENDERING, false), BUCKET_DRAG_ICON_SELECTION(
+		EManagedObjectType.GL_REMOTE_RENDERING, false),
 	// BUCKET_SEARCH_PATHWAY,
 	VIEW_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, true),
 	/**
-	 * A remote level element is the place-holder for a view, basically the wall
-	 * behind a view
+	 * A remote level element is the place-holder for a view, basically the wall behind a view
 	 */
-	REMOTE_LEVEL_ELEMENT(EManagedObjectType.GL_REMOTE_RENDERING, false),
-	MEMO_PAD_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, false),
+	REMOTE_LEVEL_ELEMENT(EManagedObjectType.GL_REMOTE_RENDERING, false), MEMO_PAD_SELECTION(
+		EManagedObjectType.GL_REMOTE_RENDERING, false),
 
 	// selection panel
 	SELECTION_PANEL_ITEM(EManagedObjectType.GL_SELECTION_PANEL, false),
 
 	// parallel coordinates
-	POLYLINE_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	X_AXIS_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	Y_AXIS_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	GATE_TIP_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	GATE_BODY_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	GATE_BOTTOM_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	ADD_GATE(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	ADD_MASTER_GATE(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	REMOVE_GATE(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	PC_ICON_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	MOVE_AXIS(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	REMOVE_AXIS(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	DUPLICATE_AXIS(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	ANGULAR_UPPER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	ANGULAR_LOWER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
-	PCS_VIEW_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, true),
-	REMOVE_NAN(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
+	POLYLINE_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, false), X_AXIS_SELECTION(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), Y_AXIS_SELECTION(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), GATE_TIP_SELECTION(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), GATE_BODY_SELECTION(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), GATE_BOTTOM_SELECTION(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), ADD_GATE(EManagedObjectType.GL_PARALLEL_COORDINATES,
+		false), ADD_MASTER_GATE(EManagedObjectType.GL_PARALLEL_COORDINATES, false), REMOVE_GATE(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), PC_ICON_SELECTION(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), MOVE_AXIS(EManagedObjectType.GL_PARALLEL_COORDINATES,
+		false), REMOVE_AXIS(EManagedObjectType.GL_PARALLEL_COORDINATES, false), DUPLICATE_AXIS(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), ANGULAR_UPPER(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), ANGULAR_LOWER(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, false), PCS_VIEW_SELECTION(
+		EManagedObjectType.GL_PARALLEL_COORDINATES, true), REMOVE_NAN(EManagedObjectType.GL_PARALLEL_COORDINATES,
+		false),
 
 	// pathway manager
-	PATHWAY_ELEMENT_SELECTION(EManagedObjectType.GL_PATHWAY, false),
-	PATHWAY_TEXTURE_SELECTION(EManagedObjectType.GL_PATHWAY, false),
+	PATHWAY_ELEMENT_SELECTION(EManagedObjectType.GL_PATHWAY, false), PATHWAY_TEXTURE_SELECTION(
+		EManagedObjectType.GL_PATHWAY, false),
 
 	// heat map
-	HEAT_MAP_LINE_SELECTION(EManagedObjectType.GL_HEAT_MAP, false),
-	HEAT_MAP_STORAGE_SELECTION(EManagedObjectType.GL_HEAT_MAP, false),
+	HEAT_MAP_LINE_SELECTION(EManagedObjectType.GL_HEAT_MAP, false), HEAT_MAP_STORAGE_SELECTION(
+		EManagedObjectType.GL_HEAT_MAP, false),
 
 	// hierarchical heat map
-	HIER_HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, false),
-	HIER_HEAT_MAP_TEXTURE_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, false),
-	HIER_HEAT_MAP_INFOCUS_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, false),
-	HIER_HEAT_MAP_CURSOR(EManagedObjectType.GL_HIER_HEAT_MAP, false),
-	HIER_HEAT_MAP_VIEW_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, true),
-	HIER_HEAT_MAP_TEXTURE_CURSOR(EManagedObjectType.GL_HIER_HEAT_MAP, false),
+	HIER_HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, false), HIER_HEAT_MAP_TEXTURE_SELECTION(
+		EManagedObjectType.GL_HIER_HEAT_MAP, false), HIER_HEAT_MAP_INFOCUS_SELECTION(
+		EManagedObjectType.GL_HIER_HEAT_MAP, false), HIER_HEAT_MAP_CURSOR(EManagedObjectType.GL_HIER_HEAT_MAP,
+		false), HIER_HEAT_MAP_VIEW_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, true), HIER_HEAT_MAP_TEXTURE_CURSOR(
+		EManagedObjectType.GL_HIER_HEAT_MAP, false),
 
 	// glyph
 	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH, false),
@@ -68,8 +63,7 @@ public enum EPickingType
 
 	private boolean bCanContainOtherPicks;
 
-	private EPickingType(EManagedObjectType viewType, boolean bCanContainOtherPicks)
-	{
+	private EPickingType(EManagedObjectType viewType, boolean bCanContainOtherPicks) {
 		this.viewType = viewType;
 		this.bCanContainOtherPicks = bCanContainOtherPicks;
 	}
@@ -79,18 +73,15 @@ public enum EPickingType
 	 * 
 	 * @return
 	 */
-	public EManagedObjectType getViewType()
-	{
+	public EManagedObjectType getViewType() {
 		return viewType;
 	}
 
-	public boolean canContainOtherPicks()
-	{
+	public boolean canContainOtherPicks() {
 		return bCanContainOtherPicks;
 	}
 
-	public EPickingType get(int iOrdinal)
-	{
+	public EPickingType get(int iOrdinal) {
 		return values()[iOrdinal];
 	}
 }

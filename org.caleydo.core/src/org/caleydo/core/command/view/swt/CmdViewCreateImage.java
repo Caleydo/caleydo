@@ -14,33 +14,28 @@ import org.caleydo.core.view.swt.image.ImageViewRep;
  * @author Marc Streit
  */
 public class CmdViewCreateImage
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	String sImagePath = "";
 
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateImage(final ECommandType cmdType)
-	{
+	public CmdViewCreateImage(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1)
-		{
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
-					iParentContainerId);
+		if (iExternalID != -1) {
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
-		ImageViewRep imageView = (ImageViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_IMAGE, iParentContainerId, sLabel);
+		ImageViewRep imageView =
+			(ImageViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_IMAGE, iParentContainerId, sLabel);
 
 		viewManager.registerItem(imageView);
 
@@ -48,30 +43,26 @@ public class CmdViewCreateImage
 		imageView.initView();
 		imageView.drawView();
 
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(imageView.getID(),
-					iExternalID);
+		if (iExternalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(imageView.getID(), iExternalID);
 		}
 
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		parameterHandler.setValueAndTypeAndDefault("sImagePath", parameterHandler
-				.getValueString(ECommandType.TAG_DETAIL.getXmlKey()),
-				IParameterHandler.ParameterHandlerType.STRING, "");
+		parameterHandler
+			.setValueAndTypeAndDefault("sImagePath", parameterHandler.getValueString(ECommandType.TAG_DETAIL
+				.getXmlKey()), IParameterHandler.ParameterHandlerType.STRING, "");
 
 		sImagePath = parameterHandler.getValueString("sImagePath");
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

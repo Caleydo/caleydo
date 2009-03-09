@@ -10,32 +10,28 @@ import org.caleydo.core.manager.event.IMediatorSender;
 
 /**
  * <p>
- * This class manages mediators. There are two basic types of Mediators: private
- * and public, system-wide ones.
+ * This class manages mediators. There are two basic types of Mediators: private and public, system-wide ones.
  * </p>
  * <p>
- * The private mediators are created by calling {@link #getPrivateMediator()}
- * and are not stored or managed any further by the publisher.
+ * The private mediators are created by calling {@link #getPrivateMediator()} and are not stored or managed
+ * any further by the publisher.
  * </p>
  * <p>
- * The public mediators are unique system-wide. The possible mediators are
- * listed in {@link EMediatorType}
+ * The public mediators are unique system-wide. The possible mediators are listed in {@link EMediatorType}
  * </p>
  * <p>
- * The publisher provides a complete abstraction of the public mediators, so
- * that no access to the concrete mediators is needed.
+ * The publisher provides a complete abstraction of the public mediators, so that no access to the concrete
+ * mediators is needed.
  * </p>
  * <p>
- * Object that can receive updates form the mediator have to implement
- * {@link IMediatorReceiver}, those that want to send updates have to implement
- * {@link IMediatorSender}
+ * Object that can receive updates form the mediator have to implement {@link IMediatorReceiver}, those that
+ * want to send updates have to implement {@link IMediatorSender}
  * </p>
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
-public interface IEventPublisher
-{
+public interface IEventPublisher {
 
 	/**
 	 * Get a mediator that is not stored anywhere, for your private use only.
@@ -45,14 +41,17 @@ public interface IEventPublisher
 	public IMediator getPrivateMediator();
 
 	/**
-	 * Trigger an update concerning selections. The details about what to do
-	 * with the update are specified in the delta.
+	 * Trigger an update concerning selections. The details about what to do with the update are specified in
+	 * the delta.
 	 * 
-	 * @param eMediatorType for which mediator
-	 * @param eventTrigger the caller
-	 * @param selectionDelta the delta containing all operations to be executed
-	 * @param colSelectionCommand a command to be executed on the selection
-	 *            manager (can be null if not necessary)
+	 * @param eMediatorType
+	 *          for which mediator
+	 * @param eventTrigger
+	 *          the caller
+	 * @param selectionDelta
+	 *          the delta containing all operations to be executed
+	 * @param colSelectionCommand
+	 *          a command to be executed on the selection manager (can be null if not necessary)
 	 */
 	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
 	// IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
@@ -72,60 +71,70 @@ public interface IEventPublisher
 	// IVirtualArrayDelta delta, Collection<SelectionCommand>
 	// colSelectionCommand);
 	/**
-	 * Triggers an event, signals that something has happened and sends data
-	 * along
+	 * Triggers an event, signals that something has happened and sends data along
 	 * 
-	 * @param eventTrigger the caller
-	 * @param eventContainer containing the information on the type of the event
-	 *            {@link EEventType} and possibly data associated
+	 * @param eventTrigger
+	 *          the caller
+	 * @param eventContainer
+	 *          containing the information on the type of the event {@link EEventType} and possibly data
+	 *          associated
 	 */
 	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			IEventContainer eventContainer);
+		IEventContainer eventContainer);
 
 	/**
 	 * Adds a sender to the mediator specified in eMediatorType
 	 * 
-	 * @param eMediatorType The mediator that is used to pass this type of
-	 *            events
-	 * @param sender the sender to be registered
+	 * @param eMediatorType
+	 *          The mediator that is used to pass this type of events
+	 * @param sender
+	 *          the sender to be registered
 	 */
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender);
 
 	/**
 	 * Adds a receiver to the mediator specified in eMediatorType
 	 * 
-	 * @param eMediatorType the type of the mediator
-	 * @param receiver the receiver to be registered
+	 * @param eMediatorType
+	 *          the type of the mediator
+	 * @param receiver
+	 *          the receiver to be registered
 	 */
 	public void addReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver);
 
 	/**
 	 * Removes a sender from the mediator specified in eMediatorType
 	 * 
-	 * @param eMediatorType the type of the mediator
-	 * @param sender the sender to be removed
+	 * @param eMediatorType
+	 *          the type of the mediator
+	 * @param sender
+	 *          the sender to be removed
 	 */
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender);
 
 	/**
 	 * Removes a receiver from the mediator specified in eMediatorType
 	 * 
-	 * @param eMediatorType the type of the mediator
-	 * @param reveiver the receiver to be removed
+	 * @param eMediatorType
+	 *          the type of the mediator
+	 * @param reveiver
+	 *          the receiver to be removed
 	 */
 	public void removeReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver);
 
 	/**
 	 * Removes a sender from all public mediators
 	 * 
-	 * @param sender the sender to be removed
+	 * @param sender
+	 *          the sender to be removed
 	 */
 	public void removeSenderFromAllGroups(IMediatorSender sender);
 
 	/**
 	 * Removes a receiver from all public mediators
 	 * 
-	 * @param receiver the receiver to be removed
+	 * @param receiver
+	 *          the receiver to be removed
 	 */
 	public void removeReceiverFromAllGroups(IMediatorReceiver receiver);
 }

@@ -4,16 +4,15 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 /**
- * Camera model using yaw, pitch and roll to manipulate the camera. Note: using
- * OpenGL camera convention. camera viewing in -z direction onto the x-y plane.
+ * Camera model using yaw, pitch and roll to manipulate the camera. Note: using OpenGL camera convention.
+ * camera viewing in -z direction onto the x-y plane.
  * 
  * @see org.caleydo.core.view.opengl.camera.IViewCamera
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class ViewCameraPitchRollYaw
-	extends ViewCameraBase
-{
+	extends ViewCameraBase {
 
 	protected float fRollZ = 0.0f;
 
@@ -30,8 +29,7 @@ public class ViewCameraPitchRollYaw
 	protected Rotf quatYawX = new Rotf();
 
 	/**
-	 * Defines update behavior. If TURE the ViewMatrix is updated via
-	 * setViewRotate(Rotf) .
+	 * Defines update behavior. If TURE the ViewMatrix is updated via setViewRotate(Rotf) .
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#setCameraRotation(Rotf)
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#getCameraMatrix()
@@ -41,57 +39,47 @@ public class ViewCameraPitchRollYaw
 	/**
 	 * Constructor.
 	 */
-	public ViewCameraPitchRollYaw(int iId)
-	{
+	public ViewCameraPitchRollYaw(int iId) {
 
 		super(iId);
 	}
 
-	private void updateRollZ(final float fSetRadiant)
-	{
+	private void updateRollZ(final float fSetRadiant) {
 
-		quatRollZ.set(new Vec3f((float) Math.sin(fSetRadiant * 0.5f), 0, 0), (float) Math
-				.cos(fSetRadiant * 0.5f));
+		quatRollZ
+			.set(new Vec3f((float) Math.sin(fSetRadiant * 0.5f), 0, 0), (float) Math.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}
 
-	private void updatePitchY(final float fSetRadiant)
-	{
+	private void updatePitchY(final float fSetRadiant) {
 
 		quatPitchY.set(new Vec3f(0, (float) Math.sin(fSetRadiant * 0.5f), 0), (float) Math
-				.cos(fSetRadiant * 0.5f));
+			.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}
 
-	private void updateYawX(final float fSetRadiant)
-	{
+	private void updateYawX(final float fSetRadiant) {
 
-		quatYawX.set(new Vec3f(0, 0, (float) Math.sin(fSetRadiant * 0.5f)), (float) Math
-				.cos(fSetRadiant * 0.5f));
+		quatYawX.set(new Vec3f(0, 0, (float) Math.sin(fSetRadiant * 0.5f)), (float) Math.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}
 
 	/**
-	 * Updates quaternion from roll, pitch and yaw. If
-	 * prometheus.data.collection
-	 * .view.camera.ViewCameraPitchRollYaw#bEnableImmediateCameraUpdate is TRUE
-	 * the ViewMatrix is updated by calling
-	 * prometheus.data.collection.view.camera.ViewCameraBase#setViewRotate(Rotf)
-	 * .
+	 * Updates quaternion from roll, pitch and yaw. If prometheus.data.collection
+	 * .view.camera.ViewCameraPitchRollYaw#bEnableImmediateCameraUpdate is TRUE the ViewMatrix is updated by
+	 * calling prometheus.data.collection.view.camera.ViewCameraBase#setViewRotate(Rotf) .
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#setCameraRotation(Rotf)
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#bEnableImmediateCameraUpdate
 	 */
-	private void updateQuaternion()
-	{
+	private void updateQuaternion() {
 
-		quadResult = (quatRollZ.times(quatPitchY)).times(quatYawX);
+		quadResult = quatRollZ.times(quatPitchY).times(quatYawX);
 
-		if (bEnableImmediateCameraUpdate)
-		{
+		if (bEnableImmediateCameraUpdate) {
 			setCameraRotation(quadResult);
 		}
 	}
@@ -100,10 +88,10 @@ public class ViewCameraPitchRollYaw
 	 * Sets yaw angle in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addYawX(float)
-	 * @param fSetRadiant yaw angle in radians
+	 * @param fSetRadiant
+	 *          yaw angle in radians
 	 */
-	public void setYawX(final float fSetRadiant)
-	{
+	public void setYawX(final float fSetRadiant) {
 
 		fYawX = fSetRadiant;
 
@@ -114,10 +102,10 @@ public class ViewCameraPitchRollYaw
 	 * Sets pitch angle in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addPitchY(float)
-	 * @param fSetRadiant pitch angle in radians
+	 * @param fSetRadiant
+	 *          pitch angle in radians
 	 */
-	public void setPitchY(final float fSetRadiant)
-	{
+	public void setPitchY(final float fSetRadiant) {
 
 		fPitchY = fSetRadiant;
 
@@ -128,10 +116,10 @@ public class ViewCameraPitchRollYaw
 	 * Sets roll angle in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addRollZ(float)
-	 * @param fSetRadiant roll angle in radians
+	 * @param fSetRadiant
+	 *          roll angle in radians
 	 */
-	public void setRollZ(final float fSetRadiant)
-	{
+	public void setRollZ(final float fSetRadiant) {
 
 		fRollZ = fSetRadiant;
 
@@ -142,10 +130,10 @@ public class ViewCameraPitchRollYaw
 	 * Adds a roll increment in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setYawX(float)
-	 * @param fSetRadiant roll increment in radians
+	 * @param fSetRadiant
+	 *          roll increment in radians
 	 */
-	public void addYawX(final float fSetRadiant)
-	{
+	public void addYawX(final float fSetRadiant) {
 
 		fYawX += fSetRadiant;
 
@@ -156,10 +144,10 @@ public class ViewCameraPitchRollYaw
 	 * Adds a roll increment in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setPitchY(float)
-	 * @param fSetRadiant roll increment in radians
+	 * @param fSetRadiant
+	 *          roll increment in radians
 	 */
-	public void addPitchY(final float fSetRadiant)
-	{
+	public void addPitchY(final float fSetRadiant) {
 
 		fPitchY += fSetRadiant;
 
@@ -170,10 +158,10 @@ public class ViewCameraPitchRollYaw
 	 * Adds a roll increment in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setRollZ(float)
-	 * @param fSetRadiant roll increment in radians
+	 * @param fSetRadiant
+	 *          roll increment in radians
 	 */
-	public void addRollZ(final float fSetRadiant)
-	{
+	public void addRollZ(final float fSetRadiant) {
 
 		fRollZ += fSetRadiant;
 
@@ -186,14 +174,14 @@ public class ViewCameraPitchRollYaw
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addPitchY(float)
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setRollZ(float)
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addYawX(float)
-	 * @param iIndex index from [0..2] were 0..yawX, 1..pitchY and 2..rollZ
-	 * @param fSetRadiant rotation angel in radians
+	 * @param iIndex
+	 *          index from [0..2] were 0..yawX, 1..pitchY and 2..rollZ
+	 * @param fSetRadiant
+	 *          rotation angel in radians
 	 */
-	public void setByIndex(final int iIndex, final float fSetRadiant)
-	{
+	public void setByIndex(final int iIndex, final float fSetRadiant) {
 
-		switch (iIndex)
-		{
+		switch (iIndex) {
 			case 0:
 				setYawX(fSetRadiant);
 				return;
@@ -204,8 +192,7 @@ public class ViewCameraPitchRollYaw
 				setRollZ(fSetRadiant);
 				return;
 			default:
-				throw new IndexOutOfBoundsException("index [" + Integer.toString(iIndex)
-						+ "] out of bounds [0..2] ");
+				throw new IndexOutOfBoundsException("index [" + Integer.toString(iIndex) + "] out of bounds [0..2] ");
 		}
 	}
 
@@ -214,8 +201,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @return yaw component of rotation in radians
 	 */
-	public float getYawX()
-	{
+	public float getYawX() {
 
 		return fYawX;
 	}
@@ -225,8 +211,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @return pitch component of rotation in radians
 	 */
-	public float getPitchY()
-	{
+	public float getPitchY() {
 
 		return fPitchY;
 	}
@@ -236,20 +221,17 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @return roll component of rotation in radians
 	 */
-	public float getRollZ()
-	{
+	public float getRollZ() {
 
 		return fRollZ;
 	}
 
 	/**
-	 * Get resulting rotation from pitch, roll and yaw. Note: This value is
-	 * updated with each set method.
+	 * Get resulting rotation from pitch, roll and yaw. Note: This value is updated with each set method.
 	 * 
 	 * @return current rotation calculated from pitch, roll and yaw.
 	 */
-	public Rotf getRotation()
-	{
+	public Rotf getRotation() {
 
 		return quadResult;
 	}
@@ -258,11 +240,10 @@ public class ViewCameraPitchRollYaw
 	 * Set state for update behaviour.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#getCameraMatrix()
-	 * @param bImmediateUpdate TRUE force an immediate update once a setter is
-	 *            called, which recalulates the ViewMatrix
+	 * @param bImmediateUpdate
+	 *          TRUE force an immediate update once a setter is called, which recalulates the ViewMatrix
 	 */
-	public synchronized void setImmediateCameraUpdate(final boolean bImmediateUpdate)
-	{
+	public synchronized void setImmediateCameraUpdate(final boolean bImmediateUpdate) {
 
 		bEnableImmediateCameraUpdate = bImmediateUpdate;
 	}
@@ -273,8 +254,7 @@ public class ViewCameraPitchRollYaw
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#getCameraMatrix()
 	 * @return TURE if ViewMatrix is updated immediately
 	 */
-	public boolean isImmediateCameraUpdateEnabled()
-	{
+	public boolean isImmediateCameraUpdateEnabled() {
 
 		return bEnableImmediateCameraUpdate;
 	}
@@ -283,8 +263,7 @@ public class ViewCameraPitchRollYaw
 	 * Creates a clone of this camera by copying all settings.
 	 */
 	@Override
-	public ViewCameraBase clone()
-	{
+	public ViewCameraBase clone() {
 
 		ViewCameraBase exportClone = new ViewCameraBase(iUniqueID);
 
@@ -294,10 +273,9 @@ public class ViewCameraPitchRollYaw
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 
-		return "[" + super.toString() + " (" + Float.toString(fYawX) + "|"
-				+ Float.toString(fPitchY) + "|" + Float.toString(fRollZ) + ")]";
+		return "[" + super.toString() + " (" + Float.toString(fYawX) + "|" + Float.toString(fPitchY) + "|"
+			+ Float.toString(fRollZ) + ")]";
 	}
 }

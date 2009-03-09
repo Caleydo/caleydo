@@ -2,8 +2,6 @@ package org.caleydo.rcp.wizard.project;
 
 import java.lang.reflect.Method;
 
-import javax.swing.JOptionPane;
-
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -20,14 +18,12 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * 1st wizard page: The user have to choose if she wants to create a new project
- * or load an existing one.
+ * 1st wizard page: The user have to choose if she wants to create a new project or load an existing one.
  * 
  * @author Marc Streit
  */
 public class NewOrExistingProjectPage
-	extends WizardPage
-{
+	extends WizardPage {
 
 	public static final String PAGE_NAME = "Project Wizard";
 
@@ -35,8 +31,7 @@ public class NewOrExistingProjectPage
 
 	public Wizard parentWizard = null;
 
-	public enum EProjectType
-	{
+	public enum EProjectType {
 		NEW_PROJECT, EXISTING_PROJECT, PATHWAY_VIEWER_MODE, SAMPLE_DATA_RANDOM, SAMPLE_DATA_REAL
 	}
 
@@ -45,8 +40,7 @@ public class NewOrExistingProjectPage
 	/**
 	 * Constructor.
 	 */
-	public NewOrExistingProjectPage()
-	{
+	public NewOrExistingProjectPage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
 		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
@@ -59,8 +53,7 @@ public class NewOrExistingProjectPage
 		setPageComplete(false);
 	}
 
-	public void createControl(Composite parent)
-	{
+	public void createControl(Composite parent) {
 		parentWizard = (Wizard) this.getWizard();
 
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -72,26 +65,22 @@ public class NewOrExistingProjectPage
 		buttonSampleDataMode.setSelection(true);
 
 		Link link = new Link(composite, SWT.NULL);
-		link.setText("(see: <a href=\"HCC_SAMPLE_DATASET_PAPER_LINK\">" +HCC_SAMPLE_DATASET_PAPER_LINK +"</a>)");
-		link.addSelectionListener(new SelectionAdapter()
-		{
+		link
+			.setText("(see: <a href=\"HCC_SAMPLE_DATASET_PAPER_LINK\">" + HCC_SAMPLE_DATASET_PAPER_LINK + "</a>)");
+		link.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				String osName = System.getProperty("os.name");
-				try
-				{
-					if (osName.startsWith("Mac OS"))
-					{
+				try {
+					if (osName.startsWith("Mac OS")) {
 						Class fileMgr = Class.forName("com.apple.eio.FileManager");
 						Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
 						openURL.invoke(null, new Object[] { HCC_SAMPLE_DATASET_PAPER_LINK });
 					}
 					else if (osName.startsWith("Windows"))
-						Runtime.getRuntime().exec(
-							"rundll32 url.dll,FileProtocolHandler " + HCC_SAMPLE_DATASET_PAPER_LINK);
-					else
-					{
+						Runtime.getRuntime()
+							.exec("rundll32 url.dll,FileProtocolHandler " + HCC_SAMPLE_DATASET_PAPER_LINK);
+					else {
 						// assume Unix or Linux
 						String[] browsers = { "firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
 						String browser = null;
@@ -104,8 +93,7 @@ public class NewOrExistingProjectPage
 							Runtime.getRuntime().exec(new String[] { browser, HCC_SAMPLE_DATASET_PAPER_LINK });
 					}
 				}
-				catch (Exception exception)
-				{
+				catch (Exception exception) {
 				}
 			}
 		});
@@ -127,28 +115,26 @@ public class NewOrExistingProjectPage
 		btnLoadPathwayData.setText("Load KEGG and BioCarta pathway data");
 		btnLoadPathwayData.setSelection(true);
 		btnLoadPathwayData.setEnabled(true);
-		
-//		Application.caleydoCore.getGeneralManager().getPreferenceStore()
-//		.getBoolean(PreferenceConstants.PATHWAY_DATA_OK)
-//		|| 
-		if (Application.caleydoCore.getGeneralManager().getPreferenceStore()
-			.getBoolean(PreferenceConstants.FIRST_START) && !Application.isInternetConnectionOK())
-		{
+
+		// Application.caleydoCore.getGeneralManager().getPreferenceStore()
+		// .getBoolean(PreferenceConstants.PATHWAY_DATA_OK)
+		// ||
+		if (Application.caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+			PreferenceConstants.FIRST_START)
+			&& !Application.isInternetConnectionOK()) {
 			btnLoadPathwayData.setEnabled(false);
 		}
-		
-		btnLoadPathwayData.addSelectionListener(new SelectionAdapter()
-		{
+
+		btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
 
-				if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData)
-				{
+				if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
 					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
 					messageBox.setText("Load KEGG and BioCarta pathway data");
-					messageBox.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
+					messageBox
+						.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
 					messageBox.open();
 
 					((Button) e.widget).setSelection(true);
@@ -169,52 +155,42 @@ public class NewOrExistingProjectPage
 		// Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
 		// sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
 
-		buttonNewProject.addSelectionListener(new SelectionAdapter()
-		{
+		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				projectType = EProjectType.NEW_PROJECT;
 				setPageComplete(true);
 			}
 		});
 
-		buttonExistingProject.addSelectionListener(new SelectionAdapter()
-		{
+		buttonExistingProject.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				projectType = EProjectType.EXISTING_PROJECT;
 				setPageComplete(true);
 			}
 		});
 
-		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter()
-		{
+		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				projectType = EProjectType.PATHWAY_VIEWER_MODE;
 				btnLoadPathwayData.setSelection(true);
 				setPageComplete(true);
 			}
 		});
 
-		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter()
-		{
+		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				projectType = EProjectType.SAMPLE_DATA_RANDOM;
 				setPageComplete(true);
 			}
 		});
 
-		buttonSampleDataMode.addSelectionListener(new SelectionAdapter()
-		{
+		buttonSampleDataMode.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				projectType = EProjectType.SAMPLE_DATA_REAL;
 				setPageComplete(true);
 			}
@@ -224,8 +200,7 @@ public class NewOrExistingProjectPage
 		composite.pack();
 	}
 
-	public EProjectType getProjectType()
-	{
+	public EProjectType getProjectType() {
 		return projectType;
 	}
 }

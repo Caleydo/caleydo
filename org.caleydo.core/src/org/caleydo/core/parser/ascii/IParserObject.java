@@ -5,8 +5,7 @@ package org.caleydo.core.parser.ascii;
  * 
  * @author Michael Kalkusch
  */
-public interface IParserObject
-{
+public interface IParserObject {
 	/**
 	 * Initialize parser.
 	 */

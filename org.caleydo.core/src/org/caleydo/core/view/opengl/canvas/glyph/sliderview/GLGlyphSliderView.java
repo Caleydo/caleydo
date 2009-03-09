@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.glyph.sliderview;
 
 import gleem.linalg.Vec2f;
+
 import java.awt.Font;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -8,7 +9,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
@@ -38,6 +41,7 @@ import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -47,8 +51,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public class GLGlyphSliderView
 	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver
-{
+	implements IMediatorSender, IMediatorReceiver {
 	/**
 	 * 
 	 */
@@ -79,9 +82,7 @@ public class GLGlyphSliderView
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyphSliderView(final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
-	{
+	public GLGlyphSliderView(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
 
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
@@ -92,19 +93,16 @@ public class GLGlyphSliderView
 		alGlyphAttributeTypes = new ArrayList<GlyphAttributeType>();
 		alGridPosition = new ArrayList<Vec2f>();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
-				.build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		viewType = EManagedObjectType.GL_GLYPH_SLIDER;
 	}
 
 	@Override
-	public void init(GL gl)
-	{
+	public void init(GL gl) {
 		// disable view rotation, zooming
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
-			for (MouseListener l : ml)
-			{
+			for (MouseListener l : ml) {
 				if (l instanceof JoglMouseListener)
 					((JoglMouseListener) l).setNavigationModes(true, false, false);
 			}
@@ -130,16 +128,14 @@ public class GLGlyphSliderView
 		borderStyle.init(gl);
 
 		int slidercounter = 0;
-		for (GlyphAttributeType typ : types)
-		{
+		for (GlyphAttributeType typ : types) {
 			if (typ.doesAutomaticAttribute())
 				continue;
 
 			alGlyphAttributeTypes.add(typ);
 
 			// slider
-			GLSliderMiniView slider = new GLSliderMiniView(pickingTriggerMouseAdapter,
-					iUniqueID, slidercounter);
+			GLSliderMiniView slider = new GLSliderMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
 			alSlider.add(slider);
 
 			slider.setBorderStyle(borderStyle);
@@ -149,8 +145,8 @@ public class GLGlyphSliderView
 			slider.setAxisScale(typ.getAttributeNames());
 
 			// distribution
-			GLDistributionMiniView dmv = new GLDistributionMiniView(
-					pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+			GLDistributionMiniView dmv =
+				new GLDistributionMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
 			alDistribution.add(dmv);
 			dmv.setHeight(fSliderHeight);
 			dmv.setWidth(fSliderWidth);
@@ -161,14 +157,12 @@ public class GLGlyphSliderView
 		// build slider position grid
 		int x = 0;
 		int y = 0;
-		for (int i = 0; i < alSlider.size(); ++i)
-		{
-			Vec2f pos = new Vec2f(x * (fSliderWidth), y * (fSliderHeight + 2.0f));
+		for (int i = 0; i < alSlider.size(); ++i) {
+			Vec2f pos = new Vec2f(x * fSliderWidth, y * (fSliderHeight + 2.0f));
 
 			alGridPosition.add(pos);
 			++x;
-			if (x >= iMaxCols)
-			{
+			if (x >= iMaxCols) {
 				x = 0;
 				y++;
 			}
@@ -178,18 +172,17 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void initLocal(GL gl)
-	{
+	public void initLocal(GL gl) {
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-		
+
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
+		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{
 
@@ -201,8 +194,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void displayLocal(GL gl)
-	{
+	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(iUniqueID, gl);
 
 		display(gl);
@@ -210,8 +202,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void displayRemote(GL gl)
-	{
+	public void displayRemote(GL gl) {
 		float scale = 0.25f;
 		float offset = 1.0f;
 
@@ -228,8 +219,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void display(GL gl)
-	{
+	public void display(GL gl) {
 		// gl.glScalef(0.25f, 0.25f, 1f);
 
 		gl.glPushMatrix();
@@ -248,8 +238,7 @@ public class GLGlyphSliderView
 		gl.glPushMatrix();
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		for (int i = 0; i < alDistribution.size(); ++i)
-		{
+		for (int i = 0; i < alDistribution.size(); ++i) {
 			Vec2f position = alGridPosition.get(i);
 			gl.glTranslatef(position.x(), position.y(), 0);
 
@@ -257,8 +246,7 @@ public class GLGlyphSliderView
 			GlyphAttributeType typ = alGlyphAttributeTypes.get(i);
 
 			ArrayList<ArrayList<Float>> dist = typ.getDistributionNormalized();
-			if (dist.size() == 2)
-			{
+			if (dist.size() == 2) {
 				dmv.setNormalicedDistribution(dist.get(0));
 				dmv.setNormalicedSelectedDistribution(dist.get(1));
 			}
@@ -284,8 +272,7 @@ public class GLGlyphSliderView
 
 		gl.glPushMatrix();
 
-		for (GLSliderMiniView s : alSlider)
-		{
+		for (GLSliderMiniView s : alSlider) {
 			Vec2f position = alGridPosition.get(s.getID());
 			gl.glTranslatef(position.x(), position.y(), 0);
 			s.setHeight(blockheight);
@@ -294,19 +281,15 @@ public class GLGlyphSliderView
 			gl.glTranslatef(-position.x(), -position.y(), 0);
 
 			// only if the slider was changed
-			if (s.hasSelectionChanged())
-			{
+			if (s.hasSelectionChanged()) {
 				// col , value index
 				HashMap<Integer, HashSet<Integer>> columnIndexMap = new HashMap<Integer, HashSet<Integer>>();
 
-				for (int i = 0; i < alSlider.size(); ++i)
-				{
+				for (int i = 0; i < alSlider.size(); ++i) {
 					ArrayList<Float> ordinal = alSlider.get(i).getSelectionOrdinal();
-					int internalColumn = alGlyphAttributeTypes.get(i)
-							.getInternalColumnNumber();
+					int internalColumn = alGlyphAttributeTypes.get(i).getInternalColumnNumber();
 
-					for (Float o : ordinal)
-					{
+					for (Float o : ordinal) {
 						if (!columnIndexMap.containsKey(internalColumn))
 							columnIndexMap.put(internalColumn, new HashSet<Integer>());
 
@@ -317,13 +300,11 @@ public class GLGlyphSliderView
 				selectionManager.clearSelections();
 
 				Iterator<GlyphEntry> it = gman.getGlyphs().values().iterator();
-				while (it.hasNext())
-				{
+				while (it.hasNext()) {
 					GlyphEntry g = it.next();
 
 					boolean isselected = true;
-					for (int internalindex : columnIndexMap.keySet())
-					{
+					for (int internalindex : columnIndexMap.keySet()) {
 						int param = g.getParameter(internalindex);
 						HashSet<Integer> p = columnIndexMap.get(internalindex);
 
@@ -338,26 +319,22 @@ public class GLGlyphSliderView
 
 				}
 
-				generalManager.getViewGLCanvasManager()
-						.getConnectedElementRepresentationManager().clear(
-								EIDType.EXPERIMENT_INDEX);
-				
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
-								new SelectionCommand(ESelectionCommandType.CLEAR,
-										ESelectionType.SELECTION)));
+				generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
+					EIDType.EXPERIMENT_INDEX);
 
-				
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+					EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
+						ESelectionType.SELECTION)));
+
 				ISelectionDelta selectionDelta = selectionManager.getDelta();
-				if (selectionDelta.getAllItems().size() > 0)
-				{
+				if (selectionDelta.getAllItems().size() > 0) {
 
-					generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+					generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR, this,
+						new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 				}
-				
-//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-//						new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
+
+				// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				// new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
 
 			}
 		}
@@ -372,14 +349,12 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public String getShortInfo()
-	{
+	public String getShortInfo() {
 		return "Glyph slider";
 	}
 
 	@Override
-	public String getDetailedInfo()
-	{
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Type: Glyph Slider View");
 		sInfoText.append("GL: Showing Sliders for Glyph View");
@@ -387,13 +362,9 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
-			int externalID, Pick pick)
-	{
-		if (pickingType == EPickingType.SLIDER_SELECTION)
-		{
-			for (int i = 0; i < alSlider.size(); ++i)
-			{
+	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID, Pick pick) {
+		if (pickingType == EPickingType.SLIDER_SELECTION) {
+			for (int i = 0; i < alSlider.size(); ++i) {
 				alSlider.get(i).handleEvents(pickingType, pickingMode, externalID, pick);
 			}
 		}
@@ -403,36 +374,31 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type)
-	{
+	public void broadcastElements(EVAOperation type) {
 
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType)
-	{
+	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger,
-			IEventContainer eventContainer, EMediatorType eMediatorType)
-	{
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+		EMediatorType eMediatorType) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void clearAllSelections()
-	{
+	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

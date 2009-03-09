@@ -80,16 +80,15 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
- * Abstract class that is able to remotely rendering views. Subclasses implement
- * the positioning of the views (bucket, jukebox, etc.).
+ * Abstract class that is able to remotely rendering views. Subclasses implement the positioning of the views
+ * (bucket, jukebox, etc.).
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering
-{
+	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering {
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
 	private static final int SLERP_RANGE = 1000;
@@ -167,8 +166,7 @@ public class GLRemoteRendering
 	 * Constructor.
 	 */
 	public GLRemoteRendering(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
-		final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode)
-	{
+		final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
@@ -178,12 +176,12 @@ public class GLRemoteRendering
 		glOffScreenRenderer = new GLOffScreenTextureRenderer();
 		// }
 
-		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
 			super.renderStyle = layoutRenderStyle;
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
+			bucketMouseWheelListener =
+				new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
@@ -192,23 +190,20 @@ public class GLRemoteRendering
 			// parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
 		}
-		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
-		{
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum);
 		}
-		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST))
-		{
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum);
 		}
 
 		focusLevel = layoutRenderStyle.initFocusLevel();
 
-		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{
+		if (GeneralManager.get().isWiiModeActive()
+			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			stackLevel = ((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
 		}
-		else
-		{
+		else {
 			stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
 		}
 
@@ -217,16 +212,13 @@ public class GLRemoteRendering
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
-		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel, poolLevel);
 		}
-		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
-		{
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
 		}
-		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST))
-		{
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
 			glConnectionLineRenderer = null;
 		}
 
@@ -249,15 +241,15 @@ public class GLRemoteRendering
 		createSelectionHeatMap();
 		// Registration to event system
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) this);
+		generalManager.getEventPublisher()
+			.addReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) this);
 		generalManager.getEventPublisher().addSender(EMediatorType.VIEW_SELECTION, this);
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
 	@Override
-	public void initLocal(final GL gl)
-	{
+	public void initLocal(final GL gl) {
 		// iGLDisplayList = gl.glGenLists(1);
 
 		init(gl);
@@ -266,15 +258,13 @@ public class GLRemoteRendering
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 		final PickingJoglMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
-	{
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
 
 	@Override
-	public void init(final GL gl)
-	{
+	public void init(final GL gl) {
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
 
 		if (glConnectionLineRenderer != null)
@@ -298,8 +288,7 @@ public class GLRemoteRendering
 		glOffScreenRenderer.init(gl);
 	}
 
-	private void createSelectionHeatMap()
-	{
+	private void createSelectionHeatMap() {
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
@@ -315,11 +304,9 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl)
-	{
-		if ((pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener.isZoomedIn())
-			&& !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle))
-		{
+	public synchronized void displayLocal(final GL gl) {
+		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener.isZoomedIn()
+			&& !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
 
 			bRightMouseClickEventInvalid = true;
@@ -327,8 +314,7 @@ public class GLRemoteRendering
 			if (glConnectionLineRenderer != null)
 				glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
 		}
-		else if (pickingTriggerMouseAdapter.wasMouseReleased())
-		{
+		else if (pickingTriggerMouseAdapter.wasMouseReleased()) {
 			bRightMouseClickEventInvalid = false;
 		}
 
@@ -348,13 +334,11 @@ public class GLRemoteRendering
 		if (pickingTriggerMouseAdapter.getPickedPoint() != null)
 			dragAndDrop.setCurrentMousePos(gl, pickingTriggerMouseAdapter.getPickedPoint());
 
-		if (dragAndDrop.isDragActionRunning())
-		{
+		if (dragAndDrop.isDragActionRunning()) {
 			dragAndDrop.renderDragThumbnailTexture(gl);
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased() && dragAndDrop.isDragActionRunning())
-		{
+		if (pickingTriggerMouseAdapter.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
 			int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
 
 			// System.out.println("over: " +iExternalID);
@@ -362,23 +346,19 @@ public class GLRemoteRendering
 
 			// Prevent user from dragging element onto selection level
 			if (!RemoteElementManager.get().hasItem(iMouseOverObjectID)
-				|| !externalSelectionLevel.containsElement(RemoteElementManager.get().getItem(iMouseOverObjectID)))
-			{
+				|| !externalSelectionLevel.containsElement(RemoteElementManager.get().getItem(iMouseOverObjectID))) {
 				RemoteLevelElement mouseOverElement = null;
 
 				// Check if a drag and drop action is performed onto the pool
 				// level
-				if (iMouseOverObjectID == iPoolLevelCommonID)
-				{
+				if (iMouseOverObjectID == iPoolLevelCommonID) {
 					mouseOverElement = poolLevel.getNextFree();
 				}
-				else if (mouseOverElement == null && iMouseOverObjectID != iDraggedObjectId)
-				{
+				else if (mouseOverElement == null && iMouseOverObjectID != iDraggedObjectId) {
 					mouseOverElement = RemoteElementManager.get().getItem(iMouseOverObjectID);
 				}
 
-				if (mouseOverElement != null)
-				{
+				if (mouseOverElement != null) {
 					RemoteLevelElement originElement = RemoteElementManager.get().getItem(iDraggedObjectId);
 
 					int iMouseOverElementID = mouseOverElement.getContainedElementID();
@@ -400,22 +380,18 @@ public class GLRemoteRendering
 					updateViewDetailLevels(originElement);
 					updateViewDetailLevels(mouseOverElement);
 
-					if (mouseOverElement.getContainedElementID() != -1)
-					{
+					if (mouseOverElement.getContainedElementID() != -1) {
 						if (poolLevel.containsElement(originElement)
 							&& (stackLevel.containsElement(mouseOverElement) || focusLevel
-								.containsElement(mouseOverElement)))
-						{
+								.containsElement(mouseOverElement))) {
 							generalManager.getViewGLCanvasManager().getGLEventListener(
 								mouseOverElement.getContainedElementID()).broadcastElements(EVAOperation.APPEND_UNIQUE);
 						}
 
 						if (poolLevel.containsElement(mouseOverElement)
-							&& (stackLevel.containsElement(originElement) || focusLevel.containsElement(originElement)))
-						{
+							&& (stackLevel.containsElement(originElement) || focusLevel.containsElement(originElement))) {
 							generalManager.getViewGLCanvasManager().getGLEventListener(
-								mouseOverElement.getContainedElementID())
-								.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+								mouseOverElement.getContainedElementID()).broadcastElements(EVAOperation.REMOVE_ELEMENT);
 						}
 					}
 				}
@@ -431,22 +407,20 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl)
-	{
+	public synchronized void displayRemote(final GL gl) {
 		display(gl);
 	}
 
 	@Override
-	public synchronized void display(final GL gl)
-	{
+	public synchronized void display(final GL gl) {
 		time.update();
 
 		// layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
 		// layoutRenderStyle.initStackLevel(false);
 		// layoutRenderStyle.initMemoLevel();
 
-		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{
+		if (GeneralManager.get().isWiiModeActive()
+			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelWii();
 
 			((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
@@ -455,25 +429,23 @@ public class GLRemoteRendering
 		doSlerpActions(gl);
 		initializeNewPathways(gl);
 
-		if (!generalManager.isWiiModeActive())
-		{
+		if (!generalManager.isWiiModeActive()) {
 			renderRemoteLevel(gl, focusLevel);
 			renderRemoteLevel(gl, stackLevel);
 		}
-		else
-		{
+		else {
 			if (bUpdateOffScreenTextures)
 				updateOffScreenTextures(gl);
 
 			renderRemoteLevel(gl, focusLevel);
 
-			glOffScreenRenderer.renderRubberBucket(gl, stackLevel, (BucketLayoutRenderStyle) layoutRenderStyle, this);
+			glOffScreenRenderer.renderRubberBucket(gl, stackLevel, (BucketLayoutRenderStyle) layoutRenderStyle,
+				this);
 		}
 
 		// If user zooms to the bucket bottom all but the under
 		// focus layer is _not_ rendered.
-		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
-		{
+		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn()) {
 			// comment here for connection lines
 			if (glConnectionLineRenderer != null && bEnableConnectinLines)
 				glConnectionLineRenderer.render(gl);
@@ -486,8 +458,7 @@ public class GLRemoteRendering
 			renderRemoteLevel(gl, externalSelectionLevel);
 		}
 
-		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			bucketMouseWheelListener.render();
 		}
 
@@ -500,33 +471,28 @@ public class GLRemoteRendering
 		// gl.glCallList(iGLDisplayList);
 	}
 
-	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs)
-	{
+	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
 		iAlContainedViewIDs = iAlInitialContainedViewIDs;
 	}
 
-	private void initializeContainedViews(final GL gl)
-	{
+	private void initializeContainedViews(final GL gl) {
 		if (iAlContainedViewIDs == null)
 			return;
 
-		for (int iContainedViewID : iAlContainedViewIDs)
-		{
+		for (int iContainedViewID : iAlContainedViewIDs) {
 			AGLEventListener tmpGLEventListener =
 				generalManager.getViewGLCanvasManager().getGLEventListener(iContainedViewID);
 
 			// Ignore pathway views upon startup
 			// because they will be activated when pathway loader thread has
 			// finished
-			if (tmpGLEventListener == this || tmpGLEventListener instanceof GLPathway)
-			{
+			if (tmpGLEventListener == this || tmpGLEventListener instanceof GLPathway) {
 				continue;
 			}
 
-			int iViewID = (tmpGLEventListener).getID();
+			int iViewID = tmpGLEventListener.getID();
 
-			if (focusLevel.hasFreePosition())
-			{
+			if (focusLevel.hasFreePosition()) {
 				RemoteLevelElement element = focusLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
@@ -540,8 +506,7 @@ public class GLRemoteRendering
 				// tmpGLEventListener);
 
 			}
-			else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle))
-			{
+			else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
 				RemoteLevelElement element = stackLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
@@ -551,8 +516,7 @@ public class GLRemoteRendering
 				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
 				tmpGLEventListener.setRemoteLevelElement(element);
 			}
-			else if (poolLevel.hasFreePosition())
-			{
+			else if (poolLevel.hasFreePosition()) {
 				RemoteLevelElement element = poolLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
@@ -571,11 +535,9 @@ public class GLRemoteRendering
 		}
 	}
 
-	public void renderBucketWall(final GL gl, boolean bRenderBorder, RemoteLevelElement element)
-	{
+	public void renderBucketWall(final GL gl, boolean bRenderBorder, RemoteLevelElement element) {
 		// Highlight potential view drop destination
-		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID)
-		{
+		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID) {
 			gl.glLineWidth(5);
 			gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
 			gl.glBegin(GL.GL_LINE_LOOP);
@@ -615,10 +577,8 @@ public class GLRemoteRendering
 		// gl.glEnd();
 	}
 
-	private void renderRemoteLevel(final GL gl, final RemoteLevel level)
-	{
-		for (RemoteLevelElement element : level.getAllElements())
-		{
+	private void renderRemoteLevel(final GL gl, final RemoteLevel level) {
+		for (RemoteLevelElement element : level.getAllElements()) {
 			renderRemoteLevelElement(gl, element, level);
 
 			if (!(layoutRenderStyle instanceof ListLayoutRenderStyle))
@@ -626,8 +586,7 @@ public class GLRemoteRendering
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element, RemoteLevel level)
-	{
+	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element, RemoteLevel level) {
 		// // Check if view is visible
 		// if (!level.getElementVisibilityById(iViewID))
 		// return;
@@ -640,7 +599,7 @@ public class GLRemoteRendering
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID));
 
-		AGLEventListener glEventListener = (generalManager.getViewGLCanvasManager().getGLEventListener(iViewID));
+		AGLEventListener glEventListener = generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		if (glEventListener == null)
 			throw new IllegalStateException("Cannot render canvas object which is null!");
@@ -658,8 +617,7 @@ public class GLRemoteRendering
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
-		if (level == poolLevel)
-		{
+		if (level == poolLevel) {
 			String sRenderText = glEventListener.getShortInfo();
 
 			// Limit pathway name in length
@@ -675,8 +633,7 @@ public class GLRemoteRendering
 			float fTextScalingFactor = 0.09f;
 			float fTextXPosition = 0f;
 
-			if (element.getID() == iMouseOverObjectID)
-			{
+			if (element.getID() == iMouseOverObjectID) {
 				renderPoolSelection(gl, translation.x() - 0.4f / fAspectRatio, translation.y() * scale.y() + 5.2f,
 
 				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f, element); // 1.8f
@@ -690,8 +647,7 @@ public class GLRemoteRendering
 				fTextScalingFactor = 0.075f;
 				fTextXPosition = 12f;
 			}
-			else
-			{
+			else {
 				// Render view background frame
 				Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
 				tempTexture.enable();
@@ -740,8 +696,7 @@ public class GLRemoteRendering
 			if (element.getID() == iMouseOverObjectID)
 				gl.glTranslatef(2.2f, 0.5f, 0);
 
-			if (iNumberOfGenesMouseOver > 0)
-			{
+			if (iNumberOfGenesMouseOver > 0) {
 				if (element.getID() == iMouseOverObjectID)
 					gl.glTranslatef(-2.5f, 0, 0);
 
@@ -762,8 +717,7 @@ public class GLRemoteRendering
 				gl.glEnd();
 			}
 
-			if (iNumberOfGenesSelected > 0)
-			{
+			if (iNumberOfGenesSelected > 0) {
 				if (iNumberOfGenesMouseOver > 0)
 					gl.glTranslatef(0, -1.8f, 0);
 
@@ -802,20 +756,17 @@ public class GLRemoteRendering
 		// return;
 		// }
 
-		if (level != externalSelectionLevel && level != poolLevel)
-		{
+		if (level != externalSelectionLevel && level != poolLevel) {
 			if (level.equals(focusLevel))
 				renderBucketWall(gl, false, element);
 			else
 				renderBucketWall(gl, true, element);
 		}
 
-		if (!bEnableNavigationOverlay || !level.equals(stackLevel))
-		{
+		if (!bEnableNavigationOverlay || !level.equals(stackLevel)) {
 			glEventListener.displayRemote(gl);
 		}
-		else
-		{
+		else {
 			renderNavigationOverlay(gl, element.getID());
 		}
 
@@ -825,8 +776,7 @@ public class GLRemoteRendering
 		gl.glPopName();
 	}
 
-	private void renderEmptyBucketWall(final GL gl, RemoteLevelElement element, RemoteLevel level)
-	{
+	private void renderEmptyBucketWall(final GL gl, RemoteLevelElement element, RemoteLevel level) {
 		gl.glPushMatrix();
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
@@ -843,8 +793,7 @@ public class GLRemoteRendering
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
 		if (!level.equals(transitionLevel) && !level.equals(spawnLevel) && !level.equals(poolLevel)
-			&& !level.equals(externalSelectionLevel))
-		{
+			&& !level.equals(externalSelectionLevel)) {
 			renderBucketWall(gl, true, element);
 		}
 
@@ -853,22 +802,18 @@ public class GLRemoteRendering
 		gl.glPopMatrix();
 	}
 
-	private void renderHandles(final GL gl)
-	{
+	private void renderHandles(final GL gl) {
 		float fZoomedInScalingFactor = 0.4f;
 
 		// Bucket stack top
 		RemoteLevelElement element = stackLevel.getElementByPositionIndex(0);
-		if (element.getContainedElementID() != -1)
-		{
-			if (!bucketMouseWheelListener.isZoomedIn())
-			{
+		if (element.getContainedElementID() != -1) {
+			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2, 0, 4.02f);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
 				gl.glTranslatef(2, 0, -4.02f);
 			}
-			else
-			{
+			else {
 				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, 0, 0.02f);
 				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
 					1 / fZoomedInScalingFactor);
@@ -878,18 +823,15 @@ public class GLRemoteRendering
 
 		// Bucket stack bottom
 		element = stackLevel.getElementByPositionIndex(2);
-		if (element.getContainedElementID() != -1)
-		{
-			if (!bucketMouseWheelListener.isZoomedIn())
-			{
+		if (element.getContainedElementID() != -1) {
+			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2, 0, 4.02f);
 				gl.glRotatef(180, 1, 0, 0);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, true, 1);
 				gl.glRotatef(-180, 1, 0, 0);
 				gl.glTranslatef(2, 0, -4.02f);
 			}
-			else
-			{
+			else {
 				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, -4 + 4 * fZoomedInScalingFactor, 0.02f);
 				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
 					1 / fZoomedInScalingFactor);
@@ -899,18 +841,15 @@ public class GLRemoteRendering
 
 		// Bucket stack left
 		element = stackLevel.getElementByPositionIndex(1);
-		if (element.getContainedElementID() != -1)
-		{
-			if (!bucketMouseWheelListener.isZoomedIn())
-			{
+		if (element.getContainedElementID() != -1) {
+			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2f / fAspectRatio + 2 + 0.8f, -2, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
 				gl.glRotatef(-90, 0, 0, 1);
 				gl.glTranslatef(2f / fAspectRatio - 2 - 0.8f, 2, -4.02f);
 			}
-			else
-			{
+			else {
 				gl.glTranslatef(2, 0, 0.02f);
 				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
 					1 / fZoomedInScalingFactor);
@@ -920,18 +859,15 @@ public class GLRemoteRendering
 
 		// Bucket stack right
 		element = stackLevel.getElementByPositionIndex(3);
-		if (element.getContainedElementID() != -1)
-		{
-			if (!bucketMouseWheelListener.isZoomedIn())
-			{
+		if (element.getContainedElementID() != -1) {
+			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(2f / fAspectRatio - 0.8f - 2, 2, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
 				gl.glRotatef(90, 0, 0, 1);
 				gl.glTranslatef(-2f / fAspectRatio + 0.8f + 2, -2, -4.02f);
 			}
-			else
-			{
+			else {
 				gl.glTranslatef(2, -4 + 4 * fZoomedInScalingFactor, 0.02f);
 				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
 					1 / fZoomedInScalingFactor);
@@ -941,8 +877,7 @@ public class GLRemoteRendering
 
 		// Bucket center
 		element = focusLevel.getElementByPositionIndex(0);
-		if (element.getContainedElementID() != -1)
-		{
+		if (element.getContainedElementID() != -1) {
 			float fYCorrection = 0f;
 
 			if (!bucketMouseWheelListener.isZoomedIn())
@@ -959,27 +894,25 @@ public class GLRemoteRendering
 			renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
 			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
 
-			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection, -translation.z() - 0.001f);
+			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
+				-translation.z() - 0.001f);
 		}
 	}
 
 	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element, float fHandleWidth,
-		float fHandleHeight, boolean bUpsideDown, float fScalingFactor)
-	{
+		float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
 			EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
-		if (bUpsideDown)
-		{
+		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_LOCK_ICON_SELECTION,
 			EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
-		if (bUpsideDown)
-		{
+		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
@@ -989,7 +922,8 @@ public class GLRemoteRendering
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.BUCKET_DRAG_ICON_SELECTION, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.BUCKET_DRAG_ICON_SELECTION, element
+			.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -1002,7 +936,8 @@ public class GLRemoteRendering
 
 		// Render view information
 		String sText =
-			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID()).getShortInfo();
+			generalManager.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID())
+				.getShortInfo();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars)
@@ -1010,8 +945,7 @@ public class GLRemoteRendering
 
 		float fTextScalingFactor = 0.0027f;
 
-		if (bUpsideDown)
-		{
+		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, -4 - fHandleHeight, 0);
 		}
@@ -1022,16 +956,14 @@ public class GLRemoteRendering
 			* fTextScalingFactor, 2.02f, 0f, fTextScalingFactor);
 		textRenderer.end3DRendering();
 
-		if (bUpsideDown)
-		{
+		if (bUpsideDown) {
 			gl.glTranslatef(0, 4 + fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 	}
 
 	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID, EPickingType ePickingType,
-		EIconTextures eIconTexture, float fWidth, float fHeight)
-	{
+		EIconTextures eIconTexture, float fWidth, float fHeight) {
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType, iRemoteLevelElementID));
 
 		Texture tempTexture = iconTextureManager.getIconTexture(gl, eIconTexture);
@@ -1056,8 +988,7 @@ public class GLRemoteRendering
 		gl.glPopName();
 	}
 
-	private void renderNavigationOverlay(final GL gl, final int iRemoteLevelElementID)
-	{
+	private void renderNavigationOverlay(final GL gl, final int iRemoteLevelElementID) {
 		if (glConnectionLineRenderer != null)
 			glConnectionLineRenderer.enableRendering(false);
 
@@ -1068,39 +999,37 @@ public class GLRemoteRendering
 		EPickingType topWallPickingType = null;
 		EPickingType bottomWallPickingType = null;
 
-		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_in = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_left = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_out =
+			new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_in =
+			new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_left =
+			new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 		Vec4f tmpColor_right =
 			new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_lock = new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_lock =
+			new Vec4f(0.9f, 0.9f, 0.9f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 		// Assign view symbol
 		Texture textureViewSymbol;
 		AGLEventListener view =
 			generalManager.getViewGLCanvasManager().getGLEventListener(remoteLevelElement.getContainedElementID());
-		if (view instanceof GLHeatMap)
-		{
+		if (view instanceof GLHeatMap) {
 			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		}
-		else if (view instanceof GLParallelCoordinates)
-		{
+		else if (view instanceof GLParallelCoordinates) {
 			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
 		}
-		else if (view instanceof GLPathway)
-		{
+		else if (view instanceof GLPathway) {
 			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.PATHWAY_SYMBOL);
 		}
-		else if (view instanceof GLGlyph)
-		{
+		else if (view instanceof GLGlyph) {
 			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		}
-		else if (view instanceof GLCell)
-		{
+		else if (view instanceof GLCell) {
 			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		}
-		else
-		{
+		else {
 			throw new IllegalStateException("Unknown view that has no symbol assigned.");
 		}
 
@@ -1114,8 +1043,7 @@ public class GLRemoteRendering
 		if (iNavigationMouseOverViewID_lock == iRemoteLevelElementID)
 			tmpColor_lock.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		if (layoutMode.equals(LayoutMode.JUKEBOX))
-		{
+		if (layoutMode.equals(LayoutMode.JUKEBOX)) {
 			topWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 			bottomWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
 			leftWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
@@ -1135,8 +1063,7 @@ public class GLRemoteRendering
 			textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
 			textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 		}
-		else
-		{
+		else {
 			if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 0) // top
 			{
 				topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
@@ -1467,17 +1394,15 @@ public class GLRemoteRendering
 	}
 
 	private void renderPoolSelection(final GL gl, float fXOrigin, float fYOrigin, float fWidth, float fHeight,
-		RemoteLevelElement element)
-	{
+		RemoteLevelElement element) {
 		float fPanelSideWidth = 11f;
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 
 		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl
-			.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth, fYOrigin - fHeight / 2f + fHeight,
-				0f);
+		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth, fYOrigin - fHeight / 2f
+			+ fHeight, 0f);
 		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth, fYOrigin - fHeight / 2f, 0f);
 		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight / 2f, 0f);
 
@@ -1493,9 +1418,9 @@ public class GLRemoteRendering
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + (2) / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2 / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXOrigin + (2) / fAspectRatio + fPanelSideWidth, fYOrigin + fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + 2 / fAspectRatio + fPanelSideWidth, fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(fXOrigin + 2f / fAspectRatio, fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -1510,8 +1435,8 @@ public class GLRemoteRendering
 		int fHandleScaleFactor = 18;
 		gl.glTranslatef(fXOrigin + 2.5f / fAspectRatio, fYOrigin - fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.POOL_DRAG_VIEW,
-			0.1f, 0.1f);
+		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
+			EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_REMOVE_ICON_SELECTION,
 			EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
@@ -1533,22 +1458,19 @@ public class GLRemoteRendering
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, element.getID()));
 	}
 
-	private void doSlerpActions(final GL gl)
-	{
+	private void doSlerpActions(final GL gl) {
 		if (arSlerpActions.isEmpty())
 			return;
 
 		SlerpAction tmpSlerpAction = arSlerpActions.get(0);
 
-		if (iSlerpFactor == 0)
-		{
+		if (iSlerpFactor == 0) {
 			tmpSlerpAction.start();
 
 			// System.out.println("Start slerp action " +tmpSlerpAction);
 		}
 
-		if (iSlerpFactor < SLERP_RANGE)
-		{
+		if (iSlerpFactor < SLERP_RANGE) {
 			// Makes animation rendering speed independent
 			iSlerpFactor += SLERP_SPEED * time.deltaT();
 
@@ -1559,14 +1481,12 @@ public class GLRemoteRendering
 		slerpView(gl, tmpSlerpAction);
 	}
 
-	private void slerpView(final GL gl, SlerpAction slerpAction)
-	{
+	private void slerpView(final GL gl, SlerpAction slerpAction) {
 		int iViewID = slerpAction.getElementId();
 
 		SlerpMod slerpMod = new SlerpMod();
 
-		if ((iSlerpFactor == 0))
-		{
+		if (iSlerpFactor == 0) {
 			slerpMod.playSlerpSound();
 		}
 
@@ -1578,13 +1498,12 @@ public class GLRemoteRendering
 
 		slerpMod.applySlerp(gl, transform);
 
-		(generalManager.getViewGLCanvasManager().getGLEventListener(iViewID)).displayRemote(gl);
+		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);
 
 		gl.glPopMatrix();
 
 		// Check if slerp action is finished
-		if (iSlerpFactor >= SLERP_RANGE)
-		{
+		if (iSlerpFactor >= SLERP_RANGE) {
 			arSlerpActions.remove(slerpAction);
 
 			iSlerpFactor = 0;
@@ -1598,8 +1517,7 @@ public class GLRemoteRendering
 
 		// After last slerp action is done the line connections are turned on
 		// again
-		if (arSlerpActions.isEmpty())
-		{
+		if (arSlerpActions.isEmpty()) {
 			if (glConnectionLineRenderer != null)
 				glConnectionLineRenderer.enableRendering(true);
 
@@ -1607,8 +1525,7 @@ public class GLRemoteRendering
 		}
 	}
 
-	private void updateViewDetailLevels(RemoteLevelElement element)
-	{
+	private void updateViewDetailLevels(RemoteLevelElement element) {
 		RemoteLevel destinationLevel = element.getRemoteLevel();
 
 		if (element.getContainedElementID() == -1)
@@ -1620,8 +1537,7 @@ public class GLRemoteRendering
 		glActiveSubView.setRemoteLevelElement(element);
 
 		// Update detail level of moved view when slerp action is finished;
-		if (destinationLevel == focusLevel)
-		{
+		if (destinationLevel == focusLevel) {
 			if (bucketMouseWheelListener.isZoomedIn() || layoutRenderStyle instanceof ListLayoutRenderStyle)
 				glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
 			else
@@ -1637,8 +1553,7 @@ public class GLRemoteRendering
 			// generalManager.getGUIBridge().setActiveGLSubView(this,
 			// glActiveSubView);
 		}
-		else if (destinationLevel == stackLevel)
-		{
+		else if (destinationLevel == stackLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 
 			// if (glActiveSubView instanceof GLPathway)
@@ -1667,8 +1582,7 @@ public class GLRemoteRendering
 			// }
 			// }
 		}
-		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel)
-		{
+		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 
 			// if (glActiveSubView instanceof GLPathway)
@@ -1680,8 +1594,7 @@ public class GLRemoteRendering
 		compactPoolLevel();
 	}
 
-	private void loadViewToFocusLevel(final int iRemoteLevelElementID)
-	{
+	private void loadViewToFocusLevel(final int iRemoteLevelElementID) {
 		RemoteLevelElement element = RemoteElementManager.get().getItem(iRemoteLevelElementID);
 
 		// Check if other slerp action is currently running
@@ -1696,8 +1609,7 @@ public class GLRemoteRendering
 			return;
 
 		// Only broadcast elements if view is moved from pool to bucket
-		if (poolLevel.containsElement(element))
-		{
+		if (poolLevel.containsElement(element)) {
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).broadcastElements(
 				EVAOperation.APPEND_UNIQUE);
 		}
@@ -1729,16 +1641,14 @@ public class GLRemoteRendering
 		// else
 		{
 			// Check if view is already loaded in the stack layer
-			if (stackLevel.containsElement(element))
-			{
+			if (stackLevel.containsElement(element)) {
 				// Slerp selected view to transition position
 				SlerpAction slerpActionTransition =
 					new SlerpAction(element, transitionLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpActionTransition);
 
 				// Check if focus level is free
-				if (!focusLevel.hasFreePosition())
-				{
+				if (!focusLevel.hasFreePosition()) {
 					// Slerp focus view to free spot in stack
 					SlerpAction reverseSlerpAction =
 						new SlerpAction(focusLevel.getElementByPositionIndex(0).getContainedElementID(), focusLevel
@@ -1753,16 +1663,14 @@ public class GLRemoteRendering
 						focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
 			}
-			else
-			{
+			else {
 				// Slerp selected view to transition position
 				SlerpAction slerpActionTransition =
 					new SlerpAction(element, transitionLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpActionTransition);
 
 				RemoteLevelElement freeStackElement = null;
-				if (!stackLevel.hasFreePosition())
-				{
+				if (!stackLevel.hasFreePosition()) {
 					int iReplacePosition = 1;
 
 					// // Determine non locked stack position for view movement
@@ -1798,13 +1706,11 @@ public class GLRemoteRendering
 						.getGLEventListener(freeStackElement.getContainedElementID()).broadcastElements(
 							EVAOperation.REMOVE_ELEMENT);
 				}
-				else
-				{
+				else {
 					freeStackElement = stackLevel.getNextFree();
 				}
 
-				if (!focusLevel.hasFreePosition())
-				{
+				if (!focusLevel.hasFreePosition()) {
 					// Slerp focus view to free spot in stack
 					SlerpAction reverseSlerpAction2 =
 						new SlerpAction(focusLevel.getElementByPositionIndex(0), freeStackElement);
@@ -1826,25 +1732,21 @@ public class GLRemoteRendering
 	@SuppressWarnings("unchecked")
 	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType)
-	{
+		EMediatorType eMediatorType) {
 
-		switch (eventContainer.getEventType())
-		{
+		switch (eventContainer.getEventType()) {
 			// pathway loading based on gene id
 			case LOAD_PATHWAY_BY_GENE:
 
 				// take care here, if we ever use non integer ids this has to be
 				// cast to raw type first to determine the actual id data types
 				IDListEventContainer<Integer> idContainer = (IDListEventContainer<Integer>) eventContainer;
-				if (idContainer.getIDType() == EIDType.REFSEQ_MRNA_INT)
-				{
+				if (idContainer.getIDType() == EIDType.REFSEQ_MRNA_INT) {
 					int iGraphItemID = 0;
 					Integer iDavidID = -1;
 					ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
 
-					for (Integer iRefSeqID : idContainer.getIDs())
-					{
+					for (Integer iRefSeqID : idContainer.getIDs()) {
 						iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
 
 						if (iDavidID == null || iDavidID == -1)
@@ -1857,7 +1759,7 @@ public class GLRemoteRendering
 							continue;
 
 						PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-							((PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID));
+							(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
 
 						if (tmpPathwayVertexGraphItem == null)
 							continue;
@@ -1865,13 +1767,11 @@ public class GLRemoteRendering
 						alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
 					}
 
-					if (!alPathwayVertexGraphItem.isEmpty())
-					{
+					if (!alPathwayVertexGraphItem.isEmpty()) {
 						loadDependentPathways(alPathwayVertexGraphItem);
 					}
 				}
-				else
-				{
+				else {
 					throw new IllegalStateException("Not Implemented");
 				}
 				break;
@@ -1879,8 +1779,7 @@ public class GLRemoteRendering
 			case LOAD_PATHWAY_BY_PATHWAY_ID:
 				IDListEventContainer<Integer> pathwayIDContainer = (IDListEventContainer<Integer>) eventContainer;
 
-				for (Integer iPathwayID : pathwayIDContainer.getIDs())
-				{
+				for (Integer iPathwayID : pathwayIDContainer.getIDs()) {
 					addPathwayView(iPathwayID);
 				}
 
@@ -1897,13 +1796,11 @@ public class GLRemoteRendering
 	 * 
 	 * @param iPathwayIDToLoad
 	 */
-	public synchronized void addPathwayView(final int iPathwayIDToLoad)
-	{
+	public synchronized void addPathwayView(final int iPathwayIDToLoad) {
 		iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
 	}
 
-	public synchronized void loadDependentPathways(final List<ICaleydoGraphItem> alVertex)
-	{
+	public synchronized void loadDependentPathways(final List<ICaleydoGraphItem> alVertex) {
 		// Remove pathways from stacked layer view
 		// poolLayer.removeAllElements();
 
@@ -1913,12 +1810,10 @@ public class GLRemoteRendering
 		IGraphItem pathwayGraphItem;
 		int iPathwayID = 0;
 
-		while (iterPathwayGraphItem.hasNext())
-		{
+		while (iterPathwayGraphItem.hasNext()) {
 			pathwayGraphItem = iterPathwayGraphItem.next();
 
-			if (pathwayGraphItem == null)
-			{
+			if (pathwayGraphItem == null) {
 				// generalManager.logMsg(
 				// this.getClass().getSimpleName() + " (" + iUniqueID
 				// + "): pathway graph item is null.  ",
@@ -1929,8 +1824,7 @@ public class GLRemoteRendering
 			iterIdenticalPathwayGraphItemRep =
 				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
 
-			while (iterIdenticalPathwayGraphItemRep.hasNext())
-			{
+			while (iterIdenticalPathwayGraphItemRep.hasNext()) {
 				iPathwayID =
 					((PathwayGraph) iterIdenticalPathwayGraphItemRep.next().getAllGraphByType(
 						EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
@@ -1953,8 +1847,7 @@ public class GLRemoteRendering
 
 		// Turn on busy mode
 		for (AGLEventListener tmpGLEventListener : GeneralManager.get().getViewGLCanvasManager()
-			.getAllGLEventListeners())
-		{
+			.getAllGLEventListeners()) {
 			if (!tmpGLEventListener.isRenderedRemote())
 				tmpGLEventListener.enableBusyMode(true);
 		}
@@ -1963,18 +1856,14 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick)
-	{
-		switch (pickingType)
-		{
+	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+		switch (pickingType) {
 			case BUCKET_DRAG_ICON_SELECTION:
 
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
-						if (!dragAndDrop.isDragActionRunning())
-						{
+						if (!dragAndDrop.isDragActionRunning()) {
 							// System.out.println("Start drag!");
 							dragAndDrop.startDragAction(iExternalID);
 						}
@@ -1993,15 +1882,14 @@ public class GLRemoteRendering
 
 			case BUCKET_REMOVE_ICON_SELECTION:
 
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
 
 						AGLEventListener glEventListener =
-							((AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(
-								element.getContainedElementID()));
+							(AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(
+								element.getContainedElementID());
 
 						// // Unregister all elements of the view that is
 						// removed
@@ -2023,8 +1911,7 @@ public class GLRemoteRendering
 
 			case BUCKET_LOCK_ICON_SELECTION:
 
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
 						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
@@ -2040,8 +1927,7 @@ public class GLRemoteRendering
 				break;
 
 			case REMOTE_LEVEL_ELEMENT:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case MOUSE_OVER:
 					case DRAGGED:
 						iMouseOverObjectID = iExternalID;
@@ -2053,10 +1939,8 @@ public class GLRemoteRendering
 							break;
 
 						// Check if view is contained in pool level
-						for (RemoteLevelElement element : poolLevel.getAllElements())
-						{
-							if (element.getID() == iExternalID)
-							{
+						for (RemoteLevelElement element : poolLevel.getAllElements()) {
+							if (element.getID() == iExternalID) {
 								loadViewToFocusLevel(iExternalID);
 								break;
 							}
@@ -2069,8 +1953,7 @@ public class GLRemoteRendering
 				break;
 
 			case VIEW_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case MOUSE_OVER:
 
 						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
@@ -2105,8 +1988,7 @@ public class GLRemoteRendering
 				break;
 
 			case BUCKET_MOVE_IN_ICON_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 						loadViewToFocusLevel(iExternalID);
 						bEnableNavigationOverlay = false;
@@ -2129,8 +2011,7 @@ public class GLRemoteRendering
 				break;
 
 			case BUCKET_MOVE_OUT_ICON_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
 						// Check if other slerp action is currently running
@@ -2169,8 +2050,7 @@ public class GLRemoteRendering
 				break;
 
 			case BUCKET_MOVE_LEFT_ICON_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 						// Check if other slerp action is currently running
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
@@ -2190,28 +2070,23 @@ public class GLRemoteRendering
 							iDestinationPosIndex++;
 
 						// Check if destination position in stack is free
-						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getContainedElementID() == -1)
-						{
+						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getContainedElementID() == -1) {
 							SlerpAction slerpAction =
-								new SlerpAction(selectedElement, stackLevel
-									.getElementByPositionIndex(iDestinationPosIndex));
+								new SlerpAction(selectedElement, stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 							arSlerpActions.add(slerpAction);
 						}
-						else
-						{
+						else {
 							SlerpAction slerpActionTransition =
 								new SlerpAction(selectedElement, transitionLevel.getElementByPositionIndex(0));
 							arSlerpActions.add(slerpActionTransition);
 
 							SlerpAction slerpAction =
-								new SlerpAction(stackLevel.getElementByPositionIndex(iDestinationPosIndex),
-									selectedElement);
+								new SlerpAction(stackLevel.getElementByPositionIndex(iDestinationPosIndex), selectedElement);
 							arSlerpActions.add(slerpAction);
 
 							SlerpAction slerpActionTransitionReverse =
 								new SlerpAction(selectedElement.getContainedElementID(), transitionLevel
-									.getElementByPositionIndex(0), stackLevel
-									.getElementByPositionIndex(iDestinationPosIndex));
+									.getElementByPositionIndex(0), stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 							arSlerpActions.add(slerpActionTransitionReverse);
 						}
 
@@ -2235,8 +2110,7 @@ public class GLRemoteRendering
 				break;
 
 			case BUCKET_MOVE_RIGHT_ICON_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 						// Check if other slerp action is currently running
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
@@ -2256,28 +2130,23 @@ public class GLRemoteRendering
 							iDestinationPosIndex--;
 
 						// Check if destination position in stack is free
-						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getContainedElementID() == -1)
-						{
+						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getContainedElementID() == -1) {
 							SlerpAction slerpAction =
-								new SlerpAction(selectedElement, stackLevel
-									.getElementByPositionIndex(iDestinationPosIndex));
+								new SlerpAction(selectedElement, stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 							arSlerpActions.add(slerpAction);
 						}
-						else
-						{
+						else {
 							SlerpAction slerpActionTransition =
 								new SlerpAction(selectedElement, transitionLevel.getElementByPositionIndex(0));
 							arSlerpActions.add(slerpActionTransition);
 
 							SlerpAction slerpAction =
-								new SlerpAction(stackLevel.getElementByPositionIndex(iDestinationPosIndex),
-									selectedElement);
+								new SlerpAction(stackLevel.getElementByPositionIndex(iDestinationPosIndex), selectedElement);
 							arSlerpActions.add(slerpAction);
 
 							SlerpAction slerpActionTransitionReverse =
 								new SlerpAction(selectedElement.getContainedElementID(), transitionLevel
-									.getElementByPositionIndex(0), stackLevel
-									.getElementByPositionIndex(iDestinationPosIndex));
+									.getElementByPositionIndex(0), stackLevel.getElementByPositionIndex(iDestinationPosIndex));
 							arSlerpActions.add(slerpActionTransitionReverse);
 						}
 
@@ -2303,39 +2172,36 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public String getShortInfo()
-	{
+	public String getShortInfo() {
 		return "Bucket / Jukebox";
 	}
 
 	@Override
-	public String getDetailedInfo()
-	{
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Bucket / Jukebox");
 		return sInfoText.toString();
 	}
 
-	private void createEventMediator()
-	{
+	private void createEventMediator() {
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) this);
 
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) this);
+		generalManager.getEventPublisher()
+			.addReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) this);
 	}
 
-	public synchronized void toggleLayoutMode()
-	{
+	public synchronized void toggleLayoutMode() {
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
 		else
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
-		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
+			bucketMouseWheelListener =
+				new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
@@ -2346,8 +2212,7 @@ public class GLRemoteRendering
 
 			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel, poolLevel);
 		}
-		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
-		{
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 
 			// Unregister bucket wheel listener
@@ -2357,8 +2222,7 @@ public class GLRemoteRendering
 
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
 		}
-		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST))
-		{
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST)) {
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 			glConnectionLineRenderer = null;
 
@@ -2388,22 +2252,19 @@ public class GLRemoteRendering
 		parentGLCanvas.setSize(parentGLCanvas.getWidth(), parentGLCanvas.getHeight());
 	}
 
-	public synchronized void toggleConnectionLines()
-	{
+	public synchronized void toggleConnectionLines() {
 		bEnableConnectinLines = !bEnableConnectinLines;
 	}
 
 	/**
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
-	public void removeView(AGLEventListener glEventListener)
-	{
+	public void removeView(AGLEventListener glEventListener) {
 		if (glEventListener != null)
 			glEventListener.destroy();
 	}
 
-	public synchronized void clearAll()
-	{
+	public synchronized void clearAll() {
 		enableBusyMode(false);
 		pickingManager.enablePicking(true);
 
@@ -2419,14 +2280,12 @@ public class GLRemoteRendering
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 	}
 
-	private void clearRemoteLevel(RemoteLevel remoteLevel)
-	{
+	private void clearRemoteLevel(RemoteLevel remoteLevel) {
 		int iViewID;
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		AGLEventListener glEventListener = null;
 
-		for (RemoteLevelElement element : remoteLevel.getAllElements())
-		{
+		for (RemoteLevelElement element : remoteLevel.getAllElements()) {
 			iViewID = element.getContainedElementID();
 
 			if (iViewID == -1)
@@ -2434,16 +2293,14 @@ public class GLRemoteRendering
 
 			glEventListener = viewManager.getGLEventListener(iViewID);
 
-			if (glEventListener instanceof GLHeatMap || glEventListener instanceof GLParallelCoordinates)
-			{
+			if (glEventListener instanceof GLHeatMap || glEventListener instanceof GLParallelCoordinates) {
 				// Remove all elements from heatmap and parallel coordinates
 				((AStorageBasedView) glEventListener).resetView();
 
 				if (!glEventListener.isRenderedRemote())
 					glEventListener.enableBusyMode(false);
 			}
-			else
-			{
+			else {
 				removeView(glEventListener);
 				element.setContainedElementID(-1);
 			}
@@ -2475,20 +2332,17 @@ public class GLRemoteRendering
 	// }
 
 	@Override
-	public RemoteLevel getFocusLevel()
-	{
+	public RemoteLevel getFocusLevel() {
 		return focusLevel;
 	}
 
 	@Override
-	public BucketMouseWheelListener getBucketMouseWheelListener()
-	{
+	public BucketMouseWheelListener getBucketMouseWheelListener() {
 		return bucketMouseWheelListener;
 	}
 
 	@Override
-	public synchronized void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
-	{
+	public synchronized void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
 		// Update aspect ratio and reinitialize stack and focus layer
@@ -2500,18 +2354,15 @@ public class GLRemoteRendering
 		layoutRenderStyle.initMemoLevel();
 	}
 
-	protected void renderPoolAndMemoLayerBackground(final GL gl)
-	{
+	protected void renderPoolAndMemoLayerBackground(final GL gl) {
 		// Pool layer background
 
 		float fWidth = 0.8f;
 		float fXCorrection = 0.07f; // Detach pool level from stack
 
-		if (layoutMode.equals(LayoutMode.BUCKET))
-		{
-			gl
-				.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
-					iPoolLevelCommonID));
+		if (layoutMode.equals(LayoutMode.BUCKET)) {
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+				iPoolLevelCommonID));
 
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
@@ -2522,13 +2373,11 @@ public class GLRemoteRendering
 			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, -2, 4);
 			gl.glEnd();
 
-			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID)
-			{
+			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID) {
 				gl.glLineWidth(5);
 				gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
 			}
-			else
-			{
+			else {
 				gl.glLineWidth(1);
 				gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 			}
@@ -2573,67 +2422,55 @@ public class GLRemoteRendering
 		textRenderer.end3DRendering();
 	}
 
-	public synchronized void enableGeneMapping(final boolean bEnableMapping)
-	{
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
-		{
-			if (tmpGLEventListener instanceof GLPathway)
-			{
+	public synchronized void enableGeneMapping(final boolean bEnableMapping) {
+		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+			.getAllGLEventListeners()) {
+			if (tmpGLEventListener instanceof GLPathway) {
 				((GLPathway) tmpGLEventListener).enableGeneMapping(bEnableMapping);
 			}
 		}
 	}
 
-	public synchronized void enablePathwayTextures(final boolean bEnablePathwayTexture)
-	{
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
-		{
-			if (tmpGLEventListener instanceof GLPathway)
-			{
+	public synchronized void enablePathwayTextures(final boolean bEnablePathwayTexture) {
+		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+			.getAllGLEventListeners()) {
+			if (tmpGLEventListener instanceof GLPathway) {
 				((GLPathway) tmpGLEventListener).enablePathwayTextures(bEnablePathwayTexture);
 			}
 		}
 	}
 
-	public synchronized void enableNeighborhood(final boolean bEnableNeighborhood)
-	{
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
-		{
-			if (tmpGLEventListener instanceof GLPathway)
-			{
+	public synchronized void enableNeighborhood(final boolean bEnableNeighborhood) {
+		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+			.getAllGLEventListeners()) {
+			if (tmpGLEventListener instanceof GLPathway) {
 				((GLPathway) tmpGLEventListener).enableNeighborhood(bEnableNeighborhood);
 			}
 		}
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 
 	}
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type)
-	{
+	public synchronized void broadcastElements(EVAOperation type) {
 		// do nothing
 	}
 
-	private synchronized void initializeNewPathways(final GL gl)
-	{
+	private synchronized void initializeNewPathways(final GL gl) {
 		// Init newly created pathways
 		// FIXME: this specialization to pathways in the bucket is not good!
-		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty())
-		{
+		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty()) {
 			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
 
 			// Check if pathway is already loaded in bucket
-			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID))
-			{
+			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID)) {
 				ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
 
-				for (ISet tmpSet : alSets)
-				{
+				for (ISet tmpSet : alSets) {
 					if (tmpSet.getSetType() != ESetType.GENE_EXPRESSION_DATA)
 						continue;
 
@@ -2645,7 +2482,8 @@ public class GLRemoteRendering
 					(CmdCreateGLPathway) generalManager.getCommandManager().createCommandByType(
 						ECommandType.CREATE_GL_PATHWAY_3D);
 
-				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20,
+					20);
 				cmdPathway.doCommand();
 
 				GLPathway glPathway = (GLPathway) cmdPathway.getCreatedObject();
@@ -2663,8 +2501,7 @@ public class GLRemoteRendering
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
 						lastSelectionDelta));
 
-				if (focusLevel.hasFreePosition())
-				{
+				if (focusLevel.hasFreePosition()) {
 					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
 					SlerpAction slerpActionTransition =
 						new SlerpAction(spawnLevel.getElementByPositionIndex(0), focusLevel.getNextFree());
@@ -2676,8 +2513,7 @@ public class GLRemoteRendering
 					// Trigger initial gene propagation
 					glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				}
-				else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle))
-				{
+				else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
 					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
 					SlerpAction slerpActionTransition =
 						new SlerpAction(spawnLevel.getElementByPositionIndex(0), stackLevel.getNextFree());
@@ -2689,8 +2525,7 @@ public class GLRemoteRendering
 					// Trigger initial gene propagation
 					glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				}
-				else if (poolLevel.hasFreePosition())
-				{
+				else if (poolLevel.hasFreePosition()) {
 					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
 					SlerpAction slerpActionTransition =
 						new SlerpAction(spawnLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
@@ -2699,14 +2534,12 @@ public class GLRemoteRendering
 					glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 					glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
 				}
-				else
-				{
+				else {
 					generalManager.getLogger().log(Level.SEVERE, "No empty space left to add new pathway!");
 					iAlUninitializedPathwayIDs.clear();
 
 					for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
-						.getAllGLEventListeners())
-					{
+						.getAllGLEventListeners()) {
 						if (!eventListener.isRenderedRemote())
 							eventListener.enableBusyMode(false);
 					}
@@ -2717,21 +2550,19 @@ public class GLRemoteRendering
 					return;
 				}
 			}
-			else
-			{
+			else {
 				generalManager.getLogger().log(Level.WARNING,
 					"Pathway with ID: " + iTmpPathwayID + " is already loaded in Bucket.");
 			}
 
 			iAlUninitializedPathwayIDs.remove(0);
 
-			if (iAlUninitializedPathwayIDs.isEmpty())
-			{
+			if (iAlUninitializedPathwayIDs.isEmpty()) {
 				// Enable picking after all pathways are loaded
 				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
 
-				for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
-				{
+				for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
+					.getAllGLEventListeners()) {
 					if (!eventListener.isRenderedRemote())
 						eventListener.enableBusyMode(false);
 				}
@@ -2740,40 +2571,32 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public void enableBusyMode(boolean busyMode)
-	{
+	public void enableBusyMode(boolean busyMode) {
 		super.enableBusyMode(busyMode);
 
-		if (eBusyModeState == EBusyModeState.ON)
-		{
+		if (eBusyModeState == EBusyModeState.ON) {
 			parentGLCanvas.removeMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 		}
-		else
-		{
+		else {
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		}
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType)
-	{
+	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		return 0;
 	}
 
-	private void compactPoolLevel()
-	{
+	private void compactPoolLevel() {
 		RemoteLevelElement element;
 		RemoteLevelElement elementInner;
-		for (int iIndex = 0; iIndex < poolLevel.getCapacity(); iIndex++)
-		{
+		for (int iIndex = 0; iIndex < poolLevel.getCapacity(); iIndex++) {
 			element = poolLevel.getElementByPositionIndex(iIndex);
-			if (element.isFree())
-			{
+			if (element.isFree()) {
 				// Search for next element to put it in the free position
-				for (int iInnerIndex = iIndex + 1; iInnerIndex < poolLevel.getCapacity(); iInnerIndex++)
-				{
+				for (int iInnerIndex = iIndex + 1; iInnerIndex < poolLevel.getCapacity(); iInnerIndex++) {
 					elementInner = poolLevel.getElementByPositionIndex(iInnerIndex);
 
 					if (elementInner.isFree())
@@ -2788,13 +2611,11 @@ public class GLRemoteRendering
 		}
 	}
 
-	public ArrayList<Integer> getRemoteRenderedViews()
-	{
+	public ArrayList<Integer> getRemoteRenderedViews() {
 		return iAlContainedViewIDs;
 	}
 
-	private void updateOffScreenTextures(final GL gl)
-	{
+	private void updateOffScreenTextures(final GL gl) {
 		bUpdateOffScreenTextures = false;
 
 		gl.glPushMatrix();
@@ -2802,38 +2623,32 @@ public class GLRemoteRendering
 		int iViewWidth = parentGLCanvas.getWidth();
 		int iViewHeight = parentGLCanvas.getHeight();
 
-		if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
-		{
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(0).getContainedElementID(), 0,
-				iViewWidth, iViewHeight);
+		if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1) {
+			glOffScreenRenderer.renderToTexture(gl,
+				stackLevel.getElementByPositionIndex(0).getContainedElementID(), 0, iViewWidth, iViewHeight);
 		}
 
-		if (stackLevel.getElementByPositionIndex(1).getContainedElementID() != -1)
-		{
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(1).getContainedElementID(), 1,
-				iViewWidth, iViewHeight);
+		if (stackLevel.getElementByPositionIndex(1).getContainedElementID() != -1) {
+			glOffScreenRenderer.renderToTexture(gl,
+				stackLevel.getElementByPositionIndex(1).getContainedElementID(), 1, iViewWidth, iViewHeight);
 		}
 
-		if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1)
-		{
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(2).getContainedElementID(), 2,
-				iViewWidth, iViewHeight);
+		if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1) {
+			glOffScreenRenderer.renderToTexture(gl,
+				stackLevel.getElementByPositionIndex(2).getContainedElementID(), 2, iViewWidth, iViewHeight);
 		}
 
-		if (stackLevel.getElementByPositionIndex(3).getContainedElementID() != -1)
-		{
-			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(3).getContainedElementID(), 3,
-				iViewWidth, iViewHeight);
+		if (stackLevel.getElementByPositionIndex(3).getContainedElementID() != -1) {
+			glOffScreenRenderer.renderToTexture(gl,
+				stackLevel.getElementByPositionIndex(3).getContainedElementID(), 3, iViewWidth, iViewHeight);
 		}
 
 		gl.glPopMatrix();
 	}
 
 	@Override
-	public void clearAllSelections()
-	{
-		for (Integer iViewID : iAlContainedViewIDs)
-		{
+	public void clearAllSelections() {
+		for (Integer iViewID : iAlContainedViewIDs) {
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).clearAllSelections();
 		}
 

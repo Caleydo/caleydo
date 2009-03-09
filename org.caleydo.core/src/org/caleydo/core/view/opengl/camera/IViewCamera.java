@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.camera;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import org.caleydo.core.data.IUniqueObject;
 
 /**
@@ -14,8 +15,7 @@ import org.caleydo.core.data.IUniqueObject;
  * @author Marc Streit
  */
 public interface IViewCamera
-	extends IUniqueObject
-{
+	extends IUniqueObject {
 
 	/**
 	 * Returns true if any data of the camera has changed.
@@ -28,46 +28,50 @@ public interface IViewCamera
 	// public boolean hasViewCameraChanged();
 
 	/**
-	 * Apply a new pan. Updates the ViewMatrix using the existing Rotation &
-	 * Zoom.
+	 * Apply a new pan. Updates the ViewMatrix using the existing Rotation & Zoom.
 	 * 
-	 * @param setPan new pan settings
+	 * @param setPan
+	 *          new pan settings
 	 */
 	public void setCameraPosition(final Vec3f setPos);
 
 	/**
 	 * same as setCameraPosition() but adds current setPos vector.
 	 * 
-	 * @param setPos increment position.
+	 * @param setPos
+	 *          increment position.
 	 */
 	public void addCameraPosition(final Vec3f setPos);
 
 	/**
-	 * Apply a new rotation. Updates the ViewMatrix using the existing Pan &
-	 * Zoom.
+	 * Apply a new rotation. Updates the ViewMatrix using the existing Pan & Zoom.
 	 * 
-	 * @param setRot new rotation
+	 * @param setRot
+	 *          new rotation
 	 */
 	public void setCameraRotation(final Rotf setRot);
 
 	/**
 	 * add setRot to current rotation.
 	 * 
-	 * @param setRot incremental rotation of current rotation
+	 * @param setRot
+	 *          incremental rotation of current rotation
 	 */
 	public void addCameraRotation(final Rotf setRot);
 
 	/**
 	 * Set rotation in euler angles.
 	 * 
-	 * @param setRotEuler with euler angles x,y,z
+	 * @param setRotEuler
+	 *          with euler angles x,y,z
 	 */
 	public void setCameraRotationEuler(final Vec3f setRotEuler);
 
 	/**
 	 * Add rotation in euler angles.
 	 * 
-	 * @param addRotEuler with euler angles x,y,z
+	 * @param addRotEuler
+	 *          with euler angles x,y,z
 	 */
 	public void addCameraRotationEuler(Vec3f addRotEuler);
 
@@ -92,24 +96,24 @@ public interface IViewCamera
 	public float getCameraRotationRadiant(Vec3f axis);
 
 	/**
-	 * Apply a new rotation using Vec3f. Updates the ViewMatrix using the
-	 * existing Pan & Zoom.
+	 * Apply a new rotation using Vec3f. Updates the ViewMatrix using the existing Pan & Zoom.
 	 * 
-	 * @param setRot new rotation
+	 * @param setRot
+	 *          new rotation
 	 */
 	public void setCameraRotationVec3f(final Vec3f setRotVec3f);
 
 	/**
-	 * Apply new zooming, which is a scaling operation. Updates the ViewMatrix
-	 * using the existing Rotation & Zoom.
+	 * Apply new zooming, which is a scaling operation. Updates the ViewMatrix using the existing Rotation &
+	 * Zoom.
 	 * 
-	 * @param setZoom new zoom values
+	 * @param setZoom
+	 *          new zoom values
 	 */
 	public void setCameraScale(final Vec3f setScale);
 
 	/**
-	 * same as setCameraScale() but adds the setScale vector to the current
-	 * vector.
+	 * same as setCameraScale() but adds the setScale vector to the current vector.
 	 * 
 	 * @param setScale
 	 */
@@ -118,15 +122,18 @@ public interface IViewCamera
 	/**
 	 * Apply new Pan, Zoom and Rotation at once. Note: Does the same as calling
 	 * 
-	 * @param setPan new pan values
-	 * @param setZoom new zoom/scale values
-	 * @param setRot new rotation values
+	 * @param setPan
+	 *          new pan values
+	 * @param setZoom
+	 *          new zoom/scale values
+	 * @param setRot
+	 *          new rotation values
 	 */
 	public void setCameraAll(final Vec3f setPos, final Vec3f setScale, final Rotf setRot);
 
 	/**
-	 * @param bSetHasChanged status of viewCamera, TURE means status has
-	 *            changed.
+	 * @param bSetHasChanged
+	 *          status of viewCamera, TURE means status has changed.
 	 * @see prometheus.data.collection.view.camera.IViewCamera#hasViewCameraChanged()
 	 */
 	public void setHasChanged(final boolean bSetHasChanged);
@@ -162,8 +169,7 @@ public interface IViewCamera
 	public Vec3f getCameraRotationEuler();
 
 	/**
-	 * Get the current ViewMatrix. Note: This matrix is updated each time a set
-	 * method is called.
+	 * Get the current ViewMatrix. Note: This matrix is updated each time a set method is called.
 	 * 
 	 * @return current view matrix
 	 */

@@ -3,11 +3,11 @@ package org.caleydo.core.data.collection.ccontainer;
 import java.util.ArrayList;
 
 /**
- * A container for numerical values. Type can be anything that implements
- * java.Number
+ * A container for numerical values. Type can be anything that implements java.Number
  * 
  * @author Alexander Lex
- * @param <T> the Type, can be anything that implements java.Number
+ * @param <T>
+ *          the Type, can be anything that implements java.Number
  */
 
 public class NumericalCContainer<T extends Number>
@@ -24,41 +24,35 @@ public class NumericalCContainer<T extends Number>
 	 * 
 	 * @param alContainer
 	 */
-	public NumericalCContainer(ArrayList<T> alContainer)
-	{
+	public NumericalCContainer(ArrayList<T> alContainer) {
 		this.alContainer = alContainer;
 	}
 
 	@Override
-	public double getMin()
-	{
+	public double getMin() {
 		if (dMin == Double.MAX_VALUE)
 			calculateMinMax();
 		return dMin;
 	}
 
 	@Override
-	public double getMax()
-	{
+	public double getMax() {
 		if (dMax == Double.MIN_VALUE)
 			calculateMinMax();
 		return dMax;
 	}
 
 	@Override
-	public FloatCContainer normalize()
-	{
+	public FloatCContainer normalize() {
 		return normalize(getMin(), getMax());
 	}
 
 	@Override
-	public FloatCContainer log(int iBase)
-	{
+	public FloatCContainer log(int iBase) {
 		float[] fArTarget = new float[alContainer.size()];
 
 		float fTmp;
-		for (int index = 0; index < alContainer.size(); index++)
-		{
+		for (int index = 0; index < alContainer.size(); index++) {
 			fTmp = alContainer.get(index).floatValue();
 			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
 			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
@@ -69,8 +63,7 @@ public class NumericalCContainer<T extends Number>
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
-	{
+	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax) {
 		return normalize(dMin, dMax);
 	}
 
@@ -80,26 +73,24 @@ public class NumericalCContainer<T extends Number>
 	 * @param dMin
 	 * @param dMax
 	 * @return a new container with the normalized values
-	 * @throws IllegalAttributeException when dMin is >= dMax
+	 * @throws IllegalAttributeException
+	 *           when dMin is >= dMax
 	 */
-	private FloatCContainer normalize(double dMin, double dMax)
-	{
+	private FloatCContainer normalize(double dMin, double dMax) {
 
 		if (dMin >= dMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
 		float[] fArTmpTarget = new float[alContainer.size()];
 
-		for (int iCount = 0; iCount < alContainer.size(); iCount++)
-		{
+		for (int iCount = 0; iCount < alContainer.size(); iCount++) {
 			if (Float.isNaN(alContainer.get(iCount).floatValue())
-					|| Double.isNaN(alContainer.get(iCount).doubleValue()))
+				|| Double.isNaN(alContainer.get(iCount).doubleValue()))
 				fArTmpTarget[iCount] = Float.NaN;
-			else
-			{
+			else {
 
-				fArTmpTarget[iCount] = (alContainer.get(iCount).floatValue() - (float) dMin)
-						/ ((float) dMax - (float) dMin);
+				fArTmpTarget[iCount] =
+					(alContainer.get(iCount).floatValue() - (float) dMin) / ((float) dMax - (float) dMin);
 				if (fArTmpTarget[iCount] > 1)
 					fArTmpTarget[iCount] = 1;
 				else if (fArTmpTarget[iCount] < 0)
@@ -110,18 +101,14 @@ public class NumericalCContainer<T extends Number>
 	}
 
 	/**
-	 * Calculates the min and max of the container and sets them to the fMin and
-	 * fMax class variables
+	 * Calculates the min and max of the container and sets them to the fMin and fMax class variables
 	 */
-	private void calculateMinMax()
-	{
-		for (Number current : alContainer)
-		{
+	private void calculateMinMax() {
+		for (Number current : alContainer) {
 			if (Float.isNaN(current.floatValue()) || Double.isNaN(current.doubleValue()))
 				continue;
 
-			if (current.doubleValue() < dMin)
-			{
+			if (current.doubleValue() < dMin) {
 				dMin = current.doubleValue();
 				continue;
 			}

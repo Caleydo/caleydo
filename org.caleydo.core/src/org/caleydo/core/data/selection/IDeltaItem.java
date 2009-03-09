@@ -1,13 +1,10 @@
 package org.caleydo.core.data.selection;
 
 /**
- * 
  * @author Alexander Lex
- * 
  */
 public interface IDeltaItem
-	extends Cloneable
-{
+	extends Cloneable {
 	/**
 	 * Returns the selection ID
 	 * 
@@ -16,7 +13,6 @@ public interface IDeltaItem
 	public int getPrimaryID();
 
 	/**
-	 * 
 	 * @return
 	 */
 	public int getSecondaryID();

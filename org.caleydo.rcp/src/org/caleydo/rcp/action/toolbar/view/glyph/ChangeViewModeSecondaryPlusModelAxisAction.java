@@ -3,6 +3,7 @@ package org.caleydo.rcp.action.toolbar.view.glyph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+
 import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
@@ -15,8 +16,7 @@ import org.eclipse.swt.widgets.Menu;
 
 public class ChangeViewModeSecondaryPlusModelAxisAction
 	extends AToolBarAction
-	implements IMenuCreator
-{
+	implements IMenuCreator {
 	public static final String TEXT = "Switch Scatterplot Axis definition";
 	// public static final String ICON =
 	// "resources/icons/view/glyph/sort_scatterplot.png";
@@ -27,8 +27,7 @@ public class ChangeViewModeSecondaryPlusModelAxisAction
 	/**
 	 * Constructor.
 	 */
-	public ChangeViewModeSecondaryPlusModelAxisAction(int iViewID, int axis)
-	{
+	public ChangeViewModeSecondaryPlusModelAxisAction(int iViewID, int axis) {
 		super(iViewID);
 		this.axisnum = axis;
 
@@ -44,16 +43,13 @@ public class ChangeViewModeSecondaryPlusModelAxisAction
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 	}
 
 	@Override
-	public void dispose()
-	{
-		if (menu != null)
-		{
+	public void dispose() {
+		if (menu != null) {
 			menu.dispose();
 			menu = null;
 		}
@@ -62,41 +58,37 @@ public class ChangeViewModeSecondaryPlusModelAxisAction
 	/**
 	 * This is called in a tool bar
 	 */
-	public Menu getMenu(Control parent)
-	{
+	public Menu getMenu(Control parent) {
 		return null;
 	}
 
 	/**
 	 * This is called in a menu bar
 	 */
-	public Menu getMenu(Menu parent)
-	{
+	public Menu getMenu(Menu parent) {
 		if (menu != null)
 			menu.dispose();
 
 		menu = new Menu(parent);
 
 		// get all combo box entrys
-		final HashMap<String, Integer> list = GeneralManager.get().getGlyphManager()
-				.getGlyphAttributeComboboxEntryList();
+		final HashMap<String, Integer> list =
+			GeneralManager.get().getGlyphManager().getGlyphAttributeComboboxEntryList();
 
 		ArrayList<String> names = new ArrayList<String>(list.keySet());
 		Collections.sort(names);
 
-		for (final String name : names)
-		{
-			Action axisAction = new Action(name)
-			{
-				public void run()
-				{
+		for (final String name : names) {
+			Action axisAction = new Action(name) {
+				@Override
+				public void run() {
 					if (axisnum == 0)
 						triggerCmdExternalObjectSetter(list.get(name),
-								EExternalObjectSetterType.GLYPH_CHANGE_PLUSMODEL_AXIS_X);
+							EExternalObjectSetterType.GLYPH_CHANGE_PLUSMODEL_AXIS_X);
 
 					if (axisnum == 1)
 						triggerCmdExternalObjectSetter(list.get(name),
-								EExternalObjectSetterType.GLYPH_CHANGE_PLUSMODEL_AXIS_Y);
+							EExternalObjectSetterType.GLYPH_CHANGE_PLUSMODEL_AXIS_Y);
 				}
 			};
 			addActionToMenu(menu, axisAction);
@@ -105,8 +97,7 @@ public class ChangeViewModeSecondaryPlusModelAxisAction
 		return menu;
 	}
 
-	protected void addActionToMenu(Menu parent, IAction action)
-	{
+	protected void addActionToMenu(Menu parent, IAction action) {
 		ActionContributionItem item = new ActionContributionItem(action);
 		item.fill(parent, -1);
 	}

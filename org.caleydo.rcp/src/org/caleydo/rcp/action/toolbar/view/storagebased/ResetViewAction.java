@@ -7,25 +7,22 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ResetViewAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 
 	public static final String TEXT = "Reset View";
 	public static final String ICON = "resources/icons/view/general/reset_view.png";
 
-	public ResetViewAction(int iViewID)
-	{
+	public ResetViewAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		triggerCmdExternalAction(EExternalActionType.STORAGEBASED_RESET_VIEW);

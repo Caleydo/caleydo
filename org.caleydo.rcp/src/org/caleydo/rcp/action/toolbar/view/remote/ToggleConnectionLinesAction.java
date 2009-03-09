@@ -7,31 +7,27 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ToggleConnectionLinesAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Turn on/off connection lines";
 	public static final String ICON = "resources/icons/view/remote/connection_lines.png";
 
 	/**
 	 * Constructor.
 	 */
-	public ToggleConnectionLinesAction(int iViewID)
-	{
+	public ToggleConnectionLinesAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 		setChecked(true);
 	}
- 
+
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
-		triggerCmdExternalAction(
-				EExternalActionType.REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE);
+		triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE);
 	};
 }

@@ -13,8 +13,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public class NewProjectImportDataPage
-	extends WizardPage
-{
+	extends WizardPage {
 
 	public static final String PAGE_NAME = "Import data to new project";
 
@@ -25,12 +24,11 @@ public class NewProjectImportDataPage
 	/**
 	 * Constructor.
 	 */
-	public NewProjectImportDataPage()
-	{
+	public NewProjectImportDataPage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
-				.getResource("resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
+			"resources/wizard/wizard.png")));
 
 		setPageComplete(true);
 	}
@@ -38,16 +36,14 @@ public class NewProjectImportDataPage
 	/**
 	 * Constructor.
 	 */
-	public NewProjectImportDataPage(String sFileName)
-	{
+	public NewProjectImportDataPage(String sFileName) {
 		this();
 
 		this.sInputFile = sFileName;
 	}
 
 	@Override
-	public void createControl(Composite parent)
-	{
+	public void createControl(Composite parent) {
 		Composite topLevel = new Composite(parent, SWT.NONE);
 		topLevel.setLayout(new FillLayout());
 
@@ -62,8 +58,7 @@ public class NewProjectImportDataPage
 		// setPageComplete(true);
 	}
 
-	public FileLoadDataAction getFileLoadDataAction()
-	{
+	public FileLoadDataAction getFileLoadDataAction() {
 		return fileLoadDataAction;
 	}
 }

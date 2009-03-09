@@ -15,8 +15,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class FileSaveProjectAction
 	extends Action
-	implements ActionFactory.IWorkbenchAction
-{
+	implements ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.rcp.saveProjectDialog";
 
@@ -25,23 +24,21 @@ public class FileSaveProjectAction
 	/**
 	 * Constructor.
 	 */
-	public FileSaveProjectAction(final Composite parentComposite)
-	{
+	public FileSaveProjectAction(final Composite parentComposite) {
 
 		super("Save Project");
 
 		setId(ID);
 		setToolTipText("Save project dialog");
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-				IImageKeys.FILE_OPEN_XML_CONFIG_FILE)); // TODO: change image
+			IImageKeys.FILE_OPEN_XML_CONFIG_FILE)); // TODO: change image
 
 		this.parentComposite = parentComposite;
 
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 
 		super.run();
 
@@ -58,8 +55,7 @@ public class FileSaveProjectAction
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 
 		// nothing to do
 	}

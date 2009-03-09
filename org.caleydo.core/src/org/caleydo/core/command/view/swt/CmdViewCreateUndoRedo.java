@@ -7,39 +7,33 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
- * Class implements the command for creating the UNDO/REDO GUI view
- * representation.
+ * Class implements the command for creating the UNDO/REDO GUI view representation.
  * 
  * @author Marc Streit
  */
 public class CmdViewCreateUndoRedo
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	/**
 	 * Constructor
 	 */
-	public CmdViewCreateUndoRedo(final ECommandType cmdType)
-	{
+	public CmdViewCreateUndoRedo(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	/**
-	 * Method creates a undo/redo view, sets the attributes and calls the init
-	 * and draw method.
+	 * Method creates a undo/redo view, sets the attributes and calls the init and draw method.
 	 */
-	public void doCommand()
-	{
+	public void doCommand() {
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1)
-		{
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
-					iParentContainerId);
+		if (iExternalID != -1) {
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
-		UndoRedoViewRep undoRedoView = (UndoRedoViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_UNDO_REDO, iParentContainerId, sLabel);
+		UndoRedoViewRep undoRedoView =
+			(UndoRedoViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_UNDO_REDO, iParentContainerId,
+				sLabel);
 
 		viewManager.registerItem(undoRedoView);
 
@@ -49,18 +43,15 @@ public class CmdViewCreateUndoRedo
 		// Register UNDO/REDO view to command manager.
 		generalManager.getCommandManager().addUndoRedoViewRep(undoRedoView);
 
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(undoRedoView.getID(),
-					iExternalID);
+		if (iExternalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(undoRedoView.getID(), iExternalID);
 		}
 
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

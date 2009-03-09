@@ -13,22 +13,19 @@ import org.caleydo.core.data.selection.SelectionDelta;
  * @author Marc Streit
  */
 public class CmdDataCreateSelection
-	extends ACmdCreational<ISelectionDelta>
-{
+	extends ACmdCreational<ISelectionDelta> {
 	private EIDType idType;
 	private EIDType internalIDType = null;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateSelection(final ECommandType cmdType)
-	{
+	public CmdDataCreateSelection(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		createdObject = new SelectionDelta(idType, internalIDType);
 
@@ -36,31 +33,29 @@ public class CmdDataCreateSelection
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	/**
-	 * Set attributes for object to be constructed, see
-	 * {@link SelectionDelta#SelectionDelta(EIDType)}
+	 * Set attributes for object to be constructed, see {@link SelectionDelta#SelectionDelta(EIDType)}
 	 * 
-	 * @param iDType see Constructor
+	 * @param iDType
+	 *          see Constructor
 	 */
-	public void setAttributes(EIDType idType)
-	{
+	public void setAttributes(EIDType idType) {
 		this.idType = idType;
 	}
 
 	/**
-	 * Set attributes for object to be constructed, see
-	 * {@link SelectionDelta#SelectionDelta(EIDType, EIDType)}
+	 * Set attributes for object to be constructed, see {@link SelectionDelta#SelectionDelta(EIDType, EIDType)}
 	 * 
-	 * @param iDType see Constructor
-	 * @param internalIDType see Constructor
+	 * @param iDType
+	 *          see Constructor
+	 * @param internalIDType
+	 *          see Constructor
 	 */
-	public void setAttributes(EIDType idType, EIDType internalIDType)
-	{
+	public void setAttributes(EIDType idType, EIDType internalIDType) {
 		this.internalIDType = internalIDType;
 	}
 

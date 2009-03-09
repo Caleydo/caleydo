@@ -12,13 +12,12 @@ import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageM
  * @author Marc Streit
  */
 public interface IPathwayManager
-	extends IManager<PathwayGraph>
-{
-	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
-			final String sTitle, final String sImageLink, final String sExternalLink);
+	extends IManager<PathwayGraph> {
+	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName, final String sTitle,
+		final String sImageLink, final String sExternalLink);
 
 	public void createPathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath,
-			final String sImagePath, final String sImageMapPath);
+		final String sImagePath, final String sImageMapPath);
 
 	public void triggerParsingPathwayDatabases();
 
@@ -26,13 +25,11 @@ public interface IPathwayManager
 
 	public PathwayImageMap getCurrentPathwayImageMap();
 
-	public int searchPathwayIdByName(final String sPathwayName,
-			EPathwayDatabaseType ePathwayDatabaseType);
+	public int searchPathwayIdByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType);
 
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type);
 
-	public void setPathwayVisibilityStateByID(final int iPathwayID,
-			final boolean bVisibilityState);
+	public void setPathwayVisibilityStateByID(final int iPathwayID, final boolean bVisibilityState);
 
 	public boolean isPathwayVisible(final int iPathwayID);
 

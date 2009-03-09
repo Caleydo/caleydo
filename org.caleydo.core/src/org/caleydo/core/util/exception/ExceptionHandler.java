@@ -1,26 +1,23 @@
 package org.caleydo.core.util.exception;
 
 import java.util.logging.Level;
+
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Catches exceptions and logs them, hides them when in release mode
  * 
  * @author Alexander Lex
- * 
  */
-public class ExceptionHandler
-{
+public class ExceptionHandler {
 	/**
-	 * Determine whether to hide exceptions and log them, or whether to throw
-	 * them
+	 * Determine whether to hide exceptions and log them, or whether to throw them
 	 */
 	public static final boolean HIDE_EXCEPTIONS = false;
 
 	private static ExceptionHandler singletonInstance = null;
 
-	private ExceptionHandler()
-	{
+	private ExceptionHandler() {
 
 	}
 
@@ -29,8 +26,7 @@ public class ExceptionHandler
 	 * 
 	 * @return
 	 */
-	public static ExceptionHandler get()
-	{
+	public static ExceptionHandler get() {
 		if (singletonInstance == null)
 			singletonInstance = new ExceptionHandler();
 
@@ -38,22 +34,17 @@ public class ExceptionHandler
 	}
 
 	/**
-	 * Handle runtime exceptions. Depending on
-	 * {@link ExceptionHandler#HIDE_EXCEPTIONS} exceptions are either rethrown
-	 * or hidden and logged
+	 * Handle runtime exceptions. Depending on {@link ExceptionHandler#HIDE_EXCEPTIONS} exceptions are either
+	 * rethrown or hidden and logged
 	 * 
 	 * @param exception
 	 */
-	public void handleException(RuntimeException exception)
-	{
-		if (HIDE_EXCEPTIONS)
-		{
-			GeneralManager.get().getLogger().log(Level.SEVERE,
-					"Caught Exception: " + exception.getMessage());
+	public void handleException(RuntimeException exception) {
+		if (HIDE_EXCEPTIONS) {
+			GeneralManager.get().getLogger().log(Level.SEVERE, "Caught Exception: " + exception.getMessage());
 			// Log here
 		}
-		else
-		{
+		else {
 			throw exception;
 		}
 	}

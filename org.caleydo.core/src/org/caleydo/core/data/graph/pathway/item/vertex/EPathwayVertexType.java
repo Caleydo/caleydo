@@ -1,7 +1,6 @@
 package org.caleydo.core.data.graph.pathway.item.vertex;
 
-public enum EPathwayVertexType
-{
+public enum EPathwayVertexType {
 	ortholog("Ortholog"), // the node is a KO (ortholog group)
 	enzyme("Enzyme"), // the node is an enzyme
 	gene("Gene"), // the node is a gene product (mostly a protein)
@@ -9,19 +8,16 @@ public enum EPathwayVertexType
 	// complex)
 	compound("Compound"), // the node is a chemical compound (including a
 	// glycan)
-	map("Linked Pathway"),
-	other("Unknown");
+	map("Linked Pathway"), other("Unknown");
 
 	private final String sName;
 
-	EPathwayVertexType(final String sName)
-	{
+	EPathwayVertexType(final String sName) {
 
 		this.sName = sName;
 	}
 
-	public String getName()
-	{
+	public String getName() {
 
 		return sName;
 	}

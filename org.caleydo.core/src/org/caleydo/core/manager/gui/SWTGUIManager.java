@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -25,19 +26,15 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * The SWTGUIManager is responsible for the creation and the administration of
- * the windows and composites. Also the overall layout is defined here and the
- * menus are added to the windows.
- * 
- * This class is not derived from AManager since it does not manages
- * IUniqueObjects.
+ * The SWTGUIManager is responsible for the creation and the administration of the windows and composites.
+ * Also the overall layout is defined here and the menus are added to the windows. This class is not derived
+ * from AManager since it does not manages IUniqueObjects.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */
 public class SWTGUIManager
-	implements ISWTGUIManager
-{
+	implements ISWTGUIManager {
 	protected IGeneralManager generalManager;
 
 	/**
@@ -64,8 +61,7 @@ public class SWTGUIManager
 	/**
 	 * Constructor.
 	 */
-	public SWTGUIManager()
-	{
+	public SWTGUIManager() {
 		generalManager = GeneralManager.get();
 
 		widgetMap = new Vector<ISWTWidget>();
@@ -73,24 +69,21 @@ public class SWTGUIManager
 		compositeMap = new HashMap<Integer, Composite>();
 
 		// Only create popup window with progress bar when not in RCP mode
-		if (generalManager.isStandalone())
-		{
+		if (generalManager.isStandalone()) {
 			display = new Display();
 			createLoadingProgressBar();
 		}
 	}
 
 	@Override
-	public int createWindow(String sLabel, String sLayoutAttributes)
-	{
+	public int createWindow(String sLabel, String sLayoutAttributes) {
 		Shell newShell = new Shell(display);
 		newShell.setLayout(new GridLayout());
 		newShell.setMaximized(true);
 		newShell.setImage(new Image(display, "resources/icons/caleydo/caleydo16.gif"));
 		newShell.setText(sLabel);
 
-		int iShellID = generalManager.getIDManager().createID(
-				EManagedObjectType.GUI_SWT_WINDOW);
+		int iShellID = generalManager.getIDManager().createID(EManagedObjectType.GUI_SWT_WINDOW);
 
 		windowMap.put(iShellID, newShell);
 
@@ -100,9 +93,7 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
-			String layoutAttributes)
-	{
+	public void createComposite(int iUniqueId, int iUniqueParentContainerId, String layoutAttributes) {
 
 		// TODO check if parent exists
 		Shell parentWindow = windowMap.get(iUniqueParentContainerId);
@@ -118,22 +109,18 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			int iUniqueParentContainerId)
-	{
+	public ISWTWidget createWidget(final EManagedObjectType useWidgetType, int iUniqueParentContainerId) {
 
 		// TODO Check if window id is valid and print error message
 
 		// Check if the parent is a window
 		composite = windowMap.get(iUniqueParentContainerId);
 
-		if (composite == null)
-		{
+		if (composite == null) {
 			// Check if the parent is a composite
 			composite = compositeMap.get(iUniqueParentContainerId);
 
-			if (composite == null)
-			{
+			if (composite == null) {
 				// generalManager.logMsg( getClass().getSimpleName() +
 				// ".createWidget(" +
 				// useWidgetType.toString() + ", parentId=" +
@@ -144,17 +131,15 @@ public class SWTGUIManager
 			}
 		}
 
-		return (createWidget(useWidgetType, composite));
+		return createWidget(useWidgetType, composite);
 	}
 
 	@Override
 	public synchronized ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			final Composite externalParentComposite)
-	{
+		final Composite externalParentComposite) {
 		ASWTWidget newSWTWidget;
 
-		switch (useWidgetType)
-		{
+		switch (useWidgetType) {
 			case GUI_SWT_NATIVE_WIDGET:
 				newSWTWidget = new SWTNativeWidget(externalParentComposite);
 				widgetMap.add(newSWTWidget);
@@ -168,39 +153,33 @@ public class SWTGUIManager
 				widgetMap.add(newSWTWidget);
 				return newSWTWidget;
 			default:
-				throw new IllegalStateException(
-						"StorageManagerSimple.createView() failed due to unhandled type ["
-								+ useWidgetType.toString() + "]");
+				throw new IllegalStateException("StorageManagerSimple.createView() failed due to unhandled type ["
+					+ useWidgetType.toString() + "]");
 		}
 	}
 
-	protected void setUpLayout(Composite newComposite, String sLayoutAttributes)
-	{
+	protected void setUpLayout(Composite newComposite, String sLayoutAttributes) {
 
 		String layoutType; // GRID or ROW
 		String layoutDirection;
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
 
-		StringTokenizer token = new StringTokenizer(sLayoutAttributes,
-				IGeneralManager.sDelimiter_Parser_DataItems);
+		StringTokenizer token =
+			new StringTokenizer(sLayoutAttributes, IGeneralManager.sDelimiter_Parser_DataItems);
 
 		layoutType = token.nextToken();
 
-		if (layoutType.equals("ROW"))
-		{
+		if (layoutType.equals("ROW")) {
 			layoutDirection = token.nextToken();
-			if (layoutDirection.equals("HORIZONTAL"))
-			{
+			if (layoutDirection.equals("HORIZONTAL")) {
 				gridLayout.numColumns += 1;
 			}
 		}
-		else if (layoutType.equals("GRID"))
-		{
+		else if (layoutType.equals("GRID")) {
 			// real GRID layout is now implemented yet
 		}
-		else
-		{
+		else {
 			// ERROR
 		}
 
@@ -209,8 +188,7 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public void runApplication()
-	{
+	public void runApplication() {
 		Iterator<Shell> shellIterator;
 		Shell currentShell;
 
@@ -220,27 +198,23 @@ public class SWTGUIManager
 			setProgressBarVisible(false);
 
 		shellIterator = windowMap.values().iterator();
-		while (shellIterator.hasNext())
-		{
+		while (shellIterator.hasNext()) {
 			currentShell = shellIterator.next();
 			currentShell.setVisible(true);// open();
 		}
 
 		shellIterator = windowMap.values().iterator();
 
-		while (shellIterator.hasNext())
-		{
+		while (shellIterator.hasNext()) {
 			currentShell = shellIterator.next();
-			while (!currentShell.isDisposed())
-			{
+			while (!currentShell.isDisposed()) {
 				if (!display.readAndDispatch())
 					display.sleep();
 			}
 		}
 	}
 
-	private void createLoadingProgressBar()
-	{
+	private void createLoadingProgressBar() {
 		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
 		loadingProgressBarWindow.setMaximized(false);
 		loadingProgressBarWindow.setText("Loading Caleydo...");
@@ -257,8 +231,7 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public void setProgressBarPercentage(int iPercentage)
-	{
+	public void setProgressBarPercentage(int iPercentage) {
 		if (loadingProgressBar.isDisposed())
 			return;
 
@@ -266,15 +239,12 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public void setProgressBarPercentageFromExternalThread(final int iPercentage)
-	{
+	public void setProgressBarPercentageFromExternalThread(final int iPercentage) {
 		if (loadingProgressBar.isDisposed())
 			return;
 
-		loadingProgressBar.getDisplay().asyncExec(new Runnable()
-		{
-			public void run()
-			{
+		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
+			public void run() {
 				if (loadingProgressBar.isDisposed())
 					return;
 				loadingProgressBar.setSelection(iPercentage);
@@ -283,15 +253,12 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public void setProgressBarText(String sText)
-	{
-		if (generalManager.isStandalone())
-		{
+	public void setProgressBarText(String sText) {
+		if (generalManager.isStandalone()) {
 			loadingProgressBarWindow.setText(sText);
 			loadingProgressBarWindow.update();
 		}
-		else
-		{
+		else {
 			// // If in RCP mode and the splash is already gone
 			// // a new progress bar has to be created
 			// if (loadingProgressBarWindow == null)
@@ -306,50 +273,41 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public void setProgressBarTextFromExternalThread(final String sText)
-	{
+	public void setProgressBarTextFromExternalThread(final String sText) {
 		if (loadingProgressBar.isDisposed())
 			return;
 
-		loadingProgressBar.getDisplay().asyncExec(new Runnable()
-		{
-			public void run()
-			{
+		loadingProgressBar.getDisplay().asyncExec(new Runnable() {
+			public void run() {
 				setProgressBarText(sText);
 			}
 		});
 	}
 
-	public void setProgressBarVisible(final boolean state)
-	{
+	public void setProgressBarVisible(final boolean state) {
 		loadingProgressBarWindow.setVisible(state);
 		loadingProgressBar.setVisible(state);
 	}
 
 	@Override
-	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel)
-	{
+	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel) {
 		this.loadingProgressBar = progressBar;
 		this.loadingProgressBarLabel = progressLabel;
 	}
 
 	@Override
-	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display)
-	{
+	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display) {
 		this.display = display;
 		this.externalRCPStatusLine = statusLine;
 	}
 
 	@Override
-	public void setExternalRCPStatusLineMessage(final String sMessage)
-	{
+	public void setExternalRCPStatusLineMessage(final String sMessage) {
 		if (externalRCPStatusLine == null)
 			return;
 
-		display.asyncExec(new Runnable()
-		{
-			public void run()
-			{
+		display.asyncExec(new Runnable() {
+			public void run() {
 				externalRCPStatusLine.setMessage(sMessage);
 			}
 		});

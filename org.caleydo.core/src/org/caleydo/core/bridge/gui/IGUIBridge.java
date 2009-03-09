@@ -1,7 +1,6 @@
 package org.caleydo.core.bridge.gui;
 
-public interface IGUIBridge
-{
+public interface IGUIBridge {
 	public void closeApplication();
 
 	// public void setActiveGLView();

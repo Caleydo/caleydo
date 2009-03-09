@@ -1,6 +1,7 @@
 package org.caleydo.core.data.graph.pathway.item.vertex;
 
 import java.io.Serializable;
+
 import org.caleydo.core.data.graph.ACaleydoGraphItem;
 import org.caleydo.util.graph.EGraphItemKind;
 
@@ -11,8 +12,7 @@ import org.caleydo.util.graph.EGraphItemKind;
  */
 public class PathwayVertexGraphItem
 	extends ACaleydoGraphItem
-	implements Serializable
-{
+	implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,19 +32,16 @@ public class PathwayVertexGraphItem
 	 * @param sExternalLink
 	 * @param sReactionId
 	 */
-	public PathwayVertexGraphItem(final String sName, final String sType,
-			final String sExternalLink, final String sReactionId)
-	{
+	public PathwayVertexGraphItem(final String sName, final String sType, final String sExternalLink,
+		final String sReactionId) {
 
 		super(EGraphItemKind.NODE);
 
 		// Check if type exists - otherwise assign "other"
-		try
-		{
+		try {
 			type = EPathwayVertexType.valueOf(sType);
 		}
-		catch (IllegalArgumentException e)
-		{
+		catch (IllegalArgumentException e) {
 			type = EPathwayVertexType.other;
 		}
 
@@ -53,33 +50,28 @@ public class PathwayVertexGraphItem
 		this.sReactionId = sReactionId;
 	}
 
-	public String getName()
-	{
+	public String getName() {
 
 		return sName;
 	}
 
-	public EPathwayVertexType getType()
-	{
+	public EPathwayVertexType getType() {
 
 		return type;
 	}
 
-	public String getExternalLink()
-	{
+	public String getExternalLink() {
 
 		return sExternalLink;
 	}
 
-	public String getReactionId()
-	{
+	public String getReactionId() {
 
 		return sReactionId;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 
 		return sName;
 	}

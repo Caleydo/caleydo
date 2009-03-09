@@ -5,6 +5,7 @@ import java.io.ObjectOutputStream;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.manager.IMementoManager;
 
@@ -15,8 +16,7 @@ import org.caleydo.core.manager.IMementoManager;
  * @author Marc Streit
  */
 public class MementoManager
-	implements IMementoManager
-{
+	implements IMementoManager {
 
 	private int iVecMementoStorageSize;
 
@@ -29,16 +29,14 @@ public class MementoManager
 	/**
 	 * Constructor.
 	 */
-	public MementoManager()
-	{
+	public MementoManager() {
 		vecMemento = new Vector<IMemento>(iInitSizeMementoVector);
 		hashMementoId2Index = new Hashtable<Integer, Integer>(iInitSizeMementoVector * 2);
 		iVecMementoStorageSize = 0;
 	}
 
 	@Override
-	public final int pushMemento(final IMemento addMemento)
-	{
+	public final int pushMemento(final IMemento addMemento) {
 		// TODO: review when implementing ID management
 		final int iUniqueId = -1;// createId(EManagerObjectType.MEMENTO);
 
@@ -49,62 +47,52 @@ public class MementoManager
 	}
 
 	@Override
-	public IMemento getMemento(int iMementoId)
-	{
+	public IMemento getMemento(int iMementoId) {
 
 		final int iVectorIndex = hashMementoId2Index.get(iMementoId);
 
-		try
-		{
+		try {
 			return vecMemento.get(iVectorIndex);
 		}
-		catch (ArrayIndexOutOfBoundsException ae)
-		{
+		catch (ArrayIndexOutOfBoundsException ae) {
 			assert false : "getMemento(int) failed due to wrong iMementoId. " + ae.toString();
 			return null;
 		}
 	}
 
-	public IMemento pullMemento(final int iMementoId)
-	{
+	public IMemento pullMemento(final int iMementoId) {
 
 		final int iIndex = hashMementoId2Index.get(iMementoId);
 
-		try
-		{
+		try {
 			IMemento pullMemento = vecMemento.get(iIndex);
 			vecMemento.removeElementAt(iIndex);
 			return pullMemento;
 		}
-		catch (ArrayIndexOutOfBoundsException ae)
-		{
+		catch (ArrayIndexOutOfBoundsException ae) {
 			assert false : "getMemento(int) failed due to wrong iMementoId. " + ae.toString();
 			return null;
 		}
 	}
 
-	public boolean pullMemento(IMemento pullMemento)
-	{
+	public boolean pullMemento(IMemento pullMemento) {
 
 		return vecMemento.contains(pullMemento);
 	}
 
 	@Override
-	public boolean isMementoId(int iMementoId)
-	{
+	public boolean isMementoId(int iMementoId) {
 
 		return this.hashMementoId2Index.contains(iMementoId);
 	}
 
 	@Override
-	public final int size()
-	{
+	public final int size() {
 		return vecMemento.size();
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 
 		final String newLine = "\n";
 		String result = "[";
@@ -114,21 +102,17 @@ public class MementoManager
 		int iCounter = 0;
 		Iterator<IMemento> iter = vecMemento.iterator();
 
-		if (!iter.hasNext())
-		{
+		if (!iter.hasNext()) {
 			result += "Vector: is empty" + newLine;
 		}
 
-		while (iter.hasNext())
-		{
+		while (iter.hasNext()) {
 			IMemento buffer = iter.next();
 
-			if (buffer != null)
-			{
+			if (buffer != null) {
 				result += " #" + iCounter + ": " + buffer.toString() + newLine;
 			}
-			else
-			{
+			else {
 				result += " #" + iCounter + ": null" + newLine;
 			}
 
@@ -143,14 +127,12 @@ public class MementoManager
 	/**
 	 * Not used.
 	 */
-	public void optimize()
-	{
+	public void optimize() {
 
 	}
 
 	@Override
-	public void clearAllMementos()
-	{
+	public void clearAllMementos() {
 
 		vecMemento.clear();
 		hashMementoId2Index.clear();
@@ -162,8 +144,7 @@ public class MementoManager
 	 * 
 	 * @return true on success
 	 */
-	public boolean writeToOutputStream(ObjectOutputStream outStream)
-	{
+	public boolean writeToOutputStream(ObjectOutputStream outStream) {
 
 		// TODO: code this
 		return true;
@@ -174,8 +155,7 @@ public class MementoManager
 	 * 
 	 * @return true on success
 	 */
-	public boolean readFromInputStream(ObjectInputStream inStream)
-	{
+	public boolean readFromInputStream(ObjectInputStream inStream) {
 
 		// TODO: code this
 

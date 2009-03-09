@@ -6,11 +6,9 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
  * @author Alexander Lex
  */
 
-public enum EStorageBasedVAType
-{
+public enum EStorageBasedVAType {
 	/**
-	 * The selection type corresponding to an external selection using
-	 * SetSelections
+	 * The selection type corresponding to an external selection using SetSelections
 	 */
 	EXTERNAL_SELECTION,
 
@@ -18,7 +16,7 @@ public enum EStorageBasedVAType
 	 * All elements in the storage (initially)
 	 */
 	COMPLETE_SELECTION,
-	
+
 	/**
 	 * All elements in the storage (clustered)
 	 */

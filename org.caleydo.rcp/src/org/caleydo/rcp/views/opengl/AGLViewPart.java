@@ -25,8 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class AGLViewPart
-	extends CaleydoViewPart
-{
+	extends CaleydoViewPart {
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected AGLEventListener glEventListener;
@@ -39,13 +38,11 @@ public abstract class AGLViewPart
 	/**
 	 * Constructor.
 	 */
-	public AGLViewPart()
-	{
+	public AGLViewPart() {
 		super();
 	}
 
-	protected void createGLCanvas()
-	{
+	protected void createGLCanvas() {
 		CmdViewCreateRcpGLCanvas cmdCanvas =
 			(CmdViewCreateRcpGLCanvas) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.CREATE_VIEW_RCP_GLCANVAS);
@@ -57,42 +54,37 @@ public abstract class AGLViewPart
 	}
 
 	/**
-	 * This class creates the GL event listener contained in a RCP view for a
-	 * RCP view.
+	 * This class creates the GL event listener contained in a RCP view for a RCP view.
 	 * 
 	 * @param glViewType
-	 *            The type of view. See {@link ECommandType}
+	 *          The type of view. See {@link ECommandType}
 	 * @param iParentCanvasID
-	 *            the id of canvas where you want to render
+	 *          the id of canvas where you want to render
 	 * @param bRegisterToOverallMediator
-	 *            true if you want this to listen and send to main mediator
+	 *          true if you want this to listen and send to main mediator
 	 * @return the ID of the view
 	 */
-	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID, boolean bRegisterToOverallMediator)
-	{
+	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID,
+		boolean bRegisterToOverallMediator) {
 		IGeneralManager generalManager = GeneralManager.get();
 
 		ArrayList<Integer> iAlSets = new ArrayList<Integer>();
-		for (ISet set : generalManager.getSetManager().getAllItems())
-		{
+		for (ISet set : generalManager.getSetManager().getAllItems()) {
 			iAlSets.add(set.getID());
 		}
 
 		CmdCreateGLEventListener cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(glViewType);
 
-		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D)
-		{
+		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f, 2.87f, 100, iAlSets,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
-		else if (glViewType == ECommandType.CREATE_GL_GLYPH)
-		{
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iAlSets, iParentCanvasID,
-				0, 0, -8, 0, 0, 0, 0);
+		else if (glViewType == ECommandType.CREATE_GL_GLYPH) {
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iAlSets,
+				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
-		else
-		{
+		else {
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iAlSets, iParentCanvasID);
 		}
 
@@ -101,8 +93,7 @@ public abstract class AGLViewPart
 		AGLEventListener glView = cmdView.getCreatedObject();
 		int iViewID = glView.getID();
 
-		if (iAlContainedViewIDs != null && glViewType == ECommandType.CREATE_GL_BUCKET_3D)
-		{
+		if (iAlContainedViewIDs != null && glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
 			((GLRemoteRendering) glView).setInitialContainedViews(iAlContainedViewIDs);
 		}
 
@@ -113,30 +104,25 @@ public abstract class AGLViewPart
 	}
 
 	protected int createGLRemoteEventListener(ECommandType glViewType, int iParentCanvasID,
-		boolean bRegisterToOverallMediator, ArrayList<Integer> iAlContainedViewIDs)
-	{
+		boolean bRegisterToOverallMediator, ArrayList<Integer> iAlContainedViewIDs) {
 		this.iAlContainedViewIDs = iAlContainedViewIDs;
 		return createGLEventListener(glViewType, iParentCanvasID, bRegisterToOverallMediator);
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		swtComposite = new Composite(parent, SWT.EMBEDDED);
 		// fillToolBar();
 	}
 
-	public void setGLData(final GLCaleydoCanvas glCanvas, final AGLEventListener glEventListener)
-	{
+	public void setGLData(final GLCaleydoCanvas glCanvas, final AGLEventListener glEventListener) {
 		this.glCanvas = glCanvas;
 		this.glEventListener = glEventListener;
 		this.iViewID = glEventListener.getID();
 	}
 
-	public void createPartControlGL()
-	{
-		if (frameGL == null)
-		{
+	public void createPartControlGL() {
+		if (frameGL == null) {
 			frameGL = SWT_AWT.new_Frame(swtComposite);
 		}
 
@@ -144,8 +130,7 @@ public abstract class AGLViewPart
 	}
 
 	@Override
-	public void setFocus()
-	{
+	public void setFocus() {
 		// final IToolBarManager toolBarManager =
 		// getViewSite().getActionBars().getToolBarManager();
 		// toolBarManager.add(ActionFactory.QUIT.create(this.getViewSite().getWorkbenchWindow()));
@@ -153,20 +138,17 @@ public abstract class AGLViewPart
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 
 		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID).destroy();
 	}
 
-	public AGLEventListener getGLEventListener()
-	{
+	public AGLEventListener getGLEventListener() {
 		return glEventListener;
 	}
 
-	public GLCaleydoCanvas getGLCanvas()
-	{
+	public GLCaleydoCanvas getGLCanvas() {
 		return glCanvas;
 	}
 }

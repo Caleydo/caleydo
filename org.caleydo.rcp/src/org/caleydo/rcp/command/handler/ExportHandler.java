@@ -9,13 +9,11 @@ import org.eclipse.swt.widgets.Shell;
 
 public class ExportHandler
 	extends AbstractHandler
-	implements IHandler
-{
-	public Object execute(ExecutionEvent event) throws ExecutionException
-	{
+	implements IHandler {
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ExportDataDialog dialog = new ExportDataDialog(new Shell());
 		dialog.open();
-		
+
 		return null;
 	}
 }

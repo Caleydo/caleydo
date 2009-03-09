@@ -1,8 +1,10 @@
 package org.caleydo.core.parser.xml.sax.handler.specialized.glyph;
 
 import gleem.linalg.Vec4f;
+
 import java.util.Vector;
 import java.util.logging.Level;
+
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
@@ -19,8 +21,7 @@ import org.xml.sax.SAXException;
  * @author Sauer Stefan
  */
 public class GlyphDefinitionSaxHandler
-	extends AXmlParserHandler
-{
+	extends AXmlParserHandler {
 	protected Attributes attributes;
 
 	protected String sAttributeName = "";
@@ -33,8 +34,7 @@ public class GlyphDefinitionSaxHandler
 	private GlyphObjectDefinitionPart glyphDefinitionPart = null;
 	private String glyphPartName = null;
 
-	public GlyphDefinitionSaxHandler()
-	{
+	public GlyphDefinitionSaxHandler() {
 		super();
 
 		setXmlActivationTag("glyphview");
@@ -42,19 +42,16 @@ public class GlyphDefinitionSaxHandler
 
 	@Override
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
-			Attributes attributes) throws SAXException
-	{
+		Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
 
-		if ("".equals(sElementName))
-		{
+		if ("".equals(sElementName)) {
 			sElementName = sQualifiedName;
 		}
 
-		if (attributes != null)
-		{
+		if (attributes != null) {
 
 			if (sElementName.equals("glyphview"))
 				tagHierarchie.clear();
@@ -84,61 +81,49 @@ public class GlyphDefinitionSaxHandler
 	}
 
 	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
-			throws SAXException
-	{
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
 
 		// emit("</"+sName+">");
 
-		String eName = ("".equals(sSimpleName)) ? sQualifiedName : sSimpleName;
+		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 		tagHierarchie.remove(tagHierarchie.size() - 1);
 
-		if (null != eName)
-		{
-			if (eName.equals("column"))
-			{
+		if (null != eName) {
+			if (eName.equals("column")) {
 				handleColumnEndTag();
 			}
-			if (eName.equals("item"))
-			{
+			if (eName.equals("item")) {
 				handleItemEndTag();
 			}
-			if (eName.equals("glyph"))
-			{
+			if (eName.equals("glyph")) {
 				handleGlyphEndTag();
 
 			}
-			if (eName.equals(sOpeningTag))
-			{
+			if (eName.equals(sOpeningTag)) {
 				/**
-				 * section (xml block) finished, call callback function from
-				 * IXmlParserManager
+				 * section (xml block) finished, call callback function from IXmlParserManager
 				 */
 				xmlParserManager.sectionFinishedByHandler(this);
 			}
 		}
 	}
 
-	private void handleItemTag()
-	{
+	private void handleItemTag() {
 
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (pTag.equals("settings"))
-		{
+		if (pTag.equals("settings")) {
 			handleSettings();
 		}
 
 	}
 
-	private void handleItemEndTag()
-	{
+	private void handleItemEndTag() {
 		if (glyphDefinitionPart != null)
 			glyphDefinitionPart = null;
 	}
 
-	private void handleSettings()
-	{
+	private void handleSettings() {
 
 		String type = "";
 		String colnum = "";
@@ -146,8 +131,7 @@ public class GlyphDefinitionSaxHandler
 		String on = "";
 		String direction = "";
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
@@ -171,49 +155,42 @@ public class GlyphDefinitionSaxHandler
 		if (type.equals("scatterPlotAxisY"))
 			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTY, colnum);
 
-		if (type.equals("scale"))
-		{
-			if (!level.equals("") && !direction.equals(""))
-			{
+		if (type.equals("scale")) {
+			if (!level.equals("") && !direction.equals("")) {
 				int iLevel = Integer.parseInt(level);
 				int iColnum = Integer.parseInt(colnum);
 				DIRECTION dir = DIRECTION.valueOf(direction.toUpperCase());
 
-				GLGlyphGenerator.getDetailLevelModel(iLevel).setPartParameterIndex(on,
-						EGlyphSettingIDs.SCALE, dir, iColnum);
+				GLGlyphGenerator.getDetailLevelModel(iLevel).setPartParameterIndex(on, EGlyphSettingIDs.SCALE, dir,
+					iColnum);
 			}
 		}
 
-		if (type.equals("color") && !level.equals(""))
-		{
+		if (type.equals("color") && !level.equals("")) {
 			int iLevel = Integer.parseInt(level);
 			int iColnum = Integer.parseInt(colnum);
 
-			GLGlyphGenerator.getDetailLevelModel(iLevel).setPartParameterIndex(on,
-					EGlyphSettingIDs.COLOR, null, iColnum);
+			GLGlyphGenerator.getDetailLevelModel(iLevel).setPartParameterIndex(on, EGlyphSettingIDs.COLOR, null,
+				iColnum);
 
-			glyphDefinitionPart = GLGlyphGenerator.getDetailLevelModel(iLevel)
-					.getObjectPartDefinition(on);
+			glyphDefinitionPart = GLGlyphGenerator.getDetailLevelModel(iLevel).getObjectPartDefinition(on);
 		}
 
 	}
 
-	private void handleProfileTag()
-	{
+	private void handleProfileTag() {
 
 		// we might want to support some profiles in the future
 	}
 
-	private void handleColumnBeginTag()
-	{
+	private void handleColumnBeginTag() {
 
 		// String type = "";
 		String col = "";
 		String label = "";
 		int colnum = 0;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
@@ -224,18 +201,13 @@ public class GlyphDefinitionSaxHandler
 				label = attributes.getValue(iAttributeIndex);
 		}
 
-		try
-		{
+		try {
 			colnum = Integer.parseInt(col);
 		}
-		catch (NumberFormatException ex)
-		{
+		catch (NumberFormatException ex) {
 			gatActualColumn = null;
-			generalManager.getLogger()
-					.log(
-							Level.SEVERE,
-							"GlyphSaxDefinitionHandler:: colnumber is not an integer! ("
-									+ label + ")");
+			generalManager.getLogger().log(Level.SEVERE,
+				"GlyphSaxDefinitionHandler:: colnumber is not an integer! (" + label + ")");
 			return;
 		}
 
@@ -243,25 +215,20 @@ public class GlyphDefinitionSaxHandler
 
 	}
 
-	private void handleColumnEndTag()
-	{
+	private void handleColumnEndTag() {
 
 		if (gatActualColumn != null)
 			generalManager.getGlyphManager().addColumnAttributeType(gatActualColumn);
 	}
 
-	private void handleNominalTag()
-	{
+	private void handleNominalTag() {
 
 		// <nominal string="X" group="0" numeric="0.0" />
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (!pTag.equals("column"))
-		{
-			generalManager
-					.getLogger()
-					.log(Level.WARNING,
-							"GlyphSaxDefinitionHandler::handleNominalTag() - nominal tag not in column tag embeded");
+		if (!pTag.equals("column")) {
+			generalManager.getLogger().log(Level.WARNING,
+				"GlyphSaxDefinitionHandler::handleNominalTag() - nominal tag not in column tag embeded");
 			return;
 		}
 
@@ -273,8 +240,7 @@ public class GlyphDefinitionSaxHandler
 		String nu = "";
 		float fnu = 0.0f;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
@@ -292,26 +258,20 @@ public class GlyphDefinitionSaxHandler
 			nu = gr;
 
 		// convert numbers
-		try
-		{
+		try {
 			fnu = Float.parseFloat(nu);
 		}
-		catch (NumberFormatException ex)
-		{
-			generalManager
-					.getLogger()
-					.log(Level.SEVERE,
-							"GlyphSaxDefinitionHandler::handleNominalTag() nominal numeric is not an float!");
+		catch (NumberFormatException ex) {
+			generalManager.getLogger().log(Level.SEVERE,
+				"GlyphSaxDefinitionHandler::handleNominalTag() nominal numeric is not an float!");
 			return;
 		}
-		try
-		{
+		try {
 			igr = Integer.parseInt(gr);
 		}
-		catch (NumberFormatException ex)
-		{
+		catch (NumberFormatException ex) {
 			generalManager.getLogger().log(Level.SEVERE,
-					"GlyphSaxDefinitionHandler::handleNominalTag() group is not an integer!");
+				"GlyphSaxDefinitionHandler::handleNominalTag() group is not an integer!");
 			return;
 		}
 
@@ -320,18 +280,14 @@ public class GlyphDefinitionSaxHandler
 
 	}
 
-	private void handleIntTag()
-	{
+	private void handleIntTag() {
 
 		// <int min="1900" max="2008" interval="1" />
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (!pTag.equals("column"))
-		{
-			generalManager
-					.getLogger()
-					.log(Level.WARNING,
-							"GlyphSaxDefinitionHandler::handleNominalTag() - int tag not in column tag embeded");
+		if (!pTag.equals("column")) {
+			generalManager.getLogger().log(Level.WARNING,
+				"GlyphSaxDefinitionHandler::handleNominalTag() - int tag not in column tag embeded");
 			return;
 		}
 
@@ -344,8 +300,7 @@ public class GlyphDefinitionSaxHandler
 		int imax = 0;
 		int iint = 0;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
@@ -358,59 +313,47 @@ public class GlyphDefinitionSaxHandler
 				sint = attributes.getValue(iAttributeIndex);
 		}
 
-		try
-		{
+		try {
 			imin = Integer.parseInt(smin);
 			imax = Integer.parseInt(smax);
 			iint = Integer.parseInt(sint);
 		}
-		catch (NumberFormatException ex)
-		{
+		catch (NumberFormatException ex) {
 			generalManager.getLogger().log(Level.SEVERE,
-					"GlyphSaxDefinitionHandler::handleIntTag() given data is not an integer!");
+				"GlyphSaxDefinitionHandler::handleIntTag() given data is not an integer!");
 			return;
 		}
 
-		for (int i = imin; i < imax; i += iint)
-		{
+		for (int i = imin; i < imax; i += iint) {
 			gatActualColumn.addAttribute(i - imin, Integer.toString(i), i);
 		}
 
 	}
 
-	private void handleColorTag()
-	{
+	private void handleColorTag() {
 
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (!pTag.equals("item"))
-		{
-			generalManager
-					.getLogger()
-					.log(Level.WARNING,
-							"GlyphSaxDefinitionHandler::handleColorTag() - color tag not in item tag embeded");
+		if (!pTag.equals("item")) {
+			generalManager.getLogger().log(Level.WARNING,
+				"GlyphSaxDefinitionHandler::handleColorTag() - color tag not in item tag embeded");
 			return;
 		}
 
 		Vec4f color = new Vec4f();
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			String svalue = attributes.getValue(iAttributeIndex);
 
-			if (sAttributeName.equals("rgb"))
-			{ // html style
+			if (sAttributeName.equals("rgb")) { // html style
 				if (svalue.charAt(0) == '#')
 					svalue = svalue.substring(1, svalue.length());
 
-				if (svalue.length() != 6)
-				{
-					generalManager
-							.getLogger()
-							.log(Level.SEVERE,
-									"GlyphSaxDefinitionHandler::handleColorTag() color definition error (string too short (6))");
+				if (svalue.length() != 6) {
+					generalManager.getLogger().log(Level.SEVERE,
+						"GlyphSaxDefinitionHandler::handleColorTag() color definition error (string too short (6))");
 					continue;
 				}
 
@@ -418,35 +361,26 @@ public class GlyphDefinitionSaxHandler
 				String green = svalue.substring(2, 4);
 				String blue = svalue.substring(4, 6);
 
-				try
-				{
+				try {
 					color.set(0, Integer.parseInt(red, 16) / 255.0f);
 					color.set(1, Integer.parseInt(green, 16) / 255.0f);
 					color.set(2, Integer.parseInt(blue, 16) / 255.0f);
 				}
-				catch (NumberFormatException ex)
-				{
-					generalManager
-							.getLogger()
-							.log(Level.SEVERE,
-									"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!");
+				catch (NumberFormatException ex) {
+					generalManager.getLogger().log(Level.SEVERE,
+						"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!");
 				}
 
 			}
-			else
-			{ // color component style
+			else { // color component style
 
 				float fvalue = 0.5f;
-				try
-				{
+				try {
 					fvalue = Float.parseFloat(svalue);
 				}
-				catch (NumberFormatException ex)
-				{
-					generalManager
-							.getLogger()
-							.log(Level.SEVERE,
-									"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!");
+				catch (NumberFormatException ex) {
+					generalManager.getLogger().log(Level.SEVERE,
+						"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!");
 				}
 
 				if (sAttributeName.equals("rn"))
@@ -470,16 +404,12 @@ public class GlyphDefinitionSaxHandler
 		glyphDefinitionPart.addColor(color);
 	}
 
-	private void handleGlyphTag()
-	{
+	private void handleGlyphTag() {
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (!pTag.equals("glyphobjects"))
-		{
-			generalManager
-					.getLogger()
-					.log(Level.WARNING,
-							"GlyphSaxDefinitionHandler::handleGlyphTag() - glyph tag not in glyphobjects tag embeded");
+		if (!pTag.equals("glyphobjects")) {
+			generalManager.getLogger().log(Level.WARNING,
+				"GlyphSaxDefinitionHandler::handleGlyphTag() - glyph tag not in glyphobjects tag embeded");
 			return;
 		}
 
@@ -487,8 +417,7 @@ public class GlyphDefinitionSaxHandler
 		String description = "";
 		int detaillevel = -1;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
@@ -501,16 +430,12 @@ public class GlyphDefinitionSaxHandler
 				description = attributes.getValue(iAttributeIndex);
 
 			if (sAttributeName.equals("detaillevel"))
-				try
-				{
+				try {
 					detaillevel = Integer.parseInt(attributes.getValue(iAttributeIndex));
 				}
-				catch (Exception e)
-				{
-					generalManager
-							.getLogger()
-							.log(Level.WARNING,
-									"GlyphSaxDefinitionHandler::handleGlyphTag() - detaillevel wasn't a integer");
+				catch (Exception e) {
+					generalManager.getLogger().log(Level.WARNING,
+						"GlyphSaxDefinitionHandler::handleGlyphTag() - detaillevel wasn't a integer");
 				}
 		}
 		glyphDefinition = new GlyphObjectDefinition();
@@ -519,8 +444,7 @@ public class GlyphDefinitionSaxHandler
 		glyphDefinition.setSourceFile(file);
 	}
 
-	private void handleGlyphEndTag()
-	{
+	private void handleGlyphEndTag() {
 		if (glyphDefinition == null)
 			return;
 
@@ -529,30 +453,23 @@ public class GlyphDefinitionSaxHandler
 		glyphPartName = null;
 	}
 
-	private void handleGlyphPartTag()
-	{
+	private void handleGlyphPartTag() {
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (!pTag.equals("glyph"))
-		{
-			generalManager
-					.getLogger()
-					.log(Level.WARNING,
-							"GlyphSaxDefinitionHandler::handleGlyphPartTag() - glyphpart tag not in glyph tag embeded");
+		if (!pTag.equals("glyph")) {
+			generalManager.getLogger().log(Level.WARNING,
+				"GlyphSaxDefinitionHandler::handleGlyphPartTag() - glyphpart tag not in glyph tag embeded");
 			return;
 		}
 
-		if (glyphDefinition == null)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"GlyphSaxDefinitionHandler::handleGlyphPartTag() - wtf?");
+		if (glyphDefinition == null) {
+			generalManager.getLogger().log(Level.SEVERE, "GlyphSaxDefinitionHandler::handleGlyphPartTag() - wtf?");
 			return;
 		}
 
 		glyphPartName = null;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
@@ -565,17 +482,14 @@ public class GlyphDefinitionSaxHandler
 		glyphDefinition.addGlyphPart(glyphPartName);
 	}
 
-	private void handleGlyphParameterTag()
-	{
+	private void handleGlyphParameterTag() {
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (!pTag.equals("part"))
-		{
+		if (!pTag.equals("part")) {
 			generalManager
-					.getLogger()
-					.log(
-							Level.WARNING,
-							"GlyphSaxDefinitionHandler::handleGlyphParameterTag() - glyph parameter tag not in glyph part tag embeded");
+				.getLogger()
+				.log(Level.WARNING,
+					"GlyphSaxDefinitionHandler::handleGlyphParameterTag() - glyph parameter tag not in glyph part tag embeded");
 			return;
 		}
 
@@ -583,8 +497,7 @@ public class GlyphDefinitionSaxHandler
 		String value = null;
 		String description = null;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
@@ -602,32 +515,27 @@ public class GlyphDefinitionSaxHandler
 			glyphDefinition.addGlyphPartParameter(glyphPartName, type, value, description);
 	}
 
-	private void handleGlyphAnchorTag()
-	{
+	private void handleGlyphAnchorTag() {
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
-		if (!pTag.equals("part"))
-		{
+		if (!pTag.equals("part")) {
 			generalManager
-					.getLogger()
-					.log(
-							Level.WARNING,
-							"GlyphSaxDefinitionHandler::handleGlyphAnchorTag() - glyph parameter tag not in glyph part tag embeded");
+				.getLogger()
+				.log(Level.WARNING,
+					"GlyphSaxDefinitionHandler::handleGlyphAnchorTag() - glyph parameter tag not in glyph part tag embeded");
 			return;
 		}
 
 		ANCHOR type = null;
 		String to = null;
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
-		{
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			String sAttributeName = attributes.getLocalName(iAttributeIndex);
 
 			if (sAttributeName.equals(""))
 				sAttributeName = attributes.getQName(iAttributeIndex);
 
-			if (sAttributeName.equals("type"))
-			{
+			if (sAttributeName.equals("type")) {
 				String temp = attributes.getValue(iAttributeIndex).toLowerCase().toUpperCase();
 				type = ANCHOR.valueOf(temp);
 			}
@@ -645,8 +553,7 @@ public class GlyphDefinitionSaxHandler
 	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 */
 	@Override
-	public void destroyHandler()
-	{
+	public void destroyHandler() {
 
 		super.destroyHandler();
 	}

@@ -3,8 +3,11 @@ package org.caleydo.core.view.opengl.canvas.remote.bucket;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IViewManager;
@@ -20,8 +23,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
  * @author Marc Streit
  */
 public class GLConnectionLineRendererBucket
-	extends AGLConnectionLineRenderer
-{
+	extends AGLConnectionLineRenderer {
 
 	/**
 	 * Constructor.
@@ -30,15 +32,13 @@ public class GLConnectionLineRendererBucket
 	 * @param stackLevel
 	 * @param poolLevel
 	 */
-	public GLConnectionLineRendererBucket(final RemoteLevel focusLevel,
-			final RemoteLevel stackLevel, final RemoteLevel poolLevel)
-	{
+	public GLConnectionLineRendererBucket(final RemoteLevel focusLevel, final RemoteLevel stackLevel,
+		final RemoteLevel poolLevel) {
 		super(focusLevel, stackLevel, poolLevel);
 	}
 
 	@Override
-	protected void renderConnectionLines(final GL gl)
-	{
+	protected void renderConnectionLines(final GL gl) {
 		Vec3f vecTranslation;
 		Vec3f vecScale;
 
@@ -54,25 +54,22 @@ public class GLConnectionLineRendererBucket
 
 		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 
-		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes())
-		{
+		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
 
-			for (int iSelectedElementID : connectedElementRepManager.getIDList(idType))
-			{
+			for (int iSelectedElementID : connectedElementRepManager.getIDList(idType)) {
 				for (SelectedElementRep selectedElementRep : connectedElementRepManager
-						.getSelectedElementRepsByElementID(idType, iSelectedElementID))
-				{
-					remoteLevelElement = viewGLCanvasManager.getGLEventListener(
-							selectedElementRep.getContainingViewID()).getRemoteLevelElement();
+					.getSelectedElementRepsByElementID(idType, iSelectedElementID)) {
+					remoteLevelElement =
+						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID())
+							.getRemoteLevelElement();
 					// views that are not rendered remote
 					if (remoteLevelElement == null)
 						continue;
 
 					activeLevel = remoteLevelElement.getRemoteLevel();
 
-					if (activeLevel == stackLevel || activeLevel == focusLevel)
-					{
+					if (activeLevel == stackLevel || activeLevel == focusLevel) {
 						vecTranslation = remoteLevelElement.getTransform().getTranslation();
 						vecScale = remoteLevelElement.getTransform().getScale();
 						rotation = remoteLevelElement.getTransform().getRotation();
@@ -80,16 +77,14 @@ public class GLConnectionLineRendererBucket
 						ArrayList<Vec3f> alPoints = selectedElementRep.getPoints();
 						ArrayList<Vec3f> alPointsTransformed = new ArrayList<Vec3f>();
 
-						for (Vec3f vecCurrentPoint : alPoints)
-						{
-							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation,
-									vecScale, rotation, remoteLevelElement));
+						for (Vec3f vecCurrentPoint : alPoints) {
+							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation, vecScale, rotation,
+								remoteLevelElement));
 						}
 						int iKey = selectedElementRep.getContainingViewID();
 
 						alPointLists = hashViewToPointLists.get(iKey);
-						if (alPointLists == null)
-						{
+						if (alPointLists == null) {
 							alPointLists = new ArrayList<ArrayList<Vec3f>>();
 							hashViewToPointLists.put(iKey, alPointLists);
 						}
@@ -98,8 +93,7 @@ public class GLConnectionLineRendererBucket
 					}
 				}
 
-				if (hashViewToPointLists.size() > 1)
-				{
+				if (hashViewToPointLists.size() > 1) {
 					renderLineBundling(gl, new float[] { 0, 0, 0 });
 					hashViewToPointLists.clear();
 				}

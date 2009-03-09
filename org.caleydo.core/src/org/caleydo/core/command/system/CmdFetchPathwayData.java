@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.caleydo.core.application.helper.cacher.biocarta.BioCartaPathwayCacher;
 import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayCacher;
 import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayImageCacher;
@@ -25,8 +26,7 @@ import org.eclipse.swt.widgets.ProgressBar;
  * @author Marc Streit
  */
 public class CmdFetchPathwayData
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 	private Display display = null;
 	// private ProgressBar progressBarKeggPathwayCacher = null;
 	// private ProgressBar progressBarKeggPathwayImageCacher = null;
@@ -44,24 +44,19 @@ public class CmdFetchPathwayData
 	/**
 	 * Constructor.
 	 */
-	public CmdFetchPathwayData(final ECommandType cmdType)
-	{
+	public CmdFetchPathwayData(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		clearOldPathwayData();
 
-		try
-		{
-			generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK,
-					false);
+		try {
+			generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
 			generalManager.getPreferenceStore().save();
 		}
-		catch (IOException e1)
-		{
+		catch (IOException e1) {
 			throw new IllegalStateException("Unable to save preference file.");
 		}
 
@@ -71,22 +66,18 @@ public class CmdFetchPathwayData
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 	}
 
-	public void setAttributes(final Display display,
-			final ProgressBar progressBarKeggPathwayCacher,
-			final ProgressBar progressBarKeggPathwayImageCacher,
-			final ProgressBar progressBarBioCartaPathwayCacher, final DialogPage parentPage)
-	{
+	public void setAttributes(final Display display, final ProgressBar progressBarKeggPathwayCacher,
+		final ProgressBar progressBarKeggPathwayImageCacher, final ProgressBar progressBarBioCartaPathwayCacher,
+		final DialogPage parentPage) {
 		this.display = display;
 		// this.progressBarKeggPathwayCacher = progressBarKeggPathwayCacher;
 		// this.progressBarKeggPathwayImageCacher =
@@ -95,72 +86,57 @@ public class CmdFetchPathwayData
 		// progressBarBioCartaPathwayCacher;
 		this.parentPage = parentPage;
 
-		bioCartaPathwayCacher = new BioCartaPathwayCacher(display,
-				progressBarBioCartaPathwayCacher, this);
+		bioCartaPathwayCacher = new BioCartaPathwayCacher(display, progressBarBioCartaPathwayCacher, this);
 
 		keggPathwayCacher = new KeggPathwayCacher(display, progressBarKeggPathwayCacher, this);
 
-		keggPathwayImageCacher = new KeggPathwayImageCacher(display,
-				progressBarKeggPathwayImageCacher, this);
+		keggPathwayImageCacher = new KeggPathwayImageCacher(display, progressBarKeggPathwayImageCacher, this);
 	}
 
-	public void setProxySettings(String sProxyServer, int iProxyPort)
-	{
+	public void setProxySettings(String sProxyServer, int iProxyPort) {
 		bioCartaPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
 		keggPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
 		keggPathwayImageCacher.setProxySettings(sProxyServer, iProxyPort);
 	}
 
-	public void setFinishedKeggCacher()
-	{
+	public void setFinishedKeggCacher() {
 		isKeggCacherFinished = true;
 		notifyWizard();
 		keggPathwayImageCacher.start();
 	}
 
-	public void setFinishedKeggImageCacher()
-	{
+	public void setFinishedKeggImageCacher() {
 		isKeggImageCacherFinished = true;
 		notifyWizard();
 		bioCartaPathwayCacher.start();
 	}
 
-	public void setFinishedBioCartaCacher()
-	{
+	public void setFinishedBioCartaCacher() {
 		isBioCartaCacherFinished = true;
 		notifyWizard();
 	}
 
-	public void notifyWizard()
-	{
+	public void notifyWizard() {
 		if (parentPage == null)
 			return;
 
-		if (isKeggCacherFinished && isKeggImageCacherFinished && isBioCartaCacherFinished)
-		{
-			display.asyncExec(new Runnable()
-			{
-				public void run()
-				{
-					if (parentPage instanceof WizardPage)
-					{
+		if (isKeggCacherFinished && isKeggImageCacherFinished && isBioCartaCacherFinished) {
+			display.asyncExec(new Runnable() {
+				public void run() {
+					if (parentPage instanceof WizardPage) {
 						((WizardPage) parentPage).setPageComplete(true);
 					}
-					else if (parentPage instanceof PreferencePage)
-					{
+					else if (parentPage instanceof PreferencePage) {
 						((PreferencePage) parentPage).setValid(true);
 					}
 
-					try
-					{
-						generalManager.getPreferenceStore().setValue(
-								PreferenceConstants.PATHWAY_DATA_OK, true);
-						generalManager.getPreferenceStore().setValue(
-								PreferenceConstants.LAST_PATHWAY_UPDATE, getDateTime());
+					try {
+						generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK, true);
+						generalManager.getPreferenceStore().setValue(PreferenceConstants.LAST_PATHWAY_UPDATE,
+							getDateTime());
 						generalManager.getPreferenceStore().save();
 					}
-					catch (IOException e1)
-					{
+					catch (IOException e1) {
 						throw new IllegalStateException("Unable to save preference file.");
 					}
 				}
@@ -193,8 +169,7 @@ public class CmdFetchPathwayData
 	//		
 	// }
 
-	private void clearOldPathwayData()
-	{
+	private void clearOldPathwayData() {
 		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "kegg"));
 		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "cgap.nci.nih.gov"));
 		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "www.genome.jp"));
@@ -207,16 +182,12 @@ public class CmdFetchPathwayData
 	// Returns true if all deletions were successful.
 	// If a deletion fails, the method stops attempting to delete and returns
 	// false.
-	public static boolean deleteDir(File dir)
-	{
-		if (dir.isDirectory())
-		{
+	public static boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
 			String[] children = dir.list();
-			for (int i = 0; i < children.length; i++)
-			{
-				boolean success = deleteDir(new File(dir, children[i]));
-				if (!success)
-				{
+			for (String element : children) {
+				boolean success = deleteDir(new File(dir, element));
+				if (!success) {
 					return false;
 				}
 			}
@@ -226,8 +197,7 @@ public class CmdFetchPathwayData
 		return dir.delete();
 	}
 
-	private String getDateTime()
-	{
+	private String getDateTime() {
 		DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 		Date date = new Date();
 		return dateFormat.format(date);

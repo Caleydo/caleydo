@@ -8,12 +8,10 @@ import javax.media.opengl.glu.GLU;
  * 
  * @author Marc Streit
  */
-public class GLCoordinateUtils
-{
+public class GLCoordinateUtils {
 
 	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL gl,
-			final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY)
-	{
+		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY) {
 
 		float[] fArWorldCoordinatePosition = new float[3];
 
@@ -38,7 +36,7 @@ public class GLCoordinateUtils
 		// For an explanation look at page 161 in the red book
 		// 0.3 at least works for the bucket when the user zooms in
 		glu.gluUnProject(iWindowCoordinatePositionX, realy, 0.3f, //
-				mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
+			mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
 
 		// System.out.println("World coords at z=0.0 are ( " //
 		// + wcoord[0] + ", " + wcoord[1] + ", " + wcoord[2]);

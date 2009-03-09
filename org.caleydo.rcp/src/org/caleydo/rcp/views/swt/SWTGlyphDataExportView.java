@@ -9,18 +9,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class SWTGlyphDataExportView
-	extends ViewPart
-{
+	extends ViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.SWTGlyphDataExportView";
 
 	private GlyphDataExportViewRep GDEview;
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
-		GDEview = (GlyphDataExportViewRep) GeneralManager.get().getViewGLCanvasManager()
-				.createView(EManagedObjectType.VIEW_SWT_GLYPH_DATAEXPORT, -1,
-						"Glyph Data Export");
+	public void createPartControl(Composite parent) {
+		GDEview =
+			(GlyphDataExportViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
+				EManagedObjectType.VIEW_SWT_GLYPH_DATAEXPORT, -1, "Glyph Data Export");
 
 		GDEview.initViewRCP(parent);
 		GDEview.drawView();
@@ -29,18 +27,16 @@ public class SWTGlyphDataExportView
 	}
 
 	@Override
-	public void setFocus()
-	{
+	public void setFocus() {
 
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getEventPublisher().removeReceiver(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) GDEview);
+		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
+			(IMediatorReceiver) GDEview);
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(GDEview.getID());
 	}

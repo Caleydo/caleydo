@@ -15,8 +15,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLRemoteRenderingView
-	extends AGLViewPart
-{
+	extends AGLViewPart {
 
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLRemoteRenderingView";
 
@@ -25,8 +24,7 @@ public class GLRemoteRenderingView
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteRenderingView()
-	{
+	public GLRemoteRenderingView() {
 		super();
 
 		createToolBarItems(-1);
@@ -34,77 +32,67 @@ public class GLRemoteRenderingView
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
 		createGLCanvas();
 
 		// Only create parcoords and heatmap if the application is NOT in
 		// pathway viewer mode
-		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER)
-		{
-			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D,
-					-1, true));
+		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER) {
+			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1, true));
 			iAlContainedViewIDs.add(createGLEventListener(
-					ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true));
+				ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true));
 			// iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL,
 			// -1, true));
 
 			// FIXME: This is just a temporary solution to check if glyph view
 			// should be added to bucket.
-			try
-			{
+			try {
 				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH,
-						-1, true));
-				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH,
-						-1, true));
+				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true));
+				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true));
 			}
-			catch (IllegalArgumentException e)
-			{
+			catch (IllegalArgumentException e) {
 				GeneralManager.get().getLogger().log(Level.WARNING,
-						"Cannot add glyph to bucket! No glyph data loaded!");
+					"Cannot add glyph to bucket! No glyph data loaded!");
 			}
 		}
 
-		createGLRemoteEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true,
-				iAlContainedViewIDs);
+		createGLRemoteEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
 	}
 
-	public static void createToolBarItems(int iViewID)
-	{
+	public static void createToolBarItems(int iViewID) {
 		alToolbar = new ArrayList<IAction>();
 
 		// IAction takeSnapshotAction = new TakeSnapshotAction(-1);
 		// alToolbar.add(takeSnapshotAction);
 		IAction closeOrResetContainedViews = new CloseOrResetContainedViews(iViewID);
 		alToolbar.add(closeOrResetContainedViews);
-//		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
-//		alToolbar.add(toggleLayoutAction);
+		// IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
+		// alToolbar.add(toggleLayoutAction);
 		IAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(iViewID);
-		alToolbar.add(toggleConnectionLinesAction);	
+		alToolbar.add(toggleConnectionLinesAction);
 		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
 		alToolbar.add(clearSelectionsAction);
 	}
 
 	@Override
-	public void dispose()
-	{
-		GLRemoteRendering glRemoteView = ((GLRemoteRendering) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-				iViewID));
-		
-//		glRemoteView.clearAll();
+	public void dispose() {
+		GLRemoteRendering glRemoteView =
+			(GLRemoteRendering) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
-		for (Integer iContainedViewID : iAlContainedViewIDs)
-		{
-			glRemoteView.removeView(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iContainedViewID));
+		// glRemoteView.clearAll();
+
+		for (Integer iContainedViewID : iAlContainedViewIDs) {
+			glRemoteView.removeView(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+				iContainedViewID));
 		}
 
 		super.dispose();
-		
-		GeneralManager.get().getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager().clearByView(iViewID);
+
+		GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager().clearByView(
+			iViewID);
 
 		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
 

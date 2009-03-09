@@ -1,17 +1,17 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import javax.management.InvalidAttributeValueException;
+
 import org.caleydo.core.data.selection.IVirtualArray;
 
 /**
- * A container for floats. Initialized with a float array. The length can not be
- * modified after initialization. Optimized to hold a large amount of data.
+ * A container for floats. Initialized with a float array. The length can not be modified after
+ * initialization. Optimized to hold a large amount of data.
  * 
  * @author Alexander Lex
  */
 public class FloatCContainer
-	implements INumericalCContainer
-{
+	implements INumericalCContainer {
 
 	private float[] fArContainer;
 
@@ -20,32 +20,31 @@ public class FloatCContainer
 	private float fMax = Float.NaN;
 
 	/**
-	 * Constructor Pass a float array. The length of the array can not be
-	 * modified after initialization
+	 * Constructor Pass a float array. The length of the array can not be modified after initialization
 	 * 
-	 * @param fArContainer the float array
+	 * @param fArContainer
+	 *          the float array
 	 */
-	public FloatCContainer(final float[] fArContainer)
-	{
+	public FloatCContainer(final float[] fArContainer) {
 
 		this.fArContainer = fArContainer;
 	}
 
 	@Override
-	public int size()
-	{
+	public int size() {
 		return fArContainer.length;
 	}
 
 	/**
 	 * Returns the value associated with the index
 	 * 
-	 * @throws IndexOutOfBoundsException if index out of range
-	 * @param iIndex index of element to return
+	 * @throws IndexOutOfBoundsException
+	 *           if index out of range
+	 * @param iIndex
+	 *          index of element to return
 	 * @return the element at the specified position in this list
 	 */
-	public float get(final int iIndex)
-	{
+	public float get(final int iIndex) {
 
 		return fArContainer[iIndex];
 	}
@@ -55,8 +54,7 @@ public class FloatCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public FloatCContainerIterator iterator()
-	{
+	public FloatCContainerIterator iterator() {
 		return new FloatCContainerIterator(this);
 	}
 
@@ -65,36 +63,31 @@ public class FloatCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public FloatCContainerIterator iterator(IVirtualArray virtualArray)
-	{
+	public FloatCContainerIterator iterator(IVirtualArray virtualArray) {
 		return new FloatCContainerIterator(this, virtualArray);
 	}
 
 	@Override
-	public double getMin()
-	{
+	public double getMin() {
 		if (Float.isNaN(fMin))
 			calculateMinMax();
 		return fMin;
 	}
 
 	@Override
-	public double getMax()
-	{
+	public double getMax() {
 		if (Float.isNaN(fMax))
 			calculateMinMax();
 		return fMax;
 	}
 
 	@Override
-	public FloatCContainer normalize()
-	{
+	public FloatCContainer normalize() {
 		return normalize((int) getMin(), (int) getMax());
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(final double dMin, final double dMax)
-	{
+	public FloatCContainer normalizeWithExternalExtrema(final double dMin, final double dMax) {
 		if (fMin >= fMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
@@ -119,13 +112,11 @@ public class FloatCContainer
 	// }
 
 	@Override
-	public FloatCContainer log(int iBase)
-	{
+	public FloatCContainer log(int iBase) {
 		float[] fArTarget = new float[fArContainer.length];
 
 		float fTmp;
-		for (int index = 0; index < fArContainer.length; index++)
-		{
+		for (int index = 0; index < fArContainer.length; index++) {
 			fTmp = fArContainer[index];
 			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
 			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
@@ -136,25 +127,24 @@ public class FloatCContainer
 	}
 
 	/**
-	 * Does the actual normalization between 0 and 1 values that are NaN in the
-	 * input are kept to be NaN
+	 * Does the actual normalization between 0 and 1 values that are NaN in the input are kept to be NaN
 	 * 
-	 * @param fMin the minimum considered in the normalization
-	 * @param fMax the maximum considered in the normalization
+	 * @param fMin
+	 *          the minimum considered in the normalization
+	 * @param fMax
+	 *          the maximum considered in the normalization
 	 * @return
-	 * @throws InvalidAttributeValueException when fMin is >= fMax
+	 * @throws InvalidAttributeValueException
+	 *           when fMin is >= fMax
 	 */
-	private FloatCContainer normalize(final float fMin, final float fMax)
-	{
+	private FloatCContainer normalize(final float fMin, final float fMax) {
 		if (fMin >= fMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
 		float[] fArTmpTarget = new float[fArContainer.length];
-		if (fArContainer.length > 1)
-		{
+		if (fArContainer.length > 1) {
 
-			for (int iCount = 0; iCount < fArContainer.length; iCount++)
-			{
+			for (int iCount = 0; iCount < fArContainer.length; iCount++) {
 				if (Float.isNaN(fArContainer[iCount]))
 					fArTmpTarget[iCount] = Float.NaN;
 
@@ -169,22 +159,16 @@ public class FloatCContainer
 	}
 
 	/**
-	 * Calculates the min and max of the container and sets them to the fMin and
-	 * fMax class variables
+	 * Calculates the min and max of the container and sets them to the fMin and fMax class variables
 	 */
-	private void calculateMinMax()
-	{
+	private void calculateMinMax() {
 		fMin = Float.MAX_VALUE;
 		fMax = Float.MIN_VALUE;
-		for (int iCount = 0; iCount < fArContainer.length; iCount++)
-		{
-			float fCurrent = fArContainer[iCount];
-
+		for (float fCurrent : fArContainer) {
 			if (Float.isNaN(fCurrent))
 				continue;
 
-			if (fCurrent < fMin)
-			{
+			if (fCurrent < fMin) {
 				fMin = fCurrent;
 				continue;
 			}

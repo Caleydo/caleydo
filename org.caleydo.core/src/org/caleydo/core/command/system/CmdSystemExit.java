@@ -10,25 +10,21 @@ import org.caleydo.core.command.base.ACommand;
  * @author Marc Streit
  */
 public class CmdSystemExit
-	extends ACommand
-{
+	extends ACommand {
 	/**
 	 * Constructor.
 	 */
-	public CmdSystemExit(final ECommandType cmdType)
-	{
+	public CmdSystemExit(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		System.exit(0);
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		// no undo of system shutdown!
 	}
 }

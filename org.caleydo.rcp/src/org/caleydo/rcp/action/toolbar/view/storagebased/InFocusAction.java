@@ -9,8 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class InFocusAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Switch Focus";
 	// TODO: own icon for "Switch Focus"
 	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
@@ -20,25 +19,23 @@ public class InFocusAction
 	/**
 	 * Constructor.
 	 */
-	public InFocusAction(int iViewID)
-	{
+	public InFocusAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
-		bEnable = ((GLHierarchicalHeatMap) GeneralManager.get().getViewGLCanvasManager()
-				.getGLEventListener(iViewID)).isInFocus();
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
+		bEnable =
+			((GLHierarchicalHeatMap) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
+				.isInFocus();
 		setChecked(bEnable);
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 		bEnable = !bEnable;
-		triggerCmdExternalFlagSetter(bEnable,
-				EExternalFlagSetterType.STORAGEBASED_HEATMAP_IN_FOCUS);
+		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_HEATMAP_IN_FOCUS);
 	};
 }

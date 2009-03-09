@@ -7,27 +7,24 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class LoadDataAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Load data";
 	public static final String ICON = "resources/icons/general/load_data.png";
 
 	/**
 	 * Constructor.
 	 */
-	public LoadDataAction()
-	{
+	public LoadDataAction() {
 		super(-1);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		new FileLoadDataAction(null).run();

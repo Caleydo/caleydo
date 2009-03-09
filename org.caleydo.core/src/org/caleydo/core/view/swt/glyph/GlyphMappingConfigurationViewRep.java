@@ -3,6 +3,7 @@ package org.caleydo.core.view.swt.glyph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
@@ -38,10 +39,8 @@ import org.eclipse.swt.widgets.Composite;
 // FIXME: bad hack, should implement IMediatorReciever
 public class GlyphMappingConfigurationViewRep
 	extends ASWTView
-	implements ISWTView, IMediatorSender
-{
-	private class DataPack
-	{
+	implements ISWTView, IMediatorSender {
+	private class DataPack {
 		public Composite composite;
 		public CCombo comboBox;
 		public GlyphObjectDefinition model;
@@ -70,10 +69,9 @@ public class GlyphMappingConfigurationViewRep
 	/**
 	 * Constructor.
 	 */
-	public GlyphMappingConfigurationViewRep(int iParentContainerId, String sLabel)
-	{
+	public GlyphMappingConfigurationViewRep(int iParentContainerId, String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION));
+			EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION));
 
 		composites = new HashMap<Integer, Composite>();
 		comboBoxes = new HashMap<CCombo, DataPack>();
@@ -86,13 +84,11 @@ public class GlyphMappingConfigurationViewRep
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 		// get all combo box entrys
 		Iterator<GlyphAttributeType> it = gman.getGlyphAttributes().iterator();
 		int counter = 0;
-		while (it.hasNext())
-		{
+		while (it.hasNext()) {
 			GlyphAttributeType at = it.next();
 
 			if (at.doesAutomaticAttribute())
@@ -109,43 +105,35 @@ public class GlyphMappingConfigurationViewRep
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 
 	}
 
-	private void initComponents()
-	{
+	private void initComponents() {
 		// create listener
-		listener = new SelectionListener()
-		{
+		listener = new SelectionListener() {
 
-			public void widgetDefaultSelected(SelectionEvent arg0)
-			{
+			public void widgetDefaultSelected(SelectionEvent arg0) {
 
 			}
 
-			public void widgetSelected(SelectionEvent event)
-			{
+			public void widgetSelected(SelectionEvent event) {
 
 				DataPack box = comboBoxes.get(event.widget);
 
-				if (box != null)
-				{
-					if (box.parameterType == EGlyphSettingIDs.SCALE
-							|| box.parameterType == EGlyphSettingIDs.COLOR)
-					{
+				if (box != null) {
+					if (box.parameterType == EGlyphSettingIDs.SCALE || box.parameterType == EGlyphSettingIDs.COLOR) {
 						int selectedindex = box.comboBox.getSelectionIndex();
 						int selectedCol = arrayIndexToExtColNum.get(selectedindex);
 
-						box.model.setPartParameterIndex(box.parameterName, box.parameterType,
-								box.parameterValue, selectedCol);
+						box.model.setPartParameterIndex(box.parameterName, box.parameterType, box.parameterValue,
+							selectedCol);
 
 					}
 				}
 
-				for (AGLEventListener agleventlistener : generalManager
-						.getViewGLCanvasManager().getAllGLEventListeners())
+				for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager()
+					.getAllGLEventListeners())
 					if (agleventlistener instanceof GLGlyph)
 						((GLGlyph) agleventlistener).forceRebuild();
 
@@ -159,9 +147,7 @@ public class GlyphMappingConfigurationViewRep
 		GridLayout layout = new GridLayout();
 		parentComposite.setBackground(new Color(null, 255, 255, 255));
 
-
-		for (int i = 0; i < 30; ++i)
-		{
+		for (int i = 0; i < 30; ++i) {
 			GlyphObjectDefinition model = GLGlyphGenerator.getDetailLevelModel(i);
 
 			if (model == null)
@@ -181,13 +167,11 @@ public class GlyphMappingConfigurationViewRep
 	}
 
 	/**
-	 * Show/Hide a Body Component defined with the detail level. Uses
-	 * "switchBody(Composite comp)".
+	 * Show/Hide a Body Component defined with the detail level. Uses "switchBody(Composite comp)".
 	 * 
 	 * @param level
 	 */
-	private void switchBody(int level)
-	{
+	private void switchBody(int level) {
 		Composite composite = composites.get(level);
 
 		if (composite == null)
@@ -201,18 +185,15 @@ public class GlyphMappingConfigurationViewRep
 	 * 
 	 * @param comp
 	 */
-	private void switchBody(Composite comp)
-	{
-		if (comp.getVisible() == false)
-		{
+	private void switchBody(Composite comp) {
+		if (comp.getVisible() == false) {
 			GridData data = (GridData) comp.getLayoutData();
 			data.exclude = false;
 
 			comp.setVisible(true);
 			parentComposite.layout(false);
 		}
-		else
-		{
+		else {
 			GridData data = (GridData) comp.getLayoutData();
 			data.exclude = true;
 
@@ -221,24 +202,20 @@ public class GlyphMappingConfigurationViewRep
 		}
 	}
 
-
 	/**
 	 * Creates a header line, defined with the Glyph model
 	 * 
 	 * @param parent
 	 * @param model
 	 */
-	private void addHeaderGlyphDefinition(Composite parent, final GlyphObjectDefinition model)
-	{
+	private void addHeaderGlyphDefinition(Composite parent, final GlyphObjectDefinition model) {
 		Composite comp = getHeaderComposite(parent);
 
 		Button button = new Button(comp, SWT.PUSH);
 		button.setText("+");
-		button.addSelectionListener(new SelectionAdapter()
-		{
+		button.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				switchBody(model.getDetailLevel());
 			}
 		});
@@ -255,8 +232,7 @@ public class GlyphMappingConfigurationViewRep
 	 * @param parent
 	 * @return
 	 */
-	private Composite getHeaderComposite(Composite parent)
-	{
+	private Composite getHeaderComposite(Composite parent) {
 		GridData gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
 		gd.grabExcessHorizontalSpace = true;
@@ -278,8 +254,7 @@ public class GlyphMappingConfigurationViewRep
 	 * @param parent
 	 * @param model
 	 */
-	private void addBodyGlyphDefinition(Composite parent, final GlyphObjectDefinition model)
-	{
+	private void addBodyGlyphDefinition(Composite parent, final GlyphObjectDefinition model) {
 		Composite comp = getBodyComposite(parent);
 
 		GridLayout layout = new GridLayout();
@@ -287,18 +262,13 @@ public class GlyphMappingConfigurationViewRep
 		gd.horizontalAlignment = GridData.FILL;
 		gd.grabExcessHorizontalSpace = true;
 
-		for (String name : model.getObjectPartNames())
-		{
+		for (String name : model.getObjectPartNames()) {
 			// scale part
-			for (DIRECTION dir : DIRECTION.values())
-			{
-				if (model.canPartScale(name, dir))
-				{
-					String description = model.getPartParameterDescription(name,
-							EGlyphSettingIDs.SCALE, dir);
+			for (DIRECTION dir : DIRECTION.values()) {
+				if (model.canPartScale(name, dir)) {
+					String description = model.getPartParameterDescription(name, EGlyphSettingIDs.SCALE, dir);
 
-					int index = model.getPartParameterIndexExternal(name,
-							EGlyphSettingIDs.SCALE, dir);
+					int index = model.getPartParameterIndexExternal(name, EGlyphSettingIDs.SCALE, dir);
 					if (extColNumToArrayIndex.containsKey(index))
 						index = extColNumToArrayIndex.get(index);
 					CCombo box = makeLabelComboBoxLine(layout, gd, comp, index, description);
@@ -315,13 +285,10 @@ public class GlyphMappingConfigurationViewRep
 			}
 
 			// color part
-			if (model.canPartColorChange(name))
-			{
-				String description = model.getPartParameterDescription(name,
-						EGlyphSettingIDs.COLOR, null);
+			if (model.canPartColorChange(name)) {
+				String description = model.getPartParameterDescription(name, EGlyphSettingIDs.COLOR, null);
 
-				int index = model.getPartParameterIndexExternal(name, EGlyphSettingIDs.COLOR,
-						null);
+				int index = model.getPartParameterIndexExternal(name, EGlyphSettingIDs.COLOR, null);
 				if (extColNumToArrayIndex.containsKey(index))
 					index = extColNumToArrayIndex.get(index);
 				CCombo box = makeLabelComboBoxLine(layout, gd, comp, index, description);
@@ -341,15 +308,13 @@ public class GlyphMappingConfigurationViewRep
 		composites.put(model.getDetailLevel(), comp);
 	}
 
-
 	/**
 	 * Creates a generic Body component
 	 * 
 	 * @param parent
 	 * @return
 	 */
-	private Composite getBodyComposite(Composite parent)
-	{
+	private Composite getBodyComposite(Composite parent) {
 		GridData gd = new GridData();
 		gd.horizontalAlignment = GridData.FILL;
 		gd.grabExcessHorizontalSpace = true;
@@ -375,9 +340,8 @@ public class GlyphMappingConfigurationViewRep
 	 * @param text
 	 * @return
 	 */
-	private CCombo makeLabelComboBoxLine(GridLayout layout, GridData gd, Composite block,
-			int selectedid, String text)
-	{
+	private CCombo makeLabelComboBoxLine(GridLayout layout, GridData gd, Composite block, int selectedid,
+		String text) {
 		CLabel label = new CLabel(block, SWT.LEFT);
 		label.setText(text);
 		label.setBackground(bodyBackgroundColor);
@@ -401,8 +365,7 @@ public class GlyphMappingConfigurationViewRep
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 

@@ -2,8 +2,7 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.open.Vec2i;
 
-public class GlyphGridPosition
-{
+public class GlyphGridPosition {
 
 	private GlyphEntry glyph_;
 
@@ -12,44 +11,38 @@ public class GlyphGridPosition
 
 	private Vec2i position_;
 
-	public GlyphGridPosition(int x, int y)
-	{
+	public GlyphGridPosition(int x, int y) {
 
 		gridPosition_ = new Vec2i();
 		gridPosition_.setX(x + y - y / 2);
-		gridPosition_.setY(x - y + (y % 2) + y / 2);
+		gridPosition_.setY(x - y + y % 2 + y / 2);
 
 		position_ = new Vec2i();
 		position_.setX(x);
 		position_.setY(y);
 	}
 
-	public Vec2i getPosition()
-	{
+	public Vec2i getPosition() {
 
 		return new Vec2i(position_);
 	}
 
-	public Vec2i getGridPosition()
-	{
+	public Vec2i getGridPosition() {
 
 		return new Vec2i(gridPosition_);
 	}
 
-	public GlyphEntry getGlyph()
-	{
+	public GlyphEntry getGlyph() {
 
 		return glyph_;
 	}
 
-	public void setGlyph(GlyphEntry glyph)
-	{
+	public void setGlyph(GlyphEntry glyph) {
 
 		glyph_ = glyph;
 	}
 
-	public boolean isPositionFree()
-	{
+	public boolean isPositionFree() {
 
 		if (glyph_ == null)
 			return true;

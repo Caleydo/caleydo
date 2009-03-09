@@ -10,99 +10,79 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * Storage for Numerical Values, Implementation of INumericalStorage
  * 
  * @author Alexander Lex
- * 
  */
 public class NumericalStorage
 	extends AStorage
-	implements INumericalStorage
-{
+	implements INumericalStorage {
 
 	/**
 	 * Constructor
-	 * 
 	 */
-	public NumericalStorage()
-	{
-		super(GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.STORAGE_NUMERICAL));
+	public NumericalStorage() {
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.STORAGE_NUMERICAL));
 	}
 
 	@Override
-	public void normalize()
-	{
+	public void normalize() {
 
-		INumericalCContainer iRawContainer = (INumericalCContainer) hashCContainers
-				.get(dataRep);
+		INumericalCContainer iRawContainer = (INumericalCContainer) hashCContainers.get(dataRep);
 
 		hashCContainers.put(EDataRepresentation.NORMALIZED, iRawContainer.normalize());
 	}
 
 	@Override
-	public void normalizeWithExternalExtrema(double dMin, double dMax)
-	{
+	public void normalizeWithExternalExtrema(double dMin, double dMax) {
 		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers.get(dataRep);
 
-		INumericalCContainer numericalContainer = rawStorage.normalizeWithExternalExtrema(
-				dMin, dMax);
+		INumericalCContainer numericalContainer = rawStorage.normalizeWithExternalExtrema(dMin, dMax);
 
 		hashCContainers.put(EDataRepresentation.NORMALIZED, numericalContainer);
 	}
 
 	@Override
-	public ERawDataType getRawDataType()
-	{
+	public ERawDataType getRawDataType() {
 		return rawDataType;
 	}
 
 	@Override
-	public double getMin()
-	{
+	public double getMin() {
 		if (!hashCContainers.containsKey(dataRep))
-			throw new IllegalStateException(
-					"The requested data representation was not produced.");
-		return ((INumericalCContainer) (hashCContainers.get(dataRep))).getMin();
+			throw new IllegalStateException("The requested data representation was not produced.");
+		return ((INumericalCContainer) hashCContainers.get(dataRep)).getMin();
 	}
 
 	@Override
-	public double getMax()
-	{
-		return ((INumericalCContainer) (hashCContainers.get(dataRep))).getMax();
+	public double getMax() {
+		return ((INumericalCContainer) hashCContainers.get(dataRep)).getMax();
 	}
 
 	@Override
-	public double getRawForNormalized(double dNormalized)
-	{
+	public double getRawForNormalized(double dNormalized) {
 		return dNormalized * (getMax() - getMin());
 	}
 
 	@Override
-	public void log10()
-	{
-		hashCContainers.put(EDataRepresentation.LOG10,
-				((INumericalCContainer) (hashCContainers.get(EDataRepresentation.RAW)))
-						.log(10));
+	public void log10() {
+		hashCContainers.put(EDataRepresentation.LOG10, ((INumericalCContainer) hashCContainers
+			.get(EDataRepresentation.RAW)).log(10));
 	}
 
 	@Override
-	public void log2()
-	{
-		hashCContainers.put(EDataRepresentation.LOG2, ((INumericalCContainer) (hashCContainers
-				.get(EDataRepresentation.RAW))).log(2));
+	public void log2() {
+		hashCContainers.put(EDataRepresentation.LOG2, ((INumericalCContainer) hashCContainers
+			.get(EDataRepresentation.RAW)).log(2));
 	}
 
 	@Override
-	public void reset()
-	{
+	public void reset() {
 		hashCContainers.remove(EDataRepresentation.LOG2);
 		hashCContainers.remove(EDataRepresentation.LOG10);
 		hashCContainers.remove(EDataRepresentation.NORMALIZED);
 	}
 
 	@Override
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep)
-	{
-		switch (externalDataRep)
-		{
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep) {
+		switch (externalDataRep) {
 			case NORMAL:
 				dataRep = EDataRepresentation.RAW;
 				break;

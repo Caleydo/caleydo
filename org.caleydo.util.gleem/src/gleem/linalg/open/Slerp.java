@@ -2,6 +2,7 @@ package gleem.linalg.open;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
 /**
@@ -9,8 +10,7 @@ import javax.media.opengl.GL;
  * 
  * @author Marc Streit
  */
-public class Slerp
-{
+public class Slerp {
 
 	private Rotf quatResult;
 
@@ -18,24 +18,19 @@ public class Slerp
 
 	private Vec3f scaleResult;
 
-	public Slerp()
-	{
+	public Slerp() {
 
 		quatResult = new Rotf();
 	}
 
-	public Transform interpolate(Transform transformOrigin, Transform transformDestination,
-			float delta)
-	{
+	public Transform interpolate(Transform transformOrigin, Transform transformDestination, float delta) {
 
-		translationResult = interpolate(transformOrigin.getTranslation(), transformDestination
-				.getTranslation(), delta);
-		scaleResult = interpolate(transformOrigin.getScale(), transformDestination.getScale(),
-				delta);
+		translationResult =
+			interpolate(transformOrigin.getTranslation(), transformDestination.getTranslation(), delta);
+		scaleResult = interpolate(transformOrigin.getScale(), transformDestination.getScale(), delta);
 
 		// Return the interpolated quaternion
-		quatResult = slerp(transformOrigin.getRotation(), transformDestination.getRotation(),
-				delta);
+		quatResult = slerp(transformOrigin.getRotation(), transformDestination.getRotation(), delta);
 
 		Transform resultTransform = new Transform();
 		resultTransform.setTranslation(translationResult);
@@ -45,8 +40,7 @@ public class Slerp
 		return resultTransform;
 	}
 
-	public void applySlerp(final GL gl, final Transform transform)
-	{
+	public void applySlerp(final GL gl, final Transform transform) {
 
 		Vec3f translation = transform.getTranslation();
 		Vec3f scale = transform.getScale();
@@ -123,15 +117,16 @@ public class Slerp
 	// }
 
 	/**
-	 * <code>slerp</code> sets this quaternion's value as an interpolation
-	 * between two other quaternions.
+	 * <code>slerp</code> sets this quaternion's value as an interpolation between two other quaternions.
 	 * 
-	 * @param q1 the first quaternion.
-	 * @param q2 the second quaternion.
-	 * @param t the amount to interpolate between the two quaternions.
+	 * @param q1
+	 *          the first quaternion.
+	 * @param q2
+	 *          the second quaternion.
+	 * @param t
+	 *          the amount to interpolate between the two quaternions.
 	 */
-	protected Rotf slerp(Rotf q1, Rotf q2, float t)
-	{
+	protected Rotf slerp(Rotf q1, Rotf q2, float t) {
 
 		Rotf quatResult = new Rotf();
 
@@ -141,18 +136,17 @@ public class Slerp
 		float fQ2Angle = q2.get(vecQ2Axis);
 
 		// Create a local quaternion to store the interpolated quaternion
-		if (vecQ1Axis.x() == vecQ2Axis.x() && vecQ1Axis.y() == vecQ2Axis.y()
-				&& vecQ1Axis.z() == vecQ2Axis.z() && fQ1Angle == fQ2Angle)
-		{
+		if (vecQ1Axis.x() == vecQ2Axis.x() && vecQ1Axis.y() == vecQ2Axis.y() && vecQ1Axis.z() == vecQ2Axis.z()
+			&& fQ1Angle == fQ2Angle) {
 			quatResult.set(q1);
 			return quatResult;
 		}
 
-		float result = (vecQ1Axis.x() * vecQ2Axis.x()) + (vecQ1Axis.y() * vecQ2Axis.y())
-				+ (vecQ1Axis.z() * vecQ2Axis.z()) + (fQ1Angle * fQ2Angle);
+		float result =
+			vecQ1Axis.x() * vecQ2Axis.x() + vecQ1Axis.y() * vecQ2Axis.y() + vecQ1Axis.z() * vecQ2Axis.z()
+				+ fQ1Angle * fQ2Angle;
 
-		if (result < 0.0f)
-		{
+		if (result < 0.0f) {
 			// Negate the second quaternion and the result of the dot product
 			q2.set(new Vec3f(-vecQ2Axis.x(), -vecQ2Axis.y(), -vecQ2Axis.z()), -fQ2Angle);
 			fQ2Angle = q2.get(vecQ2Axis);
@@ -165,8 +159,7 @@ public class Slerp
 
 		// Check if the angle between the 2 quaternions was big enough to
 		// warrant such calculations
-		if ((1 - result) > 0.1f)
-		{// Get the angle between the 2 quaternions,
+		if (1 - result > 0.1f) {// Get the angle between the 2 quaternions,
 			// and then store the sin() of that angle
 			float theta = (float) Math.acos(result);
 			float invSinTheta = (float) (1f / Math.sin(theta));
@@ -180,27 +173,26 @@ public class Slerp
 		// Calculate the x, y, z and w values for the quaternion by using a
 		// special
 		// form of linear interpolation for quaternions.
-		quatResult
-				.set(new Vec3f((scale0 * vecQ1Axis.x()) + (scale1 * vecQ2Axis.x()),
-						(scale0 * vecQ1Axis.y()) + (scale1 * vecQ2Axis.y()),
-						(scale0 * vecQ1Axis.z()) + (scale1 * vecQ2Axis.z())),
-						(scale0 * fQ1Angle) + (scale1 * fQ2Angle));
+		quatResult.set(new Vec3f(scale0 * vecQ1Axis.x() + scale1 * vecQ2Axis.x(), scale0 * vecQ1Axis.y() + scale1
+			* vecQ2Axis.y(), scale0 * vecQ1Axis.z() + scale1 * vecQ2Axis.z()), scale0 * fQ1Angle + scale1
+			* fQ2Angle);
 
 		// Return the interpolated quaternion
 		return quatResult;
 	}
 
 	/**
-	 * Sets this vector to the interpolation by changeAmnt from beginVec to
-	 * finalVec this=(1-changeAmnt)*beginVec + changeAmnt * finalVec
+	 * Sets this vector to the interpolation by changeAmnt from beginVec to finalVec
+	 * this=(1-changeAmnt)*beginVec + changeAmnt * finalVec
 	 * 
-	 * @param beginVec the begin vector (changeAmnt=0)
-	 * @param finalVec The final vector to interpolate towards
-	 * @param changeAmnt An amount between 0.0 - 1.0 representing a percentage
-	 *            change from beginVec towards finalVec
+	 * @param beginVec
+	 *          the begin vector (changeAmnt=0)
+	 * @param finalVec
+	 *          The final vector to interpolate towards
+	 * @param changeAmnt
+	 *          An amount between 0.0 - 1.0 representing a percentage change from beginVec towards finalVec
 	 */
-	public Vec3f interpolate(Vec3f beginVec, Vec3f finalVec, float changeAmnt)
-	{
+	public Vec3f interpolate(Vec3f beginVec, Vec3f finalVec, float changeAmnt) {
 
 		Vec3f result = new Vec3f();
 		result.setX((1 - changeAmnt) * beginVec.x() + changeAmnt * finalVec.x());
@@ -210,14 +202,12 @@ public class Slerp
 		return result;
 	}
 
-	public Vec3f getTranslationResult()
-	{
+	public Vec3f getTranslationResult() {
 
 		return translationResult;
 	}
 
-	public Vec3f getScaleResult()
-	{
+	public Vec3f getScaleResult() {
 
 		return scaleResult;
 	}

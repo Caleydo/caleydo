@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.logging.Level;
+
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -24,27 +25,24 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public abstract class AXmlParserManager
 	extends DefaultHandler
-	implements IXmlParserManager
-{
+	implements IXmlParserManager {
 	protected IGeneralManager generalManager;
 
 	/**
-	 * Token to avoid registering and unregistering handlers during processing
-	 * XMl data.
+	 * Token to avoid registering and unregistering handlers during processing XMl data.
 	 */
 	private boolean bProcessingXmlDataNow = false;
 
 	/**
-	 * Defines the active handler if the opening tag was found. If no opening
-	 * tag was found or the closing tag was precessed this reference is null.
+	 * Defines the active handler if the opening tag was found. If no opening tag was found or the closing tag
+	 * was precessed this reference is null.
 	 */
 	protected IXmlParserHandler currentHandler = null;
 
 	/**
-	 * Contains the Handler of the previous opening tags. If a new tag is opened
-	 * the currentHandler is stored as last element of this vector. If a closing
-	 * tag is processed the currentHandler is set to the last element in the
-	 * vector and the last element in the vector is removed.
+	 * Contains the Handler of the previous opening tags. If a new tag is opened the currentHandler is stored as
+	 * last element of this vector. If a closing tag is processed the currentHandler is set to the last element
+	 * in the vector and the last element in the vector is removed.
 	 */
 	protected LinkedList<IXmlParserHandler> llXmlParserStack;
 
@@ -56,26 +54,22 @@ public abstract class AXmlParserManager
 	/**
 	 * Constructor.
 	 */
-	protected AXmlParserManager()
-	{
+	protected AXmlParserManager() {
 		generalManager = GeneralManager.get();
 
 		hashTag2XmlParser = new Hashtable<String, IXmlParserHandler>();
 		llXmlParserStack = new LinkedList<IXmlParserHandler>();
 	}
 
-	protected final void setXmlFileProcessedNow(boolean bStatus)
-	{
+	protected final void setXmlFileProcessedNow(boolean bStatus) {
 		this.bProcessingXmlDataNow = bStatus;
 	}
 
-	protected final boolean closeCurrentTag()
-	{
+	protected final boolean closeCurrentTag() {
 
-		if (this.currentHandler == null)
-		{
+		if (this.currentHandler == null) {
 			throw new IllegalStateException(
-					"AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
+				"AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
 			// return false;
 		}
 
@@ -87,13 +81,11 @@ public abstract class AXmlParserManager
 		// currentHandler.getClass().getSimpleName(),
 		// LoggerType.VERBOSE_EXTRA );
 
-		if (!llXmlParserStack.isEmpty())
-		{
+		if (!llXmlParserStack.isEmpty()) {
 
 			// llXmlParserStack.removeLast();
 
-			if (!llXmlParserStack.remove(buffer))
-			{
+			if (!llXmlParserStack.remove(buffer)) {
 				// generalManager.logMsg(
 				// "AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!"
 				// ,
@@ -104,15 +96,13 @@ public abstract class AXmlParserManager
 			/**
 			 * Get previous item from stack ...
 			 */
-			if (llXmlParserStack.isEmpty())
-			{
+			if (llXmlParserStack.isEmpty()) {
 				/**
 				 * stack is empty, set currentHandler null!
 				 */
 				currentHandler = null;
 			} // if ( llXmlParserStack.isEmpty() )
-			else
-			{
+			else {
 				/**
 				 * Get previous item from stack.
 				 */
@@ -120,22 +110,19 @@ public abstract class AXmlParserManager
 			} // else .. if ( llXmlParserStack.isEmpty() )
 
 		} // if ( ! llXmlParserStack.isEmpty() ) {
-		else
-		{
+		else {
 			currentHandler = null;
 		} // else ... if ( ! llXmlParserStack.isEmpty() ) {
 
 		/**
 		 * Clean up XmlParserHandler..
 		 */
-		if (buffer.isHandlerDestoryedAfterClosingTag())
-		{
+		if (buffer.isHandlerDestoryedAfterClosingTag()) {
 			unregisterSaxHandler(buffer.getXmlActivationTag());
 			buffer.destroyHandler();
 			buffer = null;
 		}
-		else
-		{
+		else {
 			// generalManager.logMsg(
 			// "AXmlParserManger.closeCurrentTag() key=[" +
 			// buffer.getXmlActivationTag() + "] " +
@@ -148,32 +135,28 @@ public abstract class AXmlParserManager
 	}
 
 	@Override
-	public final boolean registerAndInitSaxHandler(IXmlParserHandler handler)
-	{
+	public final boolean registerAndInitSaxHandler(IXmlParserHandler handler) {
 
 		assert handler != null : "Can not handle null pointer as handler";
 
-		if (bProcessingXmlDataNow)
-		{
+		if (bProcessingXmlDataNow) {
 			throw new IllegalStateException(
-					"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");
+				"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");
 			// return false;
 		}
 
-		if (hashTag2XmlParser.contains(handler))
-		{
+		if (hashTag2XmlParser.contains(handler)) {
 			throw new IllegalStateException(
-					"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
+				"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
 			// return false;
 		}
 
 		String key = handler.getXmlActivationTag();
 
-		if (hashTag2XmlParser.containsKey(key))
-		{
+		if (hashTag2XmlParser.containsKey(key)) {
 			throw new IllegalStateException(
-					"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String ["
-							+ handler.getXmlActivationTag() + "] is already registered!");
+				"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String ["
+					+ handler.getXmlActivationTag() + "] is already registered!");
 			// return false;
 		}
 
@@ -191,26 +174,22 @@ public abstract class AXmlParserManager
 	}
 
 	@Override
-	public final void unregisterSaxHandler(final String sActivationXmlTag)
-	{
-		if (bProcessingXmlDataNow)
-		{
+	public final void unregisterSaxHandler(final String sActivationXmlTag) {
+		if (bProcessingXmlDataNow) {
 			throw new IllegalStateException(
-					"AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");
+				"AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");
 			// return false;
 		}
 
-		if (!hashTag2XmlParser.containsKey(sActivationXmlTag))
-		{
+		if (!hashTag2XmlParser.containsKey(sActivationXmlTag)) {
 			throw new IllegalStateException(
-					"AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
+				"AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
 			// return false;
 		}
 
 		IXmlParserHandler parserHandler = hashTag2XmlParser.remove(sActivationXmlTag);
 
-		if (parserHandler == null)
-		{
+		if (parserHandler == null) {
 			throw new IllegalStateException("Cannot unregister parser handler!");
 		}
 
@@ -218,34 +197,27 @@ public abstract class AXmlParserManager
 	}
 
 	@Override
-	public final IXmlParserHandler getCurrentXmlParserHandler()
-	{
+	public final IXmlParserHandler getCurrentXmlParserHandler() {
 		return this.currentHandler;
 	}
 
-	public boolean parseOnce(final String sFileName)
-	{
+	public boolean parseOnce(final String sFileName) {
 		InputSource inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
 
-		try
-		{
+		try {
 			XMLReader reader = null;
 
-			if (sFileName.contains(".xml"))
-			{
+			if (sFileName.contains(".xml")) {
 				reader = XMLReaderFactory.createXMLReader();
 
 				// Entity resolver avoids the XML Reader
 				// to check external DTDs.
-				reader.setFeature(
-						"http://apache.org/xml/features/nonvalidating/load-external-dtd",
-						false);
+				reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 
 				reader.setEntityResolver(this);
 				reader.setContentHandler(this);
 			}
-			else
-			{
+			else {
 				reader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
 				// reader.setFeature(org.ccil.cowan.tagsoup.Parser.
 				// defaultAttributesFeature, false);
@@ -261,25 +233,20 @@ public abstract class AXmlParserManager
 
 			reader.parse(inputSource);
 
-			if (inputSource.getByteStream() != null)
-			{
+			if (inputSource.getByteStream() != null) {
 				inputSource.getByteStream().close();
 			}
-			else if (inputSource.getCharacterStream() != null)
-			{
+			else if (inputSource.getCharacterStream() != null) {
 				inputSource.getCharacterStream().close();
 			}
 
 			generalManager.getLogger().log(Level.FINE, "Finished parsing file " + sFileName);
 
 		}
-		catch (SAXException saxe)
-		{
-			throw new IllegalStateException("SAXParser-error during parsing.\n SAX error: "
-					+ saxe.toString());
+		catch (SAXException saxe) {
+			throw new IllegalStateException("SAXParser-error during parsing.\n SAX error: " + saxe.toString());
 		}
-		catch (IOException ioe)
-		{
+		catch (IOException ioe) {
 			throw new IllegalStateException("IO-error during parsing");
 		}
 

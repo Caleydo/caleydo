@@ -1,7 +1,6 @@
 package org.caleydo.core.parser.parameter;
 
-public interface IParameterKeyValuePair<T>
-{
+public interface IParameterKeyValuePair<T> {
 
 	public abstract T getValue(final String key);
 
@@ -11,8 +10,7 @@ public interface IParameterKeyValuePair<T>
 
 	public abstract void setValue(final String key, final T value);
 
-	public abstract void setValueAndDefaultValue(final String key, final T value,
-			final T defaultValue);
+	public abstract void setValueAndDefaultValue(final String key, final T value, final T defaultValue);
 
 	public abstract void setDefaultValue(final String key, final T value);
 

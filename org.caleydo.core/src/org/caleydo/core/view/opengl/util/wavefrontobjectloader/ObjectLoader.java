@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.util.wavefrontobjectloader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.logging.Level;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 
@@ -11,16 +12,14 @@ import org.caleydo.data.loader.ResourceLoader;
  * 
  * @author Stefan Sauer
  */
-public class ObjectLoader
-{
+public class ObjectLoader {
 
 	/**
 	 * Loads a Wavefront Object File.
 	 * 
 	 * @param resourceName
 	 */
-	public ObjectModel loadFile(String resourceName)
-	{
+	public ObjectModel loadFile(String resourceName) {
 		ResourceLoader loader = new ResourceLoader();
 		return loadFile(loader.getResource(resourceName));
 	}
@@ -30,19 +29,16 @@ public class ObjectLoader
 	 * 
 	 * @param resourceReader
 	 */
-	public ObjectModel loadFile(BufferedReader resourceReader)
-	{
+	public ObjectModel loadFile(BufferedReader resourceReader) {
 		if (resourceReader == null)
 			throw new IllegalStateException("Cannot load wavefront object.");
 
 		ObjectModel model = new ObjectModel();
 
-		try
-		{
+		try {
 			String line;
 
-			do
-			{
+			do {
 				line = resourceReader.readLine();
 
 				if (line == null)
@@ -56,62 +52,50 @@ public class ObjectLoader
 					continue;
 
 				// handle groups
-				if (line.startsWith("g"))
-				{
+				if (line.startsWith("g")) {
 					model.handleGroupCommand(line);
 				}
 				// handle smoothing groups
-				if (line.startsWith("s"))
-				{
+				if (line.startsWith("s")) {
 					// TODO wavefront smoothing groups are not implemented
-					GeneralManager
-							.get()
-							.getLogger()
-							.log(Level.INFO,
-									"Wavefront Object Loader hasn't implemented smoothing groups yet.");
+					GeneralManager.get().getLogger().log(Level.INFO,
+						"Wavefront Object Loader hasn't implemented smoothing groups yet.");
 				}
 				// handle merging group
-				if (line.startsWith("mg"))
-				{
+				if (line.startsWith("mg")) {
 					// TODO wavefront merging groups is not implemented
 					GeneralManager.get().getLogger().log(Level.INFO,
-							"Wavefront Object Loader hasn't implemented merging groups yet.");
+						"Wavefront Object Loader hasn't implemented merging groups yet.");
 				}
 				// handle object name
-				if (line.startsWith("o"))
-				{
+				if (line.startsWith("o")) {
 					// TODO wavefront object name is not implemented
 					GeneralManager.get().getLogger().log(Level.INFO,
-							"Wavefront Object Loader hasn't implemented object names yet.");
+						"Wavefront Object Loader hasn't implemented object names yet.");
 				}
 
 				// handle vertex
-				if (line.startsWith("v "))
-				{
+				if (line.startsWith("v ")) {
 					model.handleVertexCommand(line);
 				}
 				// handle vertex normal
-				if (line.startsWith("vn"))
-				{
+				if (line.startsWith("vn")) {
 					model.handleVertexNormalCommand(line);
 				}
 				// handle texture coordinate
-				if (line.startsWith("vt"))
-				{
+				if (line.startsWith("vt")) {
 					model.handleVertexTextureCommand(line);
 				}
 
 				// handle faces
-				if (line.startsWith("f "))
-				{
+				if (line.startsWith("f ")) {
 					model.handleFaceCommand(line);
 				}
 
 			} while (line != null);
 
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -123,14 +107,12 @@ public class ObjectLoader
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		ObjectLoader loader = new ObjectLoader();
 
 		// works as stand alone application
 		// can't use rcp plugin path because of that
-		loader
-				.loadFile("D:/work/Eclipse Workspace work/org.caleydo.data/resources/3dmodels/glyph/square1.obj");
+		loader.loadFile("D:/work/Eclipse Workspace work/org.caleydo.data/resources/3dmodels/glyph/square1.obj");
 
 		System.out.println("");
 	}

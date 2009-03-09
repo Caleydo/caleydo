@@ -13,25 +13,21 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 public class GLHierarchicalHeatMapView
-	extends AGLViewPart
-{
+	extends AGLViewPart {
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView";
 
 	/**
 	 * Constructor.
 	 */
-	public GLHierarchicalHeatMapView()
-	{
+	public GLHierarchicalHeatMapView() {
 		super();
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
-		{
+		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();
@@ -41,12 +37,10 @@ public class GLHierarchicalHeatMapView
 		}
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, glCanvas.getID(),
-				true);
+		createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, glCanvas.getID(), true);
 	}
 
-	public static void createToolBarItems(int iViewID)
-	{
+	public static void createToolBarItems(int iViewID) {
 		// GLHierarchicalHeatMap hierarchicalHeatMap = (GLHierarchicalHeatMap)
 		// GeneralManager
 		// .get().getViewGLCanvasManager().getGLEventListener(iViewID);

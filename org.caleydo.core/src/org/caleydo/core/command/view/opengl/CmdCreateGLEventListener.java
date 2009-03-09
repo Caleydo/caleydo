@@ -3,8 +3,10 @@ package org.caleydo.core.command.view.opengl;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IGeneralManager;
@@ -24,8 +26,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
  * @author Marc Streit
  */
 public class CmdCreateGLEventListener
-	extends ACmdCreational<AGLEventListener>
-{
+	extends ACmdCreational<AGLEventListener> {
 	protected ECommandType viewType;
 
 	protected IViewFrustum viewFrustum;
@@ -38,8 +39,7 @@ public class CmdCreateGLEventListener
 	/**
 	 * Constructor.
 	 */
-	public CmdCreateGLEventListener(final ECommandType cmdType)
-	{
+	public CmdCreateGLEventListener(final ECommandType cmdType) {
 		super(cmdType);
 
 		cameraRotation = new Rotf();
@@ -51,45 +51,37 @@ public class CmdCreateGLEventListener
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		extractDataIDs();
 
-		String sPositionGLOrigin = parameterHandler
-				.getValueString(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
+		String sPositionGLOrigin = parameterHandler.getValueString(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
 
-		String sPositionGLRotation = parameterHandler
-				.getValueString(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
+		String sPositionGLRotation =
+			parameterHandler.getValueString(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
 
 		/* convert values.. */
-		if (sPositionGLOrigin != null)
-		{
-			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ORIGIN
-					.getXmlKey(), sPositionGLOrigin, ParameterHandlerType.VEC3F,
-					ECommandType.TAG_POS_GL_ORIGIN.getDefault());
+		if (sPositionGLOrigin != null) {
+			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey(),
+				sPositionGLOrigin, ParameterHandlerType.VEC3F, ECommandType.TAG_POS_GL_ORIGIN.getDefault());
 		}
 
-		if (sPositionGLRotation != null)
-		{
-			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ROTATION
-					.getXmlKey(), sPositionGLRotation, ParameterHandlerType.VEC4F,
-					ECommandType.TAG_POS_GL_ROTATION.getDefault());
+		if (sPositionGLRotation != null) {
+			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ROTATION.getXmlKey(),
+				sPositionGLRotation, ParameterHandlerType.VEC4F, ECommandType.TAG_POS_GL_ROTATION.getDefault());
 		}
 
-		cameraOrigin = parameterHandler.getValueVec3f(ECommandType.TAG_POS_GL_ORIGIN
-				.getXmlKey());
+		cameraOrigin = parameterHandler.getValueVec3f(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
 
 		/* convert Vec4f to roation Rotf */
-		Vec4f vec4fRotation = parameterHandler.getValueVec4f(ECommandType.TAG_POS_GL_ROTATION
-				.getXmlKey());
+		Vec4f vec4fRotation = parameterHandler.getValueVec4f(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
 
-		cameraRotation.set(new Vec3f(vec4fRotation.x(), vec4fRotation.y(), vec4fRotation.z()),
-				(float) Math.toRadians(vec4fRotation.w()));
+		cameraRotation.set(new Vec3f(vec4fRotation.x(), vec4fRotation.y(), vec4fRotation.z()), (float) Math
+			.toRadians(vec4fRotation.w()));
 
-		StringTokenizer frustumToken = new StringTokenizer(sAttribute3,
-				IGeneralManager.sDelimiter_Parser_DataItems);
+		StringTokenizer frustumToken =
+			new StringTokenizer(sAttribute3, IGeneralManager.sDelimiter_Parser_DataItems);
 
 		// try
 		// {
@@ -100,8 +92,7 @@ public class CmdCreateGLEventListener
 			sProjectionMode = frustumToken.nextToken();
 
 		if (!sProjectionMode.equals(EProjectionMode.ORTHOGRAPHIC.name())
-				&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name()))
-		{
+			&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name())) {
 			return;
 		}
 
@@ -119,8 +110,8 @@ public class CmdCreateGLEventListener
 		fNear = new Float(frustumToken.nextToken());
 		fFar = new Float(frustumToken.nextToken());
 
-		viewFrustum = new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight,
-				fBottom, fTop, fNear, fFar);
+		viewFrustum =
+			new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear, fFar);
 
 		// }
 		// catch (Exception e)
@@ -135,21 +126,18 @@ public class CmdCreateGLEventListener
 	 * Extract set and selection IDs from detail string. Example:
 	 * "SET_ID_1 SET_ID_2@SELECTION_ID_1 SELECTION_ID_2"
 	 */
-	private void extractDataIDs()
-	{
+	private void extractDataIDs() {
 
 		// Read Set and Selection IDs
-		StringTokenizer divideSetAndSelectionIDs = new StringTokenizer(sDetail,
-				IGeneralManager.sDelimiter_Paser_DataItemBlock);
+		StringTokenizer divideSetAndSelectionIDs =
+			new StringTokenizer(sDetail, IGeneralManager.sDelimiter_Paser_DataItemBlock);
 
 		// Fill set IDs
-		if (divideSetAndSelectionIDs.hasMoreTokens())
-		{
-			StringTokenizer divideIDs = new StringTokenizer(divideSetAndSelectionIDs
-					.nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
+		if (divideSetAndSelectionIDs.hasMoreTokens()) {
+			StringTokenizer divideIDs =
+				new StringTokenizer(divideSetAndSelectionIDs.nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
 
-			while (divideIDs.hasMoreTokens())
-			{
+			while (divideIDs.hasMoreTokens()) {
 				iAlSetIDs.add(Integer.valueOf(divideIDs.nextToken()).intValue());
 			}
 		}
@@ -169,56 +157,44 @@ public class CmdCreateGLEventListener
 		// }
 
 		// Convert external IDs from XML file to internal IDs
-		iAlSetIDs = GeneralManager.get().getIDManager()
-				.convertExternalToInternalIDs(iAlSetIDs);
+		iAlSetIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlSetIDs);
 
 	}
 
-	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft,
-			final float fRight, final float fBottom, final float fTop, final float fNear,
-			final float fFar, final ArrayList<Integer> iArSetIDs, final int iParentCanvasID)
-	{
-		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear,
-				fFar);
+	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
+		final float fBottom, final float fTop, final float fNear, final float fFar,
+		final ArrayList<Integer> iArSetIDs, final int iParentCanvasID) {
+		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
 		this.iAlSetIDs = iArSetIDs;
 		this.iParentContainerId = iParentCanvasID;
 	}
 
-	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft,
-			final float fRight, final float fBottom, final float fTop, final float fNear,
-			final float fFar, final ArrayList<Integer> iArSetIDs, final int iParentCanvasID,
-			final float fCamOriginX, final float fCamOriginY, final float fCamOriginZ,
-			final float fCamRotationX, final float fCamRotationY, final float fCamRotationZ,
-			final float fCamRotationAngle)
-	{
-		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iArSetIDs,
-				iParentCanvasID);
+	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
+		final float fBottom, final float fTop, final float fNear, final float fFar,
+		final ArrayList<Integer> iArSetIDs, final int iParentCanvasID, final float fCamOriginX,
+		final float fCamOriginY, final float fCamOriginZ, final float fCamRotationX, final float fCamRotationY,
+		final float fCamRotationZ, final float fCamRotationAngle) {
+		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iArSetIDs, iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
-		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ),
-				(float) Math.toRadians(fCamRotationAngle));
+		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ), (float) Math
+			.toRadians(fCamRotationAngle));
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
 		IViewManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1 && iParentContainerId != -1)
-		{
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
-					iParentContainerId);
+		if (iExternalID != -1 && iParentContainerId != -1) {
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
-		createdObject = glCanvasManager.createGLEventListener(viewType, iParentContainerId,
-				sLabel, viewFrustum);
+		createdObject = glCanvasManager.createGLEventListener(viewType, iParentContainerId, sLabel, viewFrustum);
 
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(),
-					iExternalID);
+		if (iExternalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
 		}
 
 		createdObject.getViewCamera().setCameraPosition(cameraOrigin);
@@ -228,8 +204,7 @@ public class CmdCreateGLEventListener
 		if (iAlSetIDs == null)
 			return;
 
-		for (Integer iSetID : iAlSetIDs)
-		{
+		for (Integer iSetID : iAlSetIDs) {
 			createdObject.addSet(iSetID);
 		}
 
@@ -237,8 +212,7 @@ public class CmdCreateGLEventListener
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

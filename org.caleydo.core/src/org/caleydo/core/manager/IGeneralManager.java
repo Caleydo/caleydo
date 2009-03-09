@@ -1,6 +1,7 @@
 package org.caleydo.core.manager;
 
 import java.util.logging.Logger;
+
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
@@ -19,12 +20,10 @@ import org.eclipse.jface.preference.PreferenceStore;
  * @author Michael Kalkusch
  * @author Alexander Lex
  */
-public interface IGeneralManager
-{
+public interface IGeneralManager {
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME = "user.home";
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME)
-			+ "/.caleydo/";
+	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + "/.caleydo/";
 
 	public static final String sDelimiter_Paser_DataItemBlock = "@";
 	public static final String sDelimiter_Parser_DataItems = " ";
@@ -72,28 +71,27 @@ public interface IGeneralManager
 	public Logger getLogger();
 
 	/**
-	 * Resource loader that is responsible for loading images, textures and data
-	 * files in the Caleydo framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
+	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo framework.
+	 * DO NOT LOAD YOUR FILES ON YOUR OWN!
 	 * 
 	 * @return resource loader
 	 */
 	public ResourceLoader getResourceLoader();
 
 	/**
-	 * Returns the preference store where Caleydo stores its preferences. The
-	 * object can store and restore preferences to/from a predefined file.
+	 * Returns the preference store where Caleydo stores its preferences. The object can store and restore
+	 * preferences to/from a predefined file.
 	 */
 	public PreferenceStore getPreferenceStore();
 
 	/**
-	 * Returns whether the application runs as standalone test GUI or embedded
-	 * in RCP
+	 * Returns whether the application runs as standalone test GUI or embedded in RCP
 	 */
 	public boolean isStandalone();
 
 	public IGUIBridge getGUIBridge();
 
 	public boolean isWiiModeActive();
-	
+
 	public WiiRemote getWiiRemote();
 }

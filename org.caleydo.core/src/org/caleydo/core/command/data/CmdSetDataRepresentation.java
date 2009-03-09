@@ -2,6 +2,7 @@ package org.caleydo.core.command.data;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
@@ -19,8 +20,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Alexander Lex
  */
 public class CmdSetDataRepresentation
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	private ArrayList<Integer> iAlIDs;
 
@@ -34,16 +34,14 @@ public class CmdSetDataRepresentation
 	 * 
 	 * @param cmdType
 	 */
-	public CmdSetDataRepresentation(ECommandType cmdType)
-	{
+	public CmdSetDataRepresentation(ECommandType cmdType) {
 		super(cmdType);
 
 		iAlIDs = new ArrayList<Integer>();
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		externalDataRep = EExternalDataRepresentation.valueOf(sAttribute1);
@@ -51,11 +49,10 @@ public class CmdSetDataRepresentation
 		/**
 		 * Fill storage IDs
 		 */
-		StringTokenizer strToken_DataTypes = new StringTokenizer(sAttribute2,
-				IGeneralManager.sDelimiter_Parser_DataItems);
+		StringTokenizer strToken_DataTypes =
+			new StringTokenizer(sAttribute2, IGeneralManager.sDelimiter_Parser_DataItems);
 
-		while (strToken_DataTypes.hasMoreTokens())
-		{
+		while (strToken_DataTypes.hasMoreTokens()) {
 			iAlIDs.add(Integer.valueOf(strToken_DataTypes.nextToken()).intValue());
 		}
 
@@ -64,26 +61,23 @@ public class CmdSetDataRepresentation
 
 		if (sAttribute3.equals(""))
 			objectType = EManagedObjectType.STORAGE;
-		else
-		{
+		else {
 			objectType = EManagedObjectType.valueOf(sAttribute3);
 			if (objectType != EManagedObjectType.SET)
-				throw new IllegalArgumentException(
-						"Setting of external data rep is only allowed on storages or sets");
+				throw new IllegalArgumentException("Setting of external data rep is only allowed on storages or sets");
 		}
 
 		// default is homogeneous
 		if (sAttribute4.equals(""))
 			bIsSetHomogeneous = true;
-		else
-		{
+		else {
 			if (sAttribute4.equals("homogeneous"))
 				bIsSetHomogeneous = true;
 			else if (sAttribute4.equals("inhomogeneous"))
 				bIsSetHomogeneous = false;
 			else
 				throw new IllegalArgumentException(
-						"Illegal string for attrib 4: 'homogeneous' and 'inhomogeneous' are valid.");
+					"Illegal string for attrib 4: 'homogeneous' and 'inhomogeneous' are valid.");
 		}
 
 	}
@@ -91,53 +85,44 @@ public class CmdSetDataRepresentation
 	/**
 	 * Overwrites the specified storage with the results of the operation
 	 * 
-	 * @param externalDataRep Determines how the data is visualized. For options
-	 *            see {@link EExternalDataRepresentation}
-	 * @param bIsSetHomogeneous Determines whether a set is homogeneous or not.
-	 *            Homogeneous means that the sat has a global maximum and
-	 *            minimum, meaning that all storages in the set contain equal
-	 *            data. If false, each storage is treated separately, has it's
-	 *            own min and max etc. Sets that contain nominal data MUST be
-	 *            inhomogeneous.
-	 * @param iAlStorageID The source storage ids. This storage is overwritten
-	 *            with the result.
-	 * @param objectType Signal whether you want to apply this on a set or a
-	 *            storage.
+	 * @param externalDataRep
+	 *          Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
+	 * @param bIsSetHomogeneous
+	 *          Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
+	 *          maximum and minimum, meaning that all storages in the set contain equal data. If false, each
+	 *          storage is treated separately, has it's own min and max etc. Sets that contain nominal data MUST
+	 *          be inhomogeneous.
+	 * @param iAlStorageID
+	 *          The source storage ids. This storage is overwritten with the result.
+	 * @param objectType
+	 *          Signal whether you want to apply this on a set or a storage.
 	 */
-	public void setAttributes(EExternalDataRepresentation externalDataRep,
-			boolean bIsSetHomogeneous, ArrayList<Integer> iAlStorageID,
-			EManagedObjectType objectType)
-	{
+	public void setAttributes(EExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous,
+		ArrayList<Integer> iAlStorageID, EManagedObjectType objectType) {
 
 		this.externalDataRep = externalDataRep;
 		this.bIsSetHomogeneous = bIsSetHomogeneous;
 		this.iAlIDs = iAlStorageID;
 		if (objectType != EManagedObjectType.STORAGE && objectType != EManagedObjectType.SET)
-			throw new IllegalArgumentException(
-					"Setting of external data rep is only allowed on storages or sets");
+			throw new IllegalArgumentException("Setting of external data rep is only allowed on storages or sets");
 
 		this.objectType = objectType;
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 
-		if (objectType == EManagedObjectType.STORAGE)
-		{
+		if (objectType == EManagedObjectType.STORAGE) {
 			IStorage tmpStorage = null;
-			for (int currentID : iAlIDs)
-			{
+			for (int currentID : iAlIDs) {
 				tmpStorage = generalManager.getStorageManager().getItem(currentID);
 
 				tmpStorage.setExternalDataRepresentation(externalDataRep);
 			}
 		}
-		else
-		{
+		else {
 			ISet tmpSet = null;
-			for (int currentID : iAlIDs)
-			{
+			for (int currentID : iAlIDs) {
 				tmpSet = generalManager.getSetManager().getItem(currentID);
 
 				tmpSet.setExternalDataRepresentation(externalDataRep, bIsSetHomogeneous);
@@ -147,8 +132,7 @@ public class CmdSetDataRepresentation
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

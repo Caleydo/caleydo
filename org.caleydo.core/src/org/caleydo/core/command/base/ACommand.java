@@ -10,16 +10,14 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
- * Abstract base class for all commands. Supports serialization for exporting
- * commands.
+ * Abstract base class for all commands. Supports serialization for exporting commands.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public abstract class ACommand
 	extends AUniqueObject
-	implements ICommand
-{
+	implements ICommand {
 	/**
 	 * Reference to ICommandManager
 	 */
@@ -32,8 +30,7 @@ public abstract class ACommand
 	/**
 	 * Constructor.
 	 */
-	public ACommand(final ECommandType cmdType)
-	{
+	public ACommand(final ECommandType cmdType) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.COMMAND));
 
 		this.generalManager = GeneralManager.get();
@@ -42,20 +39,17 @@ public abstract class ACommand
 	}
 
 	@Override
-	public final ECommandType getCommandType()
-	{
+	public final ECommandType getCommandType() {
 		return cmdType;
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler phHandler)
-	{
+	public void setParameterHandler(final IParameterHandler phHandler) {
 
 	}
 
 	@Override
-	public String getInfoText()
-	{
+	public String getInfoText() {
 		return cmdType.getInfoText() + " [" + this.getID() + "]";
 	}
 }

@@ -1,14 +1,13 @@
 package org.caleydo.core.view.opengl.renderstyle.border;
 
 import gleem.linalg.Vec4f;
+
 import javax.media.opengl.GL;
 
 public class BorderRenderStyle
-	implements IBorderRenderStyle
-{
+	implements IBorderRenderStyle {
 
-	public static final class BORDER
-	{
+	public static final class BORDER {
 		public static final int FULL = 0xf;
 		public static final int LEFT = 0x1;
 		public static final int TOP = 0x2;
@@ -26,13 +25,11 @@ public class BorderRenderStyle
 
 	protected int glList = -1;
 
-	public void setBorderWidth(final int width)
-	{
+	public void setBorderWidth(final int width) {
 		iBorderWidth = width;
 	}
 
-	public void setBorder(int borderpart, boolean onoff)
-	{
+	public void setBorder(int borderpart, boolean onoff) {
 		if ((borderpart & BORDER.LEFT) == BORDER.LEFT)
 			bBorderLeft = onoff;
 
@@ -47,18 +44,15 @@ public class BorderRenderStyle
 
 	}
 
-	public void setBorderColor(Vec4f color)
-	{
+	public void setBorderColor(Vec4f color) {
 		vBorderColor = color;
 	}
 
-	public void init(GL gl)
-	{
+	public void init(GL gl) {
 
 	}
 
-	public void display(GL gl)
-	{
+	public void display(GL gl) {
 		if (glList < 0)
 			return;
 

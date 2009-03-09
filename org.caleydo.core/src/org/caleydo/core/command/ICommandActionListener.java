@@ -1,13 +1,11 @@
 package org.caleydo.core.command;
 
 /**
- * Handles commands and forwards them. Controller/manager in the "Observer"
- * design pattern.
+ * Handles commands and forwards them. Controller/manager in the "Observer" design pattern.
  * 
  * @author Michael Kalkusch
  */
-public interface ICommandActionListener
-{
+public interface ICommandActionListener {
 
 	/**
 	 * Immediately executes command.

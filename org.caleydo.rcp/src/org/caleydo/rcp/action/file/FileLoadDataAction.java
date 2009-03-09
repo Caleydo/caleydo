@@ -16,9 +16,6 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -32,13 +29,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -66,8 +59,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class FileLoadDataAction
 	extends Action
-	implements ActionFactory.IWorkbenchAction
-{
+	implements ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.rcp.FileLoadDataAction";
 
@@ -103,13 +95,12 @@ public class FileLoadDataAction
 	/**
 	 * Constructor.
 	 */
-	public FileLoadDataAction(final Composite parentComposite)
-	{
+	public FileLoadDataAction(final Composite parentComposite) {
 		super("Load Data");
 		setId(ID);
 		setToolTipText("Import data from text file");
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-				IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
+			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
 
 		this.parentComposite = parentComposite;
 
@@ -120,32 +111,29 @@ public class FileLoadDataAction
 	/**
 	 * Constructor.
 	 */
-	public FileLoadDataAction(final Composite parentComposite, String sInputFile)
-	{
+	public FileLoadDataAction(final Composite parentComposite, String sInputFile) {
 		this(parentComposite);
 		this.sInputFile = sInputFile;
 	}
 
 	@Override
-	public void run()
-	{
-//		// Check if load data GUI is embedded in a wizard or if a own dialog
-//		// must be created.
-//		if (parentComposite == null)
-//		{
-//			Shell shell = new Shell();
-////			shell.setMaximized(true);
-//			LoadDataDialog loadDataFileDialog = new LoadDataDialog(shell);
-//			loadDataFileDialog.open();
-//		}
-//		else
-//		{
-			createGUI();
-//		}
+	public void run() {
+		// // Check if load data GUI is embedded in a wizard or if a own dialog
+		// // must be created.
+		// if (parentComposite == null)
+		// {
+		// Shell shell = new Shell();
+		// // shell.setMaximized(true);
+		// LoadDataDialog loadDataFileDialog = new LoadDataDialog(shell);
+		// loadDataFileDialog.open();
+		// }
+		// else
+		// {
+		createGUI();
+		// }
 	}
 
-	private void createGUI()
-	{
+	private void createGUI() {
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
@@ -156,11 +144,9 @@ public class FileLoadDataAction
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
 
-		buttonFileChooser.addSelectionListener(new SelectionAdapter()
-		{
+		buttonFileChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent event)
-			{
+			public void widgetSelected(SelectionEvent event) {
 
 				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
 				fileDialog.setText("Open");
@@ -183,13 +169,10 @@ public class FileLoadDataAction
 		txtStartParseAtLine.setLayoutData(new GridData(50, 15));
 		txtStartParseAtLine.setText("1");
 		txtStartParseAtLine.setTextLimit(2);
-		txtStartParseAtLine.addModifyListener(new ModifyListener()
-		{
+		txtStartParseAtLine.addModifyListener(new ModifyListener() {
 			@Override
-			public void modifyText(ModifyEvent e)
-			{
-				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText())
-						.intValue();
+			public void modifyText(ModifyEvent e) {
+				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
 
 				createDataPreviewTable("\t");
 				composite.pack();
@@ -202,7 +185,7 @@ public class FileLoadDataAction
 
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setLayout(new RowLayout());
-//		delimiterGroup.setText("Delimiter (Separator)");
+		// delimiterGroup.setText("Delimiter (Separator)");
 
 		final Button[] buttonDelimiter = new Button[6];
 
@@ -230,33 +213,29 @@ public class FileLoadDataAction
 		buttonDelimiter[5] = new Button(delimiterGroup, SWT.CHECK);
 		buttonDelimiter[5].setText("Other");
 		buttonDelimiter[5].setBounds(10, 55, 75, 30);
-		
+
 		final Text txtCustomizedDelimiter = new Text(delimiterGroup, SWT.BORDER);
 		txtCustomizedDelimiter.setBounds(0, 0, 75, 30);
 		txtCustomizedDelimiter.setTextLimit(1);
 		txtCustomizedDelimiter.setEnabled(false);
-		txtCustomizedDelimiter.addModifyListener(new ModifyListener()
-		{
+		txtCustomizedDelimiter.addModifyListener(new ModifyListener() {
 			@Override
-			public void modifyText(ModifyEvent e)
-			{
+			public void modifyText(ModifyEvent e) {
 				createDataPreviewTable(txtCustomizedDelimiter.getText());
 				composite.pack();
 			}
 
 		});
 
-		buttonDelimiter[0].addSelectionListener(new SelectionAdapter()
-		{
+		buttonDelimiter[0].addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
-				
+
 				if (sFileName.isEmpty())
 					return;
 
@@ -270,12 +249,10 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
-		
-		buttonDelimiter[1].addSelectionListener(new SelectionAdapter()
-		{
+
+		buttonDelimiter[1].addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
@@ -296,12 +273,10 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
-		
-		buttonDelimiter[2].addSelectionListener(new SelectionAdapter()
-		{
+
+		buttonDelimiter[2].addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
@@ -322,12 +297,10 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
-		
-		buttonDelimiter[3].addSelectionListener(new SelectionAdapter()
-		{
+
+		buttonDelimiter[3].addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
@@ -348,12 +321,10 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
-		
-		buttonDelimiter[4].addSelectionListener(new SelectionAdapter()
-		{
+
+		buttonDelimiter[4].addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
@@ -374,19 +345,17 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
-		
-		buttonDelimiter[5].addSelectionListener(new SelectionAdapter()
-		{
+
+		buttonDelimiter[5].addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(true);
-				
+
 				if (sFileName.isEmpty())
 					return;
 
@@ -414,11 +383,9 @@ public class FileLoadDataAction
 		dataRepCombo.setItems(sArOptions);
 		dataRepCombo.setEnabled(true);
 		dataRepCombo.select(0);
-		dataRepCombo.addSelectionListener(new SelectionAdapter()
-		{
+		dataRepCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				sDataRepMode = dataRepCombo.getText();
 
 			}
@@ -428,27 +395,22 @@ public class FileLoadDataAction
 		buttonMin.setText("Min");
 		buttonMin.setEnabled(true);
 		buttonMin.setSelection(false);
-		buttonMin.addSelectionListener(new SelectionAdapter()
-		{
+		buttonMin.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				txtMin.setEnabled(buttonMin.getSelection());
 			}
 		});
 
 		txtMin = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMin.setEnabled(false);
-		txtMin.addListener(SWT.Verify, new Listener()
-		{
-			public void handleEvent(Event e)
-			{
+		txtMin.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event e) {
 				// Only allow digits
 				String string = e.text;
 				char[] chars = new char[string.length()];
 				string.getChars(0, chars.length, chars, 0);
-				for (int i = 0; i < chars.length; i++)
-				{
+				for (char c : chars) {
 					// TODO
 					// if (!('0' <= chars[i] && chars[i] <= '9'))
 					// {
@@ -463,28 +425,23 @@ public class FileLoadDataAction
 		buttonMax.setText("Max");
 		buttonMax.setEnabled(true);
 		buttonMax.setSelection(false);
-		buttonMax.addSelectionListener(new SelectionAdapter()
-		{
+		buttonMax.addSelectionListener(new SelectionAdapter() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				txtMax.setEnabled(buttonMax.getSelection());
 			}
 		});
 
 		txtMax = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMax.setEnabled(false);
-		txtMax.addListener(SWT.Verify, new Listener()
-		{
-			public void handleEvent(Event e)
-			{
+		txtMax.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event e) {
 				// Only allow digits
 				String string = e.text;
 				char[] chars = new char[string.length()];
 				string.getChars(0, chars.length, chars, 0);
-				for (int i = 0; i < chars.length; i++)
-				{
+				for (char c : chars) {
 					// TODO
 					// if (!('0' <= chars[i] && chars[i] <= '9'))
 					// {
@@ -508,8 +465,7 @@ public class FileLoadDataAction
 		previewTable.setLayoutData(data);
 
 		// Check if an external file name is given to the action
-		if (!sInputFile.isEmpty())
-		{
+		if (!sInputFile.isEmpty()) {
 			txtFileName.setText(sInputFile);
 			sFileName = sInputFile;
 			sDataRepMode = "Log10";
@@ -519,15 +475,13 @@ public class FileLoadDataAction
 		}
 	}
 
-	private void createDataPreviewTable(final String sDelimiter)
-	{
+	private void createDataPreviewTable(final String sDelimiter) {
 		this.sDelimiter = sDelimiter;
 
 		// Clear table if not empty
 		previewTable.removeAll();
 
-		for (TableColumn tmpColumn : previewTable.getColumns())
-		{
+		for (TableColumn tmpColumn : previewTable.getColumns()) {
 			tmpColumn.dispose();
 		}
 
@@ -535,82 +489,80 @@ public class FileLoadDataAction
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
 
-//		previewTable.addListener(SWT.MouseDown, new Listener()
-//		{
-//			public void handleEvent(Event event)
-//			{
-//				Rectangle clientArea = previewTable.getClientArea();
-//				Point pt = new Point(event.x, event.y);
-//
-//				int index = 0; // only make caption line editable
-//
-//				boolean visible = false;
-//				final TableItem item = previewTable.getItem(index);
-//				for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
-//				{
-//					Rectangle rect = item.getBounds(iColIndex);
-//					if (rect.contains(pt))
-//					{
-//						final int column = iColIndex;
-//						final Text text = new Text(previewTable, SWT.NONE);
-//						Listener textListener = new Listener()
-//						{
-//							public void handleEvent(final Event e)
-//							{
-//								switch (e.type)
-//								{
-//									case SWT.FocusOut:
-//										item.setText(column, text.getText());
-//										text.dispose();
-//										break;
-//									case SWT.Traverse:
-//										switch (e.detail)
-//										{
-//											case SWT.TRAVERSE_RETURN:
-//												item.setText(column, text.getText());
-//
-//												// FALL THROUGH
-//											case SWT.TRAVERSE_ESCAPE:
-//												text.dispose();
-//												e.doit = false;
-//										}
-//										break;
-//								}
-//							}
-//						};
-//
-//						text.addListener(SWT.FocusOut, textListener);
-//						text.addListener(SWT.Traverse, textListener);
-//						editor.setEditor(text, item, iColIndex);
-//						text.setText(item.getText(iColIndex));
-//						text.selectAll();
-//						text.setFocus();
-//						return;
-//					}
-//
-//					if (!visible && rect.intersects(clientArea))
-//					{
-//						visible = true;
-//					}
-//				}
-//
-//				if (!visible)
-//					return;
-//				index++;
-//			}
-//		});
+		// previewTable.addListener(SWT.MouseDown, new Listener()
+		// {
+		// public void handleEvent(Event event)
+		// {
+		// Rectangle clientArea = previewTable.getClientArea();
+		// Point pt = new Point(event.x, event.y);
+		//
+		// int index = 0; // only make caption line editable
+		//
+		// boolean visible = false;
+		// final TableItem item = previewTable.getItem(index);
+		// for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
+		// {
+		// Rectangle rect = item.getBounds(iColIndex);
+		// if (rect.contains(pt))
+		// {
+		// final int column = iColIndex;
+		// final Text text = new Text(previewTable, SWT.NONE);
+		// Listener textListener = new Listener()
+		// {
+		// public void handleEvent(final Event e)
+		// {
+		// switch (e.type)
+		// {
+		// case SWT.FocusOut:
+		// item.setText(column, text.getText());
+		// text.dispose();
+		// break;
+		// case SWT.Traverse:
+		// switch (e.detail)
+		// {
+		// case SWT.TRAVERSE_RETURN:
+		// item.setText(column, text.getText());
+		//
+		// // FALL THROUGH
+		// case SWT.TRAVERSE_ESCAPE:
+		// text.dispose();
+		// e.doit = false;
+		// }
+		// break;
+		// }
+		// }
+		// };
+		//
+		// text.addListener(SWT.FocusOut, textListener);
+		// text.addListener(SWT.Traverse, textListener);
+		// editor.setEditor(text, item, iColIndex);
+		// text.setText(item.getText(iColIndex));
+		// text.selectAll();
+		// text.setFocus();
+		// return;
+		// }
+		//
+		// if (!visible && rect.intersects(clientArea))
+		// {
+		// visible = true;
+		// }
+		// }
+		//
+		// if (!visible)
+		// return;
+		// index++;
+		// }
+		// });
 
 		// Read preview table
 		BufferedReader brFile;
-		try
-		{
+		try {
 			brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			String sLine = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 2; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++)
-			{
+			for (int iIgnoreLineIndex = 2; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++) {
 				brFile.readLine();
 			}
 
@@ -621,30 +573,25 @@ public class FileLoadDataAction
 			int iColIndex = 0;
 
 			// Read labels
-			if ((sLine = brFile.readLine()) != null)
-			{
+			if ((sLine = brFile.readLine()) != null) {
 				tokenizer = new StringTokenizer(sLine, sDelimiter, false);
 				column = new TableColumn(previewTable, SWT.NONE);
 				column.setWidth(100);
 				column.setText("");
 
-				while (tokenizer.hasMoreTokens())
-				{
+				while (tokenizer.hasMoreTokens()) {
 					sTmpNextToken = tokenizer.nextToken();
 					final TableColumn dataColumn = new TableColumn(previewTable, SWT.NONE);
 					dataColumn.setWidth(100);
 					dataColumn.setText(sTmpNextToken);
 
-					dataColumn.addSelectionListener(new SelectionAdapter()
-					{
+					dataColumn.addSelectionListener(new SelectionAdapter() {
 						@Override
-						public void widgetSelected(SelectionEvent e)
-						{
+						public void widgetSelected(SelectionEvent e) {
 							LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
 							String sLabel = dialog.open(dataColumn.getText());
 
-							if (sLabel != null && !sLabel.isEmpty())
-							{
+							if (sLabel != null && !sLabel.isEmpty()) {
 								dataColumn.setText(sLabel);
 							}
 						}
@@ -657,29 +604,24 @@ public class FileLoadDataAction
 			int iRowCount = 0;
 			boolean bCellFilled = false;
 
-			while ((sLine = brFile.readLine()) != null && iRowCount < MAX_PREVIEW_TABLE_ROWS)
-			{
+			while ((sLine = brFile.readLine()) != null && iRowCount < MAX_PREVIEW_TABLE_ROWS) {
 				// last flag triggers return of delimiter itself
 				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
 				item = new TableItem(previewTable, SWT.NONE);
 				iColIndex = 0;
 
-				while (tokenizer.hasMoreTokens())
-				{
+				while (tokenizer.hasMoreTokens()) {
 					sTmpNextToken = tokenizer.nextToken();
 
 					// Check for empty cells
-					if (sTmpNextToken.equals(sDelimiter) && !bCellFilled)
-					{
+					if (sTmpNextToken.equals(sDelimiter) && !bCellFilled) {
 						item.setText(iColIndex + 1, "");
 						iColIndex++;
 					}
-					else if (sTmpNextToken.equals(sDelimiter) && bCellFilled)
-					{
+					else if (sTmpNextToken.equals(sDelimiter) && bCellFilled) {
 						bCellFilled = false; // reset
 					}
-					else
-					{
+					else {
 						bCellFilled = true;
 						item.setText(iColIndex + 1, sTmpNextToken);
 						iColIndex++;
@@ -691,182 +633,172 @@ public class FileLoadDataAction
 				iRowCount++;
 			}
 		}
-		catch (FileNotFoundException e)
-		{
+		catch (FileNotFoundException e) {
 			throw new IllegalStateException("File not found!");
 		}
-		catch (IOException ioe)
-		{
+		catch (IOException ioe) {
 			throw new IllegalStateException("Input/output problem!");
 		}
 
 		createDataClassBar();
 		createDataTypeBar();
-		
+
 		TableItem[] arTmpLabelColumnItem = previewTable.getItems();
 		arTmpLabelColumnItem[0].setText(0, "Use column");
 		arTmpLabelColumnItem[1].setText(0, "Data type");
 
-		for (int iItemIndex = 2; iItemIndex < arTmpLabelColumnItem.length; iItemIndex++)
-		{
+		for (int iItemIndex = 2; iItemIndex < arTmpLabelColumnItem.length; iItemIndex++) {
 			arTmpLabelColumnItem[iItemIndex].setText(0, "Row " + (iItemIndex - 1));
 		}
-		
-//		for (TableColumn column : previewTable.getColumns())
-//			column.pack();
-		
-//		previewTable.pack();
-//		composite.pack();
+
+		// for (TableColumn column : previewTable.getColumns())
+		// column.pack();
+
+		// previewTable.pack();
+		// composite.pack();
 	}
 
-	private void createDataClassBar()
-	{
+	private void createDataClassBar() {
 		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 1);
 		Button skipButton;
-		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++)
-		{
+		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
 			tmpItem = previewTable.getItem(0);
 			tmpItem.setText("");
 
-	        skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
-	        skipButton.setSelection(true);
-	        skipButton.setData("column", iColIndex);
-	        skipButton.addSelectionListener(new SelectionAdapter()
-	        {
-	        	@Override
-	        	public void widgetSelected(SelectionEvent e)
-	        	{
-	        		Color textColor = null;
-	        		boolean bSkipColumn = false;
-	        		
-	        		for (TableItem item : previewTable.getItems())
-	        		{
-	        			bSkipColumn = !((Button)e.widget).getSelection();
-	        			
-	        			if (bSkipColumn)
-	        				textColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
-	        			else
-	        				textColor = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
+			skipButton.setSelection(true);
+			skipButton.setData("column", iColIndex);
+			skipButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					Color textColor = null;
+					boolean bSkipColumn = false;
 
-	        			item.setForeground(((Integer)(e.widget.getData("column"))), textColor);
-	        		}
-	        	}
-	        });
-	        
-	        arSkipColumn.add(skipButton);
-	        
-	        TableEditor editor = new TableEditor(previewTable);
-	        editor.grabHorizontal = editor.grabVertical = true;
-	        editor.setEditor(skipButton, tmpItem, iColIndex);
-			
-//			previewTable.getColumn(iColIndex).pack();
+					for (TableItem item : previewTable.getItems()) {
+						bSkipColumn = !((Button) e.widget).getSelection();
+
+						if (bSkipColumn)
+							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
+						else
+							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+
+						item.setForeground(((Integer) e.widget.getData("column")), textColor);
+					}
+				}
+			});
+
+			arSkipColumn.add(skipButton);
+
+			TableEditor editor = new TableEditor(previewTable);
+			editor.grabHorizontal = editor.grabVertical = true;
+			editor.setEditor(skipButton, tmpItem, iColIndex);
+
+			// previewTable.getColumn(iColIndex).pack();
 
 			// Initialize data type selection combo
-//			final Combo comboTmpDataClass = new Combo(previewTable, SWT.READ_ONLY);
-//			comboTmpDataClass.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
-//			comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment", "Patient" });
+			// final Combo comboTmpDataClass = new Combo(previewTable, SWT.READ_ONLY);
+			// comboTmpDataClass.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
+			// comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment", "Patient" });
 
-//			if (iColIndex == 1)
-//				comboTmpDataClass.select(1);
-//			else
-//				comboTmpDataClass.select(2); // by default set columns to experiment
+			// if (iColIndex == 1)
+			// comboTmpDataClass.select(1);
+			// else
+			// comboTmpDataClass.select(2); // by default set columns to experiment
 
 			// should be ignored
-//			arComboDataClass.add(comboTmpDataClass);
+			// arComboDataClass.add(comboTmpDataClass);
 
-//			TableEditor editor = new TableEditor(previewTable);
-//			editor.grabHorizontal = true;
-//			editor.setEditor(comboTmpDataClass, tmpItem, iColIndex);
-			
-//			// Set corresponding column background color to red
-//			for (TableItem tmpTableItem : previewTable.getItems())
-//			{
-//				tmpTableItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass) + 1,
-//						Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-//				tmpTableItem
-//			}
+			// TableEditor editor = new TableEditor(previewTable);
+			// editor.grabHorizontal = true;
+			// editor.setEditor(comboTmpDataClass, tmpItem, iColIndex);
 
-//			comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter()
-//			{
-//				public Color originalColor = txtFileName.getBackground();
-//				public Color highlightColor = Display.getCurrent().getSystemColor(
-//						SWT.COLOR_YELLOW);
-//				public Color selectionColor = Display.getCurrent().getSystemColor(
-//						SWT.COLOR_RED);
-//
-//				@Override
-//				public void mouseEnter(MouseEvent e)
-//				{
-//					// Set corresponding column background color to yellow
-//					for (TableItem tmpItem : previewTable.getItems())
-//					{
-//						if (comboTmpDataClass.getSelectionIndex() == 0)
-//						{
-//							tmpItem.setBackground(
-//									arComboDataClass.indexOf(comboTmpDataClass) + 1,
-//									highlightColor);
-//						}
-//					}
-//				}
-//
-//				@Override
-//				public void mouseExit(MouseEvent e)
-//				{
-//					// Set back to original color
-//					for (TableItem tmpItem : previewTable.getItems())
-//					{
-//						if (comboTmpDataClass.getSelectionIndex() > 0)
-//						{
-//							tmpItem.setBackground(
-//									arComboDataClass.indexOf(comboTmpDataClass) + 1,
-//									selectionColor);
-//						}
-//						else
-//						{
-//							tmpItem.setBackground(
-//									arComboDataClass.indexOf(comboTmpDataClass) + 1,
-//									originalColor);
-//						}
-//					}
-//				}
-//			});
-//
-//			comboTmpDataClass.addSelectionListener(new SelectionAdapter()
-//			{
-//
-//				@Override
-//				public void widgetSelected(SelectionEvent e)
-//				{
-//
-//					int iColIndex = arComboDataClass.indexOf(comboTmpDataClass);
-//
-//					if (comboTmpDataClass.getSelectionIndex() == 0
-//							|| comboTmpDataClass.getSelectionIndex() == 1)
-//					{
-//						arComboDataType.get(iColIndex).setEnabled(false);
-//						arComboDataType.get(iColIndex).select(0);
-//						// arButtonNormalize.get(iColIndex).setSelection(false);
-//					}
-//					else
-//					{
-//						arComboDataType.get(iColIndex).setEnabled(true);
-//						// arButtonNormalize.get(iColIndex).setSelection(true);
-//					}
-//
-//					if (comboTmpDataClass.getText().equals("RefSeq ID"))
-//						arComboDataType.get(iColIndex).select(1);
-//					else if (comboTmpDataClass.getText().equals("Experiment"))
-//						arComboDataType.get(iColIndex).select(2);
-//				}
-//			});
+			// // Set corresponding column background color to red
+			// for (TableItem tmpTableItem : previewTable.getItems())
+			// {
+			// tmpTableItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass) + 1,
+			// Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+			// tmpTableItem
+			// }
+
+			// comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter()
+			// {
+			// public Color originalColor = txtFileName.getBackground();
+			// public Color highlightColor = Display.getCurrent().getSystemColor(
+			// SWT.COLOR_YELLOW);
+			// public Color selectionColor = Display.getCurrent().getSystemColor(
+			// SWT.COLOR_RED);
+			//
+			// @Override
+			// public void mouseEnter(MouseEvent e)
+			// {
+			// // Set corresponding column background color to yellow
+			// for (TableItem tmpItem : previewTable.getItems())
+			// {
+			// if (comboTmpDataClass.getSelectionIndex() == 0)
+			// {
+			// tmpItem.setBackground(
+			// arComboDataClass.indexOf(comboTmpDataClass) + 1,
+			// highlightColor);
+			// }
+			// }
+			// }
+			//
+			// @Override
+			// public void mouseExit(MouseEvent e)
+			// {
+			// // Set back to original color
+			// for (TableItem tmpItem : previewTable.getItems())
+			// {
+			// if (comboTmpDataClass.getSelectionIndex() > 0)
+			// {
+			// tmpItem.setBackground(
+			// arComboDataClass.indexOf(comboTmpDataClass) + 1,
+			// selectionColor);
+			// }
+			// else
+			// {
+			// tmpItem.setBackground(
+			// arComboDataClass.indexOf(comboTmpDataClass) + 1,
+			// originalColor);
+			// }
+			// }
+			// }
+			// });
+			//
+			// comboTmpDataClass.addSelectionListener(new SelectionAdapter()
+			// {
+			//
+			// @Override
+			// public void widgetSelected(SelectionEvent e)
+			// {
+			//
+			// int iColIndex = arComboDataClass.indexOf(comboTmpDataClass);
+			//
+			// if (comboTmpDataClass.getSelectionIndex() == 0
+			// || comboTmpDataClass.getSelectionIndex() == 1)
+			// {
+			// arComboDataType.get(iColIndex).setEnabled(false);
+			// arComboDataType.get(iColIndex).select(0);
+			// // arButtonNormalize.get(iColIndex).setSelection(false);
+			// }
+			// else
+			// {
+			// arComboDataType.get(iColIndex).setEnabled(true);
+			// // arButtonNormalize.get(iColIndex).setSelection(true);
+			// }
+			//
+			// if (comboTmpDataClass.getText().equals("RefSeq ID"))
+			// arComboDataType.get(iColIndex).select(1);
+			// else if (comboTmpDataClass.getText().equals("Experiment"))
+			// arComboDataType.get(iColIndex).select(2);
+			// }
+			// });
 		}
 	}
 
-	private void createDataTypeBar()
-	{
+	private void createDataTypeBar() {
 
-		for (Combo tmpComboDataType : arComboDataType)
-		{
+		for (Combo tmpComboDataType : arComboDataType) {
 			tmpComboDataType.dispose();
 		}
 
@@ -874,17 +806,16 @@ public class FileLoadDataAction
 
 		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 0);
 
-		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++)
-		{
+		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
 			// previewTable.getColumn (iColIndex).pack();
 
 			// Initialize data type selection combo
 			final Combo comboTmpDataType = new Combo(previewTable, SWT.READ_ONLY);
-//			comboTmpDataType.setSize(100, previewTable.getItemHeight());
+			// comboTmpDataType.setSize(100, previewTable.getItemHeight());
 			comboTmpDataType.setEnabled(true);
-			comboTmpDataType.setItems(new String[] {"INT", "FLOAT", "STRING" });
+			comboTmpDataType.setItems(new String[] { "INT", "FLOAT", "STRING" });
 			comboTmpDataType.computeSize(SWT.DEFAULT, previewTable.getItemHeight());
-			
+
 			comboTmpDataType.select(1);
 
 			// should be ignored
@@ -892,22 +823,19 @@ public class FileLoadDataAction
 
 			TableEditor editor = new TableEditor(previewTable);
 			editor.grabHorizontal = true;
-		    editor.minimumHeight = comboTmpDataType.getSize().y;
-		    editor.minimumWidth = comboTmpDataType.getSize().x;
+			editor.minimumHeight = comboTmpDataType.getSize().y;
+			editor.minimumWidth = comboTmpDataType.getSize().x;
 			editor.setEditor(comboTmpDataType, tmpItem, iColIndex);
-			
-//			previewTable.getColumn(iColIndex).pack();
+
+			// previewTable.getColumn(iColIndex).pack();
 		}
-		
-//		previewTable.pack();
+
+		// previewTable.pack();
 	}
 
-	public void execute()
-	{
-		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
-		{
-			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
-			{
+	public void execute() {
+		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
+			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 				iOldSetID = set.getID();
 				break;
 			}
@@ -921,43 +849,37 @@ public class FileLoadDataAction
 		// Application.applicationMode = EApplicationMode.STANDARD;
 	}
 
-	private void createData()
-	{
+	private void createData() {
 		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
 		String sStorageIDs = "";
 
 		// Build input pattern from data type combos
 		sInputPattern = sInputPattern + "SKIP" + ";";
-		
+
 		Combo tmpComboDataType;
-		for (int iColIndex = 2; iColIndex < arComboDataType.size(); iColIndex++)
-		{
+		for (int iColIndex = 2; iColIndex < arComboDataType.size(); iColIndex++) {
 			tmpComboDataType = arComboDataType.get(iColIndex);
 
-			if (!arSkipColumn.get(iColIndex).getSelection())
-			{
+			if (!arSkipColumn.get(iColIndex).getSelection()) {
 				sInputPattern = sInputPattern + "SKIP" + ";";
 				continue;
 			}
-			
-			if (tmpComboDataType.getText().equals("FLOAT")
-					|| tmpComboDataType.getText().equals("SKIP"))
-			{
+
+			if (tmpComboDataType.getText().equals("FLOAT") || tmpComboDataType.getText().equals("SKIP")) {
 				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
 			}
 
-			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only  allow parsing float data
+			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only allow parsing float data
 			{
 				// Create data storage
-				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) GeneralManager
-						.get().getCommandManager().createCommandByType(
-								ECommandType.CREATE_STORAGE);
+				CmdDataCreateStorage cmdCreateStorage =
+					(CmdDataCreateStorage) GeneralManager.get().getCommandManager().createCommandByType(
+						ECommandType.CREATE_STORAGE);
 
 				cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
 				cmdCreateStorage.doCommand();
 
-				INumericalStorage storage = (INumericalStorage) cmdCreateStorage
-						.getCreatedObject();
+				INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
 
 				storage.setLabel(previewTable.getColumn(iColIndex).getText());
 
@@ -975,28 +897,28 @@ public class FileLoadDataAction
 
 		sFileName = txtFileName.getText();
 
-		if (sFileName.equals(""))
-		{
-			MessageDialog.openError(parentComposite.getShell(), "Invalid filename",
-					"Invalid filename");
+		if (sFileName.equals("")) {
+			MessageDialog.openError(parentComposite.getShell(), "Invalid filename", "Invalid filename");
 			return;
 		}
 
 		// Trigger file loading command
-		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) GeneralManager.get()
-				.getCommandManager().createCommandByType(ECommandType.LOAD_DATA_FILE);
+		CmdLoadFileNStorages cmdLoadCsv =
+			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager().createCommandByType(
+				ECommandType.LOAD_DATA_FILE);
 
 		// ISWTGUIManager iSWTGUIManager =
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
-				iStartParseFileAtLine - 1, -1);
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter, iStartParseFileAtLine - 1,
+			-1);
 		cmdLoadCsv.doCommand();
 
 		// Create SET
-		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) GeneralManager.get()
-				.getCommandManager().createCommandByType(ECommandType.CREATE_SET_DATA);
+		CmdDataCreateSet cmdCreateSet =
+			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
+				ECommandType.CREATE_SET_DATA);
 		cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
 		cmdCreateSet.doCommand();
 		ISet set = cmdCreateSet.getCreatedObject();
@@ -1004,69 +926,56 @@ public class FileLoadDataAction
 
 		// iSWTGUIManager.setProgressBarVisible(false);
 
-		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) GeneralManager
-				.get().getCommandManager().createCommandByType(
-						ECommandType.LOAD_LOOKUP_TABLE_FILE);
+		CmdLoadFileLookupTable cmdLoadLookupTableFile =
+			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
+				ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter,
-				"REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
+			"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter, "REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
 		cmdLoadLookupTableFile.doCommand();
 
-		if (!txtMin.getText().isEmpty())
-		{
+		if (!txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
-			if (!Float.isNaN(fMin))
-			{
+			if (!Float.isNaN(fMin)) {
 				set.setMin(fMin);
 			}
 
 		}
 
-		if (!txtMax.getText().isEmpty())
-		{
+		if (!txtMax.getText().isEmpty()) {
 			float fMax = Float.parseFloat(txtMax.getText());
-			if (!Float.isNaN(fMax))
-			{
+			if (!Float.isNaN(fMax)) {
 				set.setMax(fMax);
 			}
 		}
 
-		if (sDataRepMode.equals("Normal"))
-		{
+		if (sDataRepMode.equals("Normal")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
 		}
-		else if (sDataRepMode.equals("Log10"))
-		{
+		else if (sDataRepMode.equals("Log10")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);
 		}
-		else if (sDataRepMode.equals("Log2"))
-		{
+		else if (sDataRepMode.equals("Log2")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
 		}
-		else
-		{
+		else {
 			throw new IllegalStateException("Unknown data representation type");
 		}
 	}
 
-	private void setDataInViews()
-	{
-		for (AGLEventListener tmpGLEventListener : GeneralManager.get()
-				.getViewGLCanvasManager().getAllGLEventListeners())
-		{
+	private void setDataInViews() {
+		for (AGLEventListener tmpGLEventListener : GeneralManager.get().getViewGLCanvasManager()
+			.getAllGLEventListeners()) {
 			tmpGLEventListener.clearSets();
 			tmpGLEventListener.addSet(iCreatedSetID);
 
-			if (tmpGLEventListener.getClass().getSuperclass().equals(AStorageBasedView.class))
-			{
+			if (tmpGLEventListener.getClass().getSuperclass().equals(AStorageBasedView.class)) {
 				((AStorageBasedView) tmpGLEventListener).initData();
 			}
 		}
 	}
 
-	private void clearOldData()
-	{
+	private void clearOldData() {
 		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
 	}
 
@@ -1075,16 +984,14 @@ public class FileLoadDataAction
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Shell shell = new Shell();
-//		shell.setMaximized(true);
+		// shell.setMaximized(true);
 		LoadDataDialog dialog = new LoadDataDialog(shell);
 		dialog.open();
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 	}
 }

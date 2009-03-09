@@ -7,9 +7,7 @@ import org.caleydo.core.manager.IManager;
  * Manage all IVirtualArrays.
  * 
  * @author Alexander Lex
- * 
  */
 public interface IVirtualArrayManager
-	extends IManager<IVirtualArray>
-{
+	extends IManager<IVirtualArray> {
 }

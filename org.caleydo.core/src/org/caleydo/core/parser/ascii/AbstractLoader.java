@@ -3,6 +3,7 @@ package org.caleydo.core.parser.ascii;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.logging.Level;
+
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -14,16 +15,15 @@ import org.caleydo.core.manager.general.GeneralManager;
  * @author Marc Streit
  */
 public abstract class AbstractLoader
-	implements IParserObject
-{
+	implements IParserObject {
 	/**
 	 * File name
 	 */
 	private String sFileName = "";
 
 	/**
-	 * Defines the number of lines to be read from a file. only useful, if
-	 * loadData_TestLinesToBeRead() was called before reading the file.
+	 * Defines the number of lines to be read from a file. only useful, if loadData_TestLinesToBeRead() was
+	 * called before reading the file.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#computeNumberOfLinesInFile(BufferedReader)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
@@ -31,16 +31,15 @@ public abstract class AbstractLoader
 	private int iLinesInFileToBeRead = -1;
 
 	/**
-	 * Define numbers of lines to skip as assumed to be the header of a file.
-	 * Defines how many lines are part of the header file. By default these
-	 * lines are skipped during parsing. Default is 32, because gpr files have a
-	 * header of that size!
+	 * Define numbers of lines to skip as assumed to be the header of a file. Defines how many lines are part of
+	 * the header file. By default these lines are skipped during parsing. Default is 32, because gpr files have
+	 * a header of that size!
 	 */
 	protected int iStartParsingAtLine = 0;
 
 	/**
-	 * Define numbers of lines to skip as assumed to be the header of a file.
-	 * Default is -1 which means until the end of file.
+	 * Define numbers of lines to skip as assumed to be the header of a file. Default is -1 which means until
+	 * the end of file.
 	 */
 	protected int iStopParsingAtLine = Integer.MAX_VALUE;
 
@@ -56,8 +55,7 @@ public abstract class AbstractLoader
 	/**
 	 * Constructor.
 	 */
-	public AbstractLoader(final String sFileName)
-	{
+	public AbstractLoader(final String sFileName) {
 		this.sFileName = sFileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 
@@ -67,10 +65,10 @@ public abstract class AbstractLoader
 	/**
 	 * Set the current token separator.
 	 * 
-	 * @param sTokenSeparator current token separator
+	 * @param sTokenSeparator
+	 *          current token separator
 	 */
-	public final void setTokenSeperator(final String sTokenSeparator)
-	{
+	public final void setTokenSeperator(final String sTokenSeparator) {
 
 		if (sTokenSeparator.equals("\\t"))
 			sTokenSeperator = "\t";
@@ -83,8 +81,7 @@ public abstract class AbstractLoader
 	 * 
 	 * @return current token separator
 	 */
-	public final String getTokenSeperator()
-	{
+	public final String getTokenSeperator() {
 
 		return sTokenSeperator;
 	}
@@ -92,10 +89,10 @@ public abstract class AbstractLoader
 	/**
 	 * Set the current file name.
 	 * 
-	 * @param setFileName set current file name
+	 * @param setFileName
+	 *          set current file name
 	 */
-	public final void setFileName(String setFileName)
-	{
+	public final void setFileName(String setFileName) {
 
 		this.sFileName = setFileName;
 	}
@@ -105,26 +102,22 @@ public abstract class AbstractLoader
 	 * 
 	 * @return current file name
 	 */
-	public final String getFileName()
-	{
+	public final String getFileName() {
 
 		return this.sFileName;
 	}
 
 	public final void setStartParsingStopParsingAtLine(final int iStartParsingAtLine,
-			final int iStopParsingAtLine)
-	{
+		final int iStopParsingAtLine) {
 
 		this.iStartParsingAtLine = iStartParsingAtLine;
 
-		if (iStopParsingAtLine < 0)
-		{
+		if (iStopParsingAtLine < 0) {
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
 			return;
 		}
 
-		if (iStartParsingAtLine > iStopParsingAtLine)
-		{
+		if (iStartParsingAtLine > iStopParsingAtLine) {
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
 			// generalManager.logMsg(
 			// "AMicroArrayLoader.setStartParsingStopParsingAtLine() stop index is smaller than start index. set stop index to end of file!"
@@ -140,8 +133,7 @@ public abstract class AbstractLoader
 	 * 
 	 * @return first line to be read
 	 */
-	public final int getStartParsingAtLine()
-	{
+	public final int getStartParsingAtLine() {
 
 		return this.iStartParsingAtLine;
 	}
@@ -151,8 +143,7 @@ public abstract class AbstractLoader
 	 * 
 	 * @return last line to be parses
 	 */
-	public final int getStopParsingAtLine()
-	{
+	public final int getStopParsingAtLine() {
 
 		return this.iStopParsingAtLine;
 	}
@@ -160,19 +151,15 @@ public abstract class AbstractLoader
 	/**
 	 * Reads the file and counts the numbers of lines to be read.
 	 */
-	protected final int computeNumberOfLinesInFile(String sFileName) throws IOException
-	{
+	protected final int computeNumberOfLinesInFile(String sFileName) throws IOException {
 
 		int iCountLinesToBeRead = 0;
 		int iCountLines = 0;
 
-		try
-		{
-			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(
-					sFileName);
+		try {
+			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
-			while (((brFile.readLine()) != null) && (iCountLines <= iStopParsingAtLine))
-			{
+			while (brFile.readLine() != null && iCountLines <= iStopParsingAtLine) {
 				if (iCountLines > this.iStartParsingAtLine)
 					iCountLinesToBeRead++;
 
@@ -181,8 +168,7 @@ public abstract class AbstractLoader
 
 			brFile.close();
 		}
-		catch (IOException ioe)
-		{
+		catch (IOException ioe) {
 			throw new RuntimeException();
 		}
 
@@ -194,46 +180,37 @@ public abstract class AbstractLoader
 		return iCountLinesToBeRead;
 	}
 
-	public boolean loadData()
-	{
+	public boolean loadData() {
 
-		BufferedReader brFile = GeneralManager.get().getResourceLoader()
-				.getResource(sFileName);
+		BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
-		GeneralManager.get().getLogger().log(Level.INFO,
-				"Start loading file " + sFileName + "...");
+		GeneralManager.get().getLogger().log(Level.INFO, "Start loading file " + sFileName + "...");
 
-		try
-		{
+		try {
 			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
 		}
-		catch (IOException e)
-		{
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (brFile != null)
-		{
-			try
-			{
+		if (brFile != null) {
+			try {
 				brFile.close();
 			}
-			catch (IOException e)
-			{
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
-		GeneralManager.get().getLogger().log(Level.INFO,
-				"File " + sFileName + " successfully loaded.");
+		GeneralManager.get().getLogger().log(Level.INFO, "File " + sFileName + " successfully loaded.");
 
 		setArraysToStorages();
 
 		return true;
 	}
 
-	protected abstract void loadDataParseFile(BufferedReader brFile,
-			final int iNumberOfLinesInFile) throws IOException;
+	protected abstract void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
+		throws IOException;
 
 	protected abstract void setArraysToStorages();
 }

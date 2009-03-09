@@ -18,19 +18,17 @@ import org.eclipse.ui.splash.AbstractSplashHandler;
  * @author Marc Streit
  */
 public class InteractiveSplashHandler
-	extends AbstractSplashHandler
-{
+	extends AbstractSplashHandler {
 	private ProgressBar progressBar;
 
 	@Override
-	public void init(Shell splash)
-	{
+	public void init(Shell splash) {
 		// Store the shell
 		super.init(splash);
 
-//		// TODO: remove this when webstart splash bug is solved
-//		if (Application.bIsWebstart)
-//			return;
+		// // TODO: remove this when webstart splash bug is solved
+		// if (Application.bIsWebstart)
+		// return;
 
 		// Create UI
 		createUI();
@@ -45,8 +43,7 @@ public class InteractiveSplashHandler
 		splash.setText("Loading Caleydo...");
 	}
 
-	private void createUI()
-	{
+	private void createUI() {
 		Shell splash = getSplash();
 
 		progressBar = new ProgressBar(splash, SWT.SMOOTH | SWT.BORDER);
@@ -60,8 +57,7 @@ public class InteractiveSplashHandler
 		// (SWT.COLOR_BLACK));
 		progressMessageLabel.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
 		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
-		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(
-				SWT.COLOR_WHITE));
+		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label versionLabel = new Label(splash, SWT.NONE);
 		versionLabel.setText("Version " + Activator.sBundleVersion);// + " BETA");
@@ -74,63 +70,56 @@ public class InteractiveSplashHandler
 		brandingLabelTUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		brandingLabelTUGCaption.setBounds(20, 268, 500, 15);
 		brandingLabelTUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
+
 		Label brandingLabelTUGNames = new Label(splash, SWT.NONE);
-		brandingLabelTUGNames.setText("Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, Dieter Schmalstieg");
+		brandingLabelTUGNames
+			.setText("Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, Dieter Schmalstieg");
 		brandingLabelTUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
 		brandingLabelTUGNames.setBounds(20, 280, 500, 14);
 		brandingLabelTUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
+
 		Label brandingLabelMUGCaption = new Label(splash, SWT.NONE);
 		brandingLabelMUGCaption.setText("Medical Uiversity of Graz");
 		brandingLabelMUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		brandingLabelMUGCaption.setBounds(20, 298, 500, 15);
 		brandingLabelMUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
+
 		Label brandingLabelMUGNames = new Label(splash, SWT.NONE);
 		brandingLabelMUGNames.setText("Heimo Müller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
 		brandingLabelMUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
 		brandingLabelMUGNames.setBounds(20, 310, 300, 14);
 		brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
+
 		Label copyrightLabel = new Label(splash, SWT.NONE);
 		copyrightLabel.setText("© 2005 - 2009 - www.caleydo.org");
 		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		copyrightLabel.setBounds(390, 310, 175, 14);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
-		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
-				progressMessageLabel);
+
+		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
 	}
 
-	private void doEventLoop()
-	{
+	private void doEventLoop() {
 		final Shell splash = getSplash();
-		if (splash.getDisplay().readAndDispatch() == false)
-		{
+		if (splash.getDisplay().readAndDispatch() == false) {
 			splash.getDisplay().sleep();
 		}
 
 		// Make sure that splash screen remains the active window
-		splash.addFocusListener(new FocusListener()
-		{
-			public void focusGained(FocusEvent e)
-			{
+		splash.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {
 				// nothing to do
 			}
 
-			public void focusLost(FocusEvent e)
-			{
+			public void focusLost(FocusEvent e) {
 				splash.forceActive();
 			}
 		});
 	}
 
 	@Override
-	public void dispose()
-	{
-		if (!Application.bIsWebstart && !Application.bDoExit)
-		{
+	public void dispose() {
+		if (!Application.bIsWebstart && !Application.bDoExit) {
 			Application.startCaleydoCore();
 
 			// Start OpenGL rendering

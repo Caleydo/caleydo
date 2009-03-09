@@ -4,17 +4,14 @@ package org.caleydo.core.data.selection;
  * List of operations allowed in virtual array deltas ({@link VADeltaItem}
  * 
  * @author Alexander Lex
- * 
  */
-public enum EVAOperation
-{
+public enum EVAOperation {
 	/**
 	 * Append an element at the end of a virtual array
 	 */
 	APPEND,
 	/**
-	 * Append an element at the end of a virtual array, if the element is not
-	 * yet contained in the list
+	 * Append an element at the end of a virtual array, if the element is not yet contained in the list
 	 */
 	APPEND_UNIQUE,
 	/**
@@ -42,8 +39,8 @@ public enum EVAOperation
 	 */
 	MOVE_LEFT,
 	/**
-	 * Copy an element at a specific index. The result will be added at index +
-	 * 1, the rest will be moved one to the right
+	 * Copy an element at a specific index. The result will be added at index + 1, the rest will be moved one to
+	 * the right
 	 */
 	COPY
 }

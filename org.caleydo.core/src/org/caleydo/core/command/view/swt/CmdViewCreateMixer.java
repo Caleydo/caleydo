@@ -14,32 +14,27 @@ import org.caleydo.core.view.swt.mixer.MixerViewRep;
  * @author Marc Streit
  */
 public class CmdViewCreateMixer
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	int iNumberOfSliders = 1;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateMixer(final ECommandType cmdType)
-	{
+	public CmdViewCreateMixer(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1)
-		{
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
-					iParentContainerId);
+		if (iExternalID != -1) {
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
-		MixerViewRep mixerView = (MixerViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_MIXER, iParentContainerId, sLabel);
+		MixerViewRep mixerView =
+			(MixerViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_MIXER, iParentContainerId, sLabel);
 
 		viewManager.registerItem(mixerView);
 
@@ -47,30 +42,26 @@ public class CmdViewCreateMixer
 		mixerView.initView();
 		mixerView.drawView();
 
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(mixerView.getID(),
-					iExternalID);
+		if (iExternalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(mixerView.getID(), iExternalID);
 		}
 
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders", parameterHandler
-				.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()),
-				IParameterHandler.ParameterHandlerType.INT, "-1");
+			.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()), IParameterHandler.ParameterHandlerType.INT,
+			"-1");
 
 		iNumberOfSliders = parameterHandler.getValueInt("iNumberOfSliders");
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

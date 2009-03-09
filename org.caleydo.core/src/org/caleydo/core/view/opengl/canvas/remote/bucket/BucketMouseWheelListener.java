@@ -1,11 +1,13 @@
 package org.caleydo.core.view.opengl.canvas.remote.bucket;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -18,15 +20,14 @@ import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
  */
 public class BucketMouseWheelListener
 	extends MouseAdapter
-	implements MouseWheelListener, MouseMotionListener
-	{
-	
+	implements MouseWheelListener, MouseMotionListener {
+
 	private GLRemoteRendering bucketGLEventListener;
 
 	private float fBuketZoomMax = 0;
 
 	private final static int BUCKET_ZOOM_MAX = 400;
-	
+
 	private final static int BUCKET_ZOOM_STEP = 16;
 
 	private int iCurrentBucketZoom = 0;
@@ -47,34 +48,30 @@ public class BucketMouseWheelListener
 	 * Constructor.
 	 */
 	public BucketMouseWheelListener(final GLRemoteRendering remoteRendering3D,
-			final BucketLayoutRenderStyle bucketLayoutRenderStyle)
-	{
+		final BucketLayoutRenderStyle bucketLayoutRenderStyle) {
 		this.bucketGLEventListener = remoteRendering3D;
 		this.bucketLayoutRenderStyle = bucketLayoutRenderStyle;
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent event)
-	{
+	public void mouseWheelMoved(MouseWheelEvent event) {
 
 		// CTRL = Change horizontal zoom factor
 		// ALT = Change vertical zoom factor
 
 		if (bZoomActionRunning)
 			return;
-		
+
 		fBuketZoomMax = BUCKET_ZOOM_MAX;// * bucketGLEventListener.getAspectRatio();
 
 		// Change bucket tilt angle
-		if (event.isControlDown() || event.isAltDown())
-		{
+		if (event.isControlDown() || event.isAltDown()) {
 			float fTmpAngle = 0;
 			float fStepSize = 0.1f;
 			int notches = event.getWheelRotation();
 
 			// Change bucket tilt angle of left and right wall if CTRL is down
-			if (event.isControlDown() || event.isAltDown())
-			{
+			if (event.isControlDown() || event.isAltDown()) {
 				fTmpAngle = bucketLayoutRenderStyle.getZoomFactor();
 
 				if (notches < 0)
@@ -98,15 +95,13 @@ public class BucketMouseWheelListener
 		// zoom to bottom of the bucket
 		{
 			int notches = event.getWheelRotation();
-			if (notches < 0)
-			{
-				if (iCurrentBucketZoom == (int)fBuketZoomMax)
+			if (notches < 0) {
+				if (iCurrentBucketZoom == (int) fBuketZoomMax)
 					return;
 
 				bZoomIn = true;
 			}
-			else
-			{
+			else {
 				if (iCurrentBucketZoom == 0)
 					return;
 
@@ -118,87 +113,73 @@ public class BucketMouseWheelListener
 			bucketLayoutRenderStyle.initPoolLevel(bZoomIn, -1);
 
 			// Turn off picking while zoom action is running
-			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
-					false);
+			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(false);
 		}
 	}
 
-	public void render()
-	{
+	public void render() {
 		if (!bZoomActionRunning)
 			return;
 
-		if (iAnimationZoomCounter == 0 || //iCurrentBucketZoom < fBuketZoomMax)
-			iCurrentBucketZoom % (int)fBuketZoomMax != 0)
-		{
-			if (bZoomIn)
-			{
+		if (iAnimationZoomCounter == 0 || // iCurrentBucketZoom < fBuketZoomMax)
+			iCurrentBucketZoom % (int) fBuketZoomMax != 0) {
+			if (bZoomIn) {
 				iCurrentBucketZoom += BUCKET_ZOOM_STEP;
 				iAnimationZoomCounter += BUCKET_ZOOM_STEP;
 
-				bucketGLEventListener.getViewCamera().addCameraScale(
-						new Vec3f(0, 0, BUCKET_ZOOM_STEP / 100f));
+				bucketGLEventListener.getViewCamera().addCameraScale(new Vec3f(0, 0, BUCKET_ZOOM_STEP / 100f));
 
 				// fBucketTransparency = fCurrentBucketZoom / BUCKET_ZOOM_MAX;
 			}
-			else
-			{
+			else {
 				iCurrentBucketZoom -= BUCKET_ZOOM_STEP;
 				iAnimationZoomCounter -= BUCKET_ZOOM_STEP;
 
-				bucketGLEventListener.getViewCamera().addCameraScale(
-						new Vec3f(0, 0, -BUCKET_ZOOM_STEP / 100f));
+				bucketGLEventListener.getViewCamera().addCameraScale(new Vec3f(0, 0, -BUCKET_ZOOM_STEP / 100f));
 
 				// fBucketTransparency = fCurrentBucketZoom / -BUCKET_ZOOM_MAX;
 			}
 
-			if (iCurrentBucketZoom >= fBuketZoomMax)//iCurrentBucketZoom == (int)fBuketZoomMax)
+			if (iCurrentBucketZoom >= fBuketZoomMax)// iCurrentBucketZoom == (int)fBuketZoomMax)
 			{
 				bBucketBottomReached = true;
 
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID = bucketGLEventListener.getFocusLevel()
-						.getElementByPositionIndex(0).getContainedElementID();
+				int iGLEventListenerID =
+					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
 
-				if (iGLEventListenerID != -1)
-				{
-					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-							iGLEventListenerID).setDetailLevel(EDetailLevel.HIGH);
+				if (iGLEventListenerID != -1) {
+					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)
+						.setDetailLevel(EDetailLevel.HIGH);
 				}
 			}
-			else if (iCurrentBucketZoom == 0)
-			{
+			else if (iCurrentBucketZoom == 0) {
 				bBucketBottomReached = false;
 
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID = bucketGLEventListener.getFocusLevel()
-						.getElementByPositionIndex(0).getContainedElementID();
+				int iGLEventListenerID =
+					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
 
-				if (iGLEventListenerID != -1)
-				{
-					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-							iGLEventListenerID).setDetailLevel(EDetailLevel.MEDIUM);
+				if (iGLEventListenerID != -1) {
+					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)
+						.setDetailLevel(EDetailLevel.MEDIUM);
 				}
 			}
 		}
-		else
-		{
+		else {
 			iAnimationZoomCounter = 0;
 			bZoomActionRunning = false;
 
 			// Turn on picking after zoom action is done
-			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
-					true);
+			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(true);
 		}
 	}
 
-	public boolean isZoomedIn()
-	{
+	public boolean isZoomedIn() {
 		return bBucketBottomReached;
 	}
 
-	public void triggerZoom(boolean bZoomIn)
-	{
+	public void triggerZoom(boolean bZoomIn) {
 		bZoomActionRunning = true;
 		this.bZoomIn = bZoomIn;
 		bucketLayoutRenderStyle.initStackLevel(bZoomIn);
@@ -206,23 +187,19 @@ public class BucketMouseWheelListener
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e)
-	{
+	public void mouseEntered(MouseEvent e) {
 		grabFocus();
 	}
-	
+
 	@Override
-	public void mouseMoved(MouseEvent e) 
-	{
+	public void mouseMoved(MouseEvent e) {
 		grabFocus();
 	}
 
 	/**
-	 * Method forces the current view to be in focus.
-	 * This is needed to get events properly.
+	 * Method forces the current view to be in focus. This is needed to get events properly.
 	 */
-	private void grabFocus()
-	{
+	private void grabFocus() {
 		// Potential performance problem
 		bucketGLEventListener.getParentGLCanvas().requestFocus();
 	}

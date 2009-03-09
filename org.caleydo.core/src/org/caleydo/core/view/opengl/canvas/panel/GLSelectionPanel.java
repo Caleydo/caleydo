@@ -2,7 +2,9 @@ package org.caleydo.core.view.opengl.canvas.panel;
 
 import java.awt.Font;
 import java.util.ArrayList;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -26,6 +28,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -35,11 +38,11 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Marc Streit
  */
-@Deprecated // use heat map with list mode instead
+@Deprecated
+// use heat map with list mode instead
 public class GLSelectionPanel
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender
-{
+	implements IMediatorReceiver, IMediatorSender {
 	private GenericSelectionManager selectionManager;
 
 	private TextRenderer textRenderer;
@@ -51,9 +54,7 @@ public class GLSelectionPanel
 	/**
 	 * Constructor.
 	 */
-	public GLSelectionPanel(final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
-	{
+	public GLSelectionPanel(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_SELECTION_PANEL;
 
@@ -61,15 +62,15 @@ public class GLSelectionPanel
 
 		iAlElements = new ArrayList<Integer>();
 
-		GeneralManager.get().getEventPublisher().addReceiver(
-				EMediatorType.PROPAGATION_MEDIATOR, (IMediatorReceiver) this);
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.PROPAGATION_MEDIATOR,
+			(IMediatorReceiver) this);
 		// GeneralManager.get().getEventPublisher().addSender(
 		// EMediatorType.BUCKET_INTERNAL_INCOMING_MEDIATOR, (IMediatorSender)
 		// this);
 		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-				(IMediatorSender) this);
+			(IMediatorSender) this);
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				(IMediatorReceiver) this);
+			(IMediatorReceiver) this);
 		// GeneralManager.get().getEventPublisher().addReceiver(
 		// EMediatorType.BUCKET_INTERNAL_OUTGOING_MEDIATOR,
 		// (IMediatorReceiver)this);
@@ -80,8 +81,7 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public void initLocal(final GL gl)
-	{
+	public void initLocal(final GL gl) {
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
@@ -90,9 +90,8 @@ public class GLSelectionPanel
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
-	{
+		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
@@ -103,17 +102,14 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public void init(final GL gl)
-	{
+	public void init(final GL gl) {
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl)
-	{
+	public synchronized void displayLocal(final GL gl) {
 		pickingManager.handlePicking(iUniqueID, gl);
 
-		if (bIsDisplayListDirtyLocal)
-		{
+		if (bIsDisplayListDirtyLocal) {
 			rebuildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -124,10 +120,8 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl)
-	{
-		if (bIsDisplayListDirtyRemote)
-		{
+	public synchronized void displayRemote(final GL gl) {
+		if (bIsDisplayListDirtyRemote) {
 			rebuildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -138,8 +132,7 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public synchronized void display(final GL gl)
-	{
+	public synchronized void display(final GL gl) {
 		checkForHits(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
@@ -201,8 +194,7 @@ public class GLSelectionPanel
 	//
 	// }
 
-	private void rebuildDisplayList(GL gl, int iGLDisplayList)
-	{
+	private void rebuildDisplayList(GL gl, int iGLDisplayList) {
 		float fXOrigin = 0.05f;
 		float fYOrigin = -0.2f + viewFrustum.getTop() - viewFrustum.getBottom();
 
@@ -213,38 +205,29 @@ public class GLSelectionPanel
 		// textRenderer.setSmoothing(true);
 
 		String sOutput;
-		for (Integer iDavidID : iAlElements)
-		{
-			if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, iDavidID))
-			{
+		for (Integer iDavidID : iAlElements) {
+			if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, iDavidID)) {
 				renderSelectionHighlight(gl, fXOrigin, fYOrigin);
 				textRenderer.setColor(1, 1, 1, 1);
 			}
-			else if (selectionManager.checkStatus(ESelectionType.SELECTION, iDavidID))
-			{
+			else if (selectionManager.checkStatus(ESelectionType.SELECTION, iDavidID)) {
 				textRenderer.setColor(0, 1, 0, 1);
 				renderSelectionHighlight(gl, fXOrigin, fYOrigin);
 			}
-			else if (selectionManager.checkStatus(ESelectionType.NORMAL, iDavidID))
-			{
+			else if (selectionManager.checkStatus(ESelectionType.NORMAL, iDavidID)) {
 				textRenderer.setColor(0, 0, 0, 1);
 			}
 			else
-				throw new IllegalStateException(
-						"Cannot determine color for panel selection element " + iDavidID);
+				throw new IllegalStateException("Cannot determine color for panel selection element " + iDavidID);
 
-			sOutput = generalManager.getIDMappingManager().getID(
-					EMappingType.DAVID_2_GENE_SYMBOL, iDavidID)
-					+ " ("
-					+ generalManager.getIDMappingManager().getID(
-							EMappingType.DAVID_2_REFSEQ_MRNA, iDavidID) + ")";
+			sOutput =
+				generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID) + " ("
+					+ generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidID) + ")";
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.SELECTION_PANEL_ITEM, iDavidID));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.SELECTION_PANEL_ITEM, iDavidID));
 			gl.glTranslatef(fXOrigin, fYOrigin, 0);
 			textRenderer.begin3DRendering();
-			textRenderer.draw3D(sOutput.toString(), 0, 0, 0.1f, renderStyle
-					.getHeadingFontScalingFactor());
+			textRenderer.draw3D(sOutput.toString(), 0, 0, 0.1f, renderStyle.getHeadingFontScalingFactor());
 			textRenderer.end3DRendering();
 			gl.glPopName();
 			gl.glTranslatef(-fXOrigin, -fYOrigin, 0);
@@ -256,15 +239,11 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
-			int iExternalID, Pick pick)
-	{
-		switch (ePickingType)
-		{
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+		switch (ePickingType) {
 			case SELECTION_PANEL_ITEM:
 				ESelectionType selectionType;
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case DOUBLE_CLICKED:
 					case CLICKED:
 						selectionType = ESelectionType.SELECTION;
@@ -273,8 +252,7 @@ public class GLSelectionPanel
 						selectionType = ESelectionType.MOUSE_OVER;
 						break;
 					default:
-						pickingManager.flushHits(this.getID(),
-								EPickingType.SELECTION_PANEL_ITEM);
+						pickingManager.flushHits(this.getID(), EPickingType.SELECTION_PANEL_ITEM);
 						return;
 				}
 				selectionManager.clearSelection(selectionType);
@@ -290,8 +268,8 @@ public class GLSelectionPanel
 				selectionManager.addToType(selectionType, iExternalID);
 				// }
 
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+					selectionManager.getDelta()));
 
 				setDisplayListDirty();
 				break;
@@ -301,25 +279,21 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public synchronized String getShortInfo()
-	{
+	public synchronized String getShortInfo() {
 		return "no info for panel";
 	}
 
 	@Override
-	public synchronized String getDetailedInfo()
-	{
+	public synchronized String getDetailedInfo() {
 		return "no info for panel";
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type)
-	{
+	public void broadcastElements(EVAOperation type) {
 		// nothing to do here
 	}
 
-	private void renderBackground(final GL gl)
-	{
+	private void renderBackground(final GL gl) {
 		// Render panel background
 		gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
 		gl.glLineWidth(1);
@@ -340,10 +314,8 @@ public class GLSelectionPanel
 		gl.glEnd();
 	}
 
-	private void renderSelectionHighlight(final GL gl, float fXOrigin, float fYOrigin)
-	{
-		Texture tempTexture = iconTextureManager.getIconTexture(gl,
-				EIconTextures.PANEL_SELECTION);
+	private void renderSelectionHighlight(final GL gl, float fXOrigin, float fYOrigin) {
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.PANEL_SELECTION);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -365,30 +337,26 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType)
-	{
+	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		return 0;
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger,
-			IEventContainer eventContainer, EMediatorType eMediatorType)
-	{
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+		EMediatorType eMediatorType) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@Override
-	public void clearAllSelections()
-	{
+	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

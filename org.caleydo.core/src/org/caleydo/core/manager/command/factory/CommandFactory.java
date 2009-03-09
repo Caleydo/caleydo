@@ -36,15 +36,13 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
- * Class is responsible for creating the commands. The commands are created
- * according to the command type.
+ * Class is responsible for creating the commands. The commands are created according to the command type.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class CommandFactory
-	implements ICommandFactory
-{
+	implements ICommandFactory {
 	private ICommand lastCommand;
 
 	protected final IGeneralManager generalManager;
@@ -54,101 +52,81 @@ public class CommandFactory
 	/**
 	 * Constructor.
 	 */
-	public CommandFactory()
-	{
+	public CommandFactory() {
 		this.generalManager = GeneralManager.get();
 		this.commandManager = generalManager.getCommandManager();
 	}
 
 	@Override
-	public ICommand createCommandByType(final ECommandType cmdType)
-	{
+	public ICommand createCommandByType(final ECommandType cmdType) {
 		ICommand createdCommand = null;
 
-		switch (cmdType)
-		{
-			case LOAD_LOOKUP_TABLE_FILE:
-			{
+		switch (cmdType) {
+			case LOAD_LOOKUP_TABLE_FILE: {
 				createdCommand = new CmdLoadFileLookupTable(cmdType);
 				break;
 			}
-			case LOAD_DATA_FILE:
-			{
+			case LOAD_DATA_FILE: {
 				createdCommand = new CmdLoadFileNStorages(cmdType);
 				break;
 			}
-			case CREATE_STORAGE:
-			{
+			case CREATE_STORAGE: {
 				createdCommand = new CmdDataCreateStorage(cmdType);
 				break;
 			}
-			case CREATE_VIRTUAL_ARRAY:
-			{
+			case CREATE_VIRTUAL_ARRAY: {
 				createdCommand = new CmdDataCreateVirtualArray(cmdType);
 				break;
 			}
-			case CREATE_SET_DATA:
-			{
+			case CREATE_SET_DATA: {
 				createdCommand = new CmdDataCreateSet(cmdType);
 				break;
 			}
-			case CREATE_SWT_WINDOW:
-			{
+			case CREATE_SWT_WINDOW: {
 				createdCommand = new CmdWindowCreate(cmdType);
 				break;
 			}
-			case CREATE_SWT_CONTAINER:
-			{
+			case CREATE_SWT_CONTAINER: {
 				createdCommand = new CmdContainerCreate(cmdType);
 				break;
 			}
-			case CREATE_VIEW_SWT_GLCANVAS:
-			{
+			case CREATE_VIEW_SWT_GLCANVAS: {
 				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
 				break;
 			}
-			case CREATE_VIEW_RCP_GLCANVAS:
-			{
+			case CREATE_VIEW_RCP_GLCANVAS: {
 				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
 				break;
 			}
-			case CREATE_VIEW_PATHWAY:
-			{
+			case CREATE_VIEW_PATHWAY: {
 				createdCommand = new CmdViewCreatePathway(cmdType);
 				break;
 			}
-			case CREATE_VIEW_MIXER:
-			{
+			case CREATE_VIEW_MIXER: {
 				createdCommand = new CmdViewCreateMixer(cmdType);
 				break;
 			}
-			case CREATE_VIEW_GLYPHCONFIG:
-			{
+			case CREATE_VIEW_GLYPHCONFIG: {
 				createdCommand = new CmdViewCreateGlyphConfiguration(cmdType);
 				break;
 			}
-			case CREATE_VIEW_BROWSER:
-			{
+			case CREATE_VIEW_BROWSER: {
 				createdCommand = new CmdViewCreateHTMLBrowser(cmdType);
 				break;
 			}
-			case CREATE_VIEW_IMAGE:
-			{
+			case CREATE_VIEW_IMAGE: {
 				createdCommand = new CmdViewCreateImage(cmdType);
 				break;
 			}
-			case CREATE_VIEW_UNDO_REDO:
-			{
+			case CREATE_VIEW_UNDO_REDO: {
 				createdCommand = new CmdViewCreateUndoRedo(cmdType);
 				break;
 			}
-			case CREATE_VIEW_DATA_ENTITY_SEARCHER:
-			{
+			case CREATE_VIEW_DATA_ENTITY_SEARCHER: {
 				createdCommand = new CmdViewCreateDataEntitySearcher(cmdType);
 				break;
 			}
-			case CREATE_GL_PATHWAY_3D:
-			{
+			case CREATE_GL_PATHWAY_3D: {
 				createdCommand = new CmdCreateGLPathway(cmdType);
 				break;
 			}
@@ -165,53 +143,43 @@ public class CommandFactory
 			case CREATE_GL_CELL:
 			case CREATE_GL_REMOTE_GLYPH:
 			case CREATE_GL_PANEL_SELECTION:
-			case CREATE_GL_RADIAL_HIERARCHY:
-			{
+			case CREATE_GL_RADIAL_HIERARCHY: {
 				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
 			}
-			case EXTERNAL_OBJECT_SETTER:
-			{
+			case EXTERNAL_OBJECT_SETTER: {
 				createdCommand = new CmdExternalObjectSetter(cmdType);
 				break;
 			}
-			case EXTERNAL_FLAG_SETTER:
-			{
+			case EXTERNAL_FLAG_SETTER: {
 				createdCommand = new CmdExternalFlagSetter(cmdType);
 				break;
 			}
-			case EXTERNAL_ACTION_TRIGGER:
-			{
+			case EXTERNAL_ACTION_TRIGGER: {
 				createdCommand = new CmdExternalActionTrigger(cmdType);
 				break;
 			}
-			case EVENT_MEDIATOR_ADD_OBJECT:
-			{
+			case EVENT_MEDIATOR_ADD_OBJECT: {
 				createdCommand = new CmdEventMediatorAddObject(cmdType);
 				break;
 			}
-			case SYSTEM_SHUT_DOWN:
-			{
+			case SYSTEM_SHUT_DOWN: {
 				createdCommand = new CmdSystemExit(cmdType);
 				break;
 			}
-			case SET_SYSTEM_PATH_PATHWAYS:
-			{
+			case SET_SYSTEM_PATH_PATHWAYS: {
 				createdCommand = new CmdSetPathwayDatabasePath(cmdType);
 				break;
 			}
-			case LOAD_GLYPH_DEFINITIONS:
-			{
+			case LOAD_GLYPH_DEFINITIONS: {
 				createdCommand = new CmdLoadGlyphDefinition(cmdType);
 				break;
 			}
-			case LOAD_PATHWAY_DATA:
-			{
+			case LOAD_PATHWAY_DATA: {
 				createdCommand = new CmdLoadPathwayData(cmdType);
 				break;
 			}
-			case FETCH_PATHWAY_DATA:
-			{
+			case FETCH_PATHWAY_DATA: {
 				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
@@ -220,19 +188,16 @@ public class CommandFactory
 				// createdCommand = new CmdDataFilterMath(cmdType);
 				// break;
 				// }
-			case SET_DATA_REPRESENTATION:
-			{
+			case SET_DATA_REPRESENTATION: {
 				createdCommand = new CmdSetDataRepresentation(cmdType);
 				break;
 			}
-			case DATA_FILTER_MIN_MAX:
-			{
+			case DATA_FILTER_MIN_MAX: {
 				createdCommand = new CmdDataFilterMinMax(cmdType);
 				break;
 			}
 			default:
-				throw new IllegalStateException("Unsupported CommandQueue key= [" + cmdType
-						+ "]");
+				throw new IllegalStateException("Unsupported CommandQueue key= [" + cmdType + "]");
 		} // end switch
 
 		return createdCommand;
@@ -291,14 +256,12 @@ public class CommandFactory
 	// }
 
 	/**
-	 * Since the last created command is stored its reference is returned. Note:
-	 * be carefully with this method, because maybe the command was already
-	 * executed or destroyed, or a new command was created meanwhile
+	 * Since the last created command is stored its reference is returned. Note: be carefully with this method,
+	 * because maybe the command was already executed or destroyed, or a new command was created meanwhile
 	 * 
 	 * @return reference to last created command
 	 */
-	protected ICommand getLastCreatedCommand()
-	{
+	protected ICommand getLastCreatedCommand() {
 		return lastCommand;
 	}
 }

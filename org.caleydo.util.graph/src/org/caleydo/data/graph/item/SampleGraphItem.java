@@ -12,14 +12,13 @@ import org.caleydo.util.graph.item.GraphItem;
  * @author Michael Kalkusch
  */
 public class SampleGraphItem
-	extends GraphItem
-{
+	extends GraphItem {
 
 	/**
-	 * @param kind define NODE or EDGE
+	 * @param kind
+	 *          define NODE or EDGE
 	 */
-	public SampleGraphItem(EGraphItemKind kind)
-	{
+	public SampleGraphItem(EGraphItemKind kind) {
 		super(666, kind);
 
 		/** extend the Graph Item based on your requirements */

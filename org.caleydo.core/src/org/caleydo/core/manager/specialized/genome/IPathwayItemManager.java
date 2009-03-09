@@ -2,6 +2,7 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.IManager;
@@ -14,33 +15,29 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Marc Streit
  */
 public interface IPathwayItemManager
-	extends IManager<ICaleydoGraphItem>
-{
+	extends IManager<ICaleydoGraphItem> {
 
-	public IGraphItem createVertex(final String sName, final String sType,
-			final String sExternalLink, final String sReactionId);
+	public IGraphItem createVertex(final String sName, final String sType, final String sExternalLink,
+		final String sReactionId);
 
-	public IGraphItem createVertexGene(final String sName, final String sType,
-			final String sExternalLink, final String sReactionId, final int iDavidId);
-
-	public IGraphItem createVertexRep(final IGraph parentPathway,
-			final ArrayList<IGraphItem> alVertexGraphItem, final String sName,
-			final String sShapeType, final short shHeight, final short shWidth,
-			final short shXPosition, final short shYPosition);
+	public IGraphItem createVertexGene(final String sName, final String sType, final String sExternalLink,
+		final String sReactionId, final int iDavidId);
 
 	public IGraphItem createVertexRep(final IGraph parentPathway,
-			final IGraphItem parentVertex, final String sName, final String sShapeType,
-			final String sCoords);
+		final ArrayList<IGraphItem> alVertexGraphItem, final String sName, final String sShapeType,
+		final short shHeight, final short shWidth, final short shXPosition, final short shYPosition);
+
+	public IGraphItem createVertexRep(final IGraph parentPathway, final IGraphItem parentVertex,
+		final String sName, final String sShapeType, final String sCoords);
 
 	public IGraphItem createRelationEdge(final List<IGraphItem> alGraphItemIn,
-			final List<IGraphItem> alGraphItemOut, final String sType);
+		final List<IGraphItem> alGraphItemOut, final String sType);
 
-	public void createRelationEdgeRep(final IGraph parentPathway,
-			final IGraphItem pathwayRelationEdge, final IGraphItem graphItemIn,
-			final IGraphItem graphItemOut);
+	public void createRelationEdgeRep(final IGraph parentPathway, final IGraphItem pathwayRelationEdge,
+		final IGraphItem graphItemIn, final IGraphItem graphItemOut);
 
-	public IGraphItem createReactionEdge(final IGraph parentPathway,
-			final String sReactionName, final String sReactionType);
+	public IGraphItem createReactionEdge(final IGraph parentPathway, final String sReactionName,
+		final String sReactionType);
 
 	public int getPathwayVertexGraphItemIdByDavidId(final int iDavidId);
 

@@ -1,27 +1,24 @@
 package org.caleydo.core.util.sound;
 
 import java.io.File;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
-public class SoundPlayer
-{
+public class SoundPlayer {
 
 	private static boolean TURN_ON_SOUND = false;
 
-	public static void playSoundByFilename(String sFilename)
-	{
+	public static void playSoundByFilename(String sFilename) {
 
 		if (TURN_ON_SOUND == false)
 			return;
 
-		try
-		{
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(
-					sFilename));
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(sFilename));
 			AudioFormat af = audioInputStream.getFormat();
 			int size = (int) (af.getFrameSize() * audioInputStream.getFrameLength());
 			byte[] audio = new byte[size];
@@ -33,8 +30,7 @@ public class SoundPlayer
 			clip.start();
 
 		}
-		catch (Exception e)
-		{
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

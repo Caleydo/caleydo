@@ -13,8 +13,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  */
 public class FileNewProjectAction
 	extends Action
-	implements ActionFactory.IWorkbenchAction
-{
+	implements ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.rcp.FileNewProjectAction";
 
@@ -23,28 +22,25 @@ public class FileNewProjectAction
 	/**
 	 * Constructor.
 	 */
-	public FileNewProjectAction(final Composite parentComposite)
-	{
+	public FileNewProjectAction(final Composite parentComposite) {
 
 		super("New Project");
 
 		setId(ID);
 		setToolTipText("Create new project");
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-				IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
+			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
 
 		this.parentComposite = parentComposite;
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 
 		// nothing to do
 	}

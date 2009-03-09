@@ -7,8 +7,7 @@ import org.caleydo.core.command.base.ACommand;
  * @author Michael Kalkusch
  */
 public abstract class ACommandQueue
-	extends ACommand
-{
+	extends ACommand {
 
 	/**
 	 * Command QueueId
@@ -18,10 +17,10 @@ public abstract class ACommandQueue
 	/**
 	 * ISet CollectionId using this constructor.
 	 * 
-	 * @param iCmdQueueId define cmd queue by this id
+	 * @param iCmdQueueId
+	 *          define cmd queue by this id
 	 */
-	protected ACommandQueue(final ECommandType cmdType, final int iCmdQueueId)
-	{
+	protected ACommandQueue(final ECommandType cmdType, final int iCmdQueueId) {
 		super(cmdType);
 
 		this.iCmdQueueId = iCmdQueueId;
@@ -32,8 +31,7 @@ public abstract class ACommandQueue
 	 * 
 	 * @return CommandQueueId
 	 */
-	public final int getCmdQueueId()
-	{
+	public final int getCmdQueueId() {
 
 		return iCmdQueueId;
 	}
@@ -41,10 +39,10 @@ public abstract class ACommandQueue
 	/**
 	 * ISet a new QueueID. CommandQueueId = -1 indicates no queueId
 	 * 
-	 * @param setCmdQueueId new QueueId
+	 * @param setCmdQueueId
+	 *          new QueueId
 	 */
-	public final void setCmdQueueId(final int setCmdQueueId)
-	{
+	public final void setCmdQueueId(final int setCmdQueueId) {
 
 		this.iCmdQueueId = setCmdQueueId;
 	}

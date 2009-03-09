@@ -2,18 +2,20 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.open.Vec2i;
+
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
 
-public class GlyphGridPositionModel
-{
+public class GlyphGridPositionModel {
 	protected IGeneralManager generalManager = null;
 	protected GlyphRenderStyle renderStyle = null;
 
@@ -24,8 +26,7 @@ public class GlyphGridPositionModel
 	protected Vec2f glyphCenterWorld = null;
 	protected Vec2i glyphCenterGrid = null;
 
-	public GlyphGridPositionModel(GlyphRenderStyle renderStyle)
-	{
+	public GlyphGridPositionModel(GlyphRenderStyle renderStyle) {
 		generalManager = GeneralManager.get();
 		this.renderStyle = renderStyle;
 
@@ -34,36 +35,27 @@ public class GlyphGridPositionModel
 		glyphCenterGrid = new Vec2i();
 	}
 
-	public void setWorldLimit(int x, int y)
-	{
+	public void setWorldLimit(int x, int y) {
 		worldLimit.setXY(x, y);
 	}
 
-	public int getGridLayout()
-	{
+	public int getGridLayout() {
 		return iDisplayListGrid;
 	}
 
-	public void buildGrid(Vector<Vector<GlyphGridPosition>> glyphMap, GL gl)
-	{
+	public void buildGrid(Vector<Vector<GlyphGridPosition>> glyphMap, GL gl) {
 	}
 
-	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_,
-			ArrayList<GlyphEntry> gg)
-	{
-		GeneralManager.get().getLogger().log(Level.INFO,
-				"setGlyphPositions in base class called");
+	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg) {
+		GeneralManager.get().getLogger().log(Level.INFO, "setGlyphPositions in base class called");
 	}
 
-	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_,
-			ArrayList<GlyphEntry> gg, int centerX, int centerY)
-	{
-		GeneralManager.get().getLogger().log(Level.INFO,
-				"setGlyphPositions in base class called");
+	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg,
+		int centerX, int centerY) {
+		GeneralManager.get().getLogger().log(Level.INFO, "setGlyphPositions in base class called");
 	}
 
-	protected boolean isFree(Vector<Vector<GlyphGridPosition>> glyphMap, int x, int y)
-	{
+	protected boolean isFree(Vector<Vector<GlyphGridPosition>> glyphMap, int x, int y) {
 		if (glyphMap.contains(x))
 			if (glyphMap.get(x).contains(y))
 				if (glyphMap.get(x).get(y).getGlyph() != null)
@@ -72,13 +64,11 @@ public class GlyphGridPositionModel
 		return true;
 	}
 
-	public Vec2f getGlyphCenterWorld()
-	{
+	public Vec2f getGlyphCenterWorld() {
 		return glyphCenterWorld;
 	}
 
-	public Vec2i getGlyphCenterGrid()
-	{
+	public Vec2i getGlyphCenterGrid() {
 		return glyphCenterGrid;
 	}
 

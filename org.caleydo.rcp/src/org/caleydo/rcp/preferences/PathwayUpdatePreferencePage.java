@@ -19,18 +19,15 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public class PathwayUpdatePreferencePage
 	extends PreferencePage
-	implements IWorkbenchPreferencePage
-{
-	public PathwayUpdatePreferencePage()
-	{
+	implements IWorkbenchPreferencePage {
+	public PathwayUpdatePreferencePage() {
 		super();
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
 		setDescription("Preferences for updating pathway databases.");
 	}
 
 	@Override
-	public boolean performOk()
-	{
+	public boolean performOk() {
 
 		boolean bReturn = super.performOk();
 
@@ -53,8 +50,7 @@ public class PathwayUpdatePreferencePage
 	}
 
 	@Override
-	protected Control createContents(Composite parent)
-	{
+	protected Control createContents(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 
 		RowLayout layout = new RowLayout(SWT.VERTICAL);
@@ -65,10 +61,8 @@ public class PathwayUpdatePreferencePage
 		composite.setLayout(layout);
 
 		Label lastUpdateLabel = new Label(composite, SWT.NULL);
-		lastUpdateLabel
-				.setText("Last complete update: "
-						+ GeneralManager.get().getPreferenceStore().getString(
-								"lastPathwayDataUpdate"));
+		lastUpdateLabel.setText("Last complete update: "
+			+ GeneralManager.get().getPreferenceStore().getString("lastPathwayDataUpdate"));
 
 		FetchPathwayDataPage page = new FetchPathwayDataPage();
 		return page.createContent(composite, this);
@@ -102,14 +96,13 @@ public class PathwayUpdatePreferencePage
 	// }
 
 	@Override
-	public boolean performCancel()
-	{
+	public boolean performCancel() {
 		super.performCancel();
 
 		MessageBox messageBox = new MessageBox(this.getShell(), SWT.OK);
 		messageBox.setText("Pathway Update Notification");
 		messageBox.setMessage("You have cancelled the pathway update. "
-				+ "Please try again and wait until the update process has finished!");
+			+ "Please try again and wait until the update process has finished!");
 		// "The system restores the old pathway data fetched on"
 		// +GeneralManager.get()
 		// .getPreferenceStore().getString("lastPathwayDataUpdate"));
@@ -119,7 +112,6 @@ public class PathwayUpdatePreferencePage
 	}
 
 	@Override
-	public void init(IWorkbench workbench)
-	{
+	public void init(IWorkbench workbench) {
 	}
 }

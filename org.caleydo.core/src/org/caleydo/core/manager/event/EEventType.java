@@ -6,21 +6,18 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 
 /**
- * Types of events that can be send from a {@link IMediatorSender} to a
- * {@link IMediatorReceiver} Document every type, including a reference to the
- * implementing class
+ * Types of events that can be send from a {@link IMediatorSender} to a {@link IMediatorReceiver} Document
+ * every type, including a reference to the implementing class
  * 
  * @author Alexander Lex
  */
-public enum EEventType
-{
+public enum EEventType {
 	/**
 	 * Type for loading pathways by gene IDs, uses {@link IDListEventContainer}
 	 */
 	LOAD_PATHWAY_BY_GENE,
 	/**
-	 * Type for loading pathways by pathway IDs, uses
-	 * {@link IDListEventContainer}
+	 * Type for loading pathways by pathway IDs, uses {@link IDListEventContainer}
 	 */
 	LOAD_PATHWAY_BY_PATHWAY_ID,
 	/**
@@ -32,13 +29,11 @@ public enum EEventType
 	 */
 	SELECTION_UPDATE,
 	/**
-	 * Type for {@link DeltaEventContainer} with {@link IVirtualArrayDelta} as
-	 * type
+	 * Type for {@link DeltaEventContainer} with {@link IVirtualArrayDelta} as type
 	 */
 	VA_UPDATE,
 	/**
-	 * Type for {@link ViewCommandEventContainer}. Used to signal views for
-	 * example to redraw
+	 * Type for {@link ViewCommandEventContainer}. Used to signal views for example to redraw
 	 */
 	VIEW_COMMAND,
 	/**

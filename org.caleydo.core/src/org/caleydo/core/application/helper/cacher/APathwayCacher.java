@@ -3,6 +3,7 @@ package org.caleydo.core.application.helper.cacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
+
 import de.phleisch.app.itsucks.core.Dispatcher;
 import de.phleisch.app.itsucks.event.Event;
 import de.phleisch.app.itsucks.event.EventObserver;
@@ -16,8 +17,7 @@ import de.phleisch.app.itsucks.job.event.JobChangedEvent;
  * @author Marc Streit
  */
 public abstract class APathwayCacher
-	extends Thread
-{
+	extends Thread {
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -35,22 +35,16 @@ public abstract class APathwayCacher
 
 	protected int iExpectedDownloads = 0;
 
-	protected void processJobs(Dispatcher dispatcher)
-	{
-		dispatcher.getEventManager().registerObserver(new EventObserver()
-		{
+	protected void processJobs(Dispatcher dispatcher) {
+		dispatcher.getEventManager().registerObserver(new EventObserver() {
 			@Override
-			public void processEvent(Event arg0)
-			{
+			public void processEvent(Event arg0) {
 				if (arg0 instanceof JobChangedEvent
-						&& ((JobChangedEvent) arg0).getJob().getState() == Job.STATE_FINISHED)
-				{
+					&& ((JobChangedEvent) arg0).getJob().getState() == Job.STATE_FINISHED) {
 					iDownloadCount++;
 
-					progressBar.getDisplay().asyncExec(new Runnable()
-					{
-						public void run()
-						{
+					progressBar.getDisplay().asyncExec(new Runnable() {
+						public void run() {
 							if (progressBar.isDisposed())
 								return;
 
@@ -75,32 +69,27 @@ public abstract class APathwayCacher
 
 	protected abstract void triggerPathwayListGeneration();
 
-	public void setProxySettings(String sProxyServer, int iProxyPort)
-	{
+	public void setProxySettings(String sProxyServer, int iProxyPort) {
 		this.sProxyServer = sProxyServer;
 		this.iProxyPort = iProxyPort;
 
 		bEnableProxy = true;
 	}
 
-	public void createProxySettings(Dispatcher dispatcher)
-	{
+	public void createProxySettings(Dispatcher dispatcher) {
 
 		if (bEnableProxy == false)
 			return;
 
 		// get and create http retriever configuration
-		HttpRetrieverConfiguration httpConfiguration = (HttpRetrieverConfiguration) dispatcher
-				.getContext()
-				.getContextParameter(
-						HttpRetrieverConfiguration.CONTEXT_PARAMETER_HTTP_RETRIEVER_CONFIGURATION);
+		HttpRetrieverConfiguration httpConfiguration =
+			(HttpRetrieverConfiguration) dispatcher.getContext().getContextParameter(
+				HttpRetrieverConfiguration.CONTEXT_PARAMETER_HTTP_RETRIEVER_CONFIGURATION);
 
-		if (httpConfiguration == null)
-		{
+		if (httpConfiguration == null) {
 			httpConfiguration = new HttpRetrieverConfiguration();
 			dispatcher.getContext().setContextParameter(
-					HttpRetrieverConfiguration.CONTEXT_PARAMETER_HTTP_RETRIEVER_CONFIGURATION,
-					httpConfiguration);
+				HttpRetrieverConfiguration.CONTEXT_PARAMETER_HTTP_RETRIEVER_CONFIGURATION, httpConfiguration);
 		}
 
 		httpConfiguration.setProxyEnabled(true);

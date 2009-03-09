@@ -6,11 +6,9 @@ import java.util.ListIterator;
  * Iterator implementation for virtual arrays.
  * 
  * @author Alexander Lex
- * 
  */
 public class VAIterator
-	implements ListIterator<Integer>
-{
+	implements ListIterator<Integer> {
 
 	int iCount = -1;
 	VirtualArray virtualArray;
@@ -19,22 +17,20 @@ public class VAIterator
 	/**
 	 * Constructor
 	 * 
-	 * @param virtualArray the virtual array on which the iterator is executed
+	 * @param virtualArray
+	 *          the virtual array on which the iterator is executed
 	 */
-	public VAIterator(VirtualArray virtualArray)
-	{
+	public VAIterator(VirtualArray virtualArray) {
 		this.virtualArray = virtualArray;
 	}
 
 	@Override
-	public void add(Integer iNewElement)
-	{
+	public void add(Integer iNewElement) {
 		virtualArray.add(++iCount, iNewElement);
 	}
 
 	@Override
-	public boolean hasNext()
-	{
+	public boolean hasNext() {
 		if (iCount < virtualArray.size() - 1)
 			return true;
 
@@ -42,8 +38,7 @@ public class VAIterator
 	}
 
 	@Override
-	public boolean hasPrevious()
-	{
+	public boolean hasPrevious() {
 		if (iCount > 0)
 			return true;
 
@@ -51,29 +46,25 @@ public class VAIterator
 	}
 
 	@Override
-	public Integer next()
-	{
+	public Integer next() {
 		bLastMoveOperationWasPrevious = false;
 		return virtualArray.get(++iCount);
 
 	}
 
 	@Override
-	public int nextIndex()
-	{
+	public int nextIndex() {
 		return iCount + 1;
 	}
 
 	@Override
-	public Integer previous()
-	{
+	public Integer previous() {
 		bLastMoveOperationWasPrevious = true;
 		return virtualArray.get(iCount--);
 	}
 
 	@Override
-	public int previousIndex()
-	{
+	public int previousIndex() {
 		if (iCount < 0)
 			return -1;
 
@@ -81,8 +72,7 @@ public class VAIterator
 	}
 
 	@Override
-	public void remove()
-	{
+	public void remove() {
 		if (bLastMoveOperationWasPrevious)
 			virtualArray.remove(iCount);
 		else
@@ -90,8 +80,7 @@ public class VAIterator
 	}
 
 	@Override
-	public void set(Integer iNewElement)
-	{
+	public void set(Integer iNewElement) {
 		if (bLastMoveOperationWasPrevious)
 			virtualArray.set(iCount, iNewElement);
 		else

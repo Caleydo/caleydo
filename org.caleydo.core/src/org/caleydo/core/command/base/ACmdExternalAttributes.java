@@ -10,8 +10,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Marc Streit
  */
 public abstract class ACmdExternalAttributes
-	extends ACommand
-{
+	extends ACommand {
 
 	/**
 	 * Unique Id of the object, that will be created.
@@ -37,16 +36,13 @@ public abstract class ACmdExternalAttributes
 
 	/**
 	 * Constructor
-	 * 
 	 */
-	protected ACmdExternalAttributes(final ECommandType cmdType)
-	{
+	protected ACmdExternalAttributes(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
 		iExternalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());

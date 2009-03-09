@@ -7,27 +7,24 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class AngularBrushingAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Set angular brush";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/angular_brush.png";
 
 	/**
 	 * Constructor.
 	 */
-	public AngularBrushingAction(int iViewID)
-	{
+	public AngularBrushingAction(int iViewID) {
 		super(iViewID);
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		triggerCmdExternalAction(EExternalActionType.PARCOORDS_ANGULAR_BRUSHING);

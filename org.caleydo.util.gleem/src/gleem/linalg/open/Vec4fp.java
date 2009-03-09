@@ -1,31 +1,24 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003
- * Kenneth B. Russell (kbrussel@alum.mit.edu) Copying, distribution and use of
- * this software in source and binary forms, with or without modification, is
- * permitted provided that the following conditions are met: Distributions of
- * source code must reproduce the copyright notice, this list of conditions and
- * the following disclaimer in the source code header files; and Distributions
- * of binary code must reproduce the copyright notice, this list of conditions
- * and the following disclaimer in the documentation, Read me file, license file
- * and/or other materials provided with the software distribution. The names of
- * Sun Microsystems, Inc. ("Sun") and/or the copyright holder may not be used to
- * endorse or promote products derived from this software without specific prior
- * written permission. THIS SOFTWARE IS PROVIDED "AS IS," WITHOUT A WARRANTY OF
- * ANY KIND. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES,
- * INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- * PURPOSE, NON-INTERFERENCE, ACCURACY OF INFORMATIONAL CONTENT OR
- * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. THE COPYRIGHT HOLDER, SUN AND SUN'S
- * LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A
- * RESULT OF USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
- * IN NO EVENT WILL THE COPYRIGHT HOLDER, SUN OR SUN'S LICENSORS BE LIABLE FOR
- * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS
- * OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. YOU
- * ACKNOWLEDGE THAT THIS SOFTWARE IS NOT DESIGNED, LICENSED OR INTENDED FOR USE
- * IN THE DESIGN, CONSTRUCTION, OPERATION OR MAINTENANCE OF ANY NUCLEAR
- * FACILITY. THE COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS DISCLAIM ANY EXPRESS
- * OR IMPLIED WARRANTY OF FITNESS FOR SUCH USES.
+ * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
+ * without modification, is permitted provided that the following conditions are met: Distributions of source
+ * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
+ * source code header files; and Distributions of binary code must reproduce the copyright notice, this list
+ * of conditions and the following disclaimer in the documentation, Read me file, license file and/or other
+ * materials provided with the software distribution. The names of Sun Microsystems, Inc. ("Sun") and/or the
+ * copyright holder may not be used to endorse or promote products derived from this software without specific
+ * prior written permission. THIS SOFTWARE IS PROVIDED "AS IS," WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR
+ * IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, NON-INTERFERENCE, ACCURACY OF INFORMATIONAL CONTENT OR NON-INFRINGEMENT,
+ * ARE HEREBY EXCLUDED. THE COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
+ * SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES. IN
+ * NO EVENT WILL THE COPYRIGHT HOLDER, SUN OR SUN'S LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA,
+ * OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. YOU ACKNOWLEDGE THAT THIS SOFTWARE IS NOT DESIGNED, LICENSED OR
+ * INTENDED FOR USE IN THE DESIGN, CONSTRUCTION, OPERATION OR MAINTENANCE OF ANY NUCLEAR FACILITY. THE
+ * COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS DISCLAIM ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR SUCH
+ * USES.
  */
 
 package gleem.linalg.open;
@@ -34,47 +27,39 @@ package gleem.linalg.open;
 
 import gleem.linalg.Vecf;
 
-public class Vec4fp
-{
+public class Vec4fp {
 	public float x;
 	public float y;
 	public float z;
 	public float w;
 
-	public Vec4fp()
-	{
+	public Vec4fp() {
 	}
 
-	public Vec4fp(Vec4fp arg)
-	{
+	public Vec4fp(Vec4fp arg) {
 		set(arg);
 	}
 
-	public Vec4fp(float x, float y, float z, float w)
-	{
+	public Vec4fp(float x, float y, float z, float w) {
 		set(x, y, z, w);
 	}
 
-	public Vec4fp copy()
-	{
+	public Vec4fp copy() {
 		return new Vec4fp(this);
 	}
 
-	public void set(Vec4fp arg)
-	{
+	public void set(Vec4fp arg) {
 		set(arg.x, arg.y, arg.z, arg.w);
 	}
 
-	public void set(float x, float y, float z, float w)
-	{
+	public void set(float x, float y, float z, float w) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.w = w;
 	}
 
-	public void set(int x, int y, int z, double w)
-	{
+	public void set(int x, int y, int z, double w) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -82,10 +67,8 @@ public class Vec4fp
 	}
 
 	/** Sets the ith component, 0 <= i < 4 */
-	public void set(int i, float val)
-	{
-		switch (i)
-		{
+	public void set(int i, float val) {
+		switch (i) {
 			case 0:
 				x = val;
 				break;
@@ -104,10 +87,8 @@ public class Vec4fp
 	}
 
 	/** Gets the ith component, 0 <= i < 4 */
-	public float get(int i)
-	{
-		switch (i)
-		{
+	public float get(int i) {
+		switch (i) {
 			case 0:
 				return x;
 			case 1:
@@ -121,63 +102,51 @@ public class Vec4fp
 		}
 	}
 
-	public float x()
-	{
+	public float x() {
 		return x;
 	}
 
-	public float y()
-	{
+	public float y() {
 		return y;
 	}
 
-	public float z()
-	{
+	public float z() {
 		return z;
 	}
 
-	public float w()
-	{
+	public float w() {
 		return w;
 	}
 
-	public void setX(float x)
-	{
+	public void setX(float x) {
 		this.x = x;
 	}
 
-	public void setY(float y)
-	{
+	public void setY(float y) {
 		this.y = y;
 	}
 
-	public void setZ(float z)
-	{
+	public void setZ(float z) {
 		this.z = z;
 	}
 
-	public void setW(float w)
-	{
+	public void setW(float w) {
 		this.w = w;
 	}
 
-	public float dot(Vec4fp arg)
-	{
+	public float dot(Vec4fp arg) {
 		return x * arg.x + y * arg.y + z * arg.z + w * arg.w;
 	}
 
-	public float length()
-	{
+	public float length() {
 		return (float) Math.sqrt(lengthSquared());
 	}
 
-	public float lengthSquared()
-	{
+	public float lengthSquared() {
 		return this.dot(this);
 	}
 
-	public void normalize()
-	{
+	public void normalize() {
 		float len = length();
 		if (len == 0.0f)
 			return;
@@ -185,16 +154,14 @@ public class Vec4fp
 	}
 
 	/** Returns this * val; creates new vector */
-	public Vec4fp times(float val)
-	{
+	public Vec4fp times(float val) {
 		Vec4fp tmp = new Vec4fp(this);
 		tmp.scale(val);
 		return tmp;
 	}
 
 	/** this = this * val */
-	public void scale(float val)
-	{
+	public void scale(float val) {
 		x *= val;
 		y *= val;
 		z *= val;
@@ -202,22 +169,19 @@ public class Vec4fp
 	}
 
 	/** Returns this + arg; creates new vector */
-	public Vec4fp plus(Vec4fp arg)
-	{
+	public Vec4fp plus(Vec4fp arg) {
 		Vec4fp tmp = new Vec4fp();
 		tmp.add(this, arg);
 		return tmp;
 	}
 
 	/** this = this + b */
-	public void add(Vec4fp b)
-	{
+	public void add(Vec4fp b) {
 		add(this, b);
 	}
 
 	/** this = a + b */
-	public void add(Vec4fp a, Vec4fp b)
-	{
+	public void add(Vec4fp a, Vec4fp b) {
 		x = a.x + b.x;
 		y = a.y + b.y;
 		z = a.z + b.z;
@@ -225,16 +189,14 @@ public class Vec4fp
 	}
 
 	/** Returns this + s * arg; creates new vector */
-	public Vec4fp addScaled(float s, Vec4fp arg)
-	{
+	public Vec4fp addScaled(float s, Vec4fp arg) {
 		Vec4fp tmp = new Vec4fp();
 		tmp.addScaled(this, s, arg);
 		return tmp;
 	}
 
 	/** this = a + s * b */
-	public void addScaled(Vec4fp a, float s, Vec4fp b)
-	{
+	public void addScaled(Vec4fp a, float s, Vec4fp b) {
 		x = a.x + s * b.x;
 		y = a.y + s * b.y;
 		z = a.z + s * b.z;
@@ -242,22 +204,19 @@ public class Vec4fp
 	}
 
 	/** Returns this - arg; creates new vector */
-	public Vec4fp minus(Vec4fp arg)
-	{
+	public Vec4fp minus(Vec4fp arg) {
 		Vec4fp tmp = new Vec4fp();
 		tmp.sub(this, arg);
 		return tmp;
 	}
 
 	/** this = this - b */
-	public void sub(Vec4fp b)
-	{
+	public void sub(Vec4fp b) {
 		sub(this, b);
 	}
 
 	/** this = a - b */
-	public void sub(Vec4fp a, Vec4fp b)
-	{
+	public void sub(Vec4fp a, Vec4fp b) {
 		x = a.x - b.x;
 		y = a.y - b.y;
 		z = a.z - b.z;
@@ -265,29 +224,26 @@ public class Vec4fp
 	}
 
 	/**
-	 * Sets each component of this vector to the product of the component with
-	 * the corresponding component of the argument vector.
+	 * Sets each component of this vector to the product of the component with the corresponding component of
+	 * the argument vector.
 	 */
-	public void componentMul(Vec4fp arg)
-	{
+	public void componentMul(Vec4fp arg) {
 		x *= arg.x;
 		y *= arg.y;
 		z *= arg.z;
 		w *= arg.w;
 	}
 
-	public Vecf toVecf()
-	{
+	public Vecf toVecf() {
 		Vecf out = new Vecf(4);
-		for (int i = 0; i < 4; i++)
-		{
+		for (int i = 0; i < 4; i++) {
 			out.set(i, get(i));
 		}
 		return out;
 	}
 
-	public String toString()
-	{
+	@Override
+	public String toString() {
 		return "(" + x + ", " + y + ", " + z + ")";
 	}
 }

@@ -14,19 +14,14 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class PathwayLoadingProgressIndicatorAction
-	implements IWorkbenchWindowActionDelegate
-{
-	public void run(IAction action)
-	{
-		Job job = new Job("Loading pathways...   ")
-		{
+	implements IWorkbenchWindowActionDelegate {
+	public void run(IAction action) {
+		Job job = new Job("Loading pathways...   ") {
 			@Override
-			public IStatus run(IProgressMonitor monitor)
-			{
+			public IStatus run(IProgressMonitor monitor) {
 				// Turn on busy mode
-				for (AGLEventListener tmpGLEventListener : GeneralManager.get()
-						.getViewGLCanvasManager().getAllGLEventListeners())
-				{
+				for (AGLEventListener tmpGLEventListener : GeneralManager.get().getViewGLCanvasManager()
+					.getAllGLEventListeners()) {
 					if (!tmpGLEventListener.isRenderedRemote())
 						tmpGLEventListener.enableBusyMode(true);
 				}
@@ -34,15 +29,13 @@ public class PathwayLoadingProgressIndicatorAction
 				monitor.beginTask("Loading pathways", 100);
 
 				monitor.subTask("KEGG");
-				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager
-						.get().getPathwayManager().getPathwayDatabaseByType(
-								EPathwayDatabaseType.KEGG));
+				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
+					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
 				monitor.worked(50);
 
 				monitor.subTask("BioCarta");
-				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager
-						.get().getPathwayManager().getPathwayDatabaseByType(
-								EPathwayDatabaseType.BIOCARTA));
+				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
+					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
 				monitor.worked(50);
 
 				GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
@@ -50,9 +43,8 @@ public class PathwayLoadingProgressIndicatorAction
 				monitor.done();
 
 				// Turn off busy mode
-				for (AGLEventListener tmpGLEventListener : GeneralManager.get()
-						.getViewGLCanvasManager().getAllGLEventListeners())
-				{
+				for (AGLEventListener tmpGLEventListener : GeneralManager.get().getViewGLCanvasManager()
+					.getAllGLEventListeners()) {
 					if (!tmpGLEventListener.isRenderedRemote())
 						tmpGLEventListener.enableBusyMode(false);
 				}
@@ -64,18 +56,15 @@ public class PathwayLoadingProgressIndicatorAction
 		job.schedule();
 	}
 
-	public void dispose()
-	{
+	public void dispose() {
 		// TODO Auto-generated method stub
 	}
 
-	public void init(IWorkbenchWindow window)
-	{
+	public void init(IWorkbenchWindow window) {
 		// TODO Auto-generated method stub
 	}
 
-	public void selectionChanged(IAction action, ISelection selection)
-	{
+	public void selectionChanged(IAction action, ISelection selection) {
 		// TODO Auto-generated method stub
 	}
 }

@@ -13,45 +13,38 @@ import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
  * @author Marc Streit
  */
 public class CmdViewCreateSwtGLCanvas
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateSwtGLCanvas(final ECommandType cmdType)
-	{
+	public CmdViewCreateSwtGLCanvas(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		if (iExternalID != -1)
-		{
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
-					iParentContainerId);
+		if (iExternalID != -1) {
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
-		SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep) viewManager
-				.createGLView(EManagedObjectType.VIEW_GL_CANVAS, iParentContainerId, sLabel);
+		SwtJoglGLCanvasViewRep swtGLCanvasView =
+			(SwtJoglGLCanvasViewRep) viewManager.createGLView(EManagedObjectType.VIEW_GL_CANVAS,
+				iParentContainerId, sLabel);
 
 		swtGLCanvasView.initViewSWTComposite(null);
 		swtGLCanvasView.drawView();
 
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(
-					swtGLCanvasView.getGLCanvasID(), iExternalID);
+		if (iExternalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(swtGLCanvasView.getGLCanvasID(), iExternalID);
 		}
 
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

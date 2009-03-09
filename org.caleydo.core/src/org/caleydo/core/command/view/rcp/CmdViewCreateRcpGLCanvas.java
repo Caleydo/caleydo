@@ -1,6 +1,7 @@
 package org.caleydo.core.command.view.rcp;
 
 import javax.media.opengl.GLCapabilities;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IViewManager;
@@ -13,8 +14,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * @author Marc Streit
  */
 public class CmdViewCreateRcpGLCanvas
-	extends ACmdCreational<GLCaleydoCanvas>
-{
+	extends ACmdCreational<GLCaleydoCanvas> {
 
 	protected boolean bEnablePan = true;
 	protected boolean bEnableRotate = true;
@@ -23,14 +23,12 @@ public class CmdViewCreateRcpGLCanvas
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateRcpGLCanvas(final ECommandType cmdType)
-	{
+	public CmdViewCreateRcpGLCanvas(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 
@@ -41,10 +39,8 @@ public class CmdViewCreateRcpGLCanvas
 		// Register GL canvas to view manager
 		viewManager.registerGLCanvas(createdObject);
 
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(),
-					iExternalID);
+		if (iExternalID != -1) {
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
 		}
 
 		createdObject.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
@@ -53,14 +49,12 @@ public class CmdViewCreateRcpGLCanvas
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	public void setAttributes(int iParentCanvasID, boolean bEnablePan, boolean bEnableRotate,
-			boolean bEnableZoom)
-	{
+		boolean bEnableZoom) {
 		iExternalID = iParentCanvasID;
 
 		this.bEnablePan = bEnablePan;

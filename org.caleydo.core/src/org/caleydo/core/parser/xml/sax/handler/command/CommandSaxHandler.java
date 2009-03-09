@@ -17,8 +17,7 @@ import org.xml.sax.SAXException;
  * @author Marc Streit
  */
 public class CommandSaxHandler
-	extends AXmlParserHandler
-{
+	extends AXmlParserHandler {
 
 	/* XML Tags */
 	private final String sTag_Command = ECommandType.TAG_CMD.getXmlKey();
@@ -26,8 +25,7 @@ public class CommandSaxHandler
 	/* END: XML Tags */
 
 	/**
-	 * Since the opening tag is handled by the external handler this fal is set
-	 * to true by default.
+	 * Since the opening tag is handled by the external handler this fal is set to true by default.
 	 */
 	private boolean bCommandBuffer_isActive = false;
 	private boolean bCommandQueue_isActive = false;
@@ -35,11 +33,9 @@ public class CommandSaxHandler
 	protected ICommandQueue commandQueueIter = null;
 
 	/**
-	 * <Application > <CommandBuffer> <Cmd /> <Cmd /> </CommandBuffer>
-	 * </Application>
+	 * <Application > <CommandBuffer> <Cmd /> <Cmd /> </CommandBuffer> </Application>
 	 */
-	public CommandSaxHandler()
-	{
+	public CommandSaxHandler() {
 		super();
 		setXmlActivationTag("CommandBuffer");
 	}
@@ -50,8 +46,7 @@ public class CommandSaxHandler
 	 * @param attrs
 	 * @param bIsExternalFrame
 	 */
-	protected ICommand readCommandData(final Attributes attrs, boolean bIsExternalFrame)
-	{
+	protected ICommand readCommandData(final Attributes attrs, boolean bIsExternalFrame) {
 
 		ICommand lastCommand = null;
 
@@ -59,48 +54,46 @@ public class CommandSaxHandler
 
 		/* create new Frame */
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PROCESS.getXmlKey(),
-				ECommandType.TAG_PROCESS.getDefault(), ParameterHandlerType.STRING);
+			ECommandType.TAG_PROCESS.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(),
-				ECommandType.TAG_LABEL.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(), ECommandType.TAG_LABEL
+			.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_CMD_ID.getXmlKey(),
-				ECommandType.TAG_CMD_ID.getDefault(), ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_CMD_ID.getXmlKey(), ECommandType.TAG_CMD_ID
+			.getDefault(), ParameterHandlerType.INT);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_UNIQUE_ID.getXmlKey(),
-				ECommandType.TAG_UNIQUE_ID.getDefault(), ParameterHandlerType.INT);
+			ECommandType.TAG_UNIQUE_ID.getDefault(), ParameterHandlerType.INT);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_MEMENTO_ID.getXmlKey(),
-				ECommandType.TAG_MEMENTO_ID.getDefault(), ParameterHandlerType.INT);
+			ECommandType.TAG_MEMENTO_ID.getDefault(), ParameterHandlerType.INT);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(),
-				ECommandType.TAG_TYPE.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(), ECommandType.TAG_TYPE
+			.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT.getXmlKey(),
-				ECommandType.TAG_PARENT.getDefault(), ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT.getXmlKey(), ECommandType.TAG_PARENT
+			.getDefault(), ParameterHandlerType.INT);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE1.getXmlKey(),
-				ECommandType.TAG_ATTRIBUTE1.getDefault(), ParameterHandlerType.STRING);
+			ECommandType.TAG_ATTRIBUTE1.getDefault(), ParameterHandlerType.STRING);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE2.getXmlKey(),
-				ECommandType.TAG_ATTRIBUTE2.getDefault(), ParameterHandlerType.STRING);
+			ECommandType.TAG_ATTRIBUTE2.getDefault(), ParameterHandlerType.STRING);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE3.getXmlKey(),
-				ECommandType.TAG_ATTRIBUTE3.getDefault(), ParameterHandlerType.STRING);
+			ECommandType.TAG_ATTRIBUTE3.getDefault(), ParameterHandlerType.STRING);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE4.getXmlKey(),
-				ECommandType.TAG_ATTRIBUTE4.getDefault(), ParameterHandlerType.STRING);
+			ECommandType.TAG_ATTRIBUTE4.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs,
-				ECommandType.TAG_POS_GL_ORIGIN.getXmlKey(), ECommandType.TAG_POS_GL_ORIGIN
-						.getDefault(), ParameterHandlerType.VEC3F);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ORIGIN.getXmlKey(),
+			ECommandType.TAG_POS_GL_ORIGIN.getDefault(), ParameterHandlerType.VEC3F);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ROTATION
-				.getXmlKey(), ECommandType.TAG_POS_GL_ROTATION.getDefault(),
-				ParameterHandlerType.VEC4F);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ROTATION.getXmlKey(),
+			ECommandType.TAG_POS_GL_ROTATION.getDefault(), ParameterHandlerType.VEC4F);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(),
-				ECommandType.TAG_DETAIL.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(), ECommandType.TAG_DETAIL
+			.getDefault(), ParameterHandlerType.STRING);
 
 		// generalManager.logMsg(
 		// "XML-TAG= " + phAttributes.getValueString(
@@ -109,21 +102,17 @@ public class CommandSaxHandler
 
 		lastCommand = generalManager.getCommandManager().createCommand(phAttributes);
 
-		if (lastCommand != null)
-		{
-			String sData_Cmd_process = phAttributes.getValueString(ECommandType.TAG_PROCESS
-					.getXmlKey());
+		if (lastCommand != null) {
+			String sData_Cmd_process = phAttributes.getValueString(ECommandType.TAG_PROCESS.getXmlKey());
 
-			if (sData_Cmd_process.equals(ECommandType.RUN_CMD_NOW.toString()))
-			{
+			if (sData_Cmd_process.equals(ECommandType.RUN_CMD_NOW.toString())) {
 				// generalManager.logMsg("do command: " +
 				// lastCommand.toString(),
 				// LoggerType.FULL );
 				lastCommand.doCommand();
 			}
 		}
-		else
-		{
+		else {
 			// generalManager.logMsg("do command: command=null!",
 			// LoggerType.VERBOSE );
 		}
@@ -223,44 +212,35 @@ public class CommandSaxHandler
 	// }
 
 	/**
-	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt,
-	 *      org.xml.sax.Attributes)
+	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	@Override
-	public void startElement(String namespaceURI, String localName, String qName,
-			Attributes attrs) throws SAXException
-	{
+	public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
+		throws SAXException {
 
-		String eName = ("".equals(localName)) ? qName : localName;
+		String eName = "".equals(localName) ? qName : localName;
 
-		if (null != eName)
-		{
+		if (null != eName) {
 
-			if (eName.equals(sOpeningTag))
-			{
+			if (eName.equals(sOpeningTag)) {
 				/* <sFrameStateTag> */
-				if (bCommandBuffer_isActive)
-				{
+				if (bCommandBuffer_isActive) {
 					throw new SAXException("<" + sOpeningTag + "> already opened!");
 				}
-				else
-				{
+				else {
 					bCommandBuffer_isActive = true;
 					return;
 				}
 
 			} // end: if (eName.equals(sFrameStateTag)) {
-			else if (eName.equals(sTag_Command))
-			{
+			else if (eName.equals(sTag_Command)) {
 
-				if (bCommandBuffer_isActive)
-				{
+				if (bCommandBuffer_isActive) {
 					/**
 					 * <CommandBuffer> ... <Cmd ...>
 					 */
 
-					if (bCommandQueue_isActive)
-					{
+					if (bCommandQueue_isActive) {
 						/**
 						 * <CommandBuffer> ... <CmdQueue> <br>
 						 * ... <Cmd ...>
@@ -269,19 +249,16 @@ public class CommandSaxHandler
 						// readCommandQueueData( attrs, true );
 						ICommand lastCommand = readCommandData(attrs, true);
 
-						if (lastCommand != null)
-						{
+						if (lastCommand != null) {
 							commandQueueIter.addCmdToQueue(lastCommand);
 						}
-						else
-						{
+						else {
 							// generalManager.logMsg(
 							// "CommandQueue: no Command to add. skip it.",
 							// LoggerType.VERBOSE );
 						}
 					}
-					else
-					{
+					else {
 						/**
 						 * <CommandBuffer> ... <Cmd ...>
 						 */
@@ -289,8 +266,7 @@ public class CommandSaxHandler
 						// readCommandQueueData( attrs, true );
 						ICommand lastCommand = readCommandData(attrs, true);
 
-						if (lastCommand == null)
-						{
+						if (lastCommand == null) {
 							// generalManager.logMsg(
 							// "Command: can not execute command due to error while parsing. skip it."
 							// ,
@@ -300,25 +276,20 @@ public class CommandSaxHandler
 					}
 
 				}
-				else
-				{
-					throw new SAXException("<" + sTag_Command + "> opens without <"
-							+ sOpeningTag + "> being opened!");
+				else {
+					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag + "> being opened!");
 				}
 			}
-			else if (eName.equals(sTag_Command))
-			{
+			else if (eName.equals(sTag_Command)) {
 
 				/**
 				 * <CmdQueue ...>
 				 */
-				if (bCommandBuffer_isActive)
-				{
+				if (bCommandBuffer_isActive) {
 
-					if (bCommandQueue_isActive)
-					{
-						throw new SAXException("<" + sTag_CommandQueue + "> opens inside a <"
-								+ sTag_CommandQueue + "> block!");
+					if (bCommandQueue_isActive) {
+						throw new SAXException("<" + sTag_CommandQueue + "> opens inside a <" + sTag_CommandQueue
+							+ "> block!");
 					}
 
 					bCommandQueue_isActive = true;
@@ -326,10 +297,8 @@ public class CommandSaxHandler
 					// readCommandQueueData(attrs, true);
 
 				}
-				else
-				{
-					throw new SAXException("<" + sTag_Command + "> opens without <"
-							+ sOpeningTag + "> being opened!");
+				else {
+					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag + "> being opened!");
 				}
 
 			}
@@ -340,62 +309,49 @@ public class CommandSaxHandler
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	@Override
-	public void endElement(String namespaceURI, String localName, String qName)
-			throws SAXException
-	{
+	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
 
-		String eName = ("".equals(localName)) ? qName : localName;
+		String eName = "".equals(localName) ? qName : localName;
 
-		if (null != eName)
-		{
-			if (eName.equals(sOpeningTag))
-			{
+		if (null != eName) {
+			if (eName.equals(sOpeningTag)) {
 
 				/* </CommandBuffer> */
-				if (bCommandBuffer_isActive)
-				{
+				if (bCommandBuffer_isActive) {
 					bCommandBuffer_isActive = false;
 
 					/**
-					 * section (xml block) finished, call callback function from
-					 * IXmlParserManager
+					 * section (xml block) finished, call callback function from IXmlParserManager
 					 */
 					xmlParserManager.sectionFinishedByHandler(this);
 
 					return;
 				}
-				else
-				{
+				else {
 					throw new SAXException("<" + sOpeningTag + "> was already closed.");
 				}
 
 			}
-			else if (eName.equals(sTag_Command))
-			{
+			else if (eName.equals(sTag_Command)) {
 
 				/* </cmd> */
-				if (!bCommandBuffer_isActive)
-				{
-					throw new SAXException("<" + sTag_Command + "> opens without "
-							+ sOpeningTag + " being opened.");
+				if (!bCommandBuffer_isActive) {
+					throw new SAXException("<" + sTag_Command + "> opens without " + sOpeningTag + " being opened.");
 				}
 
 			}
-			else if (eName.equals(sTag_CommandQueue))
-			{
+			else if (eName.equals(sTag_CommandQueue)) {
 
 				/**
 				 * </CmdQueue ...>
 				 */
-				if (bCommandBuffer_isActive)
-				{
+				if (bCommandBuffer_isActive) {
 
 					bCommandQueue_isActive = false;
 				}
-				else
-				{
-					throw new SAXException("<" + sTag_CommandQueue + "> opens without "
-							+ sOpeningTag + " being opened.");
+				else {
+					throw new SAXException("<" + sTag_CommandQueue + "> opens without " + sOpeningTag
+						+ " being opened.");
 				}
 			}
 
@@ -408,8 +364,7 @@ public class CommandSaxHandler
 	 * Cleanup called by Manager after Handler is not used any more.
 	 */
 	@Override
-	public void destroyHandler()
-	{
+	public void destroyHandler() {
 		super.destroyHandler();
 	}
 }

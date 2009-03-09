@@ -1,7 +1,9 @@
 package org.caleydo.core.data.selection;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
+
 import org.caleydo.core.data.mapping.EIDType;
 
 /**
@@ -10,8 +12,7 @@ import org.caleydo.core.data.mapping.EIDType;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectedElementRep
-{
+public class SelectedElementRep {
 	private int iContainingViewID;
 
 	private EIDType idType;
@@ -24,14 +25,15 @@ public class SelectedElementRep
 	/**
 	 * Constructor. Use this constructor for a one point element rep
 	 * 
-	 * @param iDType the type of the element to be connected.
-	 * @param iContainingViewID the unique id of the view
+	 * @param iDType
+	 *          the type of the element to be connected.
+	 * @param iContainingViewID
+	 *          the unique id of the view
 	 * @param fXCoord
 	 * @param fYCoord
 	 */
-	public SelectedElementRep(EIDType idType, final int iContainingViewID,
-			final float fXCoord, final float fYCoord, final float fZCoord)
-	{
+	public SelectedElementRep(EIDType idType, final int iContainingViewID, final float fXCoord,
+		final float fYCoord, final float fZCoord) {
 
 		this.idType = idType;
 		this.iContainingViewID = iContainingViewID;
@@ -42,12 +44,12 @@ public class SelectedElementRep
 	/**
 	 * Constructor. Use this constructor for a list of points
 	 * 
-	 * @param iContainingViewID the unique id of the view
-	 * @param alPoints the list of connection points
+	 * @param iContainingViewID
+	 *          the unique id of the view
+	 * @param alPoints
+	 *          the list of connection points
 	 */
-	public SelectedElementRep(EIDType idType, final int iContainingViewID,
-			final ArrayList<Vec3f> alPoints)
-	{
+	public SelectedElementRep(EIDType idType, final int iContainingViewID, final ArrayList<Vec3f> alPoints) {
 
 		this.idType = idType;
 		this.iContainingViewID = iContainingViewID;
@@ -55,14 +57,12 @@ public class SelectedElementRep
 	}
 
 	/**
-	 * Returns the type which the representation belongs to. Examples are gene
-	 * expression values, expression experiments. See {@link EIDType} for
-	 * details.
+	 * Returns the type which the representation belongs to. Examples are gene expression values, expression
+	 * experiments. See {@link EIDType} for details.
 	 * 
 	 * @return the type of the id
 	 */
-	public EIDType getIDType()
-	{
+	public EIDType getIDType() {
 		return idType;
 	}
 
@@ -71,8 +71,7 @@ public class SelectedElementRep
 	 * 
 	 * @return the id
 	 */
-	public int getContainingViewID()
-	{
+	public int getContainingViewID() {
 		return iContainingViewID;
 	}
 
@@ -81,8 +80,7 @@ public class SelectedElementRep
 	 * 
 	 * @return
 	 */
-	public ArrayList<Vec3f> getPoints()
-	{
+	public ArrayList<Vec3f> getPoints() {
 		return alPoints;
 	}
 	// public float getXCoord() {

@@ -7,8 +7,7 @@ import javax.media.opengl.GL;
  * 
  * @author Marc Streit
  */
-public interface IGLMiniView
-{
+public interface IGLMiniView {
 
 	public abstract void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin);
 

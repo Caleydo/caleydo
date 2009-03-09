@@ -37,15 +37,13 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 /**
- * Info area that is located in the side-bar. It shows the current view and the
- * current selection (in a tree).
+ * Info area that is located in the side-bar. It shows the current view and the current selection (in a tree).
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 public class InfoArea
-	implements IMediatorReceiver
-{
+	implements IMediatorReceiver {
 	private Label lblViewInfoContent;
 
 	private Tree selectionTree;
@@ -65,8 +63,7 @@ public class InfoArea
 	/**
 	 * Constructor.
 	 */
-	public InfoArea()
-	{
+	public InfoArea() {
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION, this);
 
@@ -74,8 +71,7 @@ public class InfoArea
 		idMappingManager = GeneralManager.get().getIDMappingManager();
 	}
 
-	public Control createControl(final Composite parent)
-	{
+	public Control createControl(final Composite parent) {
 		// Font font = new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD);
 
 		parentComposite = parent;
@@ -109,15 +105,13 @@ public class InfoArea
 		lblViewInfoContent.setText("");
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 
-		if (ToolBarView.bHorizontal)
-		{
+		if (ToolBarView.bHorizontal) {
 			gridData.minimumWidth = 150;
 			gridData.widthHint = 150;
 			gridData.minimumHeight = 72;
 			gridData.heightHint = 72;
 		}
-		else
-		{
+		else {
 			gridData.minimumWidth = 100;
 			gridData.widthHint = 150;
 			gridData.minimumHeight = 82;
@@ -130,15 +124,13 @@ public class InfoArea
 		gridData.heightHint = 62;
 		gridData.minimumHeight = 62;
 
-		if (Application.bIsWindowsOS)
-		{
+		if (Application.bIsWindowsOS) {
 			// In windows the list needs more space because of no multi line
 			// support
 			gridData.widthHint = 145;
 			gridData.minimumWidth = 145;
 		}
-		else
-		{
+		else {
 			gridData.widthHint = 120;
 			gridData.minimumWidth = 120;
 		}
@@ -146,12 +138,10 @@ public class InfoArea
 		selectionTree.setLayoutData(gridData);
 
 		// selectionTree.setItemCount(2);
-		selectionTree.addSelectionListener(new SelectionAdapter()
-		{
+		selectionTree.addSelectionListener(new SelectionAdapter() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
+			public void widgetSelected(SelectionEvent e) {
 				super.widgetSelected(e);
 
 				// ((HTMLBrowserView)
@@ -176,37 +166,27 @@ public class InfoArea
 		return parent;
 	}
 
-	private void handleSelectionUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta)
-	{
-		parentComposite.getDisplay().asyncExec(new Runnable()
-		{
-			public void run()
-			{
-				if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-				{
-					if ((eventTrigger instanceof AGLEventListener))
-					{
+	private void handleSelectionUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta) {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
+					if (eventTrigger instanceof AGLEventListener) {
 						lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
 					}
 
-					for (SelectionDeltaItem selectionItem : selectionDelta)
-					{
+					for (SelectionDeltaItem selectionItem : selectionDelta) {
 						if (selectionItem.getSelectionType() == ESelectionType.NORMAL
-							|| selectionItem.getSelectionType() == ESelectionType.DESELECTED)
-						{
+							|| selectionItem.getSelectionType() == ESelectionType.DESELECTED) {
 							// Flush old items that become deselected/normal
-							for (TreeItem tmpItem : selectionTree.getItems())
-							{
+							for (TreeItem tmpItem : selectionTree.getItems()) {
 								if (tmpItem.getData() == null
-									|| ((Integer) tmpItem.getData()).intValue() == selectionItem.getPrimaryID())
-								{
+									|| ((Integer) tmpItem.getData()).intValue() == selectionItem.getPrimaryID()) {
 									tmpItem.dispose();
 								}
 							}
 						}
 						else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
-							|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
-						{
+							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
 							Color color;
 							float[] fArColor = null;
 
@@ -216,16 +196,15 @@ public class InfoArea
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 
 							color =
-								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
-									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
+								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255), (int) (fArColor[1] * 255),
+									(int) (fArColor[2] * 255));
 
 							String sRefSeqID =
 								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, selectionItem
 									.getPrimaryID());
 
 							Integer iDavidID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem
-									.getPrimaryID());
+								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem.getPrimaryID());
 
 							String sGeneSymbol = idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
@@ -233,11 +212,9 @@ public class InfoArea
 								sGeneSymbol = "Unknown";
 
 							boolean bIsExisting = false;
-							for (TreeItem existingItem : selectionTree.getItems())
-							{
+							for (TreeItem existingItem : selectionTree.getItems()) {
 								if (existingItem.getText().equals(sGeneSymbol)
-									&& ((Integer) existingItem.getData()).intValue() == selectionItem.getPrimaryID())
-								{
+									&& ((Integer) existingItem.getData()).intValue() == selectionItem.getPrimaryID()) {
 									existingItem.setBackground(color);
 									existingItem.getItem(0).setBackground(color);
 									existingItem.setData("selection_type", selectionItem.getSelectionType());
@@ -246,8 +223,7 @@ public class InfoArea
 								}
 							}
 
-							if (!bIsExisting)
-							{
+							if (!bIsExisting) {
 								TreeItem item = new TreeItem(selectionTree, SWT.NONE);
 								if (ToolBarView.bHorizontal || Application.bIsWindowsOS)
 									item.setText(sGeneSymbol + " - " + sRefSeqID);
@@ -314,55 +290,46 @@ public class InfoArea
 		});
 	}
 
-	private void addGlyphInfo(SelectionDeltaItem selectionItem, TreeItem item)
-	{
+	private void addGlyphInfo(SelectionDeltaItem selectionItem, TreeItem item) {
 		GlyphEntry entry = glyphManager.getGlyphs().get(selectionItem.getPrimaryID());
 
 		if (entry == null)
 			return;
 
-		for (int i = 0; i < entry.getNumberOfParameters(); ++i)
-		{
-			String info = glyphManager.getGlyphAttributeInfoStringWithInternalColumnNumber(i, entry.getParameter(i));
+		for (int i = 0; i < entry.getNumberOfParameters(); ++i) {
+			String info =
+				glyphManager.getGlyphAttributeInfoStringWithInternalColumnNumber(i, entry.getParameter(i));
 
 			TreeItem subitem = new TreeItem(item, SWT.NONE);
 			subitem.setText(info);
 		}
 
-		for (String key : entry.getStringParameterColumnNames())
-		{
+		for (String key : entry.getStringParameterColumnNames()) {
 			String info = key + ": " + entry.getStringParameter(key);
 			TreeItem subitem = new TreeItem(item, SWT.NONE);
 			subitem.setText(info);
 		}
 	}
 
-	private void handleVAUpdate(final IUniqueObject eventTrigger, final IVirtualArrayDelta delta)
-	{
+	private void handleVAUpdate(final IUniqueObject eventTrigger, final IVirtualArrayDelta delta) {
 		if (delta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
 		if (parentComposite.isDisposed())
 			return;
 
-		parentComposite.getDisplay().asyncExec(new Runnable()
-		{
-			public void run()
-			{
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
 				if (!(eventTrigger instanceof AGLEventListener))
 					return;
 
 				lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
 
-				for (VADeltaItem item : delta)
-				{
-					if (item.getType() == EVAOperation.REMOVE_ELEMENT)
-					{
+				for (VADeltaItem item : delta) {
+					if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
 						// Flush old items that become deselected/normal
-						for (TreeItem tmpItem : selectionTree.getItems())
-						{
-							if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID())
-							{
+						for (TreeItem tmpItem : selectionTree.getItems()) {
+							if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID()) {
 								tmpItem.dispose();
 							}
 						}
@@ -377,18 +344,15 @@ public class InfoArea
 	// return selectionDelta;
 	// }
 
-	protected AGLEventListener getUpdateTriggeringView()
-	{
+	protected AGLEventListener getUpdateTriggeringView() {
 		return updateTriggeringView;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType)
-	{
-		switch (eventContainer.getEventType())
-		{
+		EMediatorType eMediatorType) {
+		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
 				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
 					(DeltaEventContainer<ISelectionDelta>) eventContainer;
@@ -402,8 +366,7 @@ public class InfoArea
 			case TRIGGER_SELECTION_COMMAND:
 				final SelectionCommandEventContainer commandEventContainer =
 					(SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType())
-				{
+				switch (commandEventContainer.getIDType()) {
 					case DAVID:
 					case REFSEQ_MRNA_INT:
 					case EXPRESSION_INDEX:
@@ -411,26 +374,19 @@ public class InfoArea
 						if (parentComposite.isDisposed())
 							return;
 
-						parentComposite.getDisplay().asyncExec(new Runnable()
-						{
-							public void run()
-							{
+						parentComposite.getDisplay().asyncExec(new Runnable() {
+							public void run() {
 								ESelectionCommandType cmdType;
-								for (SelectionCommand cmd : commandEventContainer.getSelectionCommands())
-								{
+								for (SelectionCommand cmd : commandEventContainer.getSelectionCommands()) {
 									cmdType = cmd.getSelectionCommandType();
-									if (cmdType == ESelectionCommandType.RESET
-										|| cmdType == ESelectionCommandType.CLEAR_ALL)
-									{
+									if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
 										selectionTree.removeAll();
 										break;
 									}
-									else if (cmdType == ESelectionCommandType.CLEAR)
-									{
+									else if (cmdType == ESelectionCommandType.CLEAR) {
 										// Flush old items that become
 										// deselected/normal
-										for (TreeItem tmpItem : selectionTree.getItems())
-										{
+										for (TreeItem tmpItem : selectionTree.getItems()) {
 											if (tmpItem.getData("selection_type") == cmd.getSelectionType())
 												tmpItem.dispose();
 										}
@@ -451,10 +407,8 @@ public class InfoArea
 					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(infoEventContainer.getViewID());
 
 				shortInfo = view.getShortInfo();
-				parentComposite.getDisplay().asyncExec(new Runnable()
-				{
-					public void run()
-					{
+				parentComposite.getDisplay().asyncExec(new Runnable() {
+					public void run() {
 						lblViewInfoContent.setText(shortInfo);
 					}
 				});

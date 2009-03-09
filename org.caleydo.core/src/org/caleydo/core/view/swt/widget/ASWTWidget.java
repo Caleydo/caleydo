@@ -9,8 +9,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class ASWTWidget
-	implements ISWTWidget
-{
+	implements ISWTWidget {
 
 	/**
 	 * Composite in which the content of the View should be placed.
@@ -20,14 +19,12 @@ public abstract class ASWTWidget
 	protected int iUniqueId;
 
 	/**
-	 * Constructor that takes the composite in which it should place the
-	 * content.
+	 * Constructor that takes the composite in which it should place the content.
 	 * 
-	 * @param composite Reference to the composite that is supposed to be
-	 *            filled.
+	 * @param composite
+	 *          Reference to the composite that is supposed to be filled.
 	 */
-	protected ASWTWidget(Composite parentComposite)
-	{
+	protected ASWTWidget(Composite parentComposite) {
 		this.parentComposite = parentComposite;
 	}
 }

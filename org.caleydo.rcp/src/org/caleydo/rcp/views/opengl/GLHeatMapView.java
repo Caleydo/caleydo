@@ -18,25 +18,21 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 public class GLHeatMapView
-	extends AGLViewPart
-{
+	extends AGLViewPart {
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLHeatMapView";
 
 	/**
 	 * Constructor.
 	 */
-	public GLHeatMapView()
-	{
+	public GLHeatMapView() {
 		super();
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
-		{
+		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();
@@ -49,18 +45,14 @@ public class GLHeatMapView
 		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID(), true);
 	}
 
-	public static void createToolBarItems(int iViewID)
-	{
-		 GLHeatMap heatMap = (GLHeatMap)
-		 GeneralManager.get().getViewGLCanvasManager()
-		 .getGLEventListener(iViewID);
+	public static void createToolBarItems(int iViewID) {
+		GLHeatMap heatMap = (GLHeatMap) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 
 		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
 		alToolbar.add(switchAxesToPolylinesAction);
-		if (!heatMap.isRenderedRemote())
-		{
+		if (!heatMap.isRenderedRemote()) {
 			IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
 			alToolbar.add(clearSelectionsAction);
 			IAction resetViewAction = new ResetViewAction(iViewID);

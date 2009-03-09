@@ -11,31 +11,26 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Marc Streit
  */
 public class CmdDataCreateVirtualArray
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateVirtualArray(final ECommandType cmdType)
-	{
+	public CmdDataCreateVirtualArray(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 	}
 }

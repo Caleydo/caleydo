@@ -19,7 +19,6 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
@@ -47,8 +46,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender
-{
+	implements IMediatorReceiver, IMediatorSender {
 
 	protected ISet set;
 	protected ESetType setType;
@@ -104,14 +102,13 @@ public abstract class AStorageBasedView
 	 * Constructor for storage based views
 	 * 
 	 * @param setType
-	 *            from the type of set the kind of visualization is derived
+	 *          from the type of set the kind of visualization is derived
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
 	protected AStorageBasedView(ESetType setType, final int iGLCanvasID, final String sLabel,
-		final IViewFrustum viewFrustum)
-	{
+		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		this.setType = setType;
@@ -128,9 +125,8 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Toggle whether to render the complete dataset (with regards to the
-	 * filters though) or only contextual data This effectively means switching
-	 * between the {@link EStorageBasedVAType#COMPLETE_SELECTION} and
+	 * Toggle whether to render the complete dataset (with regards to the filters though) or only contextual
+	 * data This effectively means switching between the {@link EStorageBasedVAType#COMPLETE_SELECTION} and
 	 * {@link EStorageBasedVAType#EXTERNAL_SELECTION}
 	 */
 	public abstract void renderContext(boolean bRenderContext);
@@ -140,8 +136,7 @@ public abstract class AStorageBasedView
 	 * 
 	 * @return
 	 */
-	public boolean isRenderingOnlyContext()
-	{
+	public boolean isRenderingOnlyContext() {
 		return bRenderOnlyContext;
 	}
 
@@ -156,50 +151,41 @@ public abstract class AStorageBasedView
 	// this.dataFilterLevel = dataFilterLevel;
 	// }
 
-	public synchronized void initData()
-	{
+	public synchronized void initData() {
 		set = null;
 
-		for (ISet currentSet : alSets)
-		{
+		for (ISet currentSet : alSets) {
 			if (currentSet.getSetType() == setType)
 				set = currentSet;
 		}
 
-		String sLevel = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
-		if (sLevel.equals("complete"))
-		{
+		String sLevel =
+			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
+		if (sLevel.equals("complete")) {
 			dataFilterLevel = EDataFilterLevel.COMPLETE;
 		}
-		else if (sLevel.equals("only_mapping"))
-		{
+		else if (sLevel.equals("only_mapping")) {
 			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		}
-		else if (sLevel.equals("only_context"))
-		{
+		else if (sLevel.equals("only_context")) {
 			// Only apply only_context when pathways are loaded
-			if (GeneralManager.get().getPathwayManager().size() > 100)
-			{
+			if (GeneralManager.get().getPathwayManager().size() > 100) {
 				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 			}
-			else
-			{
+			else {
 				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 			}
 		}
-		else
-		{
+		else {
 			throw new IllegalStateException("Unknown data filter level");
 		}
 
-		if (!mapVAIDs.isEmpty())
-		{
+		if (!mapVAIDs.isEmpty()) {
 
 			// This should be done once we get some thread safety, memory leak,
 			// and a big one
 
-			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
-			{
+			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
 				if (mapVAIDs.containsKey(eSelectionType))
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 			}
@@ -208,8 +194,7 @@ public abstract class AStorageBasedView
 			mapVAIDs.clear();
 		}
 
-		if (set == null)
-		{
+		if (set == null) {
 			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
@@ -224,8 +209,7 @@ public abstract class AStorageBasedView
 
 		alTempList = new ArrayList<Integer>();
 
-		for (int iCount = 0; iCount < set.size(); iCount++)
-		{
+		for (int iCount = 0; iCount < set.size(); iCount++) {
 			alTempList.add(iCount);
 		}
 
@@ -236,30 +220,25 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Initializes a virtual array with all elements, according to the data
-	 * filters, as defined in {@link EDataFilterLevel}.
+	 * Initializes a virtual array with all elements, according to the data filters, as defined in
+	 * {@link EDataFilterLevel}.
 	 */
-	protected final void initCompleteList()
-	{
+	protected final void initCompleteList() {
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 
-		for (int iCount = 0; iCount < set.depth(); iCount++)
-		{
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE)
-			{
+		for (int iCount = 0; iCount < set.depth(); iCount++) {
+			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
 				// Here we get mapping data for all values
 				// FIXME: not general, only for genes
 				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
-				if (iDavidID == -1)
-				{
+				if (iDavidID == -1) {
 					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");
 					continue;
 				}
 
-				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
-				{
+				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 					// Here all values are contained within pathways as well
 					int iGraphItemID =
 						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
@@ -268,7 +247,7 @@ public abstract class AStorageBasedView
 						continue;
 
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-						((PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID));
+						(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
 
 					if (tmpPathwayVertexGraphItem == null)
 						continue;
@@ -277,16 +256,13 @@ public abstract class AStorageBasedView
 			alTempList.add(iCount);
 		}
 
-		if (bUseRandomSampling)
-		{
+		if (bUseRandomSampling) {
 			alUseInRandomSampling = new ArrayList<Boolean>();
 			int iCount = 0;
-			for (; iCount < iNumberOfRandomElements; iCount++)
-			{
+			for (; iCount < iNumberOfRandomElements; iCount++) {
 				alUseInRandomSampling.add(true);
 			}
-			for (; iCount < alTempList.size(); iCount++)
-			{
+			for (; iCount < alTempList.size(); iCount++) {
 				alUseInRandomSampling.add(false);
 			}
 			Collections.shuffle(alUseInRandomSampling);
@@ -315,18 +291,16 @@ public abstract class AStorageBasedView
 	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
 	 * 
 	 * @param iDType
-	 *            TODO
+	 *          TODO
 	 * @param selectionDelta
-	 *            the selection delta which should be represented
+	 *          the selection delta which should be represented
 	 * @throws InvalidAttributeValueException
-	 *             when the selectionDelta does not contain a valid type for
-	 *             this view
+	 *           when the selectionDelta does not contain a valid type for this view
 	 */
 	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException;
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
-	{
+	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -334,8 +308,7 @@ public abstract class AStorageBasedView
 
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
-			|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
-		{
+			|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			contentSelectionManager.setDelta(selectionDelta);
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
@@ -344,8 +317,7 @@ public abstract class AStorageBasedView
 			setDisplayListDirty();
 		}
 
-		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
-		{
+		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
 			// key)(type)
 
@@ -357,29 +329,24 @@ public abstract class AStorageBasedView
 
 	}
 
-	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
-	{
+	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
 		GenericSelectionManager selectionManager;
-		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)
-		{
+		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			selectionManager = storageSelectionManager;
 		}
-		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-		{
+		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
 			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 			selectionManager = contentSelectionManager;
 		}
-		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
-		{
+		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			selectionManager = contentSelectionManager;
 		}
-		else
-		{
+		else {
 			return;
 		}
 
@@ -391,36 +358,31 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Is called any time a update is triggered externally. Should be
-	 * implemented by inheriting views.
+	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection()
-	{
+	protected void reactOnExternalSelection() {
 
 	}
 
 	/**
-	 * Is called any time a virtual array is changed. Can be implemented by
-	 * inheriting views if some action is necessary
+	 * Is called any time a virtual array is changed. Can be implemented by inheriting views if some action is
+	 * necessary
 	 * 
 	 * @param delta
 	 */
-	protected void reactOnVAChanges(IVirtualArrayDelta delta)
-	{
+	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
 
 	}
 
 	/**
-	 * This method is called when new elements are added from external - if you
-	 * need to react to it do it here, if not don't do anything.
+	 * This method is called when new elements are added from external - if you need to react to it do it here,
+	 * if not don't do anything.
 	 */
-	protected void initForAddedElements()
-	{
+	protected void initForAddedElements() {
 	}
 
 	@Override
-	public synchronized void clearAllSelections()
-	{
+	public synchronized void clearAllSelections() {
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
@@ -431,25 +393,21 @@ public abstract class AStorageBasedView
 	/**
 	 * Reset the view to its initial state, synchronized
 	 */
-	public synchronized final void resetView()
-	{
+	public synchronized final void resetView() {
 		initData();
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
-	{
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType)
-	{
-		switch (eventContainer.getEventType())
-		{
+		EMediatorType eMediatorType) {
+		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
 				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
 					(DeltaEventContainer<ISelectionDelta>) eventContainer;
@@ -464,9 +422,9 @@ public abstract class AStorageBasedView
 				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
 				break;
 			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer = (SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType())
-				{
+				SelectionCommandEventContainer commandEventContainer =
+					(SelectionCommandEventContainer) eventContainer;
+				switch (commandEventContainer.getIDType()) {
 					case DAVID:
 					case REFSEQ_MRNA_INT:
 					case EXPRESSION_INDEX:
@@ -486,48 +444,40 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Handles the creation of {@link SelectedElementRep} according to the data
-	 * in a selectionDelta
+	 * Handles the creation of {@link SelectedElementRep} according to the data in a selectionDelta
 	 * 
 	 * @param selectionDelta
-	 *            the selection data that should be handled
+	 *          the selection data that should be handled
 	 */
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
-	{
-		try
-		{
+	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
+		try {
 			int iStorageIndex = -1;
 
 			int iID = -1;
 			EIDType idType;
 
-			if (selectionDelta.size() > 0)
-			{
-				for (SelectionDeltaItem item : selectionDelta)
-				{
+			if (selectionDelta.size() > 0) {
+				for (SelectionDeltaItem item : selectionDelta) {
 					// if (!(item.getSelectionType() ==
 					// ESelectionType.MOUSE_OVER
 					// || item.getSelectionType() == ESelectionType.SELECTION))
 					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER))
 						continue;
 
-					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
-					{
+					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
 						iStorageIndex = item.getPrimaryID();
 
 						iID = item.getSecondaryID();
 						idType = EIDType.EXPRESSION_INDEX;
 
 					}
-					else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX)
-					{
+					else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX) {
 						iStorageIndex = item.getSecondaryID();
 
 						iID = item.getPrimaryID();
 						idType = EIDType.EXPRESSION_INDEX;
 					}
-					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
-					{
+					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 						iID = item.getPrimaryID();
 						iStorageIndex = iID;
 						idType = EIDType.EXPERIMENT_INDEX;
@@ -540,27 +490,22 @@ public abstract class AStorageBasedView
 						throw new IllegalArgumentException("No internal ID in selection delta");
 
 					ArrayList<SelectedElementRep> alRep = createElementRep(idType, iStorageIndex);
-					if(alRep == null)
-					{
+					if (alRep == null) {
 						continue;
 					}
-					for (SelectedElementRep rep : alRep)
-					{
-						if (rep == null)
-						{
+					for (SelectedElementRep rep : alRep) {
+						if (rep == null) {
 							continue;
 						}
 
-						for (Integer iConnectionID : item.getConnectionID())
-						{
+						for (Integer iConnectionID : item.getConnectionID()) {
 							connectedElementRepresentationManager.addSelection(iConnectionID, rep);
 						}
 					}
 				}
 			}
 		}
-		catch (InvalidAttributeValueException e)
-		{
+		catch (InvalidAttributeValueException e) {
 			generalManager.getLogger().log(Level.WARNING, "Can not handle data type of update in selectionDelta");
 		}
 	}
@@ -571,8 +516,7 @@ public abstract class AStorageBasedView
 	public abstract void broadcastElements();
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type)
-	{
+	public synchronized void broadcastElements(EVAOperation type) {
 		// nothing to do
 	}
 
@@ -581,10 +525,8 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param bUseRandomSampling
 	 */
-	public synchronized final void useRandomSampling(boolean bUseRandomSampling)
-	{
-		if (this.bUseRandomSampling != bUseRandomSampling)
-		{
+	public synchronized final void useRandomSampling(boolean bUseRandomSampling) {
+		if (this.bUseRandomSampling != bUseRandomSampling) {
 			this.bUseRandomSampling = bUseRandomSampling;
 		}
 		// TODO, probably do this with initCompleteList, take care of selection
@@ -594,16 +536,13 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Set the number of samples which are shown in the view. The distribution
-	 * is purely random
+	 * Set the number of samples which are shown in the view. The distribution is purely random
 	 * 
 	 * @param iNumberOfRandomElements
-	 *            the number
+	 *          the number
 	 */
-	public synchronized final void setNumberOfSamplesToShow(int iNumberOfRandomElements)
-	{
-		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling)
-		{
+	public synchronized final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
+		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling) {
 			this.iNumberOfRandomElements = iNumberOfRandomElements;
 			initData();
 			return;
@@ -617,10 +556,9 @@ public abstract class AStorageBasedView
 	 * Set the number of samples which are shown in one texture
 	 * 
 	 * @param iNumberOfSamplesPerTexture
-	 *            the number
+	 *          the number
 	 */
-	public synchronized final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture)
-	{
+	public synchronized final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
 		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
 	}
 
@@ -628,10 +566,9 @@ public abstract class AStorageBasedView
 	 * Set the number of samples which are shown in one heat map
 	 * 
 	 * @param iNumberOfSamplesPerHeatmap
-	 *            the number
+	 *          the number
 	 */
-	public synchronized final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap)
-	{
+	public synchronized final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
 		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 
@@ -642,8 +579,7 @@ public abstract class AStorageBasedView
 	public abstract boolean isInDefaultOrientation();
 
 	@Override
-	public int getNumberOfSelections(ESelectionType eSelectionType)
-	{
+	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		return contentSelectionManager.getElements(eSelectionType).size();
 	}
 

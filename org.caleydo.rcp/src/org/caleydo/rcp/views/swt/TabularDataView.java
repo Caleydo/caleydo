@@ -9,27 +9,24 @@ import org.caleydo.rcp.views.CaleydoViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class TabularDataView
-	extends CaleydoViewPart
-{
+	extends CaleydoViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.TabularDataView";
 
 	private TabularDataViewRep tabularDataView;
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
-		tabularDataView = (TabularDataViewRep) GeneralManager.get().getViewGLCanvasManager()
-				.createView(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1,
-						"Tabular Data Viewer");
+	public void createPartControl(Composite parent) {
+		tabularDataView =
+			(TabularDataViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
+				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1, "Tabular Data Viewer");
 
-//		tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
-//				.getFileNameCurrentDataSet());
-		
-		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
-		{
+		// tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
+		// .getFileNameCurrentDataSet());
+
+		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
 			tabularDataView.addSet(set);
 		}
-		
+
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
 
@@ -37,24 +34,20 @@ public class TabularDataView
 	}
 
 	@Override
-	public void setFocus()
-	{
+	public void setFocus() {
 
 	}
 
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getEventPublisher().removeSender(
-				EMediatorType.SELECTION_MEDIATOR, tabularDataView);
-		GeneralManager.get().getEventPublisher().removeReceiver(
-				EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+		GeneralManager.get().getEventPublisher().removeSender(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+		GeneralManager.get().getEventPublisher()
+			.removeReceiver(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
 	}
 
-	public TabularDataViewRep getTabularDataView()
-	{
+	public TabularDataViewRep getTabularDataView() {
 		return tabularDataView;
 	}
 }

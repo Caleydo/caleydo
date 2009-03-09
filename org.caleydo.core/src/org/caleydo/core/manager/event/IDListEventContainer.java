@@ -1,28 +1,26 @@
 package org.caleydo.core.manager.event;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.mapping.EIDType;
 
 /**
- * Reference implementation of {@link IEventContainer} and
- * {@link AEventContainer} for lists of IDs
+ * Reference implementation of {@link IEventContainer} and {@link AEventContainer} for lists of IDs
  * 
  * @author Alexander Lex
- * 
  */
 public class IDListEventContainer<T>
-	extends AEventContainer
-{
+	extends AEventContainer {
 	ArrayList<T> alIDs;
 	EIDType iDType = null;
 
 	/**
 	 * Constructor for ID Container without ID Type
 	 * 
-	 * @param eEventType the type of event
+	 * @param eEventType
+	 *          the type of event
 	 */
-	public IDListEventContainer(EEventType eEventType)
-	{
+	public IDListEventContainer(EEventType eEventType) {
 		super(eEventType);
 		alIDs = new ArrayList<T>();
 	}
@@ -30,11 +28,12 @@ public class IDListEventContainer<T>
 	/**
 	 * Constructor for ID Container with ID Type
 	 * 
-	 * @param eEventType the type of event
-	 * @param iDType the type of the ID
+	 * @param eEventType
+	 *          the type of event
+	 * @param iDType
+	 *          the type of the ID
 	 */
-	public IDListEventContainer(EEventType eEventType, EIDType iDType)
-	{
+	public IDListEventContainer(EEventType eEventType, EIDType iDType) {
 		this(eEventType);
 		this.iDType = iDType;
 	}
@@ -44,19 +43,18 @@ public class IDListEventContainer<T>
 	 * 
 	 * @return the type of the ID or null
 	 */
-	public EIDType getIDType()
-	{
+	public EIDType getIDType() {
 		return iDType;
 	}
 
 	/**
-	 * Set an array list of IDs. All previously added elements are lost. Uses
-	 * the reference passed, does not copy list.
+	 * Set an array list of IDs. All previously added elements are lost. Uses the reference passed, does not
+	 * copy list.
 	 * 
-	 * @param alIDs the new list of IDs
+	 * @param alIDs
+	 *          the new list of IDs
 	 */
-	public void setIDs(ArrayList<T> alIDs)
-	{
+	public void setIDs(ArrayList<T> alIDs) {
 		this.alIDs = alIDs;
 	}
 
@@ -65,8 +63,7 @@ public class IDListEventContainer<T>
 	 * 
 	 * @param ID
 	 */
-	public void addID(T iD)
-	{
+	public void addID(T iD) {
 		alIDs.add(iD);
 	}
 
@@ -75,8 +72,7 @@ public class IDListEventContainer<T>
 	 * 
 	 * @return the list of IDs
 	 */
-	public ArrayList<T> getIDs()
-	{
+	public ArrayList<T> getIDs() {
 		return alIDs;
 	}
 

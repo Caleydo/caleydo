@@ -9,8 +9,7 @@ import gleem.linalg.Veci;
  * @author Michael Kalkusch
  */
 public class Vec2i
-	extends Veci
-{
+	extends Veci {
 
 	protected static final int X = 0;
 	protected static final int Y = 1;
@@ -18,8 +17,7 @@ public class Vec2i
 	/**
 	 * 
 	 */
-	public Vec2i()
-	{
+	public Vec2i() {
 
 		super(2);
 	}
@@ -27,60 +25,53 @@ public class Vec2i
 	/**
 	 * @param arg
 	 */
-	public Vec2i(Veci arg)
-	{
+	public Vec2i(Veci arg) {
 
 		super(2);
 		this.setXY(arg.get(X), arg.get(Y));
 	}
 
 	/**
-	 * @param arg copy values
+	 * @param arg
+	 *          copy values
 	 */
-	public Vec2i(Vec2i arg)
-	{
+	public Vec2i(Vec2i arg) {
 
 		super(2);
 		this.set(arg);
 	}
 
 	/**
-	 * @param size specify size
+	 * @param size
+	 *          specify size
 	 */
-	protected Vec2i(final int size)
-	{
+	protected Vec2i(final int size) {
 
 		super(size);
 	}
 
-	public final int x()
-	{
+	public final int x() {
 		return get(X);
 	}
 
-	public final int y()
-	{
+	public final int y() {
 		return get(Y);
 	}
 
-	public final void set(Vec2i arg)
-	{
+	public final void set(Vec2i arg) {
 		set(X, arg.x());
 		set(Y, arg.y());
 	}
 
-	public final void setX(int x)
-	{
+	public final void setX(int x) {
 		set(X, x);
 	}
 
-	public final void setY(int y)
-	{
+	public final void setY(int y) {
 		set(Y, y);
 	}
 
-	public final void setXY(int x, int y)
-	{
+	public final void setXY(int x, int y) {
 		set(X, x);
 		set(Y, y);
 	}

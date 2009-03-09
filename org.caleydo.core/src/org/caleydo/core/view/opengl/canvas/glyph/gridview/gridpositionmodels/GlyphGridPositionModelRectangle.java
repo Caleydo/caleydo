@@ -3,23 +3,20 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
+
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
 
 public class GlyphGridPositionModelRectangle
-	extends GlyphGridPositionModel
-{
+	extends GlyphGridPositionModel {
 
-	public GlyphGridPositionModelRectangle(GlyphRenderStyle renderStyle)
-	{
+	public GlyphGridPositionModelRectangle(GlyphRenderStyle renderStyle) {
 		super(renderStyle);
 	}
 
 	@Override
-	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap,
-			ArrayList<GlyphEntry> gg)
-	{
+	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap, ArrayList<GlyphEntry> gg) {
 
 		int num = gg.size();
 		int x_max = (int) java.lang.Math.sqrt(num);
@@ -28,12 +25,10 @@ public class GlyphGridPositionModelRectangle
 			x_max = worldLimit.x();
 
 		int i = 0, j = 0;
-		for (GlyphEntry g : gg)
-		{
-			if (j >= worldLimit.y())
-			{
+		for (GlyphEntry g : gg) {
+			if (j >= worldLimit.y()) {
 				generalManager.getLogger().log(Level.WARNING,
-						"The world is not enough! I've no place to put the glyphs any more.");
+					"The world is not enough! I've no place to put the glyphs any more.");
 				break;
 			}
 
@@ -41,8 +36,7 @@ public class GlyphGridPositionModelRectangle
 
 			++i;
 
-			if (i >= x_max)
-			{
+			if (i >= x_max) {
 				i = 0;
 				++j;
 			}

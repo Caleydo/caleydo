@@ -11,8 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public abstract class AXmlParserHandler
 	extends DefaultHandler
-	implements IXmlParserHandler
-{
+	implements IXmlParserHandler {
 
 	private boolean bDestroyHandlerAfterClosingTag = false;
 
@@ -24,44 +23,35 @@ public abstract class AXmlParserHandler
 	/**
 	 * Constructor.
 	 */
-	protected AXmlParserHandler()
-	{
+	protected AXmlParserHandler() {
 		this.generalManager = GeneralManager.get();
 		this.xmlParserManager = generalManager.getXmlParserManager();
 	}
 
-	public final void setXmlActivationTag(final String tag)
-	{
-		if (tag.length() < 2)
-		{
-			throw new IllegalStateException(
-					"setXmlActivationTag() tag must be at least one char!");
+	public final void setXmlActivationTag(final String tag) {
+		if (tag.length() < 2) {
+			throw new IllegalStateException("setXmlActivationTag() tag must be at least one char!");
 		}
 
 		this.sOpeningTag = tag;
 	}
 
 	@Override
-	public final String getXmlActivationTag()
-	{
+	public final String getXmlActivationTag() {
 
 		return sOpeningTag;
 	}
 
 	@Override
-	public final boolean isHandlerDestoryedAfterClosingTag()
-	{
-		if (bDestroyHandlerAfterClosingTag)
-		{
+	public final boolean isHandlerDestoryedAfterClosingTag() {
+		if (bDestroyHandlerAfterClosingTag) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public final void setHandlerDestoryedAfterClosingTag(
-			final boolean setHandlerDestoryedAfterClosingTag)
-	{
+	public final void setHandlerDestoryedAfterClosingTag(final boolean setHandlerDestoryedAfterClosingTag) {
 
 		this.bDestroyHandlerAfterClosingTag = setHandlerDestoryedAfterClosingTag;
 	}
@@ -71,8 +61,7 @@ public abstract class AXmlParserHandler
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
 	 */
-	public void initHandler()
-	{
+	public void initHandler() {
 
 		// generalManager.logMsg(
 		// this.getClass().getSimpleName() +
@@ -84,8 +73,7 @@ public abstract class AXmlParserHandler
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
 	 */
-	public void destroyHandler()
-	{
+	public void destroyHandler() {
 
 		// generalManager.logMsg(
 		// this.getClass().getSimpleName() +

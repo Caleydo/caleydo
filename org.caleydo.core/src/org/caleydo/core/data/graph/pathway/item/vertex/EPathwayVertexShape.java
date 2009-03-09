@@ -1,7 +1,6 @@
 package org.caleydo.core.data.graph.pathway.item.vertex;
 
-public enum EPathwayVertexShape
-{
+public enum EPathwayVertexShape {
 	// KEGG types
 
 	// the shape is a rectangle, which is used in KEGG to represent a
@@ -15,6 +14,5 @@ public enum EPathwayVertexShape
 	roundrectangle,
 
 	// BIOCARTA types
-	rect,
-	poly,
+	rect, poly,
 }

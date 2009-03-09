@@ -16,30 +16,26 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class SwtJoglGLCanvasViewRep
 	extends ASWTView
-	implements ISWTView
-{
+	implements ISWTView {
 	protected int iGLCanvasID;
 
 	protected GLCaleydoCanvas gLCanvas;
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public SwtJoglGLCanvasViewRep(int iParentContainerId, String sLabel)
-	{
+	public SwtJoglGLCanvasViewRep(int iParentContainerId, String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_JOGL_CONTAINER));
+			EManagedObjectType.VIEW_SWT_JOGL_CONTAINER));
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 		ISWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
 
-		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget = (SWTEmbeddedJoglWidget) iSWTGUIManager
-				.createWidget(EManagedObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
-						iParentContainerId);
+		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget =
+			(SWTEmbeddedJoglWidget) iSWTGUIManager.createWidget(EManagedObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
+				iParentContainerId);
 
 		parentComposite = sWTEmbeddedJoglWidget.getParentComposite();
 
@@ -55,17 +51,14 @@ public class SwtJoglGLCanvasViewRep
 	}
 
 	@Override
-	public final void initView()
-	{
+	public final void initView() {
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 	}
 
-	public int getGLCanvasID()
-	{
+	public int getGLCanvasID() {
 		return iGLCanvasID;
 	}
 }

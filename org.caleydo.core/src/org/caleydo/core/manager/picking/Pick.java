@@ -5,8 +5,7 @@ import java.awt.Point;
 /**
  * @author Alexander Lex
  */
-public class Pick
-{
+public class Pick {
 
 	private int iPickingID = 0;
 
@@ -19,8 +18,7 @@ public class Pick
 	/**
 	 * Constructor.
 	 */
-	public Pick(int iPickingID)
-	{
+	public Pick(int iPickingID) {
 
 		this.iPickingID = iPickingID;
 	}
@@ -28,8 +26,7 @@ public class Pick
 	/**
 	 * Constructor.
 	 */
-	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint)
-	{
+	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint) {
 
 		this.iPickingID = iPickingID;
 		this.ePickingMode = ePickingMode;
@@ -39,9 +36,7 @@ public class Pick
 	/**
 	 * Constructor.
 	 */
-	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint,
-			Point dragStartPoint)
-	{
+	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint) {
 
 		this.iPickingID = iPickingID;
 		this.ePickingMode = ePickingMode;
@@ -52,26 +47,22 @@ public class Pick
 		// or if it doesn't match the picking mode
 	}
 
-	public int getPickingID()
-	{
+	public int getPickingID() {
 
 		return iPickingID;
 	}
 
-	public EPickingMode getPickingMode()
-	{
+	public EPickingMode getPickingMode() {
 
 		return ePickingMode;
 	}
 
-	public Point getPickedPoint()
-	{
+	public Point getPickedPoint() {
 
 		return pickedPoint;
 	}
 
-	public Point getDragStartPoint()
-	{
+	public Point getDragStartPoint() {
 
 		// TODO: throw useful exception if point is not set
 		return dragStartPoint;

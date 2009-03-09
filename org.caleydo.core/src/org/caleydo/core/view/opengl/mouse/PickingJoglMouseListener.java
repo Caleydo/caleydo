@@ -11,8 +11,7 @@ import java.awt.event.MouseEvent;
  * @author Alexander Lex
  */
 public class PickingJoglMouseListener
-	extends JoglMouseListener
-{
+	extends JoglMouseListener {
 
 	protected boolean bMouseMoved = false;
 
@@ -31,27 +30,23 @@ public class PickingJoglMouseListener
 	/**
 	 * Constructor.
 	 */
-	public PickingJoglMouseListener()
-	{
+	public PickingJoglMouseListener() {
 		super();
 		pickedPointDragStart = new Point();
 	}
 
 	@Override
-	public void mousePressed(MouseEvent mouseEvent)
-	{
+	public void mousePressed(MouseEvent mouseEvent) {
 		super.mousePressed(mouseEvent);
-		
+
 		bMouseReleased = false;
 		bLeftMouseButtonPressed = false;
 		bRightMouseButtonPressed = false;
-		
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
-		{
+
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 			bLeftMouseButtonPressed = true;
 		}
-		else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
-		{
+		else if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
 			bRightMouseButtonPressed = true;
 		}
 
@@ -59,23 +54,20 @@ public class PickingJoglMouseListener
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent mouseEvent)
-	{
+	public void mouseMoved(MouseEvent mouseEvent) {
 		super.mouseMoved(mouseEvent);
-		
+
 		bMouseMoved = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent mouseEvent)
-	{
+	public void mouseReleased(MouseEvent mouseEvent) {
 		super.mouseReleased(mouseEvent);
 
 		bMouseDragged = false;
-		
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
-		{
+
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
 			pickedPointCurrent = mouseEvent.getPoint();
 		}
 
@@ -83,57 +75,48 @@ public class PickingJoglMouseListener
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent mouseEvent)
-	{
+	public void mouseDragged(MouseEvent mouseEvent) {
 		super.mouseDragged(mouseEvent);
 
 		bMouseDragged = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
 
-	public final boolean wasLeftMouseButtonPressed()
-	{
+	public final boolean wasLeftMouseButtonPressed() {
 		boolean bTmp = bLeftMouseButtonPressed;
 		bLeftMouseButtonPressed = false;
 		return bTmp;
 	}
 
-	public final boolean wasMouseDoubleClicked()
-	{
+	public final boolean wasMouseDoubleClicked() {
 		return bMouseDoubleClick;
 	}
 
-	public final boolean wasRightMouseButtonPressed()
-	{
+	public final boolean wasRightMouseButtonPressed() {
 		boolean bTmp = bRightMouseButtonPressed;
 		bRightMouseButtonPressed = false;
 		return bTmp;
 	}
 
-	public final boolean wasMouseMoved()
-	{
+	public final boolean wasMouseMoved() {
 		boolean bTmp = bMouseMoved;
 		bMouseMoved = false;
 		return bTmp;
 	}
 
-	public final boolean wasMouseReleased()
-	{
+	public final boolean wasMouseReleased() {
 		return bMouseReleased;
 	}
 
-	public final boolean wasMouseDragged()
-	{
+	public final boolean wasMouseDragged() {
 		return bMouseDragged;
 	}
 
-	public final Point getPickedPoint()
-	{
+	public final Point getPickedPoint() {
 		return pickedPointCurrent;
 	}
 
-	public final Point getPickedPointDragStart()
-	{
+	public final Point getPickedPointDragStart() {
 		return pickedPointDragStart;
 	}
 }

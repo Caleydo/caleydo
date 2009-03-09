@@ -1,21 +1,20 @@
 package org.caleydo.core.view.opengl.util;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 
 /**
- * Class contains GL commands for rendering GL objects of common interest (like
- * axis, etc.)
+ * Class contains GL commands for rendering GL objects of common interest (like axis, etc.)
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLHelperFunctions
-{
+public class GLHelperFunctions {
 
-	public static void drawAxis(final GL gl)
-	{
+	public static void drawAxis(final GL gl) {
 
 		gl.glLineWidth(3);
 		gl.glBegin(GL.GL_LINES);
@@ -31,8 +30,7 @@ public class GLHelperFunctions
 		gl.glEnd();
 	}
 
-	public static void drawViewFrustum(final GL gl, final IViewFrustum viewFrustum)
-	{
+	public static void drawViewFrustum(final GL gl, final IViewFrustum viewFrustum) {
 
 		gl.glColor3f(1, 0, 0);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -40,15 +38,14 @@ public class GLHelperFunctions
 		// viewFrustum.getBottom(), 0);
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), 0, 0);
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop()
-				- viewFrustum.getBottom(), 0);
+			- viewFrustum.getBottom(), 0);
 		gl.glVertex3f(0, viewFrustum.getTop() - viewFrustum.getBottom(), 0);
 		// gl.glVertex3f(0, 0, 0);
 
 		gl.glEnd();
 	}
 
-	public static void drawPointAt(final GL gl, final Vec3f vecPoint)
-	{
+	public static void drawPointAt(final GL gl, final Vec3f vecPoint) {
 
 		gl.glColor4f(1, 0, 0, 1);
 		gl.glLineWidth(3);

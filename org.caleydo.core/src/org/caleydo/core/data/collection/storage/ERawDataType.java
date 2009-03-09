@@ -4,10 +4,8 @@ package org.caleydo.core.data.collection.storage;
  * The datatype of the raw storage
  * 
  * @author Alexander Lex
- * 
  */
-public enum ERawDataType
-{
+public enum ERawDataType {
 	// For generic Nominal Storages
 	OBJECT,
 	// For generic Numerical Storages
@@ -17,6 +15,5 @@ public enum ERawDataType
 	// Primitive Float
 	FLOAT,
 	// Primitive Int
-	INT,
-	UNDEFINED
+	INT, UNDEFINED
 }

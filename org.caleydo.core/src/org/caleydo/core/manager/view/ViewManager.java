@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.logging.Level;
+
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
+
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -43,6 +42,7 @@ import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
+
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
@@ -55,8 +55,7 @@ import com.sun.opengl.util.FPSAnimator;
  */
 public class ViewManager
 	extends AManager<IView>
-	implements IViewManager
-{
+	implements IViewManager {
 	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
 	protected HashMap<Integer, ArrayList<AGLEventListener>> hashGLCanvasID2GLEventListeners;
@@ -72,20 +71,11 @@ public class ViewManager
 	private ConnectedElementRepresentationManager selectionManager;
 
 	private GLInfoAreaManager infoAreaManager;
-	
-	/**
-	 * Heat map that is embedded in views like bucket or parcoords to show a
-	 * selection of genes. 
-	 * TODO: maybe the view manager is not the perfect place to create/store this view
-	 */
-	private GLHeatMap glSelectionHeatMap;
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public ViewManager()
-	{
+	public ViewManager() {
 		pickingManager = new PickingManager();
 		selectionManager = new ConnectedElementRepresentationManager();
 		infoAreaManager = new GLInfoAreaManager();
@@ -100,8 +90,7 @@ public class ViewManager
 	}
 
 	@Override
-	public boolean hasItem(int iItemId)
-	{
+	public boolean hasItem(int iItemId) {
 		if (hashItems.containsKey(iItemId))
 			return true;
 
@@ -114,24 +103,19 @@ public class ViewManager
 		return false;
 	}
 
-	public GLCaleydoCanvas getCanvas(int iItemID)
-	{
+	public GLCaleydoCanvas getCanvas(int iItemID) {
 		return hashGLCanvasID2GLCanvas.get(iItemID);
 	}
 
-	public AGLEventListener getGLEventListener(int iItemID)
-	{
+	public AGLEventListener getGLEventListener(int iItemID) {
 		return hashGLEventListenerID2GLEventListener.get(iItemID);
 	}
 
 	@Override
-	public IView createView(final EManagedObjectType type, final int iParentContainerID,
-			final String sLabel)
-	{
+	public IView createView(final EManagedObjectType type, final int iParentContainerID, final String sLabel) {
 		IView view = null;
 
-		switch (type)
-		{
+		switch (type) {
 			case VIEW:
 				break;
 			case VIEW_SWT_PATHWAY:
@@ -166,9 +150,8 @@ public class ViewManager
 				view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
 				break;
 			default:
-				throw new RuntimeException(
-						"StorageManagerSimple.createView() failed due to unhandled type ["
-								+ type.toString() + "]");
+				throw new RuntimeException("StorageManagerSimple.createView() failed due to unhandled type ["
+					+ type.toString() + "]");
 		}
 
 		registerItem(view);
@@ -177,20 +160,17 @@ public class ViewManager
 	}
 
 	@Override
-	public IView createGLView(final EManagedObjectType useViewType,
-			final int iParentContainerID, final String sLabel)
-	{
+	public IView createGLView(final EManagedObjectType useViewType, final int iParentContainerID,
+		final String sLabel) {
 		IView view = null;
 
-		switch (useViewType)
-		{
+		switch (useViewType) {
 			case VIEW_GL_CANVAS:
 				view = new SwtJoglGLCanvasViewRep(iParentContainerID, sLabel);
 				break;
 
 			default:
-				throw new RuntimeException("Unhandled view type [" + useViewType.toString()
-						+ "]");
+				throw new RuntimeException("Unhandled view type [" + useViewType.toString() + "]");
 		}
 
 		registerItem(view);
@@ -200,24 +180,19 @@ public class ViewManager
 
 	@Override
 	public AGLEventListener createGLEventListener(ECommandType type, final int iGLCanvasID,
-			final String sLabel, final IViewFrustum viewFrustum)
-	{
-		GeneralManager.get().getLogger().log(
-				Level.INFO,
-				"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel
-						+ "]");
+		final String sLabel, final IViewFrustum viewFrustum) {
+		GeneralManager.get().getLogger().log(Level.INFO,
+			"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]");
 
 		AGLEventListener glEventListener = null;
 
-		switch (type)
-		{
+		switch (type) {
 			case CREATE_GL_HEAT_MAP_3D:
-				glEventListener = new GLHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID,
-						sLabel, viewFrustum);
+				glEventListener = new GLHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-				glEventListener = new GLHierarchicalHeatMap(ESetType.GENE_EXPRESSION_DATA,
-						iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLHierarchicalHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
@@ -225,13 +200,12 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION:
-				glEventListener = new GLParallelCoordinates(ESetType.GENE_EXPRESSION_DATA,
-						iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLParallelCoordinates(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PARALLEL_COORDINATES_CLINICAL:
-				glEventListener = new GLParallelCoordinates(ESetType.CLINICAL_DATA,
-						iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLParallelCoordinates(ESetType.CLINICAL_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_GLYPH:
 				glEventListener = new GLGlyph(iGLCanvasID, sLabel, viewFrustum);
@@ -246,12 +220,14 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_BUCKET_3D:
-				glEventListener = new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
+				glEventListener =
+					new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
 				break;
 
 			case CREATE_GL_JUKEBOX_3D:
-				glEventListener = new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
+				glEventListener =
+					new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
 				break;
 
@@ -262,16 +238,15 @@ public class ViewManager
 			case CREATE_GL_PANEL_SELECTION:
 				glEventListener = new GLSelectionPanel(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_RADIAL_HIERARCHY:
-				glEventListener = new GLRadialHierarchy(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID,
-						sLabel, viewFrustum);
+				glEventListener =
+					new GLRadialHierarchy(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			default:
-				throw new RuntimeException(
-						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
-								+ type.toString() + "]");
+				throw new RuntimeException("ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
+					+ type.toString() + "]");
 		}
 
 		registerGLEventListenerByGLCanvasID(iGLCanvasID, glEventListener);
@@ -280,32 +255,25 @@ public class ViewManager
 	}
 
 	@Override
-	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas)
-	{
+	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas) {
 		int iGLCanvasID = glCanvas.getID();
 
-		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID))
-		{
-			generalManager.getLogger()
-					.log(
-							Level.WARNING,
-							"GL Canvas with ID " + iGLCanvasID
-									+ " is already registered! Do nothing.");
+		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
+			generalManager.getLogger().log(Level.WARNING,
+				"GL Canvas with ID " + iGLCanvasID + " is already registered! Do nothing.");
 
 			return false;
 		}
 
 		hashGLCanvasID2GLCanvas.put(iGLCanvasID, glCanvas);
-//		fpsAnimator.add(glCanvas);
+		// fpsAnimator.add(glCanvas);
 
 		return true;
 	}
 
 	@Override
-	public boolean unregisterGLCanvas(final int iGLCanvasId)
-	{
-		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId))
-		{
+	public boolean unregisterGLCanvas(final int iGLCanvasId) {
+		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId)) {
 			fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasId));
 
 			hashGLCanvasID2GLCanvas.remove(iGLCanvasId);
@@ -317,24 +285,21 @@ public class ViewManager
 
 	@Override
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
-			final AGLEventListener gLEventListener)
-	{
-		hashGLEventListenerID2GLEventListener.put((gLEventListener).getID(), gLEventListener);
+		final AGLEventListener gLEventListener) {
+		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener);
 
 		if (iGLCanvasID == -1)
 			return;
 
 		if (!hashGLCanvasID2GLEventListeners.containsKey(iGLCanvasID))
-			hashGLCanvasID2GLEventListeners
-					.put(iGLCanvasID, new ArrayList<AGLEventListener>());
+			hashGLCanvasID2GLEventListeners.put(iGLCanvasID, new ArrayList<AGLEventListener>());
 
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
 		hashGLCanvasID2GLCanvas.get(iGLCanvasID).addGLEventListener(gLEventListener);
 	}
 
 	@Override
-	public void cleanup()
-	{
+	public void cleanup() {
 
 		hashGLCanvasID2GLCanvas.clear();
 		hashGLCanvasID2GLEventListeners.clear();
@@ -343,59 +308,48 @@ public class ViewManager
 	}
 
 	@Override
-	public void unregisterGLEventListener(final int iGLEventListenerID)
-	{
-		GLEventListener gLEventListenerToRemove = hashGLEventListenerID2GLEventListener
-				.get(iGLEventListenerID);
+	public void unregisterGLEventListener(final int iGLEventListenerID) {
+		GLEventListener gLEventListenerToRemove = hashGLEventListenerID2GLEventListener.get(iGLEventListenerID);
 
 		if (gLEventListenerToRemove == null)
 			return;
-		
-		GLCaleydoCanvas parentGLCanvas = ((AGLEventListener) gLEventListenerToRemove)
-				.getParentGLCanvas();
 
-		if (parentGLCanvas != null)
-		{
+		GLCaleydoCanvas parentGLCanvas = ((AGLEventListener) gLEventListenerToRemove).getParentGLCanvas();
+
+		if (parentGLCanvas != null) {
 			parentGLCanvas.removeGLEventListener(gLEventListenerToRemove);
 
 			if (hashGLCanvasID2GLEventListeners.containsKey(parentGLCanvas.getID()))
-				hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(
-						gLEventListenerToRemove);
+				hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(gLEventListenerToRemove);
 		}
 
 		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
 	}
-	
+
 	@Override
-	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers()
-	{
+	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers() {
 		return hashGLCanvasID2GLCanvas.values();
 	}
 
 	@Override
-	public Collection<AGLEventListener> getAllGLEventListeners()
-	{
+	public Collection<AGLEventListener> getAllGLEventListeners() {
 		return hashGLEventListenerID2GLEventListener.values();
 	}
 
-	public PickingManager getPickingManager()
-	{
+	public PickingManager getPickingManager() {
 		return pickingManager;
 	}
 
-	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager()
-	{
+	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager() {
 		return selectionManager;
 	}
 
-	public GLInfoAreaManager getInfoAreaManager()
-	{
+	public GLInfoAreaManager getInfoAreaManager() {
 		return infoAreaManager;
 	}
 
 	@Override
-	public void startAnimator()
-	{
+	public void startAnimator() {
 		// // add all canvas objects before starting animator
 		// // this is needed because all the views are fully filled with needed
 		// data at that time.
@@ -406,24 +360,20 @@ public class ViewManager
 
 		fpsAnimator.start();
 	}
-	
+
 	@Override
-	public void stopAnimator()
-	{
+	public void stopAnimator() {
 		fpsAnimator.stop();
 	}
 
 	@Override
-	public void registerGLCanvasToAnimator(final int iGLCanvasID)
-	{
+	public void registerGLCanvasToAnimator(final int iGLCanvasID) {
 		fpsAnimator.add(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
 	}
-	
+
 	@Override
-	public void unregisterGLCanvasFromAnimator(final int iGLCanvasID)
-	{
+	public void unregisterGLCanvasFromAnimator(final int iGLCanvasID) {
 		fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
 	}
-	
 
 }

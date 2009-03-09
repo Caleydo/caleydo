@@ -5,8 +5,10 @@ package org.caleydo.core.parser.parameter;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
+
 import java.util.Hashtable;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.data.ParameterKeyValueDataAndDefault;
 
@@ -16,8 +18,7 @@ import org.caleydo.core.parser.parameter.data.ParameterKeyValueDataAndDefault;
  * @author Michael Kalkusch
  */
 public final class ParameterHandler
-	extends AParameterHandler
-{
+	extends AParameterHandler {
 
 	private Hashtable<String, ParameterHandlerType> hashPrimarySwitch;
 
@@ -32,8 +33,7 @@ public final class ParameterHandler
 	/**
 	 * 
 	 */
-	public ParameterHandler()
-	{
+	public ParameterHandler() {
 
 		hashPrimarySwitch = new Hashtable<String, ParameterHandlerType>();
 
@@ -43,11 +43,9 @@ public final class ParameterHandler
 		hashKey2Boolean = new ParameterKeyValueDataAndDefault<Boolean>();
 	}
 
-	public void clear()
-	{
+	public void clear() {
 
-		synchronized (getClass())
-		{
+		synchronized (getClass()) {
 			hashPrimarySwitch.clear();
 			hashKey2Integer.clear();
 			hashKey2Float.clear();
@@ -57,13 +55,11 @@ public final class ParameterHandler
 	}
 
 	@Override
-	public Object getValue(final String key)
-	{
+	public Object getValue(final String key) {
 
 		ParameterHandlerType type = hashPrimarySwitch.get(key);
 
-		switch (type)
-		{
+		switch (type) {
 			case BOOL:
 				return getValueBoolean(key);
 			case FLOAT:
@@ -74,89 +70,75 @@ public final class ParameterHandler
 				return getValueString(key);
 			default:
 				throw new IllegalArgumentException("ParameterHandler.getValue(" + key
-						+ ") uses unregistered enumeration!");
+					+ ") uses unregistered enumeration!");
 		}
 	}
 
 	@Override
-	public ParameterHandlerType getValueType(final String key)
-	{
+	public ParameterHandlerType getValueType(final String key) {
 
 		return hashPrimarySwitch.get(key);
 	}
 
 	@Override
-	public int getValueInt(final String key)
-	{
+	public int getValueInt(final String key) {
 		return hashKey2Integer.getValue(key);
 	}
 
 	@Override
-	public Vec3f getValueVec3f(final String key)
-	{
+	public Vec3f getValueVec3f(final String key) {
 
-		if (key == null)
-		{
+		if (key == null) {
 			return new Vec3f();
 		}
 
-		return new Vec3f(hashKey2Float.getValue(key + "_GL0"), hashKey2Float.getValue(key
-				+ "_GL1"), hashKey2Float.getValue(key + "_GL2"));
+		return new Vec3f(hashKey2Float.getValue(key + "_GL0"), hashKey2Float.getValue(key + "_GL1"),
+			hashKey2Float.getValue(key + "_GL2"));
 
 	}
 
 	@Override
-	public Vec4f getValueVec4f(final String key)
-	{
+	public Vec4f getValueVec4f(final String key) {
 
-		if (key == null)
-		{
+		if (key == null) {
 			return new Vec4f();
 		}
 
-		return new Vec4f(hashKey2Float.getValue(key + "_GLROT0"), hashKey2Float.getValue(key
-				+ "_GLROT1"), hashKey2Float.getValue(key + "_GLROT2"), hashKey2Float
-				.getValue(key + "_GLROT3"));
+		return new Vec4f(hashKey2Float.getValue(key + "_GLROT0"), hashKey2Float.getValue(key + "_GLROT1"),
+			hashKey2Float.getValue(key + "_GLROT2"), hashKey2Float.getValue(key + "_GLROT3"));
 
 	}
 
 	@Override
-	public float getValueFloat(final String key)
-	{
+	public float getValueFloat(final String key) {
 
 		return hashKey2Float.getValue(key);
 	}
 
 	@Override
-	public String getValueString(final String key)
-	{
+	public String getValueString(final String key) {
 
 		return hashKey2String.getValue(key);
 	}
 
 	@Override
-	public boolean getValueBoolean(final String key)
-	{
+	public boolean getValueBoolean(final String key) {
 
 		return hashKey2Boolean.getValue(key);
 	}
 
 	@Override
-	public void setValue(final String key, final String value)
-	{
+	public void setValue(final String key, final String value) {
 
 		ParameterHandlerType currentType = hashPrimarySwitch.get(key);
 
-		if (currentType == null)
-		{
+		if (currentType == null) {
 			throw new IllegalArgumentException("ParameterHandler.setValue(" + key
-					+ " , * ) key was not registered as type!");
+				+ " , * ) key was not registered as type!");
 		}
 
-		try
-		{
-			switch (currentType)
-			{
+		try {
+			switch (currentType) {
 				case BOOL:
 					hashKey2Boolean.setValue(key, Boolean.valueOf(value));
 					break;
@@ -172,28 +154,22 @@ public final class ParameterHandler
 
 				default:
 					throw new IllegalArgumentException("ParameterHandler.setValue(" + key
-							+ ",*) uses unregistered enumeration!");
+						+ ",*) uses unregistered enumeration!");
 			}
 
 		}
-		catch (NumberFormatException nfe)
-		{
+		catch (NumberFormatException nfe) {
 			new IllegalStateException("ParameterHandler.setValue(" + key + "," + value
-					+ ") value was not valid due to enumeration type="
-					+ currentType.toString() + " !");
+				+ ") value was not valid due to enumeration type=" + currentType.toString() + " !");
 
 		}
 	}
 
 	@Override
-	public void setValueAndType(final String key, final String value,
-			final ParameterHandlerType type)
-	{
+	public void setValueAndType(final String key, final String value, final ParameterHandlerType type) {
 
-		try
-		{
-			switch (type)
-			{
+		try {
+			switch (type) {
 				case BOOL:
 					hashKey2Boolean.setValue(key, Boolean.valueOf(value));
 					break;
@@ -208,15 +184,13 @@ public final class ParameterHandler
 					break;
 
 				default:
-					throw new IllegalArgumentException("ParameterHandler.setValueAndType("
-							+ key + ") uses unregistered enumeration!");
+					throw new IllegalArgumentException("ParameterHandler.setValueAndType(" + key
+						+ ") uses unregistered enumeration!");
 			}
 		}
-		catch (NumberFormatException nfe)
-		{
-			new IllegalArgumentException("ParameterHandler.setValueAndType(" + key + ","
-					+ value + ") value was not valid due to enumeration type="
-					+ type.toString() + " !");
+		catch (NumberFormatException nfe) {
+			new IllegalArgumentException("ParameterHandler.setValueAndType(" + key + "," + value
+				+ ") value was not valid due to enumeration type=" + type.toString() + " !");
 
 		}
 
@@ -226,99 +200,76 @@ public final class ParameterHandler
 
 	@Override
 	public void setValueAndTypeAndDefault(final String key, final String value,
-			final ParameterHandlerType type, final String defaultValue)
-	{
+		final ParameterHandlerType type, final String defaultValue) {
 
-		try
-		{
-			switch (type)
-			{
+		try {
+			switch (type) {
 				case BOOL:
-					try
-					{
-						hashKey2Boolean.setValueAndDefaultValue(key, Boolean.valueOf(value),
-								Boolean.valueOf(defaultValue));
+					try {
+						hashKey2Boolean.setValueAndDefaultValue(key, Boolean.valueOf(value), Boolean
+							.valueOf(defaultValue));
 					}
-					catch (NumberFormatException nfe)
-					{
-						hashKey2Boolean.setValueAndDefaultValue(key, Boolean
-								.valueOf(defaultValue), Boolean.valueOf(defaultValue));
+					catch (NumberFormatException nfe) {
+						hashKey2Boolean.setValueAndDefaultValue(key, Boolean.valueOf(defaultValue), Boolean
+							.valueOf(defaultValue));
 					}
 					break;
 
 				case FLOAT:
-					try
-					{
-						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(value), Float
-								.valueOf(defaultValue));
+					try {
+						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(value), Float.valueOf(defaultValue));
 					}
-					catch (NumberFormatException nfe)
-					{
-						hashKey2Float.setValueAndDefaultValue(key,
-								Float.valueOf(defaultValue), Float.valueOf(defaultValue));
+					catch (NumberFormatException nfe) {
+						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(defaultValue), Float
+							.valueOf(defaultValue));
 					}
 					break;
 
 				case INT:
-					try
-					{
-						hashKey2Integer.setValueAndDefaultValue(key, Integer.valueOf(value),
-								Integer.valueOf(defaultValue));
+					try {
+						hashKey2Integer.setValueAndDefaultValue(key, Integer.valueOf(value), Integer
+							.valueOf(defaultValue));
 					}
-					catch (NumberFormatException nfe)
-					{
-						hashKey2Integer.setValueAndDefaultValue(key, Integer
-								.valueOf(defaultValue), Integer.valueOf(defaultValue));
+					catch (NumberFormatException nfe) {
+						hashKey2Integer.setValueAndDefaultValue(key, Integer.valueOf(defaultValue), Integer
+							.valueOf(defaultValue));
 					}
 					break;
 
 				case STRING:
-					if (key.length() > 0)
-					{
+					if (key.length() > 0) {
 						hashKey2String.setValueAndDefaultValue(key, value, defaultValue);
 					}
-					else
-					{
-						hashKey2String
-								.setValueAndDefaultValue(key, defaultValue, defaultValue);
+					else {
+						hashKey2String.setValueAndDefaultValue(key, defaultValue, defaultValue);
 					}
 					break;
 
-				case VEC3F:
-				{
-					StringTokenizer tokenizer = new StringTokenizer(value,
-							IGeneralManager.sDelimiter_Parser_DataItems);
+				case VEC3F: {
+					StringTokenizer tokenizer = new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
 
-					if (tokenizer.countTokens() != 3)
-					{
-						throw new IllegalArgumentException("Error in parameter " + key + "=["
-								+ value + "] needs three float values!");
+					if (tokenizer.countTokens() != 3) {
+						throw new IllegalArgumentException("Error in parameter " + key + "=[" + value
+							+ "] needs three float values!");
 					} // if
 
-					for (int i = 0; tokenizer.hasMoreTokens(); i++)
-					{
-						hashKey2Float.setValue(key + "_GL" + i, Float.valueOf(tokenizer
-								.nextToken()));
+					for (int i = 0; tokenizer.hasMoreTokens(); i++) {
+						hashKey2Float.setValue(key + "_GL" + i, Float.valueOf(tokenizer.nextToken()));
 					} // for
 
 				} // case
 					break;
 
-				case VEC4F:
-				{
-					StringTokenizer tokenizer = new StringTokenizer(value,
-							IGeneralManager.sDelimiter_Parser_DataItems);
+				case VEC4F: {
+					StringTokenizer tokenizer = new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
 
-					if (tokenizer.countTokens() != 4)
-					{
-						throw new IllegalArgumentException("Error in parameter " + key + "=["
-								+ value + "] needs four float values!");
+					if (tokenizer.countTokens() != 4) {
+						throw new IllegalArgumentException("Error in parameter " + key + "=[" + value
+							+ "] needs four float values!");
 					} // if
 
-					for (int i = 0; tokenizer.hasMoreTokens(); i++)
-					{
-						hashKey2Float.setValue(key + "_GLROT" + i, Float.valueOf(tokenizer
-								.nextToken()));
+					for (int i = 0; tokenizer.hasMoreTokens(); i++) {
+						hashKey2Float.setValue(key + "_GLROT" + i, Float.valueOf(tokenizer.nextToken()));
 					} // for
 
 				} // case
@@ -326,15 +277,12 @@ public final class ParameterHandler
 
 				default:
 					throw new IllegalStateException("ParameterHandler.setValueAndType(" + key
-							+ ") uses unregistered enumeration!");
+						+ ") uses unregistered enumeration!");
 			}
 		}
-		catch (NumberFormatException nfe)
-		{
-			new IllegalStateException("ParameterHandler.setValueAndTypeAndDefault(" + key
-					+ "," + defaultValue
-					+ ") defaultValue was not valid due to enumeration type="
-					+ type.toString() + " !");
+		catch (NumberFormatException nfe) {
+			new IllegalStateException("ParameterHandler.setValueAndTypeAndDefault(" + key + "," + defaultValue
+				+ ") defaultValue was not valid due to enumeration type=" + type.toString() + " !");
 
 		}
 
@@ -342,14 +290,10 @@ public final class ParameterHandler
 	}
 
 	@Override
-	public void setDefaultValueAnyType(final String key, final String value,
-			final ParameterHandlerType type)
-	{
+	public void setDefaultValueAnyType(final String key, final String value, final ParameterHandlerType type) {
 
-		try
-		{
-			switch (type)
-			{
+		try {
+			switch (type) {
 				case BOOL:
 					hashKey2Boolean.setDefaultValue(key, Boolean.valueOf(value));
 					break;
@@ -364,15 +308,13 @@ public final class ParameterHandler
 					break;
 
 				default:
-					throw new IllegalArgumentException("ParameterHandler.setValueAndType("
-							+ key + ") uses unregistered enumeration!");
+					throw new IllegalArgumentException("ParameterHandler.setValueAndType(" + key
+						+ ") uses unregistered enumeration!");
 			}
 		}
-		catch (NumberFormatException nfe)
-		{
+		catch (NumberFormatException nfe) {
 			new IllegalStateException("ParameterHandler.setValueAndType(" + key + "," + value
-					+ ") value was not valid due to enumeration type=" + type.toString()
-					+ " !");
+				+ ") value was not valid due to enumeration type=" + type.toString() + " !");
 
 		}
 
@@ -381,15 +323,13 @@ public final class ParameterHandler
 	}
 
 	@Override
-	public void setDefaultType(final String key, final ParameterHandlerType type)
-	{
+	public void setDefaultType(final String key, final ParameterHandlerType type) {
 
 		hashPrimarySwitch.put(key, type);
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 
 		StringBuffer strBuffer = new StringBuffer();
 

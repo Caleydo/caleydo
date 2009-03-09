@@ -8,20 +8,17 @@ import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
 import org.eclipse.jface.action.IAction;
 
 public class GLPathwayView
-	extends AGLViewPart
-{
+	extends AGLViewPart {
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLPathwayView";
 
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayView()
-	{
+	public GLPathwayView() {
 		super();
 	}
 
-	public static void createToolBarItems(int iViewID)
-	{
+	public static void createToolBarItems(int iViewID) {
 		alToolbar = new ArrayList<IAction>();
 
 		IAction textureAction = new TextureAction(iViewID);

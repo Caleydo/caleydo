@@ -1,21 +1,21 @@
 package org.caleydo.core.command.event;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
- * Class creates a mediator, extracts the sender and receiver IDs and calls the
- * methods that handle the registration.
+ * Class creates a mediator, extracts the sender and receiver IDs and calls the methods that handle the
+ * registration.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */
 public class CmdEventMediatorAddObject
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	protected ArrayList<Integer> iArSenderIDs;
 
@@ -26,8 +26,7 @@ public class CmdEventMediatorAddObject
 	/**
 	 * Constructor.
 	 */
-	public CmdEventMediatorAddObject(final ECommandType cmdType)
-	{
+	public CmdEventMediatorAddObject(final ECommandType cmdType) {
 		super(cmdType);
 
 		iArSenderIDs = new ArrayList<Integer>();
@@ -37,8 +36,7 @@ public class CmdEventMediatorAddObject
 	}
 
 	@Override
-	public void doCommand()
-	{
+	public void doCommand() {
 		// IEventPublisher eventPublisher = generalManager.getEventPublisher();
 		// IMediator mediator = eventPublisher.getItem(iExternalID);
 		//
@@ -56,8 +54,7 @@ public class CmdEventMediatorAddObject
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		// super.setParameterHandler(parameterHandler);
 		//
 		// StringTokenizer senderToken = new StringTokenizer(sAttribute1,
@@ -93,8 +90,7 @@ public class CmdEventMediatorAddObject
 	}
 
 	public void setAttributes(int iEventMediatorId, ArrayList<Integer> iArSenderIDs,
-			ArrayList<Integer> iArReceiverIDs, EMediatorType mediatorType)
-	{
+		ArrayList<Integer> iArReceiverIDs, EMediatorType mediatorType) {
 
 		this.iExternalID = iEventMediatorId;
 		this.iArSenderIDs = iArSenderIDs;
@@ -103,8 +99,7 @@ public class CmdEventMediatorAddObject
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
 }

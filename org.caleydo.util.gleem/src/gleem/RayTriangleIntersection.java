@@ -1,31 +1,24 @@
 /*
- * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003
- * Kenneth B. Russell (kbrussel@alum.mit.edu) Copying, distribution and use of
- * this software in source and binary forms, with or without modification, is
- * permitted provided that the following conditions are met: Distributions of
- * source code must reproduce the copyright notice, this list of conditions and
- * the following disclaimer in the source code header files; and Distributions
- * of binary code must reproduce the copyright notice, this list of conditions
- * and the following disclaimer in the documentation, Read me file, license file
- * and/or other materials provided with the software distribution. The names of
- * Sun Microsystems, Inc. ("Sun") and/or the copyright holder may not be used to
- * endorse or promote products derived from this software without specific prior
- * written permission. THIS SOFTWARE IS PROVIDED "AS IS," WITHOUT A WARRANTY OF
- * ANY KIND. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES,
- * INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- * PURPOSE, NON-INTERFERENCE, ACCURACY OF INFORMATIONAL CONTENT OR
- * NON-INFRINGEMENT, ARE HEREBY EXCLUDED. THE COPYRIGHT HOLDER, SUN AND SUN'S
- * LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE AS A
- * RESULT OF USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
- * IN NO EVENT WILL THE COPYRIGHT HOLDER, SUN OR SUN'S LICENSORS BE LIABLE FOR
- * ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS
- * OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. YOU
- * ACKNOWLEDGE THAT THIS SOFTWARE IS NOT DESIGNED, LICENSED OR INTENDED FOR USE
- * IN THE DESIGN, CONSTRUCTION, OPERATION OR MAINTENANCE OF ANY NUCLEAR
- * FACILITY. THE COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS DISCLAIM ANY EXPRESS
- * OR IMPLIED WARRANTY OF FITNESS FOR SUCH USES.
+ * gleem -- OpenGL Extremely Easy-To-Use Manipulators. Copyright (C) 1998-2003 Kenneth B. Russell
+ * (kbrussel@alum.mit.edu) Copying, distribution and use of this software in source and binary forms, with or
+ * without modification, is permitted provided that the following conditions are met: Distributions of source
+ * code must reproduce the copyright notice, this list of conditions and the following disclaimer in the
+ * source code header files; and Distributions of binary code must reproduce the copyright notice, this list
+ * of conditions and the following disclaimer in the documentation, Read me file, license file and/or other
+ * materials provided with the software distribution. The names of Sun Microsystems, Inc. ("Sun") and/or the
+ * copyright holder may not be used to endorse or promote products derived from this software without specific
+ * prior written permission. THIS SOFTWARE IS PROVIDED "AS IS," WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR
+ * IMPLIED CONDITIONS, REPRESENTATIONS AND WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, NON-INTERFERENCE, ACCURACY OF INFORMATIONAL CONTENT OR NON-INFRINGEMENT,
+ * ARE HEREBY EXCLUDED. THE COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
+ * SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES. IN
+ * NO EVENT WILL THE COPYRIGHT HOLDER, SUN OR SUN'S LICENSORS BE LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA,
+ * OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+ * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. YOU ACKNOWLEDGE THAT THIS SOFTWARE IS NOT DESIGNED, LICENSED OR
+ * INTENDED FOR USE IN THE DESIGN, CONSTRUCTION, OPERATION OR MAINTENANCE OF ANY NUCLEAR FACILITY. THE
+ * COPYRIGHT HOLDER, SUN AND SUN'S LICENSORS DISCLAIM ANY EXPRESS OR IMPLIED WARRANTY OF FITNESS FOR SUCH
+ * USES.
  */
 
 package gleem;
@@ -38,32 +31,27 @@ import gleem.linalg.Vec3f;
 
 /** Implements ray casting against a 3D triangle. */
 @SuppressWarnings("all")
-public class RayTriangleIntersection
-{
+public class RayTriangleIntersection {
 	public static final int ERROR = 0;
 	public static final int NO_INTERSECTION = 1;
 	public static final int INTERSECTION = 2;
 
 	/**
-	 * Allow roundoff error of this amount. Be very careful adjusting this. Too
-	 * big a value may cause valid triangles to be rejected. Too small a value
-	 * may trigger an assert in the code to create an orthonormal basis in
-	 * intersectRayWithTriangle.
+	 * Allow roundoff error of this amount. Be very careful adjusting this. Too big a value may cause valid
+	 * triangles to be rejected. Too small a value may trigger an assert in the code to create an orthonormal
+	 * basis in intersectRayWithTriangle.
 	 */
 	private static final float epsilon = 1.0e-3f;
 
 	/**
-	 * Cast a ray starting at rayOrigin with rayDirection into the triangle
-	 * defined by vertices v0, v1, and v2. If intersection occurred returns
-	 * INTERSECTION and sets intersectionPoint appropriately, including t
-	 * parameter (scale factor for rayDirection to reach intersection plane
-	 * starting from rayOrigin). Returns NO_INTERSECTION if no intersection, or
-	 * ERROR if triangle was degenerate or line was parallel to plane of
+	 * Cast a ray starting at rayOrigin with rayDirection into the triangle defined by vertices v0, v1, and v2.
+	 * If intersection occurred returns INTERSECTION and sets intersectionPoint appropriately, including t
+	 * parameter (scale factor for rayDirection to reach intersection plane starting from rayOrigin). Returns
+	 * NO_INTERSECTION if no intersection, or ERROR if triangle was degenerate or line was parallel to plane of
 	 * triangle.
 	 */
-	public static int intersectRayWithTriangle(Vec3f rayOrigin, Vec3f rayDirection, Vec3f v0,
-			Vec3f v1, Vec3f v2, IntersectionPoint intersectionPoint)
-	{
+	public static int intersectRayWithTriangle(Vec3f rayOrigin, Vec3f rayDirection, Vec3f v0, Vec3f v1,
+		Vec3f v2, IntersectionPoint intersectionPoint) {
 		// Returns INTERSECTION if intersection computed, NO_INTERSECTION
 		// if no intersection with triangle, ERROR if triangle was
 		// degenerate or line did not intersect plane containing triangle.
@@ -109,8 +97,7 @@ public class RayTriangleIntersection
 		Vec3f tmp = new Vec3f(X);
 		tmp.scale(X.dot(Y));
 		Y.sub(tmp);
-		if (Y.length() < epsilon)
-		{
+		if (Y.length() < epsilon) {
 			return ERROR; // coincident points in triangle
 		}
 		Y.normalize();
@@ -127,8 +114,7 @@ public class RayTriangleIntersection
 		Vec3f tmpRayDir = new Vec3f(rayDirection);
 		tmpRayDir.scale(-1.0f);
 		A.setCol(2, tmpRayDir);
-		if (!A.invert())
-		{
+		if (!A.invert()) {
 			return ERROR;
 		}
 		Vec3f B = new Vec3f();
@@ -142,18 +128,15 @@ public class RayTriangleIntersection
 		uv[1] = new Vec2f(p2.dot(X), p2.dot(Y));
 		uv[2] = new Vec2f(p3.dot(X), p3.dot(Y));
 
-		if (!(Math.abs(uv[1].y()) < epsilon))
-		{
+		if (!(Math.abs(uv[1].y()) < epsilon)) {
 			throw new RuntimeException("Math.abs(uv[1].y()) >= epsilon");
 		}
 
 		// Test. For each of the sides of the triangle, is the intersection
 		// point on the same side as the third vertex of the triangle?
 		// If so, intersection point is inside triangle.
-		for (int i = 0; i < 3; i++)
-		{
-			if (approxOnSameSide(uv[i], uv[(i + 1) % 3], uv[(i + 2) % 3], W) == false)
-			{
+		for (int i = 0; i < 3; i++) {
+			if (approxOnSameSide(uv[i], uv[(i + 1) % 3], uv[(i + 2) % 3], W) == false) {
 				return NO_INTERSECTION;
 			}
 		}
@@ -163,12 +146,10 @@ public class RayTriangleIntersection
 		// To do: find u,v coordinates of intersection point in coordinate
 		// system of axes defined by uv[1] and uv[2].
 		// Blending coords == a, b. 0 <= a,b <= 1.
-		if (!(Math.abs(uv[2].y()) > epsilon))
-		{
+		if (!(Math.abs(uv[2].y()) > epsilon)) {
 			throw new RuntimeException("Math.abs(uv[2].y()) <= epsilon");
 		}
-		if (!(Math.abs(uv[1].x()) > epsilon))
-		{
+		if (!(Math.abs(uv[1].x()) > epsilon)) {
 			throw new RuntimeException("Math.abs(uv[1].x()) <= epsilon");
 		}
 		float a, b;
@@ -184,9 +165,7 @@ public class RayTriangleIntersection
 		return INTERSECTION;
 	}
 
-	private static boolean approxOnSameSide(Vec2f linePt1, Vec2f linePt2, Vec2f testPt1,
-			Vec2f testPt2)
-	{
+	private static boolean approxOnSameSide(Vec2f linePt1, Vec2f linePt2, Vec2f testPt1, Vec2f testPt2) {
 		// Evaluate line equation for testPt1 and testPt2
 
 		// ((y2 - y1) / (x2 - x1)) - ((y1 - y) / (x1 - x))
@@ -198,16 +177,13 @@ public class RayTriangleIntersection
 		float num2 = linePt1.y() - testPt2.y();
 		float den2 = linePt1.x() - testPt2.x();
 
-		if (Math.abs(den0) < epsilon)
-		{
+		if (Math.abs(den0) < epsilon) {
 			// line goes vertically.
-			if ((Math.abs(den1) < epsilon) || (Math.abs(den2) < epsilon))
-			{
+			if (Math.abs(den1) < epsilon || Math.abs(den2) < epsilon) {
 				return true;
 			}
 
-			if (MathUtil.sgn(den1) == MathUtil.sgn(den2))
-			{
+			if (MathUtil.sgn(den1) == MathUtil.sgn(den2)) {
 				return true;
 			}
 
@@ -218,13 +194,11 @@ public class RayTriangleIntersection
 		// (y - y1) - m(x - x1)
 		float val1 = testPt1.y() - linePt1.y() - m * (testPt1.x() - linePt1.x());
 		float val2 = testPt2.y() - linePt1.y() - m * (testPt2.x() - linePt1.x());
-		if ((Math.abs(val1) < epsilon) || (Math.abs(val2) < epsilon))
-		{
+		if (Math.abs(val1) < epsilon || Math.abs(val2) < epsilon) {
 			return true;
 		}
 
-		if (MathUtil.sgn(val1) == MathUtil.sgn(val2))
-		{
+		if (MathUtil.sgn(val1) == MathUtil.sgn(val2)) {
 			return true;
 		}
 

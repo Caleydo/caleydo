@@ -14,16 +14,14 @@ import org.eclipse.swt.widgets.Shell;
  * @author Marc Streit
  */
 public class ExportDataDialog
-	extends Dialog
-{
+	extends Dialog {
 
 	private ExportDataAction exportDataAction;
 
 	/**
 	 * Constructor.
 	 */
-	public ExportDataDialog(Shell parentShell)
-	{
+	public ExportDataDialog(Shell parentShell) {
 		super(parentShell);
 
 		parentShell.setText("Open project file");
@@ -36,23 +34,20 @@ public class ExportDataDialog
 	}
 
 	@Override
-	protected void configureShell(Shell newShell)
-	{
+	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Export Data");
 	}
 
 	@Override
-	protected Control createDialogArea(Composite parent)
-	{
+	protected Control createDialogArea(Composite parent) {
 		exportDataAction = new ExportDataAction(parent);
 		exportDataAction.run();
 		return parent;
 	}
 
 	@Override
-	protected void okPressed()
-	{
+	protected void okPressed() {
 		exportDataAction.execute();
 
 		super.okPressed();
@@ -63,8 +58,7 @@ public class ExportDataDialog
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		ExportDataDialog dialog = new ExportDataDialog(new Shell());
 		dialog.open();
 	}

@@ -3,12 +3,14 @@ package org.caleydo.core.application.helper.cacher.kegg;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import de.phleisch.app.itsucks.constants.ApplicationConstants;
 import de.phleisch.app.itsucks.core.Dispatcher;
 import de.phleisch.app.itsucks.filter.download.impl.DownloadJobFilter;
@@ -24,14 +26,12 @@ import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
  * @author Marc Streit
  */
 public class KeggPathwayCacher
-	extends APathwayCacher
-{
+	extends APathwayCacher {
 	/**
 	 * Constructor.
 	 */
 	public KeggPathwayCacher(final Display display, final ProgressBar progressBar,
-			final CmdFetchPathwayData triggeringCommand)
-	{
+		final CmdFetchPathwayData triggeringCommand) {
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
@@ -40,13 +40,12 @@ public class KeggPathwayCacher
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 
 		// load spring application context
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
+		ClassPathXmlApplicationContext context =
+			new ClassPathXmlApplicationContext(ApplicationConstants.CORE_SPRING_CONFIG_FILE);
 
 		// load dispatcher from spring
 		final Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
@@ -61,9 +60,9 @@ public class KeggPathwayCacher
 		dispatcher.addJobFilter(downloadFilter);
 
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
-		RegExpFilterRule regExpFilterRule = new RegExpJobFilter.RegExpFilterRule(
-				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html"
-						+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*Fig.*");
+		RegExpFilterRule regExpFilterRule =
+			new RegExpJobFilter.RegExpFilterRule(".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html"
+				+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*Fig.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
@@ -76,16 +75,14 @@ public class KeggPathwayCacher
 
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
-		String sOutputFileName = GeneralManager.CALEYDO_HOME_PATH;
+		String sOutputFileName = IGeneralManager.CALEYDO_HOME_PATH;
 
 		UrlDownloadJob job = jobFactory.createDownloadJob();
 
-		try
-		{
+		try {
 			job.setUrl(new URL("http://www.genome.jp/kegg/xml/hsa/index.html"));
 		}
-		catch (MalformedURLException e)
-		{
+		catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 		// "http://www.genome.jp/kegg/pathway/hsa/hsa00380.gif
@@ -102,8 +99,7 @@ public class KeggPathwayCacher
 	}
 
 	@Override
-	protected void triggerPathwayListGeneration()
-	{
+	protected void triggerPathwayListGeneration() {
 		throw new IllegalStateException("Pathway list generation is not supported!");
 	}
 }

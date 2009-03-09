@@ -2,27 +2,30 @@ package org.caleydo.core.view.opengl.util.infoarea;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
+
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
- * Info Area Renderer. Renders an info area. It needs only an id, a data type
- * and a gl context, and renders the information.
+ * Info Area Renderer. Renders an info area. It needs only an id, a data type and a gl context, and renders
+ * the information.
  * 
  * @author Alexander Lex
  */
 
-public class GLInPlaceInfoRenderer2
-{
+public class GLInPlaceInfoRenderer2 {
 
 	private TextRenderer textRenderer;
 
@@ -49,10 +52,8 @@ public class GLInPlaceInfoRenderer2
 
 	/**
 	 * Constructor
-	 * 
 	 */
-	public GLInPlaceInfoRenderer2(IViewFrustum viewFrustum)
-	{
+	public GLInPlaceInfoRenderer2(IViewFrustum viewFrustum) {
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 		contentCreator = new InformationContentCreator();
 		renderStyle = new InfoAreaRenderStyle(viewFrustum);
@@ -66,8 +67,7 @@ public class GLInPlaceInfoRenderer2
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iCaleydoID, EIDType eInputDataTypes)
-	{
+	public void setData(int iCaleydoID, EIDType eInputDataTypes) {
 
 		this.sContent = contentCreator.getStringContentForID(iCaleydoID, eInputDataTypes);
 		// this.pickedPoint = pickedPoint;
@@ -78,8 +78,7 @@ public class GLInPlaceInfoRenderer2
 		calculateWidthAndHeight();
 	}
 
-	public void setMiniViewData(ArrayList<IStorage> alStorages)
-	{
+	public void setMiniViewData(ArrayList<IStorage> alStorages) {
 
 		miniView.setData(alStorages);
 	}
@@ -88,27 +87,23 @@ public class GLInPlaceInfoRenderer2
 	 * Render the data previously set
 	 * 
 	 * @param gl
-	 * @param bFirstTime this has to be true only the first time you render it
-	 *            and can never be true after that
+	 * @param bFirstTime
+	 *          this has to be true only the first time you render it and can never be true after that
 	 */
-	public void renderInfoArea(GL gl, Vec3f vecLowerLeft, boolean bFirstTime)
-	{
+	public void renderInfoArea(GL gl, Vec3f vecLowerLeft, boolean bFirstTime) {
 
 		String sCurrent;
 		float fXLowerLeft = vecLowerLeft.x();
 		float fYLowerLeft = vecLowerLeft.y();
 
 		int iCount = 0;
-		while (iCount < 2)
-		{
-			if (iCount == 0)
-			{
+		while (iCount < 2) {
+			if (iCount == 0) {
 				gl.glColor4fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
 
 				gl.glBegin(GL.GL_POLYGON);
 			}
-			else
-			{
+			else {
 				gl.glColor4fv(InfoAreaRenderStyle.INFO_AREA_BORDER_COLOR, 0);
 				gl.glLineWidth(InfoAreaRenderStyle.INFO_AREA_BORDER_WIDTH);
 				gl.glBegin(GL.GL_LINE_STRIP);
@@ -135,45 +130,37 @@ public class GLInPlaceInfoRenderer2
 		iCount = 0;
 
 		float fFontScaling = renderStyle.getHeadingFontScalingFactor();
-		while (contentIterator.hasNext())
-		{
-			if (iCount == 1)
-			{
+		while (contentIterator.hasNext()) {
+			if (iCount == 1) {
 				fFontScaling = renderStyle.getSmallFontScalingFactor();
 			}
 			sCurrent = contentIterator.next();
-			fNextLineHeight -= ((float) textRenderer.getBounds(sCurrent).getHeight()
-					* fFontScaling + fSpacing);
+			fNextLineHeight -= (float) textRenderer.getBounds(sCurrent).getHeight() * fFontScaling + fSpacing;
 
-			textRenderer.draw3D(sCurrent, fXLowerLeft + fSpacing, fNextLineHeight,
-					fZValue + 0.001f, fFontScaling);
+			textRenderer.draw3D(sCurrent, fXLowerLeft + fSpacing, fNextLineHeight, fZValue + 0.001f, fFontScaling);
 
 			iCount++;
 		}
 		textRenderer.end3DRendering();
 
 		if (miniView != null)
-			miniView
-					.render(gl, fXLowerLeft + fTextWidth + fSpacing, fYLowerLeft + fSpacing, 0);
+			miniView.render(gl, fXLowerLeft + fTextWidth + fSpacing, fYLowerLeft + fSpacing, 0);
 
 		// gl.glVertex3f(fXOrigin, fYOrigin, 0);
 
 	}
 
-	public float getWidth()
-	{
+	public float getWidth() {
 
 		return fWidth;
 	}
 
-	public float getHeight()
-	{
+	public float getHeight() {
 
 		return fHeight;
 	}
 
-	private void calculateWidthAndHeight()
-	{
+	private void calculateWidthAndHeight() {
 
 		String sCurrent;
 
@@ -183,20 +170,18 @@ public class GLInPlaceInfoRenderer2
 		Iterator<String> contentIterator = sContent.iterator();
 		int iCount = 0;
 		float fFontScalingFactor = renderStyle.getHeadingFontScalingFactor();
-		while (contentIterator.hasNext())
-		{
+		while (contentIterator.hasNext()) {
 
 			sCurrent = contentIterator.next();
 			if (iCount == 1)
 				fFontScalingFactor = renderStyle.getSmallFontScalingFactor();
 
 			box = textRenderer.getBounds(sCurrent).getBounds2D();
-			fHeight += (box.getHeight() * fFontScalingFactor);
+			fHeight += box.getHeight() * fFontScalingFactor;
 
-			fTemp = ((float) box.getWidth() * fFontScalingFactor);
+			fTemp = (float) box.getWidth() * fFontScalingFactor;
 
-			if (fTemp > fWidth)
-			{
+			if (fTemp > fWidth) {
 				fWidth = fTemp;
 			}
 			fHeight += fSpacing;
@@ -208,9 +193,8 @@ public class GLInPlaceInfoRenderer2
 		fHeight += 2 * fSpacing;
 
 		fTextWidth = fWidth;
-		if (miniView != null)
-		{
-			fWidth += (miniView.getWidth() + fSpacing * 2);
+		if (miniView != null) {
+			fWidth += miniView.getWidth() + fSpacing * 2;
 
 			if (fHeight < miniView.getHeight())
 				fHeight = miniView.getHeight();

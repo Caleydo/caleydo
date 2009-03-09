@@ -2,9 +2,11 @@ package org.caleydo.core.view.opengl.util.wavefrontobjectloader;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec3i;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import javax.media.opengl.GL;
 
 /**
@@ -12,8 +14,7 @@ import javax.media.opengl.GL;
  * 
  * @author Stefan Sauer
  */
-public class ObjectModel
-{
+public class ObjectModel {
 	ArrayList<Vec3f> verticesGeometric;
 	ArrayList<Vec3f> verticesNormal;
 	ArrayList<Vec3f> verticesTexture;
@@ -24,8 +25,7 @@ public class ObjectModel
 
 	private boolean isNormalized = false;
 
-	public ObjectModel()
-	{
+	public ObjectModel() {
 		verticesGeometric = new ArrayList<Vec3f>();
 		verticesNormal = new ArrayList<Vec3f>();
 		verticesTexture = new ArrayList<Vec3f>();
@@ -36,16 +36,14 @@ public class ObjectModel
 
 	}
 
-	public ObjectGroup getObjectGroup(String name)
-	{
+	public ObjectGroup getObjectGroup(String name) {
 		if (!groups.containsKey(name))
 			return null;
 
 		return groups.get(name);
 	}
 
-	public Vec3f getGeometricVertex(int i)
-	{
+	public Vec3f getGeometricVertex(int i) {
 		if (i > verticesGeometric.size())
 			return null;
 
@@ -57,8 +55,7 @@ public class ObjectModel
 		return verticesGeometric.get(i - 1);
 	}
 
-	public Vec3f getNormalVertex(int i)
-	{
+	public Vec3f getNormalVertex(int i) {
 		if (i >= verticesNormal.size())
 			return null;
 
@@ -67,8 +64,7 @@ public class ObjectModel
 		return verticesNormal.get(i - 1);
 	}
 
-	public Vec3f getTextureVertex(int i)
-	{
+	public Vec3f getTextureVertex(int i) {
 		if (i >= verticesTexture.size())
 			return null;
 
@@ -82,8 +78,7 @@ public class ObjectModel
 	 * 
 	 * @param line
 	 */
-	public void handleGroupCommand(String line)
-	{
+	public void handleGroupCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "g");
 
 		// empty group name is not possible
@@ -105,14 +100,13 @@ public class ObjectModel
 	 * 
 	 * @param line
 	 */
-	public void handleVertexCommand(String line)
-	{
+	public void handleVertexCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "v");
 
 		Vec3f temp = new Vec3f();
 		if (lineparts.size() == 3)
-			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float
-					.valueOf(lineparts.get(2)));
+			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float.valueOf(lineparts
+				.get(2)));
 
 		verticesGeometric.add(temp);
 	}
@@ -122,14 +116,13 @@ public class ObjectModel
 	 * 
 	 * @param line
 	 */
-	public void handleVertexNormalCommand(String line)
-	{
+	public void handleVertexNormalCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "vn");
 
 		Vec3f temp = new Vec3f();
 		if (lineparts.size() == 3)
-			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float
-					.valueOf(lineparts.get(2)));
+			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float.valueOf(lineparts
+				.get(2)));
 
 		verticesNormal.add(temp);
 	}
@@ -139,14 +132,13 @@ public class ObjectModel
 	 * 
 	 * @param line
 	 */
-	public void handleVertexTextureCommand(String line)
-	{
+	public void handleVertexTextureCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "vt");
 
 		Vec3f temp = new Vec3f();
 		if (lineparts.size() == 3)
-			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float
-					.valueOf(lineparts.get(2)));
+			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float.valueOf(lineparts
+				.get(2)));
 
 		verticesTexture.add(temp);
 	}
@@ -156,14 +148,12 @@ public class ObjectModel
 	 * 
 	 * @param line
 	 */
-	public void handleFaceCommand(String line)
-	{
+	public void handleFaceCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "f");
 
 		ArrayList<Vec3i> indices = new ArrayList<Vec3i>();
 
-		for (String token : lineparts)
-		{
+		for (String token : lineparts) {
 			String[] tokenparts = token.split("/");
 
 			// invalid face - ignore
@@ -175,8 +165,8 @@ public class ObjectModel
 			Vec3i temp = new Vec3i();
 
 			temp.set(0, Integer.parseInt(tokenparts[0]));
-			temp.set(1, (tokenparts.length > 1) ? Integer.parseInt(tokenparts[1]) : 0);
-			temp.set(2, (tokenparts.length > 2) ? Integer.parseInt(tokenparts[2]) : 0);
+			temp.set(1, tokenparts.length > 1 ? Integer.parseInt(tokenparts[1]) : 0);
+			temp.set(2, tokenparts.length > 2 ? Integer.parseInt(tokenparts[2]) : 0);
 
 			indices.add(temp);
 		}
@@ -189,8 +179,7 @@ public class ObjectModel
 
 	}
 
-	private ArrayList<String> splitAndRemoveCommand(String line, String cmd)
-	{
+	private ArrayList<String> splitAndRemoveCommand(String line, String cmd) {
 		String[] lineparts = line.split("[\\s]+");
 
 		if (lineparts.length == 0)
@@ -210,15 +199,13 @@ public class ObjectModel
 		return temp;
 	}
 
-	private void normalizeScale()
-	{
+	private void normalizeScale() {
 		if (isNormalized)
 			return;
 
 		float largest = 0;
 
-		for (Vec3f vertex : verticesGeometric)
-		{
+		for (Vec3f vertex : verticesGeometric) {
 			for (int i = 0; i < 3; ++i)
 				if (largest < vertex.get(0))
 					largest = vertex.get(0);
@@ -236,33 +223,28 @@ public class ObjectModel
 	}
 
 	/**
-	 * This draws the complete object, defined in the file. The object is
-	 * normalized inside a 1x1x1 cube.
+	 * This draws the complete object, defined in the file. The object is normalized inside a 1x1x1 cube.
 	 * 
 	 * @param gl
 	 */
-	public void drawObject(GL gl)
-	{
+	public void drawObject(GL gl) {
 		normalizeScale();
 
 		gl.glPushMatrix();
-		for (ObjectGroup group : groups.values())
-		{
+		for (ObjectGroup group : groups.values()) {
 			group.draw(gl);
 		}
 		gl.glPopMatrix();
 	}
 
 	/**
-	 * This draws only a part (g command) of a object file. If the group Name is
-	 * not present in the object file, nothing happens. The object is normalized
-	 * inside a 1x1x1 cube.
+	 * This draws only a part (g command) of a object file. If the group Name is not present in the object file,
+	 * nothing happens. The object is normalized inside a 1x1x1 cube.
 	 * 
 	 * @param gl
 	 * @param name
 	 */
-	public void drawObjectGroup(GL gl, String name)
-	{
+	public void drawObjectGroup(GL gl, String name) {
 		normalizeScale();
 
 		if (!groups.containsKey(name))

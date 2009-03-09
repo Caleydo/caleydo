@@ -1,22 +1,20 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import javax.media.opengl.GL;
+
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class GLParCoordsMiniView
-	extends AGLMiniView
-{
+	extends AGLMiniView {
 
-	public GLParCoordsMiniView()
-	{
+	public GLParCoordsMiniView() {
 
 		fWidth = 0.2f;
 		fHeight = 0.2f;
 	}
 
 	@Override
-	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin)
-	{
+	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT);
 		gl.glColor3f(1, 0, 0);

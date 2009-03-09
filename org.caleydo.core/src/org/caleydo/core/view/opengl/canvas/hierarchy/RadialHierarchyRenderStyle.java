@@ -10,14 +10,11 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
  */
 
 public class RadialHierarchyRenderStyle
-	extends GeneralRenderStyle
-{
+	extends GeneralRenderStyle {
 
-	public RadialHierarchyRenderStyle(IViewFrustum viewFrustum)
-	{
+	public RadialHierarchyRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);
 		// TODO Auto-generated constructor stub
 	}
 
-	
 }

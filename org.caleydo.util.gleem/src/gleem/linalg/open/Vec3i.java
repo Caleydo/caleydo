@@ -11,16 +11,14 @@ import gleem.linalg.Veci;
  * @author Michael Kalkusch
  */
 public class Vec3i
-	extends Veci
-{
+	extends Veci {
 
 	// protected int[] data;
 
 	/**
 	 * 
 	 */
-	public Vec3i()
-	{
+	public Vec3i() {
 
 		super(3);
 	}
@@ -28,30 +26,24 @@ public class Vec3i
 	/**
 	 * 
 	 */
-	public Vec3i(Veci source)
-	{
+	public Vec3i(Veci source) {
 
 		super(3);
 
 		this.cloneFrom(source);
 	}
 
-	public int[] getData()
-	{
+	public int[] getData() {
 		int[] dataBuffer = new int[3];
-		for (int i = 0; i < this.length(); i++)
-		{
+		for (int i = 0; i < this.length(); i++) {
 			dataBuffer[i] = this.get(i);
 		}
 		return dataBuffer;
 	}
 
-	public void cloneFrom(Veci source)
-	{
-		for (int i = 0; i < source.length(); i++)
-		{
-			if (i > 2)
-			{
+	public void cloneFrom(Veci source) {
+		for (int i = 0; i < source.length(); i++) {
+			if (i > 2) {
 				assert false : "access size of internal array; ignore other values";
 				return;
 			}
@@ -59,12 +51,9 @@ public class Vec3i
 		}
 	}
 
-	public void setData(int[] data)
-	{
-		for (int i = 0; i < data.length; i++)
-		{
-			if (i > 2)
-			{
+	public void setData(int[] data) {
+		for (int i = 0; i < data.length; i++) {
+			if (i > 2) {
 				assert false : "access size of internal array; ignore other values";
 				return;
 			}

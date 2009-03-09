@@ -2,6 +2,7 @@ package org.caleydo.core.view.swt.undoredo;
 
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -21,23 +22,20 @@ import org.eclipse.swt.widgets.Label;
  */
 public class UndoRedoViewRep
 	extends ASWTView
-	implements ISWTView
-{
+	implements ISWTView {
 
 	protected Combo undoRedoCombo;
 
 	/**
 	 * Constructor.
 	 */
-	public UndoRedoViewRep(int iParentContainerId, String sLabel)
-	{
+	public UndoRedoViewRep(int iParentContainerId, String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
-				EManagedObjectType.VIEW_SWT_UNDO_REDO));
+			EManagedObjectType.VIEW_SWT_UNDO_REDO));
 	}
 
 	@Override
-	public void initViewSWTComposite(Composite parentComposite)
-	{
+	public void initViewSWTComposite(Composite parentComposite) {
 		parentComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		Label viewComboLabel = new Label(parentComposite, SWT.LEFT);
@@ -48,36 +46,29 @@ public class UndoRedoViewRep
 	}
 
 	@Override
-	public void drawView()
-	{
+	public void drawView() {
 	}
 
-	public void setAttributes(String sImagePath)
-	{
+	public void setAttributes(String sImagePath) {
 	}
 
-	public void updateCommandList(Vector<ICommand> vecCommands)
-	{
+	public void updateCommandList(Vector<ICommand> vecCommands) {
 
 		undoRedoCombo.removeAll();
 
 		Iterator<ICommand> iterCommands = vecCommands.iterator();
 
-		while (iterCommands.hasNext())
-		{
+		while (iterCommands.hasNext()) {
 			// ICommand bufferCmd = iterCommands.next();
 			undoRedoCombo.add(iterCommands.next().getInfoText());
 		}
 	}
 
-	public void addCommand(final ICommand command)
-	{
+	public void addCommand(final ICommand command) {
 
-		parentComposite.getDisplay().asyncExec(new Runnable()
-		{
+		parentComposite.getDisplay().asyncExec(new Runnable() {
 
-			public void run()
-			{
+			public void run() {
 
 				undoRedoCombo.add(command.getInfoText());
 				// generalManager.logMsg(

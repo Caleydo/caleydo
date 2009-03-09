@@ -3,15 +3,13 @@ package org.caleydo.core.data.collection.ccontainer;
 import org.caleydo.core.data.selection.IVirtualArray;
 
 /**
- * CContainer implementation for int A container for ints. Initialized with an
- * int array. The length can not be modified after initialization. Optimized to
- * hold a large amount of data.
+ * CContainer implementation for int A container for ints. Initialized with an int array. The length can not
+ * be modified after initialization. Optimized to hold a large amount of data.
  * 
  * @author Alexander Lex
  */
 public class IntCContainer
-	implements INumericalCContainer
-{
+	implements INumericalCContainer {
 
 	private int[] iArContainer;
 
@@ -20,19 +18,17 @@ public class IntCContainer
 	private int iMax = Integer.MIN_VALUE;
 
 	/**
-	 * Constructor Pass an int array. The length of the array can not be
-	 * modified after initialization
+	 * Constructor Pass an int array. The length of the array can not be modified after initialization
 	 * 
-	 * @param iArContainer the int array
+	 * @param iArContainer
+	 *          the int array
 	 */
-	public IntCContainer(int[] iArContainer)
-	{
+	public IntCContainer(int[] iArContainer) {
 		this.iArContainer = iArContainer;
 	}
 
 	@Override
-	public int size()
-	{
+	public int size() {
 
 		return iArContainer.length;
 	}
@@ -40,26 +36,25 @@ public class IntCContainer
 	/**
 	 * Returns the value associated with the index at the variable
 	 * 
-	 * @throws IndexOutOfBoundsException if index is out of specified range
-	 * @param iIndex the index of the variable
+	 * @throws IndexOutOfBoundsException
+	 *           if index is out of specified range
+	 * @param iIndex
+	 *          the index of the variable
 	 * @return the variable associated with the index
 	 */
-	public int get(int iIndex)
-	{
+	public int get(int iIndex) {
 		return iArContainer[iIndex];
 	}
 
 	@Override
-	public double getMin()
-	{
+	public double getMin() {
 		if (Integer.MAX_VALUE == iMin)
 			calculateMinMax();
 		return iMin;
 	}
 
 	@Override
-	public double getMax()
-	{
+	public double getMax() {
 
 		if (Integer.MIN_VALUE == iMax)
 			calculateMinMax();
@@ -71,8 +66,7 @@ public class IntCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public IntCContainerIterator iterator()
-	{
+	public IntCContainerIterator iterator() {
 
 		return new IntCContainerIterator(this);
 	}
@@ -80,28 +74,25 @@ public class IntCContainer
 	/**
 	 * Iterator which takes a virtual array into account
 	 * 
-	 * @param virtualArray the virtual array
+	 * @param virtualArray
+	 *          the virtual array
 	 * @return the iterator
 	 */
-	public IntCContainerIterator iterator(IVirtualArray virtualArray)
-	{
+	public IntCContainerIterator iterator(IVirtualArray virtualArray) {
 		return new IntCContainerIterator(this, virtualArray);
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
-	{
-		if (dMin > getMin() || dMax < getMax())
-		{
+	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax) {
+		if (dMin > getMin() || dMax < getMax()) {
 			throw new IllegalArgumentException("Provided external values are more "
-					+ "limiting than calculated ones");
+				+ "limiting than calculated ones");
 		}
 		return normalize((int) dMin, (int) dMax);
 	}
 
 	@Override
-	public FloatCContainer normalize()
-	{
+	public FloatCContainer normalize() {
 		return normalize((int) getMin(), (int) getMax());
 	}
 
@@ -111,7 +102,8 @@ public class IntCContainer
 	 * @param iMin
 	 * @param iMax
 	 * @return
-	 * @throws IllegalAttributeException when iMin is >= iMax
+	 * @throws IllegalAttributeException
+	 *           when iMin is >= iMax
 	 */
 	private FloatCContainer normalize(int iMin, int iMax)
 
@@ -120,10 +112,9 @@ public class IntCContainer
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 		float[] fArTmpTarget = new float[iArContainer.length];
 
-		for (int iCount = 0; iCount < iArContainer.length; iCount++)
-		{
+		for (int iCount = 0; iCount < iArContainer.length; iCount++) {
 			fArTmpTarget[iCount] = ((float) iArContainer[iCount] - iMin) / (iMax - iMin);
-			fArTmpTarget[iCount] = (fArTmpTarget[iCount] > 1) ? 1 : fArTmpTarget[iCount];
+			fArTmpTarget[iCount] = fArTmpTarget[iCount] > 1 ? 1 : fArTmpTarget[iCount];
 		}
 		return new FloatCContainer(fArTmpTarget);
 	}
@@ -131,13 +122,9 @@ public class IntCContainer
 	/**
 	 * The actual calculation of min and maxima on the local array
 	 */
-	private void calculateMinMax()
-	{
+	private void calculateMinMax() {
 
-		for (int iCount = 0; iCount < iArContainer.length; iCount++)
-		{
-			int iCurrentValue = iArContainer[iCount];
-
+		for (int iCurrentValue : iArContainer) {
 			// Handle NaN values
 			if (iCurrentValue == Integer.MIN_VALUE)
 				continue;
@@ -150,14 +137,12 @@ public class IntCContainer
 	}
 
 	@Override
-	public FloatCContainer log(int iBase)
-	{
+	public FloatCContainer log(int iBase) {
 
 		float[] fArTarget = new float[iArContainer.length];
 
 		float fTmp;
-		for (int index = 0; index < iArContainer.length; index++)
-		{
+		for (int index = 0; index < iArContainer.length; index++) {
 			fTmp = iArContainer[index];
 			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
 		}

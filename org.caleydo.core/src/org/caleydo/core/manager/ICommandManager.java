@@ -9,15 +9,14 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
- * One Manager handle all ICommandListener. This is a singleton for all Commands
- * and ICommandListener objects. "ISingelton" Design Pattern.
+ * One Manager handle all ICommandListener. This is a singleton for all Commands and ICommandListener objects.
+ * "ISingelton" Design Pattern.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public interface ICommandManager
-	extends ICommandActionListener, IManager<ICommand>
-{
+	extends ICommandActionListener, IManager<ICommand> {
 
 	// /**
 	// * Create a new CommandQueue object.
@@ -42,8 +41,8 @@ public interface ICommandManager
 	 * create a new command. Calls createCommandByType(CommandType) internal.
 	 * 
 	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(ECommandType)
-	 * @param phAttributes Define several attributes and assign them in new
-	 *            Command
+	 * @param phAttributes
+	 *          Define several attributes and assign them in new Command
 	 * @return new Command with attributes defined in phAttributes
 	 */
 	public ICommand createCommand(final IParameterHandler phAttributes);
@@ -59,33 +58,35 @@ public interface ICommandManager
 	/**
 	 * Add reference to one ICommandListener object.
 	 * 
-	 * @param addCommandListener adds reference to ICommandListener object.
+	 * @param addCommandListener
+	 *          adds reference to ICommandListener object.
 	 */
 	public void addCommandListener(ICommandListener addCommandListener);
 
 	/**
 	 * Remove reference to one ICommandListener object.
 	 * 
-	 * @param removeCommandListener removes references to ICommandListener
-	 *            object.
-	 * @return TRUE if the reference was removed, false if the reference was not
-	 *         found.
+	 * @param removeCommandListener
+	 *          removes references to ICommandListener object.
+	 * @return TRUE if the reference was removed, false if the reference was not found.
 	 */
 	public boolean removeCommandListener(ICommandListener removeCommandListener);
 
 	/**
 	 * Tests if the reference to one ICommandListener object exists.
 	 * 
-	 * @param hasCommandListener reference to be tested
+	 * @param hasCommandListener
+	 *          reference to be tested
 	 * @return true if the reference is bound to this ICommandManager
 	 */
 	public boolean hasCommandListener(ICommandListener hasCommandListener);
 
 	/**
-	 * Get a command queue by it's commandQueueId, which is only a key for the
-	 * commandQueue and is not a uniqueSystem wide Id.
+	 * Get a command queue by it's commandQueueId, which is only a key for the commandQueue and is not a
+	 * uniqueSystem wide Id.
 	 * 
-	 * @param iCmdQueueId commandQueueId
+	 * @param iCmdQueueId
+	 *          commandQueueId
 	 * @return command queue
 	 */
 	public ICommandQueue getCommandQueueByCmdQueueId(final int iCmdQueueId);
@@ -93,14 +94,14 @@ public interface ICommandManager
 	/**
 	 * Tests if a iCmdQueueId is registered with a CommandQueue object.
 	 * 
-	 * @param iCmdQueueId test this id
+	 * @param iCmdQueueId
+	 *          test this id
 	 * @return TRUE if an CommandQueue is bound that iCmdQueueId
 	 */
 	public boolean hasCommandQueueId(final int iCmdQueueId);
 
 	/**
-	 * Register a org.caleydo.core.command.ICommand after its doCommand() method
-	 * was called. Used for redo-undo.
+	 * Register a org.caleydo.core.command.ICommand after its doCommand() method was called. Used for redo-undo.
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 * @param runCmd
@@ -108,8 +109,8 @@ public interface ICommandManager
 	public void runDoCommand(ICommand runCmd);
 
 	/**
-	 * Register a org.caleydo.core.command.ICommand after its undoCommand()
-	 * method was called. Used for redo-undo.
+	 * Register a org.caleydo.core.command.ICommand after its undoCommand() method was called. Used for
+	 * redo-undo.
 	 * 
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 * @param runCmd

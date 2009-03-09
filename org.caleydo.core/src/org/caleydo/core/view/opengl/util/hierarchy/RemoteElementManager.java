@@ -8,26 +8,20 @@ import org.caleydo.core.manager.AManager;
  * @author Marc Streit
  */
 public class RemoteElementManager
-	extends AManager<RemoteLevelElement>
-{
+	extends AManager<RemoteLevelElement> {
 	private static RemoteElementManager remoteElementManager;
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	private RemoteElementManager()
-	{
+	private RemoteElementManager() {
 	}
 
 	/**
-	 * Returns the manager as a singleton object. When first called the manager
-	 * is created (lazy).
+	 * Returns the manager as a singleton object. When first called the manager is created (lazy).
 	 */
-	public static RemoteElementManager get()
-	{
-		if (remoteElementManager == null)
-		{
+	public static RemoteElementManager get() {
+		if (remoteElementManager == null) {
 			remoteElementManager = new RemoteElementManager();
 		}
 		return remoteElementManager;

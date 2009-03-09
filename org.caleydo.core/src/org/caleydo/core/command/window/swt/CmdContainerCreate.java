@@ -11,38 +11,32 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * @author Michael Kalkusch
  */
 public class CmdContainerCreate
-	extends ACmdExternalAttributes
-{
+	extends ACmdExternalAttributes {
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param cmdType
 	 */
-	public CmdContainerCreate(final ECommandType cmdType)
-	{
+	public CmdContainerCreate(final ECommandType cmdType) {
 		super(cmdType);
 	}
 
 	@Override
-	public void doCommand()
-	{
-		generalManager.getSWTGUIManager().createComposite(iExternalID, iParentContainerId,
-				sAttribute2);
+	public void doCommand() {
+		generalManager.getSWTGUIManager().createComposite(iExternalID, iParentContainerId, sAttribute2);
 
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void undoCommand()
-	{
+	public void undoCommand() {
 
 		commandManager.runUndoCommand(this);
 	}
 
 	@Override
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
+	public void setParameterHandler(final IParameterHandler parameterHandler) {
 
 		assert parameterHandler != null : "ParameterHandler object is null!";
 

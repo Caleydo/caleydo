@@ -8,8 +8,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
  * 
  * @author Marc Streit
  */
-public interface IGLCanvasRemoteRendering
-{
+public interface IGLCanvasRemoteRendering {
 
 	// public RemoteLevel getHierarchyLayerByGLEventListenerId(
 	// final int iGLEventListenerId);

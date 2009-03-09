@@ -1,10 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.Vec4f;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -13,13 +15,11 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition.
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
 /**
- * Stores the xml definition of a glyph object, matching to the wavefront object
- * group.
+ * Stores the xml definition of a glyph object, matching to the wavefront object group.
  * 
  * @author Stefan Sauer
  */
-public class GlyphObjectDefinitionPart
-{
+public class GlyphObjectDefinitionPart {
 	private GlyphManager gman = null;
 
 	private HashMap<ANCHOR, String> anchors;
@@ -42,8 +42,7 @@ public class GlyphObjectDefinitionPart
 
 	private Vector<Vec4f> colors;
 
-	public GlyphObjectDefinitionPart()
-	{
+	public GlyphObjectDefinitionPart() {
 		anchors = new HashMap<ANCHOR, String>();
 		colors = new Vector<Vec4f>();
 
@@ -54,20 +53,17 @@ public class GlyphObjectDefinitionPart
 		gman = GeneralManager.get().getGlyphManager();
 	}
 
-	public void addColor(Vec4f color)
-	{
+	public void addColor(Vec4f color) {
 		colors.add(color);
 	}
 
-	public Vec4f getColor(int index)
-	{
+	public Vec4f getColor(int index) {
 		if (index < colors.size() && index >= 0)
 			return new Vec4f(colors.get(index));
 		return null;
 	}
 
-	public void addParameter(String type, String value, String description)
-	{
+	public void addParameter(String type, String value, String description) {
 		if (type == null)
 			return;
 
@@ -80,30 +76,24 @@ public class GlyphObjectDefinitionPart
 		if (value != null)
 			value = value.toUpperCase();
 
-		if (Etype == EGlyphSettingIDs.SCALE)
-		{
+		if (Etype == EGlyphSettingIDs.SCALE) {
 			DIRECTION dir = DIRECTION.valueOf(value);
-			if (dir == DIRECTION.X)
-			{
+			if (dir == DIRECTION.X) {
 				bScaleX = true;
 				sScaleDescriptionX = description;
 			}
-			if (dir == DIRECTION.Y)
-			{
+			if (dir == DIRECTION.Y) {
 				bScaleY = true;
 				sScaleDescriptionY = description;
 			}
-			if (dir == DIRECTION.Z)
-			{
+			if (dir == DIRECTION.Z) {
 				bScaleZ = true;
 				sScaleDescriptionZ = description;
 			}
 		}
-		else
-		{
+		else {
 
-			if (parameter.containsKey(type))
-			{
+			if (parameter.containsKey(type)) {
 				parameter.remove(Etype);
 				parameterDescription.remove(Etype);
 				parameterIndex.remove(Etype);
@@ -115,8 +105,7 @@ public class GlyphObjectDefinitionPart
 
 	}
 
-	public boolean canScale(DIRECTION dir)
-	{
+	public boolean canScale(DIRECTION dir) {
 		if (dir == DIRECTION.X)
 			return bScaleX;
 		if (dir == DIRECTION.Y)
@@ -127,10 +116,8 @@ public class GlyphObjectDefinitionPart
 		return false;
 	}
 
-	public String getDescription(EGlyphSettingIDs type, DIRECTION dir)
-	{
-		if (type == EGlyphSettingIDs.SCALE)
-		{
+	public String getDescription(EGlyphSettingIDs type, DIRECTION dir) {
+		if (type == EGlyphSettingIDs.SCALE) {
 			if (dir == DIRECTION.X)
 				return sScaleDescriptionX;
 			if (dir == DIRECTION.Y)
@@ -142,36 +129,30 @@ public class GlyphObjectDefinitionPart
 		return parameterDescription.get(type);
 	}
 
-	public void addAnchor(ANCHOR anc, String to)
-	{
+	public void addAnchor(ANCHOR anc, String to) {
 		if (!anchors.containsKey(anc))
 			anchors.put(anc, to);
 	}
 
-	public Set<ANCHOR> getAnchors()
-	{
+	public Set<ANCHOR> getAnchors() {
 		return new HashSet<ANCHOR>(anchors.keySet());
 	}
 
-	public boolean hasAnchor(ANCHOR anc)
-	{
+	public boolean hasAnchor(ANCHOR anc) {
 		if (anchors.containsKey(anc))
 			return true;
 		return false;
 	}
 
-	public String getAnchorPlace(ANCHOR anc)
-	{
+	public String getAnchorPlace(ANCHOR anc) {
 		if (anchors.containsKey(anc))
 			return new String(anchors.get(anc));
 		return null;
 	}
 
-	public void setParameterIndex(EGlyphSettingIDs type, DIRECTION dir, int index)
-	{
+	public void setParameterIndex(EGlyphSettingIDs type, DIRECTION dir, int index) {
 
-		if (type == EGlyphSettingIDs.SCALE)
-		{
+		if (type == EGlyphSettingIDs.SCALE) {
 			if (dir == DIRECTION.X)
 				iScaleIndexX = index;
 			if (dir == DIRECTION.Y)
@@ -179,8 +160,7 @@ public class GlyphObjectDefinitionPart
 			if (dir == DIRECTION.Z)
 				iScaleIndexZ = index;
 		}
-		else
-		{
+		else {
 			if (!parameter.containsKey(type))
 				return;
 
@@ -190,10 +170,8 @@ public class GlyphObjectDefinitionPart
 
 	}
 
-	public int getParameterIndexExternal(EGlyphSettingIDs type, DIRECTION dir)
-	{
-		if (type == EGlyphSettingIDs.SCALE)
-		{
+	public int getParameterIndexExternal(EGlyphSettingIDs type, DIRECTION dir) {
+		if (type == EGlyphSettingIDs.SCALE) {
 			if (dir == DIRECTION.X)
 				return iScaleIndexX;
 			if (dir == DIRECTION.Y)
@@ -201,8 +179,7 @@ public class GlyphObjectDefinitionPart
 			if (dir == DIRECTION.Z)
 				return iScaleIndexZ;
 		}
-		else
-		{
+		else {
 			if (!parameter.containsKey(type))
 				return -1;
 
@@ -211,16 +188,13 @@ public class GlyphObjectDefinitionPart
 		return -1;
 	}
 
-	public int getParameterIndexInternal(EGlyphSettingIDs type, DIRECTION dir)
-	{
+	public int getParameterIndexInternal(EGlyphSettingIDs type, DIRECTION dir) {
 		return remapIndex(getParameterIndexExternal(type, dir));
 	}
 
-	private int remapIndex(int externalIndex)
-	{
+	private int remapIndex(int externalIndex) {
 
-		GlyphAttributeType typ = gman
-				.getGlyphAttributeTypeWithExternalColumnNumber(externalIndex);
+		GlyphAttributeType typ = gman.getGlyphAttributeTypeWithExternalColumnNumber(externalIndex);
 		if (typ != null)
 			return typ.getInternalColumnNumber();
 

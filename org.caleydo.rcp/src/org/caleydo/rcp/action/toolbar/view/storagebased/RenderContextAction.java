@@ -9,8 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class RenderContextAction
-	extends AToolBarAction
-{
+	extends AToolBarAction {
 	public static final String TEXT = "Render Context / Render All";
 	public static final String ICON = "resources/icons/view/storagebased/toggle_render_context.png";
 
@@ -19,28 +18,25 @@ public class RenderContextAction
 	/**
 	 * Constructor.
 	 */
-	public RenderContextAction(int iViewID)
-	{
+	public RenderContextAction(int iViewID) {
 		super(iViewID);
-		AStorageBasedView storageBasedView = (AStorageBasedView) GeneralManager.get()
-				.getViewGLCanvasManager().getGLEventListener(iViewID);
+		AStorageBasedView storageBasedView =
+			(AStorageBasedView) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 		bEnable = storageBasedView.isRenderingOnlyContext();
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 
 		setChecked(bEnable);
 		// setEnabled(bEnable);
 	}
 
 	@Override
-	public void run()
-	{
+	public void run() {
 		super.run();
 		bEnable = !bEnable;
-		triggerCmdExternalFlagSetter(bEnable,
-				EExternalFlagSetterType.STORAGEBASED_RENDER_CONTEXT);
+		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_RENDER_CONTEXT);
 	};
 }
