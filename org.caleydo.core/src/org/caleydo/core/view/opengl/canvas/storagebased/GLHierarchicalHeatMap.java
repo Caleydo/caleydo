@@ -199,7 +199,7 @@ public class GLHierarchicalHeatMap
 		bUseClusteredVA = false;
 
 		// cluster hierarchical
-		bClusterHierarchical = true;
+		bClusterHierarchical = false;
 	}
 
 	@Override
@@ -1568,11 +1568,10 @@ public class GLHierarchicalHeatMap
 			// System.out.println("iContentVAID before clustering " + iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
 
-			ArrayList<Integer> alClusterResult = new ArrayList<Integer>();
-			alClusterResult = set.cluster(iContentVAID, iStorageVAID, bClusterHierarchical);
+			ArrayList<Integer> alClusterResult = set.cluster(iContentVAID, iStorageVAID, bClusterHierarchical);
 
 			if (alClusterResult != null) {
-				iContentVAID = set.getVA(alClusterResult.get(0)).getID();
+				iContentVAID = alClusterResult.get(0);//set.getVA(alClusterResult.get(0)).getID();
 			}
 
 			// System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "

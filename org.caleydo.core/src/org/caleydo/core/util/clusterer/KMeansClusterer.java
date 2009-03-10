@@ -56,11 +56,12 @@ public class KMeansClusterer {
 		// System.out.println(dataToCluster.getVA(iContentVAID).size());
 
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
-
-		for (Integer iContentIndex : contentVA) {
-			IVirtualArray storageVA = set.getVA(iVAIdStorage);
+		IVirtualArray storageVA = set.getVA(iVAIdStorage);
+		
+		for (Integer iContentIndex : contentVA) {	
 			for (Integer iStorageIndex : storageVA) {
 				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex) + ", ");
+			
 			}
 			buffer.append("\n");
 		}

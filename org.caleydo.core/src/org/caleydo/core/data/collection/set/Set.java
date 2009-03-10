@@ -438,6 +438,8 @@ public class Set
 		boolean bHierarchicalClustering) {
 
 		ArrayList<Integer> VAIds = new ArrayList<Integer>();
+		
+		IVirtualArray tempVA = getVA(iVAIdOriginal);
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
