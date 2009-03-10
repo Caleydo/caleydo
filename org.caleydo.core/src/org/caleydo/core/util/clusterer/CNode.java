@@ -702,4 +702,21 @@ public class CNode
 	public int getClusterNum() {
 		return m_clusterNum;
 	}
+
+	public void traversTree(int depth) {
+
+		int currentdepth = depth;
+
+		if (m_children == null)
+			System.out.println("currentdepth: " + currentdepth + " Number: " + m_clusterNum + "no childs");
+		else {
+			System.out.println("currentdepth: " + currentdepth + " Number: " + m_clusterNum + "Nrchilds: "
+				+ m_children.size());
+			currentdepth++;
+			for (int i = 0; i < m_children.size(); i++) {
+				CNode temp = (CNode) m_children.elementAt(i);
+				temp.traversTree(currentdepth);
+			}
+		}
+	}
 }

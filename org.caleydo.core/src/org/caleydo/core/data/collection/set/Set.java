@@ -436,45 +436,53 @@ public class Set
 
 	public ArrayList<Integer> cluster(Integer iVAIdOriginal, Integer iVAIdStorage,
 		boolean bHierarchicalClustering) {
+
 		ArrayList<Integer> VAIds = new ArrayList<Integer>();
 
-		long tic, toc, duration;
+		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
-		if (bHierarchicalClustering) {
-			System.out.println("hierarchical clustering ...");
+			long tic, toc, duration;
 
-			tic = System.currentTimeMillis();
+			if (bHierarchicalClustering) {
+				System.out.println("hierarchical clustering ...");
 
-			HierarchicalClusterer clusterer = new HierarchicalClusterer();
-			VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
+				tic = System.currentTimeMillis();
 
-			toc = System.currentTimeMillis();
+				HierarchicalClusterer clusterer = new HierarchicalClusterer();
+				VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
+
+				toc = System.currentTimeMillis();
+			}
+			else {
+				System.out.println("KMeans clustering ...");
+				tic = System.currentTimeMillis();
+
+				KMeansClusterer clusterer = new KMeansClusterer();
+				VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
+
+				toc = System.currentTimeMillis();
+			}
+			duration = (toc - tic) / 1000;
+			System.out.println("cluster duration: ~" + duration + "sec");
+
+			if (VAIds.size() != 2) {
+				throw new IllegalStateException("Problems during clustering!!");
+			}
+
+			IVirtualArray virtualArray = getVA(VAIds.get(0));
+			hashSetVAs.put(virtualArray.getID(), virtualArray);
+			VAIds.add(VAIds.get(0));
+
+			virtualArray = getVA(VAIds.get(1));
+			hashSetVAs.put(virtualArray.getID(), virtualArray);
+			VAIds.add(VAIds.get(1));
+
+			return VAIds;
 		}
 		else {
-			System.out.println("KMeans clustering ...");
-			tic = System.currentTimeMillis();
-
-			KMeansClusterer clusterer = new KMeansClusterer();
-			VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
-
-			toc = System.currentTimeMillis();
+			System.out.println("Set is not numerical/homogeneous --> clustering not allowed !!!");
+			return null;
 		}
-		duration = (toc - tic) / 1000;
-		System.out.println("cluster duration: ~" + duration + "sec");
-
-		if (VAIds.size() != 2) {
-			throw new IllegalStateException("Problems during clustering!!");
-		}
-
-		IVirtualArray virtualArray = getVA(VAIds.get(0));
-		hashSetVAs.put(virtualArray.getID(), virtualArray);
-		VAIds.add(VAIds.get(0));
-
-		virtualArray = getVA(VAIds.get(1));
-		hashSetVAs.put(virtualArray.getID(), virtualArray);
-		VAIds.add(VAIds.get(1));
-
-		return VAIds;
 	}
 
 	public void setClusteredGraph(CNode clusteredGraph) {

@@ -38,6 +38,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.util.clusterer.CNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -48,6 +49,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 
@@ -134,6 +136,7 @@ public class GLHierarchicalHeatMap
 
 	// clustering flag
 	private boolean bClusterHierarchical = false;
+	CNode graphRoot = null;
 
 	/**
 	 * Constructor.
@@ -1319,7 +1322,81 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(fleftOffset, +0.2f, 0);
 	}
 
+	/**
+	 * Render dendrogram recursively
+	 * 
+	 * @param gl
+	 * @param fymin
+	 * @param fymax
+	 * @param CNode
+	 * @param iDepth
+	 * @param iNrSiblings
+	 * @param iChildNr
+	 */
+	private void renderDendrogram(final GL gl, float fymin, float fymax, CNode Node, int iDepth,
+		int iNrSiblings, int iChildNr) {
+
+		int currentDepth = iDepth;
+
+		float fxpos = 0.2f * currentDepth;
+		float fypos = 0;
+		float ymaxNew = 0, yminNew = 0;
+		float fdiff = (fymax - fymin);
+		float ywidth = fdiff / (iNrSiblings + 1);
+
+		fypos = fymin + (ywidth * (iChildNr + 1));
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
+		int iNodeNr = Node.getClusterNum();
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION, iNodeNr));
+		gl.glColor4f(1f, 1 - (float) (1 / (iDepth + 0.00001)), 0f, 1f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fxpos, fypos, SELECTION_Z);
+		gl.glVertex3f(fxpos + 0.2f, fypos, SELECTION_Z);
+		gl.glVertex3f(fxpos + 0.2f, fypos + 0.01f, SELECTION_Z);
+		gl.glVertex3f(fxpos, fypos + 0.01f, SELECTION_Z);
+		gl.glEnd();
+		gl.glPopName();
+
+		gl.glPopAttrib();
+
+		if (Node.getChilds() != null) {
+			currentDepth++;
+			int iNrChildsNode = Node.getChilds().size();
+
+//			gl.glColor4f(0f, 0f, 1f, 1f);
+//			gl.glBegin(GL.GL_POINTS);
+//			gl.glVertex3f(fxpos, fymin, SELECTION_Z);
+//			gl.glEnd();
+//
+//			gl.glColor4f(0f, 1f, 0f, 1f);
+//			gl.glBegin(GL.GL_POINTS);
+//			gl.glVertex3f(fxpos, fymax, SELECTION_Z);
+//			gl.glEnd();
+
+			gl.glColor4f(1f, 1 - (float) (1 / (iDepth + 0.00001)), 0f, 1f);
+			gl.glLineWidth(0.1f);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * 0.55f), SELECTION_Z);
+			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * (iNrChildsNode + 0.55f)), SELECTION_Z);
+			gl.glEnd();
+			
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.55f));
+				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
+
+				CNode currentNode = (CNode) Node.getChilds().elementAt(i);
+				renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i);
+			}
+		}
+
+	}
+
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
+
 		if (bRedrawTextures) {
 			initTextures(gl);
 			bRedrawTextures = false;
@@ -1350,26 +1427,37 @@ public class GLHierarchicalHeatMap
 
 		handleTexturePicking(gl);
 
-		// all stuff for rendering level 1 (overview bar)
-		renderOverviewBar(gl);
-		renderMarkerOverviewBar(gl);
-		renderSelectedElementsOverviewBar(gl);
+		// GLHelperFunctions.drawAxis(gl);
 
-		gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
-
-		if (bIsHeatmapInFocus) {
-			fAnimationScale = 0.2f;
+		if (graphRoot == null) {
+			System.out.println("Problems during clustering!!");
 		}
 		else {
-			fAnimationScale = 1.0f;
+			// graphRoot.traversTree(0);
+			// System.out.println("renderDendrogram(..)");
+			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), graphRoot, 0, 1, 0);
 		}
 
-		// all stuff for rendering level 2 (textures)
-		renderTextureHeatMap(gl);
-		renderMarkerTexture(gl);
-		renderSelectedElementsTexture(gl);
-		renderCursor(gl);
-
+		 // all stuff for rendering level 1 (overview bar)
+		 renderOverviewBar(gl);
+		 renderMarkerOverviewBar(gl);
+		 renderSelectedElementsOverviewBar(gl);
+		
+		 gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
+		
+		 if (bIsHeatmapInFocus) {
+		 fAnimationScale = 0.2f;
+		 }
+		 else {
+		 fAnimationScale = 1.0f;
+		 }
+		
+		 // all stuff for rendering level 2 (textures)
+		 renderTextureHeatMap(gl);
+		 renderMarkerTexture(gl);
+		 renderSelectedElementsTexture(gl);
+		 renderCursor(gl);
+		
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
 		gl.glTranslatef(-0.1f, -0.4f, 0);
@@ -1482,8 +1570,10 @@ public class GLHierarchicalHeatMap
 
 			ArrayList<Integer> alClusterResult = new ArrayList<Integer>();
 			alClusterResult = set.cluster(iContentVAID, iStorageVAID, bClusterHierarchical);
-			iContentVAID = -1;
-			iContentVAID = set.getVA(alClusterResult.get(0)).getID();
+
+			if (alClusterResult != null) {
+				iContentVAID = set.getVA(alClusterResult.get(0)).getID();
+			}
 
 			// System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
@@ -1492,6 +1582,10 @@ public class GLHierarchicalHeatMap
 			// {
 			// System.out.print(iter + " ");
 			// }
+
+			if (bClusterHierarchical == true) {
+				graphRoot = set.getClusteredGraph();
+			}
 		}
 
 		contentSelectionManager.resetSelectionManager();
@@ -1690,6 +1784,19 @@ public class GLHierarchicalHeatMap
 		}
 
 		switch (ePickingType) {
+
+			case DENDROGRAM_SELECTION:
+				switch (pickingMode) {
+
+					case MOUSE_OVER:
+
+						System.out.println("nodeNr: " + iExternalID);
+						break;
+				}
+
+				pickingManager.flushHits(iUniqueID, ePickingType);
+				break;
+
 			case HIER_HEAT_MAP_TEXTURE_CURSOR:
 				switch (pickingMode) {
 					case CLICKED:

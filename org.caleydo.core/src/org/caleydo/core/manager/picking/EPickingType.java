@@ -54,6 +54,9 @@ public enum EPickingType {
 		false), HIER_HEAT_MAP_VIEW_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, true), HIER_HEAT_MAP_TEXTURE_CURSOR(
 		EManagedObjectType.GL_HIER_HEAT_MAP, false),
 
+	// dendrogram
+	DENDROGRAM_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, false),
+
 	// glyph
 	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH, false),
 	// TODO: works only for glyph sliders now, new solution?

@@ -42,7 +42,7 @@ public class HierarchicalClusterer {
 
 		buffer.append("@data\n");
 
-		// System.out.println(dataToCluster.getVA(iContentVAID).size());
+//		 System.out.println(set.getVA(iVAIdOriginal).size());
 
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 
@@ -67,7 +67,7 @@ public class HierarchicalClusterer {
 		// unsupervised learning --> no class given
 		data.setClassIndex(-1);
 
-		// System.out.println(data.toString());
+//		 System.out.println(data.toString());
 
 		try {
 			// train the clusterer
@@ -129,7 +129,7 @@ public class HierarchicalClusterer {
 		Integer clusterSizeVAId = set.createStorageVA(count);
 		alClusterResult.add(clusterSizeVAId);
 
-		// set.setClusteredGraph(clusterer.getGraph());
+		set.setClusteredGraph(clusterer.getGraph());
 
 		return alClusterResult;
 	}
