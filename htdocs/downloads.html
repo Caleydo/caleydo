@@ -58,36 +58,72 @@ terms.</p>
 	href="http://www.caleydo.org/download/webstart/caleydo.jnlp"><img
 	src="images/logos/webstart.png" alt="Start Caleydo"
 	style="border-style: none" /><br />
-<b style="padding-left: 15px">Version 1.0.2 Beta</b></a></p>
+<b style="padding-left: 15px">Version 1.1 Beta</b></a></p>
 
 <p>If you have troubles running Caleydo please refer to the <a
 	href="help.html#KnownIssues">Help Section</a>. You will also find a
 link to a compatibility mode there.</p>
+
 <h2>Changelog</h2>
+<h3>Version 1.1 Beta</h3>
+<h4>New Features</h4>
+<ul>
+	<li>New Hierarchical Heat Map that allows to browse all genes</li>
+	<li>New Tabular Data View that shows you your data in a
+	spreadsheet - which is synchronized with the other views</li>
+	<li>Many newly designed elements</li>
+	<li>New export functionality that enables you to save and re-read
+	results of your analysis</li>
+	<li>New method for browsing a set of selected genes by propagating
+	them and viewing them in a "list heat map" next to the bucket and the
+	parallel coordinates</li>
+	<li>New way of applying random sampling: only the displayed
+	elements are sampled, all operations are executed on the whole dataset.
+	Also the sample automatically adapts to the number of visible element
+	resulting in all elements being visible once a selection was narrowed
+	down.</li>
+	<li>New user interface that improves clarity</li>
+	<li>New navigation features in the Bucket including drag and drop
+	and removing of views.</li>
+	<li>Re-ordering, duplicating and removing of experiments is now
+	synchronized across all views.</li>
+	<li>Drag and drop for re-ordering axes in the parallel coordinates</li>
+	<li>New global brush in the parallel coordinates that allows you
+	to filter out all genes that never leave a threshold</li>
+	<li>New way to handle NaN values in the parallel coordinates</li>
+	<li>Experiment selection now possible in heat map</li> 
+</ul>
+
 <h3>Version 1.0.2</h3>
 <h4>New Features</h4>
 <ul>
-<li>Views have a new "reset view" function that clears all changes</li>
-<li>Genes in pool layer are highlighted as well</li>
-<li>Added log base 2 support</li>
-<li>Added an XP classic style mode. (Enable via Preferences -> General)</li>
-<li>Added support for different filter levels (all genes - genes with david mapping - genes that occur in pathways). All genes mode is slow, needs improvement.</li>
-<li>Data loader is now a view, not only a dialog. This allows runtime changes to data.</li>
+	<li>Views have a new "reset view" function that clears all changes</li>
+	<li>Genes in pool layer are highlighted as well</li>
+	<li>Added log base 2 support</li>
+	<li>Added an XP classic style mode. (Enable via Preferences ->
+	General)</li>
+	<li>Added support for different filter levels (all genes - genes
+	with david mapping - genes that occur in pathways). All genes mode is
+	slow, needs improvement.</li>
+	<li>Data loader is now a view, not only a dialog. This allows
+	runtime changes to data.</li>
 </ul>
 <h4>Fixed Bugs</h4>
 <ul>
-<li>Color mapping now uses correct values on reset default</li>
-<li>Default color for NaN set to gray</li>
-<li>Improved mouse events under windows, needs further testing</li>
-<li>Min and max works now separately</li>
-<li>Pathways can be loaded more than once now</li>
-<li>Selection consistency when moving views improved</li>
-<li>Data RefSeq mapping loader ignores version of RefSeqs (NM_*.* -> NM_*).</li>
-<li>Multiple RefSeq numbers per micro-array spot in data files are ignored because they all point to the same DAVID gene ID.</li>
-<li>All experiments in data loader are selected by default.</li>
-<li>Corrected mapping of genes to actual values</li>
-<li>Browser now does not complain all the time when it is offline</li>
-<li>All delimiters for data import work now (not only Tab)</li>
+	<li>Color mapping now uses correct values on reset default</li>
+	<li>Default color for NaN set to gray</li>
+	<li>Improved mouse events under windows, needs further testing</li>
+	<li>Min and max works now separately</li>
+	<li>Pathways can be loaded more than once now</li>
+	<li>Selection consistency when moving views improved</li>
+	<li>Data RefSeq mapping loader ignores version of RefSeqs (NM_*.*
+	-> NM_*).</li>
+	<li>Multiple RefSeq numbers per micro-array spot in data files are
+	ignored because they all point to the same DAVID gene ID.</li>
+	<li>All experiments in data loader are selected by default.</li>
+	<li>Corrected mapping of genes to actual values</li>
+	<li>Browser now does not complain all the time when it is offline</li>
+	<li>All delimiters for data import work now (not only Tab)</li>
 </ul>
 
 <h3>Version 1.0.1</h3>
@@ -115,7 +151,7 @@ November 2007. A more recent video will follow soon.</p>
 website maintained by <a href="http://www.icg.tugraz.at/Members/streit"><strong>Marc
 Streit</strong></a> and <a href="http://www.icg.tugraz.at/Members/alex"><strong>Alexander
 Lex</strong></a><br />
-last updated on 2008-11-05</p>
+last updated on 2009-03-10</p>
 </div>
 
 </div>
@@ -123,7 +159,7 @@ last updated on 2008-11-05</p>
 <!-- end main --> <!-- footer -->
 
 <div id="footer">
-<div id="left_footer">&#169; Copyright 2008 caleydo.org</div>
+<div id="left_footer">&#169; Copyright 2006-2009 caleydo.org</div>
 
 <div id="right_footer"><!-- DO NOT DELETE THIS LINK! READ THE LICENSE! -->
 Design by <a href="http://www.realitysoftware.ca" title="Website Design">Reality
