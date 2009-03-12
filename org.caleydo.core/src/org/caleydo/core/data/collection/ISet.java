@@ -255,8 +255,7 @@ public interface ISet
 	 * @param bHierarchicalClustering
 	 * @return ArrayList<Integer> Ids of virtual arrays holding cluster result
 	 */
-	public ArrayList<Integer> cluster(Integer iVAIdOriginal, Integer iVAIdStorage,
-		boolean bHierarchicalClustering);
+	public Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, boolean bHierarchicalClustering);
 
 	/**
 	 * Returns clustered graph
@@ -273,4 +272,19 @@ public interface ISet
 	 */
 	public void setClusteredGraph(CNode clusteredGraph);
 
+	/**
+	 * Returns cluster sizes
+	 * 
+	 * @param
+	 * @return CNode
+	 */
+	public ArrayList<Integer> getAlClusterSizes();
+	
+	/**
+	 * Sets cluster sizes
+	 * 
+	 * @param CNode
+	 */
+	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
+	
 }

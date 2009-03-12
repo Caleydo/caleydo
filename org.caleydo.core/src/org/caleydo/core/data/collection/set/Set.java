@@ -57,6 +57,7 @@ public class Set
 	// clustering stuff
 	private HashMap<Integer, IGraph> hashVAIdToGraph;
 	private CNode clusteredGraph = null;
+	private ArrayList<Integer> alClusterSizes = null;
 
 	private EExternalDataRepresentation externalDataRep;
 
@@ -434,52 +435,43 @@ public class Set
 		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
-	public ArrayList<Integer> cluster(Integer iVAIdOriginal, Integer iVAIdStorage,
-		boolean bHierarchicalClustering) {
+	public Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, boolean bHierarchicalClustering) {
 
-		ArrayList<Integer> VAIds = new ArrayList<Integer>();
-		
-		IVirtualArray tempVA = getVA(iVAIdOriginal);
+		Integer VAId = 0;
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
-			long tic, toc, duration;
+			// long tic, toc, duration;
 
 			if (bHierarchicalClustering) {
 				System.out.println("hierarchical clustering ...");
-
-				tic = System.currentTimeMillis();
+				// tic = System.currentTimeMillis();
 
 				HierarchicalClusterer clusterer = new HierarchicalClusterer();
-				VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
+				VAId = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
 
-				toc = System.currentTimeMillis();
+				// toc = System.currentTimeMillis();
 			}
 			else {
 				System.out.println("KMeans clustering ...");
-				tic = System.currentTimeMillis();
+				// tic = System.currentTimeMillis();
 
 				KMeansClusterer clusterer = new KMeansClusterer();
-				VAIds = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
+				VAId = clusterer.cluster(this, iVAIdOriginal, 0, iVAIdStorage);
 
-				toc = System.currentTimeMillis();
+				// toc = System.currentTimeMillis();
 			}
-			duration = (toc - tic) / 1000;
-			System.out.println("cluster duration: ~" + duration + "sec");
+			// duration = (toc - tic) / 1000;
+			// System.out.println("cluster duration: ~" + duration + "sec");
 
-			if (VAIds.size() != 2) {
+			if (VAId == 0) {
 				throw new IllegalStateException("Problems during clustering!!");
 			}
 
-			IVirtualArray virtualArray = getVA(VAIds.get(0));
+			IVirtualArray virtualArray = getVA(VAId);
 			hashSetVAs.put(virtualArray.getID(), virtualArray);
-			VAIds.add(VAIds.get(0));
 
-			virtualArray = getVA(VAIds.get(1));
-			hashSetVAs.put(virtualArray.getID(), virtualArray);
-			VAIds.add(VAIds.get(1));
-
-			return VAIds;
+			return VAId;
 		}
 		else {
 			System.out.println("Set is not numerical/homogeneous --> clustering not allowed !!!");
@@ -493,5 +485,13 @@ public class Set
 
 	public CNode getClusteredGraph() {
 		return clusteredGraph;
+	}
+
+	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
+		this.alClusterSizes = alClusterSizes;
+	}
+
+	public ArrayList<Integer> getAlClusterSizes() {
+		return alClusterSizes;
 	}
 }

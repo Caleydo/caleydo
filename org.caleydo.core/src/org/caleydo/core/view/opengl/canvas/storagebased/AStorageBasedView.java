@@ -301,10 +301,10 @@ public abstract class AStorageBasedView
 		throws InvalidAttributeValueException;
 
 	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta) {
-		// generalManager.getLogger().log(
-		// Level.INFO,
-		// "Update called by " + eventTrigger.getClass().getSimpleName()
-		// + ", received in: " + this.getClass().getSimpleName());
+//		 generalManager.getLogger().log(
+//		 Level.INFO,
+//		 "Update called by " + eventTrigger.getClass().getSimpleName()
+//		 + ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
@@ -313,7 +313,7 @@ public abstract class AStorageBasedView
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementRep(internalDelta);
-			reactOnExternalSelection();
+			reactOnExternalSelection(eventTrigger.getClass().getSimpleName());
 			setDisplayListDirty();
 		}
 
@@ -323,7 +323,7 @@ public abstract class AStorageBasedView
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
-			reactOnExternalSelection();
+			reactOnExternalSelection(eventTrigger.getClass().getSimpleName());
 			setDisplayListDirty();
 		}
 
@@ -360,7 +360,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection() {
+	protected void reactOnExternalSelection(String trigger) {
 
 	}
 

@@ -18,10 +18,7 @@ public class HierarchicalClusterer {
 		clusterer = new Cobweb();
 	}
 
-	public ArrayList<Integer> cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered,
-		Integer iVAIdStorage) {
-
-		ArrayList<Integer> alClusterResult = new ArrayList<Integer>();
+	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered, Integer iVAIdStorage) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -42,7 +39,7 @@ public class HierarchicalClusterer {
 
 		buffer.append("@data\n");
 
-//		 System.out.println(set.getVA(iVAIdOriginal).size());
+		// System.out.println(set.getVA(iVAIdOriginal).size());
 
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 
@@ -67,7 +64,7 @@ public class HierarchicalClusterer {
 		// unsupervised learning --> no class given
 		data.setClassIndex(-1);
 
-//		 System.out.println(data.toString());
+		// System.out.println(data.toString());
 
 		try {
 			// train the clusterer
@@ -110,27 +107,12 @@ public class HierarchicalClusterer {
 				count.add(iter);
 		}
 
-		// StringBuffer graphbuffer = new StringBuffer();
-		// try
-		// {
-		// clusteredGraph.graphTree(graphbuffer);
-		// System.out.println(graphbuffer);
-		//		
-		// System.out.println(clusteredGraph.dumpData());
-		// }
-		// catch (Exception e)
-		// {
-		// e.printStackTrace();
-		// }
-
 		Integer clusteredVAId = set.createStorageVA(indexes);
-		alClusterResult.add(clusteredVAId);
 
-		Integer clusterSizeVAId = set.createStorageVA(count);
-		alClusterResult.add(clusterSizeVAId);
-
+		// set cluster result in Set
+		set.setAlClusterSizes(count);
 		set.setClusteredGraph(clusterer.getGraph());
 
-		return alClusterResult;
+		return clusteredVAId;
 	}
 }

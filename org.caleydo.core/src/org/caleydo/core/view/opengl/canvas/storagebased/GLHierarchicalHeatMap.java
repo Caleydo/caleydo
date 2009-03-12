@@ -501,12 +501,12 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Function called any time a update is triggered by embedded heatmap
+	 * Function called any time a update is triggered external
 	 * 
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection() {
+	protected void reactOnExternalSelection(String trigger) {
 		int iIndex = 0;
 		int iTexture = 0;
 		int iPos = 0;
@@ -557,7 +557,8 @@ public class GLHierarchicalHeatMap
 		}
 
 		// if selected element is in another texture, switch to this texture
-		setTexture();
+		if (!trigger.equals("GLHeatMap"))
+			setTexture();
 	}
 
 	@Override
@@ -1366,23 +1367,24 @@ public class GLHierarchicalHeatMap
 			currentDepth++;
 			int iNrChildsNode = Node.getChilds().size();
 
-//			gl.glColor4f(0f, 0f, 1f, 1f);
-//			gl.glBegin(GL.GL_POINTS);
-//			gl.glVertex3f(fxpos, fymin, SELECTION_Z);
-//			gl.glEnd();
-//
-//			gl.glColor4f(0f, 1f, 0f, 1f);
-//			gl.glBegin(GL.GL_POINTS);
-//			gl.glVertex3f(fxpos, fymax, SELECTION_Z);
-//			gl.glEnd();
+			// gl.glColor4f(0f, 0f, 1f, 1f);
+			// gl.glBegin(GL.GL_POINTS);
+			// gl.glVertex3f(fxpos, fymin, SELECTION_Z);
+			// gl.glEnd();
+			//
+			// gl.glColor4f(0f, 1f, 0f, 1f);
+			// gl.glBegin(GL.GL_POINTS);
+			// gl.glVertex3f(fxpos, fymax, SELECTION_Z);
+			// gl.glEnd();
 
 			gl.glColor4f(1f, 1 - (float) (1 / (iDepth + 0.00001)), 0f, 1f);
 			gl.glLineWidth(0.1f);
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * 0.55f), SELECTION_Z);
-			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * (iNrChildsNode + 0.55f)), SELECTION_Z);
+			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * (iNrChildsNode + 0.55f)),
+				SELECTION_Z);
 			gl.glEnd();
-			
+
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.55f));
@@ -1430,7 +1432,7 @@ public class GLHierarchicalHeatMap
 		// GLHelperFunctions.drawAxis(gl);
 
 		if (graphRoot == null) {
-			System.out.println("Problems during clustering!!");
+			// System.out.println("Problems during clustering!!");
 		}
 		else {
 			// graphRoot.traversTree(0);
@@ -1438,26 +1440,26 @@ public class GLHierarchicalHeatMap
 			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), graphRoot, 0, 1, 0);
 		}
 
-		 // all stuff for rendering level 1 (overview bar)
-		 renderOverviewBar(gl);
-		 renderMarkerOverviewBar(gl);
-		 renderSelectedElementsOverviewBar(gl);
-		
-		 gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
-		
-		 if (bIsHeatmapInFocus) {
-		 fAnimationScale = 0.2f;
-		 }
-		 else {
-		 fAnimationScale = 1.0f;
-		 }
-		
-		 // all stuff for rendering level 2 (textures)
-		 renderTextureHeatMap(gl);
-		 renderMarkerTexture(gl);
-		 renderSelectedElementsTexture(gl);
-		 renderCursor(gl);
-		
+		// all stuff for rendering level 1 (overview bar)
+		renderOverviewBar(gl);
+		renderMarkerOverviewBar(gl);
+		renderSelectedElementsOverviewBar(gl);
+
+		gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
+
+		if (bIsHeatmapInFocus) {
+			fAnimationScale = 0.2f;
+		}
+		else {
+			fAnimationScale = 1.0f;
+		}
+
+		// all stuff for rendering level 2 (textures)
+		renderTextureHeatMap(gl);
+		renderMarkerTexture(gl);
+		renderSelectedElementsTexture(gl);
+		renderCursor(gl);
+
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
 		gl.glTranslatef(-0.1f, -0.4f, 0);
@@ -1567,17 +1569,21 @@ public class GLHierarchicalHeatMap
 		if (bUseClusteredVA) {
 			// System.out.println("iContentVAID before clustering " + iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
+			// for(int i = 0; i < 20; i++)
+			// {
+			// System.out.println(set.getVA(iContentVAID).get(i));
+			// }
 
-			ArrayList<Integer> alClusterResult = set.cluster(iContentVAID, iStorageVAID, bClusterHierarchical);
-
-			if (alClusterResult != null) {
-				iContentVAID = alClusterResult.get(0);//set.getVA(alClusterResult.get(0)).getID();
-			}
+			iContentVAID = set.cluster(iContentVAID, iStorageVAID, bClusterHierarchical);
 
 			// System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
+			// for(int i = 0; i < 20; i++)
+			// {
+			// System.out.println(set.getVA(iContentVAID).get(i));
+			// }
 
-			// for (Integer iter : set.getVA(alClusterResult.get(1)))
+			// for (Integer iter : set.getAlClusterSizes())
 			// {
 			// System.out.print(iter + " ");
 			// }

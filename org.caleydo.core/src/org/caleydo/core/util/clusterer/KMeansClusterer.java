@@ -16,16 +16,13 @@ public class KMeansClusterer {
 
 	private SimpleKMeans clusterer = null;
 
-	private int iNrCluster = 15;
+	private int iNrCluster = 50;
 
 	public KMeansClusterer() {
 		clusterer = new SimpleKMeans();
 	}
 
-	public ArrayList<Integer> cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered,
-		Integer iVAIdStorage) {
-
-		ArrayList<Integer> alClusterResult = new ArrayList<Integer>();
+	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered, Integer iVAIdStorage) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -57,11 +54,11 @@ public class KMeansClusterer {
 
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
-		
-		for (Integer iContentIndex : contentVA) {	
+
+		for (Integer iContentIndex : contentVA) {
 			for (Integer iStorageIndex : storageVA) {
-				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex) + ", ");
-			
+				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex) + ", ");
+
 			}
 			buffer.append("\n");
 		}
@@ -115,18 +112,12 @@ public class KMeansClusterer {
 			}
 		}
 
-		// int i = 0;
-		// for (Integer iter : count) {
-		// System.out.println("cluster Nr: " + i + " has " + iter + " elements");
-		// i++;
-		// }
-
 		Integer clusteredVAId = set.createStorageVA(indexes);
-		alClusterResult.add(clusteredVAId);
 
-		Integer clusterSizeVAId = set.createStorageVA(count);
-		alClusterResult.add(clusterSizeVAId);
+		// set cluster result in Set
+		set.setClusteredGraph(null); // no hierarchical clustering --> no graph
+		set.setAlClusterSizes(count);
 
-		return alClusterResult;
+		return clusteredVAId;
 	}
 }

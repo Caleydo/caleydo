@@ -1721,7 +1721,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	protected void reactOnExternalSelection() {
+	protected void reactOnExternalSelection(String trigger) {
 		handleUnselection();
 		resetAxisSpacing();
 	}
