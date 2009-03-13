@@ -250,12 +250,12 @@ public interface ISet
 	/**
 	 * Clusters a Storage
 	 * 
-	 * @param iVAIdOriginal
+	 * @param iVAIdContent
 	 * @param iVAIdStorage
 	 * @param bHierarchicalClustering
-	 * @return ArrayList<Integer> Ids of virtual arrays holding cluster result
+	 * @return Integer Id of virtual arrays holding cluster result
 	 */
-	public Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, boolean bHierarchicalClustering);
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, boolean bHierarchicalClustering);
 
 	/**
 	 * Returns clustered graph
