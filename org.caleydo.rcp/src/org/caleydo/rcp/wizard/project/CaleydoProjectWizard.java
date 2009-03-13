@@ -66,6 +66,8 @@ public class CaleydoProjectWizard
 
 	@Override
 	public boolean performCancel() {
+		
+		Application.bDoExit = true;
 		return true;
 	}
 

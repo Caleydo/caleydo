@@ -114,6 +114,12 @@ public class Application
 					else if (element.equals(EStartViewType.TABULAR.getCommandLineArgument())) {
 						alStartViews.add(EStartViewType.TABULAR);
 					}
+					else if (element.equals(EStartViewType.RADIAL_HIERARCHY.getCommandLineArgument())) {
+						alStartViews.add(EStartViewType.RADIAL_HIERARCHY);
+					}
+					else if (element.equals(EStartViewType.HYPERBOLIC.getCommandLineArgument())) {
+						alStartViews.add(EStartViewType.HYPERBOLIC);
+					}					
 					else {
 						sCaleydoXMLfile = element;
 					}

@@ -133,6 +133,13 @@
             id="org.caleydo.rcp.views.GLRadialHierarchyView"
             name="Radial Hierarchy">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.opengl.GLHyperbolicView"
+            id="org.caleydo.rcp.views.GLHyperbolicView"
+            name="Hyperbolic">
+      </view>
 
       
    </extension>   
@@ -169,7 +176,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2009.&#x0A;All Rights Reserved.">
+               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2009.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>
@@ -209,7 +216,7 @@
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenRemoteHandler"
             id="org.caleydo.rcp.command.openviews.remote"
-            name="Open Bucket / Jukebox">
+            name="Open Bucket">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenBrowserHandler"
@@ -267,6 +274,11 @@
             name="Open Radial Hierarchy">
       </command>
       <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHyperbolicHandler"
+            id="org.caleydo.rcp.command.openviews.hyperbolic"
+            name="Open Hyperbolic">
+      </command>
+      <command
             defaultHandler="org.caleydo.rcp.command.handler.LoadDataHandler"
             id="org.caleydo.rcp.command.load_data"
             name="Load Data">
@@ -312,6 +324,82 @@
             </command>
          </menu>
          <menu
+               id="viewMenu"
+               label="View">
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Heat Map"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.parcoords"
+                  icon="resources/icons/view/parcoords.png"
+                  label="Parallel Coordinates"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.remote"
+                  icon="resources/icons/view/remote.png"
+                  label="Bucket"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.browser"
+                  icon="resources/icons/view/browser.png"
+                  label="Web Browser"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.tabulardata"
+                  icon="resources/icons/view/tabular_data_viewer.png"
+                  label="Tabular Data Viewer"
+                  style="push">
+            </command>    
+            <!-- 
+	            <command
+	                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
+	                  icon="resources/icons/view/parcoords.png"
+	                  label="Clinical Parallel Coordinates"
+	                  style="push">
+	            </command>
+	            <command
+	                  commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
+	                  icon="resources/icons/view/heatmap.png"
+	                  label="Radial Hierarchy"
+	                  style="push">
+	            </command>
+	            <command
+	                  commandId="org.caleydo.rcp.command.openviews.hyperbolic"
+	                  icon="resources/icons/view/heatmap.png"
+	                  label="Hyperbolic"
+	                  style="push">
+	            </command>
+	            <menu
+	                  icon="resources/icons/view/glyph.png"
+	                  label="Glyph">
+	               <command
+	                     commandId="org.caleydo.rcp.command.openviews.glyphview"
+	                     icon="resources/icons/view/glyph.png"
+	                     label="Glyph View"
+	                     style="push">
+	               </command>
+	               <command
+	                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
+	                     icon="resources/icons/view/glyph.png"
+	                     label="Glyph Slider View"
+	                     style="push">
+	               </command>
+	               <command
+	                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+	                     icon="resources/icons/view/glyph.png"
+	                     label="Glyph Mapping Configuration"
+	                     style="push">
+	               </command>
+	            </menu>
+	          -->
+         </menu>
+         <menu
                id="windowMenu"
                label="Window">
             <command
@@ -321,70 +409,6 @@
                   style="push">
             </command>
             <menu label="Open Views">
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
-                     icon="resources/icons/view/heatmap.png"
-                     label="Heat Map"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.parcoords"
-                     icon="resources/icons/view/parcoords.png"
-                     label="Parallel Coordinates"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
-                     icon="resources/icons/view/parcoords.png"
-                     label="Clinical Parallel Coordinates"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.remote"
-                     icon="resources/icons/view/remote.png"
-                     label="Bucket / jukebox"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.browser"
-                     icon="resources/icons/view/browser.png"
-                     label="Web Browser"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.tabulardata"
-                     icon="resources/icons/view/tabular_data_viewer.png"
-                     label="Tabular Data Viewer"
-                     style="push">
-               </command>
-               <menu
-                     icon="resources/icons/view/glyph.png"
-                     label="Glyph">
-                  <command
-                        commandId="org.caleydo.rcp.command.openviews.glyphview"
-                        icon="resources/icons/view/glyph.png"
-                        label="Glyph View"
-                        style="push">
-                  </command>
-                  <command
-                        commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
-                        icon="resources/icons/view/glyph.png"
-                        label="Glyph Slider View"
-                        style="push">
-                  </command>
-                  <command
-                        commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
-                        icon="resources/icons/view/glyph.png"
-                        label="Glyph Mapping Configuration"
-                        style="push">
-                  </command>
-               </menu>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
-                     icon="resources/icons/view/heatmap.png"
-                     label="Radial Hierarchy"
-                     style="push">
-               </command>
             </menu>
          </menu>
          <menu

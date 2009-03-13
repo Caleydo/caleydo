@@ -243,6 +243,11 @@ public class ViewManager
 				glEventListener =
 					new GLRadialHierarchy(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
+				
+			case CREATE_GL_HYPERBOLIC:
+				glEventListener =
+					new GLRadialHierarchy(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+				break;				
 
 			default:
 				throw new RuntimeException("ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
