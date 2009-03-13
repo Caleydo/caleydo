@@ -1941,6 +1941,10 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public synchronized void clearAllSelections() {
+		
+		contentSelectionManager.clearSelections();
+		storageSelectionManager.clearSelections();
+		
 		AlSelection.clear();
 		AlExpMouseOver.clear();
 		AlExpSelected.clear();
