@@ -19,9 +19,8 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.CNode;
-import org.caleydo.core.util.clusterer.HierarchicalClusterer;
-import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.util.graph.IGraph;
 
 /**
@@ -500,61 +499,67 @@ public class Set
 		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, boolean bHierarchicalClustering) {
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, boolean bHierarchicalClustering)
+	{
 
 		Integer VAId = 0;
 
-		if (bIsNumerical == true && bIsSetHomogeneous == true) {
+		if (bIsNumerical == true && bIsSetHomogeneous == true)
+		{
 
 			long tic, toc, duration;
 
-			 if (bHierarchicalClustering) {
+			// if (bHierarchicalClustering)
+			// {
 			// System.out.println("hierarchical clustering ...");
-			// // tic = System.currentTimeMillis();
+			// tic = System.currentTimeMillis();
 			//
-			 HierarchicalClusterer clusterer = new HierarchicalClusterer();
-			 VAId = clusterer.cluster(this, iVAIdContent, 0, iVAIdStorage);
+			// HierarchicalClusterer clusterer = new HierarchicalClusterer();
+			// VAId = clusterer.cluster(this, iVAIdContent, 0, iVAIdStorage);
 			//
-			// // toc = System.currentTimeMillis();
-			 }
-			 else {
+			// toc = System.currentTimeMillis();
+			// }
+			// else
+			// {
 			// System.out.println("KMeans clustering ...");
-			// // tic = System.currentTimeMillis();
+			// tic = System.currentTimeMillis();
 			//
-			 KMeansClusterer clusterer = new KMeansClusterer();
-			 VAId = clusterer.cluster(this, iVAIdContent, 0, iVAIdStorage);
+			// KMeansClusterer clusterer = new KMeansClusterer();
+			// VAId = clusterer.cluster(this, iVAIdContent, 0, iVAIdStorage);
 			//
-			// // toc = System.currentTimeMillis();
-			 }
-			// // duration = (toc - tic) / 1000;
-			// // System.out.println("cluster duration: ~" + duration + "sec");
+			// toc = System.currentTimeMillis();
+			// }
+			// duration = (toc - tic) / 1000;
+			// System.out.println("cluster duration: ~" + duration + "sec");
 
-			 if (VAId == 0) {
-			 throw new IllegalStateException("Problems during clustering!!");
-			 }
+			// if (VAId == 0)
+			// {
+			// throw new IllegalStateException("Problems during clustering!!");
+			// }
 
-//			AffinityClusterer clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
-//			
-//			System.out.println("determineSimilaries");
+			AffinityClusterer clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
+
+//			System.out.println("determineSimilarities in progress ... ");
 //			tic = System.currentTimeMillis();
-//			clusterer.determineSimilaries(this, iVAIdContent, iVAIdStorage);
+			clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
 //			toc = System.currentTimeMillis();
 //			duration = (toc - tic) / 1000;
-//			System.out.println("determineSimilaries duration: ~" + duration + "sec");
-//
-//			System.out.println("affinityPropagation");
-//			tic = System.currentTimeMillis();
-//			clusterer.affinityPropagation(this);
-//			toc = System.currentTimeMillis();
-//			duration = (toc - tic) / 1000;
-//			System.out.println("affinityPropagation duration: ~" + duration + "sec");
-//			
-			 IVirtualArray virtualArray = getVA(VAId);
-			 hashSetVAs.put(virtualArray.getID(), virtualArray);
+//			System.out.println("determineSimilarities duration: ~" + duration + "sec");
+
+			System.out.println("affinityPropagation in progress ... ");
+			tic = System.currentTimeMillis();
+			VAId = clusterer.affinityPropagation(this);
+			toc = System.currentTimeMillis();
+			duration = (toc - tic) / 1000;
+			System.out.println("affinityPropagation duration: ~" + duration + "sec");
+
+			IVirtualArray virtualArray = getVA(VAId);
+			hashSetVAs.put(virtualArray.getID(), virtualArray);
 
 			return VAId;
 		}
-		else {
+		else
+		{
 			System.out.println("Set is not numerical/homogeneous --> clustering not allowed !");
 			return null;
 		}
