@@ -29,6 +29,8 @@ public class TabularDataView
 
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
+		
+		swtComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
 	}

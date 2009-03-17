@@ -42,6 +42,7 @@ import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
+import org.eclipse.swt.widgets.Composite;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -71,6 +72,8 @@ public class ViewManager
 	private ConnectedElementRepresentationManager selectionManager;
 
 	private GLInfoAreaManager infoAreaManager;
+	
+	private Composite activeSWTView;
 
 	/**
 	 * Constructor.
@@ -381,4 +384,16 @@ public class ViewManager
 		fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
 	}
 
+	public void setActiveSWTView(Composite composite)
+	{
+		if (composite == null)
+			throw new IllegalStateException("Tried to set a null object as active SWT view.");
+		
+		activeSWTView = composite;
+	}
+	
+	public Composite getActiveSWTView()
+	{
+		return activeSWTView;
+	}
 }

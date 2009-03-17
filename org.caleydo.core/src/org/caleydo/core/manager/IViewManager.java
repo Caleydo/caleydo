@@ -11,6 +11,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Make SWT Views and JOGL GLCanvas addressable by ID and provide ground for XML bootstrapping of GLCanvas.
@@ -74,4 +75,9 @@ public interface IViewManager
 	public GLCaleydoCanvas getCanvas(int iItemID);
 
 	public AGLEventListener getGLEventListener(int iItemID);
+
+	public void setActiveSWTView(Composite composite);
+	
+	public Composite getActiveSWTView();
 }
+

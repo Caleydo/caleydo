@@ -17,6 +17,7 @@ import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -161,6 +162,10 @@ public class PartListener
 
 	@Override
 	public void partActivated(IWorkbenchPartReference partRef) {
+
+		IWorkbenchPart activePart = partRef.getPart(false);
+		if (activePart instanceof CaleydoViewPart && !(activePart instanceof HTMLBrowserView))
+			GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(((CaleydoViewPart)activePart).getSWTComposite());
 
 	}
 
