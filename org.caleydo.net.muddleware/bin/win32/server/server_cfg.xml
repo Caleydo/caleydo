@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="no" ?>
-<XMLDB>
-	<Server listen-port="default" callback-port="default" />
-	<Database filename="data/test.xml" />
-	<Persistance write-interval="20" old-filename="data/test.old.xml" tmp-filename="data/db.tmp.xml" diff-filename="data/db.diff.xml" />
-	<Logging level="maximum" console-output="on" console-logging="off" database-logging="off" />
-</XMLDB>
