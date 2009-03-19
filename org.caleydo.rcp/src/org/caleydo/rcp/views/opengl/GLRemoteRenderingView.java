@@ -59,7 +59,8 @@ public class GLRemoteRenderingView
 			}
 		}
 
-		createGLRemoteEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
+		createGLRemoteEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true,
+			iAlContainedViewIDs);
 	}
 
 	public static void createToolBarItems(int iViewID) {

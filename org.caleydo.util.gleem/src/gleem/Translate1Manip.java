@@ -64,9 +64,9 @@ public class Translate1Manip
 	}
 
 	/**
-	 * Set the translation of this Translate1Manip. This moves its on-screen representation. Manipulations cause
-	 * the translation to be modified, not overwritten, so if you want the default Translate1Manip to go through
-	 * the point (0, 1, 0) but still translate along the X axis, then setTranslation(0, 1, 0).
+	 * Set the translation of this Translate1Manip. This moves its on-screen representation. Manipulations
+	 * cause the translation to be modified, not overwritten, so if you want the default Translate1Manip to go
+	 * through the point (0, 1, 0) but still translate along the X axis, then setTranslation(0, 1, 0).
 	 */
 	public void setTranslation(Vec3f translation) {
 		this.translation.set(translation);
@@ -81,8 +81,8 @@ public class Translate1Manip
 	}
 
 	/**
-	 * Set the axis of this Translate1Manip. This is the direction along which it will travel. Does not need to
-	 * be normalized, but must not be the zero vector.
+	 * Set the axis of this Translate1Manip. This is the direction along which it will travel. Does not need
+	 * to be normalized, but must not be the zero vector.
 	 */
 	public void setAxis(Vec3f axis) {
 		this.axis.set(axis);
@@ -118,9 +118,8 @@ public class Translate1Manip
 	}
 
 	public void highlight(HitPoint hit) {
-		if (hit.manipPart != parts) {
+		if (hit.manipPart != parts)
 			throw new RuntimeException("My old geometry disappeared; how did this happen?");
-		}
 		parts.highlight();
 	}
 
@@ -139,10 +138,9 @@ public class Translate1Manip
 		// Algorithm: Find closest point of ray to dragLine. Add dragOffset
 		// to this point to get new translation.
 		Vec3f closestPoint = new Vec3f();
-		if (dragLine.closestPointToRay(rayStart, rayDirection, closestPoint) == false) {
+		if (dragLine.closestPointToRay(rayStart, rayDirection, closestPoint) == false)
 			// Drag axis is parallel to ray. Punt.
 			return;
-		}
 		translation.set(closestPoint);
 		translation.add(dragOffset);
 		recalc();

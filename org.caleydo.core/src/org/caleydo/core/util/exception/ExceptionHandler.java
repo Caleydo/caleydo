@@ -27,8 +27,9 @@ public class ExceptionHandler {
 	 * @return
 	 */
 	public static ExceptionHandler get() {
-		if (singletonInstance == null)
+		if (singletonInstance == null) {
 			singletonInstance = new ExceptionHandler();
+		}
 
 		return singletonInstance;
 	}
@@ -44,9 +45,8 @@ public class ExceptionHandler {
 			GeneralManager.get().getLogger().log(Level.SEVERE, "Caught Exception: " + exception.getMessage());
 			// Log here
 		}
-		else {
+		else
 			throw exception;
-		}
 	}
 
 }

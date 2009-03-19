@@ -75,7 +75,7 @@ public class Mat4f_GeneralRotf {
 
 	/**
 	 * @param rotation
-	 *          the rotation to set
+	 *            the rotation to set
 	 */
 	public final void setRotation(final Rotf rotation) {
 
@@ -91,7 +91,7 @@ public class Mat4f_GeneralRotf {
 
 	/**
 	 * @param rotation
-	 *          the rotation to set
+	 *            the rotation to set
 	 */
 	public final void setAllAndUpdate(final Vec3f centerOfRotation, final Rotf rotation) {
 
@@ -111,7 +111,7 @@ public class Mat4f_GeneralRotf {
 
 	/**
 	 * @param centerOfRoation
-	 *          the centerOfRotation to set
+	 *            the centerOfRotation to set
 	 */
 	public final void setCenterOfRotation(final Vec3f centerOfRoation) {
 
@@ -180,7 +180,7 @@ public class Mat4f_GeneralRotf {
 	 * @see gleem.linalg.Mat4f#xformPt(Vec3f, Vec3f)
 	 * @see gleem.linalg.open.Mat4f_GeneralRotf#xformPt(Vec3f, Vec3f)
 	 * @param src
-	 *          point to be transformed
+	 *            point to be transformed
 	 * @return point transformed by internal Mat4f; creates a new Vec3f() object
 	 */
 	public final Vec3f xformPt(final Vec3f src) {
@@ -193,7 +193,7 @@ public class Mat4f_GeneralRotf {
 	 * @see gleem.linalg.Mat4f#xformPt(Vec3f, Vec3f)
 	 * @param src
 	 * @param dest
-	 *          result; note this Vec3f must not be null!
+	 *            result; note this Vec3f must not be null!
 	 */
 	public final void xformPt(final Vec3f src, Vec3f dest) {
 		matrix.xformPt(src, dest);

@@ -73,8 +73,9 @@ public class Application
 		// System.out.println("Start Caleydo...");
 		// System.out.println("OS Name:" +System.getProperty("os.name"));
 
-		if (System.getProperty("os.name").contains("Win"))
+		if (System.getProperty("os.name").contains("Win")) {
 			bIsWindowsOS = true;
+		}
 
 		alStartViews = new ArrayList<EStartViewType>();
 
@@ -119,7 +120,7 @@ public class Application
 					}
 					else if (element.equals(EStartViewType.HYPERBOLIC.getCommandLineArgument())) {
 						alStartViews.add(EStartViewType.HYPERBOLIC);
-					}					
+					}
 					else {
 						sCaleydoXMLfile = element;
 					}
@@ -138,7 +139,8 @@ public class Application
 		// Check if Caleydo will be started the first time and no internet connection is detected
 		if (caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(PreferenceConstants.FIRST_START)
 			&& !isInternetConnectionOK()) {
-			WizardDialog internetConfigurationWizard = new WizardDialog(shell, new InternetConfigurationWizard());
+			WizardDialog internetConfigurationWizard =
+				new WizardDialog(shell, new InternetConfigurationWizard());
 			internetConfigurationWizard.open();
 		}
 
@@ -185,15 +187,15 @@ public class Application
 
 			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
 
-			if (returnCode == PlatformUI.RETURN_RESTART) {
+			if (returnCode == PlatformUI.RETURN_RESTART)
 				return IApplication.EXIT_RESTART;
-			}
 			else
 				return IApplication.EXIT_OK;
 		}
 		finally {
-			if (!bDoExit)
+			if (!bDoExit) {
 				shutDown();
+			}
 		}
 	}
 
@@ -279,8 +281,9 @@ public class Application
 			alStartViews.add(EStartViewType.BROWSER);
 
 			// Only show bucket when pathway data is loaded
-			if (bLoadPathwayData)
+			if (bLoadPathwayData) {
 				alStartViews.add(EStartViewType.REMOTE);
+			}
 
 			if (applicationMode != EApplicationMode.PATHWAY_VIEWER) {
 				// alStartViews.add(EStartViewType.TABULAR);

@@ -23,14 +23,14 @@ public class ColorMarkerPoint
 	 * normalized between 0 and 1.
 	 * </p>
 	 * <p>
-	 * fArColor has to be a float array of length 3, with values representing the red, green and blue component.
-	 * The values have to be between 0 and 1
+	 * fArColor has to be a float array of length 3, with values representing the red, green and blue
+	 * component. The values have to be between 0 and 1
 	 * </p>
 	 * 
 	 * @param fValue
-	 *          the inflection point on the color field
+	 *            the inflection point on the color field
 	 * @param fArColor
-	 *          the color array
+	 *            the color array
 	 */
 	public ColorMarkerPoint(float fValue, float[] fArColor) {
 		init(fValue, fArColor);
@@ -45,13 +45,13 @@ public class ColorMarkerPoint
 	 * </p>
 	 * 
 	 * @param fValue
-	 *          the inflection point on the color field
+	 *            the inflection point on the color field
 	 * @param fRed
-	 *          red component of the color
+	 *            red component of the color
 	 * @param fGreen
-	 *          green component of the color
+	 *            green component of the color
 	 * @param fBlue
-	 *          blue component of the color
+	 *            blue component of the color
 	 */
 	public ColorMarkerPoint(float fValue, float fRed, float fGreen, float fBlue) {
 		float[] fArColor = new float[3];

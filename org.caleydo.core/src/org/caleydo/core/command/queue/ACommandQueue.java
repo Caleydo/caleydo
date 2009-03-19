@@ -18,7 +18,7 @@ public abstract class ACommandQueue
 	 * ISet CollectionId using this constructor.
 	 * 
 	 * @param iCmdQueueId
-	 *          define cmd queue by this id
+	 *            define cmd queue by this id
 	 */
 	protected ACommandQueue(final ECommandType cmdType, final int iCmdQueueId) {
 		super(cmdType);
@@ -40,7 +40,7 @@ public abstract class ACommandQueue
 	 * ISet a new QueueID. CommandQueueId = -1 indicates no queueId
 	 * 
 	 * @param setCmdQueueId
-	 *          new QueueId
+	 *            new QueueId
 	 */
 	public final void setCmdQueueId(final int setCmdQueueId) {
 

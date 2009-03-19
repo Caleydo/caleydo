@@ -71,8 +71,8 @@ public interface IGeneralManager {
 	public Logger getLogger();
 
 	/**
-	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo framework.
-	 * DO NOT LOAD YOUR FILES ON YOUR OWN!
+	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo
+	 * framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
 	 * 
 	 * @return resource loader
 	 */

@@ -38,11 +38,8 @@ public class CmdDataCreateSet
 	}
 
 	private void fillSets(ISet newSet) {
-		if (iAlStorageIDs.isEmpty())// ||
-		// ( iAlVirtualArrayIDs.isEmpty()))
-		{
+		if (iAlStorageIDs.isEmpty())
 			throw new IllegalStateException("No data available for creating storage.");
-		}
 
 		for (int iStorageID : iAlStorageIDs) {
 			newSet.addStorage(iStorageID);
@@ -58,13 +55,16 @@ public class CmdDataCreateSet
 		createdObject = setManager.createSet(setType);
 		createdObject.setLabel(sLabel);
 
-		if (iExternalID != -1)
+		if (iExternalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
+		}
 
 		fillSets(createdObject);
 
-		generalManager.getLogger().log(Level.INFO,
-			"New Set with internal ID " + createdObject.getID() + " and external ID " + iExternalID + " created.");
+		generalManager.getLogger().log(
+			Level.INFO,
+			"New Set with internal ID " + createdObject.getID() + " and external ID " + iExternalID
+				+ " created.");
 
 		commandManager.runDoCommand(this);
 	}
@@ -94,7 +94,8 @@ public class CmdDataCreateSet
 			 * Separate "id1 id2 .."
 			 */
 			StringTokenizer strToken_StorageId =
-				new StringTokenizer(strToken_StorageBlock.nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
+				new StringTokenizer(strToken_StorageBlock.nextToken(),
+					IGeneralManager.sDelimiter_Parser_DataItems);
 
 			while (strToken_StorageId.hasMoreTokens()) {
 				iAlStorageIDs.add(Integer.valueOf(strToken_StorageId.nextToken()).intValue());

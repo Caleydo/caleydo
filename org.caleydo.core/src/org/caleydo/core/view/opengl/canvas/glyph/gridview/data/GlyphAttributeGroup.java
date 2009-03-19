@@ -45,14 +45,20 @@ public class GlyphAttributeGroup {
 
 	public void addAttribute(String sValue, float fValue) {
 
-		if (!hmMappingNominalOrdinal.containsKey(sValue))
+		if (!hmMappingNominalOrdinal.containsKey(sValue)) {
 			hmMappingNominalOrdinal.put(sValue, fValue);
-		else
-			generalManager.getLogger().log(Level.WARNING, "double nominal value (" + sValue + ") found in " + sKey);
-		if (!hmMappingOrdinalNominal.containsKey(fValue))
+		}
+		else {
+			generalManager.getLogger().log(Level.WARNING,
+				"double nominal value (" + sValue + ") found in " + sKey);
+		}
+		if (!hmMappingOrdinalNominal.containsKey(fValue)) {
 			hmMappingOrdinalNominal.put(fValue, sValue);
-		else
-			generalManager.getLogger().log(Level.WARNING, "double ordinal value (" + sValue + ") found in " + sKey);
+		}
+		else {
+			generalManager.getLogger().log(Level.WARNING,
+				"double ordinal value (" + sValue + ") found in " + sKey);
+		}
 
 		alAttributes.add(sValue);
 	}

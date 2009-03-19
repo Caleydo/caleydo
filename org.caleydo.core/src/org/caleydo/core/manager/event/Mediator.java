@@ -44,9 +44,8 @@ public class Mediator
 		if (sender == null)
 			throw new IllegalArgumentException("Sender to be registered was null");
 
-		if (alSender.contains(sender)) {
+		if (alSender.contains(sender))
 			return false;
-		}
 
 		alSender.add(sender);
 		return true;
@@ -57,9 +56,8 @@ public class Mediator
 		if (receiver == null)
 			throw new IllegalArgumentException("Receiver to be registered was null");
 
-		if (alReceiver.contains(receiver)) {
+		if (alReceiver.contains(receiver))
 			return false;
-		}
 
 		alReceiver.add(receiver);
 		return true;

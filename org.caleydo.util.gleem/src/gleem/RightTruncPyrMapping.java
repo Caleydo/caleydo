@@ -32,7 +32,8 @@ import gleem.linalg.Vec3f;
 
 public class RightTruncPyrMapping
 	implements ScreenToRayMapping {
-	public void mapScreenToRay(Vec2f screenCoords, CameraParameters params, Vec3f raySource, Vec3f rayDirection) {
+	public void mapScreenToRay(Vec2f screenCoords, CameraParameters params, Vec3f raySource,
+		Vec3f rayDirection) {
 		Vec3f fwd = new Vec3f(params.getForwardDirection());
 		Vec3f up = new Vec3f(params.getUpDirection());
 		Vec3f right = fwd.cross(up);

@@ -44,8 +44,8 @@ public class GlyphEntry {
 	}
 
 	/**
-	 * Returns the internal mapping id of the glyhp. Use the IDMappingManager to get the id inside the given csv
-	 * file
+	 * Returns the internal mapping id of the glyhp. Use the IDMappingManager to get the id inside the given
+	 * csv file
 	 * 
 	 * @return the id of the glyph.
 	 */
@@ -58,9 +58,10 @@ public class GlyphEntry {
 			return;
 
 		selected_ = true;
-		for (int i = 0; i < parameter_.size(); ++i)
+		for (int i = 0; i < parameter_.size(); ++i) {
 			generalManager.getGlyphManager().getGlyphAttributeTypeWithInternalColumnNumber(i)
 				.incSelectedDistribution(parameter_.get(i));
+		}
 	}
 
 	public void deSelect() {
@@ -68,9 +69,10 @@ public class GlyphEntry {
 			return;
 
 		selected_ = false;
-		for (int i = 0; i < parameter_.size(); ++i)
+		for (int i = 0; i < parameter_.size(); ++i) {
 			generalManager.getGlyphManager().getGlyphAttributeTypeWithInternalColumnNumber(i)
 				.decSelectedDistribution(parameter_.get(i));
+		}
 	}
 
 	public boolean isSelected() {
@@ -78,9 +80,8 @@ public class GlyphEntry {
 	}
 
 	public int getGlList(GL gl) {
-		if (selected_) {
+		if (selected_)
 			return glListSelected_;
-		}
 
 		return glList_;
 	}
@@ -92,8 +93,9 @@ public class GlyphEntry {
 
 	public void addStringParameter(String column, String value) {
 
-		if (vsParameterString.containsKey(column))
+		if (vsParameterString.containsKey(column)) {
 			vsParameterString.remove(column);
+		}
 		vsParameterString.put(column, value);
 	}
 
@@ -136,7 +138,7 @@ public class GlyphEntry {
 	 * This method returns a String representation of the holding data
 	 * 
 	 * @param seperator
-	 *          between the data fields
+	 *            between the data fields
 	 * @return data text
 	 */
 	public String getGlyphDescription(String seperator) {
@@ -145,8 +147,8 @@ public class GlyphEntry {
 		String value;
 
 		sInfoText.append("ID "
-			+ GeneralManager.get().getIDMappingManager().getID(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, id_)
-			+ seperator);
+			+ GeneralManager.get().getIDMappingManager().getID(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT,
+				id_) + seperator);
 
 		for (int iAttributeIndex = 1; iAttributeIndex < gman.getGlyphAttributes().size(); ++iAttributeIndex) {
 

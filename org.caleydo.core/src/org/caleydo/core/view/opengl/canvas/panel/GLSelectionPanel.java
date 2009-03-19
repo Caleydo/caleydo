@@ -218,13 +218,17 @@ public class GLSelectionPanel
 				textRenderer.setColor(0, 0, 0, 1);
 			}
 			else
-				throw new IllegalStateException("Cannot determine color for panel selection element " + iDavidID);
+				throw new IllegalStateException("Cannot determine color for panel selection element "
+					+ iDavidID);
 
 			sOutput =
 				generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID) + " ("
-					+ generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidID) + ")";
+					+ generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidID)
+					+ ")";
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.SELECTION_PANEL_ITEM, iDavidID));
+			gl
+				.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.SELECTION_PANEL_ITEM,
+					iDavidID));
 			gl.glTranslatef(fXOrigin, fYOrigin, 0);
 			textRenderer.begin3DRendering();
 			textRenderer.draw3D(sOutput.toString(), 0, 0, 0.1f, renderStyle.getHeadingFontScalingFactor());
@@ -239,7 +243,8 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick) {
 		switch (ePickingType) {
 			case SELECTION_PANEL_ITEM:
 				ESelectionType selectionType;

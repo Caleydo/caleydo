@@ -30,7 +30,8 @@ public class GLIconTextureManager {
 
 	public Texture getIconTexture(GL gl, final EIconTextures eIconTextures) {
 		if (!mapIconTextures.containsKey(eIconTextures)) {
-			Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(eIconTextures.getFileName());
+			Texture tmpTexture =
+				GeneralManager.get().getResourceLoader().getTexture(eIconTextures.getFileName());
 			mapIconTextures.put(eIconTextures, tmpTexture);
 		}
 		return mapIconTextures.get(eIconTextures);

@@ -56,7 +56,8 @@ public class CmdCreateGLEventListener
 
 		extractDataIDs();
 
-		String sPositionGLOrigin = parameterHandler.getValueString(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
+		String sPositionGLOrigin =
+			parameterHandler.getValueString(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
 
 		String sPositionGLRotation =
 			parameterHandler.getValueString(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
@@ -69,7 +70,8 @@ public class CmdCreateGLEventListener
 
 		if (sPositionGLRotation != null) {
 			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ROTATION.getXmlKey(),
-				sPositionGLRotation, ParameterHandlerType.VEC4F, ECommandType.TAG_POS_GL_ROTATION.getDefault());
+				sPositionGLRotation, ParameterHandlerType.VEC4F, ECommandType.TAG_POS_GL_ROTATION
+					.getDefault());
 		}
 
 		cameraOrigin = parameterHandler.getValueVec3f(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
@@ -88,13 +90,13 @@ public class CmdCreateGLEventListener
 		// Parse projection mode (PERSPECTIVE / ORTHOGRAPHIC)
 		String sProjectionMode = "";
 
-		if (frustumToken.hasMoreTokens())
+		if (frustumToken.hasMoreTokens()) {
 			sProjectionMode = frustumToken.nextToken();
+		}
 
 		if (!sProjectionMode.equals(EProjectionMode.ORTHOGRAPHIC.name())
-			&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name())) {
+			&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name()))
 			return;
-		}
 
 		float fLeft = -1;
 		float fRight = -1;
@@ -111,7 +113,8 @@ public class CmdCreateGLEventListener
 		fFar = new Float(frustumToken.nextToken());
 
 		viewFrustum =
-			new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear, fFar);
+			new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear,
+				fFar);
 
 		// }
 		// catch (Exception e)
@@ -135,7 +138,8 @@ public class CmdCreateGLEventListener
 		// Fill set IDs
 		if (divideSetAndSelectionIDs.hasMoreTokens()) {
 			StringTokenizer divideIDs =
-				new StringTokenizer(divideSetAndSelectionIDs.nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
+				new StringTokenizer(divideSetAndSelectionIDs.nextToken(),
+					IGeneralManager.sDelimiter_Parser_DataItems);
 
 			while (divideIDs.hasMoreTokens()) {
 				iAlSetIDs.add(Integer.valueOf(divideIDs.nextToken()).intValue());
@@ -173,8 +177,8 @@ public class CmdCreateGLEventListener
 	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
 		final float fBottom, final float fTop, final float fNear, final float fFar,
 		final ArrayList<Integer> iArSetIDs, final int iParentCanvasID, final float fCamOriginX,
-		final float fCamOriginY, final float fCamOriginZ, final float fCamRotationX, final float fCamRotationY,
-		final float fCamRotationZ, final float fCamRotationAngle) {
+		final float fCamOriginY, final float fCamOriginZ, final float fCamRotationX,
+		final float fCamRotationY, final float fCamRotationZ, final float fCamRotationAngle) {
 		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iArSetIDs, iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
@@ -191,7 +195,8 @@ public class CmdCreateGLEventListener
 			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
-		createdObject = glCanvasManager.createGLEventListener(viewType, iParentContainerId, sLabel, viewFrustum);
+		createdObject =
+			glCanvasManager.createGLEventListener(viewType, iParentContainerId, sLabel, viewFrustum);
 
 		if (iExternalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);

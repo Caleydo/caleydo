@@ -123,9 +123,11 @@ public class Mat3f {
 		cf.set(2, 2, get(0, 0) * get(1, 1) - get(1, 0) * get(0, 1));
 
 		// Now copy back transposed
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 3; j++)
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
 				set(i, j, cf.get(j, i) / det);
+			}
+		}
 		return true;
 	}
 
@@ -149,13 +151,15 @@ public class Mat3f {
 
 	/** this = a * b */
 	public void mul(Mat3f a, Mat3f b) {
-		for (int rc = 0; rc < 3; rc++)
+		for (int rc = 0; rc < 3; rc++) {
 			for (int cc = 0; cc < 3; cc++) {
 				float tmp = 0.0f;
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < 3; i++) {
 					tmp += a.get(rc, i) * b.get(i, cc);
+				}
 				set(rc, cc, tmp);
 			}
+		}
 	}
 
 	public Matf toMatf() {
@@ -171,7 +175,7 @@ public class Mat3f {
 	@Override
 	public String toString() {
 		String endl = System.getProperty("line.separator");
-		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + endl + get(1, 0) + ", " + get(1, 1) + ", "
-			+ get(1, 2) + endl + get(2, 0) + ", " + get(2, 1) + ", " + get(2, 2) + ")";
+		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + endl + get(1, 0) + ", " + get(1, 1)
+			+ ", " + get(1, 2) + endl + get(2, 0) + ", " + get(2, 1) + ", " + get(2, 2) + ")";
 	}
 }

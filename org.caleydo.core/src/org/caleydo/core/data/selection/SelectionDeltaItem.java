@@ -20,9 +20,9 @@ public class SelectionDeltaItem
 	 * Constructor
 	 * 
 	 * @param iPrimaryID
-	 *          the id of the selected element
+	 *            the id of the selected element
 	 * @param selectionType
-	 *          the type of the selection
+	 *            the type of the selection
 	 */
 	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType) {
 		this.iPrimaryID = iSelectionID;
@@ -34,11 +34,11 @@ public class SelectionDeltaItem
 	 * Constructor. This constructor allows to specify the optional internal id in the selection
 	 * 
 	 * @param iPrimaryID
-	 *          the id of the selected element
+	 *            the id of the selected element
 	 * @param selectionType
-	 *          the type of the selection
+	 *            the type of the selection
 	 * @param iSecondaryID
-	 *          the internal id which maps to the selectionID
+	 *            the internal id which maps to the selectionID
 	 */
 	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType, int iInternalID) {
 		this(iSelectionID, selectionType);
@@ -50,7 +50,7 @@ public class SelectionDeltaItem
 	 * Set a connection ID which is meant to be persistent over conversion steps
 	 * 
 	 * @param iConnectionID
-	 *          the new id
+	 *            the new id
 	 */
 	public void setConnectionID(int iConnectionID) {
 		alConnectionID.add(iConnectionID);
@@ -92,7 +92,7 @@ public class SelectionDeltaItem
 	 * Set the selection type
 	 * 
 	 * @param selectionType
-	 *          the selection type
+	 *            the selection type
 	 */
 	public void setSelectionType(ESelectionType selectionType) {
 		this.selectionType = selectionType;

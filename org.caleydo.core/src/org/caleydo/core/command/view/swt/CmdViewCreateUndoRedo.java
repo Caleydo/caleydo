@@ -32,8 +32,8 @@ public class CmdViewCreateUndoRedo
 		}
 
 		UndoRedoViewRep undoRedoView =
-			(UndoRedoViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_UNDO_REDO, iParentContainerId,
-				sLabel);
+			(UndoRedoViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_UNDO_REDO,
+				iParentContainerId, sLabel);
 
 		viewManager.registerItem(undoRedoView);
 

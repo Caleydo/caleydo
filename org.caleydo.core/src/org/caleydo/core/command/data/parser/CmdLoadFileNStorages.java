@@ -106,8 +106,9 @@ public class CmdLoadFileNStorages
 		loader.setTargetStorages(iAlStorageIDs);
 		loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine, iStopParseFileAtLine);
 
-		if (!sTokenSeparator.isEmpty())
+		if (!sTokenSeparator.isEmpty()) {
 			loader.setTokenSeperator(sTokenSeparator);
+		}
 
 		loader.loadData();
 

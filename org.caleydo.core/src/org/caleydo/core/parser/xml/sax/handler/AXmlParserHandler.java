@@ -29,9 +29,8 @@ public abstract class AXmlParserHandler
 	}
 
 	public final void setXmlActivationTag(final String tag) {
-		if (tag.length() < 2) {
+		if (tag.length() < 2)
 			throw new IllegalStateException("setXmlActivationTag() tag must be at least one char!");
-		}
 
 		this.sOpeningTag = tag;
 	}
@@ -44,9 +43,8 @@ public abstract class AXmlParserHandler
 
 	@Override
 	public final boolean isHandlerDestoryedAfterClosingTag() {
-		if (bDestroyHandlerAfterClosingTag) {
+		if (bDestroyHandlerAfterClosingTag)
 			return true;
-		}
 
 		return false;
 	}

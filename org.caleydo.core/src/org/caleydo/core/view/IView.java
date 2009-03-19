@@ -32,7 +32,7 @@ public interface IView
 	 * Set the label of the view
 	 * 
 	 * @param label
-	 *          the label
+	 *            the label
 	 */
 	void setLabel(String label);
 
@@ -40,7 +40,7 @@ public interface IView
 	 * Add a set to a view by passing the set itself
 	 * 
 	 * @param set
-	 *          the set
+	 *            the set
 	 */
 	public void addSet(ISet set);
 
@@ -48,7 +48,7 @@ public interface IView
 	 * Add a set to a view by passing the ID of the set
 	 * 
 	 * @param iSetID
-	 *          the id of the set
+	 *            the id of the set
 	 */
 	public void addSet(int iSetID);
 
@@ -56,7 +56,7 @@ public interface IView
 	 * Add a list of sets to the view
 	 * 
 	 * @param alSets
-	 *          the list of sets
+	 *            the list of sets
 	 */
 	public void addSets(ArrayList<ISet> alSets);
 
@@ -64,7 +64,7 @@ public interface IView
 	 * Remove all sets that have the specified set type
 	 * 
 	 * @param setType
-	 *          the type of the set
+	 *            the type of the set
 	 */
 	public void removeSets(ESetType setType);
 

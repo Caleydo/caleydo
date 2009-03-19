@@ -111,16 +111,19 @@ public class ManipPartLineSeg
 		boolean reenable = gl.glIsEnabled(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glBegin(GL.GL_LINES);
-		if (highlighted)
+		if (highlighted) {
 			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor.z());
-		else
+		}
+		else {
 			gl.glColor3f(color.x(), color.y(), color.z());
+		}
 		for (Vec3f v : curVertices) {
 			gl.glVertex3f(v.x(), v.y(), v.z());
 		}
 		gl.glEnd();
-		if (reenable)
+		if (reenable) {
 			gl.glEnable(GL.GL_LIGHTING);
+		}
 	}
 
 	// ----------------------------------------------------------------------

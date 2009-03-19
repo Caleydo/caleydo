@@ -9,7 +9,9 @@ public class URLGenerator {
 		String sURL = eBrowserQueryType.getBrowserQueryStringPrefix();
 
 		if (!eBrowserQueryType.getMappingType().isMultiMap()) {
-			sURL += GeneralManager.get().getIDMappingManager().getID(eBrowserQueryType.getMappingType(), iDavidID);
+			sURL +=
+				GeneralManager.get().getIDMappingManager()
+					.getID(eBrowserQueryType.getMappingType(), iDavidID);
 		}
 		else {
 			// TODO: only the first is handled in the case of multiple

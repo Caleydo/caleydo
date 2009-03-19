@@ -69,8 +69,9 @@ public class GLInPlaceInfoRenderer {
 		if (pickedVertexRep == null)
 			return;
 
-		if (fScaleFactor < 1.0)
+		if (fScaleFactor < 1.0) {
 			fScaleFactor += 0.1f;
+		}
 
 		extractMultipleGeneMapping(pickedVertexRep);
 
@@ -87,8 +88,9 @@ public class GLInPlaceInfoRenderer {
 
 	public void renderInfoArea(final GL gl, final PathwayVertexGraphItem pickedVertex) {
 
-		if (fScaleFactor < 1.0)
+		if (fScaleFactor < 1.0) {
 			fScaleFactor += 0.06;
+		}
 
 		llMultipleMappingGenes.clear();
 		llMultipleMappingGenes.add(pickedVertex);
@@ -139,8 +141,9 @@ public class GLInPlaceInfoRenderer {
 		// + text)
 		float fMaxWidth = calculateInfoAreaWidth(llMultipleMappingGenes.get(0));
 
-		if (fMaxWidth < fWidth)
+		if (fMaxWidth < fWidth) {
 			fMaxWidth = fWidth;
+		}
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
@@ -168,8 +171,9 @@ public class GLInPlaceInfoRenderer {
 		// Calculate star points by taking the gene number as edge count
 		float fStarRadius = llMultipleMappingGenes.size() / 4.0f;
 
-		if (fStarRadius >= 1.2f)
+		if (fStarRadius >= 1.2f) {
 			fStarRadius = 1.2f;
+		}
 
 		starEffectRenderer.calculateStarPoints(llMultipleMappingGenes.size(), fStarRadius, 0, 0);
 
@@ -216,8 +220,9 @@ public class GLInPlaceInfoRenderer {
 			2.2f * (float) textRenderer.getBounds("ID: " + sElementId).getWidth()
 				* PathwayRenderStyle.SCALING_FACTOR_X;
 
-		if (fMaxWidth < fCurrentWidth)
+		if (fMaxWidth < fCurrentWidth) {
 			fMaxWidth = fCurrentWidth;
+		}
 
 		String sTmp = "";
 		if (pickedVertex.getType().equals(EPathwayVertexType.gene)) {
@@ -227,8 +232,9 @@ public class GLInPlaceInfoRenderer {
 			sTmp = pickedVertex.getName();
 
 			// Remove "TITLE: "
-			if (sTmp.contains("TITLE:"))
+			if (sTmp.contains("TITLE:")) {
 				sTmp = sTmp.substring(6);
+			}
 
 			sTmp = "Pathway name: " + sTmp;
 		}
@@ -236,8 +242,9 @@ public class GLInPlaceInfoRenderer {
 		// Save text length as new width if it bigger than previous one
 		fCurrentWidth =
 			2.2f * (float) textRenderer.getBounds(sTmp).getWidth() * PathwayRenderStyle.SCALING_FACTOR_X;
-		if (fMaxWidth < fCurrentWidth)
+		if (fMaxWidth < fCurrentWidth) {
 			fMaxWidth = fCurrentWidth;
+		}
 
 		textRenderer.end3DRendering();
 
@@ -266,24 +273,25 @@ public class GLInPlaceInfoRenderer {
 		else if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.compound)) {
 			sType = EPathwayVertexType.compound.getName();
 			sName =
-				((PathwayVertexGraphItemRep) tmpVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)
-					.get(0)).getName();
+				((PathwayVertexGraphItemRep) tmpVertexGraphItem.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD).get(0)).getName();
 		}
 		else if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.enzyme)) {
 			sType = EPathwayVertexType.enzyme.getName();
 			sName =
-				((PathwayVertexGraphItemRep) tmpVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)
-					.get(0)).getName();
+				((PathwayVertexGraphItemRep) tmpVertexGraphItem.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD).get(0)).getName();
 		}
 		else if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.map)) {
 			sType = EPathwayVertexType.map.getName();
 			sName =
-				((PathwayVertexGraphItemRep) tmpVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)
-					.get(0)).getName();
+				((PathwayVertexGraphItemRep) tmpVertexGraphItem.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD).get(0)).getName();
 
 			// Remove "TITLE: "
-			if (sName.contains("TITLE:"))
+			if (sName.contains("TITLE:")) {
 				sName = sName.substring(6);
+			}
 		}
 
 		gl.glColor3f(1, 1, 1);
@@ -298,7 +306,7 @@ public class GLInPlaceInfoRenderer {
 		// factor
 
 		textRenderer.draw3D(sElementId, fXOffset + 0.3f, fYOffset - 2 * fLineHeight, 0.001f, 0.005f); // scale
-																																																	// factor
+		// factor
 
 		textRenderer.draw3D("Name: ", fXOffset, fYOffset - 3 * fLineHeight, 0.001f, 0.005f); // scale
 		// factor
@@ -313,7 +321,7 @@ public class GLInPlaceInfoRenderer {
 			// factor
 
 			textRenderer.draw3D(sAccessionCode, fXOffset + 0.3f, fYOffset - 4 * fLineHeight, 0.001f, 0.005f); // scale
-																																																				// factor
+			// factor
 		}
 
 		textRenderer.end3DRendering();
@@ -363,8 +371,9 @@ public class GLInPlaceInfoRenderer {
 		// System.out.println("World coords at z=0.0 are ( " //
 		// + wcoord[0] + ", " + wcoord[1] + ", " + wcoord[2]);
 
-		if (fArWorldCoordinatePosition == null)
+		if (fArWorldCoordinatePosition == null) {
 			fArWorldCoordinatePosition = new float[3];
+		}
 
 		fArWorldCoordinatePosition[0] = (float) wcoord[0];
 		fArWorldCoordinatePosition[1] = (float) wcoord[1];
@@ -373,8 +382,9 @@ public class GLInPlaceInfoRenderer {
 
 	public void setWorldCoordinatePosition(float x, float y, float z) {
 
-		if (fArWorldCoordinatePosition == null)
+		if (fArWorldCoordinatePosition == null) {
 			fArWorldCoordinatePosition = new float[3];
+		}
 
 		fArWorldCoordinatePosition[0] = x;
 		fArWorldCoordinatePosition[1] = y;

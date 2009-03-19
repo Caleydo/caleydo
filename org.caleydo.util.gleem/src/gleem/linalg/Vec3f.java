@@ -64,7 +64,7 @@ public class Vec3f {
 	 * Convert grad to radiant (eg: [-360� .. +360�] ==> [-2PI .. 2PI]).
 	 * 
 	 * @param fGrad
-	 *          in grad
+	 *            in grad
 	 * @return grad converted to radiant
 	 */
 	public static final float convertGrad2Radiant(final float fGrad) {
@@ -75,7 +75,7 @@ public class Vec3f {
 	 * Convert radiant to grad (eg:[-2PI .. 2PI] ==> [-360� .. +360�]).
 	 * 
 	 * @param fRadiant
-	 *          angle in radiant
+	 *            angle in radiant
 	 * @return radiant converted to grad
 	 */
 	public static final float convertRadiant2Grad(final float fRadiant) {

@@ -9,8 +9,9 @@ public class GlyphKeyListener
 	public void keyPressed(java.awt.event.KeyEvent event) {
 
 		if (event.getKeyCode() == java.awt.event.KeyEvent.VK_CONTROL) {
-			if (event.isControlDown())
+			if (event.isControlDown()) {
 				bKeyControlPressed = true;
+			}
 		}
 		else {
 			// System.out.println("other");

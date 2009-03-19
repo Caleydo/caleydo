@@ -29,7 +29,7 @@ public class TabularDataView
 
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
-		
+
 		swtComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
@@ -44,9 +44,10 @@ public class TabularDataView
 	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getEventPublisher().removeSender(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
-		GeneralManager.get().getEventPublisher()
-			.removeReceiver(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+		GeneralManager.get().getEventPublisher().removeSender(EMediatorType.SELECTION_MEDIATOR,
+			tabularDataView);
+		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
+			tabularDataView);
 	}
 
 	public TabularDataViewRep getTabularDataView() {

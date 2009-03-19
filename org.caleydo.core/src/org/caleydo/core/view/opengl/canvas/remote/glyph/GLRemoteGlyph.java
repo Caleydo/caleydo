@@ -158,8 +158,9 @@ public class GLRemoteGlyph
 		while (iterGLEventListener.hasNext()) {
 			AGLEventListener tmpGLEventListener = iterGLEventListener.next();
 
-			if (tmpGLEventListener == this || tmpGLEventListener.getClass() != GLGlyph.class)
+			if (tmpGLEventListener == this || tmpGLEventListener.getClass() != GLGlyph.class) {
 				continue;
+			}
 
 			int iViewID = tmpGLEventListener.getID();
 

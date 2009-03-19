@@ -33,7 +33,7 @@ public class Vec2i
 
 	/**
 	 * @param arg
-	 *          copy values
+	 *            copy values
 	 */
 	public Vec2i(Vec2i arg) {
 
@@ -43,7 +43,7 @@ public class Vec2i
 
 	/**
 	 * @param size
-	 *          specify size
+	 *            specify size
 	 */
 	protected Vec2i(final int size) {
 

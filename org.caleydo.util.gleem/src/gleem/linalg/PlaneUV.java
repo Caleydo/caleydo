@@ -37,17 +37,17 @@ public class PlaneUV {
 	private Vec3f vAxis = new Vec3f();
 
 	/**
-	 * Default constructor initializes normal to (0, 1, 0), origin to (0, 0, 0), U axis to (1, 0, 0) and V axis
-	 * to (0, 0, -1).
+	 * Default constructor initializes normal to (0, 1, 0), origin to (0, 0, 0), U axis to (1, 0, 0) and V
+	 * axis to (0, 0, -1).
 	 */
 	public PlaneUV() {
 		setEverything(new Vec3f(0, 1, 0), new Vec3f(0, 0, 0), new Vec3f(1, 0, 0), new Vec3f(0, 0, -1));
 	}
 
 	/**
-	 * Takes normal vector and a point which the plane goes through (which becomes the plane's "origin"). Normal
-	 * does NOT have to be normalized, but may not be zero vector. U and V axes are initialized to arbitrary
-	 * values.
+	 * Takes normal vector and a point which the plane goes through (which becomes the plane's "origin").
+	 * Normal does NOT have to be normalized, but may not be zero vector. U and V axes are initialized to
+	 * arbitrary values.
 	 */
 	public PlaneUV(Vec3f normal, Vec3f origin) {
 		setOrigin(origin);
@@ -55,9 +55,9 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Takes normal vector, point which plane goes through, and the "u" axis in the plane. Computes the "v" axis
-	 * by taking the cross product of the normal and the u axis. Axis must be perpendicular to normal. Normal
-	 * and uAxis do NOT have to be normalized, but neither may be the zero vector.
+	 * Takes normal vector, point which plane goes through, and the "u" axis in the plane. Computes the "v"
+	 * axis by taking the cross product of the normal and the u axis. Axis must be perpendicular to normal.
+	 * Normal and uAxis do NOT have to be normalized, but neither may be the zero vector.
 	 */
 	public PlaneUV(Vec3f normal, Vec3f origin, Vec3f uAxis) {
 		setOrigin(origin);
@@ -73,7 +73,8 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Set the origin, through which this plane goes and with respect to which U and V coordinates are computed
+	 * Set the origin, through which this plane goes and with respect to which U and V coordinates are
+	 * computed
 	 */
 	public void setOrigin(Vec3f origin) {
 		this.origin.set(origin);
@@ -84,8 +85,8 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Normal, U and V axes must be orthogonal and satisfy U cross V = normal, do not need to be unit length but
-	 * must not be the zero vector.
+	 * Normal, U and V axes must be orthogonal and satisfy U cross V = normal, do not need to be unit length
+	 * but must not be the zero vector.
 	 */
 	public void setNormalAndUV(Vec3f normal, Vec3f uAxis, Vec3f vAxis) {
 		setEverything(normal, origin, uAxis, vAxis);

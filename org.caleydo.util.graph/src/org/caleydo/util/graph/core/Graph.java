@@ -89,9 +89,8 @@ public class Graph
 
 	@Override
 	public final boolean isEmpty() {
-		if (graphs.isEmpty() && items.isEmpty()) {
+		if (graphs.isEmpty() && items.isEmpty())
 			return true;
-		}
 		return false;
 	}
 
@@ -125,12 +124,9 @@ public class Graph
 	@Override
 	public boolean updateItem(IGraphItem item) {
 		EGraphItemKind itemNewKind = item.getGraphKind();
-		if (items.containsGraphComponent(item, itemNewKind)) {
+		if (items.containsGraphComponent(item, itemNewKind))
 			/** same kind as already registered. no update required */
 			return true;
-
-			/** do not use else but use early "return" and avoid "else" */
-		}
 
 		/** update is required! */
 
@@ -138,12 +134,9 @@ public class Graph
 		items.addGraphComponent(item, itemNewKind);
 
 		/** remove item from old list .. */
-		if (itemNewKind.equals(EGraphItemKind.EDGE)) {
+		if (itemNewKind.equals(EGraphItemKind.EDGE))
 			/** new kind is EDGE thus old kind was NODE */
 			return items.removeGraphComponent(item, EGraphItemKind.NODE);
-
-			/** do not use else but use early "return" and avoid "else" */
-		}
 
 		/** new kind is NODE thus old kind was EDGE */
 		return items.removeGraphComponent(item, EGraphItemKind.EDGE);

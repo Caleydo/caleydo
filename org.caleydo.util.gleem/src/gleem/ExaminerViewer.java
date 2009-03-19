@@ -171,8 +171,8 @@ public class ExaminerViewer {
 	}
 
 	/**
-	 * Call this at the end of your display() method to cause the Modelview matrix to be recomputed for the next
-	 * frame.
+	 * Call this at the end of your display() method to cause the Modelview matrix to be recomputed for the
+	 * next frame.
 	 */
 	public void update(GL gl) {
 		recalc(gl);
@@ -180,8 +180,8 @@ public class ExaminerViewer {
 
 	/**
 	 * Call this to apply the inverse rotation matrix of the camera to the current matrix. This is useful for
-	 * drawing a skybox. Does not update which OpenGL matrix is currently being modified or the ExaminerViewer's
-	 * camera parameters.
+	 * drawing a skybox. Does not update which OpenGL matrix is currently being modified or the
+	 * ExaminerViewer's camera parameters.
 	 */
 	public void updateInverseRotation(GL gl) {
 		recalcInverseRotation(gl);
@@ -199,21 +199,21 @@ public class ExaminerViewer {
 	 * on the visible geometry. A BSphereProvider must have already been set or this method has no effect.
 	 */
 	public void viewAll(GL gl) {
-		if (provider == null) {
+		if (provider == null)
 			return;
-		}
 		// Figure out how far to move
 		float vertFOV, horizFOV, minFOV;
 		float adjustedVertFOV = params.getVertFOV() * vertFOVScale;
 		vertFOV = 2.0f * adjustedVertFOV;
 		horizFOV = 2.0f * (float) Math.atan(params.getImagePlaneAspectRatio() * Math.tan(adjustedVertFOV));
-		if (vertFOV < horizFOV)
+		if (vertFOV < horizFOV) {
 			minFOV = vertFOV;
-		else
-			minFOV = horizFOV;
-		if (minFOV == 0.0f) {
-			throw new RuntimeException("Minimum field of view was zero");
 		}
+		else {
+			minFOV = horizFOV;
+		}
+		if (minFOV == 0.0f)
+			throw new RuntimeException("Minimum field of view was zero");
 		BSphere bsph = provider.getBoundingSphere();
 		float dist = bsph.getRadius() / (float) Math.sin(minFOV / 2.0f);
 		dolly.setZ(dist);
@@ -231,8 +231,8 @@ public class ExaminerViewer {
 	}
 
 	/**
-	 * These routines can be hooked into a GUI by calling them from ActionEvent listeners for buttons elsewhere
-	 * in the application.
+	 * These routines can be hooked into a GUI by calling them from ActionEvent listeners for buttons
+	 * elsewhere in the application.
 	 */
 	public void rotateFaster() {
 		rotateSpeed *= 2.0f;
@@ -241,8 +241,9 @@ public class ExaminerViewer {
 	public void rotateSlower() {
 		if (rotateSpeed < minRotateSpeed)
 			return;
-		else
+		else {
 			rotateSpeed /= 2.0f;
+		}
 	}
 
 	public void dollyFaster() {
@@ -252,8 +253,9 @@ public class ExaminerViewer {
 	public void dollySlower() {
 		if (dollySpeed < minDollySpeed)
 			return;
-		else
+		else {
 			dollySpeed /= 2.0f;
+		}
 	}
 
 	public float getZNear() {
@@ -313,16 +315,16 @@ public class ExaminerViewer {
 
 	/**
 	 * Enables or disables the automatic redrawing of the GLAutoDrawable to which this ExaminerViewer is
-	 * attached. If the GLAutoDrawable is already being animated, disabling auto redraw mode may provide better
-	 * performance. Defaults to on.
+	 * attached. If the GLAutoDrawable is already being animated, disabling auto redraw mode may provide
+	 * better performance. Defaults to on.
 	 */
 	public void setAutoRedrawMode(boolean onOrOff) {
 		autoRedrawMode = onOrOff;
 	}
 
 	/**
-	 * Returns whether this ExaminerViewer automatically redraws the GLAutoDrawable to which it is attached upon
-	 * updates.
+	 * Returns whether this ExaminerViewer automatically redraws the GLAutoDrawable to which it is attached
+	 * upon updates.
 	 */
 	public boolean getAutoRedrawMode() {
 		return autoRedrawMode;
@@ -366,18 +368,15 @@ public class ExaminerViewer {
 	private boolean modifiersMatch(MouseEvent e, int mods) {
 		if (noAltKeyMode) {
 			if ((mods & MouseEvent.BUTTON1_MASK) != 0 && (mods & MouseEvent.BUTTON2_MASK) == 0
-				&& (mods & MouseEvent.BUTTON3_MASK) == 0) {
+				&& (mods & MouseEvent.BUTTON3_MASK) == 0)
 				return !e.isAltDown() && !e.isMetaDown() && !e.isControlDown() && !e.isShiftDown();
-			}
-			else {
+			else
 				// At least on Windows, meta seems to be declared to be down on
 				// right button presses
 				return !e.isControlDown() && !e.isShiftDown();
-			}
 		}
-		else {
+		else
 			return (e.isAltDown() || e.isMetaDown()) && !e.isControlDown() && !e.isShiftDown();
-		}
 	}
 
 	private void init() {
@@ -518,10 +517,12 @@ public class ExaminerViewer {
 	private void reshapeMethod(int w, int h) {
 		float aspect, theta;
 		aspect = (float) w / (float) h;
-		if (w >= h)
+		if (w >= h) {
 			theta = 45;
-		else
+		}
+		else {
 			theta = (float) Math.toDegrees(Math.atan(1 / aspect));
+		}
 		theta *= vertFOVScale;
 		params.setVertFOV((float) (Math.toRadians(theta) / 2.0));
 		params.setImagePlaneAspectRatio(aspect);
@@ -569,19 +570,20 @@ public class ExaminerViewer {
 		params.setProjectionMatrix(tmpMat);
 
 		/********************
-		 * // Recompute position, forward and up vectors params.setPosition(position); Vec3f tmp = new Vec3f();
-		 * orientation.rotateVector(Vec3f.NEG_Z_AXIS, tmp); params.setForwardDirection(tmp);
+		 * // Recompute position, forward and up vectors params.setPosition(position); Vec3f tmp = new
+		 * Vec3f(); orientation.rotateVector(Vec3f.NEG_Z_AXIS, tmp); params.setForwardDirection(tmp);
 		 * orientation.rotateVector(Vec3f.Y_AXIS, tmp); params.setUpDirection(tmp);
-		 * params.setOrientation(orientation); // Compute modelview matrix based on camera parameters, position
-		 * and // orientation Mat4f tmpMat = new Mat4f(); tmpMat.makeIdent(); tmpMat.setRotation(orientation);
-		 * tmpMat.setTranslation(position); tmpMat.invertRigid(); params.setModelviewMatrix(tmpMat); // Compute
-		 * perspective matrix given camera parameters float deltaZ = zFar - zNear; float aspect =
-		 * params.getImagePlaneAspectRatio(); float radians = params.getVertFOV(); float sine = (float)
-		 * Math.sin(radians); if ((deltaZ == 0) || (sine == 0) || (aspect == 0)) { tmpMat.makeIdent();
-		 * params.setProjectionMatrix(tmpMat); return; } float cotangent = (float) Math.cos(radians) / sine;
-		 * tmpMat.makeIdent(); tmpMat.set(0, 0, cotangent / aspect); tmpMat.set(1, 1, cotangent); tmpMat.set(2, 2,
-		 * -(zFar + zNear) / deltaZ); tmpMat.set(3, 2, -1); tmpMat.set(2, 3, -2 * zNear * zFar / deltaZ);
-		 * tmpMat.set(3, 3, 0); params.setProjectionMatrix(tmpMat);
+		 * params.setOrientation(orientation); // Compute modelview matrix based on camera parameters,
+		 * position and // orientation Mat4f tmpMat = new Mat4f(); tmpMat.makeIdent();
+		 * tmpMat.setRotation(orientation); tmpMat.setTranslation(position); tmpMat.invertRigid();
+		 * params.setModelviewMatrix(tmpMat); // Compute perspective matrix given camera parameters float
+		 * deltaZ = zFar - zNear; float aspect = params.getImagePlaneAspectRatio(); float radians =
+		 * params.getVertFOV(); float sine = (float) Math.sin(radians); if ((deltaZ == 0) || (sine == 0) ||
+		 * (aspect == 0)) { tmpMat.makeIdent(); params.setProjectionMatrix(tmpMat); return; } float cotangent
+		 * = (float) Math.cos(radians) / sine; tmpMat.makeIdent(); tmpMat.set(0, 0, cotangent / aspect);
+		 * tmpMat.set(1, 1, cotangent); tmpMat.set(2, 2, -(zFar + zNear) / deltaZ); tmpMat.set(3, 2, -1);
+		 * tmpMat.set(2, 3, -2 * zNear * zFar / deltaZ); tmpMat.set(3, 3, 0);
+		 * params.setProjectionMatrix(tmpMat);
 		 **********************/
 	}
 
@@ -602,8 +604,9 @@ public class ExaminerViewer {
 		Rotf oriInv = orientation.inverse();
 		Vec3f tmp = new Vec3f();
 		float ang = orientation.get(tmp);
-		if (tmp.lengthSquared() > EPSILON)
+		if (tmp.lengthSquared() > EPSILON) {
 			gl.glRotatef((float) Math.toDegrees(ang), tmp.x(), tmp.y(), tmp.z());
+		}
 	}
 
 	private Vec3f computePosition(Vec3f tmp) {

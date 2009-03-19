@@ -18,7 +18,7 @@ public class IDListEventContainer<T>
 	 * Constructor for ID Container without ID Type
 	 * 
 	 * @param eEventType
-	 *          the type of event
+	 *            the type of event
 	 */
 	public IDListEventContainer(EEventType eEventType) {
 		super(eEventType);
@@ -29,9 +29,9 @@ public class IDListEventContainer<T>
 	 * Constructor for ID Container with ID Type
 	 * 
 	 * @param eEventType
-	 *          the type of event
+	 *            the type of event
 	 * @param iDType
-	 *          the type of the ID
+	 *            the type of the ID
 	 */
 	public IDListEventContainer(EEventType eEventType, EIDType iDType) {
 		this(eEventType);
@@ -52,7 +52,7 @@ public class IDListEventContainer<T>
 	 * copy list.
 	 * 
 	 * @param alIDs
-	 *          the new list of IDs
+	 *            the new list of IDs
 	 */
 	public void setIDs(ArrayList<T> alIDs) {
 		this.alIDs = alIDs;

@@ -43,8 +43,8 @@ public class CommandQueueVector
 	protected boolean bQueueCanBeExecutedSeveralTimes = false;
 
 	/**
-	 * If "undo" is called on queue, the undo() method is called in reverse order to the do() method. Default is
-	 * TURE.
+	 * If "undo" is called on queue, the undo() method is called in reverse order to the do() method. Default
+	 * is TURE.
 	 */
 	protected boolean bQueueUndoInReverseOrder = true;
 
@@ -65,13 +65,11 @@ public class CommandQueueVector
 	@Override
 	public void doCommand() {
 
-		if (bQueueIsExcecuting) {
+		if (bQueueIsExcecuting)
 			throw new IllegalStateException("Can not execute command queue, that is already processed!");
-		}
 
-		if (!bQueueCanBeExecutedSeveralTimes && bQueueWasExcecuted) {
+		if (!bQueueCanBeExecutedSeveralTimes && bQueueWasExcecuted)
 			throw new IllegalStateException("Can not execute command queue, that is already processed!");
-		}
 		/**
 		 * critical section
 		 */
@@ -102,21 +100,18 @@ public class CommandQueueVector
 	@Override
 	public void undoCommand() {
 
-		if (this.bQueueCanBeExecutedSeveralTimes) {
+		if (this.bQueueCanBeExecutedSeveralTimes)
 			throw new IllegalStateException(
 				"Can not call undo() on command queue, that can be executed several times!");
-		}
 
-		if (this.bQueueIsExcecuting) {
+		if (this.bQueueIsExcecuting)
 			throw new IllegalStateException("Can not execute command queue, that is already processed!");
-		}
 
 		/**
 		 * Special case: no commands in vector Avoid excecute empty list!
 		 */
-		if (vecCommandsInQueue.isEmpty()) {
+		if (vecCommandsInQueue.isEmpty())
 			return;
-		}
 
 		/**
 		 * cirtical section
@@ -167,7 +162,7 @@ public class CommandQueueVector
 	 * inside the Vector.
 	 * 
 	 * @param testCmdQueueId
-	 *          uniwue command id to seek for
+	 *            uniwue command id to seek for
 	 * @return TRUE if testCmdQueueId is inside vector
 	 */
 	public boolean containsCmdQueueId(final int testCmdQueueId) {
@@ -175,9 +170,8 @@ public class CommandQueueVector
 		Iterator<ICommand> iter = vecCommandsInQueue.iterator();
 
 		while (iter.hasNext()) {
-			if (iter.next().getID() == testCmdQueueId) {
+			if (iter.next().getID() == testCmdQueueId)
 				return true;
-			}
 		}
 
 		return false;
@@ -187,14 +181,13 @@ public class CommandQueueVector
 	 * Add a new command.
 	 * 
 	 * @param cmdItem
-	 *          add command
+	 *            add command
 	 * @return FALSE if command is already inside queue, TRUE else
 	 */
 	public boolean addCmdToQueue(final ICommand cmdItem) {
 
-		if (this.vecCommandsInQueue.contains(cmdItem)) {
+		if (this.vecCommandsInQueue.contains(cmdItem))
 			return false;
-		}
 
 		this.vecCommandsInQueue.addElement(cmdItem);
 		return true;
@@ -204,7 +197,7 @@ public class CommandQueueVector
 	 * Remove a new command.
 	 * 
 	 * @param cmdItem
-	 *          remove command
+	 *            remove command
 	 */
 	public boolean removeCmdFromQueue(final ICommand cmdItem) {
 
@@ -215,7 +208,7 @@ public class CommandQueueVector
 	 * Contains a command.
 	 * 
 	 * @param cmdItem
-	 *          test if command is contained in command queue
+	 *            test if command is contained in command queue
 	 */
 	public boolean containsCmdInQueue(final ICommand cmdItem) {
 

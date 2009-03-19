@@ -18,19 +18,19 @@ public interface INumericalStorage
 	 * instead of normalize(). This is e.g. useful if other sets need to be comparable, but contain larger or
 	 * smaller elements.
 	 * </p>
-	 * If dMin is smaller respectively dMax bigger than the actual minimum the values that are bigger are set to
-	 * 0 (minimum) or 1 (maximum) in the normalized data. However, the raw data stays the way it is. Therefore
-	 * elements that are drawn at 1 or 0 can have different raw values associated.
+	 * If dMin is smaller respectively dMax bigger than the actual minimum the values that are bigger are set
+	 * to 0 (minimum) or 1 (maximum) in the normalized data. However, the raw data stays the way it is.
+	 * Therefore elements that are drawn at 1 or 0 can have different raw values associated.
 	 * <p>
 	 * Normalize operates on the raw data, except if you previously called log, then the logarithmized data is
 	 * used.
 	 * 
 	 * @param dMin
-	 *          the minimum
+	 *            the minimum
 	 * @param dMax
-	 *          the maximum
+	 *            the maximum
 	 * @throws IlleagalAttributeStateException
-	 *           if dMin >= dMax
+	 *             if dMin >= dMax
 	 */
 	public void normalizeWithExternalExtrema(double dMin, double dMax);
 
@@ -52,7 +52,7 @@ public interface INumericalStorage
 	 * Calculates a raw value based on min and max from a normalized value.
 	 * 
 	 * @param dNormalized
-	 *          a value between 0 and 1
+	 *            a value between 0 and 1
 	 * @return a value between min and max
 	 */
 	public double getRawForNormalized(double dNormalized);

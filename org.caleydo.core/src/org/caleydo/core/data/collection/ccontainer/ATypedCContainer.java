@@ -9,7 +9,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
  * 
  * @author Alexander Lex
  * @param <T>
- *          the Type of the container
+ *            the Type of the container
  */
 
 public abstract class ATypedCContainer<T>
@@ -20,7 +20,7 @@ public abstract class ATypedCContainer<T>
 	 * Returns the element of type T at the index iIndex
 	 * 
 	 * @param iIndex
-	 *          the index
+	 *            the index
 	 * @return the value at iIndex of type T
 	 */
 	public T get(int iIndex) {
@@ -33,8 +33,8 @@ public abstract class ATypedCContainer<T>
 	}
 
 	/**
-	 * Returns an iterator on the data Do not use the iterators remove, add or set function, since it will cause
-	 * an UnsupportedOperationException.
+	 * Returns an iterator on the data Do not use the iterators remove, add or set function, since it will
+	 * cause an UnsupportedOperationException.
 	 * 
 	 * @return the iterator
 	 */
@@ -46,7 +46,7 @@ public abstract class ATypedCContainer<T>
 	 * Returns an iterator on the container which iterates based on a virtual array
 	 * 
 	 * @param virtualArray
-	 *          the virtual array which the iteration is based on
+	 *            the virtual array which the iteration is based on
 	 * @return the iterator
 	 */
 	public ContainerIterator<T> iterator(IVirtualArray virtualArray) {

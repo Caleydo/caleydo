@@ -20,7 +20,7 @@ public class SelectionCommandEventContainer
 	 * Constructor
 	 * 
 	 * @param iDType
-	 *          used to identify the selection manager associated with the id type
+	 *            used to identify the selection manager associated with the id type
 	 */
 	public SelectionCommandEventContainer(EIDType iDType) {
 		super(EEventType.TRIGGER_SELECTION_COMMAND);
@@ -33,9 +33,9 @@ public class SelectionCommandEventContainer
 	 * Constructor
 	 * 
 	 * @param iDType
-	 *          used to identify the selection manager associated with the id type
+	 *            used to identify the selection manager associated with the id type
 	 * @param selectionCommand
-	 *          shortcut when only used with one command
+	 *            shortcut when only used with one command
 	 */
 	public SelectionCommandEventContainer(EIDType iDType, SelectionCommand selectionCommand) {
 		this(iDType);
@@ -46,7 +46,7 @@ public class SelectionCommandEventContainer
 	 * Adds a selection command
 	 * 
 	 * @param selectionCommand
-	 *          the command to add
+	 *            the command to add
 	 */
 	public void addSelectionCommand(SelectionCommand selectionCommand) {
 		alSelectionCommands.add(selectionCommand);

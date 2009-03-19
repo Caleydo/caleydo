@@ -88,7 +88,7 @@ public class GLInPlaceInfoRenderer2 {
 	 * 
 	 * @param gl
 	 * @param bFirstTime
-	 *          this has to be true only the first time you render it and can never be true after that
+	 *            this has to be true only the first time you render it and can never be true after that
 	 */
 	public void renderInfoArea(GL gl, Vec3f vecLowerLeft, boolean bFirstTime) {
 
@@ -112,8 +112,9 @@ public class GLInPlaceInfoRenderer2 {
 			gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft, fZValue);
 			gl.glVertex3f(fXLowerLeft + fWidth, fYLowerLeft + fHeight, fZValue);
 			gl.glVertex3f(fXLowerLeft, fYLowerLeft + fHeight, fZValue);
-			if (iCount == 1)
+			if (iCount == 1) {
 				gl.glVertex3f(fXLowerLeft, fYLowerLeft, fZValue);
+			}
 			gl.glEnd();
 			iCount++;
 		}
@@ -137,14 +138,16 @@ public class GLInPlaceInfoRenderer2 {
 			sCurrent = contentIterator.next();
 			fNextLineHeight -= (float) textRenderer.getBounds(sCurrent).getHeight() * fFontScaling + fSpacing;
 
-			textRenderer.draw3D(sCurrent, fXLowerLeft + fSpacing, fNextLineHeight, fZValue + 0.001f, fFontScaling);
+			textRenderer.draw3D(sCurrent, fXLowerLeft + fSpacing, fNextLineHeight, fZValue + 0.001f,
+				fFontScaling);
 
 			iCount++;
 		}
 		textRenderer.end3DRendering();
 
-		if (miniView != null)
+		if (miniView != null) {
 			miniView.render(gl, fXLowerLeft + fTextWidth + fSpacing, fYLowerLeft + fSpacing, 0);
+		}
 
 		// gl.glVertex3f(fXOrigin, fYOrigin, 0);
 
@@ -173,8 +176,9 @@ public class GLInPlaceInfoRenderer2 {
 		while (contentIterator.hasNext()) {
 
 			sCurrent = contentIterator.next();
-			if (iCount == 1)
+			if (iCount == 1) {
 				fFontScalingFactor = renderStyle.getSmallFontScalingFactor();
+			}
 
 			box = textRenderer.getBounds(sCurrent).getBounds2D();
 			fHeight += box.getHeight() * fFontScalingFactor;
@@ -196,8 +200,9 @@ public class GLInPlaceInfoRenderer2 {
 		if (miniView != null) {
 			fWidth += miniView.getWidth() + fSpacing * 2;
 
-			if (fHeight < miniView.getHeight())
+			if (fHeight < miniView.getHeight()) {
 				fHeight = miniView.getHeight();
+			}
 
 			fHeight += fSpacing * 2;
 		}

@@ -24,7 +24,7 @@ public abstract class AGraphDataHandler
 
 	/**
 	 * @param initialSize
-	 *          define initial size and number of expected objects.
+	 *            define initial size and number of expected objects.
 	 */
 	protected AGraphDataHandler(int initialSize) {
 		key_2_data = new HashMap<Integer, Object>(initialSize);

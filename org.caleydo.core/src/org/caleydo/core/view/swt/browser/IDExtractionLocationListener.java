@@ -98,16 +98,16 @@ public class IDExtractionLocationListener
 			else
 				return;
 
-			Integer.valueOf(event.location.substring(iPathwayIdIndex, event.location.lastIndexOf('+'))).intValue();
+			Integer.valueOf(event.location.substring(iPathwayIdIndex, event.location.lastIndexOf('+')))
+				.intValue();
 
 			// iArSelectionId = new int[0];
 			// iArSelectionDepth = new int[0];
 
 			// iAlOptional.add(iPathwayId);
 		}
-		else {
+		else
 			return;
-		}
 
 		// TODO reimplement
 		// Selection tmpSelectionSet = (Selection)

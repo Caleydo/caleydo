@@ -64,8 +64,9 @@ public class GLConnectionLineRendererBucket
 						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID())
 							.getRemoteLevelElement();
 					// views that are not rendered remote
-					if (remoteLevelElement == null)
+					if (remoteLevelElement == null) {
 						continue;
+					}
 
 					activeLevel = remoteLevelElement.getRemoteLevel();
 
@@ -78,8 +79,8 @@ public class GLConnectionLineRendererBucket
 						ArrayList<Vec3f> alPointsTransformed = new ArrayList<Vec3f>();
 
 						for (Vec3f vecCurrentPoint : alPoints) {
-							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation, vecScale, rotation,
-								remoteLevelElement));
+							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation, vecScale,
+								rotation, remoteLevelElement));
 						}
 						int iKey = selectedElementRep.getContainingViewID();
 

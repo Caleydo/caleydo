@@ -115,9 +115,8 @@ public class ManipManager {
 	 * Remove all references to a given window, including removing all manipulators from it.
 	 */
 	public synchronized void unregisterWindow(GLAutoDrawable window) {
-		if (window == null) {
+		if (window == null)
 			return;
-		}
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
 		if (info != null) {
 			Object[] manips = info.manips.toArray();
@@ -134,9 +133,8 @@ public class ManipManager {
 	 */
 	public synchronized void showManipInWindow(Manip manip, GLAutoDrawable window) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
-		if (info == null) {
+		if (info == null)
 			throw new RuntimeException("Window not registered");
-		}
 		info.manips.add(manip);
 		Set windows = (Set) manipToWindowMap.get(manip);
 		if (windows == null) {
@@ -151,12 +149,10 @@ public class ManipManager {
 	 */
 	public synchronized void removeManipFromWindow(Manip manip, GLAutoDrawable window) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
-		if (info == null) {
+		if (info == null)
 			throw new RuntimeException("Window not registered");
-		}
-		if (!info.manips.remove(manip)) {
+		if (!info.manips.remove(manip))
 			throw new RuntimeException("Manip not registered in window");
-		}
 		Set windows = (Set) manipToWindowMap.get(manip);
 		assert windows != null;
 		windows.remove(window);
@@ -167,9 +163,8 @@ public class ManipManager {
 	 */
 	public synchronized void updateCameraParameters(GLAutoDrawable window, CameraParameters params) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
-		if (info == null) {
+		if (info == null)
 			throw new RuntimeException("Window not registered");
-		}
 		info.params.set(params);
 	}
 
@@ -186,10 +181,10 @@ public class ManipManager {
 	}
 
 	/**
-	 * Sets the WindowUpdateListener the ManipManager uses to force repainting of windows in which manipulators
-	 * have moved. The default implementation, which can be restored by passing a null listener argument to this
-	 * method, calls repaint() on the GLAutoDrawable if it is not a GLRunnable instance (i.e., a GLAnimCanvas or
-	 * GLAnimJPanel, which redraw themselves automatically).
+	 * Sets the WindowUpdateListener the ManipManager uses to force repainting of windows in which
+	 * manipulators have moved. The default implementation, which can be restored by passing a null listener
+	 * argument to this method, calls repaint() on the GLAutoDrawable if it is not a GLRunnable instance
+	 * (i.e., a GLAnimCanvas or GLAnimJPanel, which redraw themselves automatically).
 	 */
 	public synchronized void setWindowUpdateListener(WindowUpdateListener listener) {
 		if (listener != null) {
@@ -201,14 +196,14 @@ public class ManipManager {
 	}
 
 	/**
-	 * Cause the manipulators for a given window to be drawn. The drawing occurs immediately; this routine must
-	 * be called when an OpenGL context is valid, i.e., from within the display() method of a GLEventListener.
+	 * Cause the manipulators for a given window to be drawn. The drawing occurs immediately; this routine
+	 * must be called when an OpenGL context is valid, i.e., from within the display() method of a
+	 * GLEventListener.
 	 */
 	public synchronized void render(GLAutoDrawable window, GL gl) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
-		if (info == null) {
+		if (info == null)
 			throw new RuntimeException("Window not registered");
-		}
 		for (Iterator iter = info.manips.iterator(); iter.hasNext();) {
 			((Manip) iter.next()).render(gl);
 		}
@@ -217,9 +212,9 @@ public class ManipManager {
 	/**
 	 * Sets up a MouseListener and MouseMotionListener for the given window. Since an application-level
 	 * MouseListener or MouseMotionListener might want to intercept events and not pass them on to the
-	 * ManipManager without relying on the ordering of listeners for the canvas (see the ExaminerViewer class),
-	 * the setupMouseListeners and removeMouseListeners routines, as well as the appropriate delegate routines,
-	 * are made public here.
+	 * ManipManager without relying on the ordering of listeners for the canvas (see the ExaminerViewer
+	 * class), the setupMouseListeners and removeMouseListeners routines, as well as the appropriate delegate
+	 * routines, are made public here.
 	 */
 	public synchronized void setupMouseListeners(GLAutoDrawable window) {
 		window.addMouseMotionListener(mouseMotionListener);
@@ -227,8 +222,8 @@ public class ManipManager {
 	}
 
 	/**
-	 * Removes the automatically-installed mouse listeners for the given window. This allows application code to
-	 * determine the policy for intercepting mouse events.
+	 * Removes the automatically-installed mouse listeners for the given window. This allows application code
+	 * to determine the policy for intercepting mouse events.
 	 */
 	public synchronized void removeMouseListeners(GLAutoDrawable window) {
 		window.removeMouseMotionListener(mouseMotionListener);
@@ -389,9 +384,8 @@ public class ManipManager {
 	}
 
 	private void computeRay(CameraParameters params, int x, int y, Vec3f raySource, Vec3f rayDirection) {
-		if (mapping == null) {
+		if (mapping == null)
 			throw new RuntimeException("Screen to ray mapping was unspecified");
-		}
 		mapping.mapScreenToRay(screenToNormalizedCoordinates(params, x, y), params, raySource, rayDirection);
 	}
 

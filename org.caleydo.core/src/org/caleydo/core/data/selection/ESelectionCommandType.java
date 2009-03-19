@@ -6,5 +6,7 @@ package org.caleydo.core.data.selection;
  * @author Alexander Lex
  */
 public enum ESelectionCommandType {
-	CLEAR, CLEAR_ALL, RESET
+	CLEAR,
+	CLEAR_ALL,
+	RESET
 }

@@ -1,14 +1,12 @@
 package org.caleydo.core.data.mapping;
 
 /**
- * Enum defines possible combinations of genome entity types that can be mapped
- * to each other.
+ * Enum defines possible combinations of genome entity types that can be mapped to each other.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public enum EMappingType
-{
+public enum EMappingType {
 	DAVID_2_REFSEQ_MRNA(EIDType.DAVID, EIDType.REFSEQ_MRNA, EMappingDataType.MULTI_INT2STRING),
 	DAVID_2_REFSEQ_MRNA_INT(EIDType.DAVID, EIDType.REFSEQ_MRNA_INT, EMappingDataType.MULTI_INT2INT),
 	REFSEQ_MRNA_INT_2_DAVID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID, EMappingDataType.INT2INT),
@@ -23,13 +21,22 @@ public enum EMappingType
 		EIDType.REFSEQ_MRNA_INT,
 		EIDType.EXPRESSION_INDEX,
 		EMappingDataType.MULTI_INT2INT),
-	REFSEQ_MRNA_2_EXPRESSION_INDEX(EIDType.REFSEQ_MRNA, EIDType.EXPRESSION_INDEX, EMappingDataType.MULTI_STRING2INT),
+	REFSEQ_MRNA_2_EXPRESSION_INDEX(
+		EIDType.REFSEQ_MRNA,
+		EIDType.EXPRESSION_INDEX,
+		EMappingDataType.MULTI_STRING2INT),
 	// EXPRESSION_INDEX_2_DAVID(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
 	// EMappingDataType.INT2INT),
-	EXPRESSION_INDEX_2_REFSEQ_MRNA_INT(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, EMappingDataType.INT2INT),
+	EXPRESSION_INDEX_2_REFSEQ_MRNA_INT(
+		EIDType.EXPRESSION_INDEX,
+		EIDType.REFSEQ_MRNA_INT,
+		EMappingDataType.INT2INT),
 	DAVID_2_BIOCARTA_GENE_ID(EIDType.DAVID, EIDType.BIOCARTA_GENE_ID, EMappingDataType.MULTI_INT2STRING),
 	BIOCARTA_GENE_ID_2_DAVID(EIDType.BIOCARTA_GENE_ID, EIDType.DAVID, EMappingDataType.MULTI_STRING2INT),
-	BIOCARTA_GENE_ID_2_REFSEQ_MRNA(EIDType.BIOCARTA_GENE_ID, EIDType.REFSEQ_MRNA, EMappingDataType.MULTI_STRING2STRING),
+	BIOCARTA_GENE_ID_2_REFSEQ_MRNA(
+		EIDType.BIOCARTA_GENE_ID,
+		EIDType.REFSEQ_MRNA,
+		EMappingDataType.MULTI_STRING2STRING),
 	// BIOCARTA_GENE_ID_2_REFSEQ_MRNA_INT(EIDType.BIOCARTA_GENE_ID,
 	// EIDType.REFSEQ_MRNA_INT,
 	// EMappingDataType.MULTI_STRING2INT),
@@ -58,8 +65,7 @@ public enum EMappingType
 	/**
 	 * Constructor.
 	 */
-	private EMappingType(EIDType destination, EIDType target, EMappingDataType setDataMappingType)
-	{
+	private EMappingType(EIDType destination, EIDType target, EMappingDataType setDataMappingType) {
 		mappingDataType = setDataMappingType;
 
 		originType = destination;
@@ -69,29 +75,24 @@ public enum EMappingType
 	}
 
 	/**
-	 * TRUE if this is a MultiMap <Integer,ArrayList<Integer>> FALSE if it is a
-	 * HashMap. Two types of HashMaps are in use: <String,Integer> and
-	 * <Integer,String> see isReversHashMap()
+	 * TRUE if this is a MultiMap <Integer,ArrayList<Integer>> FALSE if it is a HashMap. Two types of HashMaps
+	 * are in use: <String,Integer> and <Integer,String> see isReversHashMap()
 	 * 
 	 * @return
 	 */
-	public boolean isMultiMap()
-	{
+	public boolean isMultiMap() {
 		return bIsMultiMap;
 	}
 
-	public EMappingDataType getDataMapppingType()
-	{
+	public EMappingDataType getDataMapppingType() {
 		return mappingDataType;
 	}
 
-	public EIDType getTypeOrigin()
-	{
+	public EIDType getTypeOrigin() {
 		return originType;
 	}
 
-	public EIDType getTypeTarget()
-	{
+	public EIDType getTypeTarget() {
 		return targetType;
 	}
 }

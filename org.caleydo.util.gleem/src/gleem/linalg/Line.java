@@ -43,8 +43,8 @@ public class Line {
 	}
 
 	/**
-	 * Line goes in direction <b>direction</b> through the point <b>point</b>. <b>direction</b> does not need to
-	 * be normalized but must not be the zero vector.
+	 * Line goes in direction <b>direction</b> through the point <b>point</b>. <b>direction</b> does not need
+	 * to be normalized but must not be the zero vector.
 	 */
 	public Line(Vec3f direction, Vec3f point) {
 		direction = new Vec3f(direction);
@@ -102,12 +102,10 @@ public class Line {
 		A.set(1, 1, -rayDirection.lengthSquared());
 		A.set(0, 1, direction.dot(rayDirection));
 		A.set(1, 0, A.get(0, 1));
-		if (Math.abs(A.determinant()) == 0.0f) {
+		if (Math.abs(A.determinant()) == 0.0f)
 			return false;
-		}
-		if (!A.invert()) {
+		if (!A.invert())
 			return false;
-		}
 		Vec2f b = new Vec2f();
 		b.setX(point.dot(direction) - rayStart.dot(direction));
 		b.setY(rayStart.dot(rayDirection) - point.dot(rayDirection));
@@ -131,9 +129,8 @@ public class Line {
 
 	private void recalc() {
 		float denom = direction.lengthSquared();
-		if (denom == 0.0f) {
+		if (denom == 0.0f)
 			throw new RuntimeException("Line.recalc: ERROR: direction was the zero vector " + "(not allowed)");
-		}
 		alongVec.set(point.minus(direction.times(point.dot(direction))));
 	}
 }

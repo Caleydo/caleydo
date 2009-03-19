@@ -50,7 +50,9 @@ public abstract class AGLEventListener
 	extends AView
 	implements GLEventListener {
 	public enum EBusyModeState {
-		SWITCH_OFF, ON, OFF
+		SWITCH_OFF,
+		ON,
+		OFF
 	}
 
 	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
@@ -76,8 +78,8 @@ public abstract class AGLEventListener
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
 	/**
-	 * The remote level element in which the view is placed. This variable is only set when the view is rendered
-	 * remote.
+	 * The remote level element in which the view is placed. This variable is only set when the view is
+	 * rendered remote.
 	 */
 	protected RemoteLevelElement remoteLevelElement;
 
@@ -204,8 +206,9 @@ public abstract class AGLEventListener
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		if (remoteRenderingGLCanvas != null || this instanceof GLRemoteRendering || this instanceof GLGlyph)
+		if (remoteRenderingGLCanvas != null || this instanceof GLRemoteRendering || this instanceof GLGlyph) {
 			viewFrustum.considerAspectRatio(true);
+		}
 		else {
 			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
@@ -361,8 +364,9 @@ public abstract class AGLEventListener
 					int iPickingID = tempPick.getPickingID();
 					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID, iPickingID);
 
-					if (iExternalID == -1)
+					if (iExternalID == -1) {
 						continue;
+					}
 
 					EPickingMode ePickingMode = tempPick.getPickingMode();
 					handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);
@@ -376,14 +380,14 @@ public abstract class AGLEventListener
 	 * events.
 	 * 
 	 * @param ePickingType
-	 *          the Picking type, held in EPickingType
+	 *            the Picking type, held in EPickingType
 	 * @param ePickingMode
-	 *          the Picking mode (clicked, dragged etc.)
+	 *            the Picking mode (clicked, dragged etc.)
 	 * @param iExternalID
-	 *          the name specified for an element with glPushName
+	 *            the name specified for an element with glPushName
 	 * @param pick
-	 *          the pick object which can be useful to retrieve for example the mouse position when the pick
-	 *          occurred
+	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
+	 *            occurred
 	 */
 	abstract protected void handleEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
 		final int iExternalID, final Pick pick);

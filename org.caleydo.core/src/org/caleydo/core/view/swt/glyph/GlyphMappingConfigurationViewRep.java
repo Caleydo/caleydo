@@ -91,8 +91,9 @@ public class GlyphMappingConfigurationViewRep
 		while (it.hasNext()) {
 			GlyphAttributeType at = it.next();
 
-			if (at.doesAutomaticAttribute())
+			if (at.doesAutomaticAttribute()) {
 				continue;
+			}
 
 			columnNames.add(at.getName());
 			extColNumToArrayIndex.put(at.getExternalColumnNumber(), counter);
@@ -122,20 +123,22 @@ public class GlyphMappingConfigurationViewRep
 				DataPack box = comboBoxes.get(event.widget);
 
 				if (box != null) {
-					if (box.parameterType == EGlyphSettingIDs.SCALE || box.parameterType == EGlyphSettingIDs.COLOR) {
+					if (box.parameterType == EGlyphSettingIDs.SCALE
+						|| box.parameterType == EGlyphSettingIDs.COLOR) {
 						int selectedindex = box.comboBox.getSelectionIndex();
 						int selectedCol = arrayIndexToExtColNum.get(selectedindex);
 
-						box.model.setPartParameterIndex(box.parameterName, box.parameterType, box.parameterValue,
-							selectedCol);
+						box.model.setPartParameterIndex(box.parameterName, box.parameterType,
+							box.parameterValue, selectedCol);
 
 					}
 				}
 
 				for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager()
 					.getAllGLEventListeners())
-					if (agleventlistener instanceof GLGlyph)
+					if (agleventlistener instanceof GLGlyph) {
 						((GLGlyph) agleventlistener).forceRebuild();
+					}
 
 				// TODO request assistance for this triggerEvent
 				// triggerEventHere
@@ -150,8 +153,9 @@ public class GlyphMappingConfigurationViewRep
 		for (int i = 0; i < 30; ++i) {
 			GlyphObjectDefinition model = GLGlyphGenerator.getDetailLevelModel(i);
 
-			if (model == null)
+			if (model == null) {
 				continue;
+			}
 
 			addHeaderGlyphDefinition(parentComposite, model);
 			addBodyGlyphDefinition(parentComposite, model);
@@ -269,8 +273,9 @@ public class GlyphMappingConfigurationViewRep
 					String description = model.getPartParameterDescription(name, EGlyphSettingIDs.SCALE, dir);
 
 					int index = model.getPartParameterIndexExternal(name, EGlyphSettingIDs.SCALE, dir);
-					if (extColNumToArrayIndex.containsKey(index))
+					if (extColNumToArrayIndex.containsKey(index)) {
 						index = extColNumToArrayIndex.get(index);
+					}
 					CCombo box = makeLabelComboBoxLine(layout, gd, comp, index, description);
 
 					DataPack pack = new DataPack();
@@ -289,8 +294,9 @@ public class GlyphMappingConfigurationViewRep
 				String description = model.getPartParameterDescription(name, EGlyphSettingIDs.COLOR, null);
 
 				int index = model.getPartParameterIndexExternal(name, EGlyphSettingIDs.COLOR, null);
-				if (extColNumToArrayIndex.containsKey(index))
+				if (extColNumToArrayIndex.containsKey(index)) {
 					index = extColNumToArrayIndex.get(index);
+				}
 				CCombo box = makeLabelComboBoxLine(layout, gd, comp, index, description);
 
 				DataPack pack = new DataPack();
@@ -354,10 +360,12 @@ public class GlyphMappingConfigurationViewRep
 		combo.setLayoutData(gd);
 
 		combo.removeAll();
-		for (int i = 0; i < columnNames.size(); ++i)
+		for (int i = 0; i < columnNames.size(); ++i) {
 			combo.add(columnNames.get(i));
-		if (selectedid >= 0)
+		}
+		if (selectedid >= 0) {
 			combo.select(selectedid);
+		}
 
 		combo.addSelectionListener(listener);
 

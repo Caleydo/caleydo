@@ -117,7 +117,8 @@ public final class FetchPathwayDataPage
 		});
 
 		final Label lblNote = new Label(composite, SWT.NONE);
-		lblNote.setText("Note: Depending on your internet connection, this process can take several minutes.");
+		lblNote
+			.setText("Note: Depending on your internet connection, this process can take several minutes.");
 
 		return composite;
 	}

@@ -37,16 +37,17 @@ public class ConnectedElementRepresentationManager {
 	}
 
 	/**
-	 * Add a selection to a specific tree. The data type is determined by the selectedElementRep, the connection
-	 * id has to be specified manually
+	 * Add a selection to a specific tree. The data type is determined by the selectedElementRep, the
+	 * connection id has to be specified manually
 	 * 
 	 * @param iConnectionID
-	 *          the connection ID - one connection id per connection line tree
+	 *            the connection ID - one connection id per connection line tree
 	 * @param selectedElementRep
-	 *          the selected element rep associated with the tree specified
+	 *            the selected element rep associated with the tree specified
 	 */
 	public void addSelection(int iConnectionID, final SelectedElementRep selectedElementRep) {
-		HashMap<Integer, ArrayList<SelectedElementRep>> tmpHash = hashIDTypes.get(selectedElementRep.getIDType());
+		HashMap<Integer, ArrayList<SelectedElementRep>> tmpHash =
+			hashIDTypes.get(selectedElementRep.getIDType());
 		if (tmpHash == null) {
 			tmpHash = new HashMap<Integer, ArrayList<SelectedElementRep>>();
 			hashIDTypes.put(selectedElementRep.getIDType(), tmpHash);
@@ -106,12 +107,13 @@ public class ConnectedElementRepresentationManager {
 	 * Get a representation of a particular element
 	 * 
 	 * @param iDType
-	 *          the type of the object to be connected (e.g. gene expression, clinical)
+	 *            the type of the object to be connected (e.g. gene expression, clinical)
 	 * @param iElementID
-	 *          the id of the object to be connected
+	 *            the id of the object to be connected
 	 * @return a list of the representations of the points
 	 */
-	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(EIDType idType, final int iElementID) {
+	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(EIDType idType,
+		final int iElementID) {
 
 		ArrayList<SelectedElementRep> tempList = hashIDTypes.get(idType).get(iElementID);
 
@@ -142,9 +144,9 @@ public class ConnectedElementRepresentationManager {
 	 * Clear all selections of a given type that belong to a certain view
 	 * 
 	 * @param idType
-	 *          the type to be cleared
+	 *            the type to be cleared
 	 * @param iViewID
-	 *          the id of the view
+	 *            the id of the view
 	 */
 	public void clearByViewAndType(EIDType idType, int iViewID) {
 		HashMap<Integer, ArrayList<SelectedElementRep>> hashReps = hashIDTypes.get(idType);
@@ -155,8 +157,9 @@ public class ConnectedElementRepresentationManager {
 
 			Iterator<SelectedElementRep> iterator = alRep.iterator();
 			while (iterator.hasNext()) {
-				if (iterator.next().getContainingViewID() == iViewID)
+				if (iterator.next().getContainingViewID() == iViewID) {
 					iterator.remove();
+				}
 			}
 		}
 	}
@@ -165,7 +168,7 @@ public class ConnectedElementRepresentationManager {
 	 * Clear all elements of a view, regardless of their type.
 	 * 
 	 * @param iViewID
-	 *          the view which id's should be removed
+	 *            the view which id's should be removed
 	 */
 	public void clearByView(int iViewID) {
 		for (EIDType idType : hashIDTypes.keySet()) {

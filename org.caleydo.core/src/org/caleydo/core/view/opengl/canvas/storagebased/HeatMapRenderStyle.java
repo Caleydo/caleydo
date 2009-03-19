@@ -58,12 +58,15 @@ public class HeatMapRenderStyle
 		hashLevelToWidth.put(iNotSelectedLevel, fNormalFieldWidth);
 		float fCurrentWidth = fNormalFieldWidth;
 		for (int iCount = -iLevels; iCount <= iLevels; iCount++) {
-			if (iCount < 0)
+			if (iCount < 0) {
 				fCurrentWidth += fDelta;
-			else if (iCount == 0)
+			}
+			else if (iCount == 0) {
 				fCurrentWidth = fSelectedFieldWidth;
-			else
+			}
+			else {
 				fCurrentWidth -= fDelta;
+			}
 
 			hashLevelToWidth.put(iCount, fCurrentWidth);
 		}
@@ -100,14 +103,16 @@ public class HeatMapRenderStyle
 
 				fSelectedFieldWidth = LIST_SELECTED_FIELD_WIDTH;
 				fNormalFieldWidth =
-					(getRenderHeight() - iNumberSelected * fSelectedFieldWidth) / (iNumberTotal - iNumberSelected);
+					(getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
+						/ (iNumberTotal - iNumberSelected);
 
 			}
 			else {
 				fSelectedFieldWidth =
 					getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE * fSelecteFieldWidthPercentage;
 				fNormalFieldWidth =
-					(getRenderHeight() - iNumberSelected * fSelectedFieldWidth) / (iNumberTotal - iNumberSelected);
+					(getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
+						/ (iNumberTotal - iNumberSelected);
 			}
 			fFieldHeight = getRenderWidth() / heatMap.set.getVA(heatMap.getStorageVAID()).size();
 

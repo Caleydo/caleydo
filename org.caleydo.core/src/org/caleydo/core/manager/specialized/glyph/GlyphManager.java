@@ -78,13 +78,16 @@ public class GlyphManager {
 
 	public void setSetting(EGlyphSettingIDs type, String value) {
 
-		if (settings.containsKey(type))
+		if (settings.containsKey(type)) {
 			settings.remove(type);
+		}
 		settings.put(type, value);
 
-		for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
-			if (agleventlistener instanceof GLGlyph)
+		for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager()
+			.getAllGLEventListeners())
+			if (agleventlistener instanceof GLGlyph) {
 				((GLGlyph) agleventlistener).forceRebuild();
+			}
 	}
 
 	public int getSortOrder(int depth) {
@@ -127,8 +130,9 @@ public class GlyphManager {
 		while (it.hasNext()) {
 			GlyphAttributeType at = it.next();
 
-			if (at.doesAutomaticAttribute())
+			if (at.doesAutomaticAttribute()) {
 				continue;
+			}
 
 			list.put(at.getName(), at.getInternalColumnNumber());
 		}
@@ -172,8 +176,9 @@ public class GlyphManager {
 		if (hmLoadedStoraged.containsKey(storagename))
 			return;
 
-		for (GlyphEntry e : glyphlist.values())
+		for (GlyphEntry e : glyphlist.values()) {
 			e.select();
+		}
 
 		hmGlyphList.putAll(glyphlist);
 		hmLoadedStoraged.put(storagename, null);
@@ -186,8 +191,9 @@ public class GlyphManager {
 	public HashMap<Integer, GlyphEntry> getSelectedGlyphs() {
 		HashMap<Integer, GlyphEntry> temp = new HashMap<Integer, GlyphEntry>();
 		for (int i : hmGlyphList.keySet())
-			if (hmGlyphList.get(i).isSelected())
+			if (hmGlyphList.get(i).isSelected()) {
 				temp.put(i, hmGlyphList.get(i));
+			}
 
 		return temp;
 	}

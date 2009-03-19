@@ -26,7 +26,7 @@ public class NominalCContainer<T>
 	 * Constructor
 	 * 
 	 * @param sAlContainer
-	 *          The complete list of all Strings in the dataset
+	 *            The complete list of all Strings in the dataset
 	 */
 	public NominalCContainer(ArrayList<T> tAlContainer) {
 		this.alContainer = tAlContainer;
@@ -40,7 +40,7 @@ public class NominalCContainer<T>
 	 * exception will occur
 	 * 
 	 * @param sAlPossibleValues
-	 *          the List
+	 *            the List
 	 */
 	public void setPossibleValues(ArrayList<T> alPossibleValues) {
 		// TODO: check if all values in the raw list are also in the other list
@@ -54,8 +54,9 @@ public class NominalCContainer<T>
 	@Override
 	public FloatCContainer normalize() {
 
-		if (!bHashMapsInitialized)
+		if (!bHashMapsInitialized) {
 			setUpMapping(alContainer);
+		}
 
 		float[] fArNormalized = new float[alContainer.size()];
 
@@ -81,27 +82,29 @@ public class NominalCContainer<T>
 	 * @return the string associated with the discrete value, or null if no such value exists
 	 */
 	public T getNominalForDiscreteValue(Float fDiscrete) {
-		if (!bHashMapsInitialized)
+		if (!bHashMapsInitialized) {
 			setUpMapping(alContainer);
+		}
 		return hashDiscreteToNominal.get(fDiscrete);
 	}
 
 	/**
-	 * When providing a nominal value that is in the initially provided list, the assoziated normalized value is
-	 * returned
+	 * When providing a nominal value that is in the initially provided list, the assoziated normalized value
+	 * is returned
 	 * 
 	 * @param sNominal
 	 * @return
 	 */
 	public Float getDiscreteForNominalValue(T tNominal) {
-		if (!bHashMapsInitialized)
+		if (!bHashMapsInitialized) {
 			setUpMapping(alContainer);
+		}
 		return hashNominalToDiscrete.get(tNominal);
 	}
 
 	/**
-	 * Initialize the mapping of nominal to discrete values. Call it either with the member sAlStorage, or with
-	 * a list provided externally
+	 * Initialize the mapping of nominal to discrete values. Call it either with the member sAlStorage, or
+	 * with a list provided externally
 	 * 
 	 * @param sAlStorage
 	 */
@@ -142,11 +145,13 @@ public class NominalCContainer<T>
 
 		for (T tContent : alContainer) {
 			fTemp = hashTypeToCounter.get(tContent);
-			if (fTemp == null)
+			if (fTemp == null) {
 				fTemp = new Float(0);
+			}
 			++fTemp;
-			if (fTemp > fMax)
+			if (fTemp > fMax) {
 				fMax = fTemp;
+			}
 			hashTypeToCounter.put(tContent, fTemp);
 		}
 

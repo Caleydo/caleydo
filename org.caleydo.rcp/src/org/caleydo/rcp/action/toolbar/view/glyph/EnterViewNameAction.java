@@ -34,15 +34,15 @@ public class EnterViewNameAction
 
 		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			if (view instanceof GLGlyph) {
-				if (view.getID() == iViewID)
+				if (view.getID() == iViewID) {
 					glyphview = (GLGlyph) view;
+				}
 			}
 		}
 
-		if (glyphview == null) {
+		if (glyphview == null)
 			throw new IllegalStateException(
 				"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
-		}
 
 		String oldname = glyphview.getPersonalName();
 
@@ -50,8 +50,9 @@ public class EnterViewNameAction
 		TextInputDialog dialog = new TextInputDialog(shell, oldname);
 		String newname = dialog.open();
 
-		if (newname != null)
+		if (newname != null) {
 			triggerCmdExternalObjectSetter(newname, EExternalObjectSetterType.GLYPH_CHANGEPERSONALNAME);
+		}
 
 	};
 }

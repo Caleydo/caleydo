@@ -18,7 +18,7 @@ public interface ICollection {
 	 * Sets the label for this item.
 	 * 
 	 * @param setLabel
-	 *          label text
+	 *            label text
 	 */
 	public void setLabel(final String setLabel);
 
@@ -26,7 +26,7 @@ public interface ICollection {
 	 * Deletes the virtual arrays associated with the unique id
 	 * 
 	 * @param iUniqueID
-	 *          the unique ID associated with the virtual array
+	 *            the unique ID associated with the virtual array
 	 */
 	public void removeVirtualArray(int iUniqueID);
 
@@ -34,7 +34,7 @@ public interface ICollection {
 	 * Resets the virtual arrays to the original values
 	 * 
 	 * @param iUniqueID
-	 *          the unique ID associated with the virtual array
+	 *            the unique ID associated with the virtual array
 	 */
 	public void resetVirtualArray(int iUniqueID);
 }

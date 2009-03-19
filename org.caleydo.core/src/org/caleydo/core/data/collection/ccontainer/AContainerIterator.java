@@ -32,7 +32,8 @@ public class AContainerIterator
 		if (virtualArray == null)
 			throw new IllegalStateException(
 				"Remove is only defined if a virtual array is enabled, which is currently not the case");
-		else
+		else {
 			vaIterator.remove();
+		}
 	}
 }

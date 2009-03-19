@@ -98,7 +98,8 @@ public class PartListener
 			if (viewPart instanceof AGLViewPart) {
 				IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 				AGLEventListener glEventListener =
-					viewGLCanvasManager.getGLEventListener(((AGLViewPart) viewPart).getGLEventListener().getID());
+					viewGLCanvasManager.getGLEventListener(((AGLViewPart) viewPart).getGLEventListener()
+						.getID());
 
 				if (glEventListener instanceof GLRemoteRendering) {
 					AGLEventListener glSubEventListener;
@@ -107,7 +108,8 @@ public class PartListener
 
 					// Add toolbars of remote rendered views to remote view
 					// toolbar
-					for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glEventListener).getRemoteRenderedViews()) {
+					for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glEventListener)
+						.getRemoteRenderedViews()) {
 						glSubEventListener = viewGLCanvasManager.getGLEventListener(iRemoteRenderedGLViewID);
 						toolBarManager.add(new Separator());
 						createViewSpecificToolbar(glSubEventListener, toolBarManager);
@@ -164,8 +166,10 @@ public class PartListener
 	public void partActivated(IWorkbenchPartReference partRef) {
 
 		IWorkbenchPart activePart = partRef.getPart(false);
-		if (activePart instanceof CaleydoViewPart && !(activePart instanceof HTMLBrowserView))
-			GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(((CaleydoViewPart)activePart).getSWTComposite());
+		if (activePart instanceof CaleydoViewPart && !(activePart instanceof HTMLBrowserView)) {
+			GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(
+				((CaleydoViewPart) activePart).getSWTComposite());
+		}
 
 	}
 

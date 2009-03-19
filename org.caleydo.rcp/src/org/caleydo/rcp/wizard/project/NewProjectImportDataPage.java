@@ -47,10 +47,12 @@ public class NewProjectImportDataPage
 		Composite topLevel = new Composite(parent, SWT.NONE);
 		topLevel.setLayout(new FillLayout());
 
-		if (sInputFile != null)
+		if (sInputFile != null) {
 			fileLoadDataAction = new FileLoadDataAction(topLevel, sInputFile);
-		else
+		}
+		else {
 			fileLoadDataAction = new FileLoadDataAction(topLevel);
+		}
 
 		fileLoadDataAction.run();
 

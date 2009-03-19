@@ -61,8 +61,9 @@ public class SetExporter {
 				IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 				Integer iRefseqMrnaInt =
 					iDMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
-				if (iRefseqMrnaInt == null)
+				if (iRefseqMrnaInt == null) {
 					continue;
+				}
 
 				String sRefseqMrna =
 					iDMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefseqMrnaInt);

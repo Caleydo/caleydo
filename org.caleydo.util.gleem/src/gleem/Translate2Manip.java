@@ -65,9 +65,9 @@ public class Translate2Manip
 	}
 
 	/**
-	 * Set the translation of this Translate2Manip. This moves its on-screen representation. Manipulations cause
-	 * the translation to be modified, not overwritten, so if you want the default Translate2Manip to go through
-	 * the point (0, 1, 0) but still translate in the X-Z plane, then setTranslation(0, 1, 0).
+	 * Set the translation of this Translate2Manip. This moves its on-screen representation. Manipulations
+	 * cause the translation to be modified, not overwritten, so if you want the default Translate2Manip to go
+	 * through the point (0, 1, 0) but still translate in the X-Z plane, then setTranslation(0, 1, 0).
 	 */
 	public void setTranslation(Vec3f translation) {
 		this.translation.set(translation);
@@ -82,8 +82,8 @@ public class Translate2Manip
 	}
 
 	/**
-	 * Set the normal of this Translate2Manip. The manip moves in the plane containing its current position and
-	 * perpendicular to this normal. Does not need to be normalized, but must not be the zero vector.
+	 * Set the normal of this Translate2Manip. The manip moves in the plane containing its current position
+	 * and perpendicular to this normal. Does not need to be normalized, but must not be the zero vector.
 	 */
 	public void setNormal(Vec3f normal) {
 		this.normal.set(normal);
@@ -120,9 +120,8 @@ public class Translate2Manip
 	}
 
 	public void highlight(HitPoint hit) {
-		if (hit.manipPart != parts) {
+		if (hit.manipPart != parts)
 			throw new RuntimeException("My old geometry disappeared; how did this happen?");
-		}
 		parts.highlight();
 	}
 
@@ -141,10 +140,9 @@ public class Translate2Manip
 		// Algorithm: Find intersection of ray with dragPlane. Add
 		// dragOffset to this point to get new translation.
 		IntersectionPoint intPt = new IntersectionPoint();
-		if (dragPlane.intersectRay(rayStart, rayDirection, intPt) == false) {
+		if (dragPlane.intersectRay(rayStart, rayDirection, intPt) == false)
 			// Ray is parallel to plane. Punt.
 			return;
-		}
 		translation.set(intPt.getIntersectionPoint());
 		translation.add(dragOffset);
 		recalc();

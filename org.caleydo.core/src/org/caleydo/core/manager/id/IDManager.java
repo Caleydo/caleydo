@@ -27,18 +27,19 @@ public class IDManager {
 	}
 
 	/**
-	 * Creates a new ID based on the object type. The type prefix defined in EManagedObjectType is reflected in
-	 * the last two digits of the number
+	 * Creates a new ID based on the object type. The type prefix defined in EManagedObjectType is reflected
+	 * in the last two digits of the number
 	 * 
 	 * @param type
-	 *          the type of object
+	 *            the type of object
 	 * @return the id
 	 */
 	public int createID(EManagedObjectType type) {
 		Integer iCount = hashObjectTypeToCounter.get(type);
 
-		if (iCount == null)
+		if (iCount == null) {
 			iCount = new Integer(0);
+		}
 
 		hashObjectTypeToCounter.put(type, ++iCount);
 		return calculateID(type, iCount);
@@ -67,27 +68,25 @@ public class IDManager {
 	 * Returns an internal id which is mapped to an external id, when such a mapping exists.
 	 * 
 	 * @param iExternalID
-	 *          the external id
+	 *            the external id
 	 * @return the internal id
 	 * @throws IllegalArgumentException
-	 *           if now mapping exists
+	 *             if now mapping exists
 	 */
 	public int getInternalFromExternalID(int iExternalID)
 
 	{
-		if (!hashExternalToInternalID.containsKey(iExternalID)) {
+		if (!hashExternalToInternalID.containsKey(iExternalID))
 			throw new IllegalArgumentException("Given external ID " + iExternalID
 				+ " does not map to any internal ID.");
-		}
 
 		return hashExternalToInternalID.get(iExternalID);
 	}
 
 	public int getExternalFromInternalID(int iInternalID) {
-		if (!hashInternalToExternalID.containsKey(iInternalID)) {
+		if (!hashInternalToExternalID.containsKey(iInternalID))
 			throw new IllegalArgumentException("Given internal ID " + iInternalID
 				+ " does not map to an external ID.");
-		}
 
 		return hashInternalToExternalID.get(iInternalID);
 	}
@@ -96,9 +95,9 @@ public class IDManager {
 	 * Calculates the ID, based on type and a counter
 	 * 
 	 * @param type
-	 *          the type
+	 *            the type
 	 * @param iCount
-	 *          the counter
+	 *            the counter
 	 * @return the ID
 	 */
 	private int calculateID(EManagedObjectType type, int iCount) {

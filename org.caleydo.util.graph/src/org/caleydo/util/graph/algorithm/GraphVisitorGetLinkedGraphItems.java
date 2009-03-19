@@ -64,9 +64,8 @@ public class GraphVisitorGetLinkedGraphItems
 	@Override
 	public List<IGraphItem> getSearchResult() {
 
-		if (this.iSearchDepth == 1) {
+		if (this.iSearchDepth == 1)
 			return getSearchResultFromGraphItem(this.itemSource);
-		}
 
 		assert false : "not implemented yet";
 

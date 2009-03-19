@@ -18,7 +18,7 @@ public class VAIterator
 	 * Constructor
 	 * 
 	 * @param virtualArray
-	 *          the virtual array on which the iterator is executed
+	 *            the virtual array on which the iterator is executed
 	 */
 	public VAIterator(VirtualArray virtualArray) {
 		this.virtualArray = virtualArray;
@@ -73,18 +73,22 @@ public class VAIterator
 
 	@Override
 	public void remove() {
-		if (bLastMoveOperationWasPrevious)
+		if (bLastMoveOperationWasPrevious) {
 			virtualArray.remove(iCount);
-		else
+		}
+		else {
 			virtualArray.remove(--iCount);
+		}
 	}
 
 	@Override
 	public void set(Integer iNewElement) {
-		if (bLastMoveOperationWasPrevious)
+		if (bLastMoveOperationWasPrevious) {
 			virtualArray.set(iCount, iNewElement);
-		else
+		}
+		else {
 			virtualArray.set(iCount - 1, iNewElement);
+		}
 
 	}
 

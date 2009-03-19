@@ -61,8 +61,9 @@ public class KeggPathwayCacher
 
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
 		RegExpFilterRule regExpFilterRule =
-			new RegExpJobFilter.RegExpFilterRule(".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html"
-				+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*Fig.*");
+			new RegExpJobFilter.RegExpFilterRule(
+				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html"
+					+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*Fig.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
@@ -94,8 +95,9 @@ public class KeggPathwayCacher
 
 		// triggerPathwayListGeneration();
 
-		if (triggeringCommand != null)
+		if (triggeringCommand != null) {
 			triggeringCommand.setFinishedKeggCacher();
+		}
 	}
 
 	@Override

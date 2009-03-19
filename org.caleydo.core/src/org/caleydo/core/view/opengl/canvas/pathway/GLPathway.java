@@ -125,8 +125,9 @@ public class GLPathway
 
 	public synchronized void setPathwayID(final int iPathwayID) {
 		// Unregister former pathway in visibility list
-		if (iPathwayID != -1)
+		if (iPathwayID != -1) {
 			generalManager.getPathwayManager().setPathwayVisibilityStateByID(this.iPathwayID, false);
+		}
 
 		this.iPathwayID = iPathwayID;
 	}
@@ -242,7 +243,8 @@ public class GLPathway
 		if (bEnablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, iPathwayId, fPathwayTransparency, false);
+			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, iPathwayId, fPathwayTransparency,
+				false);
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathwayManager.getItem(iPathwayId).getHeight();
@@ -301,17 +303,19 @@ public class GLPathway
 		int iPathwayHeight = generalManager.getPathwayManager().getItem(iPathwayID).getHeight();
 		for (SelectionDeltaItem item : resolvedDelta) {
 			if (item.getSelectionType() != ESelectionType.MOUSE_OVER
-				&& item.getSelectionType() != ESelectionType.SELECTION)
+				&& item.getSelectionType() != ESelectionType.SELECTION) {
 				continue;
+			}
 
 			PathwayVertexGraphItemRep vertexRep =
-				(PathwayVertexGraphItemRep) generalManager.getPathwayItemManager().getItem(item.getPrimaryID());
+				(PathwayVertexGraphItemRep) generalManager.getPathwayItemManager().getItem(
+					item.getPrimaryID());
 
 			SelectedElementRep elementRep =
 				new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vertexRep.getXOrigin()
 					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
-					(iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
-						+ vecTranslation.y(), 0);
+					(iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y
+						* vecScaling.y() + vecTranslation.y(), 0);
 
 			for (Integer iConnectionID : item.getConnectionID()) {
 				connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
@@ -328,10 +332,12 @@ public class GLPathway
 				generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
 					pathwayVertexGraphItem.getId());
 
-			if (iDavidID == -1)
+			if (iDavidID == -1) {
 				continue;
+			}
 
-			Set<Integer> iSetRefSeq = idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+			Set<Integer> iSetRefSeq =
+				idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 			if (iSetRefSeq == null) {
 				generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
@@ -373,7 +379,8 @@ public class GLPathway
 
 		for (SelectionDeltaItem item : selectionDelta) {
 			for (int iRefSeqID : getRefSeqIDsFromPathwayVertexGraphItemRep(item.getPrimaryID())) {
-				newSelectionDelta.addSelection((Integer) iRefSeqID, item.getSelectionType(), item.getPrimaryID());
+				newSelectionDelta.addSelection((Integer) iRefSeqID, item.getSelectionType(), item
+					.getPrimaryID());
 
 				for (Integer iConnectionID : item.getConnectionID()) {
 					newSelectionDelta.addConnectionID((Integer) iRefSeqID, iConnectionID);
@@ -385,7 +392,8 @@ public class GLPathway
 	}
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.REFSEQ_MRNA_INT);
+		ISelectionDelta newSelectionDelta =
+			new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.REFSEQ_MRNA_INT);
 
 		int iRefSeqID = 0;
 		Integer iDavidID = 0;
@@ -412,11 +420,13 @@ public class GLPathway
 			// Convert DAVID ID to pathway graph item representation ID
 			for (IGraphItem tmpGraphItemRep : generalManager.getPathwayItemManager().getItem(
 				iPathwayVertexGraphItemID).getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-				if (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
+				if (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep)) {
 					continue;
+				}
 
 				SelectionDeltaItem newItem =
-					newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item.getSelectionType(), iDavidID);
+					newSelectionDelta
+						.addSelection(tmpGraphItemRep.getId(), item.getSelectionType(), iDavidID);
 				for (int iConnectionID : item.getConnectionID()) {
 					newItem.setConnectionID(iConnectionID);
 				}
@@ -446,8 +456,8 @@ public class GLPathway
 		float fPathwayScalingFactor = 0;
 		float fPadding = 0.98f;
 
-		if (generalManager.getPathwayManager().getItem(iPathwayId).getType()
-			.equals(EPathwayDatabaseType.BIOCARTA)) {
+		if (generalManager.getPathwayManager().getItem(iPathwayId).getType().equals(
+			EPathwayDatabaseType.BIOCARTA)) {
 			fPathwayScalingFactor = 5;
 		}
 		else {
@@ -477,9 +487,9 @@ public class GLPathway
 			vecScaling.setY(vecScaling.x());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-				* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
-				(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y
-					* vecScaling.y()) / 2.0f, 0);
+				* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum.getTop()
+				- viewFrustum.getBottom() - iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y
+				* vecScaling.y()) / 2.0f, 0);
 		}
 		else if (fTmpPathwayHeight > viewFrustum.getTop() - viewFrustum.getBottom()) {
 			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom())
@@ -487,15 +497,16 @@ public class GLPathway
 			vecScaling.setX(vecScaling.y());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-				* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
-				(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y
-					* vecScaling.y()) / 2.0f, 0);
+				* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum.getTop()
+				- viewFrustum.getBottom() - iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y
+				* vecScaling.y()) / 2.0f, 0);
 		}
 		else {
 			vecScaling.set(fPathwayScalingFactor, fPathwayScalingFactor, 1f);
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - fTmpPathwayWidth / 2.0f,
-				(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - fTmpPathwayHeight / 2.0f, 0);
+			vecTranslation
+				.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - fTmpPathwayWidth / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - fTmpPathwayHeight / 2.0f, 0);
 		}
 	}
 
@@ -532,7 +543,8 @@ public class GLPathway
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
@@ -576,12 +588,13 @@ public class GLPathway
 						// Load embedded pathway
 						if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
 							int iPathwayID =
-								generalManager.getPathwayManager().searchPathwayIdByName(tmpVertexGraphItemRep.getName(),
-									EPathwayDatabaseType.KEGG);
+								generalManager.getPathwayManager().searchPathwayIdByName(
+									tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG);
 
 							if (iPathwayID != -1) {
 								IDListEventContainer<Integer> idListEventContainer =
-									new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
+									new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID,
+										EIDType.PATHWAY);
 								idListEventContainer.addID(iPathwayID);
 
 								triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
@@ -590,7 +603,8 @@ public class GLPathway
 						else {
 							// Load pathways based on a david ID
 							IDListEventContainer<Integer> idListEventContainer =
-								new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
+								new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_GENE,
+									EIDType.REFSEQ_MRNA_INT);
 							ArrayList<Integer> alRefSeqID =
 								getRefSeqIDsFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
 							idListEventContainer.setIDs(alRefSeqID);
@@ -626,7 +640,8 @@ public class GLPathway
 				createConnectionLines(eSelectionType, iConnectionID);
 
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+					EIDType.REFSEQ_MRNA_INT,
+					new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
 					selectionDelta));
@@ -642,14 +657,15 @@ public class GLPathway
 		int iPathwayHeight = generalManager.getPathwayManager().getItem(iPathwayID).getHeight();
 
 		for (int iVertexRepID : selectionManager.getElements(eSelectionType)) {
-			tmpPathwayVertexGraphItemRep = generalManager.getPathwayItemManager().getPathwayVertexRep(iVertexRepID);
+			tmpPathwayVertexGraphItemRep =
+				generalManager.getPathwayItemManager().getPathwayVertexRep(iVertexRepID);
 
 			SelectedElementRep elementRep =
 				new SelectedElementRep(EIDType.EXPRESSION_INDEX, this.getID(), tmpPathwayVertexGraphItemRep
 					.getXOrigin()
 					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
-					(iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y
-						* vecScaling.y() + vecTranslation.y(), 0);
+					(iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin())
+						* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y() + vecTranslation.y(), 0);
 
 			// for (Integer iConnectionID : selectionManager
 			// .getConnectionForElementID(iVertexRepID))
@@ -690,10 +706,12 @@ public class GLPathway
 					continue;
 				}
 
-				Set<Integer> iSetRefSeq = idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+				Set<Integer> iSetRefSeq =
+					idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 				if (iSetRefSeq == null) {
-					generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
+					generalManager.getLogger()
+						.log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
 					continue;
 				}
 
@@ -818,14 +836,17 @@ public class GLPathway
 					case DAVID:
 					case REFSEQ_MRNA_INT:
 					case EXPRESSION_INDEX:
-						selectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
+						selectionManager.executeSelectionCommands(commandEventContainer
+							.getSelectionCommands());
 						break;
 				}
 				break;
 			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer = (ViewCommandEventContainer) eventContainer;
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW)
+				ViewCommandEventContainer viewCommandEventContainer =
+					(ViewCommandEventContainer) eventContainer;
+				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
 					setDisplayListDirty();
+				}
 				break;
 		}
 	}

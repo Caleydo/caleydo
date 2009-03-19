@@ -14,7 +14,8 @@ public class ApplicationWorkbenchAdvisor
 
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-		PlatformUI.getPreferenceStore().setValue(IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
+		PlatformUI.getPreferenceStore()
+			.setValue(IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
 
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
@@ -42,7 +43,8 @@ public class ApplicationWorkbenchAdvisor
 		}
 
 		// Filter preference pages
-		PreferenceManager preferenceManager = this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
+		PreferenceManager preferenceManager =
+			this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
 		preferenceManager.remove("org.eclipse.ui.preferencePages.Workbench");
 		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
 		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");

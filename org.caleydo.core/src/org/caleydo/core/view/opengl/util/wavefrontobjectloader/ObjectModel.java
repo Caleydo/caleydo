@@ -90,8 +90,9 @@ public class ObjectModel {
 
 		// create ObjectGroup Objects
 		for (String name : lineparts)
-			if (!groups.containsKey(name))
+			if (!groups.containsKey(name)) {
 				groups.put(name, new ObjectGroup(this, name));
+			}
 
 	}
 
@@ -104,9 +105,10 @@ public class ObjectModel {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "v");
 
 		Vec3f temp = new Vec3f();
-		if (lineparts.size() == 3)
-			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float.valueOf(lineparts
-				.get(2)));
+		if (lineparts.size() == 3) {
+			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float
+				.valueOf(lineparts.get(2)));
+		}
 
 		verticesGeometric.add(temp);
 	}
@@ -120,9 +122,10 @@ public class ObjectModel {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "vn");
 
 		Vec3f temp = new Vec3f();
-		if (lineparts.size() == 3)
-			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float.valueOf(lineparts
-				.get(2)));
+		if (lineparts.size() == 3) {
+			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float
+				.valueOf(lineparts.get(2)));
+		}
 
 		verticesNormal.add(temp);
 	}
@@ -136,9 +139,10 @@ public class ObjectModel {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "vt");
 
 		Vec3f temp = new Vec3f();
-		if (lineparts.size() == 3)
-			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float.valueOf(lineparts
-				.get(2)));
+		if (lineparts.size() == 3) {
+			temp.set(Float.valueOf(lineparts.get(0)), Float.valueOf(lineparts.get(1)), Float
+				.valueOf(lineparts.get(2)));
+		}
 
 		verticesTexture.add(temp);
 	}
@@ -157,8 +161,9 @@ public class ObjectModel {
 			String[] tokenparts = token.split("/");
 
 			// invalid face - ignore
-			if (tokenparts.length == 0)
+			if (tokenparts.length == 0) {
 				continue;
+			}
 
 			// int numSeperators = tokenparts.length;
 
@@ -172,10 +177,12 @@ public class ObjectModel {
 		}
 
 		for (String name : addFacedToGroups)
-			if (groups.containsKey(name))
+			if (groups.containsKey(name)) {
 				groups.get(name).addFace(indices);
-			else
+			}
+			else {
 				System.err.println("could not add face to group " + name);
+			}
 
 	}
 
@@ -187,14 +194,16 @@ public class ObjectModel {
 
 		int startat = 0;
 		if (lineparts.length > 1)
-			if (lineparts[0].equals(cmd))
+			if (lineparts[0].equals(cmd)) {
 				startat = 1;
+			}
 
 		ArrayList<String> temp = new ArrayList<String>();
 
 		for (int i = startat; i < lineparts.length; ++i)
-			if (!lineparts[i].equals(""))
+			if (!lineparts[i].equals("")) {
 				temp.add(lineparts[i]);
+			}
 
 		return temp;
 	}
@@ -207,18 +216,22 @@ public class ObjectModel {
 
 		for (Vec3f vertex : verticesGeometric) {
 			for (int i = 0; i < 3; ++i)
-				if (largest < vertex.get(0))
+				if (largest < vertex.get(0)) {
 					largest = vertex.get(0);
+				}
 		}
 
 		float scaleFactor = 1.0f;
 
-		if (largest != 0)
+		if (largest != 0) {
 			scaleFactor = 1.0f / largest;
+		}
 
-		for (Vec3f vertex : verticesGeometric)
-			for (int i = 0; i < 3; ++i)
+		for (Vec3f vertex : verticesGeometric) {
+			for (int i = 0; i < 3; ++i) {
 				vertex.set(i, vertex.get(i) * scaleFactor);
+			}
+		}
 
 	}
 
@@ -238,8 +251,8 @@ public class ObjectModel {
 	}
 
 	/**
-	 * This draws only a part (g command) of a object file. If the group Name is not present in the object file,
-	 * nothing happens. The object is normalized inside a 1x1x1 cube.
+	 * This draws only a part (g command) of a object file. If the group Name is not present in the object
+	 * file, nothing happens. The object is normalized inside a 1x1x1 cube.
 	 * 
 	 * @param gl
 	 * @param name

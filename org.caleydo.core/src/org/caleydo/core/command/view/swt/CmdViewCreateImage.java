@@ -35,7 +35,8 @@ public class CmdViewCreateImage
 		}
 
 		ImageViewRep imageView =
-			(ImageViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_IMAGE, iParentContainerId, sLabel);
+			(ImageViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_IMAGE, iParentContainerId,
+				sLabel);
 
 		viewManager.registerItem(imageView);
 
@@ -54,9 +55,9 @@ public class CmdViewCreateImage
 	public void setParameterHandler(final IParameterHandler parameterHandler) {
 		super.setParameterHandler(parameterHandler);
 
-		parameterHandler
-			.setValueAndTypeAndDefault("sImagePath", parameterHandler.getValueString(ECommandType.TAG_DETAIL
-				.getXmlKey()), IParameterHandler.ParameterHandlerType.STRING, "");
+		parameterHandler.setValueAndTypeAndDefault("sImagePath", parameterHandler
+			.getValueString(ECommandType.TAG_DETAIL.getXmlKey()),
+			IParameterHandler.ParameterHandlerType.STRING, "");
 
 		sImagePath = parameterHandler.getValueString("sImagePath");
 	}

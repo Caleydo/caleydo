@@ -14,7 +14,9 @@ import java.util.List;
  */
 public enum EGraphItemHierarchy {
 
-	GRAPH_PARENT, GRAPH_CHILDREN, GRAPH_NEIGHBOUR,
+	GRAPH_PARENT,
+	GRAPH_CHILDREN,
+	GRAPH_NEIGHBOUR,
 
 	GRAPH_ALIAS,
 	// GRAPH_DATA,

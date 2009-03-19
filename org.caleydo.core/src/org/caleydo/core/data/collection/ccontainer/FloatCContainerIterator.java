@@ -37,9 +37,8 @@ public class FloatCContainerIterator
 	 * @return the next element
 	 */
 	public float next() {
-		if (virtualArray != null) {
+		if (virtualArray != null)
 			return floatCContainer.get(vaIterator.next());
-		}
 		else {
 			try {
 				return floatCContainer.get(++iIndex);

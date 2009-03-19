@@ -37,8 +37,8 @@ public class InformationContentCreator {
 	}
 
 	/**
-	 * Returns an AL of Strings when you pass it an ID and a data type The list is in such order that the first
-	 * element is suitable for a title
+	 * Returns an AL of Strings when you pass it an ID and a data type The list is in such order that the
+	 * first element is suitable for a title
 	 * 
 	 * @param iUniqueID
 	 * @param eInputDataTypes
@@ -55,15 +55,20 @@ public class InformationContentCreator {
 				String sGeneSymbol = "unknown";
 
 				if (iUniqueID != -1) {
-					sRefSeq = generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA, iUniqueID);
-					sGeneName = generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
+					sRefSeq =
+						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA,
+							iUniqueID);
+					sGeneName =
+						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
 					sGeneSymbol =
-						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL, iUniqueID);
+						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
+							iUniqueID);
 				}
 
 				// Cut too long gene names
-				if (sGeneName.length() >= 50)
+				if (sGeneName.length() >= 50) {
 					sGeneName = sGeneName.substring(0, 50) + "...";
+				}
 
 				sContent.add("Type: Gene");
 				sContent.add("RefSeq: " + sRefSeq);

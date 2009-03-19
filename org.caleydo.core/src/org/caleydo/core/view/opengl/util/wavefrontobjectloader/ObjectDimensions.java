@@ -37,24 +37,30 @@ public class ObjectDimensions {
 	}
 
 	public void updateX(float f) {
-		if (xLowest > f)
+		if (xLowest > f) {
 			xLowest = f;
-		if (xHighest < f)
+		}
+		if (xHighest < f) {
 			xHighest = f;
+		}
 	}
 
 	public void updateY(float f) {
-		if (yLowest > f)
+		if (yLowest > f) {
 			yLowest = f;
-		if (yHighest < f)
+		}
+		if (yHighest < f) {
 			yHighest = f;
+		}
 	}
 
 	public void updateZ(float f) {
-		if (zLowest > f)
+		if (zLowest > f) {
 			zLowest = f;
-		if (zHighest < f)
+		}
+		if (zHighest < f) {
 			zHighest = f;
+		}
 	}
 
 	public float getLowestX(boolean scaled) {

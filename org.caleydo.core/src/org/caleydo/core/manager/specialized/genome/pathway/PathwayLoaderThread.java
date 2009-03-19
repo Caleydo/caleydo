@@ -54,8 +54,9 @@ public class PathwayLoaderThread
 		// Turn on busy mode
 		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 			.getAllGLEventListeners()) {
-			if (!tmpGLEventListener.isRenderedRemote())
+			if (!tmpGLEventListener.isRenderedRemote()) {
 				tmpGLEventListener.enableBusyMode(true);
+			}
 		}
 
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
@@ -66,8 +67,9 @@ public class PathwayLoaderThread
 		// Turn off busy mode
 		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 			.getAllGLEventListeners()) {
-			if (!tmpGLEventListener.isRenderedRemote())
+			if (!tmpGLEventListener.isRenderedRemote()) {
 				tmpGLEventListener.enableBusyMode(false);
+			}
 		}
 
 		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
@@ -80,7 +82,8 @@ public class PathwayLoaderThread
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
-		generalManager.getLogger().log(Level.INFO, "Start parsing " + pathwayDatabase.getName() + " pathways.");
+		generalManager.getLogger().log(Level.INFO,
+			"Start parsing " + pathwayDatabase.getName() + " pathways.");
 
 		BufferedReader file = null;
 		String sLine = null;
@@ -92,13 +95,15 @@ public class PathwayLoaderThread
 			sFileName = IGeneralManager.CALEYDO_HOME_PATH + PATHWAY_LIST_KEGG;
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG;
 
-			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
+			generalManager.getSWTGUIManager()
+				.setProgressBarTextFromExternalThread("Loading KEGG Pathways...");
 		}
 		else if (pathwayDatabase.getName().equals("BioCarta")) {
 			sFileName = IGeneralManager.CALEYDO_HOME_PATH + PATHWAY_LIST_BIOCARTA;
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_BIOCARTA;
 
-			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread("Loading BioCarta Pathways...");
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
+				"Loading BioCarta Pathways...");
 		}
 
 		int iPathwayIndex = 0;
@@ -114,12 +119,14 @@ public class PathwayLoaderThread
 				sPathwayName = tokenizer.nextToken();
 
 				// Skip non pathway files
-				if (!sPathwayName.endsWith(".xml") && !sLine.contains("h_"))
+				if (!sPathwayName.endsWith(".xml") && !sLine.contains("h_")) {
 					continue;
+				}
 
 				generalManager.getXmlParserManager().parseXmlFileByName(sPathwayPath + sPathwayName);
 
-				tmpPathwayGraph = ((PathwayManager) generalManager.getPathwayManager()).getCurrenPathwayGraph();
+				tmpPathwayGraph =
+					((PathwayManager) generalManager.getPathwayManager()).getCurrenPathwayGraph();
 				tmpPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
 				tmpPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken()).intValue());
 
@@ -153,7 +160,7 @@ public class PathwayLoaderThread
 		// tmpGLRemoteRendering3D.enableBusyMode(false);
 		// }
 
-		generalManager.getLogger()
-			.log(Level.INFO, "Finished parsing " + pathwayDatabase.getName() + " pathways.");
+		generalManager.getLogger().log(Level.INFO,
+			"Finished parsing " + pathwayDatabase.getName() + " pathways.");
 	}
 }

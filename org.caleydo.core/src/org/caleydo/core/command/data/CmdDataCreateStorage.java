@@ -49,10 +49,12 @@ public class CmdDataCreateStorage
 		super.setParameterHandler(parameterHandler);
 
 		if (sAttribute1.length() > 0) {
-			if (sAttribute1.equalsIgnoreCase("NOMINAL"))
+			if (sAttribute1.equalsIgnoreCase("NOMINAL")) {
 				storageType = EManagedObjectType.STORAGE_NOMINAL;
-			else if (sAttribute1.equalsIgnoreCase("NUMERICAL"))
+			}
+			else if (sAttribute1.equalsIgnoreCase("NUMERICAL")) {
 				storageType = EManagedObjectType.STORAGE_NUMERICAL;
+			}
 			else
 				throw new IllegalArgumentException(
 					"attrib1 of CREATE_STORAGE must be either NUMERICAL or NOMINAL, but was neither");

@@ -124,7 +124,8 @@ public class CmdLoadFileLookupTable
 				bCreateReverseMap = true;
 			}
 			else if (sLookupTableOptions.equals("LUT")) {
-				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes, IGeneralManager.sDelimiter_Parser_DataItems);
+				tokenizer =
+					new StringTokenizer(sCodeResolvingLUTTypes, IGeneralManager.sDelimiter_Parser_DataItems);
 
 				sCodeResolvingLUTMappingType = tokenizer.nextToken();
 
@@ -153,7 +154,8 @@ public class CmdLoadFileLookupTable
 
 		int iIndex = 0;
 		if (sFileName.equals("generate")) {
-			genomeIdManager.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT, EMappingDataType.INT2STRING);
+			genomeIdManager
+				.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT, EMappingDataType.INT2STRING);
 			Map hashTmp = genomeIdManager.getMapping(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
 			for (Object sRefSeqID : genomeIdManager.getMapping(EMappingType.DAVID_2_REFSEQ_MRNA).values()) {
 				hashTmp.put(sRefSeqID, iIndex++);
@@ -167,7 +169,8 @@ public class CmdLoadFileLookupTable
 		}
 
 		if (bResolveCodeMappingUsingCodeToId_LUT) {
-			genomeIdManager.createCodeResolvedMap(mappingType, EMappingType.valueOf(sCodeResolvingLUTMappingType));
+			genomeIdManager.createCodeResolvedMap(mappingType, EMappingType
+				.valueOf(sCodeResolvingLUTMappingType));
 		}
 
 		/* --- create reverse Map ... --- */

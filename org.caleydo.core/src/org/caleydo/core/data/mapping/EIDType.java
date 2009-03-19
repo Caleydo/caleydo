@@ -3,15 +3,13 @@ package org.caleydo.core.data.mapping;
 import org.caleydo.core.data.collection.EStorageType;
 
 /**
- * Enum that defines all genome data types that could possibly be loaded to the
- * system.
+ * Enum that defines all genome data types that could possibly be loaded to the system.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
  */
-public enum EIDType
-{
+public enum EIDType {
 
 	GENE_NAME(EStorageType.STRING, "gene-name", "gene pseudo name"),
 	GENE_SYMBOL(EStorageType.STRING, "gene-symbol", "gene pseudo symbol"),
@@ -49,8 +47,7 @@ public enum EIDType
 	 * @param sName
 	 * @param sDesciption
 	 */
-	private EIDType(final EStorageType storageType, final String sName, final String sDesciption)
-	{
+	private EIDType(final EStorageType storageType, final String sName, final String sDesciption) {
 
 		this.sName = sName;
 		this.sDescription = sDesciption;
@@ -60,8 +57,7 @@ public enum EIDType
 	/**
 	 * @return the entities description.
 	 */
-	public String getDescription()
-	{
+	public String getDescription() {
 
 		return sDescription;
 	}
@@ -71,8 +67,7 @@ public enum EIDType
 	 * 
 	 * @return type of storage needed
 	 */
-	public EStorageType getStorageType()
-	{
+	public EStorageType getStorageType() {
 
 		return storageType;
 	}
@@ -80,8 +75,7 @@ public enum EIDType
 	/**
 	 * @return the entities name
 	 */
-	public String getName()
-	{
+	public String getName() {
 
 		return sName;
 	}

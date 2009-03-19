@@ -21,7 +21,7 @@ public class IntCContainer
 	 * Constructor Pass an int array. The length of the array can not be modified after initialization
 	 * 
 	 * @param iArContainer
-	 *          the int array
+	 *            the int array
 	 */
 	public IntCContainer(int[] iArContainer) {
 		this.iArContainer = iArContainer;
@@ -37,9 +37,9 @@ public class IntCContainer
 	 * Returns the value associated with the index at the variable
 	 * 
 	 * @throws IndexOutOfBoundsException
-	 *           if index is out of specified range
+	 *             if index is out of specified range
 	 * @param iIndex
-	 *          the index of the variable
+	 *            the index of the variable
 	 * @return the variable associated with the index
 	 */
 	public int get(int iIndex) {
@@ -48,16 +48,18 @@ public class IntCContainer
 
 	@Override
 	public double getMin() {
-		if (Integer.MAX_VALUE == iMin)
+		if (Integer.MAX_VALUE == iMin) {
 			calculateMinMax();
+		}
 		return iMin;
 	}
 
 	@Override
 	public double getMax() {
 
-		if (Integer.MIN_VALUE == iMax)
+		if (Integer.MIN_VALUE == iMax) {
 			calculateMinMax();
+		}
 		return iMax;
 	}
 
@@ -75,7 +77,7 @@ public class IntCContainer
 	 * Iterator which takes a virtual array into account
 	 * 
 	 * @param virtualArray
-	 *          the virtual array
+	 *            the virtual array
 	 * @return the iterator
 	 */
 	public IntCContainerIterator iterator(IVirtualArray virtualArray) {
@@ -84,10 +86,9 @@ public class IntCContainer
 
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax) {
-		if (dMin > getMin() || dMax < getMax()) {
+		if (dMin > getMin() || dMax < getMax())
 			throw new IllegalArgumentException("Provided external values are more "
 				+ "limiting than calculated ones");
-		}
 		return normalize((int) dMin, (int) dMax);
 	}
 
@@ -103,7 +104,7 @@ public class IntCContainer
 	 * @param iMax
 	 * @return
 	 * @throws IllegalAttributeException
-	 *           when iMin is >= iMax
+	 *             when iMin is >= iMax
 	 */
 	private FloatCContainer normalize(int iMin, int iMax)
 
@@ -126,13 +127,16 @@ public class IntCContainer
 
 		for (int iCurrentValue : iArContainer) {
 			// Handle NaN values
-			if (iCurrentValue == Integer.MIN_VALUE)
+			if (iCurrentValue == Integer.MIN_VALUE) {
 				continue;
+			}
 
-			if (iCurrentValue < iMin)
+			if (iCurrentValue < iMin) {
 				iMin = iCurrentValue;
-			if (iCurrentValue > iMax)
+			}
+			if (iCurrentValue > iMax) {
 				iMax = iCurrentValue;
+			}
 		}
 	}
 

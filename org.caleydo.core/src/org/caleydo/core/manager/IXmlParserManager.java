@@ -25,9 +25,9 @@ public interface IXmlParserManager
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#getXmlActivationTag()
 	 * @param handler
-	 *          register handler to an opening tag.
+	 *            register handler to an opening tag.
 	 * @param sOpeningAndClosingTag
-	 *          defines opening and closing tag triggering the handler to become active.
+	 *            defines opening and closing tag triggering the handler to become active.
 	 * @return TRUE if Handler could be register and FALSE if either handler or its associated opening Tag was
 	 *         already registered.
 	 */
@@ -37,7 +37,7 @@ public interface IXmlParserManager
 	 * Unregister a Handler by its String
 	 * 
 	 * @param sOpeningAndClosingTag
-	 *          tag to identify handler.
+	 *            tag to identify handler.
 	 */
 	public void unregisterSaxHandler(final String sActivationXmlTag);
 
@@ -48,7 +48,7 @@ public interface IXmlParserManager
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * @param handler
-	 *          calling handler, that just read its closing tag
+	 *            calling handler, that just read its closing tag
 	 */
 	public void sectionFinishedByHandler(IXmlParserHandler handler);
 
@@ -56,7 +56,7 @@ public interface IXmlParserManager
 	 * Open a new XML file and start parsing it.
 	 * 
 	 * @param filename
-	 *          XML file name.
+	 *            XML file name.
 	 * @return true if file existed and was parsed successfully
 	 */
 	public boolean parseXmlFileByName(String filename);

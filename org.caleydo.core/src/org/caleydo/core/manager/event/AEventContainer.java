@@ -13,7 +13,7 @@ public abstract class AEventContainer
 	 * Constructor
 	 * 
 	 * @param eEventType
-	 *          the type of event for this container
+	 *            the type of event for this container
 	 */
 	public AEventContainer(EEventType eEventType) {
 		this.eEventType = eEventType;

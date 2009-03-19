@@ -17,7 +17,7 @@ public interface INominalCContainer<T>
 	 * exception will occur
 	 * 
 	 * @param sAlPossibleValues
-	 *          the List
+	 *            the List
 	 */
 	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
 

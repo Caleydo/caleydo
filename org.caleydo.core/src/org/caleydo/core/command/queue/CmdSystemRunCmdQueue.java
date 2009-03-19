@@ -29,9 +29,8 @@ public class CmdSystemRunCmdQueue
 		ICommandQueue cmdQueue =
 			this.generalManager.getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 
-		if (cmdQueue == null) {
+		if (cmdQueue == null)
 			throw new IllegalStateException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
-		}
 
 		cmdQueue.doCommand();
 	}
@@ -42,9 +41,8 @@ public class CmdSystemRunCmdQueue
 		ICommandQueue cmdQueue =
 			this.generalManager.getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 
-		if (cmdQueue == null) {
+		if (cmdQueue == null)
 			throw new IllegalStateException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
-		}
 
 		cmdQueue.doCommand();
 	}

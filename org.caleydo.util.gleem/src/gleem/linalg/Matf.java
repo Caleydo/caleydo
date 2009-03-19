@@ -99,9 +99,8 @@ public class Matf {
 
 	/** Returns this * v, assuming v is a column vector. */
 	public Vecf mul(Vecf v) throws DimensionMismatchException {
-		if (nCol() != v.length()) {
+		if (nCol() != v.length())
 			throw new DimensionMismatchException();
-		}
 		Vecf out = new Vecf(nRow());
 		for (int i = 0; i < nRow(); i++) {
 			float tmp = 0;
@@ -115,9 +114,8 @@ public class Matf {
 
 	/** If this is a 2x2 matrix, returns it as a Mat2f. */
 	public Mat2f toMat2f() throws DimensionMismatchException {
-		if (nRow() != 2 || nCol() != 2) {
+		if (nRow() != 2 || nCol() != 2)
 			throw new DimensionMismatchException();
-		}
 		Mat2f tmp = new Mat2f();
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
@@ -129,9 +127,8 @@ public class Matf {
 
 	/** If this is a 3x3 matrix, returns it as a Mat3f. */
 	public Mat3f toMat3f() throws DimensionMismatchException {
-		if (nRow() != 3 || nCol() != 3) {
+		if (nRow() != 3 || nCol() != 3)
 			throw new DimensionMismatchException();
-		}
 		Mat3f tmp = new Mat3f();
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -143,9 +140,8 @@ public class Matf {
 
 	/** If this is a 4x4 matrix, returns it as a Mat4f. */
 	public Mat4f toMat4f() throws DimensionMismatchException {
-		if (nRow() != 4 || nCol() != 4) {
+		if (nRow() != 4 || nCol() != 4)
 			throw new DimensionMismatchException();
-		}
 		Mat4f tmp = new Mat4f();
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {

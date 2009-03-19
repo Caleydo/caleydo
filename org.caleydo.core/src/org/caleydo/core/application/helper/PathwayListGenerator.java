@@ -40,12 +40,14 @@ public class PathwayListGenerator {
 		String sOutput = "";
 
 		for (File tmpFile : arFiles) {
-			if (tmpFile.toString().endsWith(".svn"))
+			if (tmpFile.toString().endsWith(".svn")) {
 				continue;
+			}
 
 			// Ignore mice pathways
-			if (tmpFile.toString().contains("m_"))
+			if (tmpFile.toString().contains("m_")) {
 				continue;
+			}
 
 			// Cut off path
 			sOutput = tmpFile.toString();
@@ -56,9 +58,8 @@ public class PathwayListGenerator {
 			else if (sOutput.contains("/")) {
 				sPathDelimiter = "/";
 			}
-			else {
+			else
 				throw new IllegalStateException("Problem with detecting path separator.");
-			}
 
 			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput.length());
 
@@ -79,8 +80,10 @@ public class PathwayListGenerator {
 					while ((sLine = brFile.readLine()) != null) {
 						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) {
 							sImagePath =
-								sLine.substring(sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42, sLine
-									.indexOf(".gif", sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
+								sLine.substring(
+									sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42, sLine
+										.indexOf(".gif", sLine
+											.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
 
 							sImagePath = sInputImagePath + sImagePath;
 
@@ -115,7 +118,8 @@ public class PathwayListGenerator {
 
 		try {
 			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG, INPUT_IMAGE_PATH_KEGG, OUTPUT_FILE_NAME_KEGG);
-			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA, OUTPUT_FILE_NAME_BIOCARTA);
+			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA,
+				OUTPUT_FILE_NAME_BIOCARTA);
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();

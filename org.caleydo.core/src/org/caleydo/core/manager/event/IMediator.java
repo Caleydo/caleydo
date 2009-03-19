@@ -21,7 +21,7 @@ public interface IMediator
 	 * Register a new event sender to the mediator.
 	 * 
 	 * @param sender
-	 *          new event receiver
+	 *            new event receiver
 	 * @return true, when the instance was added, false when it was already registered
 	 */
 	public boolean addSender(IMediatorSender sender);
@@ -30,7 +30,7 @@ public interface IMediator
 	 * Register a new event receiver to the mediator.
 	 * 
 	 * @param receiver
-	 *          new event receiver
+	 *            new event receiver
 	 * @return true, when the instance was added, false when it was already registered
 	 */
 	public boolean addReceiver(IMediatorReceiver receiver);
@@ -39,7 +39,7 @@ public interface IMediator
 	 * Remove sender from mediator
 	 * 
 	 * @param sender
-	 *          the sender to be removed
+	 *            the sender to be removed
 	 * @return true if the mediator contained the instance
 	 */
 	public boolean removeSender(IMediatorSender sender);
@@ -48,7 +48,7 @@ public interface IMediator
 	 * Remove receiver from mediator
 	 * 
 	 * @param receiver
-	 *          the receiver to be removed
+	 *            the receiver to be removed
 	 * @return true if the mediator contained the instance
 	 */
 	public boolean removeReceiver(IMediatorReceiver receiver);
@@ -57,7 +57,7 @@ public interface IMediator
 	 * Checks whether the instance is registered as a receiver
 	 * 
 	 * @param receiver
-	 *          the instance to be checked
+	 *            the instance to be checked
 	 * @return true if already registered
 	 */
 	public boolean hasReceiver(IMediatorReceiver receiver);
@@ -66,7 +66,7 @@ public interface IMediator
 	 * Checks whether the instance is registered as a sender
 	 * 
 	 * @param sender
-	 *          the instance to be checked
+	 *            the instance to be checked
 	 * @return true if already registered
 	 */
 	public boolean hasSender(IMediatorSender sender);
@@ -75,12 +75,12 @@ public interface IMediator
 	 * Triggers an event, signals that something has happened and sends data along
 	 * 
 	 * @param eMediatorType
-	 *          the type of mediator that is used to process this event
+	 *            the type of mediator that is used to process this event
 	 * @param eventTrigger
-	 *          the caller
+	 *            the caller
 	 * @param eventContainer
-	 *          containing the information on the type of the event {@link EEventType} and possibly data
-	 *          associated
+	 *            containing the information on the type of the event {@link EEventType} and possibly data
+	 *            associated
 	 */
 	public void triggerEvent(IUniqueObject eventTrigger, IEventContainer eventContainer);
 }

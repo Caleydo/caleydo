@@ -53,8 +53,8 @@ public class Plane {
 	}
 
 	/**
-	 * Setter does some work to maintain internal caches. Normal does not need to be unit length but must not be
-	 * the zero vector.
+	 * Setter does some work to maintain internal caches. Normal does not need to be unit length but must not
+	 * be the zero vector.
 	 */
 	public void setNormal(Vec3f normal) {
 		this.normal.set(normal);

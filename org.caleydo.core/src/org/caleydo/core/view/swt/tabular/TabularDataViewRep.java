@@ -135,9 +135,9 @@ public class TabularDataViewRep
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		contentSelectionManager =
-			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(EIDType.REFSEQ_MRNA_INT)
-				.mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-					EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
+				EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		idMappingManager = generalManager.getIDMappingManager();
@@ -163,8 +163,9 @@ public class TabularDataViewRep
 		set = null;
 
 		for (ISet currentSet : alSets) {
-			if (currentSet.getSetType() == setType)
+			if (currentSet.getSetType() == setType) {
 				set = currentSet;
+			}
 		}
 
 		String sLevel =
@@ -184,9 +185,8 @@ public class TabularDataViewRep
 				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 			}
 		}
-		else {
+		else
 			throw new IllegalStateException("Unknown data filter level");
-		}
 
 		if (!mapVAIDs.isEmpty()) {
 
@@ -194,8 +194,9 @@ public class TabularDataViewRep
 			// and a big one
 
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
-				if (mapVAIDs.containsKey(eSelectionType))
+				if (mapVAIDs.containsKey(eSelectionType)) {
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+				}
 			}
 			iContentVAID = -1;
 			iStorageVAID = -1;
@@ -226,8 +227,9 @@ public class TabularDataViewRep
 		// Set<Integer> setMouseOver = storageSelectionManager
 		// .getElements(ESelectionType.MOUSE_OVER);
 
-		if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+		if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
 			initCompleteList();
+		}
 		iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
@@ -276,14 +278,16 @@ public class TabularDataViewRep
 					int iGraphItemID =
 						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
-					if (iGraphItemID == -1)
+					if (iGraphItemID == -1) {
 						continue;
+					}
 
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
 						(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
 
-					if (tmpPathwayVertexGraphItem == null)
+					if (tmpPathwayVertexGraphItem == null) {
 						continue;
+					}
 				}
 			}
 			alTempList.add(iCount);
@@ -307,7 +311,8 @@ public class TabularDataViewRep
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		labelTableComposite.setLayout(layout);
 
-		labelTable = new Table(labelTableComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		labelTable =
+			new Table(labelTableComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		labelTable.setLinesVisible(true);
 		labelTable.setHeaderVisible(true);
 
@@ -572,20 +577,24 @@ public class TabularDataViewRep
 			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(iContentIndex));
 
-			iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+			iRefSeqID =
+				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
 
 			// RefSeq ID
-			item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID));
+			item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+				iRefSeqID));
 
 			// Gene Symbol
 			sGeneSymbol =
 				(String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, idMappingManager.getID(
 					EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
 
-			if (sGeneSymbol != null)
+			if (sGeneSymbol != null) {
 				item.setText(2, sGeneSymbol);
-			else
+			}
+			else {
 				item.setText(2, "Unknown");
+			}
 
 			item = new TableItem(contentTable, SWT.NONE);
 
@@ -643,7 +652,8 @@ public class TabularDataViewRep
 		ScrollBar hScroolBar = contentTable.getHorizontalBar();
 		hScroolBar.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event event) {
-				storageRemoverTable.getHorizontalBar().setSelection(contentTable.getHorizontalBar().getSelection());
+				storageRemoverTable.getHorizontalBar().setSelection(
+					contentTable.getHorizontalBar().getSelection());
 			}
 		});
 	}
@@ -670,10 +680,12 @@ public class TabularDataViewRep
 					case DAVID:
 					case REFSEQ_MRNA_INT:
 					case EXPRESSION_INDEX:
-						contentSelectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
+						contentSelectionManager.executeSelectionCommands(commandEventContainer
+							.getSelectionCommands());
 						break;
 					case EXPERIMENT_INDEX:
-						storageSelectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
+						storageSelectionManager.executeSelectionCommands(commandEventContainer
+							.getSelectionCommands());
 						break;
 				}
 		}
@@ -720,9 +732,8 @@ public class TabularDataViewRep
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			selectionManager = contentSelectionManager;
 		}
-		else {
+		else
 			return;
-		}
 
 		// reactOnVAChanges(delta);
 		selectionManager.setVADelta(delta);
@@ -816,7 +827,8 @@ public class TabularDataViewRep
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 			EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+			selectionDelta));
 	}
 
 	private void triggerStorageSelectionEvent(int iStorageIndex, ESelectionType eSelectionType) {
@@ -829,7 +841,8 @@ public class TabularDataViewRep
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 			EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+			selectionDelta));
 	}
 
 	@Override
@@ -866,7 +879,8 @@ public class TabularDataViewRep
 
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
 				vaDelta.add(VADeltaItem.remove(iExpressionIndex));
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(
+					vaDelta));
 
 				// Dispose the removed row
 				TableItem item = (TableItem) e.widget.getData();
@@ -905,7 +919,8 @@ public class TabularDataViewRep
 
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 				vaDelta.add(VADeltaItem.remove(iStorageIndex));
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(
+					vaDelta));
 
 				// Dispose the removed row
 				editor.getEditor().dispose();

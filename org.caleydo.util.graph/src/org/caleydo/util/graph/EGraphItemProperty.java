@@ -20,9 +20,12 @@ import java.util.List;
  */
 public enum EGraphItemProperty {
 
-	INCOMING(), OUTGOING(),
+	INCOMING(),
+	OUTGOING(),
 	// HIERARCHY(),
-	ALIAS_PARENT(), ALIAS_CHILD(), NONE();
+	ALIAS_PARENT(),
+	ALIAS_CHILD(),
+	NONE();
 
 	/**
 	 * Constructor; no values necessary yet.
@@ -41,7 +44,7 @@ public enum EGraphItemProperty {
 	 * 
 	 * @return inverted property
 	 * @throws GraphRuntimeException
-	 *           if this==NONE or an unsupported type is used this exception is thrown
+	 *             if this==NONE or an unsupported type is used this exception is thrown
 	 */
 	public final EGraphItemProperty getInvertProperty() throws GraphRuntimeException {
 
@@ -56,7 +59,8 @@ public enum EGraphItemProperty {
 				return EGraphItemProperty.INCOMING;
 
 			default:
-				throw new GraphRuntimeException("getInvertProperty() can not handle type=[" + this.toString() + "]");
+				throw new GraphRuntimeException("getInvertProperty() can not handle type=[" + this.toString()
+					+ "]");
 		}
 	}
 

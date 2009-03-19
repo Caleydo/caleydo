@@ -94,7 +94,8 @@ public class ResourceLoader {
 		try {
 			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 				texture =
-					TextureIO.newTexture(TextureIO.newTextureData(loadResourceAsInputStream(sFileName), true, "GIF"));
+					TextureIO.newTexture(TextureIO.newTextureData(loadResourceAsInputStream(sFileName), true,
+						"GIF"));
 			}
 			else {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(new File(sFileName), true, "GIF"));

@@ -106,9 +106,9 @@ public class HandleBoxManip
 	private List draggedGeometry;
 
 	/**
-	 * Each rotation handle points off to two faces corresponding to the planes in which that handle can rotate.
-	 * It also points to two circles which appear during dragging to indicate to the user in which plane the
-	 * manipulator is being rotated.
+	 * Each rotation handle points off to two faces corresponding to the planes in which that handle can
+	 * rotate. It also points to two circles which appear during dragging to indicate to the user in which
+	 * plane the manipulator is being rotated.
 	 */
 	static class RotateHandleInfo {
 		ManipPart geometry;
@@ -189,8 +189,8 @@ public class HandleBoxManip
 	}
 
 	/**
-	 * Set the translation of this HandleBoxManip. This moves its on-screen representation. Manipulations cause
-	 * the translation to be modified, not overwritten.
+	 * Set the translation of this HandleBoxManip. This moves its on-screen representation. Manipulations
+	 * cause the translation to be modified, not overwritten.
 	 */
 	public void setTranslation(Vec3f translation) {
 		this.translation.set(translation);
@@ -229,8 +229,8 @@ public class HandleBoxManip
 
 	/**
 	 * Set the scale of the HandleBoxManip's geometry. This only affects its on-screen representation. It is
-	 * probably a bad idea to use a non-uniform scale here, because it'd be very confusing to the user. None of
-	 * the components of the geometryScale vector may be negative.
+	 * probably a bad idea to use a non-uniform scale here, because it'd be very confusing to the user. None
+	 * of the components of the geometryScale vector may be negative.
 	 */
 	public void setGeometryScale(Vec3f geometryScale) {
 		this.geometryScale.set(geometryScale);
@@ -272,12 +272,15 @@ public class HandleBoxManip
 
 	public void render(GL gl) {
 		int i;
-		for (i = 0; i < 12; i++)
+		for (i = 0; i < 12; i++) {
 			lineSegs[i].render(gl);
-		for (i = 0; i < rotateHandles.size(); i++)
+		}
+		for (i = 0; i < rotateHandles.size(); i++) {
 			((RotateHandleInfo) rotateHandles.get(i)).geometry.render(gl);
-		for (i = 0; i < scaleHandles.size(); i++)
+		}
+		for (i = 0; i < scaleHandles.size(); i++) {
 			((ScaleHandleInfo) scaleHandles.get(i)).geometry.render(gl);
+		}
 	}
 
 	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results) {
@@ -345,10 +348,12 @@ public class HandleBoxManip
 				float dotp0 = Math.abs(hit.rayDirection.dot(((FaceInfo) faces.get(rotInfo.faceIdx0)).normal));
 				float dotp1 = Math.abs(hit.rayDirection.dot(((FaceInfo) faces.get(rotInfo.faceIdx1)).normal));
 				int faceIdx;
-				if (dotp0 > dotp1)
+				if (dotp0 > dotp1) {
 					faceIdx = rotInfo.faceIdx0;
-				else
+				}
+				else {
 					faceIdx = rotInfo.faceIdx1;
+				}
 				FaceInfo face = (FaceInfo) faces.get(faceIdx);
 				// Set up the rotation plane
 				rotatePlane.setOrigin(translation);
@@ -446,23 +451,22 @@ public class HandleBoxManip
 			// Algorithm: Find intersection of ray with dragPlane. Add
 			// dragOffset to this point to get new translation.
 			IntersectionPoint intPt = new IntersectionPoint();
-			if (dragPlane.intersectRay(rayStart, rayDirection, intPt) == false) {
+			if (dragPlane.intersectRay(rayStart, rayDirection, intPt) == false)
 				// Ray is parallel to plane. Punt.
 				return;
-			}
 			translation.add(intPt.getIntersectionPoint(), dragOffset);
 			recalc();
 		}
 		else if (dragState == ROTATE) {
 			IntersectionPoint intPt = new IntersectionPoint();
 			Vec2f uvCoords = new Vec2f();
-			if (rotatePlane.intersectRay(rayStart, rayDirection, intPt, uvCoords) == false) {
+			if (rotatePlane.intersectRay(rayStart, rayDirection, intPt, uvCoords) == false)
 				// Ray is parallel to plane. Punt.
 				return;
-			}
 			// Compute offset rotation angle
 			Rotf offsetRot = new Rotf();
-			offsetRot.set(rotatePlane.getNormal(), (float) Math.atan2(uvCoords.y(), uvCoords.x()) - startAngle);
+			offsetRot.set(rotatePlane.getNormal(), (float) Math.atan2(uvCoords.y(), uvCoords.x())
+				- startAngle);
 			rotation.mul(offsetRot, startRot);
 			recalc();
 		}
@@ -497,26 +501,34 @@ public class HandleBoxManip
 				scaleAxisPlane.projectPoint(tmp, foo, faceCenteredUVCoords);
 				if (MathUtil.sgn(faceCenteredUVCoords.x()) == MathUtil.sgn(scaleAxisOrigUV.x())
 					&& MathUtil.sgn(faceCenteredUVCoords.y()) == MathUtil.sgn(scaleAxisOrigUV.y())) {
-					if (faceCenteredUVCoords.x() < 0)
+					if (faceCenteredUVCoords.x() < 0) {
 						uvCoords.setX(uvCoords.x() * -1);
-					if (faceCenteredUVCoords.y() < 0)
+					}
+					if (faceCenteredUVCoords.y() < 0) {
 						uvCoords.setY(uvCoords.y() * -1);
+					}
 					Vec3f scaleVec = new Vec3f();
 					if (Math.abs(uvCoords.x()) > Math.abs(uvCoords.y())) {
-						if (scaleAxes == SCALE_XY)
+						if (scaleAxes == SCALE_XY) {
 							scaleVec.setX(uvCoords.x());
-						else if (scaleAxes == SCALE_YZ)
+						}
+						else if (scaleAxes == SCALE_YZ) {
 							scaleVec.setY(uvCoords.x());
-						else
+						}
+						else {
 							scaleVec.setZ(uvCoords.x());
+						}
 					}
 					else {
-						if (scaleAxes == SCALE_XY)
+						if (scaleAxes == SCALE_XY) {
 							scaleVec.setY(uvCoords.y());
-						else if (scaleAxes == SCALE_YZ)
+						}
+						else if (scaleAxes == SCALE_YZ) {
 							scaleVec.setZ(uvCoords.y());
-						else
+						}
+						else {
 							scaleVec.setX(uvCoords.y());
+						}
 					}
 					scaleVec.setX(scaleVec.x() / geometryScale.x());
 					scaleVec.setY(scaleVec.y() / geometryScale.y());
@@ -530,28 +542,33 @@ public class HandleBoxManip
 				}
 				else {
 					if (Math.abs(uvCoords.x()) > Math.abs(uvCoords.y())) {
-						if (scaleAxes == SCALE_XY)
+						if (scaleAxes == SCALE_XY) {
 							scale.setX(0);
-						else if (scaleAxes == SCALE_YZ)
+						}
+						else if (scaleAxes == SCALE_YZ) {
 							scale.setY(0);
-						else
+						}
+						else {
 							scale.setZ(0);
+						}
 					}
 					else {
-						if (scaleAxes == SCALE_XY)
+						if (scaleAxes == SCALE_XY) {
 							scale.setY(0);
-						else if (scaleAxes == SCALE_YZ)
+						}
+						else if (scaleAxes == SCALE_YZ) {
 							scale.setZ(0);
-						else
+						}
+						else {
 							scale.setX(0);
+						}
 					}
 				}
 				recalc();
 			}
 		}
-		else {
+		else
 			throw new RuntimeException("HandleBoxManip::drag: ERROR: Unexpected drag state");
-		}
 		super.drag(rayStart, rayDirection);
 	}
 

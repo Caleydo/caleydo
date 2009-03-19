@@ -43,16 +43,17 @@ public class HitPoint {
 	 */
 	public Vec3f rayStart;
 	/**
-	 * Direction of the ray which was cast. The manipulator part must set this when an intersection is detected.
+	 * Direction of the ray which was cast. The manipulator part must set this when an intersection is
+	 * detected.
 	 */
 	public Vec3f rayDirection;
 
 	// Not all ManipParts supply all of these pieces of information.
 
 	/**
-	 * The combination of 3D point and t parameter at which the intersection occurred. It's important to supply
-	 * the t parameter because the ManipManager needs it to disambiguate between intersections with multiple
-	 * manipulators.
+	 * The combination of 3D point and t parameter at which the intersection occurred. It's important to
+	 * supply the t parameter because the ManipManager needs it to disambiguate between intersections with
+	 * multiple manipulators.
 	 */
 	public IntersectionPoint intPt;
 

@@ -12,9 +12,9 @@ public interface ISelectionDelta
 	 * Add a new selection to the delta
 	 * 
 	 * @param iSelectionID
-	 *          the selection id
+	 *            the selection id
 	 * @param selectionType
-	 *          the selection type
+	 *            the selection type
 	 */
 	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType);
 
@@ -22,11 +22,11 @@ public interface ISelectionDelta
 	 * Add a new selection to the delta, including the optional internal id
 	 * 
 	 * @param iSelectionID
-	 *          the selection id
+	 *            the selection id
 	 * @param selectionType
-	 *          the selection type
+	 *            the selection type
 	 * @param iInternalID
-	 *          the internal id
+	 *            the internal id
 	 */
 	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType, int iInternalID);
 
@@ -42,9 +42,9 @@ public interface ISelectionDelta
 	 * id is meant to be persistent across conversion processes
 	 * 
 	 * @param iSelectionID
-	 *          the original selection id
+	 *            the original selection id
 	 * @param iConnectionID
-	 *          the connection id
+	 *            the connection id
 	 */
 	public void addConnectionID(int iSelectionID, int iConnectionID);
 

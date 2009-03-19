@@ -57,16 +57,19 @@ public class DataEntitySearcherViewRep
 	private boolean searchForPathway(String sEntity) {
 		EPathwayDatabaseType ePathwayDatabaseType;
 
-		if (sEntity.contains("KEGG"))
+		if (sEntity.contains("KEGG")) {
 			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
-		else if (sEntity.contains("BioCarta"))
+		}
+		else if (sEntity.contains("BioCarta")) {
 			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
+		}
 		else
 			return false;
 
 		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
 
-		int iPathwayID = generalManager.getPathwayManager().searchPathwayIdByName(sEntity, ePathwayDatabaseType);
+		int iPathwayID =
+			generalManager.getPathwayManager().searchPathwayIdByName(sEntity, ePathwayDatabaseType);
 
 		if (iPathwayID == -1)
 			return false;
@@ -90,7 +93,8 @@ public class DataEntitySearcherViewRep
 
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
 		selectionDelta.addSelection(iRefSeqID, ESelectionType.SELECTION);
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+			selectionDelta));
 		return true;
 	}
 
@@ -116,7 +120,8 @@ public class DataEntitySearcherViewRep
 
 	private boolean searchForGeneShortName(final String sEntity) {
 		Integer iDavidID =
-			generalManager.getIDMappingManager().getID(EMappingType.GENE_SYMBOL_2_DAVID, sEntity.toUpperCase());
+			generalManager.getIDMappingManager().getID(EMappingType.GENE_SYMBOL_2_DAVID,
+				sEntity.toUpperCase());
 
 		if (iDavidID == null || iDavidID == -1)
 			return false;
@@ -152,8 +157,10 @@ public class DataEntitySearcherViewRep
 		}
 
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-			EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION)));
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+			EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
+				ESelectionType.SELECTION)));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+			selectionDelta));
 
 		return true;
 	}

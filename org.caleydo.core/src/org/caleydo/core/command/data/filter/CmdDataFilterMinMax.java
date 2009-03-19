@@ -33,8 +33,8 @@ public class CmdDataFilterMinMax
 	}
 
 	/**
-	 * Calculates the minimum and the maximum of either a set or a storage depending on what has been set using
-	 * the setAttributes methods
+	 * Calculates the minimum and the maximum of either a set or a storage depending on what has been set
+	 * using the setAttributes methods
 	 */
 	public void doCommand() {
 
@@ -46,9 +46,8 @@ public class CmdDataFilterMinMax
 			dMinValue = myStorage.getMin();
 			dMaxValue = myStorage.getMax();
 		}
-		else {
+		else
 			throw new IllegalStateException("You have to initialize the filter before using it");
-		}
 
 		commandManager.runDoCommand(this);
 
@@ -60,11 +59,11 @@ public class CmdDataFilterMinMax
 	}
 
 	/**
-	 * You have to set the attributes of the command before executing doCommand() This is done here if you want
-	 * to calculate the min and max on a storage
+	 * You have to set the attributes of the command before executing doCommand() This is done here if you
+	 * want to calculate the min and max on a storage
 	 * 
 	 * @param myStorage
-	 *          The storage
+	 *            The storage
 	 */
 	public void setAttributes(INumericalStorage myStorage) {
 
@@ -72,11 +71,11 @@ public class CmdDataFilterMinMax
 	}
 
 	/**
-	 * You have to set the attributes of the command before executing doCommand() This is done here if you want
-	 * to calculate the min and max on a storage
+	 * You have to set the attributes of the command before executing doCommand() This is done here if you
+	 * want to calculate the min and max on a storage
 	 * 
 	 * @param mySet
-	 *          The set
+	 *            The set
 	 */
 	public void setAttributes(ISet mySet) {
 

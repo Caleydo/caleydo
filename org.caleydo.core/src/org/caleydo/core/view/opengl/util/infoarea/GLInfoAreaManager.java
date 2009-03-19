@@ -64,8 +64,9 @@ public class GLInfoAreaManager {
 	public void initInfoOverlay(final int iViewID, final GLAutoDrawable drawable) {
 
 		// Lazy creation to be sure that all managers are already initialized
-		if (hashViewIDToInfoOverlay.isEmpty())
+		if (hashViewIDToInfoOverlay.isEmpty()) {
 			contentCreator = new InformationContentCreator();
+		}
 
 		if (!hashViewIDToInfoOverlay.containsKey(iViewID)) {
 			GLOverlayInfoRenderer infoOverlayRenderer = new GLOverlayInfoRenderer();
@@ -81,13 +82,14 @@ public class GLInfoAreaManager {
 	 * 
 	 * @param gl
 	 * @param bFirstTime
-	 *          this has to be true only the first time you render it and can never be true after that
+	 *            this has to be true only the first time you render it and can never be true after that
 	 */
 	public void renderInPlaceInfo(GL gl, boolean bFirstTime) {
 
 		if (bFirstTime) {
 			float[] fArWorldCoords =
-				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
+				GLCoordinateUtils
+					.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
 
 			fXOrigin = fArWorldCoords[0];
 			fYOrigin = fArWorldCoords[1];

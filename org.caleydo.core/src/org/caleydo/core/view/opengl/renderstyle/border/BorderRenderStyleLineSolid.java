@@ -9,8 +9,9 @@ public class BorderRenderStyleLineSolid
 
 	@Override
 	public void init(GL gl) {
-		if (glList >= 0)
+		if (glList >= 0) {
 			gl.glDeleteLists(glList, 1);
+		}
 
 		glList = gl.glGenLists(1);
 		gl.glNewList(glList, GL.GL_COMPILE);
@@ -20,10 +21,12 @@ public class BorderRenderStyleLineSolid
 
 	@Override
 	public void display(GL gl) {
-		if (glList < 0)
+		if (glList < 0) {
 			draw(gl);
-		else
+		}
+		else {
 			gl.glCallList(glList);
+		}
 	}
 
 	private void draw(GL gl) {

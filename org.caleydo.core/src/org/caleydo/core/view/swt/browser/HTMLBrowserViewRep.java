@@ -15,10 +15,6 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -100,8 +96,9 @@ public class HTMLBrowserViewRep
 
 		textURL = new Text(browserBarComposite, SWT.BORDER);
 
-		if (checkInternetConnection())
+		if (checkInternetConnection()) {
 			textURL.setText(sUrl);
+		}
 
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.heightHint = 15;
@@ -158,25 +155,23 @@ public class HTMLBrowserViewRep
 		});
 
 		browser = new Browser(composite, SWT.BORDER);
-		
+
 		// Mechanism prevents the browser to steal the focus from other views
-		browser.addProgressListener(new ProgressListener(){
-		
+		browser.addProgressListener(new ProgressListener() {
+
 			@Override
-			public void completed(ProgressEvent event)
-			{
+			public void completed(ProgressEvent event) {
 				// Give the focus back to active view
 				GeneralManager.get().getViewGLCanvasManager().getActiveSWTView().setFocus();
 			}
-		
+
 			@Override
-			public void changed(ProgressEvent event)
-			{
+			public void changed(ProgressEvent event) {
 				// Give the focus back to active view
 				GeneralManager.get().getViewGLCanvasManager().getActiveSWTView().setFocus();
 			}
 		});
-	
+
 		idExtractionLocationListener = new IDExtractionLocationListener(browser, iUniqueID, -1);
 		browser.addLocationListener(idExtractionLocationListener);
 

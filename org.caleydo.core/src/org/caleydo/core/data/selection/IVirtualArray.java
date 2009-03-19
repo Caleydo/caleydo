@@ -22,7 +22,7 @@ public interface IVirtualArray
 	 * Returns the element at the specified index in the virtual array
 	 * 
 	 * @param iIndex
-	 *          the index
+	 *            the index
 	 * @return the element at the index
 	 */
 	public Integer get(int iIndex);
@@ -31,10 +31,10 @@ public interface IVirtualArray
 	 * Adds an element to the end of the list.
 	 * 
 	 * @param iNewElement
-	 *          the index to the collection
+	 *            the index to the collection
 	 * @exception IllegalArgumentException
-	 *              if the value of the new element is larger than allowed. The maximum allowed value is the
-	 *              length of the collection which is managed - 1
+	 *                if the value of the new element is larger than allowed. The maximum allowed value is the
+	 *                length of the collection which is managed - 1
 	 */
 	public void append(Integer iNewElement);
 
@@ -42,10 +42,10 @@ public interface IVirtualArray
 	 * Adds an element to the end of the list, if the element is not already contained.
 	 * 
 	 * @param iNewElement
-	 *          the index to the collection
+	 *            the index to the collection
 	 * @exception IllegalArgumentException
-	 *              if the value of the new element is larger than allowed. The maximum allowed value is the
-	 *              length of the collection which is managed - 1
+	 *                if the value of the new element is larger than allowed. The maximum allowed value is the
+	 *                length of the collection which is managed - 1
 	 * @return true if the array was modified, else false
 	 */
 	public boolean appendUnique(Integer iNewElement);
@@ -55,12 +55,12 @@ public interface IVirtualArray
 	 * that position (if any) and any subsequent elements to the right (adds one to their indices).
 	 * 
 	 * @param iIndex
-	 *          the position on which to insert the new element
+	 *            the position on which to insert the new element
 	 * @param iNewElement
-	 *          the index to the collection
+	 *            the index to the collection
 	 * @throws IllegalArgumentException
-	 *           if the value of the new element is larger than allowed. The maximum allowed value is the length
-	 *           of the collection which is managed - 1
+	 *             if the value of the new element is larger than allowed. The maximum allowed value is the
+	 *             length of the collection which is managed - 1
 	 */
 	public void add(int iIndex, Integer iNewElement);
 
@@ -70,8 +70,8 @@ public interface IVirtualArray
 	 * @param iIndex
 	 * @param iNewElement
 	 * @throws CaleydoRuntimeException
-	 *           if the value of the new element is larger than allowed. The maximum allowed value is the length
-	 *           of the collection which is managed - 1
+	 *             if the value of the new element is larger than allowed. The maximum allowed value is the
+	 *             length of the collection which is managed - 1
 	 */
 	public void set(int iIndex, Integer iNewElement);
 
@@ -80,7 +80,7 @@ public interface IVirtualArray
 	 * any) and any subsequent elements to the right (adds one to their indices).
 	 * 
 	 * @param iIndex
-	 *          the index of the element to be copied
+	 *            the index of the element to be copied
 	 */
 	public void copy(int iIndex);
 
@@ -88,18 +88,18 @@ public interface IVirtualArray
 	 * Moves the element at iIndex to the left
 	 * 
 	 * @param iIndex
-	 *          the index of the element to be moved
+	 *            the index of the element to be moved
 	 */
 	public void moveLeft(int iIndex);
 
 	/**
-	 * Moves the element at the specified src index to the target index. The element formerly at iSrcIndex is at
-	 * iTargetIndex after this operation. The rest of the elements can change the index.
+	 * Moves the element at the specified src index to the target index. The element formerly at iSrcIndex is
+	 * at iTargetIndex after this operation. The rest of the elements can change the index.
 	 * 
 	 * @param iSrcIndex
-	 *          the src index of the element
+	 *            the src index of the element
 	 * @param iTargetIndex
-	 *          the target index of the element
+	 *            the target index of the element
 	 */
 	public void move(int iSrcIndex, int iTargetIndex);
 
@@ -107,7 +107,7 @@ public interface IVirtualArray
 	 * Moves the element at iIndex to the right
 	 * 
 	 * @param iIndex
-	 *          the index of the element to be moved
+	 *            the index of the element to be moved
 	 */
 	public void moveRight(int iIndex);
 
@@ -116,15 +116,15 @@ public interface IVirtualArray
 	 * from their indices).
 	 * 
 	 * @param iIndex
-	 *          the index of the element to be removed
+	 *            the index of the element to be removed
 	 * @return the Element that was removed from the list
 	 */
 	public Integer remove(int iIndex);
 
 	/**
 	 * <p>
-	 * Remove all occurrences of an element from the list. Shifts any subsequent elements to the left (subtracts
-	 * one from their indices).
+	 * Remove all occurrences of an element from the list. Shifts any subsequent elements to the left
+	 * (subtracts one from their indices).
 	 * </p>
 	 * <p>
 	 * Notice that this has a complexity of O(n) TODO: probably add a higher performance version, with an
@@ -132,7 +132,7 @@ public interface IVirtualArray
 	 * </p>
 	 * 
 	 * @param iElement
-	 *          the element to be removed
+	 *            the element to be removed
 	 */
 	public void removeByElement(int iElement);
 
@@ -154,14 +154,14 @@ public interface IVirtualArray
 	public void clear();
 
 	/**
-	 * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does
-	 * not contain the element. More formally, returns the lowest index i such that (o==null ? get(i)==null :
-	 * o.equals(get(i))), or -1 if there is no such index.
+	 * Returns the index of the first occurrence of the specified element in this list, or -1 if this list
+	 * does not contain the element. More formally, returns the lowest index i such that (o==null ?
+	 * get(i)==null : o.equals(get(i))), or -1 if there is no such index.
 	 * 
 	 * @param iElement
-	 *          element to search for
-	 * @return the index of the first occurrence of the specified element in this list, or -1 if this list does
-	 *         not contain the element
+	 *            element to search for
+	 * @return the index of the first occurrence of the specified element in this list, or -1 if this list
+	 *         does not contain the element
 	 */
 	public int indexOf(int iElement);
 
@@ -170,9 +170,9 @@ public interface IVirtualArray
 	 * list does not contain the element.
 	 * 
 	 * @param iElement
-	 *          element to search for
-	 * @return a list of all the indices of all occurrences of the element or an empty list if no such elements
-	 *         exist
+	 *            element to search for
+	 * @return a list of all the indices of all occurrences of the element or an empty list if no such
+	 *         elements exist
 	 */
 	public ArrayList<Integer> indicesOf(int iElement);
 
@@ -195,7 +195,7 @@ public interface IVirtualArray
 	 * occurrences, 0 if it does not occur.
 	 * 
 	 * @param iElement
-	 *          the lement to be checked
+	 *            the lement to be checked
 	 * @return the number of occurences
 	 */
 	public int containsElement(int iElement);

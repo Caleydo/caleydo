@@ -47,8 +47,9 @@ public class GlyphGridPositionModelScatterplot
 			return;
 
 		// delete list if present (rebuild grid)
-		if (iDisplayListGrid >= 0)
+		if (iDisplayListGrid >= 0) {
 			gl.glDeleteLists(iDisplayListGrid, 1);
+		}
 
 		TextRenderer textRenderer = renderStyle.getScatterplotTextRenderer();
 		Vec4f gridColor_ = renderStyle.getGridColor();
@@ -69,8 +70,10 @@ public class GlyphGridPositionModelScatterplot
 		GlyphAttributeType ydata = gman.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
 
 		if (xdata == null || ydata == null) {
-			generalManager.getLogger().log(Level.WARNING,
-				"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", " + iScatterParameterY + ")");
+			generalManager.getLogger().log(
+				Level.WARNING,
+				"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", " + iScatterParameterY
+					+ ")");
 			return;
 		}
 
@@ -92,12 +95,15 @@ public class GlyphGridPositionModelScatterplot
 		int drawLabelEveryLineX = 1;
 		int drawLabelEveryLineY = 1;
 
-		if (incy < 2)
+		if (incy < 2) {
 			drawLabelEveryLineY = 3;
-		if (incy < 1)
+		}
+		if (incy < 1) {
 			drawLabelEveryLineY = 5;
-		if (incy < 0.1f)
+		}
+		if (incy < 0.1f) {
 			drawLabelEveryLineY = 50;
+		}
 
 		ArrayList<Float> pointsX = new ArrayList<Float>();
 		ArrayList<Float> pointsY = new ArrayList<Float>();
@@ -257,10 +263,12 @@ public class GlyphGridPositionModelScatterplot
 			int xp = g.getParameter(iScatterParameterX);
 			int yp = g.getParameter(iScatterParameterY);
 
-			if (xp < 0)
+			if (xp < 0) {
 				xp = maxX + 1;
-			if (yp < 0)
+			}
+			if (yp < 0) {
 				yp = maxY + 1;
+			}
 
 			alge.add(g);
 			Vec2i pos = scatterpointmap.get(xp).get(yp);

@@ -173,7 +173,8 @@ public class ColorMappingPreferencePage
 			// SWT.SHADOW_ETCHED_IN);
 			//			
 			ColorFieldEditor colorFieldEditor =
-				new ColorFieldEditor(COLOR_MARKER_POINT_COLOR + iCount, "Color " + iCount, getFieldEditorParent());
+				new ColorFieldEditor(COLOR_MARKER_POINT_COLOR + iCount, "Color " + iCount,
+					getFieldEditorParent());
 			colorFieldEditor.load();
 			colorFieldEditor.getColorSelector().addListener(changeListener);
 			alColorFieldEditors.add(colorFieldEditor);

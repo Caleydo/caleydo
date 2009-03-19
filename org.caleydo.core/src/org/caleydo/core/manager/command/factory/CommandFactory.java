@@ -143,7 +143,7 @@ public class CommandFactory
 			case CREATE_GL_CELL:
 			case CREATE_GL_REMOTE_GLYPH:
 			case CREATE_GL_PANEL_SELECTION:
-			case CREATE_GL_RADIAL_HIERARCHY: 
+			case CREATE_GL_RADIAL_HIERARCHY:
 			case CREATE_GL_HYPERBOLIC: {
 				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
@@ -257,8 +257,9 @@ public class CommandFactory
 	// }
 
 	/**
-	 * Since the last created command is stored its reference is returned. Note: be carefully with this method,
-	 * because maybe the command was already executed or destroyed, or a new command was created meanwhile
+	 * Since the last created command is stored its reference is returned. Note: be carefully with this
+	 * method, because maybe the command was already executed or destroyed, or a new command was created
+	 * meanwhile
 	 * 
 	 * @return reference to last created command
 	 */

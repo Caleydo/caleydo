@@ -28,8 +28,8 @@ public class ChangeSelectionBrush
 
 		this.sText = text;
 		this.idIcon =
-			ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				iconresource));
+			ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench()
+				.getDisplay(), iconresource));
 
 		setText(text);
 		setToolTipText(sText);
@@ -41,8 +41,9 @@ public class ChangeSelectionBrush
 	public void run() {
 		super.run();
 
-		if (parent != null)
+		if (parent != null) {
 			parent.setImageDescriptor(idIcon);
+		}
 
 		triggerCmdExternalObjectSetter(iBrushSize, EExternalObjectSetterType.GLYPH_SELECTIONBRUSH);
 	};

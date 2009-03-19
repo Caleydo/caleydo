@@ -89,8 +89,9 @@ public class GLSliderMiniView
 		this.fHeight = fHeight;
 
 		// recalc seperator positions
-		for (SliderSeperator Seperator : alSeperator)
+		for (SliderSeperator Seperator : alSeperator) {
 			Seperator.setPos(Seperator.getPos() / fHeightOld * fHeight);
+		}
 	}
 
 	public void setAxisScale(float min, float max, float increment) {
@@ -133,9 +134,8 @@ public class GLSliderMiniView
 	}
 
 	public ArrayList<Float> getSelectionOrdinal() {
-		if (alAxisScaleOrdinal == null) {
+		if (alAxisScaleOrdinal == null)
 			throw new RuntimeException("someone wanted odinal data from GLSlider, but has not set any");
-		}
 
 		ArrayList<Float> selection = new ArrayList<Float>();
 
@@ -144,8 +144,9 @@ public class GLSliderMiniView
 			float bottom = bond.getBottom();
 			int lowerindex = (int) (bottom / fHeight * 1000);
 			int upperindex = (int) (top / fHeight * 1000);
-			if (upperindex >= 1000)
+			if (upperindex >= 1000) {
 				upperindex = 999;
+			}
 
 			float last = -2;
 			for (int i = lowerindex; i <= upperindex; ++i) {
@@ -161,9 +162,8 @@ public class GLSliderMiniView
 	}
 
 	public ArrayList<String> getSelectionNominal() {
-		if (alAxisScaleNominal == null) {
+		if (alAxisScaleNominal == null)
 			throw new RuntimeException("someone wanted nominal data from GLSlider, but has not set any");
-		}
 
 		ArrayList<String> selection = new ArrayList<String>();
 
@@ -225,18 +225,21 @@ public class GLSliderMiniView
 
 			if (bDoDragging && iDraggedSeperator == Seperator.getID()) {
 				float[] fArTargetWorldCoordinates =
-					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, 0, pickingTriggerMouseAdapter
-						.getPickedPoint().y);
+					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, 0,
+						pickingTriggerMouseAdapter.getPickedPoint().y);
 				float canvasY = fArTargetWorldCoordinates[1];
 
-				if (canvasY > fHeight)
+				if (canvasY > fHeight) {
 					canvasY = fHeight;
-				if (canvasY < 0)
+				}
+				if (canvasY < 0) {
 					canvasY = 0;
+				}
 
 				int actualindex = (int) (canvasY / fHeight * 1000);
-				if (actualindex >= 1000)
+				if (actualindex >= 1000) {
 					actualindex = 999;
+				}
 				float actual = alAxisScaleOrdinal.get(actualindex);
 
 				if (Seperator.getPos() != canvasY && fLastSelectedBlock != actual) {
@@ -248,8 +251,8 @@ public class GLSliderMiniView
 			}
 
 			gl.glPushMatrix();
-			gl.glColor4f(vSeperatorColor.get(0), vSeperatorColor.get(1), vSeperatorColor.get(2), vSeperatorColor
-				.get(3));
+			gl.glColor4f(vSeperatorColor.get(0), vSeperatorColor.get(1), vSeperatorColor.get(2),
+				vSeperatorColor.get(3));
 
 			gl.glTranslatef(0f, Seperator.getPos(), 0.1f);
 
@@ -288,12 +291,14 @@ public class GLSliderMiniView
 
 			String value = "";
 			if (alAxisScaleOrdinal != null)
-				if (alAxisScaleOrdinal.size() > index)
+				if (alAxisScaleOrdinal.size() > index) {
 					value = Float.toString(alAxisScaleOrdinal.get(index));
+				}
 
 			if (alAxisScaleNominal != null)
-				if (alAxisScaleNominal.size() > index)
+				if (alAxisScaleNominal.size() > index) {
 					value = alAxisScaleNominal.get(index);
+				}
 
 			gl.glTranslatef(0.1f, -0.05f, 0);
 
@@ -308,14 +313,16 @@ public class GLSliderMiniView
 			gl.glPopMatrix();
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased())
+		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
 			bDoDragging = false;
+		}
 
 	}
 
 	private void drawSeperatorBond(GL gl) {
-		for (SliderSeperatorBond bond : alSeperatorBonds)
+		for (SliderSeperatorBond bond : alSeperatorBonds) {
 			bond.render(gl, fWidth, fHeight, vSeperatorBondColor);
+		}
 	}
 
 	public boolean handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -330,7 +337,8 @@ public class GLSliderMiniView
 
 				SliderSeperator seperator = alSeperator.get(seperatorid);
 
-				if (!seperator.hasSeperatorBond()) { // this is a new seperator -> create bond + second seperator
+				if (!seperator.hasSeperatorBond()) { // this is a new seperator -> create bond + second
+					// seperator
 					SliderSeperator newseperator = new SliderSeperator(alSeperator.size());
 					alSeperator.add(newseperator);
 

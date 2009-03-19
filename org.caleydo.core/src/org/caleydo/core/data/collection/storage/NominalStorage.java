@@ -14,7 +14,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * 
  * @author Alexander Lex
  * @param <T>
- *          the type, anything is ok
+ *            the type, anything is ok
  */
 public class NominalStorage<T>
 	extends AStorage
@@ -35,15 +35,15 @@ public class NominalStorage<T>
 
 		bRawDataSet = true;
 
-		if (alData.isEmpty()) {
+		if (alData.isEmpty())
 			throw new IllegalStateException("Raw Data is empty");
-		}
 		else {
-			if (alData.get(0) instanceof String)
+			if (alData.get(0) instanceof String) {
 				rawDataType = ERawDataType.STRING;
-
-			else
+			}
+			else {
 				rawDataType = ERawDataType.OBJECT;
+			}
 
 			NominalCContainer sStorage = new NominalCContainer(alData);
 			hashCContainers.put(EDataRepresentation.RAW, sStorage);
@@ -53,13 +53,12 @@ public class NominalStorage<T>
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setPossibleValues(ArrayList<T> alPossibleValues) {
-		if (alPossibleValues.isEmpty()) {
+		if (alPossibleValues.isEmpty())
 			throw new IllegalStateException("Raw Data is empty");
-		}
 		else {
-			if (hashCContainers.get(EDataRepresentation.RAW) instanceof NominalCContainer) {
-				throw new IllegalStateException("Raw data format does not correspond to" + "specified value list.");
-			}
+			if (hashCContainers.get(EDataRepresentation.RAW) instanceof NominalCContainer)
+				throw new IllegalStateException("Raw data format does not correspond to"
+					+ "specified value list.");
 			else {
 				((NominalCContainer) hashCContainers.get(EDataRepresentation.RAW))
 					.setPossibleValues(alPossibleValues);

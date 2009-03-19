@@ -30,8 +30,7 @@ import org.caleydo.util.graph.IGraph;
  */
 public class Set
 	extends AUniqueObject
-	implements ISet
-{
+	implements ISet {
 
 	private ESetType setType;
 
@@ -63,8 +62,7 @@ public class Set
 
 	private boolean bIsSetHomogeneous = false;
 
-	public Set()
-	{
+	public Set() {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
 
 		GeneralManager.get().getSetManager().registerItem(this);
@@ -76,20 +74,17 @@ public class Set
 	}
 
 	@Override
-	public void setSetType(ESetType setType)
-	{
+	public void setSetType(ESetType setType) {
 		this.setType = setType;
 	}
 
 	@Override
-	public ESetType getSetType()
-	{
+	public ESetType getSetType() {
 		return setType;
 	}
 
 	@Override
-	public void addStorage(int iStorageID)
-	{
+	public void addStorage(int iStorageID) {
 		IStorageManager storageManager = GeneralManager.get().getStorageManager();
 
 		if (!storageManager.hasItem(iStorageID))
@@ -99,22 +94,21 @@ public class Set
 	}
 
 	@Override
-	public void addStorage(IStorage storage)
-	{
-		if (alStorages.isEmpty())
-		{
+	public void addStorage(IStorage storage) {
+		if (alStorages.isEmpty()) {
 			// iColumnLength = storage.size();
 			// rawDataType = storage.getRawDataType();
-			if (storage instanceof INumericalStorage)
+			if (storage instanceof INumericalStorage) {
 				bIsNumerical = true;
-			else
+			}
+			else {
 				bIsNumerical = false;
+			}
 
 			rawDataType = storage.getRawDataType();
 			iDepth = storage.size();
 		}
-		else
-		{
+		else {
 			// if (storage.size() != iColumnLength)
 			// throw new
 			// CaleydoRuntimeException("Storages must be of the same length",
@@ -135,42 +129,34 @@ public class Set
 	}
 
 	@Override
-	public IStorage get(int iIndex)
-	{
+	public IStorage get(int iIndex) {
 
 		return alStorages.get(iIndex);
 	}
 
 	@Override
-	public SetIterator VAIterator(int uniqueID)
-	{
+	public SetIterator VAIterator(int uniqueID) {
 		return new SetIterator(alStorages, hashSetVAs.get(iUniqueID));
 	}
 
 	@Override
-	public IStorage getStorageFromVA(int iUniqueID, int iIndex)
-	{
-		if (hashSetVAs.containsKey(iUniqueID))
-		{
+	public IStorage getStorageFromVA(int iUniqueID, int iIndex) {
+		if (hashSetVAs.containsKey(iUniqueID)) {
 			int iTmp = hashSetVAs.get(iUniqueID).get(iIndex);
 			return alStorages.get(iTmp);
 		}
 		else
-		{
 			throw new IllegalArgumentException("No such virtual array " + iUniqueID
 				+ " registered for storages");
-		}
 	}
 
 	@Override
-	public int size()
-	{
+	public int size() {
 		return alStorages.size();
 	}
 
 	@Override
-	public int sizeVA(int iUniqueID)
-	{
+	public int sizeVA(int iUniqueID) {
 		if (hashSetVAs.containsKey(iUniqueID))
 			return hashSetVAs.get(iUniqueID).size();
 		else if (hashStorageVAs.containsKey(iUniqueID))
@@ -181,91 +167,77 @@ public class Set
 	}
 
 	@Override
-	public int depth()
-	{
+	public int depth() {
 		return iDepth;
 	}
 
-	private void normalize()
-	{
+	private void normalize() {
 		bIsSetHomogeneous = false;
-		for (IStorage storage : alStorages)
-		{
+		for (IStorage storage : alStorages) {
 			storage.normalize();
 		}
 	}
 
-	private void normalizeGlobally()
-	{
+	private void normalizeGlobally() {
 		bIsSetHomogeneous = true;
-		for (IStorage storage : alStorages)
-		{
-			if (storage instanceof INumericalStorage)
-			{
+		for (IStorage storage : alStorages) {
+			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 
 				nStorage.normalizeWithExternalExtrema(getMin(), getMax());
 
 			}
 			else
-			{
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
 					+ "contains nominal storages, currently not supported!");
-			}
 		}
 	}
 
 	@Override
-	public void setLabel(String sLabel)
-	{
+	public void setLabel(String sLabel) {
 		this.sLabel = sLabel;
 	}
 
 	@Override
-	public String getLabel()
-	{
+	public String getLabel() {
 		return sLabel;
 	}
 
 	@Override
-	public Iterator<IStorage> iterator()
-	{
+	public Iterator<IStorage> iterator() {
 		return alStorages.iterator();
 	}
 
 	@Override
-	public double getMin()
-	{
-		if (dMin == Double.MAX_VALUE)
+	public double getMin() {
+		if (dMin == Double.MAX_VALUE) {
 			calculateGlobalExtrema();
+		}
 		return dMin;
 	}
 
 	@Override
-	public double getMax()
-	{
-		if (dMax == Double.MIN_VALUE)
+	public double getMax() {
+		if (dMax == Double.MIN_VALUE) {
 			calculateGlobalExtrema();
+		}
 		return dMax;
 	}
 
 	@Override
-	public void setMin(double dMin)
-	{
+	public void setMin(double dMin) {
 		bArtificialMin = true;
 		this.dMin = dMin;
 	}
 
 	@Override
-	public void setMax(double dMax)
-	{
+	public void setMax(double dMax) {
 		bArtificialMax = true;
 		this.dMax = dMax;
 	}
 
 	@Override
-	public double getRawForNormalized(double dNormalized)
-	{
+	public double getRawForNormalized(double dNormalized) {
 		if (!bIsSetHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce raw data on set level for inhomogenous sets. Access via storages");
@@ -277,8 +249,7 @@ public class Set
 		// return (dNormalized) * (getMax() + getMin());
 	}
 
-	public double getNormalizedForRaw(double dRaw)
-	{
+	public double getNormalizedForRaw(double dRaw) {
 		if (!bIsSetHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
@@ -290,60 +261,47 @@ public class Set
 	}
 
 	@Override
-	public void log10()
-	{
-		for (IStorage storage : alStorages)
-		{
-			if (storage instanceof INumericalStorage)
-			{
+	public void log10() {
+		for (IStorage storage : alStorages) {
+			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				nStorage.log10();
 			}
 			else
-			{
 				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
 					+ "contains nominal storages. This is not possible!");
-			}
 		}
 	}
 
 	@Override
-	public void log2()
-	{
+	public void log2() {
 
-		for (IStorage storage : alStorages)
-		{
-			if (storage instanceof INumericalStorage)
-			{
+		for (IStorage storage : alStorages) {
+			if (storage instanceof INumericalStorage) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				nStorage.log2();
 			}
 			else
-			{
 				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
 					+ "contains nominal storages. This is not possible!");
-			}
 		}
 	}
 
 	@Override
-	public int createStorageVA()
-	{
+	public int createStorageVA() {
 		VirtualArray virtualArray = new VirtualArray(depth());
 		return doCreateStorageVA(virtualArray);
 
 	}
 
 	@Override
-	public int createStorageVA(List<Integer> iAlSelections)
-	{
+	public int createStorageVA(List<Integer> iAlSelections) {
 		IVirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
 		return doCreateStorageVA(virtualArray);
 	}
 
 	@Override
-	public int createSetVA()
-	{
+	public int createSetVA() {
 		VirtualArray virtualArray = new VirtualArray(depth());
 		int iUniqueID = virtualArray.getID();
 		hashSetVAs.put(iUniqueID, virtualArray);
@@ -351,8 +309,7 @@ public class Set
 	}
 
 	@Override
-	public int createSetVA(ArrayList<Integer> iAlSelections)
-	{
+	public int createSetVA(ArrayList<Integer> iAlSelections) {
 		VirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
 		int iUniqueID = virtualArray.getID();
 
@@ -364,32 +321,28 @@ public class Set
 	}
 
 	@Override
-	public void resetVirtualArray(int iUniqueID)
-	{
-		if (hashSetVAs.containsKey(iUniqueID))
-		{
+	public void resetVirtualArray(int iUniqueID) {
+		if (hashSetVAs.containsKey(iUniqueID)) {
 			hashSetVAs.get(iUniqueID).reset();
 			return;
 		}
 
-		if (hashStorageVAs.containsKey(iUniqueID))
+		if (hashStorageVAs.containsKey(iUniqueID)) {
 			hashStorageVAs.get(iUniqueID).reset();
+		}
 	}
 
 	@Override
-	public void removeVirtualArray(int iUniqueID)
-	{
+	public void removeVirtualArray(int iUniqueID) {
 		hashSetVAs.remove(iUniqueID);
-		for (IStorage storage : alStorages)
-		{
+		for (IStorage storage : alStorages) {
 			storage.removeVirtualArray(iUniqueID);
 		}
 		hashStorageVAs.remove(iUniqueID);
 	}
 
 	@Override
-	public IVirtualArray getVA(int iUniqueID)
-	{
+	public IVirtualArray getVA(int iUniqueID) {
 		if (hashSetVAs.containsKey(iUniqueID))
 			return hashSetVAs.get(iUniqueID);
 		else if (hashStorageVAs.containsKey(iUniqueID))
@@ -398,36 +351,30 @@ public class Set
 			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
 	}
 
-	private void calculateGlobalExtrema()
-	{
+	private void calculateGlobalExtrema() {
 		double dTemp = 0.0;
-		if (alStorages.get(0) instanceof INumericalStorage)
-		{
-			for (IStorage storage : alStorages)
-			{
+		if (alStorages.get(0) instanceof INumericalStorage) {
+			for (IStorage storage : alStorages) {
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				dTemp = nStorage.getMin();
-				if (!bArtificialMin && dTemp < dMin)
+				if (!bArtificialMin && dTemp < dMin) {
 					dMin = dTemp;
+				}
 				dTemp = nStorage.getMax();
-				if (!bArtificialMax && dTemp > dMax)
+				if (!bArtificialMax && dTemp > dMax) {
 					dMax = dTemp;
+				}
 			}
 		}
 		else if (alStorages.get(0) instanceof INominalStorage)
-		{
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
-
-		}
 	}
 
-	private int doCreateStorageVA(IVirtualArray virtualArray)
-	{
+	private int doCreateStorageVA(IVirtualArray virtualArray) {
 		int iUniqueID = virtualArray.getID();
 		hashStorageVAs.put(iUniqueID, virtualArray);
-		for (IStorage storage : alStorages)
-		{
+		for (IStorage storage : alStorages) {
 			storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
 		}
 		return iUniqueID;
@@ -435,26 +382,21 @@ public class Set
 
 	@Override
 	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
-		boolean bIsSetHomogeneous)
-	{
+		boolean bIsSetHomogeneous) {
 		this.bIsSetHomogeneous = bIsSetHomogeneous;
 		if (externalDataRep == this.externalDataRep)
 			return;
 
 		this.externalDataRep = externalDataRep;
 
-		for (IStorage storage : alStorages)
-		{
-			if (storage instanceof INumericalStorage)
-			{
+		for (IStorage storage : alStorages) {
+			if (storage instanceof INumericalStorage) {
 				((INumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
 			}
 		}
 
-		if (bIsSetHomogeneous)
-		{
-			switch (externalDataRep)
-			{
+		if (bIsSetHomogeneous) {
+			switch (externalDataRep) {
 				case NORMAL:
 					normalizeGlobally();
 					break;
@@ -468,10 +410,8 @@ public class Set
 					break;
 			}
 		}
-		else
-		{
-			switch (externalDataRep)
-			{
+		else {
+			switch (externalDataRep) {
 				case NORMAL:
 					normalize();
 					break;
@@ -488,24 +428,20 @@ public class Set
 	}
 
 	@Override
-	public boolean isSetHomogeneous()
-	{
+	public boolean isSetHomogeneous() {
 		return bIsSetHomogeneous;
 	}
 
-	public void export(String sFileName, boolean bExportBucketInternal)
-	{
+	public void export(String sFileName, boolean bExportBucketInternal) {
 		SetExporter exporter = new SetExporter();
 		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, boolean bHierarchicalClustering)
-	{
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, boolean bHierarchicalClustering) {
 
 		Integer VAId = 0;
 
-		if (bIsNumerical == true && bIsSetHomogeneous == true)
-		{
+		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
 			long tic, toc, duration;
 
@@ -539,12 +475,12 @@ public class Set
 
 			AffinityClusterer clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
 
-//			System.out.println("determineSimilarities in progress ... ");
-//			tic = System.currentTimeMillis();
+			// System.out.println("determineSimilarities in progress ... ");
+			// tic = System.currentTimeMillis();
 			clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
-//			toc = System.currentTimeMillis();
-//			duration = (toc - tic) / 1000;
-//			System.out.println("determineSimilarities duration: ~" + duration + "sec");
+			// toc = System.currentTimeMillis();
+			// duration = (toc - tic) / 1000;
+			// System.out.println("determineSimilarities duration: ~" + duration + "sec");
 
 			System.out.println("affinityPropagation in progress ... ");
 			tic = System.currentTimeMillis();
@@ -558,30 +494,25 @@ public class Set
 
 			return VAId;
 		}
-		else
-		{
+		else {
 			System.out.println("Set is not numerical/homogeneous --> clustering not allowed !");
 			return null;
 		}
 	}
 
-	public void setClusteredGraph(CNode clusteredGraph)
-	{
+	public void setClusteredGraph(CNode clusteredGraph) {
 		this.clusteredGraph = clusteredGraph;
 	}
 
-	public CNode getClusteredGraph()
-	{
+	public CNode getClusteredGraph() {
 		return clusteredGraph;
 	}
 
-	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes)
-	{
+	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
 		this.alClusterSizes = alClusterSizes;
 	}
 
-	public ArrayList<Integer> getAlClusterSizes()
-	{
+	public ArrayList<Integer> getAlClusterSizes() {
 		return alClusterSizes;
 	}
 }

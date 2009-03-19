@@ -30,7 +30,7 @@ public interface IStorage
 	 * Set the raw data with data type float
 	 * 
 	 * @param fArRawData
-	 *          a float array containing the raw data
+	 *            a float array containing the raw data
 	 */
 	public void setRawData(float[] fArRawData);
 
@@ -38,7 +38,7 @@ public interface IStorage
 	 * Set the raw data with data type int
 	 * 
 	 * @param fArRawData
-	 *          a int array containing the raw data
+	 *            a int array containing the raw data
 	 */
 	public void setRawData(int[] iArRawData);
 
@@ -57,13 +57,13 @@ public interface IStorage
 	public ERawDataType getRawDataType();
 
 	/**
-	 * Returns a float value from a storage of which the kind has to be specified Use iterator when you want to
-	 * iterate over the whole field, it has better performance
+	 * Returns a float value from a storage of which the kind has to be specified Use iterator when you want
+	 * to iterate over the whole field, it has better performance
 	 * 
 	 * @param storageKind
-	 *          Specify which kind of storage (eg: raw, normalized)
+	 *            Specify which kind of storage (eg: raw, normalized)
 	 * @param iIndex
-	 *          The index of the requested Element
+	 *            The index of the requested Element
 	 * @return The associated value
 	 */
 	public float getFloat(EDataRepresentation storageKind, int iIndex);
@@ -81,35 +81,35 @@ public interface IStorage
 	 * specifies a position in the virtual array, where the actual indices on the container are stored.
 	 * 
 	 * @param storageKind
-	 *          specifies which kind of storage (eg: raw, normalized)
+	 *            specifies which kind of storage (eg: raw, normalized)
 	 * @param iIndex
-	 *          the index in the Virtual Array
+	 *            the index in the Virtual Array
 	 * @param iUniqeID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @return the value
 	 */
 	public float getFloatVA(EDataRepresentation storageKind, int iIndex, int iUniqeID);
 
 	/**
-	 * Returns an iterator which iterates over the indices stored in a virtual array and returns values from the
-	 * storage based on the ordering in the virtual array.
+	 * Returns an iterator which iterates over the indices stored in a virtual array and returns values from
+	 * the storage based on the ordering in the virtual array.
 	 * 
 	 * @param storageKind
-	 *          specifies which kind of storage (eg: raw, normalized)
+	 *            specifies which kind of storage (eg: raw, normalized)
 	 * @param iUniqeID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @return the iterator which iterates over the data based on the rules or order in the virtual array
 	 */
 	public FloatCContainerIterator floatVAIterator(EDataRepresentation storageKind, int iUniqueID);
 
 	/**
-	 * Returns a float value from a storage of which the kind has to be specified Use iterator when you want to
-	 * iterate over the whole field, it has better performance
+	 * Returns a float value from a storage of which the kind has to be specified Use iterator when you want
+	 * to iterate over the whole field, it has better performance
 	 * 
 	 * @param storageKind
-	 *          Specify which kind of storage (eg: raw, normalized, log)
+	 *            Specify which kind of storage (eg: raw, normalized, log)
 	 * @param iIndex
-	 *          The index of the requested Element
+	 *            The index of the requested Element
 	 * @return The associated value
 	 */
 	public int getInt(EDataRepresentation storageKind, int iIndex);
@@ -123,34 +123,34 @@ public interface IStorage
 	public IntCContainerIterator intIterator(EDataRepresentation storageKind);
 
 	/**
-	 * Returns the int associated with the value in the container through the virtual array. The index specifies
-	 * a position in the virtual array, where the actual indices on the container are stored.
+	 * Returns the int associated with the value in the container through the virtual array. The index
+	 * specifies a position in the virtual array, where the actual indices on the container are stored.
 	 * 
 	 * @param storageKind
-	 *          specifies which kind of storage (eg: raw, normalized)
+	 *            specifies which kind of storage (eg: raw, normalized)
 	 * @param iIndex
-	 *          the index in the Virtual Array
+	 *            the index in the Virtual Array
 	 * @param iUniqeID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @return the value
 	 */
 	public int getIntVA(EDataRepresentation storageKind, int iIndex, int iUniqueID);
 
 	/**
-	 * Returns an iterator which iterates over the indices stored in a virtual array and returns values from the
-	 * storage based on the ordering in the virtual array.
+	 * Returns an iterator which iterates over the indices stored in a virtual array and returns values from
+	 * the storage based on the ordering in the virtual array.
 	 * 
 	 * @param storageKind
-	 *          specifies which kind of storage (eg: raw, normalized)
+	 *            specifies which kind of storage (eg: raw, normalized)
 	 * @param iUniqeID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @return the iterator which iterates over the data based on the rules or order in the virtual array
 	 */
 	public IntCContainerIterator intVAIterator(EDataRepresentation storageKind, int iUniqueID);
 
 	/**
-	 * Returns a value of the type Number, from the representation chosen in storageKind, at the index specified
-	 * in iIndex
+	 * Returns a value of the type Number, from the representation chosen in storageKind, at the index
+	 * specified in iIndex
 	 * 
 	 * @storageKind specifies which kind of storage (eg: raw, normalized)
 	 * @iIndex the index of the element
@@ -162,7 +162,7 @@ public interface IStorage
 	 * Returns an iterator on the representation chosen in storageKind
 	 * 
 	 * @param storageKind
-	 *          specifies which kind of storage (eg: raw, normalized)
+	 *            specifies which kind of storage (eg: raw, normalized)
 	 * @return the iterator
 	 */
 	public Iterator<? extends Number> iterator(EDataRepresentation storageKind);
@@ -172,7 +172,7 @@ public interface IStorage
 	 * 
 	 * @iIndex the index in the virtual array
 	 * @param iUniqueID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @return the Number
 	 */
 	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID);
@@ -181,9 +181,9 @@ public interface IStorage
 	 * Returns an iterator on the representation chosen in storageKind via a virtual array
 	 * 
 	 * @param storageKind
-	 *          specifies which kind of storage (eg: raw, normalized)
+	 *            specifies which kind of storage (eg: raw, normalized)
 	 * @param iUniqueID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @return the iterator
 	 */
 	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID);

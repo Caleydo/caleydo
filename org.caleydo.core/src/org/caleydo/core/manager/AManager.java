@@ -30,9 +30,8 @@ public abstract class AManager<T extends IUniqueObject>
 
 	@Override
 	public T getItem(int iItemID) {
-		if (!hasItem(iItemID)) {
+		if (!hasItem(iItemID))
 			throw new IllegalArgumentException("Requested item with ID " + iItemID + " does not exist!");
-		}
 
 		return hashItems.get(iItemID);
 	}

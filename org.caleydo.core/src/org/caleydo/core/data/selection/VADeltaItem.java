@@ -28,7 +28,7 @@ public class VADeltaItem
 	 * {@link IVirtualArray#append(Integer)})
 	 * 
 	 * @param iNewElement
-	 *          the new element
+	 *            the new element
 	 * @return the created object
 	 */
 	public static VADeltaItem append(int iNewElement) {
@@ -43,7 +43,7 @@ public class VADeltaItem
 	 * {@link IVirtualArray#appendUnique(Integer)}) if the element does not yet exist in the virtual array
 	 * 
 	 * @param iNewElement
-	 *          the new element
+	 *            the new element
 	 * @return the created object
 	 */
 	public static VADeltaItem appendUnique(int iNewElement) {
@@ -57,9 +57,9 @@ public class VADeltaItem
 	 * Static factory for a new delta item that adds an element at a specific position of a virtual array
 	 * 
 	 * @param iIndex
-	 *          the place where the element is added (see {@link IVirtualArray#add(int, Integer)})
+	 *            the place where the element is added (see {@link IVirtualArray#add(int, Integer)})
 	 * @param iNewElement
-	 *          the new element
+	 *            the new element
 	 * @return the created object
 	 */
 	public static VADeltaItem add(int iIndex, int iNewElement) {
@@ -72,11 +72,11 @@ public class VADeltaItem
 
 	/**
 	 * Static factory for a new delta item that removes an element at a specific position of a virtual array
-	 * Take good care to remove items in the correct order, from back to front. Otherwise this can corrupt your
-	 * data.
+	 * Take good care to remove items in the correct order, from back to front. Otherwise this can corrupt
+	 * your data.
 	 * 
 	 * @param iIndex
-	 *          the place where the element is added (see {@link IVirtualArray#remove(int)})
+	 *            the place where the element is added (see {@link IVirtualArray#remove(int)})
 	 * @return the created object
 	 */
 	public static VADeltaItem remove(int iIndex) {
@@ -91,7 +91,7 @@ public class VADeltaItem
 	 * {@link IVirtualArray#removeByElement(int)} for further details.
 	 * 
 	 * @param iElement
-	 *          the element to be removed
+	 *            the element to be removed
 	 * @return the created object
 	 */
 	public static VADeltaItem removeElement(int iElement) {
@@ -106,7 +106,7 @@ public class VADeltaItem
 	 * {@link IVirtualArray#moveRight(int)} for further details.
 	 * 
 	 * @param iIndex
-	 *          the element to be moved
+	 *            the element to be moved
 	 * @return the created object
 	 */
 	public static VADeltaItem moveRight(int iIndex) {
@@ -121,7 +121,7 @@ public class VADeltaItem
 	 * {@link IVirtualArray#moveLeft(int)} for further details.
 	 * 
 	 * @param iIndex
-	 *          the element to be moved
+	 *            the element to be moved
 	 * @return the created object
 	 */
 	public static VADeltaItem moveLeft(int iIndex) {
@@ -136,9 +136,9 @@ public class VADeltaItem
 	 * target index. See {@link IVirtualArray#move(int, int)} for further details.
 	 * 
 	 * @param iSrcIndex
-	 *          the src index
+	 *            the src index
 	 * @param iTragetIndex
-	 *          the target index
+	 *            the target index
 	 * @return the created object
 	 */
 	public static VADeltaItem move(int iSrcIndex, int iTragetIndex) {
@@ -150,11 +150,11 @@ public class VADeltaItem
 	}
 
 	/**
-	 * Static Factory for new delta item that copies the element at the specified index and adds the new element
-	 * at iIndex + 1 {@link IVirtualArray#copy(int)} for further details.
+	 * Static Factory for new delta item that copies the element at the specified index and adds the new
+	 * element at iIndex + 1 {@link IVirtualArray#copy(int)} for further details.
 	 * 
 	 * @param iIndex
-	 *          the element to be copied
+	 *            the element to be copied
 	 * @return the created object
 	 */
 	public static VADeltaItem copy(int iIndex) {
@@ -170,9 +170,9 @@ public class VADeltaItem
 	 * argument here
 	 * 
 	 * @param operation
-	 *          the operation the delta item should carry out
+	 *            the operation the delta item should carry out
 	 * @param iVariable
-	 *          a integer variable, which can be either an index or an element id, depending on the use case
+	 *            a integer variable, which can be either an index or an element id, depending on the use case
 	 * @return the created object with the properties specified in operation
 	 */
 	public static VADeltaItem create(EVAOperation operation, int iVariable) {
@@ -192,7 +192,8 @@ public class VADeltaItem
 			case COPY:
 				return copy(iVariable);
 			default:
-				throw new IllegalArgumentException("Illegal number of arguments for operation " + operation + ".");
+				throw new IllegalArgumentException("Illegal number of arguments for operation " + operation
+					+ ".");
 		}
 	}
 
@@ -210,7 +211,7 @@ public class VADeltaItem
 	 * 
 	 * @return the index
 	 * @throws IllegalStateException
-	 *           if operation does not use an index
+	 *             if operation does not use an index
 	 */
 	public int getIndex() {
 		if (iIndex == -1)
@@ -224,7 +225,7 @@ public class VADeltaItem
 	 * 
 	 * @return the target index
 	 * @throws IllegalStateException
-	 *           if operation does not use a target index
+	 *             if operation does not use a target index
 	 */
 	public int getTargetIndex() {
 		if (iTargetIndex == -1)
@@ -237,7 +238,7 @@ public class VADeltaItem
 	 * 
 	 * @return the element
 	 * @throws IllegalStateException
-	 *           if operation does not use an element
+	 *             if operation does not use an element
 	 */
 	@Override
 	public int getPrimaryID() {

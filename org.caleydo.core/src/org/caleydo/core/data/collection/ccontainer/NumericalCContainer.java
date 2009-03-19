@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 
  * @author Alexander Lex
  * @param <T>
- *          the Type, can be anything that implements java.Number
+ *            the Type, can be anything that implements java.Number
  */
 
 public class NumericalCContainer<T extends Number>
@@ -30,15 +30,17 @@ public class NumericalCContainer<T extends Number>
 
 	@Override
 	public double getMin() {
-		if (dMin == Double.MAX_VALUE)
+		if (dMin == Double.MAX_VALUE) {
 			calculateMinMax();
+		}
 		return dMin;
 	}
 
 	@Override
 	public double getMax() {
-		if (dMax == Double.MIN_VALUE)
+		if (dMax == Double.MIN_VALUE) {
 			calculateMinMax();
+		}
 		return dMax;
 	}
 
@@ -55,8 +57,9 @@ public class NumericalCContainer<T extends Number>
 		for (int index = 0; index < alContainer.size(); index++) {
 			fTmp = alContainer.get(index).floatValue();
 			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
-			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
+			if (fArTarget[index] == Float.NEGATIVE_INFINITY) {
 				fArTarget[index] = Float.NaN;
+			}
 		}
 
 		return new FloatCContainer(fArTarget);
@@ -74,7 +77,7 @@ public class NumericalCContainer<T extends Number>
 	 * @param dMax
 	 * @return a new container with the normalized values
 	 * @throws IllegalAttributeException
-	 *           when dMin is >= dMax
+	 *             when dMin is >= dMax
 	 */
 	private FloatCContainer normalize(double dMin, double dMax) {
 
@@ -85,16 +88,19 @@ public class NumericalCContainer<T extends Number>
 
 		for (int iCount = 0; iCount < alContainer.size(); iCount++) {
 			if (Float.isNaN(alContainer.get(iCount).floatValue())
-				|| Double.isNaN(alContainer.get(iCount).doubleValue()))
+				|| Double.isNaN(alContainer.get(iCount).doubleValue())) {
 				fArTmpTarget[iCount] = Float.NaN;
+			}
 			else {
 
 				fArTmpTarget[iCount] =
 					(alContainer.get(iCount).floatValue() - (float) dMin) / ((float) dMax - (float) dMin);
-				if (fArTmpTarget[iCount] > 1)
+				if (fArTmpTarget[iCount] > 1) {
 					fArTmpTarget[iCount] = 1;
-				else if (fArTmpTarget[iCount] < 0)
+				}
+				else if (fArTmpTarget[iCount] < 0) {
 					fArTmpTarget[iCount] = 0;
+				}
 			}
 		}
 		return new FloatCContainer(fArTmpTarget);
@@ -105,15 +111,17 @@ public class NumericalCContainer<T extends Number>
 	 */
 	private void calculateMinMax() {
 		for (Number current : alContainer) {
-			if (Float.isNaN(current.floatValue()) || Double.isNaN(current.doubleValue()))
+			if (Float.isNaN(current.floatValue()) || Double.isNaN(current.doubleValue())) {
 				continue;
+			}
 
 			if (current.doubleValue() < dMin) {
 				dMin = current.doubleValue();
 				continue;
 			}
-			if (current.doubleValue() > dMax)
+			if (current.doubleValue() > dMax) {
 				dMax = current.doubleValue();
+			}
 		}
 		return;
 	}

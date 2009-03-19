@@ -102,7 +102,7 @@ public abstract class AStorageBasedView
 	 * Constructor for storage based views
 	 * 
 	 * @param setType
-	 *          from the type of set the kind of visualization is derived
+	 *            from the type of set the kind of visualization is derived
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
@@ -155,8 +155,9 @@ public abstract class AStorageBasedView
 		set = null;
 
 		for (ISet currentSet : alSets) {
-			if (currentSet.getSetType() == setType)
+			if (currentSet.getSetType() == setType) {
 				set = currentSet;
+			}
 		}
 
 		String sLevel =
@@ -176,9 +177,8 @@ public abstract class AStorageBasedView
 				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 			}
 		}
-		else {
+		else
 			throw new IllegalStateException("Unknown data filter level");
-		}
 
 		if (!mapVAIDs.isEmpty()) {
 
@@ -186,8 +186,9 @@ public abstract class AStorageBasedView
 			// and a big one
 
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
-				if (mapVAIDs.containsKey(eSelectionType))
+				if (mapVAIDs.containsKey(eSelectionType)) {
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+				}
 			}
 			iContentVAID = -1;
 			iStorageVAID = -1;
@@ -243,14 +244,16 @@ public abstract class AStorageBasedView
 					int iGraphItemID =
 						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
-					if (iGraphItemID == -1)
+					if (iGraphItemID == -1) {
 						continue;
+					}
 
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
 						(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
 
-					if (tmpPathwayVertexGraphItem == null)
+					if (tmpPathwayVertexGraphItem == null) {
 						continue;
+					}
 				}
 			}
 			alTempList.add(iCount);
@@ -291,20 +294,20 @@ public abstract class AStorageBasedView
 	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
 	 * 
 	 * @param iDType
-	 *          TODO
+	 *            TODO
 	 * @param selectionDelta
-	 *          the selection delta which should be represented
+	 *            the selection delta which should be represented
 	 * @throws InvalidAttributeValueException
-	 *           when the selectionDelta does not contain a valid type for this view
+	 *             when the selectionDelta does not contain a valid type for this view
 	 */
 	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException;
 
 	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta) {
-//		 generalManager.getLogger().log(
-//		 Level.INFO,
-//		 "Update called by " + eventTrigger.getClass().getSimpleName()
-//		 + ", received in: " + this.getClass().getSimpleName());
+		// generalManager.getLogger().log(
+		// Level.INFO,
+		// "Update called by " + eventTrigger.getClass().getSimpleName()
+		// + ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
@@ -346,9 +349,8 @@ public abstract class AStorageBasedView
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
 			selectionManager = contentSelectionManager;
 		}
-		else {
+		else
 			return;
-		}
 
 		reactOnVAChanges(delta);
 		selectionManager.setVADelta(delta);
@@ -375,8 +377,8 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * This method is called when new elements are added from external - if you need to react to it do it here,
-	 * if not don't do anything.
+	 * This method is called when new elements are added from external - if you need to react to it do it
+	 * here, if not don't do anything.
 	 */
 	protected void initForAddedElements() {
 	}
@@ -415,8 +417,9 @@ public abstract class AStorageBasedView
 				break;
 			case VA_UPDATE:
 				if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
-					&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR)
+					&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR) {
 					break;
+				}
 				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
 					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
 				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
@@ -428,17 +431,21 @@ public abstract class AStorageBasedView
 					case DAVID:
 					case REFSEQ_MRNA_INT:
 					case EXPRESSION_INDEX:
-						contentSelectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
+						contentSelectionManager.executeSelectionCommands(commandEventContainer
+							.getSelectionCommands());
 						break;
 					case EXPERIMENT_INDEX:
-						storageSelectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
+						storageSelectionManager.executeSelectionCommands(commandEventContainer
+							.getSelectionCommands());
 						break;
 				}
 				break;
 			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer = (ViewCommandEventContainer) eventContainer;
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW)
+				ViewCommandEventContainer viewCommandEventContainer =
+					(ViewCommandEventContainer) eventContainer;
+				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
 					setDisplayListDirty();
+				}
 				break;
 		}
 	}
@@ -447,7 +454,7 @@ public abstract class AStorageBasedView
 	 * Handles the creation of {@link SelectedElementRep} according to the data in a selectionDelta
 	 * 
 	 * @param selectionDelta
-	 *          the selection data that should be handled
+	 *            the selection data that should be handled
 	 */
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
 		try {
@@ -461,8 +468,9 @@ public abstract class AStorageBasedView
 					// if (!(item.getSelectionType() ==
 					// ESelectionType.MOUSE_OVER
 					// || item.getSelectionType() == ESelectionType.SELECTION))
-					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER))
+					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER)) {
 						continue;
+					}
 
 					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
 						iStorageIndex = item.getPrimaryID();
@@ -506,7 +514,8 @@ public abstract class AStorageBasedView
 			}
 		}
 		catch (InvalidAttributeValueException e) {
-			generalManager.getLogger().log(Level.WARNING, "Can not handle data type of update in selectionDelta");
+			generalManager.getLogger().log(Level.WARNING,
+				"Can not handle data type of update in selectionDelta");
 		}
 	}
 
@@ -539,7 +548,7 @@ public abstract class AStorageBasedView
 	 * Set the number of samples which are shown in the view. The distribution is purely random
 	 * 
 	 * @param iNumberOfRandomElements
-	 *          the number
+	 *            the number
 	 */
 	public synchronized final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
 		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling) {
@@ -556,7 +565,7 @@ public abstract class AStorageBasedView
 	 * Set the number of samples which are shown in one texture
 	 * 
 	 * @param iNumberOfSamplesPerTexture
-	 *          the number
+	 *            the number
 	 */
 	public synchronized final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
 		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
@@ -566,7 +575,7 @@ public abstract class AStorageBasedView
 	 * Set the number of samples which are shown in one heat map
 	 * 
 	 * @param iNumberOfSamplesPerHeatmap
-	 *          the number
+	 *            the number
 	 */
 	public synchronized final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
 		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;

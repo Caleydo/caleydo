@@ -103,8 +103,9 @@ public class GLGlyphSliderView
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml) {
-				if (l instanceof JoglMouseListener)
+				if (l instanceof JoglMouseListener) {
 					((JoglMouseListener) l).setNavigationModes(true, false, false);
+				}
 			}
 		}
 
@@ -129,13 +130,15 @@ public class GLGlyphSliderView
 
 		int slidercounter = 0;
 		for (GlyphAttributeType typ : types) {
-			if (typ.doesAutomaticAttribute())
+			if (typ.doesAutomaticAttribute()) {
 				continue;
+			}
 
 			alGlyphAttributeTypes.add(typ);
 
 			// slider
-			GLSliderMiniView slider = new GLSliderMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+			GLSliderMiniView slider =
+				new GLSliderMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
 			alSlider.add(slider);
 
 			slider.setBorderStyle(borderStyle);
@@ -290,8 +293,9 @@ public class GLGlyphSliderView
 					int internalColumn = alGlyphAttributeTypes.get(i).getInternalColumnNumber();
 
 					for (Float o : ordinal) {
-						if (!columnIndexMap.containsKey(internalColumn))
+						if (!columnIndexMap.containsKey(internalColumn)) {
 							columnIndexMap.put(internalColumn, new HashSet<Integer>());
+						}
 
 						columnIndexMap.get(internalColumn).add(o.intValue());
 					}
@@ -308,14 +312,17 @@ public class GLGlyphSliderView
 						int param = g.getParameter(internalindex);
 						HashSet<Integer> p = columnIndexMap.get(internalindex);
 
-						if (!p.contains(param))
+						if (!p.contains(param)) {
 							isselected = false;
+						}
 					}
 
-					if (isselected)
+					if (isselected) {
 						selectionManager.addToType(ESelectionType.SELECTION, g.getID());
-					else
+					}
+					else {
 						selectionManager.addToType(ESelectionType.DESELECTED, g.getID());
+					}
 
 				}
 

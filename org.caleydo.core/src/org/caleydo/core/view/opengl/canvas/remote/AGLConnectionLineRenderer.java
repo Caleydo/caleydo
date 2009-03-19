@@ -88,8 +88,8 @@ public abstract class AGLConnectionLineRenderer {
 					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
 				}
 				else {
-					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, hashViewToCenterPoint.get(iKey),
-						fArColor);
+					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, hashViewToCenterPoint
+						.get(iKey), fArColor);
 				}
 			}
 
@@ -216,8 +216,8 @@ public abstract class AGLConnectionLineRenderer {
 		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
 		float[] fArPoints =
 			{ arSplinePoints[0].x(), arSplinePoints[0].y(), arSplinePoints[0].z(), arSplinePoints[1].x(),
-					arSplinePoints[1].y(), arSplinePoints[1].z(), arSplinePoints[2].x(), arSplinePoints[2].y(),
-					arSplinePoints[2].z() };
+					arSplinePoints[1].y(), arSplinePoints[1].z(), arSplinePoints[2].x(),
+					arSplinePoints[2].y(), arSplinePoints[2].z() };
 		splinePoints.put(fArPoints);
 		splinePoints.rewind();
 
@@ -376,14 +376,14 @@ public abstract class AGLConnectionLineRenderer {
 
 				float fTransformedX = vecOriginalPoint.x() / 8f * fPlaneWidth;
 				float fTransformedY = vecOriginalPoint.y() / 8f * fBucketHeight * 2f;// * (4 + fYTop - (-4 +
-																																							// fYBottom));
+				// fYBottom));
 
 				float fXScaling = fTransformedX / fPlaneWidth;
 				fTransformedY += fArHeadPosition[1] * fXScaling;
 
 				vecWiiTransformedPoint =
 					new Vec3f(fTransformedX, -fBucketHeight + fTransformedY, vecOriginalPoint.z()); // / 4f *
-																																													// fBucketHeight
+				// fBucketHeight
 			}
 			else if (stackLevel.getElementByPositionIndex(3) == remoteLevelElement) {
 				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;
@@ -392,16 +392,17 @@ public abstract class AGLConnectionLineRenderer {
 
 				float fTransformedX = vecOriginalPoint.x() / 8f * fPlaneWidth;
 				float fTransformedY = vecOriginalPoint.y() / 8f * fBucketHeight * 2f;// * (4 + fYTop - (-4 +
-																																							// fYBottom));
+				// fYBottom));
 
 				float fXScaling = fTransformedX / fPlaneWidth;
 				fTransformedY += fArHeadPosition[1] * (1 - fXScaling);
 
 				vecWiiTransformedPoint =
-					new Vec3f(fPlaneWidth - fTransformedX, -fBucketHeight + fTransformedY, vecOriginalPoint.z()); // /
-																																																				// 4f
-																																																				// *
-																																																				// fBucketHeight
+					new Vec3f(fPlaneWidth - fTransformedX, -fBucketHeight + fTransformedY, vecOriginalPoint
+						.z()); // /
+				// 4f
+				// *
+				// fBucketHeight
 			}
 			else if (stackLevel.getElementByPositionIndex(0) == remoteLevelElement) {
 				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;
@@ -409,14 +410,15 @@ public abstract class AGLConnectionLineRenderer {
 				float fPlaneWidth = (float) Math.sqrt((double) (Math.pow(fAK, 2) + Math.pow(fGK, 2)));
 
 				float fTransformedX = vecOriginalPoint.x() / 8f * fBucketHeight * 2f;
-				float fTransformedY = vecOriginalPoint.y() / 8f * fPlaneWidth;// * (4 + fYTop - (-4 + fYBottom));
+				float fTransformedY = vecOriginalPoint.y() / 8f * fPlaneWidth;// * (4 + fYTop - (-4 +
+				// fYBottom));
 
 				float fYScaling = fTransformedY / fPlaneWidth;
 				// fTransformedX += fArHeadPosition[0] * fYScaling;
 
 				vecWiiTransformedPoint =
-					new Vec3f((fBucketWidth + fBucketBottomLeft) * (1 - fYScaling) + fTransformedX, fPlaneWidth
-						- fTransformedY, vecOriginalPoint.z());
+					new Vec3f((fBucketWidth + fBucketBottomLeft) * (1 - fYScaling) + fTransformedX,
+						fPlaneWidth - fTransformedY, vecOriginalPoint.z());
 			}
 			else if (stackLevel.getElementByPositionIndex(2) == remoteLevelElement) {
 				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;

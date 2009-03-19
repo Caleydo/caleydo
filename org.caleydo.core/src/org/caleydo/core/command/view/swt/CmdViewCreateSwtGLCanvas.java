@@ -37,7 +37,8 @@ public class CmdViewCreateSwtGLCanvas
 		swtGLCanvasView.drawView();
 
 		if (iExternalID != -1) {
-			generalManager.getIDManager().mapInternalToExternalID(swtGLCanvasView.getGLCanvasID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(swtGLCanvasView.getGLCanvasID(),
+				iExternalID);
 		}
 
 		commandManager.runDoCommand(this);

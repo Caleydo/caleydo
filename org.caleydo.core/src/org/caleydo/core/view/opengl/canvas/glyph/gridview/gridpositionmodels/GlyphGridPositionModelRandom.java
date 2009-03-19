@@ -33,8 +33,9 @@ public class GlyphGridPositionModelRandom
 
 			} while (!bFoundplace && counter < 10000000);
 
-			if (counter >= 10000000)
+			if (counter >= 10000000) {
 				System.err.println("no place for glyph " + g.getID() + " found");
+			}
 
 			if (bFoundplace) {
 				glyphMap.get(x).get(y).setGlyph(g);

@@ -5,9 +5,9 @@ package org.caleydo.core.util.collection;
  * 
  * @author Alexander Lex
  * @param <T>
- *          first type
+ *            first type
  * @param <E>
- *          second type
+ *            second type
  */
 public class Pair<T, E> {
 	T first;
@@ -17,9 +17,9 @@ public class Pair<T, E> {
 	 * Constructor
 	 * 
 	 * @param first
-	 *          the first value
+	 *            the first value
 	 * @param second
-	 *          the second value
+	 *            the second value
 	 */
 	public Pair(T first, E second) {
 		this.first = first;

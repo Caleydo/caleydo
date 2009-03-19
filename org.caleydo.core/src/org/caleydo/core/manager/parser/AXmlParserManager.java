@@ -40,9 +40,9 @@ public abstract class AXmlParserManager
 	protected IXmlParserHandler currentHandler = null;
 
 	/**
-	 * Contains the Handler of the previous opening tags. If a new tag is opened the currentHandler is stored as
-	 * last element of this vector. If a closing tag is processed the currentHandler is set to the last element
-	 * in the vector and the last element in the vector is removed.
+	 * Contains the Handler of the previous opening tags. If a new tag is opened the currentHandler is stored
+	 * as last element of this vector. If a closing tag is processed the currentHandler is set to the last
+	 * element in the vector and the last element in the vector is removed.
 	 */
 	protected LinkedList<IXmlParserHandler> llXmlParserStack;
 
@@ -67,11 +67,10 @@ public abstract class AXmlParserManager
 
 	protected final boolean closeCurrentTag() {
 
-		if (this.currentHandler == null) {
+		if (this.currentHandler == null)
 			throw new IllegalStateException(
 				"AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
-			// return false;
-		}
+		// return false;
 
 		IXmlParserHandler buffer = currentHandler;
 
@@ -85,13 +84,12 @@ public abstract class AXmlParserManager
 
 			// llXmlParserStack.removeLast();
 
-			if (!llXmlParserStack.remove(buffer)) {
+			if (!llXmlParserStack.remove(buffer))
 				// generalManager.logMsg(
 				// "AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!"
 				// ,
 				// LoggerType.MINOR_ERROR);
 				return false;
-			}
 
 			/**
 			 * Get previous item from stack ...
@@ -139,26 +137,23 @@ public abstract class AXmlParserManager
 
 		assert handler != null : "Can not handle null pointer as handler";
 
-		if (bProcessingXmlDataNow) {
+		if (bProcessingXmlDataNow)
 			throw new IllegalStateException(
 				"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");
-			// return false;
-		}
+		// return false;
 
-		if (hashTag2XmlParser.contains(handler)) {
+		if (hashTag2XmlParser.contains(handler))
 			throw new IllegalStateException(
 				"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
-			// return false;
-		}
+		// return false;
 
 		String key = handler.getXmlActivationTag();
 
-		if (hashTag2XmlParser.containsKey(key)) {
+		if (hashTag2XmlParser.containsKey(key))
 			throw new IllegalStateException(
 				"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String ["
 					+ handler.getXmlActivationTag() + "] is already registered!");
-			// return false;
-		}
+		// return false;
 
 		hashTag2XmlParser.put(key, handler);
 
@@ -175,23 +170,20 @@ public abstract class AXmlParserManager
 
 	@Override
 	public final void unregisterSaxHandler(final String sActivationXmlTag) {
-		if (bProcessingXmlDataNow) {
+		if (bProcessingXmlDataNow)
 			throw new IllegalStateException(
 				"AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");
-			// return false;
-		}
+		// return false;
 
-		if (!hashTag2XmlParser.containsKey(sActivationXmlTag)) {
+		if (!hashTag2XmlParser.containsKey(sActivationXmlTag))
 			throw new IllegalStateException(
 				"AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
-			// return false;
-		}
+		// return false;
 
 		IXmlParserHandler parserHandler = hashTag2XmlParser.remove(sActivationXmlTag);
 
-		if (parserHandler == null) {
+		if (parserHandler == null)
 			throw new IllegalStateException("Cannot unregister parser handler!");
-		}
 
 		return;
 	}

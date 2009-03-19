@@ -45,7 +45,8 @@ public class GLParCoordsView
 		}
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, glCanvas.getID(), true);
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, glCanvas.getID(),
+			true);
 	}
 
 	public static void createToolBarItems(int iViewID) {

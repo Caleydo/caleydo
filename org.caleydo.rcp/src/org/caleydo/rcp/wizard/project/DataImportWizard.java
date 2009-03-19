@@ -67,9 +67,8 @@ public class DataImportWizard
 
 	@Override
 	public boolean canFinish() {
-		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete()) {
+		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete())
 			return true;
-		}
 
 		return false;
 	}

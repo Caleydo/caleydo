@@ -45,9 +45,8 @@ public final class ParameterKeyValueDataAndDefault<T>
 
 		T buffer = hashKey2Generic.get(key);
 
-		if (buffer == null) {
+		if (buffer == null)
 			return hashKey2DefaultValue.get(key);
-		}
 
 		return buffer;
 	}
@@ -95,9 +94,8 @@ public final class ParameterKeyValueDataAndDefault<T>
 	@Override
 	public boolean containsValueAndDefaultValue(final String key) {
 
-		if (hashKey2Generic.containsKey(key) && hashKey2DefaultValue.containsKey(key)) {
+		if (hashKey2Generic.containsKey(key) && hashKey2DefaultValue.containsKey(key))
 			return true;
-		}
 		return false;
 	}
 
@@ -116,9 +114,8 @@ public final class ParameterKeyValueDataAndDefault<T>
 	@Override
 	public String toString() {
 
-		if (this.isEmpty()) {
+		if (this.isEmpty())
 			return "-";
-		}
 
 		StringBuffer strBuffer = new StringBuffer();
 

@@ -43,8 +43,9 @@ public class CmdExternalFlagSetter
 			// Pathway settings should apply to all pathways
 			for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners()) {
-				if (!(glEventListener instanceof GLPathway))
+				if (!(glEventListener instanceof GLPathway)) {
 					continue;
+				}
 
 				switch (externalFlagSetterType) {
 					case PATHWAY_GENE_MAPPING:
@@ -121,10 +122,12 @@ public class CmdExternalFlagSetter
 					glyphview.setPositionModel(EIconIDs.DISPLAY_PLUS);
 					return;
 				case GLYPH_SELECTION:
-					if (!bFlag)
+					if (!bFlag) {
 						glyphview.clearAllSelections();
-					else
+					}
+					else {
 						glyphview.removeUnselected();
+					}
 
 					return;
 			}

@@ -42,7 +42,7 @@ public interface ICommandManager
 	 * 
 	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(ECommandType)
 	 * @param phAttributes
-	 *          Define several attributes and assign them in new Command
+	 *            Define several attributes and assign them in new Command
 	 * @return new Command with attributes defined in phAttributes
 	 */
 	public ICommand createCommand(final IParameterHandler phAttributes);
@@ -59,7 +59,7 @@ public interface ICommandManager
 	 * Add reference to one ICommandListener object.
 	 * 
 	 * @param addCommandListener
-	 *          adds reference to ICommandListener object.
+	 *            adds reference to ICommandListener object.
 	 */
 	public void addCommandListener(ICommandListener addCommandListener);
 
@@ -67,7 +67,7 @@ public interface ICommandManager
 	 * Remove reference to one ICommandListener object.
 	 * 
 	 * @param removeCommandListener
-	 *          removes references to ICommandListener object.
+	 *            removes references to ICommandListener object.
 	 * @return TRUE if the reference was removed, false if the reference was not found.
 	 */
 	public boolean removeCommandListener(ICommandListener removeCommandListener);
@@ -76,7 +76,7 @@ public interface ICommandManager
 	 * Tests if the reference to one ICommandListener object exists.
 	 * 
 	 * @param hasCommandListener
-	 *          reference to be tested
+	 *            reference to be tested
 	 * @return true if the reference is bound to this ICommandManager
 	 */
 	public boolean hasCommandListener(ICommandListener hasCommandListener);
@@ -86,7 +86,7 @@ public interface ICommandManager
 	 * uniqueSystem wide Id.
 	 * 
 	 * @param iCmdQueueId
-	 *          commandQueueId
+	 *            commandQueueId
 	 * @return command queue
 	 */
 	public ICommandQueue getCommandQueueByCmdQueueId(final int iCmdQueueId);
@@ -95,13 +95,14 @@ public interface ICommandManager
 	 * Tests if a iCmdQueueId is registered with a CommandQueue object.
 	 * 
 	 * @param iCmdQueueId
-	 *          test this id
+	 *            test this id
 	 * @return TRUE if an CommandQueue is bound that iCmdQueueId
 	 */
 	public boolean hasCommandQueueId(final int iCmdQueueId);
 
 	/**
-	 * Register a org.caleydo.core.command.ICommand after its doCommand() method was called. Used for redo-undo.
+	 * Register a org.caleydo.core.command.ICommand after its doCommand() method was called. Used for
+	 * redo-undo.
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 * @param runCmd

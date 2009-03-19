@@ -24,8 +24,8 @@ public enum MementoType {
 	RELATIVE("relative memento; contains incremental states, which are proccessed to obtain state"),
 
 	/**
-	 * This idicates, that this memento was created by a view and not by an GUI object. View mementos in general
-	 * store more data and or larger than GUI-mementos.
+	 * This idicates, that this memento was created by a view and not by an GUI object. View mementos in
+	 * general store more data and or larger than GUI-mementos.
 	 */
 	VIEW("memento of a hole view; may contain several sub-mementos"),
 
@@ -45,7 +45,7 @@ public enum MementoType {
 	 * Constructor
 	 * 
 	 * @param tooltip
-	 *          describing, that kind of memento this is.
+	 *            describing, that kind of memento this is.
 	 */
 	private MementoType(String tooltip) {
 

@@ -17,8 +17,8 @@ import java.util.Iterator;
  * 
  * @author Alexander Lex
  * @param <E>
- *          an arbitrary type. Make sure that {@link Object#equals(Object)} and {@link Object#hashCode()} are
- *          correctly implemented
+ *            an arbitrary type. Make sure that {@link Object#equals(Object)} and {@link Object#hashCode()}
+ *            are correctly implemented
  */
 public class UniqueList<E>
 	implements Iterable<E>, Collection<E> {
@@ -66,8 +66,9 @@ public class UniqueList<E>
 	public boolean addAll(Collection<? extends E> collection) {
 		boolean bChanged = false;
 		for (E element : collection) {
-			if (add(element))
+			if (add(element)) {
 				bChanged = true;
+			}
 		}
 		return bChanged;
 	}
@@ -88,8 +89,9 @@ public class UniqueList<E>
 	public boolean containsAll(Collection<?> collection) {
 		boolean bChanged = true;
 		for (Object element : collection) {
-			if (!hashElements.containsKey(element))
+			if (!hashElements.containsKey(element)) {
 				bChanged = false;
+			}
 		}
 		return bChanged;
 	}
@@ -109,8 +111,9 @@ public class UniqueList<E>
 	public boolean removeAll(Collection<?> collection) {
 		boolean bChanged = false;
 		for (Object element : collection) {
-			if (hashElements.remove(element) != null)
+			if (hashElements.remove(element) != null) {
 				bChanged = true;
+			}
 		}
 		alElements.removeAll(collection);
 		return bChanged;

@@ -57,11 +57,11 @@ public abstract class AGLViewPart
 	 * This class creates the GL event listener contained in a RCP view for a RCP view.
 	 * 
 	 * @param glViewType
-	 *          The type of view. See {@link ECommandType}
+	 *            The type of view. See {@link ECommandType}
 	 * @param iParentCanvasID
-	 *          the id of canvas where you want to render
+	 *            the id of canvas where you want to render
 	 * @param bRegisterToOverallMediator
-	 *          true if you want this to listen and send to main mediator
+	 *            true if you want this to listen and send to main mediator
 	 * @return the ID of the view
 	 */
 	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID,
@@ -85,7 +85,8 @@ public abstract class AGLViewPart
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
-			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iAlSets, iParentCanvasID);
+			cmdView
+				.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iAlSets, iParentCanvasID);
 		}
 
 		cmdView.doCommand();

@@ -84,8 +84,8 @@ public class PathwayManager
 	}
 
 	@Override
-	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName, final String sTitle,
-		final String sImageLink, final String sExternalLink) {
+	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
+		final String sTitle, final String sImageLink, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
 
 		registerItem(pathway);
@@ -118,8 +118,9 @@ public class PathwayManager
 				// Ignore the found pathway if it has the same name but is
 				// contained
 				// in a different database
-				if (getItem(iPathwayID).getType() != ePathwayDatabaseType)
+				if (getItem(iPathwayID).getType() != ePathwayDatabaseType) {
 					continue;
+				}
 
 				return iPathwayID;
 			}

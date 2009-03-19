@@ -106,7 +106,8 @@ public class JoglMouseListener
 
 			if (bMouseLeft_StandbyZoom) {
 				/*
-				 * first button pressed was "middle" and it is still pressed, but also "right" button is pressed now..
+				 * first button pressed was "middle" and it is still pressed, but also "right" button is
+				 * pressed now..
 				 */
 				bMouseMiddleButtonDown = true;
 			}
@@ -150,8 +151,8 @@ public class JoglMouseListener
 
 			if (bMouseRight_StandbyRotate) {
 				/*
-				 * first button pressed was "right" and now "left" button is released ==> same state as if only
-				 * "right" button was pressed.
+				 * first button pressed was "right" and now "left" button is released ==> same state as if
+				 * only "right" button was pressed.
 				 */
 				bMouseRightButtonDown = true;
 			}
@@ -161,8 +162,8 @@ public class JoglMouseListener
 
 			if (bMouseLeft_StandbyZoom) {
 				/*
-				 * First "left" button was pressed and not released since and "right" button was pressed now ==>
-				 * emmulate "middle" button
+				 * First "left" button was pressed and not released since and "right" button was pressed now
+				 * ==> emmulate "middle" button
 				 */
 				bMouseMiddleButtonDown = false;
 			}

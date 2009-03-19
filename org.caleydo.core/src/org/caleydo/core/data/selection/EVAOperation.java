@@ -39,8 +39,8 @@ public enum EVAOperation {
 	 */
 	MOVE_LEFT,
 	/**
-	 * Copy an element at a specific index. The result will be added at index + 1, the rest will be moved one to
-	 * the right
+	 * Copy an element at a specific index. The result will be added at index + 1, the rest will be moved one
+	 * to the right
 	 */
 	COPY
 }

@@ -23,7 +23,8 @@ public class EnzymeCodeConverter {
 	public EnzymeCodeConverter()
 		throws IOException {
 
-		writer_GENE_ID_2_ENZYME_CODE = new PrintWriter("data/MicroarrayData/mapping/gene_id_2_enzyme_code.map");
+		writer_GENE_ID_2_ENZYME_CODE =
+			new PrintWriter("data/MicroarrayData/mapping/gene_id_2_enzyme_code.map");
 	}
 
 	protected void convertData() throws IOException {

@@ -27,8 +27,8 @@ public interface IDelta<T extends IDeltaItem>
 	public EIDType getIDType();
 
 	/**
-	 * Get the type of the secondary ID, which has to be listed in {@link EIDType}. Returns null if no internal
-	 * ID type was set
+	 * Get the type of the secondary ID, which has to be listed in {@link EIDType}. Returns null if no
+	 * internal ID type was set
 	 * 
 	 * @return the type of the internal id
 	 */
@@ -45,7 +45,7 @@ public interface IDelta<T extends IDeltaItem>
 	 * Add a new item to the delta
 	 * 
 	 * @param deltaItem
-	 *          the delta item
+	 *            the delta item
 	 */
 	public void add(T deltaItem);
 

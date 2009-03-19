@@ -30,17 +30,21 @@ public class BorderRenderStyle
 	}
 
 	public void setBorder(int borderpart, boolean onoff) {
-		if ((borderpart & BORDER.LEFT) == BORDER.LEFT)
+		if ((borderpart & BORDER.LEFT) == BORDER.LEFT) {
 			bBorderLeft = onoff;
+		}
 
-		if ((borderpart & BORDER.TOP) == BORDER.TOP)
+		if ((borderpart & BORDER.TOP) == BORDER.TOP) {
 			bBorderTop = onoff;
+		}
 
-		if ((borderpart & BORDER.RIGHT) == BORDER.RIGHT)
+		if ((borderpart & BORDER.RIGHT) == BORDER.RIGHT) {
 			bBorderRight = onoff;
+		}
 
-		if ((borderpart & BORDER.BOTTOM) == BORDER.BOTTOM)
+		if ((borderpart & BORDER.BOTTOM) == BORDER.BOTTOM) {
 			bBorderBottom = onoff;
+		}
 
 	}
 

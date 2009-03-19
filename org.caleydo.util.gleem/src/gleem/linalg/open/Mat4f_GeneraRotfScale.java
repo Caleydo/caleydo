@@ -51,7 +51,7 @@ public class Mat4f_GeneraRotfScale
 
 	/**
 	 * @param scale
-	 *          the scale to set
+	 *            the scale to set
 	 */
 	public final void setScale(final Vec3f scale) {
 
@@ -130,7 +130,7 @@ public class Mat4f_GeneraRotfScale
 
 	/**
 	 * @param rotation
-	 *          the rotation to set
+	 *            the rotation to set
 	 */
 	public final void setAllAndUpdate(final Vec3f centerOfRotation, final Vec3f scale, final Rotf rotation) {
 

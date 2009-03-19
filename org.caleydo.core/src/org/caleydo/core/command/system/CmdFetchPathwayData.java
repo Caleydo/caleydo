@@ -76,8 +76,8 @@ public class CmdFetchPathwayData
 	}
 
 	public void setAttributes(final Display display, final ProgressBar progressBarKeggPathwayCacher,
-		final ProgressBar progressBarKeggPathwayImageCacher, final ProgressBar progressBarBioCartaPathwayCacher,
-		final DialogPage parentPage) {
+		final ProgressBar progressBarKeggPathwayImageCacher,
+		final ProgressBar progressBarBioCartaPathwayCacher, final DialogPage parentPage) {
 		this.display = display;
 		// this.progressBarKeggPathwayCacher = progressBarKeggPathwayCacher;
 		// this.progressBarKeggPathwayImageCacher =
@@ -131,7 +131,8 @@ public class CmdFetchPathwayData
 					}
 
 					try {
-						generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK, true);
+						generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK,
+							true);
 						generalManager.getPreferenceStore().setValue(PreferenceConstants.LAST_PATHWAY_UPDATE,
 							getDateTime());
 						generalManager.getPreferenceStore().save();
@@ -187,9 +188,8 @@ public class CmdFetchPathwayData
 			String[] children = dir.list();
 			for (String element : children) {
 				boolean success = deleteDir(new File(dir, element));
-				if (!success) {
+				if (!success)
 					return false;
-				}
 			}
 		}
 

@@ -31,11 +31,13 @@ public class ChangeViewModeSecondaryScatterplotAxisAction
 		super(iViewID);
 		this.axisnum = axis;
 
-		if (axis == 0)
+		if (axis == 0) {
 			setText("X");
+		}
 
-		if (axis == 1)
+		if (axis == 1) {
 			setText("Y");
+		}
 
 		setToolTipText(TEXT);
 
@@ -66,8 +68,9 @@ public class ChangeViewModeSecondaryScatterplotAxisAction
 	 * This is called in a menu bar
 	 */
 	public Menu getMenu(Menu parent) {
-		if (menu != null)
+		if (menu != null) {
 			menu.dispose();
+		}
 
 		menu = new Menu(parent);
 
@@ -82,13 +85,15 @@ public class ChangeViewModeSecondaryScatterplotAxisAction
 			Action axisAction = new Action(name) {
 				@Override
 				public void run() {
-					if (axisnum == 0)
+					if (axisnum == 0) {
 						triggerCmdExternalObjectSetter(list.get(name),
 							EExternalObjectSetterType.GLYPH_CHANGE_SCATTERPLOT_AXIS_X);
+					}
 
-					if (axisnum == 1)
+					if (axisnum == 1) {
 						triggerCmdExternalObjectSetter(list.get(name),
 							EExternalObjectSetterType.GLYPH_CHANGE_SCATTERPLOT_AXIS_Y);
+					}
 				}
 			};
 			addActionToMenu(menu, axisAction);

@@ -94,8 +94,9 @@ public abstract class AView
 	public synchronized void removeSets(ESetType setType) {
 		Iterator<ISet> iter = alSets.iterator();
 		while (iter.hasNext()) {
-			if (iter.next().getSetType() == setType)
+			if (iter.next().getSetType() == setType) {
 				iter.remove();
+			}
 		}
 	}
 

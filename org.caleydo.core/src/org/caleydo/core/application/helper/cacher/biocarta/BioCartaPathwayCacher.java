@@ -98,8 +98,9 @@ public class BioCartaPathwayCacher
 
 		triggerPathwayListGeneration();
 
-		if (triggeringCommand != null)
+		if (triggeringCommand != null) {
 			triggeringCommand.setFinishedBioCartaCacher();
+		}
 	}
 
 	@Override
@@ -109,7 +110,8 @@ public class BioCartaPathwayCacher
 
 		try {
 			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA,
-				PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA, PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
+				PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
+				PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
 		}
 		catch (FileNotFoundException fnfe) {
 			throw new RuntimeException("Cannot generate BioCarta pathway list.");

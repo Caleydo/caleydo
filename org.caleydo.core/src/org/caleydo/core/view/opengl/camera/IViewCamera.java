@@ -31,7 +31,7 @@ public interface IViewCamera
 	 * Apply a new pan. Updates the ViewMatrix using the existing Rotation & Zoom.
 	 * 
 	 * @param setPan
-	 *          new pan settings
+	 *            new pan settings
 	 */
 	public void setCameraPosition(final Vec3f setPos);
 
@@ -39,7 +39,7 @@ public interface IViewCamera
 	 * same as setCameraPosition() but adds current setPos vector.
 	 * 
 	 * @param setPos
-	 *          increment position.
+	 *            increment position.
 	 */
 	public void addCameraPosition(final Vec3f setPos);
 
@@ -47,7 +47,7 @@ public interface IViewCamera
 	 * Apply a new rotation. Updates the ViewMatrix using the existing Pan & Zoom.
 	 * 
 	 * @param setRot
-	 *          new rotation
+	 *            new rotation
 	 */
 	public void setCameraRotation(final Rotf setRot);
 
@@ -55,7 +55,7 @@ public interface IViewCamera
 	 * add setRot to current rotation.
 	 * 
 	 * @param setRot
-	 *          incremental rotation of current rotation
+	 *            incremental rotation of current rotation
 	 */
 	public void addCameraRotation(final Rotf setRot);
 
@@ -63,7 +63,7 @@ public interface IViewCamera
 	 * Set rotation in euler angles.
 	 * 
 	 * @param setRotEuler
-	 *          with euler angles x,y,z
+	 *            with euler angles x,y,z
 	 */
 	public void setCameraRotationEuler(final Vec3f setRotEuler);
 
@@ -71,7 +71,7 @@ public interface IViewCamera
 	 * Add rotation in euler angles.
 	 * 
 	 * @param addRotEuler
-	 *          with euler angles x,y,z
+	 *            with euler angles x,y,z
 	 */
 	public void addCameraRotationEuler(Vec3f addRotEuler);
 
@@ -99,7 +99,7 @@ public interface IViewCamera
 	 * Apply a new rotation using Vec3f. Updates the ViewMatrix using the existing Pan & Zoom.
 	 * 
 	 * @param setRot
-	 *          new rotation
+	 *            new rotation
 	 */
 	public void setCameraRotationVec3f(final Vec3f setRotVec3f);
 
@@ -108,7 +108,7 @@ public interface IViewCamera
 	 * Zoom.
 	 * 
 	 * @param setZoom
-	 *          new zoom values
+	 *            new zoom values
 	 */
 	public void setCameraScale(final Vec3f setScale);
 
@@ -123,17 +123,17 @@ public interface IViewCamera
 	 * Apply new Pan, Zoom and Rotation at once. Note: Does the same as calling
 	 * 
 	 * @param setPan
-	 *          new pan values
+	 *            new pan values
 	 * @param setZoom
-	 *          new zoom/scale values
+	 *            new zoom/scale values
 	 * @param setRot
-	 *          new rotation values
+	 *            new rotation values
 	 */
 	public void setCameraAll(final Vec3f setPos, final Vec3f setScale, final Rotf setRot);
 
 	/**
 	 * @param bSetHasChanged
-	 *          status of viewCamera, TURE means status has changed.
+	 *            status of viewCamera, TURE means status has changed.
 	 * @see prometheus.data.collection.view.camera.IViewCamera#hasViewCameraChanged()
 	 */
 	public void setHasChanged(final boolean bSetHasChanged);

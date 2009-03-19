@@ -41,19 +41,20 @@ public class CmdDataCreateSelection
 	 * Set attributes for object to be constructed, see {@link SelectionDelta#SelectionDelta(EIDType)}
 	 * 
 	 * @param iDType
-	 *          see Constructor
+	 *            see Constructor
 	 */
 	public void setAttributes(EIDType idType) {
 		this.idType = idType;
 	}
 
 	/**
-	 * Set attributes for object to be constructed, see {@link SelectionDelta#SelectionDelta(EIDType, EIDType)}
+	 * Set attributes for object to be constructed, see
+	 * {@link SelectionDelta#SelectionDelta(EIDType, EIDType)}
 	 * 
 	 * @param iDType
-	 *          see Constructor
+	 *            see Constructor
 	 * @param internalIDType
-	 *          see Constructor
+	 *            see Constructor
 	 */
 	public void setAttributes(EIDType idType, EIDType internalIDType) {
 		this.internalIDType = internalIDType;

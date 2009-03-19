@@ -146,10 +146,12 @@ public class ExportDataAction
 	public void execute() {
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				if (radios[0].getSelection())
+				if (radios[0].getSelection()) {
 					set.export(sFileName, true);
-				else
+				}
+				else {
 					set.export(sFileName, false);
+				}
 			}
 		}
 

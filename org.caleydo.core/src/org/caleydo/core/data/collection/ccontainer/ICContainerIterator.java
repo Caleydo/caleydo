@@ -15,8 +15,8 @@ public interface ICContainerIterator {
 	public boolean hasNext();
 
 	/**
-	 * Removes the element last called by next or previous from the virtual array. Works only if virtual arrays
-	 * are enabled, throws exception if called without an enabled virtual array.
+	 * Removes the element last called by next or previous from the virtual array. Works only if virtual
+	 * arrays are enabled, throws exception if called without an enabled virtual array.
 	 */
 	public void remove();
 

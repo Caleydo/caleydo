@@ -34,8 +34,8 @@ public interface ICommand
 	public abstract ECommandType getCommandType();
 
 	/**
-	 * Method returns a description of the command. This is mainly used for the UNDO/REDO GUI component to show
-	 * what the command is about.
+	 * Method returns a description of the command. This is mainly used for the UNDO/REDO GUI component to
+	 * show what the command is about.
 	 * 
 	 * @return
 	 */

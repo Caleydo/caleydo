@@ -22,7 +22,9 @@ public class GLDistributionMiniView
 	extends AGLMiniView {
 
 	public enum ALIGN {
-		LEFT, RIGHT, CENTER;
+		LEFT,
+		RIGHT,
+		CENTER;
 	}
 
 	private ALIGN alignment = ALIGN.LEFT;
@@ -127,10 +129,12 @@ public class GLDistributionMiniView
 			for (float value : alNormalicedDistribution) {
 				float posx = 0;
 				float width = fWidth * value;
-				if (alignment == ALIGN.RIGHT)
+				if (alignment == ALIGN.RIGHT) {
 					posx = fWidth - width;
-				if (alignment == ALIGN.CENTER)
+				}
+				if (alignment == ALIGN.CENTER) {
 					posx = fWidth / 2.0f - width / 2.0f;
+				}
 
 				gl.glBegin(GL.GL_QUADS);
 				gl.glNormal3i(0, 1, 0);
@@ -158,10 +162,12 @@ public class GLDistributionMiniView
 			for (float value : alNormalicedSelectedDistribution) {
 				float posx = 0;
 				float width = fWidth * value;
-				if (alignment == ALIGN.RIGHT)
+				if (alignment == ALIGN.RIGHT) {
 					posx = fWidth - width;
-				if (alignment == ALIGN.CENTER)
+				}
+				if (alignment == ALIGN.CENTER) {
 					posx = fWidth / 2.0f - width / 2.0f;
+				}
 
 				gl.glBegin(GL.GL_QUADS);
 				gl.glNormal3i(0, 1, 0);

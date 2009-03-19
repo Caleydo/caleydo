@@ -72,8 +72,9 @@ public class GLTextUtils {
 			else {
 				sTmpText = showText.subSequence(0, iMaxLineChars).toString();
 
-				if (sTmpText.contains(" "))
+				if (sTmpText.contains(" ")) {
 					sTmpText = sTmpText.substring(0, sTmpText.lastIndexOf(' '));
+				}
 
 				renderText(gl, sTmpText, iSize, fx, fy - iLineIndex * fLineHeight, fz);
 

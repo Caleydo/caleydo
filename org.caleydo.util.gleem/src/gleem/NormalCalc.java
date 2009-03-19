@@ -42,10 +42,10 @@ public class NormalCalc {
 
 	/**
 	 * Returns null upon failure, or a set of Vec3fs and integers which represent faceted (non-averaged)
-	 * normals, but per-vertex. Performs bounds checking on indices with respect to vertex list. Index list must
-	 * represent independent triangles; indices are taken in groups of three. If index list doesn't represent
-	 * triangles or other error occurred then returns null. ccw flag indicates whether triangles are specified
-	 * counterclockwise when viewed from top or not.
+	 * normals, but per-vertex. Performs bounds checking on indices with respect to vertex list. Index list
+	 * must represent independent triangles; indices are taken in groups of three. If index list doesn't
+	 * represent triangles or other error occurred then returns null. ccw flag indicates whether triangles are
+	 * specified counterclockwise when viewed from top or not.
 	 */
 
 	public static NormalInfo computeFacetedNormals(Vec3f[] vertices, int[] indices, boolean ccw) {
@@ -65,7 +65,8 @@ public class NormalCalc {
 			int i0 = indices[i];
 			int i1 = indices[i + 1];
 			int i2 = indices[i + 2];
-			if (i0 < 0 || i0 >= indices.length || i1 < 0 || i1 >= indices.length || i2 < 0 || i2 >= indices.length) {
+			if (i0 < 0 || i0 >= indices.length || i1 < 0 || i1 >= indices.length || i2 < 0
+				|| i2 >= indices.length) {
 				System.err.println("NormalCalc.computeFacetedNormals: ERROR: "
 					+ "vertex index out of bounds or no end of triangle " + "index found");
 				return null;

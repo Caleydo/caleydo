@@ -25,8 +25,8 @@ public class CmdViewCreateDataEntitySearcher
 	public void doCommand() {
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		createdObject =
-			(DataEntitySearcherViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER,
-				-1, sLabel);
+			(DataEntitySearcherViewRep) viewManager.createView(
+				EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, -1, sLabel);
 		viewManager.registerItem(createdObject);
 
 		commandManager.runDoCommand(this);

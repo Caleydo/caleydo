@@ -89,9 +89,8 @@ public class Mat4f {
 	public void set(final float[] values) {
 		// float[] mine = data;
 
-		if (values.length != 16) {
+		if (values.length != 16)
 			throw new RuntimeException("Try to set 4x4 matrix with more or less than 16 values!");
-		}
 
 		for (int i = 0; i < data.length; i++) {
 			data[i] = values[i];
@@ -113,8 +112,8 @@ public class Mat4f {
 	}
 
 	/**
-	 * Sets the translation component of this matrix (i.e., the three top elements of the third column) without
-	 * touching any of the other parts of the matrix
+	 * Sets the translation component of this matrix (i.e., the three top elements of the third column)
+	 * without touching any of the other parts of the matrix
 	 */
 	public void setTranslation(Vec3f trans) {
 		set(0, 3, trans.x());
@@ -157,9 +156,9 @@ public class Mat4f {
 	}
 
 	/**
-	 * Sets the elements (0, 0), (1, 1), and (2, 2) with the appropriate elements of the given three-dimensional
-	 * scale vector. Does not perform a full multiplication of the upper-left 3x3; use this with an identity
-	 * matrix in conjunction with <code>mul</code> for that.
+	 * Sets the elements (0, 0), (1, 1), and (2, 2) with the appropriate elements of the given
+	 * three-dimensional scale vector. Does not perform a full multiplication of the upper-left 3x3; use this
+	 * with an identity matrix in conjunction with <code>mul</code> for that.
 	 */
 	public void setScale(Vec3f scale) {
 		set(0, 0, scale.x());
@@ -202,13 +201,15 @@ public class Mat4f {
 
 	/** this = a * b */
 	public void mul(Mat4f a, Mat4f b) {
-		for (int rc = 0; rc < 4; rc++)
+		for (int rc = 0; rc < 4; rc++) {
 			for (int cc = 0; cc < 4; cc++) {
 				float tmp = 0.0f;
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < 4; i++) {
 					tmp += a.get(rc, i) * b.get(i, cc);
+				}
 				set(rc, cc, tmp);
 			}
+		}
 	}
 
 	/** Transpose this matrix in place. */
@@ -237,9 +238,9 @@ public class Mat4f {
 	}
 
 	/**
-	 * Transforms a 3D vector as though it had a homogeneous coordinate and assuming that this matrix represents
-	 * only rigid transformations; i.e., is not a full transformation. NOTE: src and dest must be different
-	 * vectors.
+	 * Transforms a 3D vector as though it had a homogeneous coordinate and assuming that this matrix
+	 * represents only rigid transformations; i.e., is not a full transformation. NOTE: src and dest must be
+	 * different vectors.
 	 */
 	public void xformPt(Vec3f src, Vec3f dest) {
 		for (int rc = 0; rc < 3; rc++) {
@@ -290,9 +291,9 @@ public class Mat4f {
 	@Override
 	public String toString() {
 		String endl = System.getProperty("line.separator");
-		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + ", " + get(0, 3) + endl + " " + get(1, 0)
-			+ ", " + get(1, 1) + ", " + get(1, 2) + ", " + get(1, 3) + endl + " " + get(2, 0) + ", " + get(2, 1)
-			+ ", " + get(2, 2) + ", " + get(2, 3) + endl + " " + get(3, 0) + ", " + get(3, 1) + ", " + get(3, 2)
-			+ ", " + get(3, 3) + ")";
+		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + ", " + get(0, 3) + endl + " "
+			+ get(1, 0) + ", " + get(1, 1) + ", " + get(1, 2) + ", " + get(1, 3) + endl + " " + get(2, 0)
+			+ ", " + get(2, 1) + ", " + get(2, 2) + ", " + get(2, 3) + endl + " " + get(3, 0) + ", "
+			+ get(3, 1) + ", " + get(3, 2) + ", " + get(3, 3) + ")";
 	}
 }

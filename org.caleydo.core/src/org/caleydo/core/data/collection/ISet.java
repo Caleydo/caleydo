@@ -23,7 +23,7 @@ public interface ISet
 	 * 
 	 * @see ESetType
 	 * @param setType
-	 *          the type
+	 *            the type
 	 */
 	public void setSetType(ESetType setType);
 
@@ -46,7 +46,7 @@ public interface ISet
 	 * Add a storage by reference. The storage has to be fully initialized with data
 	 * 
 	 * @param storage
-	 *          the storage
+	 *            the storage
 	 */
 	public void addStorage(IStorage storage);
 
@@ -62,9 +62,9 @@ public interface ISet
 	 * Get the storage via the index in the virtual array
 	 * 
 	 * @param iUniqueID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @param iIndex
-	 *          the index in the virtual array
+	 *            the index in the virtual array
 	 * @return the storage
 	 */
 	public IStorage getStorageFromVA(int iUniqueID, int iIndex);
@@ -73,7 +73,7 @@ public interface ISet
 	 * Get an iterator that iterates over the storages considering the Virtual Array.
 	 * 
 	 * @param the
-	 *          unique ID of the set virtula array
+	 *            unique ID of the set virtula array
 	 * @return the set iterator
 	 */
 	public SetIterator VAIterator(int iUniqueID);
@@ -89,7 +89,7 @@ public interface ISet
 	 * Return the size of the virtual array
 	 * 
 	 * @param iUniqueID
-	 *          the unique id associated with the virtual array
+	 *            the unique id associated with the virtual array
 	 * @return the number of sets in the virtual array
 	 */
 	public int sizeVA(int iUniqueID);
@@ -102,8 +102,9 @@ public interface ISet
 	public int depth();
 
 	/**
-	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the raw
-	 * data as basis by default, however when a logarithmized representation is in the storage this is used.
+	 * Normalize all storages in the set, based solely on the values within each storage. Operates with the
+	 * raw data as basis by default, however when a logarithmized representation is in the storage this is
+	 * used.
 	 */
 	// public void normalize();
 	/**
@@ -117,7 +118,7 @@ public interface ISet
 	 * Get the minimum value in the set.
 	 * 
 	 * @throws OperationNotSupportedException
-	 *           when executed on nominal data
+	 *             when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMin();
@@ -126,7 +127,7 @@ public interface ISet
 	 * Get the maximum value in the set.
 	 * 
 	 * @throws OperationNotSupportedException
-	 *           when executed on nominal data
+	 *             when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax();
@@ -147,7 +148,7 @@ public interface ISet
 	 * Calculates a raw value based on min and max from a normalized value.
 	 * 
 	 * @param dNormalized
-	 *          a value between 0 and 1
+	 *            a value between 0 and 1
 	 * @return a value between min and max
 	 */
 	public double getRawForNormalized(double dNormalized);
@@ -156,7 +157,7 @@ public interface ISet
 	 * Calculates a normalized value based on min and max.
 	 * 
 	 * @param dRaw
-	 *          the raw value
+	 *            the raw value
 	 * @return a value between 0 and 1
 	 */
 	public double getNormalizedForRaw(double dRaw);
@@ -166,12 +167,12 @@ public interface ISet
 	 * calculated from the mode specified.
 	 * 
 	 * @param externalDataRep
-	 *          Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
+	 *            Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
-	 *          Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *          maximum and minimum, meaning that all storages in the set contain equal data. If false, each
-	 *          storage is treated separately, has it's own min and max etc. Sets that contain nominal data MUST
-	 *          be inhomogeneous.
+	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
+	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
+	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
+	 *            MUST be inhomogeneous.
 	 */
 	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
 		boolean bIsSetHomogeneous);
@@ -209,7 +210,7 @@ public interface ISet
 	 * Creates a virtual array based on the list of indices supplied for the storages in the set
 	 * 
 	 * @param iAlSelections
-	 *          a list of indices
+	 *            a list of indices
 	 * @return the id of the newly created VA
 	 */
 	public int createStorageVA(List<Integer> iAlSelections);
@@ -225,7 +226,7 @@ public interface ISet
 	 * Creates a virtual array based on the list of indices supplied for the set
 	 * 
 	 * @param iAlSelections
-	 *          a list of indices
+	 *            a list of indices
 	 * @return the unique id associated with the virtual array
 	 */
 	public int createSetVA(ArrayList<Integer> iAlSelections);
@@ -234,7 +235,7 @@ public interface ISet
 	 * Returns the virtual array associated with the unique ID
 	 * 
 	 * @param iUniqueID
-	 *          the unique id
+	 *            the unique id
 	 * @return the virtual array associated with the unique ID
 	 */
 	public IVirtualArray getVA(int iUniqueID);
@@ -279,12 +280,12 @@ public interface ISet
 	 * @return CNode
 	 */
 	public ArrayList<Integer> getAlClusterSizes();
-	
+
 	/**
 	 * Sets cluster sizes
 	 * 
 	 * @param CNode
 	 */
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
-	
+
 }

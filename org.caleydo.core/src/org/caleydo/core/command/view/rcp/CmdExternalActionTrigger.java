@@ -30,8 +30,9 @@ public class CmdExternalActionTrigger
 	public void doCommand() {
 		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
-		if (externalActionType == EExternalActionType.CLEAR_SELECTIONS)
+		if (externalActionType == EExternalActionType.CLEAR_SELECTIONS) {
 			viewObject.clearAllSelections();
+		}
 
 		if (viewObject instanceof GLRemoteRendering) {
 			switch (externalActionType) {

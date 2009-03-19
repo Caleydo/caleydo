@@ -50,10 +50,9 @@ public class GraphVisitorSearchBFS
 		super.setSearchDepth(iSearchDepth);
 
 		if (depthSortedList != null) {
-			if (depthSortedList.size() == iSearchDepth) {
+			if (depthSortedList.size() == iSearchDepth)
 				/** List has already the required size */
 				return;
-			}
 		}
 
 		/** create list and initialize it .. */
@@ -63,10 +62,9 @@ public class GraphVisitorSearchBFS
 	@Override
 	public List<IGraphItem> getSearchResult() {
 
-		if (iSearchDepth < 1) {
+		if (iSearchDepth < 1)
 			/** special case, no elements, return empty list */
 			return new ArrayList<IGraphItem>(0);
-		}
 
 		List<IGraphItem> resultList = new ArrayList<IGraphItem>();
 
@@ -138,7 +136,8 @@ public class GraphVisitorSearchBFS
 			Iterator<IGraphItem> iterRawDataInnerLoop = currentRawDataDepthList.iterator();
 
 			/* result list, deep copy */
-			ArrayList<IGraphItem> resultListDeepCopy = new ArrayList<IGraphItem>(currentRawDataDepthList.size());
+			ArrayList<IGraphItem> resultListDeepCopy =
+				new ArrayList<IGraphItem>(currentRawDataDepthList.size());
 
 			while (iterRawDataInnerLoop.hasNext()) {
 				resultListDeepCopy.add(iterRawDataInnerLoop.next());
@@ -167,7 +166,7 @@ public class GraphVisitorSearchBFS
 
 	/**
 	 * @param prop
-	 *          the prop to set
+	 *            the prop to set
 	 */
 	public final void setProp(EGraphItemProperty prop) {
 		this.prop = prop;

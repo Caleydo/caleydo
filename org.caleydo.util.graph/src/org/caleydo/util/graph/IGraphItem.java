@@ -29,7 +29,7 @@ public interface IGraphItem
 	 * 
 	 * @see org.caleydo.util.graph.IGraphItem#getGraphKind()
 	 * @param kind
-	 *          type for this GraphItem
+	 *            type for this GraphItem
 	 */
 	public void setGraphKind(EGraphItemKind kind);
 
@@ -40,21 +40,21 @@ public interface IGraphItem
 	 * EGraphItemProperty.NONE or null all IGraphItem's are returned.
 	 * 
 	 * @param prop
-	 *          specify, which IGraphItem's should be returned; if prop == EGraphItemProperty.NONE or null all
-	 *          IGraphItem's are returned.
+	 *            specify, which IGraphItem's should be returned; if prop == EGraphItemProperty.NONE or null
+	 *            all IGraphItem's are returned.
 	 * @return collection of IGraphItems matching prop
 	 */
 	public List<IGraphItem> getAllItemsByProp(EGraphItemProperty prop);
 
 	/**
-	 * Adds a new IGraphItem with prop. Note, if prop == EGraphItemProperty.NONE or null a GraphRuntimeException
-	 * is thrown
+	 * Adds a new IGraphItem with prop. Note, if prop == EGraphItemProperty.NONE or null a
+	 * GraphRuntimeException is thrown
 	 * 
 	 * @see org.caleydo.util.graph.IGraphItem#addItemDoubleLinked(IGraphItem, EGraphItemProperty)
 	 * @param item
-	 *          new IGraphItem to be added
+	 *            new IGraphItem to be added
 	 * @param prop
-	 *          property linked to the added item
+	 *            property linked to the added item
 	 */
 	public void addItem(IGraphItem item, EGraphItemProperty prop) throws GraphRuntimeException;
 
@@ -66,9 +66,9 @@ public interface IGraphItem
 	 * 
 	 * @see org.caleydo.util.graph.IGraphItem#addItem(IGraphItem, EGraphItemProperty)
 	 * @param item
-	 *          new IGraphItem to be added and to be linked reverse to this item;
+	 *            new IGraphItem to be added and to be linked reverse to this item;
 	 * @param prop
-	 *          property linked to the added item
+	 *            property linked to the added item
 	 * @throws GraphRuntimeException
 	 */
 	public void addItemDoubleLinked(IGraphItem item, EGraphItemProperty prop) throws GraphRuntimeException;
@@ -78,9 +78,9 @@ public interface IGraphItem
 	 * "INCOMING,OUTGOING" and "ALIAS"
 	 * 
 	 * @param item
-	 *          IGraphItem to be removed
+	 *            IGraphItem to be removed
 	 * @param prop
-	 *          specify from which internal structure item should be removed
+	 *            specify from which internal structure item should be removed
 	 * @return TRUE if removal was successful, FLASE indicates that item was not registered
 	 */
 	public boolean removeItem(IGraphItem item, EGraphItemProperty prop);
@@ -90,9 +90,9 @@ public interface IGraphItem
 	 * EGraphItemProperty.NONE or null all types are matched.
 	 * 
 	 * @param item
-	 *          object to be tested
+	 *            object to be tested
 	 * @param prop
-	 *          specify context; if prop == EGraphItemProperty.NONE or null all types are matched
+	 *            specify context; if prop == EGraphItemProperty.NONE or null all types are matched
 	 * @return TURE indicates item is contained
 	 */
 	public boolean containsItem(IGraphItem item, EGraphItemProperty prop);

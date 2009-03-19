@@ -11,7 +11,12 @@ public interface IParameterHandler {
 
 	public enum ParameterHandlerType {
 
-		BOOL(), INT(), FLOAT(), STRING(), VEC3F(), VEC4F();
+		BOOL(),
+		INT(),
+		FLOAT(),
+		STRING(),
+		VEC3F(),
+		VEC4F();
 
 	}
 
@@ -36,17 +41,17 @@ public interface IParameterHandler {
 	public abstract void setValueAndType(final String key, final String value, final ParameterHandlerType type);
 
 	/**
-	 * Set key, value its type and a default value. If value could not be converted to type the default value is
-	 * assigned. some impelmentations store the defautl value in addition to the 'data' value.
+	 * Set key, value its type and a default value. If value could not be converted to type the default value
+	 * is assigned. some impelmentations store the defautl value in addition to the 'data' value.
 	 * 
 	 * @param key
-	 *          of the pair (key,value)
+	 *            of the pair (key,value)
 	 * @param value
-	 *          of the pair (key,value)
+	 *            of the pair (key,value)
 	 * @param type
-	 *          of of the data
+	 *            of of the data
 	 * @param defaultValue
-	 *          default value in case the value can not be converted to the requested type
+	 *            default value in case the value can not be converted to the requested type
 	 */
 	public void setValueAndTypeAndDefault(final String key, final String value,
 		final ParameterHandlerType type, final String defaultValue);
@@ -67,11 +72,11 @@ public interface IParameterHandler {
 	 * register keys, defaultValues and thier types.
 	 * 
 	 * @param keys
-	 *          array of keys
+	 *            array of keys
 	 * @param defaultVales
-	 *          array of default values bound to the keys
+	 *            array of default values bound to the keys
 	 * @param types
-	 *          array of types for each key
+	 *            array of types for each key
 	 */
 	public void setDefaultTypeByArray(final String[] keys, final String[] defaultVales, final String[] types);
 

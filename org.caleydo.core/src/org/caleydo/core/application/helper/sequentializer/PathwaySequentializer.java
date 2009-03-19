@@ -37,12 +37,14 @@ public class PathwaySequentializer {
 		File[] arFiles = folder.listFiles();
 
 		for (File tmpFile : arFiles) {
-			if (tmpFile.toString().endsWith(".svn"))
+			if (tmpFile.toString().endsWith(".svn")) {
 				continue;
+			}
 
 			// Ignore mice pathways
-			if (tmpFile.toString().contains("m_"))
+			if (tmpFile.toString().contains("m_")) {
 				continue;
+			}
 
 			copyfile(tmpFile);
 		}

@@ -90,7 +90,8 @@ public class TabularAsciiDataReader
 			else {
 				bAllTokensProper = false;
 
-				GeneralManager.get().getLogger().log(Level.WARNING, "Unknown column data type: " + tokenPattern);
+				GeneralManager.get().getLogger().log(Level.WARNING,
+					"Unknown column data type: " + tokenPattern);
 			}
 
 		} // end of while
@@ -122,13 +123,15 @@ public class TabularAsciiDataReader
 				case ABORT:
 					return;
 				default:
-					throw new IllegalStateException("Unknown token pattern detected: " + storageType.toString());
+					throw new IllegalStateException("Unknown token pattern detected: "
+						+ storageType.toString());
 			}
 		}
 	}
 
 	@Override
-	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile) throws IOException {
+	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
+		throws IOException {
 
 		allocateStorageBufferForTokenPattern();
 
@@ -193,12 +196,14 @@ public class TabularAsciiDataReader
 							iColumnIndex = alColumnDataTypes.size();
 							break;
 						default:
-							throw new IllegalStateException("Unknown token pattern detected: " + columnDataType.toString());
+							throw new IllegalStateException("Unknown token pattern detected: "
+								+ columnDataType.toString());
 					}
 
 					// Check if the line is finished or early aborted
-					if (iColumnIndex == alColumnDataTypes.size())
+					if (iColumnIndex == alColumnDataTypes.size()) {
 						continue;
+					}
 				}
 			}
 
@@ -234,8 +239,8 @@ public class TabularAsciiDataReader
 					iStorageIndex++;
 					break;
 				case STRING:
-					((INominalStorage<String>) alTargetStorages.get(iStorageIndex)).setRawNominalData(alStringBuffers
-						.get(iStringArrayIndex));
+					((INominalStorage<String>) alTargetStorages.get(iStorageIndex))
+						.setRawNominalData(alStringBuffers.get(iStringArrayIndex));
 					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
 					iStringArrayIndex++;
 					iStorageIndex++;
@@ -245,7 +250,8 @@ public class TabularAsciiDataReader
 				case ABORT:
 					return;
 				default:
-					throw new IllegalStateException("Unknown token pattern detected: " + storageType.toString());
+					throw new IllegalStateException("Unknown token pattern detected: "
+						+ storageType.toString());
 			}
 		}
 	}

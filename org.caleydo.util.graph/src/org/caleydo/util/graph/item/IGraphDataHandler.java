@@ -15,7 +15,7 @@ public interface IGraphDataHandler {
 
 	/**
 	 * @param key
-	 *          address a certain object.
+	 *            address a certain object.
 	 * @return null if no object is registered for this identifier.
 	 */
 	public Object getData(int key);
@@ -29,9 +29,9 @@ public interface IGraphDataHandler {
 
 	/**
 	 * @param key
-	 *          index to access data
+	 *            index to access data
 	 * @param data
-	 *          raw data to be stored at each node
+	 *            raw data to be stored at each node
 	 * @return TURE if identifier was not registered previously, FLASE if identifier was already stored.
 	 */
 	public boolean setData(int key, Object data);
@@ -40,7 +40,7 @@ public interface IGraphDataHandler {
 	 * removes one object bound to identifier.
 	 * 
 	 * @param key
-	 *          address one object
+	 *            address one object
 	 * @return Object that was removed or NULL if identifier was not bound to an object
 	 */
 	public Object removeData(int key);
@@ -54,7 +54,7 @@ public interface IGraphDataHandler {
 	 * test if one object is already assigned.
 	 * 
 	 * @param data
-	 *          object to be tested
+	 *            object to be tested
 	 * @return TRUE if object is already registered
 	 */
 	public boolean containsDataObject(Object data);
@@ -63,7 +63,7 @@ public interface IGraphDataHandler {
 	 * Test if an identifier is already assigned
 	 * 
 	 * @param key
-	 *          test this id
+	 *            test this id
 	 * @return TURE if identifier is already used
 	 */
 	public boolean containsData(int key);

@@ -18,11 +18,18 @@ import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectModel;
  */
 public class GlyphObjectDefinition {
 	public enum DIRECTION {
-		X, Y, Z
+		X,
+		Y,
+		Z
 	}
 
 	public enum ANCHOR {
-		BOTTOM, TOP, LEFT, RIGHT, BACK, FRONT
+		BOTTOM,
+		TOP,
+		LEFT,
+		RIGHT,
+		BACK,
+		FRONT
 	}
 
 	private int iDetailLevel = -1;
@@ -50,8 +57,9 @@ public class GlyphObjectDefinition {
 
 	public void setSourceFile(String file) {
 		sourceFile = file;
-		if (sourceFile != null)
+		if (sourceFile != null) {
 			loadObjectFile();
+		}
 	}
 
 	public void loadObjectFile() {
@@ -76,14 +84,15 @@ public class GlyphObjectDefinition {
 	}
 
 	public void addGlyphAnchor(String name, ANCHOR anc, String to) {
-		if (parts.containsKey(name))
+		if (parts.containsKey(name)) {
 			parts.get(name).addAnchor(anc, to);
+		}
 	}
 
 	public String getGlyphAnchorPlace(String name, ANCHOR anchor) {
 		if (!parts.containsKey(name)) {
-			logger.log(Level.WARNING, "GlyphObjectDefinition::getAnchorPlace() - " + "part does not exist '" + name
-				+ "'");
+			logger.log(Level.WARNING, "GlyphObjectDefinition::getAnchorPlace() - " + "part does not exist '"
+				+ name + "'");
 			return null;
 		}
 		return parts.get(name).getAnchorPlace(anchor);
@@ -93,16 +102,16 @@ public class GlyphObjectDefinition {
 	 * This adds a possible parameter (SCALE/COLOR) to the glyph object.
 	 * 
 	 * @param part
-	 *          name
+	 *            name
 	 * @param transformation
-	 *          type
+	 *            type
 	 * @param value
 	 * @param description
 	 */
 	public void addGlyphPartParameter(String name, String type, String value, String description) {
 		if (!parts.containsKey(name)) {
-			logger.log(Level.WARNING, "GlyphObjectDefinition::addGlyphPartParameter() - " + "part does not exist '"
-				+ name + "'");
+			logger.log(Level.WARNING, "GlyphObjectDefinition::addGlyphPartParameter() - "
+				+ "part does not exist '" + name + "'");
 			return;
 		}
 
@@ -131,8 +140,8 @@ public class GlyphObjectDefinition {
 
 	public boolean canPartScale(String name, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
-			logger.log(Level.WARNING, "GlyphObjectDefinition::canPartScale() - " + "part does not exist '" + name
-				+ "'");
+			logger.log(Level.WARNING, "GlyphObjectDefinition::canPartScale() - " + "part does not exist '"
+				+ name + "'");
 			return false;
 		}
 		return parts.get(name).canScale(dir);
@@ -141,8 +150,8 @@ public class GlyphObjectDefinition {
 	public boolean canPartColorChange(String name) {
 
 		if (!parts.containsKey(name)) {
-			logger.log(Level.WARNING, "GlyphObjectDefinition::canPartColorChange() - " + "part does not exist '"
-				+ name + "'");
+			logger.log(Level.WARNING, "GlyphObjectDefinition::canPartColorChange() - "
+				+ "part does not exist '" + name + "'");
 			return false;
 		}
 		GlyphObjectDefinitionPart def = parts.get(name);
@@ -157,7 +166,7 @@ public class GlyphObjectDefinition {
 	 * Gets the Description of the possible transformation.
 	 * 
 	 * @param group
-	 *          name
+	 *            name
 	 * @param type
 	 * @param direction
 	 * @return
@@ -180,8 +189,8 @@ public class GlyphObjectDefinition {
 
 	public void setPartParameterIndex(String name, EGlyphSettingIDs type, DIRECTION dir, int colNum) {
 		if (!parts.containsKey(name)) {
-			logger.log(Level.WARNING, "GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '"
-				+ name + "'");
+			logger.log(Level.WARNING, "GlyphObjectDefinition::setPartParameterIndex() - "
+				+ "part does not exist '" + name + "'");
 			return;
 		}
 		GlyphObjectDefinitionPart def = parts.get(name);
@@ -191,8 +200,8 @@ public class GlyphObjectDefinition {
 
 	public int getPartParameterIndexExternal(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
-			logger.log(Level.WARNING, "GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '"
-				+ name + "'");
+			logger.log(Level.WARNING, "GlyphObjectDefinition::setPartParameterIndex() - "
+				+ "part does not exist '" + name + "'");
 			return -1;
 		}
 		return parts.get(name).getParameterIndexExternal(type, dir);
@@ -200,8 +209,8 @@ public class GlyphObjectDefinition {
 
 	public int getPartParameterIndexInternal(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
-			logger.log(Level.WARNING, "GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '"
-				+ name + "'");
+			logger.log(Level.WARNING, "GlyphObjectDefinition::setPartParameterIndex() - "
+				+ "part does not exist '" + name + "'");
 			return -1;
 		}
 		return parts.get(name).getParameterIndexInternal(type, dir);

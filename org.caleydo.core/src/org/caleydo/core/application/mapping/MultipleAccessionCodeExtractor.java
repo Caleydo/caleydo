@@ -23,7 +23,8 @@ public class MultipleAccessionCodeExtractor {
 	public MultipleAccessionCodeExtractor()
 		throws IOException {
 
-		writer = new PrintWriter("data/genome/mapping/accession_code_2_microarray_expression_storage_index.map");
+		writer =
+			new PrintWriter("data/genome/mapping/accession_code_2_microarray_expression_storage_index.map");
 	}
 
 	protected void convertData() throws IOException {

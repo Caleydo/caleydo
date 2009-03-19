@@ -33,7 +33,7 @@ public class IGeneralMemento
 	 * Constructor.
 	 * 
 	 * @param setMementoCreator
-	 *          creator of memento
+	 *            creator of memento
 	 */
 	public IGeneralMemento(final Object setMementoCreator) {
 
@@ -46,9 +46,9 @@ public class IGeneralMemento
 	 * Constructor.
 	 * 
 	 * @param setMementoCreator
-	 *          creator of memento
+	 *            creator of memento
 	 * @param setMementoData
-	 *          data from the creator object
+	 *            data from the creator object
 	 */
 	public IGeneralMemento(final Object setMementoCreator, final IMementoState setMementoData) {
 
@@ -62,11 +62,11 @@ public class IGeneralMemento
 	 * Constructor.
 	 * 
 	 * @param setMementoCreator
-	 *          creator of memento
+	 *            creator of memento
 	 * @param setMementoData
-	 *          data from the creator object
+	 *            data from the creator object
 	 * @param setMementoType
-	 *          type of memento; used for memento manger
+	 *            type of memento; used for memento manger
 	 */
 	public IGeneralMemento(final Object setMementoCreator, final IMementoState setMementoData,
 		final MementoType setMementoType) {
@@ -87,13 +87,9 @@ public class IGeneralMemento
 	@Override
 	public void setMementoState(final Object setMementoCreator, final IMementoState setMemetoState) {
 
-		if (mementoCreator != setMementoCreator) {
+		if (mementoCreator != setMementoCreator)
 			throw new IllegalStateException(
 				"IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.");
-		}
-		// assert mementoCreator == setMementoCreator:
-		// "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento."
-		// ;
 
 		this.mementoState = setMemetoState;
 	}

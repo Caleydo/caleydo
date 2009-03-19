@@ -34,8 +34,8 @@ public class SwtJoglGLCanvasViewRep
 		ISWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
 
 		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget =
-			(SWTEmbeddedJoglWidget) iSWTGUIManager.createWidget(EManagedObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
-				iParentContainerId);
+			(SWTEmbeddedJoglWidget) iSWTGUIManager.createWidget(
+				EManagedObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, iParentContainerId);
 
 		parentComposite = sWTEmbeddedJoglWidget.getParentComposite();
 

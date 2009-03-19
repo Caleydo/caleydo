@@ -39,15 +39,18 @@ public class PathwayImageMapSaxHandler
 		}
 
 		if (attributes != null) {
-			if (sElementName.equals("imagemap"))
+			if (sElementName.equals("imagemap")) {
 				handleImageMapTag();
-			else if (sElementName.equals("area"))
+			}
+			else if (sElementName.equals("area")) {
 				handleAreaTag();
+			}
 		}
 	}
 
 	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
+		throws SAXException {
 
 		// emit("</"+sName+">");
 
@@ -76,8 +79,9 @@ public class PathwayImageMapSaxHandler
 			sAttributeName = attributes.getQName(0);
 		}
 
-		if (sAttributeName.equals("image"))
+		if (sAttributeName.equals("image")) {
 			sImageLink = attributes.getValue(0);
+		}
 
 		// generalManager.logMsg(
 		// "Load image map from: " + sImageLink,
@@ -104,12 +108,15 @@ public class PathwayImageMapSaxHandler
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("coords"))
+			if (sAttributeName.equals("coords")) {
 				sCoords = attributes.getValue(iAttributeIndex);
-			else if (sAttributeName.equals("link"))
+			}
+			else if (sAttributeName.equals("link")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
-			else if (sAttributeName.equals("shape"))
+			}
+			else if (sAttributeName.equals("shape")) {
 				sShape = attributes.getValue(iAttributeIndex);
+			}
 
 		}
 

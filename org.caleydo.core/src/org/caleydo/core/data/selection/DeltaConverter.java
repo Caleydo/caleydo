@@ -27,11 +27,11 @@ public class DeltaConverter {
 	 * Convert method. TODO: only DAVID_2_EXPRESSION_INDEX is supported ATM
 	 * 
 	 * @param <T>
-	 *          the type of the delta, an implementation of {@link IDelta}
+	 *            the type of the delta, an implementation of {@link IDelta}
 	 * @param targetType
-	 *          the target type of the id conversion
+	 *            the target type of the id conversion
 	 * @param delta
-	 *          the src delta containing the src type
+	 *            the src delta containing the src type
 	 * @return the new delta, which can be longer than the original
 	 */
 	@SuppressWarnings("unchecked")
@@ -43,10 +43,9 @@ public class DeltaConverter {
 		else if (delta instanceof VirtualArrayDelta) {
 			newDelta = (T) new VirtualArrayDelta(targetType, delta.getIDType());
 		}
-		else {
+		else
 			throw new IllegalStateException(
 				"This type of delta is not supported by the DeltaConverter, add appropriate implementation");
-		}
 
 		// if (delta.getIDType() == EIDType.DAVID && targetType == EIDType.EXPRESSION_INDEX)
 		// {

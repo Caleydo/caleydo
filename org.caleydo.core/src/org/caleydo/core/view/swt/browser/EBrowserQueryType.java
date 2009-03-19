@@ -10,13 +10,24 @@ import org.caleydo.core.data.mapping.EMappingType;
  * @author Marc Streit
  */
 public enum EBrowserQueryType {
-	PROCESS_STRING_WITHOUT_CHANGE("", "", null), PubMed("PubMed",
-		"http://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&cmd=search&term=", EMappingType.DAVID_2_GENE_SYMBOL), EntrezGene(
-		"Entrez", "http://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=search&term=",
-		EMappingType.DAVID_2_ENTREZ_GENE_ID), KEGG("KEGG", "http://www.genome.jp/dbget-bin/www_bget?hsa+",
-		EMappingType.DAVID_2_ENTREZ_GENE_ID), GeneCards("GeneCards",
-		"http://www.genecards.org/cgi-bin/carddisp.pl?gene=", EMappingType.DAVID_2_GENE_SYMBOL), BioCarta(
-		"BioCarta", "http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Hs&BCID=", EMappingType.DAVID_2_BIOCARTA_GENE_ID);
+	PROCESS_STRING_WITHOUT_CHANGE("", "", null),
+	PubMed(
+		"PubMed",
+		"http://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&cmd=search&term=",
+		EMappingType.DAVID_2_GENE_SYMBOL),
+	EntrezGene(
+		"Entrez",
+		"http://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=search&term=",
+		EMappingType.DAVID_2_ENTREZ_GENE_ID),
+	KEGG("KEGG", "http://www.genome.jp/dbget-bin/www_bget?hsa+", EMappingType.DAVID_2_ENTREZ_GENE_ID),
+	GeneCards(
+		"GeneCards",
+		"http://www.genecards.org/cgi-bin/carddisp.pl?gene=",
+		EMappingType.DAVID_2_GENE_SYMBOL),
+	BioCarta(
+		"BioCarta",
+		"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Hs&BCID=",
+		EMappingType.DAVID_2_BIOCARTA_GENE_ID);
 
 	private String sTitle;
 

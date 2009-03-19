@@ -32,7 +32,11 @@ public class NewOrExistingProjectPage
 	public Wizard parentWizard = null;
 
 	public enum EProjectType {
-		NEW_PROJECT, EXISTING_PROJECT, PATHWAY_VIEWER_MODE, SAMPLE_DATA_RANDOM, SAMPLE_DATA_REAL
+		NEW_PROJECT,
+		EXISTING_PROJECT,
+		PATHWAY_VIEWER_MODE,
+		SAMPLE_DATA_RANDOM,
+		SAMPLE_DATA_REAL
 	}
 
 	private EProjectType projectType = EProjectType.SAMPLE_DATA_REAL;
@@ -65,8 +69,8 @@ public class NewOrExistingProjectPage
 		buttonSampleDataMode.setSelection(true);
 
 		Link link = new Link(composite, SWT.NULL);
-		link
-			.setText("(see: <a href=\"HCC_SAMPLE_DATASET_PAPER_LINK\">" + HCC_SAMPLE_DATASET_PAPER_LINK + "</a>)");
+		link.setText("(see: <a href=\"HCC_SAMPLE_DATASET_PAPER_LINK\">" + HCC_SAMPLE_DATASET_PAPER_LINK
+			+ "</a>)");
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -77,20 +81,26 @@ public class NewOrExistingProjectPage
 						Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
 						openURL.invoke(null, new Object[] { HCC_SAMPLE_DATASET_PAPER_LINK });
 					}
-					else if (osName.startsWith("Windows"))
-						Runtime.getRuntime()
-							.exec("rundll32 url.dll,FileProtocolHandler " + HCC_SAMPLE_DATASET_PAPER_LINK);
+					else if (osName.startsWith("Windows")) {
+						Runtime.getRuntime().exec(
+							"rundll32 url.dll,FileProtocolHandler " + HCC_SAMPLE_DATASET_PAPER_LINK);
+					}
 					else {
 						// assume Unix or Linux
-						String[] browsers = { "firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
+						String[] browsers =
+							{ "firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
 						String browser = null;
 						for (int count = 0; count < browsers.length && browser == null; count++)
-							if (Runtime.getRuntime().exec(new String[] { "which", browsers[count] }).waitFor() == 0)
+							if (Runtime.getRuntime().exec(new String[] { "which", browsers[count] })
+								.waitFor() == 0) {
 								browser = browsers[count];
+							}
 						if (browser == null)
 							throw new Exception("Could not find web browser");
-						else
-							Runtime.getRuntime().exec(new String[] { browser, HCC_SAMPLE_DATASET_PAPER_LINK });
+						else {
+							Runtime.getRuntime()
+								.exec(new String[] { browser, HCC_SAMPLE_DATASET_PAPER_LINK });
+						}
 					}
 				}
 				catch (Exception exception) {

@@ -44,8 +44,8 @@ public class ParCoordsPreferencePage
 		layout.wrap = true;
 		getFieldEditorParent().setLayout(layout);
 		numRandomSamplesFE =
-			new IntegerFieldEditor(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, "Number of Random Samples:",
-				getFieldEditorParent());
+			new IntegerFieldEditor(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT,
+				"Number of Random Samples:", getFieldEditorParent());
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
 

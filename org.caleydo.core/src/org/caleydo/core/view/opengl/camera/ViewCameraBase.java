@@ -166,7 +166,8 @@ public class ViewCameraBase
 	public final void setCameraRotationVec3f(final Vec3f setRotVec3f) {
 
 		/**
-		 * compute Quaternion from input vector assuming vector Vec3f describes 3 rotations alpha, betha, gamma
+		 * compute Quaternion from input vector assuming vector Vec3f describes 3 rotations alpha, betha,
+		 * gamma
 		 */
 		Vec3f helpRot_cos =
 			new Vec3f((float) Math.cos((setRotVec3f.x() * 0.5f)), (float) Math.cos((setRotVec3f.y() * 0.5f)),
@@ -179,14 +180,14 @@ public class ViewCameraBase
 			helpRot_cos.x() * helpRot_cos.y() * helpRot_cos.z() - helpRot_sin.x() * helpRot_sin.y()
 				* helpRot_sin.z();
 
-		rotfCameraRotation.set(new Vec3f(helpRot_cos.x() * helpRot_sin.y() * helpRot_cos.z() + helpRot_sin.x()
-			* helpRot_sin.y() * helpRot_sin.z(),
+		rotfCameraRotation.set(new Vec3f(helpRot_cos.x() * helpRot_sin.y() * helpRot_cos.z()
+			+ helpRot_sin.x() * helpRot_sin.y() * helpRot_sin.z(),
 
-			helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
-				* helpRot_sin.z(),
+		helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
+			* helpRot_sin.z(),
 
-			helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
-				* helpRot_sin.z()),
+		helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
+			* helpRot_sin.z()),
 
 		w);
 	}
@@ -196,7 +197,8 @@ public class ViewCameraBase
 		assert false : "Not tested yet!";
 
 		/**
-		 * compute Quaternion from input vector assuming vector Vec3f describes 3 rotations alpha, betha, gamma
+		 * compute Quaternion from input vector assuming vector Vec3f describes 3 rotations alpha, betha,
+		 * gamma
 		 */
 		Vec3f helpRot_cos =
 			new Vec3f((float) Math.cos((setRotVec3f.x() * 0.5f)), (float) Math.cos((setRotVec3f.y() * 0.5f)),
@@ -213,11 +215,11 @@ public class ViewCameraBase
 		temp.set(new Vec3f(helpRot_cos.x() * helpRot_sin.y() * helpRot_cos.z() + helpRot_sin.x()
 			* helpRot_sin.y() * helpRot_sin.z(),
 
-			helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
-				* helpRot_sin.z(),
+		helpRot_sin.x() * helpRot_sin.y() * helpRot_cos.z() - helpRot_cos.x() * helpRot_sin.y()
+			* helpRot_sin.z(),
 
-			helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
-				* helpRot_sin.z()),
+		helpRot_sin.x() * helpRot_cos.y() * helpRot_cos.z() + helpRot_cos.x() * helpRot_cos.y()
+			* helpRot_sin.z()),
 
 		w);
 

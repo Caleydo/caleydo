@@ -24,7 +24,7 @@ public interface IMementoCreator {
 	 * not fit. Derived class has to check, if IMemento-object fits.
 	 * 
 	 * @param setMemento
-	 *          org.caleydo.command.memento.Memento to reset the object in a previous state
+	 *            org.caleydo.command.memento.Memento to reset the object in a previous state
 	 */
 	public void setMemento(IMemento setMemento);
 }

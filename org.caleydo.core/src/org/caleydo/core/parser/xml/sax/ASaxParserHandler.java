@@ -67,7 +67,7 @@ public abstract class ASaxParserHandler
 	 * Constructor with bEnableHaltOnParsingError.
 	 * 
 	 * @param bEnableHaltOnParsingError
-	 *          enabels or disables halting on errors
+	 *            enabels or disables halting on errors
 	 */
 	public ASaxParserHandler(final boolean bEnableHaltOnParsingError) {
 
@@ -123,7 +123,7 @@ public abstract class ASaxParserHandler
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#bErrorWhileParsing
 	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#appandInfoMsg(String)
 	 * @param errorMessage
-	 *          new error message
+	 *            new error message
 	 */
 	final protected void appandErrorMsg(final String errorMessage) {
 
@@ -140,8 +140,9 @@ public abstract class ASaxParserHandler
 				throw new IllegalStateException(s_e.toString());
 			}
 		}
-		if (!bErrorWhileParsing)
+		if (!bErrorWhileParsing) {
 			bErrorWhileParsing = true;
+		}
 	}
 
 	/**
@@ -173,8 +174,8 @@ public abstract class ASaxParserHandler
 	 * 
 	 * @see
 	 * @param setRefParent
-	 *          reference to the parent obejct or the object, that sould be triggert in case of a callback
-	 *          action
+	 *            reference to the parent obejct or the object, that sould be triggert in case of a callback
+	 *            action
 	 */
 	public void setParentMementoCaller(IMementoCallbackXML setRefParent) {
 

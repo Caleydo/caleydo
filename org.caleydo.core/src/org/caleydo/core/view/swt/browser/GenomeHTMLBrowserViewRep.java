@@ -110,12 +110,13 @@ public class GenomeHTMLBrowserViewRep
 					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
 						|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION) {
 						String sRefSeqID =
-							GeneralManager.get().getIDMappingManager().getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-								selectionDeltaItem.getPrimaryID());
+							GeneralManager.get().getIDMappingManager()
+								.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+									selectionDeltaItem.getPrimaryID());
 
 						Integer iDavidID =
-							GeneralManager.get().getIDMappingManager().getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID,
-								selectionDeltaItem.getPrimaryID());
+							GeneralManager.get().getIDMappingManager().getID(
+								EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionDeltaItem.getPrimaryID());
 
 						if (iItemsToLoad == 0) {
 							String sURL = urlGenerator.createURL(eBrowserQueryType, iDavidID);
@@ -131,14 +132,15 @@ public class GenomeHTMLBrowserViewRep
 						String sOutput = "";
 						sOutput =
 							sOutput
-								+ GeneralManager.get().getIDMappingManager()
-									.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
+								+ GeneralManager.get().getIDMappingManager().getID(
+									EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
 						sOutput = sOutput + "\n";
 						sOutput = sOutput + sRefSeqID;
 
-						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID()))
+						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID())) {
 							continue;
+						}
 
 						// list.add(sOutput);
 						iAlDavidID.add(iDavidID);

@@ -88,9 +88,8 @@ public final class ParameterHandler
 	@Override
 	public Vec3f getValueVec3f(final String key) {
 
-		if (key == null) {
+		if (key == null)
 			return new Vec3f();
-		}
 
 		return new Vec3f(hashKey2Float.getValue(key + "_GL0"), hashKey2Float.getValue(key + "_GL1"),
 			hashKey2Float.getValue(key + "_GL2"));
@@ -100,9 +99,8 @@ public final class ParameterHandler
 	@Override
 	public Vec4f getValueVec4f(final String key) {
 
-		if (key == null) {
+		if (key == null)
 			return new Vec4f();
-		}
 
 		return new Vec4f(hashKey2Float.getValue(key + "_GLROT0"), hashKey2Float.getValue(key + "_GLROT1"),
 			hashKey2Float.getValue(key + "_GLROT2"), hashKey2Float.getValue(key + "_GLROT3"));
@@ -132,10 +130,9 @@ public final class ParameterHandler
 
 		ParameterHandlerType currentType = hashPrimarySwitch.get(key);
 
-		if (currentType == null) {
+		if (currentType == null)
 			throw new IllegalArgumentException("ParameterHandler.setValue(" + key
 				+ " , * ) key was not registered as type!");
-		}
 
 		try {
 			switch (currentType) {
@@ -217,7 +214,8 @@ public final class ParameterHandler
 
 				case FLOAT:
 					try {
-						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(value), Float.valueOf(defaultValue));
+						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(value), Float
+							.valueOf(defaultValue));
 					}
 					catch (NumberFormatException nfe) {
 						hashKey2Float.setValueAndDefaultValue(key, Float.valueOf(defaultValue), Float
@@ -246,12 +244,12 @@ public final class ParameterHandler
 					break;
 
 				case VEC3F: {
-					StringTokenizer tokenizer = new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
+					StringTokenizer tokenizer =
+						new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
 
-					if (tokenizer.countTokens() != 3) {
+					if (tokenizer.countTokens() != 3)
 						throw new IllegalArgumentException("Error in parameter " + key + "=[" + value
 							+ "] needs three float values!");
-					} // if
 
 					for (int i = 0; tokenizer.hasMoreTokens(); i++) {
 						hashKey2Float.setValue(key + "_GL" + i, Float.valueOf(tokenizer.nextToken()));
@@ -261,12 +259,12 @@ public final class ParameterHandler
 					break;
 
 				case VEC4F: {
-					StringTokenizer tokenizer = new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
+					StringTokenizer tokenizer =
+						new StringTokenizer(value, IGeneralManager.sDelimiter_Parser_DataItems);
 
-					if (tokenizer.countTokens() != 4) {
+					if (tokenizer.countTokens() != 4)
 						throw new IllegalArgumentException("Error in parameter " + key + "=[" + value
 							+ "] needs four float values!");
-					} // if
 
 					for (int i = 0; tokenizer.hasMoreTokens(); i++) {
 						hashKey2Float.setValue(key + "_GLROT" + i, Float.valueOf(tokenizer.nextToken()));
@@ -281,8 +279,9 @@ public final class ParameterHandler
 			}
 		}
 		catch (NumberFormatException nfe) {
-			new IllegalStateException("ParameterHandler.setValueAndTypeAndDefault(" + key + "," + defaultValue
-				+ ") defaultValue was not valid due to enumeration type=" + type.toString() + " !");
+			new IllegalStateException("ParameterHandler.setValueAndTypeAndDefault(" + key + ","
+				+ defaultValue + ") defaultValue was not valid due to enumeration type=" + type.toString()
+				+ " !");
 
 		}
 

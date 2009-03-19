@@ -17,8 +17,9 @@ public class IDMappingHelper {
 	}
 
 	public static IDMappingHelper get() {
-		if (idMappingHelper == null)
+		if (idMappingHelper == null) {
 			idMappingHelper = new IDMappingHelper();
+		}
 
 		return idMappingHelper;
 	}

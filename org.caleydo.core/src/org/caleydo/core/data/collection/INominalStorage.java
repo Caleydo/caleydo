@@ -21,7 +21,7 @@ public interface INominalStorage<T>
 	 * Set the raw data Currently supported: String
 	 * 
 	 * @param alData
-	 *          the ArrayList containing the data
+	 *            the ArrayList containing the data
 	 */
 	public void setRawNominalData(ArrayList<T> alData);
 

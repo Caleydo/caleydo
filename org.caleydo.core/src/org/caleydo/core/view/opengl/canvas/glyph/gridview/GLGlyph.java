@@ -141,8 +141,9 @@ public class GLGlyph
 		// if (sLabel.equals("Glyph Single View"))
 		iViewRole = 1;
 
-		if (sLabel.equals("Glyph Selection View"))
+		if (sLabel.equals("Glyph Selection View")) {
 			iViewRole = 2;
+		}
 
 	}
 
@@ -174,7 +175,7 @@ public class GLGlyph
 	 * @param positionmodel
 	 * @param axisnumber
 	 * @param internal
-	 *          column number
+	 *            column number
 	 */
 	public synchronized void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value) {
 		if (positionmodel == EIconIDs.DISPLAY_SCATTERPLOT) {
@@ -208,25 +209,29 @@ public class GLGlyph
 	 * Sets the Selection Brush
 	 * 
 	 * @param enable
-	 *          / disable selection brush
+	 *            / disable selection brush
 	 * @param size
-	 *          of the brush
+	 *            of the brush
 	 */
 	public synchronized void setSelectionBrush(int size) {
 		if (size <= 0) {
 			bEnableSelection = false;
 			ArrayList<Integer> ids = null;
-			if (size == -1)
+			if (size == -1) {
 				ids = grid_.selectAll();
-			if (size == -2)
+			}
+			if (size == -2) {
 				ids = grid_.deSelectAll();
+			}
 
 			selectionManager.clearSelections();
 			alSelectionBrushCornerPoints.clear();
 
-			if (ids != null) // no grid set
-				for (int id : ids)
+			if (ids != null) {
+				for (int id : ids) {
 					selectionManager.addToType(ESelectionType.SELECTION, id);
+				}
+			}
 
 			bDrawConnectionRepLines = false;
 
@@ -258,8 +263,9 @@ public class GLGlyph
 
 		for (ISet tmpSet : alSets) {
 			if (tmpSet != null) {
-				if (tmpSet.getLabel().equals("Set for clinical data"))
+				if (tmpSet.getLabel().equals("Set for clinical data")) {
 					glyphData = tmpSet;
+				}
 			}
 		}
 
@@ -303,8 +309,9 @@ public class GLGlyph
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml) {
-				if (l instanceof JoglMouseListener)
+				if (l instanceof JoglMouseListener) {
 					((JoglMouseListener) l).setNavigationModes(false, false, false);
+				}
 			}
 		}
 
@@ -324,8 +331,9 @@ public class GLGlyph
 		grid_.setGlyphPositions(EIconIDs.DISPLAY_RECTANGLE);
 		// grid_.setGlyphPositions(EIconIDs.DISPLAY_PLUS);
 
-		if (this.iViewRole == 2)
+		if (this.iViewRole == 2) {
 			grid_.setGlyphPositions(EIconIDs.DISPLAY_CIRCLE);
+		}
 
 	}
 
@@ -412,8 +420,9 @@ public class GLGlyph
 			}
 		}
 
-		if (bRedrawDisplayListGrid || bRedrawDisplayListGlyph)
+		if (bRedrawDisplayListGrid || bRedrawDisplayListGlyph) {
 			initDisplayLists(gl);
+		}
 
 		organizeGlyphsForViewRole();
 
@@ -424,35 +433,42 @@ public class GLGlyph
 
 		float scale = iViewScale;
 
-		if (iViewRole == 2) // don't scale down for the selectionview
+		if (iViewRole == 2) {
 			scale = 1;
+		}
 
 		gl.glScalef(scale, scale, scale);
 		gl.glTranslatef(iCornerOffset, 0, 0f);
 
-		if (mouseListener_ != null)
+		if (mouseListener_ != null) {
 			handleMouseListenerRubberband(gl, scale);
+		}
 
-		if (displayList_ < 0 || bRedrawDisplayListGlyph)
+		if (displayList_ < 0 || bRedrawDisplayListGlyph) {
 			redrawView(gl);
+		}
 
 		int displayListGrid = grid_.getGridLayout(bIsLocal);
-		if (displayListGrid >= 0)
+		if (displayListGrid >= 0) {
 			gl.glCallList(displayListGrid);
+		}
 
-		if (displayList_ >= 0)
+		if (displayList_ >= 0) {
 			gl.glCallList(displayList_);
+		}
 
-		if (alSelectionBrushCornerPoints != null)
+		if (alSelectionBrushCornerPoints != null) {
 			renderSelectionBrush(gl);
+		}
 
 		gl.glTranslatef(-7.0f, 0.0f, 0f);
 		gl.glRotatef(-45f, 0, 0, 1);
 
 		gl.glPopMatrix();
 
-		if (mouseListener_ != null)
+		if (mouseListener_ != null) {
 			mouseListener_.render(gl);
+		}
 
 		// if (System.currentTimeMillis() - ticker > 10000)
 		// {
@@ -514,11 +530,13 @@ public class GLGlyph
 			GlyphEntry ge = git.next();
 
 			Vec2i pos = grid_.getGridPosition(ge);
-			if (pos == null)
+			if (pos == null) {
 				continue;
+			}
 
 			gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GLYPH_FIELD_SELECTION, ge.getID()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GLYPH_FIELD_SELECTION, ge
+				.getID()));
 			gl.glCallList(ge.getGlList(gl));
 			gl.glPopName();
 			gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
@@ -539,8 +557,9 @@ public class GLGlyph
 		int size = alSelectionBrushCornerPoints.size();
 
 		Vec2i oldpoint = null;
-		if (size > 1)
+		if (size > 1) {
 			oldpoint = alSelectionBrushCornerPoints.get(size - 1);
+		}
 
 		for (Vec2i point : alSelectionBrushCornerPoints) {
 			gl.glPushMatrix();
@@ -548,10 +567,12 @@ public class GLGlyph
 
 			gl.glLineWidth(3);
 
-			if (!keyListener_.isControlDown())
+			if (!keyListener_.isControlDown()) {
 				gl.glColor4f(0, 1, 0, 1);
-			else
+			}
+			else {
 				gl.glColor4f(1, 0, 0, 1);
+			}
 
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(0, 0, 0);
@@ -612,18 +633,18 @@ public class GLGlyph
 
 	/**
 	 * This method saves either an high resolution screenshot, or the current view if no framebuffer is
-	 * available. You can either give it an resolution (no aspect ratio correction!) or use -1 as width & height
-	 * to use 4096x? (aspect ratio of the screen). It uses ImagieIO, so the file extension defines the written
-	 * picture format.
+	 * available. You can either give it an resolution (no aspect ratio correction!) or use -1 as width &
+	 * height to use 4096x? (aspect ratio of the screen). It uses ImagieIO, so the file extension defines the
+	 * written picture format.
 	 * 
 	 * @param gl
-	 *          context
+	 *            context
 	 * @param file
-	 *          to write
+	 *            to write
 	 * @param width
-	 *          of the picture
+	 *            of the picture
 	 * @param height
-	 *          of the picture
+	 *            of the picture
 	 */
 	@SuppressWarnings("unused")
 	private void renderToImage(GL gl, File outFile, int width, int height) {
@@ -637,8 +658,9 @@ public class GLGlyph
 			height = (int) (width * aspect);
 		}
 
-		if (iFrameBufferObject < 0)
+		if (iFrameBufferObject < 0) {
 			iFrameBufferObject = createFrameBufferObject(gl, width, height);
+		}
 
 		// we don't have an framebuffer, so we just save the current screen
 		if (iFrameBufferObject < 0) {
@@ -682,8 +704,8 @@ public class GLGlyph
 	}
 
 	/**
-	 * Creates a frame buffer object with the given size. This is from an example of Nehe Productions Lession 36
-	 * (Radial Blur & Rendering To A Texture).
+	 * Creates a frame buffer object with the given size. This is from an example of Nehe Productions Lession
+	 * 36 (Radial Blur & Rendering To A Texture).
 	 * 
 	 * @return the newly created frame buffer object is or -1 if a frame buffer object could not be created
 	 */
@@ -726,9 +748,8 @@ public class GLGlyph
 
 		// Make sure the framebuffer object is complete (i.e. set up correctly)
 		int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
-		if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT) {
+		if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT)
 			return frameBuffer[0];
-		}
 		else {
 			// No matter what goes wrong, we simply delete the frame buffer
 			// object
@@ -770,8 +791,9 @@ public class GLGlyph
 
 		HashMap<Integer, GlyphEntry> tmp = new HashMap<Integer, GlyphEntry>();
 		for (GlyphEntry g : gman.getGlyphs().values()) {
-			if (g.isSelected())
+			if (g.isSelected()) {
 				tmp.put(g.getID(), g);
+			}
 		}
 		grid_.setGlyphList(tmp);
 
@@ -797,7 +819,7 @@ public class GLGlyph
 	 * 
 	 * @param gl
 	 * @param used
-	 *          scale
+	 *            scale
 	 */
 	private void handleMouseListenerRubberband(GL gl, float scale) {
 		ArrayList<Vec3f> points = mouseListener_.getRubberBandPoints();
@@ -868,9 +890,9 @@ public class GLGlyph
 	 * Brush size (iSelectionBrushSize).
 	 * 
 	 * @param a
-	 *          Glyph Entry (the middle one of the brush)
+	 *            Glyph Entry (the middle one of the brush)
 	 * @param select
-	 *          (true) or deselect (false) mode?
+	 *            (true) or deselect (false) mode?
 	 */
 	private void brushSelect(GlyphEntry glyph, boolean selectDeselect) {
 		Vec2i pos = grid_.getPosition(glyph);
@@ -913,19 +935,22 @@ public class GLGlyph
 		ArrayList<Integer> glyphIDs = new ArrayList<Integer>();
 		for (int x = -iSelectionBrushSize + 1; x <= iSelectionBrushSize - 1; ++x) {
 			int ymax = selectedGridHeight[x + iSelectionBrushSize - 1];
-			for (int y = -ymax; y <= ymax; ++y)
+			for (int y = -ymax; y <= ymax; ++y) {
 				glyphIDs.add(grid_.getGlyphID(pos.x() + x, pos.y() - y));
+			}
 		}
 
 		if (selectDeselect) {
 			for (int id : glyphIDs)
-				if (id >= 0)
+				if (id >= 0) {
 					grid_.getGlyph(id).select();
+				}
 		}
 		else {
 			for (int id : glyphIDs)
-				if (id >= 0)
+				if (id >= 0) {
 					grid_.getGlyph(id).deSelect();
+				}
 		}
 
 		Vec2i gridPos = grid_.getGridPosition(glyph);
@@ -999,8 +1024,9 @@ public class GLGlyph
 					}
 
 					selectionManager.clearSelections();
-					if (oldMouseOverGlyphEntry != null)
+					if (oldMouseOverGlyphEntry != null) {
 						selectionManager.addToType(ESelectionType.NORMAL, oldMouseOverGlyphEntry.getID());
+					}
 
 					selectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 
@@ -1009,8 +1035,9 @@ public class GLGlyph
 					selectionManager.addConnectionID(generalManager.getIDManager().createID(
 						EManagedObjectType.CONNECTION), iExternalID);
 
-					if (bEnableSelection)
+					if (bEnableSelection) {
 						brushSelect(g, !keyListener_.isControlDown());
+					}
 
 					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 						EIDType.EXPERIMENT_INDEX);
@@ -1047,8 +1074,9 @@ public class GLGlyph
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);
 
-		if (selectionDelta.size() > 0)
+		if (selectionDelta.size() > 0) {
 			handleConnectedElementRep(selectionDelta);
+		}
 
 		forceRebuild();
 
@@ -1061,14 +1089,17 @@ public class GLGlyph
 		for (SelectionDeltaItem item : selectionDelta) {
 			actualGlyph = grid_.getGlyph(item.getPrimaryID());
 
-			if (actualGlyph == null) // not glyph to this id found
+			if (actualGlyph == null) {
 				continue;
+			}
 
-			if (item.getSelectionType() == ESelectionType.DESELECTED)
+			if (item.getSelectionType() == ESelectionType.DESELECTED) {
 				actualGlyph.deSelect();
+			}
 
-			if (item.getSelectionType() == ESelectionType.SELECTION)
+			if (item.getSelectionType() == ESelectionType.SELECTION) {
 				actualGlyph.select();
+			}
 
 		}
 
@@ -1102,7 +1133,8 @@ public class GLGlyph
 					(SelectionCommandEventContainer) eventContainer;
 				switch (commandEventContainer.getIDType()) {
 					case EXPERIMENT_INDEX:
-						selectionManager.executeSelectionCommands(commandEventContainer.getSelectionCommands());
+						selectionManager.executeSelectionCommands(commandEventContainer
+							.getSelectionCommands());
 						break;
 				}
 				break;
@@ -1141,11 +1173,13 @@ public class GLGlyph
 		for (SelectionDeltaItem item : selection) {
 			actualGlyph = grid_.getGlyph(item.getPrimaryID());
 
-			if (actualGlyph == null)
+			if (actualGlyph == null) {
 				continue;
+			}
 
-			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
+			if (item.getSelectionType() != ESelectionType.MOUSE_OVER) {
 				continue;
+			}
 
 			vecGlyphPos = getGlyphPosition(actualGlyph);
 
@@ -1153,8 +1187,9 @@ public class GLGlyph
 				new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(),
 					vecGlyphPos.z());
 
-			for (Integer iConnectionID : item.getConnectionID())
+			for (Integer iConnectionID : item.getConnectionID()) {
 				connectedElementRepresentationManager.addSelection(iConnectionID, rep);
+			}
 
 		}
 	}
@@ -1176,7 +1211,7 @@ public class GLGlyph
 	 * Temporary fix
 	 * 
 	 * @param addHeader
-	 *          you want a header?
+	 *            you want a header?
 	 * @param viewName
 	 * @return
 	 */
@@ -1230,11 +1265,11 @@ public class GLGlyph
 	 * Temporary fix
 	 * 
 	 * @param addHeader
-	 *          you want a header?
+	 *            you want a header?
 	 * @param selectionOnly
-	 *          export selected glyphs only
+	 *            export selected glyphs only
 	 * @param originalData
-	 *          unused now
+	 *            unused now
 	 * @return
 	 */
 	@Deprecated
@@ -1266,13 +1301,15 @@ public class GLGlyph
 			}
 
 			for (GlyphEntry ge : list) {
-				if (selectionOnly && !ge.isSelected())
+				if (selectionOnly && !ge.isSelected()) {
 					continue;
+				}
 
-				if (GeneralManager.get().getIDMappingManager().hasMapping(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT)) {
+				if (GeneralManager.get().getIDMappingManager().hasMapping(
+					EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT)) {
 					String id =
-						GeneralManager.get().getIDMappingManager().getID(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT,
-							ge.getID());
+						GeneralManager.get().getIDMappingManager().getID(
+							EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, ge.getID());
 
 					out.print(id);
 				}
@@ -1307,8 +1344,9 @@ public class GLGlyph
 
 	@Override
 	public void clearAllSelections() {
-		for (GlyphEntry g : gman.getGlyphs().values())
+		for (GlyphEntry g : gman.getGlyphs().values()) {
 			g.select();
+		}
 
 		grid_.loadData(null);
 		forceRebuild();

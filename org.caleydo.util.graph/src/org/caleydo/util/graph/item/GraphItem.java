@@ -47,7 +47,7 @@ public class GraphItem
 	 * 
 	 * @see org.caleydo.util.graph.item.GraphItem#GraphItem(int, EGraphItemKind, int, int)
 	 * @param kind
-	 *          use EGraphItemKind.NODE or EGraphItemKind.EDGE
+	 *            use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
 	public GraphItem(final int id, final EGraphItemKind kind) {
 		this(id, kind, GraphItem.iInitialSizeItemsDefault, GraphItem.iInitalSizeGraphsDefault);
@@ -58,11 +58,11 @@ public class GraphItem
 	 * Specify initial size of IGraphItems and IGraphs.
 	 * 
 	 * @param iInitialSizeItems
-	 *          estimated number of items
+	 *            estimated number of items
 	 * @param iInitalSizeGraphs
-	 *          estimated number of graphs
+	 *            estimated number of graphs
 	 * @param kind
-	 *          use EGraphItemKind.NODE or EGraphItemKind.EDGE
+	 *            use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
 	public GraphItem(final int id, final EGraphItemKind kind, final int iInitialSizeItems,
 		final int iInitalSizeGraphs) {

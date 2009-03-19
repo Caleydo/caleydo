@@ -31,9 +31,8 @@ public class MathUtil {
 	 * the source vector was equal to (0, 0, 0).
 	 */
 	public static boolean makePerpendicular(Vec3f src, Vec3f dest) {
-		if (src.x() == 0.0f && src.y() == 0.0f && src.z() == 0.0f) {
+		if (src.x() == 0.0f && src.y() == 0.0f && src.z() == 0.0f)
 			return false;
-		}
 
 		if (src.x() != 0.0f) {
 			if (src.y() != 0.0f) {
@@ -53,12 +52,10 @@ public class MathUtil {
 	 * Returns 1 if the sign of the given argument is positive; -1 if negative; 0 if 0.
 	 */
 	public static int sgn(float f) {
-		if (f > 0) {
+		if (f > 0)
 			return 1;
-		}
-		else if (f < 0) {
+		else if (f < 0)
 			return -1;
-		}
 		return 0;
 	}
 

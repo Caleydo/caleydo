@@ -46,7 +46,8 @@ public class CaleydoProjectWizard
 	@Override
 	public boolean performFinish() {
 		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete()) {
-			NewOrExistingProjectPage page = (NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME);
+			NewOrExistingProjectPage page =
+				(NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME);
 
 			if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
 				Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
@@ -66,16 +67,15 @@ public class CaleydoProjectWizard
 
 	@Override
 	public boolean performCancel() {
-		
+
 		Application.bDoExit = true;
 		return true;
 	}
 
 	@Override
 	public boolean canFinish() {
-		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete()) {
+		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete())
 			return true;
-		}
 
 		return false;
 	}
@@ -90,24 +90,30 @@ public class CaleydoProjectWizard
 				nextPage.setPageComplete(true);
 				return nextPage;
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.EXISTING_PROJECT) {
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+				.getProjectType() == EProjectType.EXISTING_PROJECT) {
 				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
 				fileOpenProjectAction.run();
 
 				this.performFinish();
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+				.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+				.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+				.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
 				// Remove heatmap and par coord views
 				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
 					.getAllGLEventListeners()) {
-					if (glEventListener instanceof GLHeatMap || glEventListener instanceof GLParallelCoordinates) {
-						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(glEventListener.getID());
+					if (glEventListener instanceof GLHeatMap
+						|| glEventListener instanceof GLParallelCoordinates) {
+						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
+							glEventListener.getID());
 					}
 				}
 

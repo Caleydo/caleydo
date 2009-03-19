@@ -45,13 +45,13 @@ public interface IEventPublisher {
 	 * the delta.
 	 * 
 	 * @param eMediatorType
-	 *          for which mediator
+	 *            for which mediator
 	 * @param eventTrigger
-	 *          the caller
+	 *            the caller
 	 * @param selectionDelta
-	 *          the delta containing all operations to be executed
+	 *            the delta containing all operations to be executed
 	 * @param colSelectionCommand
-	 *          a command to be executed on the selection manager (can be null if not necessary)
+	 *            a command to be executed on the selection manager (can be null if not necessary)
 	 */
 	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
 	// IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
@@ -74,10 +74,10 @@ public interface IEventPublisher {
 	 * Triggers an event, signals that something has happened and sends data along
 	 * 
 	 * @param eventTrigger
-	 *          the caller
+	 *            the caller
 	 * @param eventContainer
-	 *          containing the information on the type of the event {@link EEventType} and possibly data
-	 *          associated
+	 *            containing the information on the type of the event {@link EEventType} and possibly data
+	 *            associated
 	 */
 	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
 		IEventContainer eventContainer);
@@ -86,9 +86,9 @@ public interface IEventPublisher {
 	 * Adds a sender to the mediator specified in eMediatorType
 	 * 
 	 * @param eMediatorType
-	 *          The mediator that is used to pass this type of events
+	 *            The mediator that is used to pass this type of events
 	 * @param sender
-	 *          the sender to be registered
+	 *            the sender to be registered
 	 */
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender);
 
@@ -96,9 +96,9 @@ public interface IEventPublisher {
 	 * Adds a receiver to the mediator specified in eMediatorType
 	 * 
 	 * @param eMediatorType
-	 *          the type of the mediator
+	 *            the type of the mediator
 	 * @param receiver
-	 *          the receiver to be registered
+	 *            the receiver to be registered
 	 */
 	public void addReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver);
 
@@ -106,9 +106,9 @@ public interface IEventPublisher {
 	 * Removes a sender from the mediator specified in eMediatorType
 	 * 
 	 * @param eMediatorType
-	 *          the type of the mediator
+	 *            the type of the mediator
 	 * @param sender
-	 *          the sender to be removed
+	 *            the sender to be removed
 	 */
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender);
 
@@ -116,9 +116,9 @@ public interface IEventPublisher {
 	 * Removes a receiver from the mediator specified in eMediatorType
 	 * 
 	 * @param eMediatorType
-	 *          the type of the mediator
+	 *            the type of the mediator
 	 * @param reveiver
-	 *          the receiver to be removed
+	 *            the receiver to be removed
 	 */
 	public void removeReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver);
 
@@ -126,7 +126,7 @@ public interface IEventPublisher {
 	 * Removes a sender from all public mediators
 	 * 
 	 * @param sender
-	 *          the sender to be removed
+	 *            the sender to be removed
 	 */
 	public void removeSenderFromAllGroups(IMediatorSender sender);
 
@@ -134,7 +134,7 @@ public interface IEventPublisher {
 	 * Removes a receiver from all public mediators
 	 * 
 	 * @param receiver
-	 *          the receiver to be removed
+	 *            the receiver to be removed
 	 */
 	public void removeReceiverFromAllGroups(IMediatorReceiver receiver);
 }

@@ -10,9 +10,10 @@ public class SearchBoxSnippet {
 
 	public static void main(String[] args) {
 		String items[] =
-			{ "Lions", "Tigers", "Bears", "Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel",
-					"India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa", "Quebec", "Romeo",
-					"Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-Ray", "Yankee", "Zulu" };
+			{ "Lions", "Tigers", "Bears", "Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf",
+					"Hotel", "India", "Juliet", "Kilo", "Lima", "Mike", "November", "Oscar", "Papa",
+					"Quebec", "Romeo", "Sierra", "Tango", "Uniform", "Victor", "Whiskey", "X-Ray", "Yankee",
+					"Zulu" };
 		Display display = Display.getDefault();
 		Shell shell1 = new Shell(display);
 		shell1.setLayout(new GridLayout());
@@ -25,8 +26,9 @@ public class SearchBoxSnippet {
 		shell1.pack();
 		shell1.open();
 		while (!shell1.isDisposed()) {
-			if (!display.readAndDispatch())
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
 		}
 		display.dispose();
 	}

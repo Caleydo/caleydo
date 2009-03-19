@@ -12,9 +12,9 @@ public interface IMediatorSender {
 	 * Trigger an update on the selections. The information is contained in the selection delta specified
 	 * 
 	 * @param eMediatorType
-	 *          TODO
+	 *            TODO
 	 * @param colSelectionCommand
-	 *          TODO
+	 *            TODO
 	 */
 	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
 	// ISelectionDelta selectionDelta, Collection<SelectionCommand>

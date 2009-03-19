@@ -37,9 +37,9 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * Constructor.
 	 * 
 	 * @param colGraphEnum
-	 *          List of all Enumeration that will be used; Skip type NONE or GRAPH_NONE
+	 *            List of all Enumeration that will be used; Skip type NONE or GRAPH_NONE
 	 * @param iInitialSizeGraphComponents
-	 *          specify initial size of ArrayList<GraphComponent>
+	 *            specify initial size of ArrayList<GraphComponent>
 	 */
 	public GraphGenericContainer(List<GraphEnum> colGraphEnum, int iInitialSizeGraphComponents) {
 
@@ -65,17 +65,16 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 
 	/**
 	 * Same as
-	 * {@link org.caleydo.util.graph.item.GraphGenericContainer#addGraphComponent(IGraphComponent, Object)} but
-	 * it will be checked if the element is already added. In this case an assertion will be triggered.
+	 * {@link org.caleydo.util.graph.item.GraphGenericContainer#addGraphComponent(IGraphComponent, Object)}
+	 * but it will be checked if the element is already added. In this case an assertion will be triggered.
 	 */
 	public void addGraphComponentChecked(GraphComponent item, final GraphEnum key) {
 
 		/* add to hierarchy... */
 		ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
 
-		if (arrayBuffer == null) {
+		if (arrayBuffer == null)
 			throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString());
-		}
 
 		if (!arrayBuffer.contains(item)) {
 			arrayBuffer.add(item);
@@ -97,9 +96,8 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 		/* add to hierarchy... */
 		ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
 
-		if (arrayBuffer == null) {
+		if (arrayBuffer == null)
 			throw new GraphRuntimeException("unsupported type " + type2ArrayList.toString());
-		}
 
 		if (!arrayBuffer.contains(item)) {
 			arrayBuffer.add(item);
@@ -136,9 +134,8 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values().iterator();
 
 		while (iter.hasNext()) {
-			if (iter.next().contains(item)) {
+			if (iter.next().contains(item))
 				return true;
-			}
 		}
 
 		return false;
@@ -233,9 +230,8 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values().iterator();
 
 		while (iter.hasNext()) {
-			if (!iter.next().isEmpty()) {
+			if (!iter.next().isEmpty())
 				return false;
-			}
 		}
 		return true;
 	}

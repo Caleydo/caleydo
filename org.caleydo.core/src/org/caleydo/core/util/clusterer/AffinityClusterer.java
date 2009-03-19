@@ -9,8 +9,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
-public class AffinityClusterer
-{
+public class AffinityClusterer {
 	private double[] s = null;
 	private int[] i = null;
 	private int[] k = null;
@@ -29,8 +28,7 @@ public class AffinityClusterer
 
 	private int iNrSimilarities = 0;
 
-	public AffinityClusterer(int iNrSamples)
-	{
+	public AffinityClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
 		this.iNrSimilarities = iNrSamples * iNrSamples;
 		this.s = new double[this.iNrSimilarities];
@@ -45,19 +43,16 @@ public class AffinityClusterer
 	 * @param dAr2
 	 * @return double euclidean distance
 	 */
-	private double euclideanDistance(double[] dAr1, double[] dAr2)
-	{
+	private double euclideanDistance(double[] dAr1, double[] dAr2) {
 		double distance = 0;
 		double sum = 0;
 
-		if (dAr1.length != dAr2.length)
-		{
+		if (dAr1.length != dAr2.length) {
 			System.out.println("length of vectors not equal!");
 			return 0;
 		}
 
-		for (int i = 0; i < dAr1.length; i++)
-		{
+		for (int i = 0; i < dAr1.length; i++) {
 			sum = sum + Math.pow(dAr1[i] - dAr2[i], 2);
 		}
 
@@ -73,22 +68,24 @@ public class AffinityClusterer
 	 * @param dArray
 	 * @return double median
 	 */
-	private double median(double[] dArray)
-	{
+	private double median(double[] dArray) {
 
 		double median = 0;
 		double[] temp = new double[dArray.length];
 
-		for (int i = 0; i < temp.length; i++)
+		for (int i = 0; i < temp.length; i++) {
 			temp[i] = dArray[i];
+		}
 
 		Arrays.sort(temp);
 
-		if ((temp.length % 2) == 0)
+		if ((temp.length % 2) == 0) {
 			median =
 				(temp[(int) Math.floor(temp.length / 2)] + temp[(int) Math.floor((temp.length + 1) / 2)]) / 2;
-		else
+		}
+		else {
 			median = temp[(int) Math.floor((temp.length + 1) / 2)];
+		}
 
 		// return median
 		return median * dClusterFactor;
@@ -100,12 +97,12 @@ public class AffinityClusterer
 	 * @param dArray
 	 * @return double minimum
 	 */
-	private double minimum(double[] dArray)
-	{
+	private double minimum(double[] dArray) {
 		double[] temp = new double[dArray.length];
 
-		for (int i = 0; i < temp.length; i++)
+		for (int i = 0; i < temp.length; i++) {
 			temp[i] = dArray[i];
+		}
 
 		Arrays.sort(temp);
 
@@ -121,8 +118,7 @@ public class AffinityClusterer
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	public void determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage)
-	{
+	public void determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage) {
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
@@ -132,31 +128,26 @@ public class AffinityClusterer
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int count = 0;
 
-		for (Integer iContentIndex1 : contentVA)
-		{
+		for (Integer iContentIndex1 : contentVA) {
 
 			isto = 0;
-			for (Integer iStorageIndex1 : storageVA)
-			{
+			for (Integer iStorageIndex1 : storageVA) {
 				dArInstance1[isto] =
 					set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
 				isto++;
 			}
 
 			icnt2 = 0;
-			for (Integer iContentIndex2 : contentVA)
-			{
+			for (Integer iContentIndex2 : contentVA) {
 
 				isto = 0;
-				for (Integer iStorageIndex2 : storageVA)
-				{
+				for (Integer iStorageIndex2 : storageVA) {
 					dArInstance2[isto] =
 						set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex2);
 					isto++;
 				}
 
-				if (icnt1 != icnt2)
-				{
+				if (icnt1 != icnt2) {
 					s[count] = euclideanDistance(dArInstance1, dArInstance2);
 					i[count] = iContentIndex1 - 1;
 					k[count] = iContentIndex2 - 1;
@@ -170,8 +161,7 @@ public class AffinityClusterer
 		// determine median of the similarity values
 		double median = median(s);
 
-		for (Integer iContentIndex1 : contentVA)
-		{
+		for (Integer iContentIndex1 : contentVA) {
 			s[count] = median;
 			i[count] = iContentIndex1 - 1;
 			k[count] = iContentIndex1 - 1;
@@ -183,17 +173,14 @@ public class AffinityClusterer
 	}
 
 	/**
-	 * Java-implementation of the affinity propagation clustering algorithm. See
-	 * BJ Frey and D Dueck, Science 315, 972-976, Feb 16, 2007, for a
-	 * description of the algorithm. Copyright 2007, BJ Frey and Delbert Dueck.
-	 * This software may be freely used and distributed for non-commercial
-	 * purposes.
+	 * Java-implementation of the affinity propagation clustering algorithm. See BJ Frey and D Dueck, Science
+	 * 315, 972-976, Feb 16, 2007, for a description of the algorithm. Copyright 2007, BJ Frey and Delbert
+	 * Dueck. This software may be freely used and distributed for non-commercial purposes.
 	 * 
 	 * @param set
 	 * @return Integer
 	 */
-	public Integer affinityPropagation(ISet set)
-	{
+	public Integer affinityPropagation(ISet set) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
 		// Arraylist holding indeces of examples (cluster centers)
@@ -222,145 +209,163 @@ public class AffinityClusterer
 		// (Math.random() / 2f);
 		// }
 
-		while (bIterate)
-		{
+		while (bIterate) {
 			iNrIterations++;
 
 			// Compute responsibilities
-			for (j = 0; j < iNrSamples; j++)
-			{
+			for (j = 0; j < iNrSamples; j++) {
 				mx1[j] = -Double.MAX_VALUE;
 				mx2[j] = -Double.MAX_VALUE;
 			}
-			for (j = 0; j < iNrSimilarities; j++)
-			{
+			for (j = 0; j < iNrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
-				if (tmp > mx1[i[j]])
-				{
+				if (tmp > mx1[i[j]]) {
 					mx2[i[j]] = mx1[i[j]];
 					mx1[i[j]] = tmp;
 				}
-				else if (tmp > mx2[i[j]])
+				else if (tmp > mx2[i[j]]) {
 					mx2[i[j]] = tmp;
+				}
 			}
-			for (j = 0; j < iNrSimilarities; j++)
-			{
+			for (j = 0; j < iNrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
-				if (tmp == mx1[i[j]])
+				if (tmp == mx1[i[j]]) {
 					dArResposibilities[j] =
 						dLambda * dArResposibilities[j] + (1 - dLambda) * (s[j] - mx2[i[j]]);
-				else
+				}
+				else {
 					dArResposibilities[j] =
 						dLambda * dArResposibilities[j] + (1 - dLambda) * (s[j] - mx1[i[j]]);
+				}
 			}
 
 			// Compute availabilities
 			for (j = 0; j < iNrSimilarities - iNrSamples; j++)
-				if (dArResposibilities[j] > 0.0)
+				if (dArResposibilities[j] > 0.0) {
 					srp[k[j]] = srp[k[j]] + dArResposibilities[j];
-			for (j = iNrSimilarities - iNrSamples; j < iNrSimilarities; j++)
+				}
+			for (j = iNrSimilarities - iNrSamples; j < iNrSimilarities; j++) {
 				srp[k[j]] = srp[k[j]] + dArResposibilities[j];
-			for (j = 0; j < iNrSimilarities - iNrSamples; j++)
-			{
-				if (dArResposibilities[j] > 0.0)
-					tmp = srp[k[j]] - dArResposibilities[j];
-				else
-					tmp = srp[k[j]];
-				if (tmp < 0.0)
-					dArAvailabilities[j] = dLambda * dArAvailabilities[j] + (1 - dLambda) * tmp;
-				else
-					dArAvailabilities[j] = dLambda * dArAvailabilities[j];
 			}
-			for (j = iNrSimilarities - iNrSamples; j < iNrSimilarities; j++)
+			for (j = 0; j < iNrSimilarities - iNrSamples; j++) {
+				if (dArResposibilities[j] > 0.0) {
+					tmp = srp[k[j]] - dArResposibilities[j];
+				}
+				else {
+					tmp = srp[k[j]];
+				}
+				if (tmp < 0.0) {
+					dArAvailabilities[j] = dLambda * dArAvailabilities[j] + (1 - dLambda) * tmp;
+				}
+				else {
+					dArAvailabilities[j] = dLambda * dArAvailabilities[j];
+				}
+			}
+			for (j = iNrSimilarities - iNrSamples; j < iNrSimilarities; j++) {
 				dArAvailabilities[j] =
 					dLambda * dArAvailabilities[j] + (1 - dLambda) * (srp[k[j]] - dArResposibilities[j]);
+			}
 
 			// Identify exemplars and check to see if finished
 			decit++;
-			if (decit >= iConvIterations)
+			if (decit >= iConvIterations) {
 				decit = 0;
-			for (j = 0; j < iNrSamples; j++)
+			}
+			for (j = 0; j < iNrSamples; j++) {
 				decsum[j] = decsum[j] - dec[decit][j];
+			}
 			for (j = 0; j < iNrSamples; j++)
 				if (dArAvailabilities[iNrSimilarities - iNrSamples + j]
-					+ dArResposibilities[iNrSimilarities - iNrSamples + j] > 0.0)
+					+ dArResposibilities[iNrSimilarities - iNrSamples + j] > 0.0) {
 					dec[decit][j] = 1;
-				else
+				}
+				else {
 					dec[decit][j] = 0;
+				}
 			iNrClusters = 0;
-			for (j = 0; j < iNrSamples; j++)
+			for (j = 0; j < iNrSamples; j++) {
 				iNrClusters = iNrClusters + dec[decit][j];
-			for (j = 0; j < iNrSamples; j++)
+			}
+			for (j = 0; j < iNrSamples; j++) {
 				decsum[j] = decsum[j] + dec[decit][j];
-			if ((iNrIterations >= iConvIterations) || (iNrIterations >= iMaxIterations))
-			{
+			}
+			if ((iNrIterations >= iConvIterations) || (iNrIterations >= iMaxIterations)) {
 				// Check convergence
 				bConverged = true;
 				for (j = 0; j < iNrSamples; j++)
-					if ((decsum[j] != 0) && (decsum[j] != iConvIterations))
+					if ((decsum[j] != 0) && (decsum[j] != iConvIterations)) {
 						bConverged = false;
+					}
 				// Check to see if done
-				if ((bConverged && (iNrClusters > 0)) || (iNrIterations == iMaxIterations))
+				if ((bConverged && (iNrClusters > 0)) || (iNrIterations == iMaxIterations)) {
 					bIterate = false;
+				}
 			}
 		}
 
 		// If clusters were identified, find the assignments
-		if (iNrClusters > 0)
-		{
+		if (iNrClusters > 0) {
 			for (j = 0; j < iNrSimilarities; j++)
-				if (dec[decit][k[j]] == 1)
+				if (dec[decit][k[j]] == 1) {
 					dArAvailabilities[j] = 0.0;
-				else
+				}
+				else {
 					dArAvailabilities[j] = -Double.MAX_VALUE;
-			for (j = 0; j < iNrSamples; j++)
+				}
+			for (j = 0; j < iNrSamples; j++) {
 				mx1[j] = -Double.MAX_VALUE;
-			for (j = 0; j < iNrSimilarities; j++)
-			{
+			}
+			for (j = 0; j < iNrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
-				if (tmp > mx1[i[j]])
-				{
+				if (tmp > mx1[i[j]]) {
 					mx1[i[j]] = tmp;
 					idx[i[j]] = k[j];
 				}
 			}
 			for (j = 0; j < iNrSamples; j++)
-				if (dec[decit][j] == 1)
+				if (dec[decit][j] == 1) {
 					idx[j] = j;
-			for (j = 0; j < iNrSamples; j++)
+				}
+			for (j = 0; j < iNrSamples; j++) {
 				srp[j] = 0.0;
+			}
 			for (j = 0; j < iNrSimilarities; j++)
-				if (idx[i[j]] == idx[k[j]])
+				if (idx[i[j]] == idx[k[j]]) {
 					srp[k[j]] = srp[k[j]] + s[j];
-			for (j = 0; j < iNrSamples; j++)
+				}
+			for (j = 0; j < iNrSamples; j++) {
 				mx1[j] = -Double.MAX_VALUE;
+			}
 			for (j = 0; j < iNrSamples; j++)
-				if (srp[j] > mx1[idx[j]])
+				if (srp[j] > mx1[idx[j]]) {
 					mx1[idx[j]] = srp[j];
+				}
 			for (j = 0; j < iNrSamples; j++)
-				if (srp[j] == mx1[idx[j]])
+				if (srp[j] == mx1[idx[j]]) {
 					dec[decit][j] = 1;
-				else
+				}
+				else {
 					dec[decit][j] = 0;
+				}
 			for (j = 0; j < iNrSimilarities; j++)
-				if (dec[decit][k[j]] == 1)
+				if (dec[decit][k[j]] == 1) {
 					dArAvailabilities[j] = 0.0;
-				else
+				}
+				else {
 					dArAvailabilities[j] = -Double.MAX_VALUE;
-			for (j = 0; j < iNrSamples; j++)
+				}
+			for (j = 0; j < iNrSamples; j++) {
 				mx1[j] = -Double.MAX_VALUE;
-			for (j = 0; j < iNrSimilarities; j++)
-			{
+			}
+			for (j = 0; j < iNrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
-				if (tmp > mx1[i[j]])
-				{
+				if (tmp > mx1[i[j]]) {
 					mx1[i[j]] = tmp;
 					idx[i[j]] = k[j];
 				}
 			}
 			for (j = 0; j < iNrSamples; j++)
-				if (dec[decit][j] == 1)
-				{
+				if (dec[decit][j] == 1) {
 					idx[j] = j;
 					alExamples.add(j);
 				}
@@ -368,26 +373,20 @@ public class AffinityClusterer
 			System.out.println("Number of iterations: " + iNrIterations);
 		}
 		else
-		{
 			throw new IllegalStateException("Did not identify any clusters!!");
-		}
 		if (bConverged == false)
-		{
 			throw new IllegalStateException("Algorithm did not converg!!");
-		}
 
-		for (int i = 0; i < alExamples.size(); i++)
+		for (int i = 0; i < alExamples.size(); i++) {
 			count.add(0);
+		}
 
 		int counter = 0;
-		for (Integer index : alExamples)
-		{
-			for (int index2 = 0; index2 < iNrSamples; index2++)
-			{
-				if (idx[index2] == index)
-				{
+		for (Integer index : alExamples) {
+			for (int index2 = 0; index2 < iNrSamples; index2++) {
+				if (idx[index2] == index) {
 					AlIndexes.add(index2 + 1);
-					 count.set(counter, count.get(counter) + 1);
+					count.set(counter, count.get(counter) + 1);
 				}
 			}
 			counter++;
@@ -404,13 +403,11 @@ public class AffinityClusterer
 	// this.iNrClusters = iNrClusters;
 	// }
 
-	public int getNrCluteres()
-	{
+	public int getNrCluteres() {
 		return iNrClusters;
 	}
 
-	public void setClusterFactor(double dClusterFactor)
-	{
+	public void setClusterFactor(double dClusterFactor) {
 		this.dClusterFactor = dClusterFactor;
 	}
 

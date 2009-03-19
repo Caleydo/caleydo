@@ -98,10 +98,12 @@ public class TestTranslate2 {
 			GL gl = drawable.getGL();
 			float aspect, theta;
 			aspect = (float) w / (float) h;
-			if (w >= h)
+			if (w >= h) {
 				theta = 45;
-			else
+			}
+			else {
 				theta = (float) Math.toDegrees(Math.atan(1 / aspect));
+			}
 			params.setVertFOV((float) Math.toRadians(theta) / 2.0f);
 			params.setImagePlaneAspectRatio(aspect);
 			params.setXSize(w);

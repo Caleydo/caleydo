@@ -98,8 +98,10 @@ public final class ProxyConfigurationPage
 					prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
 					prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
 
-					System.setProperty("network.proxy_host", prefStore.getString(PreferenceConstants.PROXY_SERVER));
-					System.setProperty("network.proxy_port", prefStore.getString(PreferenceConstants.PROXY_PORT));
+					System.setProperty("network.proxy_host", prefStore
+						.getString(PreferenceConstants.PROXY_SERVER));
+					System.setProperty("network.proxy_port", prefStore
+						.getString(PreferenceConstants.PROXY_PORT));
 				}
 			}
 		});
@@ -177,10 +179,12 @@ public final class ProxyConfigurationPage
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (e.widget == btnNoProxy)
+				if (e.widget == btnNoProxy) {
 					bUseProxy = false;
-				else
+				}
+				else {
 					bUseProxy = true;
+				}
 
 				lblProxyServer.setEnabled(bUseProxy);
 				lblProxyPort.setEnabled(bUseProxy);

@@ -35,13 +35,13 @@ public class OpenExternalXmlFileSaxHandler
 	 * @see org.xml.sax.helpers.DefaultHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
 	 * @param uri
-	 *          URI @see org.xml.sax.helpers.DefaultHandler
+	 *            URI @see org.xml.sax.helpers.DefaultHandler
 	 * @param localName
-	 *          lacalName @see org.xml.sax.helpers.DefaultHandler
+	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
 	 * @param qName
-	 *          tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
 	 * @param attributes
-	 *          attributes bound to qName
+	 *            attributes bound to qName
 	 */
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
@@ -53,9 +53,8 @@ public class OpenExternalXmlFileSaxHandler
 			// {
 			sTargetFileName = attributes.getValue(sXML_attribute_target);
 
-			if (sTargetFileName == null) {
+			if (sTargetFileName == null)
 				throw new IllegalArgumentException("no XML-file specified!");
-			}
 
 			/**
 			 * Recursion...
@@ -81,11 +80,11 @@ public class OpenExternalXmlFileSaxHandler
 	 * endElement for pareser callbacks
 	 * 
 	 * @param uri
-	 *          URI @see org.xml.sax.helpers.DefaultHandler
+	 *            URI @see org.xml.sax.helpers.DefaultHandler
 	 * @param localName
-	 *          lacalName @see org.xml.sax.helpers.DefaultHandler
+	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
 	 * @param qName
-	 *          tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
 	 */
 	@Override
 	public void endElement(String uri, String localName, String qName) {

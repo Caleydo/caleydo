@@ -8,5 +8,7 @@ package org.caleydo.core.data.collection;
  */
 
 public enum EExternalDataRepresentation {
-	NORMAL, LOG10, LOG2;
+	NORMAL,
+	LOG10,
+	LOG2;
 }

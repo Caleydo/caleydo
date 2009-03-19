@@ -44,11 +44,11 @@ public class RayTriangleIntersection {
 	private static final float epsilon = 1.0e-3f;
 
 	/**
-	 * Cast a ray starting at rayOrigin with rayDirection into the triangle defined by vertices v0, v1, and v2.
-	 * If intersection occurred returns INTERSECTION and sets intersectionPoint appropriately, including t
+	 * Cast a ray starting at rayOrigin with rayDirection into the triangle defined by vertices v0, v1, and
+	 * v2. If intersection occurred returns INTERSECTION and sets intersectionPoint appropriately, including t
 	 * parameter (scale factor for rayDirection to reach intersection plane starting from rayOrigin). Returns
-	 * NO_INTERSECTION if no intersection, or ERROR if triangle was degenerate or line was parallel to plane of
-	 * triangle.
+	 * NO_INTERSECTION if no intersection, or ERROR if triangle was degenerate or line was parallel to plane
+	 * of triangle.
 	 */
 	public static int intersectRayWithTriangle(Vec3f rayOrigin, Vec3f rayDirection, Vec3f v0, Vec3f v1,
 		Vec3f v2, IntersectionPoint intersectionPoint) {
@@ -97,9 +97,8 @@ public class RayTriangleIntersection {
 		Vec3f tmp = new Vec3f(X);
 		tmp.scale(X.dot(Y));
 		Y.sub(tmp);
-		if (Y.length() < epsilon) {
+		if (Y.length() < epsilon)
 			return ERROR; // coincident points in triangle
-		}
 		Y.normalize();
 
 		// X and Y are now orthonormal bases for the plane defined by the
@@ -114,9 +113,8 @@ public class RayTriangleIntersection {
 		Vec3f tmpRayDir = new Vec3f(rayDirection);
 		tmpRayDir.scale(-1.0f);
 		A.setCol(2, tmpRayDir);
-		if (!A.invert()) {
+		if (!A.invert())
 			return ERROR;
-		}
 		Vec3f B = new Vec3f();
 		A.xformVec(Bv, B);
 
@@ -128,17 +126,15 @@ public class RayTriangleIntersection {
 		uv[1] = new Vec2f(p2.dot(X), p2.dot(Y));
 		uv[2] = new Vec2f(p3.dot(X), p3.dot(Y));
 
-		if (!(Math.abs(uv[1].y()) < epsilon)) {
+		if (!(Math.abs(uv[1].y()) < epsilon))
 			throw new RuntimeException("Math.abs(uv[1].y()) >= epsilon");
-		}
 
 		// Test. For each of the sides of the triangle, is the intersection
 		// point on the same side as the third vertex of the triangle?
 		// If so, intersection point is inside triangle.
 		for (int i = 0; i < 3; i++) {
-			if (approxOnSameSide(uv[i], uv[(i + 1) % 3], uv[(i + 2) % 3], W) == false) {
+			if (approxOnSameSide(uv[i], uv[(i + 1) % 3], uv[(i + 2) % 3], W) == false)
 				return NO_INTERSECTION;
-			}
 		}
 
 		// Blend coordinates and texture coordinates according to
@@ -146,12 +142,10 @@ public class RayTriangleIntersection {
 		// To do: find u,v coordinates of intersection point in coordinate
 		// system of axes defined by uv[1] and uv[2].
 		// Blending coords == a, b. 0 <= a,b <= 1.
-		if (!(Math.abs(uv[2].y()) > epsilon)) {
+		if (!(Math.abs(uv[2].y()) > epsilon))
 			throw new RuntimeException("Math.abs(uv[2].y()) <= epsilon");
-		}
-		if (!(Math.abs(uv[1].x()) > epsilon)) {
+		if (!(Math.abs(uv[1].x()) > epsilon))
 			throw new RuntimeException("Math.abs(uv[1].x()) <= epsilon");
-		}
 		float a, b;
 		b = W.y() / uv[2].y();
 		a = (W.x() - b * uv[2].x()) / uv[1].x();
@@ -179,13 +173,11 @@ public class RayTriangleIntersection {
 
 		if (Math.abs(den0) < epsilon) {
 			// line goes vertically.
-			if (Math.abs(den1) < epsilon || Math.abs(den2) < epsilon) {
+			if (Math.abs(den1) < epsilon || Math.abs(den2) < epsilon)
 				return true;
-			}
 
-			if (MathUtil.sgn(den1) == MathUtil.sgn(den2)) {
+			if (MathUtil.sgn(den1) == MathUtil.sgn(den2))
 				return true;
-			}
 
 			return false;
 		}
@@ -194,13 +186,11 @@ public class RayTriangleIntersection {
 		// (y - y1) - m(x - x1)
 		float val1 = testPt1.y() - linePt1.y() - m * (testPt1.x() - linePt1.x());
 		float val2 = testPt2.y() - linePt1.y() - m * (testPt2.x() - linePt1.x());
-		if (Math.abs(val1) < epsilon || Math.abs(val2) < epsilon) {
+		if (Math.abs(val1) < epsilon || Math.abs(val2) < epsilon)
 			return true;
-		}
 
-		if (MathUtil.sgn(val1) == MathUtil.sgn(val2)) {
+		if (MathUtil.sgn(val1) == MathUtil.sgn(val2))
 			return true;
-		}
 
 		return false;
 	}

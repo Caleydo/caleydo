@@ -21,8 +21,9 @@ public class GlyphGridPositionModelRectangle
 		int num = gg.size();
 		int x_max = (int) java.lang.Math.sqrt(num);
 
-		if (x_max > worldLimit.x())
+		if (x_max > worldLimit.x()) {
 			x_max = worldLimit.x();
+		}
 
 		int i = 0, j = 0;
 		for (GlyphEntry g : gg) {

@@ -16,7 +16,8 @@ import java.util.List;
  */
 public enum EGraphItemKind {
 
-	NODE(false), EDGE(false),
+	NODE(false),
+	EDGE(false),
 
 	// /**
 	// * Consists of NODE and EDGE
@@ -34,7 +35,7 @@ public enum EGraphItemKind {
 	 * Constructor.
 	 * 
 	 * @param isGraph
-	 *          TRUE for GRAPH else false.
+	 *            TRUE for GRAPH else false.
 	 */
 	private EGraphItemKind(boolean isGraph) {
 		this.bIsGraph = isGraph;

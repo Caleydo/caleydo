@@ -45,8 +45,9 @@ public class KMeansClusterer {
 		// optional
 		// buffer.append("@attribute Instance_name { A, B, C, D}\n");
 
-		for (int nr = 0; nr < set.size(); nr++)
+		for (int nr = 0; nr < set.size(); nr++) {
 			buffer.append("@attribute Patient" + nr + " real\n");
+		}
 
 		buffer.append("@data\n");
 
@@ -100,8 +101,9 @@ public class KMeansClusterer {
 
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
-		for (int i = 0; i < iNrCluster; i++)
+		for (int i = 0; i < iNrCluster; i++) {
 			count.add(0);
+		}
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {

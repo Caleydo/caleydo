@@ -30,15 +30,19 @@ public class PathwayRenderStyle
 	private float[][] neighborhoodNodeColorArray;
 
 	public enum NodeShape {
-		RECTANGULAR, ROUND, ROUNDRECTANGULAR
+		RECTANGULAR,
+		ROUND,
+		ROUNDRECTANGULAR
 	};
 
 	public enum EdgeLineStyle {
-		NORMAL, DASHED
+		NORMAL,
+		DASHED
 	};
 
 	public enum EdgeArrowHeadStyle {
-		FILLED, EMPTY
+		FILLED,
+		EMPTY
 	};
 
 	protected NodeShape enzymeNodeShape;
@@ -137,13 +141,12 @@ public class PathwayRenderStyle
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#neighborhoodNodeColorArraysize
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#highlightedNodeColor
 	 * @param depth
-	 *          [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0 highlightedNodeColor is returned
+	 *            [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0 highlightedNodeColor is returned
 	 * @return
 	 */
 	public float[] getNeighborhoodNodeColorByDepth(final int depth) {
-		if (depth >= neighborhoodNodeColorArraysize) {
+		if (depth >= neighborhoodNodeColorArraysize)
 			throw new IllegalStateException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
-		}
 		return this.neighborhoodNodeColorArray[depth];
 	}
 }

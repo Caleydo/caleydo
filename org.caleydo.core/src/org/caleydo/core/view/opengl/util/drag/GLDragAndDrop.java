@@ -74,7 +74,8 @@ public class GLDragAndDrop {
 		int iGLEventListenerID = RemoteElementManager.get().getItem(iDragObjectId).getContainedElementID();
 
 		if (iGLEventListenerID != -1) {
-			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID).displayRemote(gl);
+			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)
+				.displayRemote(gl);
 		}
 
 		gl.glPopMatrix();

@@ -55,7 +55,8 @@ public class GeneralPreferencePage
 		// addField(numRandomSamplesFE);
 
 		// enableXPClassicStyleMode =
-		// new BooleanFieldEditor(PreferenceConstants.XP_CLASSIC_STYLE_MODE, "Use Windows XP classic style mode",
+		// new BooleanFieldEditor(PreferenceConstants.XP_CLASSIC_STYLE_MODE,
+		// "Use Windows XP classic style mode",
 		// getFieldEditorParent());
 		// enableXPClassicStyleMode.loadDefault();
 		// addField(enableXPClassicStyleMode);
@@ -78,8 +79,8 @@ public class GeneralPreferencePage
 		Composite sampleComposite = new Composite(mainComp, SWT.NULL);
 
 		numRandomSamplesFE =
-			new IntegerFieldEditor(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, "Number of Random Samples:",
-				sampleComposite);
+			new IntegerFieldEditor(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT,
+				"Number of Random Samples:", sampleComposite);
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
 

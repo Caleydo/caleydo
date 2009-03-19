@@ -96,7 +96,8 @@ public class InteractiveSplashHandler
 		copyrightLabel.setBounds(390, 310, 175, 14);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
+		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
+			progressMessageLabel);
 	}
 
 	private void doEventLoop() {

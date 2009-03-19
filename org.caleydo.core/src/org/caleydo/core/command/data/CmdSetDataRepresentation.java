@@ -59,22 +59,27 @@ public class CmdSetDataRepresentation
 		// Convert external IDs from XML file to internal IDs
 		iAlIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlIDs);
 
-		if (sAttribute3.equals(""))
+		if (sAttribute3.equals("")) {
 			objectType = EManagedObjectType.STORAGE;
+		}
 		else {
 			objectType = EManagedObjectType.valueOf(sAttribute3);
 			if (objectType != EManagedObjectType.SET)
-				throw new IllegalArgumentException("Setting of external data rep is only allowed on storages or sets");
+				throw new IllegalArgumentException(
+					"Setting of external data rep is only allowed on storages or sets");
 		}
 
 		// default is homogeneous
-		if (sAttribute4.equals(""))
+		if (sAttribute4.equals("")) {
 			bIsSetHomogeneous = true;
+		}
 		else {
-			if (sAttribute4.equals("homogeneous"))
+			if (sAttribute4.equals("homogeneous")) {
 				bIsSetHomogeneous = true;
-			else if (sAttribute4.equals("inhomogeneous"))
+			}
+			else if (sAttribute4.equals("inhomogeneous")) {
 				bIsSetHomogeneous = false;
+			}
 			else
 				throw new IllegalArgumentException(
 					"Illegal string for attrib 4: 'homogeneous' and 'inhomogeneous' are valid.");
@@ -86,16 +91,16 @@ public class CmdSetDataRepresentation
 	 * Overwrites the specified storage with the results of the operation
 	 * 
 	 * @param externalDataRep
-	 *          Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
+	 *            Determines how the data is visualized. For options see {@link EExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
-	 *          Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *          maximum and minimum, meaning that all storages in the set contain equal data. If false, each
-	 *          storage is treated separately, has it's own min and max etc. Sets that contain nominal data MUST
-	 *          be inhomogeneous.
+	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
+	 *            maximum and minimum, meaning that all storages in the set contain equal data. If false, each
+	 *            storage is treated separately, has it's own min and max etc. Sets that contain nominal data
+	 *            MUST be inhomogeneous.
 	 * @param iAlStorageID
-	 *          The source storage ids. This storage is overwritten with the result.
+	 *            The source storage ids. This storage is overwritten with the result.
 	 * @param objectType
-	 *          Signal whether you want to apply this on a set or a storage.
+	 *            Signal whether you want to apply this on a set or a storage.
 	 */
 	public void setAttributes(EExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous,
 		ArrayList<Integer> iAlStorageID, EManagedObjectType objectType) {
@@ -104,7 +109,8 @@ public class CmdSetDataRepresentation
 		this.bIsSetHomogeneous = bIsSetHomogeneous;
 		this.iAlIDs = iAlStorageID;
 		if (objectType != EManagedObjectType.STORAGE && objectType != EManagedObjectType.SET)
-			throw new IllegalArgumentException("Setting of external data rep is only allowed on storages or sets");
+			throw new IllegalArgumentException(
+				"Setting of external data rep is only allowed on storages or sets");
 
 		this.objectType = objectType;
 	}

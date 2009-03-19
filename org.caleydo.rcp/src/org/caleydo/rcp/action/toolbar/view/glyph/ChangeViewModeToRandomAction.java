@@ -31,9 +31,10 @@ public class ChangeViewModeToRandomAction
 	public void run() {
 		super.run();
 
-		if (parent != null)
-			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-				.getWorkbench().getDisplay(), ICON)));
+		if (parent != null) {
+			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		}
 
 		parent.getSecondaryAction().setAction(this);
 

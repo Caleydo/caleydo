@@ -65,10 +65,12 @@ public class CmdViewCreateHTMLBrowser
 
 		String sBrowserType = sDetail;
 
-		if (!sBrowserType.equals(""))
+		if (!sBrowserType.equals("")) {
 			browserType = EBrowserType.valueOf(sBrowserType);
-		else
+		}
+		else {
 			browserType = EBrowserType.GENERAL;
+		}
 	}
 
 	public void setAttributes(EBrowserType browserType) {

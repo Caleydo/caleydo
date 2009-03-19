@@ -22,6 +22,8 @@ public class AInfoOverlayRenderStyle {
 	public final static Color borderColor = Color.DARK_GRAY;
 
 	public enum VerticalPosition {
-		TOP, CENTER, BOTTOM
+		TOP,
+		CENTER,
+		BOTTOM
 	}
 }

@@ -103,9 +103,10 @@ public class GLRadialHierarchy
 
 	@Override
 	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
-		if (bUseDetailLevel)
+		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
-		// renderStyle.setDetailLevel(detailLevel);
+			// renderStyle.setDetailLevel(detailLevel);
+		}
 
 	}
 
@@ -122,8 +123,9 @@ public class GLRadialHierarchy
 		display(gl);
 		checkForHits(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF)
+		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
+		}
 	}
 
 	@Override
@@ -173,7 +175,8 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;

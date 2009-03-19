@@ -71,12 +71,13 @@ public class CmdViewCreatePathway
 		// Read SET IDs (Data and Selection)
 		String sPathwaySets = "";
 		parameterHandler.setValueAndTypeAndDefault("sPathwaySets", parameterHandler
-			.getValueString(ECommandType.TAG_DETAIL.getXmlKey()), IParameterHandler.ParameterHandlerType.STRING,
-			"-1");
+			.getValueString(ECommandType.TAG_DETAIL.getXmlKey()),
+			IParameterHandler.ParameterHandlerType.STRING, "-1");
 
 		sPathwaySets = parameterHandler.getValueString("sPathwaySets");
 
-		StringTokenizer setToken = new StringTokenizer(sPathwaySets, IGeneralManager.sDelimiter_Parser_DataItems);
+		StringTokenizer setToken =
+			new StringTokenizer(sPathwaySets, IGeneralManager.sDelimiter_Parser_DataItems);
 
 		while (setToken.hasMoreTokens()) {
 			iArSetIDs.add(Integer.valueOf(setToken.nextToken()).intValue());

@@ -45,7 +45,8 @@ public class GLPathwayTextureManager {
 		EPathwayDatabaseType type = generalManager.getPathwayManager().getItem(iPathwayId).getType();
 
 		sPathwayTexturePath =
-			generalManager.getPathwayManager().getPathwayDatabaseByType(type).getImagePath() + sPathwayTexturePath;
+			generalManager.getPathwayManager().getPathwayDatabaseByType(type).getImagePath()
+				+ sPathwayTexturePath;
 
 		generalManager.getLogger().log(Level.INFO, "Load pathway texture with ID: " + iPathwayId);
 
@@ -69,15 +70,18 @@ public class GLPathwayTextureManager {
 		tmpPathwayTexture.enable();
 		tmpPathwayTexture.bind();
 
-		if (bHighlight)
+		if (bHighlight) {
 			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
-		else
+		}
+		else {
 			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
+		}
 
 		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
 		float fTextureWidth =
-			PathwayRenderStyle.SCALING_FACTOR_X * generalManager.getPathwayManager().getItem(iPathwayId).getWidth();
+			PathwayRenderStyle.SCALING_FACTOR_X
+				* generalManager.getPathwayManager().getItem(iPathwayId).getWidth();
 		float fTextureHeight =
 			PathwayRenderStyle.SCALING_FACTOR_Y
 				* generalManager.getPathwayManager().getItem(iPathwayId).getHeight();

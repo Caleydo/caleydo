@@ -20,7 +20,7 @@ public class IntCContainerIterator
 	 * Constructor
 	 * 
 	 * @param intCContainer
-	 *          the container over which to iterate
+	 *            the container over which to iterate
 	 */
 	public IntCContainerIterator(IntCContainer intCContainer) {
 		this.intCContainer = intCContainer;
@@ -44,9 +44,8 @@ public class IntCContainerIterator
 	 * @return the next element
 	 */
 	public int next() {
-		if (virtualArray != null) {
+		if (virtualArray != null)
 			return intCContainer.get(vaIterator.next());
-		}
 		else {
 			try {
 				return intCContainer.get(++iIndex);

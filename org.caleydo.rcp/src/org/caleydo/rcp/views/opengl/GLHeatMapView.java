@@ -46,7 +46,8 @@ public class GLHeatMapView
 	}
 
 	public static void createToolBarItems(int iViewID) {
-		GLHeatMap heatMap = (GLHeatMap) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+		GLHeatMap heatMap =
+			(GLHeatMap) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 

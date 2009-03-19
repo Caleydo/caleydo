@@ -46,8 +46,8 @@ public class ViewCameraPitchRollYaw
 
 	private void updateRollZ(final float fSetRadiant) {
 
-		quatRollZ
-			.set(new Vec3f((float) Math.sin(fSetRadiant * 0.5f), 0, 0), (float) Math.cos(fSetRadiant * 0.5f));
+		quatRollZ.set(new Vec3f((float) Math.sin(fSetRadiant * 0.5f), 0, 0), (float) Math
+			.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}
@@ -62,7 +62,8 @@ public class ViewCameraPitchRollYaw
 
 	private void updateYawX(final float fSetRadiant) {
 
-		quatYawX.set(new Vec3f(0, 0, (float) Math.sin(fSetRadiant * 0.5f)), (float) Math.cos(fSetRadiant * 0.5f));
+		quatYawX.set(new Vec3f(0, 0, (float) Math.sin(fSetRadiant * 0.5f)), (float) Math
+			.cos(fSetRadiant * 0.5f));
 
 		updateQuaternion();
 	}
@@ -89,7 +90,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addYawX(float)
 	 * @param fSetRadiant
-	 *          yaw angle in radians
+	 *            yaw angle in radians
 	 */
 	public void setYawX(final float fSetRadiant) {
 
@@ -103,7 +104,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addPitchY(float)
 	 * @param fSetRadiant
-	 *          pitch angle in radians
+	 *            pitch angle in radians
 	 */
 	public void setPitchY(final float fSetRadiant) {
 
@@ -117,7 +118,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addRollZ(float)
 	 * @param fSetRadiant
-	 *          roll angle in radians
+	 *            roll angle in radians
 	 */
 	public void setRollZ(final float fSetRadiant) {
 
@@ -131,7 +132,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setYawX(float)
 	 * @param fSetRadiant
-	 *          roll increment in radians
+	 *            roll increment in radians
 	 */
 	public void addYawX(final float fSetRadiant) {
 
@@ -145,7 +146,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setPitchY(float)
 	 * @param fSetRadiant
-	 *          roll increment in radians
+	 *            roll increment in radians
 	 */
 	public void addPitchY(final float fSetRadiant) {
 
@@ -159,7 +160,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setRollZ(float)
 	 * @param fSetRadiant
-	 *          roll increment in radians
+	 *            roll increment in radians
 	 */
 	public void addRollZ(final float fSetRadiant) {
 
@@ -175,9 +176,9 @@ public class ViewCameraPitchRollYaw
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setRollZ(float)
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addYawX(float)
 	 * @param iIndex
-	 *          index from [0..2] were 0..yawX, 1..pitchY and 2..rollZ
+	 *            index from [0..2] were 0..yawX, 1..pitchY and 2..rollZ
 	 * @param fSetRadiant
-	 *          rotation angel in radians
+	 *            rotation angel in radians
 	 */
 	public void setByIndex(final int iIndex, final float fSetRadiant) {
 
@@ -192,7 +193,8 @@ public class ViewCameraPitchRollYaw
 				setRollZ(fSetRadiant);
 				return;
 			default:
-				throw new IndexOutOfBoundsException("index [" + Integer.toString(iIndex) + "] out of bounds [0..2] ");
+				throw new IndexOutOfBoundsException("index [" + Integer.toString(iIndex)
+					+ "] out of bounds [0..2] ");
 		}
 	}
 
@@ -241,7 +243,7 @@ public class ViewCameraPitchRollYaw
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#getCameraMatrix()
 	 * @param bImmediateUpdate
-	 *          TRUE force an immediate update once a setter is called, which recalulates the ViewMatrix
+	 *            TRUE force an immediate update once a setter is called, which recalulates the ViewMatrix
 	 */
 	public synchronized void setImmediateCameraUpdate(final boolean bImmediateUpdate) {
 

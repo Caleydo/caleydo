@@ -41,8 +41,9 @@ public class GLCoordinateUtils {
 		// System.out.println("World coords at z=0.0 are ( " //
 		// + wcoord[0] + ", " + wcoord[1] + ", " + wcoord[2]);
 
-		if (fArWorldCoordinatePosition == null)
+		if (fArWorldCoordinatePosition == null) {
 			fArWorldCoordinatePosition = new float[3];
+		}
 
 		fArWorldCoordinatePosition[0] = (float) wcoord[0];
 		fArWorldCoordinatePosition[1] = (float) wcoord[1];

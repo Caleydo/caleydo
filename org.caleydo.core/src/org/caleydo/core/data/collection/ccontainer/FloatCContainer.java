@@ -23,7 +23,7 @@ public class FloatCContainer
 	 * Constructor Pass a float array. The length of the array can not be modified after initialization
 	 * 
 	 * @param fArContainer
-	 *          the float array
+	 *            the float array
 	 */
 	public FloatCContainer(final float[] fArContainer) {
 
@@ -39,9 +39,9 @@ public class FloatCContainer
 	 * Returns the value associated with the index
 	 * 
 	 * @throws IndexOutOfBoundsException
-	 *           if index out of range
+	 *             if index out of range
 	 * @param iIndex
-	 *          index of element to return
+	 *            index of element to return
 	 * @return the element at the specified position in this list
 	 */
 	public float get(final int iIndex) {
@@ -69,15 +69,17 @@ public class FloatCContainer
 
 	@Override
 	public double getMin() {
-		if (Float.isNaN(fMin))
+		if (Float.isNaN(fMin)) {
 			calculateMinMax();
+		}
 		return fMin;
 	}
 
 	@Override
 	public double getMax() {
-		if (Float.isNaN(fMax))
+		if (Float.isNaN(fMax)) {
 			calculateMinMax();
+		}
 		return fMax;
 	}
 
@@ -119,8 +121,9 @@ public class FloatCContainer
 		for (int index = 0; index < fArContainer.length; index++) {
 			fTmp = fArContainer[index];
 			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
-			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
+			if (fArTarget[index] == Float.NEGATIVE_INFINITY) {
 				fArTarget[index] = Float.NaN;
+			}
 		}
 
 		return new FloatCContainer(fArTarget);
@@ -130,12 +133,12 @@ public class FloatCContainer
 	 * Does the actual normalization between 0 and 1 values that are NaN in the input are kept to be NaN
 	 * 
 	 * @param fMin
-	 *          the minimum considered in the normalization
+	 *            the minimum considered in the normalization
 	 * @param fMax
-	 *          the maximum considered in the normalization
+	 *            the maximum considered in the normalization
 	 * @return
 	 * @throws InvalidAttributeValueException
-	 *           when fMin is >= fMax
+	 *             when fMin is >= fMax
 	 */
 	private FloatCContainer normalize(final float fMin, final float fMax) {
 		if (fMin >= fMax)
@@ -145,14 +148,17 @@ public class FloatCContainer
 		if (fArContainer.length > 1) {
 
 			for (int iCount = 0; iCount < fArContainer.length; iCount++) {
-				if (Float.isNaN(fArContainer[iCount]))
+				if (Float.isNaN(fArContainer[iCount])) {
 					fArTmpTarget[iCount] = Float.NaN;
+				}
 
 				fArTmpTarget[iCount] = (fArContainer[iCount] - fMin) / (fMax - fMin);
-				if (fArTmpTarget[iCount] > 1)
+				if (fArTmpTarget[iCount] > 1) {
 					fArTmpTarget[iCount] = 1;
-				else if (fArTmpTarget[iCount] < 0)
+				}
+				else if (fArTmpTarget[iCount] < 0) {
 					fArTmpTarget[iCount] = 0;
+				}
 			}
 		}
 		return new FloatCContainer(fArTmpTarget);
@@ -165,15 +171,17 @@ public class FloatCContainer
 		fMin = Float.MAX_VALUE;
 		fMax = Float.MIN_VALUE;
 		for (float fCurrent : fArContainer) {
-			if (Float.isNaN(fCurrent))
+			if (Float.isNaN(fCurrent)) {
 				continue;
+			}
 
 			if (fCurrent < fMin) {
 				fMin = fCurrent;
 				continue;
 			}
-			if (fCurrent > fMax)
+			if (fCurrent > fMax) {
 				fMax = fCurrent;
+			}
 		}
 		return;
 	}

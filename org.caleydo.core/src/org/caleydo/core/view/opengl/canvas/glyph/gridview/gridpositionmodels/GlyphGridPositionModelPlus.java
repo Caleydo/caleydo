@@ -63,8 +63,9 @@ public class GlyphGridPositionModelPlus
 			int x = ge.getParameter(xIndex);
 			boolean isRightSide = x == 0 ? false : true;
 
-			if (y >= glyphMap_.get(0).size())
+			if (y >= glyphMap_.get(0).size()) {
 				continue;
+			}
 
 			// this are the glyphs with invalid (or not given) data
 			if (y < 0 || x < 0) {

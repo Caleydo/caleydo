@@ -34,8 +34,9 @@ public class HierarchicalClusterer {
 		// optional
 		// buffer.append("@attribute Instance_name { A, B, C, D}\n");
 
-		for (int nr = 0; nr < set.size(); nr++)
+		for (int nr = 0; nr < set.size(); nr++) {
 			buffer.append("@attribute Patient" + nr + " real\n");
+		}
 
 		buffer.append("@data\n");
 
@@ -90,8 +91,9 @@ public class HierarchicalClusterer {
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 
-		for (int i = 0; i < nrclusters; i++)
+		for (int i = 0; i < nrclusters; i++) {
 			temp.add(0);
+		}
 
 		for (int cluster = 0; cluster < nrclusters; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
@@ -103,8 +105,9 @@ public class HierarchicalClusterer {
 		}
 
 		for (Integer iter : temp) {
-			if (iter > 0)
+			if (iter > 0) {
 				count.add(iter);
+			}
 		}
 
 		Integer clusteredVAId = set.createStorageVA(indexes);

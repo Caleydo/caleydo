@@ -32,11 +32,13 @@ public class GlyphGridPositionModelCircle
 
 		}
 
-		if (centerX > glyphMap_.size())
+		if (centerX > glyphMap_.size()) {
 			centerX = glyphMap_.size() - 1;
+		}
 
-		if (centerY > glyphMap_.get(centerX).size())
+		if (centerY > glyphMap_.get(centerX).size()) {
 			centerY = glyphMap_.get(centerX).size() - 1;
+		}
 
 		glyphCenterGrid.setXY(centerX, centerY);
 		glyphCenterWorld.set(glyphMap_.get(centerX).get(centerY).getGridPosition().toVec2f());
@@ -51,8 +53,9 @@ public class GlyphGridPositionModelCircle
 		for (GlyphEntry g : gg) {
 			boolean isfree = false;
 
-			if (x >= 0 && y >= 0 && x < this.worldLimit.x() && y < this.worldLimit.y())
+			if (x >= 0 && y >= 0 && x < this.worldLimit.x() && y < this.worldLimit.y()) {
 				isfree = glyphMap_.get(x).get(y).isPositionFree();
+			}
 
 			while (!isfree) {
 				switch (d % 4) {
@@ -79,19 +82,25 @@ public class GlyphGridPositionModelCircle
 						k = 0;
 					}
 				}
-				if (x < 0)
+				if (x < 0) {
 					x = 0;
-				if (y < 0)
+				}
+				if (y < 0) {
 					y = 0;
+				}
 
-				if (x < 0)
+				if (x < 0) {
 					x = 0;
-				if (x >= worldLimit.x())
+				}
+				if (x >= worldLimit.x()) {
 					x = worldLimit.x() - 1;
-				if (y < 0)
+				}
+				if (y < 0) {
 					y = 0;
-				if (y >= worldLimit.y())
+				}
+				if (y >= worldLimit.y()) {
 					y = worldLimit.y() - 1;
+				}
 				isfree = glyphMap_.get(x).get(y).isPositionFree();
 			}
 			glyphMap_.get(x).get(y).setGlyph(g);

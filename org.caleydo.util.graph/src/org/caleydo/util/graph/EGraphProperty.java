@@ -13,7 +13,9 @@ package org.caleydo.util.graph;
  */
 public enum EGraphProperty {
 
-	HAS_NO_CYCLES(), IS_TREE(), HAS_SUB_GRAPH();
+	HAS_NO_CYCLES(),
+	IS_TREE(),
+	HAS_SUB_GRAPH();
 
 	private EGraphProperty() {
 		/** no local variables necessary yet! */
@@ -23,7 +25,7 @@ public enum EGraphProperty {
 	 * Test if a graph is cyclic.
 	 * 
 	 * @param prop
-	 *          property to be tested
+	 *            property to be tested
 	 * @return TRUE if cycles exist, FLASE if the graph is acyclic
 	 */
 	public static final boolean isCyclic(EGraphProperty prop) {

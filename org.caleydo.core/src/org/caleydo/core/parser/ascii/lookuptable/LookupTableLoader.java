@@ -27,7 +27,8 @@ public class LookupTableLoader
 	protected final IIDMappingManager genomeIdManager;
 
 	/**
-	 * Factor with that the line index must be multiplied to get a normalized (0-100) progress percentage value.
+	 * Factor with that the line index must be multiplied to get a normalized (0-100) progress percentage
+	 * value.
 	 */
 	protected float fProgressBarFactor = 0;
 
@@ -79,14 +80,17 @@ public class LookupTableLoader
 							|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)) {
 							// Remove multiple RefSeqs because all point to the
 							// same gene DAVID ID
-							if (sLine.contains(";"))
+							if (sLine.contains(";")) {
 								sLine = sLine.substring(0, sLine.indexOf(";"));
+							}
 
 							// Remove version in RefSeq (NM_*.* -> NM_*)
-							if (sLine.contains("."))
+							if (sLine.contains(".")) {
 								sLine = sLine.substring(0, sLine.indexOf("."));
+							}
 
-							genomeIdManager.getMapping(mappingType).put(sLine, iLineInFile - iStartParsingAtLine);
+							genomeIdManager.getMapping(mappingType).put(sLine,
+								iLineInFile - iStartParsingAtLine);
 						}
 						else {
 							genomeIdManager.getMapping(mappingType).put(sLine, strTokenText.nextToken());
@@ -103,12 +107,14 @@ public class LookupTableLoader
 								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)) {
 								// Remove multiple RefSeqs because all point to
 								// the same gene DAVID ID
-								if (buffer.contains(";"))
+								if (buffer.contains(";")) {
 									buffer = sLine.substring(0, sLine.indexOf(";"));
+								}
 
 								// Remove version in RefSeq (NM_*.* -> NM_*)
-								if (buffer.contains("."))
+								if (buffer.contains(".")) {
 									buffer = buffer.substring(0, buffer.indexOf("."));
+								}
 
 								// Check for integer values that must be ignored
 								// - in that case no RefSeq is available or the
@@ -119,7 +125,8 @@ public class LookupTableLoader
 								catch (NumberFormatException e) {
 									// System.out.println(buffer + " " +
 									// (iLineInFile - iStartParsingAtLine));
-									genomeIdManager.getMapping(mappingType).put(buffer, iLineInFile - iStartParsingAtLine);
+									genomeIdManager.getMapping(mappingType).put(buffer,
+										iLineInFile - iStartParsingAtLine);
 								}
 
 								break;
@@ -143,7 +150,8 @@ public class LookupTableLoader
 											Integer.valueOf(strTokenText.nextToken()));
 									}
 									else if (mappingType.getTypeTarget().getStorageType() == EStorageType.STRING) {
-										genomeIdManager.getMapping(mappingType).put(buffer, strTokenText.nextToken());
+										genomeIdManager.getMapping(mappingType).put(buffer,
+											strTokenText.nextToken());
 									}
 									else
 										throw new IllegalStateException("Unsupported data type!");

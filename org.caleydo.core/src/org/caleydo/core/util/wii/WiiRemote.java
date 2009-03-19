@@ -49,7 +49,8 @@ public class WiiRemote {
 	public void connect() {
 		Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
 
-		// Return if no Wii remote was detected. In this case the input is simulated with fixed values for testing
+		// Return if no Wii remote was detected. In this case the input is simulated with fixed values for
+		// testing
 		// purposes.
 		if (wiimotes.length == 0)
 			return;
@@ -112,13 +113,17 @@ public class WiiRemote {
 
 				relativeVerticalAngle = (avgY - m_dwHeight / 2f) * radiansPerPixel;// relative
 
-				if (cameraIsAboveScreen)
+				if (cameraIsAboveScreen) {
 					headY =
-						.5f + (float) (movementScaling * Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
-				else
+						.5f + (float) (movementScaling
+							* Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
+				}
+				else {
 					headY =
 						-.5f
-							+ (float) (movementScaling * Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
+							+ (float) (movementScaling
+								* Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
+				}
 
 				// System.out.println("Distance: " + fHeadDistance);
 				// System.out.println("Head position: " + headX + "/" + headY);
@@ -187,13 +192,13 @@ public class WiiRemote {
 		float[] fArTmpPoint;
 		float[] fArSmoothedPoint = new float[] { -1.3f, 0.1f };
 
-		if (!GeneralManager.get().isWiiModeActive() || !bInitOK) {
+		if (!GeneralManager.get().isWiiModeActive() || !bInitOK)
 			return fArSmoothedPoint;
-		}
 
 		for (int i = 0; i < SMOOTH_RANGE; i++) {
-			if (posInputQueue.size() < SMOOTH_RANGE)
+			if (posInputQueue.size() < SMOOTH_RANGE) {
 				break;
+			}
 
 			fArTmpPoint = ((LinkedList<float[]>) posInputQueue).get(i);
 			fArSmoothedPoint[0] += fArTmpPoint[0];
@@ -211,9 +216,8 @@ public class WiiRemote {
 	public float getCurrentHeadDistance() {
 		float fSmoothedHeadDistance = 8;
 
-		if (!GeneralManager.get().isWiiModeActive() || !bInitOK) {
+		if (!GeneralManager.get().isWiiModeActive() || !bInitOK)
 			return fSmoothedHeadDistance;
-		}
 
 		for (int i = 0; i < SMOOTH_RANGE; i++) {
 			fSmoothedHeadDistance += ((LinkedList<Float>) distanceInputQueue).get(i);

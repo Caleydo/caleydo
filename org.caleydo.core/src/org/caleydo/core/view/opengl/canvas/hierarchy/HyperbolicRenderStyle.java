@@ -5,7 +5,6 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * Hyperbolic render styles
- * 
  */
 
 public class HyperbolicRenderStyle

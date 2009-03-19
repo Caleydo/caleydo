@@ -31,9 +31,9 @@ public abstract class AbstractLoader
 	private int iLinesInFileToBeRead = -1;
 
 	/**
-	 * Define numbers of lines to skip as assumed to be the header of a file. Defines how many lines are part of
-	 * the header file. By default these lines are skipped during parsing. Default is 32, because gpr files have
-	 * a header of that size!
+	 * Define numbers of lines to skip as assumed to be the header of a file. Defines how many lines are part
+	 * of the header file. By default these lines are skipped during parsing. Default is 32, because gpr files
+	 * have a header of that size!
 	 */
 	protected int iStartParsingAtLine = 0;
 
@@ -66,14 +66,16 @@ public abstract class AbstractLoader
 	 * Set the current token separator.
 	 * 
 	 * @param sTokenSeparator
-	 *          current token separator
+	 *            current token separator
 	 */
 	public final void setTokenSeperator(final String sTokenSeparator) {
 
-		if (sTokenSeparator.equals("\\t"))
+		if (sTokenSeparator.equals("\\t")) {
 			sTokenSeperator = "\t";
-		else
+		}
+		else {
 			sTokenSeperator = sTokenSeparator;
+		}
 	}
 
 	/**
@@ -90,7 +92,7 @@ public abstract class AbstractLoader
 	 * Set the current file name.
 	 * 
 	 * @param setFileName
-	 *          set current file name
+	 *            set current file name
 	 */
 	public final void setFileName(String setFileName) {
 
@@ -160,8 +162,9 @@ public abstract class AbstractLoader
 			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			while (brFile.readLine() != null && iCountLines <= iStopParsingAtLine) {
-				if (iCountLines > this.iStartParsingAtLine)
+				if (iCountLines > this.iStartParsingAtLine) {
 					iCountLinesToBeRead++;
+				}
 
 				iCountLines++;
 			}
@@ -174,8 +177,9 @@ public abstract class AbstractLoader
 
 		iLinesInFileToBeRead = iCountLinesToBeRead;
 
-		if (iStopParsingAtLine == Integer.MAX_VALUE)
+		if (iStopParsingAtLine == Integer.MAX_VALUE) {
 			iStopParsingAtLine = iLinesInFileToBeRead;
+		}
 
 		return iCountLinesToBeRead;
 	}

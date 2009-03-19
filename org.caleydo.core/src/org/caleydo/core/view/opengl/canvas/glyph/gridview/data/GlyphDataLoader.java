@@ -104,9 +104,12 @@ public class GlyphDataLoader {
 							glyphAttributeType.addAttribute(t2, value, t2);
 						}
 
-						if (t2 == -1 && !value.equals("-1"))
-							this.generalManager.getLogger().log(Level.WARNING,
-								"GlyphDataLoader: No data mapping found for " + tmpStorage.getLabel() + " value " + value);
+						if (t2 == -1 && !value.equals("-1")) {
+							this.generalManager.getLogger().log(
+								Level.WARNING,
+								"GlyphDataLoader: No data mapping found for " + tmpStorage.getLabel()
+									+ " value " + value);
+						}
 
 						temp2[i] = t2;
 
@@ -119,11 +122,13 @@ public class GlyphDataLoader {
 
 				}
 				else { // its something for the string storage
-					if (tmpStorage instanceof NominalStorage && tmpStorage.getRawDataType() == ERawDataType.STRING) {
+					if (tmpStorage instanceof NominalStorage
+						&& tmpStorage.getRawDataType() == ERawDataType.STRING) {
 						alsStoreString.add((INominalStorage<String>) tmpStorage);
 					}
-					else
+					else {
 						System.out.println("ERROR " + tmpStorage.getLabel());
+					}
 				}
 
 				++counter;
@@ -138,9 +143,10 @@ public class GlyphDataLoader {
 		IIDMappingManager IdMappingManager = generalManager.getIDMappingManager();
 		// now convert the storages to real glyphs
 
-		if (!IdMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
+		if (!IdMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)) {
 			this.generalManager.getLogger().log(Level.WARNING,
 				"GlyphDataLoader: No ID Mapping found - using internal ids");
+		}
 
 		int counter = gman.getGlyphs().size();
 		int iExperimentID = 0;
@@ -148,7 +154,8 @@ public class GlyphDataLoader {
 			// Extract glyph ID from mapping
 			try {
 				iExperimentID =
-					IdMappingManager.getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, alsStoreString.get(0).getRaw(i));
+					IdMappingManager.getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, alsStoreString.get(0)
+						.getRaw(i));
 			}
 			catch (Exception NullPointerException) {
 				iExperimentID = counter;
@@ -157,8 +164,9 @@ public class GlyphDataLoader {
 
 			GlyphEntry g = new GlyphEntry(iExperimentID);
 
-			for (int[] s : aliStoreMapped)
+			for (int[] s : aliStoreMapped) {
 				g.addParameter(s[i]);
+			}
 
 			for (int j = 0; j < alsStoreString.size(); ++j) {
 				g.addStringParameter(alsStoreString.get(j).getLabel(), alsStoreString.get(j).getRaw(i));

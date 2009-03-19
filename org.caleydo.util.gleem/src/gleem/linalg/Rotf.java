@@ -249,10 +249,12 @@ public class Rotf {
 		}
 		else {
 			i = 0;
-			if (mat.get(1, 1) > mat.get(0, 0))
+			if (mat.get(1, 1) > mat.get(0, 0)) {
 				i = 1;
-			if (mat.get(2, 2) > mat.get(i, i))
+			}
+			if (mat.get(2, 2) > mat.get(i, i)) {
 				i = 2;
+			}
 			j = (i + 1) % 3;
 			k = (j + 1) % 3;
 			s = (float) Math.sqrt(mat.get(i, i) - (mat.get(j, j) + mat.get(k, k)) + 1.0f);
@@ -265,8 +267,8 @@ public class Rotf {
 	}
 
 	/**
-	 * Rotate a vector by this quaternion. Implementation is from Horn's <u>Robot Vision</u>. NOTE: src and dest
-	 * must be different vectors.
+	 * Rotate a vector by this quaternion. Implementation is from Horn's <u>Robot Vision</u>. NOTE: src and
+	 * dest must be different vectors.
 	 */
 	public void rotateVector(Vec3f src, Vec3f dest) {
 		Vec3f qVec = new Vec3f(q1, q2, q3);

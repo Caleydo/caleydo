@@ -26,9 +26,9 @@ public class SelectedElementRep {
 	 * Constructor. Use this constructor for a one point element rep
 	 * 
 	 * @param iDType
-	 *          the type of the element to be connected.
+	 *            the type of the element to be connected.
 	 * @param iContainingViewID
-	 *          the unique id of the view
+	 *            the unique id of the view
 	 * @param fXCoord
 	 * @param fYCoord
 	 */
@@ -45,9 +45,9 @@ public class SelectedElementRep {
 	 * Constructor. Use this constructor for a list of points
 	 * 
 	 * @param iContainingViewID
-	 *          the unique id of the view
+	 *            the unique id of the view
 	 * @param alPoints
-	 *          the list of connection points
+	 *            the list of connection points
 	 */
 	public SelectedElementRep(EIDType idType, final int iContainingViewID, final ArrayList<Vec3f> alPoints) {
 

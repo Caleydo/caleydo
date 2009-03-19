@@ -64,13 +64,16 @@ public class GLOverlayInfoRenderer {
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 
 		int panelHeight = 0;
-		if (sAlContent.isEmpty())
+		if (sAlContent.isEmpty()) {
 			panelHeight = 0;
-		else
+		}
+		else {
 			panelHeight = (sAlContent.size() + 1) * AInfoOverlayRenderStyle.LINE_HEIGHT;
+		}
 
-		if (panelHeight > AInfoOverlayRenderStyle.MAX_OVERLAY_HEIGHT)
+		if (panelHeight > AInfoOverlayRenderStyle.MAX_OVERLAY_HEIGHT) {
 			panelHeight = AInfoOverlayRenderStyle.MAX_OVERLAY_HEIGHT;
+		}
 
 		if (drawable.getWidth() == 0 || drawable.getHeight() == 0)
 			return;

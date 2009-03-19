@@ -15,5 +15,6 @@ public enum ERawDataType {
 	// Primitive Float
 	FLOAT,
 	// Primitive Int
-	INT, UNDEFINED
+	INT,
+	UNDEFINED
 }

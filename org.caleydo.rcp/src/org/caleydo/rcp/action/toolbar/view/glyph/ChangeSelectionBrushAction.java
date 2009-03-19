@@ -70,8 +70,9 @@ public class ChangeSelectionBrushAction
 	 * This is called in a tool bar
 	 */
 	public Menu getMenu(Control parent) {
-		if (menu != null)
+		if (menu != null) {
 			menu.dispose();
+		}
 
 		menu = new Menu(parent);
 

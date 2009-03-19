@@ -102,13 +102,16 @@ public class ToolBarView
 
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
-		if (!GenomePerspective.bIsWideScreen)
+		if (!GenomePerspective.bIsWideScreen) {
 			bHorizontal = true;
+		}
 
-		if (bHorizontal)
+		if (bHorizontal) {
 			parentComposite.setLayout(new GridLayout(10, false));
-		else
+		}
+		else {
 			parentComposite.setLayout(new GridLayout(1, false));
+		}
 
 		this.parentComposite = parentComposite;
 
@@ -137,23 +140,28 @@ public class ToolBarView
 
 		if (viewPart instanceof GLRemoteRenderingView) {
 			// Add toolbars of remote rendered views
-			for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) ((AGLViewPart) viewPart).getGLEventListener())
-				.getRemoteRenderedViews()) {
+			for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) ((AGLViewPart) viewPart)
+				.getGLEventListener()).getRemoteRenderedViews()) {
 				AGLEventListener glView =
 					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iRemoteRenderedGLViewID);
 
 				String sViewType = "";
 
-				if (glView instanceof GLHeatMap)
+				if (glView instanceof GLHeatMap) {
 					sViewType = GLHeatMapView.ID;
-				else if (glView instanceof GLPathway)
+				}
+				else if (glView instanceof GLPathway) {
 					sViewType = GLPathwayView.ID;
-				else if (glView instanceof GLParallelCoordinates)
+				}
+				else if (glView instanceof GLParallelCoordinates) {
 					sViewType = GLParCoordsView.ID;
-				else if (glView instanceof GLGlyph)
+				}
+				else if (glView instanceof GLGlyph) {
 					sViewType = GLGlyphView.ID;
-				else
+				}
+				else {
 					break;
+				}
 
 				addViewSpecificToolBar(iRemoteRenderedGLViewID, sViewType);
 			}
@@ -178,14 +186,17 @@ public class ToolBarView
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginBottom =
 			layout.marginTop =
-				layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+				layout.marginLeft =
+					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 3;
 		group.setLayout(layout);
 
-		if (bHorizontal)
+		if (bHorizontal) {
 			group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		else
+		}
+		else {
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
 		viewSpecificGroups.add(group);
 
 		// Needed to simulate toolbar wrapping which is not implemented for
@@ -265,16 +276,17 @@ public class ToolBarView
 			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
 				"resources/icons/view/browser/browser.png");
 		}
-		else {
+		else
 			return;
-		}
 
 		toolBarManager.update(true);
 
-		if (toolBarManager2.isEmpty())
+		if (toolBarManager2.isEmpty()) {
 			toolBarManager2.dispose();
-		else
+		}
+		else {
 			toolBarManager2.update(true);
+		}
 
 		if (bHorizontal) {
 			Label spacer = new Label(group, SWT.NULL);
@@ -296,8 +308,9 @@ public class ToolBarView
 	public void removeViewSpecificToolBar(int iViewID) {
 		Group removedGroup = null;
 		for (Group group : viewSpecificGroups) {
-			if (!(group.getData("view") instanceof AGLEventListener))
+			if (!(group.getData("view") instanceof AGLEventListener)) {
 				continue;
+			}
 
 			if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID) {
 				group.dispose();
@@ -306,8 +319,9 @@ public class ToolBarView
 			}
 		}
 
-		if (removedGroup != null)
+		if (removedGroup != null) {
 			viewSpecificGroups.remove(removedGroup);
+		}
 
 		// Remove toolbars of remote rendered views
 		AGLEventListener glView = GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
@@ -405,7 +419,8 @@ public class ToolBarView
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginBottom =
 			layout.marginTop =
-				layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+				layout.marginLeft =
+					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 3;
 		searchGroup.setLayout(layout);
 		GridData gridData;
@@ -428,10 +443,12 @@ public class ToolBarView
 
 		Composite searchComposite = new Composite(searchGroup, SWT.NULL);
 		searchComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		if (bHorizontal)
+		if (bHorizontal) {
 			layout = new GridLayout(2, false);
-		else
+		}
+		else {
 			layout = new GridLayout(1, false);
+		}
 
 		layout.marginHeight = layout.marginWidth = 0;
 		searchComposite.setLayout(layout);
@@ -455,7 +472,8 @@ public class ToolBarView
 						return;
 					}
 
-					Collection<PathwayGraph> allPathways = GeneralManager.get().getPathwayManager().getAllItems();
+					Collection<PathwayGraph> allPathways =
+						GeneralManager.get().getPathwayManager().getAllItems();
 					String[] sArSearchItems = new String[allPathways.size()];
 					int iIndex = 0;
 					String sPathwayTitle = "";
@@ -554,7 +572,8 @@ public class ToolBarView
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginBottom =
 			layout.marginTop =
-				layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+				layout.marginLeft =
+					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 3;
 		group.setLayout(layout);
 
@@ -676,8 +695,9 @@ public class ToolBarView
 					PreferencesUtil.createPreferenceDialogOn(parentComposite.getShell(),
 						"org.caleydo.rcp.preferences.ColorMappingPreferencePage", null, null);
 
-				if (pref != null)
+				if (pref != null) {
 					pref.open();
+				}
 			}
 		});
 
@@ -703,13 +723,16 @@ public class ToolBarView
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginBottom =
 			layout.marginTop =
-				layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+				layout.marginLeft =
+					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 3;
 		group.setLayout(layout);
-		if (bHorizontal)
+		if (bHorizontal) {
 			group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		else
+		}
+		else {
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
 
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
@@ -742,25 +765,31 @@ public class ToolBarView
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginBottom =
 			layout.marginTop =
-				layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+				layout.marginLeft =
+					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 3;
 		group.setLayout(layout);
-		if (bHorizontal)
+		if (bHorizontal) {
 			group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		else
+		}
+		else {
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		}
 
 		Composite infoComposite = new Composite(group, SWT.NULL);
 		infoComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		if (bHorizontal)
+		if (bHorizontal) {
 			layout = new GridLayout(2, false);
-		else
+		}
+		else {
 			layout = new GridLayout(1, false);
+		}
 
 		layout.marginBottom =
 			layout.marginTop =
-				layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+				layout.marginLeft =
+					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 0;
 
 		infoComposite.setLayout(layout);
@@ -792,12 +821,14 @@ public class ToolBarView
 							if (subControl instanceof Label) {
 								if (group.getData("viewID") != null
 									&& ((Integer) group.getData("viewID")).intValue() == iViewID
-									|| eventTrigger instanceof GLPathway && group.getData("viewType") == GLPathwayView.ID) {
-									((Label) subControl)
-										.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY));
+									|| eventTrigger instanceof GLPathway
+									&& group.getData("viewType") == GLPathwayView.ID) {
+									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(
+										SWT.COLOR_DARK_GRAY));
 								}
 								else {
-									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(
+										SWT.COLOR_GRAY));
 								}
 
 							}

@@ -21,8 +21,8 @@ public interface IXmlParserHandler
 	public void destroyHandler();
 
 	/**
-	 * Get the XmlActivationTag, which makes this Handler the current XMLHandler, that receives all events from
-	 * the org.caleydo.core.manager.IXmlParserManager. XmlActivationTag is set via the Constructor.
+	 * Get the XmlActivationTag, which makes this Handler the current XMLHandler, that receives all events
+	 * from the org.caleydo.core.manager.IXmlParserManager. XmlActivationTag is set via the Constructor.
 	 * 
 	 * @return tag that enables this Handler inside the org.caleydo.core.manager.IXmlParserManager
 	 */

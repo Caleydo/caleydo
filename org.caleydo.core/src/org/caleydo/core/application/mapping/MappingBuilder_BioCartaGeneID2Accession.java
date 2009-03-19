@@ -62,10 +62,12 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 				if (iStartIndex == -1)
 					return;
 
-				String sAccessionNumber = sFileText.substring(iStartIndex - 3, sFileText.indexOf('"', iStartIndex));
+				String sAccessionNumber =
+					sFileText.substring(iStartIndex - 3, sFileText.indexOf('"', iStartIndex));
 
 				String sBioCartaGeneId =
-					file.getName().substring(file.getName().lastIndexOf("BCID=") + 5, file.getName().length());
+					file.getName()
+						.substring(file.getName().lastIndexOf("BCID=") + 5, file.getName().length());
 
 				appendMappingToFile(sBioCartaGeneId, sAccessionNumber);
 
@@ -94,7 +96,8 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 
 		try {
 
-			MappingBuilder_BioCartaGeneID2Accession mappingBuilder = new MappingBuilder_BioCartaGeneID2Accession();
+			MappingBuilder_BioCartaGeneID2Accession mappingBuilder =
+				new MappingBuilder_BioCartaGeneID2Accession();
 
 			mappingBuilder.loadAllFilesInFolder(BIOCARTA_INPUT_FOLDER_PATH);
 

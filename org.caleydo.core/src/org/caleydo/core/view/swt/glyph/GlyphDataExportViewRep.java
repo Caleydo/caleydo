@@ -133,11 +133,13 @@ public class GlyphDataExportViewRep
 
 				String text = view.getPersonalName();
 
-				if (text == null)
+				if (text == null) {
 					text = view.getShortInfo();
+				}
 
-				if (text == null)
+				if (text == null) {
 					item.setText("missing view info");
+				}
 				else {
 					item.setText(text);
 

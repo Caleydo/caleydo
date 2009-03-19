@@ -79,8 +79,9 @@ public class TextInputDialog
 
 		shell.addListener(SWT.Traverse, new Listener() {
 			public void handleEvent(Event event) {
-				if (event.detail == SWT.TRAVERSE_ESCAPE)
+				if (event.detail == SWT.TRAVERSE_ESCAPE) {
 					event.doit = false;
+				}
 			}
 		});
 
@@ -89,8 +90,9 @@ public class TextInputDialog
 
 		Display display = parent.getDisplay();
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
 		}
 
 		return value;

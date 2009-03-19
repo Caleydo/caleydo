@@ -27,8 +27,8 @@ public class InFocusAction
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
 		bEnable =
-			((GLHierarchicalHeatMap) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
-				.isInFocus();
+			((GLHierarchicalHeatMap) GeneralManager.get().getViewGLCanvasManager()
+				.getGLEventListener(iViewID)).isInFocus();
 		setChecked(bEnable);
 	}
 

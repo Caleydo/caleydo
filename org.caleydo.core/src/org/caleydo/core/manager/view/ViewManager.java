@@ -72,7 +72,7 @@ public class ViewManager
 	private ConnectedElementRepresentationManager selectionManager;
 
 	private GLInfoAreaManager infoAreaManager;
-	
+
 	private Composite activeSWTView;
 
 	/**
@@ -191,7 +191,8 @@ public class ViewManager
 
 		switch (type) {
 			case CREATE_GL_HEAT_MAP_3D:
-				glEventListener = new GLHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
 				glEventListener =
@@ -208,7 +209,8 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_PARALLEL_COORDINATES_CLINICAL:
-				glEventListener = new GLParallelCoordinates(ESetType.CLINICAL_DATA, iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLParallelCoordinates(ESetType.CLINICAL_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_GLYPH:
 				glEventListener = new GLGlyph(iGLCanvasID, sLabel, viewFrustum);
@@ -246,15 +248,16 @@ public class ViewManager
 				glEventListener =
 					new GLRadialHierarchy(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_HYPERBOLIC:
 				glEventListener =
 					new GLRadialHierarchy(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
-				break;				
+				break;
 
 			default:
-				throw new RuntimeException("ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
-					+ type.toString() + "]");
+				throw new RuntimeException(
+					"ViewJoglManager.createGLCanvasUser() failed due to unhandled type [" + type.toString()
+						+ "]");
 		}
 
 		registerGLEventListenerByGLCanvasID(iGLCanvasID, glEventListener);
@@ -299,8 +302,9 @@ public class ViewManager
 		if (iGLCanvasID == -1)
 			return;
 
-		if (!hashGLCanvasID2GLEventListeners.containsKey(iGLCanvasID))
+		if (!hashGLCanvasID2GLEventListeners.containsKey(iGLCanvasID)) {
 			hashGLCanvasID2GLEventListeners.put(iGLCanvasID, new ArrayList<AGLEventListener>());
+		}
 
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
 		hashGLCanvasID2GLCanvas.get(iGLCanvasID).addGLEventListener(gLEventListener);
@@ -317,7 +321,8 @@ public class ViewManager
 
 	@Override
 	public void unregisterGLEventListener(final int iGLEventListenerID) {
-		GLEventListener gLEventListenerToRemove = hashGLEventListenerID2GLEventListener.get(iGLEventListenerID);
+		GLEventListener gLEventListenerToRemove =
+			hashGLEventListenerID2GLEventListener.get(iGLEventListenerID);
 
 		if (gLEventListenerToRemove == null)
 			return;
@@ -327,8 +332,9 @@ public class ViewManager
 		if (parentGLCanvas != null) {
 			parentGLCanvas.removeGLEventListener(gLEventListenerToRemove);
 
-			if (hashGLCanvasID2GLEventListeners.containsKey(parentGLCanvas.getID()))
+			if (hashGLCanvasID2GLEventListeners.containsKey(parentGLCanvas.getID())) {
 				hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(gLEventListenerToRemove);
+			}
 		}
 
 		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
@@ -384,16 +390,14 @@ public class ViewManager
 		fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
 	}
 
-	public void setActiveSWTView(Composite composite)
-	{
+	public void setActiveSWTView(Composite composite) {
 		if (composite == null)
 			throw new IllegalStateException("Tried to set a null object as active SWT view.");
-		
+
 		activeSWTView = composite;
 	}
-	
-	public Composite getActiveSWTView()
-	{
+
+	public Composite getActiveSWTView() {
 		return activeSWTView;
 	}
 }

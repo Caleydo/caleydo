@@ -69,10 +69,12 @@ public class RemoteLevel {
 	}
 
 	public void replaceElement(RemoteLevelElement newElement, int iPositionIndex) {
-		if (alRemoteLevelElement.size() < iPositionIndex)
+		if (alRemoteLevelElement.size() < iPositionIndex) {
 			addElement(newElement);
-		else
+		}
+		else {
 			alRemoteLevelElement.set(iPositionIndex, newElement);
+		}
 	}
 
 	public void replaceElement(RemoteLevelElement newElement, RemoteLevelElement oldElement) {
@@ -88,8 +90,9 @@ public class RemoteLevel {
 		for (RemoteLevelElement element : alRemoteLevelElement) {
 			bHasFree = element.isFree();
 
-			if (bHasFree == true)
+			if (bHasFree == true) {
 				break;
+			}
 		}
 
 		return bHasFree;

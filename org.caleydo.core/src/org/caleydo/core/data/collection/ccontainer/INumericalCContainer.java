@@ -9,17 +9,18 @@ public interface INumericalCContainer
 	extends ICContainer {
 
 	/**
-	 * Execute the normalize method, where values in the container are normalized to values between 0 and 1, but
-	 * do not take min max from the range calculated internally, but use those specified in dMin, dMax Take care
-	 * that dMin and dMax are smaller resp. bigger than the smallest resp. biggest value in the data.
+	 * Execute the normalize method, where values in the container are normalized to values between 0 and 1,
+	 * but do not take min max from the range calculated internally, but use those specified in dMin, dMax
+	 * Take care that dMin and dMax are smaller resp. bigger than the smallest resp. biggest value in the
+	 * data.
 	 * 
 	 * @param dMin
-	 *          the minimum
+	 *            the minimum
 	 * @param dMax
-	 *          the maximum
+	 *            the maximum
 	 * @return a container with the normalized values
 	 * @throws IllegalAttributeException
-	 *           when iMin is >= iMax
+	 *             when iMin is >= iMax
 	 */
 	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax);
 

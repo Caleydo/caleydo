@@ -74,7 +74,8 @@ public class XmlParserManager
 	}
 
 	@Override
-	public void startElement(String uri, String localName, String qName, Attributes attrib) throws SAXException {
+	public void startElement(String uri, String localName, String qName, Attributes attrib)
+		throws SAXException {
 		if (currentHandler == null) {
 			// generalManager.logMsg( " < TAG= " + qName,
 			// LoggerType.FULL );
@@ -206,9 +207,8 @@ public class XmlParserManager
 		/**
 		 * 
 		 */
-		if (currentHandler != handler) {
+		if (currentHandler != handler)
 			throw new IllegalStateException("sectionFinishedByHandler() called by wrong handler!");
-		}
 
 		closeCurrentTag();
 

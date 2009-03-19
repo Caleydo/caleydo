@@ -93,8 +93,10 @@ public class GlyphMouseListener
 
 		if (iRubberBandStartX != 0 && iRubberBandStartY != 0) {
 			// starting point
-			if (vRubberBandStart.x() == 0 && vRubberBandStart.y() == 0)
-				vRubberBandStart = this.convertMousePositionToWorldPosition(gl, iRubberBandStartX, iRubberBandStartY);
+			if (vRubberBandStart.x() == 0 && vRubberBandStart.y() == 0) {
+				vRubberBandStart =
+					this.convertMousePositionToWorldPosition(gl, iRubberBandStartX, iRubberBandStartY);
+			}
 
 			// moving point
 			vRubberBandCurrent =
@@ -186,7 +188,7 @@ public class GlyphMouseListener
 	 * This handles the panning for the view. It flyes over the drawing plane
 	 * 
 	 * @param MouseEvent
-	 *          e
+	 *            e
 	 */
 	private void handlePanning(MouseEvent e) {
 		if (!bEnablePan)
@@ -214,7 +216,7 @@ public class GlyphMouseListener
 	 * This handles the rotation for the view. Not used for now
 	 * 
 	 * @param MouseEvent
-	 *          e
+	 *            e
 	 */
 	private void handleRotation(MouseEvent e) {
 		if (!bEnableRotate)
@@ -249,7 +251,7 @@ public class GlyphMouseListener
 	 * This handles the zooming for the view.
 	 * 
 	 * @param MouseEvent
-	 *          e
+	 *            e
 	 */
 	private void handleZooming(MouseWheelEvent e) {
 		if (!bEnableZoom)
@@ -274,8 +276,9 @@ public class GlyphMouseListener
 		if (angle < 0) {
 			angle = 0;
 
-			if (addVec3f.z() < 0)
+			if (addVec3f.z() < 0) {
 				addVec3f = new Vec3f(0, 0, 0);
+			}
 		}
 
 		viewCanvas.getViewCamera().addCameraPosition(addVec3f);
@@ -298,7 +301,8 @@ public class GlyphMouseListener
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, x, y);
 
 		Vec3f mousePos =
-			new Vec3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], fArTargetWorldCoordinates[2]);
+			new Vec3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1],
+				fArTargetWorldCoordinates[2]);
 
 		Vec3f camPos = viewCanvas.getViewCamera().getCameraPosition();
 		float camRot = viewCanvas.getViewCamera().getCameraRotationRadiant(new Vec3f(-1, 0, 0));
@@ -328,11 +332,11 @@ public class GlyphMouseListener
 	 * Enables / Disables Mouse Zoom, Pan & Rotating Rotating is not functional in this special MouseListener
 	 * 
 	 * @param enable
-	 *          /disable Panning
+	 *            /disable Panning
 	 * @param enable
-	 *          /disable Rotation
+	 *            /disable Rotation
 	 * @param enable
-	 *          /disable Zooming
+	 *            /disable Zooming
 	 */
 	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom) {
 		this.bEnablePan = bEnablePan;

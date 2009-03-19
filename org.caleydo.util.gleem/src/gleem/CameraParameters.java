@@ -147,8 +147,8 @@ public class CameraParameters {
 	}
 
 	/**
-	 * Sets the projection matrix corresponding to the camera's field-of-view and aspect ratio parameters. NOTE:
-	 * user is responsible for ensuring this matrix corresponds to these parameters.
+	 * Sets the projection matrix corresponding to the camera's field-of-view and aspect ratio parameters.
+	 * NOTE: user is responsible for ensuring this matrix corresponds to these parameters.
 	 */
 	public void setProjectionMatrix(Mat4f matrix) {
 		projectionMatrix.set(matrix);

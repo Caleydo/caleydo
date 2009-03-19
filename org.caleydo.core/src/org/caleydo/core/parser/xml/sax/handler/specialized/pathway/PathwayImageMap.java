@@ -55,15 +55,14 @@ public class PathwayImageMap {
 	 * found the corresponding link is returned.
 	 * 
 	 * @param point
-	 *          Point to check for intersection.
+	 *            Point to check for intersection.
 	 * @return Link that should be followed.
 	 */
 	public String processPoint(Point point) {
 
 		for (int iAreaIndex = 0; iAreaIndex < rectArray.size(); iAreaIndex++) {
-			if (rectArray.get(iAreaIndex).contains(point)) {
+			if (rectArray.get(iAreaIndex).contains(point))
 				return imageLinkArray.get(iAreaIndex);
-			}
 		}
 
 		return "";

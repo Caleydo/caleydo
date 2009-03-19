@@ -21,26 +21,32 @@ public class GenomePerspective
 		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
 		float fRatio = (float) rectDisplay.width / rectDisplay.height;
 
-		if (fRatio > 1.35)
+		if (fRatio > 1.35) {
 			bIsWideScreen = true;
+		}
 
 		if (bIsWideScreen) {
 			fRatio =
 				(float) ToolBarView.TOOLBAR_WIDTH
 					/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().width;
 
-			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
-			layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);
+			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.LEFT, fRatio,
+				IPageLayout.ID_EDITOR_AREA);
+			layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio,
+				IPageLayout.ID_EDITOR_AREA);
 		}
 		else {
 			fRatio =
 				(float) ToolBarView.TOOLBAR_HEIGHT
 					/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().height;
 
-			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);
-			layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);
+			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio,
+				IPageLayout.ID_EDITOR_AREA);
+			layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
+				IPageLayout.ID_EDITOR_AREA);
 		}
 
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(new PartListener());
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(
+			new PartListener());
 	}
 }

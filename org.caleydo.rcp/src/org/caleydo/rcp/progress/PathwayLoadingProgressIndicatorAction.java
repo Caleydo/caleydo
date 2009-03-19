@@ -22,8 +22,9 @@ public class PathwayLoadingProgressIndicatorAction
 				// Turn on busy mode
 				for (AGLEventListener tmpGLEventListener : GeneralManager.get().getViewGLCanvasManager()
 					.getAllGLEventListeners()) {
-					if (!tmpGLEventListener.isRenderedRemote())
+					if (!tmpGLEventListener.isRenderedRemote()) {
 						tmpGLEventListener.enableBusyMode(true);
+					}
 				}
 
 				monitor.beginTask("Loading pathways", 100);
@@ -45,8 +46,9 @@ public class PathwayLoadingProgressIndicatorAction
 				// Turn off busy mode
 				for (AGLEventListener tmpGLEventListener : GeneralManager.get().getViewGLCanvasManager()
 					.getAllGLEventListeners()) {
-					if (!tmpGLEventListener.isRenderedRemote())
+					if (!tmpGLEventListener.isRenderedRemote()) {
 						tmpGLEventListener.enableBusyMode(false);
+					}
 				}
 
 				return Status.OK_STATUS;

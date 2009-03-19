@@ -23,13 +23,13 @@ public class ColorMapping {
 	public static int COLOR_DEPTH = 256;
 
 	/**
-	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first has the smallest value, and each
-	 * next point has a bigger value. These color points work as inflection points. between two adjacent points
-	 * the colors are interpolated.
+	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first has the smallest value, and
+	 * each next point has a bigger value. These color points work as inflection points. between two adjacent
+	 * points the colors are interpolated.
 	 * 
 	 * @param alMarkerPoints
 	 * @throws IllegalArgumentException
-	 *           if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
+	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
 	 */
 	protected ColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints) {
 		init(alMarkerPoints);
@@ -61,7 +61,7 @@ public class ColorMapping {
 	 * Initialize the color mapping
 	 * 
 	 * @param alMarkerPoints
-	 *          the marker points
+	 *            the marker points
 	 */
 	private void setUpMapping() {
 		Collections.sort(alMarkerPoints);
@@ -99,12 +99,11 @@ public class ColorMapping {
 	 * @param fValue
 	 * @return float array with length 3, RGB
 	 * @throws IllegalArgumentException
-	 *           if fvalue > 1 || fvalue < 0
+	 *             if fvalue > 1 || fvalue < 0
 	 */
 	public float[] getColor(float fValue) {
-		if (Float.isNaN(fValue)) {
+		if (Float.isNaN(fValue))
 			return fArNotANumberColor;
-		}
 
 		if (fValue > 1 || fValue < 0)
 			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1");

@@ -43,8 +43,8 @@ public interface IViewFrustum {
 	public void setFar(final float fFar);
 
 	/**
-	 * Define whether to consider aspect ratios when setting the projection matrix. This guarantees rectangular
-	 * appearance of views
+	 * Define whether to consider aspect ratios when setting the projection matrix. This guarantees
+	 * rectangular appearance of views
 	 * 
 	 * @param bConsiderAspectRatio
 	 * @deprecated Because fAspectRatio should not be used any more.
@@ -56,7 +56,7 @@ public interface IViewFrustum {
 	 * Sets the projection matrix, according to the projection mode defined in the frustum
 	 * 
 	 * @param gl
-	 *          the GL context
+	 *            the GL context
 	 */
 	public void setProjectionMatrix(GL gl);
 
@@ -64,9 +64,9 @@ public interface IViewFrustum {
 	 * Sets the projection matrix, according to the projection mode defined in the frustum
 	 * 
 	 * @param gl
-	 *          the GL context
+	 *            the GL context
 	 * @param fAspectRatio
-	 *          the aspect ratio
+	 *            the aspect ratio
 	 * @deprecated Because fAspectRatio should not be used any more.
 	 */
 	@Deprecated

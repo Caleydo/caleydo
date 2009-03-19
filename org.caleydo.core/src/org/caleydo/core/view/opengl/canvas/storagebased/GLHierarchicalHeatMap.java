@@ -66,8 +66,7 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Alexander Lex
  */
 public class GLHierarchicalHeatMap
-	extends AStorageBasedView
-{
+	extends AStorageBasedView {
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.4f;
 
@@ -147,8 +146,7 @@ public class GLHierarchicalHeatMap
 	 * @param viewFrustum
 	 */
 	public GLHierarchicalHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel,
-		final IViewFrustum viewFrustum)
-	{
+		final IViewFrustum viewFrustum) {
 		super(setType, iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HIER_HEAT_MAP;
 
@@ -175,16 +173,14 @@ public class GLHierarchicalHeatMap
 		// default: 30 (PreferenceInitializer)
 		iSamplesPerHeatmap = generalManager.getPreferenceStore().getInt("hmNumSamplesPerHeatmap");
 
-		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
-		{
+		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP) {
 			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
 			// update Preference store
 			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP,
 				iSamplesPerHeatmap);
 
 		}
-		else if (iSamplesPerHeatmap > iSamplesPerTexture / 3)
-		{
+		else if (iSamplesPerHeatmap > iSamplesPerTexture / 3) {
 			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
 			// update Preference store
 			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP,
@@ -206,8 +202,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void init(GL gl)
-	{
+	public void init(GL gl) {
 		bRenderOnlyContext = false;
 		// bUseRandomSampling = false;
 
@@ -228,16 +223,16 @@ public class GLHierarchicalHeatMap
 		if (iNumberOfElements < 2)
 			throw new IllegalStateException("Number of elements not supported!!");
 
-		if (2 * iSamplesPerTexture > iNumberOfElements)
+		if (2 * iSamplesPerTexture > iNumberOfElements) {
 			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 2);
+		}
 
 		initTextures(gl);
 		initPosCursor();
 	}
 
 	@Override
-	public void initLocal(GL gl)
-	{
+	public void initLocal(GL gl) {
 
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
@@ -252,8 +247,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void initRemote(GL gl, int remoteViewID, PickingJoglMouseListener pickingTriggerMouseAdapter,
-		IGLCanvasRemoteRendering remoteRenderingGLCanvas)
-	{
+		IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -267,99 +261,81 @@ public class GLHierarchicalHeatMap
 
 	}
 
-	private void setTexture()
-	{
+	private void setTexture() {
 		boolean bSetCurrentTexture = true;
 
-		if (AlSelection.size() > 0)
-		{
-			for (HeatMapSelection selection : AlSelection)
-			{
+		if (AlSelection.size() > 0) {
+			for (HeatMapSelection selection : AlSelection) {
 
 				if (selection.getTexture() == iSelectorBar && selection.getPos() >= iFirstSample
 					&& selection.getPos() <= iLastSample || selection.getTexture() == iSelectorBar - 1
-					&& selection.getPos() >= iFirstSample && selection.getPos() <= iLastSample)
-				{
+					&& selection.getPos() >= iFirstSample && selection.getPos() <= iLastSample) {
 					bSetCurrentTexture = false;
 					break;
 				}
 			}
-			if (bSetCurrentTexture)
-			{
+			if (bSetCurrentTexture) {
 				iSelectorBar = AlSelection.get(0).getTexture() + 1;
-				if (iSelectorBar == iNrSelBar)
+				if (iSelectorBar == iNrSelBar) {
 					iSelectorBar--;
+				}
 				initPosCursor();
 			}
 		}
 	}
 
 	/**
-	 * Init (reset) the positions of cursors used for highlighting selected
-	 * elements in stage 2 (texture)
+	 * Init (reset) the positions of cursors used for highlighting selected elements in stage 2 (texture)
 	 * 
 	 * @param
 	 */
-	private void initPosCursor()
-	{
-		if (AlSelection.size() > 0)
-		{
+	private void initPosCursor() {
+		if (AlSelection.size() > 0) {
 			int iNumberSample = iNrSamplesPerTexture * 2;
 
-			for (HeatMapSelection iter : AlSelection)
-			{
-				if (iter.getTexture() == iSelectorBar - 1)
-				{
+			for (HeatMapSelection iter : AlSelection) {
+				if (iter.getTexture() == iSelectorBar - 1) {
 					iPickedSample = iter.getPos();
 
-					if (iSamplesPerHeatmap % 2 == 0)
-					{
+					if (iSamplesPerHeatmap % 2 == 0) {
 						iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
 						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 					}
-					else
-					{
+					else {
 						iFirstSample = iPickedSample - (int) Math.ceil(iSamplesPerHeatmap / 2);
 						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 					}
 
-					if (iPickedSample < iSamplesPerHeatmap / 2)
-					{
+					if (iPickedSample < iSamplesPerHeatmap / 2) {
 						iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
 						iFirstSample = 0;
 						iLastSample = iSamplesPerHeatmap - 1;
 					}
-					else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2)
-					{
+					else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2) {
 						iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
 						iLastSample = iNumberSample - 1;
 						iFirstSample = iNumberSample - iSamplesPerHeatmap;
 					}
 					break;
 				}
-				else if (iter.getTexture() == iSelectorBar)
-				{
+				else if (iter.getTexture() == iSelectorBar) {
 					iPickedSample = iter.getPos() + iAlNumberSamples.get(iSelectorBar - 1);
 
-					if (iSamplesPerHeatmap % 2 == 0)
-					{
+					if (iSamplesPerHeatmap % 2 == 0) {
 						iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
 						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 					}
-					else
-					{
+					else {
 						iFirstSample = iPickedSample - (int) Math.ceil(iSamplesPerHeatmap / 2);
 						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 					}
 
-					if (iPickedSample < iSamplesPerHeatmap / 2)
-					{
+					if (iPickedSample < iSamplesPerHeatmap / 2) {
 						iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
 						iFirstSample = 0;
 						iLastSample = iSamplesPerHeatmap - 1;
 					}
-					else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2)
-					{
+					else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2) {
 						iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
 						iLastSample = iNumberSample - 1;
 						iFirstSample = iNumberSample - iSamplesPerHeatmap;
@@ -371,8 +347,7 @@ public class GLHierarchicalHeatMap
 				iLastSample = iSamplesPerHeatmap - 1;
 			}
 		}
-		else
-		{
+		else {
 			iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
 			iFirstSample = 0;
 			iLastSample = iSamplesPerHeatmap - 1;
@@ -380,13 +355,11 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Init textures, build array of textures used for holding the whole
-	 * examples from contentSelectionManager
+	 * Init textures, build array of textures used for holding the whole examples from contentSelectionManager
 	 * 
 	 * @param
 	 */
-	private void initTextures(GL gl)
-	{
+	private void initTextures(GL gl) {
 		fAlXDistances.clear();
 		// renderStyle.updateFieldSizes();
 
@@ -410,18 +383,18 @@ public class GLHierarchicalHeatMap
 		int iCount = 0;
 		int iTextureCounter = 0;
 
-		for (Integer iContentIndex : set.getVA(iContentVAID))
-		{
+		for (Integer iContentIndex : set.getVA(iContentVAID)) {
 			iCount++;
 			IVirtualArray storageVA = set.getVA(iStorageVAID);
-			for (Integer iStorageIndex : storageVA)
-			{
+			for (Integer iStorageIndex : storageVA) {
 				if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
 					|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-					|| detailLevel.compareTo(EDetailLevel.LOW) > 0)
+					|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
 					fOpacity = 1.0f;
-				else
+				}
+				else {
 					fOpacity = 0.3f;
+				}
 
 				fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
@@ -431,8 +404,7 @@ public class GLHierarchicalHeatMap
 
 				FbTemp.put(fArRgba);
 			}
-			if (iCount >= iNrSamplesPerTexture)
-			{
+			if (iCount >= iNrSamplesPerTexture) {
 				FbTemp.rewind();
 
 				TextureData texData =
@@ -459,16 +431,14 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param
 	 */
-	private void createHeatMap()
-	{
+	private void createHeatMap() {
 		CmdCreateGLEventListener cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_HEAT_MAP_3D);
 
 		ArrayList<Integer> alSetIDs = new ArrayList<Integer>();
 
-		for (ISet set : alSets)
-		{
+		for (ISet set : alSets) {
 			alSetIDs.add(set.getID());
 		}
 		float fHeatMapHeight = viewFrustum.getHeight();
@@ -494,23 +464,20 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel)
-	{
+	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 		// renderStyle.setDetailLevel(detailLevel);
 		// renderStyle.updateFieldSizes();
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl)
-	{
+	public synchronized void displayLocal(GL gl) {
 		if (set == null)
 			return;
 
 		pickingManager.handlePicking(iUniqueID, gl);
 
-		if (bIsDisplayListDirtyLocal)
-		{
+		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -521,13 +488,11 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl)
-	{
+	public synchronized void displayRemote(GL gl) {
 		if (set == null)
 			return;
 
-		if (bIsDisplayListDirtyRemote)
-		{
+		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -544,8 +509,7 @@ public class GLHierarchicalHeatMap
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(String trigger)
-	{
+	protected void reactOnExternalSelection(String trigger) {
 		int iIndex = 0;
 		int iTexture = 0;
 		int iPos = 0;
@@ -555,8 +519,7 @@ public class GLHierarchicalHeatMap
 
 		Set<Integer> setMouseOverElements = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 
-		for (Integer iSelectedID : setMouseOverElements)
-		{
+		for (Integer iSelectedID : setMouseOverElements) {
 			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
 
 			iTexture = (int) Math.floor(iIndex / iAlNumberSamples.get(0));
@@ -568,8 +531,7 @@ public class GLHierarchicalHeatMap
 
 		Set<Integer> setSelectionElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
 
-		for (Integer iSelectedID : setSelectionElements)
-		{
+		for (Integer iSelectedID : setSelectionElements) {
 			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
 
 			iTexture = (int) Math.floor(iIndex / iAlNumberSamples.get(0));
@@ -582,10 +544,8 @@ public class GLHierarchicalHeatMap
 		setMouseOverElements = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 
 		AlExpMouseOver.clear();
-		if (setMouseOverElements.size() >= 0)
-		{
-			for (Integer iSelectedID : setMouseOverElements)
-			{
+		if (setMouseOverElements.size() >= 0) {
+			for (Integer iSelectedID : setMouseOverElements) {
 				AlExpMouseOver.add(iSelectedID);
 			}
 		}
@@ -593,32 +553,28 @@ public class GLHierarchicalHeatMap
 		setSelectionElements = storageSelectionManager.getElements(ESelectionType.SELECTION);
 
 		AlExpSelected.clear();
-		if (setSelectionElements.size() >= 0)
-		{
-			for (Integer iSelectedID : setSelectionElements)
-			{
+		if (setSelectionElements.size() >= 0) {
+			for (Integer iSelectedID : setSelectionElements) {
 				AlExpSelected.add(iSelectedID);
 			}
 		}
 
 		// if selected element is in another texture, switch to this texture
-		if (!trigger.equals("GLHeatMap"))
+		if (!trigger.equals("GLHeatMap")) {
 			setTexture();
+		}
 	}
 
 	@Override
-	protected void reactOnVAChanges(IVirtualArrayDelta delta)
-	{
+	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		bRedrawTextures = true;
 
 		Set<Integer> setMouseOverElements = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 
 		AlExpMouseOver.clear();
-		if (setMouseOverElements.size() >= 0)
-		{
-			for (Integer iSelectedID : setMouseOverElements)
-			{
+		if (setMouseOverElements.size() >= 0) {
+			for (Integer iSelectedID : setMouseOverElements) {
 				AlExpMouseOver.add(iSelectedID);
 			}
 		}
@@ -626,10 +582,8 @@ public class GLHierarchicalHeatMap
 		Set<Integer> setSelectionElements = storageSelectionManager.getElements(ESelectionType.SELECTION);
 
 		AlExpSelected.clear();
-		if (setSelectionElements.size() >= 0)
-		{
-			for (Integer iSelectedID : setSelectionElements)
-			{
+		if (setSelectionElements.size() >= 0) {
+			for (Integer iSelectedID : setSelectionElements) {
 				AlExpSelected.add(iSelectedID);
 			}
 		}
@@ -646,8 +600,7 @@ public class GLHierarchicalHeatMap
 	 * @param fYOrigin
 	 * @param fFontScaling
 	 */
-	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fFontScaling)
-	{
+	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fFontScaling) {
 		textRenderer.setColor(1, 1, 1, 1);
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(fXOrigin, fYOrigin, 0);
@@ -659,28 +612,30 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Render a curved (nice looking) connection line from given start point to
-	 * given end point
+	 * Render a curved (nice looking) connection line from given start point to given end point
 	 * 
 	 * @param gl
 	 * @param startpoint
 	 * @param endpoint
 	 */
 	private void renderSelectedDomain(GL gl, Vec3f startpoint1, Vec3f endpoint1, Vec3f startpoint2,
-		Vec3f endpoint2)
-	{
+		Vec3f endpoint2) {
 		float fthickness = (endpoint1.x() - startpoint1.x()) / 4;
 		float fScalFactor1, fScalFactor2;
 
-		if (endpoint1.y() - startpoint1.y() < 0.2f)
+		if (endpoint1.y() - startpoint1.y() < 0.2f) {
 			fScalFactor1 = (endpoint1.y() - startpoint1.y()) * 5f;
-		else
+		}
+		else {
 			fScalFactor1 = 1;
+		}
 
-		if (startpoint2.y() - endpoint2.y() < 0.2f)
+		if (startpoint2.y() - endpoint2.y() < 0.2f) {
 			fScalFactor2 = (startpoint2.y() - endpoint2.y()) * 5f;
-		else
+		}
+		else {
 			fScalFactor2 = 1;
+		}
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
 
@@ -781,8 +736,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderOverviewBar(GL gl)
-	{
+	private void renderOverviewBar(GL gl) {
 		float fHeight;
 		float fWidth;
 		float fyOffset = 0.0f;
@@ -794,8 +748,7 @@ public class GLHierarchicalHeatMap
 
 		gl.glColor4f(1f, 1f, 0f, 1f);
 
-		for (int i = 0; i < iNrSelBar; i++)
-		{
+		for (int i = 0; i < iNrSelBar; i++) {
 			AlTextures.get(iNrSelBar - i - 1).enable();
 			AlTextures.get(iNrSelBar - i - 1).bind();
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
@@ -824,13 +777,11 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Render marker in OverviewBar for visualization of the currently (in stage
-	 * 2) rendered part
+	 * Render marker in OverviewBar for visualization of the currently (in stage 2) rendered part
 	 * 
 	 * @param gl
 	 */
-	private void renderMarkerOverviewBar(final GL gl)
-	{
+	private void renderMarkerOverviewBar(final GL gl) {
 		float fHeight = viewFrustum.getHeight();
 		float fStep = fHeight / iNrSelBar;
 		float fFieldWith = 0.1f;
@@ -868,23 +819,22 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Render marker next to OverviewBar for visualization of selected elements
-	 * in the data set
+	 * Render marker next to OverviewBar for visualization of selected elements in the data set
 	 * 
 	 * @param gl
 	 */
-	private void renderSelectedElementsOverviewBar(GL gl)
-	{
+	private void renderSelectedElementsOverviewBar(GL gl) {
 		float fHeight = viewFrustum.getHeight();
 		float fStep = fHeight / iNrSelBar;
 		float fBarWidth = 0.1f;
 
-		for (HeatMapSelection selection : AlSelection)
-		{
-			if (selection.getSelectionType() == ESelectionType.MOUSE_OVER)
+		for (HeatMapSelection selection : AlSelection) {
+			if (selection.getSelectionType() == ESelectionType.MOUSE_OVER) {
 				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-			else
+			}
+			else {
 				gl.glColor4fv(SELECTED_COLOR, 0);
+			}
 
 			// elements in overview bar
 			gl.glBegin(GL.GL_QUADS);
@@ -902,8 +852,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void renderTextureHeatMap(GL gl)
-	{
+	private void renderTextureHeatMap(GL gl) {
 		float fHeight;
 		float fWidth;
 
@@ -962,13 +911,11 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Render marker in Texture for visualization of the currently (in stage 3)
-	 * rendered part
+	 * Render marker in Texture for visualization of the currently (in stage 3) rendered part
 	 * 
 	 * @param gl
 	 */
-	private void renderMarkerTexture(final GL gl)
-	{
+	private void renderMarkerTexture(final GL gl) {
 		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		float fHeightSample = viewFrustum.getHeight() / (iAlNumberSamples.get(iSelectorBar - 1) * 2);
 
@@ -983,8 +930,7 @@ public class GLHierarchicalHeatMap
 		gl.glVertex3f(0, viewFrustum.getHeight() - (iLastSample + 1) * fHeightSample, 0);
 		gl.glEnd();
 
-		if (bIsDraggingActive == false)
-		{
+		if (bIsDraggingActive == false) {
 			fPosCursorFirstElement = viewFrustum.getHeight() - iFirstSample * fHeightSample;
 			fPosCursorLastElement = viewFrustum.getHeight() - (iLastSample + 1) * fHeightSample;
 		}
@@ -1007,8 +953,7 @@ public class GLHierarchicalHeatMap
 		gl
 			.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_INFOCUS_SELECTION,
 				1));
-		if (bIsHeatmapInFocus)
-		{
+		if (bIsHeatmapInFocus) {
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(fFieldWith + 0.2f, fYCoord - 0.3f, 0.1f);
@@ -1020,8 +965,7 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fFieldWith + 0.3f, fYCoord - 0.3f, 0.1f);
 			gl.glEnd();
 		}
-		else
-		{
+		else {
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(fFieldWith + 0.2f, fYCoord - 0.3f, 0.1f);
@@ -1037,8 +981,7 @@ public class GLHierarchicalHeatMap
 
 		tempTexture.disable();
 
-		if (bRenderCaption == true)
-		{
+		if (bRenderCaption == true) {
 			renderCaption(gl, "Number Samples:" + iSamplesPerHeatmap, 0.0f, viewFrustum.getHeight()
 				- iPickedSample * fHeightSample, 0.01f);
 			bRenderCaption = false;
@@ -1046,13 +989,11 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Render marker in OverviewBar for visualization of selected elements in
-	 * the data set
+	 * Render marker in OverviewBar for visualization of selected elements in the data set
 	 * 
 	 * @param gl
 	 */
-	private void renderSelectedElementsTexture(GL gl)
-	{
+	private void renderSelectedElementsTexture(GL gl) {
 		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		float fHeightSample = viewFrustum.getHeight() / (iNrSamplesPerTexture * 2);
 
@@ -1064,12 +1005,9 @@ public class GLHierarchicalHeatMap
 		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 		Set<Integer> selectedSet = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 		int iColumnIndex = 0;
-		for (int iTempLine : set.getVA(iStorageVAID))
-		{
-			for (Integer iCurrentLine : selectedSet)
-			{
-				if (iTempLine == iCurrentLine)
-				{
+		for (int iTempLine : set.getVA(iStorageVAID)) {
+			for (Integer iCurrentLine : selectedSet) {
+				if (iTempLine == iCurrentLine) {
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(iColumnIndex * fExpWidth, 0, SELECTION_Z);
 					gl.glVertex3f((iColumnIndex + 1) * fExpWidth, 0, SELECTION_Z);
@@ -1084,12 +1022,9 @@ public class GLHierarchicalHeatMap
 		gl.glColor4fv(SELECTED_COLOR, 0);
 		selectedSet = storageSelectionManager.getElements(ESelectionType.SELECTION);
 		int iLineIndex = 0;
-		for (int iTempLine : set.getVA(iStorageVAID))
-		{
-			for (Integer iCurrentLine : selectedSet)
-			{
-				if (iTempLine == iCurrentLine)
-				{
+		for (int iTempLine : set.getVA(iStorageVAID)) {
+			for (Integer iCurrentLine : selectedSet) {
+				if (iTempLine == iCurrentLine) {
 					gl.glBegin(GL.GL_LINE_LOOP);
 					gl.glVertex3f(iLineIndex * fExpWidth, 0, SELECTION_Z);
 					gl.glVertex3f((iLineIndex + 1) * fExpWidth, 0, SELECTION_Z);
@@ -1103,17 +1038,17 @@ public class GLHierarchicalHeatMap
 
 		gl.glDisable(GL.GL_LINE_STIPPLE);
 
-		for (HeatMapSelection selection : AlSelection)
-		{
+		for (HeatMapSelection selection : AlSelection) {
 
-			if (selection.getSelectionType() == ESelectionType.MOUSE_OVER)
+			if (selection.getSelectionType() == ESelectionType.MOUSE_OVER) {
 				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-			else
+			}
+			else {
 				gl.glColor4fv(SELECTED_COLOR, 0);
+			}
 
 			// elements in texture
-			if (iSelectorBar == selection.getTexture() + 1)
-			{
+			if (iSelectorBar == selection.getTexture() + 1) {
 				gl.glLineWidth(2f);
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(-0.1f, viewFrustum.getHeight() - (selection.getPos() - 1) * fHeightSample,
@@ -1126,8 +1061,7 @@ public class GLHierarchicalHeatMap
 					SELECTION_Z);
 				gl.glEnd();
 			}
-			else if (iSelectorBar + 1 == selection.getTexture() + 1)
-			{
+			else if (iSelectorBar + 1 == selection.getTexture() + 1) {
 				gl.glLineWidth(2f);
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(-0.1f, viewFrustum.getHeight()
@@ -1148,13 +1082,12 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Render cursor used for controlling hierarchical heatmap (e.g. next
-	 * Texture, previous Texture, set heatmap in focus)
+	 * Render cursor used for controlling hierarchical heatmap (e.g. next Texture, previous Texture, set
+	 * heatmap in focus)
 	 * 
 	 * @param gl
 	 */
-	private void renderCursor(final GL gl)
-	{
+	private void renderCursor(final GL gl) {
 		float fHeight = viewFrustum.getHeight();
 		float fWidth = viewFrustum.getWidth() / 4.0f;
 
@@ -1167,8 +1100,7 @@ public class GLHierarchicalHeatMap
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glColor4f(1f, 1, 1, 1f);
 
-		if (iSelectorBar != 1)
-		{
+		if (iSelectorBar != 1) {
 			// Polygon for selecting previous texture
 			gl.glPushName(pickingManager
 				.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_TEXTURE_CURSOR, 1));
@@ -1185,8 +1117,7 @@ public class GLHierarchicalHeatMap
 			gl.glEnd();
 
 			// right
-			if (bIsHeatmapInFocus)
-			{
+			if (bIsHeatmapInFocus) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidth / 5 - 0.1f, fHeight, 0);
@@ -1198,8 +1129,7 @@ public class GLHierarchicalHeatMap
 				gl.glVertex3f(fWidth / 5 - 0.1f, fHeight + 0.1f, 0);
 				gl.glEnd();
 			}
-			else
-			{
+			else {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidth - 0.1f, fHeight, 0);
@@ -1218,8 +1148,7 @@ public class GLHierarchicalHeatMap
 
 			texCoords = tempTexture.getImageTexCoords();
 			// middle
-			if (bIsHeatmapInFocus)
-			{
+			if (bIsHeatmapInFocus) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidth / 10 - 0.15f, fHeight, 0);
@@ -1231,8 +1160,7 @@ public class GLHierarchicalHeatMap
 				gl.glVertex3f(fWidth / 10 - 0.15f, fHeight + 0.1f, 0);
 				gl.glEnd();
 			}
-			else
-			{
+			else {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidth / 2 - 0.15f, fHeight, 0.001f);
@@ -1267,8 +1195,7 @@ public class GLHierarchicalHeatMap
 
 		texCoords = tempTexture.getImageTexCoords();
 
-		if (iSelectorBar != iNrSelBar - 1)
-		{
+		if (iSelectorBar != iNrSelBar - 1) {
 			// Polygon for selecting next texture
 			gl.glPushName(pickingManager
 				.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_TEXTURE_CURSOR, 2));
@@ -1285,8 +1212,7 @@ public class GLHierarchicalHeatMap
 			gl.glEnd();
 
 			// right
-			if (bIsHeatmapInFocus)
-			{
+			if (bIsHeatmapInFocus) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidth / 5 - 0.1f, 0, 0);
@@ -1298,8 +1224,7 @@ public class GLHierarchicalHeatMap
 				gl.glVertex3f(fWidth / 5 - 0.1f, -0.1f, 0);
 				gl.glEnd();
 			}
-			else
-			{
+			else {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidth - 0.1f, 0, 0);
@@ -1318,8 +1243,7 @@ public class GLHierarchicalHeatMap
 
 			texCoords = tempTexture.getImageTexCoords();
 			// middle
-			if (bIsHeatmapInFocus)
-			{
+			if (bIsHeatmapInFocus) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidth / 10 - 0.15f, 0, 0);
@@ -1331,8 +1255,7 @@ public class GLHierarchicalHeatMap
 				gl.glVertex3f(fWidth / 10 - 0.15f, -0.1f, 0);
 				gl.glEnd();
 			}
-			else
-			{
+			else {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidth / 2 - 0.15f, 0, 0.001f);
@@ -1412,18 +1335,18 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void display(GL gl)
-	{
-		if (generalManager.isWiiModeActive())
+	public synchronized void display(GL gl) {
+		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
+		}
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
-		if (bIsDraggingActive)
-		{
+		if (bIsDraggingActive) {
 			handleCursorDragging(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased())
+			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
 				bIsDraggingActive = false;
+			}
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
@@ -1435,16 +1358,14 @@ public class GLHierarchicalHeatMap
 		float fleftOffset = 0;
 
 		// render embedded heat map
-		if (bIsHeatmapInFocus)
-		{
+		if (bIsHeatmapInFocus) {
 			fright = viewFrustum.getWidth() - 1.2f;
 			fleftOffset = 0.095f + // width level 1 + boarder
 				GAP_LEVEL1_2 + // width gap between level 1 and 2
 				viewFrustum.getWidth() / 4f * 0.2f + // width level 2
 				GAP_LEVEL2_3; // width gap between level 2 and 3
 		}
-		else
-		{
+		else {
 			fright = viewFrustum.getWidth() - 2.75f;
 			fleftOffset = 0.075f + // width level 1
 				GAP_LEVEL1_2 + // width gap between level 1 and 2
@@ -1452,10 +1373,12 @@ public class GLHierarchicalHeatMap
 				GAP_LEVEL2_3;// width gap between level 2 and 3
 		}
 
-		if (glHeatMapView.isInDefaultOrientation())
+		if (glHeatMapView.isInDefaultOrientation()) {
 			gl.glTranslatef(fleftOffset, +0.4f, 0);
-		else
+		}
+		else {
 			gl.glTranslatef(fleftOffset, -0.2f, 0);
+		}
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_VIEW_SELECTION,
 			glHeatMapView.getID()));
@@ -1465,10 +1388,12 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
 
-		if (glHeatMapView.isInDefaultOrientation())
+		if (glHeatMapView.isInDefaultOrientation()) {
 			gl.glTranslatef(fleftOffset, -0.4f, 0);
-		else
+		}
+		else {
 			gl.glTranslatef(fleftOffset, +0.2f, 0);
+		}
 	}
 
 	/**
@@ -1483,8 +1408,7 @@ public class GLHierarchicalHeatMap
 	 * @param iChildNr
 	 */
 	private void renderDendrogram(final GL gl, float fymin, float fymax, CNode Node, int iDepth,
-		int iNrSiblings, int iChildNr)
-	{
+		int iNrSiblings, int iChildNr) {
 
 		int currentDepth = iDepth;
 
@@ -1512,8 +1436,7 @@ public class GLHierarchicalHeatMap
 
 		gl.glPopAttrib();
 
-		if (Node.getChilds() != null)
-		{
+		if (Node.getChilds() != null) {
 			currentDepth++;
 			int iNrChildsNode = Node.getChilds().size();
 
@@ -1535,8 +1458,7 @@ public class GLHierarchicalHeatMap
 				SELECTION_Z);
 			gl.glEnd();
 
-			for (int i = 0; i < iNrChildsNode; i++)
-			{
+			for (int i = 0; i < iNrChildsNode; i++) {
 
 				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.55f));
 				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
@@ -1548,11 +1470,9 @@ public class GLHierarchicalHeatMap
 
 	}
 
-	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
-	{
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
-		if (bRedrawTextures)
-		{
+		if (bRedrawTextures) {
 			initTextures(gl);
 			bRedrawTextures = false;
 		}
@@ -1574,8 +1494,7 @@ public class GLHierarchicalHeatMap
 		// {
 		// }
 
-		if (bHasFrustumChanged)
-		{
+		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
 			bHasFrustumChanged = false;
 		}
@@ -1602,12 +1521,10 @@ public class GLHierarchicalHeatMap
 
 		// GLHelperFunctions.drawAxis(gl);
 
-		if (graphRoot == null)
-		{
+		if (graphRoot == null) {
 			// System.out.println("Problems during clustering!!");
 		}
-		else
-		{
+		else {
 			// graphRoot.traversTree(0);
 			// System.out.println("renderDendrogram(..)");
 			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), graphRoot, 0, 1, 0);
@@ -1620,12 +1537,10 @@ public class GLHierarchicalHeatMap
 
 		gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
 
-		if (bIsHeatmapInFocus)
-		{
+		if (bIsHeatmapInFocus) {
 			fAnimationScale = 0.2f;
 		}
-		else
-		{
+		else {
 			fAnimationScale = 1.0f;
 		}
 
@@ -1651,8 +1566,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param
 	 */
-	private void triggerSelectionBlock()
-	{
+	private void triggerSelectionBlock() {
 		int iCount = iNrSamplesPerTexture * (iSelectorBar - 1) + iFirstSample;
 
 		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
@@ -1666,24 +1580,23 @@ public class GLHierarchicalHeatMap
 
 		int iContentIndex = 0;
 
-		for (int index = 0; index < iSamplesPerHeatmap; index++)
-		{
+		for (int index = 0; index < iSamplesPerHeatmap; index++) {
 			iIndex = iCount + index;
-			if (iIndex < currentVirtualArray.size())
+			if (iIndex < currentVirtualArray.size()) {
 				iContentIndex = currentVirtualArray.get(iIndex);
+			}
 
 			delta.add(VADeltaItem.append(iContentIndex));
 			// set elements selected in embedded heatMap
-			for (HeatMapSelection selection : AlSelection)
-			{
-				if (selection.getContentIndex() == iContentIndex)
+			for (HeatMapSelection selection : AlSelection) {
+				if (selection.getContentIndex() == iContentIndex) {
 					selectionDelta.addSelection(iContentIndex, selection.getSelectionType());
+				}
 			}
 		}
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
-		if (selectionDelta.size() > 0)
-		{
+		if (selectionDelta.size() > 0) {
 			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 
@@ -1696,39 +1609,38 @@ public class GLHierarchicalHeatMap
 
 		IVirtualArray currentVirtualArrayEx = set.getVA(iStorageVAID);
 
-		for (int index = 0; index < currentVirtualArrayEx.size(); index++)
-		{
+		for (int index = 0; index < currentVirtualArrayEx.size(); index++) {
 			iContentIndex = currentVirtualArrayEx.get(index);
 
 			deltaExp.add(VADeltaItem.append(iContentIndex));
 			// set elements selected in embedded heatMap
-			for (Integer selection : AlExpMouseOver)
-			{
-				if (selection == iContentIndex)
+			for (Integer selection : AlExpMouseOver) {
+				if (selection == iContentIndex) {
 					selectionDeltaEx.addSelection(iContentIndex, ESelectionType.MOUSE_OVER);
+				}
 			}
-			for (Integer selection : AlExpSelected)
-			{
-				if (selection == iContentIndex)
+			for (Integer selection : AlExpSelected) {
+				if (selection == iContentIndex) {
 					selectionDeltaEx.addSelection(iContentIndex, ESelectionType.SELECTION);
+				}
 			}
 		}
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(deltaExp));
-		if (selectionDeltaEx.size() > 0)
-		{
+		if (selectionDeltaEx.size() > 0) {
 			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
 		}
 
 	}
 
-	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
-	{
+	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally) {
 
-		if (glHeatMapView.isInDefaultOrientation())
+		if (glHeatMapView.isInDefaultOrientation()) {
 			glHeatMapView.changeOrientation(false);
-		else
+		}
+		else {
 			glHeatMapView.changeOrientation(true);
+		}
 
 		// this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		// renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
@@ -1736,26 +1648,23 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	protected void initLists()
-	{
+	protected void initLists() {
 
 		// Set<Integer> setMouseOver = storageSelectionManager
 		// .getElements(ESelectionType.MOUSE_OVER);
 
-		if (bRenderOnlyContext)
-		{
+		if (bRenderOnlyContext) {
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		}
-		else
-		{
-			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+		else {
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
 				initCompleteList();
+			}
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
-		if (bUseClusteredVA)
-		{
+		if (bUseClusteredVA) {
 			// System.out.println("iContentVAID before clustering " +
 			// iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
@@ -1781,8 +1690,7 @@ public class GLHierarchicalHeatMap
 			// System.out.print(iter + " ");
 			// }
 
-			if (bClusterHierarchical == true)
-			{
+			if (bClusterHierarchical == true) {
 				graphRoot = set.getClusteredGraph();
 			}
 		}
@@ -1801,15 +1709,13 @@ public class GLHierarchicalHeatMap
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
 
-		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++)
-		{
+		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
 			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
 
 		}
 
 		// this for loop executes one per axis
-		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
-		{
+		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
 			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
 
 			// if
@@ -1834,31 +1740,29 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public String getShortInfo()
-	{
+	public String getShortInfo() {
 		return "Hierarchical Heat Map (" + set.getVA(iContentVAID).size() + " genes / "
 			+ set.getVA(iStorageVAID).size() + " experiments)";
 	}
 
 	@Override
-	public String getDetailedInfo()
-	{
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
-		if (bRenderStorageHorizontally)
+		if (bRenderStorageHorizontally) {
 			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
 				+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
-		else
+		}
+		else {
 			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
 				+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+		}
 
-		if (bRenderOnlyContext)
-		{
+		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
 		}
-		else
-		{
+		else {
 			// if (bUseRandomSampling)
 			// {
 			// sInfoText.append("Random sampling active, sample size: "
@@ -1869,13 +1773,16 @@ public class GLHierarchicalHeatMap
 			// sInfoText.append("Random sampling inactive\n");
 			// }
 
-			if (dataFilterLevel == EDataFilterLevel.COMPLETE)
+			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
 				sInfoText.append("Showing all genes in the dataset\n");
-			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
+			}
+			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
 				sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
-			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
+			}
+			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText
 					.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
+			}
 		}
 
 		return sInfoText.toString();
@@ -1886,15 +1793,13 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void handleTexturePicking(GL gl)
-	{
+	private void handleTexturePicking(GL gl) {
 		int iNumberSample = iNrSamplesPerTexture * 2;
 		float fOffsety;
 		float fHeightSample = viewFrustum.getHeight() / iNumberSample;
 		float[] fArPickingCoords = new float[3];
 
-		if (PickingPoint != null)
-		{
+		if (PickingPoint != null) {
 			fArPickingCoords =
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, PickingPoint.x,
 					PickingPoint.y);
@@ -1902,25 +1807,21 @@ public class GLHierarchicalHeatMap
 			iPickedSample = (int) Math.ceil(fOffsety / fHeightSample);
 			PickingPoint = null;
 
-			if (iSamplesPerHeatmap % 2 == 0)
-			{
+			if (iSamplesPerHeatmap % 2 == 0) {
 				iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
 				iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 			}
-			else
-			{
+			else {
 				iFirstSample = iPickedSample - (int) Math.ceil(iSamplesPerHeatmap / 2);
 				iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 			}
 
-			if (iPickedSample < iSamplesPerHeatmap / 2)
-			{
+			if (iPickedSample < iSamplesPerHeatmap / 2) {
 				iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
 				iFirstSample = 0;
 				iLastSample = iSamplesPerHeatmap - 1;
 			}
-			else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2)
-			{
+			else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2) {
 				iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
 				iLastSample = iNumberSample - 1;
 				iFirstSample = iNumberSample - iSamplesPerHeatmap;
@@ -1935,8 +1836,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void handleCursorDragging(final GL gl)
-	{
+	private void handleCursorDragging(final GL gl) {
 		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
 		int iselElement;
@@ -1950,14 +1850,11 @@ public class GLHierarchicalHeatMap
 		float fYPosMouse = fArTargetWorldCoordinates[1] - 0.4f;
 
 		// cursor for iFirstElement
-		if (iDraggedCursor == 1)
-		{
-			if (fYPosMouse > fPosCursorLastElement && fYPosMouse <= viewFrustum.getHeight() - 0.6f)
-			{
+		if (iDraggedCursor == 1) {
+			if (fYPosMouse > fPosCursorLastElement && fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
 				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iLastSample - iselElement + 1;
-				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < iAlNumberSamples.get(0) / 3)
-				{
+				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < iAlNumberSamples.get(0) / 3) {
 					fPosCursorFirstElement = fYPosMouse;
 					iFirstSample = iselElement;
 					iSamplesPerHeatmap = iLastSample - iFirstSample + 1;
@@ -1969,14 +1866,11 @@ public class GLHierarchicalHeatMap
 			}
 		}
 		// cursor for iLastElement
-		if (iDraggedCursor == 2)
-		{
-			if (fYPosMouse < fPosCursorFirstElement && fYPosMouse >= 0.0f)
-			{
+		if (iDraggedCursor == 2) {
+			if (fYPosMouse < fPosCursorFirstElement && fYPosMouse >= 0.0f) {
 				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iselElement - iFirstSample + 1;
-				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < iAlNumberSamples.get(0) / 3)
-				{
+				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < iAlNumberSamples.get(0) / 3) {
 					fPosCursorLastElement = fYPosMouse;
 					iLastSample = iselElement;
 					iSamplesPerHeatmap = iLastSample - iFirstSample + 1;
@@ -1991,28 +1885,23 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 		triggerSelectionBlock();
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased())
-		{
+		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
 			bIsDraggingActive = false;
 		}
 	}
 
 	@Override
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
-		Pick pick)
-	{
-		if (detailLevel == EDetailLevel.VERY_LOW)
-		{
+		Pick pick) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 
-		switch (ePickingType)
-		{
+		switch (ePickingType) {
 
 			case DENDROGRAM_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 
 					case MOUSE_OVER:
 
@@ -2024,8 +1913,7 @@ public class GLHierarchicalHeatMap
 				break;
 
 			case HIER_HEAT_MAP_INFOCUS_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 
 					case CLICKED:
 
@@ -2040,19 +1928,16 @@ public class GLHierarchicalHeatMap
 				break;
 
 			case HIER_HEAT_MAP_TEXTURE_CURSOR:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
-						if (iExternalID == 1)
-						{
+						if (iExternalID == 1) {
 							iSelectorBar--;
 							initPosCursor();
 							triggerSelectionBlock();
 							setDisplayListDirty();
 						}
-						if (iExternalID == 2)
-						{
+						if (iExternalID == 2) {
 							iSelectorBar++;
 							initPosCursor();
 							triggerSelectionBlock();
@@ -2072,8 +1957,7 @@ public class GLHierarchicalHeatMap
 				break;
 
 			case HIER_HEAT_MAP_CURSOR:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
 						// bRenderCaption = true;
@@ -2097,13 +1981,13 @@ public class GLHierarchicalHeatMap
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case HIER_HEAT_MAP_TEXTURE_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
 						iSelectorBar = iExternalID;
-						if (iSelectorBar == iNrSelBar)
+						if (iSelectorBar == iNrSelBar) {
 							iSelectorBar--;
+						}
 						initPosCursor();
 						triggerSelectionBlock();
 						setDisplayListDirty();
@@ -2112,8 +1996,9 @@ public class GLHierarchicalHeatMap
 					case MOUSE_OVER:
 
 						iSelectorBar = iExternalID;
-						if (iSelectorBar == iNrSelBar)
+						if (iSelectorBar == iNrSelBar) {
 							iSelectorBar--;
+						}
 						initPosCursor();
 						triggerSelectionBlock();
 						setDisplayListDirty();
@@ -2124,8 +2009,7 @@ public class GLHierarchicalHeatMap
 				break;
 
 			case HIER_HEAT_MAP_FIELD_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case CLICKED:
 
 						// bIsHeatmapInFocus = false;
@@ -2145,8 +2029,7 @@ public class GLHierarchicalHeatMap
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case HIER_HEAT_MAP_VIEW_SELECTION:
-				switch (pickingMode)
-				{
+				switch (pickingMode) {
 					case MOUSE_OVER:
 						break;
 
@@ -2169,26 +2052,22 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
-	{
+	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex) {
 		return null;
 	}
 
 	@Override
-	public void renderContext(boolean bRenderOnlyContext)
-	{
+	public void renderContext(boolean bRenderOnlyContext) {
 		throw new IllegalStateException("Rendering only context not supported for the hierachical heat map");
 	}
 
 	@Override
-	public void broadcastElements()
-	{
+	public void broadcastElements() {
 		throw new IllegalStateException("broadcast elements of the contained heat map or all?");
 	}
 
 	@Override
-	public synchronized void clearAllSelections()
-	{
+	public synchronized void clearAllSelections() {
 
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
@@ -2204,44 +2083,40 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void changeOrientation(boolean defaultOrientation)
-	{
+	public void changeOrientation(boolean defaultOrientation) {
 		renderHorizontally(defaultOrientation);
 	}
 
 	@Override
-	public boolean isInDefaultOrientation()
-	{
+	public boolean isInDefaultOrientation() {
 		return bRenderStorageHorizontally;
 	}
 
-	public void changeFocus(boolean bInFocus)
-	{
+	public void changeFocus(boolean bInFocus) {
 		bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
 
 		setDisplayListDirty();
 	}
 
-	public boolean isInFocus()
-	{
+	public boolean isInFocus() {
 		return bIsHeatmapInFocus;
 	}
 
-	private void handleWiiInput()
-	{
+	private void handleWiiInput() {
 		float fHeadPositionX = generalManager.getWiiRemote().getCurrentSmoothHeadPosition()[0];
 
-		if (fHeadPositionX < -1.2f)
+		if (fHeadPositionX < -1.2f) {
 			bIsHeatmapInFocus = false;
-		else
+		}
+		else {
 			bIsHeatmapInFocus = true;
+		}
 
 		setDisplayListDirty();
 	}
 
 	@Override
-	public synchronized void initData()
-	{
+	public synchronized void initData() {
 		super.initData();
 
 		bRedrawTextures = true;

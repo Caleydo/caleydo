@@ -5,7 +5,6 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * Radial render styles
- * 
  */
 
 public class RadialHierarchyRenderStyle

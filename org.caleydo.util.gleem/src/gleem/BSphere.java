@@ -122,8 +122,8 @@ public class BSphere {
 	}
 
 	/**
-	 * Intersect a ray with the sphere. This is a one-sided ray cast. Mutates one or both of intPt0 and intPt1.
-	 * Returns number of intersections which occurred.
+	 * Intersect a ray with the sphere. This is a one-sided ray cast. Mutates one or both of intPt0 and
+	 * intPt1. Returns number of intersections which occurred.
 	 */
 	int intersectRay(Vec3f rayStart, Vec3f rayDirection, IntersectionPoint intPt0, IntersectionPoint intPt1) {
 		// Solve quadratic equation
@@ -137,13 +137,16 @@ public class BSphere {
 		if (disc < 0.0f)
 			return 0;
 		int numIntersections;
-		if (disc == 0.0f)
+		if (disc == 0.0f) {
 			numIntersections = 1;
-		else
+		}
+		else {
 			numIntersections = 2;
+		}
 		intPt0.setT(0.5f * (-1.0f * b + (float) Math.sqrt(disc)) / a);
-		if (numIntersections == 2)
+		if (numIntersections == 2) {
 			intPt1.setT(0.5f * (-1.0f * b - (float) Math.sqrt(disc)) / a);
+		}
 		Vec3f tmp = new Vec3f(rayDirection);
 		tmp.scale(intPt0.getT());
 		tmp.add(tmp, rayStart);

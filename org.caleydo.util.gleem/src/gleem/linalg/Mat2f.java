@@ -130,13 +130,15 @@ public class Mat2f {
 
 	/** this = a * b */
 	public void mul(Mat2f a, Mat2f b) {
-		for (int rc = 0; rc < 2; rc++)
+		for (int rc = 0; rc < 2; rc++) {
 			for (int cc = 0; cc < 2; cc++) {
 				float tmp = 0.0f;
-				for (int i = 0; i < 2; i++)
+				for (int i = 0; i < 2; i++) {
 					tmp += a.get(rc, i) * b.get(i, cc);
+				}
 				set(rc, cc, tmp);
 			}
+		}
 	}
 
 	public Matf toMatf() {

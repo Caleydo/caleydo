@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
  * 
  * @author Alexander Lex
  * @param <T>
- *          the type
+ *            the type
  */
 public class ContainerIterator<T>
 	extends AContainerIterator
@@ -22,9 +22,9 @@ public class ContainerIterator<T>
 	 * Constructor for iterator. Provide a ListIterator from the ArrayList of the Container
 	 * 
 	 * @param container
-	 *          the container itself
+	 *            the container itself
 	 * @param containerIterator
-	 *          a ListIterator from the ArrayList
+	 *            a ListIterator from the ArrayList
 	 */
 	public ContainerIterator(ATypedCContainer<T> container, ListIterator<T> containerIterator) {
 		this.container = container;
@@ -35,9 +35,9 @@ public class ContainerIterator<T>
 	 * Constructor for iterator when operating with virtual arrays.
 	 * 
 	 * @param container
-	 *          the container on which is iterated
+	 *            the container on which is iterated
 	 * @param virtualArray
-	 *          the virtual array
+	 *            the virtual array
 	 */
 	public ContainerIterator(ATypedCContainer<T> container, IVirtualArray virtualArray) {
 		this.container = container;

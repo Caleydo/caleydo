@@ -14,12 +14,12 @@ public class Spline3D {
 	 * Constructor.
 	 * 
 	 * @param points
-	 *          Input points
+	 *            Input points
 	 * @param accuracy
-	 *          Accuracy works very smooth when using 0.001-0.010. The higher the rougher, cheaper in first
-	 *          calc, same speed (!) when cached.
+	 *            Accuracy works very smooth when using 0.001-0.010. The higher the rougher, cheaper in first
+	 *            calc, same speed (!) when cached.
 	 * @param margin
-	 *          Margin defines the margin-of-error the actual answer. measured in units.
+	 *            Margin defines the margin-of-error the actual answer. measured in units.
 	 */
 	public Spline3D(Vec3f[] points, float accuracy, float margin) {
 		n0 = points.length;
@@ -70,10 +70,12 @@ public class Spline3D {
 
 	public final void getPositionAt(float param, Vec3f result) {
 		// clamp
-		if (param < 0.0F)
+		if (param < 0.0F) {
 			param = 0.0F;
-		if (param >= n1)
+		}
+		if (param >= n1) {
 			param = n1 - 0.00001F;
+		}
 
 		// split
 		int ti = (int) param;
@@ -196,8 +198,9 @@ public class Spline3D {
 			cacheToFloat.put(cacheKey, new Float(distance));
 
 			// clear cache if it grows way out of control
-			if (cacheToFloat.size() > 1024)
+			if (cacheToFloat.size() > 1024) {
 				cacheToFloat.clear();
+			}
 		}
 
 		return distance;
@@ -247,20 +250,23 @@ public class Spline3D {
 
 			// gamma
 			gamma[0] = 0.5F;
-			for (int i = 1; i < n; i++)
+			for (int i = 1; i < n; i++) {
 				gamma[i] = 1.0F / (4.0F - gamma[i - 1]);
+			}
 			gamma[n] = 1.0F / (2.0F - gamma[n - 1]);
 
 			// delta
 			delta[0] = 3.0F * (axis[1] - axis[0]) * gamma[0];
-			for (int i = 1; i < n; i++)
+			for (int i = 1; i < n; i++) {
 				delta[i] = (3.0F * (axis[i + 1] - axis[i - 1]) - delta[i - 1]) * gamma[i];
+			}
 			delta[n] = (3.0F * (axis[n] - axis[n - 1]) - delta[n - 1]) * gamma[n];
 
 			// d
 			d[n] = delta[n];
-			for (int i = n - 1; i >= 0; i--)
+			for (int i = n - 1; i >= 0; i--) {
 				d[i] = delta[i] - gamma[i] * d[i + 1];
+			}
 
 			// c
 			for (int i = 0; i < n; i++) {

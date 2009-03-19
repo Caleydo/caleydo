@@ -148,7 +148,8 @@ public class GLCell
 			iDavidID = item.getPrimaryID();
 
 			System.out.println("Cell component: "
-				+ GeneralManager.get().getIDMappingManager().getID(EMappingType.DAVID_2_CELL_COMPONENT, iDavidID));
+				+ GeneralManager.get().getIDMappingManager().getID(EMappingType.DAVID_2_CELL_COMPONENT,
+					iDavidID));
 		}
 		//
 		// iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
@@ -179,7 +180,8 @@ public class GLCell
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;

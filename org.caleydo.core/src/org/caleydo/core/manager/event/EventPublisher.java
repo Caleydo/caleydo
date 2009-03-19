@@ -30,8 +30,9 @@ public class EventPublisher
 	@Override
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender) {
 		// Lazy mediator creation
-		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
+		if (!hashMediatorType2Mediator.containsKey(eMediatorType)) {
 			hashMediatorType2Mediator.put(eMediatorType, new Mediator(eMediatorType));
+		}
 
 		hashMediatorType2Mediator.get(eMediatorType).addSender(sender);
 
@@ -40,8 +41,9 @@ public class EventPublisher
 	@Override
 	public void addReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver) {
 		// Lazy mediator creation
-		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
+		if (!hashMediatorType2Mediator.containsKey(eMediatorType)) {
 			hashMediatorType2Mediator.put(eMediatorType, new Mediator(eMediatorType));
+		}
 
 		hashMediatorType2Mediator.get(eMediatorType).addReceiver(receiver);
 
@@ -51,10 +53,9 @@ public class EventPublisher
 	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
 		IEventContainer eventContainer) {
 
-		if (!(eventTrigger instanceof IMediatorSender)) {
+		if (!(eventTrigger instanceof IMediatorSender))
 			throw new IllegalArgumentException(
 				"triggerEvent called by an object which does not implement IMediatorSender");
-		}
 
 		if (eMediatorType == EMediatorType.ALL_REGISTERED) {
 

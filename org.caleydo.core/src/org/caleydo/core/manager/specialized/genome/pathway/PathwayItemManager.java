@@ -50,7 +50,8 @@ public class PathwayItemManager
 	@Override
 	public IGraphItem createVertex(final String sName, final String sType, final String sExternalLink,
 		final String sReactionId) {
-		ICaleydoGraphItem pathwayVertex = new PathwayVertexGraphItem(sName, sType, sExternalLink, sReactionId);
+		ICaleydoGraphItem pathwayVertex =
+			new PathwayVertexGraphItem(sName, sType, sExternalLink, sReactionId);
 
 		hashItems.put(pathwayVertex.getID(), pathwayVertex);
 
@@ -222,10 +223,9 @@ public class PathwayItemManager
 	public PathwayVertexGraphItemRep getPathwayVertexRep(int iID) {
 		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
 
-		if (!hashIDToPathwayVertexGraphItemRep.containsKey(iID)) {
+		if (!hashIDToPathwayVertexGraphItemRep.containsKey(iID))
 			throw new IllegalArgumentException("Requested pathway vertex representation ID " + iID
 				+ " does not exist!");
-		}
 
 		return hashIDToPathwayVertexGraphItemRep.get(iID);
 	}

@@ -22,7 +22,9 @@ public abstract class ARemoteViewLayoutRenderStyle
 	protected float fPoolLayerWidth = 0.8f;
 
 	public enum LayoutMode {
-		BUCKET, JUKEBOX, LIST
+		BUCKET,
+		JUKEBOX,
+		LIST
 	}
 
 	protected RemoteLevel focusLevel;

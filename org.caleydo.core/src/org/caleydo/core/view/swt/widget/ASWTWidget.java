@@ -22,7 +22,7 @@ public abstract class ASWTWidget
 	 * Constructor that takes the composite in which it should place the content.
 	 * 
 	 * @param composite
-	 *          Reference to the composite that is supposed to be filled.
+	 *            Reference to the composite that is supposed to be filled.
 	 */
 	protected ASWTWidget(Composite parentComposite) {
 		this.parentComposite = parentComposite;

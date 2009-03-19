@@ -33,8 +33,8 @@ public class CaleydoBootloader {
 	protected ISWTGUIManager swtGUIManager;
 
 	/**
-	 * Reference to XML parser. The parser does the bootstrapping of the Caleydo application using an XML input
-	 * stream.
+	 * Reference to XML parser. The parser does the bootstrapping of the Caleydo application using an XML
+	 * input stream.
 	 */
 	protected IXmlParserManager xmlParserManager;
 
@@ -79,7 +79,7 @@ public class CaleydoBootloader {
 	 * Set local XML file name.
 	 * 
 	 * @param fileName
-	 *          the sFileName to set
+	 *            the sFileName to set
 	 */
 	public final void setXmlFileName(String sFileName) {
 		this.sFileName = sFileName;

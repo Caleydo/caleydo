@@ -7,5 +7,8 @@ package org.caleydo.core.data.collection.storage;
  * @author Alexander Lex
  */
 public enum EDataRepresentation {
-	RAW, NORMALIZED, LOG10, LOG2;
+	RAW,
+	NORMALIZED,
+	LOG10,
+	LOG2;
 }

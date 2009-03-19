@@ -59,9 +59,8 @@ public class ManipPartGroup
 	}
 
 	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results, Manip caller) {
-		if (!pickable) {
+		if (!pickable)
 			return;
-		}
 
 		int topIdx = results.size();
 		for (int i = 0; i < getNumChildren(); i++) {

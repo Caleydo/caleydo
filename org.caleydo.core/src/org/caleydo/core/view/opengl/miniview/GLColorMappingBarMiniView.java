@@ -43,7 +43,8 @@ public class GLColorMappingBarMiniView
 	public synchronized void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
 		// TODO: generalize
 		textRenderer.setColor(0, 0, 0, 1);
-		ColorMapping colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		ColorMapping colorMapper =
+			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		ISet geneExpressionSet = null;
 		Collection<ISet> sets = GeneralManager.get().getSetManager().getAllItems();
@@ -61,10 +62,9 @@ public class GLColorMappingBarMiniView
 		if (iSetCount > 1)
 			return;
 
-		if (geneExpressionSet == null) {
+		if (geneExpressionSet == null)
 			// this is the case when the application is in pathway viewer mode
 			return;
-		}
 
 		ArrayList<ColorMarkerPoint> alColorMarkerPoints = colorMapper.getMarkerPoints();
 
@@ -93,8 +93,8 @@ public class GLColorMappingBarMiniView
 				GeneralRenderStyle.getDecimalFormat().format(
 					geneExpressionSet.getRawForNormalized(markerPoint.getValue()));
 			textRenderer.begin3DRendering();
-			textRenderer.draw3D(infoToRender, fXOrigin + fWidth / 3 + renderStyle.getSmallSpacing(), fYCurrent
-				- fYOffset, fZOrigin + 0.01f, renderStyle.getSmallFontScalingFactor());
+			textRenderer.draw3D(infoToRender, fXOrigin + fWidth / 3 + renderStyle.getSmallSpacing(),
+				fYCurrent - fYOffset, fZOrigin + 0.01f, renderStyle.getSmallFontScalingFactor());
 			textRenderer.end3DRendering();
 			iCount++;
 		}

@@ -38,8 +38,9 @@ public class ChangeViewModeAction
 		String usedText = ChangeViewModeToRectangleAction.TEXT;
 		String usedImage = ChangeViewModeToRectangleAction.ICON;
 
-		if (glyphview != null)
+		if (glyphview != null) {
 			type = glyphview.getPositionModel();
+		}
 
 		if (type == EIconIDs.DISPLAY_CIRCLE) {
 			usedText = ChangeViewModeToCircleAction.TEXT;
@@ -77,8 +78,9 @@ public class ChangeViewModeAction
 		this.iViewID = id;
 		glyphview = null;
 		for (AGLEventListener l : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
-			if (l.getID() == iViewID && l instanceof GLGlyph)
+			if (l.getID() == iViewID && l instanceof GLGlyph) {
 				glyphview = (GLGlyph) l;
+			}
 		}
 	}
 
@@ -99,8 +101,9 @@ public class ChangeViewModeAction
 	 * This is called in a tool bar
 	 */
 	public Menu getMenu(Control parent) {
-		if (menu != null)
+		if (menu != null) {
 			menu.dispose();
+		}
 
 		menu = new Menu(parent);
 

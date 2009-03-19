@@ -52,12 +52,10 @@ public class MouseButtonHelper {
 	}
 
 	private static int mouseButtonsForOS(String osName) {
-		if (osName.startsWith("Windows")) {
+		if (osName.startsWith("Windows"))
 			return 2;
-		}
-		else {
+		else
 			// Assume X11 and a three-button mouse
 			return 3;
-		}
 	}
 }

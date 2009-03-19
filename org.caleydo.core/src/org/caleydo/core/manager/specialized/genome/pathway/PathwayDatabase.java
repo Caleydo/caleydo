@@ -33,14 +33,17 @@ public class PathwayDatabase
 
 		String sUserHomePath = System.getProperty(USER_HOME);
 
-		if (sXMLPath.startsWith(USER_HOME))
+		if (sXMLPath.startsWith(USER_HOME)) {
 			this.sXMLPath = sXMLPath.replace(USER_HOME, sUserHomePath);
+		}
 
-		if (sImagePath.startsWith(USER_HOME))
+		if (sImagePath.startsWith(USER_HOME)) {
 			this.sImagePath = sImagePath.replace(USER_HOME, sUserHomePath);
+		}
 
-		if (sImageMapPath.startsWith(USER_HOME))
+		if (sImageMapPath.startsWith(USER_HOME)) {
 			this.sImageMapPath = sImageMapPath.replace(USER_HOME, sUserHomePath);
+		}
 	}
 
 	public final EPathwayDatabaseType getType() {

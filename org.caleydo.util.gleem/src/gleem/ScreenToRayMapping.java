@@ -53,5 +53,6 @@ public interface ScreenToRayMapping {
 	 * Maps screen (x, y) to 3D point source and direction based on given CameraParameters. screenCoords and
 	 * params are incoming arguments; raySource and rayDirection are mutated to contain the result.
 	 */
-	public void mapScreenToRay(Vec2f screenCoords, CameraParameters params, Vec3f raySource, Vec3f rayDirection);
+	public void mapScreenToRay(Vec2f screenCoords, CameraParameters params, Vec3f raySource,
+		Vec3f rayDirection);
 }

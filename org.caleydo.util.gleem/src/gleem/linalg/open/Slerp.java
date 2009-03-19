@@ -120,11 +120,11 @@ public class Slerp {
 	 * <code>slerp</code> sets this quaternion's value as an interpolation between two other quaternions.
 	 * 
 	 * @param q1
-	 *          the first quaternion.
+	 *            the first quaternion.
 	 * @param q2
-	 *          the second quaternion.
+	 *            the second quaternion.
 	 * @param t
-	 *          the amount to interpolate between the two quaternions.
+	 *            the amount to interpolate between the two quaternions.
 	 */
 	protected Rotf slerp(Rotf q1, Rotf q2, float t) {
 
@@ -136,8 +136,8 @@ public class Slerp {
 		float fQ2Angle = q2.get(vecQ2Axis);
 
 		// Create a local quaternion to store the interpolated quaternion
-		if (vecQ1Axis.x() == vecQ2Axis.x() && vecQ1Axis.y() == vecQ2Axis.y() && vecQ1Axis.z() == vecQ2Axis.z()
-			&& fQ1Angle == fQ2Angle) {
+		if (vecQ1Axis.x() == vecQ2Axis.x() && vecQ1Axis.y() == vecQ2Axis.y()
+			&& vecQ1Axis.z() == vecQ2Axis.z() && fQ1Angle == fQ2Angle) {
 			quatResult.set(q1);
 			return quatResult;
 		}
@@ -173,9 +173,9 @@ public class Slerp {
 		// Calculate the x, y, z and w values for the quaternion by using a
 		// special
 		// form of linear interpolation for quaternions.
-		quatResult.set(new Vec3f(scale0 * vecQ1Axis.x() + scale1 * vecQ2Axis.x(), scale0 * vecQ1Axis.y() + scale1
-			* vecQ2Axis.y(), scale0 * vecQ1Axis.z() + scale1 * vecQ2Axis.z()), scale0 * fQ1Angle + scale1
-			* fQ2Angle);
+		quatResult.set(new Vec3f(scale0 * vecQ1Axis.x() + scale1 * vecQ2Axis.x(), scale0 * vecQ1Axis.y()
+			+ scale1 * vecQ2Axis.y(), scale0 * vecQ1Axis.z() + scale1 * vecQ2Axis.z()), scale0 * fQ1Angle
+			+ scale1 * fQ2Angle);
 
 		// Return the interpolated quaternion
 		return quatResult;
@@ -186,11 +186,11 @@ public class Slerp {
 	 * this=(1-changeAmnt)*beginVec + changeAmnt * finalVec
 	 * 
 	 * @param beginVec
-	 *          the begin vector (changeAmnt=0)
+	 *            the begin vector (changeAmnt=0)
 	 * @param finalVec
-	 *          The final vector to interpolate towards
+	 *            The final vector to interpolate towards
 	 * @param changeAmnt
-	 *          An amount between 0.0 - 1.0 representing a percentage change from beginVec towards finalVec
+	 *            An amount between 0.0 - 1.0 representing a percentage change from beginVec towards finalVec
 	 */
 	public Vec3f interpolate(Vec3f beginVec, Vec3f finalVec, float changeAmnt) {
 

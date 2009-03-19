@@ -63,8 +63,9 @@ public class ObjectGroup {
 	}
 
 	public void init(GL gl) {
-		if (iDisplayList >= 0)
+		if (iDisplayList >= 0) {
 			gl.glDeleteLists(iDisplayList, 1);
+		}
 
 		iDisplayList = gl.glGenLists(1);
 		gl.glNewList(iDisplayList, GL.GL_COMPILE);
@@ -74,12 +75,15 @@ public class ObjectGroup {
 		// render faces
 		for (ArrayList<Vec3i> face : faces) {
 			// check face type
-			if (face.size() == 3)
+			if (face.size() == 3) {
 				gl.glBegin(GL.GL_TRIANGLES);
-			else if (face.size() == 4)
+			}
+			else if (face.size() == 4) {
 				gl.glBegin(GL.GL_QUADS);
-			else
+			}
+			else {
 				gl.glBegin(GL.GL_POLYGON);
+			}
 
 			// calculate normal for this face
 			if (face.size() >= 3) {
@@ -108,23 +112,26 @@ public class ObjectGroup {
 				// (normals for every point of the face?)
 				if (faceIndices.get(2) != 0) {
 					Vec3f normal = model.getNormalVertex(faceIndices.get(2));
-					if (normal != null)
+					if (normal != null) {
 						gl.glNormal3f(normal.get(0), normal.get(1), normal.get(2));
+					}
 				}
 
 				// render texture
 				if (faceIndices.get(1) != 0) {
 					Vec3f texture = model.getTextureVertex(faceIndices.get(1));
-					if (texture != null)
+					if (texture != null) {
 						gl.glTexCoord3f(texture.get(0), texture.get(1), texture.get(2));
+					}
 
 				}
 
 				// render object
 				{
 					Vec3f vertex = model.getGeometricVertex(faceIndices.get(0));
-					if (vertex != null)
+					if (vertex != null) {
 						gl.glVertex3f(vertex.get(0), vertex.get(1), vertex.get(2));
+					}
 				}
 			}
 

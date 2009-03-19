@@ -46,8 +46,8 @@ public class HeatMapPreferencePage
 		layout.wrap = true;
 		getFieldEditorParent().setLayout(layout);
 		numRandomSamplesFE =
-			new IntegerFieldEditor(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT, "Number of Random Samples:",
-				getFieldEditorParent());
+			new IntegerFieldEditor(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT,
+				"Number of Random Samples:", getFieldEditorParent());
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
 

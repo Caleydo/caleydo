@@ -130,10 +130,12 @@ public class GeneralRenderStyle {
 
 	public float getScaling() {
 		float fScaling;
-		if (viewFrustum.getWidth() > viewFrustum.getHeight())
+		if (viewFrustum.getWidth() > viewFrustum.getHeight()) {
 			fScaling = viewFrustum.getWidth();
-		else
+		}
+		else {
 			fScaling = viewFrustum.getHeight();
+		}
 		return fScaling;
 	}
 

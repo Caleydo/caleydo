@@ -82,7 +82,7 @@ public class CNode
 	 * Creates an empty <code>CNode</code> instance.
 	 * 
 	 * @param numAttributes
-	 *          the number of attributes in the data
+	 *            the number of attributes in the data
 	 */
 	public CNode(int numAttributes) {
 		m_numAttributes = numAttributes;
@@ -92,9 +92,9 @@ public class CNode
 	 * Creates a new leaf <code>CNode</code> instance.
 	 * 
 	 * @param numAttributes
-	 *          the number of attributes in the data
+	 *            the number of attributes in the data
 	 * @param leafInstance
-	 *          the instance to store at this leaf
+	 *            the instance to store at this leaf
 	 */
 	public CNode(int numAttributes, Instance leafInstance) {
 		this(numAttributes);
@@ -109,9 +109,9 @@ public class CNode
 	 * Adds an instance to this cluster.
 	 * 
 	 * @param newInstance
-	 *          the instance to add
+	 *            the instance to add
 	 * @throws Exception
-	 *           if an error occurs
+	 *             if an error occurs
 	 */
 	protected void addInstance(Instance newInstance) throws Exception {
 		// Add the instance to this cluster
@@ -124,7 +124,8 @@ public class CNode
 		}
 		else if (m_children == null) {
 			/*
-			 * we are a leaf, so make our existing instance(s) into a child and then add the new instance as a child
+			 * we are a leaf, so make our existing instance(s) into a child and then add the new instance as a
+			 * child
 			 */
 			m_children = new FastVector();
 			CNode tempSubCluster = new CNode(m_numAttributes, m_clusterInstances.instance(0));
@@ -159,14 +160,15 @@ public class CNode
 	}
 
 	/**
-	 * Temporarily adds a new instance to each of this nodes children in turn and computes the category utility.
+	 * Temporarily adds a new instance to each of this nodes children in turn and computes the category
+	 * utility.
 	 * 
 	 * @param newInstance
-	 *          the new instance to evaluate
-	 * @return an array of category utility values---the result of considering each child in turn as a host for
-	 *         the new instance
+	 *            the new instance to evaluate
+	 * @return an array of category utility values---the result of considering each child in turn as a host
+	 *         for the new instance
 	 * @throws Exception
-	 *           if an error occurs
+	 *             if an error occurs
 	 */
 	private double[] cuScoresForChildren(Instance newInstance) throws Exception {
 		// look for a host in existing children
@@ -214,13 +216,13 @@ public class CNode
 	 * splitting the best host.
 	 * 
 	 * @param newInstance
-	 *          the instance to find a host for
+	 *            the instance to find a host for
 	 * @param structureFrozen
-	 *          true if the instance is not to be added to the tree and instead the best potential host is to be
-	 *          returned
+	 *            true if the instance is not to be added to the tree and instead the best potential host is
+	 *            to be returned
 	 * @return the best host
 	 * @throws Exception
-	 *           if an error occurs
+	 *             if an error occurs
 	 */
 	CNode findHost(Instance newInstance, boolean structureFrozen) throws Exception {
 
@@ -266,12 +268,10 @@ public class CNode
 		}
 
 		if (structureFrozen) {
-			if (finalBestHost == newLeaf) {
+			if (finalBestHost == newLeaf)
 				return null; // *this* node is the best host
-			}
-			else {
+			else
 				return finalBestHost;
-			}
 		}
 
 		double mergedCU = -Double.MAX_VALUE;
@@ -398,7 +398,7 @@ public class CNode
 	 * instances
 	 * 
 	 * @param child
-	 *          the child to add
+	 *            the child to add
 	 */
 	protected void addChildNode(CNode child) {
 		for (int i = 0; i < child.m_clusterInstances.numInstances(); i++) {
@@ -418,13 +418,12 @@ public class CNode
 	 * 
 	 * @return the category utility of the children with respect to this node.
 	 * @throws Exception
-	 *           if there are no children
+	 *             if there are no children
 	 */
 	protected double categoryUtility() throws Exception {
 
-		if (m_children == null) {
+		if (m_children == null)
 			throw new Exception("categoryUtility: No children!");
-		}
 
 		double totalCU = 0;
 
@@ -441,10 +440,10 @@ public class CNode
 	 * Computes the utility of a single child with respect to this node
 	 * 
 	 * @param child
-	 *          the child for which to compute the utility
+	 *            the child for which to compute the utility
 	 * @return the utility of the child with respect to this node
 	 * @throws Exception
-	 *           if something goes wrong
+	 *             if something goes wrong
 	 */
 	protected double categoryUtilityChild(CNode child) throws Exception {
 
@@ -470,45 +469,42 @@ public class CNode
 	 * Returns the probability of a value of a nominal attribute in this node
 	 * 
 	 * @param attIndex
-	 *          the index of the attribute
+	 *            the index of the attribute
 	 * @param valueIndex
-	 *          the index of the value of the attribute
+	 *            the index of the value of the attribute
 	 * @return the probability
 	 * @throws Exception
-	 *           if the requested attribute is not nominal
+	 *             if the requested attribute is not nominal
 	 */
 	protected double getProbability(int attIndex, int valueIndex) throws Exception {
 
-		if (!m_clusterInstances.attribute(attIndex).isNominal()) {
+		if (!m_clusterInstances.attribute(attIndex).isNominal())
 			throw new Exception("getProbability: attribute is not nominal");
-		}
 
-		if (m_attStats[attIndex].totalCount <= 0) {
+		if (m_attStats[attIndex].totalCount <= 0)
 			return 0;
-		}
 
-		return (double) m_attStats[attIndex].nominalCounts[valueIndex] / (double) m_attStats[attIndex].totalCount;
+		return (double) m_attStats[attIndex].nominalCounts[valueIndex]
+			/ (double) m_attStats[attIndex].totalCount;
 	}
 
 	/**
 	 * Returns the standard deviation of a numeric attribute
 	 * 
 	 * @param attIndex
-	 *          the index of the attribute
+	 *            the index of the attribute
 	 * @return the standard deviation
 	 * @throws Exception
-	 *           if an error occurs
+	 *             if an error occurs
 	 */
 	protected double getStandardDev(int attIndex) throws Exception {
-		if (!m_clusterInstances.attribute(attIndex).isNumeric()) {
+		if (!m_clusterInstances.attribute(attIndex).isNumeric())
 			throw new Exception("getStandardDev: attribute is not numeric");
-		}
 
 		m_attStats[attIndex].numericStats.calculateDerived();
 		double stdDev = m_attStats[attIndex].numericStats.stdDev;
-		if (Double.isNaN(stdDev) || Double.isInfinite(stdDev)) {
+		if (Double.isNaN(stdDev) || Double.isInfinite(stdDev))
 			return m_acuity;
-		}
 
 		return Math.max(m_acuity, stdDev);
 	}
@@ -517,9 +513,9 @@ public class CNode
 	 * Update attribute stats using the supplied instance.
 	 * 
 	 * @param updateInstance
-	 *          the instance for updating
+	 *            the instance for updating
 	 * @param delete
-	 *          true if the values of the supplied instance are to be removed from the statistics
+	 *            true if the values of the supplied instance are to be removed from the statistics
 	 */
 	protected void updateStats(Instance updateInstance, boolean delete) {
 
@@ -541,7 +537,8 @@ public class CNode
 				if (m_clusterInstances.attribute(i).isNominal()) {
 					m_attStats[i].nominalCounts[(int) value] +=
 						delete ? -1.0 * updateInstance.weight() : updateInstance.weight();
-					m_attStats[i].totalCount += delete ? -1.0 * updateInstance.weight() : updateInstance.weight();
+					m_attStats[i].totalCount +=
+						delete ? -1.0 * updateInstance.weight() : updateInstance.weight();
 				}
 				else {
 					if (delete) {
@@ -560,14 +557,13 @@ public class CNode
 	 * Recursively assigns numbers to the nodes in the tree.
 	 * 
 	 * @param cl_num
-	 *          an <code>int[]</code> value
+	 *            an <code>int[]</code> value
 	 * @throws Exception
-	 *           if an error occurs
+	 *             if an error occurs
 	 */
 	void assignClusterNums(int[] cl_num) throws Exception {
-		if (m_children != null && m_children.size() < 2) {
+		if (m_children != null && m_children.size() < 2)
 			throw new Exception("assignClusterNums: tree not built correctly!");
-		}
 
 		m_clusterNum = cl_num[0];
 		cl_num[0]++;
@@ -583,9 +579,9 @@ public class CNode
 	 * Recursively build a string representation of the Cobweb tree
 	 * 
 	 * @param depth
-	 *          depth of this node in the tree
+	 *            depth of this node in the tree
 	 * @param text
-	 *          holds the string representation
+	 *            holds the string representation
 	 */
 	protected void dumpTree(int depth, StringBuffer text) {
 
@@ -617,12 +613,11 @@ public class CNode
 	 * 
 	 * @return a <code>String</code> value
 	 * @throws Exception
-	 *           if an error occurs
+	 *             if an error occurs
 	 */
 	protected String dumpData() throws Exception {
-		if (m_children == null) {
+		if (m_children == null)
 			return m_clusterInstances.toString();
-		}
 
 		// construct instances string with cluster numbers attached
 		CNode tempNode = new CNode(m_numAttributes);
@@ -663,14 +658,14 @@ public class CNode
 	 * Recursively generate the graph string for the Cobweb tree.
 	 * 
 	 * @param text
-	 *          holds the graph string
+	 *            holds the graph string
 	 * @throws Exception
-	 *           if generation fails
+	 *             if generation fails
 	 */
 	protected void graphTree(StringBuffer text) throws Exception {
 
-		text.append("N" + m_clusterNum + " [label=\"" + (m_children == null ? "leaf " : "node ") + m_clusterNum
-			+ " " + " (" + m_clusterInstances.numInstances() + ")\" "
+		text.append("N" + m_clusterNum + " [label=\"" + (m_children == null ? "leaf " : "node ")
+			+ m_clusterNum + " " + " (" + m_clusterInstances.numInstances() + ")\" "
 			+ (m_children == null ? "shape=box style=filled " : "")
 			+ (m_saveInstances ? "data =\n" + dumpData() + "\n,\n" : "") + "]\n");
 		if (m_children != null) {
@@ -707,8 +702,9 @@ public class CNode
 
 		int currentdepth = depth;
 
-		if (m_children == null)
+		if (m_children == null) {
 			System.out.println("currentdepth: " + currentdepth + " Number: " + m_clusterNum + "no childs");
+		}
 		else {
 			System.out.println("currentdepth: " + currentdepth + " Number: " + m_clusterNum + "Nrchilds: "
 				+ m_children.size());

@@ -41,15 +41,18 @@ public class ObjectLoader {
 			do {
 				line = resourceReader.readLine();
 
-				if (line == null)
+				if (line == null) {
 					continue;
+				}
 
 				// empty line
-				if (line.length() <= 0)
+				if (line.length() <= 0) {
 					continue;
+				}
 				// comment line
-				if (line.startsWith("#"))
+				if (line.startsWith("#")) {
 					continue;
+				}
 
 				// handle groups
 				if (line.startsWith("g")) {
@@ -112,7 +115,8 @@ public class ObjectLoader {
 
 		// works as stand alone application
 		// can't use rcp plugin path because of that
-		loader.loadFile("D:/work/Eclipse Workspace work/org.caleydo.data/resources/3dmodels/glyph/square1.obj");
+		loader
+			.loadFile("D:/work/Eclipse Workspace work/org.caleydo.data/resources/3dmodels/glyph/square1.obj");
 
 		System.out.println("");
 	}

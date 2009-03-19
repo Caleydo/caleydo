@@ -30,8 +30,8 @@ public interface IGraphVisitorSearch {
 	/* --- algorithm related stuff --- */
 
 	/**
-	 * Initialize data structures and creates and initializes temporal data inside graphs. Note: some algorithms
-	 * do not require init() and wipeTemporalDataFromGraph()
+	 * Initialize data structures and creates and initializes temporal data inside graphs. Note: some
+	 * algorithms do not require init() and wipeTemporalDataFromGraph()
 	 * 
 	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#wipeTemporalDataFromGraph()
 	 * @return TRUE indicates, that temporal data structures are created and thus have to be removed with

@@ -41,7 +41,8 @@ public class GLGlyphView
 	}
 
 	public static void createToolBarItems(int iViewID) {
-		GLGlyph glyphview = (GLGlyph) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+		GLGlyph glyphview =
+			(GLGlyph) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 		alToolbarContributions = new ArrayList<IContributionItem>();
@@ -66,7 +67,8 @@ public class GLGlyphView
 
 		// only if standalone or explicitly requested
 		if (glyphview.isRenderedRemote()
-			&& GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
+			&& GeneralManager.get().getPreferenceStore().getBoolean(
+				PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
 			return;
 
 	}

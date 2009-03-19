@@ -73,8 +73,9 @@ public class GlyphObjectDefinitionPart {
 			return;
 
 		type = type.toUpperCase();
-		if (value != null)
+		if (value != null) {
 			value = value.toUpperCase();
+		}
 
 		if (Etype == EGlyphSettingIDs.SCALE) {
 			DIRECTION dir = DIRECTION.valueOf(value);
@@ -130,8 +131,9 @@ public class GlyphObjectDefinitionPart {
 	}
 
 	public void addAnchor(ANCHOR anc, String to) {
-		if (!anchors.containsKey(anc))
+		if (!anchors.containsKey(anc)) {
 			anchors.put(anc, to);
+		}
 	}
 
 	public Set<ANCHOR> getAnchors() {
@@ -153,12 +155,15 @@ public class GlyphObjectDefinitionPart {
 	public void setParameterIndex(EGlyphSettingIDs type, DIRECTION dir, int index) {
 
 		if (type == EGlyphSettingIDs.SCALE) {
-			if (dir == DIRECTION.X)
+			if (dir == DIRECTION.X) {
 				iScaleIndexX = index;
-			if (dir == DIRECTION.Y)
+			}
+			if (dir == DIRECTION.Y) {
 				iScaleIndexY = index;
-			if (dir == DIRECTION.Z)
+			}
+			if (dir == DIRECTION.Z) {
 				iScaleIndexZ = index;
+			}
 		}
 		else {
 			if (!parameter.containsKey(type))

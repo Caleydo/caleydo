@@ -154,8 +154,9 @@ public class GLPathwayContentCreator {
 		Set<Integer> tmpItemIDs;
 		tmpItemIDs = internalSelectionManager.getElements(eSelectionType);
 
-		if (tmpItemIDs != null)
+		if (tmpItemIDs != null) {
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
+		}
 
 		// tmpItemIDs =
 		// internalSelectionManager.getElements(ESelectionType.SELECTION);
@@ -163,23 +164,25 @@ public class GLPathwayContentCreator {
 		// if (tmpItemIDs != null)
 		// iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
 
-		if (iAlTmpSelectedGraphItemIds.size() == 0) {
+		if (iAlTmpSelectedGraphItemIds.size() == 0)
 			return;
-		}
 
 		// Copy selection IDs to array list object
 		for (int iItemIndex = 0; iItemIndex < iAlTmpSelectedGraphItemIds.size(); iItemIndex++) {
-			if (!bEnableIdenticalNodeHighlighting)
+			if (!bEnableIdenticalNodeHighlighting) {
 				continue;
+			}
 
 			// // Perform identical node highlighting only on nodes with depth 0
 			// if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
 			// continue;
 			for (IGraphItem graphItem : ((IGraphItem) generalManager.getPathwayItemManager().getItem(
-				iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
+				iAlTmpSelectedGraphItemIds.get(iItemIndex)))
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 				for (IGraphItem graphItemRep : graphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-					if (tmpItemIDs.contains(graphItemRep.getId()))
+					if (tmpItemIDs.contains(graphItemRep.getId())) {
 						continue;
+					}
 					internalSelectionManager.addToType(eSelectionType, graphItemRep.getId());
 					for (int iConnectionID : internalSelectionManager
 						.getConnectionForElementID(iAlTmpSelectedGraphItemIds.get(iItemIndex))) {
@@ -196,13 +199,16 @@ public class GLPathwayContentCreator {
 	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
 		GraphVisitorSearchBFS graphVisitorSearchBFS;
 
-		if (bEnableNeighborhood)
+		if (bEnableNeighborhood) {
 			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 4);
-		else
+		}
+		else {
 			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
+		}
 
 		graphVisitorSearchBFS.setProp(EGraphItemProperty.OUTGOING);
-		graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0));
+		graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT)
+			.get(0));
 
 		// List<IGraphItem> lGraphItems =
 		// graphVisitorSearchBFS.getSearchResult();
@@ -222,15 +228,17 @@ public class GLPathwayContentCreator {
 				if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep) {
 					iTmpDepth = (iDepthIndex + 1) / 2;
 
-					if (iTmpDepth == 1)
+					if (iTmpDepth == 1) {
 						tmpType = ESelectionType.NEIGHBORHOOD_1;
-					else if (iTmpDepth == 2)
-						tmpType = ESelectionType.NEIGHBORHOOD_2;
-					else if (iTmpDepth == 3)
-						tmpType = ESelectionType.NEIGHBORHOOD_3;
-					else {
-						throw new IllegalStateException("Neighborhood depth greater than 3 is not supported!");
 					}
+					else if (iTmpDepth == 2) {
+						tmpType = ESelectionType.NEIGHBORHOOD_2;
+					}
+					else if (iTmpDepth == 3) {
+						tmpType = ESelectionType.NEIGHBORHOOD_3;
+					}
+					else
+						throw new IllegalStateException("Neighborhood depth greater than 3 is not supported!");
 
 					internalSelectionManager.addToType(tmpType, lGraphItems.get(iItemIndex).getId());
 
@@ -374,10 +382,12 @@ public class GLPathwayContentCreator {
 		gl.glEnd();
 	}
 
-	private void extractVertices(final GL gl, final IUniqueObject containingView, PathwayGraph pathwayToExtract) {
+	private void extractVertices(final GL gl, final IUniqueObject containingView,
+		PathwayGraph pathwayToExtract) {
 		for (IGraphItem vertexRep : pathwayToExtract.getAllItemsByKind(EGraphItemKind.NODE)) {
-			if (vertexRep == null)
+			if (vertexRep == null) {
 				continue;
+			}
 
 			createVertex(gl, containingView, (PathwayVertexGraphItemRep) vertexRep, pathwayToExtract);
 		}
@@ -385,7 +395,8 @@ public class GLPathwayContentCreator {
 
 	private void extractEdges(final GL gl, PathwayGraph pathwayToExtract) {
 
-		Iterator<IGraphItem> edgeIterator = pathwayToExtract.getAllItemsByKind(EGraphItemKind.EDGE).iterator();
+		Iterator<IGraphItem> edgeIterator =
+			pathwayToExtract.getAllItemsByKind(EGraphItemKind.EDGE).iterator();
 
 		IGraphItem edgeRep;
 
@@ -597,16 +608,8 @@ public class GLPathwayContentCreator {
 		List<IGraphItem> listGraphItemsIn = edgeRep.getAllItemsByProp(EGraphItemProperty.INCOMING);
 		List<IGraphItem> listGraphItemsOut = edgeRep.getAllItemsByProp(EGraphItemProperty.OUTGOING);
 
-		if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty()) {
-			// generalManager.getSingelton().logMsg(
-			// this.getClass().getSimpleName()
-			// +
-			// ": createEdge(): Edge has either no incoming or outcoming vertex."
-			// ,
-			// LoggerType.VERBOSE);
-
+		if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
 			return;
-		}
 
 		float[] tmpColor;
 		float fReactionLineOffset = 0;
@@ -641,11 +644,11 @@ public class GLPathwayContentCreator {
 				tmpTargetGraphItem = (PathwayVertexGraphItemRep) iterTargetGraphItem.next();
 
 				gl.glVertex3f(tmpSourceGraphItem.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X
-					+ fReactionLineOffset, -tmpSourceGraphItem.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y
-					+ fReactionLineOffset, 0.02f);
+					+ fReactionLineOffset, -tmpSourceGraphItem.getYOrigin()
+					* PathwayRenderStyle.SCALING_FACTOR_Y + fReactionLineOffset, 0.02f);
 				gl.glVertex3f(tmpTargetGraphItem.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X
-					+ fReactionLineOffset, -tmpTargetGraphItem.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y
-					+ fReactionLineOffset, 0.02f);
+					+ fReactionLineOffset, -tmpTargetGraphItem.getYOrigin()
+					* PathwayRenderStyle.SCALING_FACTOR_Y + fReactionLineOffset, 0.02f);
 			}
 		}
 

@@ -14,7 +14,8 @@ public class OpenHierarchicalHeatMapHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLHierarchicalHeatMapView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage()
+				.showView(GLHierarchicalHeatMapView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

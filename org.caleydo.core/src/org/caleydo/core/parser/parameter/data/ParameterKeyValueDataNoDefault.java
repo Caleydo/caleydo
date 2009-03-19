@@ -18,8 +18,8 @@ public final class ParameterKeyValueDataNoDefault<T>
 	implements IParameterKeyValuePair<T> {
 
 	/**
-	 * flag to indicate, that default values are set. If this flag is true, data values are written and no more
-	 * defautl values must be set, because that would cause the data valeus to be overwritten.
+	 * flag to indicate, that default values are set. If this flag is true, data values are written and no
+	 * more defautl values must be set, because that would cause the data valeus to be overwritten.
 	 */
 	private boolean bDefaultValuesSetFinished = false;
 
@@ -92,10 +92,9 @@ public final class ParameterKeyValueDataNoDefault<T>
 	 */
 	public void setDefaultValue(final String key, final T value) {
 
-		if (bDefaultValuesSetFinished) {
+		if (bDefaultValuesSetFinished)
 			throw new IllegalStateException(
 				"setDefaultValue() is callled after writing data to this class! Once data valeus are written setDefaultValue() must not be called any more!");
-		}
 		hashKey2Generic.put(key, value);
 	}
 
@@ -151,9 +150,8 @@ public final class ParameterKeyValueDataNoDefault<T>
 	@Override
 	public String toString() {
 
-		if (this.isEmpty()) {
+		if (this.isEmpty())
 			return "-";
-		}
 
 		StringBuffer strBuffer = new StringBuffer();
 

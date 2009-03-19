@@ -74,23 +74,23 @@ public final class SearchBox
 	 * <p>
 	 * The style value is either one of the style constants defined in class <code>SWT</code> which is
 	 * applicable to instances of this class, or must be built by <em>bitwise OR</em>'ing together (that is,
-	 * using the <code>int</code> "|" operator) two or more of those <code>SWT</code> style constants. The class
-	 * description lists the style constants that are applicable to the class. Style bits are also inherited
-	 * from superclasses.
+	 * using the <code>int</code> "|" operator) two or more of those <code>SWT</code> style constants. The
+	 * class description lists the style constants that are applicable to the class. Style bits are also
+	 * inherited from superclasses.
 	 * </p>
 	 * 
 	 * @param parent
-	 *          a widget which will be the parent of the new instance (cannot be null)
+	 *            a widget which will be the parent of the new instance (cannot be null)
 	 * @param style
-	 *          the style of widget to construct
+	 *            the style of widget to construct
 	 * @exception IllegalArgumentException
-	 *              <ul>
-	 *              <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
+	 *                </ul>
 	 * @exception SWTException
-	 *              <ul>
-	 *              <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
+	 *                </ul>
 	 * @see SWT#BORDER
 	 * @see SWT#FLAT
 	 * @see Widget#getStyle()
@@ -99,12 +99,14 @@ public final class SearchBox
 		super(parent, style = checkStyle(style));
 
 		int textStyle = SWT.SINGLE;
-		if ((style & SWT.FLAT) != 0)
+		if ((style & SWT.FLAT) != 0) {
 			textStyle |= SWT.FLAT;
+		}
 		text = new Text(this, textStyle);
 		int arrowStyle = SWT.ARROW | SWT.DOWN;
-		if ((style & SWT.FLAT) != 0)
+		if ((style & SWT.FLAT) != 0) {
 			arrowStyle |= SWT.FLAT;
+		}
 		arrow = new Button(this, arrowStyle);
 
 		listener = new Listener() {
@@ -144,16 +146,19 @@ public final class SearchBox
 		};
 
 		int[] comboEvents = { SWT.Dispose, SWT.Move, SWT.Resize };
-		for (int comboEvent : comboEvents)
+		for (int comboEvent : comboEvents) {
 			this.addListener(comboEvent, listener);
+		}
 
 		int[] textEvents = { SWT.KeyDown, SWT.KeyUp, SWT.FocusIn };
-		for (int textEvent : textEvents)
+		for (int textEvent : textEvents) {
 			text.addListener(textEvent, listener);
+		}
 
 		int[] arrowEvents = { SWT.Selection, SWT.FocusIn };
-		for (int arrowEvent : arrowEvents)
+		for (int arrowEvent : arrowEvents) {
 			arrow.addListener(arrowEvent, listener);
+		}
 
 		createPopup(null, -1);
 		initAccessible();
@@ -168,22 +173,24 @@ public final class SearchBox
 	 * Adds the argument to the end of the receiver's list.
 	 * 
 	 * @param string
-	 *          the new item
+	 *            the new item
 	 * @exception IllegalArgumentException
-	 *              <ul>
-	 *              <li>ERROR_NULL_ARGUMENT - if the string is null</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_NULL_ARGUMENT - if the string is null</li>
+	 *                </ul>
 	 * @exception SWTException
-	 *              <ul>
-	 *              <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *              <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
+	 *                receiver</li>
+	 *                </ul>
 	 * @see #add(String,int)
 	 */
 	public void add(String string) {
 		checkWidget();
-		if (string == null)
+		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		list.add(string);
 		// call setItems() so new item is added to listItems and list is sorted
 		setItems(list.getItems());
@@ -194,23 +201,25 @@ public final class SearchBox
 	 * modified, by sending it one of the messages defined in the <code>ModifyListener</code> interface.
 	 * 
 	 * @param listener
-	 *          the listener which should be notified
+	 *            the listener which should be notified
 	 * @exception IllegalArgumentException
-	 *              <ul>
-	 *              <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
+	 *                </ul>
 	 * @exception SWTException
-	 *              <ul>
-	 *              <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *              <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
+	 *                receiver</li>
+	 *                </ul>
 	 * @see ModifyListener
 	 * @see #removeModifyListener
 	 */
 	public void addModifyListener(ModifyListener listener) {
 		checkWidget();
-		if (listener == null)
+		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		TypedListener typedListener = new TypedListener(listener);
 		addListener(SWT.Modify, typedListener);
 	}
@@ -225,24 +234,26 @@ public final class SearchBox
 	 * <ul>
 	 * 
 	 * @param listener
-	 *          the listener which should be notified
+	 *            the listener which should be notified
 	 * @exception IllegalArgumentException
-	 *              <ul>
-	 *              <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
+	 *                </ul>
 	 * @exception SWTException
-	 *              <ul>
-	 *              <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *              <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
+	 *                receiver</li>
+	 *                </ul>
 	 * @see SelectionListener
 	 * @see #removeSelectionListener
 	 * @see SelectionEvent
 	 */
 	public void addSelectionListener(SelectionListener listener) {
 		checkWidget();
-		if (listener == null)
+		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		TypedListener typedListener = new TypedListener(listener);
 		addListener(SWT.Selection, typedListener);
 		addListener(SWT.DefaultSelection, typedListener);
@@ -269,10 +280,11 @@ public final class SearchBox
 	 * </p>
 	 * 
 	 * @exception SWTException
-	 *              <ul>
-	 *              <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
-	 *              <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the receiver</li>
-	 *              </ul>
+	 *                <ul>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the
+	 *                receiver</li>
+	 *                </ul>
 	 * @see #deselectAll
 	 */
 	public void clearSelection() {
@@ -346,32 +358,42 @@ public final class SearchBox
 		popup = new Shell(getShell(), SWT.NO_TRIM | SWT.ON_TOP);
 		int style = getStyle();
 		int listStyle = SWT.SINGLE | SWT.V_SCROLL;
-		if ((style & SWT.FLAT) != 0)
+		if ((style & SWT.FLAT) != 0) {
 			listStyle |= SWT.FLAT;
-		if ((style & SWT.RIGHT_TO_LEFT) != 0)
+		}
+		if ((style & SWT.RIGHT_TO_LEFT) != 0) {
 			listStyle |= SWT.RIGHT_TO_LEFT;
-		if ((style & SWT.LEFT_TO_RIGHT) != 0)
+		}
+		if ((style & SWT.LEFT_TO_RIGHT) != 0) {
 			listStyle |= SWT.LEFT_TO_RIGHT;
+		}
 		list = new List(popup, listStyle);
-		if (font != null)
+		if (font != null) {
 			list.setFont(font);
-		if (foreground != null)
+		}
+		if (foreground != null) {
 			list.setForeground(foreground);
-		if (background != null)
+		}
+		if (background != null) {
 			list.setBackground(background);
+		}
 
 		int[] popupEvents = { SWT.Close, SWT.Paint, SWT.Deactivate };
-		for (int popupEvent : popupEvents)
+		for (int popupEvent : popupEvents) {
 			popup.addListener(popupEvent, listener);
+		}
 		int[] listEvents =
 			{ SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn, SWT.Dispose };
-		for (int listEvent : listEvents)
+		for (int listEvent : listEvents) {
 			list.addListener(listEvent, listener);
+		}
 
-		if (this.listItems != null)
+		if (this.listItems != null) {
 			list.setItems(getFilteredList());
-		if (selectionIndex != -1)
+		}
+		if (selectionIndex != -1) {
 			list.setSelection(selectionIndex);
+		}
 	}
 
 	/**
@@ -419,14 +441,16 @@ public final class SearchBox
 		Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
 
 		// Restrict size of the drop down menu
-		if (listSize.x > 500)
+		if (listSize.x > 500) {
 			listSize.x = 500;
+		}
 
 		list.setBounds(1, 1, Math.max(size.x - 2, listSize.x), listSize.y);
 
 		int index = list.getSelectionIndex();
-		if (index != -1)
+		if (index != -1) {
 			list.setTopIndex(index);
+		}
 		Display display = getDisplay();
 		Rectangle listRect = list.getBounds();
 		Rectangle parentRect = display.map(getParent(), null, getBounds());
@@ -436,8 +460,9 @@ public final class SearchBox
 		int height = listRect.height + 2;
 		int x = parentRect.x;
 		int y = parentRect.y + comboSize.y;
-		if (y + height > displayRect.y + displayRect.height)
+		if (y + height > displayRect.y + displayRect.height) {
 			y = parentRect.y - height;
+		}
 		popup.setBounds(x, y, width, height);
 		popup.setVisible(true);
 	}
@@ -449,9 +474,8 @@ public final class SearchBox
 		Control[] siblings = getParent().getChildren();
 		for (int i = 0; i < siblings.length; i++) {
 			if (siblings[i] == SearchBox.this) {
-				if (i > 0 && siblings[i - 1] instanceof Label) {
+				if (i > 0 && siblings[i - 1] instanceof Label)
 					return (Label) siblings[i - 1];
-				}
 			}
 		}
 		return null;
@@ -507,8 +531,9 @@ public final class SearchBox
 		int index = 0;
 		int length = string.length();
 		do {
-			while (index < length && string.charAt(index) != '&')
+			while (index < length && string.charAt(index) != '&') {
 				index++;
+			}
 			if (++index >= length)
 				return '\0';
 			if (string.charAt(index) != '&')
@@ -622,8 +647,9 @@ public final class SearchBox
 	 */
 	public int indexOf(String string) {
 		checkWidget();
-		if (string == null)
+		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		return list.indexOf(string);
 	}
 
@@ -632,8 +658,9 @@ public final class SearchBox
 	 */
 	public int indexOf(String string, int start) {
 		checkWidget();
-		if (string == null)
+		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		return list.indexOf(string, start);
 	}
 
@@ -760,15 +787,16 @@ public final class SearchBox
 	@Override
 	public boolean isFocusControl() {
 		checkWidget();
-		if (text.isFocusControl() || arrow.isFocusControl() || list.isFocusControl() || popup.isFocusControl()) {
+		if (text.isFocusControl() || arrow.isFocusControl() || list.isFocusControl()
+			|| popup.isFocusControl())
 			return true;
-		}
 		return super.isFocusControl();
 	}
 
 	void internalLayout(boolean changed) {
-		if (isDropped())
+		if (isDropped()) {
 			dropDown(false);
+		}
 		Rectangle rect = getClientArea();
 		int width = rect.width;
 		int height = rect.height;
@@ -865,8 +893,9 @@ public final class SearchBox
 		super.redraw();
 		text.redraw();
 		arrow.redraw();
-		if (popup.isVisible())
+		if (popup.isVisible()) {
 			list.redraw();
+		}
 	}
 
 	@Override
@@ -894,8 +923,9 @@ public final class SearchBox
 	 */
 	public void remove(String string) {
 		checkWidget();
-		if (string == null)
+		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		list.remove(string);
 		listItems.remove(string);
 	}
@@ -915,8 +945,9 @@ public final class SearchBox
 	 */
 	public void removeModifyListener(ModifyListener listener) {
 		checkWidget();
-		if (listener == null)
+		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		removeListener(SWT.Modify, listener);
 	}
 
@@ -925,8 +956,9 @@ public final class SearchBox
 	 */
 	public void removeSelectionListener(SelectionListener listener) {
 		checkWidget();
-		if (listener == null)
+		if (listener == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		removeListener(SWT.Selection, listener);
 		removeListener(SWT.DefaultSelection, listener);
 	}
@@ -955,12 +987,15 @@ public final class SearchBox
 	public void setBackground(Color color) {
 		super.setBackground(color);
 		background = color;
-		if (text != null)
+		if (text != null) {
 			text.setBackground(color);
-		if (list != null)
+		}
+		if (list != null) {
 			list.setBackground(color);
-		if (arrow != null)
+		}
+		if (arrow != null) {
 			arrow.setBackground(color);
+		}
 	}
 
 	/**
@@ -974,12 +1009,15 @@ public final class SearchBox
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		if (popup != null)
+		if (popup != null) {
 			popup.setVisible(false);
-		if (text != null)
+		}
+		if (text != null) {
 			text.setEnabled(enabled);
-		if (arrow != null)
+		}
+		if (arrow != null) {
 			arrow.setEnabled(enabled);
+		}
 	}
 
 	@Override
@@ -1001,12 +1039,15 @@ public final class SearchBox
 	public void setForeground(Color color) {
 		super.setForeground(color);
 		foreground = color;
-		if (text != null)
+		if (text != null) {
 			text.setForeground(color);
-		if (list != null)
+		}
+		if (list != null) {
 			list.setForeground(color);
-		if (arrow != null)
+		}
+		if (arrow != null) {
 			arrow.setForeground(color);
+		}
 	}
 
 	/**
@@ -1022,10 +1063,12 @@ public final class SearchBox
 	public void setItems(String[] items) {
 		checkWidget();
 		text.setText("");
-		if (listItems != null)
+		if (listItems != null) {
 			listItems.clear();
-		else
+		}
+		else {
 			listItems = new ArrayList<String>(items.length);
+		}
 
 		for (String item : items) {
 			listItems.add(item);
@@ -1048,8 +1091,9 @@ public final class SearchBox
 	 */
 	public void setSelection(Point selection) {
 		checkWidget();
-		if (selection == null)
+		if (selection == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		text.setSelection(selection.x, selection.y);
 	}
 
@@ -1058,8 +1102,9 @@ public final class SearchBox
 	 */
 	public void setText(String string) {
 		checkWidget();
-		if (string == null)
+		if (string == null) {
 			SWT.error(SWT.ERROR_NULL_ARGUMENT);
+		}
 		int index = list.indexOf(string);
 		if (index == -1) {
 			text.setText(string);
@@ -1090,8 +1135,9 @@ public final class SearchBox
 	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
-		if (!visible)
+		if (!visible) {
 			popup.setVisible(false);
+		}
 	}
 
 	/**
@@ -1108,13 +1154,13 @@ public final class SearchBox
 		int index = 0;
 		int length = string.length();
 		do {
-			while (index < length && string.charAt(index) != '&')
+			while (index < length && string.charAt(index) != '&') {
 				index++;
+			}
 			if (++index >= length)
 				return string;
-			if (string.charAt(index) != '&') {
+			if (string.charAt(index) != '&')
 				return string.substring(0, index - 1) + string.substring(index, length);
-			}
 			index++;
 		} while (index < length);
 		return string;
@@ -1142,9 +1188,8 @@ public final class SearchBox
 					dropDown(false);
 					return;
 				}
-				if (event.keyCode == SWT.ARROW_UP) {
+				if (event.keyCode == SWT.ARROW_UP)
 					return;
-				}
 				hasFocus = false;
 				list.setItems(getFilteredList());
 				dropDown(false);
@@ -1167,9 +1212,8 @@ public final class SearchBox
 	}
 
 	private String[] getFilteredList() {
-		if (listItems == null) {
+		if (listItems == null)
 			return null;
-		}
 		ArrayList<Object> filteredList = new ArrayList<Object>();
 
 		String txt = text.getText();

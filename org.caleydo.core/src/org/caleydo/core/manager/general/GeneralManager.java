@@ -99,9 +99,8 @@ public class GeneralManager
 	public void init(boolean bIsStandalone) {
 		this.bIsStandalone = bIsStandalone;
 
-		if (bAllManagersInitialized) {
+		if (bAllManagersInitialized)
 			throw new IllegalStateException("Tried to initialize managers multiple times. Abort.");
-		}
 
 		bAllManagersInitialized = true;
 
@@ -161,12 +160,14 @@ public class GeneralManager
 			// Create .caleydo folder
 			if (!new File(IGeneralManager.CALEYDO_HOME_PATH).exists()) {
 				if (!new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir())
-					throw new IllegalStateException("Unable to create home folder .caleydo. Check user permissions!");
+					throw new IllegalStateException(
+						"Unable to create home folder .caleydo. Check user permissions!");
 			}
 
 			// Create log folder in .caleydo
 			if (!new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs())
-				throw new IllegalStateException("Unable to create log folder .caleydo/log. Check user permissions!");
+				throw new IllegalStateException(
+					"Unable to create log folder .caleydo/log. Check user permissions!");
 
 			logger.log(Level.INFO, "Create new preference store at " + IGeneralManager.CALEYDO_HOME_PATH
 				+ PREFERENCE_FILE_NAME);
@@ -184,8 +185,10 @@ public class GeneralManager
 		}
 
 		if (preferenceStore.getBoolean(PreferenceConstants.USE_PROXY)) {
-			System.setProperty("network.proxy_host", preferenceStore.getString(PreferenceConstants.PROXY_SERVER));
-			System.setProperty("network.proxy_port", preferenceStore.getString(PreferenceConstants.PROXY_PORT));
+			System.setProperty("network.proxy_host", preferenceStore
+				.getString(PreferenceConstants.PROXY_SERVER));
+			System.setProperty("network.proxy_port", preferenceStore
+				.getString(PreferenceConstants.PROXY_PORT));
 		}
 	}
 

@@ -16,7 +16,7 @@ public class SampleGraphItem
 
 	/**
 	 * @param kind
-	 *          define NODE or EDGE
+	 *            define NODE or EDGE
 	 */
 	public SampleGraphItem(EGraphItemKind kind) {
 		super(666, kind);

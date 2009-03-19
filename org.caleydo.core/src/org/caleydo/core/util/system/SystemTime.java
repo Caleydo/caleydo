@@ -47,8 +47,8 @@ public class SystemTime
 	private double deltaT;
 
 	/**
-	 * Sets number of smoothing samples. Defaults to 10. Note that there may be a discontinuity in the reported
-	 * time after a call to this method.
+	 * Sets number of smoothing samples. Defaults to 10. Note that there may be a discontinuity in the
+	 * reported time after a call to this method.
 	 */
 	public void setNumSmoothingSamples(int num) {
 

@@ -8,7 +8,8 @@ public enum EPathwayVertexType {
 	// complex)
 	compound("Compound"), // the node is a chemical compound (including a
 	// glycan)
-	map("Linked Pathway"), other("Unknown");
+	map("Linked Pathway"),
+	other("Unknown");
 
 	private final String sName;
 

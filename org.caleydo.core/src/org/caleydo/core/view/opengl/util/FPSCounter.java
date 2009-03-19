@@ -73,11 +73,11 @@ public class FPSCounter {
 	 * constructor is called.
 	 * 
 	 * @param drawable
-	 *          the drawable to render the text to
+	 *            the drawable to render the text to
 	 * @param textSize
-	 *          the point size of the font to use
+	 *            the point size of the font to use
 	 * @throws GLException
-	 *           if an OpenGL context is not current when the constructor is called
+	 *             if an OpenGL context is not current when the constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, int textSize)
 		throws GLException {
@@ -90,11 +90,11 @@ public class FPSCounter {
 	 * constructor is called.
 	 * 
 	 * @param drawable
-	 *          the drawable to render the text to
+	 *            the drawable to render the text to
 	 * @param font
-	 *          the font to use
+	 *            the font to use
 	 * @throws GLException
-	 *           if an OpenGL context is not current when the constructor is called
+	 *             if an OpenGL context is not current when the constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, Font font)
 		throws GLException {
@@ -103,19 +103,19 @@ public class FPSCounter {
 	}
 
 	/**
-	 * Creates a new FPSCounter with the given font and rendering attributes. An OpenGL context must be current
-	 * at the time the constructor is called.
+	 * Creates a new FPSCounter with the given font and rendering attributes. An OpenGL context must be
+	 * current at the time the constructor is called.
 	 * 
 	 * @param drawable
-	 *          the drawable to render the text to
+	 *            the drawable to render the text to
 	 * @param font
-	 *          the font to use
+	 *            the font to use
 	 * @param antialiased
-	 *          whether to use antialiased fonts
+	 *            whether to use antialiased fonts
 	 * @param useFractionalMetrics
-	 *          whether to use fractional font
+	 *            whether to use fractional font
 	 * @throws GLException
-	 *           if an OpenGL context is not current when the constructor is called
+	 *             if an OpenGL context is not current when the constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, Font font, boolean antialiased, boolean useFractionalMetrics)
 		throws GLException {
@@ -139,28 +139,28 @@ public class FPSCounter {
 	 */
 	public void setTextLocation(int textLocation) {
 
-		if (textLocation < UPPER_LEFT || textLocation > LOWER_RIGHT) {
+		if (textLocation < UPPER_LEFT || textLocation > LOWER_RIGHT)
 			throw new IllegalArgumentException("textLocation");
-		}
 		this.textLocation = textLocation;
 	}
 
 	/**
-	 * Changes the current color of this TextRenderer to the supplied one, where each component ranges from 0.0f
-	 * - 1.0f. The alpha component, if used, does not need to be premultiplied into the color channels as
+	 * Changes the current color of this TextRenderer to the supplied one, where each component ranges from
+	 * 0.0f - 1.0f. The alpha component, if used, does not need to be premultiplied into the color channels as
 	 * described in the documentation for {@link Texture Texture}, although premultiplied colors are used
 	 * internally. The default color is opaque white.
 	 * 
 	 * @param r
-	 *          the red component of the new color
+	 *            the red component of the new color
 	 * @param g
-	 *          the green component of the new color
+	 *            the green component of the new color
 	 * @param b
-	 *          the blue component of the new color
+	 *            the blue component of the new color
 	 * @param alpha
-	 *          the alpha component of the new color, 0.0f = completely transparent, 1.0f = completely opaque
+	 *            the alpha component of the new color, 0.0f = completely transparent, 1.0f = completely
+	 *            opaque
 	 * @throws GLException
-	 *           If an OpenGL context is not current when this method is called
+	 *             If an OpenGL context is not current when this method is called
 	 */
 	public void setColor(float r, float g, float b, float a) throws GLException {
 
@@ -168,8 +168,8 @@ public class FPSCounter {
 	}
 
 	/**
-	 * Updates the FPSCounter's internal timer and counter and draws the computed FPS. It is assumed this method
-	 * will be called only once per frame.
+	 * Updates the FPSCounter's internal timer and counter and draws the computed FPS. It is assumed this
+	 * method will be called only once per frame.
 	 */
 	public void draw() {
 

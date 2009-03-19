@@ -52,8 +52,8 @@ public class ListLayoutRenderStyle
 
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(-0.5f / fAspectRatio, -1.4f, 0f));
-		transform
-			.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel, fScalingFactorFocusLevel));
+		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
+			fScalingFactorFocusLevel));
 
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 
@@ -146,8 +146,8 @@ public class ListLayoutRenderStyle
 	public RemoteLevel initSpawnLevel() {
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(-4.4f, 3.9f, 4.1f));
-		transform
-			.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel, fScalingFactorSpawnLevel));
+		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
+			fScalingFactorSpawnLevel));
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 

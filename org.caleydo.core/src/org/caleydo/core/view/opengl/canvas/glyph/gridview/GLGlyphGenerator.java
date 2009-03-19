@@ -33,7 +33,9 @@ public class GLGlyphGenerator {
 	private boolean bIsInit;
 
 	static public enum DETAILLEVEL {
-		LEVEL_MIN, LEVEL_MID, LEVEL_MAX,
+		LEVEL_MIN,
+		LEVEL_MID,
+		LEVEL_MAX,
 	}
 
 	public GLGlyphGenerator(boolean isLocal) {
@@ -70,8 +72,9 @@ public class GLGlyphGenerator {
 		if (!bIsInit) {
 			for (GlyphObjectDefinition modelDefinition : objectModels.values()) {
 				ArrayList<String> partnames = modelDefinition.getObjectPartNames();
-				for (String partname : partnames)
+				for (String partname : partnames) {
 					modelDefinition.getObjectPart(partname).init(gl);
+				}
 			}
 			bIsInit = true;
 		}
@@ -117,8 +120,9 @@ public class GLGlyphGenerator {
 		ArrayList<String> partnames = modelDefinition.getObjectPartNames();
 		for (String partname : partnames) {
 			GlyphObjectDefinitionPart partdef = modelDefinition.getObjectPartDefinition(partname);
-			if (partdef == null)
+			if (partdef == null) {
 				continue;
+			}
 
 			gl.glPushMatrix();
 
@@ -132,28 +136,34 @@ public class GLGlyphGenerator {
 				if (index >= 0) {
 					float nv = 0.0f;
 					// if the box isn't selected color will be darker
-					if (!selected)
+					if (!selected) {
 						nv = 0.5f;
+					}
 
 					int tc = glyph.getParameter(index);
 					Vec4f color = partdef.getColor(tc);
 
 					if (color != null && tc >= 0) {
-						if (color.get(0) != -1.0f && color.get(1) != -1.0f && color.get(2) != -1.0f)
-							gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color.get(3));
-						// else, do nothing (keep old color)
+						if (color.get(0) != -1.0f && color.get(1) != -1.0f && color.get(2) != -1.0f) {
+							gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color
+								.get(3));
+							// else, do nothing (keep old color)
+						}
 
 					}
-					else
+					else {
 						gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f); // Annoying gray
+					}
 
 				}
 				else {
 					// base color
-					if (selected)
+					if (selected) {
 						gl.glColor4f(0.1f, 0.6f, 0.1f, 1.0f);
-					else
+					}
+					else {
 						gl.glColor4f(0.1f, 0.35f, 0.1f, 1.0f);
+					}
 				}
 			}
 
@@ -165,12 +175,14 @@ public class GLGlyphGenerator {
 			if (partdef.canScale(DIRECTION.Z)) {
 				int index = partdef.getParameterIndexInternal(EGlyphSettingIDs.SCALE, DIRECTION.Z);
 				if (index >= 0) {
-					GlyphAttributeType glyphAttributeType = gman.getGlyphAttributeTypeWithInternalColumnNumber(index);
+					GlyphAttributeType glyphAttributeType =
+						gman.getGlyphAttributeTypeWithInternalColumnNumber(index);
 
 					float scale = glyph.getParameter(index);
 
-					if (scale < 0.1f)
+					if (scale < 0.1f) {
 						scale = 1.0f;
+					}
 
 					scale = scale / glyphAttributeType.getMaxIndex();
 					dim.scaleY(scale);

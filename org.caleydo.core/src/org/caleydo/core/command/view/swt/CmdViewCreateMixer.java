@@ -34,7 +34,8 @@ public class CmdViewCreateMixer
 		}
 
 		MixerViewRep mixerView =
-			(MixerViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_MIXER, iParentContainerId, sLabel);
+			(MixerViewRep) viewManager.createView(EManagedObjectType.VIEW_SWT_MIXER, iParentContainerId,
+				sLabel);
 
 		viewManager.registerItem(mixerView);
 
@@ -54,8 +55,8 @@ public class CmdViewCreateMixer
 		super.setParameterHandler(parameterHandler);
 
 		parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders", parameterHandler
-			.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()), IParameterHandler.ParameterHandlerType.INT,
-			"-1");
+			.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()),
+			IParameterHandler.ParameterHandlerType.INT, "-1");
 
 		iNumberOfSliders = parameterHandler.getValueInt("iNumberOfSliders");
 	}

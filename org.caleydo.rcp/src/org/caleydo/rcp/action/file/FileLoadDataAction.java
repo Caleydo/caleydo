@@ -677,10 +677,12 @@ public class FileLoadDataAction
 					for (TableItem item : previewTable.getItems()) {
 						bSkipColumn = !((Button) e.widget).getSelection();
 
-						if (bSkipColumn)
+						if (bSkipColumn) {
 							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
-						else
+						}
+						else {
 							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+						}
 
 						item.setForeground(((Integer) e.widget.getData("column")), textColor);
 					}
@@ -885,8 +887,9 @@ public class FileLoadDataAction
 
 				iAlStorageId.add(storage.getID());
 
-				if (!sStorageIDs.equals(""))
+				if (!sStorageIDs.equals("")) {
 					sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
+				}
 
 				sStorageIDs = sStorageIDs + storage.getID();
 
@@ -911,8 +914,8 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter, iStartParseFileAtLine - 1,
-			-1);
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
+			iStartParseFileAtLine - 1, -1);
 		cmdLoadCsv.doCommand();
 
 		// Create SET
@@ -958,9 +961,8 @@ public class FileLoadDataAction
 		else if (sDataRepMode.equals("Log2")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
 		}
-		else {
+		else
 			throw new IllegalStateException("Unknown data representation type");
-		}
 	}
 
 	private void setDataInViews() {

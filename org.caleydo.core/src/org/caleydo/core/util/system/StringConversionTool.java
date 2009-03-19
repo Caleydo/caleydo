@@ -10,15 +10,15 @@ import java.util.StringTokenizer;
  */
 public final class StringConversionTool {
 	/**
-	 * Convert a String sInput into an array of integers. The Int array size is asigns dynamically depending on
-	 * the size of provided integer values inside the string sInput. If number of integer values in sInput is
-	 * smaller than iDimension the remaining values are "0". Also if a non-integer value is found it is replaced
-	 * by "0".
+	 * Convert a String sInput into an array of integers. The Int array size is asigns dynamically depending
+	 * on the size of provided integer values inside the string sInput. If number of integer values in sInput
+	 * is smaller than iDimension the remaining values are "0". Also if a non-integer value is found it is
+	 * replaced by "0".
 	 * 
 	 * @param sInput
-	 *          input to be converted into an array of int[]
+	 *            input to be converted into an array of int[]
 	 * @param sDelimiter
-	 *          delimiter used while parsing String
+	 *            delimiter used while parsing String
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(final String sInput, final String sDelimiter) {

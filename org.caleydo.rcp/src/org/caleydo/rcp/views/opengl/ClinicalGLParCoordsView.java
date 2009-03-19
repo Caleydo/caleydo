@@ -60,7 +60,8 @@ public class ClinicalGLParCoordsView
 		alToolbar.add(propagateSelectionAction);
 		// only if standalone or explicitly requested
 		if (pcs.isRenderedRemote()
-			&& GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
+			&& GeneralManager.get().getPreferenceStore().getBoolean(
+				PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
 			return;
 
 		IAction toggleRenderContextAction = new RenderContextAction(iViewID);

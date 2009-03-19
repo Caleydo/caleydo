@@ -30,9 +30,11 @@ public abstract class CaleydoViewPart
 	public static void fillToolBar(ArrayList<IToolBarManager> alToolBarManager) {
 		// Add ControlContribution items
 		if (!GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.XP_CLASSIC_STYLE_MODE)) {
-			if (alToolbarContributions != null)
-				for (IContributionItem item : alToolbarContributions)
+			if (alToolbarContributions != null) {
+				for (IContributionItem item : alToolbarContributions) {
 					alToolBarManager.get(0).add(item);
+				}
+			}
 
 			alToolbarContributions = null;
 		}
@@ -40,8 +42,9 @@ public abstract class CaleydoViewPart
 		// add action items
 		int iToolBarWrapCount = TOOLBAR_WRAP_COUNT;
 
-		if (alToolbar.size() <= 4 && ToolBarView.bHorizontal)
+		if (alToolbar.size() <= 4 && ToolBarView.bHorizontal) {
 			iToolBarWrapCount = 2;
+		}
 
 		for (int iToolBarItemIndex = 0; iToolBarItemIndex < alToolbar.size(); iToolBarItemIndex++) {
 			alToolBarManager.get((int) (iToolBarItemIndex / iToolBarWrapCount)).add(
@@ -51,15 +54,17 @@ public abstract class CaleydoViewPart
 	}
 
 	/**
-	 * Method fills the toolbar in a given toolbar manager. Used in case of a detached view that can put all its
-	 * toolbar items into one single toolbar (no wrapping needed).
+	 * Method fills the toolbar in a given toolbar manager. Used in case of a detached view that can put all
+	 * its toolbar items into one single toolbar (no wrapping needed).
 	 */
 	public static void fillToolBar(final IToolBarManager toolBarManager) {
 		// Add ControlContribution items
 		if (!GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.XP_CLASSIC_STYLE_MODE)) {
-			if (alToolbarContributions != null)
-				for (IContributionItem item : alToolbarContributions)
+			if (alToolbarContributions != null) {
+				for (IContributionItem item : alToolbarContributions) {
 					toolBarManager.add(item);
+				}
+			}
 
 			alToolbarContributions = null;
 		}

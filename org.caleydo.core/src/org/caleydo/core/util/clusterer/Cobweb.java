@@ -58,9 +58,9 @@ public class Cobweb
 	 * Builds the clusterer.
 	 * 
 	 * @param data
-	 *          the training instances.
+	 *            the training instances.
 	 * @throws Exception
-	 *           if something goes wrong.
+	 *             if something goes wrong.
 	 */
 	@Override
 	public void buildClusterer(Instances data) throws Exception {
@@ -92,11 +92,11 @@ public class Cobweb
 	 * Classifies a given instance.
 	 * 
 	 * @param instance
-	 *          the instance to be assigned to a cluster
+	 *            the instance to be assigned to a cluster
 	 * @return the number of the assigned cluster as an interger if the class is enumerated, otherwise the
 	 *         predicted value
 	 * @throws Exception
-	 *           if instance could not be classified successfully
+	 *             if instance could not be classified successfully
 	 */
 	@Override
 	public int clusterInstance(Instance instance) throws Exception {
@@ -192,9 +192,9 @@ public class Cobweb
 	 * Adds an instance to the clusterer.
 	 * 
 	 * @param newInstance
-	 *          the instance to be added
+	 *            the instance to be added
 	 * @throws Exception
-	 *           if something goes wrong
+	 *             if something goes wrong
 	 */
 	public void updateClusterer(Instance newInstance) throws Exception {
 		m_numberOfClustersDetermined = false;
@@ -211,9 +211,9 @@ public class Cobweb
 	 * Adds an instance to the Cobweb tree.
 	 * 
 	 * @param newInstance
-	 *          the instance to be added
+	 *            the instance to be added
 	 * @throws Exception
-	 *           if something goes wrong
+	 *             if something goes wrong
 	 * @deprecated updateClusterer(Instance) should be used instead
 	 * @see #updateClusterer(Instance)
 	 */

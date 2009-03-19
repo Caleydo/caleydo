@@ -77,7 +77,6 @@ public interface IViewManager
 	public AGLEventListener getGLEventListener(int iItemID);
 
 	public void setActiveSWTView(Composite composite);
-	
+
 	public Composite getActiveSWTView();
 }
-

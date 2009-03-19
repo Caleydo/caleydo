@@ -64,15 +64,15 @@ public class ExportClinicalDataAction
 
 		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			if (view instanceof GLGlyph) {
-				if (view.getID() == iViewID)
+				if (view.getID() == iViewID) {
 					glyphview = (GLGlyph) view;
+				}
 			}
 		}
 
-		if (glyphview == null) {
+		if (glyphview == null)
 			throw new IllegalStateException(
 				"Clinical Data Export in Toolbar wants to export a view witch doesn't exist");
-		}
 
 	}
 
@@ -110,8 +110,8 @@ public class ExportClinicalDataAction
 				fileDialog.setFilterExtensions(filterExt);
 
 				String sFilePath =
-					"caleydo_export_" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + "_clinical_" + name
-						+ ".csv";
+					"caleydo_export_" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())
+						+ "_clinical_" + name + ".csv";
 
 				fileDialog.setFileName(sFilePath);
 				sFileName = fileDialog.open();

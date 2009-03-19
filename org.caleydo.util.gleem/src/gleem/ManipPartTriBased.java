@@ -90,9 +90,8 @@ public class ManipPartTriBased
 
 	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results, Manip caller) {
 		consistencyCheck();
-		if (!pickable) {
+		if (!pickable)
 			return;
-		}
 
 		IntersectionPoint intPt = new IntersectionPoint();
 		HitPoint hitPt = new HitPoint();
@@ -159,10 +158,12 @@ public class ManipPartTriBased
 			gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
 		}
 		gl.glBegin(GL.GL_TRIANGLES);
-		if (highlighted)
+		if (highlighted) {
 			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor.z());
-		else
+		}
+		else {
 			gl.glColor3f(color.x(), color.y(), color.z());
+		}
 		int i = 0;
 		while (i < vertexIndices.length) {
 			Vec3f n0 = curNormals[normalIndices[i]];
@@ -184,8 +185,9 @@ public class ManipPartTriBased
 			i++;
 		}
 		gl.glEnd();
-		if (lightingOn)
+		if (lightingOn) {
 			gl.glDisable(GL.GL_COLOR_MATERIAL);
+		}
 	}
 
 	// ----------------------------------------------------------------------
@@ -230,17 +232,14 @@ public class ManipPartTriBased
 	//
 
 	private void consistencyCheck() {
-		if (vertexIndices.length != normalIndices.length) {
+		if (vertexIndices.length != normalIndices.length)
 			throw new RuntimeException("vertexIndices.length != normalIndices.length");
-		}
 
-		if (vertexIndices.length % 3 != 0) {
+		if (vertexIndices.length % 3 != 0)
 			throw new RuntimeException("(vertexIndices % 3) != 0");
-		}
 
-		if (curVertices != null && vertices.length != curVertices.length) {
+		if (curVertices != null && vertices.length != curVertices.length)
 			throw new RuntimeException("vertices.length != curVertices.length");
-		}
 	}
 
 	private void recalcVertices() {

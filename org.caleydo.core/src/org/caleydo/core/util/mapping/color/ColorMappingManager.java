@@ -45,9 +45,10 @@ public class ColorMappingManager {
 	 * 
 	 * @param colorMappingType
 	 * @param alMarkerPoints
-	 *          a list of marker points based on which the color mapping is created
+	 *            a list of marker points based on which the color mapping is created
 	 */
-	public void initColorMapping(EColorMappingType colorMappingType, ArrayList<ColorMarkerPoint> alMarkerPoints) {
+	public void initColorMapping(EColorMappingType colorMappingType,
+		ArrayList<ColorMarkerPoint> alMarkerPoints) {
 		if (hashColorMapping.containsKey(colorMappingType)) {
 			hashColorMapping.get(colorMappingType).resetColorMapping(alMarkerPoints);
 			return;
@@ -56,8 +57,8 @@ public class ColorMappingManager {
 	}
 
 	/**
-	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all display
-	 * list to dirty to have immediate effect.
+	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all
+	 * display list to dirty to have immediate effect.
 	 */
 	public void initiFromPreferenceStore() {
 		PreferenceStore store = GeneralManager.get().getPreferenceStore();
@@ -68,7 +69,8 @@ public class ColorMappingManager {
 			float colorMarkerValue = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
 
-			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, ConversionTools.getColorFromString(color)));
+			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, ConversionTools
+				.getColorFromString(color)));
 		}
 
 		// TODO not generic
@@ -85,7 +87,7 @@ public class ColorMappingManager {
 	 * was set beforehand.
 	 * 
 	 * @param colorMappingType
-	 *          the type
+	 *            the type
 	 * @return the color mapping
 	 */
 	public ColorMapping getColorMapping(EColorMappingType colorMappingType) {
@@ -101,7 +103,7 @@ public class ColorMappingManager {
 	 * Create default color mapping
 	 * 
 	 * @param colorMappingType
-	 *          the type
+	 *            the type
 	 * @return the color mapping
 	 */
 	private ColorMapping getDefaultColorMapping(EColorMappingType colorMappingType) {

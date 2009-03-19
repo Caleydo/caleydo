@@ -61,17 +61,21 @@ public class BioCartaPathwayImageMapSaxHandler
 		}
 
 		if (attributes != null) {
-			if (sElementName.equals("b"))
+			if (sElementName.equals("b")) {
 				handleTitleTag();
-			else if (sElementName.equals("img"))
+			}
+			else if (sElementName.equals("img")) {
 				handleImageLinkTag();
-			else if (sElementName.equals("area"))
+			}
+			else if (sElementName.equals("area")) {
 				handleAreaTag();
+			}
 		}
 	}
 
 	@Override
-	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName) throws SAXException {
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
+		throws SAXException {
 
 		String sName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 
@@ -99,8 +103,9 @@ public class BioCartaPathwayImageMapSaxHandler
 	 */
 	protected void handleTitleTag() {
 
-		if (sTitle.length() == 0)
+		if (sTitle.length() == 0) {
 			bReadTitle = true;
+		}
 	}
 
 	/**
@@ -163,7 +168,9 @@ public class BioCartaPathwayImageMapSaxHandler
 
 				if (sExternalLink.contains("BCID=")) {
 					// Create name from link
-					sName = sExternalLink.substring(sExternalLink.lastIndexOf("BCID=") + 5, sExternalLink.length());
+					sName =
+						sExternalLink.substring(sExternalLink.lastIndexOf("BCID=") + 5, sExternalLink
+							.length());
 				}
 			}
 		}
@@ -172,8 +179,8 @@ public class BioCartaPathwayImageMapSaxHandler
 		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		Set<Integer> iSetDavidID =
-			(Set<Integer>) genomeIdManager.<String, Integer> getMultiID(EMappingType.BIOCARTA_GENE_ID_2_DAVID,
-				sName);
+			(Set<Integer>) genomeIdManager.<String, Integer> getMultiID(
+				EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);
 
 		if (iSetDavidID == null)
 			return;
@@ -181,16 +188,18 @@ public class BioCartaPathwayImageMapSaxHandler
 		for (Integer iDavidId : iSetDavidID) {
 			if (iDavidId == null || iDavidId == -1 || iDavidId == 0) {
 				// TODO: How to handle this case?
-				generalManager.getLogger().log(Level.FINE, "Cannot map BioCarta ID " + sName + " to David ID");
+				generalManager.getLogger()
+					.log(Level.FINE, "Cannot map BioCarta ID " + sName + " to David ID");
 
 				return;
 			}
 
 			IGraphItem vertex =
-				pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "",
-					iDavidId);
+				pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX
+					+ sExternalLink, "", iDavidId);
 
-			generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName, sShape, sCoords);
+			generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName, sShape,
+				sCoords);
 		}
 	}
 

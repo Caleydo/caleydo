@@ -56,11 +56,11 @@ public class CommandSaxHandler
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PROCESS.getXmlKey(),
 			ECommandType.TAG_PROCESS.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(), ECommandType.TAG_LABEL
-			.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(),
+			ECommandType.TAG_LABEL.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_CMD_ID.getXmlKey(), ECommandType.TAG_CMD_ID
-			.getDefault(), ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_CMD_ID.getXmlKey(),
+			ECommandType.TAG_CMD_ID.getDefault(), ParameterHandlerType.INT);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_UNIQUE_ID.getXmlKey(),
 			ECommandType.TAG_UNIQUE_ID.getDefault(), ParameterHandlerType.INT);
@@ -71,8 +71,8 @@ public class CommandSaxHandler
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(), ECommandType.TAG_TYPE
 			.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT.getXmlKey(), ECommandType.TAG_PARENT
-			.getDefault(), ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT.getXmlKey(),
+			ECommandType.TAG_PARENT.getDefault(), ParameterHandlerType.INT);
 
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE1.getXmlKey(),
 			ECommandType.TAG_ATTRIBUTE1.getDefault(), ParameterHandlerType.STRING);
@@ -92,8 +92,8 @@ public class CommandSaxHandler
 		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ROTATION.getXmlKey(),
 			ECommandType.TAG_POS_GL_ROTATION.getDefault(), ParameterHandlerType.VEC4F);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(), ECommandType.TAG_DETAIL
-			.getDefault(), ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(),
+			ECommandType.TAG_DETAIL.getDefault(), ParameterHandlerType.STRING);
 
 		// generalManager.logMsg(
 		// "XML-TAG= " + phAttributes.getValueString(
@@ -224,9 +224,8 @@ public class CommandSaxHandler
 
 			if (eName.equals(sOpeningTag)) {
 				/* <sFrameStateTag> */
-				if (bCommandBuffer_isActive) {
+				if (bCommandBuffer_isActive)
 					throw new SAXException("<" + sOpeningTag + "> already opened!");
-				}
 				else {
 					bCommandBuffer_isActive = true;
 					return;
@@ -276,9 +275,9 @@ public class CommandSaxHandler
 					}
 
 				}
-				else {
-					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag + "> being opened!");
-				}
+				else
+					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag
+						+ "> being opened!");
 			}
 			else if (eName.equals(sTag_Command)) {
 
@@ -287,19 +286,18 @@ public class CommandSaxHandler
 				 */
 				if (bCommandBuffer_isActive) {
 
-					if (bCommandQueue_isActive) {
-						throw new SAXException("<" + sTag_CommandQueue + "> opens inside a <" + sTag_CommandQueue
-							+ "> block!");
-					}
+					if (bCommandQueue_isActive)
+						throw new SAXException("<" + sTag_CommandQueue + "> opens inside a <"
+							+ sTag_CommandQueue + "> block!");
 
 					bCommandQueue_isActive = true;
 
 					// readCommandQueueData(attrs, true);
 
 				}
-				else {
-					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag + "> being opened!");
-				}
+				else
+					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag
+						+ "> being opened!");
 
 			}
 		}
@@ -327,17 +325,16 @@ public class CommandSaxHandler
 
 					return;
 				}
-				else {
+				else
 					throw new SAXException("<" + sOpeningTag + "> was already closed.");
-				}
 
 			}
 			else if (eName.equals(sTag_Command)) {
 
 				/* </cmd> */
-				if (!bCommandBuffer_isActive) {
-					throw new SAXException("<" + sTag_Command + "> opens without " + sOpeningTag + " being opened.");
-				}
+				if (!bCommandBuffer_isActive)
+					throw new SAXException("<" + sTag_Command + "> opens without " + sOpeningTag
+						+ " being opened.");
 
 			}
 			else if (eName.equals(sTag_CommandQueue)) {
@@ -349,10 +346,9 @@ public class CommandSaxHandler
 
 					bCommandQueue_isActive = false;
 				}
-				else {
+				else
 					throw new SAXException("<" + sTag_CommandQueue + "> opens without " + sOpeningTag
 						+ " being opened.");
-				}
 			}
 
 			// end:else if (eName.equals(...)) {

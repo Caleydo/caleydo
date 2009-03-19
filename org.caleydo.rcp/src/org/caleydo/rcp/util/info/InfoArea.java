@@ -180,7 +180,8 @@ public class InfoArea
 							// Flush old items that become deselected/normal
 							for (TreeItem tmpItem : selectionTree.getItems()) {
 								if (tmpItem.getData() == null
-									|| ((Integer) tmpItem.getData()).intValue() == selectionItem.getPrimaryID()) {
+									|| ((Integer) tmpItem.getData()).intValue() == selectionItem
+										.getPrimaryID()) {
 									tmpItem.dispose();
 								}
 							}
@@ -190,31 +191,37 @@ public class InfoArea
 							Color color;
 							float[] fArColor = null;
 
-							if (selectionItem.getSelectionType() == ESelectionType.SELECTION)
+							if (selectionItem.getSelectionType() == ESelectionType.SELECTION) {
 								fArColor = GeneralRenderStyle.SELECTED_COLOR;
-							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER)
+							}
+							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+							}
 
 							color =
-								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255), (int) (fArColor[1] * 255),
-									(int) (fArColor[2] * 255));
+								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 							String sRefSeqID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, selectionItem
-									.getPrimaryID());
+								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+									selectionItem.getPrimaryID());
 
 							Integer iDavidID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem.getPrimaryID());
+								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem
+									.getPrimaryID());
 
-							String sGeneSymbol = idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
+							String sGeneSymbol =
+								idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
-							if (sGeneSymbol == null)
+							if (sGeneSymbol == null) {
 								sGeneSymbol = "Unknown";
+							}
 
 							boolean bIsExisting = false;
 							for (TreeItem existingItem : selectionTree.getItems()) {
 								if (existingItem.getText().equals(sGeneSymbol)
-									&& ((Integer) existingItem.getData()).intValue() == selectionItem.getPrimaryID()) {
+									&& ((Integer) existingItem.getData()).intValue() == selectionItem
+										.getPrimaryID()) {
 									existingItem.setBackground(color);
 									existingItem.getItem(0).setBackground(color);
 									existingItem.setData("selection_type", selectionItem.getSelectionType());
@@ -225,10 +232,12 @@ public class InfoArea
 
 							if (!bIsExisting) {
 								TreeItem item = new TreeItem(selectionTree, SWT.NONE);
-								if (ToolBarView.bHorizontal || Application.bIsWindowsOS)
+								if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
 									item.setText(sGeneSymbol + " - " + sRefSeqID);
-								else
+								}
+								else {
 									item.setText(sGeneSymbol + "\n" + sRefSeqID);
+								}
 								item.setBackground(color);
 								item.setData(selectionItem.getPrimaryID());
 								item.setData("selection_type", selectionItem.getSelectionType());
@@ -379,7 +388,8 @@ public class InfoArea
 								ESelectionCommandType cmdType;
 								for (SelectionCommand cmd : commandEventContainer.getSelectionCommands()) {
 									cmdType = cmd.getSelectionCommandType();
-									if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
+									if (cmdType == ESelectionCommandType.RESET
+										|| cmdType == ESelectionCommandType.CLEAR_ALL) {
 										selectionTree.removeAll();
 										break;
 									}
@@ -387,8 +397,9 @@ public class InfoArea
 										// Flush old items that become
 										// deselected/normal
 										for (TreeItem tmpItem : selectionTree.getItems()) {
-											if (tmpItem.getData("selection_type") == cmd.getSelectionType())
+											if (tmpItem.getData("selection_type") == cmd.getSelectionType()) {
 												tmpItem.dispose();
+											}
 										}
 									}
 								}
@@ -402,9 +413,11 @@ public class InfoArea
 				}
 				break;
 			case INFO_AREA_UPDATE:
-				InfoAreaUpdateEventContainer infoEventContainer = (InfoAreaUpdateEventContainer) eventContainer;
+				InfoAreaUpdateEventContainer infoEventContainer =
+					(InfoAreaUpdateEventContainer) eventContainer;
 				AGLEventListener view =
-					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(infoEventContainer.getViewID());
+					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+						infoEventContainer.getViewID());
 
 				shortInfo = view.getShortInfo();
 				parentComposite.getDisplay().asyncExec(new Runnable() {

@@ -31,7 +31,7 @@ public class VirtualArray
 	 * Constructor. Pass the length of the managed collection
 	 * 
 	 * @param iLength
-	 *          the length of the managed collection
+	 *            the length of the managed collection
 	 */
 	public VirtualArray(int iLength) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
@@ -66,12 +66,14 @@ public class VirtualArray
 
 	@Override
 	public void append(Integer iNewElement) {
-		if (iNewElement < iLength)
+		if (iNewElement < iLength) {
 			iAlVirtualArray.add(iNewElement);
+		}
 		else
-			throw new IllegalArgumentException("Tried to add a element to a virtual array that is not within the "
-				+ "allowed range (which is determined by the length of the collection "
-				+ "on which the virtual array is applied");
+			throw new IllegalArgumentException(
+				"Tried to add a element to a virtual array that is not within the "
+					+ "allowed range (which is determined by the length of the collection "
+					+ "on which the virtual array is applied");
 	}
 
 	@Override
@@ -86,22 +88,26 @@ public class VirtualArray
 
 	@Override
 	public void add(int iIndex, Integer iNewElement) {
-		if (iNewElement < iLength)
+		if (iNewElement < iLength) {
 			iAlVirtualArray.add(iIndex, iNewElement);
+		}
 		else
-			throw new IllegalArgumentException("Tried to add a element to a virtual array that is not within the "
-				+ "allowed range (which is determined by the length of the collection "
-				+ "on which the virtual array is applied");
+			throw new IllegalArgumentException(
+				"Tried to add a element to a virtual array that is not within the "
+					+ "allowed range (which is determined by the length of the collection "
+					+ "on which the virtual array is applied");
 	}
 
 	@Override
 	public void set(int iIndex, Integer iNewElement) {
-		if (iNewElement < iLength)
+		if (iNewElement < iLength) {
 			iAlVirtualArray.set(iIndex, iNewElement);
+		}
 		else
-			throw new IllegalArgumentException("Tried to add a element to a virtual array that is not within the "
-				+ "allowed range (which is determined by the length of the collection "
-				+ "on which the virtual array is applied");
+			throw new IllegalArgumentException(
+				"Tried to add a element to a virtual array that is not within the "
+					+ "allowed range (which is determined by the length of the collection "
+					+ "on which the virtual array is applied");
 	}
 
 	@Override
@@ -142,8 +148,9 @@ public class VirtualArray
 	public void removeByElement(int iElement) {
 		Iterator<Integer> iter = iAlVirtualArray.iterator();
 		while (iter.hasNext()) {
-			if (iter.next() == iElement)
+			if (iter.next() == iElement) {
 				iter.remove();
+			}
 		}
 	}
 
@@ -234,8 +241,9 @@ public class VirtualArray
 	public int containsElement(int iElement) {
 		int iCount = 0;
 		for (Integer iCompareElement : iAlVirtualArray) {
-			if (iCompareElement == iElement)
+			if (iCompareElement == iElement) {
 				iCount++;
+			}
 		}
 		return iCount;
 	}

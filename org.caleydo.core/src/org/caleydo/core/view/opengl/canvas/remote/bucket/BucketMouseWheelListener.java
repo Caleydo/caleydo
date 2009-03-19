@@ -74,17 +74,22 @@ public class BucketMouseWheelListener
 			if (event.isControlDown() || event.isAltDown()) {
 				fTmpAngle = bucketLayoutRenderStyle.getZoomFactor();
 
-				if (notches < 0)
+				if (notches < 0) {
 					fTmpAngle += fStepSize;
-				else
+				}
+				else {
 					fTmpAngle -= fStepSize;
+				}
 
-				if (fTmpAngle >= 1)
+				if (fTmpAngle >= 1) {
 					bucketLayoutRenderStyle.setZoomFactor(1);
-				else if (fTmpAngle <= 0)
+				}
+				else if (fTmpAngle <= 0) {
 					bucketLayoutRenderStyle.setZoomFactor(0);
-				else
+				}
+				else {
 					bucketLayoutRenderStyle.setZoomFactor(fTmpAngle);
+				}
 			}
 
 			bucketLayoutRenderStyle.initStackLevel(false);
@@ -127,7 +132,8 @@ public class BucketMouseWheelListener
 				iCurrentBucketZoom += BUCKET_ZOOM_STEP;
 				iAnimationZoomCounter += BUCKET_ZOOM_STEP;
 
-				bucketGLEventListener.getViewCamera().addCameraScale(new Vec3f(0, 0, BUCKET_ZOOM_STEP / 100f));
+				bucketGLEventListener.getViewCamera()
+					.addCameraScale(new Vec3f(0, 0, BUCKET_ZOOM_STEP / 100f));
 
 				// fBucketTransparency = fCurrentBucketZoom / BUCKET_ZOOM_MAX;
 			}
@@ -135,7 +141,8 @@ public class BucketMouseWheelListener
 				iCurrentBucketZoom -= BUCKET_ZOOM_STEP;
 				iAnimationZoomCounter -= BUCKET_ZOOM_STEP;
 
-				bucketGLEventListener.getViewCamera().addCameraScale(new Vec3f(0, 0, -BUCKET_ZOOM_STEP / 100f));
+				bucketGLEventListener.getViewCamera().addCameraScale(
+					new Vec3f(0, 0, -BUCKET_ZOOM_STEP / 100f));
 
 				// fBucketTransparency = fCurrentBucketZoom / -BUCKET_ZOOM_MAX;
 			}
@@ -146,7 +153,8 @@ public class BucketMouseWheelListener
 
 				// Update detail level of view in center bucket position
 				int iGLEventListenerID =
-					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
+					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0)
+						.getContainedElementID();
 
 				if (iGLEventListenerID != -1) {
 					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)
@@ -158,7 +166,8 @@ public class BucketMouseWheelListener
 
 				// Update detail level of view in center bucket position
 				int iGLEventListenerID =
-					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
+					bucketGLEventListener.getFocusLevel().getElementByPositionIndex(0)
+						.getContainedElementID();
 
 				if (iGLEventListenerID != -1) {
 					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)

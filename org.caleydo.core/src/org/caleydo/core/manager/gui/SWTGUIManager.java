@@ -120,7 +120,7 @@ public class SWTGUIManager
 			// Check if the parent is a composite
 			composite = compositeMap.get(iUniqueParentContainerId);
 
-			if (composite == null) {
+			if (composite == null)
 				// generalManager.logMsg( getClass().getSimpleName() +
 				// ".createWidget(" +
 				// useWidgetType.toString() + ", parentId=" +
@@ -128,7 +128,6 @@ public class SWTGUIManager
 				// ", iWidth, iHeight) parent SWT canvas does not exist!",
 				// LoggerType.MINOR_ERROR_XML);
 				return null;
-			}
 		}
 
 		return createWidget(useWidgetType, composite);
@@ -153,8 +152,9 @@ public class SWTGUIManager
 				widgetMap.add(newSWTWidget);
 				return newSWTWidget;
 			default:
-				throw new IllegalStateException("StorageManagerSimple.createView() failed due to unhandled type ["
-					+ useWidgetType.toString() + "]");
+				throw new IllegalStateException(
+					"StorageManagerSimple.createView() failed due to unhandled type ["
+						+ useWidgetType.toString() + "]");
 		}
 	}
 
@@ -194,8 +194,9 @@ public class SWTGUIManager
 
 		// Close loading progress bar in standalone mode after bootstrapping is
 		// completed.
-		if (loadingProgressBarWindow != null)
+		if (loadingProgressBarWindow != null) {
 			setProgressBarVisible(false);
+		}
 
 		shellIterator = windowMap.values().iterator();
 		while (shellIterator.hasNext()) {
@@ -208,8 +209,9 @@ public class SWTGUIManager
 		while (shellIterator.hasNext()) {
 			currentShell = shellIterator.next();
 			while (!currentShell.isDisposed()) {
-				if (!display.readAndDispatch())
+				if (!display.readAndDispatch()) {
 					display.sleep();
+				}
 			}
 		}
 	}

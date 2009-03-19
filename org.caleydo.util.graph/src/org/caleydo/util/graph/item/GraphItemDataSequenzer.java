@@ -59,9 +59,8 @@ public final class GraphItemDataSequenzer {
 	}
 
 	public static final boolean setIdentifier(final String key, final int value) {
-		if (identifier_key_value.containsKey(key)) {
+		if (identifier_key_value.containsKey(key))
 			return false;
-		}
 		identifier_key_value.put(key, new Integer(value));
 		return true;
 	}
