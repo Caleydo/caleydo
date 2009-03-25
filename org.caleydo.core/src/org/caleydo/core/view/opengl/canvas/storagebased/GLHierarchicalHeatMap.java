@@ -39,6 +39,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.clusterer.CNode;
+import org.caleydo.core.util.clusterer.Node;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -72,7 +73,7 @@ public class GLHierarchicalHeatMap
 
 	// private final static float MAX_NUM_SAMPLES = 8f;
 
-	private final static int MIN_SAMPLES_PER_HEATMAP = 12;
+	private final static int MIN_SAMPLES_PER_HEATMAP = 14;
 	// MAX_SAMPLES_PER_HEATMAP = SmaplesPerTexture / 3
 
 	private int iNumberOfElements = 0;
@@ -136,6 +137,9 @@ public class GLHierarchicalHeatMap
 	// clustering flag
 	private boolean bClusterHierarchical = false;
 	CNode graphRoot = null;
+	Node[] treeStructure = null;
+	DendrogramNode[] Nodes = null;
+	boolean bInitNodes = true;
 
 	/**
 	 * Constructor.
@@ -170,8 +174,18 @@ public class GLHierarchicalHeatMap
 		// default: 500 (PreferenceInitializer)
 		iSamplesPerTexture = generalManager.getPreferenceStore().getInt("hmNumSamplesPerTexture");
 
+		if (iSamplesPerTexture <= 0) {
+			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_TEXTURE, 500);
+			iSamplesPerTexture = 500;
+		}
+
 		// default: 30 (PreferenceInitializer)
 		iSamplesPerHeatmap = generalManager.getPreferenceStore().getInt("hmNumSamplesPerHeatmap");
+
+		if (iSamplesPerHeatmap <= 0) {
+			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, 30);
+			iSamplesPerHeatmap = 30;
+		}
 
 		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP) {
 			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
@@ -220,8 +234,9 @@ public class GLHierarchicalHeatMap
 		// iNumberOfElements = generalManager.getPreferenceStore().getInt(
 		// "hmNumRandomSamplinPoints");
 
-		if (iNumberOfElements < 2)
+		if (iNumberOfElements < 2) {
 			throw new IllegalStateException("Number of elements not supported!!");
+		}
 
 		if (2 * iSamplesPerTexture > iNumberOfElements) {
 			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 2);
@@ -1470,6 +1485,109 @@ public class GLHierarchicalHeatMap
 
 	}
 
+	private class DendrogramNode {
+		float xCoords;
+		float yCoords;
+		float correlation;
+		boolean bSelected;
+		boolean bCollapsed;
+		String Nodename;
+
+		public DendrogramNode() {
+			this.xCoords = 0f;
+			this.yCoords = 0f;
+			this.correlation = 0f;
+			this.bSelected = false;
+			this.bCollapsed = false;
+			this.Nodename = "";
+		}
+	}
+
+	private void renderDendrogram(final GL gl, float fymin, float fymax, Node[] treeStructure) {
+
+		float fxoffset = 0f;
+		float fHeight = (fymax - fymin);
+
+		float fHeightSample = fHeight / (treeStructure.length + 1);
+
+		fymax = fymax - fHeightSample / 2f;
+
+		// System.out.println(treeStructure.length);
+		if (bInitNodes == true)
+			Nodes = new DendrogramNode[treeStructure.length];
+
+		int iCount = 0;
+		int iClusterCount = 0;
+
+		gl.glLineWidth(1f);
+		gl.glColor4f(0f, 0f, 0f, 0.9f);
+
+		for (int i = 0; i < treeStructure.length; i++) {
+
+			float x_start_l = 0, x_start_r = 0, x_end = 0;
+			float y_r = 0, y_l = 0;
+
+			DendrogramNode temp = new DendrogramNode();
+
+			if (treeStructure[i].getLeft() >= 0) {
+				x_start_l = 0;
+				y_l = fymax - (fHeightSample * iCount + fymin);
+				iCount++;
+			}
+			else {
+				// System.out.println("count: " + iCount + " i: " + i + " treeStructure[i].getLeft() " +
+				// treeStructure[i].getLeft());
+				x_start_l = Nodes[-(treeStructure[i].getLeft()) - 1].xCoords;
+				y_l = Nodes[-(treeStructure[i].getLeft()) - 1].yCoords;
+			}
+
+			if (treeStructure[i].getRight() >= 0) {
+				x_start_r = 0;
+				y_r = fymax - (fHeightSample * iCount + fymin);
+				iCount++;
+			}
+			else {
+				// System.out.println("count: " + iCount + " i: " + i + " treeStructure[i].getRight() " +
+				// treeStructure[i].getRight());
+				x_start_r = Nodes[-(treeStructure[i].getRight()) - 1].xCoords;
+				y_r = Nodes[-(treeStructure[i].getRight()) - 1].yCoords;
+			}
+
+			x_end = Math.max(x_start_r, x_start_l) - 0.05f + fxoffset;
+
+			fxoffset -= 0.01f;
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION,
+				iClusterCount));
+			gl.glBegin(GL.GL_LINES);
+			// left
+			gl.glVertex3f(x_start_l, y_l, SELECTION_Z);
+			gl.glVertex3f(x_end, y_l, SELECTION_Z);
+			// connect left and right
+			gl.glVertex3f(x_end, y_l, SELECTION_Z);
+			gl.glVertex3f(x_end, y_r, SELECTION_Z);
+			// right
+			gl.glVertex3f(x_start_r, y_r, SELECTION_Z);
+			gl.glVertex3f(x_end, y_r, SELECTION_Z);
+			gl.glEnd();
+			gl.glPopName();
+
+			if (bInitNodes == true) {
+
+				temp.xCoords = x_end;
+				temp.yCoords = y_l + (y_r - y_l) / 2f;
+				temp.correlation = 1 - treeStructure[i].getCorrelation();
+				temp.Nodename = "Node_" + i;
+
+				Nodes[iClusterCount] = temp;
+			}
+
+			iClusterCount++;
+		}
+		bInitNodes = false;
+		gl.glColor4f(1f, 1f, 0f, 1f);
+	}
+
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		if (bRedrawTextures) {
@@ -1521,14 +1639,14 @@ public class GLHierarchicalHeatMap
 
 		// GLHelperFunctions.drawAxis(gl);
 
-		if (graphRoot == null) {
-			// System.out.println("Problems during clustering!!");
-		}
-		else {
-			// graphRoot.traversTree(0);
-			// System.out.println("renderDendrogram(..)");
-			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), graphRoot, 0, 1, 0);
-		}
+		// if (graphRoot == null) {
+		// // System.out.println("Problems during clustering!!");
+		// }
+		// else {
+		// // graphRoot.traversTree(0);
+		// // System.out.println("renderDendrogram(..)");
+		// renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), graphRoot, 0, 1, 0);
+		// }
 
 		// all stuff for rendering level 1 (overview bar)
 		renderOverviewBar(gl);
@@ -1549,6 +1667,18 @@ public class GLHierarchicalHeatMap
 		renderMarkerTexture(gl);
 		renderSelectedElementsTexture(gl);
 		renderCursor(gl);
+
+		gl.glTranslatef(7.0f, -0.0f, 0);
+
+		if (treeStructure == null) {
+			// System.out.println("Problems during clustering!!");
+		}
+		else {
+			// System.out.println("renderDendrogram(..)");
+			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), treeStructure);
+		}
+
+		gl.glTranslatef(-7.0f, -0.0f, 0);
 
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
@@ -1665,33 +1795,36 @@ public class GLHierarchicalHeatMap
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		if (bUseClusteredVA) {
-			// System.out.println("iContentVAID before clustering " +
-			// iContentVAID + " size: "
+			// System.out.println("iContentVAID before clustering " + iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
-			// for (int i = 0; i < 50; i++)
-			// {
+			// for (int i = 0; i < 50; i++) {
 			// System.out.print(set.getVA(iContentVAID).get(i) + " ");
 			// }
 			// System.out.println(" ");
 
 			iContentVAID = set.cluster(iContentVAID, iStorageVAID, bClusterHierarchical);
 
-			// System.out.println("iContentVAID after clustering  " +
-			// iContentVAID + " size: "
+			// System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
-			// for (int i = 0; i < 50; i++)
-			// {
+			// for (int i = 0; i < 50; i++) {
 			// System.out.print(set.getVA(iContentVAID).get(i) + " ");
 			// }
 			// System.out.println(" ");
 
-			// for (Integer iter : set.getAlClusterSizes())
-			// {
-			// System.out.print(iter + " ");
-			// }
-
 			if (bClusterHierarchical == true) {
-				graphRoot = set.getClusteredGraph();
+				treeStructure = set.getTreeStructure();
+				// graphRoot = set.getClusteredGraph();
+			}
+			else {
+				// System.out.println("\nnumber of elements per cluster ... ");
+				// for (Integer iter : set.getAlClusterSizes()) {
+				// System.out.print(iter + " ");
+				// }
+				// System.out.println("\nindex of example for cluster in data set ... ");
+				// for (Integer iter : set.getAlExamples()) {
+				// System.out.print(iter + " ");
+				// }
+				// System.out.println(" ");
 			}
 		}
 
@@ -1729,13 +1862,6 @@ public class GLHierarchicalHeatMap
 		}
 
 		// vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
-
-		// Handling action ResetView in hierarchical heatmap
-		// iSelectorBar = 1;
-		// initPosCursor();
-		// AlSelection.clear();
-		// triggerSelectionBlock();
-		// glHeatMapView.setDisplayListDirty();
 
 	}
 
@@ -1903,10 +2029,14 @@ public class GLHierarchicalHeatMap
 			case DENDROGRAM_SELECTION:
 				switch (pickingMode) {
 
-					case MOUSE_OVER:
-
-						System.out.println("nodeNr: " + iExternalID);
+					case CLICKED:
+						Nodes[iExternalID].bSelected = true;
 						break;
+
+					case MOUSE_OVER:
+						System.out.println("node " + Nodes[iExternalID].Nodename);
+						break;
+
 				}
 
 				pickingManager.flushHits(iUniqueID, ePickingType);

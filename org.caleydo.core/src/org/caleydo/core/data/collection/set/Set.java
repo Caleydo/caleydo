@@ -21,6 +21,8 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.CNode;
+import org.caleydo.core.util.clusterer.Node;
+import org.caleydo.core.util.clusterer.TreeClusterer;
 import org.caleydo.util.graph.IGraph;
 
 /**
@@ -57,6 +59,8 @@ public class Set
 	private HashMap<Integer, IGraph> hashVAIdToGraph;
 	private CNode clusteredGraph = null;
 	private ArrayList<Integer> alClusterSizes = null;
+	private ArrayList<Integer> alClusterExamples = null;
+	private Node[] treeStructure = null;
 
 	private EExternalDataRepresentation externalDataRep;
 
@@ -473,22 +477,41 @@ public class Set
 			// throw new IllegalStateException("Problems during clustering!!");
 			// }
 
-			AffinityClusterer clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
+			if (bHierarchicalClustering) {
+				TreeClusterer clusterer = new TreeClusterer(getVA(iVAIdContent).size());
 
-			// System.out.println("determineSimilarities in progress ... ");
-			// tic = System.currentTimeMillis();
-			clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
-			// toc = System.currentTimeMillis();
-			// duration = (toc - tic) / 1000;
-			// System.out.println("determineSimilarities duration: ~" + duration + "sec");
+				System.out.println("determineSimilarities in progress ... ");
+				tic = System.currentTimeMillis();
+				clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
+				toc = System.currentTimeMillis();
+				duration = (toc - tic) / 1000;
+				System.out.println("determineSimilarities duration: ~" + duration + "sec");
 
-			System.out.println("affinityPropagation in progress ... ");
-			tic = System.currentTimeMillis();
-			VAId = clusterer.affinityPropagation(this);
-			toc = System.currentTimeMillis();
-			duration = (toc - tic) / 1000;
-			System.out.println("affinityPropagation duration: ~" + duration + "sec");
+				System.out.println("treeClustering in progress ... ");
+				tic = System.currentTimeMillis();
+				VAId = clusterer.pmlcluster(this);
+				toc = System.currentTimeMillis();
+				duration = (toc - tic) / 1000;
+				System.out.println("treeClustering duration: ~" + duration + "sec");
+			}
+			else {
+				AffinityClusterer clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
 
+				System.out.println("determineSimilarities in progress ... ");
+				tic = System.currentTimeMillis();
+				clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
+				toc = System.currentTimeMillis();
+				duration = (toc - tic) / 1000;
+				System.out.println("determineSimilarities duration: ~" + duration + "sec");
+
+				System.out.println("affinityPropagation in progress ... ");
+				tic = System.currentTimeMillis();
+				VAId = clusterer.affinityPropagation(this);
+				toc = System.currentTimeMillis();
+				duration = (toc - tic) / 1000;
+				System.out.println("affinityPropagation duration: ~" + duration + "sec");
+
+			}
 			IVirtualArray virtualArray = getVA(VAId);
 			hashSetVAs.put(virtualArray.getID(), virtualArray);
 
@@ -514,5 +537,23 @@ public class Set
 
 	public ArrayList<Integer> getAlClusterSizes() {
 		return alClusterSizes;
+	}
+
+	public void setTreeStructure(Node[] treeStructure) {
+		this.treeStructure = treeStructure;
+	}
+
+	public Node[] getTreeStructure() {
+		return treeStructure;
+	}
+
+	@Override
+	public ArrayList<Integer> getAlExamples() {
+		return alClusterExamples;
+	}
+
+	@Override
+	public void setAlExamples(ArrayList<Integer> alExamples) {
+		this.alClusterExamples = alExamples;
 	}
 }

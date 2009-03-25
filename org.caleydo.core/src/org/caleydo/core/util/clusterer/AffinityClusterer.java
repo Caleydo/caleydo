@@ -1,7 +1,6 @@
 package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -10,19 +9,19 @@ import org.caleydo.core.data.selection.IVirtualArray;
 // http://www.psi.toronto.edu/affinitypropagation/
 
 public class AffinityClusterer {
-	private double[] s = null;
+	private float[] s = null;
 	private int[] i = null;
 	private int[] k = null;
 
-	private double dLambda = 0.5;
+	private float dLambda = 0.5f;
 
 	private int iNrClusters = 0;
 
 	private int iMaxIterations = 400;
 
-	private int iConvIterations = 20;
+	private int iConvIterations = 30;
 
-	private double dClusterFactor = 5.0;
+	private float fClusterFactor = 4.0f;
 
 	private int iNrSamples = 0;
 
@@ -31,83 +30,9 @@ public class AffinityClusterer {
 	public AffinityClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
 		this.iNrSimilarities = iNrSamples * iNrSamples;
-		this.s = new double[this.iNrSimilarities];
+		this.s = new float[this.iNrSimilarities];
 		this.i = new int[this.iNrSimilarities];
 		this.k = new int[this.iNrSimilarities];
-	}
-
-	/**
-	 * Calculates the euclidean distance for given vectors (double arrays)
-	 * 
-	 * @param dAr1
-	 * @param dAr2
-	 * @return double euclidean distance
-	 */
-	private double euclideanDistance(double[] dAr1, double[] dAr2) {
-		double distance = 0;
-		double sum = 0;
-
-		if (dAr1.length != dAr2.length) {
-			System.out.println("length of vectors not equal!");
-			return 0;
-		}
-
-		for (int i = 0; i < dAr1.length; i++) {
-			sum = sum + Math.pow(dAr1[i] - dAr2[i], 2);
-		}
-
-		distance = Math.sqrt(sum);
-
-		// return negative euclidean distance
-		return -distance;
-	}
-
-	/**
-	 * Calculates the median for a given vector (double array)
-	 * 
-	 * @param dArray
-	 * @return double median
-	 */
-	private double median(double[] dArray) {
-
-		double median = 0;
-		double[] temp = new double[dArray.length];
-
-		for (int i = 0; i < temp.length; i++) {
-			temp[i] = dArray[i];
-		}
-
-		Arrays.sort(temp);
-
-		if ((temp.length % 2) == 0) {
-			median =
-				(temp[(int) Math.floor(temp.length / 2)] + temp[(int) Math.floor((temp.length + 1) / 2)]) / 2;
-		}
-		else {
-			median = temp[(int) Math.floor((temp.length + 1) / 2)];
-		}
-
-		// return median
-		return median * dClusterFactor;
-	}
-
-	/**
-	 * Calculates the minimum for a given vector (double array)
-	 * 
-	 * @param dArray
-	 * @return double minimum
-	 */
-	private double minimum(double[] dArray) {
-		double[] temp = new double[dArray.length];
-
-		for (int i = 0; i < temp.length; i++) {
-			temp[i] = dArray[i];
-		}
-
-		Arrays.sort(temp);
-
-		// return minimum
-		return temp[0];
 	}
 
 	/**
@@ -122,8 +47,8 @@ public class AffinityClusterer {
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
-		double[] dArInstance1 = new double[storageVA.size()];
-		double[] dArInstance2 = new double[storageVA.size()];
+		float[] dArInstance1 = new float[storageVA.size()];
+		float[] dArInstance2 = new float[storageVA.size()];
 
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int count = 0;
@@ -148,9 +73,9 @@ public class AffinityClusterer {
 				}
 
 				if (icnt1 != icnt2) {
-					s[count] = euclideanDistance(dArInstance1, dArInstance2);
-					i[count] = iContentIndex1 - 1;
-					k[count] = iContentIndex2 - 1;
+					s[count] = -ClusterHelper.euclideanDistance(dArInstance1, dArInstance2);
+					i[count] = iContentIndex1 - 0;
+					k[count] = iContentIndex2 - 0;
 					count++;
 				}
 				icnt2++;
@@ -159,17 +84,16 @@ public class AffinityClusterer {
 		}
 
 		// determine median of the similarity values
-		double median = median(s);
+		float median = ClusterHelper.median(s);
 
 		for (Integer iContentIndex1 : contentVA) {
-			s[count] = median;
-			i[count] = iContentIndex1 - 1;
-			k[count] = iContentIndex1 - 1;
+			s[count] = median * fClusterFactor;
+			i[count] = iContentIndex1 - 0;
+			k[count] = iContentIndex1 - 0;
 			count++;
 		}
 
 		System.out.println(" ");
-		// System.out.println("icnt: " + icnt1 + " isto: " + isto);
 	}
 
 	/**
@@ -183,24 +107,24 @@ public class AffinityClusterer {
 	public Integer affinityPropagation(ISet set) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
-		// Arraylist holding indeces of examples (cluster centers)
+		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
-		// Arraylist holding # of elements per cluster
+		// Arraylist holding number of elements per cluster
 		ArrayList<Integer> count = new ArrayList<Integer>();
 
 		int iNrIterations = 0, decit = iConvIterations;
 		boolean bIterate = true;
 		boolean bConverged = false;
-		double[] mx1 = new double[iNrSamples];
-		double[] mx2 = new double[iNrSamples];
-		double[] srp = new double[iNrSamples];
-		double[] decsum = new double[iNrSamples];
+		float[] mx1 = new float[iNrSamples];
+		float[] mx2 = new float[iNrSamples];
+		float[] srp = new float[iNrSamples];
+		float[] decsum = new float[iNrSamples];
 		int[] idx = new int[iNrSamples];
 		int[][] dec = new int[iConvIterations][iNrSamples];
-		double tmp = 0;
+		float tmp = 0;
 		int j = 0;
-		double[] dArResposibilities = new double[iNrSimilarities];
-		double[] dArAvailabilities = new double[iNrSimilarities];
+		float[] dArResposibilities = new float[iNrSimilarities];
+		float[] dArAvailabilities = new float[iNrSimilarities];
 
 		// add noise to similarities
 		// for (int m = 0; m < s.length; m++)
@@ -214,8 +138,8 @@ public class AffinityClusterer {
 
 			// Compute responsibilities
 			for (j = 0; j < iNrSamples; j++) {
-				mx1[j] = -Double.MAX_VALUE;
-				mx2[j] = -Double.MAX_VALUE;
+				mx1[j] = -Float.MAX_VALUE;
+				mx2[j] = -Float.MAX_VALUE;
 			}
 			for (j = 0; j < iNrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
@@ -307,13 +231,13 @@ public class AffinityClusterer {
 		if (iNrClusters > 0) {
 			for (j = 0; j < iNrSimilarities; j++)
 				if (dec[decit][k[j]] == 1) {
-					dArAvailabilities[j] = 0.0;
+					dArAvailabilities[j] = 0.0f;
 				}
 				else {
-					dArAvailabilities[j] = -Double.MAX_VALUE;
+					dArAvailabilities[j] = -Float.MAX_VALUE;
 				}
 			for (j = 0; j < iNrSamples; j++) {
-				mx1[j] = -Double.MAX_VALUE;
+				mx1[j] = -Float.MAX_VALUE;
 			}
 			for (j = 0; j < iNrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
@@ -327,14 +251,14 @@ public class AffinityClusterer {
 					idx[j] = j;
 				}
 			for (j = 0; j < iNrSamples; j++) {
-				srp[j] = 0.0;
+				srp[j] = 0.0f;
 			}
 			for (j = 0; j < iNrSimilarities; j++)
 				if (idx[i[j]] == idx[k[j]]) {
 					srp[k[j]] = srp[k[j]] + s[j];
 				}
 			for (j = 0; j < iNrSamples; j++) {
-				mx1[j] = -Double.MAX_VALUE;
+				mx1[j] = -Float.MAX_VALUE;
 			}
 			for (j = 0; j < iNrSamples; j++)
 				if (srp[j] > mx1[idx[j]]) {
@@ -349,13 +273,13 @@ public class AffinityClusterer {
 				}
 			for (j = 0; j < iNrSimilarities; j++)
 				if (dec[decit][k[j]] == 1) {
-					dArAvailabilities[j] = 0.0;
+					dArAvailabilities[j] = 0.0f;
 				}
 				else {
-					dArAvailabilities[j] = -Double.MAX_VALUE;
+					dArAvailabilities[j] = -Float.MAX_VALUE;
 				}
 			for (j = 0; j < iNrSamples; j++) {
-				mx1[j] = -Double.MAX_VALUE;
+				mx1[j] = -Float.MAX_VALUE;
 			}
 			for (j = 0; j < iNrSimilarities; j++) {
 				tmp = dArAvailabilities[j] + s[j];
@@ -369,13 +293,13 @@ public class AffinityClusterer {
 					idx[j] = j;
 					alExamples.add(j);
 				}
-			System.out.println("Number of identified clusters: " + iNrClusters);
-			System.out.println("Number of iterations: " + iNrIterations);
+			// System.out.println("Number of identified clusters: " + iNrClusters);
+			// System.out.println("Number of iterations: " + iNrIterations);
 		}
 		else
 			throw new IllegalStateException("Did not identify any clusters!!");
 		if (bConverged == false)
-			throw new IllegalStateException("Algorithm did not converg!!");
+			throw new IllegalStateException("Algorithm did not converge!!");
 
 		for (int i = 0; i < alExamples.size(); i++) {
 			count.add(0);
@@ -385,7 +309,7 @@ public class AffinityClusterer {
 		for (Integer index : alExamples) {
 			for (int index2 = 0; index2 < iNrSamples; index2++) {
 				if (idx[index2] == index) {
-					AlIndexes.add(index2 + 1);
+					AlIndexes.add(index2);
 					count.set(counter, count.get(counter) + 1);
 				}
 			}
@@ -394,25 +318,20 @@ public class AffinityClusterer {
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 		set.setAlClusterSizes(count);
+		set.setAlExamples(alExamples);
 
 		return clusteredVAId;
 	}
-
-	// public void setNrCluteres(int iNrClusters)
-	// {
-	// this.iNrClusters = iNrClusters;
-	// }
 
 	public int getNrCluteres() {
 		return iNrClusters;
 	}
 
-	public void setClusterFactor(double dClusterFactor) {
-		this.dClusterFactor = dClusterFactor;
+	public void setClusterFactor(float dClusterFactor) {
+		this.fClusterFactor = dClusterFactor;
 	}
 
-	// public double getClusterFactor()
-	// {
-	// return dClusterFactor;
-	// }
+	public float getClusterFactor() {
+		return fClusterFactor;
+	}
 }

@@ -9,6 +9,7 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.SetIterator;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.CNode;
+import org.caleydo.core.util.clusterer.Node;
 
 /**
  * Interface for Sets
@@ -274,7 +275,7 @@ public interface ISet
 	public void setClusteredGraph(CNode clusteredGraph);
 
 	/**
-	 * Returns cluster sizes
+	 * Returns cluster sizes, determined by affinity clusterer
 	 * 
 	 * @param
 	 * @return CNode
@@ -282,10 +283,29 @@ public interface ISet
 	public ArrayList<Integer> getAlClusterSizes();
 
 	/**
-	 * Sets cluster sizes
+	 * Sets cluster sizes, used by affinity clusterer
 	 * 
 	 * @param CNode
 	 */
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes);
+	
+	/**
+	 * Returns cluster examples, determined by affinity clusterer
+	 * 
+	 * @param
+	 * @return CNode
+	 */
+	public ArrayList<Integer> getAlExamples();
 
+	/**
+	 * Sets cluster examples, used by affinity clusterer
+	 * 
+	 * @param CNode
+	 */
+	public void setAlExamples(ArrayList<Integer> alExamples);
+
+	public void setTreeStructure(Node[] treeStructure) ;
+
+	public Node[] getTreeStructure();
+	
 }
