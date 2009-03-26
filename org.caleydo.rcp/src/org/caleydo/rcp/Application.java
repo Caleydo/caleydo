@@ -244,7 +244,9 @@ public class Application
 				bDoExit = true;
 			}
 		}
-		else if (applicationMode == EApplicationMode.STANDARD && sCaleydoXMLfile.isEmpty()) {
+		else if (applicationMode == EApplicationMode.STANDARD
+			&& sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE)) {
+			
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell));
 
