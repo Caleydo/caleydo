@@ -7,8 +7,10 @@ import gleem.linalg.open.Transform;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 import javax.media.opengl.GL;
@@ -1917,9 +1919,11 @@ public class GLRemoteRendering
 	 * @param iPathwayIDToLoad
 	 */
 	public synchronized void addPathwayView(final int iPathwayIDToLoad) {
-		SerializedPathwayView serPathway = new SerializedPathwayView();
-		serPathway.setPathwayID(iPathwayIDToLoad);
-		newViews.add(serPathway);
+		if (!generalManager.getPathwayManager().isPathwayVisible(iPathwayIDToLoad)) {
+			SerializedPathwayView serPathway = new SerializedPathwayView();
+			serPathway.setPathwayID(iPathwayIDToLoad);
+			newViews.add(serPathway);
+		}
 		// iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
 	}
 
@@ -1930,11 +1934,8 @@ public class GLRemoteRendering
 		Iterator<ICaleydoGraphItem> iterPathwayGraphItem = alVertex.iterator();
 		Iterator<IGraphItem> iterIdenticalPathwayGraphItemRep = null;
 
-		IGraphItem pathwayGraphItem;
-		int iPathwayID = 0;
-
 		while (iterPathwayGraphItem.hasNext()) {
-			pathwayGraphItem = iterPathwayGraphItem.next();
+			IGraphItem pathwayGraphItem = iterPathwayGraphItem.next();
 
 			if (pathwayGraphItem == null) {
 				// generalManager.logMsg(
@@ -1947,17 +1948,18 @@ public class GLRemoteRendering
 			iterIdenticalPathwayGraphItemRep =
 				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
 
+			// set to avoid duplicate pathways
+			Set<Integer> newPathwayIDs = new HashSet<Integer>();
 			while (iterIdenticalPathwayGraphItemRep.hasNext()) {
-				iPathwayID =
+				int pathwayID =
 					((PathwayGraph) iterIdenticalPathwayGraphItemRep.next().getAllGraphByType(
 						EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
-
-				// Only add pathway if it is not loaded yet
-				if (!generalManager.getPathwayManager().isPathwayVisible(iPathwayID)) {
-					SerializedPathwayView serPathway = new SerializedPathwayView();
-					serPathway.setPathwayID(iPathwayID);
-					newViews.add(serPathway);
-				}
+				newPathwayIDs.add(pathwayID);
+			}
+			
+			// add new pathways to bucket 
+			for (int pathwayID : newPathwayIDs) {
+				addPathwayView(pathwayID);
 			}
 		}
 
