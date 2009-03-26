@@ -2629,6 +2629,7 @@ public class GLRemoteRendering
 				if (newViews.isEmpty()) {
 					enableUserInteraction();
 				}
+				iAlContainedViewIDs.add(view.getID());
 			}
 		}
 	}
