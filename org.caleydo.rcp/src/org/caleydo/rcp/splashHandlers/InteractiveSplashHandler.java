@@ -27,8 +27,8 @@ public class InteractiveSplashHandler
 		super.init(splash);
 
 		// // TODO: remove this when webstart splash bug is solved
-		// if (Application.bIsWebstart)
-		// return;
+		 if (Application.bIsWebstart)
+			 return;
 
 		// Create UI
 		createUI();
@@ -85,13 +85,13 @@ public class InteractiveSplashHandler
 		brandingLabelMUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelMUGNames = new Label(splash, SWT.NONE);
-		brandingLabelMUGNames.setText("Heimo Müller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
+		brandingLabelMUGNames.setText("Heimo Mï¿½ller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
 		brandingLabelMUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
 		brandingLabelMUGNames.setBounds(20, 310, 300, 14);
 		brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label copyrightLabel = new Label(splash, SWT.NONE);
-		copyrightLabel.setText("© 2005 - 2009 - www.caleydo.org");
+		copyrightLabel.setText("ï¿½ 2005 - 2009 - www.caleydo.org");
 		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		copyrightLabel.setBounds(390, 310, 175, 14);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));

@@ -244,7 +244,15 @@ public class Application
 				bDoExit = true;
 			}
 		}
+		else if (applicationMode == EApplicationMode.STANDARD) {
+			WizardDialog dataImportWizard =
+				new WizardDialog(shell, new DataImportWizard(shell));
 
+			if (Window.CANCEL == dataImportWizard.open()) {
+				bDoExit = true;
+			}
+		}
+		
 		initializeColorMapping();
 		// initializeViewSettings();
 
@@ -280,15 +288,15 @@ public class Application
 		if (alStartViews.isEmpty()) {
 			alStartViews.add(EStartViewType.BROWSER);
 
-			// Only show bucket when pathway data is loaded
-			if (bLoadPathwayData) {
-				alStartViews.add(EStartViewType.REMOTE);
-			}
-
 			if (applicationMode != EApplicationMode.PATHWAY_VIEWER) {
 				// alStartViews.add(EStartViewType.TABULAR);
 				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
 				alStartViews.add(EStartViewType.HEATMAP);
+			}
+			
+			// Only show bucket when pathway data is loaded
+			if (bLoadPathwayData) {
+				alStartViews.add(EStartViewType.REMOTE);
 			}
 		}
 		else {
