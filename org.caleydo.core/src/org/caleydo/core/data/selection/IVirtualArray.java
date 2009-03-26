@@ -195,9 +195,34 @@ public interface IVirtualArray
 	 * occurrences, 0 if it does not occur.
 	 * 
 	 * @param iElement
-	 *            the lement to be checked
+	 *            the element to be checked
 	 * @return the number of occurences
 	 */
 	public int containsElement(int iElement);
 
+	/**
+	 * Generates a new group list with only one group which contains all elements in the virtual array. If a
+	 * list already exists it will be overwritten. Returns the new group list or null if no group list can be
+	 * generated.
+	 * 
+	 * @return the new group list
+	 */
+	public IGroupList newGroupList();
+
+	/**
+	 * Returns the group list. If no group list exits null will be returned.
+	 * 
+	 * @param
+	 * @return the group list
+	 */
+	public IGroupList getGroupList();
+
+	/**
+	 * Sets group list in VA, used especially by affinity clusterer.
+	 * 
+	 * @param groupList
+	 *            new group list
+	 * @return true if operation executed correctly otherwise false
+	 */
+	public boolean setGroupList(IGroupList groupList);
 }

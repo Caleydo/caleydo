@@ -14,7 +14,12 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.GroupList;
+import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.VAIterator;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -513,6 +518,21 @@ public class Set
 
 			}
 			IVirtualArray virtualArray = getVA(VAId);
+
+			IGroupList groupList = new GroupList();
+			groupList.setVA(virtualArray.getIndexList());
+
+			if (bHierarchicalClustering == false) {
+				ArrayList<Integer> examples = getAlExamples();
+				int cnt = 0;
+				for (Integer iter : getAlClusterSizes()) {
+					Group temp = new Group(iter, false, examples.get(cnt), ESelectionType.NORMAL);
+					groupList.append(temp);
+					cnt++;
+				}
+			}
+			virtualArray.setGroupList(groupList);
+
 			hashSetVAs.put(virtualArray.getID(), virtualArray);
 
 			return VAId;

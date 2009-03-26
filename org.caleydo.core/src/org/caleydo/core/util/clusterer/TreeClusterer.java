@@ -381,7 +381,7 @@ public class TreeClusterer {
 
 	public void sort(int n, double data[], ArrayList<Integer> indexes) {
 
-		int f, i;
+		int f, i, iTemp;
 		double temp;
 
 		// for (int z = 0; z < indexes.size(); z++) {
@@ -398,6 +398,7 @@ public class TreeClusterer {
 			if (data[f] > data[f - 1])
 				continue;
 			temp = data[f];
+			iTemp = indexes.get(f);
 			i = f - 1;
 			while ((i >= 0) && (data[i] > temp)) {
 				data[i + 1] = data[i];
@@ -405,9 +406,9 @@ public class TreeClusterer {
 				i--;
 			}
 			data[i + 1] = temp;
-			indexes.set(i + 1, f);
+			indexes.set(i + 1, iTemp);
 		}
-
+	
 		// for (int z = 0; z < indexes.size(); z++) {
 		// System.out.print(indexes.get(z) + " ");
 		// }

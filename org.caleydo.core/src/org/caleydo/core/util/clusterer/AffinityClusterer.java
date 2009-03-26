@@ -27,12 +27,17 @@ public class AffinityClusterer {
 
 	private int iNrSimilarities = 0;
 
+	private int iVAIdContent = 0;
+	private int iVAIdStorage = 0;
+
 	public AffinityClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
 		this.iNrSimilarities = iNrSamples * iNrSamples;
 		this.s = new float[this.iNrSimilarities];
 		this.i = new int[this.iNrSimilarities];
 		this.k = new int[this.iNrSimilarities];
+		this.iVAIdContent = 0;
+		this.iVAIdStorage = 0;
 	}
 
 	/**
@@ -44,6 +49,10 @@ public class AffinityClusterer {
 	 * @return
 	 */
 	public void determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage) {
+
+		this.iVAIdContent = iVAIdContent;
+		this.iVAIdStorage = iVAIdStorage;
+
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
@@ -305,6 +314,10 @@ public class AffinityClusterer {
 			count.add(0);
 		}
 
+		// Sort cluster depending on their color values
+		// TODO find a better solution for sorting
+		sortClusters(set, alExamples);
+
 		int counter = 0;
 		for (Integer index : alExamples) {
 			for (int index2 = 0; index2 < iNrSamples; index2++) {
@@ -317,13 +330,52 @@ public class AffinityClusterer {
 		}
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+
 		set.setAlClusterSizes(count);
 		set.setAlExamples(alExamples);
 
 		return clusteredVAId;
 	}
 
-	public int getNrCluteres() {
+	private void sortClusters(ISet set, ArrayList<Integer> examples) {
+
+		IVirtualArray storageVA = set.getVA(iVAIdStorage);
+
+		int iNrExamples = examples.size();
+
+		int icontent = 0;
+		float[] fColorSum = new float[iNrExamples];
+
+		for (Integer iContentIndex1 : examples) {
+
+			for (Integer iStorageIndex1 : storageVA) {
+				fColorSum[icontent] +=
+					set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+			}
+			icontent++;
+		}
+
+		float temp;
+		int iTemp;
+		int i = 0;
+
+		for (int f = 1; f < iNrExamples; f++) {
+			if (fColorSum[f] > fColorSum[f - 1])
+				continue;
+			temp = fColorSum[f];
+			iTemp = examples.get(f);
+			i = f - 1;
+			while ((i >= 0) && (fColorSum[i] > temp)) {
+				fColorSum[i + 1] = fColorSum[i];
+				examples.set(i + 1, examples.get(i));
+				i--;
+			}
+			fColorSum[i + 1] = temp;
+			examples.set(i + 1, iTemp);
+		}
+	}
+
+	public int getNrClusters() {
 		return iNrClusters;
 	}
 

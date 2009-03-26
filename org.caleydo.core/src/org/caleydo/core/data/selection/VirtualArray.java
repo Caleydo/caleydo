@@ -21,6 +21,8 @@ public class VirtualArray
 {
 	ArrayList<Integer> iAlVirtualArray;
 
+	IGroupList iGroupList = null;
+	
 	int iLength;
 	/**
 	 * Used to check whether elements to be removed are in descending order
@@ -257,6 +259,27 @@ public class VirtualArray
 		for (int iCount = 0; iCount < iLength; iCount++) {
 			iAlVirtualArray.add(iCount);
 		}
+	}
+
+	@Override
+	public IGroupList getGroupList() {
+		return iGroupList;
+	}
+
+	@Override
+	public IGroupList newGroupList() {
+		
+		this.iGroupList = new GroupList(this.getIndexList());
+		
+		return iGroupList;
+	}
+
+	@Override
+	public boolean setGroupList(IGroupList groupList) {
+
+		this.iGroupList = groupList;
+		
+		return true;
 	}
 
 }
