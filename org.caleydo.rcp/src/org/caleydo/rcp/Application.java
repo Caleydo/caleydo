@@ -244,7 +244,7 @@ public class Application
 				bDoExit = true;
 			}
 		}
-		else if (applicationMode == EApplicationMode.STANDARD) {
+		else if (applicationMode == EApplicationMode.STANDARD && sCaleydoXMLfile.isEmpty()) {
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell));
 
@@ -286,8 +286,9 @@ public class Application
 	private static void openRCPViews() {
 		// Create view list dynamically when not specified via the command line
 		if (alStartViews.isEmpty()) {
-			alStartViews.add(EStartViewType.BROWSER);
 
+			alStartViews.add(EStartViewType.BROWSER);
+			
 			if (applicationMode != EApplicationMode.PATHWAY_VIEWER) {
 				// alStartViews.add(EStartViewType.TABULAR);
 				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
