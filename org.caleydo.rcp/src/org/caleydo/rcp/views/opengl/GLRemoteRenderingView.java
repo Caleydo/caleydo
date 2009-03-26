@@ -5,7 +5,10 @@ import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.ser.SerializedHeatMapView;
+import org.caleydo.core.view.ser.SerializedParallelCoordinatesView;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
@@ -40,9 +43,14 @@ public class GLRemoteRenderingView
 		// Only create parcoords and heatmap if the application is NOT in
 		// pathway viewer mode
 		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER) {
-			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1, true));
-			iAlContainedViewIDs.add(createGLEventListener(
-				ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true));
+/*
+			AGLEventListener heatmap = createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1, true); 
+			iAlContainedViewIDs.add(heatmap.getID());
+			
+			AGLEventListener parcoords = createGLEventListener(
+				ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true);
+			iAlContainedViewIDs.add(parcoords.getID());
+*/
 			// iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL,
 			// -1, true));
 
@@ -50,8 +58,12 @@ public class GLRemoteRenderingView
 			// should be added to bucket.
 			try {
 				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true));
-				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true));
+
+				AGLEventListener glyph1 = createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true);
+				iAlContainedViewIDs.add(glyph1.getID());
+
+				AGLEventListener glyph2 = createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true);
+				iAlContainedViewIDs.add(glyph2.getID());
 			}
 			catch (IllegalArgumentException e) {
 				GeneralManager.get().getLogger().log(Level.WARNING,
@@ -59,8 +71,13 @@ public class GLRemoteRenderingView
 			}
 		}
 
-		createGLRemoteEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true,
-			iAlContainedViewIDs);
+		GLRemoteRendering bucket = (GLRemoteRendering) createGLRemoteEventListener(
+			ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
+
+		SerializedHeatMapView heatMap = new SerializedHeatMapView();
+		bucket.addInitialRemoteView(heatMap);
+		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
+		bucket.addInitialRemoteView(parCoords);
 	}
 
 	public static void createToolBarItems(int iViewID) {

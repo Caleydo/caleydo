@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="askclear" value="false"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<booleanAttribute key="clearConfig" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
+<booleanAttribute key="clearwslog" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP - Collab"/>
+<booleanAttribute key="default" value="false"/>
+<booleanAttribute key="includeOptional" value="false"/>
+<stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.rcp.product"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml remote"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties -Xss16384k"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="product" value="org.caleydo.rcp.product"/>
+<stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
+<booleanAttribute key="restart" value="false"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.core.runtime,org.eclipse.ui,org.eclipse.equinox.app,org.eclipse.core.jobs,org.eclipse.jface,org.eclipse.core.contenttype,org.eclipse.core.expressions,com.ibm.icu,org.eclipse.jface.databinding,org.eclipse.equinox.common,org.eclipse.rcp,org.eclipse.swt,org.eclipse.osgi,org.eclipse.ui.workbench,org.eclipse.equinox.registry,org.eclipse.core.commands,org.eclipse.core.runtime.compatibility.registry,org.eclipse.core.databinding,org.eclipse.swt.win32.win32.x86,org.eclipse.equinox.preferences,org.eclipse.help"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfig" value="true"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<booleanAttribute key="useProduct" value="true"/>
+<booleanAttribute key="usefeatures" value="false"/>
+</launchConfiguration>

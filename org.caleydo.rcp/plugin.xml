@@ -140,6 +140,12 @@
             id="org.caleydo.rcp.views.GLHyperbolicView"
             name="Hyperbolic">
       </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.swt.CollabView"
+            id="org.caleydo.rcp.views.swt.CollabView"
+            name="Testing">
+      </view>
 
       
    </extension>   
@@ -283,6 +289,12 @@
             id="org.caleydo.rcp.command.load_data"
             name="Load Data">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenCollabHandler"
+            id="org.caleydo.rcp.command.open_collab"
+            name="Load Data">
+      </command>
+      		
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -422,6 +434,12 @@
                      name="org.eclipse.ui.views.showView.viewId"
                      value="org.eclipse.pde.runtime.LogView">
                </parameter>
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.open_collab"
+                  label="Collaboration"
+                  mnemonic="T"
+                  style="push">
             </command>
          </menu>
          <menu

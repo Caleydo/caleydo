@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderSt
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
+import org.caleydo.core.view.swt.collab.CollabViewRep;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphDataExportViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
@@ -151,6 +152,9 @@ public class ViewManager
 				break;
 			case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
 				view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
+				break;
+			case VIEW_SWT_COLLAB:
+				view = new CollabViewRep(iParentContainerID, sLabel);
 				break;
 			default:
 				throw new RuntimeException("StorageManagerSimple.createView() failed due to unhandled type ["

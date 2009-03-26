@@ -64,7 +64,7 @@ public abstract class AGLViewPart
 	 *            true if you want this to listen and send to main mediator
 	 * @return the ID of the view
 	 */
-	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID,
+	protected AGLEventListener createGLEventListener(ECommandType glViewType, int iParentCanvasID,
 		boolean bRegisterToOverallMediator) {
 		IGeneralManager generalManager = GeneralManager.get();
 
@@ -92,7 +92,6 @@ public abstract class AGLViewPart
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
-		int iViewID = glView.getID();
 
 		if (iAlContainedViewIDs != null && glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
 			((GLRemoteRendering) glView).setInitialContainedViews(iAlContainedViewIDs);
@@ -101,10 +100,10 @@ public abstract class AGLViewPart
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
-		return iViewID;
+		return glView;
 	}
 
-	protected int createGLRemoteEventListener(ECommandType glViewType, int iParentCanvasID,
+	protected AGLEventListener createGLRemoteEventListener(ECommandType glViewType, int iParentCanvasID,
 		boolean bRegisterToOverallMediator, ArrayList<Integer> iAlContainedViewIDs) {
 		this.iAlContainedViewIDs = iAlContainedViewIDs;
 		return createGLEventListener(glViewType, iParentCanvasID, bRegisterToOverallMediator);

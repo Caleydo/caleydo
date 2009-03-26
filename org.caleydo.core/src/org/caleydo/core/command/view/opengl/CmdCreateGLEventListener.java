@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.ser.ISerializedView;
 
 /**
  * Command creates OpenGL views.
@@ -186,6 +187,27 @@ public class CmdCreateGLEventListener
 			.toRadians(fCamRotationAngle));
 	}
 
+	/**
+	 * Sets the attributes of this command according to the given serialized form.
+	 * Inherited classes should override this method to set the view depended attributes.
+	 * @param serView serialized form of the view to create
+	 */
+	public void setAttributesFromSerializedForm(ISerializedView serView) {
+		setViewFrustum(serView.getViewFrustum());
+	}
+
+	public void setParentCanvasID(int parentCanvasID) {
+		this.iParentContainerId = parentCanvasID;
+	}
+	
+	public void setSetIDs(ArrayList<Integer> setIDs) {
+		this.iAlSetIDs = setIDs;
+	}
+
+	public void setViewFrustum(ViewFrustum viewFrustum) {
+		this.viewFrustum = viewFrustum;
+	}
+	
 	@Override
 	public void doCommand() {
 
@@ -220,4 +242,5 @@ public class CmdCreateGLEventListener
 	public void undoCommand() {
 		commandManager.runUndoCommand(this);
 	}
+
 }

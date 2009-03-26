@@ -6,6 +6,8 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
+import org.caleydo.core.view.ser.ISerializedView;
+import org.caleydo.core.view.ser.SerializedPathwayView;
 
 /**
  * Create single OpenGL pathway view.
@@ -22,6 +24,7 @@ public class CmdCreateGLPathway
 	 */
 	public CmdCreateGLPathway(final ECommandType cmdType) {
 		super(cmdType);
+		this.iExternalID = iUniqueID;
 	}
 
 	@Override
@@ -42,6 +45,17 @@ public class CmdCreateGLPathway
 		iParentContainerId = -1;
 	}
 
+	@Override
+	public void setAttributesFromSerializedForm(ISerializedView serView) {
+		super.setAttributesFromSerializedForm(serView);
+		SerializedPathwayView serPathway = (SerializedPathwayView) serView;
+		setPathwayID(serPathway.getPathwayID());
+	}
+
+	public void setPathwayID(int pathwayID) {
+		this.iPathwayID = pathwayID;
+	}
+	
 	@Override
 	public final void doCommand() {
 		super.doCommand();

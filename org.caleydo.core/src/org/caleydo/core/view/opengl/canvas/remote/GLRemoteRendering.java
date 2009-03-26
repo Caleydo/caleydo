@@ -30,6 +30,8 @@ import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
@@ -71,6 +73,8 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
+import org.caleydo.core.view.ser.ISerializedView;
+import org.caleydo.core.view.ser.SerializedPathwayView;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -126,7 +130,9 @@ public class GLRemoteRendering
 
 	private boolean bEnableNavigationOverlay = false;
 
-	private ArrayList<Integer> iAlUninitializedPathwayIDs;
+	// Werner Puff, 2009-03-26
+	// replaced initNewPathway by several more generic methods, that work with different kind of views
+	// private ArrayList<Integer> iAlUninitializedPathwayIDs;
 
 	private TextRenderer textRenderer;
 
@@ -162,6 +168,8 @@ public class GLRemoteRendering
 
 	private boolean bRightMouseClickEventInvalid = false;
 
+	private ArrayList<ISerializedView> newViews;
+	
 	/**
 	 * Constructor.
 	 */
@@ -226,7 +234,8 @@ public class GLRemoteRendering
 
 		arSlerpActions = new ArrayList<SlerpAction>();
 
-		iAlUninitializedPathwayIDs = new ArrayList<Integer>();
+		// iAlUninitializedPathwayIDs = new ArrayList<Integer>();
+		newViews = new ArrayList<ISerializedView>();
 
 		createEventMediator();
 
@@ -440,7 +449,7 @@ public class GLRemoteRendering
 		}
 
 		doSlerpActions(gl);
-		initializeNewPathways(gl);
+		initNewView(gl);
 
 		if (!generalManager.isWiiModeActive()) {
 			renderRemoteLevel(gl, focusLevel);
@@ -570,7 +579,7 @@ public class GLRemoteRendering
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
 		}
 
-		if (!iAlUninitializedPathwayIDs.isEmpty()) {
+		if (!newViews.isEmpty()) {
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
 		}
 
@@ -1893,12 +1902,22 @@ public class GLRemoteRendering
 	}
 
 	/**
-	 * Add pathway view. Also used when serialized pathways are loaded.
 	 * 
+	 */
+	@Override
+	public synchronized void addInitialRemoteView(ISerializedView serView) {
+		newViews.add(serView);
+	}
+	
+	/**
+	 * Add pathway view. Also used when serialized pathways are loaded.
 	 * @param iPathwayIDToLoad
 	 */
 	public synchronized void addPathwayView(final int iPathwayIDToLoad) {
-		iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
+		SerializedPathwayView serPathway = new SerializedPathwayView();
+		serPathway.setPathwayID(iPathwayIDToLoad);
+		newViews.add(serPathway);
+		// iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
 	}
 
 	public synchronized void loadDependentPathways(final List<ICaleydoGraphItem> alVertex) {
@@ -1932,13 +1951,16 @@ public class GLRemoteRendering
 
 				// Only add pathway if it is not loaded yet
 				if (!generalManager.getPathwayManager().isPathwayVisible(iPathwayID)) {
-					iAlUninitializedPathwayIDs.add(iPathwayID);
+					SerializedPathwayView serPathway = new SerializedPathwayView();
+					serPathway.setPathwayID(iPathwayID);
+					newViews.add(serPathway);
 				}
 			}
 		}
 
-		if (iAlUninitializedPathwayIDs.isEmpty())
+		if (newViews.isEmpty()) {
 			return;
+		}
 
 		// Disable picking until pathways are loaded
 		pickingManager.enablePicking(false);
@@ -2394,7 +2416,7 @@ public class GLRemoteRendering
 		enableBusyMode(false);
 		pickingManager.enablePicking(true);
 
-		iAlUninitializedPathwayIDs.clear();
+		newViews.clear();
 		arSlerpActions.clear();
 
 		generalManager.getPathwayManager().resetPathwayVisiblityState();
@@ -2588,110 +2610,195 @@ public class GLRemoteRendering
 		// do nothing
 	}
 
-	private synchronized void initializeNewPathways(final GL gl) {
-		// Init newly created pathways
-		// FIXME: this specialization to pathways in the bucket is not good!
-		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty()) {
-			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
+	/**
+	 * Adds new remote-rendered-views that have been queued for displaying to this view.
+	 * Only one view is taken from the list and added for remote rendering per call to this method.
+	 * @param GL   
+	 */
+	private synchronized void initNewView(GL gl) {
+		if (arSlerpActions.isEmpty()) {
+			if (!newViews.isEmpty()) {
+				ISerializedView serView = newViews.remove(0);
+				AGLEventListener view = createView(gl, serView);
+				addSlerpActionForView(gl, view);
+				if (newViews.isEmpty()) {
+					enableUserInteraction();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Adds a Slerp-Transition for a view. Usually this is used when a new view is
+	 * added to the bucket or 2 views change its position in the bucket.
+	 * @param gl 
+	 * @param view the view for which the slerp transition should be added 
+	 */
+	private void addSlerpActionForView(GL gl, AGLEventListener view) {
 
-			// Check if pathway is already loaded in bucket
-			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID)) {
-				ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
+		RemoteLevelElement origin = spawnLevel.getElementByPositionIndex(0);
+		origin.setContainedElementID(view.getID());
+		RemoteLevelElement destination = null;
 
-				for (ISet tmpSet : alSets) {
-					if (tmpSet.getSetType() != ESetType.GENE_EXPRESSION_DATA) {
-						continue;
-					}
+		if (focusLevel.hasFreePosition()) {
+			destination = focusLevel.getNextFree();
+			view.broadcastElements(EVAOperation.APPEND_UNIQUE);
+		} else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
+			destination = stackLevel.getNextFree();
+			view.broadcastElements(EVAOperation.APPEND_UNIQUE);
+		} else if (poolLevel.hasFreePosition()) {
+			destination = poolLevel.getNextFree();
+		} else {
+			generalManager.getLogger().log(Level.SEVERE, "No empty space left to add new pathway!");
+			newViews.clear();
+			enableUserInteraction();
+			return;
+		}
 
-					iAlSetIDs.add(tmpSet.getID());
+		SlerpAction slerpActionTransition = new SlerpAction(origin, destination);
+		arSlerpActions.add(slerpActionTransition);
+		view.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+		view.setDetailLevel(EDetailLevel.MEDIUM);
+	}
+	
+	/**
+	 * Creates and initializes a new view based on its serialized form. 
+	 * The view is already added to the list of event receivers and senders.
+	 * @param gl
+	 * @param serView serialized form of the view to create
+	 * @return the created view ready to be used within the application 
+	 */
+	private AGLEventListener createView(GL gl, ISerializedView serView) {
+
+		ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
+		for (ISet tmpSet : alSets) {
+			if (tmpSet.getSetType() != ESetType.GENE_EXPRESSION_DATA)
+				continue;
+			iAlSetIDs.add(tmpSet.getID());
+		}
+
+		ICommandManager cm = generalManager.getCommandManager();
+		ECommandType cmdType = serView.getCreationCommandType();
+		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) cm.createCommandByType(cmdType);
+		cmdView.setAttributesFromSerializedForm(serView);
+		cmdView.setSetIDs(iAlSetIDs);
+		cmdView.doCommand();
+		AGLEventListener glView = cmdView.getCreatedObject();
+		
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) glView);
+		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) glView);
+		triggerMostRecentDelta();
+
+		return glView;
+	}
+	
+	/**
+	 * Triggers the most recent user selection to the views. This is especially needed
+	 * to initialize new added views with the current selection information.
+	 */
+	private void triggerMostRecentDelta() {
+		// Trigger last delta to new views
+		if (lastSelectionDelta != null) {
+			triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+				lastSelectionDelta));
+		}
+	}
+
+	/** 
+	 * Enables picking and disables busy mode for remote views.
+	 */
+	public void enableUserInteraction() {
+		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
+		canvasManager.getPickingManager().enablePicking(true);
+	
+		for (AGLEventListener eventListener : canvasManager.getAllGLEventListeners()) {
+			if (!eventListener.isRenderedRemote()) {
+				eventListener.enableBusyMode(false);
+			}
+		}
+	}
+
+/*
+	private synchronized void initNewPathway(final GL gl, SerializedPathwayView pathway) {
+		int iTmpPathwayID = pathway.getPathwayID();
+		
+		// Check if pathway is already loaded in bucket
+		if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID)) {
+			ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
+
+			for (ISet tmpSet : alSets) {
+				if (tmpSet.getSetType() != ESetType.GENE_EXPRESSION_DATA) {
+					continue;
 				}
 
-				// Create Pathway3D view
-				CmdCreateGLPathway cmdPathway =
-					(CmdCreateGLPathway) generalManager.getCommandManager().createCommandByType(
-						ECommandType.CREATE_GL_PATHWAY_3D);
+				iAlSetIDs.add(tmpSet.getID());
+			}
 
-				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, EProjectionMode.ORTHOGRAPHIC, -4, 4, 4,
-					-4, -20, 20);
-				cmdPathway.doCommand();
+			// Create Pathway3D view
+			CmdCreateGLPathway cmdPathway =
+				(CmdCreateGLPathway) generalManager.getCommandManager().createCommandByType(
+					ECommandType.CREATE_GL_PATHWAY_3D);
 
-				GLPathway glPathway = (GLPathway) cmdPathway.getCreatedObject();
-				int iGeneratedViewID = glPathway.getID();
+			// cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+			cmdPathway.setPathwayID(iTmpPathwayID);
+			cmdPathway.setViewFrustum(pathway.getViewFrustum());
+			cmdPathway.setSetIDs(iAlSetIDs);
+			cmdPathway.doCommand();
 
-				GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-					(IMediatorSender) glPathway);
-				GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-					(IMediatorReceiver) glPathway);
+			GLPathway glPathway = (GLPathway) cmdPathway.getCreatedObject();
+			int iGeneratedViewID = glPathway.getID();
 
-				iAlContainedViewIDs.add(iGeneratedViewID);
+			GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorSender) glPathway);
+			GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorReceiver) glPathway);
 
-				// Trigger last delta to new pathways
-				if (lastSelectionDelta != null) {
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-						lastSelectionDelta));
-				}
+			iAlContainedViewIDs.add(iGeneratedViewID);
 
-				if (focusLevel.hasFreePosition()) {
-					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
-					SlerpAction slerpActionTransition =
-						new SlerpAction(spawnLevel.getElementByPositionIndex(0), focusLevel.getNextFree());
-					arSlerpActions.add(slerpActionTransition);
+			// Trigger last delta to new views
+			if (lastSelectionDelta != null) {
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
+					lastSelectionDelta));
+			}
 
-					glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
-					glPathway.setDetailLevel(EDetailLevel.MEDIUM);
+			if (focusLevel.hasFreePosition()) {
+				spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
+				SlerpAction slerpActionTransition =
+					new SlerpAction(spawnLevel.getElementByPositionIndex(0), focusLevel.getNextFree());
+				arSlerpActions.add(slerpActionTransition);
 
-					// Trigger initial gene propagation
-					glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
-				}
-				else if (stackLevel.hasFreePosition()
-					&& !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
-					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
-					SlerpAction slerpActionTransition =
-						new SlerpAction(spawnLevel.getElementByPositionIndex(0), stackLevel.getNextFree());
-					arSlerpActions.add(slerpActionTransition);
+				glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+				glPathway.setDetailLevel(EDetailLevel.MEDIUM);
 
-					glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
-					glPathway.setDetailLevel(EDetailLevel.LOW);
+				// Trigger initial gene propagation
+				glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
+			}
+			else if (stackLevel.hasFreePosition()
+				&& !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
+				spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
+				SlerpAction slerpActionTransition =
+					new SlerpAction(spawnLevel.getElementByPositionIndex(0), stackLevel.getNextFree());
+				arSlerpActions.add(slerpActionTransition);
 
-					// Trigger initial gene propagation
-					glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
-				}
-				else if (poolLevel.hasFreePosition()) {
-					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
-					SlerpAction slerpActionTransition =
-						new SlerpAction(spawnLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
-					arSlerpActions.add(slerpActionTransition);
+				glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+				glPathway.setDetailLevel(EDetailLevel.LOW);
 
-					glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
-					glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
-				}
-				else {
-					generalManager.getLogger().log(Level.SEVERE, "No empty space left to add new pathway!");
-					iAlUninitializedPathwayIDs.clear();
+				// Trigger initial gene propagation
+				glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
+			}
+			else if (poolLevel.hasFreePosition()) {
+				spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
+				SlerpAction slerpActionTransition =
+					new SlerpAction(spawnLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
+				arSlerpActions.add(slerpActionTransition);
 
-					for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
-						.getAllGLEventListeners()) {
-						if (!eventListener.isRenderedRemote()) {
-							eventListener.enableBusyMode(false);
-						}
-					}
-
-					// Enable picking after all pathways are loaded
-					generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
-
-					return;
-				}
+				glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+				glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
 			}
 			else {
-				generalManager.getLogger().log(Level.WARNING,
-					"Pathway with ID: " + iTmpPathwayID + " is already loaded in Bucket.");
-			}
-
-			iAlUninitializedPathwayIDs.remove(0);
-
-			if (iAlUninitializedPathwayIDs.isEmpty()) {
-				// Enable picking after all pathways are loaded
-				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+				generalManager.getLogger().log(Level.SEVERE, "No empty space left to add new pathway!");
+				iAlUninitializedPathwayIDs.clear();
 
 				for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
 					.getAllGLEventListeners()) {
@@ -2699,10 +2806,34 @@ public class GLRemoteRendering
 						eventListener.enableBusyMode(false);
 					}
 				}
+
+				// Enable picking after all pathways are loaded
+				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+
+				return;
+			}
+		}
+		else {
+			generalManager.getLogger().log(Level.WARNING,
+				"Pathway with ID: " + iTmpPathwayID + " is already loaded in Bucket.");
+		}
+
+		iAlUninitializedPathwayIDs.remove(0);
+
+		if (iAlUninitializedPathwayIDs.isEmpty()) {
+			// Enable picking after all pathways are loaded
+			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+
+			for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
+				.getAllGLEventListeners()) {
+				if (!eventListener.isRenderedRemote()) {
+					eventListener.enableBusyMode(false);
+				}
 			}
 		}
 	}
-
+*/
+	
 	@Override
 	public void enableBusyMode(boolean busyMode) {
 		super.enableBusyMode(busyMode);
