@@ -437,7 +437,10 @@ public class GLRemoteRendering
 	public synchronized void display(final GL gl) {
 		time.update();
 
-		// layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
+		// Update the pool transformations according to the current mouse over object
+		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
+
+		// Just for layout testing during runtime
 		// layoutRenderStyle.initStackLevel(false);
 		// layoutRenderStyle.initMemoLevel();
 
