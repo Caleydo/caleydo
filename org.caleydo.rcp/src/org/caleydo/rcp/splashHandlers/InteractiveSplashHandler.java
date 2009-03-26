@@ -75,25 +75,25 @@ public class InteractiveSplashHandler
 		brandingLabelTUGNames
 			.setText("Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, Dieter Schmalstieg");
 		brandingLabelTUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
-		brandingLabelTUGNames.setBounds(20, 280, 500, 14);
+		brandingLabelTUGNames.setBounds(20, 282, 500, 15);
 		brandingLabelTUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelMUGCaption = new Label(splash, SWT.NONE);
-		brandingLabelMUGCaption.setText("Medical Uiversity of Graz");
+		brandingLabelMUGCaption.setText("Medical University of Graz");
 		brandingLabelMUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		brandingLabelMUGCaption.setBounds(20, 298, 500, 15);
 		brandingLabelMUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelMUGNames = new Label(splash, SWT.NONE);
-		brandingLabelMUGNames.setText("Heimo M�ller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
+		brandingLabelMUGNames.setText("Heimo Mueller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
 		brandingLabelMUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
-		brandingLabelMUGNames.setBounds(20, 310, 300, 14);
+		brandingLabelMUGNames.setBounds(20, 312, 300, 15);
 		brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label copyrightLabel = new Label(splash, SWT.NONE);
-		copyrightLabel.setText("� 2005 - 2009 - www.caleydo.org");
+		copyrightLabel.setText("(c) 2005 - 2009  www.caleydo.org");
 		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-		copyrightLabel.setBounds(390, 310, 175, 14);
+		copyrightLabel.setBounds(385, 312, 180, 16);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
