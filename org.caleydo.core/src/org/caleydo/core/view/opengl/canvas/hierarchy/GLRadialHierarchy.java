@@ -279,6 +279,9 @@ public class GLRadialHierarchy
 			Math.min(fXCenter - (fXCenter / 10), fYCenter - (fYCenter / 10)) / iDisplayedHierarchyDepth;
 
 		pdCurrentRootElement.drawHierarchyRoot(gl, glu, fDiscWidth, iDisplayedHierarchyDepth);
+		
+		gl.glTranslatef(-fXCenter, -fYCenter, 0);
+
 		gl.glEndList();
 	}
 

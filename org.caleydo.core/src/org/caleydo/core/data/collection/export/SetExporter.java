@@ -35,7 +35,7 @@ public class SetExporter {
 				storageVA = set.getVA(view.getStorageVAID());
 				break;
 			}
-			if ((view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap)
+			else if (!view.isRenderedRemote() && (view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap)
 				&& !bExportBucketInternal) {
 				contentVA = set.getVA(view.getContentVAID());
 				storageVA = set.getVA(view.getStorageVAID());

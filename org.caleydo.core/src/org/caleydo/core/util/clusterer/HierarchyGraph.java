@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.core.Graph;
 
 /**
@@ -14,7 +15,7 @@ import org.caleydo.util.graph.core.Graph;
  */
 public class HierarchyGraph
 	extends Graph
-	implements IUniqueObject, Serializable
+	implements IUniqueObject, Serializable, IGraph
 {
 	private static final long serialVersionUID = 1L;
 
