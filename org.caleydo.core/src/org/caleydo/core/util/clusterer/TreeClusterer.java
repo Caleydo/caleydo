@@ -3,11 +3,11 @@ package org.caleydo.core.util.clusterer;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
 
-public class TreeClusterer {
+public class TreeClusterer
+	implements IClusterer {
 
 	private class ClosestPair {
 		private float correlation;
@@ -44,6 +44,8 @@ public class TreeClusterer {
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
+		IDistanceMeasure distanceMeasure = new EuclideanDistance();
+
 		float[] dArInstance1 = new float[storageVA.size()];
 		float[] dArInstance2 = new float[storageVA.size()];
 
@@ -68,7 +70,7 @@ public class TreeClusterer {
 						isto++;
 					}
 
-					similarities[icnt1][icnt2] = ClusterHelper.euclideanDistance(dArInstance1, dArInstance2);
+					similarities[icnt1][icnt2] = distanceMeasure.getMeasure(dArInstance1, dArInstance2);
 				}
 				icnt2++;
 			}
@@ -104,7 +106,7 @@ public class TreeClusterer {
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer palcluster(Set set) {
+	public Integer palcluster(ISet set) {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -199,7 +201,7 @@ public class TreeClusterer {
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer pmlcluster(Set set) {
+	public Integer pmlcluster(ISet set) {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -408,7 +410,7 @@ public class TreeClusterer {
 			data[i + 1] = temp;
 			indexes.set(i + 1, iTemp);
 		}
-	
+
 		// for (int z = 0; z < indexes.size(); z++) {
 		// System.out.print(indexes.get(z) + " ");
 		// }
@@ -419,5 +421,17 @@ public class TreeClusterer {
 		// }
 		// }
 
+	}
+
+	@Override
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
+
+		Integer VAId = 0;
+		
+		determineSimilarities(set, idContent, idStorage);
+		
+		VAId = pmlcluster(set);
+		
+		return VAId;
 	}
 }

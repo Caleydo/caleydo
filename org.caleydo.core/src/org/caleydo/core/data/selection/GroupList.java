@@ -8,23 +8,12 @@ public class GroupList
 
 	private ArrayList<Group> iAlGroup;
 
-	private ArrayList<Integer> iAlVirtualArray;
-
-	public GroupList(ArrayList<Integer> virtualArray) {
-		this.iAlVirtualArray = virtualArray;
-		Group initialGroup = new Group(virtualArray.size());
+	public GroupList(int iNrElements) {
+//		Group initialGroup = new Group(iNrElements);
 		this.iAlGroup = new ArrayList<Group>();
-		iAlGroup.add(initialGroup);
+//		iAlGroup.add(initialGroup);
 	}
 
-	public GroupList() {
-		this.iAlGroup = new ArrayList<Group>();
-	}
-
-	public void setVA(ArrayList<Integer> virtualArray){
-		this.iAlVirtualArray = virtualArray;
-	}
-	
 	@Override
 	public void add(int index, Group newElement) {
 		iAlGroup.add(index, newElement);
@@ -130,7 +119,8 @@ public class GroupList
 	 * Initialize group list
 	 */
 	private void init() {
-		Group initialGroup = new Group(iAlVirtualArray.size());
+//		Group initialGroup = new Group(iAlVirtualArray.size());
+		Group initialGroup = new Group(0);
 		this.iAlGroup = new ArrayList<Group>();
 		iAlGroup.add(initialGroup);
 	}
@@ -161,7 +151,7 @@ public class GroupList
 	}
 
 	@Override
-	public boolean interchange(int index1, int index2) {
+	public boolean interchange(IVirtualArray virtualArray, int index1, int index2) {
 		Group temp = iAlGroup.get(index1);
 		iAlGroup.set(index1, iAlGroup.get(index2));
 		iAlGroup.set(index2, temp);
@@ -196,31 +186,33 @@ public class GroupList
 		}
 		iFirstIdxG2 = iLastIdxG2 - iAlGroup.get(index2).getNrElements();
 
+		
+		
 		for (int i = 0; i < iNrElemG2; i++) {
 
-			altemp2.add(iAlVirtualArray.get(iFirstIdxG2));
-			iAlVirtualArray.remove(iFirstIdxG2);
+			altemp2.add(virtualArray.get(iFirstIdxG2));
+			virtualArray.remove(iFirstIdxG2);
 		}
 
 		for (int i = 0; i < iNrElemG1; i++) {
 
-			altemp1.add(iAlVirtualArray.get(iFirstIdxG1));
-			iAlVirtualArray.remove(iFirstIdxG1);
+			altemp1.add(virtualArray.get(iFirstIdxG1));
+			virtualArray.remove(iFirstIdxG1);
 		}
 
 		for (int i = 0; i < iNrElemG1; i++) {
-			iAlVirtualArray.add(iFirstIdxG1 + i, altemp2.get(i));
+			virtualArray.add(iFirstIdxG1 + i, altemp2.get(i));
 		}
 
 		for (int i = 0; i < iNrElemG2; i++) {
-			iAlVirtualArray.add(iFirstIdxG2 - iNrElemG1 + iNrElemG2 + i, altemp1.get(i));
+			virtualArray.add(iFirstIdxG2 - iNrElemG1 + iNrElemG2 + i, altemp1.get(i));
 		}
 
 		return true;
 	}
 
 	@Override
-	public boolean merge(int index1, int index2) {
+	public boolean merge(IVirtualArray virtualArray, int index1, int index2) {
 		Group temp = iAlGroup.get(index2);
 		iAlGroup.remove(index2);
 		iAlGroup.get(index1).setIdxExample(iAlGroup.get(index1).getIdxExample() + temp.getIdxExample());
@@ -256,12 +248,12 @@ public class GroupList
 
 		for (int i = 0; i < iNrElemG2; i++) {
 
-			altemp.add(iAlVirtualArray.get(iFirstIdxG2));
-			iAlVirtualArray.remove(iFirstIdxG2);
+			altemp.add(virtualArray.get(iFirstIdxG2));
+			virtualArray.remove(iFirstIdxG2);
 		}
 
 		for (int i = 0; i < iNrElemG1; i++) {
-			iAlVirtualArray.add(iLastIdxG1 + i, altemp.get(i));
+			virtualArray.add(iLastIdxG1 + i, altemp.get(i));
 		}
 
 		return true;

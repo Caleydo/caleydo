@@ -19,13 +19,17 @@ import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.VAIterator;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.CNode;
+import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.HierarchicalClusterer;
+import org.caleydo.core.util.clusterer.HierarchyGraph;
+import org.caleydo.core.util.clusterer.IClusterer;
+import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.core.util.clusterer.Node;
 import org.caleydo.core.util.clusterer.TreeClusterer;
 import org.caleydo.util.graph.IGraph;
@@ -63,6 +67,7 @@ public class Set
 	// clustering stuff
 	private HashMap<Integer, IGraph> hashVAIdToGraph;
 	private CNode clusteredGraph = null;
+	private HierarchyGraph hierarchyGraph = null;
 	private ArrayList<Integer> alClusterSizes = null;
 	private ArrayList<Integer> alClusterExamples = null;
 	private Node[] treeStructure = null;
@@ -446,7 +451,7 @@ public class Set
 		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, boolean bHierarchicalClustering) {
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, EClustererType eClustererType) {
 
 		Integer VAId = 0;
 
@@ -454,75 +459,71 @@ public class Set
 
 			long tic, toc, duration;
 
-			// if (bHierarchicalClustering)
-			// {
-			// System.out.println("hierarchical clustering ...");
-			// tic = System.currentTimeMillis();
-			//
-			// HierarchicalClusterer clusterer = new HierarchicalClusterer();
-			// VAId = clusterer.cluster(this, iVAIdContent, 0, iVAIdStorage);
-			//
-			// toc = System.currentTimeMillis();
-			// }
-			// else
-			// {
-			// System.out.println("KMeans clustering ...");
-			// tic = System.currentTimeMillis();
-			//
-			// KMeansClusterer clusterer = new KMeansClusterer();
-			// VAId = clusterer.cluster(this, iVAIdContent, 0, iVAIdStorage);
-			//
-			// toc = System.currentTimeMillis();
-			// }
-			// duration = (toc - tic) / 1000;
-			// System.out.println("cluster duration: ~" + duration + "sec");
+			IClusterer clusterer;
 
-			// if (VAId == 0)
-			// {
-			// throw new IllegalStateException("Problems during clustering!!");
-			// }
+			switch (eClustererType) {
+				case TREE_CLUSTERER:
 
-			if (bHierarchicalClustering) {
-				TreeClusterer clusterer = new TreeClusterer(getVA(iVAIdContent).size());
+					clusterer = new TreeClusterer(getVA(iVAIdContent).size());
 
-				System.out.println("determineSimilarities in progress ... ");
-				tic = System.currentTimeMillis();
-				clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
-				toc = System.currentTimeMillis();
-				duration = (toc - tic) / 1000;
-				System.out.println("determineSimilarities duration: ~" + duration + "sec");
+					System.out.println("treeClustering in progress ... ");
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage);
+					System.out.println("treeClustering done");
 
-				System.out.println("treeClustering in progress ... ");
-				tic = System.currentTimeMillis();
-				VAId = clusterer.pmlcluster(this);
-				toc = System.currentTimeMillis();
-				duration = (toc - tic) / 1000;
-				System.out.println("treeClustering duration: ~" + duration + "sec");
+					break;
+
+				case COBWEB_CLUSTERER:
+
+					clusterer = new HierarchicalClusterer(0);
+
+					System.out.println("Cobweb in progress ... ");
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage);
+					System.out.println("Cobweb done");
+
+					break;
+
+				case AFFINITY_PROPAGATION:
+
+					clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
+
+					// System.out.println("determineSimilarities in progress ... ");
+					// tic = System.currentTimeMillis();
+					// clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
+					// toc = System.currentTimeMillis();
+					// duration = (toc - tic) / 1000;
+					// System.out.println("determineSimilarities duration: ~" + duration + "sec");
+					//
+					// System.out.println("affinityPropagation in progress ... ");
+					// tic = System.currentTimeMillis();
+					// VAId = clusterer.affinityPropagation(this);
+					// toc = System.currentTimeMillis();
+					// duration = (toc - tic) / 1000;
+					// System.out.println("affinityPropagation duration: ~" + duration + "sec");
+
+					System.out.println("affinityPropagation in progress ... ");
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage);
+					System.out.println("affinityPropagation done");
+
+					break;
+
+				case KMEANS_CLUSTERER:
+
+					clusterer = new KMeansClusterer(0);
+
+					System.out.println("KMeansClusterer in progress ... ");
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage);
+					System.out.println("KMeansClusterer done");
+
+					break;
 			}
-			else {
-				AffinityClusterer clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
 
-				System.out.println("determineSimilarities in progress ... ");
-				tic = System.currentTimeMillis();
-				clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
-				toc = System.currentTimeMillis();
-				duration = (toc - tic) / 1000;
-				System.out.println("determineSimilarities duration: ~" + duration + "sec");
-
-				System.out.println("affinityPropagation in progress ... ");
-				tic = System.currentTimeMillis();
-				VAId = clusterer.affinityPropagation(this);
-				toc = System.currentTimeMillis();
-				duration = (toc - tic) / 1000;
-				System.out.println("affinityPropagation duration: ~" + duration + "sec");
-
-			}
 			IVirtualArray virtualArray = getVA(VAId);
 
-			IGroupList groupList = new GroupList();
-			groupList.setVA(virtualArray.getIndexList());
+			if (eClustererType == EClustererType.AFFINITY_PROPAGATION
+				|| eClustererType == EClustererType.KMEANS_CLUSTERER) {
 
-			if (bHierarchicalClustering == false) {
+				IGroupList groupList = new GroupList(virtualArray.size());
+
 				ArrayList<Integer> examples = getAlExamples();
 				int cnt = 0;
 				for (Integer iter : getAlClusterSizes()) {
@@ -530,8 +531,8 @@ public class Set
 					groupList.append(temp);
 					cnt++;
 				}
+				virtualArray.setGroupList(groupList);
 			}
-			virtualArray.setGroupList(groupList);
 
 			hashSetVAs.put(virtualArray.getID(), virtualArray);
 
@@ -543,13 +544,13 @@ public class Set
 		}
 	}
 
-	public void setClusteredGraph(CNode clusteredGraph) {
-		this.clusteredGraph = clusteredGraph;
-	}
-
-	public CNode getClusteredGraph() {
-		return clusteredGraph;
-	}
+//	public void setClusteredGraph(CNode clusteredGraph) {
+//		this.clusteredGraph = clusteredGraph;
+//	}
+//
+//	public CNode getClusteredGraph() {
+//		return clusteredGraph;
+//	}
 
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
 		this.alClusterSizes = alClusterSizes;
@@ -575,5 +576,15 @@ public class Set
 	@Override
 	public void setAlExamples(ArrayList<Integer> alExamples) {
 		this.alClusterExamples = alExamples;
+	}
+
+	@Override
+	public HierarchyGraph getClusteredGraph() {
+		return hierarchyGraph;
+	}
+
+	@Override
+	public void setClusteredGraph(HierarchyGraph clusteredGraph) {
+		this.hierarchyGraph = clusteredGraph;		
 	}
 }

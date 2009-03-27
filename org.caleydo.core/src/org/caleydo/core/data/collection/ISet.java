@@ -9,6 +9,8 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.SetIterator;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.CNode;
+import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.HierarchyGraph;
 import org.caleydo.core.util.clusterer.Node;
 
 /**
@@ -254,25 +256,25 @@ public interface ISet
 	 * 
 	 * @param iVAIdContent
 	 * @param iVAIdStorage
-	 * @param bHierarchicalClustering
+	 * @param eClustererType
 	 * @return Integer Id of virtual arrays holding cluster result
 	 */
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, boolean bHierarchicalClustering);
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, EClustererType eClustererType);
 
 	/**
 	 * Returns clustered graph
 	 * 
 	 * @param
-	 * @return CNode
+	 * @return HierarchyGraph
 	 */
-	public CNode getClusteredGraph();
+	public HierarchyGraph getClusteredGraph();
 
 	/**
 	 * Sets clustered graph
 	 * 
 	 * @param CNode
 	 */
-	public void setClusteredGraph(CNode clusteredGraph);
+	public void setClusteredGraph(HierarchyGraph clusteredGraph);
 
 	/**
 	 * Returns cluster sizes, determined by affinity clusterer

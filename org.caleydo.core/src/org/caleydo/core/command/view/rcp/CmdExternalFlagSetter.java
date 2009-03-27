@@ -76,6 +76,8 @@ public class CmdExternalFlagSetter
 					break;
 				case STORAGEBASED_HEATMAP_IN_FOCUS:
 					((GLHierarchicalHeatMap) viewObject).changeFocus(bFlag);
+				case STORAGEBASED_START_CLUSTERING:
+					((GLHierarchicalHeatMap) viewObject).startClustering(bFlag);
 			}
 		}
 

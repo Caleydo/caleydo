@@ -269,7 +269,7 @@ public class VirtualArray
 	@Override
 	public IGroupList newGroupList() {
 		
-		this.iGroupList = new GroupList(this.getIndexList());
+		this.iGroupList = new GroupList(this.size());
 		
 		return iGroupList;
 	}

@@ -7,26 +7,27 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.IGraph;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.core.Instances;
 
-public class HierarchicalClusterer {
-	private Cobweb clusterer = new Cobweb();
+public class HierarchicalClusterer
+	implements IClusterer {
+	private Cobweb clusterer;
 
-	public HierarchicalClusterer() {
+	public HierarchicalClusterer(int iNrElements) {
 		clusterer = new Cobweb();
 	}
 
-	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered, Integer iVAIdStorage) {
+	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
-		// Arraylist holding # of elements per cluster
-		ArrayList<Integer> count = new ArrayList<Integer>();
 
-		// System.out.println("iVAIdOriginal" + iVAIdOriginal);
-		// System.out.println("iVAIdStorage" + iVAIdStorage);
+//		 System.out.println("iVAIdOriginal" + iVAIdOriginal);
+//		 System.out.println("iVAIdStorage" + iVAIdStorage);
 
 		StringBuffer buffer = new StringBuffer();
 
@@ -88,6 +89,10 @@ public class HierarchicalClusterer {
 
 		double[] test = eval.getClusterAssignments();
 		int nrclusters = eval.getNumClusters();
+		
+		System.out.println(nrclusters);
+		System.out.println(data.numAttributes());
+		System.out.println(data.numInstances());
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 
@@ -104,18 +109,50 @@ public class HierarchicalClusterer {
 			}
 		}
 
-		for (Integer iter : temp) {
-			if (iter > 0) {
-				count.add(iter);
-			}
-		}
-
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result in Set
-		set.setAlClusterSizes(count);
-		set.setClusteredGraph(clusterer.getGraph());
+		HierarchyGraph graph = new HierarchyGraph();
+		
+		CNode node = clusterer.m_cobwebTree;
+		
+		graph = matchTree(graph, node);
+		
+		System.out.println("cnt: " + cnt);
+		
+		set.setClusteredGraph(graph);
 
 		return clusteredVAId;
+	}
+
+	private int cnt = 0;
+	
+	private HierarchyGraph matchTree(IGraph graph, CNode Node) {
+		HierarchyGraph temp = new HierarchyGraph("Node" + Node.getClusterNum(), Node.getClusterNum(), 0);
+cnt++;
+		graph = temp;
+
+		if (Node.getChilds() != null) {
+			int iNrChildsNode = Node.getChilds().size();
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				CNode currentNode = (CNode) Node.getChilds().elementAt(i);
+				HierarchyGraph currentGraph = new HierarchyGraph();
+				temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
+			}
+		}
+
+		return temp;
+	}
+
+	@Override
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
+
+		Integer VAId = 0;
+
+		VAId = cluster(set, idContent, idStorage);
+
+		return VAId;
 	}
 }

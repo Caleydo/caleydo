@@ -8,7 +8,8 @@ import org.caleydo.core.data.selection.IVirtualArray;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
-public class AffinityClusterer {
+public class AffinityClusterer
+	implements IClusterer {
 	private float[] s = null;
 	private int[] i = null;
 	private int[] k = null;
@@ -21,7 +22,7 @@ public class AffinityClusterer {
 
 	private int iConvIterations = 30;
 
-	private float fClusterFactor = 4.0f;
+	private float fClusterFactor = 5.0f;
 
 	private int iNrSamples = 0;
 
@@ -56,6 +57,8 @@ public class AffinityClusterer {
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
+		IDistanceMeasure distanceMeasure = new EuclideanDistance();
+
 		float[] dArInstance1 = new float[storageVA.size()];
 		float[] dArInstance2 = new float[storageVA.size()];
 
@@ -82,9 +85,13 @@ public class AffinityClusterer {
 				}
 
 				if (icnt1 != icnt2) {
-					s[count] = -ClusterHelper.euclideanDistance(dArInstance1, dArInstance2);
-					i[count] = iContentIndex1 - 0;
-					k[count] = iContentIndex2 - 0;
+					s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+					// VA starts with 1
+					i[count] = iContentIndex1 - 1;
+					k[count] = iContentIndex2 - 1;
+					// VA starts with 0
+					// i[count] = iContentIndex1 - 0;
+					// k[count] = iContentIndex1 - 0;
 					count++;
 				}
 				icnt2++;
@@ -97,12 +104,16 @@ public class AffinityClusterer {
 
 		for (Integer iContentIndex1 : contentVA) {
 			s[count] = median * fClusterFactor;
-			i[count] = iContentIndex1 - 0;
-			k[count] = iContentIndex1 - 0;
+			// VA starts with 1
+			i[count] = iContentIndex1 - 1;
+			k[count] = iContentIndex1 - 1;
+			// VA starts with 0
+			// i[count] = iContentIndex1 - 0;
+			// k[count] = iContentIndex1 - 0;
 			count++;
 		}
 
-		System.out.println(" ");
+		// System.out.println(" ");
 	}
 
 	/**
@@ -322,7 +333,10 @@ public class AffinityClusterer {
 		for (Integer index : alExamples) {
 			for (int index2 = 0; index2 < iNrSamples; index2++) {
 				if (idx[index2] == index) {
-					AlIndexes.add(index2);
+					// VA starts with 1
+					AlIndexes.add(index2 + 1);
+					// VA starts with 0
+					// AlIndexes.add(index2);
 					count.set(counter, count.get(counter) + 1);
 				}
 			}
@@ -385,5 +399,17 @@ public class AffinityClusterer {
 
 	public float getClusterFactor() {
 		return fClusterFactor;
+	}
+
+	@Override
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
+
+		Integer VAId = 0;
+		
+		determineSimilarities(set, idContent, idStorage);
+		
+		VAId = affinityPropagation(set);
+		
+		return VAId;
 	}
 }

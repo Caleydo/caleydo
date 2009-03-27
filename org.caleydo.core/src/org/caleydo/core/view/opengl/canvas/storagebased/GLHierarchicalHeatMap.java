@@ -8,6 +8,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -38,7 +39,8 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.clusterer.CNode;
+import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.HierarchyGraph;
 import org.caleydo.core.util.clusterer.Node;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -52,6 +54,8 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.IGraph;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
@@ -74,7 +78,7 @@ public class GLHierarchicalHeatMap
 	// private final static float MAX_NUM_SAMPLES = 8f;
 
 	private final static int MIN_SAMPLES_PER_HEATMAP = 14;
-	// MAX_SAMPLES_PER_HEATMAP = SmaplesPerTexture / 3
+	private final static int MAX_SAMPLES_PER_HEATMAP = 100;
 
 	private int iNumberOfElements = 0;
 
@@ -121,7 +125,7 @@ public class GLHierarchicalHeatMap
 
 	// embedded heat map
 	private GLHeatMap glHeatMapView;
-
+	private IMediator privateMediator;
 	private boolean bIsHeatmapInFocus = false;
 
 	private boolean bRedrawTextures = false;
@@ -132,14 +136,12 @@ public class GLHierarchicalHeatMap
 	private float fPosCursorFirstElement = 0;
 	private float fPosCursorLastElement = 0;
 
-	private IMediator privateMediator;
-
-	// clustering flag
-	private boolean bClusterHierarchical = false;
-	CNode graphRoot = null;
+	// clustering stuff
+	HierarchyGraph hierarchyGraph = null;
 	Node[] treeStructure = null;
 	DendrogramNode[] Nodes = null;
 	boolean bInitNodes = true;
+	private EClustererType eClustererType = EClustererType.AFFINITY_PROPAGATION;
 
 	/**
 	 * Constructor.
@@ -167,41 +169,6 @@ public class GLHierarchicalHeatMap
 
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
-		iNumberOfRandomElements = 10;
-
-		iNumberOfElements = 10;
-
-		// default: 500 (PreferenceInitializer)
-		iSamplesPerTexture = generalManager.getPreferenceStore().getInt("hmNumSamplesPerTexture");
-
-		if (iSamplesPerTexture <= 0) {
-			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_TEXTURE, 500);
-			iSamplesPerTexture = 500;
-		}
-
-		// default: 30 (PreferenceInitializer)
-		iSamplesPerHeatmap = generalManager.getPreferenceStore().getInt("hmNumSamplesPerHeatmap");
-
-		if (iSamplesPerHeatmap <= 0) {
-			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, 30);
-			iSamplesPerHeatmap = 30;
-		}
-
-		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP) {
-			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
-			// update Preference store
-			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP,
-				iSamplesPerHeatmap);
-
-		}
-		else if (iSamplesPerHeatmap > iSamplesPerTexture / 3) {
-			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
-			// update Preference store
-			generalManager.getPreferenceStore().setValue(PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP,
-				iSamplesPerHeatmap);
-
-		}
-
 		fAlXDistances = new ArrayList<Float>();
 
 		privateMediator = generalManager.getEventPublisher().getPrivateMediator();
@@ -211,8 +178,6 @@ public class GLHierarchicalHeatMap
 		// activate clustering
 		bUseClusteredVA = false;
 
-		// cluster hierarchical
-		bClusterHierarchical = false;
 	}
 
 	@Override
@@ -231,16 +196,23 @@ public class GLHierarchicalHeatMap
 			return;
 
 		iNumberOfElements = set.getVA(iContentVAID).size();
-		// iNumberOfElements = generalManager.getPreferenceStore().getInt(
-		// "hmNumRandomSamplinPoints");
 
-		if (iNumberOfElements < 2) {
+		if (iNumberOfElements < 50) {
 			throw new IllegalStateException("Number of elements not supported!!");
 		}
 
-		if (2 * iSamplesPerTexture > iNumberOfElements) {
-			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 2);
-		}
+		iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 5);
+
+		if (iSamplesPerTexture > 250)
+			iSamplesPerTexture = 250;
+
+		iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
+
+		if (iSamplesPerHeatmap > MAX_SAMPLES_PER_HEATMAP)
+			iSamplesPerTexture = 100;
+
+		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
+			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
 
 		initTextures(gl);
 		initPosCursor();
@@ -1417,12 +1389,12 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 * @param fymin
 	 * @param fymax
-	 * @param CNode
+	 * @param HierarchyGraph
 	 * @param iDepth
 	 * @param iNrSiblings
 	 * @param iChildNr
 	 */
-	private void renderDendrogram(final GL gl, float fymin, float fymax, CNode Node, int iDepth,
+	private void renderDendrogram(final GL gl, float fymin, float fymax, HierarchyGraph Node, int iDepth,
 		int iNrSiblings, int iChildNr) {
 
 		int currentDepth = iDepth;
@@ -1437,7 +1409,7 @@ public class GLHierarchicalHeatMap
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 
-		int iNodeNr = Node.getClusterNum();
+		int iNodeNr = Node.getClusterNr();
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION, iNodeNr));
 		gl.glColor4f(1f, 1 - (float) (1 / (iDepth + 0.00001)), 0f, 1f);
@@ -1451,19 +1423,12 @@ public class GLHierarchicalHeatMap
 
 		gl.glPopAttrib();
 
-		if (Node.getChilds() != null) {
-			currentDepth++;
-			int iNrChildsNode = Node.getChilds().size();
+		List<IGraph> listGraph = Node.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
 
-			// gl.glColor4f(0f, 0f, 1f, 1f);
-			// gl.glBegin(GL.GL_POINTS);
-			// gl.glVertex3f(fxpos, fymin, SELECTION_Z);
-			// gl.glEnd();
-			//
-			// gl.glColor4f(0f, 1f, 0f, 1f);
-			// gl.glBegin(GL.GL_POINTS);
-			// gl.glVertex3f(fxpos, fymax, SELECTION_Z);
-			// gl.glEnd();
+		if (listGraph.size() > 0) {
+			currentDepth++;
+
+			int iNrChildsNode = listGraph.size();
 
 			gl.glColor4f(1f, 1 - (float) (1 / (iDepth + 0.00001)), 0f, 1f);
 			gl.glLineWidth(0.1f);
@@ -1478,11 +1443,10 @@ public class GLHierarchicalHeatMap
 				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.55f));
 				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
 
-				CNode currentNode = (CNode) Node.getChilds().elementAt(i);
+				HierarchyGraph currentNode = (HierarchyGraph) listGraph.get(i);// .getChilds().elementAt(i);
 				renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i);
 			}
 		}
-
 	}
 
 	private class DendrogramNode {
@@ -1639,14 +1603,13 @@ public class GLHierarchicalHeatMap
 
 		// GLHelperFunctions.drawAxis(gl);
 
-		// if (graphRoot == null) {
-		// // System.out.println("Problems during clustering!!");
-		// }
-		// else {
-		// // graphRoot.traversTree(0);
-		// // System.out.println("renderDendrogram(..)");
-		// renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), graphRoot, 0, 1, 0);
-		// }
+		if (hierarchyGraph == null) {
+			// System.out.println("Problems during clustering!!");
+		}
+		else {
+			// System.out.println("renderDendrogram(..)");
+			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), hierarchyGraph, 0, 1, 0);
+		}
 
 		// all stuff for rendering level 1 (overview bar)
 		renderOverviewBar(gl);
@@ -1780,9 +1743,6 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void initLists() {
 
-		// Set<Integer> setMouseOver = storageSelectionManager
-		// .getElements(ESelectionType.MOUSE_OVER);
-
 		if (bRenderOnlyContext) {
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		}
@@ -1802,7 +1762,7 @@ public class GLHierarchicalHeatMap
 			// }
 			// System.out.println(" ");
 
-			iContentVAID = set.cluster(iContentVAID, iStorageVAID, bClusterHierarchical);
+			iContentVAID = set.cluster(iContentVAID, iStorageVAID, eClustererType);
 
 			// System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "
 			// + set.getVA(iContentVAID).size());
@@ -1811,25 +1771,30 @@ public class GLHierarchicalHeatMap
 			// }
 			// System.out.println(" ");
 
-			if (bClusterHierarchical == true) {
+			if (eClustererType == EClustererType.COBWEB_CLUSTERER) {
+				hierarchyGraph = set.getClusteredGraph();
+			}
+			else if (eClustererType == EClustererType.TREE_CLUSTERER) {
 				treeStructure = set.getTreeStructure();
-				// graphRoot = set.getClusteredGraph();
 			}
 			else {
-				// System.out.println("\nnumber of elements per cluster ... ");
-				// for (Integer iter : set.getAlClusterSizes()) {
-				// System.out.print(iter + " ");
-				// }
-				// System.out.println("\nindex of example for cluster in data set ... ");
-				// for (Integer iter : set.getAlExamples()) {
-				// System.out.print(iter + " ");
-				// }
-				// System.out.println(" ");
+				System.out.println("\nnumber of elements per cluster ... ");
+				for (Integer iter : set.getAlClusterSizes()) {
+					System.out.print(iter + " ");
+				}
+				System.out.println("\nindex of example for cluster in data set ... ");
+				for (Integer iter : set.getAlExamples()) {
+					System.out.print(iter + " ");
+				}
+				System.out.println(" ");
 			}
 		}
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
+
+		IVirtualArray vacnt = set.getVA(iContentVAID);
+		IVirtualArray vasto = set.getVA(iStorageVAID);
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
@@ -1889,16 +1854,6 @@ public class GLHierarchicalHeatMap
 			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
 		}
 		else {
-			// if (bUseRandomSampling)
-			// {
-			// sInfoText.append("Random sampling active, sample size: "
-			// + iNumberOfRandomElements + "\n");
-			// }
-			// else
-			// {
-			// sInfoText.append("Random sampling inactive\n");
-			// }
-
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
 				sInfoText.append("Showing all genes in the dataset\n");
 			}
@@ -2030,11 +1985,10 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 
 					case CLICKED:
-						Nodes[iExternalID].bSelected = true;
 						break;
 
 					case MOUSE_OVER:
-						System.out.println("node " + Nodes[iExternalID].Nodename);
+						System.out.println("node " + iExternalID);
 						break;
 
 				}
@@ -2224,6 +2178,14 @@ public class GLHierarchicalHeatMap
 
 	public void changeFocus(boolean bInFocus) {
 		bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
+
+		setDisplayListDirty();
+	}
+
+	public void startClustering(boolean bStartClustering) {
+		bUseClusteredVA = true;
+		initData();
+		bUseClusteredVA = false;
 
 		setDisplayListDirty();
 	}

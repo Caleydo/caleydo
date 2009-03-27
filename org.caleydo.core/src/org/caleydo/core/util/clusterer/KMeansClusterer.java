@@ -12,22 +12,25 @@ import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 
-public class KMeansClusterer {
+public class KMeansClusterer
+	implements IClusterer {
 
 	private SimpleKMeans clusterer = null;
 
 	private int iNrCluster = 50;
 
-	public KMeansClusterer() {
+	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
 	}
 
-	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdClustered, Integer iVAIdStorage) {
+	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
 		// Arraylist holding # of elements per cluster
 		ArrayList<Integer> count = new ArrayList<Integer>();
+		// Arraylist holding indices of examples (cluster centers)
+		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 
 		try {
 			clusterer.setNumClusters(iNrCluster);
@@ -103,6 +106,7 @@ public class KMeansClusterer {
 
 		for (int i = 0; i < iNrCluster; i++) {
 			count.add(0);
+			alExamples.add(0);
 		}
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
@@ -117,9 +121,19 @@ public class KMeansClusterer {
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result in Set
-		set.setClusteredGraph(null); // no hierarchical clustering --> no graph
 		set.setAlClusterSizes(count);
+		set.setAlExamples(alExamples);
 
 		return clusteredVAId;
+	}
+
+	@Override
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
+
+		Integer VAId = 0;
+		
+		VAId = cluster(set, idContent, idStorage);
+		
+		return VAId;
 	}
 }
