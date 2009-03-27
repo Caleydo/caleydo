@@ -757,15 +757,15 @@ public class GLHeatMap
 
 		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-		float fOpacity = 0;
-		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-			|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-			|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
-			fOpacity = 1f;
-		}
-		else {
-			fOpacity = 0.3f;
-		}
+		float fOpacity = 1;
+//		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
+//			|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
+//			|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
+//			fOpacity = 1f;
+//		}
+//		else {
+//			fOpacity = 0.3f;
+//		}
 
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 

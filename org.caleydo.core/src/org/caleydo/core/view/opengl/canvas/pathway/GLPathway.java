@@ -14,7 +14,6 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -86,6 +85,8 @@ public class GLPathway
 
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
+	
+	int iCurrentStorageIndex = -1;
 
 	// private TextRenderer textRenderer;
 	// private boolean bEnableTitleRendering = true;
@@ -100,7 +101,7 @@ public class GLPathway
 		viewType = EManagedObjectType.GL_PATHWAY;
 		pathwayManager = generalManager.getPathwayManager();
 
-		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum);
+		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		// hashPathwayContainingSelectedVertex2VertexCount = new
 		// HashMap<Integer, Integer>();
@@ -292,7 +293,18 @@ public class GLPathway
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
-		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
+		{
+			for (SelectionDeltaItem item : selectionDelta.getAllItems())
+			{
+				if (item.getSelectionType() == ESelectionType.MOUSE_OVER)
+				{
+					iCurrentStorageIndex = item.getPrimaryID();
+					break;
+				}
+			}
+		}
+		else if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
 		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
@@ -678,25 +690,16 @@ public class GLPathway
 
 	@Override
 	public synchronized void broadcastElements(EVAOperation type) {
+
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.REFSEQ_MRNA_INT);
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
-
-		// TODO: Move to own method (outside this class)
-		Iterator<IGraphItem> iterPathwayVertexGraphItemRep =
-			generalManager.getPathwayManager().getItem(iPathwayID).getAllItemsByKind(EGraphItemKind.NODE)
-				.iterator();
-		Iterator<IGraphItem> iterPathwayVertexGraphItem;
-		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
-		PathwayVertexGraphItem tmpPathwayVertexGraphItem = null;
-		while (iterPathwayVertexGraphItemRep.hasNext()) {
-			tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep) iterPathwayVertexGraphItemRep.next();
-
-			iterPathwayVertexGraphItem =
-				tmpPathwayVertexGraphItemRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).iterator();
-
-			while (iterPathwayVertexGraphItem.hasNext()) {
-				tmpPathwayVertexGraphItem = (PathwayVertexGraphItem) iterPathwayVertexGraphItem.next();
-
+	
+		for (IGraphItem tmpPathwayVertexGraphItemRep 
+			: generalManager.getPathwayManager().getItem(iPathwayID).getAllItemsByKind(EGraphItemKind.NODE))
+		{			
+			for (IGraphItem tmpPathwayVertexGraphItem 
+				: tmpPathwayVertexGraphItemRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) 
+			{
 				int iDavidID =
 					generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
 						tmpPathwayVertexGraphItem.getId());
@@ -710,6 +713,7 @@ public class GLPathway
 					idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 				if (iSetRefSeq == null) {
+					
 					generalManager.getLogger()
 						.log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
 					continue;

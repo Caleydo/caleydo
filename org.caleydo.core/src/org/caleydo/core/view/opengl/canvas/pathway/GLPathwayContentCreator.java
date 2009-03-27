@@ -11,18 +11,25 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphItemRep;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -40,6 +47,8 @@ public class GLPathwayContentCreator {
 
 	private static final float Z_OFFSET = 0.01f;
 
+	private GLPathway glPathwayView;
+
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
 	private int iHighlightedEnzymeNodeDisplayListId = -1;
@@ -50,28 +59,40 @@ public class GLPathwayContentCreator {
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableNeighborhood = false;
+	private boolean bEnableGeneMapping = false;
+
 	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;
-	private HashMap<Integer, ArrayList<float[]>> hashElementId2MappingColorArray;
+	// private HashMap<Integer, ArrayList<float[]>> hashElementId2MappingColorArray;
 
-	// private PathwayColorMapper genomeMapper;
+	private ColorMapping colorMapper;
 
 	private GenericSelectionManager internalSelectionManager;
 
 	private ArrayList<Integer> iArSelectedEdgeRepId;
 
+	private IIDMappingManager idMappingManager;
+
+	private ArrayList<ISet> alSetData;
+
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayContentCreator(IViewFrustum viewFrustum) {
+	public GLPathwayContentCreator(IViewFrustum viewFrustum, GLPathway glPathwayView) {
+
 		this.generalManager = GeneralManager.get();
+		this.glPathwayView = glPathwayView;
+
+		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		renderStyle = new PathwayRenderStyle(viewFrustum);
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();
-		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<float[]>>();
+		// hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<float[]>>();
 
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
+
+		idMappingManager = generalManager.getIDMappingManager();
 	}
 
 	public void init(final GL gl, final ArrayList<ISet> alSetData,
@@ -82,24 +103,16 @@ public class GLPathwayContentCreator {
 		buildHighlightedCompoundNodeDisplayList(gl);
 
 		this.internalSelectionManager = internalSelectionManager;
+		this.alSetData = alSetData;
 
-		// Initialize genome mapper
-		// TODO: move to a manager because more classes use the genome mapper
-		// maybe GenomeIdManager is the right place
-		// genomeMapper = new PathwayColorMapper();
-		// genomeMapper.setMappingData(alSetData);
+		// hashElementId2MappingColorArray.clear();
 
-		hashElementId2MappingColorArray.clear();
-
-		// if (generalManager.getIDMappingManager().hasMapping(
-		// EMappingType.DAVID_2_EXPRESSION_INDEX))
-		// {
-		// bEnableGeneMapping = true;
-		// }
-		// else
-		// {
-		// bEnableGeneMapping = false;
-		// }
+		if (generalManager.getIDMappingManager().hasMapping(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX)) {
+			bEnableGeneMapping = true;
+		}
+		else {
+			bEnableGeneMapping = false;
+		}
 	}
 
 	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView, final int iPathwayId) {
@@ -418,6 +431,7 @@ public class GLPathwayContentCreator {
 
 	private void createVertex(final GL gl, final IUniqueObject containingView,
 		PathwayVertexGraphItemRep vertexRep, PathwayGraph containingPathway) {
+
 		float[] tmpNodeColor = null;
 
 		gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager().getPickingID(
@@ -450,8 +464,7 @@ public class GLPathwayContentCreator {
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
-			// Render transparent node for picking
-			tmpNodeColor = new float[] { 0, 0, 0, 0 };
+			tmpNodeColor = new float[] { 0f, 0f, 0f, 0.25f };
 			gl.glColor4fv(tmpNodeColor, 0);
 			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 
@@ -499,19 +512,29 @@ public class GLPathwayContentCreator {
 		}
 		else if (shape.equals(EPathwayVertexShape.poly)) // BIOCARTA
 		{
-			gl.glColor4f(0, 0, 0, 0);
-
 			short[][] shArCoords = vertexRep.getCoords();
 
-			gl.glBegin(GL.GL_POLYGON);
+			tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+
+			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
+				tmpNodeColor = determineNodeColor(vertexRep);
+				gl.glColor3fv(tmpNodeColor, 0);
+			}
+			else {
+				gl.glColor4f(0, 0, 0, 0);
+			}
+
+			if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH)
+				gl.glBegin(GL.GL_LINE_STRIP);
+			else
+				gl.glBegin(GL.GL_POLYGON);
+			
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
 					-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
 			}
 			gl.glEnd();
 
-			tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
-			gl.glColor4fv(tmpNodeColor, 0);
 			gl.glLineWidth(3);
 
 			// Handle selection highlighting of element
@@ -538,64 +561,66 @@ public class GLPathwayContentCreator {
 		// new kegg data assign enzymes without mapping to "undefined"
 			// which we represent as other
 			|| vertexType.equals(EPathwayVertexType.other)) {
+
 			float fCanvasXPos = vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X;
 			float fCanvasYPos = vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y;
-			// float fNodeWidth = vertexRep.getWidth() / 2.0f
-			// * PathwayRenderStyle.SCALING_FACTOR_X;
-			// float fNodeHeight = vertexRep.getHeight() / 2.0f
-			// * PathwayRenderStyle.SCALING_FACTOR_Y;
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
-			int iVertexRepID = vertexRep.getId();
-
-			// if (bEnableGeneMapping &&
-			// vertexType.equals(EPathwayVertexType.gene))
-			// {
-			// mapExpression(gl, vertexRep, fNodeWidth, fNodeHeight);
-			// }
-			// else
-			// {
-			// Draw transparent node for picking purposes
-			gl.glColor4f(0, 0, 0, 0);
-			gl.glCallList(iEnzymeNodeDisplayListId);
-
-			// gl.glColor4fv(PathwayRenderStyle.ENZYME_NODE_COLOR, 0);
-			// gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
-			// }
-
-			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)
-				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)
-				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)
-				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)
-				|| internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
-				if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)) {
-					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-				}
-				else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
-					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
-				}
-				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)) {
-					gl.glEnable(GL.GL_LINE_STIPPLE);
-					gl.glLineStipple(4, (short) 0xAAAA);
-					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(1);
-				}
-				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)) {
-					gl.glEnable(GL.GL_LINE_STIPPLE);
-					gl.glLineStipple(2, (short) 0xAAAA);
-					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(2);
-				}
-				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)) {
-					gl.glEnable(GL.GL_LINE_STIPPLE);
-					gl.glLineStipple(1, (short) 0xAAAA);
-					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(3);
-				}
-
-				gl.glColor4fv(tmpNodeColor, 0);
-				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
-				gl.glDisable(GL.GL_LINE_STIPPLE);
+//			int iVertexRepID = vertexRep.getId();
+			
+			// Render transparent nodes for picking
+			if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH)
+			{
+				gl.glColor4f(0, 0, 0, 0);
+				gl.glCallList(iEnzymeNodeDisplayListId);
 			}
+			
+			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
+				tmpNodeColor = determineNodeColor(vertexRep);
+				gl.glColor3fv(tmpNodeColor, 0);
+			}
+			else {
+				gl.glColor4f(0, 0, 0, 0);
+			}
+			
+			if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH)
+				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+			else
+				gl.glCallList(iEnzymeNodeDisplayListId);
+
+//			// Handle selection highlighting of element
+//			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)
+//				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)
+//				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)
+//				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)
+//				|| internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
+//				if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)) {
+//					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+//				}
+//				else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
+//					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+//				}
+//				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)) {
+//					gl.glEnable(GL.GL_LINE_STIPPLE);
+//					gl.glLineStipple(4, (short) 0xAAAA);
+//					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(1);
+//				}
+//				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)) {
+//					gl.glEnable(GL.GL_LINE_STIPPLE);
+//					gl.glLineStipple(2, (short) 0xAAAA);
+//					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(2);
+//				}
+//				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)) {
+//					gl.glEnable(GL.GL_LINE_STIPPLE);
+//					gl.glLineStipple(1, (short) 0xAAAA);
+//					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(3);
+//				}
+//
+//				gl.glColor4fv(tmpNodeColor, 0);
+//				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+//				gl.glDisable(GL.GL_LINE_STIPPLE);
+//			}
 
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
@@ -669,6 +694,51 @@ public class GLPathwayContentCreator {
 			// if (bRenderLabels && bEnableAnnotation)
 			// renderLabels(gl, iPathwayID);
 		}
+	}
+	
+	private float[] determineNodeColor(PathwayVertexGraphItemRep vertexRep) {
+		
+			int iDavidID =
+				generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
+					vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0).getId());
+
+			if (iDavidID == -1 || iDavidID == 0) {
+				generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
+			}
+			else {
+				Set<Integer> iSetRefSeq =
+					idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+
+				if (iSetRefSeq == null) {
+
+					generalManager.getLogger().log(Level.SEVERE,
+						"No RefSeq IDs found for David: " + iDavidID);
+			}
+			else {
+				
+				if (iSetRefSeq.size() > 1)
+					return new float[] {0,1,1};
+				
+				for (Object iRefSeqID : iSetRefSeq) {
+					
+					if(idMappingManager.getMultiID(
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, ((Integer)iRefSeqID)) == null) {
+						break;
+					}
+					
+					for (Object iExpressionIndex : idMappingManager.getMultiID(
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, ((Integer)iRefSeqID))) {
+
+						return colorMapper.getColor(alSetData.get(0).get(
+								glPathwayView.iCurrentStorageIndex).getFloat(
+								EDataRepresentation.NORMALIZED,
+								((Integer) iExpressionIndex).intValue()));
+					}
+				}
+			}
+		}
+			
+		return new float[] {0,0,0};
 	}
 
 	// private void renderLabels(final GL gl, final int iPathwayID)
@@ -846,6 +916,7 @@ public class GLPathwayContentCreator {
 	}
 
 	public void enableGeneMapping(final boolean bEnableGeneMappging) {
+		this.bEnableGeneMapping = bEnableGeneMappging;
 	}
 
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {

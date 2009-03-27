@@ -441,6 +441,7 @@ public class GLRemoteRendering
 
 		// Update the pool transformations according to the current mouse over object
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
+		layoutRenderStyle.initFocusLevel();
 
 		// Just for layout testing during runtime
 		// layoutRenderStyle.initStackLevel(false);
@@ -470,14 +471,10 @@ public class GLRemoteRendering
 			glOffScreenRenderer.renderRubberBucket(gl, stackLevel,
 				(BucketLayoutRenderStyle) layoutRenderStyle, this);
 		}
-
+		
 		// If user zooms to the bucket bottom all but the under
 		// focus layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn()) {
-			// comment here for connection lines
-			if (glConnectionLineRenderer != null && bEnableConnectinLines) {
-				glConnectionLineRenderer.render(gl);
-			}
 
 			renderPoolAndMemoLayerBackground(gl);
 
@@ -498,6 +495,13 @@ public class GLRemoteRendering
 		renderHandles(gl);
 
 		// gl.glCallList(iGLDisplayList);
+		
+		// comment here for connection lines
+		gl.glDisable(GL.GL_DEPTH_TEST);
+		if (glConnectionLineRenderer != null && bEnableConnectinLines) {
+			glConnectionLineRenderer.render(gl);
+		}
+		gl.glEnable(GL.GL_DEPTH_TEST);
 	}
 
 	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
