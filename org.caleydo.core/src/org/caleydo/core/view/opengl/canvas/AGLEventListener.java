@@ -529,7 +529,7 @@ public abstract class AGLEventListener
 			pickingManager.enablePicking(true);
 		}
 		else if (bBusyMode) {
-			pickingManager.enablePicking(false);
+			// pickingManager.enablePicking(false);
 			eBusyModeState = EBusyModeState.ON;
 		}
 

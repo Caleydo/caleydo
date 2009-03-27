@@ -141,4 +141,27 @@ public class GLCaleydoCanvas
 	public Composite getParentComposite() {
 		return parentComposite;
 	}
+
+	/**
+	 * Returns the internal unique-id as hashcode
+	 * @return internal unique-id as hashcode
+	 */
+	@Override
+	public int hashCode() {
+		return getID();
+	}
+	
+	/**
+	 * Checks if the given object is equals to this one by comparing the internal unique-id
+	 * @return <code>true</code> if the 2 objects are equal, <code>false</code> otherwise
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof IUniqueObject) {
+			return this.getID() == ((IUniqueObject) other).getID();
+		} else {
+			return false;
+		}
+	}
+
 }

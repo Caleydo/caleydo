@@ -10,8 +10,8 @@ import java.util.logging.Level;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 /**
  * Loads all pathways of a certain type by providing the XML path.
@@ -51,27 +51,15 @@ public class PathwayLoaderThread
 	public void run() {
 		super.run();
 
-		// Turn on busy mode
-		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-			.getAllGLEventListeners()) {
-			if (!tmpGLEventListener.isRenderedRemote()) {
-				tmpGLEventListener.enableBusyMode(true);
-			}
-		}
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		viewManager.requestBusyMode(this);
 
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
 		while (iterPathwayDatabase.hasNext()) {
 			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
 		}
 
-		// Turn off busy mode
-		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-			.getAllGLEventListeners()) {
-			if (!tmpGLEventListener.isRenderedRemote()) {
-				tmpGLEventListener.enableBusyMode(false);
-			}
-		}
-
+		viewManager.releaseBusyMode(this);
 		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
 		// notifyViews();
 	}

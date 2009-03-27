@@ -3,6 +3,8 @@ package org.caleydo.core.manager.view;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 
 import javax.media.opengl.GLEventListener;
@@ -76,6 +78,8 @@ public class ViewManager
 
 	private Composite activeSWTView;
 
+	private Set<Object> busyRequests;
+	
 	/**
 	 * Constructor.
 	 */
@@ -89,8 +93,9 @@ public class ViewManager
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLEventListener>();
 
 		arWorkspaceJFrame = new ArrayList<JFrame>();
-
 		fpsAnimator = new FPSAnimator(null, 60);
+		
+		busyRequests = new HashSet<Object>();
 	}
 
 	@Override
@@ -403,5 +408,43 @@ public class ViewManager
 
 	public Composite getActiveSWTView() {
 		return activeSWTView;
+	}
+
+	@Override
+	public void requestBusyMode(Object requestInstance) {
+		if (requestInstance == null) {
+			throw new IllegalArgumentException("requestInstance must not be null");
+		}
+		synchronized (busyRequests) {
+			if (busyRequests.isEmpty()) {
+				for (AGLEventListener tmpGLEventListener : getAllGLEventListeners()) {
+					if (!tmpGLEventListener.isRenderedRemote()) {
+						tmpGLEventListener.enableBusyMode(true);
+					}
+				}
+			}
+			if (!busyRequests.contains(requestInstance)) {
+				busyRequests.add(requestInstance);
+			}
+		}
+	}
+
+	@Override
+	public void releaseBusyMode(Object requestInstance) {
+		if (requestInstance == null) {
+			throw new IllegalArgumentException("requestInstance must not be null");
+		}
+		synchronized (busyRequests) {
+			if (busyRequests.contains(requestInstance)) {
+				busyRequests.remove(requestInstance);
+			}
+			if (busyRequests.isEmpty()) {
+				for (AGLEventListener tmpGLEventListener : getAllGLEventListeners()) {
+					if (!tmpGLEventListener.isRenderedRemote()) {
+						tmpGLEventListener.enableBusyMode(false);
+					}
+				}
+			}
+		}
 	}
 }

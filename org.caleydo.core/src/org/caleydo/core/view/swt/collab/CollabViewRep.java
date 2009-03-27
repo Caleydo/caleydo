@@ -1,5 +1,8 @@
 package org.caleydo.core.view.swt.collab;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -8,11 +11,10 @@ import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.FontMetrics;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -31,6 +33,9 @@ public class CollabViewRep
 	extends ASWTView
 	implements IView, ISWTView, IMediatorReceiver, IMediatorSender {
 
+	/** utility class for logging */
+	private Logger log = Logger.getLogger(CollabViewRep.class.getName());
+	
 	/** main swt-composite of this view */
 	private Composite composite;
 
@@ -56,7 +61,7 @@ public class CollabViewRep
 		composite.setLayout(layout);
 		
 		addSerializeControls(composite);
-		addEmptyComposite(composite);
+		addTestControls(composite);
 		addBucketControls(composite);
 		addEmptyComposite(composite);
 	}
@@ -71,7 +76,7 @@ public class CollabViewRep
 		gridData.minimumHeight = 300;
 		serializeComposite.setLayoutData(gridData);
 
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(3, false);
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		serializeComposite.setLayout(layout);
 
@@ -79,15 +84,18 @@ public class CollabViewRep
 		text.setTextLimit(10000);
 	    GridData data = new GridData(GridData.FILL_BOTH);
 		// data.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-	    data.horizontalSpan = 2;
+	    data.horizontalSpan = 3;
 	    data.verticalSpan = 10;
 	    text.setLayoutData(data);
 
-		Button button = new Button(serializeComposite, SWT.CENTER);
+	    Button button;
+	    Listener testListener;
+
+	    button = new Button(serializeComposite, SWT.CENTER);
 		button.setText("test");
-		Listener testListener = new Listener() {
+		testListener = new Listener() {
 			public void handleEvent(Event event) {
-				System.out.println("test button pressed");
+				log.log(Level.INFO, "test button pressed");
 			}
 		};
 		button.addListener(SWT.Selection, testListener);
@@ -120,6 +128,26 @@ public class CollabViewRep
 		label.setText("");
 	}
 
+	public void addTestControls(Composite composite) {
+		Composite testControls = new Composite(composite, SWT.NULL);
+		GridLayout testLayout = new GridLayout(2, false);
+		testControls.setLayout(testLayout);
+
+		Button button;
+
+	    button = new Button(composite, SWT.CENTER);
+		button.setText("enable busy");
+		EnableBusyListener enableListener = new EnableBusyListener();
+		enableListener.setRequester(this);
+		button.addListener(SWT.Selection, enableListener);
+
+		button = new Button(composite, SWT.CENTER);
+		button.setText("disable busy");
+		DisableBusyListener disableListener = new DisableBusyListener();
+		disableListener.setRequester(this);
+		button.addListener(SWT.Selection, disableListener);
+	}
+	
 	public void addEmptyComposite(Composite composite) {
 		Composite empty = new Composite(composite, SWT.NULL);
 		GridLayout bucketLayout = new GridLayout(1, false);
