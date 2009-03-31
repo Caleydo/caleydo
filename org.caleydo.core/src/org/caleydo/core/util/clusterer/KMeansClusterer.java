@@ -17,7 +17,7 @@ public class KMeansClusterer
 
 	private SimpleKMeans clusterer = null;
 
-	private int iNrCluster = 50;
+	private int iNrCluster = 10;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
@@ -34,19 +34,15 @@ public class KMeansClusterer
 
 		try {
 			clusterer.setNumClusters(iNrCluster);
+			clusterer.setMaxIterations(1000);
 		}
 		catch (Exception e2) {
 			e2.printStackTrace();
 		}
 
-		// System.out.println("iVAIdOriginal" + iVAIdOriginal);
-		// System.out.println("iVAIdStorage" + iVAIdStorage);
-
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("@relation test\n\n");
-		// optional
-		// buffer.append("@attribute Instance_name { A, B, C, D}\n");
 
 		for (int nr = 0; nr < set.size(); nr++) {
 			buffer.append("@attribute Patient" + nr + " real\n");
@@ -54,20 +50,17 @@ public class KMeansClusterer
 
 		buffer.append("@data\n");
 
-		// System.out.println(dataToCluster.getVA(iContentVAID).size());
-
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		for (Integer iContentIndex : contentVA) {
 			for (Integer iStorageIndex : storageVA) {
-				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex) + ", ");
+				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex)
+					+ ", ");
 
 			}
 			buffer.append("\n");
 		}
-
-		// System.out.println(buffer.toString());
 
 		Instances data = null;
 
@@ -80,8 +73,6 @@ public class KMeansClusterer
 
 		// unsupervised learning --> no class given
 		data.setClassIndex(-1);
-
-		// System.out.println(data.toString());
 
 		try {
 			// train the clusterer
@@ -99,8 +90,6 @@ public class KMeansClusterer
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// System.out.println(clusterer);
 
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
@@ -131,9 +120,9 @@ public class KMeansClusterer
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
 
 		Integer VAId = 0;
-		
+
 		VAId = cluster(set, idContent, idStorage);
-		
+
 		return VAId;
 	}
 }

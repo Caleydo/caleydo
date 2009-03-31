@@ -9,9 +9,9 @@ public class GroupList
 	private ArrayList<Group> iAlGroup;
 
 	public GroupList(int iNrElements) {
-//		Group initialGroup = new Group(iNrElements);
+		// Group initialGroup = new Group(iNrElements);
 		this.iAlGroup = new ArrayList<Group>();
-//		iAlGroup.add(initialGroup);
+		// iAlGroup.add(initialGroup);
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class GroupList
 	 * Initialize group list
 	 */
 	private void init() {
-//		Group initialGroup = new Group(iAlVirtualArray.size());
+		// Group initialGroup = new Group(iAlVirtualArray.size());
 		Group initialGroup = new Group(0);
 		this.iAlGroup = new ArrayList<Group>();
 		iAlGroup.add(initialGroup);
@@ -152,9 +152,6 @@ public class GroupList
 
 	@Override
 	public boolean interchange(IVirtualArray virtualArray, int index1, int index2) {
-		Group temp = iAlGroup.get(index1);
-		iAlGroup.set(index1, iAlGroup.get(index2));
-		iAlGroup.set(index2, temp);
 
 		int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
@@ -186,8 +183,6 @@ public class GroupList
 		}
 		iFirstIdxG2 = iLastIdxG2 - iAlGroup.get(index2).getNrElements();
 
-		
-		
 		for (int i = 0; i < iNrElemG2; i++) {
 
 			altemp2.add(virtualArray.get(iFirstIdxG2));
@@ -200,22 +195,25 @@ public class GroupList
 			virtualArray.remove(iFirstIdxG1);
 		}
 
-		for (int i = 0; i < iNrElemG1; i++) {
+		for (int i = 0; i < iNrElemG2; i++) {
 			virtualArray.add(iFirstIdxG1 + i, altemp2.get(i));
 		}
 
-		for (int i = 0; i < iNrElemG2; i++) {
+		for (int i = 0; i < iNrElemG1; i++) {
 			virtualArray.add(iFirstIdxG2 - iNrElemG1 + iNrElemG2 + i, altemp1.get(i));
 		}
 
+		Group temp = iAlGroup.get(index1);
+		iAlGroup.set(index1, iAlGroup.get(index2));
+		iAlGroup.set(index2, temp);
+		iAlGroup.get(index1).setSelectionType(ESelectionType.NORMAL);
+		iAlGroup.get(index2).setSelectionType(ESelectionType.NORMAL);
+		
 		return true;
 	}
 
 	@Override
 	public boolean merge(IVirtualArray virtualArray, int index1, int index2) {
-		Group temp = iAlGroup.get(index2);
-		iAlGroup.remove(index2);
-		iAlGroup.get(index1).setIdxExample(iAlGroup.get(index1).getIdxExample() + temp.getIdxExample());
 
 		int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
@@ -252,9 +250,13 @@ public class GroupList
 			virtualArray.remove(iFirstIdxG2);
 		}
 
-		for (int i = 0; i < iNrElemG1; i++) {
+		for (int i = 0; i < iNrElemG2; i++) {
 			virtualArray.add(iLastIdxG1 + i, altemp.get(i));
 		}
+
+		iAlGroup.remove(index2);
+		iAlGroup.get(index1).setNrElements(iNrElemG1 + iNrElemG2);
+		iAlGroup.get(index1).setSelectionType(ESelectionType.NORMAL);
 
 		return true;
 	}
@@ -267,6 +269,13 @@ public class GroupList
 
 		int iCnt = 0;
 
+		if(idx2 < idx1){
+			int temp = idx1;
+			idx1 = idx2;
+			idx2 = temp;
+		}
+			
+		
 		for (Group iter : iAlGroup) {
 			iLastIdx += iter.getNrElements();
 

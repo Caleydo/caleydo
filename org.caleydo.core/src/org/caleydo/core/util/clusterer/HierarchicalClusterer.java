@@ -26,14 +26,9 @@ public class HierarchicalClusterer
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
 
-//		 System.out.println("iVAIdOriginal" + iVAIdOriginal);
-//		 System.out.println("iVAIdStorage" + iVAIdStorage);
-
 		StringBuffer buffer = new StringBuffer();
 
 		buffer.append("@relation test\n\n");
-		// optional
-		// buffer.append("@attribute Instance_name { A, B, C, D}\n");
 
 		for (int nr = 0; nr < set.size(); nr++) {
 			buffer.append("@attribute Patient" + nr + " real\n");
@@ -41,19 +36,15 @@ public class HierarchicalClusterer
 
 		buffer.append("@data\n");
 
-		// System.out.println(set.getVA(iVAIdOriginal).size());
-
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
+		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		for (Integer iContentIndex : contentVA) {
-			IVirtualArray storageVA = set.getVA(iVAIdStorage);
 			for (Integer iStorageIndex : storageVA) {
 				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex) + ", ");
 			}
 			buffer.append("\n");
 		}
-
-		// System.out.println(buffer.toString());
 
 		Instances data = null;
 		try {
@@ -66,8 +57,6 @@ public class HierarchicalClusterer
 		// unsupervised learning --> no class given
 		data.setClassIndex(-1);
 
-		// System.out.println(data.toString());
-
 		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
@@ -75,8 +64,6 @@ public class HierarchicalClusterer
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// System.out.println(clusterer);
 
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
@@ -87,22 +74,23 @@ public class HierarchicalClusterer
 			e.printStackTrace();
 		}
 
-		double[] test = eval.getClusterAssignments();
+		double[] clusterAssignments = eval.getClusterAssignments();
 		int nrclusters = eval.getNumClusters();
-		
-		System.out.println(nrclusters);
-		System.out.println(data.numAttributes());
-		System.out.println(data.numInstances());
+
+		// System.out.println(nrclusters);
+		// System.out.println(data.numAttributes());
+		// System.out.println(data.numInstances());
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
-
+		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 		for (int i = 0; i < nrclusters; i++) {
 			temp.add(0);
+			alExamples.add(0);
 		}
 
 		for (int cluster = 0; cluster < nrclusters; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
-				if (test[i] == cluster) {
+				if (clusterAssignments[i] == cluster) {
 					indexes.add(i);
 					temp.set(cluster, temp.get(cluster) + 1);
 				}
@@ -111,25 +99,26 @@ public class HierarchicalClusterer
 
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
-		// set cluster result in Set
+		// set cluster result Set
 		HierarchyGraph graph = new HierarchyGraph();
-		
+
 		CNode node = clusterer.m_cobwebTree;
-		
+
 		graph = matchTree(graph, node);
-		
-		System.out.println("cnt: " + cnt);
-		
+
 		set.setClusteredGraph(graph);
+		set.setAlClusterSizes(temp);
+
+		set.setAlExamples(alExamples);
 
 		return clusteredVAId;
 	}
 
 	private int cnt = 0;
-	
+
 	private HierarchyGraph matchTree(IGraph graph, CNode Node) {
 		HierarchyGraph temp = new HierarchyGraph("Node" + Node.getClusterNum(), Node.getClusterNum(), 0);
-cnt++;
+		cnt++;
 		graph = temp;
 
 		if (Node.getChilds() != null) {

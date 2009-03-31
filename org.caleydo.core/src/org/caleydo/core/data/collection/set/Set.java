@@ -457,8 +457,6 @@ public class Set
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
-			long tic, toc, duration;
-
 			IClusterer clusterer;
 
 			switch (eClustererType) {
@@ -486,20 +484,6 @@ public class Set
 
 					clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
 
-					// System.out.println("determineSimilarities in progress ... ");
-					// tic = System.currentTimeMillis();
-					// clusterer.determineSimilarities(this, iVAIdContent, iVAIdStorage);
-					// toc = System.currentTimeMillis();
-					// duration = (toc - tic) / 1000;
-					// System.out.println("determineSimilarities duration: ~" + duration + "sec");
-					//
-					// System.out.println("affinityPropagation in progress ... ");
-					// tic = System.currentTimeMillis();
-					// VAId = clusterer.affinityPropagation(this);
-					// toc = System.currentTimeMillis();
-					// duration = (toc - tic) / 1000;
-					// System.out.println("affinityPropagation duration: ~" + duration + "sec");
-
 					System.out.println("affinityPropagation in progress ... ");
 					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage);
 					System.out.println("affinityPropagation done");
@@ -520,7 +504,8 @@ public class Set
 			IVirtualArray virtualArray = getVA(VAId);
 
 			if (eClustererType == EClustererType.AFFINITY_PROPAGATION
-				|| eClustererType == EClustererType.KMEANS_CLUSTERER) {
+				|| eClustererType == EClustererType.KMEANS_CLUSTERER 
+				|| eClustererType == EClustererType.COBWEB_CLUSTERER) {
 
 				IGroupList groupList = new GroupList(virtualArray.size());
 
@@ -543,14 +528,6 @@ public class Set
 			return null;
 		}
 	}
-
-//	public void setClusteredGraph(CNode clusteredGraph) {
-//		this.clusteredGraph = clusteredGraph;
-//	}
-//
-//	public CNode getClusteredGraph() {
-//		return clusteredGraph;
-//	}
 
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
 		this.alClusterSizes = alClusterSizes;

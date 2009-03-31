@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
+import org.caleydo.rcp.action.toolbar.view.storagebased.ActivateGroupHandling;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
+import org.caleydo.rcp.action.toolbar.view.storagebased.MergeClasses;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
@@ -54,6 +56,10 @@ public class GLHierarchicalHeatMapView
 		alToolbar.add(startClustering);
 		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
 		alToolbar.add(clearSelectionsAction);
+		IAction mergeClasses = new MergeClasses(iViewID);
+		alToolbar.add(mergeClasses);
+		IAction activateGroups = new ActivateGroupHandling(iViewID);
+		alToolbar.add(activateGroups);
 		// IAction resetViewAction = new ResetViewAction(iViewID);
 		// alToolbar.add(resetViewAction);
 	}

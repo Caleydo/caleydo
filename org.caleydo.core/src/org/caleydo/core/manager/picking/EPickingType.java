@@ -56,6 +56,8 @@ public enum EPickingType {
 	HIER_HEAT_MAP_CURSOR(EManagedObjectType.GL_HIER_HEAT_MAP, false),
 	HIER_HEAT_MAP_VIEW_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, true),
 	HIER_HEAT_MAP_TEXTURE_CURSOR(EManagedObjectType.GL_HIER_HEAT_MAP, false),
+	HIER_HEAT_MAP_GENES_GROUP(EManagedObjectType.GL_HIER_HEAT_MAP, false),
+	HIER_HEAT_MAP_EXPERIMENTS_GROUP(EManagedObjectType.GL_HIER_HEAT_MAP, false),
 
 	// dendrogram
 	DENDROGRAM_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, false),

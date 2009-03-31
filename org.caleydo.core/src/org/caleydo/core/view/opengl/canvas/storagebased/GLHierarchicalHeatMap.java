@@ -24,6 +24,9 @@ import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.GroupList;
+import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
@@ -136,12 +139,17 @@ public class GLHierarchicalHeatMap
 	private float fPosCursorFirstElement = 0;
 	private float fPosCursorLastElement = 0;
 
-	// clustering stuff
-	HierarchyGraph hierarchyGraph = null;
-	Node[] treeStructure = null;
-	DendrogramNode[] Nodes = null;
-	boolean bInitNodes = true;
+	// clustering/grouping stuff
+	private HierarchyGraph hierarchyGraph = null;
+	private Node[] treeStructure = null;
+	private DendrogramNode[] Nodes = null;
+	private boolean bInitNodes = true;
 	private EClustererType eClustererType = EClustererType.AFFINITY_PROPAGATION;
+
+	private boolean bSplitGroupExp = false;
+	private boolean bSplitGroupGene = false;
+	private int iGroupToSplit = 0;
+	private Point DraggingPoint = null;
 
 	/**
 	 * Constructor.
@@ -763,6 +771,97 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	private void renderClassAssignmentsExperiments(final GL gl) {
+
+		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
+		int iNrElements = set.getVA(iStorageVAID).size();
+		float fWidthSamples = fWidth / iNrElements;
+		float fxpos = 0;
+		float fHeight = viewFrustum.getHeight() + 0.1f;
+
+		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+
+		int iNrClasses = groupList.size();
+
+		gl.glLineWidth(1f);
+
+		for (int i = 0; i < iNrClasses; i++) {
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+
+			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
+
+			if (groupList.get(i).getSelectionType() == ESelectionType.NORMAL)
+				gl.glColor4f(0f, 0f, 1f, 0.5f);
+			if (groupList.get(i).getSelectionType() == ESelectionType.SELECTION)
+				gl.glColor4f(0f, 1f, 0f, 0.5f);
+
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(fxpos, fHeight, 0);
+			gl.glVertex3f(fxpos, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
+			gl.glEnd();
+
+			gl.glColor4f(0f, 0f, 0f, 1);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fxpos, fHeight, 0);
+			gl.glVertex3f(fxpos, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
+			gl.glEnd();
+
+			gl.glPopName();
+
+			fxpos = fxpos + classWidth;
+		}
+	}
+
+	private void renderClassAssignmentsGenes(final GL gl) {
+
+		float fHeight = viewFrustum.getHeight();
+		int iNrElements = iNumberOfElements;
+		float fHeightSamples = fHeight / iNrElements;
+		float fyPos = fHeight;
+
+		IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+
+		int iNrClasses = groupList.size();
+
+		gl.glLineWidth(1f);
+
+		for (int i = 0; i < iNrClasses; i++) {
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP, i));
+
+			float classHeight = groupList.get(i).getNrElements() * fHeightSamples;
+
+			if (groupList.get(i).getSelectionType() == ESelectionType.NORMAL)
+				gl.glColor4f(0f, 0f, 1f, 0.5f);
+			if (groupList.get(i).getSelectionType() == ESelectionType.SELECTION)
+				gl.glColor4f(0f, 1f, 0f, 0.5f);
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(0, fyPos, 0);
+			gl.glVertex3f(0.1f, fyPos, 0);
+			gl.glVertex3f(0.1f, fyPos - classHeight, 0);
+			gl.glVertex3f(0, fyPos - classHeight, 0);
+			gl.glEnd();
+
+			gl.glColor4f(0f, 0f, 0f, 1);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(0, fyPos, 0);
+			gl.glVertex3f(0.1f, fyPos, 0);
+			gl.glVertex3f(0.1f, fyPos - classHeight, 0);
+			gl.glVertex3f(0, fyPos - classHeight, 0);
+			gl.glEnd();
+
+			gl.glPopName();
+
+			fyPos = fyPos - classHeight;
+		}
+	}
+
 	/**
 	 * Render marker in OverviewBar for visualization of the currently (in stage 2) rendered part
 	 * 
@@ -1336,6 +1435,20 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
+		if (bSplitGroupExp) {
+			handleGroupSplitExperiments(gl);
+			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+				bSplitGroupExp = false;
+			}
+		}
+
+		if (bSplitGroupGene) {
+			handleGroupSplitGenes(gl);
+			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+				bSplitGroupExp = false;
+			}
+		}
+
 		gl.glCallList(iGLDisplayListToCall);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 
@@ -1383,6 +1496,8 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	private int iNrNodes = 0, iNrLeafs = 0;
+
 	/**
 	 * Render dendrogram recursively
 	 * 
@@ -1395,7 +1510,9 @@ public class GLHierarchicalHeatMap
 	 * @param iChildNr
 	 */
 	private void renderDendrogram(final GL gl, float fymin, float fymax, HierarchyGraph Node, int iDepth,
-		int iNrSiblings, int iChildNr) {
+		int iNrSiblings, int iChildNr, boolean bleft, float fXMax) {
+
+		iNrNodes++;
 
 		int currentDepth = iDepth;
 
@@ -1411,26 +1528,43 @@ public class GLHierarchicalHeatMap
 
 		int iNodeNr = Node.getClusterNr();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION, iNodeNr));
-		gl.glColor4f(1f, 1 - (float) (1 / (iDepth + 0.00001)), 0f, 1f);
+		// System.out.print(Node.getNodeName() + " ");
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION, iNrNodes));
+
+		if (bleft)
+			gl.glColor4f(1f, 1f, 0f, 1f);
+		else
+			gl.glColor4f(1f, 0f, 1f, 1f);
+
+		List<IGraph> listGraph = Node.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
+
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(fxpos, fypos, SELECTION_Z);
-		gl.glVertex3f(fxpos + 0.2f, fypos, SELECTION_Z);
-		gl.glVertex3f(fxpos + 0.2f, fypos + 0.01f, SELECTION_Z);
+		if (listGraph.size() > 0) {
+			gl.glVertex3f(fxpos + 0.2f, fypos, SELECTION_Z);
+			gl.glVertex3f(fxpos + 0.2f, fypos + 0.01f, SELECTION_Z);
+		}
+		else {
+			gl.glVertex3f(fXMax, fypos, SELECTION_Z);
+			gl.glVertex3f(fXMax, fypos + 0.01f, SELECTION_Z);
+			iNrLeafs++;
+		}
 		gl.glVertex3f(fxpos, fypos + 0.01f, SELECTION_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		gl.glPopAttrib();
 
-		List<IGraph> listGraph = Node.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
-
 		if (listGraph.size() > 0) {
 			currentDepth++;
 
 			int iNrChildsNode = listGraph.size();
 
-			gl.glColor4f(1f, 1 - (float) (1 / (iDepth + 0.00001)), 0f, 1f);
+			if (bleft)
+				gl.glColor4f(1f, 1f, 0f, 1f);
+			else
+				gl.glColor4f(1f, 0f, 1f, 1f);
 			gl.glLineWidth(0.1f);
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * 0.55f), SELECTION_Z);
@@ -1444,7 +1578,12 @@ public class GLHierarchicalHeatMap
 				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
 
 				HierarchyGraph currentNode = (HierarchyGraph) listGraph.get(i);// .getChilds().elementAt(i);
-				renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i);
+				if (i == 0)
+					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i, true,
+						4);
+				else
+					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i,
+						false, 4);
 			}
 		}
 	}
@@ -1499,8 +1638,6 @@ public class GLHierarchicalHeatMap
 				iCount++;
 			}
 			else {
-				// System.out.println("count: " + iCount + " i: " + i + " treeStructure[i].getLeft() " +
-				// treeStructure[i].getLeft());
 				x_start_l = Nodes[-(treeStructure[i].getLeft()) - 1].xCoords;
 				y_l = Nodes[-(treeStructure[i].getLeft()) - 1].yCoords;
 			}
@@ -1511,8 +1648,6 @@ public class GLHierarchicalHeatMap
 				iCount++;
 			}
 			else {
-				// System.out.println("count: " + iCount + " i: " + i + " treeStructure[i].getRight() " +
-				// treeStructure[i].getRight());
 				x_start_r = Nodes[-(treeStructure[i].getRight()) - 1].xCoords;
 				y_r = Nodes[-(treeStructure[i].getRight()) - 1].yCoords;
 			}
@@ -1597,7 +1732,13 @@ public class GLHierarchicalHeatMap
 		// padding along borders
 		viewFrustum.setTop(viewFrustum.getTop() - 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
-		gl.glTranslatef(0.1f, 0.4f, 0);
+
+		gl.glTranslatef(0.0f, 0.4f, 0);
+
+		if (set.getVA(iContentVAID).getGroupList() != null)
+			renderClassAssignmentsGenes(gl);
+
+		gl.glTranslatef(0.1f, 0.0f, 0);
 
 		handleTexturePicking(gl);
 
@@ -1608,7 +1749,11 @@ public class GLHierarchicalHeatMap
 		}
 		else {
 			// System.out.println("renderDendrogram(..)");
-			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), hierarchyGraph, 0, 1, 0);
+			iNrNodes = 0;
+			iNrLeafs = 0;
+			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), hierarchyGraph, 0, 1, 0, true, 4);
+//			System.out.println("\n iNrNodes: " + iNrNodes);
+//			System.out.println("\n iNrLeafs: " + iNrLeafs);
 		}
 
 		// all stuff for rendering level 1 (overview bar)
@@ -1631,17 +1776,18 @@ public class GLHierarchicalHeatMap
 		renderSelectedElementsTexture(gl);
 		renderCursor(gl);
 
-		gl.glTranslatef(7.0f, -0.0f, 0);
+		if (set.getVA(iStorageVAID).getGroupList() != null)
+			renderClassAssignmentsExperiments(gl);
 
-		if (treeStructure == null) {
-			// System.out.println("Problems during clustering!!");
-		}
-		else {
-			// System.out.println("renderDendrogram(..)");
-			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), treeStructure);
-		}
-
-		gl.glTranslatef(-7.0f, -0.0f, 0);
+		// gl.glTranslatef(7.0f, -0.0f, 0);
+		// if (treeStructure == null) {
+		// // System.out.println("Problems during clustering!!");
+		// }
+		// else {
+		// // System.out.println("renderDendrogram(..)");
+		// renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), treeStructure);
+		// }
+		// gl.glTranslatef(-7.0f, -0.0f, 0);
 
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
@@ -1755,29 +1901,28 @@ public class GLHierarchicalHeatMap
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		if (bUseClusteredVA) {
-			// System.out.println("iContentVAID before clustering " + iContentVAID + " size: "
-			// + set.getVA(iContentVAID).size());
-			// for (int i = 0; i < 50; i++) {
-			// System.out.print(set.getVA(iContentVAID).get(i) + " ");
-			// }
-			// System.out.println(" ");
+			System.out.println("iContentVAID before clustering " + iContentVAID + " size: "
+				+ set.getVA(iContentVAID).size());
+			for (int i = 0; i < 50; i++) {
+				System.out.print(set.getVA(iContentVAID).get(i) + " ");
+			}
+			System.out.println(" ");
 
 			iContentVAID = set.cluster(iContentVAID, iStorageVAID, eClustererType);
 
-			// System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "
-			// + set.getVA(iContentVAID).size());
-			// for (int i = 0; i < 50; i++) {
-			// System.out.print(set.getVA(iContentVAID).get(i) + " ");
-			// }
-			// System.out.println(" ");
+			System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "
+				+ set.getVA(iContentVAID).size());
+			for (int i = 0; i < 50; i++) {
+				System.out.print(set.getVA(iContentVAID).get(i) + " ");
+			}
+			System.out.println(" ");
 
-			if (eClustererType == EClustererType.COBWEB_CLUSTERER) {
+			if (eClustererType == EClustererType.COBWEB_CLUSTERER
+				|| eClustererType == EClustererType.TREE_CLUSTERER) {
 				hierarchyGraph = set.getClusteredGraph();
 			}
-			else if (eClustererType == EClustererType.TREE_CLUSTERER) {
-				treeStructure = set.getTreeStructure();
-			}
 			else {
+
 				System.out.println("\nnumber of elements per cluster ... ");
 				for (Integer iter : set.getAlClusterSizes()) {
 					System.out.print(iter + " ");
@@ -1912,6 +2057,83 @@ public class GLHierarchicalHeatMap
 		triggerSelectionBlock();
 	}
 
+	private void handleGroupSplitGenes(final GL gl) {
+		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		float[] fArTargetWorldCoordinates = new float[3];
+		float[] fArDraggedPoint = new float[3];
+
+		fArTargetWorldCoordinates =
+			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
+		gl.glEnd();
+
+		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			bSplitGroupGene = false;
+
+			fArDraggedPoint =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, DraggingPoint.x,
+					DraggingPoint.y);
+
+			float fYPosDrag = fArDraggedPoint[1] - 0.4f;
+			float fYPosRelease = fArTargetWorldCoordinates[1] - 0.4f;
+
+			float fHeight = viewFrustum.getHeight() - 0.6f;
+			int iNrSamples = set.getVA(iContentVAID).size();
+			float fHeightSample = fHeight / iNrSamples;
+
+			int iFirstSample = iNrSamples - (int) Math.floor(fYPosDrag / fHeightSample);
+			int iLastSample = iNrSamples - (int) Math.ceil(fYPosRelease / fHeightSample);
+
+			// System.out.println("von: " + fYPosDrag + " bis: " + fYPosRelease);
+			// System.out.println("von: " + iFirstSample + " bis: " + iLastSample);
+
+			if (set.getVA(iContentVAID).getGroupList().split(iGroupToSplit, iFirstSample, iLastSample) == false)
+				System.out.println("Operation not allowed!!");
+		}
+	}
+
+	private void handleGroupSplitExperiments(final GL gl) {
+		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		float[] fArTargetWorldCoordinates = new float[3];
+		float[] fArDraggedPoint = new float[3];
+
+		fArTargetWorldCoordinates =
+			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
+		gl.glEnd();
+
+		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			bSplitGroupExp = false;
+
+			fArDraggedPoint =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, DraggingPoint.x,
+					DraggingPoint.y);
+
+			float fXPosDrag = fArDraggedPoint[0] - 0.7f;
+			float fXPosRelease = fArTargetWorldCoordinates[0] - 0.7f;
+
+			float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
+			int iNrSamples = set.getVA(iStorageVAID).size();
+			float fWidthSample = fWidth / iNrSamples;
+
+			int iFirstSample = (int) Math.floor(fXPosDrag / fWidthSample);
+			int iLastSample = (int) Math.ceil(fXPosRelease / fWidthSample);
+
+			if (set.getVA(iStorageVAID).getGroupList().split(iGroupToSplit, iLastSample, iFirstSample) == false)
+				System.out.println("Operation not allowed!!");
+		}
+	}
+
 	/**
 	 * Function used for updating cursor position in case of dragging
 	 * 
@@ -1981,6 +2203,62 @@ public class GLHierarchicalHeatMap
 
 		switch (ePickingType) {
 
+			case HIER_HEAT_MAP_GENES_GROUP:
+				switch (pickingMode) {
+
+					case CLICKED:
+						set.getVA(iContentVAID).getGroupList().get(iExternalID).toggleSelectionType();
+						setDisplayListDirty();
+						break;
+
+					case DRAGGED:
+						if (bSplitGroupGene == false) {
+							bSplitGroupGene = true;
+							iGroupToSplit = iExternalID;
+							DraggingPoint = pick.getPickedPoint();
+						}
+						setDisplayListDirty();
+						break;
+
+					case MOUSE_OVER:
+						System.out.print("genes group " + iExternalID);
+						System.out.print(" number elements in group: ");
+						System.out.println(set.getVA(iContentVAID).getGroupList().get(iExternalID)
+							.getNrElements());
+						setDisplayListDirty();
+						break;
+				}
+
+				pickingManager.flushHits(iUniqueID, ePickingType);
+				break;
+
+			case HIER_HEAT_MAP_EXPERIMENTS_GROUP:
+				switch (pickingMode) {
+					case CLICKED:
+						set.getVA(iStorageVAID).getGroupList().get(iExternalID).toggleSelectionType();
+						setDisplayListDirty();
+						break;
+
+					case DRAGGED:
+						if (bSplitGroupExp == false) {
+							bSplitGroupExp = true;
+							iGroupToSplit = iExternalID;
+							DraggingPoint = pick.getPickedPoint();
+						}
+						setDisplayListDirty();
+						break;
+
+					case MOUSE_OVER:
+						System.out.print("patients group " + iExternalID);
+						System.out.print(" number elements in group: ");
+						System.out.println(set.getVA(iStorageVAID).getGroupList().get(iExternalID)
+							.getNrElements());
+						setDisplayListDirty();
+						break;
+				}
+				pickingManager.flushHits(iUniqueID, ePickingType);
+				break;
+
 			case DENDROGRAM_SELECTION:
 				switch (pickingMode) {
 
@@ -1989,8 +2267,8 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 						System.out.println("node " + iExternalID);
+						setDisplayListDirty();
 						break;
-
 				}
 
 				pickingManager.flushHits(iUniqueID, ePickingType);
@@ -2186,6 +2464,63 @@ public class GLHierarchicalHeatMap
 		bUseClusteredVA = true;
 		initData();
 		bUseClusteredVA = false;
+
+		setDisplayListDirty();
+	}
+
+	public void activateGroupHandling() {
+
+		if (set.getVA(iContentVAID).getGroupList() == null) {
+			IGroupList groupList = new GroupList(0);
+			Group group = new Group(set.getVA(iContentVAID).size(), false, 0, ESelectionType.NORMAL);
+			groupList.append(group);
+			set.getVA(iContentVAID).setGroupList(groupList);
+		}
+
+		if (set.getVA(iStorageVAID).getGroupList() == null) {
+			IGroupList groupList = new GroupList(0);
+			Group group = new Group(set.getVA(iStorageVAID).size(), false, 0, ESelectionType.NORMAL);
+			groupList.append(group);
+			set.getVA(iStorageVAID).setGroupList(groupList);
+		}
+
+		setDisplayListDirty();
+
+	}
+
+	public void mergeGroups() {
+
+		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+
+		ArrayList<Integer> selGroups = new ArrayList<Integer>();
+
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
+		for (Group iter : groupList) {
+			if (iter.getSelectionType() == ESelectionType.SELECTION)
+				selGroups.add(groupList.indexOf(iter));
+		}
+		if (selGroups.size() != 2) {
+			System.out.println("Number of selected elements has to be 2!!!");
+			return;
+		}
+
+		// interchange
+		// if (groupList.interchange(set.getVA(iContentVAID), selGroups.get(0), selGroups.get(1)) == false) {
+		// System.out.println("Problem during interchange!!!");
+		// return;
+		// }
+
+		// merge
+		if (groupList.merge(set.getVA(iStorageVAID), selGroups.get(0), selGroups.get(1)) == false) {
+			System.out.println("Problem during merge!!!");
+			return;
+		}
+
+		bRedrawTextures = true;
 
 		setDisplayListDirty();
 	}

@@ -10,6 +10,8 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -35,7 +37,8 @@ public class SetExporter {
 				storageVA = set.getVA(view.getStorageVAID());
 				break;
 			}
-			else if (!view.isRenderedRemote() && (view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap)
+			else if (!view.isRenderedRemote()
+				&& (view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap)
 				&& !bExportBucketInternal) {
 				contentVA = set.getVA(view.getContentVAID());
 				storageVA = set.getVA(view.getStorageVAID());
@@ -74,6 +77,21 @@ public class SetExporter {
 					out.print("\t");
 				}
 				out.println();
+			}
+
+			if (contentVA.getGroupList() != null) {
+				out.println("Group assignment for contentVA");
+				IGroupList groupList = contentVA.getGroupList();
+				for (Group group : groupList) {
+					out.println(group.getNrElements() + "\t" + group.getIdxExample());
+				}
+			}
+			if (storageVA.getGroupList() != null) {
+				out.println("Group assignment for storageVA");
+				IGroupList groupList = storageVA.getGroupList();
+				for (Group group : groupList) {
+					out.println(group.getNrElements() + "\t" + group.getIdxExample());
+				}
 			}
 
 			out.close();

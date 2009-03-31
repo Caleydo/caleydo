@@ -52,4 +52,8 @@ public class Group {
 	public ESelectionType getSelectionType() {
 		return eSelectionType;
 	}
+	
+	public void toggleSelectionType(){
+		this.eSelectionType = (eSelectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+	}
 }

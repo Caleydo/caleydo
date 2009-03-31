@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.util.graph.EGraphItemHierarchy;
 
 public class TreeClusterer
 	implements IClusterer {
@@ -258,53 +259,6 @@ public class TreeClusterer
 			clusterid[is] = clusterid[n - 1];
 		}
 
-		int nNodes = iNrSamples - 1;
-
-		double[] order = new double[iNrSamples];
-
-		for (int i = 0; i < order.length; i++)
-			order[i] = i;
-
-		double[] nodeorder = new double[nNodes];
-		int[] nodecounts = new int[nNodes];
-
-		for (int i = 0; i < nNodes; i++) {
-			int min1 = result[i].getLeft();
-			int min2 = result[i].getRight();
-			// min1 and min2 are the elements that are to be joined
-			double order1;
-			double order2;
-			int counts1;
-			int counts2;
-			if (min1 < 0) {
-				int index1 = -min1 - 1;
-				order1 = nodeorder[index1];
-				counts1 = nodecounts[index1];
-				result[i].setCorrelation(Math
-					.max(result[i].getCorrelation(), result[index1].getCorrelation()));
-			}
-			else {
-				order1 = order[min1];
-				counts1 = 1;
-			}
-			if (min2 < 0) {
-				int index2 = -min2 - 1;
-				order2 = nodeorder[index2];
-				counts2 = nodecounts[index2];
-				result[i].setCorrelation(Math
-					.max(result[i].getCorrelation(), result[index2].getCorrelation()));
-			}
-			else {
-				order2 = order[min2];
-				counts2 = 1;
-			}
-
-			nodecounts[i] = counts1 + counts2;
-			nodeorder[i] = (counts1 * order1 + counts2 * order2) / (counts1 + counts2);
-		}
-
-		AlIndexes = TreeSort(nNodes, order, nodeorder, nodecounts, result);
-
 		// for (int i = 0; i < result.length; i++) {
 		// if (result[i].getLeft() >= 0)
 		// AlIndexes.add(result[i].getLeft());
@@ -312,11 +266,58 @@ public class TreeClusterer
 		// AlIndexes.add(result[i].getRight());
 		// }
 
-		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+		// set cluster result in Set
+		HierarchyGraph graph = new HierarchyGraph();
+		graph = matchTree(graph, result);
 
+		AlIndexes = graph.getAl();
+
+		set.setClusteredGraph(graph);
 		set.setTreeStructure(result);
 
+		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+
 		return clusteredVAId;
+	}
+
+	private HierarchyGraph matchTree(HierarchyGraph graph, Node[] treeStructure) {
+
+		HierarchyGraph[] graphList = new HierarchyGraph[treeStructure.length];
+
+		for (int i = 0; i < treeStructure.length; i++) {
+
+			HierarchyGraph left = null;
+			HierarchyGraph right = null;
+
+			if (treeStructure[i].getLeft() >= 0) {
+				left =
+					new HierarchyGraph("Leaf_" + treeStructure[i].getLeft(), treeStructure[i].getLeft(), 0);
+			}
+			else {
+				left = graphList[-(treeStructure[i].getLeft()) - 1];
+				graphList[-(treeStructure[i].getLeft()) - 1] = null;
+			}
+
+			if (treeStructure[i].getRight() >= 0) {
+				right =
+					new HierarchyGraph("Leaf_" + treeStructure[i].getRight(), treeStructure[i].getRight(), 0);
+			}
+			else {
+				right = graphList[-(treeStructure[i].getRight()) - 1];
+				graphList[-(treeStructure[i].getRight()) - 1] = null;
+			}
+
+			HierarchyGraph temp = new HierarchyGraph("Node_" + i, i, treeStructure[i].getCorrelation());
+
+			temp.addGraph(left, EGraphItemHierarchy.GRAPH_CHILDREN);
+			temp.addGraph(right, EGraphItemHierarchy.GRAPH_CHILDREN);
+
+			graphList[i] = temp;
+		}
+
+		graph = graphList[treeStructure.length - 1];
+
+		return graph;
 	}
 
 	public ArrayList<Integer> TreeSort(int nNodes, double[] order, double[] nodeorder, int[] nodecounts,
@@ -390,11 +391,6 @@ public class TreeClusterer
 		// System.out.print(indexes.get(z) + " ");
 		// }
 		// System.out.println("#: " + indexes.size());
-		// for (int z = 0; z < indexes.size(); z++) {
-		// if (indexes.contains(z) == false) {
-		// System.out.println(z + "nicht enthalten");
-		// }
-		// }
 
 		for (f = 1; f < n; f++) {
 			if (data[f] > data[f - 1])
@@ -415,11 +411,6 @@ public class TreeClusterer
 		// System.out.print(indexes.get(z) + " ");
 		// }
 		// System.out.println("#: " + indexes.size());
-		// for (int z = 0; z < indexes.size(); z++) {
-		// if (indexes.contains(z) == false) {
-		// System.out.println(z + "nicht enthalten");
-		// }
-		// }
 
 	}
 
@@ -427,11 +418,11 @@ public class TreeClusterer
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
 
 		Integer VAId = 0;
-		
+
 		determineSimilarities(set, idContent, idStorage);
-		
+
 		VAId = pmlcluster(set);
-		
+
 		return VAId;
 	}
 }
