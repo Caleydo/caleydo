@@ -21,7 +21,8 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage) {
+	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage,
+		EClustererType eClustererType) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -30,20 +31,42 @@ public class HierarchicalClusterer
 
 		buffer.append("@relation test\n\n");
 
-		for (int nr = 0; nr < set.size(); nr++) {
-			buffer.append("@attribute Patient" + nr + " real\n");
-		}
-
-		buffer.append("@data\n");
-
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
-		for (Integer iContentIndex : contentVA) {
-			for (Integer iStorageIndex : storageVA) {
-				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex) + ", ");
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			for (int nr = 0; nr < storageVA.size(); nr++) {
+				buffer.append("@attribute Patient" + nr + " real\n");
 			}
-			buffer.append("\n");
+
+			buffer.append("@data\n");
+
+			for (Integer iContentIndex : contentVA) {
+				for (Integer iStorageIndex : storageVA) {
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
+						iContentIndex - 1)
+						+ ", ");
+
+				}
+				buffer.append("\n");
+			}
+		}
+		else {
+			for (int nr = 0; nr < contentVA.size(); nr++) {
+				buffer.append("@attribute Gene" + nr + " real\n");
+			}
+
+			buffer.append("@data\n");
+
+			for (Integer iStorageIndex : storageVA) {
+				for (Integer iContentIndex : contentVA) {
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
+						iContentIndex - 1)
+						+ ", ");
+
+				}
+				buffer.append("\n");
+			}
 		}
 
 		Instances data = null;
@@ -77,9 +100,9 @@ public class HierarchicalClusterer
 		double[] clusterAssignments = eval.getClusterAssignments();
 		int nrclusters = eval.getNumClusters();
 
-		// System.out.println(nrclusters);
-		// System.out.println(data.numAttributes());
-		// System.out.println(data.numInstances());
+		System.out.println(nrclusters);
+		System.out.println(data.numAttributes());
+		System.out.println(data.numInstances());
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
@@ -136,11 +159,11 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
 
 		Integer VAId = 0;
 
-		VAId = cluster(set, idContent, idStorage);
+		VAId = cluster(set, idContent, idStorage, eClustererType);
 
 		return VAId;
 	}

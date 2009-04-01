@@ -5,8 +5,8 @@ import org.caleydo.core.data.collection.ISet;
 public interface IClusterer {
 
 	/**
-	 * Clusters a given set and returns the Id of the new generated virtual array with sorted indexes according
-	 * to the cluster result
+	 * Clusters a given set and returns the Id of the new generated virtual array with sorted indexes
+	 * according to the cluster result
 	 * 
 	 * @param set
 	 *            Set
@@ -16,6 +16,7 @@ public interface IClusterer {
 	 *            Id of the storage VA
 	 * @return Id of the sorted VirtualArray
 	 */
-	public Integer getSortedVAId(ISet set, Integer iVAIdContent, Integer iVAIdStorage);
+	public Integer getSortedVAId(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
+		EClustererType eclClustererType);
 
 }

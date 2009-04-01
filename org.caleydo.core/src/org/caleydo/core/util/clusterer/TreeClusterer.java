@@ -1,11 +1,17 @@
 package org.caleydo.core.util.clusterer;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.IGraph;
 
 public class TreeClusterer
 	implements IClusterer {
@@ -41,41 +47,76 @@ public class TreeClusterer
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	public void determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage) {
+	public void determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
+		EClustererType eClustererType) {
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		IDistanceMeasure distanceMeasure = new EuclideanDistance();
 
-		float[] dArInstance1 = new float[storageVA.size()];
-		float[] dArInstance2 = new float[storageVA.size()];
-
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 
-		for (Integer iContentIndex1 : contentVA) {
-			isto = 0;
-			for (Integer iStorageIndex1 : storageVA) {
-				dArInstance1[isto] =
-					set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
-				isto++;
-			}
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
-			icnt2 = 0;
-			for (Integer iContentIndex2 : contentVA) {
+			float[] dArInstance1 = new float[storageVA.size()];
+			float[] dArInstance2 = new float[storageVA.size()];
+
+			for (Integer iContentIndex1 : contentVA) {
 				isto = 0;
-
-				if (icnt2 < icnt1) {
-					for (Integer iStorageIndex2 : storageVA) {
-						dArInstance2[isto] =
-							set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
-						isto++;
-					}
-
-					similarities[icnt1][icnt2] = distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+				for (Integer iStorageIndex1 : storageVA) {
+					dArInstance1[isto] =
+						set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
+					isto++;
 				}
-				icnt2++;
+
+				icnt2 = 0;
+				for (Integer iContentIndex2 : contentVA) {
+					isto = 0;
+
+					if (icnt2 < icnt1) {
+						for (Integer iStorageIndex2 : storageVA) {
+							dArInstance2[isto] =
+								set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
+							isto++;
+						}
+
+						similarities[icnt1][icnt2] = distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+					}
+					icnt2++;
+				}
+				icnt1++;
 			}
-			icnt1++;
+		}
+		else {
+
+			float[] dArInstance1 = new float[contentVA.size()];
+			float[] dArInstance2 = new float[contentVA.size()];
+
+			for (Integer iStorageIndex1 : storageVA) {
+				isto = 0;
+				for (Integer iContentIndex1 : contentVA) {
+					dArInstance1[isto] =
+						set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
+					isto++;
+				}
+
+				icnt2 = 0;
+				for (Integer iStorageIndex2 : storageVA) {
+					isto = 0;
+
+					if (icnt2 < icnt1) {
+						for (Integer iContentIndex2 : contentVA) {
+							dArInstance2[isto] =
+								set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
+							isto++;
+						}
+
+						similarities[icnt1][icnt2] = distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+					}
+					icnt2++;
+				}
+				icnt1++;
+			}
 		}
 	}
 
@@ -129,9 +170,6 @@ public class TreeClusterer
 
 		for (int n = iNrSamples; n > 1; n--) {
 			int sum;
-
-			// result[iNrSamples-n].distance = find_closest_pair(n, distmatrix, &is, &js);
-
 			int is = 1;
 			int js = 0;
 
@@ -188,9 +226,16 @@ public class TreeClusterer
 				AlIndexes.add(result[i].getRight());
 		}
 
-		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+		// set cluster result in Set
+		HierarchyGraph graph = new HierarchyGraph();
+		graph = treeToGraph(graph, result);
 
+		AlIndexes = graph.getAl();
+
+		set.setClusteredGraph(graph);
 		set.setTreeStructure(result);
+
+		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
 		return clusteredVAId;
 	}
@@ -259,16 +304,41 @@ public class TreeClusterer
 			clusterid[is] = clusterid[n - 1];
 		}
 
-		// for (int i = 0; i < result.length; i++) {
-		// if (result[i].getLeft() >= 0)
-		// AlIndexes.add(result[i].getLeft());
-		// if (result[i].getRight() >= 0)
-		// AlIndexes.add(result[i].getRight());
-		// }
-
 		// set cluster result in Set
 		HierarchyGraph graph = new HierarchyGraph();
-		graph = matchTree(graph, result);
+		graph = treeToGraph(graph, result);
+
+//		PrintWriter out = null;
+//		try {
+//			out = new PrintWriter(new BufferedWriter(new FileWriter("result.txt")));
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		for (int i = 0; i < result.length; i++) {
+//			out
+//				.println(result[i].getLeft() + "\t" + result[i].getRight() + "\t"
+//					+ result[i].getCorrelation());
+//		}
+//		out.close();
+
+//		Node[] result2 = new Node[iNrSamples - 1];
+//		graphToTree(graph, result2);
+
+//		PrintWriter out2 = null;
+//		try {
+//			out2 = new PrintWriter(new BufferedWriter(new FileWriter("result2.txt")));
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		for (int i = 0; i < result.length; i++) {
+//			out2.println(result2[i].getLeft() + "\t" + result2[i].getRight() + "\t"
+//				+ result2[i].getCorrelation());
+//		}
+//		out2.close();
 
 		AlIndexes = graph.getAl();
 
@@ -280,7 +350,41 @@ public class TreeClusterer
 		return clusteredVAId;
 	}
 
-	private HierarchyGraph matchTree(HierarchyGraph graph, Node[] treeStructure) {
+	private void graphToTree(HierarchyGraph graph, Node[] treeStructure) {
+		int index = graph.getClusterNr();
+
+		List<IGraph> graphList = graph.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
+
+		int iNrChildsNode = graphList.size();
+
+		float cor = graph.getCoefficient();
+
+		if (iNrChildsNode == 2) {
+			{
+				treeStructure[index] = new Node();
+
+				HierarchyGraph current1 = (HierarchyGraph) graphList.get(0);
+				if (current1.getNodeName().charAt(0) == 'L')
+					treeStructure[index].setLeft(current1.getClusterNr());
+				else
+					treeStructure[index].setLeft(-(current1.getClusterNr() + 1));
+
+				HierarchyGraph current2 = (HierarchyGraph) graphList.get(1);
+				if (current2.getNodeName().charAt(0) == 'L')
+					treeStructure[index].setRight(current2.getClusterNr());
+				else
+					treeStructure[index].setRight(-(current2.getClusterNr() + 1));
+
+				treeStructure[index].setCorrelation(cor);
+
+				graphToTree(current1, treeStructure);
+				graphToTree(current2, treeStructure);
+			}
+		}
+		return;
+	}
+
+	private HierarchyGraph treeToGraph(HierarchyGraph graph, Node[] treeStructure) {
 
 		HierarchyGraph[] graphList = new HierarchyGraph[treeStructure.length];
 
@@ -320,7 +424,7 @@ public class TreeClusterer
 		return graph;
 	}
 
-	public ArrayList<Integer> TreeSort(int nNodes, double[] order, double[] nodeorder, int[] nodecounts,
+	private ArrayList<Integer> TreeSort(int nNodes, double[] order, double[] nodeorder, int[] nodecounts,
 		Node[] tree) {
 
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -367,13 +471,6 @@ public class TreeClusterer
 			}
 		}
 
-		// for (i = 0; i < tree.length; i++) {
-		// if (tree[i].getLeft() >= 0)
-		// indexes.add(tree[i].getLeft());
-		// if (tree[i].getRight() >= 0)
-		// indexes.add(tree[i].getRight());
-		// }
-
 		for (i = 0; i < iNrSamples; i++)
 			indexes.add(i);
 
@@ -382,15 +479,10 @@ public class TreeClusterer
 		return indexes;
 	}
 
-	public void sort(int n, double data[], ArrayList<Integer> indexes) {
+	private void sort(int n, double data[], ArrayList<Integer> indexes) {
 
 		int f, i, iTemp;
 		double temp;
-
-		// for (int z = 0; z < indexes.size(); z++) {
-		// System.out.print(indexes.get(z) + " ");
-		// }
-		// System.out.println("#: " + indexes.size());
 
 		for (f = 1; f < n; f++) {
 			if (data[f] > data[f - 1])
@@ -406,22 +498,17 @@ public class TreeClusterer
 			data[i + 1] = temp;
 			indexes.set(i + 1, iTemp);
 		}
-
-		// for (int z = 0; z < indexes.size(); z++) {
-		// System.out.print(indexes.get(z) + " ");
-		// }
-		// System.out.println("#: " + indexes.size());
-
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
 
 		Integer VAId = 0;
 
-		determineSimilarities(set, idContent, idStorage);
+		determineSimilarities(set, idContent, idStorage, eClustererType);
 
 		VAId = pmlcluster(set);
+		// VAId = palcluster(set);
 
 		return VAId;
 	}

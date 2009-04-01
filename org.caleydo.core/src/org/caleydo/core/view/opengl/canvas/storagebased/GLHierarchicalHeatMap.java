@@ -42,6 +42,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.HierarchyGraph;
 import org.caleydo.core.util.clusterer.Node;
@@ -144,7 +145,8 @@ public class GLHierarchicalHeatMap
 	private Node[] treeStructure = null;
 	private DendrogramNode[] Nodes = null;
 	private boolean bInitNodes = true;
-	private EClustererType eClustererType = EClustererType.AFFINITY_PROPAGATION;
+	private EClustererAlgo eClustererAlgo = EClustererAlgo.COBWEB_CLUSTERER;
+	private EClustererType eClustererType = EClustererType.GENE_CLUSTERING;
 
 	private boolean bSplitGroupExp = false;
 	private boolean bSplitGroupGene = false;
@@ -1752,8 +1754,8 @@ public class GLHierarchicalHeatMap
 			iNrNodes = 0;
 			iNrLeafs = 0;
 			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), hierarchyGraph, 0, 1, 0, true, 4);
-//			System.out.println("\n iNrNodes: " + iNrNodes);
-//			System.out.println("\n iNrLeafs: " + iNrLeafs);
+			// System.out.println("\n iNrNodes: " + iNrNodes);
+			// System.out.println("\n iNrLeafs: " + iNrLeafs);
 		}
 
 		// all stuff for rendering level 1 (overview bar)
@@ -1901,53 +1903,61 @@ public class GLHierarchicalHeatMap
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		if (bUseClusteredVA) {
-			System.out.println("iContentVAID before clustering " + iContentVAID + " size: "
-				+ set.getVA(iContentVAID).size());
-			for (int i = 0; i < 50; i++) {
-				System.out.print(set.getVA(iContentVAID).get(i) + " ");
+			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+
+				iContentVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
+
 			}
-			System.out.println(" ");
+			else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING) {
+				// System.out.println("iStorageVAID before clustering " + iStorageVAID + " size: "
+				// + set.getVA(iStorageVAID).size());
+				// for (int i = 0; i < 6; i++) {
+				// System.out.print(set.getVA(iStorageVAID).get(i) + " ");
+				// }
+				// System.out.println(" ");
 
-			iContentVAID = set.cluster(iContentVAID, iStorageVAID, eClustererType);
+				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
 
-			System.out.println("iContentVAID after clustering  " + iContentVAID + " size: "
-				+ set.getVA(iContentVAID).size());
-			for (int i = 0; i < 50; i++) {
-				System.out.print(set.getVA(iContentVAID).get(i) + " ");
+				// System.out.println("iStorageVAID after clustering  " + iStorageVAID + " size: "
+				// + set.getVA(iStorageVAID).size());
+				// for (int i = 0; i < 6; i++) {
+				// System.out.print(set.getVA(iStorageVAID).get(i) + " ");
+				// }
+				// System.out.println(" ");
 			}
-			System.out.println(" ");
+			else {
 
-			if (eClustererType == EClustererType.COBWEB_CLUSTERER
-				|| eClustererType == EClustererType.TREE_CLUSTERER) {
+				iStorageVAID =
+					set.cluster(iContentVAID, iStorageVAID, eClustererAlgo,
+						EClustererType.EXPERIMENTS_CLUSTERING);
+				iContentVAID =
+					set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, EClustererType.GENE_CLUSTERING);
+
+			}
+
+			if (eClustererAlgo == EClustererAlgo.COBWEB_CLUSTERER
+				|| eClustererAlgo == EClustererAlgo.TREE_CLUSTERER) {
 				hierarchyGraph = set.getClusteredGraph();
 			}
 			else {
 
-				System.out.println("\nnumber of elements per cluster ... ");
-				for (Integer iter : set.getAlClusterSizes()) {
-					System.out.print(iter + " ");
-				}
-				System.out.println("\nindex of example for cluster in data set ... ");
-				for (Integer iter : set.getAlExamples()) {
-					System.out.print(iter + " ");
-				}
-				System.out.println(" ");
+				// System.out.println("\n number of elements per cluster ... ");
+				// for (Integer iter : set.getAlClusterSizes()) {
+				// System.out.print(iter + " ");
+				// }
+				// System.out.println("\n index of example for cluster in data set ... ");
+				// for (Integer iter : set.getAlExamples()) {
+				// System.out.print(iter + " ");
+				// }
+				// System.out.println(" ");
 			}
 		}
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
 
-		IVirtualArray vacnt = set.getVA(iContentVAID);
-		IVirtualArray vasto = set.getVA(iStorageVAID);
-
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
-
-		// if (renderStyle != null)
-		// {
-		// renderStyle.setActiveVirtualArray(iContentVAID);
-		// }
 
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
@@ -1960,19 +1970,7 @@ public class GLHierarchicalHeatMap
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
 			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
-
-			// if
-			// (setMouseOver.contains(set.getVA(iContentVAID).get(iColumnCount
-			// )))
-			// {
-			// storageSelectionManager.addToType(ESelectionType.MOUSE_OVER,
-			// set.getVA(
-			// iContentVAID).get(iColumnCount));
-			// }
 		}
-
-		// vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
-
 	}
 
 	@Override

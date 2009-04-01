@@ -17,13 +17,13 @@ public class KMeansClusterer
 
 	private SimpleKMeans clusterer = null;
 
-	private int iNrCluster = 10;
+	private int iNrCluster = 15;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
 	}
 
-	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage) {
+	public Integer cluster(ISet set, Integer iVAIdContent, Integer iVAIdStorage, EClustererType eClustererType) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -44,25 +44,47 @@ public class KMeansClusterer
 
 		buffer.append("@relation test\n\n");
 
-		for (int nr = 0; nr < set.size(); nr++) {
-			buffer.append("@attribute Patient" + nr + " real\n");
-		}
-
-		buffer.append("@data\n");
-
-		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
+		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
-		for (Integer iContentIndex : contentVA) {
-			for (Integer iStorageIndex : storageVA) {
-				buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex)
-					+ ", ");
-
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			for (int nr = 0; nr < storageVA.size(); nr++) {
+				buffer.append("@attribute Patient" + nr + " real\n");
 			}
-			buffer.append("\n");
+
+			buffer.append("@data\n");
+
+			for (Integer iContentIndex : contentVA) {
+				for (Integer iStorageIndex : storageVA) {
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+						iContentIndex - 1)
+						+ ", ");
+
+				}
+				buffer.append("\n");
+			}
+		}
+		else {
+			for (int nr = 0; nr < contentVA.size(); nr++) {
+				buffer.append("@attribute Gene" + nr + " real\n");
+			}
+
+			buffer.append("@data\n");
+
+			for (Integer iStorageIndex : storageVA) {
+				for (Integer iContentIndex : contentVA) {
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+						iContentIndex - 1)
+						+ ", ");
+
+				}
+				buffer.append("\n");
+			}
 		}
 
 		Instances data = null;
+
+		// System.out.println(buffer.toString());
 
 		try {
 			data = new Instances(new StringReader(buffer.toString()));
@@ -70,9 +92,6 @@ public class KMeansClusterer
 		catch (IOException e1) {
 			e1.printStackTrace();
 		}
-
-		// unsupervised learning --> no class given
-		data.setClassIndex(-1);
 
 		try {
 			// train the clusterer
@@ -98,6 +117,23 @@ public class KMeansClusterer
 			alExamples.add(0);
 		}
 
+		// System.out.println(eval.getNumClusters());
+		// System.out.println(data.numAttributes());
+		// System.out.println(data.numInstances());
+
+		// for (int j = 0; j < iNrCluster; j++) {
+		// for (int i = 0; i < data.numInstances(); i++) {
+		// if (ClusterAssignments[i] == j) {
+		// alExamples.add(i);
+		// break;
+		// }
+		// }
+		// }
+
+		// Sort cluster depending on their color values
+		// TODO find a better solution for sorting
+		// ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
+
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == cluster) {
@@ -117,11 +153,11 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
 
 		Integer VAId = 0;
 
-		VAId = cluster(set, idContent, idStorage);
+		VAId = cluster(set, idContent, idStorage, eClustererType);
 
 		return VAId;
 	}
