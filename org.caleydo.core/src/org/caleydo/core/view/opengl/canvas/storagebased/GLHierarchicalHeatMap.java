@@ -53,6 +53,7 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener.EBusyModeState;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -471,7 +472,7 @@ public class GLHierarchicalHeatMap
 	public synchronized void displayLocal(GL gl) {
 		if (set == null)
 			return;
-
+		
 		pickingManager.handlePicking(iUniqueID, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -479,9 +480,13 @@ public class GLHierarchicalHeatMap
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
+		
 		display(gl);
 		checkForHits(gl);
+		
+		if (eBusyModeState != EBusyModeState.OFF) {
+			renderBusyMode(gl);
+		}
 	}
 
 	@Override
@@ -1491,10 +1496,10 @@ public class GLHierarchicalHeatMap
 		gl.glPopName();
 
 		if (glHeatMapView.isInDefaultOrientation()) {
-			gl.glTranslatef(fleftOffset, -0.4f, 0);
+			gl.glTranslatef(-fleftOffset, -0.4f, 0);
 		}
 		else {
-			gl.glTranslatef(fleftOffset, +0.2f, 0);
+			gl.glTranslatef(-fleftOffset, +0.2f, 0);
 		}
 	}
 

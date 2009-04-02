@@ -85,14 +85,6 @@ public class GeneralRenderStyle {
 
 	}
 
-	public float getXCenter() {
-		return (viewFrustum.getRight() - viewFrustum.getLeft()) / 2;
-	}
-
-	public float getYCenter() {
-		return (viewFrustum.getTop() - viewFrustum.getBottom()) / 2;
-	}
-
 	public static DecimalFormat getDecimalFormat() {
 		return decimalFormat;
 	}
@@ -100,7 +92,6 @@ public class GeneralRenderStyle {
 	public float getSmallFontScalingFactor() {
 		float fScaling = SMALL_FONT_SCALING_FACTOR * getScaling();
 		return fScaling;
-
 	}
 
 	public float getVerySmallFontScalingFactor() {

@@ -42,9 +42,7 @@ public class Application
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
-	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset.csv";
-	// private static String REAL_DATA_SAMPLE_FILE =
-	// "data/genome/microarray/sample/sample_microarray_dataset.csv";
+	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 
 	public static CaleydoBootloader caleydoCore;
 

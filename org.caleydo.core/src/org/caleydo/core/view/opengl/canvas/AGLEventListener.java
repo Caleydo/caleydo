@@ -30,6 +30,7 @@ import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -449,13 +450,13 @@ public abstract class AGLEventListener
 		gl.glEnd();
 
 		float fXCenter, fYCenter;
-		if (renderStyle == null || this instanceof GLRemoteRendering) {
+		if (this instanceof GLRemoteRendering) {
 			fXCenter = 0;
 			fYCenter = 0;
 		}
 		else {
-			fXCenter = renderStyle.getXCenter();
-			fYCenter = renderStyle.getYCenter();
+			fXCenter = (viewFrustum.getRight() - viewFrustum.getLeft()) / 2;
+			fYCenter = (viewFrustum.getTop() - viewFrustum.getBottom()) / 2;			
 		}
 
 		// TODO bad hack here, frustum wrong or renderStyle null

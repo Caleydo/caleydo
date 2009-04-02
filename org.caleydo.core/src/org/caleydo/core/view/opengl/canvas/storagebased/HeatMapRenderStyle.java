@@ -134,14 +134,12 @@ public class HeatMapRenderStyle
 		return fFieldHeight;
 	}
 
-	@Override
 	public float getYCenter() {
 
 		// TODO: this is only correct for 4 rows
 		return viewFrustum.getHeight() / 2;
 	}
 
-	@Override
 	public float getXCenter() {
 
 		return viewFrustum.getWidth() / 2;
