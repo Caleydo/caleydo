@@ -56,7 +56,7 @@ public class CollabViewRep
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
 		
-		Composite composite = new Composite(parentComposite, SWT.NULL);
+		composite = new Composite(parentComposite, SWT.NULL);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
 		
@@ -64,18 +64,13 @@ public class CollabViewRep
 		addTestControls(composite);
 		addBucketControls(composite);
 		addEmptyComposite(composite);
+
 	}
 		
 	public void addSerializeControls(Composite composite) {
-		Composite serializeComposite = new Composite(composite, SWT.LEFT | SWT.TOP);
-		GridData gridData = new GridData();
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.minimumWidth = 600;
-		gridData.minimumHeight = 300;
-		serializeComposite.setLayoutData(gridData);
-
+		Composite serializeComposite = new Composite(composite, SWT.NULL);
+		serializeComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		
 		GridLayout layout = new GridLayout(3, false);
 		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
 		serializeComposite.setLayout(layout);
@@ -103,6 +98,7 @@ public class CollabViewRep
 	
 	public void addBucketControls(Composite composite) {
 		Composite bucketControls = new Composite(composite, SWT.NULL);
+		bucketControls.setLayoutData(new GridData(GridData.FILL_BOTH));
 		GridLayout bucketLayout = new GridLayout(3, false);
 		bucketControls.setLayout(bucketLayout);
 
@@ -130,18 +126,19 @@ public class CollabViewRep
 
 	public void addTestControls(Composite composite) {
 		Composite testControls = new Composite(composite, SWT.NULL);
+		testControls.setLayoutData(new GridData(GridData.FILL_BOTH));
+
 		GridLayout testLayout = new GridLayout(2, false);
 		testControls.setLayout(testLayout);
 
 		Button button;
-
-	    button = new Button(composite, SWT.CENTER);
+	    button = new Button(testControls, SWT.NULL);
 		button.setText("enable busy");
 		EnableBusyListener enableListener = new EnableBusyListener();
 		enableListener.setRequester(this);
 		button.addListener(SWT.Selection, enableListener);
 
-		button = new Button(composite, SWT.CENTER);
+		button = new Button(testControls, SWT.CENTER);
 		button.setText("disable busy");
 		DisableBusyListener disableListener = new DisableBusyListener();
 		disableListener.setRequester(this);
@@ -150,8 +147,11 @@ public class CollabViewRep
 	
 	public void addEmptyComposite(Composite composite) {
 		Composite empty = new Composite(composite, SWT.NULL);
+		empty.setLayoutData(new GridData(GridData.FILL_BOTH));
+
 		GridLayout bucketLayout = new GridLayout(1, false);
 		empty.setLayout(bucketLayout);
+
 		Label label = new Label(empty, SWT.NULL);
 		label.setText("empty");
 	}
