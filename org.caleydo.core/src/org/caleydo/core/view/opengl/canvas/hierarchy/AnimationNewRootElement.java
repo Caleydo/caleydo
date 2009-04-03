@@ -1,0 +1,114 @@
+package org.caleydo.core.view.opengl.canvas.hierarchy;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+
+import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
+
+public class AnimationNewRootElement
+	extends DrawingStateAnimation {
+
+	public static final float DEFAULT_ANIMATION_DURATION = 0.5f;
+
+	private static final float TARGET_ROOT_ANGLE = 360.0f;
+	private static final float TARGET_ROOT_START_ANGLE = 0.0f;
+	private static final float TARGET_ROOT_INNER_RADIUS = 0.0f;
+
+	MovementValue mvCurrentRootAngle;
+	MovementValue mvCurrentRootStartAngle;
+	MovementValue mvCurrentRootInnerRadius;
+	MovementValue mvCurrentWidth;
+	MovementValue mvCurrentDepth;
+	MovementValue mvCurrentRootColorR;
+	MovementValue mvCurrentRootColorG;
+	MovementValue mvCurrentRootColorB;
+
+	PDDrawingStrategyFixedColor dsFixedColor;
+
+	public AnimationNewRootElement(DrawingController drawingController, GLRadialHierarchy radialHierarchy) {
+		super(drawingController, radialHierarchy);
+		fAnimationDuration = DEFAULT_ANIMATION_DURATION;
+	}
+
+	@Override
+	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double dTimePassed) {
+
+		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
+
+		if (!bAnimationStarted) {
+			initAnimation(fXCenter, fYCenter, pdCurrentRootElement);
+			bAnimationStarted = true;
+		}
+
+		moveValues(dTimePassed);
+
+		if (areStoppingCreteriaFulfilled()) {
+			bAnimationStarted = false;
+		}
+
+		gl.glLoadIdentity();
+		gl.glTranslatef(fXCenter, fYCenter, 0);
+
+		dsFixedColor.setFillColor(mvCurrentRootColorR.getMovementValue(), mvCurrentRootColorG
+			.getMovementValue(), mvCurrentRootColorB.getMovementValue(), 1);
+
+		pdCurrentRootElement.drawHierarchyAngular(gl, glu, mvCurrentWidth.getMovementValue(), Math
+			.round(mvCurrentDepth.getMovementValue()), mvCurrentRootStartAngle.getMovementValue(),
+			mvCurrentRootAngle.getMovementValue(), mvCurrentRootInnerRadius.getMovementValue());
+
+		if (!bAnimationStarted) {
+			drawingController.setDrawingState(drawingController
+				.getDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY));
+			radialHierarchy.setAnimationActive(false);
+
+			pdCurrentRootElement.setPDDrawingStrategy(DrawingStrategyManager.getInstance()
+				.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_NORMAL));
+		}
+	}
+
+	private void initAnimation(float fXCenter, float fYCenter, PartialDisc pdCurrentRootElement) {
+
+		float fCurrentRootAngle = pdCurrentRootElement.getCurrentAngle();
+		float fCurrentDepth = pdCurrentRootElement.getCurrentDepth();
+		float fCurrentRootInnerRadius = pdCurrentRootElement.getCurrentInnerRadius();
+		float fCurrentRootStartAngle = pdCurrentRootElement.getCurrentStartAngle();
+		float fCurrentWidth = pdCurrentRootElement.getCurrentWidth();
+
+		float fTargetDepth =
+			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdCurrentRootElement
+				.getHierarchyDepth());
+		float fTargetWidth = Math.min(fXCenter - (fXCenter / 10), fYCenter - (fYCenter / 10)) / fTargetDepth;
+
+		float fMidAngle = fCurrentRootStartAngle + ( fCurrentRootAngle / 2.0f);
+		while (fMidAngle > 360) {
+			fMidAngle -= 360;
+		}
+
+		// TODO: if new colormode is introduced, use correct colormapping
+
+		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360);
+
+		alMovementValues.clear();
+
+		mvCurrentRootAngle = createNewMovementValue(fCurrentRootAngle, TARGET_ROOT_ANGLE, fAnimationDuration);
+		mvCurrentRootStartAngle =
+			createNewMovementValue(fCurrentRootStartAngle, TARGET_ROOT_START_ANGLE, fAnimationDuration);
+		mvCurrentRootInnerRadius =
+			createNewMovementValue(fCurrentRootInnerRadius, TARGET_ROOT_INNER_RADIUS, fAnimationDuration);
+		mvCurrentDepth = createNewMovementValue(fCurrentDepth, fTargetDepth, fAnimationDuration);
+		mvCurrentWidth = createNewMovementValue(fCurrentWidth, fTargetWidth, fAnimationDuration);
+		mvCurrentRootColorR = createNewMovementValue(fArRGB[0], 1, fAnimationDuration);
+		mvCurrentRootColorG = createNewMovementValue(fArRGB[1], 1, fAnimationDuration);
+		mvCurrentRootColorB = createNewMovementValue(fArRGB[2], 1, fAnimationDuration);
+
+		dsFixedColor =
+			(PDDrawingStrategyFixedColor) DrawingStrategyManager.getInstance().getDrawingStrategy(
+				DrawingStrategyManager.PD_DRAWING_STRATEGY_FIXED_COLOR);
+		
+		pdCurrentRootElement.setPDDrawingStrategy(dsFixedColor);
+	}
+
+}

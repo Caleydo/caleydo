@@ -13,6 +13,12 @@ public class PartialDisc
 	private PickingManager pickingManager;
 	private int iViewID;
 	private PDDrawingStrategy drawingStrategy;
+	
+	private float fCurrentAngle;
+	private float fCurrentStartAngle;
+	private int iCurrentDepth;
+	private float fCurrentWidth;
+	private float fCurrentInnerRadius;
 
 	public PartialDisc(int iElementID) {
 		super(iElementID);
@@ -32,7 +38,10 @@ public class PartialDisc
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_NORMAL);
 	}
 
-	public void drawHierarchyRoot(GL gl, GLU glu, float fWidth, int iDepth) {
+	public void drawHierarchyFull(GL gl, GLU glu, float fWidth, int iDepth) {
+		
+		setCurrentDisplayParameters(fWidth, 0, 360, 0, iDepth);
+		
 		if (iDepth <= 0)
 			return;
 		
@@ -48,15 +57,36 @@ public class PartialDisc
 			drawAllChildren(gl, glu, fWidth, 0, fWidth, fAnglePerSizeUnit, iDepth);
 		}
 	}
+	
+	public void drawHierarchyAngular(GL gl, GLU glu, float fWidth, int iDepth, 
+		float fStartAngle, float fAngle, float fInnerRadius) {
+		
+		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
+		
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+			iElementID));
+		drawingStrategy.drawPartialDisc(gl, glu, fWidth, fInnerRadius, fStartAngle, fAngle);
+		gl.glPopName();
+		iDepth--;
+
+		float fAnglePerSizeUnit = fAngle / fSize;
+
+		if (iDepth > 0) {
+			drawAllChildren(gl, glu, fWidth, fStartAngle, fInnerRadius + fWidth, fAnglePerSizeUnit, iDepth);
+		}
+		
+	}
 
 	private float drawHierarchy(GL gl, GLU glu, float fWidth, float fStartAngle, float fInnerRadius,
 		float fAnglePerSizeUnit, int iDepth) {
 
 		float fAngle = fSize * fAnglePerSizeUnit;
 
+		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
+		
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			iElementID));
-		drawingStrategy.drawPartialDisk(gl, glu, fWidth, fInnerRadius, fStartAngle, fAngle);
+		drawingStrategy.drawPartialDisc(gl, glu, fWidth, fInnerRadius, fStartAngle, fAngle);
 		gl.glPopName();
 		
 		iDepth--;
@@ -79,6 +109,15 @@ public class PartialDisc
 					fAnglePerSizeUnit, iDepth);
 		}
 	}
+	
+	private void setCurrentDisplayParameters(float fWidth, float fStartAngle, float fAngle, 
+		float fInnerRadius, int iDepth) {
+		fCurrentAngle = fAngle;
+		iCurrentDepth = iDepth;
+		fCurrentInnerRadius = fInnerRadius;
+		fCurrentStartAngle = fStartAngle;
+		fCurrentWidth = fWidth;
+	}
 
 	public float getSize() {
 		return fSize;
@@ -98,6 +137,30 @@ public class PartialDisc
 
 	public void setPDDrawingStrategy(PDDrawingStrategy drawingStrategy) {
 		this.drawingStrategy = drawingStrategy;
+	}
+	
+	public boolean hasChildren() {
+		return (vecChildren.size() > 0);
+	}
+	
+	public float getCurrentAngle() {
+		return fCurrentAngle;
+	}
+
+	public float getCurrentStartAngle() {
+		return fCurrentStartAngle;
+	}
+
+	public int getCurrentDepth() {
+		return iCurrentDepth;
+	}
+
+	public float getCurrentWidth() {
+		return fCurrentWidth;
+	}
+
+	public float getCurrentInnerRadius() {
+		return fCurrentInnerRadius;
 	}
 
 }

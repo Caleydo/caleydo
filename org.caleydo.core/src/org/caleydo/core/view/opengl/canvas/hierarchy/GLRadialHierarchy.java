@@ -56,14 +56,17 @@ public class GLRadialHierarchy
 	private float fAnimationTargetTranslation = 0;
 
 	private int iMaxDisplayedHierarchyDepth;
+	
+	private boolean bIsAnimationActive;
 
 	private HashMap<Integer, PartialDisc> hashPartialDiscs;
 
 	private PartialDisc pdRealRootElement;
 	private PartialDisc pdCurrentRootElement;
-	private PartialDisc pdSelectedElement;
+	private PartialDisc pdCurrentSelectedElement;
 
-	private GLU glu = new GLU();
+	private GLU glu;
+	private DrawingController drawingController;
 
 	boolean bIsInListMode = false;
 
@@ -92,6 +95,9 @@ public class GLRadialHierarchy
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
+		drawingController = new DrawingController(this);
+		glu = new GLU();
+		bIsAnimationActive = false;
 	}
 
 	@Override
@@ -177,6 +183,11 @@ public class GLRadialHierarchy
 		ch2[2] = new PartialDisc(childID, 25, iUniqueID, pickingManager);
 		children[1].addChild(ch2[2]);
 		hashPartialDiscs.put(childID, ch2[2]);
+		
+		childID++;
+		PartialDisc ch = new PartialDisc(childID, 25, iUniqueID, pickingManager);
+		ch2[2].addChild(ch);
+		hashPartialDiscs.put(childID, ch);
 
 		PartialDisc[] ch4 = new PartialDisc[2];
 		childID++;
@@ -224,7 +235,7 @@ public class GLRadialHierarchy
 	public synchronized void displayLocal(GL gl) {
 		pickingManager.handlePicking(iUniqueID, gl);
 
-		if (bIsDisplayListDirtyLocal) {
+		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -240,7 +251,7 @@ public class GLRadialHierarchy
 
 	@Override
 	public synchronized void displayRemote(GL gl) {
-		if (bIsDisplayListDirtyRemote) {
+		if (bIsDisplayListDirtyRemote && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -258,7 +269,13 @@ public class GLRadialHierarchy
 		// render(gl);
 		//clipToFrustum(gl);
 		//
-		gl.glCallList(iGLDisplayListToCall);
+		if(bIsAnimationActive) {
+			float fXCenter = viewFrustum.getWidth() / 2;
+			float fYCenter = viewFrustum.getHeight() / 2;
+			drawingController.draw(fXCenter, fYCenter, gl, glu);		
+		}
+		else
+			gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
@@ -266,21 +283,11 @@ public class GLRadialHierarchy
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		gl.glColor4f(1, 1, 1, 1);
 
 		float fXCenter = viewFrustum.getWidth() / 2;
 		float fYCenter = viewFrustum.getHeight() / 2;
-		gl.glTranslatef(fXCenter, fYCenter, 0);
-
-		int iDisplayedHierarchyDepth =
-			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement.getHierarchyDepth());
-
-		float fDiscWidth =
-			Math.min(fXCenter - (fXCenter / 10), fYCenter - (fYCenter / 10)) / iDisplayedHierarchyDepth;
-
-		pdCurrentRootElement.drawHierarchyRoot(gl, glu, fDiscWidth, iDisplayedHierarchyDepth);
 		
-		gl.glTranslatef(-fXCenter, -fYCenter, 0);
+		drawingController.draw(fXCenter, fYCenter, gl, glu);
 
 		gl.glEndList();
 	}
@@ -391,38 +398,23 @@ public class GLRadialHierarchy
 
 			case RAD_HIERARCHY_PDISC_SELECTION:
 				
-				PartialDisc pdTemp = hashPartialDiscs.get(iExternalID);
+				PartialDisc pdNewSelectedElement = hashPartialDiscs.get(iExternalID);
 				
 				switch (pickingMode) {
 					case CLICKED:
+						if (pdNewSelectedElement != null)
+							drawingController.handleClick(pdNewSelectedElement);
 						
-						if (pdTemp != null && pdTemp != pdRealRootElement) {
-							if (pdSelectedElement != null) {
-								pdSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.getInstance()
-									.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_NORMAL));
-							}
-							if (pdTemp == pdCurrentRootElement) {
-								pdCurrentRootElement = pdRealRootElement;
-							}
-							else {
-								pdSelectedElement = pdTemp;
-								pdCurrentRootElement = pdSelectedElement;
-							}
-							setDisplayListDirty();
-						}
+						
 						break;
 					case MOUSE_OVER:
-
-						if (pdTemp != null && pdTemp != pdSelectedElement) {
-							if (pdSelectedElement != null) {
-								pdSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.getInstance()
-									.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_NORMAL));
-							}
-							pdSelectedElement = pdTemp;
-							pdSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.getInstance()
-								.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED));
-							setDisplayListDirty();
-						}
+						if (pdNewSelectedElement != null)
+							drawingController.handleMouseOver(pdNewSelectedElement);
+						
+						break;
+						
+					case DOUBLE_CLICKED:
+						
 						break;
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);
@@ -433,9 +425,45 @@ public class GLRadialHierarchy
 
 		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
+	
+	public PartialDisc getRealRootElement() {
+		return pdRealRootElement;
+	}
+
+	public void setRealRootElement(PartialDisc pdRealRootElement) {
+		this.pdRealRootElement = pdRealRootElement;
+	}
+
+	public PartialDisc getCurrentRootElement() {
+		return pdCurrentRootElement;
+	}
+
+	public void setCurrentRootElement(PartialDisc pdCurrentRootElement) {
+		this.pdCurrentRootElement = pdCurrentRootElement;
+	}
+
+	public PartialDisc getCurrentSelectedElement() {
+		return pdCurrentSelectedElement;
+	}
+
+	public void setCurrentSelectedElement(PartialDisc pdCurrentSelectedElement) {
+		this.pdCurrentSelectedElement = pdCurrentSelectedElement;
+	}
+	
+	public int getMaxDisplayedHierarchyDepth() {
+		return iMaxDisplayedHierarchyDepth;
+	}
+
+	public void setMaxDisplayedHierarchyDepth(int iMaxDisplayedHierarchyDepth) {
+		this.iMaxDisplayedHierarchyDepth = iMaxDisplayedHierarchyDepth;
+	}
 
 	public boolean isInListMode() {
 		return bIsInListMode;
+	}
+	
+	public void setAnimationActive(boolean bIsAnimationActive) {
+		this.bIsAnimationActive = bIsAnimationActive;
 	}
 
 	@Override
@@ -462,4 +490,5 @@ public class GLRadialHierarchy
 
 	}
 
+	
 }
