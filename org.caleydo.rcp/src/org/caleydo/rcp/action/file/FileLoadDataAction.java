@@ -82,7 +82,7 @@ public class FileLoadDataAction
 	private String sInputFile = "";
 	private String sFileName = "";
 	private String sFilePath = "";
-	private String sInputPattern = "SKIP;ABORT";
+	private String sInputPattern = "";//SKIP;";
 	private String sDelimiter = "";
 	private int iCreatedSetID = -1;
 	private int iStartParseFileAtLine = 2;
@@ -859,7 +859,7 @@ public class FileLoadDataAction
 		sInputPattern = sInputPattern + "SKIP" + ";";
 
 		Combo tmpComboDataType;
-		for (int iColIndex = 2; iColIndex < arComboDataType.size(); iColIndex++) {
+		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++) {
 			tmpComboDataType = arComboDataType.get(iColIndex);
 
 			if (!arSkipColumn.get(iColIndex).getSelection()) {
@@ -870,6 +870,7 @@ public class FileLoadDataAction
 			if (tmpComboDataType.getText().equals("FLOAT") || tmpComboDataType.getText().equals("SKIP")) {
 				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
 			}
+	
 
 			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only allow parsing float data
 			{
@@ -883,7 +884,8 @@ public class FileLoadDataAction
 
 				INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
 
-				storage.setLabel(previewTable.getColumn(iColIndex).getText());
+				String labelText = previewTable.getColumn(iColIndex).getText();
+				storage.setLabel(labelText);
 
 				iAlStorageId.add(storage.getID());
 
@@ -904,6 +906,15 @@ public class FileLoadDataAction
 			MessageDialog.openError(parentComposite.getShell(), "Invalid filename", "Invalid filename");
 			return;
 		}
+		
+		// Create SET
+		CmdDataCreateSet cmdCreateSet =
+			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
+				ECommandType.CREATE_SET_DATA);
+		cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
+		cmdCreateSet.doCommand();
+		ISet set = cmdCreateSet.getCreatedObject();
+		iCreatedSetID = set.getID();
 
 		// Trigger file loading command
 		CmdLoadFileNStorages cmdLoadCsv =
@@ -918,14 +929,7 @@ public class FileLoadDataAction
 			iStartParseFileAtLine - 1, -1);
 		cmdLoadCsv.doCommand();
 
-		// Create SET
-		CmdDataCreateSet cmdCreateSet =
-			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.CREATE_SET_DATA);
-		cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
-		cmdCreateSet.doCommand();
-		ISet set = cmdCreateSet.getCreatedObject();
-		iCreatedSetID = set.getID();
+		
 
 		// iSWTGUIManager.setProgressBarVisible(false);
 
@@ -937,6 +941,7 @@ public class FileLoadDataAction
 			"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter, "REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
 		cmdLoadLookupTableFile.doCommand();
 
+	
 		if (!txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
 			if (!Float.isNaN(fMin)) {

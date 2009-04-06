@@ -13,13 +13,15 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="53301" label="A009"  attrib1="NUMERICAL" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="54301" label="A012"  attrib1="NUMERICAL" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55301" label="A013"  attrib1="NUMERICAL" />
+
+
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 53301 54301 55301" attrib3="GENE_EXPRESSION_DATA" />
 	
 	
 	<!-- Data file loading -->      
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/asslaber/gene_matrix.csv"	
 		attrib1="SKIP;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 53301 54301 55301" attrib3="1 -1" />			
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 53301 54301 55301" attrib3="GENE_EXPRESSION_DATA" />
 			
 	<!-- Data filtering (preprocessing) -->																
 	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="STORAGE"/>	-->								

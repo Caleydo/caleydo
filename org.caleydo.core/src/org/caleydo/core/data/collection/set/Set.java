@@ -121,7 +121,7 @@ public class Set
 			}
 
 			rawDataType = storage.getRawDataType();
-			iDepth = storage.size();
+			// iDepth = storage.size();
 		}
 		else {
 			// if (storage.size() != iColumnLength)
@@ -137,11 +137,12 @@ public class Set
 					"All storages in a set must be of the same basic type (nunmerical or nominal)");
 			if (rawDataType != storage.getRawDataType())
 				throw new IllegalArgumentException("All storages in a set must have the same raw data type");
-			if (iDepth != storage.size())
-				throw new IllegalArgumentException("All storages in a set must be of the same length");
+			// if (iDepth != storage.size())
+			// throw new IllegalArgumentException("All storages in a set must be of the same length");
 		}
 		alStorages.add(storage);
 	}
+
 
 	@Override
 	public IStorage get(int iIndex) {
@@ -183,6 +184,17 @@ public class Set
 
 	@Override
 	public int depth() {
+		if (iDepth == 0) {
+			for (IStorage storage : alStorages) {
+				if (iDepth == 0)
+					iDepth = storage.size();
+				else {
+					if (iDepth != storage.size())
+						throw new IllegalArgumentException("All storages in a set must be of the same length");
+				}
+
+			}
+		}
 		return iDepth;
 	}
 
@@ -472,7 +484,7 @@ public class Set
 						System.out.println("Not implemented yet");
 						clusterer = new TreeClusterer(getVA(iVAIdContent).size());
 					}
-						
+
 					System.out.println("treeClustering in progress ... ");
 					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, eClustererType);
 					System.out.println("treeClustering done");
@@ -499,7 +511,7 @@ public class Set
 						System.out.println("Not implemented yet");
 						clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
 					}
-					
+
 					System.out.println("affinityPropagation in progress ... ");
 					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, eClustererType);
 					System.out.println("affinityPropagation done");

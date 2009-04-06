@@ -9,12 +9,17 @@ package org.caleydo.core.data.collection;
  */
 public enum EStorageType {
 	// Needed by the parser
+	// FIXME: control seqeunces are not a storage type
 	ABORT(false),
 	SKIP(false),
+	// FIXME: neither a control sequence nor a data type
+	GROUP_NUMBER(false),
+	GROUP_REPRESENTATIVE(false),
 
 	INT(true),
 	FLOAT(true),
 	STRING(true),
+	// FIXME??
 	NONE(false);
 
 	private boolean bIsControlSequence;

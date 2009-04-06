@@ -8,6 +8,7 @@ import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -87,6 +88,13 @@ public class TabularAsciiDataReader
 			else if (sBuffer.equalsIgnoreCase("string")) {
 				alColumnDataTypes.add(EStorageType.STRING);
 			}
+			else if (sBuffer.equalsIgnoreCase("group_number")){
+				alColumnDataTypes.add(EStorageType.GROUP_NUMBER);
+			}
+			else if(sBuffer.equalsIgnoreCase("group_representative"))
+			{
+				alColumnDataTypes.add(EStorageType.GROUP_REPRESENTATIVE);
+			}
 			else {
 				bAllTokensProper = false;
 
@@ -109,6 +117,8 @@ public class TabularAsciiDataReader
 
 		for (EStorageType storageType : alColumnDataTypes) {
 			switch (storageType) {
+				case GROUP_NUMBER:
+				case GROUP_REPRESENTATIVE:
 				case INT:
 					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
@@ -122,6 +132,7 @@ public class TabularAsciiDataReader
 					break;
 				case ABORT:
 					return;
+				
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
 						+ storageType.toString());
@@ -169,6 +180,8 @@ public class TabularAsciiDataReader
 			for (EStorageType columnDataType : alColumnDataTypes) {
 				if (strTokenLine.hasMoreTokens()) {
 					switch (columnDataType) {
+						case GROUP_NUMBER:
+						case GROUP_REPRESENTATIVE:
 						case INT:
 							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
 								Integer.valueOf(strTokenLine.nextToken()).intValue();
@@ -223,6 +236,18 @@ public class TabularAsciiDataReader
 		int iFloatArrayIndex = 0;
 		int iStringArrayIndex = 0;
 		int iStorageIndex = 0;
+		
+		ISet set = null;
+		int iCount = 0;
+		for(ISet tempSet : GeneralManager.get().getSetManager().getAllItems())
+		{
+			set = tempSet;
+			iCount++;
+		}
+		if(iCount > 1)
+		{
+			throw new IllegalStateException("Set is not unique - a better way of handling this is needed");
+		}
 
 		for (EStorageType storageType : alColumnDataTypes) {
 			// if(iStorageIndex + 1 == alTargetStorages.size())
@@ -249,11 +274,20 @@ public class TabularAsciiDataReader
 					break;
 				case ABORT:
 					return;
+				case GROUP_NUMBER:
+				
+					// alTargetStorages.get(iStorageIndex) .doGroupMagic(alIntBuffers.get(iIntArrayIndex));
+					iIntArrayIndex++;
+					
+//					iStorageIndex++;
+					break;
+					
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
 						+ storageType.toString());
 			}
 		}
+	
 	}
 
 	/**
