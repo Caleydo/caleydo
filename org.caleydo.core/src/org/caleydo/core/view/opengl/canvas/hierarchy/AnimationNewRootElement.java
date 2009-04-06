@@ -10,10 +10,9 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 public class AnimationNewRootElement
 	extends DrawingStateAnimation {
 
-	public static final float DEFAULT_ANIMATION_DURATION = 0.5f;
+	public static final float DEFAULT_ANIMATION_DURATION = 0.35f;
 
 	private static final float TARGET_ROOT_ANGLE = 360.0f;
-	private static final float TARGET_ROOT_START_ANGLE = 0.0f;
 	private static final float TARGET_ROOT_INNER_RADIUS = 0.0f;
 
 	MovementValue mvCurrentRootAngle;
@@ -59,12 +58,11 @@ public class AnimationNewRootElement
 			mvCurrentRootAngle.getMovementValue(), mvCurrentRootInnerRadius.getMovementValue());
 
 		if (!bAnimationStarted) {
-			drawingController.setDrawingState(drawingController
-				.getDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY));
+			drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
 			radialHierarchy.setAnimationActive(false);
 
-			pdCurrentRootElement.setPDDrawingStrategy(DrawingStrategyManager.getInstance()
-				.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_NORMAL));
+			pdCurrentRootElement.setPDDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
+				DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
 		}
 	}
 
@@ -79,12 +77,18 @@ public class AnimationNewRootElement
 		float fTargetDepth =
 			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdCurrentRootElement
 				.getHierarchyDepth());
-		float fTargetWidth = Math.min(fXCenter - (fXCenter / 10), fYCenter - (fYCenter / 10)) / fTargetDepth;
+		float fTargetWidth = Math.min(fXCenter * 0.9f, fYCenter * 0.9f) / fTargetDepth;
 
-		float fMidAngle = fCurrentRootStartAngle + ( fCurrentRootAngle / 2.0f);
+		float fMidAngle = fCurrentRootStartAngle + (fCurrentRootAngle / 2.0f);
+
 		while (fMidAngle > 360) {
 			fMidAngle -= 360;
 		}
+		while (fMidAngle < 0) {
+			fMidAngle += 360;
+		}
+		float fAngleToAdd = (fMidAngle > fCurrentRootStartAngle) ? -180 : 180;
+		float fRootTargetStartAngle = fMidAngle + fAngleToAdd;
 
 		// TODO: if new colormode is introduced, use correct colormapping
 
@@ -95,7 +99,7 @@ public class AnimationNewRootElement
 
 		mvCurrentRootAngle = createNewMovementValue(fCurrentRootAngle, TARGET_ROOT_ANGLE, fAnimationDuration);
 		mvCurrentRootStartAngle =
-			createNewMovementValue(fCurrentRootStartAngle, TARGET_ROOT_START_ANGLE, fAnimationDuration);
+			createNewMovementValue(fCurrentRootStartAngle, fRootTargetStartAngle, fAnimationDuration);
 		mvCurrentRootInnerRadius =
 			createNewMovementValue(fCurrentRootInnerRadius, TARGET_ROOT_INNER_RADIUS, fAnimationDuration);
 		mvCurrentDepth = createNewMovementValue(fCurrentDepth, fTargetDepth, fAnimationDuration);
@@ -105,9 +109,9 @@ public class AnimationNewRootElement
 		mvCurrentRootColorB = createNewMovementValue(fArRGB[2], 1, fAnimationDuration);
 
 		dsFixedColor =
-			(PDDrawingStrategyFixedColor) DrawingStrategyManager.getInstance().getDrawingStrategy(
+			(PDDrawingStrategyFixedColor) DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_FIXED_COLOR);
-		
+
 		pdCurrentRootElement.setPDDrawingStrategy(dsFixedColor);
 	}
 

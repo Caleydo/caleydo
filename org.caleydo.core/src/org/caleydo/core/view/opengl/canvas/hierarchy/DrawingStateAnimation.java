@@ -44,6 +44,11 @@ public abstract class DrawingStateAnimation
 	public final void handleMouseOver(PartialDisc pdMouseOver) {
 		// do nothing
 	}
+	
+	@Override
+	public final void handleDoubleClick(PartialDisc pdClicked) {
+		// do nothing
+	}
 
 	public abstract void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double fTimePassed);
 

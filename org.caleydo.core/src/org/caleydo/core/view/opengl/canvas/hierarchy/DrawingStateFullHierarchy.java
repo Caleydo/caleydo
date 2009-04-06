@@ -15,12 +15,13 @@ public class DrawingStateFullHierarchy
 
 		PartialDisc pdRealRootElement = radialHierarchy.getRealRootElement();
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
-		PartialDisc pdCurrentSelectedElement = radialHierarchy.getCurrentSelectedElement();
+		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
 		if (pdClicked != pdRealRootElement && pdClicked.hasChildren()) {
-			if (pdCurrentSelectedElement != null) {
-				pdCurrentSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.getInstance()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_NORMAL));
+			if (pdCurrentMouseOverElement != null) {
+				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
+					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
+				radialHierarchy.setCurrentMouseOverElement(null);
 			}
 			if (pdClicked == pdCurrentRootElement) {
 				radialHierarchy.setCurrentRootElement(pdRealRootElement);
@@ -30,8 +31,7 @@ public class DrawingStateFullHierarchy
 				radialHierarchy.setCurrentSelectedElement(pdClicked);
 				radialHierarchy.setCurrentRootElement(pdClicked);
 				radialHierarchy.setAnimationActive(true);
-				drawingController.setDrawingState(drawingController
-					.getDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT));
+				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
 
 			}
 			radialHierarchy.setDisplayListDirty();
@@ -42,17 +42,17 @@ public class DrawingStateFullHierarchy
 	@Override
 	public void handleMouseOver(PartialDisc pdMouseOver) {
 
-		PartialDisc pdCurrentSelectedElement = radialHierarchy.getCurrentSelectedElement();
+		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
-		if (pdMouseOver != pdCurrentSelectedElement) {
-			if (pdCurrentSelectedElement != null) {
-				pdCurrentSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.getInstance()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_NORMAL));
+		if (pdMouseOver != pdCurrentMouseOverElement) {
+			if (pdCurrentMouseOverElement != null) {
+				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
+					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
 			}
 
-			pdMouseOver.setPDDrawingStrategy(DrawingStrategyManager.getInstance().getDrawingStrategy(
+			pdMouseOver.setPDDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED));
-			radialHierarchy.setCurrentSelectedElement(pdMouseOver);
+			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
 
 			radialHierarchy.setDisplayListDirty();
 		}
@@ -64,7 +64,6 @@ public class DrawingStateFullHierarchy
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 
 		gl.glLoadIdentity();
-		gl.glColor4f(1, 1, 1, 1);
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
 		int iDisplayedHierarchyDepth =
@@ -72,10 +71,30 @@ public class DrawingStateFullHierarchy
 				.getHierarchyDepth());
 
 		float fDiscWidth =
-			Math.min(fXCenter - (fXCenter / 10), fYCenter - (fYCenter / 10)) / iDisplayedHierarchyDepth;
+			Math.min(fXCenter * 0.9f, fYCenter * 0.9f) / iDisplayedHierarchyDepth;
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, fDiscWidth, iDisplayedHierarchyDepth);
 
+	}
+
+	@Override
+	public void handleDoubleClick(PartialDisc pdClicked) {
+		
+		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
+		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
+
+		if (pdClicked != pdCurrentRootElement && pdClicked.hasChildren() && pdClicked.getCurrentDepth() > 1) {
+			if (pdCurrentMouseOverElement != null) {
+				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
+					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
+				radialHierarchy.setCurrentMouseOverElement(null);
+			}
+
+			radialHierarchy.setCurrentSelectedElement(pdClicked);
+			drawingController.setDrawingState(DrawingController.DRAWING_STATE_DETAIL_OUTSIDE);
+
+			radialHierarchy.setDisplayListDirty();
+		}
 	}
 
 }

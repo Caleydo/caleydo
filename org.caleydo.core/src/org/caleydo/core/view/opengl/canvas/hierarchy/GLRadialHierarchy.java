@@ -8,6 +8,8 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
 import java.lang.Math;
 
 import javax.media.opengl.GL;
@@ -32,6 +34,7 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Rendering the GLHeatMap
@@ -64,6 +67,7 @@ public class GLRadialHierarchy
 	private PartialDisc pdRealRootElement;
 	private PartialDisc pdCurrentRootElement;
 	private PartialDisc pdCurrentSelectedElement;
+	private PartialDisc pdCurrentMouseOverElement;
 
 	private GLU glu;
 	private DrawingController drawingController;
@@ -132,7 +136,7 @@ public class GLRadialHierarchy
 
 	private void initTestHierarchy() {
 
-		iMaxDisplayedHierarchyDepth = 3;
+		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		pdRealRootElement = new PartialDisc(0, 100, iUniqueID, pickingManager);
 		pdCurrentRootElement = pdRealRootElement;
 		hashPartialDiscs.put(0, pdRealRootElement);
@@ -288,7 +292,26 @@ public class GLRadialHierarchy
 		float fYCenter = viewFrustum.getHeight() / 2;
 		
 		drawingController.draw(fXCenter, fYCenter, gl, glu);
-
+		
+//		TextRenderer renderer = new TextRenderer(new Font("Courier New", Font.PLAIN, 78), false);
+//		
+//		renderer.setColor(0, 0, 0, 1);
+//		renderer.begin3DRendering();
+//		renderer.draw3D("Hello World!", 0, 0, 0, 0.003f);
+//		renderer.end3DRendering();
+//		renderer.flush();
+//		Rectangle2D rect = renderer.getBounds("Hello World!");
+//		
+//		gl.glColor4f(0,0,0,1);
+//		gl.glBegin(GL.GL_POLYGON);
+//		
+//		
+//		gl.glVertex3f((float)rect.getWidth() * 0.003f, 0, 0);
+//		gl.glVertex3f((float)rect.getWidth() * 0.003f, -1, 0);
+//		gl.glVertex3f(0, -1, 0);
+//		gl.glVertex3f(0, 0, 0);
+//		gl.glEnd();
+		
 		gl.glEndList();
 	}
 
@@ -398,24 +421,24 @@ public class GLRadialHierarchy
 
 			case RAD_HIERARCHY_PDISC_SELECTION:
 				
-				PartialDisc pdNewSelectedElement = hashPartialDiscs.get(iExternalID);
+				PartialDisc pdPickedElement = hashPartialDiscs.get(iExternalID);
 				
 				switch (pickingMode) {
-					case CLICKED:
-						if (pdNewSelectedElement != null)
-							drawingController.handleClick(pdNewSelectedElement);
-						
-						
-						break;
-					case MOUSE_OVER:
-						if (pdNewSelectedElement != null)
-							drawingController.handleMouseOver(pdNewSelectedElement);
-						
-						break;
-						
 					case DOUBLE_CLICKED:
-						
+						if (pdPickedElement != null)
+							drawingController.handleClick(pdPickedElement);
 						break;
+						
+					case MOUSE_OVER:
+						if (pdPickedElement != null)
+							drawingController.handleMouseOver(pdPickedElement);					
+						break;
+						
+					case CLICKED:
+						if (pdPickedElement != null)
+							drawingController.handleDoubleClick(pdPickedElement);
+						break;
+						
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
@@ -448,6 +471,14 @@ public class GLRadialHierarchy
 
 	public void setCurrentSelectedElement(PartialDisc pdCurrentSelectedElement) {
 		this.pdCurrentSelectedElement = pdCurrentSelectedElement;
+	}
+	
+	public PartialDisc getCurrentMouseOverElement() {
+		return pdCurrentMouseOverElement;
+	}
+
+	public void setCurrentMouseOverElement(PartialDisc pdCurrentMouseOverElement) {
+		this.pdCurrentMouseOverElement = pdCurrentMouseOverElement;
 	}
 	
 	public int getMaxDisplayedHierarchyDepth() {

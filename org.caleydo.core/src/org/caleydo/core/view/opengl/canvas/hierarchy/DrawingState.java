@@ -18,4 +18,6 @@ public abstract class DrawingState {
 	public abstract void handleMouseOver(PartialDisc pdMouseOver);
 
 	public abstract void handleClick(PartialDisc pdClicked);
+	
+	public abstract void handleDoubleClick(PartialDisc pdClicked);
 }

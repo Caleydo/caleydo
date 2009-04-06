@@ -13,10 +13,9 @@ public abstract class PDDrawingStrategy {
 		iNumSlicesPerFullDisc = NUM_SLICES_DEFAULT;
 	}
 
-	public abstract void drawPartialDisc(GL gl, GLU glu, float fWidth, float fInnerRadius, float fStartAngle,
-		float fAngle);
+	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
-	public abstract void drawFullCircle(GL gl, GLU glu, float fRadius);
+	public abstract void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	public int getNumSlicesPerFullDisc() {
 		return iNumSlicesPerFullDisc;
