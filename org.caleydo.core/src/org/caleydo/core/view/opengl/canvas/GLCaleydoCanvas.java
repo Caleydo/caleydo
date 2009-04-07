@@ -11,7 +11,7 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.eclipse.swt.widgets.Composite;
 
@@ -31,7 +31,7 @@ public class GLCaleydoCanvas
 
 	private FPSCounter fpsCounter;
 
-	private PickingJoglMouseListener joglMouseListener;
+	private PickingMouseListener joglMouseListener;
 
 	private Composite parentComposite;
 
@@ -42,7 +42,7 @@ public class GLCaleydoCanvas
 		super(glCapabilities);
 		// this.getContext().setSynchronized(true);
 
-		joglMouseListener = new PickingJoglMouseListener();
+		joglMouseListener = new PickingMouseListener();
 
 		this.iGLCanvasID = GeneralManager.get().getIDManager().createID(EManagedObjectType.VIEW_GL_CANVAS);
 
@@ -121,7 +121,7 @@ public class GLCaleydoCanvas
 
 	}
 
-	public final PickingJoglMouseListener getJoglMouseListener() {
+	public final PickingMouseListener getJoglMouseListener() {
 		return joglMouseListener;
 	}
 

@@ -13,7 +13,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
-import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.IBorderRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
@@ -28,7 +28,7 @@ public class GLSliderMiniView
 	extends AGLMiniView {
 
 	protected PickingManager pickingManager = null;
-	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
+	protected PickingMouseListener pickingTriggerMouseAdapter;
 
 	private int iSliderID = 0;
 
@@ -52,7 +52,7 @@ public class GLSliderMiniView
 	private TextRenderer textRenderer = null;
 	private IBorderRenderStyle borderStyle = null;
 
-	public GLSliderMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
+	public GLSliderMiniView(PickingMouseListener pickingTriggerMouseAdapter, final int iViewID,
 		final int iSliderID) {
 		this.pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;

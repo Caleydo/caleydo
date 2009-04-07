@@ -11,7 +11,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -114,7 +114,7 @@ public class PickingManager {
 
 		AGLEventListener canvasUser =
 			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-		PickingJoglMouseListener pickingTriggerMouseAdapter =
+		PickingMouseListener pickingTriggerMouseAdapter =
 			canvasUser.getParentGLCanvas().getJoglMouseListener();
 
 		Point pickPoint = null;

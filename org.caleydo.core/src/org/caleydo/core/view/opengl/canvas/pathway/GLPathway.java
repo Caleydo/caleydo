@@ -51,7 +51,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -148,7 +148,7 @@ public class GLPathway
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final PickingMouseListener pickingTriggerMouseAdapter,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;

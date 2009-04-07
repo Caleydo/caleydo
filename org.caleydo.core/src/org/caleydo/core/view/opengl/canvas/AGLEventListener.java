@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -63,7 +63,7 @@ public abstract class AGLEventListener
 
 	protected PickingManager pickingManager;
 
-	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
+	protected PickingMouseListener pickingTriggerMouseAdapter;
 
 	protected IViewFrustum viewFrustum;
 
@@ -296,7 +296,7 @@ public abstract class AGLEventListener
 	 * @param gl
 	 */
 	public abstract void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final PickingMouseListener pickingTriggerMouseAdapter,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas);
 
 	/**

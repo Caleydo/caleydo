@@ -60,7 +60,7 @@ import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRender
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
-import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
@@ -273,7 +273,7 @@ public class GLRemoteRendering
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final PickingMouseListener pickingTriggerMouseAdapter,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");

@@ -38,8 +38,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeTyp
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
-import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
-import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -103,8 +102,8 @@ public class GLGlyphSliderView
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml) {
-				if (l instanceof JoglMouseListener) {
-					((JoglMouseListener) l).setNavigationModes(true, false, false);
+				if (l instanceof PickingMouseListener) {
+					((PickingMouseListener) l).setNavigationModes(true, false, false);
 				}
 			}
 		}
@@ -184,7 +183,7 @@ public class GLGlyphSliderView
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final PickingMouseListener pickingTriggerMouseAdapter,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{
