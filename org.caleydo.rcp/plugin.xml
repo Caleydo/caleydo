@@ -146,6 +146,13 @@
             id="org.caleydo.rcp.views.swt.CollabView"
             name="Testing">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.opengl.GLHistogramView"
+            id="org.caleydo.rcp.views.GLHistogramView"
+            name="Histogram">
+      </view>
 
       
    </extension>   
@@ -294,6 +301,11 @@
             id="org.caleydo.rcp.command.open_collab"
             name="Load Data">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHistogramHandler"
+            id="org.caleydo.rcp.command.openviews.histogram"
+            name="Open Histogram">
+      </command>
       		
    </extension>
    <extension
@@ -368,7 +380,7 @@
                   label="Tabular Data Viewer"
                   style="push">
             </command>    
-            <!-- 
+     
 	            <command
 	                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
 	                  icon="resources/icons/view/parcoords.png"
@@ -409,7 +421,13 @@
 	                     style="push">
 	               </command>
 	            </menu>
-	          -->
+             <command
+                   commandId="org.caleydo.rcp.command.openviews.histogram"
+                   icon="resources/icons/view/heatmap.png"
+                   label="Histogram"
+                   style="push">
+             </command>
+	          
          </menu>
          <menu
                id="windowMenu"

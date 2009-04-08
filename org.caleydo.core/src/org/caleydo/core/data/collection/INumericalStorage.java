@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection;
 
+
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical data of a continuous range,
  * equivalent to the set of real numbers. In terms of scales it can be interpreted as a data structure for an
@@ -75,5 +76,13 @@ public interface INumericalStorage
 	 * Remove log and normalized data. Normalize has to be called again.
 	 */
 	public void reset();
+
+	/**
+	 * Returns a histogram of the values in the storage for all values (not considering VAs). The number of
+	 * the bins is sqrt(numberOfElements)
+	 * 
+	 * @return
+	 */
+	public Histogram getHistogram();
 
 }

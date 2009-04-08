@@ -45,6 +45,7 @@ public enum ECommandType {
 	CREATE_GL_PANEL_SELECTION("cmd", "type", "-1", "Create Selection Panel"),
 	CREATE_GL_RADIAL_HIERARCHY("cmd", "type", "-1", "Create Radial Hierarchys"),
 	CREATE_GL_HYPERBOLIC("cmd", "type", "-1", "Create Hyperbolic"),
+	CREATE_GL_HISTOGRAM("cmd", "type", "-1", "Create Hyperbolic"),
 
 	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),

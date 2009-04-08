@@ -312,4 +312,15 @@ public interface ISet
 
 	public Node[] getTreeStructure();
 
+	/**
+	 * Returns a histogram of the values of all storages in the set (not considering VAs). The number of the
+	 * bins is sqrt(numberOfElements). This only works for homogeneous sets, if used on other sets an
+	 * exception is thrown.
+	 * 
+	 * @return the Histogram of the values in the set
+	 * @throws UnsupportedOperationException
+	 *             when used on non-homogeneous sets
+	 */
+	public Histogram getHistogram() throws UnsupportedOperationException;
+
 }

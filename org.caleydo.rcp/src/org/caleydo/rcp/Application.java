@@ -42,7 +42,8 @@ public class Application
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
-	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
+	private static String REAL_DATA_SAMPLE_FILE =
+		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 
 	public static CaleydoBootloader caleydoCore;
 
@@ -118,6 +119,9 @@ public class Application
 					}
 					else if (element.equals(EStartViewType.HYPERBOLIC.getCommandLineArgument())) {
 						alStartViews.add(EStartViewType.HYPERBOLIC);
+					}
+					else if (element.equals(EStartViewType.HISTOGRAM.getCommandLineArgument())) {
+						alStartViews.add(EStartViewType.HISTOGRAM);
 					}
 					else {
 						sCaleydoXMLfile = element;
@@ -244,15 +248,14 @@ public class Application
 		}
 		else if (applicationMode == EApplicationMode.STANDARD
 			&& sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE)) {
-			
-			WizardDialog dataImportWizard =
-				new WizardDialog(shell, new DataImportWizard(shell));
+
+			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
 				bDoExit = true;
 			}
 		}
-		
+
 		initializeColorMapping();
 		// initializeViewSettings();
 
@@ -288,13 +291,13 @@ public class Application
 		if (alStartViews.isEmpty()) {
 
 			alStartViews.add(EStartViewType.BROWSER);
-			
+
 			if (applicationMode != EApplicationMode.PATHWAY_VIEWER) {
 				// alStartViews.add(EStartViewType.TABULAR);
 				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
 				alStartViews.add(EStartViewType.HEATMAP);
 			}
-			
+
 			// Only show bucket when pathway data is loaded
 			if (bLoadPathwayData) {
 				alStartViews.add(EStartViewType.REMOTE);

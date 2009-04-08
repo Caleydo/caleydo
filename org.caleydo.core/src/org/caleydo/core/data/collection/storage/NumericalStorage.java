@@ -1,7 +1,10 @@
 package org.caleydo.core.data.collection.storage;
 
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
+import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.INumericalStorage;
+import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
+import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -95,5 +98,31 @@ public class NumericalStorage
 		}
 
 	}
+
+	@Override
+	public Histogram getHistogram() {
+		
+		int iNumberOfBuckets = (int)Math.sqrt(size());
+		Histogram histogram = new Histogram(iNumberOfBuckets);
+		for(int iCount = 0; iCount < iNumberOfBuckets; iCount++)
+		{
+			histogram.add(0);
+		}
+		
+		FloatCContainerIterator iterator =( (FloatCContainer)hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator();
+		while(iterator.hasNext())
+		{
+			int iIndex = (int)(iterator.next() * iNumberOfBuckets);
+			if(iIndex == iNumberOfBuckets)
+				iIndex--;
+			Integer iNumOccurences = histogram.get(iIndex);
+			histogram.set(iIndex, ++iNumOccurences);
+		}
+		
+		
+		return histogram;
+	}
+	
+	
 
 }

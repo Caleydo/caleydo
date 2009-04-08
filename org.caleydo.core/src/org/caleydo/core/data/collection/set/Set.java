@@ -8,6 +8,7 @@ import java.util.List;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
@@ -142,7 +143,6 @@ public class Set
 		}
 		alStorages.add(storage);
 	}
-
 
 	@Override
 	public IStorage get(int iIndex) {
@@ -312,6 +312,38 @@ public class Set
 				throw new UnsupportedOperationException("Tried to calcualte log values on a set wich has"
 					+ "contains nominal storages. This is not possible!");
 		}
+	}
+
+	@Override
+	public Histogram getHistogram() {
+		if (!bIsSetHomogeneous) {
+			throw new UnsupportedOperationException(
+				"Tried to calcualte a set-wide histogram on a not homogeneous set. This makes no sense. Use storage based histograms instead!");
+		}
+		Histogram histogram = new Histogram();
+
+		boolean bIsFirstLoop = true;
+		for (IStorage storage : alStorages) {
+			INumericalStorage nStorage = (INumericalStorage) storage;
+			Histogram storageHistogram = nStorage.getHistogram();
+			
+			if(bIsFirstLoop)
+			{
+				bIsFirstLoop = false;
+				for(int iCount = 0; iCount < storageHistogram.size(); iCount++)
+				{
+					histogram.add(0);
+				}
+			}
+			int iCount = 0;
+			for(Integer histoValue : histogram)
+			{
+				histoValue += storageHistogram.get(iCount);
+				histogram.set(iCount++, histoValue);
+			}
+		}
+
+		return histogram;
 	}
 
 	@Override

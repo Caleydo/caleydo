@@ -1,10 +1,11 @@
-package org.caleydo.core.view.opengl.canvas.hierarchy;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -20,17 +21,18 @@ import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 /**
- * Rendering the hyperbolic view.
+ * Rendering the histogram.
  * 
  * @author Alexander Lex
- * @author Marc Streit
  */
-public class GLHyperbolic
+public class GLHistogram
 	extends AGLEventListener {
 	boolean bIsInListMode = false;
 
 	boolean bUseDetailLevel = true;
 	ISet set;
+
+	private Histogram histogram;
 
 	/**
 	 * Constructor.
@@ -40,7 +42,7 @@ public class GLHyperbolic
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHyperbolic(ESetType setType, final int iGLCanvasID, final String sLabel,
+	public GLHistogram(ESetType setType, final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
@@ -55,8 +57,11 @@ public class GLHyperbolic
 	@Override
 	public void init(GL gl) {
 
+		set = alSets.get(0);
 		if (set == null)
 			return;
+
+		histogram = set.getHistogram();
 	}
 
 	@Override
@@ -147,13 +152,26 @@ public class GLHyperbolic
 
 	private void render(GL gl) {
 
-//		gl.glColor4f(1, 1, 0, 1);
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(0, 0, 0);
-//		gl.glVertex3f(0, 1, 0);
-//		gl.glVertex3f(1, 1, 0);
-//		gl.glVertex3f(1, 0, 0);
-//		gl.glEnd();
+		gl.glColor4f(0, 0, 1, 1);
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(0, 1, 0);
+		// gl.glVertex3f(1, 1, 0);
+		// gl.glVertex3f(1, 0, 0);
+		// gl.glEnd();
+
+		float fSpacing = viewFrustum.getWidth() / histogram.size();
+		int iCount = 0;
+		for (Integer iValue : histogram) {
+			gl.glLineWidth(3.0f);
+			gl.glBegin(GL.GL_LINES);
+			// gl.glVertex3f(0, 0, 0);
+			// gl.glVertex3f(1,1, 0);
+			gl.glVertex3f(fSpacing * iCount, 0, 0);
+			gl.glVertex3f(fSpacing * iCount, viewFrustum.getHeight() * ((float) iValue) / histogram.getLargestValue(), 0);
+			gl.glEnd();
+			iCount++;
+		}
 
 	}
 

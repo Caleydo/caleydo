@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.util.collection.Pair;
 
 /**
  * Interface for Storages A Storage is a container that holds various representations of a particular data
@@ -218,5 +219,8 @@ public interface IStorage
 	 * @param dataRep
 	 */
 	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep);
+	
+	
+
 
 }
