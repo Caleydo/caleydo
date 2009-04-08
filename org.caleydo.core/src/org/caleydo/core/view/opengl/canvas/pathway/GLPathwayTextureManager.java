@@ -41,7 +41,6 @@ public class GLPathwayTextureManager {
 		Texture pathwayTexture = null;
 
 		String sPathwayTexturePath = generalManager.getPathwayManager().getItem(iPathwayId).getImageLink();
-
 		EPathwayDatabaseType type = generalManager.getPathwayManager().getItem(iPathwayId).getType();
 
 		sPathwayTexturePath =

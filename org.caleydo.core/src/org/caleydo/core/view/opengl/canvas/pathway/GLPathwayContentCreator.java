@@ -59,7 +59,7 @@ public class GLPathwayContentCreator {
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableNeighborhood = false;
-	private boolean bEnableGeneMapping = false;
+	private boolean bEnableGeneMapping = true;
 
 	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;
@@ -97,6 +97,7 @@ public class GLPathwayContentCreator {
 
 	public void init(final GL gl, final ArrayList<ISet> alSetData,
 		final GenericSelectionManager internalSelectionManager) {
+
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
 		buildHighlightedEnzymeNodeDisplayList(gl);
@@ -514,47 +515,138 @@ public class GLPathwayContentCreator {
 		{
 			short[][] shArCoords = vertexRep.getCoords();
 
-			tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
-
 			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
+				
 				tmpNodeColor = determineNodeColor(vertexRep);
-				gl.glColor3fv(tmpNodeColor, 0);
+				gl.glLineWidth(5);
+				
+				if (tmpNodeColor != null) {
+					gl.glColor3fv(tmpNodeColor, 0);
+
+					if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
+
+						gl.glBegin(GL.GL_LINE_STRIP);
+						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+							gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+								-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+						}
+						gl.glEnd();
+						
+						// Transparent node for picking
+						gl.glColor4f(0, 0, 0, 0);
+						gl.glBegin(GL.GL_POLYGON);
+						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+							gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+								-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+						}
+						gl.glEnd();
+					}
+					else {
+						gl.glBegin(GL.GL_POLYGON);
+						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+							gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+								-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+						}
+						gl.glEnd();
+
+						// Handle selection highlighting of element
+						if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+							tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+							gl.glLineWidth(3);
+							gl.glColor4fv(tmpNodeColor, 0);
+							gl.glBegin(GL.GL_LINE_STRIP);
+							for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+								gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+									-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+							}
+							gl.glEnd();
+						}
+						else if (internalSelectionManager
+							.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
+							tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+							gl.glLineWidth(3);
+							gl.glColor4fv(tmpNodeColor, 0);
+							gl.glBegin(GL.GL_LINE_STRIP);
+							for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+								gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+									-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+							}
+							gl.glEnd();
+						}
+					}
+				}
 			}
 			else {
-				gl.glColor4f(0, 0, 0, 0);
+				// Handle selection highlighting of element
+				if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+				}
+				else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
+					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+				}
+				
+				if (tmpNodeColor != null) {
+					gl.glColor4fv(tmpNodeColor, 0);
+					gl.glBegin(GL.GL_POLYGON);
+					for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+						gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+							-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+					}
+					gl.glEnd();
+				}
 			}
-
-			if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH)
-				gl.glBegin(GL.GL_LINE_STRIP);
-			else
-				gl.glBegin(GL.GL_POLYGON);
 			
-			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
-				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
-					-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
-			}
-			gl.glEnd();
+//			tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+//
+//			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
+//				tmpNodeColor = determineNodeColor(vertexRep);
+//				
+//				if (tmpNodeColor == null)
+//				{
+//					// No mapping available
+//					// Render transparent node
+//					gl.glColor4f(0, 0, 0, 1);
+//				}
+//				else {	
+//					gl.glColor3fv(tmpNodeColor, 0);
+//				}
+//			}
+//			else {
+//				// Transparent frame if no mapping is available
+//				gl.glColor4f(0, 0, 0, 1);
+//			}
+//
+//			if (glPathwayView.getDetailLevel() != EDetailLevel.HIGH) {
+//
+//			}
+//
+//			gl.glBegin(GL.GL_POLYGON);
+//			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+//				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+//					-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+//			}
+//			gl.glEnd();
+//
+//			gl.glLineWidth(3);
+//
+//			// Handle selection highlighting of element
+//			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+//				tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+//				gl.glColor4fv(tmpNodeColor, 0);
+//				gl.glLineWidth(5);
+//			}
+//			else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
+//				tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+//				gl.glColor4fv(tmpNodeColor, 0);
+//				gl.glLineWidth(5);
+//			}
 
-			gl.glLineWidth(3);
-
-			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId())) {
-				tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-				gl.glColor4fv(tmpNodeColor, 0);
-				gl.glLineWidth(5);
-			}
-			else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
-				tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
-				gl.glColor4fv(tmpNodeColor, 0);
-				gl.glLineWidth(5);
-			}
-
-			gl.glBegin(GL.GL_LINE_STRIP);
-			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
-				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
-					-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
-			}
-			gl.glEnd();
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+//				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+//					-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+//			}
+//			gl.glEnd();
 		}
 		// Enzyme / Gene
 		else if (vertexType.equals(EPathwayVertexType.gene) || vertexType.equals(EPathwayVertexType.enzyme)
@@ -567,60 +659,86 @@ public class GLPathwayContentCreator {
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
-//			int iVertexRepID = vertexRep.getId();
-			
-			// Render transparent nodes for picking
-			if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH)
-			{
-				gl.glColor4f(0, 0, 0, 0);
-				gl.glCallList(iEnzymeNodeDisplayListId);
-			}
-			
 			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
+				
 				tmpNodeColor = determineNodeColor(vertexRep);
-				gl.glColor3fv(tmpNodeColor, 0);
+				
+				if (tmpNodeColor != null) {
+					gl.glColor3fv(tmpNodeColor, 0);
+
+					if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
+
+						gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+
+						// Transparent node for picking
+						gl.glColor4f(0, 0, 0, 0);
+						gl.glCallList(iEnzymeNodeDisplayListId);
+					}
+					else {
+						gl.glCallList(iEnzymeNodeDisplayListId);
+
+						// Handle selection highlighting of element
+						if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+							tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+							gl.glColor4fv(tmpNodeColor, 0);
+							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+						}
+						else if (internalSelectionManager
+							.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
+							tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+							gl.glColor4fv(tmpNodeColor, 0);
+							gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+						}
+					}
+				}
 			}
 			else {
-				gl.glColor4f(0, 0, 0, 0);
-			}
-			
-			if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH)
-				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
-			else
-				gl.glCallList(iEnzymeNodeDisplayListId);
+				// Handle selection highlighting of element
+				if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId())) {
+					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+				}
+				else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
+					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+				}
 
-//			// Handle selection highlighting of element
-//			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)
-//				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)
-//				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)
-//				|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)
-//				|| internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
-//				if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)) {
-//					tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-//				}
-//				else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
-//					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
-//				}
-//				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)) {
-//					gl.glEnable(GL.GL_LINE_STIPPLE);
-//					gl.glLineStipple(4, (short) 0xAAAA);
-//					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(1);
-//				}
-//				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)) {
-//					gl.glEnable(GL.GL_LINE_STIPPLE);
-//					gl.glLineStipple(2, (short) 0xAAAA);
-//					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(2);
-//				}
-//				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)) {
-//					gl.glEnable(GL.GL_LINE_STIPPLE);
-//					gl.glLineStipple(1, (short) 0xAAAA);
-//					tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(3);
-//				}
-//
-//				gl.glColor4fv(tmpNodeColor, 0);
-//				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
-//				gl.glDisable(GL.GL_LINE_STIPPLE);
-//			}
+				if (tmpNodeColor != null) {
+					gl.glColor4fv(tmpNodeColor, 0);
+					gl.glCallList(iEnzymeNodeDisplayListId);
+				}
+			}
+
+			// // Handle selection highlighting of element
+			// if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)
+			// || internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)
+			// || internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)
+			// || internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)
+			// || internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
+			// if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)) {
+			// tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+			// }
+			// else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, iVertexRepID)) {
+			// tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
+			// }
+			// else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)) {
+			// gl.glEnable(GL.GL_LINE_STIPPLE);
+			// gl.glLineStipple(4, (short) 0xAAAA);
+			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(1);
+			// }
+			// else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)) {
+			// gl.glEnable(GL.GL_LINE_STIPPLE);
+			// gl.glLineStipple(2, (short) 0xAAAA);
+			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(2);
+			// }
+			// else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID)) {
+			// gl.glEnable(GL.GL_LINE_STIPPLE);
+			// gl.glLineStipple(1, (short) 0xAAAA);
+			// tmpNodeColor = renderStyle.getNeighborhoodNodeColorByDepth(3);
+			// }
+			//
+			// gl.glColor4fv(tmpNodeColor, 0);
+			// gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+			// gl.glDisable(GL.GL_LINE_STIPPLE);
+			// }
 
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
@@ -695,50 +813,48 @@ public class GLPathwayContentCreator {
 			// renderLabels(gl, iPathwayID);
 		}
 	}
-	
+
 	private float[] determineNodeColor(PathwayVertexGraphItemRep vertexRep) {
-		
-			int iDavidID =
-				generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
-					vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0).getId());
 
-			if (iDavidID == -1 || iDavidID == 0) {
-				generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
+		int iDavidID =
+			generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
+				vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0).getId());
+
+		if (iDavidID == -1 || iDavidID == 0) {
+			generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
+		}
+		else {
+			Set<Integer> iSetRefSeq =
+				idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+
+			if (iSetRefSeq == null) {
+				generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
 			}
 			else {
-				Set<Integer> iSetRefSeq =
-					idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
-
-				if (iSetRefSeq == null) {
-
-					generalManager.getLogger().log(Level.SEVERE,
-						"No RefSeq IDs found for David: " + iDavidID);
-			}
-			else {
-				
+				// Check for multiple mapping
 				if (iSetRefSeq.size() > 1)
-					return new float[] {0,1,1};
-				
+					return new float[] { 0, 1, 1 };
+
 				for (Object iRefSeqID : iSetRefSeq) {
-					
-					if(idMappingManager.getMultiID(
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, ((Integer)iRefSeqID)) == null) {
+
+					if (idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX,
+						((Integer) iRefSeqID)) == null) {
 						break;
 					}
-					
-					for (Object iExpressionIndex : idMappingManager.getMultiID(
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, ((Integer)iRefSeqID))) {
 
-						return colorMapper.getColor(alSetData.get(0).get(
-								glPathwayView.iCurrentStorageIndex).getFloat(
-								EDataRepresentation.NORMALIZED,
-								((Integer) iExpressionIndex).intValue()));
+					for (Object iExpressionIndex : idMappingManager.getMultiID(
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, ((Integer) iRefSeqID))) {
+
+						return colorMapper
+							.getColor(alSetData.get(0).get(glPathwayView.iCurrentStorageIndex).getFloat(
+								EDataRepresentation.NORMALIZED, ((Integer) iExpressionIndex).intValue()));
 					}
 				}
 			}
 		}
-			
-		return new float[] {0,0,0};
+
+		// No mapping found
+		return null;
 	}
 
 	// private void renderLabels(final GL gl, final int iPathwayID)

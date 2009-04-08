@@ -40,9 +40,11 @@ public class CmdExternalFlagSetter
 		Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
 		if (viewObject instanceof GLPathway) {
+			
 			// Pathway settings should apply to all pathways
 			for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners()) {
+				
 				if (!(glEventListener instanceof GLPathway)) {
 					continue;
 				}
