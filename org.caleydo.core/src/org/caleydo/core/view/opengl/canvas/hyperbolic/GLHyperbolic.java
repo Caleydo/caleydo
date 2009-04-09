@@ -4,10 +4,17 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IDListEventContainer;
+import org.caleydo.core.manager.event.IEventContainer;
+import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -18,6 +25,8 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.IGraphItem;
 
 /**
  * Rendering the hyperbolic view.
@@ -26,11 +35,15 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
  * @author Marc Streit
  */
 public class GLHyperbolic
-	extends AGLEventListener {
+	extends AGLEventListener
+	implements IMediatorReceiver {
+	
 	boolean bIsInListMode = false;
 
 	boolean bUseDetailLevel = true;
 	ISet set;
+	
+	private int iPathwayID = -1;
 
 	/**
 	 * Constructor.
@@ -50,6 +63,9 @@ public class GLHyperbolic
 		alSelectionTypes.add(ESelectionType.NORMAL);
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
+		
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+			(IMediatorReceiver) this);
 	}
 
 	@Override
@@ -139,6 +155,15 @@ public class GLHyperbolic
 		// gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+		
+//		if (iPathwayID != -1)
+//		{
+//			PathwayGraph pathwayGraph = generalManager.getPathwayManager().getItem(iPathwayID);
+//			for (IGraphItem node : pathwayGraph.getAllItemsByKind(EGraphItemKind.NODE))
+//			{
+//				System.out.println("Node:" + node);
+//			}
+//		}
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -216,6 +241,27 @@ public class GLHyperbolic
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+		EMediatorType eMediatorType) {
+
+//		switch (eventContainer.getEventType()) {
+//			// Handle incoming pathways
+//			case LOAD_PATHWAY_BY_PATHWAY_ID:
+//				IDListEventContainer<Integer> pathwayIDContainer =
+//					(IDListEventContainer<Integer>) eventContainer;
+//
+//				iPathwayID = pathwayIDContainer.getIDs().get(0);
+//				
+////				for (Integer iPathwayID : pathwayIDContainer.getIDs()) {
+////					;
+////				}
+//
+//				break;
+//		}
 
 	}
 
