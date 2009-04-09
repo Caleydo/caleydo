@@ -515,10 +515,11 @@ public class GLPathwayContentCreator {
 		{
 			short[][] shArCoords = vertexRep.getCoords();
 
+			gl.glLineWidth(3);
 			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
 				
 				tmpNodeColor = determineNodeColor(vertexRep);
-				gl.glLineWidth(5);
+				gl.glLineWidth(4);
 				
 				if (tmpNodeColor != null) {
 					gl.glColor3fv(tmpNodeColor, 0);
@@ -584,69 +585,35 @@ public class GLPathwayContentCreator {
 				else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
 					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 				}
+				else if (internalSelectionManager.checkStatus(ESelectionType.NORMAL, vertexRep.getId())) {
+					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+				}
+
+				else {
+					tmpNodeColor = new float[] {0,0,0,0};
+				}
+
+				gl.glColor4fv(tmpNodeColor, 0);
+				gl.glLineWidth(3);
+				gl.glBegin(GL.GL_LINE_STRIP);
+				for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
+					gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+						-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+				}
+				gl.glEnd();
 				
-				if (tmpNodeColor != null) {
-					gl.glColor4fv(tmpNodeColor, 0);
+				if (!internalSelectionManager.checkStatus(ESelectionType.DESELECTED, vertexRep.getId())) {
+					
+					// Transparent node for picking
+					gl.glColor4f(0, 0, 0, 0);
 					gl.glBegin(GL.GL_POLYGON);
 					for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 						gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
 							-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
 					}
-					gl.glEnd();
+					gl.glEnd();		
 				}
 			}
-			
-//			tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
-//
-//			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
-//				tmpNodeColor = determineNodeColor(vertexRep);
-//				
-//				if (tmpNodeColor == null)
-//				{
-//					// No mapping available
-//					// Render transparent node
-//					gl.glColor4f(0, 0, 0, 1);
-//				}
-//				else {	
-//					gl.glColor3fv(tmpNodeColor, 0);
-//				}
-//			}
-//			else {
-//				// Transparent frame if no mapping is available
-//				gl.glColor4f(0, 0, 0, 1);
-//			}
-//
-//			if (glPathwayView.getDetailLevel() != EDetailLevel.HIGH) {
-//
-//			}
-//
-//			gl.glBegin(GL.GL_POLYGON);
-//			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
-//				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
-//					-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
-//			}
-//			gl.glEnd();
-//
-//			gl.glLineWidth(3);
-//
-//			// Handle selection highlighting of element
-//			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId())) {
-//				tmpNodeColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-//				gl.glColor4fv(tmpNodeColor, 0);
-//				gl.glLineWidth(5);
-//			}
-//			else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
-//				tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
-//				gl.glColor4fv(tmpNodeColor, 0);
-//				gl.glLineWidth(5);
-//			}
-
-//			gl.glBegin(GL.GL_LINE_STRIP);
-//			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
-//				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
-//					-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
-//			}
-//			gl.glEnd();
 		}
 		// Enzyme / Gene
 		else if (vertexType.equals(EPathwayVertexType.gene) || vertexType.equals(EPathwayVertexType.enzyme)
@@ -659,6 +626,7 @@ public class GLPathwayContentCreator {
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
+			gl.glLineWidth(1);
 			if (bEnableGeneMapping && glPathwayView.iCurrentStorageIndex != -1) {
 				
 				tmpNodeColor = determineNodeColor(vertexRep);
@@ -700,10 +668,21 @@ public class GLPathwayContentCreator {
 				else if (internalSelectionManager.checkStatus(ESelectionType.SELECTION, vertexRep.getId())) {
 					tmpNodeColor = GeneralRenderStyle.SELECTED_COLOR;
 				}
+				else if (internalSelectionManager.checkStatus(ESelectionType.NORMAL, vertexRep.getId())) {
+					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+				}
+				else {
+					tmpNodeColor = new float[] {0,0,0,0};
+				}
 
-				if (tmpNodeColor != null) {
-					gl.glColor4fv(tmpNodeColor, 0);
-					gl.glCallList(iEnzymeNodeDisplayListId);
+				gl.glColor4fv(tmpNodeColor, 0);
+				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+				
+				if (!internalSelectionManager.checkStatus(ESelectionType.DESELECTED, vertexRep.getId())) {
+				
+					// Transparent node for picking
+					gl.glColor4f(0, 0, 0, 0);
+					gl.glCallList(iEnzymeNodeDisplayListId);					
 				}
 			}
 

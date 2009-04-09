@@ -15,7 +15,7 @@ public class PathwayRenderStyle
 	public static final float COMPOUND_NODE_WIDTH = 8 * SCALING_FACTOR_X / 2.0f;
 	public static final float COMPOUND_NODE_HEIGHT = 8 * SCALING_FACTOR_X / 2.0f;
 
-	public static final float[] ENZYME_NODE_COLOR = new float[] { 0.8f, 0.8f, 0.8f, 1 };
+	public static final float[] ENZYME_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
 	public static final float[] COMPOUND_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
 	public static final float[] PATHWAY_NODE_COLOR = new float[] { 0.7f, 0.7f, 1f, 1 };
 
