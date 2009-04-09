@@ -83,7 +83,7 @@ public class ColorMapping {
 
 			int iColorRange = iDestIndex - iSrcIndex;
 
-			for (int iInnerCount = 1; iInnerCount <= iColorRange; iInnerCount++) {
+			for (int iInnerCount = 0; iInnerCount <= iColorRange; iInnerCount++) {
 				float[] fColor = alColorList.get(iSrcIndex + iInnerCount);
 				float fDivisor = (float) iColorRange / (float) iInnerCount;
 				fColor[0] = fSrcColor[0] + (fDestColor[0] - fSrcColor[0]) / fDivisor;
@@ -118,6 +118,11 @@ public class ColorMapping {
 	 */
 	public ArrayList<ColorMarkerPoint> getMarkerPoints() {
 		return alMarkerPoints;
+	}
+	
+	public void update()
+	{
+		setUpMapping();
 	}
 
 }

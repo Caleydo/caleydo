@@ -71,6 +71,16 @@ public class ColorMarkerPoint
 	}
 
 	/**
+	 * Set a value for the inflection point for later modification
+	 * 
+	 * @param fValue
+	 *            the new inflection point value
+	 */
+	public void setValue(float fValue) {
+		this.fValue = fValue;
+	}
+
+	/**
 	 * Returns the color associated with the inflection Point
 	 * 
 	 * @return the color

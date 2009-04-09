@@ -1,5 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
+import static org.caleydo.core.view.opengl.canvas.storagebased.HistogramRenderStyle.SIDE_SPACING;
+
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -13,11 +16,17 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 /**
@@ -27,12 +36,15 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
  */
 public class GLHistogram
 	extends AGLEventListener {
-	boolean bIsInListMode = false;
 
 	boolean bUseDetailLevel = true;
 	ISet set;
 
 	private Histogram histogram;
+	private ColorMapping colorMapping;
+	HistogramRenderStyle renderStyle;
+
+	boolean bUpdateColorPointPosition = false;
 
 	/**
 	 * Constructor.
@@ -46,20 +58,19 @@ public class GLHistogram
 		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
-		viewType = EManagedObjectType.GL_HYPERBOLIC;
+		viewType = EManagedObjectType.GL_HISTOGRAM;
 
-		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-		alSelectionTypes.add(ESelectionType.NORMAL);
-		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		alSelectionTypes.add(ESelectionType.SELECTION);
+		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+
+		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 	}
 
 	@Override
 	public void init(GL gl) {
 
 		set = alSets.get(0);
-		if (set == null)
-			return;
+		// if (set == null)
+		// return;
 
 		histogram = set.getHistogram();
 	}
@@ -85,13 +96,6 @@ public class GLHistogram
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 
-	}
-
-	public synchronized void setToListMode(boolean bSetToListMode) {
-		this.bIsInListMode = bSetToListMode;
-		super.setDetailLevel(EDetailLevel.HIGH);
-		bUseDetailLevel = false;
-		setDisplayListDirty();
 	}
 
 	@Override
@@ -137,8 +141,9 @@ public class GLHistogram
 
 	@Override
 	public synchronized void display(GL gl) {
-		GLHelperFunctions.drawAxis(gl);
 		render(gl);
+		if (bUpdateColorPointPosition)
+			updateColorPointPosition(gl);
 		// clipToFrustum(gl);
 		//
 		// gl.glCallList(iGLDisplayListToCall);
@@ -152,27 +157,63 @@ public class GLHistogram
 
 	private void render(GL gl) {
 
-		gl.glColor4f(0, 0, 1, 1);
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(0, 0, 0);
-		// gl.glVertex3f(0, 1, 0);
-		// gl.glVertex3f(1, 1, 0);
-		// gl.glVertex3f(1, 0, 0);
-		// gl.glEnd();
+		float fSpacing = (viewFrustum.getWidth() - 2 * SIDE_SPACING) / histogram.size();
+		float fContinuousColorRegion = 1.0f / histogram.size();
+		float fRenderWidth = (viewFrustum.getWidth() - 2 * SIDE_SPACING);
+		float fOneHeightValue = (viewFrustum.getHeight() - 2 * SIDE_SPACING) / histogram.getLargestValue();
 
-		float fSpacing = viewFrustum.getWidth() / histogram.size();
 		int iCount = 0;
 		for (Integer iValue : histogram) {
+			gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion * iCount), 0);
 			gl.glLineWidth(3.0f);
-			gl.glBegin(GL.GL_LINES);
-			// gl.glVertex3f(0, 0, 0);
-			// gl.glVertex3f(1,1, 0);
-			gl.glVertex3f(fSpacing * iCount, 0, 0);
-			gl.glVertex3f(fSpacing * iCount, viewFrustum.getHeight() * ((float) iValue) / histogram.getLargestValue(), 0);
+			gl.glBegin(GL.GL_POLYGON);
+
+			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING, 0);
+			gl.glVertex3f(fSpacing * iCount + SIDE_SPACING, SIDE_SPACING + iValue * fOneHeightValue, 0);
+			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING + iValue * fOneHeightValue, 0);
+			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glEnd();
 			iCount++;
 		}
 
+		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
+
+		iCount = 0;
+		for (ColorMarkerPoint markerPoint : markerPoints) {
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HISTOGRAM_COLOR_LINE, iCount));
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth, 0, 0);
+			gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth, viewFrustum.getHeight(), 0);
+			gl.glEnd();
+			gl.glPopName();
+			iCount++;
+		}
+
+	}
+
+	private void updateColorPointPosition(GL gl) {
+		if (pickingTriggerMouseAdapter.wasMouseReleased())
+			bUpdateColorPointPosition = false;
+
+		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+
+		float[] fArTargetWorldCoordinates =
+			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+
+		float fWidth = fArTargetWorldCoordinates[0];
+		
+		if (fWidth < SIDE_SPACING)
+			fWidth = SIDE_SPACING;
+		if (fWidth > viewFrustum.getWidth() - SIDE_SPACING)
+			fWidth = viewFrustum.getWidth() - SIDE_SPACING;
+		
+		fWidth = (fWidth - SIDE_SPACING) / (viewFrustum.getWidth() - 2 * SIDE_SPACING);
+
+		// ColorMappingManager colorManager = ColorMappingManager.get();
+		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
+
+		markerPoints.get(1).setValue(fWidth);
+		colorMapping.update();
 	}
 
 	@Override
@@ -189,10 +230,12 @@ public class GLHistogram
 		}
 		switch (ePickingType) {
 
-			case HEAT_MAP_STORAGE_SELECTION:
+			case HISTOGRAM_COLOR_LINE:
 
 				switch (pickingMode) {
 					case CLICKED:
+						bUpdateColorPointPosition = true;
+						// colorManager.initColorMapping(EColorMappingType.GENE_EXPRESSION, )
 						break;
 					case MOUSE_OVER:
 
@@ -207,10 +250,6 @@ public class GLHistogram
 		}
 
 		pickingManager.flushHits(iUniqueID, ePickingType);
-	}
-
-	public boolean isInListMode() {
-		return bIsInListMode;
 	}
 
 	@Override

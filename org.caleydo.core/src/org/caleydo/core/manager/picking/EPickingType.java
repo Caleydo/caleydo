@@ -66,9 +66,12 @@ public enum EPickingType {
 	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH, false),
 	// TODO: works only for glyph sliders now, new solution?
 	SLIDER_SELECTION(EManagedObjectType.GL_GLYPH_SLIDER, false),
-	
-	//radial hierarchy
-	RAD_HIERARCHY_PDISC_SELECTION(EManagedObjectType.GL_RADIAL_HIERARCHY, false);
+
+	// radial hierarchy
+	RAD_HIERARCHY_PDISC_SELECTION(EManagedObjectType.GL_RADIAL_HIERARCHY, false),
+
+	// histogram
+	HISTOGRAM_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false);
 
 	private EManagedObjectType viewType;
 

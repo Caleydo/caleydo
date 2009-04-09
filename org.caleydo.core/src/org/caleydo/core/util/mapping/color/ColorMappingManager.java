@@ -55,6 +55,7 @@ public class ColorMappingManager {
 		}
 		hashColorMapping.put(colorMappingType, new ColorMapping(alMarkerPoints));
 	}
+	
 
 	/**
 	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all
