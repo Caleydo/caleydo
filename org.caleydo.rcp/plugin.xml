@@ -122,7 +122,7 @@
       <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.swt.ToolBarView"
-            icon="resources/icons/view/browser.png"
+            icon="resources/icons/view/general.png"
             id="org.caleydo.rcp.views.swt.ToolBarView"
             name="Tool Bar">
       </view>
@@ -147,11 +147,28 @@
             name="Testing">
       </view>
       <view
-            allowMultiple="true"
+            allowMultiple="false"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLHistogramView"
-            id="org.caleydo.rcp.views.GLHistogramView"
-            name="Histogram">
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLHistogramView"
+            name="Color Map">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.swt.SearchView"
+            icon="resources/icons/view/search.png"
+            id="org.caleydo.rcp.views.swt.SearchView"
+            name="Search">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.swt.SelectionInfoView"
+            icon="resources/icons/view/info.png"
+            id="org.caleydo.rcp.views.swt.SelectionInfoView"
+            name="Info">
       </view>
 
       
@@ -275,11 +292,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.ExportHandler"
             id="org.caleydo.rcp.command.export"
             name="Export">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenToolBarHandler"
-            id="org.caleydo.rcp.command.openviews.toolbar"
-            name="Open Tool Bar">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenRadialHierarchyHandler"

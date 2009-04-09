@@ -13,6 +13,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.caleydo.rcp.views.opengl.GLHistogramView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
@@ -321,7 +322,7 @@ public class Application
 		// Open Views in RCP
 		try {
 			// Open toolbar view
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(ToolBarView.ID);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(GLHistogramView.ID);
 
 			// if (alStartViews.contains(EStartViewType.REMOTE))
 			// {

@@ -1,6 +1,10 @@
 package org.caleydo.rcp.util.info;
 
+import java.util.Collection;
+
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
@@ -19,9 +23,7 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.views.swt.ToolBarView;
@@ -48,14 +50,14 @@ public class InfoArea
 
 	private Tree selectionTree;
 
-	// private TreeItem geneTree;
-	// private TreeItem experimentTree;
-	// private TreeItem pathwayTree;
+	private TreeItem geneTree;
+	private TreeItem experimentTree;
+	private TreeItem pathwayTree;
 
 	private AGLEventListener updateTriggeringView;
 	private Composite parentComposite;
 
-	private GlyphManager glyphManager;
+	// private GlyphManager glyphManager;
 	private IIDMappingManager idMappingManager;
 
 	private String shortInfo;
@@ -67,42 +69,20 @@ public class InfoArea
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION, this);
 
-		glyphManager = GeneralManager.get().getGlyphManager();
+		// glyphManager = GeneralManager.get().getGlyphManager();
 		idMappingManager = GeneralManager.get().getIDMappingManager();
 	}
 
 	public Control createControl(final Composite parent) {
-		// Font font = new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD);
 
 		parentComposite = parent;
 
-		// Label lblViewInfo = null;
-		// Label lblDetailInfo = null;
-		// if (ToolBarView.bHorizontal)
-		// {
-		// // lblViewInfo = new Label(parent, SWT.NONE);
-		// // lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
-		// lblViewInfoContent = new Label(parent, SWT.WRAP);
-		// selectionTree = new Tree(parent, SWT.BORDER);
-		// }
-		// else
-		// {
-		// // lblViewInfo = new Label(parent, SWT.NONE);
+		selectionTree = new Tree(parent, SWT.NULL);
+
 		lblViewInfoContent = new Label(parent, SWT.WRAP);
 		lblViewInfoContent.setAlignment(SWT.CENTER);
-		// // lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
-		selectionTree = new Tree(parent, SWT.NULL);
-		// }
-
-		// lblViewInfo.setText("View Info");
-		// lblViewInfo.setFont(font);
-		// lblViewInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		// lblDetailInfo.setText("Selection Info");
-		// lblDetailInfo.setFont(font);
-		// lblDetailInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
 		lblViewInfoContent.setText("");
+		
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 
 		if (ToolBarView.bHorizontal) {
@@ -121,8 +101,8 @@ public class InfoArea
 		lblViewInfoContent.setLayoutData(gridData);
 
 		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.heightHint = 62;
 		gridData.minimumHeight = 62;
+		gridData.heightHint = 156;
 
 		if (Application.bIsWindowsOS) {
 			// In windows the list needs more space because of no multi line
@@ -130,64 +110,78 @@ public class InfoArea
 			gridData.widthHint = 145;
 			gridData.minimumWidth = 145;
 		}
-		else {
-			gridData.widthHint = 120;
-			gridData.minimumWidth = 120;
-		}
+//		else {
+//			gridData.widthHint = 145;
+//			gridData.minimumWidth = 145;
+//		}
 
 		selectionTree.setLayoutData(gridData);
 
 		// selectionTree.setItemCount(2);
-		selectionTree.addSelectionListener(new SelectionAdapter() {
+//		selectionTree.addSelectionListener(new SelectionAdapter() {
+//
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				super.widgetSelected(e);
+//
+//				// ((HTMLBrowserView)
+//				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//				// .findView(HTMLBrowserView.ID)).getHTMLBrowserViewRep().setUrl("bla");
+//			}
+//		});
 
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				super.widgetSelected(e);
-
-				// ((HTMLBrowserView)
-				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				// .findView(HTMLBrowserView.ID)).getHTMLBrowserViewRep().setUrl("bla");
-			}
-		});
-
-		// geneTree = new TreeItem(selectionTree, SWT.NONE);
-		// geneTree.setText("Genes");
-		// geneTree.setExpanded(true);
-		// geneTree.setData(-1);
-		// experimentTree = new TreeItem(selectionTree, SWT.NONE);
-		// experimentTree.setText("Experiments");
-		// experimentTree.setExpanded(false);
-		// experimentTree.setData(-1);
-		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
-		// pathwayTree.setText("Pathways");
-		// pathwayTree.setExpanded(false);
-		// pathwayTree.setData(-1);
+		geneTree = new TreeItem(selectionTree, SWT.NONE);
+		geneTree.setText("Genes");
+		geneTree.setExpanded(true);
+		geneTree.setData(-1);
+		experimentTree = new TreeItem(selectionTree, SWT.NONE);
+		experimentTree.setText("Experiments");
+		experimentTree.setExpanded(true);
+		experimentTree.setData(-1);
+//		pathwayTree = new TreeItem(selectionTree, SWT.NONE);
+//		pathwayTree.setText("Pathways");
+//		pathwayTree.setExpanded(false);
+//		pathwayTree.setData(-1);
 
 		return parent;
 	}
-
+	
 	private void handleSelectionUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
+				
+				if (eventTrigger instanceof AGLEventListener) {
+					lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+				}
+				
 				if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
-					if (eventTrigger instanceof AGLEventListener) {
-						lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
-					}
-
+					
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
-						if (selectionItem.getSelectionType() == ESelectionType.NORMAL
-							|| selectionItem.getSelectionType() == ESelectionType.DESELECTED) {
-							// Flush old items that become deselected/normal
-							for (TreeItem tmpItem : selectionTree.getItems()) {
-								if (tmpItem.getData() == null
-									|| ((Integer) tmpItem.getData()).intValue() == selectionItem
-										.getPrimaryID()) {
-									tmpItem.dispose();
-								}
+						
+						// Flush old genes from this selection type
+						for (TreeItem item : geneTree.getItems())
+						{
+							if (item.getData("selection_type") == selectionItem.getSelectionType()
+								|| ((Integer)item.getData()) == selectionItem.getPrimaryID()) {
+			
+								item.dispose();
 							}
 						}
-						else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
+						
+//						if (selectionItem.getSelectionType() == ESelectionType.NORMAL
+//							|| selectionItem.getSelectionType() == ESelectionType.DESELECTED) {
+//							// Flush old items that become deselected/normal
+//							for (TreeItem tmpItem : selectionTree.getItems()) {
+//								if (tmpItem.getData() == null
+//									|| ((Integer) tmpItem.getData()).intValue() == selectionItem
+//										.getPrimaryID()) {
+//									tmpItem.dispose();
+//								}
+//							}
+//						}
+						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
 							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+							
 							Color color;
 							float[] fArColor = null;
 
@@ -198,8 +192,7 @@ public class InfoArea
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							}
 
-							color =
-								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+							color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 							String sRefSeqID =
@@ -217,21 +210,21 @@ public class InfoArea
 								sGeneSymbol = "Unknown";
 							}
 
-							boolean bIsExisting = false;
-							for (TreeItem existingItem : selectionTree.getItems()) {
-								if (existingItem.getText().equals(sGeneSymbol)
-									&& ((Integer) existingItem.getData()).intValue() == selectionItem
-										.getPrimaryID()) {
-									existingItem.setBackground(color);
-									existingItem.getItem(0).setBackground(color);
-									existingItem.setData("selection_type", selectionItem.getSelectionType());
-									bIsExisting = true;
-									break;
-								}
-							}
+//							boolean bIsExisting = false;
+//							for (TreeItem existingItem : selectionTree.getItems()) {
+//								if (existingItem.getText().equals(sGeneSymbol)
+//									&& ((Integer) existingItem.getData()).intValue() == selectionItem
+//										.getPrimaryID()) {
+//									existingItem.setBackground(color);
+//									existingItem.getItem(0).setBackground(color);
+//									existingItem.setData("selection_type", selectionItem.getSelectionType());
+//									bIsExisting = true;
+//									break;
+//								}
+//							}
 
-							if (!bIsExisting) {
-								TreeItem item = new TreeItem(selectionTree, SWT.NONE);
+//							if (!bIsExisting) {
+								TreeItem item = new TreeItem(geneTree, SWT.NONE);
 								if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
 									item.setText(sGeneSymbol + " - " + sRefSeqID);
 								}
@@ -242,83 +235,93 @@ public class InfoArea
 								item.setData(selectionItem.getPrimaryID());
 								item.setData("selection_type", selectionItem.getSelectionType());
 
-								// TreeItem subItem = new TreeItem(item,
-								// SWT.NONE);
-								// subItem.setText(sRefSeqID);
-								// subItem.setBackground(color);
-								// item.setExpanded(true);
-							}
+//								TreeItem subItem = new TreeItem(item, SWT.NONE);
+//								subItem.setText(sRefSeqID);
+//								subItem.setBackground(color);
+								geneTree.setExpanded(true);
+//							}
 						}
 					}
 				}
-				// else if (selectionDelta.getIDType() ==
-				// EIDType.EXPERIMENT_INDEX)
-				// {
-				// lblViewInfoContent.setText(((AGLEventListener)
-				// eventTrigger).getShortInfo());
-				//
-				// for (SelectionDeltaItem selectionItem : selectionDelta)
-				// {
-				// if (selectionItem.getSelectionType() ==
-				// ESelectionType.MOUSE_OVER)
-				// {
-				// // we only show 1 item
-				// for (TreeItem child : selectionTree.getItems())
-				// {
-				// if (child.getData("mapping_type") != null)
-				// if (child.getData("mapping_type").equals(
-				// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString()))
-				// child.dispose();
-				// }
-				//
-				// String id = Integer.toString(selectionItem.getPrimaryID());
-				// if
-				// (idMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
-				// {
-				// id =
-				// idMappingManager.getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
-				// id);
-				// }
-				//
-				// TreeItem item = new TreeItem(selectionTree, SWT.NONE);
-				// item.setText(id);
-				// item.setData(selectionItem.getPrimaryID());
-				// item.setData("mapping_type",
-				// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
-				// item.setData("selection_type",
-				// selectionItem.getSelectionType());
-				//
-				// addGlyphInfo(selectionItem, item);
-				//
-				// item.setExpanded(true);
-				//
-				// }
-				// }
-				// }
+				else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+					lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+
+					for (SelectionDeltaItem selectionItem : selectionDelta) {
+						
+						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
+							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+	
+							// Flush old experiments from this selection type
+							for (TreeItem item : experimentTree.getItems())
+							{
+								if (item.getData("selection_type") == selectionItem.getSelectionType()
+									|| ((Integer)item.getData()) == selectionItem.getPrimaryID()) {
+									item.dispose();
+								}
+							}
+							
+							Color color;
+							float[] fArColor = null;
+
+							if (selectionItem.getSelectionType() == ESelectionType.SELECTION) {
+								fArColor = GeneralRenderStyle.SELECTED_COLOR;
+							}
+							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER) {
+								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+							}
+
+							color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
+
+							// Retrieve current set 
+							// FIXME: This solution is not robust if new data are loaded -> REDESIGN
+							ISet geneExpressionSet = null;
+							Collection<ISet> sets = GeneralManager.get().getSetManager().getAllItems();
+							int iSetCount = 0;
+							for (ISet set : sets) {
+								if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+									iSetCount++;
+									geneExpressionSet = set;
+								}
+							}
+							
+							TreeItem item = new TreeItem(experimentTree, SWT.NONE);
+							item.setText(geneExpressionSet.get(selectionItem.getPrimaryID()).getLabel());
+							item.setData(selectionItem.getPrimaryID());
+//							item.setData("mapping_type", EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
+							item.setData("selection_type", selectionItem.getSelectionType());
+							item.setBackground(color);
+							
+							experimentTree.setExpanded(true);
+							
+							// addGlyphInfo(selectionItem, item);
+						}
+					}
+				}
 			}
 		});
 	}
 
-	private void addGlyphInfo(SelectionDeltaItem selectionItem, TreeItem item) {
-		GlyphEntry entry = glyphManager.getGlyphs().get(selectionItem.getPrimaryID());
-
-		if (entry == null)
-			return;
-
-		for (int i = 0; i < entry.getNumberOfParameters(); ++i) {
-			String info =
-				glyphManager.getGlyphAttributeInfoStringWithInternalColumnNumber(i, entry.getParameter(i));
-
-			TreeItem subitem = new TreeItem(item, SWT.NONE);
-			subitem.setText(info);
-		}
-
-		for (String key : entry.getStringParameterColumnNames()) {
-			String info = key + ": " + entry.getStringParameter(key);
-			TreeItem subitem = new TreeItem(item, SWT.NONE);
-			subitem.setText(info);
-		}
-	}
+	// private void addGlyphInfo(SelectionDeltaItem selectionItem, TreeItem item) {
+	// GlyphEntry entry = glyphManager.getGlyphs().get(selectionItem.getPrimaryID());
+	//
+	// if (entry == null)
+	// return;
+	//
+	// for (int i = 0; i < entry.getNumberOfParameters(); ++i) {
+	// String info =
+	// glyphManager.getGlyphAttributeInfoStringWithInternalColumnNumber(i, entry.getParameter(i));
+	//
+	// TreeItem subitem = new TreeItem(item, SWT.NONE);
+	// subitem.setText(info);
+	// }
+	//
+	// for (String key : entry.getStringParameterColumnNames()) {
+	// String info = key + ": " + entry.getStringParameter(key);
+	// TreeItem subitem = new TreeItem(item, SWT.NONE);
+	// subitem.setText(info);
+	// }
+	// }
 
 	private void handleVAUpdate(final IUniqueObject eventTrigger, final IVirtualArrayDelta delta) {
 		if (delta.getIDType() != EIDType.REFSEQ_MRNA_INT)
@@ -334,16 +337,16 @@ public class InfoArea
 
 				lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
 
-				for (VADeltaItem item : delta) {
-					if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-						// Flush old items that become deselected/normal
-						for (TreeItem tmpItem : selectionTree.getItems()) {
-							if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID()) {
-								tmpItem.dispose();
-							}
-						}
-					}
-				}
+//				for (VADeltaItem item : delta) {
+//					if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
+//						// Flush old items that become deselected/normal
+//						for (TreeItem tmpItem : selectionTree.getItems()) {
+//							if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID()) {
+//								tmpItem.dispose();
+//							}
+//						}
+//					}
+//				}
 			}
 		});
 	}

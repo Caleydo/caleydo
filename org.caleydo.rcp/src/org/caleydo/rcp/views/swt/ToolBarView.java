@@ -1,33 +1,23 @@
 package org.caleydo.rcp.views.swt;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.StringTokenizer;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
-import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
-import org.caleydo.rcp.Activator;
-import org.caleydo.rcp.Application;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
+import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.perspective.GenomePerspective;
-import org.caleydo.rcp.util.info.InfoArea;
-import org.caleydo.rcp.util.search.SearchBox;
 import org.caleydo.rcp.views.CaleydoViewPart;
 import org.caleydo.rcp.views.opengl.AGLViewPart;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
@@ -38,33 +28,17 @@ import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -85,16 +59,9 @@ public class ToolBarView
 
 	private Composite parentComposite;
 
-	private DataEntitySearcherViewRep dataEntitySearcher;
-
-	// private HTMLBrowserViewRep browserView;
-
 	private ArrayList<Group> viewSpecificGroups;
-
-	// private boolean bIsBucketViewActive = false;
-
-	private Label pathwaySearchLabel;
-	private SearchBox pathwaySearchBox;
+	
+//	private SearchView searchView;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -115,12 +82,12 @@ public class ToolBarView
 
 		this.parentComposite = parentComposite;
 
+//		searchView = (SearchView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(SearchView.ID);
+		
 		viewSpecificGroups = new ArrayList<Group>();
 
 		addGeneralToolBar();
-		addSearchBar();
-		addColorMappingBar();
-		addInfoBar();
+//		addColorMappingBar();
 	}
 
 	@Override
@@ -224,7 +191,7 @@ public class ToolBarView
 				"resources/icons/view/remote/remote.png");
 
 			// bIsBucketViewActive = true;
-			updateSearchBar(true);
+//			searchView.updateSearchBar(true);
 		}
 		else if (sViewType.equals(GLHeatMapView.ID)) {
 			GLHeatMapView.createToolBarItems(iViewID);
@@ -333,7 +300,7 @@ public class ToolBarView
 
 			// Update search bar
 			// bIsBucketViewActive = false;
-			updateSearchBar(false);
+//			searchView.updateSearchBar(false);
 		}
 	}
 
@@ -346,7 +313,7 @@ public class ToolBarView
 
 		// Update search bar
 		// bIsBucketViewActive = false;
-		updateSearchBar(false);
+//		searchView.updateSearchBar(false);
 	}
 
 	// public void highlightViewSpecificToolBar(int iViewID)
@@ -413,310 +380,156 @@ public class ToolBarView
 	// }
 	// }
 
-	private void addSearchBar() {
-		Group searchGroup = new Group(parentComposite, SWT.NULL);
-
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginBottom =
-			layout.marginTop =
-				layout.marginLeft =
-					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 3;
-		searchGroup.setLayout(layout);
-		GridData gridData;
-		if (bHorizontal) {
-			gridData = new GridData(GridData.FILL_VERTICAL);
-			gridData.minimumWidth = 230;
-			gridData.widthHint = 230;
-		}
-		else {
-			gridData = new GridData(GridData.FILL_HORIZONTAL);
-		}
-		searchGroup.setLayoutData(gridData);
-
-		// Trigger gene/pathway search command
-		CmdViewCreateDataEntitySearcher cmd =
-			(CmdViewCreateDataEntitySearcher) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.CREATE_VIEW_DATA_ENTITY_SEARCHER);
-		cmd.doCommand();
-		dataEntitySearcher = cmd.getCreatedObject();
-
-		Composite searchComposite = new Composite(searchGroup, SWT.NULL);
-		searchComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		if (bHorizontal) {
-			layout = new GridLayout(2, false);
-		}
-		else {
-			layout = new GridLayout(1, false);
-		}
-
-		layout.marginHeight = layout.marginWidth = 0;
-		searchComposite.setLayout(layout);
-
-		pathwaySearchLabel = new Label(searchComposite, SWT.NULL);
-		pathwaySearchLabel.setText("Pathway");
-
-		pathwaySearchBox = new SearchBox(searchComposite, SWT.BORDER);
-
-		String items[] = { "No pathways available!" };
-		pathwaySearchBox.setItems(items);
-		pathwaySearchBox.setTextLimit(21);
-		pathwaySearchBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		if (Application.bLoadPathwayData) {
-			pathwaySearchBox.addFocusListener(new FocusAdapter() {
-				@Override
-				public void focusGained(FocusEvent e) {
-					if (!Application.bLoadPathwayData) {
-						pathwaySearchBox.setEnabled(false);
-						return;
-					}
-
-					Collection<PathwayGraph> allPathways =
-						GeneralManager.get().getPathwayManager().getAllItems();
-					String[] sArSearchItems = new String[allPathways.size()];
-					int iIndex = 0;
-					String sPathwayTitle = "";
-					for (PathwayGraph pathway : allPathways) {
-						sPathwayTitle = pathway.getTitle();
-
-						// if (sPathwayTitle.length() >
-						// MAX_PATHWAY_TITLE_LENGTH)
-						// sPathwayTitle = sPathwayTitle.substring(0,
-						// MAX_PATHWAY_TITLE_LENGTH) + "... ";
-
-						// sArSearchItems[iIndex] = pathway.getType().toString()
-						// + " - " + sPathwayTitle;
-
-						sArSearchItems[iIndex] = sPathwayTitle + " (" + pathway.getType().toString() + ")";
-						iIndex++;
-					}
-
-					pathwaySearchBox.setItems(sArSearchItems);
-					pathwaySearchBox.removeFocusListener(this);
-				}
-			});
-		}
-		else {
-			pathwaySearchLabel.setEnabled(false);
-			pathwaySearchBox.setEnabled(false);
-		}
-		pathwaySearchBox.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox.getSelectionIndex());
-				// sSearchEntity = sSearchEntity.substring(0,
-				// sSearchEntity.indexOf(" ("));
-
-				dataEntitySearcher.searchForEntity(sSearchEntity);
-			}
-		});
-
-		// Gene search
-		Label entitySearchLabel = new Label(searchComposite, SWT.NULL);
-		entitySearchLabel.setText("Gene");
-
-		final Text geneSearchText = new Text(searchComposite, SWT.BORDER | SWT.SINGLE);
-		geneSearchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		geneSearchText.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				geneSearchText.setText("");
-				// geneSearchText.pack();
-			}
-		});
-
-		geneSearchText.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent event) {
-				switch (event.keyCode) {
-					case SWT.CR: {
-						boolean bFound = dataEntitySearcher.searchForEntity(geneSearchText.getText());
-
-						if (!bFound) {
-							geneSearchText.setText(" NOT FOUND! Try again...");
-							// geneSearchText.setForeground(geneSearchText
-							// .getDisplay().getSystemColor(SWT.COLOR_RED));
-							// geneSearchText.pack();
-						}
-					}
-				}
-			}
-		});
-
-		Label spacer = new Label(searchGroup, SWT.NULL);
-		if (bHorizontal) {
-			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-		}
-		else {
-			GridData data = new GridData(GridData.FILL_HORIZONTAL);
-			data.minimumHeight = 10;
-			data.heightHint = 10;
-			spacer.setLayoutData(data);
-		}
-
-		Label label = new Label(searchGroup, SWT.CENTER);
-		label.setText("Gene search");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-	}
-
-	private void updateSearchBar(boolean bIsVisible) {
-		pathwaySearchBox.setVisible(bIsVisible);
-		pathwaySearchLabel.setVisible(bIsVisible);
-		parentComposite.layout();
-	}
-
-	private void addColorMappingBar() {
-		Group group = new Group(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginBottom =
-			layout.marginTop =
-				layout.marginLeft =
-					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 3;
-		group.setLayout(layout);
-
-		GridData gridData;
-		if (bHorizontal) {
-			gridData = new GridData(GridData.FILL_VERTICAL);
-			gridData.minimumWidth = 110;
-			gridData.widthHint = 110;
-		}
-		else {
-			gridData = new GridData(GridData.FILL_HORIZONTAL);
-		}
-		group.setLayoutData(gridData);
-
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.getInt("");
-		store = GeneralManager.get().getPreferenceStore();
-		int iNumberOfMarkerPoints = store.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-
-		Color[] alColor = new Color[iNumberOfMarkerPoints];
-		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
-		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
-			int iColorMarkerPoint =
-				(int) (100 * store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
-
-			// Gradient label does not need the 0 point
-			if (iColorMarkerPoint != 0) {
-				iArColorMarkerPoints[iCount - 2] = iColorMarkerPoint;
-			}
-
-			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
-
-			int[] iArColor = new int[3];
-			if (color.isEmpty()) {
-				iArColor[0] = 0;
-				iArColor[1] = 0;
-				iArColor[2] = 0;
-			}
-			else {
-				StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
-				int iInnerCount = 0;
-				while (tokenizer.hasMoreTokens()) {
-					try {
-						String token = tokenizer.nextToken();
-						iArColor[iInnerCount] = Integer.parseInt(token);
-						System.out.println();
-					}
-					catch (Exception e) {
-
-					}
-					iInnerCount++;
-				}
-			}
-			alColor[iCount - 1] =
-				new Color(PlatformUI.getWorkbench().getDisplay(), iArColor[0], iArColor[1], iArColor[2]);
-		}
-
-		CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_NONE);
-		// colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
-		colorMappingPreviewLabel.setText("");
-		// colorMappingPreviewLabel.setBackground(alColor, new int[] { 20, 100
-		// });
-
-		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
-		colorMappingPreviewLabel.update();
-		colorMappingPreviewLabel.setLayoutData(new GridData(150, 20));
-
-		Composite colorLabelComposite = new Composite(group, SWT.NULL);
-		colorLabelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		colorLabelComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
-		int iCompositeWidth = 110;// group.getBounds().width;
-
-		for (int iCount = 0; iCount < iArColorMarkerPoints.length; iCount++) {
-			Integer iWidthValue;
-			int iDisplayValue;
-			// iAccumulatedValue += iValue;
-			Label valueLabel = new Label(colorLabelComposite, SWT.LEFT);// |
-			// SWT.BORDER);
-			// valueLabel.setText("test");
-
-			if (iCount == 0) {
-				iDisplayValue = 0;
-				iWidthValue = iArColorMarkerPoints[iCount];
-			}
-			else {
-				iDisplayValue = iArColorMarkerPoints[iCount - 1];
-				iWidthValue = iArColorMarkerPoints[iCount] - iDisplayValue;
-			}
-
-			valueLabel.setText(Integer.toString(iDisplayValue));
-			int iWidth = (int) ((float) iWidthValue / 100 * iCompositeWidth);
-			RowData rowData = new RowData(iWidth, 15);
-			valueLabel.setLayoutData(rowData);
-		}
-
-		Label valueLabel = new Label(colorLabelComposite, SWT.RIGHT);
-		valueLabel.setText("100");
-		RowData rowData = new RowData(22, 15);
-		valueLabel.setLayoutData(rowData);
-		colorLabelComposite.pack();
-		// CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_NONE);
-		// // colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
-		// colorMappingPreviewLabel.setText("");
-		//		
-		// // TODO for Alex: Read real color mapping values
-		// Color[] alColorMarkerPoints = new Color[3];
-		// alColorMarkerPoints[0] = new Color(Display.getCurrent(), 255, 0, 0);
-		// alColorMarkerPoints[1] = new Color(Display.getCurrent(), 0, 0, 0);
-		// alColorMarkerPoints[2] = new Color(Display.getCurrent(), 0, 255, 0);
-		// colorMappingPreviewLabel.setBackground(alColorMarkerPoints, new int[]
-		// { 20, 100 });
-		// colorMappingPreviewLabel.setLayoutData(new
-		// GridData(GridData.FILL_HORIZONTAL));
-		//
-		colorMappingPreviewLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				PreferenceDialog pref =
-					PreferencesUtil.createPreferenceDialogOn(parentComposite.getShell(),
-						"org.caleydo.rcp.preferences.ColorMappingPreferencePage", null, null);
-
-				if (pref != null) {
-					pref.open();
-				}
-			}
-		});
-
-		Label spacer = new Label(group, SWT.NULL);
-		if (bHorizontal) {
-			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-		}
-		else {
-			GridData data = new GridData(GridData.FILL_HORIZONTAL);
-			data.minimumHeight = 10;
-			data.heightHint = 10;
-			spacer.setLayoutData(data);
-		}
-
-		Label label = new Label(group, SWT.CENTER);
-		label.setText("Color Mapping");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-	}
+//	private void addColorMappingBar() {
+//		Group group = new Group(parentComposite, SWT.NULL);
+//		GridLayout layout = new GridLayout(1, false);
+//		layout.marginBottom =
+//			layout.marginTop =
+//				layout.marginLeft =
+//					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
+//		layout.marginHeight = layout.marginWidth = 3;
+//		group.setLayout(layout);
+//
+//		GridData gridData;
+//		if (bHorizontal) {
+//			gridData = new GridData(GridData.FILL_VERTICAL);
+//			gridData.minimumWidth = 110;
+//			gridData.widthHint = 110;
+//		}
+//		else {
+//			gridData = new GridData(GridData.FILL_HORIZONTAL);
+//		}
+//		group.setLayoutData(gridData);
+//
+//		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+//		store.getInt("");
+//		store = GeneralManager.get().getPreferenceStore();
+//		int iNumberOfMarkerPoints = store.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+//
+//		Color[] alColor = new Color[iNumberOfMarkerPoints];
+//		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
+//		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
+//			int iColorMarkerPoint =
+//				(int) (100 * store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
+//
+//			// Gradient label does not need the 0 point
+//			if (iColorMarkerPoint != 0) {
+//				iArColorMarkerPoints[iCount - 2] = iColorMarkerPoint;
+//			}
+//
+//			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
+//
+//			int[] iArColor = new int[3];
+//			if (color.isEmpty()) {
+//				iArColor[0] = 0;
+//				iArColor[1] = 0;
+//				iArColor[2] = 0;
+//			}
+//			else {
+//				StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
+//				int iInnerCount = 0;
+//				while (tokenizer.hasMoreTokens()) {
+//					try {
+//						String token = tokenizer.nextToken();
+//						iArColor[iInnerCount] = Integer.parseInt(token);
+//						System.out.println();
+//					}
+//					catch (Exception e) {
+//
+//					}
+//					iInnerCount++;
+//				}
+//			}
+//			alColor[iCount - 1] =
+//				new Color(PlatformUI.getWorkbench().getDisplay(), iArColor[0], iArColor[1], iArColor[2]);
+//		}
+//
+//		CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_NONE);
+//		// colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
+//		colorMappingPreviewLabel.setText("");
+//		// colorMappingPreviewLabel.setBackground(alColor, new int[] { 20, 100
+//		// });
+//
+//		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
+//		colorMappingPreviewLabel.update();
+//		colorMappingPreviewLabel.setLayoutData(new GridData(150, 20));
+//
+//		Composite colorLabelComposite = new Composite(group, SWT.NULL);
+//		colorLabelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		colorLabelComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+//		int iCompositeWidth = 110;// group.getBounds().width;
+//
+//		for (int iCount = 0; iCount < iArColorMarkerPoints.length; iCount++) {
+//			Integer iWidthValue;
+//			int iDisplayValue;
+//			// iAccumulatedValue += iValue;
+//			Label valueLabel = new Label(colorLabelComposite, SWT.LEFT);// |
+//			// SWT.BORDER);
+//			// valueLabel.setText("test");
+//
+//			if (iCount == 0) {
+//				iDisplayValue = 0;
+//				iWidthValue = iArColorMarkerPoints[iCount];
+//			}
+//			else {
+//				iDisplayValue = iArColorMarkerPoints[iCount - 1];
+//				iWidthValue = iArColorMarkerPoints[iCount] - iDisplayValue;
+//			}
+//
+//			valueLabel.setText(Integer.toString(iDisplayValue));
+//			int iWidth = (int) ((float) iWidthValue / 100 * iCompositeWidth);
+//			RowData rowData = new RowData(iWidth, 15);
+//			valueLabel.setLayoutData(rowData);
+//		}
+//
+//		Label valueLabel = new Label(colorLabelComposite, SWT.RIGHT);
+//		valueLabel.setText("100");
+//		RowData rowData = new RowData(22, 15);
+//		valueLabel.setLayoutData(rowData);
+//		colorLabelComposite.pack();
+//		// CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_NONE);
+//		// // colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
+//		// colorMappingPreviewLabel.setText("");
+//		//		
+//		// // TODO for Alex: Read real color mapping values
+//		// Color[] alColorMarkerPoints = new Color[3];
+//		// alColorMarkerPoints[0] = new Color(Display.getCurrent(), 255, 0, 0);
+//		// alColorMarkerPoints[1] = new Color(Display.getCurrent(), 0, 0, 0);
+//		// alColorMarkerPoints[2] = new Color(Display.getCurrent(), 0, 255, 0);
+//		// colorMappingPreviewLabel.setBackground(alColorMarkerPoints, new int[]
+//		// { 20, 100 });
+//		// colorMappingPreviewLabel.setLayoutData(new
+//		// GridData(GridData.FILL_HORIZONTAL));
+//		//
+//		colorMappingPreviewLabel.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseDoubleClick(MouseEvent e) {
+//				PreferenceDialog pref =
+//					PreferencesUtil.createPreferenceDialogOn(parentComposite.getShell(),
+//						"org.caleydo.rcp.preferences.ColorMappingPreferencePage", null, null);
+//
+//				if (pref != null) {
+//					pref.open();
+//				}
+//			}
+//		});
+//
+//		Label spacer = new Label(group, SWT.NULL);
+//		if (bHorizontal) {
+//			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		}
+//		else {
+//			GridData data = new GridData(GridData.FILL_HORIZONTAL);
+//			data.minimumHeight = 10;
+//			data.heightHint = 10;
+//			spacer.setLayoutData(data);
+//		}
+//
+//		Label label = new Label(group, SWT.CENTER);
+//		label.setText("Color Mapping");
+//		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+//	}
 
 	private void addGeneralToolBar() {
 		Group group = new Group(parentComposite, SWT.NULL);
@@ -743,6 +556,7 @@ public class ToolBarView
 			final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 			ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 			toolBarManager2.add(new TakeSnapshotAction());
+			toolBarManager2.add(new OpenSearchViewAction());
 			toolBarManager2.update(true);
 
 			Label spacer = new Label(group, SWT.NULL);
@@ -750,59 +564,13 @@ public class ToolBarView
 		}
 		else {
 			toolBarManager.add(new TakeSnapshotAction());
+			toolBarManager.add(new OpenSearchViewAction());
 		}
 
 		toolBarManager.update(true);
 
 		Label label = new Label(group, SWT.CENTER);
 		label.setText("General");
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-	}
-
-	private void addInfoBar() {
-		Group group = new Group(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginBottom =
-			layout.marginTop =
-				layout.marginLeft =
-					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 3;
-		group.setLayout(layout);
-		if (bHorizontal) {
-			group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		}
-		else {
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
-
-		Composite infoComposite = new Composite(group, SWT.NULL);
-		infoComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		if (bHorizontal) {
-			layout = new GridLayout(2, false);
-		}
-		else {
-			layout = new GridLayout(1, false);
-		}
-
-		layout.marginBottom =
-			layout.marginTop =
-				layout.marginLeft =
-					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 0;
-
-		infoComposite.setLayout(layout);
-		InfoArea infoArea = new InfoArea();
-		infoArea.createControl(infoComposite);
-
-		if (bHorizontal) {
-			Label spacer = new Label(group, SWT.NULL);
-			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-		}
-
-		Label label = new Label(group, SWT.CENTER);
-		label.setText("Info");
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}

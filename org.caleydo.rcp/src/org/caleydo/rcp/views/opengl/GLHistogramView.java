@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLHistogramView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.GLHistogramView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
 
 	/**
 	 * Constructor.
@@ -19,8 +19,8 @@ public class GLHistogramView
 
 	@Override
 	public void createPartControl(Composite parent) {
+		
 		super.createPartControl(parent);
-
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_HISTOGRAM, glCanvas.getID(), true);
 	}

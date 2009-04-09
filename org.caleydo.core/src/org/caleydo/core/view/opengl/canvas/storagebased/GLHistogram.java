@@ -214,7 +214,7 @@ public class GLHistogram
 				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1], markerPoint.getColor()[2],
 					0.5f);
 
-				gl.glPushName(iColorLinePickingID);
+//				gl.glPushName(iColorLinePickingID);
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() - fLeftSpread) * fRenderWidth,
 					SIDE_SPACING, -0.1f);
@@ -224,7 +224,7 @@ public class GLHistogram
 					- SIDE_SPACING,-0.1f);
 				gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth, SIDE_SPACING, -0.1f);
 				gl.glEnd();
-				gl.glPopName();
+//				gl.glPopName();
 
 			}
 
@@ -244,7 +244,7 @@ public class GLHistogram
 				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1], markerPoint.getColor()[2],
 					0.5f);
 
-				gl.glPushName(iColorLinePickingID);
+//				gl.glPushName(iColorLinePickingID);
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth, SIDE_SPACING, -0.1f);
 				gl.glVertex3f(SIDE_SPACING + markerPoint.getValue() * fRenderWidth, viewFrustum.getHeight()
@@ -254,7 +254,7 @@ public class GLHistogram
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() + fRightSpread) * fRenderWidth,
 					SIDE_SPACING, -0.1f);
 				gl.glEnd();
-				gl.glPopName();
+//				gl.glPopName();
 			}
 			iCount++;
 		}

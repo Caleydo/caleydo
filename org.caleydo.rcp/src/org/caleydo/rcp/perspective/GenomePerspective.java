@@ -1,8 +1,12 @@
 package org.caleydo.rcp.perspective;
 
+import org.caleydo.rcp.views.opengl.GLHistogramView;
+import org.caleydo.rcp.views.swt.SearchView;
+import org.caleydo.rcp.views.swt.SelectionInfoView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.PlatformUI;
@@ -30,10 +34,21 @@ public class GenomePerspective
 				(float) ToolBarView.TOOLBAR_WIDTH
 					/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().width;
 
-			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.LEFT, fRatio,
-				IPageLayout.ID_EDITOR_AREA);
+			IFolderLayout topLeft =
+				layout.createFolder("topLeft", IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
+			topLeft.addView(ToolBarView.ID);
+
+			IFolderLayout middleLeft =
+				layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
+			middleLeft.addView(SelectionInfoView.ID);			
+			
+			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.BOTTOM, 0.7f, "middleLeft", false);
+//			IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.45f, "middleLeft");
+//			bottomLeft.addPlaceholder(GLHistogramView.ID);
+
 			layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio,
 				IPageLayout.ID_EDITOR_AREA);
+
 		}
 		else {
 			fRatio =
