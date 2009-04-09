@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hierarchy;
+package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
 import java.util.ArrayList;
 

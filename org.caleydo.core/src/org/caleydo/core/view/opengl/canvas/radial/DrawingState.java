@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hierarchy;
+package org.caleydo.core.view.opengl.canvas.radial;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;

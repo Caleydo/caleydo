@@ -1,16 +1,16 @@
-package org.caleydo.core.view.opengl.canvas.hierarchy;
+package org.caleydo.core.view.opengl.canvas.radial;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
- * Radial render styles
+ * Hyperbolic render styles
  */
 
-public class RadialHierarchyRenderStyle
+public class HyperbolicRenderStyle
 	extends GeneralRenderStyle {
 
-	public RadialHierarchyRenderStyle(IViewFrustum viewFrustum) {
+	public HyperbolicRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);
 		// TODO Auto-generated constructor stub
 	}

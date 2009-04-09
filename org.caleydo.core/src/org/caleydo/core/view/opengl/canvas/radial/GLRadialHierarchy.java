@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hierarchy;
+package org.caleydo.core.view.opengl.canvas.radial;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
