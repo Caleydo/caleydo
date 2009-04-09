@@ -3,17 +3,11 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
-import java.lang.Math;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.*;
+import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -31,10 +25,6 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Rendering the GLHeatMap
@@ -46,17 +36,6 @@ public class GLRadialHierarchy
 	extends AGLEventListener {
 
 	private static final int DISP_HIER_DEPTH_DEFAULT = 4;
-	private ColorMapping colorMapper;
-
-	private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
-
-	private Vec3f vecTranslation;
-
-	private float fAnimationTranslation = 0;
-
-	private boolean bIsTranslationAnimationActive = false;
-
-	private float fAnimationTargetTranslation = 0;
 
 	private int iMaxDisplayedHierarchyDepth;
 	
@@ -96,7 +75,6 @@ public class GLRadialHierarchy
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		drawingController = new DrawingController(this);
@@ -217,13 +195,6 @@ public class GLRadialHierarchy
 		children[4].addChild(ch5[2]);
 		hashPartialDiscs.put(childID, ch5[2]);
 
-	}
-
-	public synchronized void setToListMode(boolean bSetToListMode) {
-		this.bIsInListMode = bSetToListMode;
-		super.setDetailLevel(EDetailLevel.HIGH);
-		bUseDetailLevel = false;
-		setDisplayListDirty();
 	}
 
 	@Override

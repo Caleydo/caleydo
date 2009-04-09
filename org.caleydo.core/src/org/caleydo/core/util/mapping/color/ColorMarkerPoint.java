@@ -8,6 +8,13 @@ package org.caleydo.core.util.mapping.color;
  * <p>
  * Works with float[] because this allows the values to be plugged directly into OpenGL calls, without
  * accessing each point separately.
+ * </p>
+ * <p>
+ * Additionally the color marker points have spreads - which signal an area of constant color. For example if
+ * a marker point has a value of 0.5 and a left spread of 0.1 and a right spread of 0.2 then the region
+ * between 0.4 and 0.7 is in the constant color of the marker point. Only at the end of the spreads the
+ * interpolation to the next color begins.
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -15,6 +22,8 @@ public class ColorMarkerPoint
 	implements Comparable<ColorMarkerPoint> {
 	private float fValue;
 	private float[] fArColor;
+	private float fLeftSpread = 0.0f;
+	private float fRightSpread = 0.0f;
 
 	/**
 	 * Constructor. To create a new marker point pass two variables, fValue and fArColor.
@@ -70,6 +79,14 @@ public class ColorMarkerPoint
 		return fValue;
 	}
 
+	public void setLeftSpread(float fSpreadLeft) {
+		this.fLeftSpread = fSpreadLeft;
+	}
+
+	public void setRightSpread(float fSpreadRight) {
+		this.fRightSpread = fSpreadRight;
+	}
+
 	/**
 	 * Set a value for the inflection point for later modification
 	 * 
@@ -87,6 +104,27 @@ public class ColorMarkerPoint
 	 */
 	public float[] getColor() {
 		return fArColor;
+	}
+
+	public boolean hasLeftSpread() {
+		if (Float.compare(fLeftSpread, 0.0f) > 1)
+			return false;
+		return true;
+	}
+
+	public boolean hasRightSpread() {
+		if (Float.compare(fRightSpread, 0.0f) > 1)
+			return false;
+		return true;
+
+	}
+
+	public float getLeftSpread() {
+		return fLeftSpread;
+	}
+
+	public float getRightSpread() {
+		return fRightSpread;
 	}
 
 	private void init(float fValue, float[] fArColor) {

@@ -55,7 +55,6 @@ public class ColorMappingManager {
 		}
 		hashColorMapping.put(colorMappingType, new ColorMapping(alMarkerPoints));
 	}
-	
 
 	/**
 	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all
@@ -69,9 +68,18 @@ public class ColorMappingManager {
 		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
 			float colorMarkerValue = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
+			float fLeftSpread = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD + iCount);
+			float fRightSpread = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD + iCount);
 
-			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, ConversionTools
-				.getColorFromString(color)));
+			ColorMarkerPoint point =
+				new ColorMarkerPoint(colorMarkerValue, ConversionTools.getColorFromString(color));
+
+			if (Float.compare(fLeftSpread, 0.0f) > 0)
+				point.setLeftSpread(fLeftSpread);
+			if (Float.compare(fRightSpread, 0.0f) > 0)
+				point.setRightSpread(fRightSpread);
+
+			alMarkerPoints.add(point);
 		}
 
 		// TODO not generic

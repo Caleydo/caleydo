@@ -71,7 +71,9 @@ public enum EPickingType {
 	RAD_HIERARCHY_PDISC_SELECTION(EManagedObjectType.GL_RADIAL_HIERARCHY, false),
 
 	// histogram
-	HISTOGRAM_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false);
+	HISTOGRAM_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false),
+	HISTOGRAM_LEFT_SPREAD_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false),
+	HISTOGRAM_RIGHT_SPREAD_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false);
 
 	private EManagedObjectType viewType;
 

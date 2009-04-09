@@ -23,9 +23,17 @@ public class ColorMapping {
 	public static int COLOR_DEPTH = 256;
 
 	/**
+	 * <p>
 	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first has the smallest value, and
-	 * each next point has a bigger value. These color points work as inflection points. between two adjacent
+	 * each next point has a bigger value. These color points work as inflection points. Between two adjacent
 	 * points the colors are interpolated.
+	 * </p>
+	 * <p>
+	 * Additionally the color marker points have spreads - which signal an area of constant color. For example
+	 * if a marker point has a value of 0.5 and a left spread of 0.1 and a right spread of 0.2 then the region
+	 * between 0.4 and 0.7 is in the constant color of the marker point. Only at the end of the spreads the
+	 * interpolation to the next color begins.
+	 * </p>
 	 * 
 	 * @param alMarkerPoints
 	 * @throws IllegalArgumentException
@@ -65,18 +73,19 @@ public class ColorMapping {
 	 */
 	private void setUpMapping() {
 		Collections.sort(alMarkerPoints);
+		ArrayList<ColorMarkerPoint> alFinalMarkerPoints = considerSpread();
 		float fSrcValue, fDestValue;
 
-		for (int iCount = 0; iCount < alMarkerPoints.size() - 1; iCount++) {
-			fSrcValue = alMarkerPoints.get(iCount).getValue();
-			fDestValue = alMarkerPoints.get(iCount + 1).getValue();
+		for (int iCount = 0; iCount < alFinalMarkerPoints.size() - 1; iCount++) {
+			fSrcValue = alFinalMarkerPoints.get(iCount).getValue();
+			fDestValue = alFinalMarkerPoints.get(iCount + 1).getValue();
 
 			if (fDestValue < fSrcValue)
 				throw new IllegalArgumentException("Marker points values have to be increasing in size, "
 					+ "but this was not the case");
 
-			float[] fSrcColor = alMarkerPoints.get(iCount).getColor();
-			float[] fDestColor = alMarkerPoints.get(iCount + 1).getColor();
+			float[] fSrcColor = alFinalMarkerPoints.get(iCount).getColor();
+			float[] fDestColor = alFinalMarkerPoints.get(iCount + 1).getColor();
 
 			int iSrcIndex = (int) (fSrcValue * (COLOR_DEPTH - 1));
 			int iDestIndex = (int) (fDestValue * (COLOR_DEPTH - 1));
@@ -119,10 +128,44 @@ public class ColorMapping {
 	public ArrayList<ColorMarkerPoint> getMarkerPoints() {
 		return alMarkerPoints;
 	}
-	
-	public void update()
-	{
+
+	/**
+	 * Returns the list of marker points, but with spread converted to a separate marker point. This means
+	 * that a marker point at 0.5 with a left spread of 0.1 will result in two marker points, one with 0.4 and
+	 * one with 0.5 of the same color in this list
+	 * 
+	 * @return the list of marker points without spreads but points for spreads
+	 */
+	public ArrayList<ColorMarkerPoint> getConvertedMarkerPoints() {
+		return considerSpread();
+	}
+
+	public void update() {
 		setUpMapping();
+	}
+
+	/**
+	 * Converts the spread in color marker points to separate color points, which are easier to map later.
+	 * Does some checking and error handling.
+	 * 
+	 * @return the list with all the marker points instead of spreads
+	 */
+	private ArrayList<ColorMarkerPoint> considerSpread() {
+		ArrayList<ColorMarkerPoint> alFinalColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
+
+		for (ColorMarkerPoint point : alMarkerPoints) {
+			if (point.hasLeftSpread()) {
+				float fLeftValue = point.getValue() - point.getLeftSpread();
+				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fLeftValue, point.getColor()));
+			}
+			alFinalColorMarkerPoints.add(point);
+			if (point.hasRightSpread()) {
+				float fRightValue = point.getValue() + point.getRightSpread();
+				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fRightValue, point.getColor()));
+			}
+		}
+
+		return alFinalColorMarkerPoints;
 	}
 
 }

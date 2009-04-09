@@ -13,6 +13,8 @@ public class PreferenceConstants {
 	// Color Mapping
 	public static final String NUMBER_OF_COLOR_MARKER_POINTS = "numberOfColorMarkerPoints";
 	public static final String COLOR_MARKER_POINT_VALUE = "colorMarkerPointValue";
+	public static final String COLOR_MARKER_POINT_LEFT_SPREAD = "colorMarkerPointLeftSpread";
+	public static final String COLOR_MARKER_POINT_RIGHT_SPREAD = "colorMarkerPointRightSpread";
 	public static final String COLOR_MARKER_POINT_COLOR = "colorMarkerPointColor";
 	public static final String NAN_COLOR = "nanColor";
 
