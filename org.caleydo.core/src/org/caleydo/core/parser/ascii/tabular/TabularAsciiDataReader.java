@@ -35,6 +35,8 @@ public class TabularAsciiDataReader
 
 	private ArrayList<int[]> alIntBuffers;
 
+	private ArrayList<int[]> alGroupInfo;
+
 	private ArrayList<float[]> alFloatBuffers;
 
 	private ArrayList<ArrayList<String>> alStringBuffers;
@@ -51,6 +53,8 @@ public class TabularAsciiDataReader
 		alIntBuffers = new ArrayList<int[]>();
 		alFloatBuffers = new ArrayList<float[]>();
 		alStringBuffers = new ArrayList<ArrayList<String>>();
+
+		alGroupInfo = new ArrayList<int[]>();
 
 		init();
 	}
@@ -88,11 +92,10 @@ public class TabularAsciiDataReader
 			else if (sBuffer.equalsIgnoreCase("string")) {
 				alColumnDataTypes.add(EStorageType.STRING);
 			}
-			else if (sBuffer.equalsIgnoreCase("group_number")){
+			else if (sBuffer.equalsIgnoreCase("group_number")) {
 				alColumnDataTypes.add(EStorageType.GROUP_NUMBER);
 			}
-			else if(sBuffer.equalsIgnoreCase("group_representative"))
-			{
+			else if (sBuffer.equalsIgnoreCase("group_representative")) {
 				alColumnDataTypes.add(EStorageType.GROUP_REPRESENTATIVE);
 			}
 			else {
@@ -119,6 +122,8 @@ public class TabularAsciiDataReader
 			switch (storageType) {
 				case GROUP_NUMBER:
 				case GROUP_REPRESENTATIVE:
+					alGroupInfo.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					break;
 				case INT:
 					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
@@ -132,7 +137,7 @@ public class TabularAsciiDataReader
 					break;
 				case ABORT:
 					return;
-				
+
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
 						+ storageType.toString());
@@ -180,8 +185,6 @@ public class TabularAsciiDataReader
 			for (EStorageType columnDataType : alColumnDataTypes) {
 				if (strTokenLine.hasMoreTokens()) {
 					switch (columnDataType) {
-						case GROUP_NUMBER:
-						case GROUP_REPRESENTATIVE:
 						case INT:
 							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
 								Integer.valueOf(strTokenLine.nextToken()).intValue();
@@ -207,6 +210,14 @@ public class TabularAsciiDataReader
 							break;
 						case ABORT:
 							iColumnIndex = alColumnDataTypes.size();
+							break;
+						case GROUP_NUMBER:
+							alGroupInfo.get(0)[iLineInFile - iStartParsingAtLine] =
+								Integer.valueOf(strTokenLine.nextToken()).intValue();
+							break;
+						case GROUP_REPRESENTATIVE:
+							alGroupInfo.get(1)[iLineInFile - iStartParsingAtLine] =
+								Integer.valueOf(strTokenLine.nextToken()).intValue();
 							break;
 						default:
 							throw new IllegalStateException("Unknown token pattern detected: "
@@ -236,16 +247,14 @@ public class TabularAsciiDataReader
 		int iFloatArrayIndex = 0;
 		int iStringArrayIndex = 0;
 		int iStorageIndex = 0;
-		
+
 		ISet set = null;
 		int iCount = 0;
-		for(ISet tempSet : GeneralManager.get().getSetManager().getAllItems())
-		{
+		for (ISet tempSet : GeneralManager.get().getSetManager().getAllItems()) {
 			set = tempSet;
 			iCount++;
 		}
-		if(iCount > 1)
-		{
+		if (iCount > 1) {
 			throw new IllegalStateException("Set is not unique - a better way of handling this is needed");
 		}
 
@@ -275,19 +284,26 @@ public class TabularAsciiDataReader
 				case ABORT:
 					return;
 				case GROUP_NUMBER:
-				
-					// alTargetStorages.get(iStorageIndex) .doGroupMagic(alIntBuffers.get(iIntArrayIndex));
+
+					int[] iArGroupInfo = alGroupInfo.get(0);
+					set.setGroupNrInfo(iArGroupInfo);
+
 					iIntArrayIndex++;
-					
-//					iStorageIndex++;
 					break;
-					
+				case GROUP_REPRESENTATIVE:
+
+					int[] iArGroupRepr = alGroupInfo.get(1);
+					set.setGroupReprInfo(iArGroupRepr);
+
+					iIntArrayIndex++;
+					break;
+
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
 						+ storageType.toString());
 			}
 		}
-	
+
 	}
 
 	/**

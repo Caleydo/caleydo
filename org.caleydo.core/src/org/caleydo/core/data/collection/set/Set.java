@@ -15,6 +15,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
@@ -25,14 +26,12 @@ import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
-import org.caleydo.core.util.clusterer.CNode;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.HierarchicalClusterer;
-import org.caleydo.core.util.clusterer.HierarchyGraph;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.KMeansClusterer;
-import org.caleydo.core.util.clusterer.Node;
 import org.caleydo.core.util.clusterer.TreeClusterer;
 import org.caleydo.util.graph.IGraph;
 
@@ -68,11 +67,11 @@ public class Set
 
 	// clustering stuff
 	private HashMap<Integer, IGraph> hashVAIdToGraph;
-	private CNode clusteredGraph = null;
-	private HierarchyGraph hierarchyGraph = null;
 	private ArrayList<Integer> alClusterSizes = null;
 	private ArrayList<Integer> alClusterExamples = null;
-	private Node[] treeStructure = null;
+	private Tree<ClusterNode> clusteredTree;
+	private GroupList groupList = new GroupList(0);
+	private boolean bClusterInfo = false;
 
 	private EExternalDataRepresentation externalDataRep;
 
@@ -597,14 +596,6 @@ public class Set
 		return alClusterSizes;
 	}
 
-	public void setTreeStructure(Node[] treeStructure) {
-		this.treeStructure = treeStructure;
-	}
-
-	public Node[] getTreeStructure() {
-		return treeStructure;
-	}
-
 	@Override
 	public ArrayList<Integer> getAlExamples() {
 		return alClusterExamples;
@@ -616,12 +607,58 @@ public class Set
 	}
 
 	@Override
-	public HierarchyGraph getClusteredGraph() {
-		return hierarchyGraph;
+	public void setClusteredTree(Tree<ClusterNode> clusteredTree) {
+		this.clusteredTree = clusteredTree;
 	}
 
 	@Override
-	public void setClusteredGraph(HierarchyGraph clusteredGraph) {
-		this.hierarchyGraph = clusteredGraph;
+	public Tree<ClusterNode> getClusteredTree() {
+		return clusteredTree;
 	}
+
+	@Override
+	public void setGroupNrInfo(int[] arGroupInfo) {
+
+		int cluster = 0, cnt = 0;
+
+		for (int i = 0; i < arGroupInfo.length; i++) {
+			Group group = null;
+			if (cluster != arGroupInfo[i]) {
+				group = new Group(cnt, false, 0, ESelectionType.NORMAL);
+				groupList.append(group);
+				cluster++;
+				cnt = 0;
+			}
+			cnt++;
+		}
+		bClusterInfo = true;
+	}
+
+	@Override
+	public void setGroupReprInfo(int[] arGroupRepr) {
+
+		int group = 0;
+		int repr = 0;
+		int offset = 0;
+		
+		for (int i = 0; i < arGroupRepr.length; i++) {
+			if (arGroupRepr[i] == 1) {
+				repr = i - offset;
+				groupList.get(group).setIdxExample(repr);
+				offset = offset + groupList.get(group).getNrElements();
+				group++;
+			}
+		}
+	}
+
+	@Override
+	public boolean isClusterInfo() {
+		return bClusterInfo;
+	}
+
+	@Override
+	public GroupList getGroupList() {
+		return this.groupList;
+	}
+
 }

@@ -114,25 +114,24 @@ public class KMeansClusterer
 
 		for (int i = 0; i < iNrCluster; i++) {
 			count.add(0);
-			alExamples.add(0);
 		}
 
 		// System.out.println(eval.getNumClusters());
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		// for (int j = 0; j < iNrCluster; j++) {
-		// for (int i = 0; i < data.numInstances(); i++) {
-		// if (ClusterAssignments[i] == j) {
-		// alExamples.add(i);
-		// break;
-		// }
-		// }
-		// }
+		for (int j = 0; j < iNrCluster; j++) {
+			for (int i = 0; i < data.numInstances(); i++) {
+				if (ClusterAssignments[i] == j) {
+					alExamples.add(i - 1);
+					break;
+				}
+			}
+		}
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		// ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
+//		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {

@@ -7,7 +7,10 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.SetIterator;
+import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.HierarchyGraph;
@@ -264,20 +267,19 @@ public interface ISet
 		EClustererType eClustererType);
 
 	/**
-	 * Returns clustered graph
+	 * Sets clustered Tree
 	 * 
-	 * @param
-	 * @return HierarchyGraph
+	 * @param Tree
 	 */
-	public HierarchyGraph getClusteredGraph();
+	public void setClusteredTree(Tree<ClusterNode> clusteredTree);
 
 	/**
-	 * Sets clustered graph
+	 * Returns clustered Tree
 	 * 
-	 * @param CNode
+	 * @return Tree
 	 */
-	public void setClusteredGraph(HierarchyGraph clusteredGraph);
-
+	public Tree<ClusterNode> getClusteredTree();
+	
 	/**
 	 * Returns cluster sizes, determined by affinity clusterer
 	 * 
@@ -308,9 +310,13 @@ public interface ISet
 	 */
 	public void setAlExamples(ArrayList<Integer> alExamples);
 
-	public void setTreeStructure(Node[] treeStructure);
+	public void setGroupNrInfo(int[] arGroupInfo);
 
-	public Node[] getTreeStructure();
+	public void setGroupReprInfo(int[] arGroupRepr);
+	
+	public GroupList getGroupList();
+	
+	public boolean isClusterInfo();
 
 	/**
 	 * Returns a histogram of the values of all storages in the set (not considering VAs). The number of the
@@ -322,5 +328,6 @@ public interface ISet
 	 *             when used on non-homogeneous sets
 	 */
 	public Histogram getHistogram() throws UnsupportedOperationException;
+
 
 }

@@ -82,13 +82,15 @@ public class FileLoadDataAction
 	private String sInputFile = "";
 	private String sFileName = "";
 	private String sFilePath = "";
-	private String sInputPattern = "";//SKIP;";
+	private String sInputPattern = "";// SKIP;";
 	private String sDelimiter = "";
 	private int iCreatedSetID = -1;
 	private int iStartParseFileAtLine = 2;
 
 	private String sDataRepMode = "Normal";
 	// private boolean bLogFilter = false;
+
+	private boolean bClusterInfo = false;
 
 	private int iOldSetID;
 
@@ -478,6 +480,8 @@ public class FileLoadDataAction
 	private void createDataPreviewTable(final String sDelimiter) {
 		this.sDelimiter = sDelimiter;
 
+		boolean clusterInfo = false;
+
 		// Clear table if not empty
 		previewTable.removeAll();
 
@@ -488,71 +492,6 @@ public class FileLoadDataAction
 		final TableEditor editor = new TableEditor(previewTable);
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
-
-		// previewTable.addListener(SWT.MouseDown, new Listener()
-		// {
-		// public void handleEvent(Event event)
-		// {
-		// Rectangle clientArea = previewTable.getClientArea();
-		// Point pt = new Point(event.x, event.y);
-		//
-		// int index = 0; // only make caption line editable
-		//
-		// boolean visible = false;
-		// final TableItem item = previewTable.getItem(index);
-		// for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
-		// {
-		// Rectangle rect = item.getBounds(iColIndex);
-		// if (rect.contains(pt))
-		// {
-		// final int column = iColIndex;
-		// final Text text = new Text(previewTable, SWT.NONE);
-		// Listener textListener = new Listener()
-		// {
-		// public void handleEvent(final Event e)
-		// {
-		// switch (e.type)
-		// {
-		// case SWT.FocusOut:
-		// item.setText(column, text.getText());
-		// text.dispose();
-		// break;
-		// case SWT.Traverse:
-		// switch (e.detail)
-		// {
-		// case SWT.TRAVERSE_RETURN:
-		// item.setText(column, text.getText());
-		//
-		// // FALL THROUGH
-		// case SWT.TRAVERSE_ESCAPE:
-		// text.dispose();
-		// e.doit = false;
-		// }
-		// break;
-		// }
-		// }
-		// };
-		//
-		// text.addListener(SWT.FocusOut, textListener);
-		// text.addListener(SWT.Traverse, textListener);
-		// editor.setEditor(text, item, iColIndex);
-		// text.setText(item.getText(iColIndex));
-		// text.selectAll();
-		// text.setFocus();
-		// return;
-		// }
-		//
-		// if (!visible && rect.intersects(clientArea))
-		// {
-		// visible = true;
-		// }
-		// }
-		//
-		// if (!visible)
-		// return;
-		// index++;
-		// }
-		// });
 
 		// Read preview table
 		BufferedReader brFile;
@@ -694,107 +633,6 @@ public class FileLoadDataAction
 			TableEditor editor = new TableEditor(previewTable);
 			editor.grabHorizontal = editor.grabVertical = true;
 			editor.setEditor(skipButton, tmpItem, iColIndex);
-
-			// previewTable.getColumn(iColIndex).pack();
-
-			// Initialize data type selection combo
-			// final Combo comboTmpDataClass = new Combo(previewTable, SWT.READ_ONLY);
-			// comboTmpDataClass.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
-			// comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment", "Patient" });
-
-			// if (iColIndex == 1)
-			// comboTmpDataClass.select(1);
-			// else
-			// comboTmpDataClass.select(2); // by default set columns to experiment
-
-			// should be ignored
-			// arComboDataClass.add(comboTmpDataClass);
-
-			// TableEditor editor = new TableEditor(previewTable);
-			// editor.grabHorizontal = true;
-			// editor.setEditor(comboTmpDataClass, tmpItem, iColIndex);
-
-			// // Set corresponding column background color to red
-			// for (TableItem tmpTableItem : previewTable.getItems())
-			// {
-			// tmpTableItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass) + 1,
-			// Display.getCurrent().getSystemColor(SWT.COLOR_RED));
-			// tmpTableItem
-			// }
-
-			// comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter()
-			// {
-			// public Color originalColor = txtFileName.getBackground();
-			// public Color highlightColor = Display.getCurrent().getSystemColor(
-			// SWT.COLOR_YELLOW);
-			// public Color selectionColor = Display.getCurrent().getSystemColor(
-			// SWT.COLOR_RED);
-			//
-			// @Override
-			// public void mouseEnter(MouseEvent e)
-			// {
-			// // Set corresponding column background color to yellow
-			// for (TableItem tmpItem : previewTable.getItems())
-			// {
-			// if (comboTmpDataClass.getSelectionIndex() == 0)
-			// {
-			// tmpItem.setBackground(
-			// arComboDataClass.indexOf(comboTmpDataClass) + 1,
-			// highlightColor);
-			// }
-			// }
-			// }
-			//
-			// @Override
-			// public void mouseExit(MouseEvent e)
-			// {
-			// // Set back to original color
-			// for (TableItem tmpItem : previewTable.getItems())
-			// {
-			// if (comboTmpDataClass.getSelectionIndex() > 0)
-			// {
-			// tmpItem.setBackground(
-			// arComboDataClass.indexOf(comboTmpDataClass) + 1,
-			// selectionColor);
-			// }
-			// else
-			// {
-			// tmpItem.setBackground(
-			// arComboDataClass.indexOf(comboTmpDataClass) + 1,
-			// originalColor);
-			// }
-			// }
-			// }
-			// });
-			//
-			// comboTmpDataClass.addSelectionListener(new SelectionAdapter()
-			// {
-			//
-			// @Override
-			// public void widgetSelected(SelectionEvent e)
-			// {
-			//
-			// int iColIndex = arComboDataClass.indexOf(comboTmpDataClass);
-			//
-			// if (comboTmpDataClass.getSelectionIndex() == 0
-			// || comboTmpDataClass.getSelectionIndex() == 1)
-			// {
-			// arComboDataType.get(iColIndex).setEnabled(false);
-			// arComboDataType.get(iColIndex).select(0);
-			// // arButtonNormalize.get(iColIndex).setSelection(false);
-			// }
-			// else
-			// {
-			// arComboDataType.get(iColIndex).setEnabled(true);
-			// // arButtonNormalize.get(iColIndex).setSelection(true);
-			// }
-			//
-			// if (comboTmpDataClass.getText().equals("RefSeq ID"))
-			// arComboDataType.get(iColIndex).select(1);
-			// else if (comboTmpDataClass.getText().equals("Experiment"))
-			// arComboDataType.get(iColIndex).select(2);
-			// }
-			// });
 		}
 	}
 
@@ -815,7 +653,8 @@ public class FileLoadDataAction
 			final Combo comboTmpDataType = new Combo(previewTable, SWT.READ_ONLY);
 			// comboTmpDataType.setSize(100, previewTable.getItemHeight());
 			comboTmpDataType.setEnabled(true);
-			comboTmpDataType.setItems(new String[] { "INT", "FLOAT", "STRING" });
+			comboTmpDataType.setItems(new String[] { "INT", "FLOAT", "STRING", "GROUP_NUMBER",
+					"GROUP_REPRESENTATIVE" });
 			comboTmpDataType.computeSize(SWT.DEFAULT, previewTable.getItemHeight());
 
 			comboTmpDataType.select(1);
@@ -870,8 +709,18 @@ public class FileLoadDataAction
 			if (tmpComboDataType.getText().equals("FLOAT") || tmpComboDataType.getText().equals("SKIP")) {
 				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
 			}
-	
-
+			if (tmpComboDataType.getText().equals("GROUP_NUMBER")) // currently we only allow parsing float
+			// data
+			{
+				// System.out.println("cluster nr");
+				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
+			}
+			if (tmpComboDataType.getText().equals("GROUP_REPRESENTATIVE")) // currently we only allow parsing
+			// float data
+			{
+				// System.out.println("cluster repr");
+				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
+			}
 			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only allow parsing float data
 			{
 				// Create data storage
@@ -906,7 +755,7 @@ public class FileLoadDataAction
 			MessageDialog.openError(parentComposite.getShell(), "Invalid filename", "Invalid filename");
 			return;
 		}
-		
+
 		// Create SET
 		CmdDataCreateSet cmdCreateSet =
 			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
@@ -929,8 +778,6 @@ public class FileLoadDataAction
 			iStartParseFileAtLine - 1, -1);
 		cmdLoadCsv.doCommand();
 
-		
-
 		// iSWTGUIManager.setProgressBarVisible(false);
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
@@ -941,7 +788,6 @@ public class FileLoadDataAction
 			"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter, "REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
 		cmdLoadLookupTableFile.doCommand();
 
-	
 		if (!txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
 			if (!Float.isNaN(fMin)) {

@@ -398,6 +398,8 @@ public class AffinityClusterer
 		if (bConverged == false)
 			throw new IllegalStateException("Algorithm did not converge!!");
 
+		ArrayList<Integer> idxExamples = new ArrayList<Integer>();
+
 		for (int i = 0; i < alExamples.size(); i++) {
 			count.add(0);
 		}
@@ -407,15 +409,21 @@ public class AffinityClusterer
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
 		int counter = 0;
-		for (Integer index : alExamples) {
-			for (int index2 = 0; index2 < iNrSamples; index2++) {
-				if (idx[index2] == index) {
+		int idxCnt = 0;
+		for (Integer example : alExamples) {
+			for (int sampleNr = 0; sampleNr < iNrSamples; sampleNr++) {
+				if (idx[sampleNr] == example) {
 					if (bStart0 == true)
-						AlIndexes.add(index2);
+						AlIndexes.add(sampleNr);
 					else
-						AlIndexes.add(index2 + 1);
+						AlIndexes.add(sampleNr + 1);
 					count.set(counter, count.get(counter) + 1);
 				}
+				if (example == sampleNr) {
+					idxExamples.add(idxCnt);
+					idxCnt = 0;
+				}
+				idxCnt++;
 			}
 			counter++;
 		}
@@ -423,7 +431,7 @@ public class AffinityClusterer
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
 		set.setAlClusterSizes(count);
-		set.setAlExamples(alExamples);
+		set.setAlExamples(idxExamples);
 
 		return clusteredVAId;
 	}
@@ -446,7 +454,7 @@ public class AffinityClusterer
 		Integer VAId = 0;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			fClusterFactor = 5.0f;
+			fClusterFactor = 9.0f;
 		if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
 			fClusterFactor = 1.0f;
 

@@ -10,8 +10,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.data.selection.Group;
-import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -58,7 +56,17 @@ public class SetExporter {
 				out.print(set.get(iStorageIndex).getLabel());
 				out.print("\t");
 			}
+
+			if (contentVA.getGroupList() != null)
+				out.print("Cluster_Number\t"); //Cluster_Repr\t");
+//				out.print("Cluster_Number\tCluster_Repr\t");
+
 			out.println();
+
+			int cnt = 0;
+			int cluster = 0;
+			int index = 0;
+			int offset = 0;
 
 			for (Integer iContentIndex : contentVA) {
 				IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
@@ -76,23 +84,43 @@ public class SetExporter {
 					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
 					out.print("\t");
 				}
+				if (contentVA.getGroupList() != null) {
+					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 1) {
+						offset = offset + contentVA.getGroupList().get(cluster).getNrElements();
+						cluster++;
+						cnt = 0;
+					}
+					else {
+						cnt++;
+					}
+//					if (cluster < contentVA.getGroupList().size()) {
+//						if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
+//							out.print(cluster + "\t" + 1 + "\t");
+//						else
+//							out.print(cluster + "\t" + 0 + "\t");
+//					}
+//					else
+//						out.print(cluster + "\t" + 0 + "\t");
+					out.print(cluster + "\t");
+					index++;
+				}
 				out.println();
 			}
 
-			if (contentVA.getGroupList() != null) {
-				out.println("Group assignment for contentVA");
-				IGroupList groupList = contentVA.getGroupList();
-				for (Group group : groupList) {
-					out.println(group.getNrElements() + "\t" + group.getIdxExample());
-				}
-			}
-			if (storageVA.getGroupList() != null) {
-				out.println("Group assignment for storageVA");
-				IGroupList groupList = storageVA.getGroupList();
-				for (Group group : groupList) {
-					out.println(group.getNrElements() + "\t" + group.getIdxExample());
-				}
-			}
+			// if (contentVA.getGroupList() != null) {
+			// out.println("Group assignment for contentVA");
+			// IGroupList groupList = contentVA.getGroupList();
+			// for (Group group : groupList) {
+			// out.println(group.getNrElements() + "\t" + group.getIdxExample());
+			// }
+			// }
+			// if (storageVA.getGroupList() != null) {
+			// out.println("Group assignment for storageVA");
+			// IGroupList groupList = storageVA.getGroupList();
+			// for (Group group : groupList) {
+			// out.println(group.getNrElements() + "\t" + group.getIdxExample());
+			// }
+			// }
 
 			out.close();
 		}

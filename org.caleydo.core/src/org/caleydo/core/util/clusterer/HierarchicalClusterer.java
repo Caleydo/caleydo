@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.IGraph;
@@ -15,7 +16,10 @@ import weka.core.Instances;
 
 public class HierarchicalClusterer
 	implements IClusterer {
+
 	private Cobweb clusterer;
+
+	Tree<ClusterNode> tree = new Tree<ClusterNode>();
 
 	public HierarchicalClusterer(int iNrElements) {
 		clusterer = new Cobweb();
@@ -43,8 +47,7 @@ public class HierarchicalClusterer
 
 			for (Integer iContentIndex : contentVA) {
 				for (Integer iStorageIndex : storageVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
-						iContentIndex - 1)
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex - 1)
 						+ ", ");
 
 				}
@@ -60,8 +63,7 @@ public class HierarchicalClusterer
 
 			for (Integer iStorageIndex : storageVA) {
 				for (Integer iContentIndex : contentVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW,
-						iContentIndex - 1)
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex - 1)
 						+ ", ");
 
 				}
@@ -127,17 +129,41 @@ public class HierarchicalClusterer
 
 		CNode node = clusterer.m_cobwebTree;
 
-		graph = matchTree(graph, node);
+		ClusterNode clusterNode = new ClusterNode("Root", 1, 0f, 0);
+		tree.setRootNode(clusterNode);
 
-		set.setClusteredGraph(graph);
+		CNodeToTree(clusterNode, node);
+
+		set.setClusteredTree(tree);
+
+		// graph = matchTree(graph, node);
+		// set.setClusteredGraph(graph);
+
 		set.setAlClusterSizes(temp);
-
 		set.setAlExamples(alExamples);
 
 		return clusteredVAId;
 	}
 
 	private int cnt = 0;
+
+	private void CNodeToTree(ClusterNode clusterNode, CNode node) {
+
+		if (node.getChilds() != null) {
+			int iNrChildsNode = node.getChilds().size();
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				CNode currentNode = (CNode) node.getChilds().elementAt(i);
+				ClusterNode currentGraph =
+					new ClusterNode("Node_" + currentNode.getClusterNum(), currentNode.getClusterNum(), 0f, 0);
+				tree.addChild(clusterNode, currentGraph);
+				// temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
+				CNodeToTree(currentGraph, currentNode);
+			}
+		}
+
+	}
 
 	private HierarchyGraph matchTree(IGraph graph, CNode Node) {
 		HierarchyGraph temp = new HierarchyGraph("Node" + Node.getClusterNum(), Node.getClusterNum(), 0);

@@ -1,14 +1,11 @@
 package org.caleydo.core.util.clusterer;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.IGraph;
@@ -33,6 +30,8 @@ public class TreeClusterer
 	private float[][] similarities = null;
 
 	private int iNrSamples = 0;
+
+	private Tree<ClusterNode> tree;
 
 	public TreeClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
@@ -232,8 +231,8 @@ public class TreeClusterer
 
 		AlIndexes = graph.getAl();
 
-		set.setClusteredGraph(graph);
-		set.setTreeStructure(result);
+		// set.setClusteredGraph(graph);
+		// set.setTreeStructure(result);
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
@@ -305,49 +304,76 @@ public class TreeClusterer
 		}
 
 		// set cluster result in Set
-		HierarchyGraph graph = new HierarchyGraph();
-		graph = treeToGraph(graph, result);
+		tree = new Tree<ClusterNode>();
+		ClusterNode node = new ClusterNode("Root", 1, 0f, 0);
+		tree.setRootNode(node);
+		treeStructureToTree(node, result, result.length - 1);
 
-//		PrintWriter out = null;
-//		try {
-//			out = new PrintWriter(new BufferedWriter(new FileWriter("result.txt")));
-//		}
-//		catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		for (int i = 0; i < result.length; i++) {
-//			out
-//				.println(result[i].getLeft() + "\t" + result[i].getRight() + "\t"
-//					+ result[i].getCorrelation());
-//		}
-//		out.close();
+		Node[] result2 = new Node[iNrSamples - 1];
+		TreeToTreeStructure(tree.getRoot(), result2);
 
-//		Node[] result2 = new Node[iNrSamples - 1];
-//		graphToTree(graph, result2);
+		// graph = treeToGraph(graph, result);
 
-//		PrintWriter out2 = null;
-//		try {
-//			out2 = new PrintWriter(new BufferedWriter(new FileWriter("result2.txt")));
-//		}
-//		catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		for (int i = 0; i < result.length; i++) {
-//			out2.println(result2[i].getLeft() + "\t" + result2[i].getRight() + "\t"
-//				+ result2[i].getCorrelation());
-//		}
-//		out2.close();
+		// PrintWriter out = null;
+		// try {
+		// out = new PrintWriter(new BufferedWriter(new FileWriter("result.txt")));
+		// }
+		// catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		//
+		// for (int i = 0; i < result.length; i++) {
+		// out
+		// .println(result[i].getLeft() + "\t" + result[i].getRight() + "\t"
+		// + result[i].getCorrelation());
+		// }
+		// out.close();
 
-		AlIndexes = graph.getAl();
+		// Node[] result2 = new Node[iNrSamples - 1];
+		// graphToTree(graph, result2);
 
-		set.setClusteredGraph(graph);
-		set.setTreeStructure(result);
+		// PrintWriter out2 = null;
+		// try {
+		// out2 = new PrintWriter(new BufferedWriter(new FileWriter("result2.txt")));
+		// }
+		// catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		//
+		// for (int i = 0; i < result.length; i++) {
+		// out2.println(result2[i].getLeft() + "\t" + result2[i].getRight() + "\t"
+		// + result2[i].getCorrelation());
+		// }
+		// out2.close();
+
+		AlIndexes = getAl();
+
+		set.setClusteredTree(tree);
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
 		return clusteredVAId;
+	}
+
+	private ArrayList<Integer> traverse(ArrayList<Integer> indexes, ClusterNode node) {
+
+		if (tree.hasChildren(node) == false)
+			indexes.add(node.getClusterNr());
+		else {
+			for (ClusterNode current : tree.getChildren(node)) {
+				traverse(indexes, current);
+			}
+		}
+
+		return indexes;
+	}
+
+	public ArrayList<Integer> getAl() {
+
+		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		traverse(indexes, tree.getRoot());
+
+		return indexes;
 	}
 
 	private void graphToTree(HierarchyGraph graph, Node[] treeStructure) {
@@ -382,6 +408,88 @@ public class TreeClusterer
 			}
 		}
 		return;
+	}
+
+	private void TreeToTreeStructure(ClusterNode node, Node[] treeStructure) {
+		int index = node.getClusterNr();
+
+		List<IGraph> graphList = null;// graph.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
+
+		// int iNrChildsNode = graphList.size();
+
+		float cor = node.getCoefficient();
+
+		if (tree.hasChildren(node)) {
+			{
+				treeStructure[index] = new Node();
+
+				int cnt = 1;
+
+				for (ClusterNode currentNode : tree.getChildren(node)) {
+
+					// HierarchyGraph current1 = (HierarchyGraph) graphList.get(0);
+					if (cnt == 1) {
+						if (currentNode.getNodeName().charAt(0) == 'L')
+							treeStructure[index].setLeft(currentNode.getClusterNr());
+						else
+							treeStructure[index].setLeft(-(currentNode.getClusterNr() + 1));
+					}
+					// HierarchyGraph current2 = (HierarchyGraph) graphList.get(1);
+					else {
+						if (currentNode.getNodeName().charAt(0) == 'L')
+							treeStructure[index].setRight(currentNode.getClusterNr());
+						else
+							treeStructure[index].setRight(-(currentNode.getClusterNr() + 1));
+					}
+					treeStructure[index].setCorrelation(cor);
+
+					TreeToTreeStructure(currentNode, treeStructure);
+					// graphToTree(current2, treeStructure);
+
+					cnt++;
+				}
+			}
+		}
+		return;
+	}
+
+	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index) {
+
+		ClusterNode left = null;
+		ClusterNode right = null;
+
+		if (treeStructure[index].getLeft() >= 0) {
+
+			left =
+				new ClusterNode("Leaf_" + treeStructure[index].getLeft(), treeStructure[index].getLeft(), 0,
+					0);
+			tree.addChild(node, left);
+
+		}
+		else {
+			left =
+				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), -(treeStructure[index]
+					.getLeft()) - 1, treeStructure[index].getCorrelation(), 0);
+			tree.addChild(node, left);
+			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1);
+		}
+
+		if (treeStructure[index].getRight() >= 0) {
+
+			right =
+				new ClusterNode("Leaf_" + treeStructure[index].getRight(), treeStructure[index].getRight(),
+					0, 0);
+			tree.addChild(node, right);
+
+		}
+		else {
+			right =
+				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), -(treeStructure[index]
+					.getRight()) - 1, treeStructure[index].getCorrelation(), 0);
+			tree.addChild(node, right);
+			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1);
+		}
+
 	}
 
 	private HierarchyGraph treeToGraph(HierarchyGraph graph, Node[] treeStructure) {

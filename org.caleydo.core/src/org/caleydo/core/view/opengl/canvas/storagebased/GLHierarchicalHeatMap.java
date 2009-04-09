@@ -18,6 +18,7 @@ import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
@@ -42,6 +43,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.HierarchyGraph;
@@ -53,7 +55,6 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener.EBusyModeState;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -142,11 +143,10 @@ public class GLHierarchicalHeatMap
 	private float fPosCursorLastElement = 0;
 
 	// clustering/grouping stuff
-	private HierarchyGraph hierarchyGraph = null;
-	private Node[] treeStructure = null;
+	private Tree<ClusterNode> tree = null;
 	private DendrogramNode[] Nodes = null;
 	private boolean bInitNodes = true;
-	private EClustererAlgo eClustererAlgo = EClustererAlgo.COBWEB_CLUSTERER;
+	private EClustererAlgo eClustererAlgo = EClustererAlgo.TREE_CLUSTERER;
 	private EClustererType eClustererType = EClustererType.GENE_CLUSTERING;
 
 	private boolean bSplitGroupExp = false;
@@ -472,7 +472,7 @@ public class GLHierarchicalHeatMap
 	public synchronized void displayLocal(GL gl) {
 		if (set == null)
 			return;
-		
+
 		pickingManager.handlePicking(iUniqueID, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -480,10 +480,10 @@ public class GLHierarchicalHeatMap
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		
+
 		display(gl);
 		checkForHits(gl);
-		
+
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
@@ -1505,6 +1505,85 @@ public class GLHierarchicalHeatMap
 
 	private int iNrNodes = 0, iNrLeafs = 0;
 
+	private void renderDendrogram(final GL gl, float fymin, float fymax, ClusterNode parentNode, int iDepth,
+		int iNrSiblings, int iChildNr, boolean bleft, float fXMax) {
+
+		iNrNodes++;
+
+		int currentDepth = iDepth;
+
+		float fxpos = 0.2f * currentDepth;
+		float fypos = 0;
+		float ymaxNew = 0, yminNew = 0;
+		float fdiff = (fymax - fymin);
+		float ywidth = fdiff / (iNrSiblings + 1);
+
+		fypos = fymin + (ywidth * (iChildNr + 1));
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
+		int iNodeNr = parentNode.getClusterNr();
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION, iNrNodes));
+
+		if (bleft)
+			gl.glColor4f(1f, 1f, 0f, 1f);
+		else
+			gl.glColor4f(1f, 0f, 1f, 1f);
+
+		List<ClusterNode> listGraph = null;
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fxpos, fypos, SELECTION_Z);
+		if (tree.hasChildren(parentNode)) {
+			gl.glVertex3f(fxpos + 0.2f, fypos, SELECTION_Z);
+			gl.glVertex3f(fxpos + 0.2f, fypos + 0.01f, SELECTION_Z);
+		}
+		else {
+			gl.glVertex3f(fXMax, fypos, SELECTION_Z);
+			gl.glVertex3f(fXMax, fypos + 0.01f, SELECTION_Z);
+			iNrLeafs++;
+		}
+		gl.glVertex3f(fxpos, fypos + 0.01f, SELECTION_Z);
+		gl.glEnd();
+		gl.glPopName();
+
+		gl.glPopAttrib();
+
+		if (tree.hasChildren(parentNode)) {
+			currentDepth++;
+
+			listGraph = tree.getChildren(parentNode);
+			
+			int iNrChildsNode = listGraph.size();
+
+			if (bleft)
+				gl.glColor4f(1f, 1f, 0f, 1f);
+			else
+				gl.glColor4f(1f, 0f, 1f, 1f);
+			gl.glLineWidth(0.1f);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * 0.55f), SELECTION_Z);
+			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * (iNrChildsNode + 0.55f)),
+				SELECTION_Z);
+			gl.glEnd();
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.55f));
+				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
+
+				ClusterNode currentNode = (ClusterNode) listGraph.get(i);// .getChilds().elementAt(i);
+				if (i == 0)
+					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i, true,
+						4);
+				else
+					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i,
+						false, 4);
+			}
+		}
+	}
+
 	/**
 	 * Render dendrogram recursively
 	 * 
@@ -1751,14 +1830,14 @@ public class GLHierarchicalHeatMap
 
 		// GLHelperFunctions.drawAxis(gl);
 
-		if (hierarchyGraph == null) {
+		if (tree == null) {
 			// System.out.println("Problems during clustering!!");
 		}
 		else {
 			// System.out.println("renderDendrogram(..)");
 			iNrNodes = 0;
 			iNrLeafs = 0;
-			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), hierarchyGraph, 0, 1, 0, true, 4);
+			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), tree.getRoot(), 0, 1, 0, true, 4);
 			// System.out.println("\n iNrNodes: " + iNrNodes);
 			// System.out.println("\n iNrLeafs: " + iNrLeafs);
 		}
@@ -1906,7 +1985,7 @@ public class GLHierarchicalHeatMap
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-
+		
 		if (bUseClusteredVA) {
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
@@ -1942,7 +2021,7 @@ public class GLHierarchicalHeatMap
 
 			if (eClustererAlgo == EClustererAlgo.COBWEB_CLUSTERER
 				|| eClustererAlgo == EClustererAlgo.TREE_CLUSTERER) {
-				hierarchyGraph = set.getClusteredGraph();
+				tree = set.getClusteredTree();
 			}
 			else {
 
@@ -1957,13 +2036,16 @@ public class GLHierarchicalHeatMap
 				// System.out.println(" ");
 			}
 		}
+		else if (set.isClusterInfo()){
+			set.getVA(iContentVAID).setGroupList(set.getGroupList());
+		}
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
-
+		
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
 
@@ -2493,7 +2575,7 @@ public class GLHierarchicalHeatMap
 
 	public void mergeGroups() {
 
-		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+		IGroupList groupList = set.getVA(iContentVAID).getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -2518,7 +2600,7 @@ public class GLHierarchicalHeatMap
 		// }
 
 		// merge
-		if (groupList.merge(set.getVA(iStorageVAID), selGroups.get(0), selGroups.get(1)) == false) {
+		if (groupList.merge(set.getVA(iContentVAID), selGroups.get(0), selGroups.get(1)) == false) {
 			System.out.println("Problem during merge!!!");
 			return;
 		}

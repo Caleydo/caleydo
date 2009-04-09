@@ -8,7 +8,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
 
 public class ClusterHelper {
-	
+
 	/**
 	 * Calculates the mean for a given vector (float array)
 	 * 
@@ -24,7 +24,8 @@ public class ClusterHelper {
 		return mean / vector.length;
 	}
 
-	public static void sortClusters(ISet set, int iVAIdContent, int iVAIdStorage, ArrayList<Integer> examples, EClustererType eClustererType) {
+	public static void sortClusters(ISet set, int iVAIdContent, int iVAIdStorage,
+		ArrayList<Integer> examples, EClustererType eClustererType) {
 
 		int iNrExamples = examples.size();
 		float[] fColorSum = null;
@@ -79,10 +80,8 @@ public class ClusterHelper {
 			fColorSum[i + 1] = temp;
 			examples.set(i + 1, iTemp);
 		}
-		int o;
-		o = 0;
 	}
-	
+
 	/**
 	 * Calculates the median for a given vector (float array)
 	 * 
