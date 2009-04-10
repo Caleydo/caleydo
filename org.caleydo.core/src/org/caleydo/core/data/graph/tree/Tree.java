@@ -1,16 +1,20 @@
 package org.caleydo.core.data.graph.tree;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.JAXBException;
+
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
- * A implementation of a sorted tree, based on the JGraphT library. 
+ * A implementation of a sorted tree, based on the JGraphT library.
  * 
  * @author Alexander Lex
  * @param <NodeType>
@@ -21,9 +25,12 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	DirectedGraph<NodeType, DefaultEdge> graph;
 
+	TreePorter porter = new TreePorter();
+
 	public Tree() {
 
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
+
 	}
 
 	public void setRootNode(NodeType rootNode) {
@@ -80,7 +87,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		DefaultEdge edge = null;
 
 		for (DefaultEdge tempEdge : setEdges) {
-			edge = tempEdge;
+			edge = (DefaultEdge) tempEdge;
 		}
 		if (edge == null) {
 			// this is the root node
@@ -139,4 +146,20 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		return graph;
 	}
 
+	public void setGraph(DirectedGraph<NodeType, DefaultEdge> graph) {
+		this.graph = graph;
+	}
+
+	public boolean exportTree(String fileName) throws JAXBException, IOException {
+
+		return porter.exportTree(fileName, (DirectedGraph<ClusterNode, DefaultEdge>) this.graph,
+			(ClusterNode) this.rootNode);
+
+	}
+
+	public Tree<NodeType> importTree(String file) {
+
+		return (Tree<NodeType>) porter.importTree(file);
+
+	}
 }

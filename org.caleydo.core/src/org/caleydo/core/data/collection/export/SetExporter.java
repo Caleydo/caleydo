@@ -6,13 +6,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -58,8 +62,8 @@ public class SetExporter {
 			}
 
 			if (contentVA.getGroupList() != null)
-				out.print("Cluster_Number\t"); //Cluster_Repr\t");
-//				out.print("Cluster_Number\tCluster_Repr\t");
+				out.print("Cluster_Number\t"); // Cluster_Repr\t");
+			// out.print("Cluster_Number\tCluster_Repr\t");
 
 			out.println();
 
@@ -93,39 +97,34 @@ public class SetExporter {
 					else {
 						cnt++;
 					}
-//					if (cluster < contentVA.getGroupList().size()) {
-//						if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
-//							out.print(cluster + "\t" + 1 + "\t");
-//						else
-//							out.print(cluster + "\t" + 0 + "\t");
-//					}
-//					else
-//						out.print(cluster + "\t" + 0 + "\t");
+					// if (cluster < contentVA.getGroupList().size()) {
+					// if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
+					// out.print(cluster + "\t" + 1 + "\t");
+					// else
+					// out.print(cluster + "\t" + 0 + "\t");
+					// }
+					// else
+					// out.print(cluster + "\t" + 0 + "\t");
 					out.print(cluster + "\t");
 					index++;
 				}
 				out.println();
 			}
 
-			// if (contentVA.getGroupList() != null) {
-			// out.println("Group assignment for contentVA");
-			// IGroupList groupList = contentVA.getGroupList();
-			// for (Group group : groupList) {
-			// out.println(group.getNrElements() + "\t" + group.getIdxExample());
-			// }
-			// }
-			// if (storageVA.getGroupList() != null) {
-			// out.println("Group assignment for storageVA");
-			// IGroupList groupList = storageVA.getGroupList();
-			// for (Group group : groupList) {
-			// out.println(group.getNrElements() + "\t" + group.getIdxExample());
-			// }
-			// }
-
 			out.close();
+
+			// export cluster tree to own xml file
+			Tree<ClusterNode> tree = set.getClusteredTree();
+			if (tree != null) {
+				if (tree.exportTree(sFileName + ".xml") == false)
+					System.out.println("Problem during tree export!");
+			}
 		}
 		catch (IOException e) {
 
+		}
+		catch (JAXBException e) {
+			e.printStackTrace();
 		}
 	}
 }

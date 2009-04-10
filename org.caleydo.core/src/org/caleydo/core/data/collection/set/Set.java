@@ -33,7 +33,6 @@ import org.caleydo.core.util.clusterer.HierarchicalClusterer;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.core.util.clusterer.TreeClusterer;
-import org.caleydo.util.graph.IGraph;
 
 /**
  * Implementation of the ISet interface
@@ -66,7 +65,6 @@ public class Set
 	private HashMap<Integer, IVirtualArray> hashSetVAs;
 
 	// clustering stuff
-	private HashMap<Integer, IGraph> hashVAIdToGraph;
 	private ArrayList<Integer> alClusterSizes = null;
 	private ArrayList<Integer> alClusterExamples = null;
 	private Tree<ClusterNode> clusteredTree;
@@ -85,7 +83,6 @@ public class Set
 		alStorages = new ArrayList<IStorage>();
 		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
 		hashSetVAs = new HashMap<Integer, IVirtualArray>();
-		hashVAIdToGraph = new HashMap<Integer, IGraph>();
 	}
 
 	@Override
@@ -325,18 +322,15 @@ public class Set
 		for (IStorage storage : alStorages) {
 			INumericalStorage nStorage = (INumericalStorage) storage;
 			Histogram storageHistogram = nStorage.getHistogram();
-			
-			if(bIsFirstLoop)
-			{
+
+			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
-				for(int iCount = 0; iCount < storageHistogram.size(); iCount++)
-				{
+				for (int iCount = 0; iCount < storageHistogram.size(); iCount++) {
 					histogram.add(0);
 				}
 			}
 			int iCount = 0;
-			for(Integer histoValue : histogram)
-			{
+			for (Integer histoValue : histogram) {
 				histoValue += storageHistogram.get(iCount);
 				histogram.set(iCount++, histoValue);
 			}
@@ -640,7 +634,7 @@ public class Set
 		int group = 0;
 		int repr = 0;
 		int offset = 0;
-		
+
 		for (int i = 0; i < arGroupRepr.length; i++) {
 			if (arGroupRepr[i] == 1) {
 				repr = i - offset;
