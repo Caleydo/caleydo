@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
+import org.caleydo.rcp.action.toolbar.view.storagebased.ActivateGroupHandling;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
+import org.caleydo.rcp.action.toolbar.view.storagebased.MergeClasses;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 import org.eclipse.jface.action.IAction;
 
@@ -36,6 +38,12 @@ public class HierarchicalHeatMapToolBarContent
 		IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 		container.add(clearSelectionsAction);
 
+		IAction mergeGroup = new MergeClasses(targetViewID);
+		container.add(mergeGroup);
+		
+		IAction activateGroup = new ActivateGroupHandling(targetViewID);
+		container.add(activateGroup);
+		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
 
