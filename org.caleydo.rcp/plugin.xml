@@ -121,7 +121,7 @@
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.ToolBarView"
+            class="org.caleydo.rcp.views.swt.toolbar.ToolBarView"
             icon="resources/icons/view/general.png"
             id="org.caleydo.rcp.views.swt.ToolBarView"
             name="Tool Bar">
