@@ -118,7 +118,6 @@ public class GLHeatMap
 	@Override
 	public void init(GL gl) {
 		initData();
-
 		if (set == null)
 			return;
 	}

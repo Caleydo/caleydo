@@ -14,7 +14,6 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.views.opengl.GLHistogramView;
-import org.caleydo.rcp.views.swt.ToolBarView;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
 import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;

@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views.swt;
+package org.caleydo.rcp.views.swt.toolbar;
 
 import java.util.ArrayList;
 
@@ -8,25 +8,14 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.perspective.GenomePerspective;
-import org.caleydo.rcp.views.CaleydoViewPart;
-import org.caleydo.rcp.views.opengl.AGLViewPart;
-import org.caleydo.rcp.views.opengl.GLGlyphView;
-import org.caleydo.rcp.views.opengl.GLHeatMapView;
-import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
-import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
-import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -38,7 +27,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.ISizeProvider;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -55,7 +43,7 @@ public class ToolBarView
 	public static final int TOOLBAR_WIDTH = 173;
 	public static final int TOOLBAR_HEIGHT = 123;
 
-	public static boolean bHorizontal = false;
+	private IToolBarRenderer toolBarRenderer;
 
 	private Composite parentComposite;
 
@@ -69,17 +57,13 @@ public class ToolBarView
 
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
-		if (!GenomePerspective.bIsWideScreen) {
-			bHorizontal = true;
+		if (GenomePerspective.bIsWideScreen) {
+			toolBarRenderer = new WideScreenToolBarRenderer();
+		} else {
+			toolBarRenderer = new StandardToolBarRenderer();
 		}
 
-		if (bHorizontal) {
-			parentComposite.setLayout(new GridLayout(10, false));
-		}
-		else {
-			parentComposite.setLayout(new GridLayout(1, false));
-		}
-
+		parentComposite.setLayout(toolBarRenderer.createLayout());
 		this.parentComposite = parentComposite;
 
 //		searchView = (SearchView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(SearchView.ID);
@@ -88,6 +72,10 @@ public class ToolBarView
 
 		addGeneralToolBar();
 //		addColorMappingBar();
+
+		ToolBarMediator toolBarMediator = new ToolBarMediator();
+		toolBarMediator.setToolBarView(this);
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION, toolBarMediator);
 	}
 
 	@Override
@@ -100,176 +88,6 @@ public class ToolBarView
 		super.dispose();
 
 		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-	}
-
-	public void addViewSpecificToolBar(CaleydoViewPart viewPart) {
-		addViewSpecificToolBar(viewPart.getViewID(), viewPart.getClass().getName());
-
-		if (viewPart instanceof GLRemoteRenderingView) {
-			// Add toolbars of remote rendered views
-			for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) ((AGLViewPart) viewPart)
-				.getGLEventListener()).getRemoteRenderedViews()) {
-				AGLEventListener glView =
-					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iRemoteRenderedGLViewID);
-
-				String sViewType = "";
-
-				if (glView instanceof GLHeatMap) {
-					sViewType = GLHeatMapView.ID;
-				}
-				else if (glView instanceof GLPathway) {
-					sViewType = GLPathwayView.ID;
-				}
-				else if (glView instanceof GLParallelCoordinates) {
-					sViewType = GLParCoordsView.ID;
-				}
-				else if (glView instanceof GLGlyph) {
-					sViewType = GLGlyphView.ID;
-				}
-				else {
-					break;
-				}
-
-				addViewSpecificToolBar(iRemoteRenderedGLViewID, sViewType);
-			}
-		}
-
-	}
-
-	public void addViewSpecificToolBar(int iViewID, String sViewType) {
-		// Check if toolbar is already present
-		for (Group group : viewSpecificGroups) {
-			// Only one pathway toolbar for all pathways is allowed
-			if (group.getData("viewType").equals(GLPathwayView.ID)
-				&& GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID) instanceof GLPathway)
-				return;
-
-			if (group.getData("viewID") != null && ((Integer) group.getData("viewID")).intValue() == iViewID)
-				return;
-		}
-
-		String sViewTitle = "";
-		Group group = new Group(parentComposite, SWT.NULL);
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginBottom =
-			layout.marginTop =
-				layout.marginLeft =
-					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 3;
-		group.setLayout(layout);
-
-		if (bHorizontal) {
-			group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		}
-		else {
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
-		viewSpecificGroups.add(group);
-
-		// Needed to simulate toolbar wrapping which is not implemented for
-		// linux
-		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
-		ArrayList<ToolBar> alToolBar = new ArrayList<ToolBar>();
-		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
-
-		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-		alToolBar.add(toolBar);
-		alToolBarManager.add(toolBarManager);
-
-		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-		alToolBar.add(toolBar2);
-		alToolBarManager.add(toolBarManager2);
-
-		if (sViewType.equals(GLRemoteRenderingView.ID)) {
-			GLRemoteRenderingView.createToolBarItems(iViewID);
-			CaleydoViewPart.fillToolBar(alToolBarManager);
-
-			sViewTitle = "Bucket";
-			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/view/remote/remote.png");
-
-			// bIsBucketViewActive = true;
-//			searchView.updateSearchBar(true);
-		}
-		else if (sViewType.equals(GLHeatMapView.ID)) {
-			GLHeatMapView.createToolBarItems(iViewID);
-			CaleydoViewPart.fillToolBar(alToolBarManager);
-
-			sViewTitle = "Heat Map";
-			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/view/storagebased/heatmap/heatmap.png");
-		}
-		else if (sViewType.equals(GLHierarchicalHeatMapView.ID)) {
-			GLHierarchicalHeatMapView.createToolBarItems(iViewID);
-			CaleydoViewPart.fillToolBar(alToolBarManager);
-
-			sViewTitle = "Full Heat Map";
-			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/view/storagebased/heatmap/heatmap.png");
-		}
-		else if (sViewType.equals(GLParCoordsView.ID)) {
-			GLParCoordsView.createToolBarItems(iViewID);
-			CaleydoViewPart.fillToolBar(alToolBarManager);
-
-			sViewTitle = "Parallel Coordinates";
-			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/view/storagebased/parcoords/parcoords.png");
-		}
-		else if (sViewType.equals(GLGlyphView.ID)) {
-			GLGlyphView.createToolBarItems(iViewID);
-			CaleydoViewPart.fillToolBar(alToolBarManager);
-
-			sViewTitle = "Glyph";
-			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/view/glyph/glyph.png");
-		}
-		else if (sViewType.equals(GLPathwayView.ID)) {
-			GLPathwayView.createToolBarItems(iViewID);
-			CaleydoViewPart.fillToolBar(alToolBarManager);
-
-			sViewTitle = "Pathway";
-			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/view/pathway/pathway.png");
-		}
-		else if (sViewType.equals(HTMLBrowserView.ID)) {
-			toolBar.dispose();
-
-			((HTMLBrowserView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-				HTMLBrowserView.ID)).createToolBarItems(iViewID, group);
-
-			sViewTitle = "Browser";
-			GeneralManager.get().getResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/view/browser/browser.png");
-		}
-		else
-			return;
-
-		toolBarManager.update(true);
-
-		if (toolBarManager2.isEmpty()) {
-			toolBarManager2.dispose();
-		}
-		else {
-			toolBarManager2.update(true);
-		}
-
-		if (bHorizontal) {
-			Label spacer = new Label(group, SWT.NULL);
-			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-		}
-
-		Label label = new Label(group, SWT.CENTER);
-		label.setText(sViewTitle);
-		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-
-		group.setData("viewType", sViewType);
-		group.setData("viewID", iViewID);
-
-		group.layout();
-		parentComposite.layout();
 	}
 
 	public void removeViewSpecificToolBar(int iViewID) {
@@ -540,32 +358,14 @@ public class ToolBarView
 					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
 		layout.marginHeight = layout.marginWidth = 3;
 		group.setLayout(layout);
-		if (bHorizontal) {
-			group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-		}
-		else {
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		}
+		group.setLayoutData(toolBarRenderer.createStandardGridData());
 
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
 		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
 
-		if (bHorizontal) {
-			final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-			ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-			toolBarManager2.add(new TakeSnapshotAction());
-			toolBarManager2.add(new OpenSearchViewAction());
-			toolBarManager2.update(true);
-
-			Label spacer = new Label(group, SWT.NULL);
-			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-		}
-		else {
-			toolBarManager.add(new TakeSnapshotAction());
-			toolBarManager.add(new OpenSearchViewAction());
-		}
+		toolBarRenderer.addTakeSnapshotAction(toolBarManager, group);
 
 		toolBarManager.update(true);
 
@@ -620,5 +420,29 @@ public class ToolBarView
 	@Override
 	public int getSizeFlags(boolean width) {
 		return SWT.MIN;
+	}
+
+	public IToolBarRenderer getToolBarRenderer() {
+		return toolBarRenderer;
+	}
+
+	public void setToolBarRenderer(IToolBarRenderer toolBarRenderer) {
+		this.toolBarRenderer = toolBarRenderer;
+	}
+
+	public Composite getParentComposite() {
+		return parentComposite;
+	}
+
+	public void setParentComposite(Composite parentComposite) {
+		this.parentComposite = parentComposite;
+	}
+
+	public ArrayList<Group> getViewSpecificGroups() {
+		return viewSpecificGroups;
+	}
+
+	public void setViewSpecificGroups(ArrayList<Group> viewSpecificGroups) {
+		this.viewSpecificGroups = viewSpecificGroups;
 	}
 }

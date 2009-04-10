@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -418,6 +419,9 @@ public abstract class AGLEventListener
 		return remoteLevelElement;
 	}
 
+	/**
+	 * FIXME: should there be a seperated interface for remote rendered views that only those have to implement?
+	 */
 	public boolean isRenderedRemote() {
 		if (remoteRenderingGLCanvas == null)
 			return false;
@@ -599,5 +603,22 @@ public abstract class AGLEventListener
 	public synchronized void clearSets() {
 		super.clearSets();
 		setDisplayListDirty();
+	}
+
+	/**
+	 * Retrieves all the contained view-types from a given view.
+	 * FIXME: remote views does only work for bucket
+	 * FIXME: some kind of integration to IGLRemoteRendering   
+	 * @param glView view to get the view types from
+	 * @return list of view-types contained in the given view 
+	 */
+	public List<Integer> getAllViewIDs() {
+		List<Integer> viewIDs = new ArrayList<Integer>();
+		viewIDs.add(getID());
+		if (this instanceof GLRemoteRendering) {
+			GLRemoteRendering bucket = (GLRemoteRendering) this;
+			viewIDs.addAll(bucket.getRemoteRenderedViews());
+		}
+		return viewIDs;
 	}
 }

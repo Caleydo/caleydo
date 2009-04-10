@@ -6,5 +6,7 @@ package org.caleydo.core.manager.event;
  * @author Alexander Lex
  */
 public enum EViewCommand {
-	REDRAW
+	REDRAW,
+	ACTIVATION,
+	UPDATE
 }

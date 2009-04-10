@@ -1,6 +1,16 @@
 package org.caleydo.rcp.perspective;
 
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.EViewCommand;
+import org.caleydo.core.manager.event.IEventContainer;
+import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
@@ -18,7 +28,12 @@ import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.views.swt.HTMLBrowserView;
-import org.caleydo.rcp.views.swt.ToolBarView;
+import org.caleydo.rcp.views.swt.toolbar.ToolBarContentFactory;
+import org.caleydo.rcp.views.swt.toolbar.WideScreenToolBarRenderer;
+import org.caleydo.rcp.views.swt.toolbar.ToolBarView;
+import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Display;
@@ -33,7 +48,24 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  */
 public class PartListener
-	implements IPartListener2 {
+	implements IPartListener2, IUniqueObject, IMediatorSender {
+
+	Logger log = Logger.getLogger(PartListener.class.getName());
+	
+	public PartListener() {
+		GeneralManager.get().getEventPublisher().addSender(EMediatorType.VIEW_SELECTION, this);
+	}
+	
+	@Override
+	public int getID() {
+		return 815; // FIXXXME unique id for this object or find another uniqueObject to trigger events from
+	}
+	
+	@Override
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
+		GeneralManager.get().getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	}
+
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
 	}
@@ -66,12 +98,13 @@ public class PartListener
 
 	@Override
 	public void partVisible(IWorkbenchPartReference partRef) {
+		log.info("partVisible() started");
+
 		IWorkbenchPart activePart = partRef.getPart(false);
-
-		// System.out.println("Visible: " +partRef.getTitle());
-
-		if (!(activePart instanceof CaleydoViewPart))
+		
+		if (!(activePart instanceof CaleydoViewPart)) {
 			return;
+		}
 
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 
@@ -79,54 +112,14 @@ public class PartListener
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
 				((AGLViewPart) viewPart).getGLCanvas().getID());
 		}
-
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
-			return;
-
-		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
-
-		toolBarManager.removeAll();
-
-		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-			ToolBarView.ID)).removeAllViewSpecificToolBars();
-
-		// Check if view is inside the workbench or detached to a separate
-		// window
+		
 		if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
-			createViewSpecificToolbar(viewPart, toolBarManager);
+			// viewpart is detached
 
 			if (viewPart instanceof AGLViewPart) {
-				IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
-				AGLEventListener glEventListener =
-					viewGLCanvasManager.getGLEventListener(((AGLViewPart) viewPart).getGLEventListener()
-						.getID());
-
-				if (glEventListener instanceof GLRemoteRendering) {
-					AGLEventListener glSubEventListener;
-					GLRemoteRenderingView.createToolBarItems(viewPart.getViewID());
-					viewPart.fillToolBar();
-
-					// Add toolbars of remote rendered views to remote view
-					// toolbar
-					for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glEventListener)
-						.getRemoteRenderedViews()) {
-						glSubEventListener = viewGLCanvasManager.getGLEventListener(iRemoteRenderedGLViewID);
-						toolBarManager.add(new Separator());
-						createViewSpecificToolbar(glSubEventListener, toolBarManager);
-					}
-				}
+				drawInlineToolBar((AGLViewPart) viewPart);
 			}
 		}
-		else {
-			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-				ToolBarView.ID)).addViewSpecificToolBar(viewPart);
-		}
-
-		Display.getCurrent().asyncExec(new Runnable() {
-			public void run() {
-				toolBarManager.update(true);
-			}
-		});
 	}
 
 	@Override
@@ -166,51 +159,49 @@ public class PartListener
 	public void partActivated(IWorkbenchPartReference partRef) {
 
 		IWorkbenchPart activePart = partRef.getPart(false);
+		if (!(activePart instanceof AGLViewPart))
+			return;
+		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
+
 		if (activePart instanceof CaleydoViewPart && !(activePart instanceof HTMLBrowserView)) {
 			GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(
 				((CaleydoViewPart) activePart).getSWTComposite());
 		}
 
+		AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
+
+		ViewActivationCommandEventContainer viewActivationEvent = 
+			new ViewActivationCommandEventContainer(EViewCommand.ACTIVATION);
+		List<Integer> viewIDs = glView.getAllViewIDs();
+		viewActivationEvent.setViewIDs(viewIDs);
+
+		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher(); 
+		eventPublisher.triggerEvent(EMediatorType.VIEW_SELECTION, this, viewActivationEvent);
 	}
 
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
 	}
 
-	private void createViewSpecificToolbar(CaleydoViewPart viewPart, IToolBarManager toolBarManager) {
-		if (viewPart instanceof AGLViewPart) {
-			AGLEventListener glEventListener = ((AGLViewPart) viewPart).getGLEventListener();
-			createViewSpecificToolbar(glEventListener, toolBarManager);
-		}
-		// else if (viewPart instanceof HTMLBrowserView)
-		// {
-		// // HTMLBrowserView.createToolBarItems(viewPart.getViewID());
-		// // HTMLBrowserView.fillToolBar(toolBarManager);
-		// }
-	}
+	private void drawInlineToolBar(AGLViewPart viewPart) {
+		AGLViewPart glViewPart = (AGLViewPart) viewPart;
+		AGLEventListener glView = glViewPart.getGLEventListener();
+		List<Integer> viewIDs = glView.getAllViewIDs();
+		
+		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
+		List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(viewIDs);
 
-	private void createViewSpecificToolbar(AGLEventListener glEventListener, IToolBarManager toolBarManager) {
-		int iGLEvenntListenerID = glEventListener.getID();
+		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
 
-		if (glEventListener instanceof GLPathway) {
-			GLPathwayView.createToolBarItems(iGLEvenntListenerID);
-			CaleydoViewPart.fillToolBar(toolBarManager);
+		toolBarManager.removeAll();
+		for (AToolBarContent toolBarContent : toolBarContents) {
+			for (ToolBarContainer container : toolBarContent.getDefaultToolBar()) {
+				for (IAction toolBarAction : container) {
+					toolBarManager.add(toolBarAction);
+				}
+				toolBarManager.add(new Separator());
+			}
 		}
-		else if (glEventListener instanceof GLHeatMap) {
-			GLHeatMapView.createToolBarItems(iGLEvenntListenerID);
-			CaleydoViewPart.fillToolBar(toolBarManager);
-		}
-		else if (glEventListener instanceof GLHierarchicalHeatMap) {
-			GLHierarchicalHeatMapView.createToolBarItems(iGLEvenntListenerID);
-			CaleydoViewPart.fillToolBar(toolBarManager);
-		}
-		else if (glEventListener instanceof GLParallelCoordinates) {
-			GLParCoordsView.createToolBarItems(iGLEvenntListenerID);
-			CaleydoViewPart.fillToolBar(toolBarManager);
-		}
-		else if (glEventListener instanceof GLGlyph) {
-			GLGlyphView.createToolBarItems(iGLEvenntListenerID);
-			CaleydoViewPart.fillToolBar(toolBarManager);
-		}
+		toolBarManager.update(true);
 	}
 }

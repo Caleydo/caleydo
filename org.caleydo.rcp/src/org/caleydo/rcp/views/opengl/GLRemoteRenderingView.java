@@ -30,7 +30,6 @@ public class GLRemoteRenderingView
 	public GLRemoteRenderingView() {
 		super();
 
-		createToolBarItems(-1);
 		iAlContainedViewIDs = new ArrayList<Integer>();
 	}
 
@@ -78,21 +77,6 @@ public class GLRemoteRenderingView
 		bucket.addInitialRemoteView(heatMap);
 		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
 		bucket.addInitialRemoteView(parCoords);
-	}
-
-	public static void createToolBarItems(int iViewID) {
-		alToolbar = new ArrayList<IAction>();
-
-		// IAction takeSnapshotAction = new TakeSnapshotAction(-1);
-		// alToolbar.add(takeSnapshotAction);
-		IAction closeOrResetContainedViews = new CloseOrResetContainedViews(iViewID);
-		alToolbar.add(closeOrResetContainedViews);
-		// IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
-		// alToolbar.add(toggleLayoutAction);
-		IAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(iViewID);
-		alToolbar.add(toggleConnectionLinesAction);
-		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
-		alToolbar.add(clearSelectionsAction);
 	}
 
 	@Override

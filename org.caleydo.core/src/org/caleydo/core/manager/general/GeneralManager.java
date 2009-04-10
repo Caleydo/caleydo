@@ -140,8 +140,9 @@ public class GeneralManager
 	}
 
 	/**
-	 * Returns the general method as a singleton object. When first called the general manager is created
-	 * (lazy).
+	 * Returns the general method as a singleton object. 
+	 * When first called the general manager is created (lazy).
+	 * @return singleton GeneralManager instance
 	 */
 	public static IGeneralManager get() {
 		if (generalManager == null) {

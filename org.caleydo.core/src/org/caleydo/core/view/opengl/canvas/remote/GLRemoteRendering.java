@@ -36,10 +36,12 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -255,11 +257,10 @@ public class GLRemoteRendering
 
 		createSelectionHeatMap();
 		// Registration to event system
-		generalManager.getEventPublisher()
-			.addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) this);
-		generalManager.getEventPublisher().addSender(EMediatorType.VIEW_SELECTION, this);
+		IEventPublisher eventPublisher = generalManager.getEventPublisher(); 
+		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
+		eventPublisher.addSender(EMediatorType.VIEW_SELECTION, this);
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
@@ -2634,10 +2635,22 @@ public class GLRemoteRendering
 					newViews.clear();
 				}
 				if (newViews.isEmpty()) {
+					triggerToolBarUpdate();
 					enableUserInteraction();
 				}
 			}
 		}
+	}
+	private void triggerToolBarUpdate() {
+		log.info("triggerToolBarUpdate() called");
+
+		ViewActivationCommandEventContainer viewActivationEvent = 
+			new ViewActivationCommandEventContainer(EViewCommand.ACTIVATION);
+		List<Integer> viewIDs = this.getAllViewIDs();
+		viewActivationEvent.setViewIDs(viewIDs);
+
+		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher(); 
+		eventPublisher.triggerEvent(EMediatorType.VIEW_SELECTION, this, viewActivationEvent);
 	}
 	
 	/**

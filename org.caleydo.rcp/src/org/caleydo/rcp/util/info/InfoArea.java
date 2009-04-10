@@ -26,7 +26,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.views.swt.ToolBarView;
+import org.caleydo.rcp.views.swt.toolbar.ToolBarView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -85,18 +85,18 @@ public class InfoArea
 		
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 
-		if (ToolBarView.bHorizontal) {
-			gridData.minimumWidth = 150;
-			gridData.widthHint = 150;
-			gridData.minimumHeight = 72;
-			gridData.heightHint = 72;
-		}
-		else {
+		// FIXME: horizontal toolbar style support
+//		if (ToolBarView.bHorizontal) {
+//			gridData.minimumWidth = 150;
+//			gridData.widthHint = 150;
+//			gridData.minimumHeight = 72;
+//			gridData.heightHint = 72;
+//		} else {
 			gridData.minimumWidth = 100;
 			gridData.widthHint = 150;
 			gridData.minimumHeight = 82;
 			gridData.heightHint = 82;
-		}
+//		}
 
 		lblViewInfoContent.setLayoutData(gridData);
 
@@ -225,7 +225,10 @@ public class InfoArea
 
 //							if (!bIsExisting) {
 								TreeItem item = new TreeItem(geneTree, SWT.NONE);
-								if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
+
+								// FIXME horizontal toolbar style support 
+								// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
+								if (Application.bIsWindowsOS) {
 									item.setText(sGeneSymbol + " - " + sRefSeqID);
 								}
 								else {
