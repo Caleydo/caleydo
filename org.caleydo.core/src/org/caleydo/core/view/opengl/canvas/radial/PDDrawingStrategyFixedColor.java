@@ -3,9 +3,12 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
+
 public class PDDrawingStrategyFixedColor
-	extends PDDrawingStrategy {
-	
+extends PDDrawingStrategy {
+
 	private float fFillColorR;
 	private float fFillColorG;
 	private float fFillColorB;
@@ -21,13 +24,13 @@ public class PDDrawingStrategyFixedColor
 		fFillColorG = 0.0f;
 		fFillColorB = 0.0f;
 		fFillAlpha = 1.0f;
-		fBorderColorR = 0.0f;
-		fBorderColorG = 0.0f;
-		fBorderColorB = 0.0f;
+		fBorderColorR = 1.0f;
+		fBorderColorG = 1.0f;
+		fBorderColorB = 1.0f;
 		fBorderAlpha = 1.0f;
 	}
 	
-
+	
 	@Override
 	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
 		
@@ -45,9 +48,9 @@ public class PDDrawingStrategyFixedColor
 		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc, 2);
 		
 		gl.glPopAttrib();
-
+	
 	}
-
+	
 	@Override
 	public void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
 		
@@ -70,7 +73,7 @@ public class PDDrawingStrategyFixedColor
 			iNumSlicesPerFullDisc, 2);
 		
 		gl.glPopAttrib();
-
+	
 	}
 	
 	public void setFillColor(float fColorR, float fColorG, float fColorB, float fAlpha) {

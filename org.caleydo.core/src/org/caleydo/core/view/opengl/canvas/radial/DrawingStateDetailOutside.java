@@ -3,6 +3,13 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.view.opengl.canvas.radial.DrawingController;
+import org.caleydo.core.view.opengl.canvas.radial.DrawingState;
+import org.caleydo.core.view.opengl.canvas.radial.DrawingStrategyManager;
+import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
+import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
+
 public class DrawingStateDetailOutside
 	extends DrawingState {
 
@@ -48,10 +55,29 @@ public class DrawingStateDetailOutside
 			DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_TRANSPARENT);
 
-		pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsRainbow, pdCurrentSelectedElement
-			.getCurrentDepth());
+		boolean bMouseOverElementInDetailOutside = false;
 		if (pdCurrentMouseOverElement != null) {
-			pdCurrentMouseOverElement.setPDDrawingStrategy(dsSelected);
+			bMouseOverElementInDetailOutside =
+				pdCurrentMouseOverElement.hasParent(pdCurrentSelectedElement, iDisplayedDetailViewDepth - 1);
+		}
+
+		if ((pdCurrentMouseOverElement == pdCurrentSelectedElement) || (bMouseOverElementInDetailOutside)) {
+
+			PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+			dsLabelDecorator.setDrawingStrategy(dsRainbow);
+			pdCurrentMouseOverElement.setPDDrawingStrategyChildren(dsLabelDecorator, 3);
+
+			dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+			dsLabelDecorator.setDrawingStrategy(dsSelected);
+			pdCurrentMouseOverElement.setPDDrawingStrategy(dsLabelDecorator);
+
+		}
+		else {
+			pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsRainbow, pdCurrentSelectedElement
+				.getCurrentDepth());
+			if (pdCurrentMouseOverElement != null) {
+				pdCurrentMouseOverElement.setPDDrawingStrategy(dsSelected);
+			}
 		}
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, fDetailViewDiscWidth,
 			iDisplayedDetailViewDepth, fDetailViewStartAngle, 360, fDetailViewInnerRadius);
@@ -62,10 +88,26 @@ public class DrawingStateDetailOutside
 
 		// Draw the MouseOverElement again at last for correct antialiasing in overview
 		if (pdCurrentMouseOverElement != null) {
+			if ((!bMouseOverElementInDetailOutside)
+				&& (pdCurrentMouseOverElement != pdCurrentSelectedElement)) {
+				PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+				dsLabelDecorator.setDrawingStrategy(dsSelected);
+				if(pdCurrentMouseOverElement != pdCurrentRootElement) {
+					dsLabelDecorator.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
+				}
+				else {
+					dsLabelDecorator.drawFullCircle(gl, glu, pdCurrentMouseOverElement);
+				}
+			}
 			dsSelected.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
 		}
+
 		pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsRainbow, pdCurrentSelectedElement
 			.getCurrentDepth());
+
+		float fHierarchyOuterRadius = Math.min(fXCenter * 0.9f, fYCenter * 0.9f);
+		LabelManager.get().drawAllLabels(gl, glu, fXCenter * 2.0f, fYCenter * 2.0f, fHierarchyOuterRadius);
+		LabelManager.get().clearLabels();
 
 		bInitialDraw = false;
 	}
@@ -124,13 +166,13 @@ public class DrawingStateDetailOutside
 
 		if (pdClicked != pdRealRootElement && pdClicked.hasChildren()) {
 			if (pdCurrentMouseOverElement != null) {
-				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
-				radialHierarchy.setCurrentMouseOverElement(null);
+				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
 			}
 			if (pdClicked == pdCurrentRootElement) {
 				radialHierarchy.setCurrentRootElement(pdRealRootElement);
 				radialHierarchy.setCurrentSelectedElement(pdRealRootElement);
+				radialHierarchy.setCurrentMouseOverElement(pdRealRootElement);
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
 				bInitialDraw = true;
@@ -141,10 +183,12 @@ public class DrawingStateDetailOutside
 
 				radialHierarchy.setCurrentSelectedElement(pdClicked);
 				radialHierarchy.setCurrentRootElement(pdClicked);
+				radialHierarchy.setCurrentMouseOverElement(pdClicked);
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
 				bInitialDraw = true;
 			}
+			
 			radialHierarchy.setDisplayListDirty();
 		}
 
@@ -156,14 +200,11 @@ public class DrawingStateDetailOutside
 
 		if (pdMouseOver != pdCurrentMouseOverElement) {
 			if (pdCurrentMouseOverElement != null) {
-				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
+				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
 			}
 
-			pdMouseOver.setPDDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED));
 			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
-
 			radialHierarchy.setDisplayListDirty();
 		}
 
@@ -178,18 +219,19 @@ public class DrawingStateDetailOutside
 
 		if (pdClicked != pdCurrentRootElement && pdClicked.hasChildren() && pdClicked.getCurrentDepth() > 1) {
 			if (pdCurrentMouseOverElement != null) {
-				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
-				radialHierarchy.setCurrentMouseOverElement(null);
+				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
 			}
 
 			if (pdClicked == pdCurrentSelectedElement) {
 				radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
+				radialHierarchy.setCurrentMouseOverElement(pdCurrentRootElement);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
 				bInitialDraw = true;
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdClicked);
+				radialHierarchy.setCurrentMouseOverElement(pdClicked);
 				bInitialDraw = true;
 			}
 

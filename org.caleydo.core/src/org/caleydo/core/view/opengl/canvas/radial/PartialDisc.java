@@ -5,203 +5,243 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.radial.DrawingStrategyManager;
+import org.caleydo.core.view.opengl.canvas.radial.HierarchyElement;
+import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
 
 public class PartialDisc
-	extends HierarchyElement {
+extends HierarchyElement {
 
-	private float fSize;
-	private PickingManager pickingManager;
-	private int iViewID;
-	private PDDrawingStrategy drawingStrategy;
+private float fSize;
+private PickingManager pickingManager;
+private int iViewID;
+private PDDrawingStrategy drawingStrategy;
 
-	private float fCurrentAngle;
-	private float fCurrentStartAngle;
-	private int iCurrentDepth;
-	private float fCurrentWidth;
-	private float fCurrentInnerRadius;
+private float fCurrentAngle;
+private float fCurrentStartAngle;
+private int iCurrentDepth;
+private float fCurrentWidth;
+private float fCurrentInnerRadius;
+private int iDrawingStrategyDepth;
 
-	public PartialDisc(int iElementID) {
-		super(iElementID);
-		fSize = 0;
-		drawingStrategy =
-			DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
-		fCurrentStartAngle = 0;
+private String sName;
+
+public PartialDisc(int iElementID) {
+	super(iElementID);
+	fSize = 0;
+	drawingStrategy =
+		DrawingStrategyManager.get().getDrawingStrategy(
+			DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
+	fCurrentStartAngle = 0;
+
+	sName = new String("TestName " + new Integer(iElementID).toString());
+}
+
+public PartialDisc(int iElementID, float fSize, int iViewID, PickingManager pickingManager) {
+	super(iElementID);
+	this.fSize = fSize;
+	this.iViewID = iViewID;
+	this.pickingManager = pickingManager;
+	drawingStrategy =
+		DrawingStrategyManager.get().getDrawingStrategy(
+			DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
+	fCurrentStartAngle = 0;
+
+	sName = new String("TestName " + new Integer(iElementID).toString());
+}
+
+public void drawHierarchyFull(GL gl, GLU glu, float fWidth, int iDepth) {
+
+	setCurrentDisplayParameters(fWidth, fCurrentStartAngle, 360, 0, iDepth);
+
+	if (iDepth <= 0)
+		return;
+
+	gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+		iElementID));
+	drawingStrategy.drawFullCircle(gl, glu, this);
+	gl.glPopName();
+	iDepth--;
+
+	float fAnglePerSizeUnit = 360 / fSize;
+
+	if (iDepth > 0) {
+		drawAllChildren(gl, glu, fWidth, fCurrentStartAngle, fWidth, fAnglePerSizeUnit, iDepth, false);
 	}
+}
 
-	public PartialDisc(int iID, float fSize, int iViewID, PickingManager pickingManager) {
-		super(iID);
-		this.fSize = fSize;
-		this.iViewID = iViewID;
-		this.pickingManager = pickingManager;
-		drawingStrategy =
-			DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
-		fCurrentStartAngle = 0;
+public void drawHierarchyAngular(GL gl, GLU glu, float fWidth, int iDepth, float fStartAngle,
+	float fAngle, float fInnerRadius) {
+
+	fStartAngle = getValidAngle(fStartAngle);
+	setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
+
+	gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+		iElementID));
+	drawingStrategy.drawPartialDisc(gl, glu, this);
+	gl.glPopName();
+	iDepth--;
+
+	float fAnglePerSizeUnit = fAngle / fSize;
+
+	if (iDepth > 0) {
+		drawAllChildren(gl, glu, fWidth, fStartAngle, fInnerRadius + fWidth, fAnglePerSizeUnit, iDepth,
+			false);
 	}
+}
 
-	public void drawHierarchyFull(GL gl, GLU glu, float fWidth, int iDepth) {
+public void simulateDrawHierarchyAngular(float fWidth, int iDepth, float fStartAngle, float fAngle,
+	float fInnerRadius) {
 
-		setCurrentDisplayParameters(fWidth, fCurrentStartAngle, 360, 0, iDepth);
+	fStartAngle = getValidAngle(fStartAngle);
+	setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
+	iDepth--;
 
-		if (iDepth <= 0)
-			return;
+	float fAnglePerSizeUnit = fAngle / fSize;
 
-		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
-			iElementID));
-		drawingStrategy.drawFullCircle(gl, glu, this);
-		gl.glPopName();
-		iDepth--;
-
-		float fAnglePerSizeUnit = 360 / fSize;
-
-		if (iDepth > 0) {
-			drawAllChildren(gl, glu, fWidth, fCurrentStartAngle, fWidth, fAnglePerSizeUnit, iDepth, false);
-		}
+	if (iDepth > 0) {
+		drawAllChildren(null, null, fWidth, fStartAngle, fInnerRadius + fWidth, fAnglePerSizeUnit,
+			iDepth, true);
 	}
+}
 
-	public void drawHierarchyAngular(GL gl, GLU glu, float fWidth, int iDepth, float fStartAngle,
-		float fAngle, float fInnerRadius) {
-		
-		fStartAngle = getValidAngle(fStartAngle);
-		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
+private float drawHierarchy(GL gl, GLU glu, float fWidth, float fStartAngle, float fInnerRadius,
+	float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
 
+	float fAngle = fSize * fAnglePerSizeUnit;
+	fStartAngle = getValidAngle(fStartAngle);
+	setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
+
+	if (!bSimulation) {
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			iElementID));
 		drawingStrategy.drawPartialDisc(gl, glu, this);
 		gl.glPopName();
-		iDepth--;
-
-		float fAnglePerSizeUnit = fAngle / fSize;
-
-		if (iDepth > 0) {
-			drawAllChildren(gl, glu, fWidth, fStartAngle, fInnerRadius + fWidth, fAnglePerSizeUnit, iDepth,
-				false);
-		}
 	}
 
-	public void simulateDrawHierarchyAngular(float fWidth, int iDepth, float fStartAngle, float fAngle,
-		float fInnerRadius) {
+	iDepth--;
 
-		fStartAngle = getValidAngle(fStartAngle);
-		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
-		iDepth--;
-
-		float fAnglePerSizeUnit = fAngle / fSize;
-
-		if (iDepth > 0) {
-			drawAllChildren(null, null, fWidth, fStartAngle, fInnerRadius + fWidth, fAnglePerSizeUnit,
-				iDepth, true);
-		}
+	if (iDepth > 0) {
+		drawAllChildren(gl, glu, fWidth, fStartAngle, fInnerRadius + fWidth, fAnglePerSizeUnit, iDepth,
+			bSimulation);
 	}
+	return fAngle;
+}
 
-	private float drawHierarchy(GL gl, GLU glu, float fWidth, float fStartAngle, float fInnerRadius,
-		float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
+private void drawAllChildren(GL gl, GLU glu, float fWidth, float fStartAngle, float fInnerRadius,
+	float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
 
-		float fAngle = fSize * fAnglePerSizeUnit;
-		fStartAngle = getValidAngle(fStartAngle);
-		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
+	float fChildStartAngle = fStartAngle;
 
-		if (!bSimulation) {
-			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
-				iElementID));
-			drawingStrategy.drawPartialDisc(gl, glu, this);
-			gl.glPopName();
-		}
-
-		iDepth--;
-
-		if (iDepth > 0) {
-			drawAllChildren(gl, glu, fWidth, fStartAngle, fInnerRadius + fWidth, fAnglePerSizeUnit, iDepth,
-				bSimulation);
-		}
-		return fAngle;
+	for (int i = 0; i < vecChildren.size(); i++) {
+		PartialDisc pdCurrentChild = (PartialDisc) vecChildren.elementAt(i);
+		fChildStartAngle +=
+			pdCurrentChild.drawHierarchy(gl, glu, fWidth, fChildStartAngle, fInnerRadius,
+				fAnglePerSizeUnit, iDepth, bSimulation);
 	}
+}
 
-	private void drawAllChildren(GL gl, GLU glu, float fWidth, float fStartAngle, float fInnerRadius,
-		float fAnglePerSizeUnit, int iDepth, boolean bSimulation) {
-
-		float fChildStartAngle = fStartAngle;
-
-		for (int i = 0; i < vecChildren.size(); i++) {
-			PartialDisc pdCurrentChild = (PartialDisc) vecChildren.elementAt(i);
-			fChildStartAngle +=
-				pdCurrentChild.drawHierarchy(gl, glu, fWidth, fChildStartAngle, fInnerRadius,
-					fAnglePerSizeUnit, iDepth, bSimulation);
-		}
+private float getValidAngle(float fAngle) {
+	while (fAngle > 360) {
+		fAngle -= 360;
 	}
-
-	private float getValidAngle(float fAngle) {
-		while (fAngle > 360) {
-			fAngle -= 360;
-		}
-		while (fAngle < 0) {
-			fAngle += 360;
-		}
-		return fAngle;
+	while (fAngle < 0) {
+		fAngle += 360;
 	}
+	return fAngle;
+}
 
-	private void setCurrentDisplayParameters(float fWidth, float fStartAngle, float fAngle,
-		float fInnerRadius, int iDepth) {
-		fCurrentAngle = fAngle;
-		iCurrentDepth = Math.min(iDepth, iHierarchyDepth);
-		fCurrentInnerRadius = fInnerRadius;
-		fCurrentStartAngle = fStartAngle;
-		fCurrentWidth = fWidth;
-	}
+private void setCurrentDisplayParameters(float fWidth, float fStartAngle, float fAngle,
+	float fInnerRadius, int iDepth) {
+	fCurrentAngle = fAngle;
+	iCurrentDepth = Math.min(iDepth, iHierarchyDepth);
+	fCurrentInnerRadius = fInnerRadius;
+	fCurrentStartAngle = fStartAngle;
+	fCurrentWidth = fWidth;
+}
 
-	public float getSize() {
-		return fSize;
-	}
+public float getSize() {
+	return fSize;
+}
 
-	public void setSize(float fSize) {
-		this.fSize = fSize;
-	}
+public void setSize(float fSize) {
+	this.fSize = fSize;
+}
 
-	public void setPickingManager(PickingManager pickingManager) {
-		this.pickingManager = pickingManager;
-	}
+public void setPickingManager(PickingManager pickingManager) {
+	this.pickingManager = pickingManager;
+}
 
-	public void setViewID(int iViewID) {
-		this.iViewID = iViewID;
-	}
+public void setViewID(int iViewID) {
+	this.iViewID = iViewID;
+}
 
-	public void setPDDrawingStrategy(PDDrawingStrategy drawingStrategy) {
-		this.drawingStrategy = drawingStrategy;
-	}
+public void setPDDrawingStrategy(PDDrawingStrategy drawingStrategy) {
+	this.drawingStrategy = drawingStrategy;
+}
 
-	public void setPDDrawingStrategyChildren(PDDrawingStrategy drawingStrategy, int iDepth) {
-		this.drawingStrategy = drawingStrategy;
-		iDepth--;
+public void setPDDrawingStrategyChildren(PDDrawingStrategy drawingStrategy, int iDepth) {
+	this.drawingStrategy = drawingStrategy;
+	iDrawingStrategyDepth = iDepth;
+	iDepth--;
 
+	if (iDepth > 0) {
 		for (int i = 0; i < vecChildren.size(); i++) {
 			PartialDisc pdCurrentChild = (PartialDisc) vecChildren.elementAt(i);
 			pdCurrentChild.setPDDrawingStrategyChildren(drawingStrategy, iDepth);
 		}
 	}
+}
 
-	public boolean hasChildren() {
-		return (vecChildren.size() > 0);
+public boolean hasParent(PartialDisc pdParent, int iDepth) {
+	if (heParent == null || iDepth <= 0) {
+		return false;
 	}
+	if (heParent == pdParent) {
+		return true;
+	}
+	return ((PartialDisc) (heParent)).hasParent(pdParent, iDepth - 1);
+}
 
-	public float getCurrentAngle() {
-		return fCurrentAngle;
-	}
+public boolean hasChildren() {
+	return (vecChildren.size() > 0);
+}
 
-	public float getCurrentStartAngle() {
-		return fCurrentStartAngle;
-	}
+public float getCurrentAngle() {
+	return fCurrentAngle;
+}
 
-	public int getCurrentDepth() {
-		return iCurrentDepth;
-	}
+public float getCurrentStartAngle() {
+	return fCurrentStartAngle;
+}
 
-	public float getCurrentWidth() {
-		return fCurrentWidth;
-	}
+public int getCurrentDepth() {
+	return iCurrentDepth;
+}
 
-	public float getCurrentInnerRadius() {
-		return fCurrentInnerRadius;
-	}
+public float getCurrentWidth() {
+	return fCurrentWidth;
+}
+
+public float getCurrentInnerRadius() {
+	return fCurrentInnerRadius;
+}
+
+public String getName() {
+	return sName;
+}
+
+public void setName(String sName) {
+	this.sName = sName;
+}
+
+public int getDrawingStrategyDepth() {
+	return iDrawingStrategyDepth;
+}
+
+public void setDrawingStrategyDepth(int iDrawingStrategyDepth) {
+	this.iDrawingStrategyDepth = iDrawingStrategyDepth;
+}
 
 }

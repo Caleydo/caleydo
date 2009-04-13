@@ -395,7 +395,7 @@ public class GLRadialHierarchy
 				PartialDisc pdPickedElement = hashPartialDiscs.get(iExternalID);
 				
 				switch (pickingMode) {
-					case DOUBLE_CLICKED:
+					case CLICKED:
 						if (pdPickedElement != null)
 							drawingController.handleClick(pdPickedElement);
 						break;
@@ -405,7 +405,7 @@ public class GLRadialHierarchy
 							drawingController.handleMouseOver(pdPickedElement);					
 						break;
 						
-					case CLICKED:
+					case DOUBLE_CLICKED:
 						if (pdPickedElement != null)
 							drawingController.handleDoubleClick(pdPickedElement);
 						break;
