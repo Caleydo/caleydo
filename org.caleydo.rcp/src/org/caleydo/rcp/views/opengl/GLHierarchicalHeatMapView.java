@@ -43,24 +43,4 @@ public class GLHierarchicalHeatMapView
 		createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, glCanvas.getID(), true);
 	}
 
-	public static void createToolBarItems(int iViewID) {
-		// GLHierarchicalHeatMap hierarchicalHeatMap = (GLHierarchicalHeatMap)
-		// GeneralManager
-		// .get().getViewGLCanvasManager().getGLEventListener(iViewID);
-
-		alToolbar = new ArrayList<IAction>();
-
-//		IAction switchFocus = new InFocusAction(iViewID);
-//		alToolbar.add(switchFocus);
-		IAction startClustering = new StartClusteringAction(iViewID);
-		alToolbar.add(startClustering);
-		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
-		alToolbar.add(clearSelectionsAction);
-		IAction mergeClasses = new MergeClasses(iViewID);
-		alToolbar.add(mergeClasses);
-		IAction activateGroups = new ActivateGroupHandling(iViewID);
-		alToolbar.add(activateGroups);
-		// IAction resetViewAction = new ResetViewAction(iViewID);
-		// alToolbar.add(resetViewAction);
-	}
 }

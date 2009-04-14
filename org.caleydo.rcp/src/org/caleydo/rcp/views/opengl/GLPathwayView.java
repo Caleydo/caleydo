@@ -1,11 +1,5 @@
 package org.caleydo.rcp.views.opengl;
 
-import java.util.ArrayList;
-
-import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
-import org.caleydo.rcp.action.toolbar.view.pathway.NeighborhoodAction;
-import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
-import org.eclipse.jface.action.IAction;
 
 public class GLPathwayView
 	extends AGLViewPart {
@@ -18,14 +12,4 @@ public class GLPathwayView
 		super();
 	}
 
-	public static void createToolBarItems(int iViewID) {
-		alToolbar = new ArrayList<IAction>();
-
-		IAction textureAction = new TextureAction(iViewID);
-		alToolbar.add(textureAction);
-		IAction neighborhoodAction = new NeighborhoodAction(iViewID);
-		alToolbar.add(neighborhoodAction);
-		IAction geneMappingAction = new GeneMappingAction(iViewID);
-		alToolbar.add(geneMappingAction);
-	}
 }

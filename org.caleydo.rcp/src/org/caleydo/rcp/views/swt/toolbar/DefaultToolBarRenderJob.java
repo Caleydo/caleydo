@@ -23,7 +23,7 @@ import org.eclipse.ui.PlatformUI;
  * Render job for toolbar contents, usually used with eclipse's Display.asyncRun() 
  * @author Werner Puff
  */
-public class WideScreenToolBarRenderJob
+public class DefaultToolBarRenderJob
 	implements Runnable {
 
 	/** list of toolbar contents to render */ 

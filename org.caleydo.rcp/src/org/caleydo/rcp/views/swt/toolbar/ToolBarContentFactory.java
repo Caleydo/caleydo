@@ -9,8 +9,9 @@ import java.util.logging.Logger;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.rcp.views.opengl.GLHeatMapView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.ClinicalParCoordsToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ParCoordsToolBarContent;
@@ -69,6 +70,12 @@ public class ToolBarContentFactory {
 
 		toolBarContent = new RemoteRenderingToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), RemoteRenderingToolBarContent.class);
+
+		toolBarContent = new ClinicalParCoordsToolBarContent();
+		contentMap.put(toolBarContent.getViewClass().getName(), ClinicalParCoordsToolBarContent.class);
+		
+		toolBarContent = new GlyphToolBarContent();
+		contentMap.put(toolBarContent.getViewClass().getName(), GlyphToolBarContent.class);
 	}
 
 	/**

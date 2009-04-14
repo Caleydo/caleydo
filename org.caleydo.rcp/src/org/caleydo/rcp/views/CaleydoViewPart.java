@@ -3,14 +3,13 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public abstract class CaleydoViewPart
 	extends ViewPart {
 	protected static ArrayList<IAction> alToolbar;
-	protected static ArrayList<IContributionItem> alToolbarContributions;
+	// protected static ArrayList<IContributionItem> alToolbarContributions;
 
 	protected int iViewID;
 

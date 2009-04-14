@@ -49,45 +49,4 @@ public class GLParCoordsView
 			true);
 	}
 
-	public static void createToolBarItems(int iViewID) {
-		GLParallelCoordinates pcs =
-			(GLParallelCoordinates) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-
-		alToolbar = new ArrayList<IAction>();
-
-		// all pc views
-		IAction angularBrushingAction = new AngularBrushingAction(iViewID);
-		alToolbar.add(angularBrushingAction);
-		// IAction occlusionPreventionAction = new OcclusionPreventionAction(iViewID);
-		// alToolbar.add(occlusionPreventionAction);
-		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
-		alToolbar.add(switchAxesToPolylinesAction);
-
-		IAction resetAxisSpacing = new ResetAxisSpacingAction(iViewID);
-		alToolbar.add(resetAxisSpacing);
-
-		if (!pcs.isRenderedRemote()) {
-			IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
-			alToolbar.add(clearSelectionsAction);
-			IAction saveSelectionsAction = new SaveSelectionsAction(iViewID);
-			alToolbar.add(saveSelectionsAction);
-			IAction resetViewAction = new ResetViewAction(iViewID);
-			alToolbar.add(resetViewAction);
-			IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
-			alToolbar.add(propagateSelectionAction);
-		}
-		//
-		// // only if standalone or explicitly requested
-		// if (pcs.isRenderedRemote()
-		// && GeneralManager.get().getPreferenceStore().getBoolean(
-		// PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
-		// return;
-		//
-		// IAction toggleRenderContextAction = new RenderContextAction(iViewID);
-		// alToolbar.add(toggleRenderContextAction);
-		//
-		// IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
-		// alToolbar.add(useRandomSamplingAction);
-
-	}
 }

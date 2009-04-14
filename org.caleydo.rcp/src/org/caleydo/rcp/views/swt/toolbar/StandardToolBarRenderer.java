@@ -22,7 +22,7 @@ public class StandardToolBarRenderer
 	implements IToolBarRenderer {
 
 	public Runnable createRenderJob(ToolBarView toolBarView, List<AToolBarContent> toolBarContents) {
-		WideScreenToolBarRenderJob job = new WideScreenToolBarRenderJob();
+		DefaultToolBarRenderJob job = new DefaultToolBarRenderJob();
 		job.setToolBarView(toolBarView);
 		job.setToolBarContents(toolBarContents);
 		job.setToolBarRenderer(this);

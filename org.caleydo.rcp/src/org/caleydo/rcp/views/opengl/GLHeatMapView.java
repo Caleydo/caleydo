@@ -45,33 +45,4 @@ public class GLHeatMapView
 		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID(), true);
 	}
 
-	public static void createToolBarItems(int iViewID) {
-		GLHeatMap heatMap =
-			(GLHeatMap) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-
-		alToolbar = new ArrayList<IAction>();
-
-		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
-		alToolbar.add(switchAxesToPolylinesAction);
-		if (!heatMap.isRenderedRemote()) {
-			IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
-			alToolbar.add(clearSelectionsAction);
-			IAction resetViewAction = new ResetViewAction(iViewID);
-			alToolbar.add(resetViewAction);
-			IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
-			alToolbar.add(propagateSelectionAction);
-		}
-
-		// if (heatMap.isRenderedRemote()
-		// && GeneralManager.get().getPreferenceStore().getBoolean(
-		// PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT))
-		// return;
-		//
-		// IAction toggleRenderContextAction = new RenderContextAction(iViewID);
-		// alToolbar.add(toggleRenderContextAction);
-		// IAction useRandomSamplingAction = new
-		// UseRandomSamplingAction(iViewID);
-		// alToolbar.add(useRandomSamplingAction);
-
-	}
 }

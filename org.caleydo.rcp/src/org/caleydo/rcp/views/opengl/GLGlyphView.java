@@ -39,37 +39,4 @@ public class GLGlyphView
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID(), true);
 	}
-
-	public static void createToolBarItems(int iViewID) {
-		GLGlyph glyphview =
-			(GLGlyph) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-
-		alToolbar = new ArrayList<IAction>();
-		alToolbarContributions = new ArrayList<IContributionItem>();
-
-		alToolbar.add(new OpenNewWindowAction(iViewID));
-
-		alToolbar.add(new ChangeSelectionBrushAction(iViewID));
-
-		alToolbar.add(new RemoveUnselectedFromViewAction(iViewID));
-
-		alToolbar.add(new ClearSelectionsAction(iViewID));
-
-		alToolbar.add(new EnterViewNameAction(iViewID));
-
-		alToolbar.add(new OpenDataExportAction(iViewID));
-
-		ChangeViewModeSecondaryAction cvm2a = new ChangeViewModeSecondaryAction(iViewID);
-		cvm2a.setAction(null);
-
-		alToolbar.add(new ChangeViewModeAction(iViewID, cvm2a));
-		alToolbar.add(cvm2a);
-
-		// only if standalone or explicitly requested
-		if (glyphview.isRenderedRemote()
-			&& GeneralManager.get().getPreferenceStore().getBoolean(
-				PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
-			return;
-
-	}
 }
