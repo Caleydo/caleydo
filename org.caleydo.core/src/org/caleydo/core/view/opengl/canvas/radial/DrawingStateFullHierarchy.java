@@ -27,7 +27,7 @@ public class DrawingStateFullHierarchy
 
 		int iDisplayedHierarchyDepth =
 			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdCurrentRootElement
-				.getHierarchyDepth());
+				.getHierarchyDepth(radialHierarchy.getMaxDisplayedHierarchyDepth()));
 
 		float fHierarchyOuterRadius = Math.min(fXCenter * 0.9f, fYCenter * 0.9f);
 		float fDiscWidth = fHierarchyOuterRadius / iDisplayedHierarchyDepth;
@@ -63,8 +63,8 @@ public class DrawingStateFullHierarchy
 					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
 			}
 			if (pdClicked == pdCurrentRootElement) {
-				radialHierarchy.setCurrentRootElement(pdRealRootElement);
-				radialHierarchy.setCurrentMouseOverElement(pdRealRootElement);
+				radialHierarchy.setCurrentRootElement(pdClicked.getParent());
+				radialHierarchy.setCurrentMouseOverElement(pdClicked.getParent());
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdClicked);

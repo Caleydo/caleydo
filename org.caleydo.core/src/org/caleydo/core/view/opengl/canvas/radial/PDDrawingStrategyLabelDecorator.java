@@ -42,7 +42,7 @@ public class PDDrawingStrategyLabelDecorator
 			new Label(fSegmentXCenter, fSegmentYCenter, fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
 
 		label.addLine(pdDiscToDraw.getName());
-		label.addLine("Just a second line");
+		label.addLine("Coefficient: " + pdDiscToDraw.getCoefficient());
 		LabelManager.get().addLabel(label);
 	}
 

@@ -1,8 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
-import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,12 +8,14 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -35,12 +34,13 @@ import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 public class GLRadialHierarchy
 	extends AGLEventListener {
 
-	private static final int DISP_HIER_DEPTH_DEFAULT = 3;
+	public static final int DISP_HIER_DEPTH_DEFAULT = 3;
 
 	private int iMaxDisplayedHierarchyDepth;
-	
+
 	private boolean bIsAnimationActive;
 
+	private Tree<PartialDisc> partialDiscTree;
 	private HashMap<Integer, PartialDisc> hashPartialDiscs;
 
 	private PartialDisc pdRealRootElement;
@@ -76,6 +76,7 @@ public class GLRadialHierarchy
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
+		partialDiscTree = new Tree<PartialDisc>();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		drawingController = new DrawingController(this);
 		glu = new GLU();
@@ -118,115 +119,148 @@ public class GLRadialHierarchy
 	private void initTestHierarchy() {
 
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
-		pdRealRootElement = new PartialDisc(0, 100, iUniqueID, pickingManager);
+		int childID = 0;
+		ClusterNode currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		pdRealRootElement =
+			new PartialDisc(0, 100, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
 		pdCurrentRootElement = pdRealRootElement;
 		hashPartialDiscs.put(0, pdRealRootElement);
+		partialDiscTree.setRootNode(pdRealRootElement);
 
 		ArrayList<PartialDisc> children = new ArrayList<PartialDisc>();
-		int childID = 0;
 		childID++;
-		children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager));
-		pdCurrentRootElement.addChild(children.get(0));
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree,
+			currentClusterNode));
 		hashPartialDiscs.put(childID, children.get(0));
 		childID++;
-		children.add(new PartialDisc(childID, 40, iUniqueID, pickingManager));
-		pdCurrentRootElement.addChild(children.get(1));
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		children.add(new PartialDisc(childID, 40, iUniqueID, pickingManager, partialDiscTree,
+			currentClusterNode));
 		hashPartialDiscs.put(childID, children.get(1));
 		childID++;
-		children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager));
-		pdCurrentRootElement.addChild(children.get(2));
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree,
+			currentClusterNode));
 		hashPartialDiscs.put(childID, children.get(2));
 		childID++;
-		children.add(new PartialDisc(childID, 15, iUniqueID, pickingManager));
-		pdCurrentRootElement.addChild(children.get(3));
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		children.add(new PartialDisc(childID, 15, iUniqueID, pickingManager, partialDiscTree,
+			currentClusterNode));
 		hashPartialDiscs.put(childID, children.get(3));
 		childID++;
-		children.add(new PartialDisc(childID, 25, iUniqueID, pickingManager));
-		pdCurrentRootElement.addChild(children.get(4));
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		children.add(new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree,
+			currentClusterNode));
 		hashPartialDiscs.put(childID, children.get(4));
 
-		PartialDisc[] ch1 = new PartialDisc[4];
-		childID++;
-		ch1[0] = new PartialDisc(childID, 0.01f, iUniqueID, pickingManager);
-		children.get(0).addChild(ch1[0]);
-		hashPartialDiscs.put(childID, ch1[0]);
-		childID++;
-		ch1[1] = new PartialDisc(childID, 0.3f, iUniqueID, pickingManager);
-		children.get(0).addChild(ch1[1]);
-		hashPartialDiscs.put(childID, ch1[1]);
-		childID++;
-		ch1[2] = new PartialDisc(childID, 0.2f, iUniqueID, pickingManager);
-		children.get(0).addChild(ch1[2]);
-		hashPartialDiscs.put(childID, ch1[2]);
-		childID++;
-		ch1[3] = new PartialDisc(childID, 9.49f, iUniqueID, pickingManager);
-		children.get(0).addChild(ch1[3]);
-		hashPartialDiscs.put(childID, ch1[3]);
-		
-		childID++;
-		PartialDisc temp = new PartialDisc(childID, 0.01f, iUniqueID, pickingManager);
-		ch1[0].addChild(temp);
-		hashPartialDiscs.put(childID, temp);
-		childID++;
-		temp = new PartialDisc(childID, 0.3f, iUniqueID, pickingManager);
-		ch1[1].addChild(temp);
-		hashPartialDiscs.put(childID, temp);
-		childID++;
-		temp = new PartialDisc(childID, 0.2f, iUniqueID, pickingManager);
-		ch1[2].addChild(temp);
-		hashPartialDiscs.put(childID, temp);
-		childID++;
-		temp = new PartialDisc(childID, 9.49f, iUniqueID, pickingManager);
-		ch1[3].addChild(temp);
-		hashPartialDiscs.put(childID, temp);
+		partialDiscTree.addChildren(pdCurrentRootElement, children);
 
-		PartialDisc[] ch2 = new PartialDisc[3];
+		ArrayList<PartialDisc> ch1 = new ArrayList<PartialDisc>();
 		childID++;
-		ch2[0] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		children.get(1).addChild(ch2[0]);
-		hashPartialDiscs.put(childID, ch2[0]);
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch1.add(new PartialDisc(childID, 0.01f, iUniqueID, pickingManager, partialDiscTree,
+			currentClusterNode));
+		hashPartialDiscs.put(childID, ch1.get(0));
 		childID++;
-		ch2[1] = new PartialDisc(childID, 5, iUniqueID, pickingManager);
-		children.get(1).addChild(ch2[1]);
-		hashPartialDiscs.put(childID, ch2[1]);
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch1
+			.add(new PartialDisc(childID, 0.3f, iUniqueID, pickingManager, partialDiscTree,
+				currentClusterNode));
+		hashPartialDiscs.put(childID, ch1.get(1));
 		childID++;
-		ch2[2] = new PartialDisc(childID, 25, iUniqueID, pickingManager);
-		children.get(1).addChild(ch2[2]);
-		hashPartialDiscs.put(childID, ch2[2]);
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch1
+			.add(new PartialDisc(childID, 0.2f, iUniqueID, pickingManager, partialDiscTree,
+				currentClusterNode));
+		hashPartialDiscs.put(childID, ch1.get(2));
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch1.add(new PartialDisc(childID, 9.49f, iUniqueID, pickingManager, partialDiscTree,
+			currentClusterNode));
+		hashPartialDiscs.put(childID, ch1.get(3));
+
+		partialDiscTree.addChildren(children.get(0), ch1);
+
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		PartialDisc pdTemp = new PartialDisc(childID, 0.01f, iUniqueID, pickingManager,	partialDiscTree, currentClusterNode);
+		partialDiscTree.addChild(ch1.get(0), pdTemp);
+		hashPartialDiscs.put(childID, pdTemp);
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		pdTemp = new PartialDisc(childID, 0.3f, iUniqueID, pickingManager,
+			partialDiscTree, currentClusterNode);
+		partialDiscTree.addChild(ch1.get(1), pdTemp);
+		hashPartialDiscs.put(childID, pdTemp);
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		pdTemp = new PartialDisc(childID, 0.2f, iUniqueID, pickingManager,
+			partialDiscTree, currentClusterNode);
+		partialDiscTree.addChild(ch1.get(2), pdTemp);
+		hashPartialDiscs.put(childID, pdTemp);
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		pdTemp = new PartialDisc(childID, 9.49f, iUniqueID, pickingManager,
+			partialDiscTree, currentClusterNode);
+		partialDiscTree.addChild(ch1.get(3), pdTemp);
+		hashPartialDiscs.put(childID, pdTemp);
+
+		ArrayList<PartialDisc> ch2 = new ArrayList<PartialDisc>();
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch2.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch2.get(0));
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch2.add(new PartialDisc(childID, 5, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch2.get(1));
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch2.add(new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch2.get(2));
 		
+		partialDiscTree.addChildren(children.get(1), ch2);
+
 		childID++;
-		PartialDisc ch = new PartialDisc(childID, 25, iUniqueID, pickingManager);
-		ch2[2].addChild(ch);
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		PartialDisc ch = new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
+		partialDiscTree.addChild(ch2.get(2), ch);
 		hashPartialDiscs.put(childID, ch);
+
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		pdTemp = new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
+		partialDiscTree.addChild(ch, pdTemp);
+		hashPartialDiscs.put(childID, pdTemp);
+
+		ArrayList<PartialDisc> ch4 = new ArrayList<PartialDisc>();
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch4.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch4.get(0));
+		childID++;
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch4.add(new PartialDisc(childID, 5, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch4.get(1));
 		
-		childID++;
-		temp = new PartialDisc(childID, 25, iUniqueID, pickingManager);
-		ch.addChild(temp);
-		hashPartialDiscs.put(childID, temp);
+		partialDiscTree.addChildren(children.get(3), ch4);
 
-		PartialDisc[] ch4 = new PartialDisc[2];
+		ArrayList<PartialDisc> ch5 = new ArrayList<PartialDisc>();
 		childID++;
-		ch4[0] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		children.get(3).addChild(ch4[0]);
-		hashPartialDiscs.put(childID, ch4[0]);
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch5.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch5.get(0));
 		childID++;
-		ch4[1] = new PartialDisc(childID, 5, iUniqueID, pickingManager);
-		children.get(3).addChild(ch4[1]);
-		hashPartialDiscs.put(childID, ch4[1]);
-
-		PartialDisc[] ch5 = new PartialDisc[3];
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch5.add(new PartialDisc(childID, 2, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch5.get(1));
 		childID++;
-		ch5[0] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		children.get(4).addChild(ch5[0]);
-		hashPartialDiscs.put(childID, ch5[0]);
-		childID++;
-		ch5[1] = new PartialDisc(childID, 2, iUniqueID, pickingManager);
-		children.get(4).addChild(ch5[1]);
-		hashPartialDiscs.put(childID, ch5[1]);
-		childID++;
-		ch5[2] = new PartialDisc(childID, 13, iUniqueID, pickingManager);
-		children.get(4).addChild(ch5[2]);
-		hashPartialDiscs.put(childID, ch5[2]);
+		currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
+		ch5.add(new PartialDisc(childID, 13, iUniqueID, pickingManager, partialDiscTree, currentClusterNode));
+		hashPartialDiscs.put(childID, ch5.get(2));
+		
+		partialDiscTree.addChildren(children.get(4), ch5);
 
 	}
 
@@ -275,12 +309,12 @@ public class GLRadialHierarchy
 	public synchronized void display(GL gl) {
 
 		// render(gl);
-		//clipToFrustum(gl);
+		// clipToFrustum(gl);
 		//
-		if(bIsAnimationActive) {
+		if (bIsAnimationActive) {
 			float fXCenter = viewFrustum.getWidth() / 2;
 			float fYCenter = viewFrustum.getHeight() / 2;
-			drawingController.draw(fXCenter, fYCenter, gl, glu);		
+			drawingController.draw(fXCenter, fYCenter, gl, glu);
 		}
 		else
 			gl.glCallList(iGLDisplayListToCall);
@@ -294,28 +328,28 @@ public class GLRadialHierarchy
 
 		float fXCenter = viewFrustum.getWidth() / 2;
 		float fYCenter = viewFrustum.getHeight() / 2;
-		
+
 		drawingController.draw(fXCenter, fYCenter, gl, glu);
-		
-//		TextRenderer renderer = new TextRenderer(new Font("Courier New", Font.PLAIN, 78), false);
-//		
-//		renderer.setColor(0, 0, 0, 1);
-//		renderer.begin3DRendering();
-//		renderer.draw3D("Hello World!", 0, 0, 0, 0.003f);
-//		renderer.end3DRendering();
-//		renderer.flush();
-//		Rectangle2D rect = renderer.getBounds("Hello World!");
-//		
-//		gl.glColor4f(0,0,0,1);
-//		gl.glBegin(GL.GL_POLYGON);
-//		
-//		
-//		gl.glVertex3f((float)rect.getWidth() * 0.003f, 0, 0);
-//		gl.glVertex3f((float)rect.getWidth() * 0.003f, -1, 0);
-//		gl.glVertex3f(0, -1, 0);
-//		gl.glVertex3f(0, 0, 0);
-//		gl.glEnd();
-		
+
+		// TextRenderer renderer = new TextRenderer(new Font("Courier New", Font.PLAIN, 78), false);
+		//		
+		// renderer.setColor(0, 0, 0, 1);
+		// renderer.begin3DRendering();
+		// renderer.draw3D("Hello World!", 0, 0, 0, 0.003f);
+		// renderer.end3DRendering();
+		// renderer.flush();
+		// Rectangle2D rect = renderer.getBounds("Hello World!");
+		//		
+		// gl.glColor4f(0,0,0,1);
+		// gl.glBegin(GL.GL_POLYGON);
+		//		
+		//		
+		// gl.glVertex3f((float)rect.getWidth() * 0.003f, 0, 0);
+		// gl.glVertex3f((float)rect.getWidth() * 0.003f, -1, 0);
+		// gl.glVertex3f(0, -1, 0);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glEnd();
+
 		gl.glEndList();
 	}
 
@@ -424,25 +458,25 @@ public class GLRadialHierarchy
 		switch (ePickingType) {
 
 			case RAD_HIERARCHY_PDISC_SELECTION:
-				
+
 				PartialDisc pdPickedElement = hashPartialDiscs.get(iExternalID);
-				
+
 				switch (pickingMode) {
 					case CLICKED:
 						if (pdPickedElement != null)
 							drawingController.handleClick(pdPickedElement);
 						break;
-						
+
 					case MOUSE_OVER:
 						if (pdPickedElement != null)
-							drawingController.handleMouseOver(pdPickedElement);					
+							drawingController.handleMouseOver(pdPickedElement);
 						break;
-						
-					case DOUBLE_CLICKED:
+
+					case RIGHT_CLICKED:
 						if (pdPickedElement != null)
 							drawingController.handleDoubleClick(pdPickedElement);
 						break;
-						
+
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
@@ -452,7 +486,7 @@ public class GLRadialHierarchy
 
 		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
-	
+
 	public PartialDisc getRealRootElement() {
 		return pdRealRootElement;
 	}
@@ -476,7 +510,7 @@ public class GLRadialHierarchy
 	public void setCurrentSelectedElement(PartialDisc pdCurrentSelectedElement) {
 		this.pdCurrentSelectedElement = pdCurrentSelectedElement;
 	}
-	
+
 	public PartialDisc getCurrentMouseOverElement() {
 		return pdCurrentMouseOverElement;
 	}
@@ -484,7 +518,7 @@ public class GLRadialHierarchy
 	public void setCurrentMouseOverElement(PartialDisc pdCurrentMouseOverElement) {
 		this.pdCurrentMouseOverElement = pdCurrentMouseOverElement;
 	}
-	
+
 	public int getMaxDisplayedHierarchyDepth() {
 		return iMaxDisplayedHierarchyDepth;
 	}
@@ -496,7 +530,7 @@ public class GLRadialHierarchy
 	public boolean isInListMode() {
 		return bIsInListMode;
 	}
-	
+
 	public void setAnimationActive(boolean bIsAnimationActive) {
 		this.bIsAnimationActive = bIsAnimationActive;
 	}
@@ -525,5 +559,4 @@ public class GLRadialHierarchy
 
 	}
 
-	
 }
