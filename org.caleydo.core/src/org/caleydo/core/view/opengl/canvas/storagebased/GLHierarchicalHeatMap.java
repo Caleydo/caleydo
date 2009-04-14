@@ -6,12 +6,14 @@ import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECT
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
@@ -1554,7 +1556,7 @@ public class GLHierarchicalHeatMap
 			currentDepth++;
 
 			listGraph = tree.getChildren(parentNode);
-			
+
 			int iNrChildsNode = listGraph.size();
 
 			if (bleft)
@@ -1985,7 +1987,7 @@ public class GLHierarchicalHeatMap
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-		
+
 		if (bUseClusteredVA) {
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
@@ -2022,6 +2024,28 @@ public class GLHierarchicalHeatMap
 			if (eClustererAlgo == EClustererAlgo.COBWEB_CLUSTERER
 				|| eClustererAlgo == EClustererAlgo.TREE_CLUSTERER) {
 				tree = set.getClusteredTree();
+
+//				try {
+//
+//					System.out.println(tree.getGraph().toString());
+//
+//					String filename = "tree.xml";
+//					tree.exportTree(filename);
+//
+//					// Tree<ClusterNode> temp = tree.importTree(filename);
+//					// System.out.println(temp.getGraph().toString());
+//
+//					tree = tree.importTree(filename);
+//					System.out.println(tree.getGraph().toString());
+//
+//				}
+//				catch (JAXBException e) {
+//					e.printStackTrace();
+//				}
+//				catch (IOException e) {
+//					e.printStackTrace();
+//				}
+
 			}
 			else {
 
@@ -2036,7 +2060,7 @@ public class GLHierarchicalHeatMap
 				// System.out.println(" ");
 			}
 		}
-		else if (set.isClusterInfo()){
+		else if (set.isClusterInfo()) {
 			set.getVA(iContentVAID).setGroupList(set.getGroupList());
 		}
 
@@ -2045,7 +2069,7 @@ public class GLHierarchicalHeatMap
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
-		
+
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
 
