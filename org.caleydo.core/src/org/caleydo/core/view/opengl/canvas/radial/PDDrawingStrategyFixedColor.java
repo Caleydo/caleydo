@@ -3,11 +3,11 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategyChildIndicator;
 import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
 
 public class PDDrawingStrategyFixedColor
-extends PDDrawingStrategy {
+extends PDDrawingStrategyChildIndicator {
 
 	private float fFillColorR;
 	private float fFillColorG;
@@ -63,6 +63,10 @@ extends PDDrawingStrategy {
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 		
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
+		}
 		
 		gl.glColor4f(fFillColorR, fFillColorG, fFillColorB, fFillAlpha);
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,

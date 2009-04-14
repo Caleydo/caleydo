@@ -24,6 +24,8 @@ public class AnimationNewRootElement
 	MovementValue mvCurrentRootColorG;
 	MovementValue mvCurrentRootColorB;
 
+	int fTargetDepth;
+
 	PDDrawingStrategyFixedColor dsFixedColor;
 
 	public AnimationNewRootElement(DrawingController drawingController, GLRadialHierarchy radialHierarchy) {
@@ -53,9 +55,9 @@ public class AnimationNewRootElement
 		dsFixedColor.setFillColor(mvCurrentRootColorR.getMovementValue(), mvCurrentRootColorG
 			.getMovementValue(), mvCurrentRootColorB.getMovementValue(), 1);
 
-		pdCurrentRootElement.drawHierarchyAngular(gl, glu, mvCurrentWidth.getMovementValue(), Math
-			.round(mvCurrentDepth.getMovementValue()), mvCurrentRootStartAngle.getMovementValue(),
-			mvCurrentRootAngle.getMovementValue(), mvCurrentRootInnerRadius.getMovementValue());
+		pdCurrentRootElement.drawHierarchyAngular(gl, glu, mvCurrentWidth.getMovementValue(), fTargetDepth,
+			mvCurrentRootStartAngle.getMovementValue(), mvCurrentRootAngle.getMovementValue(),
+			mvCurrentRootInnerRadius.getMovementValue());
 
 		if (!bAnimationStarted) {
 			drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
@@ -74,12 +76,13 @@ public class AnimationNewRootElement
 		float fCurrentRootStartAngle = pdCurrentRootElement.getCurrentStartAngle();
 		float fCurrentWidth = pdCurrentRootElement.getCurrentWidth();
 
-		float fTargetDepth =
+		fTargetDepth = 
 			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdCurrentRootElement
 				.getHierarchyDepth());
 		float fTargetWidth = Math.min(fXCenter * 0.9f, fYCenter * 0.9f) / fTargetDepth;
 
 		float fMidAngle = fCurrentRootStartAngle + (fCurrentRootAngle / 2.0f);
+		fTargetDepth = pdCurrentRootElement.getCurrentDepth();
 
 		while (fMidAngle > 360) {
 			fMidAngle -= 360;

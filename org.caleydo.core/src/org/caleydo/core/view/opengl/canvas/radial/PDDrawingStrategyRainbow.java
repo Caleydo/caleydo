@@ -9,11 +9,11 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategyChildIndicator;
 import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
 
 public class PDDrawingStrategyRainbow
-	extends PDDrawingStrategy {
+	extends PDDrawingStrategyChildIndicator {
 
 	public PDDrawingStrategyRainbow() {
 
@@ -47,10 +47,15 @@ public class PDDrawingStrategyRainbow
 		}
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
+		}
+
 		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
 		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360);
 
 		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], 1);
+
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
 

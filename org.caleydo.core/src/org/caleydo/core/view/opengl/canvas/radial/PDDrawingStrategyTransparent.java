@@ -6,11 +6,11 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
+import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategyChildIndicator;
 import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
 
 public class PDDrawingStrategyTransparent
-	extends PDDrawingStrategy {
+	extends PDDrawingStrategyChildIndicator {
 
 	@Override
 	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
@@ -47,6 +47,10 @@ public class PDDrawingStrategyTransparent
 			fMidAngle -= 360;
 		}
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
+		}
 
 		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
 		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360);

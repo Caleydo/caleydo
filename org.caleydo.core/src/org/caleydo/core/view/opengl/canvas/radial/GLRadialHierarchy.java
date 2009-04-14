@@ -35,7 +35,7 @@ import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 public class GLRadialHierarchy
 	extends AGLEventListener {
 
-	private static final int DISP_HIER_DEPTH_DEFAULT = 4;
+	private static final int DISP_HIER_DEPTH_DEFAULT = 3;
 
 	private int iMaxDisplayedHierarchyDepth;
 	
@@ -85,6 +85,9 @@ public class GLRadialHierarchy
 	@Override
 	public void init(GL gl) {
 		initTestHierarchy();
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		if (set == null)
 			return;
 	}
@@ -119,80 +122,110 @@ public class GLRadialHierarchy
 		pdCurrentRootElement = pdRealRootElement;
 		hashPartialDiscs.put(0, pdRealRootElement);
 
-		PartialDisc[] children = new PartialDisc[5];
+		ArrayList<PartialDisc> children = new ArrayList<PartialDisc>();
 		int childID = 0;
 		childID++;
-		children[0] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		pdCurrentRootElement.addChild(children[0]);
-		hashPartialDiscs.put(childID, children[0]);
+		children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager));
+		pdCurrentRootElement.addChild(children.get(0));
+		hashPartialDiscs.put(childID, children.get(0));
 		childID++;
-		children[1] = new PartialDisc(childID, 40, iUniqueID, pickingManager);
-		pdCurrentRootElement.addChild(children[1]);
-		hashPartialDiscs.put(childID, children[1]);
+		children.add(new PartialDisc(childID, 40, iUniqueID, pickingManager));
+		pdCurrentRootElement.addChild(children.get(1));
+		hashPartialDiscs.put(childID, children.get(1));
 		childID++;
-		children[2] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		pdCurrentRootElement.addChild(children[2]);
-		hashPartialDiscs.put(childID, children[2]);
+		children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager));
+		pdCurrentRootElement.addChild(children.get(2));
+		hashPartialDiscs.put(childID, children.get(2));
 		childID++;
-		children[3] = new PartialDisc(childID, 15, iUniqueID, pickingManager);
-		pdCurrentRootElement.addChild(children[3]);
-		hashPartialDiscs.put(childID, children[3]);
+		children.add(new PartialDisc(childID, 15, iUniqueID, pickingManager));
+		pdCurrentRootElement.addChild(children.get(3));
+		hashPartialDiscs.put(childID, children.get(3));
 		childID++;
-		children[4] = new PartialDisc(childID, 25, iUniqueID, pickingManager);
-		pdCurrentRootElement.addChild(children[4]);
-		hashPartialDiscs.put(childID, children[4]);
+		children.add(new PartialDisc(childID, 25, iUniqueID, pickingManager));
+		pdCurrentRootElement.addChild(children.get(4));
+		hashPartialDiscs.put(childID, children.get(4));
 
-		PartialDisc[] ch1 = new PartialDisc[2];
+		PartialDisc[] ch1 = new PartialDisc[4];
 		childID++;
-		ch1[0] = new PartialDisc(childID, 1, iUniqueID, pickingManager);
-		children[0].addChild(ch1[0]);
+		ch1[0] = new PartialDisc(childID, 0.01f, iUniqueID, pickingManager);
+		children.get(0).addChild(ch1[0]);
 		hashPartialDiscs.put(childID, ch1[0]);
 		childID++;
-		ch1[1] = new PartialDisc(childID, 9, iUniqueID, pickingManager);
-		children[0].addChild(ch1[1]);
+		ch1[1] = new PartialDisc(childID, 0.3f, iUniqueID, pickingManager);
+		children.get(0).addChild(ch1[1]);
 		hashPartialDiscs.put(childID, ch1[1]);
+		childID++;
+		ch1[2] = new PartialDisc(childID, 0.2f, iUniqueID, pickingManager);
+		children.get(0).addChild(ch1[2]);
+		hashPartialDiscs.put(childID, ch1[2]);
+		childID++;
+		ch1[3] = new PartialDisc(childID, 9.49f, iUniqueID, pickingManager);
+		children.get(0).addChild(ch1[3]);
+		hashPartialDiscs.put(childID, ch1[3]);
+		
+		childID++;
+		PartialDisc temp = new PartialDisc(childID, 0.01f, iUniqueID, pickingManager);
+		ch1[0].addChild(temp);
+		hashPartialDiscs.put(childID, temp);
+		childID++;
+		temp = new PartialDisc(childID, 0.3f, iUniqueID, pickingManager);
+		ch1[1].addChild(temp);
+		hashPartialDiscs.put(childID, temp);
+		childID++;
+		temp = new PartialDisc(childID, 0.2f, iUniqueID, pickingManager);
+		ch1[2].addChild(temp);
+		hashPartialDiscs.put(childID, temp);
+		childID++;
+		temp = new PartialDisc(childID, 9.49f, iUniqueID, pickingManager);
+		ch1[3].addChild(temp);
+		hashPartialDiscs.put(childID, temp);
 
 		PartialDisc[] ch2 = new PartialDisc[3];
 		childID++;
 		ch2[0] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		children[1].addChild(ch2[0]);
+		children.get(1).addChild(ch2[0]);
 		hashPartialDiscs.put(childID, ch2[0]);
 		childID++;
 		ch2[1] = new PartialDisc(childID, 5, iUniqueID, pickingManager);
-		children[1].addChild(ch2[1]);
+		children.get(1).addChild(ch2[1]);
 		hashPartialDiscs.put(childID, ch2[1]);
 		childID++;
 		ch2[2] = new PartialDisc(childID, 25, iUniqueID, pickingManager);
-		children[1].addChild(ch2[2]);
+		children.get(1).addChild(ch2[2]);
 		hashPartialDiscs.put(childID, ch2[2]);
 		
 		childID++;
 		PartialDisc ch = new PartialDisc(childID, 25, iUniqueID, pickingManager);
 		ch2[2].addChild(ch);
 		hashPartialDiscs.put(childID, ch);
+		
+		childID++;
+		temp = new PartialDisc(childID, 25, iUniqueID, pickingManager);
+		ch.addChild(temp);
+		hashPartialDiscs.put(childID, temp);
 
 		PartialDisc[] ch4 = new PartialDisc[2];
 		childID++;
 		ch4[0] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		children[3].addChild(ch4[0]);
+		children.get(3).addChild(ch4[0]);
 		hashPartialDiscs.put(childID, ch4[0]);
 		childID++;
 		ch4[1] = new PartialDisc(childID, 5, iUniqueID, pickingManager);
-		children[3].addChild(ch4[1]);
+		children.get(3).addChild(ch4[1]);
 		hashPartialDiscs.put(childID, ch4[1]);
 
 		PartialDisc[] ch5 = new PartialDisc[3];
 		childID++;
 		ch5[0] = new PartialDisc(childID, 10, iUniqueID, pickingManager);
-		children[4].addChild(ch5[0]);
+		children.get(4).addChild(ch5[0]);
 		hashPartialDiscs.put(childID, ch5[0]);
 		childID++;
 		ch5[1] = new PartialDisc(childID, 2, iUniqueID, pickingManager);
-		children[4].addChild(ch5[1]);
+		children.get(4).addChild(ch5[1]);
 		hashPartialDiscs.put(childID, ch5[1]);
 		childID++;
 		ch5[2] = new PartialDisc(childID, 13, iUniqueID, pickingManager);
-		children[4].addChild(ch5[2]);
+		children.get(4).addChild(ch5[2]);
 		hashPartialDiscs.put(childID, ch5[2]);
 
 	}
