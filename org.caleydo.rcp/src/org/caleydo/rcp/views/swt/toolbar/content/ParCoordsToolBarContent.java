@@ -31,31 +31,33 @@ public class ParCoordsToolBarContent
 	
 	@Override
 	public List<ToolBarContainer> getDefaultToolBar() {
-		ToolBarContainer container = new ToolBarContainer();
+		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
+		List<IAction> actionList = new ArrayList<IAction>();
+		container.setActions(actionList);
 
 		// all pc views
 		IAction angularBrushingAction = new AngularBrushingAction(targetViewID);
-		container.add(angularBrushingAction);
+		actionList.add(angularBrushingAction);
 		// IAction occlusionPreventionAction = new OcclusionPreventionAction(iViewID);
 		// alToolbar.add(occlusionPreventionAction);
 		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
-		container.add(switchAxesToPolylinesAction);
+		actionList.add(switchAxesToPolylinesAction);
 
 		IAction resetAxisSpacing = new ResetAxisSpacingAction(targetViewID);
-		container.add(resetAxisSpacing);
+		actionList.add(resetAxisSpacing);
 
 		if (contentType == STANDARD_CONTENT) {
 			IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-			container.add(clearSelectionsAction);
+			actionList.add(clearSelectionsAction);
 			IAction saveSelectionsAction = new SaveSelectionsAction(targetViewID);
-			container.add(saveSelectionsAction);
+			actionList.add(saveSelectionsAction);
 			IAction resetViewAction = new ResetViewAction(targetViewID);
-			container.add(resetViewAction);
+			actionList.add(resetViewAction);
 			IAction propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
-			container.add(propagateSelectionAction);
+			actionList.add(propagateSelectionAction);
 		}
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();

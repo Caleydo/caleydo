@@ -8,10 +8,13 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ClinicalParCoordsToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.GlyphToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.HTMLBrowserToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ParCoordsToolBarContent;
@@ -76,6 +79,9 @@ public class ToolBarContentFactory {
 		
 		toolBarContent = new GlyphToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), GlyphToolBarContent.class);
+		
+		toolBarContent = new HTMLBrowserToolBarContent();
+		contentMap.put(toolBarContent.getViewClass().getName(), HTMLBrowserToolBarContent.class);
 	}
 
 	/**
@@ -97,25 +103,60 @@ public class ToolBarContentFactory {
 		List<AToolBarContent> contents = new ArrayList<AToolBarContent>();
 
 		for (int viewID : viewIDs) {
-			AGLEventListener glView = canvasManager.getGLEventListener(viewID);
-			String type = glView.getClass().getName();
-			Class<?> contentClass = contentMap.get(type);
-			if (contentClass != null) {
-				try {
-					AToolBarContent content = (AToolBarContent) contentClass.newInstance();
-					content.setTargetViewID(viewID);
-					if (glView.isRenderedRemote()) {
-						content.setContentType(AToolBarContent.REMOTE_RENDERED_CONTENT);
-					}
-					contents.add(content);
-				} catch (Exception e) {
-					System.out.println(e);
-					e.printStackTrace();
-				}
+			AToolBarContent content = null;
+			Object view = canvasManager.getGLEventListener(viewID);
+			if (view != null && view instanceof AGLEventListener) {
+				content = getGLContent((AGLEventListener) view);
 			} else {
-				log.warning("not toolbar content providing class known for " + type);
+				view = canvasManager.getItem(viewID);
+				if (view != null && view instanceof ASWTView) {
+					content = getSWTContent((IView) view);
+				}
+			}
+			if (content != null) {
+				contents.add(content);
 			}
 		}
 		return contents;
+	}
+
+	private AToolBarContent getSWTContent(IView view) {
+		AToolBarContent content = null;
+		String type = view.getClass().getName();
+		Class<?> contentClass = contentMap.get(type);
+		if (contentClass != null) {
+			try {
+				content = (AToolBarContent) contentClass.newInstance();
+				content.setTargetViewID(view.getID());
+			} catch (Exception e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+		} else {
+			log.warning("no toolbar content providing class known for " + type);
+		}
+		return content;
+	}
+
+	private AToolBarContent getGLContent(AGLEventListener glView) {
+		String type = glView.getClass().getName();
+		Class<?> contentClass = contentMap.get(type);
+		if (contentClass != null) {
+			AToolBarContent content;
+			try {
+				content = (AToolBarContent) contentClass.newInstance();
+				content.setTargetViewID(glView.getID());
+				if (glView.isRenderedRemote()) {
+					content.setContentType(AToolBarContent.REMOTE_RENDERED_CONTENT);
+				}
+				return content;
+			} catch (Exception e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+		} else {
+			log.warning("no toolbar content providing class known for " + type);
+		}
+		return null;
 	}
 }

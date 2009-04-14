@@ -44,20 +44,23 @@ public class RemoteRenderingToolBarContent
 	 * @return bucket related toolbar box
 	 */
 	private ToolBarContainer createBucketContainer() {
-		ToolBarContainer container = new ToolBarContainer();
+		ActionToolBarContainer container = new ActionToolBarContainer();
+
 		container.setImagePath(BUCKET_IMAGE_PATH);
 		container.setTitle(BUCKET_VIEW_TITLE);
+		List<IAction> actionList = new ArrayList<IAction>();
+		container.setActions(actionList);
 
 		// IAction takeSnapshotAction = new TakeSnapshotAction(-1);
 		// alToolbar.add(takeSnapshotAction);
 		IAction closeOrResetContainedViews = new CloseOrResetContainedViews(targetViewID);
-		container.add(closeOrResetContainedViews);
+		actionList.add(closeOrResetContainedViews);
 		// IAction toggleLayoutAction = new ToggleLayoutAction(viewID);
 		// alToolbar.add(toggleLayoutAction);
 		IAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(targetViewID);
-		container.add(toggleConnectionLinesAction);
+		actionList.add(toggleConnectionLinesAction);
 		IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-		container.add(clearSelectionsAction);
+		actionList.add(clearSelectionsAction);
 
 		return container;
 	}
@@ -72,16 +75,19 @@ public class RemoteRenderingToolBarContent
 	 * @return pathway related toolbar box
 	 */
 	private ToolBarContainer createPathwayContainer() {
-		ToolBarContainer container = new ToolBarContainer();
+		ActionToolBarContainer container = new ActionToolBarContainer();
+
 		container.setImagePath(PATHWAY_IMAGE_PATH);
 		container.setTitle(PATHWAY_VIEW_TITLE);
+		List<IAction> actionList = new ArrayList<IAction>();
+		container.setActions(actionList);
 
 		IAction textureAction = new TextureAction(targetViewID);
-		container.add(textureAction);
+		actionList.add(textureAction);
 		IAction neighborhoodAction = new NeighborhoodAction(targetViewID);
-		container.add(neighborhoodAction);
+		actionList.add(neighborhoodAction);
 		IAction geneMappingAction = new GeneMappingAction(targetViewID);
-		container.add(geneMappingAction);
+		actionList.add(geneMappingAction);
 
 		return container;
 	}

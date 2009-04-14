@@ -6,7 +6,10 @@ import java.util.List;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
+import org.caleydo.rcp.views.swt.toolbar.content.WidgetToolBarContainer;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -43,7 +46,13 @@ public class DefaultToolBarRenderJob
 		}
 	}
 
-	public void addToolBarContent(AToolBarContent toolBarContent) {
+	/**
+	 * Adds the content of the given toolbar content to the toolbar in the default 
+	 * drawing style of toolbars.
+	 * @param toolBarContent toolbar content to add to the toolbar
+	 */
+	private void addToolBarContent(AToolBarContent toolBarContent) {
+
 		List<Group> viewSpecificGroups = toolBarView.getViewSpecificGroups();
 		Composite parentComposite = toolBarView.getParentComposite();
 		
@@ -61,37 +70,14 @@ public class DefaultToolBarRenderJob
 		
 			// Needed to simulate toolbar wrapping which is not implemented for linux
 			// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
-			ArrayList<ToolBar> alToolBar = new ArrayList<ToolBar>();
-			ArrayList<IToolBarManager> toolBarManagers = new ArrayList<IToolBarManager>();
-		
-			final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-			ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-			alToolBar.add(toolBar);
-			toolBarManagers.add(toolBarManager);
-		
-			final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-			ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-			alToolBar.add(toolBar2);
-			toolBarManagers.add(toolBarManager2);
 			
-			fillToolBar(toolBarManagers, toolBarContainer);
+			fillToolBar(group, toolBarContainer);
 	
 			ResourceLoader resourceLoader = GeneralManager.get().getResourceLoader();
 			Display display = PlatformUI.getWorkbench().getDisplay();
 			String path = toolBarContainer.getImagePath(); 
 			resourceLoader.getImage(display, path);
 
-			// bIsBucketViewActive = true;
-			// toolBarView.updateSearchBar(true);
-			toolBarManager.update(true);
-	
-			if (toolBarManager2.isEmpty()) {
-				toolBarManager2.dispose();
-			}
-			else {
-				toolBarManager2.update(true);
-			}
-	
 // 			TODO: write horizontal renderer
 //			if (bHorizontal) {
 //				Label spacer = new Label(group, SWT.NULL);
@@ -116,13 +102,42 @@ public class DefaultToolBarRenderJob
 	 * toolbar managers is needed for simulating toolbar wrap which is not supported for linux. See bug:
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 	 */
-	public void fillToolBar(ArrayList<IToolBarManager> alToolBarManager, ToolBarContainer toolBarContainer) {
-		// add action items
-		int iToolBarWrapCount = toolBarRenderer.calcWrapCount(toolBarContainer.size());
+	private void fillToolBar(Group group, ToolBarContainer toolBarContainer) {
 
-		for (int iToolBarItemIndex = 0; iToolBarItemIndex < toolBarContainer.size(); iToolBarItemIndex++) {
-			alToolBarManager.get((int) (iToolBarItemIndex / iToolBarWrapCount)).add(
-				toolBarContainer.get(iToolBarItemIndex));
+		if (toolBarContainer instanceof ActionToolBarContainer) {
+			addActions(group, toolBarContainer);
+		} else if (toolBarContainer instanceof WidgetToolBarContainer) {
+			((WidgetToolBarContainer) toolBarContainer).render(group);
+		}
+	}
+
+	private void addActions(Group group, ToolBarContainer toolBarContainer) {
+		ArrayList<ToolBar> toolBars = new ArrayList<ToolBar>();
+		ArrayList<IToolBarManager> toolBarManagers = new ArrayList<IToolBarManager>();
+
+		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
+		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
+		toolBars.add(toolBar);
+		toolBarManagers.add(toolBarManager);
+	
+		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
+		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
+		toolBars.add(toolBar2);
+		toolBarManagers.add(toolBarManager2);
+
+		List<IAction> actions = ((ActionToolBarContainer) toolBarContainer).getActions();
+		int wrapCount = toolBarRenderer.calcWrapCount(actions.size());
+		for (int itemIndex = 0; itemIndex < actions.size(); itemIndex++) {
+			toolBarManagers.get((int) (itemIndex / wrapCount)).add(
+				actions.get(itemIndex));
+		}
+
+		toolBarManager.update(true);
+		
+		if (toolBarManager2.isEmpty()) {
+			toolBarManager2.dispose();
+		} else {
+			toolBarManager2.update(true);
 		}
 	}
 

@@ -28,20 +28,22 @@ public class HeatMapToolBarContent
 	
 	@Override
 	public List<ToolBarContainer> getDefaultToolBar() {
-		ToolBarContainer container = new ToolBarContainer();
+		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
+		List<IAction> actionList = new ArrayList<IAction>();
+		container.setActions(actionList);
 
 		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
-		container.add(switchAxesToPolylinesAction);
+		actionList.add(switchAxesToPolylinesAction);
 		if (contentType == STANDARD_CONTENT) {
 			IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-			container.add(clearSelectionsAction);
+			actionList.add(clearSelectionsAction);
 			IAction resetViewAction = new ResetViewAction(targetViewID);
-			container.add(resetViewAction);
+			actionList.add(resetViewAction);
 			IAction propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
-			container.add(propagateSelectionAction);
+			actionList.add(propagateSelectionAction);
 		}
 		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();

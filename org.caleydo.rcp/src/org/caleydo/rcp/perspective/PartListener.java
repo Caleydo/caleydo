@@ -1,11 +1,11 @@
 package org.caleydo.rcp.perspective;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -13,30 +13,17 @@ import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.views.CaleydoViewPart;
 import org.caleydo.rcp.views.opengl.AGLViewPart;
-import org.caleydo.rcp.views.opengl.GLGlyphView;
-import org.caleydo.rcp.views.opengl.GLHeatMapView;
-import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
-import org.caleydo.rcp.views.opengl.GLParCoordsView;
-import org.caleydo.rcp.views.opengl.GLPathwayView;
-import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.toolbar.ToolBarContentFactory;
-import org.caleydo.rcp.views.swt.toolbar.WideScreenToolBarRenderer;
 import org.caleydo.rcp.views.swt.toolbar.ToolBarView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
@@ -159,21 +146,27 @@ public class PartListener
 	public void partActivated(IWorkbenchPartReference partRef) {
 
 		IWorkbenchPart activePart = partRef.getPart(false);
-		if (!(activePart instanceof AGLViewPart))
+		if (!(activePart instanceof CaleydoViewPart)) {
 			return;
+		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 
-		if (activePart instanceof CaleydoViewPart && !(activePart instanceof HTMLBrowserView)) {
+		ViewActivationCommandEventContainer viewActivationEvent;
+		viewActivationEvent = new ViewActivationCommandEventContainer(EViewCommand.ACTIVATION);
+
+		if (viewPart instanceof HTMLBrowserView) {
+			List<Integer> viewIDs = new ArrayList<Integer>();
+			viewIDs.add(viewPart.getViewID());
+			viewActivationEvent.setViewIDs(viewIDs);
+		} else {
 			GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(
 				((CaleydoViewPart) activePart).getSWTComposite());
+
+			AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
+	
+			List<Integer> viewIDs = glView.getAllViewIDs();
+			viewActivationEvent.setViewIDs(viewIDs);
 		}
-
-		AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
-
-		ViewActivationCommandEventContainer viewActivationEvent = 
-			new ViewActivationCommandEventContainer(EViewCommand.ACTIVATION);
-		List<Integer> viewIDs = glView.getAllViewIDs();
-		viewActivationEvent.setViewIDs(viewIDs);
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher(); 
 		eventPublisher.triggerEvent(EMediatorType.VIEW_SELECTION, this, viewActivationEvent);
@@ -196,7 +189,7 @@ public class PartListener
 		toolBarManager.removeAll();
 		for (AToolBarContent toolBarContent : toolBarContents) {
 			for (ToolBarContainer container : toolBarContent.getDefaultToolBar()) {
-				for (IAction toolBarAction : container) {
+				for (IAction toolBarAction : ((ActionToolBarContainer) container).getActions()) {
 					toolBarManager.add(toolBarAction);
 				}
 				toolBarManager.add(new Separator());

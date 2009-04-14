@@ -59,7 +59,7 @@ public class HTMLBrowserView
 		return browserView;
 	}
 
-	public void createToolBarItems(int iViewID, Composite group) {
+	public void createToolBarItems2(int iViewID, Composite group) {
 		final Button buttonKEGG = new Button(group, SWT.RADIO);
 		buttonKEGG.setText(EBrowserQueryType.KEGG.toString());
 		final Button buttonBioCarta = new Button(group, SWT.RADIO);

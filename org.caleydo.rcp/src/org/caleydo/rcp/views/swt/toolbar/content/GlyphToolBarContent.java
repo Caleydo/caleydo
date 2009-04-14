@@ -3,7 +3,6 @@ package org.caleydo.rcp.views.swt.toolbar.content;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.rcp.action.toolbar.view.glyph.ChangeSelectionBrushAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeSecondaryAction;
@@ -12,6 +11,7 @@ import org.caleydo.rcp.action.toolbar.view.glyph.OpenDataExportAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.OpenNewWindowAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.RemoveUnselectedFromViewAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
+import org.eclipse.jface.action.IAction;
 
 /**
  * ToolBarContent implementation for glyph specific toolbar items.  
@@ -26,27 +26,29 @@ public class GlyphToolBarContent
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLHeatMap.class;
+		return GlyphToolBarContent.class;
 	}
 	
 	@Override
 	public List<ToolBarContainer> getDefaultToolBar() {
-		ToolBarContainer container = new ToolBarContainer();
+		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
+		List<IAction> actionList = new ArrayList<IAction>();
+		container.setActions(actionList);
 
-		container.add(new OpenNewWindowAction(targetViewID));
-		container.add(new ChangeSelectionBrushAction(targetViewID));
-		container.add(new RemoveUnselectedFromViewAction(targetViewID));
-		container.add(new ClearSelectionsAction(targetViewID));
-		container.add(new EnterViewNameAction(targetViewID));
-		container.add(new OpenDataExportAction(targetViewID));
+		actionList.add(new OpenNewWindowAction(targetViewID));
+		actionList.add(new ChangeSelectionBrushAction(targetViewID));
+		actionList.add(new RemoveUnselectedFromViewAction(targetViewID));
+		actionList.add(new ClearSelectionsAction(targetViewID));
+		actionList.add(new EnterViewNameAction(targetViewID));
+		actionList.add(new OpenDataExportAction(targetViewID));
 
 		ChangeViewModeSecondaryAction cvm2a = new ChangeViewModeSecondaryAction(targetViewID);
 		cvm2a.setAction(null);
-		container.add(new ChangeViewModeAction(targetViewID, cvm2a));
-		container.add(cvm2a);
+		actionList.add(new ChangeViewModeAction(targetViewID, cvm2a));
+		actionList.add(cvm2a);
 		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

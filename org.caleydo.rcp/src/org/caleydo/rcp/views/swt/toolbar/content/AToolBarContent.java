@@ -2,6 +2,9 @@ package org.caleydo.rcp.views.swt.toolbar.content;
 
 import java.util.List;
 
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.swt.widgets.Group;
+
 /**
  * Abstract super class for toolbar content classes to provide lists of toolbar-actions.
  * @author Werner Puff
@@ -36,7 +39,7 @@ public abstract class AToolBarContent {
 	 * @return list of actions for a toolbar
 	 */
 	public abstract List<ToolBarContainer> getDefaultToolBar();
-	
+
 	/**
 	 * Sets the id of the target view for the actions in this toolbar content.
 	 * The id must be set before retrieving any toolbar content.

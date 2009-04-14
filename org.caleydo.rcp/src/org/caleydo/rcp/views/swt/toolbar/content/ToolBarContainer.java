@@ -8,8 +8,7 @@ import org.eclipse.jface.action.IAction;
  * Holds a ordered group of tool-bar items displayed as one group in the toolbar   
  * @author Werner Puff
  */
-public class ToolBarContainer
-	extends ArrayList<IAction> {
+public class ToolBarContainer {
 
 	/** image path to FIXXXME: which image is this??? */
 	private String imagePath;

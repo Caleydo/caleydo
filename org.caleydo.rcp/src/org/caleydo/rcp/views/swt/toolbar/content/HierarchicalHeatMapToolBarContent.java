@@ -28,21 +28,23 @@ public class HierarchicalHeatMapToolBarContent
 	
 	@Override
 	public List<ToolBarContainer> getDefaultToolBar() {
-		ToolBarContainer container = new ToolBarContainer();
+		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
+		List<IAction> actionList = new ArrayList<IAction>();
+		container.setActions(actionList);
 
 		IAction startClustering = new StartClusteringAction(targetViewID);
-		container.add(startClustering);
+		actionList.add(startClustering);
 		IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-		container.add(clearSelectionsAction);
+		actionList.add(clearSelectionsAction);
 
 		IAction mergeGroup = new MergeClasses(targetViewID);
-		container.add(mergeGroup);
+		actionList.add(mergeGroup);
 		
 		IAction activateGroup = new ActivateGroupHandling(targetViewID);
-		container.add(activateGroup);
+		actionList.add(activateGroup);
 		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
