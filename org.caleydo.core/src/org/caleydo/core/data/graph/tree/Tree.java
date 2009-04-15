@@ -159,7 +159,14 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	public Tree<NodeType> importTree(String file) {
 
-		return (Tree<NodeType>) porter.importTree(file);
+		try {
+			return (Tree<NodeType>) porter.importTree(file);
+		}
+		catch (Exception e) {
 
+			System.out.println("Problem during tree import from xml!");
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

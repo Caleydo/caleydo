@@ -62,8 +62,8 @@ public class SetExporter {
 			}
 
 			if (contentVA.getGroupList() != null)
-				out.print("Cluster_Number\t"); // Cluster_Repr\t");
-			// out.print("Cluster_Number\tCluster_Repr\t");
+				out.print("Cluster_Number\tCluster_Repr\t");
+			// out.print("Cluster_Number\t");
 
 			out.println();
 
@@ -89,7 +89,7 @@ public class SetExporter {
 					out.print("\t");
 				}
 				if (contentVA.getGroupList() != null) {
-					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 1) {
+					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 0) {
 						offset = offset + contentVA.getGroupList().get(cluster).getNrElements();
 						cluster++;
 						cnt = 0;
@@ -97,15 +97,15 @@ public class SetExporter {
 					else {
 						cnt++;
 					}
-					// if (cluster < contentVA.getGroupList().size()) {
-					// if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
-					// out.print(cluster + "\t" + 1 + "\t");
-					// else
-					// out.print(cluster + "\t" + 0 + "\t");
-					// }
-					// else
-					// out.print(cluster + "\t" + 0 + "\t");
-					out.print(cluster + "\t");
+					if (cluster < contentVA.getGroupList().size()) {
+						if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
+							out.print(cluster + "\t" + 1 + "\t");
+						else
+							out.print(cluster + "\t" + 0 + "\t");
+					}
+					else
+						out.print(cluster + "\t" + 0 + "\t");
+					// out.print(cluster + "\t");
 					index++;
 				}
 				out.println();

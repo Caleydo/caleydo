@@ -7,6 +7,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.IGraph;
 
@@ -26,6 +27,10 @@ public class TreeClusterer
 			this.update = false;
 		}
 	}
+
+	private ISet set = null;
+	private Integer idContent = 0;
+	private Integer idStorage = 0;
 
 	private float[][] similarities = null;
 
@@ -246,7 +251,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer pmlcluster(ISet set) {
+	public Integer pmlcluster() {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -309,8 +314,8 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
 
-		Node[] result2 = new Node[iNrSamples - 1];
-		TreeToTreeStructure(tree.getRoot(), result2);
+//		Node[] result2 = new Node[iNrSamples - 1];
+//		TreeToTreeStructure(tree.getRoot(), result2);
 
 		// graph = treeToGraph(graph, result);
 
@@ -460,9 +465,10 @@ public class TreeClusterer
 
 		if (treeStructure[index].getLeft() >= 0) {
 
-			left =
-				new ClusterNode("Leaf_" + treeStructure[index].getLeft(), treeStructure[index].getLeft(), 0,
-					0);
+//			String NodeName = IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());
+//			left = new ClusterNode(NodeName, treeStructure[index].getLeft(), 0, 0);
+
+			left = new ClusterNode("Leaf_" + treeStructure[index].getLeft(), treeStructure[index].getLeft(), 0, 0);
 			tree.addChild(node, left);
 
 		}
@@ -476,9 +482,10 @@ public class TreeClusterer
 
 		if (treeStructure[index].getRight() >= 0) {
 
-			right =
-				new ClusterNode("Leaf_" + treeStructure[index].getRight(), treeStructure[index].getRight(),
-					0, 0);
+//			String NodeName = IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());
+//			right = new ClusterNode(NodeName, treeStructure[index].getRight(), 0, 0);
+			
+			right = new ClusterNode("Leaf_" + treeStructure[index].getRight(), treeStructure[index].getRight(), 0, 0);
 			tree.addChild(node, right);
 
 		}
@@ -502,8 +509,10 @@ public class TreeClusterer
 			HierarchyGraph right = null;
 
 			if (treeStructure[i].getLeft() >= 0) {
-				left =
-					new HierarchyGraph("Leaf_" + treeStructure[i].getLeft(), treeStructure[i].getLeft(), 0);
+
+				String nodeName = IDMappingHelper.get().getShortNameFromDavid(idContent);
+
+				left = new HierarchyGraph(nodeName, treeStructure[i].getLeft(), 0);
 			}
 			else {
 				left = graphList[-(treeStructure[i].getLeft()) - 1];
@@ -511,8 +520,10 @@ public class TreeClusterer
 			}
 
 			if (treeStructure[i].getRight() >= 0) {
-				right =
-					new HierarchyGraph("Leaf_" + treeStructure[i].getRight(), treeStructure[i].getRight(), 0);
+
+				String nodeName = IDMappingHelper.get().getShortNameFromDavid(idContent);
+
+				right = new HierarchyGraph(nodeName, treeStructure[i].getRight(), 0);
 			}
 			else {
 				right = graphList[-(treeStructure[i].getRight()) - 1];
@@ -615,8 +626,12 @@ public class TreeClusterer
 
 		determineSimilarities(set, idContent, idStorage, eClustererType);
 
-		VAId = pmlcluster(set);
-		// VAId = palcluster(set);
+		this.set = set;
+		this.idContent = idContent;
+		this.idStorage = idStorage;
+
+		VAId = pmlcluster();
+		// VAId = palcluster();
 
 		return VAId;
 	}

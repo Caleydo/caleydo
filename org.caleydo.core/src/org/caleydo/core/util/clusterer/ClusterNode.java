@@ -50,7 +50,7 @@ public class ClusterNode
 		
 	@Override
 	public String toString() {
-		return sNodeName + "_" + iClusterNr;
+		return sNodeName;
 	}
 
 	public void setDepth(int iDepth) {

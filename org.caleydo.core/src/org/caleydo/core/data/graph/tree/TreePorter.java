@@ -31,9 +31,6 @@ public class TreePorter {
 
 	private static final long serialVersionUID = 1L;
 
-	@XmlElement(name = "root")
-	ClusterNode root;
-
 	@XmlElementWrapper(name = "edges")
 	@XmlElement(name = "edge")
 	ArrayList<String> edges = new ArrayList<String>();
@@ -68,11 +65,12 @@ public class TreePorter {
 			e.printStackTrace();
 		}
 
-		rootNode = treePorter.root;
-
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
 			hashClusterNodes.put(node.toString(), node);
+			// FIXME: find another way to determine root node
+			if (node.getNodeName().equals("Root"))
+				rootNode = node;
 		}
 
 		for (String edge : treePorter.edges) {
@@ -98,10 +96,9 @@ public class TreePorter {
 	public boolean exportTree(String fileName, DirectedGraph<ClusterNode, DefaultEdge> graph, ClusterNode root)
 		throws JAXBException, IOException {
 
-		this.root = root;
-
 		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) graph.edgeSet();
 
+		// FIXME: edges should be stored in an other way (not as strings)
 		for (DefaultEdge edge : edgeSet) {
 			edges.add(edge.toString());
 		}

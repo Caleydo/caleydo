@@ -454,7 +454,7 @@ public class AffinityClusterer
 		Integer VAId = 0;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			fClusterFactor = 9.0f;
+			fClusterFactor = 5.0f;
 		if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
 			fClusterFactor = 1.0f;
 
