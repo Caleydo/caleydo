@@ -7,14 +7,10 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.ser.SerializedHeatMapView;
-import org.caleydo.core.view.ser.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.serialize.SerializedHeatMapView;
+import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
-import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLRemoteRenderingView

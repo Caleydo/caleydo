@@ -2792,4 +2792,5 @@ public class GLHierarchicalHeatMap
 
 		bRedrawTextures = true;
 	}
+
 }

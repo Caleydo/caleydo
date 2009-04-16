@@ -2,7 +2,6 @@ package org.caleydo.rcp.util.info;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
@@ -10,26 +9,22 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.views.swt.toolbar.ToolBarView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -146,7 +141,7 @@ public class InfoArea
 		return parent;
 	}
 	
-	private void handleSelectionUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta) {
+	private void handleSelectionUpdate(final IMediatorSender eventTrigger, final ISelectionDelta selectionDelta) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				
@@ -326,7 +321,7 @@ public class InfoArea
 	// }
 	// }
 
-	private void handleVAUpdate(final IUniqueObject eventTrigger, final IVirtualArrayDelta delta) {
+	private void handleVAUpdate(final IMediatorSender eventTrigger, final IVirtualArrayDelta delta) {
 		if (delta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
@@ -365,7 +360,7 @@ public class InfoArea
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
@@ -434,4 +429,5 @@ public class InfoArea
 				break;
 		}
 	}
+
 }

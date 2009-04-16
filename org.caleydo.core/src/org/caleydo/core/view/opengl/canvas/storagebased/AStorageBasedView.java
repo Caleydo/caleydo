@@ -8,7 +8,6 @@ import java.util.logging.Level;
 
 import javax.management.InvalidAttributeValueException;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
@@ -303,7 +302,7 @@ public abstract class AStorageBasedView
 	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException;
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta) {
+	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -332,7 +331,7 @@ public abstract class AStorageBasedView
 
 	}
 
-	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta) {
+	private void handleVAUpdate(IMediatorSender eventTrigger, IVirtualArrayDelta delta) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
@@ -407,7 +406,7 @@ public abstract class AStorageBasedView
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:

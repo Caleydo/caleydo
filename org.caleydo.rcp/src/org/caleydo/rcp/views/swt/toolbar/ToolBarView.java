@@ -2,18 +2,16 @@ package org.caleydo.rcp.views.swt.toolbar;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
-import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
-import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.eclipse.jface.action.ToolBarManager;
@@ -376,7 +374,7 @@ public class ToolBarView
 	}
 
 	@Override
-	public void handleExternalEvent(final IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		if (eventTrigger instanceof AGLEventListener) {
 			final int iViewID = ((AGLEventListener) eventTrigger).getID();
@@ -445,4 +443,5 @@ public class ToolBarView
 	public void setViewSpecificGroups(ArrayList<Group> viewSpecificGroups) {
 		this.viewSpecificGroups = viewSpecificGroups;
 	}
+
 }

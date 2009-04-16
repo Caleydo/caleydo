@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -329,7 +329,7 @@ public class SearchView
 	}
 
 	@Override
-	public void handleExternalEvent(final IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 
 	}
@@ -348,4 +348,5 @@ public class SearchView
 //	public int getSizeFlags(boolean width) {
 //		return SWT.MIN;
 //	}
+
 }

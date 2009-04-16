@@ -2,9 +2,6 @@ package org.caleydo.rcp.views.swt.toolbar.content;
 
 import java.util.List;
 
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.swt.widgets.Group;
-
 /**
  * Abstract super class for toolbar content classes to provide lists of toolbar-actions.
  * @author Werner Puff

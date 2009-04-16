@@ -12,7 +12,6 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -396,7 +395,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		// TODO Auto-generated method stub
 
@@ -407,4 +406,5 @@ public class GLGlyphSliderView
 		// TODO Auto-generated method stub
 
 	}
+
 }

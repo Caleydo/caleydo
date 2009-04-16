@@ -10,7 +10,6 @@ import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
@@ -31,6 +30,7 @@ import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
@@ -40,6 +40,8 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -93,6 +95,9 @@ public class GLPathway
 	// private int iHorizontalTextAlignment = SWT.CENTER;
 	// private int iVerticalTextAlignment = SWT.BOTTOM;
 
+	EnableTexturesListener enableTexturesListener = null;
+	DisableTexturesListener disableTexturesListener = null;
+	
 	/**
 	 * Constructor.
 	 */
@@ -120,6 +125,8 @@ public class GLPathway
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 
+		registerEventListeners();
+		
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
 	}
@@ -287,7 +294,7 @@ public class GLPathway
 		// gl.glEndList();
 	}
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta) {
+	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -820,7 +827,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
@@ -855,7 +862,7 @@ public class GLPathway
 		}
 	}
 
-	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta) {
+	private void handleVAUpdate(IMediatorSender eventTrigger, IVirtualArrayDelta delta) {
 		selectionManager.setVADelta(delta);
 		// reactOnExternalSelection();
 		setDisplayListDirty();
@@ -878,4 +885,30 @@ public class GLPathway
 	public void clearAllSelections() {
 		selectionManager.clearSelections();
 	}
+
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		
+		enableTexturesListener = new EnableTexturesListener();
+		enableTexturesListener.setGLPathway(this);
+		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
+
+		disableTexturesListener = new DisableTexturesListener();
+		disableTexturesListener.setGLPathway(this);
+		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
+	}
+	
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (enableTexturesListener != null) {
+			eventPublisher.removeListener(EnableTexturesEvent.class, enableTexturesListener);
+			enableTexturesListener = null;
+		}
+		if (disableTexturesListener != null) {
+			eventPublisher.removeListener(DisableTexturesEvent.class, disableTexturesListener);
+			disableTexturesListener = null;
+		}
+	}
+
 }

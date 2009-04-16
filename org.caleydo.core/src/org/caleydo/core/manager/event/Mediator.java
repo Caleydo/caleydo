@@ -122,17 +122,14 @@ public class Mediator
 	}
 
 	@Override
-	public void triggerEvent(IUniqueObject eventTrigger, IEventContainer eventContainer) {
+	public void triggerEvent(IMediatorSender eventTrigger, IEvent event) {
 		for (IMediatorReceiver receiver : alReceiver) {
 			// Prevent circular updates
 			if (!receiver.equals(eventTrigger)) {
-				if (receiver instanceof IMediatorReceiver) {
-					IMediatorReceiver eventReceiver = (IMediatorReceiver) receiver;
-					eventReceiver.handleExternalEvent(eventTrigger, eventContainer, eType);
-				}
+				IMediatorReceiver eventReceiver = (IMediatorReceiver) receiver;
+				eventReceiver.handleExternalEvent(eventTrigger, (IEventContainer) event, eType);
 			}
 		}
-
 	}
 
 	/**

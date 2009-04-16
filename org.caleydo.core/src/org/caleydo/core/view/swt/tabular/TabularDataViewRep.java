@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -660,7 +659,7 @@ public class TabularDataViewRep
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
@@ -691,7 +690,7 @@ public class TabularDataViewRep
 		}
 	}
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta) {
+	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta) {
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
 			|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
@@ -708,7 +707,7 @@ public class TabularDataViewRep
 		}
 	}
 
-	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta) {
+	private void handleVAUpdate(IMediatorSender eventTrigger, IVirtualArrayDelta delta) {
 		GenericSelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			selectionManager = storageSelectionManager;
@@ -932,4 +931,5 @@ public class TabularDataViewRep
 			}
 		});
 	}
+
 }

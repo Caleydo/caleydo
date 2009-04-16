@@ -1,9 +1,9 @@
 package org.caleydo.rcp.views.swt;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.info.InfoArea;
@@ -86,7 +86,7 @@ public class SelectionInfoView
 	}
 
 	@Override
-	public void handleExternalEvent(final IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 
 	}
@@ -105,4 +105,5 @@ public class SelectionInfoView
 //	public int getSizeFlags(boolean width) {
 //		return SWT.MIN;
 //	}
+
 }

@@ -75,6 +75,8 @@ public class RemoteRenderingToolBarContent
 	 * @return pathway related toolbar box
 	 */
 	private ToolBarContainer createPathwayContainer() {
+		PathwayToolBarMediator mediator = new PathwayToolBarMediator(); 
+		
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(PATHWAY_IMAGE_PATH);
@@ -82,7 +84,7 @@ public class RemoteRenderingToolBarContent
 		List<IAction> actionList = new ArrayList<IAction>();
 		container.setActions(actionList);
 
-		IAction textureAction = new TextureAction(targetViewID);
+		IAction textureAction = new TextureAction(mediator);
 		actionList.add(textureAction);
 		IAction neighborhoodAction = new NeighborhoodAction(targetViewID);
 		actionList.add(neighborhoodAction);

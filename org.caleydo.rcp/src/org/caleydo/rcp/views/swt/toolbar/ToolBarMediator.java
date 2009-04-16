@@ -3,11 +3,11 @@ package org.caleydo.rcp.views.swt.toolbar;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.eclipse.swt.widgets.Display;
@@ -30,7 +30,7 @@ public class ToolBarMediator
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType mediatorType) {
 
 		log.info("handleExternalEvent() called");

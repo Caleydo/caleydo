@@ -1,38 +1,44 @@
 package org.caleydo.rcp.action.toolbar.view.pathway;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.views.swt.toolbar.content.PathwayToolBarMediator;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class TextureAction
-	extends AToolBarAction {
+	extends Action {
 	public static final String TEXT = "Turn on/off pathway textures";
 	public static final String ICON = "resources/icons/view/pathway/texture_on_off.png";
 
-	private boolean bEnable = true;
+	/** status of the pathway textures, true = enabled, false = disabled */
+	private boolean texturesEnabled = true;
 
+	/** mediator to handle actions triggered by instances of this class */
+	private PathwayToolBarMediator pathwayToolbarMediator;
+	
 	/**
 	 * Constructor.
 	 */
-	public TextureAction(int iViewID) {
-		super(iViewID);
+	public TextureAction(PathwayToolBarMediator mediator) {
+		pathwayToolbarMediator = mediator;
 
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
-		setChecked(bEnable);
+		setChecked(texturesEnabled);
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-		bEnable = !bEnable;
-
-		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.PATHWAY_TEXTURES);
-
+		texturesEnabled = !texturesEnabled;
+		if (texturesEnabled) {
+			pathwayToolbarMediator.enablePathwayTextures();
+		} else {
+			pathwayToolbarMediator.disablePathwayTextures();
+		}
 	};
 }

@@ -13,8 +13,6 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
-import org.caleydo.core.util.clusterer.HierarchyGraph;
-import org.caleydo.core.util.clusterer.Node;
 
 /**
  * Interface for Sets

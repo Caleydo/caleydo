@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -1061,7 +1060,7 @@ public class GLGlyph
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta,
 		EMediatorType eMediatorType) {
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
@@ -1111,7 +1110,7 @@ public class GLGlyph
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		generalManager.getLogger().log(
 			Level.INFO,

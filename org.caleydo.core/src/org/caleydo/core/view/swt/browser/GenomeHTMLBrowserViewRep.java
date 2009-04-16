@@ -2,7 +2,6 @@ package org.caleydo.core.view.swt.browser;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
@@ -12,6 +11,7 @@ import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.eclipse.swt.widgets.Display;
@@ -94,7 +94,7 @@ public class GenomeHTMLBrowserViewRep
 	// super.initViewSWTComposite(composite);
 	// }
 
-	private void handleSelectionUpdate(IUniqueObject eventTrigger, final ISelectionDelta selectionDelta) {
+	private void handleSelectionUpdate(IMediatorSender eventTrigger, final ISelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
@@ -157,7 +157,7 @@ public class GenomeHTMLBrowserViewRep
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
 			case SELECTION_UPDATE:
@@ -182,4 +182,5 @@ public class GenomeHTMLBrowserViewRep
 	public EBrowserQueryType getCurrentBrowserQueryType() {
 		return eBrowserQueryType;
 	}
+
 }

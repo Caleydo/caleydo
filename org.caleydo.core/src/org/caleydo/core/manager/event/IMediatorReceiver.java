@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.event;
 
-import org.caleydo.core.data.IUniqueObject;
 
 /**
  * Object that shall receive an event.
@@ -20,7 +19,7 @@ public interface IMediatorReceiver {
 	 *            the type of the mediator that was used to transmit this event. Can be null in case of a
 	 *            private mediator.
 	 */
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType);
 
 }

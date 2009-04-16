@@ -4,5 +4,6 @@ public enum EPickingMode {
 	CLICKED,
 	DOUBLE_CLICKED,
 	MOUSE_OVER,
-	DRAGGED
+	DRAGGED,
+	RIGHT_CLICKED
 }

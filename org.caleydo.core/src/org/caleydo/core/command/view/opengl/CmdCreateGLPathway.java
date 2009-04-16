@@ -6,8 +6,8 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.ser.ISerializedView;
-import org.caleydo.core.view.ser.SerializedPathwayView;
+import org.caleydo.core.view.serialize.ISerializedView;
+import org.caleydo.core.view.serialize.SerializedPathwayView;
 
 /**
  * Create single OpenGL pathway view.

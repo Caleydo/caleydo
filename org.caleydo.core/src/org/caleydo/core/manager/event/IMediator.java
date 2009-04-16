@@ -82,5 +82,5 @@ public interface IMediator
 	 *            containing the information on the type of the event {@link EEventType} and possibly data
 	 *            associated
 	 */
-	public void triggerEvent(IUniqueObject eventTrigger, IEventContainer eventContainer);
+	public void triggerEvent(IMediatorSender eventTrigger, IEvent eventContainer);
 }

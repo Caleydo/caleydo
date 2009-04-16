@@ -1,8 +1,5 @@
 package org.caleydo.rcp.views.swt.toolbar.content;
 
-import java.util.ArrayList;
-
-import org.eclipse.jface.action.IAction;
 
 /**
  * Holds a ordered group of tool-bar items displayed as one group in the toolbar   

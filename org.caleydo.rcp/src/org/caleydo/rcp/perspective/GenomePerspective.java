@@ -1,7 +1,6 @@
 package org.caleydo.rcp.perspective;
 
 import org.caleydo.rcp.views.opengl.GLHistogramView;
-import org.caleydo.rcp.views.swt.SearchView;
 import org.caleydo.rcp.views.swt.SelectionInfoView;
 import org.caleydo.rcp.views.swt.toolbar.ToolBarView;
 import org.eclipse.swt.graphics.Rectangle;

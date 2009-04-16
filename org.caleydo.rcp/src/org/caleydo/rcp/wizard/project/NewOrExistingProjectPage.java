@@ -72,6 +72,7 @@ public class NewOrExistingProjectPage
 		link.setText("(see: <a href=\"HCC_SAMPLE_DATASET_PAPER_LINK\">" + HCC_SAMPLE_DATASET_PAPER_LINK
 			+ "</a>)");
 		link.addSelectionListener(new SelectionAdapter() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String osName = System.getProperty("os.name");

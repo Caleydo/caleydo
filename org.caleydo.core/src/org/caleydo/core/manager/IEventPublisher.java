@@ -1,9 +1,10 @@
 package org.caleydo.core.manager;
 
-import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
+import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.IEvent;
 import org.caleydo.core.manager.event.IMediator;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
@@ -79,8 +80,8 @@ public interface IEventPublisher {
 	 *            containing the information on the type of the event {@link EEventType} and possibly data
 	 *            associated
 	 */
-	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-		IEventContainer eventContainer);
+	public void triggerEvent(EMediatorType eMediatorType, IMediatorSender eventTrigger,
+		IEvent eventContainer);
 
 	/**
 	 * Adds a sender to the mediator specified in eMediatorType
@@ -137,4 +138,25 @@ public interface IEventPublisher {
 	 *            the receiver to be removed
 	 */
 	public void removeReceiverFromAllGroups(IMediatorReceiver receiver);
+	
+	/**
+	 * adds a receiver to the list of event handlers
+	 * @param eventClass event type to register the handler to
+	 * @param listener IMediatorReceiver to handle events
+	 */
+	public void addListener(Class<? extends AEvent> eventClass, IEventListener listener);
+	
+	/**
+	 * removes a contained receiver from the list of event handlers
+	 * @param eventClass event type to remove the handler from 
+	 * @param listener IMediatorReceiver to handle events
+	 */
+	public void removeListener(Class<? extends AEvent> eventClass, IEventListener listener);
+	
+	/**
+	 * New central event handling and distribution method
+	 * @param event event to distribute to the listeners
+	 */
+	public void triggerEvent(AEvent event);
+	
 }

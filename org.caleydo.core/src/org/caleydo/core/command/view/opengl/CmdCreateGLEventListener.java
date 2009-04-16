@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.ser.ISerializedView;
+import org.caleydo.core.view.serialize.ISerializedView;
 
 /**
  * Command creates OpenGL views.

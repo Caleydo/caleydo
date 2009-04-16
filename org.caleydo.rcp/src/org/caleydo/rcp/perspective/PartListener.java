@@ -158,7 +158,7 @@ public class PartListener
 			List<Integer> viewIDs = new ArrayList<Integer>();
 			viewIDs.add(viewPart.getViewID());
 			viewActivationEvent.setViewIDs(viewIDs);
-		} else {
+		} else if (viewPart instanceof AGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(
 				((CaleydoViewPart) activePart).getSWTComposite());
 
@@ -166,6 +166,9 @@ public class PartListener
 	
 			List<Integer> viewIDs = glView.getAllViewIDs();
 			viewActivationEvent.setViewIDs(viewIDs);
+		} else {
+			log.info("no defined handling for part-activation of " + viewPart);
+			return;
 		}
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher(); 

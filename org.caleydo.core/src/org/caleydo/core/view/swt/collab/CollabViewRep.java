@@ -3,7 +3,6 @@ package org.caleydo.core.view.swt.collab;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
@@ -11,7 +10,6 @@ import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
@@ -143,6 +141,13 @@ public class CollabViewRep
 		DisableBusyListener disableListener = new DisableBusyListener();
 		disableListener.setRequester(this);
 		button.addListener(SWT.Selection, disableListener);
+
+		button = new Button(testControls, SWT.CENTER);
+		button.setText("add pathway");
+		AddPathwayListener pathwayListener = new AddPathwayListener();
+		pathwayListener.setRequester(this);
+		button.addListener(SWT.Selection, pathwayListener);
+		
 	}
 	
 	public void addEmptyComposite(Composite composite) {
@@ -162,7 +167,7 @@ public class CollabViewRep
 	}
 
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
 

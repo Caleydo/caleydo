@@ -1,8 +1,9 @@
 package org.caleydo.core.manager.event;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IEventPublisher;
 
 /**
@@ -14,12 +15,15 @@ import org.caleydo.core.manager.IEventPublisher;
 public class EventPublisher
 	implements IEventPublisher {
 	private HashMap<EMediatorType, IMediator> hashMediatorType2Mediator;
+	
+	private ListenerMap listenerMap;
 
 	/**
 	 * Constructor.
 	 */
 	public EventPublisher() {
 		hashMediatorType2Mediator = new HashMap<EMediatorType, IMediator>();
+		listenerMap = new ListenerMap();
 	}
 
 	@Override
@@ -50,12 +54,8 @@ public class EventPublisher
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-		IEventContainer eventContainer) {
-
-		if (!(eventTrigger instanceof IMediatorSender))
-			throw new IllegalArgumentException(
-				"triggerEvent called by an object which does not implement IMediatorSender");
+	public void triggerEvent(EMediatorType eMediatorType, IMediatorSender eventTrigger,
+		IEvent eventContainer) {
 
 		if (eMediatorType == EMediatorType.ALL_REGISTERED) {
 
@@ -73,7 +73,7 @@ public class EventPublisher
 			}
 		}
 	}
-
+	
 	@Override
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender) {
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
@@ -101,6 +101,31 @@ public class EventPublisher
 	public void removeReceiverFromAllGroups(IMediatorReceiver receiver) {
 		for (IMediator mediator : hashMediatorType2Mediator.values()) {
 			mediator.removeReceiver(receiver);
+		}
+	}
+
+	@Override
+	public void addListener(Class<? extends AEvent> eventClass, IEventListener listener) {
+		Collection<IEventListener> listeners = listenerMap.get(eventClass);
+		if (listeners == null) {
+			listeners = new ArrayList<IEventListener>();
+			listenerMap.put(eventClass, listeners);
+		}
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeListener(Class<? extends AEvent> eventClass, IEventListener listener) {
+		
+	}
+	
+	@Override
+	public void triggerEvent(AEvent event) {
+		Collection<IEventListener> listeners = listenerMap.get(event.getClass());
+		if (listeners != null) {
+			for (IEventListener receiver : listeners) {
+				receiver.handleEvent(event);
+			}
 		}
 	}
 }

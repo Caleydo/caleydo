@@ -20,7 +20,6 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
@@ -42,6 +41,7 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
+import org.caleydo.core.manager.event.view.pathway.LoadPathwayEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -77,8 +77,8 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
-import org.caleydo.core.view.ser.ISerializedView;
-import org.caleydo.core.view.ser.SerializedPathwayView;
+import org.caleydo.core.view.serialize.ISerializedView;
+import org.caleydo.core.view.serialize.SerializedPathwayView;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -178,6 +178,8 @@ public class GLRemoteRendering
 
 	private ArrayList<ISerializedView> newViews;
 	
+	AddPathwayListener addPathwayListener = null; 
+	
 	/**
 	 * Constructor.
 	 */
@@ -261,6 +263,7 @@ public class GLRemoteRendering
 		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, this);
 		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 		eventPublisher.addSender(EMediatorType.VIEW_SELECTION, this);
+		registerEventListeners();
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
@@ -1849,7 +1852,7 @@ public class GLRemoteRendering
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer,
+	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 
 		switch (eventContainer.getEventType()) {
@@ -2728,6 +2731,7 @@ public class GLRemoteRendering
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) glView);
 		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) glView);
+
 		triggerMostRecentDelta();
 
 		return glView;
@@ -2962,4 +2966,29 @@ public class GLRemoteRendering
 		}
 
 	}
+
+	/**
+	 * FIXME: should be moved to a bucket-mediator
+	 * registers the event-listeners to the event framework 
+	 */
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher(); 
+
+		addPathwayListener = new AddPathwayListener();
+		addPathwayListener.setBucket(this);
+		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
+	}
+
+	/**
+	 * FIXME: should be moved to a bucket-mediator
+	 * registers the event-listeners to the event framework 
+	 */
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher(); 
+
+		if (addPathwayListener != null) {
+			eventPublisher.removeListener(LoadPathwayEvent.class, addPathwayListener);
+		}
+	}
+
 }
