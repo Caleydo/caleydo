@@ -6,9 +6,9 @@ import java.util.List;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
-import org.caleydo.rcp.views.swt.toolbar.content.ActionToolBarContainer;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
-import org.caleydo.rcp.views.swt.toolbar.content.WidgetToolBarContainer;
+import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
@@ -71,7 +71,7 @@ public class DefaultToolBarRenderJob
 			// Needed to simulate toolbar wrapping which is not implemented for linux
 			// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 			
-			fillToolBar(group, toolBarContainer);
+			addToolBarItems(group, toolBarContainer);
 	
 			ResourceLoader resourceLoader = GeneralManager.get().getResourceLoader();
 			Display display = PlatformUI.getWorkbench().getDisplay();
@@ -102,45 +102,51 @@ public class DefaultToolBarRenderJob
 	 * toolbar managers is needed for simulating toolbar wrap which is not supported for linux. See bug:
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 	 */
-	private void fillToolBar(Group group, ToolBarContainer toolBarContainer) {
+//	private void fillToolBar(Group group, ToolBarContainer toolBarContainer) {
+//
+//		if (toolBarContainer instanceof ActionToolBarContainer) {
+//			addItems(group, toolBarContainer);
+//		} else if (toolBarContainer instanceof WidgetToolBarContainer) {
+//			((WidgetToolBarContainer) toolBarContainer).render(group);
+//		}
+//	}
 
-		if (toolBarContainer instanceof ActionToolBarContainer) {
-			addActions(group, toolBarContainer);
-		} else if (toolBarContainer instanceof WidgetToolBarContainer) {
-			((WidgetToolBarContainer) toolBarContainer).render(group);
-		}
-	}
-
-	private void addActions(Group group, ToolBarContainer toolBarContainer) {
-		ArrayList<ToolBar> toolBars = new ArrayList<ToolBar>();
+	private void addToolBarItems(Group group, ToolBarContainer toolBarContainer) {
 		ArrayList<IToolBarManager> toolBarManagers = new ArrayList<IToolBarManager>();
 
-		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-		toolBars.add(toolBar);
-		toolBarManagers.add(toolBarManager);
-	
-		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-		toolBars.add(toolBar2);
-		toolBarManagers.add(toolBarManager2);
+		int itemIndex = 0;
+		IToolBarManager toolBarManager = null;
+		List<IToolBarItem> items = toolBarContainer.getToolBarItems();
+		int wrapCount = toolBarRenderer.calcWrapCount(items.size());
 
-		List<IAction> actions = ((ActionToolBarContainer) toolBarContainer).getActions();
-		int wrapCount = toolBarRenderer.calcWrapCount(actions.size());
-		for (int itemIndex = 0; itemIndex < actions.size(); itemIndex++) {
-			toolBarManagers.get((int) (itemIndex / wrapCount)).add(
-				actions.get(itemIndex));
+		for (IToolBarItem item : items) {
+			if (itemIndex % wrapCount == 0) {
+				toolBarManager = createNewToolBar(group, toolBarManagers);
+				itemIndex = 0;
+			}
+			if (item instanceof IAction) {
+				toolBarManager.add((IAction) item);
+			} else if (item instanceof ControlContribution) {
+				toolBarManager.add((ControlContribution) item);
+				toolBarManager = createNewToolBar(group, toolBarManagers);
+				itemIndex = 0;
+			}
+			itemIndex ++;
 		}
-
-		toolBarManager.update(true);
 		
-		if (toolBarManager2.isEmpty()) {
-			toolBarManager2.dispose();
-		} else {
-			toolBarManager2.update(true);
+		for (IToolBarManager tbm : toolBarManagers) {
+			tbm.update(true);
 		}
+		
 	}
 
+	private IToolBarManager createNewToolBar(Group group, List<IToolBarManager> toolBarManagers) {
+		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
+		IToolBarManager toolBarManager = new ToolBarManager(toolBar);
+		toolBarManagers.add(toolBarManager);
+		return toolBarManager;
+	}
+	
 	public List<AToolBarContent> getToolBarContents() {
 		return toolBarContents;
 	}

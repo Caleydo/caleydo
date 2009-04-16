@@ -11,7 +11,6 @@ import org.caleydo.rcp.action.toolbar.view.glyph.OpenDataExportAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.OpenNewWindowAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.RemoveUnselectedFromViewAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
-import org.eclipse.jface.action.IAction;
 
 /**
  * ToolBarContent implementation for glyph specific toolbar items.  
@@ -35,8 +34,8 @@ public class GlyphToolBarContent
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
-		List<IAction> actionList = new ArrayList<IAction>();
-		container.setActions(actionList);
+		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
 
 		actionList.add(new OpenNewWindowAction(targetViewID));
 		actionList.add(new ChangeSelectionBrushAction(targetViewID));

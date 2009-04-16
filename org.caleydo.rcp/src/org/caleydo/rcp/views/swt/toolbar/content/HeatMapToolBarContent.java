@@ -8,7 +8,6 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
-import org.eclipse.jface.action.IAction;
 
 /**
  * ToolBarContent implementation for heatmap specific toolbar items.  
@@ -32,17 +31,17 @@ public class HeatMapToolBarContent
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
-		List<IAction> actionList = new ArrayList<IAction>();
-		container.setActions(actionList);
+		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
 
-		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
+		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
 		actionList.add(switchAxesToPolylinesAction);
 		if (contentType == STANDARD_CONTENT) {
-			IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
+			IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 			actionList.add(clearSelectionsAction);
-			IAction resetViewAction = new ResetViewAction(targetViewID);
+			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
 			actionList.add(resetViewAction);
-			IAction propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
+			IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
 			actionList.add(propagateSelectionAction);
 		}
 		

@@ -14,11 +14,11 @@ import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ClinicalParCoordsToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.GlyphToolBarContent;
-import org.caleydo.rcp.views.swt.toolbar.content.HTMLBrowserToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ParCoordsToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.RemoteRenderingToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.browser.HTMLBrowserToolBarContent;
 
 /**
  * Factory to create toolbar contents in dependency of views.

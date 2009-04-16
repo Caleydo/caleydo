@@ -6,6 +6,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
@@ -16,7 +17,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class ChangeViewModeAction
 	extends AToolBarAction
-	implements IMenuCreator {
+	implements IMenuCreator, IToolBarItem {
 
 	private Menu menu;
 	private int iViewID;

@@ -19,8 +19,9 @@ import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.toolbar.ToolBarContentFactory;
 import org.caleydo.rcp.views.swt.toolbar.ToolBarView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
-import org.caleydo.rcp.views.swt.toolbar.content.ActionToolBarContainer;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
+import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -192,8 +193,12 @@ public class PartListener
 		toolBarManager.removeAll();
 		for (AToolBarContent toolBarContent : toolBarContents) {
 			for (ToolBarContainer container : toolBarContent.getDefaultToolBar()) {
-				for (IAction toolBarAction : ((ActionToolBarContainer) container).getActions()) {
-					toolBarManager.add(toolBarAction);
+				for (IToolBarItem item : container.getToolBarItems()) {
+					if (item instanceof IAction) {
+						toolBarManager.add((IAction) item);
+					} else if (item instanceof ControlContribution) {
+						toolBarManager.add((ControlContribution) item);
+					}
 				}
 				toolBarManager.add(new Separator());
 			}

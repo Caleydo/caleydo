@@ -4,13 +4,15 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.EStartViewType;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenNewWindowAction
-	extends AToolBarAction {
+	extends AToolBarAction
+	implements IToolBarItem {
 
 	public static final String TEXT = "Open new GlyphWindow";
 	public static final String ICON = "resources/icons/view/glyph/glyph_new_window.png";

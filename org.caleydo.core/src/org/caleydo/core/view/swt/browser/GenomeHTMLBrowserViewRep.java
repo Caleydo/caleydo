@@ -8,10 +8,13 @@ import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.eclipse.swt.widgets.Display;
@@ -38,16 +41,20 @@ public class GenomeHTMLBrowserViewRep
 
 	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.EntrezGene;
 
+	ChangeQueryTypeListener changeQueryTypeListener;
+	
 	/**
 	 * Constructor.
 	 */
 	public GenomeHTMLBrowserViewRep(int iParentContainerID, String sLabel) {
+
 		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
 
 		urlGenerator = new URLGenerator();
-
 		iAlDavidID = new ArrayList<Integer>();
+		
+		registerEventListeners();
 	}
 
 	// @Override
@@ -183,4 +190,23 @@ public class GenomeHTMLBrowserViewRep
 		return eBrowserQueryType;
 	}
 
+
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		
+		changeQueryTypeListener = new ChangeQueryTypeListener();
+		changeQueryTypeListener.setBrowserView(this);
+		eventPublisher.addListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
+
+	}
+	
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (changeQueryTypeListener != null) {
+			eventPublisher.removeListener(EnableTexturesEvent.class, changeQueryTypeListener);
+			changeQueryTypeListener = null;
+		}
+	}
+	
 }

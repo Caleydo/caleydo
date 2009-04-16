@@ -3,12 +3,14 @@ package org.caleydo.rcp.action.toolbar.view.glyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.dialog.file.ExportClinicalDataDialog;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class OpenDataExportAction
-	extends AToolBarAction {
+	extends AToolBarAction
+	implements IToolBarItem {
 
 	public static final String TEXT = "Open Glyph Data Export Tool";
 	public static final String ICON = "resources/icons/view/glyph/glyph_generate_report.png";

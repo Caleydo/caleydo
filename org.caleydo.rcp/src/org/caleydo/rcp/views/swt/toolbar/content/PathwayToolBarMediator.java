@@ -3,14 +3,11 @@ package org.caleydo.rcp.views.swt.toolbar.content;
 import java.util.logging.Logger;
 
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 
 public class PathwayToolBarMediator {
 

@@ -3,11 +3,13 @@ package org.caleydo.rcp.action.toolbar.view.storagebased.parcoords;
 import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class OcclusionPreventionAction
-	extends AToolBarAction {
+	extends AToolBarAction
+	implements IToolBarItem {
 	public static final String TEXT = "Toggle occlusion prevention";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/occlusion_prevention.png";
 

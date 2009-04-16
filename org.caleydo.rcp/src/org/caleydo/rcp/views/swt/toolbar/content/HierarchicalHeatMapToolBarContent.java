@@ -8,7 +8,6 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.ActivateGroupHandling;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.MergeClasses;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
-import org.eclipse.jface.action.IAction;
 
 /**
  * ToolBarContent implementation for heatmap specific toolbar items.  
@@ -32,18 +31,18 @@ public class HierarchicalHeatMapToolBarContent
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
-		List<IAction> actionList = new ArrayList<IAction>();
-		container.setActions(actionList);
+		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
 
-		IAction startClustering = new StartClusteringAction(targetViewID);
+		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
 		actionList.add(startClustering);
-		IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
+		IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 		actionList.add(clearSelectionsAction);
 
-		IAction mergeGroup = new MergeClasses(targetViewID);
+		IToolBarItem mergeGroup = new MergeClasses(targetViewID);
 		actionList.add(mergeGroup);
 		
-		IAction activateGroup = new ActivateGroupHandling(targetViewID);
+		IToolBarItem activateGroup = new ActivateGroupHandling(targetViewID);
 		actionList.add(activateGroup);
 		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();

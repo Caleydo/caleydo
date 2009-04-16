@@ -1,13 +1,15 @@
 package org.caleydo.rcp.action.toolbar.view.pathway;
 
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.views.swt.toolbar.content.PathwayToolBarMediator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class TextureAction
-	extends Action {
+	extends Action
+	implements IToolBarItem {
 	public static final String TEXT = "Turn on/off pathway textures";
 	public static final String ICON = "resources/icons/view/pathway/texture_on_off.png";
 

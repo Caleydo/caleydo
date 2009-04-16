@@ -5,12 +5,10 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
-import org.caleydo.rcp.action.toolbar.view.pathway.NeighborhoodAction;
 import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
-import org.eclipse.jface.action.IAction;
 
 /**
  * ToolBarContent implementation for heatmap specific toolbar items.  
@@ -48,18 +46,18 @@ public class RemoteRenderingToolBarContent
 
 		container.setImagePath(BUCKET_IMAGE_PATH);
 		container.setTitle(BUCKET_VIEW_TITLE);
-		List<IAction> actionList = new ArrayList<IAction>();
-		container.setActions(actionList);
+		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
 
 		// IAction takeSnapshotAction = new TakeSnapshotAction(-1);
 		// alToolbar.add(takeSnapshotAction);
-		IAction closeOrResetContainedViews = new CloseOrResetContainedViews(targetViewID);
+		IToolBarItem closeOrResetContainedViews = new CloseOrResetContainedViews(targetViewID);
 		actionList.add(closeOrResetContainedViews);
 		// IAction toggleLayoutAction = new ToggleLayoutAction(viewID);
 		// alToolbar.add(toggleLayoutAction);
-		IAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(targetViewID);
+		IToolBarItem toggleConnectionLinesAction = new ToggleConnectionLinesAction(targetViewID);
 		actionList.add(toggleConnectionLinesAction);
-		IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
+		IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 		actionList.add(clearSelectionsAction);
 
 		return container;
@@ -81,17 +79,17 @@ public class RemoteRenderingToolBarContent
 
 		container.setImagePath(PATHWAY_IMAGE_PATH);
 		container.setTitle(PATHWAY_VIEW_TITLE);
-		List<IAction> actionList = new ArrayList<IAction>();
-		container.setActions(actionList);
+		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
 
-		IAction textureAction = new TextureAction(mediator);
+		IToolBarItem textureAction = new TextureAction(mediator);
 		actionList.add(textureAction);
 
 		// TODO: info from streit: nighborhood currently broken 
 		// IAction neighborhoodAction = new NeighborhoodAction(mediator);
 		// actionList.add(neighborhoodAction);
 
-		IAction geneMappingAction = new GeneMappingAction(targetViewID);
+		IToolBarItem geneMappingAction = new GeneMappingAction(targetViewID);
 		actionList.add(geneMappingAction);
 
 		return container;

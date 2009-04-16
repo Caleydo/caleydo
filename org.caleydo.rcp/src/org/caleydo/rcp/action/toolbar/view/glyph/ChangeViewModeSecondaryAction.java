@@ -2,6 +2,7 @@ package org.caleydo.rcp.action.toolbar.view.glyph;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
@@ -12,7 +13,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class ChangeViewModeSecondaryAction
 	extends AToolBarAction
-	implements IMenuCreator {
+	implements IMenuCreator, IToolBarItem {
 	public static final String TEXT = "disabled";
 	public static final String TEXT_SCATTERPLOT = "Scatterplot Axis Definition";
 	public static final String TEXT_PLUSMODEL = "Distribution Model Axis Definition";

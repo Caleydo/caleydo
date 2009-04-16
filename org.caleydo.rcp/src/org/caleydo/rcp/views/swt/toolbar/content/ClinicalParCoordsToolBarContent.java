@@ -14,7 +14,6 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.OcclusionPreventionAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.SaveSelectionsAction;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -39,23 +38,23 @@ public class ClinicalParCoordsToolBarContent
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
-		List<IAction> actionList = new ArrayList<IAction>();
-		container.setActions(actionList);
+		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
 
 		// all pc views
-		IAction angularBrushingAction = new AngularBrushingAction(targetViewID);
+		IToolBarItem angularBrushingAction = new AngularBrushingAction(targetViewID);
 		actionList.add(angularBrushingAction);
-		IAction occlusionPreventionAction = new OcclusionPreventionAction(targetViewID);
+		IToolBarItem occlusionPreventionAction = new OcclusionPreventionAction(targetViewID);
 		actionList.add(occlusionPreventionAction);
-		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
+		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
 		actionList.add(switchAxesToPolylinesAction);
-		IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
+		IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 		actionList.add(clearSelectionsAction);
-		IAction saveSelectionsAction = new SaveSelectionsAction(targetViewID);
+		IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
 		actionList.add(saveSelectionsAction);
-		IAction resetViewAction = new ResetViewAction(targetViewID);
+		IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
 		actionList.add(resetViewAction);
-		IAction propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
+		IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
 		actionList.add(propagateSelectionAction);
 
 		PreferenceStore ps = GeneralManager.get().getPreferenceStore();
@@ -63,9 +62,9 @@ public class ClinicalParCoordsToolBarContent
 
 		// only if standalone or explicitly requested
 		if (contentType == STANDARD_CONTENT && !limit) {
-			IAction toggleRenderContextAction = new RenderContextAction(targetViewID);
+			IToolBarItem toggleRenderContextAction = new RenderContextAction(targetViewID);
 			actionList.add(toggleRenderContextAction);
-			IAction useRandomSamplingAction = new UseRandomSamplingAction(targetViewID);
+			IToolBarItem useRandomSamplingAction = new UseRandomSamplingAction(targetViewID);
 			actionList.add(useRandomSamplingAction);
 		}
 		

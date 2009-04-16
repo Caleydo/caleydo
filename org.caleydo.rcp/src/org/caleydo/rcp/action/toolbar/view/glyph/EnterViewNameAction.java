@@ -7,12 +7,14 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.util.glyph.TextInputDialog;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class EnterViewNameAction
-	extends AToolBarAction {
+	extends AToolBarAction
+	implements IToolBarItem {
 
 	public static final String TEXT = "Enter a name for this view";
 	public static final String ICON = "resources/icons/view/glyph/glyph_rename.png";

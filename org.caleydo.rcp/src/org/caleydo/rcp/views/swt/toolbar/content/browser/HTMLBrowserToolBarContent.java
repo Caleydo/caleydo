@@ -1,9 +1,11 @@
-package org.caleydo.rcp.views.swt.toolbar.content;
+package org.caleydo.rcp.views.swt.toolbar.content.browser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
+import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
 
 /**
  * ToolBarContent implementation for heatmap specific toolbar items.  
@@ -24,8 +26,9 @@ public class HTMLBrowserToolBarContent
 	@Override
 	public List<ToolBarContainer> getDefaultToolBar() {
 		BrowserToolBarContainer container = new BrowserToolBarContainer();
-		container.setTargetViewID(getTargetViewID());
+		BrowserToolBarMediator browserToolBarMediator = new BrowserToolBarMediator();
 
+		container.setBrowserToolBarMediator(browserToolBarMediator);
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
 

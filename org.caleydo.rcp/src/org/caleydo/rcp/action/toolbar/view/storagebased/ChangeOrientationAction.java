@@ -5,11 +5,13 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ChangeOrientationAction
-	extends AToolBarAction {
+	extends AToolBarAction
+	implements IToolBarItem {
 	public static final String TEXT = "Switch dimensions";
 	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
 

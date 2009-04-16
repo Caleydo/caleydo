@@ -11,7 +11,6 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.ResetAxisSpacingAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.SaveSelectionsAction;
-import org.eclipse.jface.action.IAction;
 
 /**
  * ToolBarContent implementation for heatmap specific toolbar items.  
@@ -35,28 +34,28 @@ public class ParCoordsToolBarContent
 
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
-		List<IAction> actionList = new ArrayList<IAction>();
-		container.setActions(actionList);
+		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+		container.setToolBarItems(actionList);
 
 		// all pc views
-		IAction angularBrushingAction = new AngularBrushingAction(targetViewID);
+		IToolBarItem angularBrushingAction = new AngularBrushingAction(targetViewID);
 		actionList.add(angularBrushingAction);
 		// IAction occlusionPreventionAction = new OcclusionPreventionAction(iViewID);
 		// alToolbar.add(occlusionPreventionAction);
-		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
+		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
 		actionList.add(switchAxesToPolylinesAction);
 
-		IAction resetAxisSpacing = new ResetAxisSpacingAction(targetViewID);
+		IToolBarItem resetAxisSpacing = new ResetAxisSpacingAction(targetViewID);
 		actionList.add(resetAxisSpacing);
 
 		if (contentType == STANDARD_CONTENT) {
-			IAction clearSelectionsAction = new ClearSelectionsAction(targetViewID);
+			IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 			actionList.add(clearSelectionsAction);
-			IAction saveSelectionsAction = new SaveSelectionsAction(targetViewID);
+			IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
 			actionList.add(saveSelectionsAction);
-			IAction resetViewAction = new ResetViewAction(targetViewID);
+			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
 			actionList.add(resetViewAction);
-			IAction propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
+			IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
 			actionList.add(propagateSelectionAction);
 		}
 
