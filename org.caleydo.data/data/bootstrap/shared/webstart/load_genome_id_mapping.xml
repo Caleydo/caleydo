@@ -35,7 +35,7 @@
 
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/david/HOMO_SAPIENS_DAVID2GENE_NAME.txt"	
-		   		attrib1="DAVID_2_GENE_NAME" 
+		   		attrib1="DAVID_2_GENE_NAME REVERSE" 
 		   		attrib2="\t" 
 		   		attrib3="0 -1" />	
 		   		

@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
@@ -24,11 +25,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -38,18 +41,18 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class SearchView
 	extends ViewPart
-	implements IMediatorReceiver { //, ISizeProvider {
+	implements IMediatorReceiver { // , ISizeProvider {
 	public static final String ID = "org.caleydo.rcp.views.swt.SearchView";
 
 	public static boolean bHorizontal = false;
-	
+
 	private Text searchText;
-	
-	private TreeItem pathwayTree;
-	private TreeItem geneTree;
-	
+
+	private Table pathwayTable;
+	private Table geneTable;
+
 	private IGeneralManager generalManager;
-	
+
 	private Button usePathways;
 	private Button useGeneSymbol;
 	private Button useGeneName;
@@ -57,29 +60,18 @@ public class SearchView
 	private Button useGeneEntrezGeneID;
 	private Button useGeneDavidID;
 
+	private IIDMappingManager idMappingManager;
+
 	@Override
 	public void createPartControl(Composite parent) {
-		
+
 		generalManager = GeneralManager.get();
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
+		idMappingManager = generalManager.getIDMappingManager();
+
 		final Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout(1, false));
-
-//		GridLayout layout = new GridLayout(1, false);
-//		layout.marginBottom =
-//			layout.marginTop =
-//				layout.marginLeft =
-//					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-//		layout.marginHeight = layout.marginWidth = 3;
-//		composite.setLayout(layout);
-
-		// Trigger gene/pathway search command
-//		CmdViewCreateDataEntitySearcher cmd =
-//			(CmdViewCreateDataEntitySearcher) GeneralManager.get().getCommandManager().createCommandByType(
-//				ECommandType.CREATE_VIEW_DATA_ENTITY_SEARCHER);
-//		cmd.doCommand();
-//		dataEntitySearcher = cmd.getCreatedObject();
 
 		Label entitySearchLabel = new Label(composite, SWT.NULL);
 		entitySearchLabel.setText("Search query:");
@@ -90,86 +82,98 @@ public class SearchView
 			@Override
 			public void focusGained(FocusEvent e) {
 				searchText.setText("");
-				// geneSearchText.pack();
 			}
 		});
-		
+
 		Group searchDataKindGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-//		searchDataKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// searchDataKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		searchDataKindGroup.setLayout(new RowLayout());
-		
+
 		Button searchButton = new Button(composite, SWT.PUSH);
 		searchButton.setText("Search");
-		
-		// TODO show only if pathways are loaded
+
 		usePathways = new Button(searchDataKindGroup, SWT.CHECK);
-		usePathways.setText("Pathways");		
+		usePathways.setText("Pathways");
 		if (generalManager.getPathwayManager().size() == 0)
 			usePathways.setEnabled(false);
 		else
 			usePathways.setSelection(true);
-		
+
 		useGeneSymbol = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneSymbol.setText("Gene symbol");
 		if (generalManager.getIDMappingManager().hasMapping(EMappingType.GENE_SYMBOL_2_DAVID))
 			useGeneSymbol.setSelection(true);
 		else
 			useGeneSymbol.setEnabled(false);
-		
-//		useGeneName = new Button(searchDataKindGroup, SWT.CHECK);
-//		useGeneName.setSelection(true);
-//		useGeneName.setText("Gene name (full)");
-		
+
+		useGeneName = new Button(searchDataKindGroup, SWT.CHECK);
+		useGeneName.setText("Gene name (full)");
+		if (idMappingManager.hasMapping(EMappingType.GENE_NAME_2_DAVID))
+			useGeneName.setSelection(true);
+		else
+			useGeneName.setEnabled(false);
+
 		useGeneRefSeqID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneRefSeqID.setText("RefSeq ID");
 		if (generalManager.getIDMappingManager().hasMapping(EMappingType.REFSEQ_MRNA_2_DAVID))
 			useGeneRefSeqID.setSelection(true);
 		else
 			useGeneRefSeqID.setEnabled(false);
-		
+
 		useGeneEntrezGeneID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneEntrezGeneID.setText("Entrez Gene ID");
 		if (generalManager.getIDMappingManager().hasMapping(EMappingType.ENTREZ_GENE_ID_2_DAVID))
 			useGeneEntrezGeneID.setSelection(true);
 		else
 			useGeneEntrezGeneID.setEnabled(false);
-		
+
 		useGeneDavidID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneDavidID.setText("David ID");
 		if (generalManager.getIDMappingManager().hasMapping(EMappingType.DAVID_2_REFSEQ_MRNA_INT))
 			useGeneDavidID.setSelection(true);
 		else
 			useGeneDavidID.setEnabled(false);
-		
+
 		searchDataKindGroup.pack();
-		
+
 		Label resultLabel = new Label(composite, SWT.NULL);
 		resultLabel.setText("Results:");
+
+		geneTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		geneTable.setLinesVisible(true);
+		geneTable.setHeaderVisible(true);
+		geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		String[] titles = { "RefSeq ID", "David ID", "Entrez Gene ID", "Gene Symbol", "Gene Name" };
+		for (int i = 0; i < titles.length; i++) {
+			TableColumn column = new TableColumn(geneTable, SWT.NONE);
+			column.setText(titles[i]);
+		}
 		
-		Tree selectionTree = new Tree(composite, SWT.NULL);
-		selectionTree.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
-		geneTree = new TreeItem(selectionTree, SWT.NONE);
-		geneTree.setText("Genes");
-		geneTree.setExpanded(true);
-//		TreeItem experimentTree = new TreeItem(selectionTree, SWT.NONE);
-//		experimentTree.setText("Experiments");
-//		experimentTree.setExpanded(true);
-//		experimentTree.setData(-1);
-		pathwayTree = new TreeItem(selectionTree, SWT.NONE);
-		pathwayTree.setText("Pathways");
-		pathwayTree.setExpanded(false);
-		pathwayTree.setData(-1);
-		
+		pathwayTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+		pathwayTable.setLinesVisible(true);
+		pathwayTable.setHeaderVisible(true);
+		pathwayTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		TableColumn pathwayDatabaseColumn = new TableColumn(pathwayTable, SWT.NONE);
+		pathwayDatabaseColumn.setText("Database");
+		TableColumn pathwayNameColumn = new TableColumn(pathwayTable, SWT.NONE);
+		pathwayNameColumn.setText("Pathway Name");
+
+		// TreeItem experimentTree = new TreeItem(selectionTree, SWT.NONE);
+		// experimentTree.setText("Experiments");
+		// experimentTree.setExpanded(true);
+		// experimentTree.setData(-1);
+
 		searchButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+
 				startSearch();
-			}	
+			}
 		});
-		
+
 		searchText.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
@@ -184,131 +188,136 @@ public class SearchView
 
 	private void startSearch() {
 
-		searchForPathway(searchText.getText());		
+		searchForPathway(searchText.getText());
 		searchForGene(searchText.getText());
 	}
-	
+
 	private void searchForPathway(String sSearchQuery) {
 
 		if (!usePathways.getSelection())
 			return;
-		
+
 		// Flush old pathway results
-		for (TreeItem item : pathwayTree.getItems())
+		for (TableItem item : pathwayTable.getItems())
 			item.dispose();
 
 		Pattern pattern = Pattern.compile(sSearchQuery, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 
 		// Search for pathways
-		for (PathwayGraph pathway : generalManager.getPathwayManager().getAllItems())
-		{
+		for (PathwayGraph pathway : generalManager.getPathwayManager().getAllItems()) {
 			regexMatcher = pattern.matcher(pathway.getTitle());
-			if (regexMatcher.find())
-			{
-				TreeItem item = new TreeItem(pathwayTree, SWT.NULL);
-				item.setText(pathway.getTitle());
+			if (regexMatcher.find()) {
+				TableItem item = new TableItem(pathwayTable, SWT.NULL);
+				item.setText(0, pathway.getType().getName());
+				item.setText(1, pathway.getTitle());
 			}
 		}
-		
-		if (pathwayTree.getItemCount() > 0)
-			pathwayTree.setExpanded(true);
+
+		pathwayTable.getColumn(0).pack();
+		pathwayTable.getColumn(1).pack();
 	}
 
-//	private int searchForRefSeq(final String sSearchQuery) {
-//		
-//		Integer iRefSeqID =
-//			GeneralManager.get().getIDMappingManager().getID(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT,
-//				sSearchQuery.toUpperCase());
-//
-//		if (iRefSeqID == null)
-//			return -1;
-//
-//		return iRefSeqID;
-//	}
-
-//	private int searchForNCBIGeneId(final String sSearchQuery) {
-//		
-//		Integer iNCBIGeneID = 0;
-//		try {
-//			iNCBIGeneID = Integer.valueOf(sSearchQuery);
-//		}
-//		catch (NumberFormatException nfe) {
-//			return -1;
-//		}
-//
-//		Integer iDavidID =
-//			GeneralManager.get().getIDMappingManager().getID(EMappingType.ENTREZ_GENE_ID_2_DAVID, iNCBIGeneID);
-//
-//		if (iDavidID == null)
-//			return -1;
-//
-//		return iDavidID;
-//	}
-
 	private void searchForGene(final String sSearchQuery) {
-		
+
 		// Flush old pathway results
-		for (TreeItem item : geneTree.getItems())
+		for (TableItem item : geneTable.getItems())
 			item.dispose();
-		
+
 		Pattern pattern = Pattern.compile(sSearchQuery, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 		ArrayList<Integer> iArDavidGeneResults = new ArrayList<Integer>();
-		
+
 		if (useGeneSymbol.getSelection()) {
-			for (Object sGeneSymbol : generalManager.getIDMappingManager().getMapping(EMappingType.GENE_SYMBOL_2_DAVID).keySet())
-			{
-				regexMatcher = pattern.matcher((String)sGeneSymbol);
+			for (Object sGeneSymbol : idMappingManager.getMapping(EMappingType.GENE_SYMBOL_2_DAVID).keySet()) {
+				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer)generalManager.getIDMappingManager().getID(EMappingType.GENE_SYMBOL_2_DAVID, sGeneSymbol));
-			}			
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(
+						EMappingType.GENE_SYMBOL_2_DAVID, sGeneSymbol));
+			}
 		}
-		
+
 		if (useGeneEntrezGeneID.getSelection()) {
-			for (Object iEntrezGeneID : generalManager.getIDMappingManager().getMapping(EMappingType.ENTREZ_GENE_ID_2_DAVID).keySet())
-			{
+			for (Object iEntrezGeneID : idMappingManager.getMapping(EMappingType.ENTREZ_GENE_ID_2_DAVID)
+				.keySet()) {
 				regexMatcher = pattern.matcher(iEntrezGeneID.toString());
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer)generalManager.getIDMappingManager().getID(EMappingType.ENTREZ_GENE_ID_2_DAVID, iEntrezGeneID));
-			}			
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(
+						EMappingType.ENTREZ_GENE_ID_2_DAVID, iEntrezGeneID));
+			}
 		}
-		
-		if (useGeneRefSeqID.getSelection()) {
-			for (Object sGeneSymbol : generalManager.getIDMappingManager().getMapping(EMappingType.REFSEQ_MRNA_2_DAVID).keySet())
-			{
-				regexMatcher = pattern.matcher((String)sGeneSymbol);
-				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer)generalManager.getIDMappingManager().getID(EMappingType.REFSEQ_MRNA_2_DAVID, sGeneSymbol));
-			}			
-		}
-		
-//		if (useGeneName.getSelection()) {
-//			for (Object sGeneSymbol : generalManager.getIDMappingManager().getMapping(EMappingType.GE).keySet())
-//			{
-//				regexMatcher = pattern.matcher((String)sGeneSymbol);
-//				if (regexMatcher.find())
-//					iArDavidGeneResults.add((Integer)generalManager.getIDMappingManager().getID(EMappingType.REFSEQ_MRNA_2_DAVID, sGeneSymbol));
-//			}			
-//		}
-		
 
-		// Fill results in list
-		for (Integer iDavidID : iArDavidGeneResults)
-		{
-			String sGeneSymbol = generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
-			
+		if (useGeneRefSeqID.getSelection()) {
+			for (Object sGeneSymbol : idMappingManager.getMapping(EMappingType.REFSEQ_MRNA_2_DAVID).keySet()) {
+				regexMatcher = pattern.matcher((String) sGeneSymbol);
+				if (regexMatcher.find())
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(
+						EMappingType.REFSEQ_MRNA_2_DAVID, sGeneSymbol));
+			}
+		}
+
+		if (useGeneName.getSelection()) {
+			for (Object sGeneName : idMappingManager.getMapping(EMappingType.GENE_NAME_2_DAVID).keySet()) {
+				regexMatcher = pattern.matcher((String) sGeneName);
+				if (regexMatcher.find())
+					iArDavidGeneResults.add((Integer) generalManager.getIDMappingManager().getID(
+						EMappingType.GENE_NAME_2_DAVID, sGeneName));
+			}
+		}
+
+		// Fill results in table
+		for (Integer iDavidID : iArDavidGeneResults) {
+			String sRefSeqIDs = "";
+
+			try {
+				for (Object iRefSeqID : idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT,
+					iDavidID)) {
+					sRefSeqIDs +=
+						idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID) + " ";
+				}
+			}
+			catch (NullPointerException npe) {
+				sRefSeqIDs = "<No Mapping>";
+			}
+
+			String sEntrezGeneID = "";
+			Integer iEntrezGeneID = idMappingManager.getID(EMappingType.DAVID_2_ENTREZ_GENE_ID, iDavidID);
+			if (iEntrezGeneID == null)
+				sEntrezGeneID = "<No Mapping>";
+			else
+				sEntrezGeneID = iEntrezGeneID.toString();
+
+			String sGeneSymbol = idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 			if (sGeneSymbol == null)
-				continue;
+				sGeneSymbol = "<Unknown>";
+
+			String sGeneName = idMappingManager.getID(EMappingType.DAVID_2_GENE_NAME, iDavidID);
+			if (sGeneName == null)
+				sGeneName = "<Unknown>";
+
+			TableItem item = new TableItem(geneTable, SWT.NULL);
+			item.setText(0, sRefSeqIDs);
+			item.setText(1, Integer.toString(iDavidID));
+			item.setText(2, sEntrezGeneID);
+			item.setText(3, sGeneSymbol);
+			item.setText(4, sGeneName);
 			
-			TreeItem item = new TreeItem(geneTree, SWT.NULL);
-			item.setText(sGeneSymbol);			
+			// Highlight content if it matches the search query
+			for (int iIndex = 0; iIndex < geneTable.getColumnCount(); iIndex++) {
+				regexMatcher = pattern.matcher(item.getText(iIndex));
+				if (regexMatcher.find()) {
+					item.setBackground(iIndex, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+				}
+			}			
 		}
 		
-		if (geneTree.getItemCount() > 0)
-			geneTree.setExpanded(true);
+		for (TableColumn column : geneTable.getColumns())
+			column.pack();
+
+		geneTable.getColumn(0).setWidth(300);
+		geneTable.getColumn(4).setWidth(200);
 	}
-	
+
 	@Override
 	public void setFocus() {
 
@@ -323,9 +332,9 @@ public class SearchView
 
 	// TODO: remove after commit of Werner
 	public void updateSearchBar(boolean bIsVisible) {
-//		pathwaySearchBox.setVisible(bIsVisible);
-//		pathwaySearchLabel.setVisible(bIsVisible);
-//		parentComposite.layout();
+		// pathwaySearchBox.setVisible(bIsVisible);
+		// pathwaySearchLabel.setVisible(bIsVisible);
+		// parentComposite.layout();
 	}
 
 	@Override
@@ -333,20 +342,4 @@ public class SearchView
 		EMediatorType eMediatorType) {
 
 	}
-
-//	@Override
-//	public int computePreferredSize(boolean width, int availableParallel, int availablePerpendicular,
-//		int preferredResult) {
-//		// Set minimum size of the view
-//		if (width == true)
-//			return (int) SearchView.TOOLBAR_WIDTH;
-//
-//		return (int) SearchView.TOOLBAR_HEIGHT;
-//	}
-
-//	@Override
-//	public int getSizeFlags(boolean width) {
-//		return SWT.MIN;
-//	}
-
 }
