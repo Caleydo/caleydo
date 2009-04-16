@@ -36,9 +36,9 @@ public class TextureAction
 
 		texturesEnabled = !texturesEnabled;
 		if (texturesEnabled) {
-			pathwayToolbarMediator.enablePathwayTextures();
+			pathwayToolbarMediator.enableTextures();
 		} else {
-			pathwayToolbarMediator.disablePathwayTextures();
+			pathwayToolbarMediator.disableTextures();
 		}
 	};
 }

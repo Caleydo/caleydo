@@ -40,7 +40,9 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -52,6 +54,10 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableNeighborhoodListener;
+import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableTexturesListener;
+import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodListener;
+import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -97,6 +103,9 @@ public class GLPathway
 
 	EnableTexturesListener enableTexturesListener = null;
 	DisableTexturesListener disableTexturesListener = null;
+	
+	EnableNeighborhoodListener enableNeighborhoodListener = null;
+	DisableNeighborhoodListener disableNeighborhoodListener = null;
 	
 	/**
 	 * Constructor.
@@ -896,6 +905,14 @@ public class GLPathway
 		disableTexturesListener = new DisableTexturesListener();
 		disableTexturesListener.setGLPathway(this);
 		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
+
+		enableNeighborhoodListener = new EnableNeighborhoodListener();
+		enableNeighborhoodListener.setGLPathway(this);
+		eventPublisher.addListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
+
+		disableNeighborhoodListener = new DisableNeighborhoodListener();
+		disableNeighborhoodListener.setGLPathway(this);
+		eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
 	}
 	
 	public void unregisterEventListeners() {
@@ -908,6 +925,14 @@ public class GLPathway
 		if (disableTexturesListener != null) {
 			eventPublisher.removeListener(DisableTexturesEvent.class, disableTexturesListener);
 			disableTexturesListener = null;
+		}
+		if (enableNeighborhoodListener != null) {
+			eventPublisher.removeListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
+			enableNeighborhoodListener = null;
+		}
+		if (disableNeighborhoodListener != null) {
+			eventPublisher.removeListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
+			disableNeighborhoodListener = null;
 		}
 	}
 

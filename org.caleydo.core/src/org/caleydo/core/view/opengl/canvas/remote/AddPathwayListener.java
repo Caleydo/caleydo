@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.remote;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.IEventListener;
-import org.caleydo.core.manager.event.view.pathway.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
 
 public class AddPathwayListener
 	implements IEventListener {

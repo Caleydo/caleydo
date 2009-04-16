@@ -1,7 +1,8 @@
-package org.caleydo.core.view.opengl.canvas.pathway;
+package org.caleydo.core.view.opengl.canvas.pathway.listeners;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 
 public class DisableTexturesListener
 	implements IEventListener {

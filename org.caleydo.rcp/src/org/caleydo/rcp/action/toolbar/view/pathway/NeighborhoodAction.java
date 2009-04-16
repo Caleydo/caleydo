@@ -1,37 +1,42 @@
 package org.caleydo.rcp.action.toolbar.view.pathway;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.views.swt.toolbar.content.PathwayToolBarMediator;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class NeighborhoodAction
-	extends AToolBarAction {
+	extends Action {
 	public static final String TEXT = "Turn on/off neighborhood";
 	public static final String ICON = "resources/icons/view/pathway/neighborhood.png";
 
-	private boolean bEnable = false;
+	private boolean neighborhoodEnabled = false;
+
+	/** mediator to handle actions triggered by instances of this class */
+	private PathwayToolBarMediator pathwayToolbarMediator;
 
 	/**
 	 * Constructor.
 	 */
-	public NeighborhoodAction(int iViewID) {
-		super(iViewID);
+	public NeighborhoodAction(PathwayToolBarMediator mediator) {
+		pathwayToolbarMediator = mediator;
 
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
-		setChecked(bEnable);
+		setChecked(neighborhoodEnabled);
 	}
 
 	@Override
 	public void run() {
 		super.run();
 
-		bEnable = !bEnable;
-
-		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.PATHWAY_NEIGHBORHOOD);
-	};
+		neighborhoodEnabled = !neighborhoodEnabled;
+		if (neighborhoodEnabled) {
+			pathwayToolbarMediator.enableNeighborhood();
+		} else {
+			pathwayToolbarMediator.disableNeighborhood();
+		}	};
 }

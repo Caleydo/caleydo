@@ -86,8 +86,11 @@ public class RemoteRenderingToolBarContent
 
 		IAction textureAction = new TextureAction(mediator);
 		actionList.add(textureAction);
-		IAction neighborhoodAction = new NeighborhoodAction(targetViewID);
-		actionList.add(neighborhoodAction);
+
+		// TODO: info from streit: nighborhood currently broken 
+		// IAction neighborhoodAction = new NeighborhoodAction(mediator);
+		// actionList.add(neighborhoodAction);
+
 		IAction geneMappingAction = new GeneMappingAction(targetViewID);
 		actionList.add(geneMappingAction);
 

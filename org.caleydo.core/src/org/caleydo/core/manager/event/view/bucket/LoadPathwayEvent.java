@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.pathway;
+package org.caleydo.core.manager.event.view.bucket;
 
 import org.caleydo.core.manager.event.AEvent;
 
