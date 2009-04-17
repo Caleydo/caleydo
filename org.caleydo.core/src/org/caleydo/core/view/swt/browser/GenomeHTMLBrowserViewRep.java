@@ -14,7 +14,6 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.eclipse.swt.widgets.Display;
@@ -28,14 +27,6 @@ public class GenomeHTMLBrowserViewRep
 	extends HTMLBrowserViewRep
 	implements IMediatorReceiver {
 	private URLGenerator urlGenerator;
-
-	// private List list;
-
-	// private Button buttonKEGG;
-	// private Button buttonBioCarta;
-	// private Button buttonPubMed;
-	// private Button buttonEntrez;
-	// private Button buttonGeneCards;
 
 	private ArrayList<Integer> iAlDavidID;
 
@@ -56,50 +47,6 @@ public class GenomeHTMLBrowserViewRep
 		
 		registerEventListeners();
 	}
-
-	// @Override
-	// public void initViewSWTComposite(Composite parentComposite)
-	// {
-	// Composite composite = new Composite(parentComposite, SWT.NONE);
-	//
-	// GridLayout layout = new GridLayout(1, false);
-	// composite.setLayout(layout);
-	//
-	// // Composite leftColumnComposite = new Composite(composite, SWT.NONE);
-	// // GridLayout leftColumnLayout = new GridLayout(1, false);
-	// // leftColumnComposite.setLayout(leftColumnLayout);
-	// // leftColumnComposite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
-	//
-	// // GridData data = new GridData();
-	// // data.widthHint = 130;
-	// // groupQueryType.setLayoutData(data);
-	// // groupQueryType.setLayout(new GridLayout(1, false));
-	//
-	// // list = new List(parentComposite, SWT.SINGLE | SWT.BORDER); // leftColumnComposite
-	// // data = new GridData(GridData.FILL_VERTICAL);
-	// // data.grabExcessVerticalSpace = true;
-	// // data.widthHint = 130;
-	// // list.setLayoutData(data);
-	//
-	// // list.addSelectionListener(new SelectionAdapter()
-	// // {
-	// //
-	// // @Override
-	// // public void widgetSelected(SelectionEvent e)
-	// // {
-	// // String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID.get(list
-	// // .getSelectionIndex()));
-	// //
-	// // browser.setUrl(sURL);
-	// // browser.update();
-	// // textURL.setText(sURL);
-	// // }
-	// // });
-	// //
-	// // list.setVisible(false);
-	//		
-	// super.initViewSWTComposite(composite);
-	// }
 
 	private void handleSelectionUpdate(IMediatorSender eventTrigger, final ISelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
@@ -185,6 +132,8 @@ public class GenomeHTMLBrowserViewRep
 			textURL.setText(sURL);
 		}
 	}
+	
+	
 
 	public EBrowserQueryType getCurrentBrowserQueryType() {
 		return eBrowserQueryType;
@@ -192,6 +141,9 @@ public class GenomeHTMLBrowserViewRep
 
 
 	public void registerEventListeners() {
+		
+		super.registerEventListeners();
+		
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 		
 		changeQueryTypeListener = new ChangeQueryTypeListener();
@@ -203,10 +155,11 @@ public class GenomeHTMLBrowserViewRep
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
+		super.registerEventListeners();
+		
 		if (changeQueryTypeListener != null) {
-			eventPublisher.removeListener(EnableTexturesEvent.class, changeQueryTypeListener);
+			eventPublisher.removeListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
 			changeQueryTypeListener = null;
 		}
 	}
-	
 }

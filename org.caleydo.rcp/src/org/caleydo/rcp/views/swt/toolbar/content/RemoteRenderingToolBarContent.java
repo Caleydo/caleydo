@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
-import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
@@ -13,7 +11,7 @@ import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarContainer
 import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
 
 /**
- * ToolBarContent implementation for heatmap specific toolbar items.  
+ * ToolBarContent implementation for bucket specific toolbar items.  
  * @author Werner Puff
  */
 public class RemoteRenderingToolBarContent
@@ -75,24 +73,6 @@ public class RemoteRenderingToolBarContent
 	 * @return pathway related toolbar box
 	 */
 	private ToolBarContainer createPathwayContainer() {
-		PathwayToolBarMediator mediator = new PathwayToolBarMediator(); 
-		
-//		ActionToolBarContainer container = new ActionToolBarContainer();
-//
-//		container.setImagePath(PATHWAY_IMAGE_PATH);
-//		container.setTitle(PATHWAY_VIEW_TITLE);
-//		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
-//		container.setToolBarItems(actionList);
-//
-//		IToolBarItem textureAction = new TextureAction(mediator);
-//		actionList.add(textureAction);
-//
-//		// TODO: info from streit: nighborhood currently broken 
-//		// IAction neighborhoodAction = new NeighborhoodAction(mediator);
-//		// actionList.add(neighborhoodAction);
-//
-//		IToolBarItem geneMappingAction = new GeneMappingAction(targetViewID);
-//		actionList.add(geneMappingAction);
 
 		PathwayToolBarContainer container = new PathwayToolBarContainer();
 
@@ -101,7 +81,6 @@ public class RemoteRenderingToolBarContent
 		
 		container.setPathwayToolBarMediator(new PathwayToolBarMediator());
 
-		
 		return container;
 	}
 }

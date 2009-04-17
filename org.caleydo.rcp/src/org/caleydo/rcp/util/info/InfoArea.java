@@ -47,7 +47,7 @@ public class InfoArea
 
 	private TreeItem geneTree;
 	private TreeItem experimentTree;
-	private TreeItem pathwayTree;
+//	private TreeItem pathwayTree;
 
 	private AGLEventListener updateTriggeringView;
 	private Composite parentComposite;

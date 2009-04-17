@@ -6,13 +6,13 @@ public abstract class ABrowserListener
 	implements IEventListener {
 	
 	/** browser related to this listener */
-	GenomeHTMLBrowserViewRep browserView;
+	HTMLBrowserViewRep browserView;
 
-	public GenomeHTMLBrowserViewRep getBrowserView() {
+	public HTMLBrowserViewRep getBrowserView() {
 		return browserView;
 	}
 
-	public void setBrowserView(GenomeHTMLBrowserViewRep browserView) {
+	public void setBrowserView(HTMLBrowserViewRep browserView) {
 		this.browserView = browserView;
 	}
 

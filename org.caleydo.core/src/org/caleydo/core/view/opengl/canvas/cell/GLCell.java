@@ -8,7 +8,6 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
@@ -21,7 +20,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -40,9 +38,9 @@ import com.sun.opengl.util.texture.TextureCoords;
 public class GLCell
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender {
-	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
+//	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
-	private GenericSelectionManager selectionManager;
+//	private GenericSelectionManager selectionManager;
 
 	/**
 	 * Constructor.
@@ -51,8 +49,8 @@ public class GLCell
 		super(iGLCanvasID, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
 
-		connectedElementRepresentationManager =
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+//		connectedElementRepresentationManager =
+//			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		// initialize internal gene selection manager
 		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
@@ -60,7 +58,7 @@ public class GLCell
 			alSelectionType.add(selectionType);
 		}
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
+//		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 	}
 
 	@Override

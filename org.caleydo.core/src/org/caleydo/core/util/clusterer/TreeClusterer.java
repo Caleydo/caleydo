@@ -44,7 +44,7 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Calculates the similarity matrix for a given set and VA´s
+	 * Calculates the similarity matrix for a given set and VAï¿½s
 	 * 
 	 * @param set
 	 * @param iVAIdContent
@@ -418,7 +418,7 @@ public class TreeClusterer
 	private void TreeToTreeStructure(ClusterNode node, Node[] treeStructure) {
 		int index = node.getClusterNr();
 
-		List<IGraph> graphList = null;// graph.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
+//		List<IGraph> graphList = null;// graph.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
 
 		// int iNrChildsNode = graphList.size();
 

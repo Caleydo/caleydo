@@ -38,7 +38,7 @@ public class GLHyperbolic
 	boolean bUseDetailLevel = true;
 	ISet set;
 	
-	private int iPathwayID = -1;
+//	private int iPathwayID = -1;
 
 	/**
 	 * Constructor.

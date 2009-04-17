@@ -13,6 +13,8 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.rcp.views.opengl.GLHeatMapView;
+import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -26,12 +28,18 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -41,7 +49,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class SearchView
 	extends ViewPart
-	implements IMediatorReceiver { // , ISizeProvider {
+	implements IMediatorReceiver {
 	public static final String ID = "org.caleydo.rcp.views.swt.SearchView";
 
 	public static boolean bHorizontal = false;
@@ -61,6 +69,12 @@ public class SearchView
 	private Button useGeneDavidID;
 
 	private IIDMappingManager idMappingManager;
+
+	private SearchViewMediator searchViewMediator;
+
+	public SearchView() {
+		searchViewMediator = new SearchViewMediator();
+	}
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -143,17 +157,19 @@ public class SearchView
 		geneTable.setLinesVisible(true);
 		geneTable.setHeaderVisible(true);
 		geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
-
+		addGeneContextMenu();
+		
 		String[] titles = { "RefSeq ID", "David ID", "Entrez Gene ID", "Gene Symbol", "Gene Name" };
 		for (int i = 0; i < titles.length; i++) {
 			TableColumn column = new TableColumn(geneTable, SWT.NONE);
 			column.setText(titles[i]);
 		}
-		
+
 		pathwayTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		pathwayTable.setLinesVisible(true);
 		pathwayTable.setHeaderVisible(true);
 		pathwayTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+		addPathwayContextMenu();
 
 		TableColumn pathwayDatabaseColumn = new TableColumn(pathwayTable, SWT.NONE);
 		pathwayDatabaseColumn.setText("Database");
@@ -184,6 +200,8 @@ public class SearchView
 				}
 			}
 		});
+
+		composite.layout();
 	}
 
 	private void startSearch() {
@@ -211,6 +229,7 @@ public class SearchView
 				TableItem item = new TableItem(pathwayTable, SWT.NULL);
 				item.setText(0, pathway.getType().getName());
 				item.setText(1, pathway.getTitle());
+				item.setData(pathway);
 			}
 		}
 
@@ -301,16 +320,16 @@ public class SearchView
 			item.setText(2, sEntrezGeneID);
 			item.setText(3, sGeneSymbol);
 			item.setText(4, sGeneName);
-			
+
 			// Highlight content if it matches the search query
 			for (int iIndex = 0; iIndex < geneTable.getColumnCount(); iIndex++) {
 				regexMatcher = pattern.matcher(item.getText(iIndex));
 				if (regexMatcher.find()) {
 					item.setBackground(iIndex, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
-			}			
+			}
 		}
-		
+
 		for (TableColumn column : geneTable.getColumns())
 			column.pack();
 
@@ -341,5 +360,140 @@ public class SearchView
 	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 
+	}
+
+	private void addGeneContextMenu() {
+
+		final Menu menu = new Menu(geneTable.getShell(), SWT.POP_UP);
+		geneTable.setMenu(menu);
+
+		menu.addListener(SWT.Show, new Listener() {
+			public void handleEvent(Event event) {
+				MenuItem[] menuItems = menu.getItems();
+				for (int i = 0; i < menuItems.length; i++) {
+					menuItems[i].dispose();
+				}
+
+				for (final TableItem tableItem : geneTable.getSelection()) {
+
+					MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
+					openInBrowserMenuItem.setText("Open in browser");
+					openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
+						geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
+					openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e) {
+						
+							// Switch to browser view
+							try {
+								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView(HTMLBrowserView.ID);
+							}
+							catch (PartInitException e1) {
+								e1.printStackTrace();
+							}
+						};
+					});
+
+					MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
+					loadPathwayInBucketMenuItem.setText("Load containing pathways in Bucket");
+					loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
+						geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
+
+					loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e) {
+
+							// Switch to bucket view
+							try {
+								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView(GLRemoteRenderingView.ID);
+							}
+							catch (PartInitException e1) {
+								e1.printStackTrace();
+							}
+						};
+					});
+
+					MenuItem loadGeneInHeatMap = new MenuItem(menu, SWT.PUSH);
+					loadGeneInHeatMap.setText("Show gene in heat map");
+					loadGeneInHeatMap.setImage(generalManager.getResourceLoader().getImage(
+						geneTable.getDisplay(), "resources/icons/view/storagebased/heatmap/heatmap.png"));
+
+					loadGeneInHeatMap.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e) {
+
+							// Switch to heat map view
+							try {
+								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView(GLHeatMapView.ID);
+							}
+							catch (PartInitException e1) {
+								e1.printStackTrace();
+							}
+						};
+					});
+				}
+			}
+		});
+	}
+
+	private void addPathwayContextMenu() {
+
+		final Menu menu = new Menu(pathwayTable.getShell(), SWT.POP_UP);
+		pathwayTable.setMenu(menu);
+
+		menu.addListener(SWT.Show, new Listener() {
+			public void handleEvent(Event event) {
+
+				MenuItem[] menuItems = menu.getItems();
+				for (int i = 0; i < menuItems.length; i++) {
+					menuItems[i].dispose();
+				}
+
+				for (final TableItem tableItem : pathwayTable.getSelection()) {
+
+					MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
+					openInBrowserMenuItem.setText("Open in browser");
+					openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
+						pathwayTable.getDisplay(), "resources/icons/view/browser/browser.png"));
+					openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e) {
+
+							// Switch to browser view
+							try {
+								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView(HTMLBrowserView.ID);
+							}
+							catch (PartInitException e1) {
+								e1.printStackTrace();
+							}
+
+							searchViewMediator.loadURLInBrowser(((PathwayGraph) tableItem.getData())
+								.getExternalLink());
+						};
+					});
+
+					MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
+					loadPathwayInBucketMenuItem.setText("Load pathway in Bucket");
+					loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
+						pathwayTable.getDisplay(), "resources/icons/view/remote/remote.png"));
+
+					loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e) {
+
+							// Switch to bucket view
+							try {
+								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView(GLRemoteRenderingView.ID);
+							}
+							catch (PartInitException e1) {
+								e1.printStackTrace();
+							}
+
+							searchViewMediator.loadPathway(((PathwayGraph) tableItem.getData()).getID());
+						};
+					});
+				}
+			}
+		});
 	}
 }

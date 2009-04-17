@@ -25,7 +25,6 @@ import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
-import org.caleydo.core.view.opengl.canvas.panel.GLSelectionPanel;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -249,10 +248,6 @@ public class ViewManager
 
 			case CREATE_GL_REMOTE_GLYPH:
 				glEventListener = new GLRemoteGlyph(iGLCanvasID, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_PANEL_SELECTION:
-				glEventListener = new GLSelectionPanel(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_RADIAL_HIERARCHY:

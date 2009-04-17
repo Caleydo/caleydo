@@ -215,7 +215,7 @@ public class GroupList
 	@Override
 	public boolean merge(IVirtualArray virtualArray, int index1, int index2) {
 
-		int iFirstIdxG1 = 0;
+//		int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
 		int iFirstIdxG2 = 0;
 		int iLastIdxG2 = 0;
@@ -232,7 +232,7 @@ public class GroupList
 				break;
 			iCnt++;
 		}
-		iFirstIdxG1 = iLastIdxG1 - iAlGroup.get(index1).getNrElements();
+//		iFirstIdxG1 = iLastIdxG1 - iAlGroup.get(index1).getNrElements();
 
 		iCnt = 0;
 		for (Group iter : iAlGroup) {

@@ -118,7 +118,7 @@ public class TabularDataViewRep
 	private Label lastRemoveContent;
 	private Label lastRemoveStorage;
 
-	private int[] iArCurrentColumnOrder;
+//	private int[] iArCurrentColumnOrder;
 
 	/**
 	 * Constructor.
@@ -564,7 +564,7 @@ public class TabularDataViewRep
 			// });
 		}
 
-		iArCurrentColumnOrder = contentTable.getColumnOrder();
+//		iArCurrentColumnOrder = contentTable.getColumnOrder();
 
 		IVirtualArray storageVA = set.getVA(iStorageVAID);
 

@@ -15,7 +15,7 @@ public class ChangeQueryTypeListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof ChangeQueryTypeEvent) {
-			getBrowserView().changeQueryType(((ChangeQueryTypeEvent) event).getQueryType());
+			((GenomeHTMLBrowserViewRep)getBrowserView()).changeQueryType(((ChangeQueryTypeEvent) event).getQueryType());
 		}
 	}
 

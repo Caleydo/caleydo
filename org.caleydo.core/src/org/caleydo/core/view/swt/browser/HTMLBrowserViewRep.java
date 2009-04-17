@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -40,12 +42,14 @@ public class HTMLBrowserViewRep
 
 	protected Text textURL;
 
-	protected IDExtractionLocationListener idExtractionLocationListener;
+//	protected IDExtractionLocationListener idExtractionLocationListener;
 
 	private ToolItem goButton;
 	private ToolItem homeButton;
 	private ToolItem backButton;
 	private ToolItem stopButton;
+	
+	private ChangeURLListener changeURLListener;
 
 	/**
 	 * Constructor.
@@ -53,6 +57,8 @@ public class HTMLBrowserViewRep
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
+		
+		registerEventListeners();
 	}
 
 	/**
@@ -60,6 +66,8 @@ public class HTMLBrowserViewRep
 	 */
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel, int iViewID) {
 		super(iParentContainerId, sLabel, iViewID);
+		
+		registerEventListeners();
 	}
 
 	@Override
@@ -172,8 +180,8 @@ public class HTMLBrowserViewRep
 			}
 		});
 
-		idExtractionLocationListener = new IDExtractionLocationListener(browser, iUniqueID, -1);
-		browser.addLocationListener(idExtractionLocationListener);
+//		idExtractionLocationListener = new IDExtractionLocationListener(browser, iUniqueID, -1);
+//		browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();
 		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
@@ -204,7 +212,7 @@ public class HTMLBrowserViewRep
 	public void setUrl(String sUrl) {
 		this.sUrl = sUrl;
 
-		idExtractionLocationListener.updateSkipNextChangeEvent(true);
+//		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
 	}
 
@@ -220,5 +228,23 @@ public class HTMLBrowserViewRep
 		}
 
 		return true;
+	}
+	
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		
+		changeURLListener = new ChangeURLListener();
+		changeURLListener.setBrowserView(this);
+		eventPublisher.addListener(ChangeURLEvent.class, changeURLListener);
+
+	}
+	
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (changeURLListener != null) {
+			eventPublisher.removeListener(ChangeURLEvent.class, changeURLListener);
+			changeURLListener = null;
+		}
 	}
 }

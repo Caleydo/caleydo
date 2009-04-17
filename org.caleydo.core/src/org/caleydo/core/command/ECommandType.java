@@ -42,7 +42,6 @@ public enum ECommandType {
 	CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
 	CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
 	CREATE_GL_CELL("cmd", "type", "-1", "Create Cell Component Localizer"),
-	CREATE_GL_PANEL_SELECTION("cmd", "type", "-1", "Create Selection Panel"),
 	CREATE_GL_RADIAL_HIERARCHY("cmd", "type", "-1", "Create Radial Hierarchys"),
 	CREATE_GL_HYPERBOLIC("cmd", "type", "-1", "Create Hyperbolic"),
 	CREATE_GL_HISTOGRAM("cmd", "type", "-1", "Create Hyperbolic"),

@@ -125,7 +125,7 @@ public class HierarchicalClusterer
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result Set
-		HierarchyGraph graph = new HierarchyGraph();
+//		HierarchyGraph graph = new HierarchyGraph();
 
 		CNode node = clusterer.m_cobwebTree;
 
