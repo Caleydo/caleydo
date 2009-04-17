@@ -2,9 +2,11 @@ package org.caleydo.rcp.views.swt;
 
 import java.util.logging.Logger;
 
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
 public class SearchViewMediator {
@@ -31,4 +33,11 @@ public class SearchViewMediator {
 		eventPublisher.triggerEvent(event);
 	}
 	
+	public void loadPathwayByGene(int davidID) {
+		log.info("loadPathwayByGene()");
+		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+		loadPathwaysByGeneEvent.setGeneID((davidID));
+		loadPathwaysByGeneEvent.setIdType(EIDType.DAVID);
+		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);		
+	}
 }

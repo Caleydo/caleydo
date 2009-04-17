@@ -24,9 +24,6 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -42,6 +39,7 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -59,6 +57,8 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
+import org.caleydo.core.view.opengl.canvas.remote.listener.AddPathwayListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -179,6 +179,8 @@ public class GLRemoteRendering
 	private ArrayList<ISerializedView> newViews;
 	
 	AddPathwayListener addPathwayListener = null; 
+	
+	LoadPathwaysByGeneListener loadPathwaysByGeneListener;
 	
 	/**
 	 * Constructor.
@@ -1857,49 +1859,49 @@ public class GLRemoteRendering
 
 		switch (eventContainer.getEventType()) {
 			// pathway loading based on gene id
-			case LOAD_PATHWAY_BY_GENE:
-
-				// take care here, if we ever use non integer ids this has to be
-				// cast to raw type first to determine the actual id data types
-				IDListEventContainer<Integer> idContainer = (IDListEventContainer<Integer>) eventContainer;
-				if (idContainer.getIDType() == EIDType.REFSEQ_MRNA_INT) {
-					int iGraphItemID = 0;
-					Integer iDavidID = -1;
-					ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem =
-						new ArrayList<ICaleydoGraphItem>();
-
-					for (Integer iRefSeqID : idContainer.getIDs()) {
-						iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
-
-						if (iDavidID == null || iDavidID == -1)
-							throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
-
-						iGraphItemID =
-							generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(
-								iDavidID);
-
-						if (iGraphItemID == -1) {
-							continue;
-						}
-
-						PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-							(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(
-								iGraphItemID);
-
-						if (tmpPathwayVertexGraphItem == null) {
-							continue;
-						}
-
-						alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
-					}
-
-					if (!alPathwayVertexGraphItem.isEmpty()) {
-						loadDependentPathways(alPathwayVertexGraphItem);
-					}
-				}
-				else
-					throw new IllegalStateException("Not Implemented");
-				break;
+//			case LOAD_PATHWAY_BY_GENE:
+//
+//				// take care here, if we ever use non integer ids this has to be
+//				// cast to raw type first to determine the actual id data types
+//				IDListEventContainer<Integer> idContainer = (IDListEventContainer<Integer>) eventContainer;
+//				if (idContainer.getIDType() == EIDType.REFSEQ_MRNA_INT) {
+//					int iGraphItemID = 0;
+//					Integer iDavidID = -1;
+//					ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem =
+//						new ArrayList<ICaleydoGraphItem>();
+//
+//					for (Integer iRefSeqID : idContainer.getIDs()) {
+//						iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+//
+//						if (iDavidID == null || iDavidID == -1)
+//							throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
+//
+//						iGraphItemID =
+//							generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(
+//								iDavidID);
+//
+//						if (iGraphItemID == -1) {
+//							continue;
+//						}
+//
+//						PathwayVertexGraphItem tmpPathwayVertexGraphItem =
+//							(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(
+//								iGraphItemID);
+//
+//						if (tmpPathwayVertexGraphItem == null) {
+//							continue;
+//						}
+//
+//						alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
+//					}
+//
+//					if (!alPathwayVertexGraphItem.isEmpty()) {
+//						loadDependentPathways(alPathwayVertexGraphItem);
+//					}
+//				}
+//				else
+//					throw new IllegalStateException("Not Implemented");
+//				break;
 			// Handle incoming pathways
 			case LOAD_PATHWAY_BY_PATHWAY_ID:
 				IDListEventContainer<Integer> pathwayIDContainer =
@@ -1936,60 +1938,8 @@ public class GLRemoteRendering
 			serPathway.setPathwayID(iPathwayIDToLoad);
 			newViews.add(serPathway);
 		}
+
 		// iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
-	}
-
-	public synchronized void loadDependentPathways(final List<ICaleydoGraphItem> alVertex) {
-		// Remove pathways from stacked layer view
-		// poolLayer.removeAllElements();
-
-		Iterator<ICaleydoGraphItem> iterPathwayGraphItem = alVertex.iterator();
-		Iterator<IGraphItem> iterIdenticalPathwayGraphItemRep = null;
-
-		// set to avoid duplicate pathways
-		Set<Integer> newPathwayIDs = new HashSet<Integer>();
-
-		while (iterPathwayGraphItem.hasNext()) {
-			IGraphItem pathwayGraphItem = iterPathwayGraphItem.next();
-
-			if (pathwayGraphItem == null) {
-				// generalManager.logMsg(
-				// this.getClass().getSimpleName() + " (" + iUniqueID
-				// + "): pathway graph item is null.  ",
-				// LoggerType.VERBOSE);
-				continue;
-			}
-
-			List<IGraphItem> pathwayItems = pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
-			for (IGraphItem pathwayItem : pathwayItems) {
-				PathwayGraph pathwayGraph = 
-					(PathwayGraph) pathwayItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0);
-				newPathwayIDs.add(pathwayGraph.getId());
-			}
-			
-//			iterIdenticalPathwayGraphItemRep =
-//				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
-//
-//			while (iterIdenticalPathwayGraphItemRep.hasNext()) {
-//				int pathwayID =
-//					((PathwayGraph) iterIdenticalPathwayGraphItemRep.next().getAllGraphByType(
-//						EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
-//				newPathwayIDs.add(pathwayID);
-//			}
-			
-		}
-
-		// add new pathways to bucket 
-		for (int pathwayID : newPathwayIDs) {
-			addPathwayView(pathwayID);
-		}
-
-		if (!newViews.isEmpty()) {
-			// Zoom out of the bucket when loading pathways
-			if (bucketMouseWheelListener.isZoomedIn()) {
-				bucketMouseWheelListener.triggerZoom(false);
-			}
-			disableUserInteraction();		}
 	}
 
 	@Override
@@ -2767,6 +2717,60 @@ public class GLRemoteRendering
 		canvasManager.releaseBusyMode(this);
 	}
 
+	public synchronized void loadDependentPathways(final List<ICaleydoGraphItem> alVertex) {
+		// Remove pathways from stacked layer view
+		// poolLayer.removeAllElements();
+
+		Iterator<ICaleydoGraphItem> iterPathwayGraphItem = alVertex.iterator();
+		Iterator<IGraphItem> iterIdenticalPathwayGraphItemRep = null;
+
+		// set to avoid duplicate pathways
+		Set<Integer> newPathwayIDs = new HashSet<Integer>();
+
+		while (iterPathwayGraphItem.hasNext()) {
+			IGraphItem pathwayGraphItem = iterPathwayGraphItem.next();
+
+			if (pathwayGraphItem == null) {
+				// generalManager.logMsg(
+				// this.getClass().getSimpleName() + " (" + iUniqueID
+				// + "): pathway graph item is null.  ",
+				// LoggerType.VERBOSE);
+				continue;
+			}
+
+			List<IGraphItem> pathwayItems = pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
+			for (IGraphItem pathwayItem : pathwayItems) {
+				PathwayGraph pathwayGraph = 
+					(PathwayGraph) pathwayItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0);
+				newPathwayIDs.add(pathwayGraph.getId());
+			}
+			
+//			iterIdenticalPathwayGraphItemRep =
+//				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
+//
+//			while (iterIdenticalPathwayGraphItemRep.hasNext()) {
+//				int pathwayID =
+//					((PathwayGraph) iterIdenticalPathwayGraphItemRep.next().getAllGraphByType(
+//						EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
+//				newPathwayIDs.add(pathwayID);
+//			}
+			
+		}
+
+		// add new pathways to bucket 
+		for (int pathwayID : newPathwayIDs) {
+			addPathwayView(pathwayID);
+		}
+		
+		if (!newViews.isEmpty()) {
+			// Zoom out of the bucket when loading pathways
+			if (bucketMouseWheelListener.isZoomedIn()) {
+				bucketMouseWheelListener.triggerZoom(false);
+			}
+			disableUserInteraction();		}
+
+	}
+	
 /*
 	private synchronized void initNewPathway(final GL gl, SerializedPathwayView pathway) {
 		int iTmpPathwayID = pathway.getPathwayID();
@@ -2977,6 +2981,10 @@ public class GLRemoteRendering
 		addPathwayListener = new AddPathwayListener();
 		addPathwayListener.setBucket(this);
 		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
+		
+		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
+		loadPathwaysByGeneListener.setBucket(this);
+		eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
 	}
 
 	/**
@@ -2988,6 +2996,10 @@ public class GLRemoteRendering
 
 		if (addPathwayListener != null) {
 			eventPublisher.removeListener(LoadPathwayEvent.class, addPathwayListener);
+		}
+		
+		if (loadPathwaysByGeneListener != null) {
+			eventPublisher.removeListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
 		}
 	}
 

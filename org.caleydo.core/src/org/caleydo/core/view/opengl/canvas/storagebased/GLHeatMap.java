@@ -31,6 +31,7 @@ import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
+import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -405,12 +406,12 @@ public class GLHeatMap
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
 					case DOUBLE_CLICKED:
-						IDListEventContainer<Integer> idListEventContainer =
-							new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_GENE,
-								EIDType.REFSEQ_MRNA_INT);
-						idListEventContainer.addID(IDMappingHelper.get().getRefSeqFromStorageIndex(
+
+						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+						loadPathwaysByGeneEvent.setGeneID(IDMappingHelper.get().getRefSeqFromStorageIndex(
 							iExternalID));
-						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+						loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
+						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
 						// intentionally no break
 
 					case CLICKED:

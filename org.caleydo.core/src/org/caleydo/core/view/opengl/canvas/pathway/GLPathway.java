@@ -40,11 +40,13 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -629,14 +631,15 @@ public class GLPathway
 							}
 						}
 						else {
-							// Load pathways based on a david ID
-							IDListEventContainer<Integer> idListEventContainer =
-								new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_GENE,
-									EIDType.REFSEQ_MRNA_INT);
+							// Load pathways
 							ArrayList<Integer> alRefSeqID =
 								getRefSeqIDsFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
-							idListEventContainer.setIDs(alRefSeqID);
-							triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+
+							for (int iRefSeqID : alRefSeqID) {
+								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+								loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
+								loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);								
+							}
 						}
 						break;
 

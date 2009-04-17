@@ -12,10 +12,7 @@ import org.caleydo.core.data.selection.SelectionCommandEventContainer;
  * @author Alexander Lex
  */
 public enum EEventType {
-	/**
-	 * Type for loading pathways by gene IDs, uses {@link IDListEventContainer}
-	 */
-	LOAD_PATHWAY_BY_GENE,
+
 	/**
 	 * Type for loading pathways by pathway IDs, uses {@link IDListEventContainer}
 	 */

@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -12,6 +13,7 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.views.opengl.GLHeatMapView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
@@ -321,6 +323,8 @@ public class SearchView
 			item.setText(3, sGeneSymbol);
 			item.setText(4, sGeneName);
 
+			item.setData(iDavidID);
+			
 			// Highlight content if it matches the search query
 			for (int iIndex = 0; iIndex < geneTable.getColumnCount(); iIndex++) {
 				regexMatcher = pattern.matcher(item.getText(iIndex));
@@ -410,6 +414,8 @@ public class SearchView
 							catch (PartInitException e1) {
 								e1.printStackTrace();
 							}
+							
+							searchViewMediator.loadPathwayByGene((Integer)tableItem.getData());
 						};
 					});
 

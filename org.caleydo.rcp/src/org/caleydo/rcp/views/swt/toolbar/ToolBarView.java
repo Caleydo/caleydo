@@ -46,8 +46,6 @@ public class ToolBarView
 	private Composite parentComposite;
 
 	private ArrayList<Group> viewSpecificGroups;
-	
-//	private SearchView searchView;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -63,14 +61,11 @@ public class ToolBarView
 
 		parentComposite.setLayout(toolBarRenderer.createLayout());
 		this.parentComposite = parentComposite;
-
-//		searchView = (SearchView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(SearchView.ID);
-		
+	
 		viewSpecificGroups = new ArrayList<Group>();
 
 		addGeneralToolBar();
-//		addColorMappingBar();
-
+		
 		ToolBarMediator toolBarMediator = new ToolBarMediator();
 		toolBarMediator.setToolBarView(this);
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION, toolBarMediator);
@@ -126,226 +121,7 @@ public class ToolBarView
 		}
 
 		viewSpecificGroups.clear();
-
-		// Update search bar
-		// bIsBucketViewActive = false;
-//		searchView.updateSearchBar(false);
 	}
-
-	// public void highlightViewSpecificToolBar(int iViewID)
-	// {
-	// // Unselect old highlights
-	// for (Group group : viewSpecificGroups)
-	// {
-	// if (item.getData("view") instanceof AGLEventListener)
-	// {
-	// // ((ToolBar)item.getData()).setBackground(
-	// //
-	// parentComposite.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-	//
-	// AGLEventListener glEventListener = (AGLEventListener)
-	// item.getData("view");
-	//
-	// // if(glEventListener.isRenderedRemote())
-	// // continue;
-	//				
-	// item.setExpanded(false);
-	// }
-	// }
-	//
-	// for (ExpandItem item : expandBar.getItems())
-	// {
-	// AGLEventListener glEventListener = (AGLEventListener)
-	// item.getData("view");
-	//
-	// if (!(glEventListener instanceof AGLEventListener))
-	// continue;
-	//
-	// // if (!(glEventListener instanceof GLRemoteRendering))
-	// // {
-	// // item.setExpanded(false);
-	// // // continue;
-	// // }
-	// // }
-	//
-	// if (glEventListener.getID() == iViewID
-	// || (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-	// iViewID) instanceof GLPathway && glEventListener instanceof GLPathway))
-	// {
-	// // ((ToolBar)item.getData()).setBackground(
-	// // parentComposite.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-	//
-	// item.setExpanded(true);
-	//
-	// // Highlight also remote rendering parent of the selected sub
-	// // view
-	// if (glEventListener.isRenderedRemote())
-	// {
-	// AGLEventListener glRemoteEventListener = (AGLEventListener)
-	// glEventListener
-	// .getRemoteRenderingGLCanvas();
-	// for (ExpandItem remoteItem : expandBar.getItems())
-	// {
-	// if (remoteItem.getData("view") == glRemoteEventListener)
-	// {
-	// remoteItem.setExpanded(true);
-	// }
-	// }
-	// }
-	// }
-	// }
-	// }
-
-//	private void addColorMappingBar() {
-//		Group group = new Group(parentComposite, SWT.NULL);
-//		GridLayout layout = new GridLayout(1, false);
-//		layout.marginBottom =
-//			layout.marginTop =
-//				layout.marginLeft =
-//					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-//		layout.marginHeight = layout.marginWidth = 3;
-//		group.setLayout(layout);
-//
-//		GridData gridData;
-//		if (bHorizontal) {
-//			gridData = new GridData(GridData.FILL_VERTICAL);
-//			gridData.minimumWidth = 110;
-//			gridData.widthHint = 110;
-//		}
-//		else {
-//			gridData = new GridData(GridData.FILL_HORIZONTAL);
-//		}
-//		group.setLayoutData(gridData);
-//
-//		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-//		store.getInt("");
-//		store = GeneralManager.get().getPreferenceStore();
-//		int iNumberOfMarkerPoints = store.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-//
-//		Color[] alColor = new Color[iNumberOfMarkerPoints];
-//		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
-//		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
-//			int iColorMarkerPoint =
-//				(int) (100 * store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
-//
-//			// Gradient label does not need the 0 point
-//			if (iColorMarkerPoint != 0) {
-//				iArColorMarkerPoints[iCount - 2] = iColorMarkerPoint;
-//			}
-//
-//			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
-//
-//			int[] iArColor = new int[3];
-//			if (color.isEmpty()) {
-//				iArColor[0] = 0;
-//				iArColor[1] = 0;
-//				iArColor[2] = 0;
-//			}
-//			else {
-//				StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
-//				int iInnerCount = 0;
-//				while (tokenizer.hasMoreTokens()) {
-//					try {
-//						String token = tokenizer.nextToken();
-//						iArColor[iInnerCount] = Integer.parseInt(token);
-//						System.out.println();
-//					}
-//					catch (Exception e) {
-//
-//					}
-//					iInnerCount++;
-//				}
-//			}
-//			alColor[iCount - 1] =
-//				new Color(PlatformUI.getWorkbench().getDisplay(), iArColor[0], iArColor[1], iArColor[2]);
-//		}
-//
-//		CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_NONE);
-//		// colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
-//		colorMappingPreviewLabel.setText("");
-//		// colorMappingPreviewLabel.setBackground(alColor, new int[] { 20, 100
-//		// });
-//
-//		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
-//		colorMappingPreviewLabel.update();
-//		colorMappingPreviewLabel.setLayoutData(new GridData(150, 20));
-//
-//		Composite colorLabelComposite = new Composite(group, SWT.NULL);
-//		colorLabelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		colorLabelComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
-//		int iCompositeWidth = 110;// group.getBounds().width;
-//
-//		for (int iCount = 0; iCount < iArColorMarkerPoints.length; iCount++) {
-//			Integer iWidthValue;
-//			int iDisplayValue;
-//			// iAccumulatedValue += iValue;
-//			Label valueLabel = new Label(colorLabelComposite, SWT.LEFT);// |
-//			// SWT.BORDER);
-//			// valueLabel.setText("test");
-//
-//			if (iCount == 0) {
-//				iDisplayValue = 0;
-//				iWidthValue = iArColorMarkerPoints[iCount];
-//			}
-//			else {
-//				iDisplayValue = iArColorMarkerPoints[iCount - 1];
-//				iWidthValue = iArColorMarkerPoints[iCount] - iDisplayValue;
-//			}
-//
-//			valueLabel.setText(Integer.toString(iDisplayValue));
-//			int iWidth = (int) ((float) iWidthValue / 100 * iCompositeWidth);
-//			RowData rowData = new RowData(iWidth, 15);
-//			valueLabel.setLayoutData(rowData);
-//		}
-//
-//		Label valueLabel = new Label(colorLabelComposite, SWT.RIGHT);
-//		valueLabel.setText("100");
-//		RowData rowData = new RowData(22, 15);
-//		valueLabel.setLayoutData(rowData);
-//		colorLabelComposite.pack();
-//		// CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_NONE);
-//		// // colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
-//		// colorMappingPreviewLabel.setText("");
-//		//		
-//		// // TODO for Alex: Read real color mapping values
-//		// Color[] alColorMarkerPoints = new Color[3];
-//		// alColorMarkerPoints[0] = new Color(Display.getCurrent(), 255, 0, 0);
-//		// alColorMarkerPoints[1] = new Color(Display.getCurrent(), 0, 0, 0);
-//		// alColorMarkerPoints[2] = new Color(Display.getCurrent(), 0, 255, 0);
-//		// colorMappingPreviewLabel.setBackground(alColorMarkerPoints, new int[]
-//		// { 20, 100 });
-//		// colorMappingPreviewLabel.setLayoutData(new
-//		// GridData(GridData.FILL_HORIZONTAL));
-//		//
-//		colorMappingPreviewLabel.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseDoubleClick(MouseEvent e) {
-//				PreferenceDialog pref =
-//					PreferencesUtil.createPreferenceDialogOn(parentComposite.getShell(),
-//						"org.caleydo.rcp.preferences.ColorMappingPreferencePage", null, null);
-//
-//				if (pref != null) {
-//					pref.open();
-//				}
-//			}
-//		});
-//
-//		Label spacer = new Label(group, SWT.NULL);
-//		if (bHorizontal) {
-//			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-//		}
-//		else {
-//			GridData data = new GridData(GridData.FILL_HORIZONTAL);
-//			data.minimumHeight = 10;
-//			data.heightHint = 10;
-//			spacer.setLayoutData(data);
-//		}
-//
-//		Label label = new Label(group, SWT.CENTER);
-//		label.setText("Color Mapping");
-//		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-//	}
 
 	private void addGeneralToolBar() {
 		Group group = new Group(parentComposite, SWT.NULL);
