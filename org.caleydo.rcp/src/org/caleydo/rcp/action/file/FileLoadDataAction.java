@@ -90,7 +90,7 @@ public class FileLoadDataAction
 	private String sDataRepMode = "Normal";
 	// private boolean bLogFilter = false;
 
-	private boolean bClusterInfo = false;
+//	private boolean bClusterInfo = false;
 
 	private int iOldSetID;
 
@@ -412,14 +412,14 @@ public class FileLoadDataAction
 				String string = e.text;
 				char[] chars = new char[string.length()];
 				string.getChars(0, chars.length, chars, 0);
-				for (char c : chars) {
+//				for (char c : chars) {
 					// TODO
 					// if (!('0' <= chars[i] && chars[i] <= '9'))
 					// {
 					// e.doit = false;
 					// return;
 					// }
-				}
+//				}
 			}
 		});
 
@@ -443,14 +443,14 @@ public class FileLoadDataAction
 				String string = e.text;
 				char[] chars = new char[string.length()];
 				string.getChars(0, chars.length, chars, 0);
-				for (char c : chars) {
+//				for (char c : chars) {
 					// TODO
 					// if (!('0' <= chars[i] && chars[i] <= '9'))
 					// {
 					// e.doit = false;
 					// return;
 					// }
-				}
+//				}
 			}
 		});
 
@@ -480,7 +480,7 @@ public class FileLoadDataAction
 	private void createDataPreviewTable(final String sDelimiter) {
 		this.sDelimiter = sDelimiter;
 
-		boolean clusterInfo = false;
+//		boolean clusterInfo = false;
 
 		// Clear table if not empty
 		previewTable.removeAll();
@@ -698,7 +698,9 @@ public class FileLoadDataAction
 		sInputPattern = sInputPattern + "SKIP" + ";";
 
 		Combo tmpComboDataType;
-		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++) {
+		
+		// Start loop with index 2 because the first to columns are only ID labels
+		for (int iColIndex = 2; iColIndex < arComboDataType.size(); iColIndex++) {
 			tmpComboDataType = arComboDataType.get(iColIndex);
 
 			if (!arSkipColumn.get(iColIndex).getSelection()) {
