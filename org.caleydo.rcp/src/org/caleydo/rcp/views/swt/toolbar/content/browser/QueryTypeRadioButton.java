@@ -30,7 +30,7 @@ public class QueryTypeRadioButton
 	private boolean selection;
 	
 	/**
-	 * constructor as rqeuested by ControlContribution
+	 * constructor as requested by ControlContribution
 	 * @param str
 	 */
 	public QueryTypeRadioButton(String str) {

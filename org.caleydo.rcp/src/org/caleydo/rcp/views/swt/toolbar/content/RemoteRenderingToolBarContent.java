@@ -9,6 +9,8 @@ import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
+import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarContainer;
+import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
 
 /**
  * ToolBarContent implementation for heatmap specific toolbar items.  
@@ -75,23 +77,31 @@ public class RemoteRenderingToolBarContent
 	private ToolBarContainer createPathwayContainer() {
 		PathwayToolBarMediator mediator = new PathwayToolBarMediator(); 
 		
-		ActionToolBarContainer container = new ActionToolBarContainer();
+//		ActionToolBarContainer container = new ActionToolBarContainer();
+//
+//		container.setImagePath(PATHWAY_IMAGE_PATH);
+//		container.setTitle(PATHWAY_VIEW_TITLE);
+//		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
+//		container.setToolBarItems(actionList);
+//
+//		IToolBarItem textureAction = new TextureAction(mediator);
+//		actionList.add(textureAction);
+//
+//		// TODO: info from streit: nighborhood currently broken 
+//		// IAction neighborhoodAction = new NeighborhoodAction(mediator);
+//		// actionList.add(neighborhoodAction);
+//
+//		IToolBarItem geneMappingAction = new GeneMappingAction(targetViewID);
+//		actionList.add(geneMappingAction);
+
+		PathwayToolBarContainer container = new PathwayToolBarContainer();
 
 		container.setImagePath(PATHWAY_IMAGE_PATH);
 		container.setTitle(PATHWAY_VIEW_TITLE);
-		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
-		container.setToolBarItems(actionList);
+		
+		container.setPathwayToolBarMediator(new PathwayToolBarMediator());
 
-		IToolBarItem textureAction = new TextureAction(mediator);
-		actionList.add(textureAction);
-
-		// TODO: info from streit: nighborhood currently broken 
-		// IAction neighborhoodAction = new NeighborhoodAction(mediator);
-		// actionList.add(neighborhoodAction);
-
-		IToolBarItem geneMappingAction = new GeneMappingAction(targetViewID);
-		actionList.add(geneMappingAction);
-
+		
 		return container;
 	}
 }

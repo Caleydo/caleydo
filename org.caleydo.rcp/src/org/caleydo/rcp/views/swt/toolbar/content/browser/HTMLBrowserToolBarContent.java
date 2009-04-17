@@ -8,7 +8,7 @@ import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
 
 /**
- * ToolBarContent implementation for heatmap specific toolbar items.  
+ * ToolBarContent implementation for browser specific toolbar items.  
  * @author Werner Puff
  */
 public class HTMLBrowserToolBarContent

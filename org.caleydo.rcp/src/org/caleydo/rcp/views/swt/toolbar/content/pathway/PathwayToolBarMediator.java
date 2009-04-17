@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views.swt.toolbar.content;
+package org.caleydo.rcp.views.swt.toolbar.content.pathway;
 
 import java.util.logging.Logger;
 
@@ -7,6 +7,7 @@ import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
+import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
 public class PathwayToolBarMediator {
@@ -19,6 +20,13 @@ public class PathwayToolBarMediator {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
 
+	public void loadPathway(int pathwayID) {
+		log.info("loadPathway()");
+		LoadPathwayEvent event = new LoadPathwayEvent();
+		event.setPathwayID(pathwayID);
+		eventPublisher.triggerEvent(event);
+	}
+	
 	public void enableTextures() {
 		log.info("enablePathwayTextures()");
 		EnableTexturesEvent event = new EnableTexturesEvent();

@@ -1,7 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view.pathway;
 
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.views.swt.toolbar.content.PathwayToolBarMediator;
+import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;

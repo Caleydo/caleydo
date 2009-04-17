@@ -11,7 +11,7 @@ public abstract class WidgetToolBarContainer
 
 	/**
 	 * Adds the toolbar widgets to the given Group-composite
-	 * @param group compiosite to add the toolbar widgets to
+	 * @param group composite to add the toolbar widgets to
 	 * @param viewID id of the target view as used by IViewManager implementations
 	 */
 	public abstract void render(Group group);

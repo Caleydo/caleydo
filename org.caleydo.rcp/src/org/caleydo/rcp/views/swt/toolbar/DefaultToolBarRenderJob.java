@@ -23,18 +23,19 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Render job for toolbar contents, usually used with eclipse's Display.asyncRun() 
+ * Render job for toolbar contents, usually used with eclipse's Display.asyncRun()
+ * 
  * @author Werner Puff
  */
 public class DefaultToolBarRenderJob
 	implements Runnable {
 
-	/** list of toolbar contents to render */ 
+	/** list of toolbar contents to render */
 	private List<AToolBarContent> toolBarContents;
-	
+
 	/** toolbar view to render the content into */
 	private ToolBarView toolBarView;
-	
+
 	/** toolbar renderer */
 	private IToolBarRenderer toolBarRenderer;
 
@@ -47,15 +48,16 @@ public class DefaultToolBarRenderJob
 	}
 
 	/**
-	 * Adds the content of the given toolbar content to the toolbar in the default 
-	 * drawing style of toolbars.
-	 * @param toolBarContent toolbar content to add to the toolbar
+	 * Adds the content of the given toolbar content to the toolbar in the default drawing style of toolbars.
+	 * 
+	 * @param toolBarContent
+	 *            toolbar content to add to the toolbar
 	 */
 	private void addToolBarContent(AToolBarContent toolBarContent) {
 
 		List<Group> viewSpecificGroups = toolBarView.getViewSpecificGroups();
 		Composite parentComposite = toolBarView.getParentComposite();
-		
+
 		for (ToolBarContainer toolBarContainer : toolBarContent.getDefaultToolBar()) {
 			Group group = new Group(parentComposite, SWT.NULL);
 			GridLayout layout = new GridLayout(1, false);
@@ -67,31 +69,31 @@ public class DefaultToolBarRenderJob
 			group.setLayout(layout);
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			viewSpecificGroups.add(group);
-		
+
 			// Needed to simulate toolbar wrapping which is not implemented for linux
 			// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
-			
+
 			addToolBarItems(group, toolBarContainer);
-	
+
 			ResourceLoader resourceLoader = GeneralManager.get().getResourceLoader();
 			Display display = PlatformUI.getWorkbench().getDisplay();
-			String path = toolBarContainer.getImagePath(); 
+			String path = toolBarContainer.getImagePath();
 			resourceLoader.getImage(display, path);
 
-// 			TODO: write horizontal renderer
-//			if (bHorizontal) {
-//				Label spacer = new Label(group, SWT.NULL);
-//				spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-//			}
-	
+			// TODO: write horizontal renderer
+			// if (bHorizontal) {
+			// Label spacer = new Label(group, SWT.NULL);
+			// spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
+			// }
+
 			Label label = new Label(group, SWT.CENTER);
 			label.setText(toolBarContainer.getTitle());
 			label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-	
+
 			group.setData("viewType", toolBarContent.getViewClass().getName());
 			group.setData("viewID", toolBarContent.getTargetViewID());
-	
+
 			group.layout();
 			parentComposite.layout();
 		}
@@ -102,15 +104,14 @@ public class DefaultToolBarRenderJob
 	 * toolbar managers is needed for simulating toolbar wrap which is not supported for linux. See bug:
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 	 */
-//	private void fillToolBar(Group group, ToolBarContainer toolBarContainer) {
-//
-//		if (toolBarContainer instanceof ActionToolBarContainer) {
-//			addItems(group, toolBarContainer);
-//		} else if (toolBarContainer instanceof WidgetToolBarContainer) {
-//			((WidgetToolBarContainer) toolBarContainer).render(group);
-//		}
-//	}
-
+	// private void fillToolBar(Group group, ToolBarContainer toolBarContainer) {
+	//
+	// if (toolBarContainer instanceof ActionToolBarContainer) {
+	// addItems(group, toolBarContainer);
+	// } else if (toolBarContainer instanceof WidgetToolBarContainer) {
+	// ((WidgetToolBarContainer) toolBarContainer).render(group);
+	// }
+	// }
 	private void addToolBarItems(Group group, ToolBarContainer toolBarContainer) {
 		ArrayList<IToolBarManager> toolBarManagers = new ArrayList<IToolBarManager>();
 
@@ -126,18 +127,19 @@ public class DefaultToolBarRenderJob
 			}
 			if (item instanceof IAction) {
 				toolBarManager.add((IAction) item);
-			} else if (item instanceof ControlContribution) {
+				toolBarManager.update(true);
+			}
+			else if (item instanceof ControlContribution) {
+				if (!toolBarManager.isEmpty()) {
+					toolBarManager = createNewToolBar(group, toolBarManagers);
+				}
 				toolBarManager.add((ControlContribution) item);
+				toolBarManager.update(true);
 				toolBarManager = createNewToolBar(group, toolBarManagers);
 				itemIndex = 0;
 			}
-			itemIndex ++;
+			itemIndex++;
 		}
-		
-		for (IToolBarManager tbm : toolBarManagers) {
-			tbm.update(true);
-		}
-		
 	}
 
 	private IToolBarManager createNewToolBar(Group group, List<IToolBarManager> toolBarManagers) {
@@ -146,7 +148,7 @@ public class DefaultToolBarRenderJob
 		toolBarManagers.add(toolBarManager);
 		return toolBarManager;
 	}
-	
+
 	public List<AToolBarContent> getToolBarContents() {
 		return toolBarContents;
 	}
