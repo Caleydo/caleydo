@@ -170,6 +170,14 @@
             id="org.caleydo.rcp.views.swt.SelectionInfoView"
             name="Info">
       </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.opengl.GLDendrogramView"
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLDendrogramView"
+            name="Dendrogram">
+      </view>
 
       
    </extension>   
@@ -318,6 +326,11 @@
             id="org.caleydo.rcp.command.openviews.histogram"
             name="Open Histogram">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDendrogramHandler"
+            id="org.caleydo.rcp.command.openviews.dendrogram"
+            name="Open Dendrogram">
+      </command>
       		
    </extension>
    <extension
@@ -437,6 +450,12 @@
                    commandId="org.caleydo.rcp.command.openviews.histogram"
                    icon="resources/icons/view/heatmap.png"
                    label="Histogram"
+                   style="push">
+             </command>
+             <command
+                   commandId="org.caleydo.rcp.command.openviews.dendrogram"
+                   icon="resources/icons/view/heatmap.png"
+                   label="Dendrogram"
                    style="push">
              </command>
 	          

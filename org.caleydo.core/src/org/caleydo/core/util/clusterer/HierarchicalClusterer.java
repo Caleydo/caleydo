@@ -3,6 +3,8 @@ package org.caleydo.core.util.clusterer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -108,16 +110,27 @@ public class HierarchicalClusterer
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
-		for (int i = 0; i < nrclusters; i++) {
+
+		ArrayList<Double> clusters = new ArrayList<Double>();
+
+		for (int i = 0; i < clusterAssignments.length; i++) {
+			if (clusters.contains(clusterAssignments[i]) == false)
+				clusters.add(clusterAssignments[i]);
+		}
+
+		HashMap<Double, Integer> hashClusters = new HashMap<Double, Integer>();
+		
+		for (int i = 0; i < clusters.size(); i++) {
+			hashClusters.put(clusters.get(i), i);
 			temp.add(0);
 			alExamples.add(0);
 		}
 
-		for (int cluster = 0; cluster < nrclusters; cluster++) {
+		for (double cluster : clusters) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (clusterAssignments[i] == cluster) {
 					indexes.add(i);
-					temp.set(cluster, temp.get(cluster) + 1);
+					temp.set(hashClusters.get(cluster), temp.get(hashClusters.get(cluster)) + 1);
 				}
 			}
 		}
@@ -135,10 +148,6 @@ public class HierarchicalClusterer
 		CNodeToTree(clusterNode, node);
 
 		set.setClusteredTree(tree);
-
-		// graph = matchTree(graph, node);
-		// set.setClusteredGraph(graph);
-
 		set.setAlClusterSizes(temp);
 		set.setAlExamples(alExamples);
 

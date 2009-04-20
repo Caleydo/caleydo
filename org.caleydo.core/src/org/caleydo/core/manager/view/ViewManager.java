@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHistogram;
@@ -263,6 +264,11 @@ public class ViewManager
 			case CREATE_GL_HISTOGRAM:
 				glEventListener =
 					new GLHistogram(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+				break;
+				
+			case CREATE_GL_DENDROGRAM:
+				glEventListener =
+					new GLDendrogram(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			default:

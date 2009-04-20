@@ -8,7 +8,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -46,8 +45,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
-import org.caleydo.core.util.clusterer.HierarchyGraph;
-import org.caleydo.core.util.clusterer.Node;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -60,8 +57,6 @@ import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.IGraph;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
@@ -144,9 +139,7 @@ public class GLHierarchicalHeatMap
 
 	// clustering/grouping stuff
 	private Tree<ClusterNode> tree = null;
-	private DendrogramNode[] Nodes = null;
-	private boolean bInitNodes = true;
-	private EClustererAlgo eClustererAlgo = EClustererAlgo.AFFINITY_PROPAGATION;
+	private EClustererAlgo eClustererAlgo = EClustererAlgo.TREE_CLUSTERER;
 	private EClustererType eClustererType = EClustererType.GENE_CLUSTERING;
 
 	private boolean bSplitGroupExp = false;
@@ -363,12 +356,12 @@ public class GLHierarchicalHeatMap
 		// renderStyle.updateFieldSizes();
 
 		if (set.getVA(iContentVAID).getGroupList() != null) {
-			System.out.println("group assignmetn, groups : " + set.getVA(iContentVAID).getGroupList().size());
+//			System.out.println("group assignmetn, groups : " + set.getVA(iContentVAID).getGroupList().size());
 
 			IGroupList groupList = set.getVA(iContentVAID).getGroupList();
 
 			groupList.get(14).setNrElements(groupList.get(14).getNrElements() - 5);
-
+			
 			iNrSelBar = groupList.size();
 			AlTextures.clear();
 			iAlNumberSamples.clear();
@@ -607,7 +600,7 @@ public class GLHierarchicalHeatMap
 			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
 
 			iTemp = iIndex;
-			
+
 			if (iIndex - iAlNumberSamples.get(0) < 0) {
 				iTexture = 0;
 				iPos = iIndex;
@@ -634,7 +627,7 @@ public class GLHierarchicalHeatMap
 			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
 
 			iTemp = iIndex;
-			
+
 			if (iIndex - iAlNumberSamples.get(0) < 0) {
 				iTexture = 0;
 				iPos = iIndex;
@@ -1644,295 +1637,12 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
-	private int iNrNodes = 0, iNrLeafs = 0;
-
-	private void renderDendrogram(final GL gl, float fymin, float fymax, ClusterNode parentNode, int iDepth,
-		int iNrSiblings, int iChildNr, boolean bleft, float fXMax) {
-
-		iNrNodes++;
-
-		int currentDepth = iDepth;
-
-		float fxpos = 0.2f * currentDepth;
-		float fypos = 0;
-		float ymaxNew = 0, yminNew = 0;
-		float fdiff = (fymax - fymin);
-		float ywidth = fdiff / (iNrSiblings + 1);
-
-		fypos = fymin + (ywidth * (iChildNr + 1));
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-
-		if (tree.hasChildren(parentNode) == false)
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION,
-				parentNode.getClusterNr()));
-
-		if (bleft)
-			gl.glColor4f(1f, 1f, 0f, 1f);
-		else
-			gl.glColor4f(1f, 0f, 1f, 1f);
-
-		List<ClusterNode> listGraph = null;
-
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fxpos, fypos, SELECTION_Z);
-		if (tree.hasChildren(parentNode)) {
-			gl.glVertex3f(fxpos + 0.2f, fypos, SELECTION_Z);
-			gl.glVertex3f(fxpos + 0.2f, fypos + 0.01f, SELECTION_Z);
-		}
-		else {
-			gl.glVertex3f(fXMax, fypos, SELECTION_Z);
-			gl.glVertex3f(fXMax, fypos + 0.01f, SELECTION_Z);
-			iNrLeafs++;
-		}
-		gl.glVertex3f(fxpos, fypos + 0.01f, SELECTION_Z);
-		gl.glEnd();
-		if (tree.hasChildren(parentNode) == false)
-			gl.glPopName();
-
-		gl.glPopAttrib();
-
-		if (tree.hasChildren(parentNode)) {
-			currentDepth++;
-
-			listGraph = tree.getChildren(parentNode);
-
-			int iNrChildsNode = listGraph.size();
-
-			if (bleft)
-				gl.glColor4f(1f, 1f, 0f, 1f);
-			else
-				gl.glColor4f(1f, 0f, 1f, 1f);
-			gl.glLineWidth(0.1f);
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * 0.55f), SELECTION_Z);
-			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * (iNrChildsNode + 0.55f)),
-				SELECTION_Z);
-			gl.glEnd();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.55f));
-				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
-
-				ClusterNode currentNode = (ClusterNode) listGraph.get(i);// .getChilds().elementAt(i);
-				if (i == 0)
-					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i, true,
-						4);
-				else
-					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i,
-						false, 4);
-			}
-		}
-	}
-
-	/**
-	 * Render dendrogram recursively
-	 * 
-	 * @param gl
-	 * @param fymin
-	 * @param fymax
-	 * @param HierarchyGraph
-	 * @param iDepth
-	 * @param iNrSiblings
-	 * @param iChildNr
-	 */
-	private void renderDendrogram(final GL gl, float fymin, float fymax, HierarchyGraph Node, int iDepth,
-		int iNrSiblings, int iChildNr, boolean bleft, float fXMax) {
-
-		iNrNodes++;
-
-		int currentDepth = iDepth;
-
-		float fxpos = 0.2f * currentDepth;
-		float fypos = 0;
-		float ymaxNew = 0, yminNew = 0;
-		float fdiff = (fymax - fymin);
-		float ywidth = fdiff / (iNrSiblings + 1);
-
-		fypos = fymin + (ywidth * (iChildNr + 1));
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION, iNrNodes));
-
-		if (bleft)
-			gl.glColor4f(1f, 1f, 0f, 1f);
-		else
-			gl.glColor4f(1f, 0f, 1f, 1f);
-
-		List<IGraph> listGraph = Node.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
-
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fxpos, fypos, SELECTION_Z);
-		if (listGraph.size() > 0) {
-			gl.glVertex3f(fxpos + 0.2f, fypos, SELECTION_Z);
-			gl.glVertex3f(fxpos + 0.2f, fypos + 0.01f, SELECTION_Z);
-		}
-		else {
-			gl.glVertex3f(fXMax, fypos, SELECTION_Z);
-			gl.glVertex3f(fXMax, fypos + 0.01f, SELECTION_Z);
-			iNrLeafs++;
-		}
-		gl.glVertex3f(fxpos, fypos + 0.01f, SELECTION_Z);
-		gl.glEnd();
-		gl.glPopName();
-
-		gl.glPopAttrib();
-
-		if (listGraph.size() > 0) {
-			currentDepth++;
-
-			int iNrChildsNode = listGraph.size();
-
-			if (bleft)
-				gl.glColor4f(1f, 1f, 0f, 1f);
-			else
-				gl.glColor4f(1f, 0f, 1f, 1f);
-			gl.glLineWidth(0.1f);
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * 0.55f), SELECTION_Z);
-			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * (iNrChildsNode + 0.55f)),
-				SELECTION_Z);
-			gl.glEnd();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.55f));
-				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
-
-				HierarchyGraph currentNode = (HierarchyGraph) listGraph.get(i);// .getChilds().elementAt(i);
-				if (i == 0)
-					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i, true,
-						4);
-				else
-					renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i,
-						false, 4);
-			}
-		}
-	}
-
-	private class DendrogramNode {
-		float xCoords;
-		float yCoords;
-		float correlation;
-		boolean bSelected;
-		boolean bCollapsed;
-		String Nodename;
-
-		public DendrogramNode() {
-			this.xCoords = 0f;
-			this.yCoords = 0f;
-			this.correlation = 0f;
-			this.bSelected = false;
-			this.bCollapsed = false;
-			this.Nodename = "";
-		}
-	}
-
-	private void renderDendrogram(final GL gl, float fymin, float fymax, Node[] treeStructure) {
-
-		float fxoffset = 0f;
-		float fHeight = (fymax - fymin);
-
-		float fHeightSample = fHeight / (treeStructure.length + 1);
-
-		fymax = fymax - fHeightSample / 2f;
-
-		if (bInitNodes == true)
-			Nodes = new DendrogramNode[treeStructure.length];
-
-		int iCount = 0;
-		int iClusterCount = 0;
-
-		gl.glLineWidth(1f);
-		gl.glColor4f(0f, 0f, 0f, 0.9f);
-
-		for (int i = 0; i < treeStructure.length; i++) {
-
-			float x_start_l = 0, x_start_r = 0, x_end = 0;
-			float y_r = 0, y_l = 0;
-
-			DendrogramNode temp = new DendrogramNode();
-
-			if (treeStructure[i].getLeft() >= 0) {
-				x_start_l = 0;
-				y_l = fymax - (fHeightSample * iCount + fymin);
-				iCount++;
-			}
-			else {
-				x_start_l = Nodes[-(treeStructure[i].getLeft()) - 1].xCoords;
-				y_l = Nodes[-(treeStructure[i].getLeft()) - 1].yCoords;
-			}
-
-			if (treeStructure[i].getRight() >= 0) {
-				x_start_r = 0;
-				y_r = fymax - (fHeightSample * iCount + fymin);
-				iCount++;
-			}
-			else {
-				x_start_r = Nodes[-(treeStructure[i].getRight()) - 1].xCoords;
-				y_r = Nodes[-(treeStructure[i].getRight()) - 1].yCoords;
-			}
-
-			x_end = Math.max(x_start_r, x_start_l) - 0.05f + fxoffset;
-
-			fxoffset -= 0.01f;
-
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION,
-				iClusterCount));
-			gl.glBegin(GL.GL_LINES);
-			// left
-			gl.glVertex3f(x_start_l, y_l, SELECTION_Z);
-			gl.glVertex3f(x_end, y_l, SELECTION_Z);
-			// connect left and right
-			gl.glVertex3f(x_end, y_l, SELECTION_Z);
-			gl.glVertex3f(x_end, y_r, SELECTION_Z);
-			// right
-			gl.glVertex3f(x_start_r, y_r, SELECTION_Z);
-			gl.glVertex3f(x_end, y_r, SELECTION_Z);
-			gl.glEnd();
-			gl.glPopName();
-
-			if (bInitNodes == true) {
-
-				temp.xCoords = x_end;
-				temp.yCoords = y_l + (y_r - y_l) / 2f;
-				temp.correlation = 1 - treeStructure[i].getCorrelation();
-				temp.Nodename = "Node_" + i;
-
-				Nodes[iClusterCount] = temp;
-			}
-
-			iClusterCount++;
-		}
-		bInitNodes = false;
-		gl.glColor4f(1f, 1f, 0f, 1f);
-	}
-
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		if (bRedrawTextures) {
 			initTextures(gl);
 			bRedrawTextures = false;
 		}
-
-		// Store clustered VA and number of samples per cluster to file
-		// try
-		// {
-		// BufferedWriter out = new BufferedWriter(new
-		// FileWriter("clusterer.txt"));
-		// for (Integer iContentIndex : set.getVA(iContentVAID))
-		// out.write(iContentIndex + " ");
-		// out.write("\n");
-		// for (Integer iter : set.getAlClusterSizes())
-		// out.write(iter + " ");
-		// out.write("\n");
-		// out.close();
-		// }
-		// catch (IOException e)
-		// {
-		// }
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
@@ -1967,17 +1677,14 @@ public class GLHierarchicalHeatMap
 
 		// GLHelperFunctions.drawAxis(gl);
 
-		if (tree == null) {
-			// System.out.println("Problems during clustering!!");
-		}
-		else {
-			// System.out.println("renderDendrogram(..)");
-			iNrNodes = 0;
-			iNrLeafs = 0;
-			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), tree.getRoot(), 0, 1, 0, true, 4);
-			// System.out.println("\n iNrNodes: " + iNrNodes);
-			// System.out.println("\n iNrLeafs: " + iNrLeafs);
-		}
+		// if (tree != null) {
+		// // System.out.println("renderDendrogram(..)");
+		// iNrNodes = 0;
+		// iNrLeafs = 0;
+		// renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), tree.getRoot(), 0, 1, 0, true, 4);
+		// // System.out.println("\n iNrNodes: " + iNrNodes);
+		// // System.out.println("\n iNrLeafs: " + iNrLeafs);
+		// }
 
 		// all stuff for rendering level 1 (overview bar)
 		renderOverviewBar(gl);
@@ -2001,16 +1708,6 @@ public class GLHierarchicalHeatMap
 
 		if (set.getVA(iStorageVAID).getGroupList() != null)
 			renderClassAssignmentsExperiments(gl);
-
-		// gl.glTranslatef(7.0f, -0.0f, 0);
-		// if (treeStructure == null) {
-		// // System.out.println("Problems during clustering!!");
-		// }
-		// else {
-		// // System.out.println("renderDendrogram(..)");
-		// renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), treeStructure);
-		// }
-		// gl.glTranslatef(-7.0f, -0.0f, 0);
 
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
@@ -2511,6 +2208,7 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 						System.out.println("node " + iExternalID);
+						System.out.println(((Tree<ClusterNode>) tree).getNameByNumber(iExternalID));
 						setDisplayListDirty();
 						break;
 				}

@@ -19,6 +19,8 @@ public class ClusterNode
 	private float fCoefficient;
 	@XmlElement
 	private int iHierarchyDepth;
+	@XmlElement
+	private int iNrElements;
 	
 	public ClusterNode() {
 
@@ -59,5 +61,13 @@ public class ClusterNode
 
 	public int getDepth() {
 		return iHierarchyDepth;
+	}
+
+	public void setNrElements(int iNrElements) {
+		this.iNrElements = iNrElements;
+	}
+
+	public int getNrElements() {
+		return iNrElements;
 	}
 }

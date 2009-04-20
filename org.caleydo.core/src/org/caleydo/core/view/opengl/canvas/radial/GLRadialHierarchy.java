@@ -469,10 +469,10 @@ public class GLRadialHierarchy
 							drawingController.handleMouseOver(pdPickedElement);
 						break;
 
-					case RIGHT_CLICKED:
-						if (pdPickedElement != null)
-							drawingController.handleDoubleClick(pdPickedElement);
-						break;
+//					case RIGHT_CLICKED:
+//						if (pdPickedElement != null)
+//							drawingController.handleDoubleClick(pdPickedElement);
+//						break;
 
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);

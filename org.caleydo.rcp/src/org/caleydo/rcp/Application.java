@@ -123,6 +123,9 @@ public class Application
 					else if (element.equals(EStartViewType.HISTOGRAM.getCommandLineArgument())) {
 						alStartViews.add(EStartViewType.HISTOGRAM);
 					}
+					else if (element.equals(EStartViewType.DENDROGRAM.getCommandLineArgument())) {
+						alStartViews.add(EStartViewType.DENDROGRAM);
+					}
 					else {
 						sCaleydoXMLfile = element;
 					}

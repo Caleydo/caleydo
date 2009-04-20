@@ -60,8 +60,9 @@ public enum EPickingType {
 	HIER_HEAT_MAP_EXPERIMENTS_GROUP(EManagedObjectType.GL_HIER_HEAT_MAP, false),
 
 	// dendrogram
-	DENDROGRAM_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP, false),
-
+	DENDROGRAM_SELECTION(EManagedObjectType.GL_DENDOGRAM, false),
+	DENDROGRAM_CUT_SELECTION(EManagedObjectType.GL_DENDOGRAM, false),
+	
 	// glyph
 	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH, false),
 	// TODO: works only for glyph sliders now, new solution?

@@ -3,11 +3,13 @@ package org.caleydo.core.data.graph.tree;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -27,9 +29,12 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	TreePorter porter = new TreePorter();
 
+	private HashMap<Integer, String> hashClusterNames;
+
 	public Tree() {
 
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
+		hashClusterNames = new HashMap<Integer, String>();
 
 	}
 
@@ -59,6 +64,8 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public void addChild(NodeType parentNode, NodeType childNode) {
 		graph.addVertex(childNode);
 		graph.addEdge(parentNode, childNode);
+		hashClusterNames.put(((ClusterNode) childNode).getClusterNr(), ((ClusterNode) childNode)
+			.getNodeName());
 	}
 
 	/**
@@ -168,5 +175,9 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public String getNameByNumber(int iClusterNr) {
+		return hashClusterNames.get(iClusterNr);
 	}
 }
