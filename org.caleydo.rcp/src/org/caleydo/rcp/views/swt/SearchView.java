@@ -1,11 +1,14 @@
 package org.caleydo.rcp.views.swt;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -13,10 +16,12 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.views.opengl.GLHeatMapView;
+import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraphItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -26,6 +31,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -36,6 +42,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -58,8 +65,19 @@ public class SearchView
 
 	private Text searchText;
 
+	private Group resultsGroup;
+
 	private Table pathwayTable;
+	private Table pathwayContainingGeneTable;
 	private Table geneTable;
+
+	private Composite composite;
+	private Composite pathwayResultsComposite;
+
+	private Label geneResultsLabel;
+	private Label pathwayResultsLabel;
+	private Label pathwayContainingGeneLabel;
+	private Label horizontalSeparator;
 
 	private IGeneralManager generalManager;
 
@@ -69,6 +87,9 @@ public class SearchView
 	private Button useGeneRefSeqID;
 	private Button useGeneEntrezGeneID;
 	private Button useGeneDavidID;
+
+	private Button showOnlyGenesContainedInAnyPathway;
+	private boolean bShowOnlyGenesContainedInAnyPathway = false;
 
 	private IIDMappingManager idMappingManager;
 
@@ -86,14 +107,16 @@ public class SearchView
 
 		idMappingManager = generalManager.getIDMappingManager();
 
-		final Composite composite = new Composite(parent, SWT.NULL);
+		composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout(1, false));
 
-		Label entitySearchLabel = new Label(composite, SWT.NULL);
-		entitySearchLabel.setText("Search query:");
+		Group searchQueryGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		// searchDataKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		searchQueryGroup.setLayout(new RowLayout());
+		searchQueryGroup.setText("Search query");
 
-		searchText = new Text(composite, SWT.BORDER | SWT.SINGLE);
-		searchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		searchText = new Text(searchQueryGroup, SWT.BORDER | SWT.SINGLE);
+		searchText.setLayoutData(new RowData(550, 20));
 		searchText.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -104,8 +127,9 @@ public class SearchView
 		Group searchDataKindGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		// searchDataKindGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		searchDataKindGroup.setLayout(new RowLayout());
+		searchDataKindGroup.setText("Search filter");
 
-		Button searchButton = new Button(composite, SWT.PUSH);
+		Button searchButton = new Button(searchQueryGroup, SWT.PUSH);
 		searchButton.setText("Search");
 
 		usePathways = new Button(searchDataKindGroup, SWT.CHECK);
@@ -152,31 +176,12 @@ public class SearchView
 
 		searchDataKindGroup.pack();
 
-		Label resultLabel = new Label(composite, SWT.NULL);
-		resultLabel.setText("Results:");
-
-		geneTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
-		geneTable.setLinesVisible(true);
-		geneTable.setHeaderVisible(true);
-		geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
-		addGeneContextMenu();
-		
-		String[] titles = { "RefSeq ID", "David ID", "Entrez Gene ID", "Gene Symbol", "Gene Name" };
-		for (int i = 0; i < titles.length; i++) {
-			TableColumn column = new TableColumn(geneTable, SWT.NONE);
-			column.setText(titles[i]);
-		}
-
-		pathwayTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
-		pathwayTable.setLinesVisible(true);
-		pathwayTable.setHeaderVisible(true);
-		pathwayTable.setLayoutData(new GridData(GridData.FILL_BOTH));
-		addPathwayContextMenu();
-
-		TableColumn pathwayDatabaseColumn = new TableColumn(pathwayTable, SWT.NONE);
-		pathwayDatabaseColumn.setText("Database");
-		TableColumn pathwayNameColumn = new TableColumn(pathwayTable, SWT.NONE);
-		pathwayNameColumn.setText("Pathway Name");
+		resultsGroup = new Group(composite, SWT.NULL);
+		// resultsGroup.setText("Search results");
+		resultsGroup.setLayout(new GridLayout(1, false));
+		resultsGroup.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// addGeneContextMenu();
+		// addResultsContent(resultsGroup);
 
 		// TreeItem experimentTree = new TreeItem(selectionTree, SWT.NONE);
 		// experimentTree.setText("Experiments");
@@ -206,20 +211,173 @@ public class SearchView
 		composite.layout();
 	}
 
+	private void addResultsContent(Composite composite) {
+
+		if (pathwayTable != null) {
+			pathwayTable.dispose();
+			pathwayResultsLabel.dispose();
+			pathwayResultsComposite.dispose();
+			pathwayContainingGeneTable.dispose();
+			pathwayContainingGeneLabel.dispose();
+		}
+
+		if (geneTable != null) {
+			geneTable.dispose();
+			geneResultsLabel.dispose();
+			showOnlyGenesContainedInAnyPathway.dispose();
+		}
+
+		if (horizontalSeparator != null)
+			horizontalSeparator.dispose();
+
+		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
+			|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection()
+			|| useGeneRefSeqID.getSelection()) {
+
+			geneResultsLabel = new Label(composite, SWT.NULL);
+			geneResultsLabel.setText("Gene results:");
+
+			geneTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+			geneTable.setLinesVisible(true);
+			geneTable.setHeaderVisible(true);
+			geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+			addGeneContextMenu();
+
+			String[] titles = { "RefSeq ID", "David ID", "Entrez Gene ID", "Gene Symbol", "Gene Name" };
+			for (int i = 0; i < titles.length; i++) {
+				TableColumn column = new TableColumn(geneTable, SWT.NONE);
+				column.setText(titles[i]);
+			}
+
+			geneTable.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+					// Flush old pathway results
+					for (TableItem item : pathwayContainingGeneTable.getItems())
+						item.dispose();
+
+					pathwayContainingGeneLabel.setEnabled(true);
+					pathwayContainingGeneTable.setEnabled(true);
+
+					for (PathwayGraph pathway : getPathwaysContainingGene((Integer) e.item.getData())) {
+						TableItem item = new TableItem(pathwayContainingGeneTable, SWT.NULL);
+						item.setText(0, pathway.getType().getName());
+						item.setText(1, pathway.getTitle());
+						item.setData(pathway);
+					}
+
+					pathwayContainingGeneTable.getColumn(0).pack();
+					pathwayContainingGeneTable.getColumn(1).pack();
+
+					pathwayContainingGeneLabel.setText("Pathway containing selected gene: "
+						+ geneTable.getSelection()[0].getText(3));
+				}
+			});
+
+			showOnlyGenesContainedInAnyPathway = new Button(composite, SWT.CHECK);
+			showOnlyGenesContainedInAnyPathway.setText("Show only genes contained in any pathway");
+			showOnlyGenesContainedInAnyPathway.setSelection(bShowOnlyGenesContainedInAnyPathway);
+			showOnlyGenesContainedInAnyPathway.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway.getSelection();
+					startSearch();
+				}
+			});
+		}
+
+		if ((useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
+			|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection() || useGeneRefSeqID
+			.getSelection())
+			&& usePathways.getSelection()) {
+
+			horizontalSeparator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+			GridData data = new GridData(GridData.FILL_HORIZONTAL);
+			data.heightHint = 20;
+			horizontalSeparator.setLayoutData(data);
+		}
+
+		if (usePathways.getSelection()) {
+
+			pathwayResultsComposite = new Composite(composite, SWT.NULL);
+			pathwayResultsComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+			pathwayResultsComposite.setLayout(new GridLayout(2, true));
+
+			pathwayResultsLabel = new Label(pathwayResultsComposite, SWT.NULL);
+			pathwayResultsLabel.setText("Pathway results:");
+
+			pathwayContainingGeneLabel = new Label(pathwayResultsComposite, SWT.NULL);
+			pathwayContainingGeneLabel.setText("Pathway containing selected gene:");
+			pathwayContainingGeneLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			pathwayTable = new Table(pathwayResultsComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+			pathwayTable.setLinesVisible(true);
+			pathwayTable.setHeaderVisible(true);
+			pathwayTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+			TableColumn pathwayDatabaseColumn = new TableColumn(pathwayTable, SWT.NONE);
+			pathwayDatabaseColumn.setText("Database");
+			TableColumn pathwayNameColumn = new TableColumn(pathwayTable, SWT.NONE);
+			pathwayNameColumn.setText("Pathway Name");
+
+			addPathwayContextMenu(pathwayTable);
+
+			pathwayContainingGeneTable =
+				new Table(pathwayResultsComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
+			pathwayContainingGeneTable.setLinesVisible(true);
+			pathwayContainingGeneTable.setHeaderVisible(true);
+			pathwayContainingGeneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+			pathwayContainingGeneTable.setEnabled(false);
+
+			TableColumn pathwayContainingGeneDatabaseColumn =
+				new TableColumn(pathwayContainingGeneTable, SWT.NONE);
+			pathwayContainingGeneDatabaseColumn.setText("Database");
+			TableColumn pathwayContainingGeneNameColumn =
+				new TableColumn(pathwayContainingGeneTable, SWT.NONE);
+			pathwayContainingGeneNameColumn.setText("Pathway Name");
+
+			addPathwayContextMenu(pathwayContainingGeneTable);
+
+		}
+
+		// composite.pack();
+		composite.layout();
+	}
+
 	private void startSearch() {
 
-		searchForPathway(searchText.getText());
-		searchForGene(searchText.getText());
+		if (searchText.getText().length() < 3) {
+			
+			 MessageBox messageBox = new MessageBox(composite.getShell(), SWT.OK);
+			 messageBox.setText("Invalid search query");
+			 messageBox.setMessage("Please enter a search query with the minimum of 3 characters.");
+			 messageBox.open();
+			return;
+		}
+		
+		// Initialize result content
+		addResultsContent(resultsGroup);
+
+		if (usePathways.getSelection()) {
+			searchForPathway(searchText.getText());
+		}
+
+		if (useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
+			|| useGeneEntrezGeneID.getSelection() || useGeneName.getSelection()
+			|| useGeneRefSeqID.getSelection()) {
+
+			searchForGene(searchText.getText());
+		}
 	}
 
 	private void searchForPathway(String sSearchQuery) {
 
-		if (!usePathways.getSelection())
-			return;
-
 		// Flush old pathway results
 		for (TableItem item : pathwayTable.getItems())
 			item.dispose();
+
+		if (!usePathways.getSelection())
+			return;
 
 		Pattern pattern = Pattern.compile(sSearchQuery, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
@@ -288,6 +446,12 @@ public class SearchView
 
 		// Fill results in table
 		for (Integer iDavidID : iArDavidGeneResults) {
+
+			// When gene filter is on and gene is not contained in any pathway -> ignore
+			if (showOnlyGenesContainedInAnyPathway.getSelection()
+				&& getPathwaysContainingGene(iDavidID).size() == 0)
+				continue;
+
 			String sRefSeqIDs = "";
 
 			try {
@@ -324,7 +488,7 @@ public class SearchView
 			item.setText(4, sGeneName);
 
 			item.setData(iDavidID);
-			
+
 			// Highlight content if it matches the search query
 			for (int iIndex = 0; iIndex < geneTable.getColumnCount(); iIndex++) {
 				regexMatcher = pattern.matcher(item.getText(iIndex));
@@ -353,13 +517,6 @@ public class SearchView
 		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
-	// TODO: remove after commit of Werner
-	public void updateSearchBar(boolean bIsVisible) {
-		// pathwaySearchBox.setVisible(bIsVisible);
-		// pathwaySearchLabel.setVisible(bIsVisible);
-		// parentComposite.layout();
-	}
-
 	@Override
 	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
@@ -386,7 +543,7 @@ public class SearchView
 						geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
 					openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
-						
+
 							// Switch to browser view
 							try {
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
@@ -414,23 +571,23 @@ public class SearchView
 							catch (PartInitException e1) {
 								e1.printStackTrace();
 							}
-							
-							searchViewMediator.loadPathwayByGene((Integer)tableItem.getData());
+
+							searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
 						};
 					});
 
-					MenuItem loadGeneInHeatMap = new MenuItem(menu, SWT.PUSH);
-					loadGeneInHeatMap.setText("Show gene in heat map");
-					loadGeneInHeatMap.setImage(generalManager.getResourceLoader().getImage(
+					MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu, SWT.PUSH);
+					loadGeneInHeatMapMenuItem.setText("Show gene in heat map");
+					loadGeneInHeatMapMenuItem.setImage(generalManager.getResourceLoader().getImage(
 						geneTable.getDisplay(), "resources/icons/view/storagebased/heatmap/heatmap.png"));
 
-					loadGeneInHeatMap.addSelectionListener(new SelectionAdapter() {
+					loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 
 							// Switch to heat map view
 							try {
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(GLHeatMapView.ID);
+									.showView(GLHierarchicalHeatMapView.ID);
 							}
 							catch (PartInitException e1) {
 								e1.printStackTrace();
@@ -442,7 +599,7 @@ public class SearchView
 		});
 	}
 
-	private void addPathwayContextMenu() {
+	private void addPathwayContextMenu(final Table pathwayTable) {
 
 		final Menu menu = new Menu(pathwayTable.getShell(), SWT.POP_UP);
 		pathwayTable.setMenu(menu);
@@ -455,51 +612,77 @@ public class SearchView
 					menuItems[i].dispose();
 				}
 
-				for (final TableItem tableItem : pathwayTable.getSelection()) {
+				final TableItem tableItem = pathwayTable.getSelection()[0];
 
-					MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
-					openInBrowserMenuItem.setText("Open in browser");
-					openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
-						pathwayTable.getDisplay(), "resources/icons/view/browser/browser.png"));
-					openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(SelectionEvent e) {
+				MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
+				openInBrowserMenuItem.setText("Open in browser");
+				openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
+					pathwayTable.getDisplay(), "resources/icons/view/browser/browser.png"));
+				openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {
 
-							// Switch to browser view
-							try {
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(HTMLBrowserView.ID);
-							}
-							catch (PartInitException e1) {
-								e1.printStackTrace();
-							}
+						// Switch to browser view
+						try {
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+								HTMLBrowserView.ID);
+						}
+						catch (PartInitException e1) {
+							e1.printStackTrace();
+						}
 
-							searchViewMediator.loadURLInBrowser(((PathwayGraph) tableItem.getData())
-								.getExternalLink());
-						};
-					});
+						searchViewMediator.loadURLInBrowser(((PathwayGraph) tableItem.getData())
+							.getExternalLink());
+					};
+				});
 
-					MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
-					loadPathwayInBucketMenuItem.setText("Load pathway in Bucket");
-					loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
-						pathwayTable.getDisplay(), "resources/icons/view/remote/remote.png"));
+				MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
+				loadPathwayInBucketMenuItem.setText("Load pathway in Bucket");
+				loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
+					pathwayTable.getDisplay(), "resources/icons/view/remote/remote.png"));
 
-					loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
-						public void widgetSelected(SelectionEvent e) {
+				loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {
 
-							// Switch to bucket view
-							try {
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(GLRemoteRenderingView.ID);
-							}
-							catch (PartInitException e1) {
-								e1.printStackTrace();
-							}
+						// Switch to bucket view
+						try {
+							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+								GLRemoteRenderingView.ID);
+						}
+						catch (PartInitException e1) {
+							e1.printStackTrace();
+						}
 
-							searchViewMediator.loadPathway(((PathwayGraph) tableItem.getData()).getID());
-						};
-					});
-				}
+						searchViewMediator.loadPathway(((PathwayGraph) tableItem.getData()).getID());
+					};
+				});
 			}
 		});
+	}
+
+	private Set<PathwayGraph> getPathwaysContainingGene(int iDavidID) {
+
+		// set to avoid duplicate pathways
+		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
+
+		int iPathwayVertexGraphItemID =
+			generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
+
+		// Only handle David IDs that does exist in any pathway
+		if (iPathwayVertexGraphItemID != -1) {
+
+			PathwayVertexGraphItem pathwayGraphItem =
+				(PathwayVertexGraphItem) GeneralManager.get().getPathwayItemManager().getItem(
+					iPathwayVertexGraphItemID);
+
+			List<IGraphItem> pathwayItems =
+				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
+			for (IGraphItem pathwayItem : pathwayItems) {
+				PathwayGraph pathwayGraph =
+					(PathwayGraph) pathwayItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0);
+				pathwaysContainingGene.add(pathwayGraph);
+			}
+		}
+
+		return pathwaysContainingGene;
 	}
 }

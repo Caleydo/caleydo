@@ -2721,7 +2721,7 @@ public class GLRemoteRendering
 		// poolLayer.removeAllElements();
 
 		Iterator<ICaleydoGraphItem> iterPathwayGraphItem = alVertex.iterator();
-		Iterator<IGraphItem> iterIdenticalPathwayGraphItemRep = null;
+//		Iterator<IGraphItem> iterIdenticalPathwayGraphItemRep = null;
 
 		// set to avoid duplicate pathways
 		Set<Integer> newPathwayIDs = new HashSet<Integer>();

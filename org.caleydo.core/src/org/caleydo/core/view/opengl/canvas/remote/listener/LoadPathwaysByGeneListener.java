@@ -75,5 +75,4 @@ public class LoadPathwaysByGeneListener
 			bucket.loadDependentPathways(alPathwayVertexGraphItem);
 		}
 	}
-
 }
