@@ -32,12 +32,11 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
+import org.caleydo.core.manager.event.view.AttachedViewActivationEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -2597,13 +2596,13 @@ public class GLRemoteRendering
 	private void triggerToolBarUpdate() {
 		log.info("triggerToolBarUpdate() called");
 
-		ViewActivationCommandEventContainer viewActivationEvent = 
-			new ViewActivationCommandEventContainer(EViewCommand.ACTIVATION);
+		AttachedViewActivationEvent viewActivationEvent = 
+			new AttachedViewActivationEvent();
 		List<Integer> viewIDs = this.getAllViewIDs();
 		viewActivationEvent.setViewIDs(viewIDs);
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher(); 
-		eventPublisher.triggerEvent(EMediatorType.VIEW_SELECTION, this, viewActivationEvent);
+		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 	
 	/**

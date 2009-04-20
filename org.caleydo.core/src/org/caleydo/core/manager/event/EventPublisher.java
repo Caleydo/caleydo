@@ -55,7 +55,7 @@ public class EventPublisher
 
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IMediatorSender eventTrigger,
-		IEvent eventContainer) {
+		IEventContainer eventContainer) {
 
 		if (eMediatorType == EMediatorType.ALL_REGISTERED) {
 

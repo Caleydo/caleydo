@@ -68,7 +68,6 @@ public class ToolBarView
 		
 		ToolBarMediator toolBarMediator = new ToolBarMediator();
 		toolBarMediator.setToolBarView(this);
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION, toolBarMediator);
 	}
 
 	@Override

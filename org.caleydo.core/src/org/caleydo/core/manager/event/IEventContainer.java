@@ -21,8 +21,7 @@ import org.caleydo.core.manager.IEventPublisher;
  * 
  * @author Alexander Lex
  */
-public interface IEventContainer
-	extends IEvent {
+public interface IEventContainer {
 
 	/**
 	 * Returns the type of event

@@ -6,11 +6,14 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewActivationCommandEventContainer;
+import org.caleydo.core.manager.event.view.AttachedViewActivationEvent;
+import org.caleydo.core.manager.event.view.DetachedViewActivationEvent;
+import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
+import org.caleydo.core.manager.event.view.ViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.rcp.views.CaleydoViewPart;
@@ -29,6 +32,7 @@ import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
 
 /**
  * Listener for events that are related to view changes (detach, visible, hide, activate, etc.)
@@ -39,9 +43,12 @@ public class PartListener
 	implements IPartListener2, IUniqueObject, IMediatorSender {
 
 	Logger log = Logger.getLogger(PartListener.class.getName());
-	
+
+	IEventPublisher eventPublisher; 
+
 	public PartListener() {
 		GeneralManager.get().getEventPublisher().addSender(EMediatorType.VIEW_SELECTION, this);
+		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
 	
 	@Override
@@ -51,7 +58,7 @@ public class PartListener
 	
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		GeneralManager.get().getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+		eventPublisher.triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@Override
@@ -96,16 +103,16 @@ public class PartListener
 
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 
-
 		if (viewPart instanceof AGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
 				((AGLViewPart) viewPart).getGLCanvas().getID());
 		}
 		
 		if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
-			// viewpart is detached from caleydo main windo
-			if (viewPart instanceof AGLViewPart) {
-				drawInlineToolBar((AGLViewPart) viewPart);
+			// viewpart is detached from caleydo main window
+			if (viewPart instanceof CaleydoViewPart) {
+				drawInlineToolBar(viewPart);
+				removeViewSpecificToolBarItems();
 			}
 		} else {
 			// viewpart is attached within caleydo main window
@@ -117,6 +124,7 @@ public class PartListener
 
 	@Override
 	public void partDeactivated(IWorkbenchPartReference partRef) {
+		// removeViewSpecificToolBarItems();
 	}
 
 	@Override
@@ -139,8 +147,11 @@ public class PartListener
 		// Check if view is inside the workbench or detached to a separate
 		// window
 		if (activePart.getSite().getShell().getText().equals("Caleydo") && glViewPart != null) {
-			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
-				ToolBarView.ID)).removeViewSpecificToolBar(glViewPart.getGLEventListener().getID());
+//			DetachedViewActivationEvent event = new DetachedViewActivationEvent();
+//			event.setViewIDs(new ArrayList<Integer>());
+//			eventPublisher.triggerEvent(event);
+//			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+//				ToolBarView.ID)).removeViewSpecificToolBar(glViewPart.getGLEventListener().getID());
 		}
 	}
 
@@ -157,28 +168,15 @@ public class PartListener
 		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 
-		ViewActivationCommandEventContainer viewActivationEvent;
-		viewActivationEvent = new ViewActivationCommandEventContainer(EViewCommand.ACTIVATION);
-
-		if (viewPart instanceof HTMLBrowserView) {
-			List<Integer> viewIDs = new ArrayList<Integer>();
-			viewIDs.add(viewPart.getViewID());
-			viewActivationEvent.setViewIDs(viewIDs);
-		} else if (viewPart instanceof AGLViewPart) {
-			GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(
-				((CaleydoViewPart) activePart).getSWTComposite());
-
-			AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
-	
-			List<Integer> viewIDs = glView.getAllViewIDs();
-			viewActivationEvent.setViewIDs(viewIDs);
+		ViewEvent viewActivationEvent;
+		if (isViewAttached(viewPart)) {
+			viewActivationEvent = new AttachedViewActivationEvent();			
 		} else {
-			log.info("no defined handling for part-activation of " + viewPart);
-			return;
+			viewActivationEvent = new DetachedViewActivationEvent();
 		}
-
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher(); 
-		eventPublisher.triggerEvent(EMediatorType.VIEW_SELECTION, this, viewActivationEvent);
+		List<Integer> viewIDs = getAllViewIDs(viewPart);
+		viewActivationEvent.setViewIDs(viewIDs);
+		eventPublisher.triggerEvent(viewActivationEvent);
 	}
 
 	@Override
@@ -189,10 +187,8 @@ public class PartListener
 	 * draws the toolbar items within the views default toolbar (inline)
 	 * @param viewPart view to add the toolbar items
 	 */
-	private void drawInlineToolBar(AGLViewPart viewPart) {
-		AGLViewPart glViewPart = (AGLViewPart) viewPart;
-		AGLEventListener glView = glViewPart.getGLEventListener();
-		List<Integer> viewIDs = glView.getAllViewIDs();
+	private void drawInlineToolBar(CaleydoViewPart viewPart) {
+		List<Integer> viewIDs = getAllViewIDs(viewPart);
 		
 		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
 		List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(viewIDs);
@@ -216,6 +212,15 @@ public class PartListener
 	}
 
 	/**
+	 * removes all view specific toolbar items in the toolbar view
+	 */
+	private void removeViewSpecificToolBarItems() {
+		RemoveViewSpecificItemsEvent event;
+		event = new RemoveViewSpecificItemsEvent();
+		eventPublisher.triggerEvent(event);
+	}
+	
+	/**
 	 * removes all inline toolbar items
 	 * @param viewPart view to remove the toolbar items from
 	 */
@@ -225,4 +230,33 @@ public class PartListener
 		toolBarManager.update(true);
 	}
 
+	/**
+	 * Gets the view-ids and all sub-view-ids (if there are any)
+	 * @param viewPart
+	 * @return
+	 */
+	private List<Integer> getAllViewIDs(CaleydoViewPart viewPart) {
+		List<Integer> viewIDs;
+		if (viewPart instanceof HTMLBrowserView) {
+			viewIDs = new ArrayList<Integer>();
+			viewIDs.add(viewPart.getViewID());
+		} else if (viewPart instanceof AGLViewPart) {
+			IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
+			viewManager.setActiveSWTView(viewPart.getSWTComposite());
+			AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
+			viewIDs = glView.getAllViewIDs();
+		} else {
+			viewIDs = new ArrayList<Integer>();
+		}
+		return viewIDs;
+	}
+	
+	private boolean isViewAttached(ViewPart viewPart) {
+		if (viewPart.getSite().getShell().getText().equals("Caleydo")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }

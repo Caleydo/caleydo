@@ -10,8 +10,7 @@ import java.util.Date;
  * Events are distributed by an {@link IEventPublisher}
  * @author Werner Puff
  */
-public abstract class AEvent
-	implements IEvent {
+public abstract class AEvent {
 
 	/** timestamp of the event-creation */ 
 	Date creationTime;

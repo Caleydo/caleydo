@@ -3,8 +3,8 @@ package org.caleydo.core.manager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IEventListener;
-import org.caleydo.core.manager.event.IEvent;
 import org.caleydo.core.manager.event.IMediator;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
@@ -81,7 +81,7 @@ public interface IEventPublisher {
 	 *            associated
 	 */
 	public void triggerEvent(EMediatorType eMediatorType, IMediatorSender eventTrigger,
-		IEvent eventContainer);
+		IEventContainer eventContainer);
 
 	/**
 	 * Adds a sender to the mediator specified in eMediatorType

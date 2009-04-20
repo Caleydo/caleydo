@@ -104,14 +104,6 @@ public class DefaultToolBarRenderJob
 	 * toolbar managers is needed for simulating toolbar wrap which is not supported for linux. See bug:
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 	 */
-	// private void fillToolBar(Group group, ToolBarContainer toolBarContainer) {
-	//
-	// if (toolBarContainer instanceof ActionToolBarContainer) {
-	// addItems(group, toolBarContainer);
-	// } else if (toolBarContainer instanceof WidgetToolBarContainer) {
-	// ((WidgetToolBarContainer) toolBarContainer).render(group);
-	// }
-	// }
 	private void addToolBarItems(Group group, ToolBarContainer toolBarContainer) {
 		ArrayList<IToolBarManager> toolBarManagers = new ArrayList<IToolBarManager>();
 
@@ -130,6 +122,9 @@ public class DefaultToolBarRenderJob
 				toolBarManager.update(true);
 			}
 			else if (item instanceof ControlContribution) {
+				if (!toolBarManager.isEmpty()) {
+					toolBarManager = createNewToolBar(group, toolBarManagers);
+				}
 				if (!toolBarManager.isEmpty()) {
 					toolBarManager = createNewToolBar(group, toolBarManagers);
 				}
