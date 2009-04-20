@@ -4,6 +4,8 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
+import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD;
+import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -24,15 +26,21 @@ public class PreferenceInitializer
 		store.setDefault(PreferenceConstants.P_CHOICE, "choice2");
 		store.setDefault(PreferenceConstants.P_STRING, "Default value");
 
-		store.setDefault(COLOR_MARKER_POINT_VALUE + "1", 0.0f);
-		store.setDefault(COLOR_MARKER_POINT_VALUE + "2", 0.5f);
-		store.setDefault(COLOR_MARKER_POINT_VALUE + "3", 1.0f);
-		store.setDefault(COLOR_MARKER_POINT_COLOR + "1", "0,255,0");
-		store.setDefault(COLOR_MARKER_POINT_COLOR + "2", "0,0,0");
-		store.setDefault(COLOR_MARKER_POINT_COLOR + "3", "255,0,0");
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_VALUE + "1", 0.0f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_VALUE + "2", 0.5f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_VALUE + "3", 1.0f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_LEFT_SPREAD + "1", 0f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_LEFT_SPREAD + "2", 0.1f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_LEFT_SPREAD + "3", 0.1f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_RIGHT_SPREAD + "1", 0.1f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_RIGHT_SPREAD + "2", 0.1f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_RIGHT_SPREAD + "3", 0f);
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_COLOR + "1", "0,255,0");
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_COLOR + "2", "0,0,0");
+		store.setDefault("GENE_EXPRESSION_" + COLOR_MARKER_POINT_COLOR + "3", "255,0,0");
 		store.setDefault(NAN_COLOR, "100,100,100");
 
-		store.setDefault(NUMBER_OF_COLOR_MARKER_POINTS, 3);
+		store.setDefault("GENE_EXPRESSION_" + NUMBER_OF_COLOR_MARKER_POINTS, 3);
 
 		store.setDefault(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT, 100);
 		store.setDefault(PreferenceConstants.HM_NUM_SAMPLES_PER_TEXTURE, 500);

@@ -41,7 +41,7 @@ public class GenomePerspective
 				layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
 			middleLeft.addView(SelectionInfoView.ID);			
 			
-			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.BOTTOM, 0.7f, "middleLeft", false);
+			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.BOTTOM, 0.7f, "middleLeft", true);
 //			IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.45f, "middleLeft");
 //			bottomLeft.addPlaceholder(GLHistogramView.ID);
 

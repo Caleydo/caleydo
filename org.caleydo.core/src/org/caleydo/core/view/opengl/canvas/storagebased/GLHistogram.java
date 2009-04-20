@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -266,6 +267,8 @@ public class GLHistogram
 			bUpdateColorPointPosition = false;
 			bUpdateLeftSpread = false;
 			bUpdateRightSpread = false;
+			
+			colorMapping.writeToPrefStore();
 		}
 
 

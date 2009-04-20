@@ -132,11 +132,11 @@ public class ColorMarkerPoint
 			throw new IllegalArgumentException("Invalid length of color array fColor");
 
 		if (fValue > 1 || fValue < 0)
-			throw new IllegalArgumentException("Invalid value for fValue. Has to be between 0 and 1");
+			throw new IllegalArgumentException("Invalid value for fValue. Has to be between 0 and 1, but was: " + fValue);
 
 		for (float fColorValue : fArColor) {
 			if (fColorValue > 1 || fColorValue < 0)
-				throw new IllegalArgumentException("Invalid value in fArColor. Has to be between 0 and 1");
+				throw new IllegalArgumentException("Invalid value in fArColor. Has to be between 0 and 1, but was: " + fColorValue);
 		}
 
 		this.fValue = fValue;

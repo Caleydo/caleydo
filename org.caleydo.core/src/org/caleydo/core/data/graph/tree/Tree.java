@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;

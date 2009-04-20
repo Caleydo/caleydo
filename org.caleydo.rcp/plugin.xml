@@ -147,7 +147,7 @@
             name="Testing">
       </view>
       <view
-            allowMultiple="false"
+            allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.opengl.GLHistogramView"
             icon="resources/icons/view/color_mapping.png"
@@ -177,6 +177,14 @@
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLDendrogramView"
             name="Dendrogram">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.opengl.GLHistogramView"
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLHistogramView"
+            name="Histogram">
       </view>
 
       

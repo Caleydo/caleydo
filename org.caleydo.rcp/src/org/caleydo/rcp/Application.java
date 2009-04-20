@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
@@ -286,7 +287,7 @@ public class Application
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.getInt("");
 
-		ColorMappingManager.get().initiFromPreferenceStore();
+		ColorMappingManager.get().initiFromPreferenceStore(EColorMappingType.GENE_EXPRESSION);
 	}
 
 	private static void openRCPViews() {

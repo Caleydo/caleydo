@@ -53,37 +53,23 @@ public class ColorMappingManager {
 			hashColorMapping.get(colorMappingType).resetColorMapping(alMarkerPoints);
 			return;
 		}
-		hashColorMapping.put(colorMappingType, new ColorMapping(alMarkerPoints));
+		hashColorMapping.put(colorMappingType, new ColorMapping(colorMappingType, alMarkerPoints));
 	}
 
 	/**
 	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all
 	 * display list to dirty to have immediate effect.
 	 */
-	public void initiFromPreferenceStore() {
-		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-		int iNumberOfMarkerPoints = store.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-
-		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
-		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
-			float colorMarkerValue = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
-			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
-			float fLeftSpread = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD + iCount);
-			float fRightSpread = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD + iCount);
-
-			ColorMarkerPoint point =
-				new ColorMarkerPoint(colorMarkerValue, ConversionTools.getColorFromString(color));
-
-			if (Float.compare(fLeftSpread, 0.0f) > 0)
-				point.setLeftSpread(fLeftSpread);
-			if (Float.compare(fRightSpread, 0.0f) > 0)
-				point.setRightSpread(fRightSpread);
-
-			alMarkerPoints.add(point);
-		}
-
+	public void initiFromPreferenceStore(EColorMappingType colorMappingType) {
+		
 		// TODO not generic
-		initColorMapping(EColorMappingType.GENE_EXPRESSION, alMarkerPoints);
+//		initColorMapping(EColorMappingType.GENE_EXPRESSION, alMarkerPoints);
+		
+		if (hashColorMapping.containsKey(colorMappingType)) {
+			hashColorMapping.get(colorMappingType).initiFromPreferenceStore();
+			return;
+		}
+		hashColorMapping.put(colorMappingType, new ColorMapping(colorMappingType));
 
 		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			view.setDisplayListDirty();
@@ -125,12 +111,12 @@ public class ColorMappingManager {
 				alColorMarkerPoints.add(new ColorMarkerPoint(0, 0, 1, 0));
 				alColorMarkerPoints.add(new ColorMarkerPoint(0.2f, 0, 0, 0));
 				alColorMarkerPoints.add(new ColorMarkerPoint(1, 1, 0, 0));
-				colorMapping = new ColorMapping(alColorMarkerPoints);
+				colorMapping = new ColorMapping(colorMappingType, alColorMarkerPoints);
 				break;
 			default:
 				alColorMarkerPoints.add(new ColorMarkerPoint(0, 0, 1, 0));
 				alColorMarkerPoints.add(new ColorMarkerPoint(1, 0, 0, 0));
-				colorMapping = new ColorMapping(alColorMarkerPoints);
+				colorMapping = new ColorMapping(colorMappingType, alColorMarkerPoints);
 		}
 
 		return colorMapping;
