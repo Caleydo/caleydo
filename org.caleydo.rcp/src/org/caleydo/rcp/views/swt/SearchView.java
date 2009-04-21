@@ -348,10 +348,10 @@ public class SearchView
 
 		if (searchText.getText().length() < 3) {
 			
-			 MessageBox messageBox = new MessageBox(composite.getShell(), SWT.OK);
-			 messageBox.setText("Invalid search query");
-			 messageBox.setMessage("Please enter a search query with the minimum of 3 characters.");
-			 messageBox.open();
+			MessageBox messageBox = new MessageBox(composite.getShell(), SWT.OK);
+			messageBox.setText("Invalid search query");
+			messageBox.setMessage("Please enter a search query with the minimum of 3 characters.");
+			messageBox.open();
 			return;
 		}
 		

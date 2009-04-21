@@ -159,7 +159,7 @@ public class TabularAsciiDataReader
 		int iColumnIndex = 0;
 		float fProgressBarFactor = 100f / iStopParsingAtLine;
 
-		while ((sLine = brFile.readLine()) != null && iLineInFile < iStopParsingAtLine) {
+		while ((sLine = brFile.readLine()) != null && iLineInFile <= iStopParsingAtLine) {
 			// Check if line should be ignored
 			if (iLineInFile < this.iStartParsingAtLine) {
 				iLineInFile++;

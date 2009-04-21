@@ -175,13 +175,13 @@ public abstract class AbstractLoader
 			throw new RuntimeException();
 		}
 
-		iLinesInFileToBeRead = iCountLinesToBeRead;
+		iLinesInFileToBeRead = iCountLinesToBeRead + iStartParsingAtLine;
 
 		if (iStopParsingAtLine == Integer.MAX_VALUE) {
 			iStopParsingAtLine = iLinesInFileToBeRead;
 		}
 
-		return iCountLinesToBeRead;
+		return iLinesInFileToBeRead;
 	}
 
 	public boolean loadData() {

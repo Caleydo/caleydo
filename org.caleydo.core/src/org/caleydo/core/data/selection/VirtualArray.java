@@ -73,9 +73,9 @@ public class VirtualArray
 		}
 		else
 			throw new IllegalArgumentException(
-				"Tried to add a element to a virtual array that is not within the "
+				"Tried to add an element to a virtual array that is not within the "
 					+ "allowed range (which is determined by the length of the collection "
-					+ "on which the virtual array is applied");
+					+ "on which the virtual array is applied)");
 	}
 
 	@Override

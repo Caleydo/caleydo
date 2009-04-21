@@ -204,7 +204,8 @@ public interface ISet
 	public void log2();
 
 	/**
-	 * Creates a default virtual array for the storages in the set
+	 * Creates a default virtual array for the storages in the set.
+	 * This means that each storages can be referenced.
 	 * 
 	 * @return the unique id associated with the virtual array
 	 */
