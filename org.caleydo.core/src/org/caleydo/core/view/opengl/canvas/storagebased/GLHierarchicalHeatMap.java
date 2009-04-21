@@ -360,8 +360,6 @@ public class GLHierarchicalHeatMap
 
 			IGroupList groupList = set.getVA(iContentVAID).getGroupList();
 
-			groupList.get(14).setNrElements(groupList.get(14).getNrElements() - 5);
-			
 			iNrSelBar = groupList.size();
 			AlTextures.clear();
 			iAlNumberSamples.clear();
