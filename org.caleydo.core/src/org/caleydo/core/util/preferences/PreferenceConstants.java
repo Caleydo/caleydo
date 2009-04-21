@@ -11,12 +11,14 @@ public class PreferenceConstants {
 	public static final String P_STRING = "stringPreference";
 
 	// Color Mapping
+	public static final String GENE_EXPRESSION_PREFIX = "GENE_EXPRESSION_";
 	public static final String NUMBER_OF_COLOR_MARKER_POINTS = "numberOfColorMarkerPoints";
 	public static final String COLOR_MARKER_POINT_VALUE = "colorMarkerPointValue";
 	public static final String COLOR_MARKER_POINT_LEFT_SPREAD = "colorMarkerPointLeftSpread";
 	public static final String COLOR_MARKER_POINT_RIGHT_SPREAD = "colorMarkerPointRightSpread";
 	public static final String COLOR_MARKER_POINT_COLOR = "colorMarkerPointColor";
 	public static final String NAN_COLOR = "nanColor";
+	public static final String COLOR_MAPPING_USED = "colorMappingUsed";
 
 	// Heat Map
 	public static final String HM_NUM_RANDOM_SAMPLING_POINT = "hmNumRandomSamplinPoints";

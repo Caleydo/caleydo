@@ -70,7 +70,7 @@ public class ColorMapping {
 
 		setUpMapping();
 		fArNotANumberColor =
-			ConversionTools.getColorFromString(GeneralManager.get().getPreferenceStore().getString(
+			ConversionTools.getFloatColorFromString(GeneralManager.get().getPreferenceStore().getString(
 				PreferenceConstants.NAN_COLOR));
 	}
 
@@ -90,7 +90,7 @@ public class ColorMapping {
 			float fRightSpread = store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD + iCount);
 
 			ColorMarkerPoint point =
-				new ColorMarkerPoint(colorMarkerValue, ConversionTools.getColorFromString(color));
+				new ColorMarkerPoint(colorMarkerValue, ConversionTools.getFloatColorFromString(color));
 
 			if (Float.compare(fLeftSpread, 0.0f) > 0)
 				point.setLeftSpread(fLeftSpread);

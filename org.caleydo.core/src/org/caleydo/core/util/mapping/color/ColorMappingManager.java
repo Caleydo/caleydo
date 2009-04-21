@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.conversion.ConversionTools;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * Manage color mappings for different situations system-wide. There can only be one color mapping for each of

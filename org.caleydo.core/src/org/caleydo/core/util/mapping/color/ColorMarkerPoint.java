@@ -107,16 +107,15 @@ public class ColorMarkerPoint
 	}
 
 	public boolean hasLeftSpread() {
-		if (Float.compare(fLeftSpread, 0.0f) > 1)
-			return false;
-		return true;
+		if (fLeftSpread > 0.0001)
+			return true;
+		return false;
 	}
 
 	public boolean hasRightSpread() {
-		if (Float.compare(fRightSpread, 0.0f) > 1)
-			return false;
-		return true;
-
+		if (fRightSpread > 0.0001)
+			return true;
+		return false;
 	}
 
 	public float getLeftSpread() {

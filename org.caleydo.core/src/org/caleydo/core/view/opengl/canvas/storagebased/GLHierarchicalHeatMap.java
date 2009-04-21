@@ -142,6 +142,7 @@ public class GLHierarchicalHeatMap
 	private EClustererAlgo eClustererAlgo = EClustererAlgo.TREE_CLUSTERER;
 	private EClustererType eClustererType = EClustererType.GENE_CLUSTERING;
 
+
 	private boolean bSplitGroupExp = false;
 	private boolean bSplitGroupGene = false;
 	private int iGroupToSplit = 0;
