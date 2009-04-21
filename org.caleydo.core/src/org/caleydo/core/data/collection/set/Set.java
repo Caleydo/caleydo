@@ -354,7 +354,7 @@ public class Set
 
 	@Override
 	public int createSetVA() {
-		VirtualArray virtualArray = new VirtualArray(depth());
+		VirtualArray virtualArray = new VirtualArray(size());
 		int iUniqueID = virtualArray.getID();
 		hashSetVAs.put(iUniqueID, virtualArray);
 		return iUniqueID;
@@ -362,7 +362,7 @@ public class Set
 
 	@Override
 	public int createSetVA(ArrayList<Integer> iAlSelections) {
-		VirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
+		VirtualArray virtualArray = new VirtualArray(size(), iAlSelections);
 		int iUniqueID = virtualArray.getID();
 
 		// FIXME: Without the next line nothing works - please check this out
