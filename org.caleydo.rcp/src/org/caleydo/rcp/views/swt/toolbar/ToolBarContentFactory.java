@@ -11,18 +11,21 @@ import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.rcp.views.CaleydoViewPart;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
+import org.caleydo.rcp.views.opengl.GLHeatMapView;
 import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
+import org.caleydo.rcp.views.opengl.GLHistogramView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
-import org.caleydo.rcp.views.swt.toolbar.content.ClinicalParCoordsToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
@@ -45,10 +48,8 @@ public class ToolBarContentFactory {
 	/** reference to singleton instance */
 	private static ToolBarContentFactory toolBarContentFactory = null;
 
-	/** Maps view types (=key) to toolbar-content classes (=value) */
-	private HashMap<String, Class<?>> contentMap;
-
-	private HashMap<Class<? extends IView>, String> relatedRcpViews;
+	/** Maps views to its {@link ToolBarInfo} */
+	private HashMap<Class<? extends IView>, ToolBarInfo> toolBarInfos;
 	
 	/** Hidden default constructor. */
 	public ToolBarContentFactory() {
@@ -73,38 +74,66 @@ public class ToolBarContentFactory {
 	 * Must be called before the first usage.  
 	 */
 	public void init() {
-		contentMap = new HashMap<String, Class<?>>();
-		relatedRcpViews = new HashMap<Class<? extends IView>, String>();
+		toolBarInfos = new HashMap<Class<? extends IView>, ToolBarInfo>();
 
 		// FIXME wpuff: mapping should be read from config file (use wiring framework?)
-		AToolBarContent toolBarContent;
+		ToolBarInfo info;
 		
-		toolBarContent = new HeatMapToolBarContent();
-		contentMap.put(toolBarContent.getViewClass().getName(), HeatMapToolBarContent.class);
-		relatedRcpViews.put(GLRemoteRendering.class, GLRemoteRenderingView.ID);
-
-		toolBarContent = new HierarchicalHeatMapToolBarContent();
-		contentMap.put(toolBarContent.getViewClass().getName(), HierarchicalHeatMapToolBarContent.class);
-		relatedRcpViews.put(GLHierarchicalHeatMap.class, GLHierarchicalHeatMapView.ID);
-
-		toolBarContent = new ParCoordsToolBarContent();
-		contentMap.put(toolBarContent.getViewClass().getName(), ParCoordsToolBarContent.class);
-		relatedRcpViews.put(GLParallelCoordinates.class, GLParCoordsView.ID);
-
-		toolBarContent = new RemoteRenderingToolBarContent();
-		contentMap.put(toolBarContent.getViewClass().getName(), RemoteRenderingToolBarContent.class);
-		relatedRcpViews.put(GLRemoteRendering.class, GLRemoteRenderingView.ID);
-
-		toolBarContent = new ClinicalParCoordsToolBarContent();
-		contentMap.put(toolBarContent.getViewClass().getName(), ClinicalParCoordsToolBarContent.class);
+		info = new ToolBarInfo();
+		info.viewClass = GLHeatMap.class;
+		info.contentClass = HeatMapToolBarContent.class;
+		info.rcpID = GLHeatMapView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
 		
-		toolBarContent = new GlyphToolBarContent();
-		contentMap.put(toolBarContent.getViewClass().getName(), GlyphToolBarContent.class);
-		relatedRcpViews.put(GLGlyph.class, GLGlyphView.ID);
+		info = new ToolBarInfo();
+		info.viewClass = GLHierarchicalHeatMap.class;
+		info.contentClass = HierarchicalHeatMapToolBarContent.class;
+		info.rcpID = GLHierarchicalHeatMapView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
+
+		info = new ToolBarInfo();
+		info.viewClass = GLParallelCoordinates.class;
+		info.contentClass = ParCoordsToolBarContent.class;
+		info.rcpID = GLParCoordsView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
+
+		info = new ToolBarInfo();
+		info.viewClass = GLRemoteRendering.class;
+		info.contentClass = RemoteRenderingToolBarContent.class;
+		info.rcpID = GLRemoteRenderingView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
+
+//		info = new ToolBarInfo();
+//		info.viewClass = ; // FIXME gl-view class of clinical par coords
+//		info.contentClass = ClinicalParCoordsToolBarContent.class;
+//		info.rcpID = ClinicalGLParCoordsView.ID; 
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewClass, info);
 		
-		toolBarContent = new HTMLBrowserToolBarContent();
-		contentMap.put(toolBarContent.getViewClass().getName(), HTMLBrowserToolBarContent.class);
-		relatedRcpViews.put(GenomeHTMLBrowserViewRep.class, HTMLBrowserView.ID);
+		info = new ToolBarInfo();
+		info.viewClass = GLGlyph.class;
+		info.contentClass = GlyphToolBarContent.class;
+		info.rcpID = GLGlyphView.ID; 
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
+		
+		info = new ToolBarInfo();
+		info.viewClass = GenomeHTMLBrowserViewRep.class;
+		info.contentClass = HTMLBrowserToolBarContent.class;
+		info.rcpID = HTMLBrowserView.ID; 
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
+
+		info = new ToolBarInfo();
+		info.viewClass = GLHistogram.class;
+		info.contentClass = null;
+		info.rcpID = GLHistogramView.ID; 
+		info.ignored = true;
+		toolBarInfos.put(info.viewClass, info);
 	}
 
 	/**
@@ -200,9 +229,10 @@ public class ToolBarContentFactory {
 
 	private CaleydoViewPart getRelatedViewPart(IView view) {
 
-		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows(); 
-		String rcpViewPartID = relatedRcpViews.get(view.getClass());
-		if (rcpViewPartID != null) {
+		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
+		ToolBarInfo info = toolBarInfos.get(view.getClass());
+		if (info != null) {
+			String rcpViewPartID = info.rcpID;
 			for (IWorkbenchWindow window : windows) {
 				IWorkbenchPage[] pages = window.getPages();
 				for (IWorkbenchPage page : pages) {
@@ -220,10 +250,9 @@ public class ToolBarContentFactory {
 	
 	private AToolBarContent getContent(IView view) {
 		AToolBarContent content = null;
-		String type = view.getClass().getName();
-		Class<?> contentClass = contentMap.get(type);
-		if (contentClass != null) {
-			
+		ToolBarInfo info = toolBarInfos.get(view.getClass());
+		if (info != null) {
+			Class<?> contentClass = info.contentClass;
 			try {
 				content = (AToolBarContent) contentClass.newInstance();
 				content.setTargetViewID(view.getID());
@@ -237,8 +266,27 @@ public class ToolBarContentFactory {
 				e.printStackTrace();
 			}
 		} else {
-			log.warning("no toolbar content providing class known for " + type);
+			log.warning("no toolbar content providing class known for " + view + "; add its ToolBarInfo to ToolBarContentFactory");
 		}
 		return content;
+	}
+
+	/**
+	 * checks if the given views should be ignored by the toolbar. 
+	 * this means that the toolbar should stay as it is, e.g. when activating a 
+	 * help view like histogramm 
+	 * @param viewIDs list of view-ids as used by IViewManager
+	 * @return true if the views should be ignored by the toolbar, false otherwise
+	 */
+	public boolean isIgnored(List<Integer> viewIDs) {
+		boolean ignored = false; 
+		for (int viewID : viewIDs) {
+			IView view = retrieveView(viewID);
+			ToolBarInfo info = toolBarInfos.get(view.getClass());
+			if (info != null) {
+				ignored |= info.ignored;
+			}
+		}
+		return ignored;
 	}
 }

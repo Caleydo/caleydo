@@ -37,12 +37,15 @@ public class ToolBarMediator {
 	 */
 	public void renderToolBar(List<Integer> viewIDs) {
 		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
-		List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(viewIDs);
-		
-		IToolBarRenderer renderer = toolBarView.getToolBarRenderer();
-		Runnable job = renderer.createRenderJob(toolBarView, toolBarContents);
-		Display display = toolBarView.getParentComposite().getDisplay(); 
-		display.asyncExec(job);
+		boolean isIgnored = contentFactory.isIgnored(viewIDs);
+		if (!isIgnored) {
+			List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(viewIDs);
+			
+			IToolBarRenderer renderer = toolBarView.getToolBarRenderer();
+			Runnable job = renderer.createRenderJob(toolBarView, toolBarContents);
+			Display display = toolBarView.getParentComposite().getDisplay(); 
+			display.asyncExec(job);
+		}
 	}
 
 	/**
