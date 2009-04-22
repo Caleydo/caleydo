@@ -95,8 +95,8 @@ public class PartListener
 		if (!(activePart instanceof CaleydoViewPart)) {
 			return;
 		}
-
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
+		viewPart.setAttached(isViewAttached(viewPart));
 
 		if (viewPart instanceof AGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
@@ -128,11 +128,15 @@ public class PartListener
 	public void partHidden(IWorkbenchPartReference partRef) {
 		IWorkbenchPart activePart = partRef.getPart(false);
 
-		// System.out.println("Hide: " +partRef.getTitle());
-
-		if (!(activePart instanceof AGLViewPart))
+		if (!(activePart instanceof CaleydoViewPart)) {
 			return;
+		}
+		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
+		viewPart.setAttached(isViewAttached(viewPart));
 
+		if (!(activePart instanceof AGLViewPart)) {
+			return;
+		}
 		AGLViewPart glViewPart = (AGLViewPart) activePart;
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvasFromAnimator(
@@ -239,7 +243,7 @@ public class PartListener
 //		return viewIDs;
 //	}
 	
-	public static boolean isViewAttached(IViewPart viewPart) {
+	public boolean isViewAttached(IViewPart viewPart) {
 		if (viewPart.getSite().getShell().getText().equals("Caleydo")) {
 			return true;
 		} else {

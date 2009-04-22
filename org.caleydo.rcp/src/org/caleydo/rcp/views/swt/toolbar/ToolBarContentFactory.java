@@ -7,13 +7,20 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
-import org.caleydo.rcp.perspective.PartListener;
+import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
+import org.caleydo.rcp.views.CaleydoViewPart;
+import org.caleydo.rcp.views.opengl.GLGlyphView;
+import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ClinicalParCoordsToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.GlyphToolBarContent;
@@ -24,6 +31,7 @@ import org.caleydo.rcp.views.swt.toolbar.content.RemoteRenderingToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.browser.HTMLBrowserToolBarContent;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -39,6 +47,8 @@ public class ToolBarContentFactory {
 
 	/** Maps view types (=key) to toolbar-content classes (=value) */
 	private HashMap<String, Class<?>> contentMap;
+
+	private HashMap<Class<? extends IView>, String> relatedRcpViews;
 	
 	/** Hidden default constructor. */
 	public ToolBarContentFactory() {
@@ -64,30 +74,37 @@ public class ToolBarContentFactory {
 	 */
 	public void init() {
 		contentMap = new HashMap<String, Class<?>>();
-		
-		// FIXME puff: mapping should be read from config file (use wiring framework?)
+		relatedRcpViews = new HashMap<Class<? extends IView>, String>();
+
+		// FIXME wpuff: mapping should be read from config file (use wiring framework?)
 		AToolBarContent toolBarContent;
 		
 		toolBarContent = new HeatMapToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), HeatMapToolBarContent.class);
+		relatedRcpViews.put(GLRemoteRendering.class, GLRemoteRenderingView.ID);
 
 		toolBarContent = new HierarchicalHeatMapToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), HierarchicalHeatMapToolBarContent.class);
+		relatedRcpViews.put(GLHierarchicalHeatMap.class, GLHierarchicalHeatMapView.ID);
 
 		toolBarContent = new ParCoordsToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), ParCoordsToolBarContent.class);
+		relatedRcpViews.put(GLParallelCoordinates.class, GLParCoordsView.ID);
 
 		toolBarContent = new RemoteRenderingToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), RemoteRenderingToolBarContent.class);
+		relatedRcpViews.put(GLRemoteRendering.class, GLRemoteRenderingView.ID);
 
 		toolBarContent = new ClinicalParCoordsToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), ClinicalParCoordsToolBarContent.class);
 		
 		toolBarContent = new GlyphToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), GlyphToolBarContent.class);
+		relatedRcpViews.put(GLGlyph.class, GLGlyphView.ID);
 		
 		toolBarContent = new HTMLBrowserToolBarContent();
 		contentMap.put(toolBarContent.getViewClass().getName(), HTMLBrowserToolBarContent.class);
+		relatedRcpViews.put(GenomeHTMLBrowserViewRep.class, HTMLBrowserView.ID);
 	}
 
 	/**
@@ -166,29 +183,41 @@ public class ToolBarContentFactory {
 	 */
 	private boolean isViewAttached(int viewID) {
 
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() == null) {
-			// FIXXXME what should be done when during startup?
-			return true;
-		}
-
-		IWorkbenchPage workbenchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(); 
 		IView view = retrieveView(viewID);
-		boolean isAttached = true;
 
-		IViewPart relatedView = null;
-		if (view instanceof GLRemoteRendering) {
-			relatedView = workbenchPage.findView(GLRemoteRenderingView.ID);
-		} else if (view instanceof GLParallelCoordinates) {
-			relatedView = workbenchPage.findView(GLParCoordsView.ID);
+		if (view instanceof CaleydoViewPart) {
+			return ((CaleydoViewPart) view).isAttached();
+		} else if (view instanceof AView) {
+			CaleydoViewPart relatedView = getRelatedViewPart(view);
+			if (relatedView != null) {
+				return relatedView.isAttached();
+			}
 		}
 
-		if (relatedView != null) {
-			isAttached = PartListener.isViewAttached(relatedView);
-		}
-
-		return isAttached;
+		log.warning("Could not find view with view-id=" + viewID + " in the workbench");
+		return false;
 	}
 
+	private CaleydoViewPart getRelatedViewPart(IView view) {
+
+		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows(); 
+		String rcpViewPartID = relatedRcpViews.get(view.getClass());
+		if (rcpViewPartID != null) {
+			for (IWorkbenchWindow window : windows) {
+				IWorkbenchPage[] pages = window.getPages();
+				for (IWorkbenchPage page : pages) {
+					IViewPart relatedView = page.findView(rcpViewPartID);
+					if (relatedView != null) {
+						if (relatedView instanceof CaleydoViewPart) {
+							return (CaleydoViewPart) relatedView;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
 	private AToolBarContent getContent(IView view) {
 		AToolBarContent content = null;
 		String type = view.getClass().getName();

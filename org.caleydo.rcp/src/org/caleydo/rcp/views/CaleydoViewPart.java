@@ -14,6 +14,9 @@ public abstract class CaleydoViewPart
 
 	protected int iViewID;
 
+	/** stores the attach status of the viewpart, true means within caleydo's main window, false otherwise */
+	protected boolean attached;
+	
 	protected Composite swtComposite;
 
 	/**
@@ -33,5 +36,13 @@ public abstract class CaleydoViewPart
 
 	public Composite getSWTComposite() {
 		return swtComposite;
+	}
+
+	public boolean isAttached() {
+		return attached;
+	}
+
+	public void setAttached(boolean attached) {
+		this.attached = attached;
 	}
 }

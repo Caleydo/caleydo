@@ -2593,6 +2593,10 @@ public class GLRemoteRendering
 			}
 		}
 	}
+
+	/**
+	 * Triggers a toolbar update by sending an event similar to the view activation
+     */
 	private void triggerToolBarUpdate() {
 		log.info("triggerToolBarUpdate() called");
 
