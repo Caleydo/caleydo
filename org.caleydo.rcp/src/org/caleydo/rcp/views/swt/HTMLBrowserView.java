@@ -33,8 +33,6 @@ public class HTMLBrowserView
 
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
 			(IMediatorReceiver) browserView);
-
-		GeneralManager.get().getViewGLCanvasManager().registerItem(browserView);
 	}
 
 	@Override

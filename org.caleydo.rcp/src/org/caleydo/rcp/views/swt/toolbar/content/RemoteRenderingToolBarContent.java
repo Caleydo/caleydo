@@ -29,7 +29,7 @@ public class RemoteRenderingToolBarContent
 	}
 	
 	@Override
-	public List<ToolBarContainer> getDefaultToolBar() {
+	protected List<ToolBarContainer> getToolBarContent() {
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(createBucketContainer());
 		list.add(createPathwayContainer());

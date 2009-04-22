@@ -1,5 +1,6 @@
 package org.caleydo.rcp.views.swt.toolbar.content;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,16 +14,19 @@ public abstract class AToolBarContent {
 	public final static int TOOLBAR_WRAP_COUNT = 4;
 
 	/** specifies that the toolbar should contain actions for standard rendering of the related view */
-	public static final int STANDARD_CONTENT = 1;
+	public static final int STANDARD_RENDERING = 1;
 
 	/** specifies that the toolbar should contain actions for remote rendering of the related view */
-	public static final int REMOTE_RENDERED_CONTENT = 2;
+	public static final int REMOTE_RENDERING = 2;
 
 	/** FIXME view-id of the target view for the actions contained within this toolbar content */
 	protected int targetViewID = -1;
 	
 	/** specifies the type of content to render. sub classes may define their own content types */ 
-	protected int contentType = STANDARD_CONTENT;
+	protected int renderType = STANDARD_RENDERING;
+	
+	/** specifies the if the related view is attached or detached to caleydo's main window*/ 
+	protected boolean attached = false;
 	
 	/**
 	 * Returns the related view type for this toolbar content
@@ -31,11 +35,37 @@ public abstract class AToolBarContent {
 	public abstract Class<?> getViewClass();
 
 	/**
-	 * Implementing classes should return a list of toolbar-actions that are added to a toolbar.
-	 * Usually this method is used to show view specific toolbars.
+	 * Delivers the toolbar content.
+	 * sub classes should return a list of toolbar-actions that are added to a toolbar.
 	 * @return list of actions for a toolbar
 	 */
-	public abstract List<ToolBarContainer> getDefaultToolBar();
+	protected abstract List<ToolBarContainer> getToolBarContent();
+	
+	/**
+	 * Delivers the content for the toolbar view
+	 * for special behaviour sub classes should override this method 
+	 * @return list of actions for a toolbar
+	 */
+	public List<ToolBarContainer> getDefaultToolBar() {
+		if (attached) {
+			return getToolBarContent();
+		} else {
+			return new ArrayList<ToolBarContainer>();
+		}
+	}
+
+	/**
+	 * Delivers the content for the view-inline toolbar
+	 * for special behaviour sub classes should override this method 
+	 * @return list of actions for a toolbar
+	 */
+	public List<ToolBarContainer> getInlineToolBar() {
+		if (!attached) {
+			return getToolBarContent();
+		} else {
+			return new ArrayList<ToolBarContainer>();
+		}
+	}
 
 	/**
 	 * Sets the id of the target view for the actions in this toolbar content.
@@ -54,11 +84,19 @@ public abstract class AToolBarContent {
 		return targetViewID;
 	}
 	
-	public int getContentType() {
-		return contentType;
+	public int getRenderType() {
+		return renderType;
 	}
 
-	public void setContentType(int contentType) {
-		this.contentType = contentType;
+	public void setRenderType(int renderType) {
+		this.renderType = renderType;
+	}
+
+	public boolean isAttached() {
+		return attached;
+	}
+
+	public void setAttached(boolean attached) {
+		this.attached = attached;
 	}
 }

@@ -29,7 +29,7 @@ public class ParCoordsToolBarContent
 	}
 	
 	@Override
-	public List<ToolBarContainer> getDefaultToolBar() {
+	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(IMAGE_PATH);
@@ -48,7 +48,7 @@ public class ParCoordsToolBarContent
 		IToolBarItem resetAxisSpacing = new ResetAxisSpacingAction(targetViewID);
 		actionList.add(resetAxisSpacing);
 
-		if (contentType == STANDARD_CONTENT) {
+		if (renderType == STANDARD_RENDERING) {
 			IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 			actionList.add(clearSelectionsAction);
 			IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);

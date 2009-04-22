@@ -2,6 +2,7 @@ package org.caleydo.rcp.views.opengl;
 
 import java.awt.Frame;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
@@ -144,6 +145,17 @@ public abstract class AGLViewPart
 		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID).destroy();
 	}
 
+	@Override
+	public List<Integer> getAllViewIDs() {
+		
+		// FIXXXME: rcp-view id is the same as the first gl-view-id, so rcp-view-ids have to be omitted  
+		// List<Integer> ids = super.getAllViewIDs();
+		
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.addAll(this.getGLEventListener().getAllViewIDs());
+		return ids;
+	}
+	
 	public AGLEventListener getGLEventListener() {
 		return glEventListener;
 	}

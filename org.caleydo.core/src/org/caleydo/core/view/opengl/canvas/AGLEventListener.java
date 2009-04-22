@@ -609,7 +609,6 @@ public abstract class AGLEventListener
 	 * Retrieves all the contained view-types from a given view.
 	 * FIXME: remote views does only work for bucket
 	 * FIXME: some kind of integration to IGLRemoteRendering   
-	 * @param glView view to get the view types from
 	 * @return list of view-types contained in the given view 
 	 */
 	public List<Integer> getAllViewIDs() {

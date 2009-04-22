@@ -170,13 +170,17 @@ public class HTMLBrowserViewRep
 			@Override
 			public void completed(ProgressEvent event) {
 				// Give the focus back to active view
-				GeneralManager.get().getViewGLCanvasManager().getActiveSWTView().setFocus();
+				if (GeneralManager.get().getViewGLCanvasManager().getActiveSWTView() != null) {
+					GeneralManager.get().getViewGLCanvasManager().getActiveSWTView().setFocus();
+				}
 			}
 
 			@Override
 			public void changed(ProgressEvent event) {
 				// Give the focus back to active view
-				GeneralManager.get().getViewGLCanvasManager().getActiveSWTView().setFocus();
+				if (GeneralManager.get().getViewGLCanvasManager().getActiveSWTView() != null) {
+					GeneralManager.get().getViewGLCanvasManager().getActiveSWTView().setFocus();
+				}
 			}
 		});
 

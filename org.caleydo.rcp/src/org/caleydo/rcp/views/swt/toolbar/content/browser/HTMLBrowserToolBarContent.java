@@ -24,7 +24,7 @@ public class HTMLBrowserToolBarContent
 	}
 	
 	@Override
-	public List<ToolBarContainer> getDefaultToolBar() {
+	protected List<ToolBarContainer> getToolBarContent() {
 		BrowserToolBarContainer container = new BrowserToolBarContainer();
 		BrowserToolBarMediator browserToolBarMediator = new BrowserToolBarMediator();
 

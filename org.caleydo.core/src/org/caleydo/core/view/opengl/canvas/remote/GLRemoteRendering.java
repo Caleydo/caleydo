@@ -36,7 +36,7 @@ import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.view.AttachedViewActivationEvent;
+import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -1982,8 +1982,8 @@ public class GLRemoteRendering
 						// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 						removeView(glEventListener);
-
 						element.setContainedElementID(-1);
+						iAlContainedViewIDs.remove(new Integer(glEventListener.getID()));
 
 						if (element.getRemoteLevel() == poolLevel) {
 							compactPoolLevel();
@@ -2596,8 +2596,8 @@ public class GLRemoteRendering
 	private void triggerToolBarUpdate() {
 		log.info("triggerToolBarUpdate() called");
 
-		AttachedViewActivationEvent viewActivationEvent = 
-			new AttachedViewActivationEvent();
+		ViewActivationEvent viewActivationEvent = 
+			new ViewActivationEvent();
 		List<Integer> viewIDs = this.getAllViewIDs();
 		viewActivationEvent.setViewIDs(viewIDs);
 
@@ -2970,6 +2970,12 @@ public class GLRemoteRendering
 
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
+		unregisterEventListeners();
+	}
+	
 	/**
 	 * FIXME: should be moved to a bucket-mediator
 	 * registers the event-listeners to the event framework 

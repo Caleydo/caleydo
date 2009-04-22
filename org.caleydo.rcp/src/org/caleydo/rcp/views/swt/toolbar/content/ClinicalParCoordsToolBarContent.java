@@ -33,7 +33,7 @@ public class ClinicalParCoordsToolBarContent
 	}
 
 	@Override
-	public List<ToolBarContainer> getDefaultToolBar() {
+	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(IMAGE_PATH);
@@ -61,7 +61,7 @@ public class ClinicalParCoordsToolBarContent
 		boolean limit = ps.getBoolean(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT);
 
 		// only if standalone or explicitly requested
-		if (contentType == STANDARD_CONTENT && !limit) {
+		if (renderType == STANDARD_RENDERING && !limit) {
 			IToolBarItem toggleRenderContextAction = new RenderContextAction(targetViewID);
 			actionList.add(toggleRenderContextAction);
 			IToolBarItem useRandomSamplingAction = new UseRandomSamplingAction(targetViewID);

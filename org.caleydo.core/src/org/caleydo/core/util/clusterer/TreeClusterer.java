@@ -1,15 +1,12 @@
 package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.IGraph;
 
 public class TreeClusterer
 	implements IClusterer {

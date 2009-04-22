@@ -26,7 +26,7 @@ public class HeatMapToolBarContent
 	}
 	
 	@Override
-	public List<ToolBarContainer> getDefaultToolBar() {
+	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(IMAGE_PATH);
@@ -36,7 +36,7 @@ public class HeatMapToolBarContent
 
 		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
 		actionList.add(switchAxesToPolylinesAction);
-		if (contentType == STANDARD_CONTENT) {
+		if (renderType == STANDARD_RENDERING) {
 			IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
 			actionList.add(clearSelectionsAction);
 			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
