@@ -16,10 +16,12 @@ import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
+import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -413,6 +415,17 @@ public class InfoArea
 						break;
 				}
 				break;
+			case VIEW_COMMAND:
+				
+				ViewCommandEventContainer viewCommandEventContainer =
+					(ViewCommandEventContainer) eventContainer;
+				
+				if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+					geneTree.removeAll();
+					experimentTree.removeAll();
+				} 
+				break;
+				
 			case INFO_AREA_UPDATE:
 				InfoAreaUpdateEventContainer infoEventContainer =
 					(InfoAreaUpdateEventContainer) eventContainer;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.AngularBrushingAction;
@@ -49,8 +48,6 @@ public class ParCoordsToolBarContent
 		actionList.add(resetAxisSpacing);
 
 		if (renderType == STANDARD_RENDERING) {
-			IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-			actionList.add(clearSelectionsAction);
 			IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
 			actionList.add(saveSelectionsAction);
 			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);

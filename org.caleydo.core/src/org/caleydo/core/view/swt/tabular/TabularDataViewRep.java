@@ -687,6 +687,14 @@ public class TabularDataViewRep
 							.getSelectionCommands());
 						break;
 				}
+			case VIEW_COMMAND:
+				ViewCommandEventContainer viewCommandEventContainer =
+					(ViewCommandEventContainer) eventContainer;
+				
+				if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+					clearAllSelections();
+				} 
+				break;
 		}
 	}
 
@@ -931,5 +939,9 @@ public class TabularDataViewRep
 			}
 		});
 	}
-
+	
+	private void clearAllSelections() {
+		contentSelectionManager.clearSelections();
+		storageSelectionManager.clearSelections();
+	}
 }

@@ -2,7 +2,10 @@ package org.caleydo.rcp.views.swt.toolbar;
 
 import java.util.List;
 
+import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
+import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
+import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.eclipse.jface.action.ToolBarManager;
@@ -33,8 +36,11 @@ public class WideScreenToolBarRenderer implements IToolBarRenderer {
 
 	@Override
 	public void addTakeSnapshotAction(ToolBarManager toolBarManager, Group group) {
+		toolBarManager.add(new LoadDataAction());
+		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
 		toolBarManager.add(new OpenSearchViewAction());
+		toolBarManager.add(new ClearSelectionsAction());
 	}
 
 	@Override

@@ -1,21 +1,19 @@
-package org.caleydo.rcp.action.toolbar.view.storagebased;
+package org.caleydo.rcp.action.toolbar.view;
 
 import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ClearSelectionsAction
-	extends AToolBarAction
-	implements IToolBarItem {
+	extends AToolBarAction {
 
 	public static final String TEXT = "Clear all selections";
 	public static final String ICON = "resources/icons/view/storagebased/clear_selections.png";
 
-	public ClearSelectionsAction(int iViewID) {
-		super(iViewID);
+	public ClearSelectionsAction() {
+		super(-1);
 
 		setText(TEXT);
 		setToolTipText(TEXT);

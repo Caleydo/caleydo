@@ -10,7 +10,6 @@ import org.caleydo.rcp.action.toolbar.view.glyph.EnterViewNameAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.OpenDataExportAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.OpenNewWindowAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.RemoveUnselectedFromViewAction;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 
 /**
  * ToolBarContent implementation for glyph specific toolbar items.  
@@ -40,7 +39,6 @@ public class GlyphToolBarContent
 		actionList.add(new OpenNewWindowAction(targetViewID));
 		actionList.add(new ChangeSelectionBrushAction(targetViewID));
 		actionList.add(new RemoveUnselectedFromViewAction(targetViewID));
-		actionList.add(new ClearSelectionsAction(targetViewID));
 		actionList.add(new EnterViewNameAction(targetViewID));
 		actionList.add(new OpenDataExportAction(targetViewID));
 

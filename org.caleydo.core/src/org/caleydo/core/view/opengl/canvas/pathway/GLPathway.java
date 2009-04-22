@@ -866,9 +866,14 @@ public class GLPathway
 			case VIEW_COMMAND:
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;
+				
 				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
 					setDisplayListDirty();
 				}
+				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+					clearAllSelections();
+					setDisplayListDirty();
+				} 
 				break;
 		}
 	}

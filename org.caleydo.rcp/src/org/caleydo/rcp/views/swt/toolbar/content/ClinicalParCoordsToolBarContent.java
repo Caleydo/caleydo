@@ -6,7 +6,6 @@ import java.util.List;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.RenderContextAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
@@ -48,8 +47,6 @@ public class ClinicalParCoordsToolBarContent
 		actionList.add(occlusionPreventionAction);
 		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
 		actionList.add(switchAxesToPolylinesAction);
-		IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-		actionList.add(clearSelectionsAction);
 		IToolBarItem saveSelectionsAction = new SaveSelectionsAction(targetViewID);
 		actionList.add(saveSelectionsAction);
 		IToolBarItem resetViewAction = new ResetViewAction(targetViewID);

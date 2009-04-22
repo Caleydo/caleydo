@@ -42,7 +42,7 @@ public class ExceptionHandler {
 	 */
 	public void handleException(RuntimeException exception) {
 		if (HIDE_EXCEPTIONS) {
-			GeneralManager.get().getLogger().log(Level.SEVERE, "Caught Exception: " + exception.getMessage());
+			GeneralManager.get().getLogger().log(Level.SEVERE, "Caught Exception: " + exception.getMessage(), exception);
 			// Log here
 		}
 		else

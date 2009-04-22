@@ -155,17 +155,6 @@ public abstract class AGLEventListener
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
-		// generalManager.getViewGLCanvasManager().getInfoAreaManager().
-		// initInfoOverlay(
-		// iUniqueID, drawable);
-		//
-		// generalManager.getViewGLCanvasManager().getInfoAreaManager().
-		// initInfoInPlace(
-		// viewFrustum);
-		//
-		// generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(
-		// false);
-
 		pickingTriggerMouseAdapter.addGLCanvas(this);
 
 		((GLEventListener) parentGLCanvas).init(drawable);

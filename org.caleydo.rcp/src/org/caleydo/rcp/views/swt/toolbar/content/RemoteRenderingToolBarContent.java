@@ -6,7 +6,6 @@ import java.util.List;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarContainer;
 import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
 
@@ -49,16 +48,12 @@ public class RemoteRenderingToolBarContent
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		// IAction takeSnapshotAction = new TakeSnapshotAction(-1);
-		// alToolbar.add(takeSnapshotAction);
 		IToolBarItem closeOrResetContainedViews = new CloseOrResetContainedViews(targetViewID);
 		actionList.add(closeOrResetContainedViews);
 		// IAction toggleLayoutAction = new ToggleLayoutAction(viewID);
 		// alToolbar.add(toggleLayoutAction);
 		IToolBarItem toggleConnectionLinesAction = new ToggleConnectionLinesAction(targetViewID);
 		actionList.add(toggleConnectionLinesAction);
-		IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-		actionList.add(clearSelectionsAction);
 
 		return container;
 	}

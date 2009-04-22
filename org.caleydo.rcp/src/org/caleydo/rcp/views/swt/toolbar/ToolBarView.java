@@ -12,6 +12,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
+import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.eclipse.jface.action.ToolBarManager;
@@ -137,8 +138,8 @@ public class ToolBarView
 
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-		toolBarManager.add(new LoadDataAction());
-		toolBarManager.add(new ExportDataAction());
+//		toolBarManager.add(new LoadDataAction());
+//		toolBarManager.add(new ExportDataAction());
 
 		toolBarRenderer.addTakeSnapshotAction(toolBarManager, group);
 

@@ -2,6 +2,17 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.EViewCommand;
+import org.caleydo.core.manager.event.IEventContainer;
+import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
@@ -14,7 +25,9 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
  * @author Marc Streit
  */
 public class CmdExternalActionTrigger
-	extends ACmdExternalAttributes {
+	extends ACmdExternalAttributes
+	implements IMediatorSender {
+	
 	private EExternalActionType externalActionType;
 
 	private int iViewId;
@@ -28,12 +41,24 @@ public class CmdExternalActionTrigger
 
 	@Override
 	public void doCommand() {
-		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
+		// Clear all selections in all GL views.
+		// This method is not good because the selection in SWT views (e.g. the tabular data viewer) is not cleared.
+		// In general a better way is needed - maybe by using a event command. But for this reason the sender (this class)
+		// must be registered in the event system. This is also bad in case of commands like this.
 		if (externalActionType == EExternalActionType.CLEAR_SELECTIONS) {
-			viewObject.clearAllSelections();
+			IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+			eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, this);
+			
+			ViewCommandEventContainer viewCommandEventContainer =
+				new ViewCommandEventContainer(EViewCommand.CLEAR_SELECTIONS);
+			triggerEvent(EMediatorType.SELECTION_MEDIATOR, viewCommandEventContainer);
+			
+			eventPublisher.removeSender(EMediatorType.SELECTION_MEDIATOR, this);
 		}
 
+		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 		if (viewObject instanceof GLRemoteRendering) {
 			switch (externalActionType) {
 				case CLOSE_OR_RESET_CONTAINED_VIEWS:
@@ -82,5 +107,10 @@ public class CmdExternalActionTrigger
 	public void setAttributes(final int iViewId, final EExternalActionType externalActionType) {
 		this.externalActionType = externalActionType;
 		this.iViewId = iViewId;
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 }

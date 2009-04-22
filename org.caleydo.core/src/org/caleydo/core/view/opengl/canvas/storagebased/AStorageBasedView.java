@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
+import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -426,6 +427,7 @@ public abstract class AStorageBasedView
 			case TRIGGER_SELECTION_COMMAND:
 				SelectionCommandEventContainer commandEventContainer =
 					(SelectionCommandEventContainer) eventContainer;
+				
 				switch (commandEventContainer.getIDType()) {
 					case DAVID:
 					case REFSEQ_MRNA_INT:
@@ -442,9 +444,14 @@ public abstract class AStorageBasedView
 			case VIEW_COMMAND:
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;
+				
 				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
 					setDisplayListDirty();
 				}
+				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+					clearAllSelections();
+					setDisplayListDirty();
+				} 
 				break;
 		}
 	}

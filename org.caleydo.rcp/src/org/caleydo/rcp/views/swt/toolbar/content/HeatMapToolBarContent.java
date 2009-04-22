@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
 
@@ -37,8 +36,6 @@ public class HeatMapToolBarContent
 		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
 		actionList.add(switchAxesToPolylinesAction);
 		if (renderType == STANDARD_RENDERING) {
-			IToolBarItem clearSelectionsAction = new ClearSelectionsAction(targetViewID);
-			actionList.add(clearSelectionsAction);
 			IToolBarItem resetViewAction = new ResetViewAction(targetViewID);
 			actionList.add(resetViewAction);
 			IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(targetViewID);

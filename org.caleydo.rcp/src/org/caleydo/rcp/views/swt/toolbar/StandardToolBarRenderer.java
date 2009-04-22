@@ -2,7 +2,10 @@ package org.caleydo.rcp.views.swt.toolbar;
 
 import java.util.List;
 
+import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
+import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
+import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.eclipse.jface.action.ToolBarManager;
@@ -36,8 +39,11 @@ public class StandardToolBarRenderer
 	public void addTakeSnapshotAction(ToolBarManager toolBarManager, Group group) {
 		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
+		toolBarManager2.add(new LoadDataAction());
+		toolBarManager2.add(new ExportDataAction());
 		toolBarManager2.add(new TakeSnapshotAction());
 		toolBarManager2.add(new OpenSearchViewAction());
+		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.update(true);
 
 		Label spacer = new Label(group, SWT.NULL);
