@@ -18,8 +18,17 @@ public class ClusterHelper {
 	public static float mean(float[] vector) {
 		float mean = 0;
 
-		for (int i = 0; i < vector.length; i++)
-			mean += vector[i];
+		float temp = 0;
+
+		for (int i = 0; i < vector.length; i++) {
+
+			if (Float.isNaN(vector[i]))
+				temp = 0;
+			else
+				temp = vector[i];
+
+			mean += temp;
+		}
 
 		return mean / vector.length;
 	}
@@ -92,8 +101,13 @@ public class ClusterHelper {
 		float median = 0;
 		float[] temp = new float[vector.length];
 
-		for (int i = 0; i < temp.length; i++)
-			temp[i] = vector[i];
+		for (int i = 0; i < temp.length; i++) {
+
+			if (Float.isNaN(vector[i]))
+				temp[i] = 0;
+			else
+				temp[i] = vector[i];
+		}
 
 		Arrays.sort(temp);
 

@@ -1,15 +1,19 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
+import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.dialog.file.StartClusteringDialog;
 import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 public class StartClusteringAction
 	extends AToolBarAction
 	implements IToolBarItem {
+
 	public static final String TEXT = "Start Clustering";
 	// TODO: own icon for "Start Clustering"
 	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
@@ -26,12 +30,18 @@ public class StartClusteringAction
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
-		setChecked(bEnable);
 	}
 
 	@Override
 	public void run() {
 		super.run();
-		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_START_CLUSTERING);
-	};
+
+		StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
+		dialog.open();
+		ClusterState clusterState = dialog.getClusterState();
+
+		triggerCmdExternalObjectSetter(clusterState, EExternalObjectSetterType.STORAGEBASED_START_CLUSTERING);
+
+	}
+
 }

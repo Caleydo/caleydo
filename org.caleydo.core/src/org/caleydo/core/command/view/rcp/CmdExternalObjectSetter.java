@@ -2,8 +2,10 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 
 /**
  * Command for setting objects in org.caleydo.core from the RCP interface.
@@ -82,6 +84,17 @@ public class CmdExternalObjectSetter
 					return;
 			}
 
+		}
+		if (viewObject instanceof GLHierarchicalHeatMap) {
+			GLHierarchicalHeatMap glHHeatMap = (GLHierarchicalHeatMap) viewObject;
+			switch (externalSetterType) {
+				case STORAGEBASED_START_CLUSTERING:
+					if (object instanceof ClusterState) {
+						ClusterState clusterState = (ClusterState) object;
+						glHHeatMap.startClustering(clusterState);
+					}
+					break;
+			}
 		}
 
 	}

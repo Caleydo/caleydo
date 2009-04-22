@@ -1,8 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.SELECTION_Z;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
+import gleem.linalg.Vec3f;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -49,6 +53,14 @@ public class GLDendrogram
 	private boolean bIsDraggingActive = false;
 	private float fPosCut = 0.0f;
 
+	private boolean bPosistionsDetermined = false;
+
+	private float yPosInit = 0.5f;
+	private float xposInit = 6;
+	private float xmax = 6;
+	private float fSampleHeight = 0;
+	private float fLevelHeight = 0;
+
 	/**
 	 * Constructor.
 	 * 
@@ -78,6 +90,12 @@ public class GLDendrogram
 		}
 
 		tree = set.getClusteredTree();
+		if (tree != null) {
+			if (bPosistionsDetermined == false) {
+				determinePositions();
+				bPosistionsDetermined = true;
+			}
+		}
 	}
 
 	@Override
@@ -153,8 +171,19 @@ public class GLDendrogram
 			}
 		}
 
+		fSampleHeight = (viewFrustum.getHeight() - 1.4f) / 10;
+		fLevelHeight = (viewFrustum.getWidth() - 1f) / 10;
+
+		xposInit = viewFrustum.getWidth() - 0.2f;
+		xmax = viewFrustum.getWidth() - 0.2f;
+
 		if (tree == null) {
 			tree = set.getClusteredTree();
+
+			if (tree != null) {
+				determinePositions();
+				bPosistionsDetermined = true;
+			}
 
 			renderSymbol(gl);
 
@@ -165,7 +194,12 @@ public class GLDendrogram
 
 			gl.glTranslatef(0.1f, 0, 0);
 
-			renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), tree.getRoot(), 0, 1, 0, 7);
+			if (bPosistionsDetermined == false) {
+				determinePositions();
+				bPosistionsDetermined = true;
+			}
+
+			renderDendrogram(gl, tree.getRoot());
 
 			renderCut(gl);
 
@@ -174,14 +208,9 @@ public class GLDendrogram
 		}
 	}
 
-	/**
-	 * Render the cut
-	 * 
-	 * @param gl
-	 */
 	private void renderCut(final GL gl) {
 
-		float fHeight = 0.1f; // viewFrustum.getWidth();
+		float fHeight = 0.1f;
 		float fWidth = viewFrustum.getWidth() - 0.2f;
 
 		gl.glColor4f(0f, 0f, 0f, 0.4f);
@@ -233,6 +262,138 @@ public class GLDendrogram
 		gl.glEnd();
 		gl.glPopAttrib();
 		tempTexture.disable();
+	}
+
+	private void determinePositions() {
+
+		determinePosRec(tree.getRoot());
+
+	}
+
+	private Vec3f determinePosRec(ClusterNode currentNode) {
+
+		Vec3f pos = new Vec3f();
+
+		if (tree.hasChildren(currentNode)) {
+
+			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
+
+			int iNrChildsNode = alChilds.size();
+
+			Vec3f[] positions = new Vec3f[iNrChildsNode];
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				ClusterNode node = (ClusterNode) alChilds.get(i);
+				positions[i] = determinePosRec(node);
+			}
+
+			float fYmax = Float.MIN_VALUE;
+			float fYmin = Float.MAX_VALUE;
+
+			for (Vec3f vec : positions) {
+				fYmax = Math.max(fYmax, vec.y());
+				fYmin = Math.min(fYmin, vec.y());
+			}
+
+			xposInit -= fLevelHeight;
+			pos.setX(xposInit);
+
+			pos.setY(fYmin + (fYmax - fYmin) / 2);
+			pos.setZ(0f);
+
+		}
+		else {
+			pos.setY(yPosInit);
+			yPosInit += fSampleHeight;
+			pos.setX(xmax);
+			pos.setZ(0f);
+		}
+
+		currentNode.setPos(pos);
+
+		return pos;
+	}
+
+	private void renderDendrogram(final GL gl, ClusterNode currentNode) {
+
+		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+		}
+		else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+			gl.glColor4fv(SELECTED_COLOR, 0);
+		}
+		else {
+			gl.glColor4f(0, 0, 0, 1);
+		}
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION, currentNode
+			.getClusterNr()));
+
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x() - 0.1f, currentNode.getPos().y(), currentNode.getPos().z());
+		gl.glEnd();
+
+		float fDiff = 0;
+		float fTemp = currentNode.getPos().x();
+
+		List<ClusterNode> listGraph = null;
+
+		if (tree.hasChildren(currentNode)) {
+
+			listGraph = tree.getChildren(currentNode);
+
+			int iNrChildsNode = listGraph.size();
+
+			float xmin = Float.MAX_VALUE;
+			float ymax = Float.MIN_VALUE;
+			float ymin = Float.MAX_VALUE;
+
+			Vec3f[] temp = new Vec3f[iNrChildsNode];
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				ClusterNode current = (ClusterNode) listGraph.get(i);
+
+				temp[i] = new Vec3f();
+				temp[i].setX(current.getPos().x());
+				temp[i].setY(current.getPos().y());
+				temp[i].setZ(current.getPos().z());
+
+				xmin = Math.min(xmin, current.getPos().x());
+				ymax = Math.max(ymax, current.getPos().y());
+				ymin = Math.min(ymin, current.getPos().y());
+
+				renderDendrogram(gl, current);
+			}
+
+			fDiff = fTemp - xmin;
+
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(xmin - 0.1f, ymin, currentNode.getPos().z());
+			gl.glVertex3f(xmin - 0.1f, ymax, currentNode.getPos().z());
+			gl.glEnd();
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(xmin - 0.1f, temp[i].y(), temp[i].z());
+				gl.glVertex3f(temp[i].x() - 0.1f, temp[i].y(), temp[i].z());
+				gl.glEnd();
+
+			}
+
+		}
+
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(currentNode.getPos().x() - fDiff - 0.1f, currentNode.getPos().y(), currentNode.getPos()
+			.z());
+		gl.glVertex3f(currentNode.getPos().x() - 0.1f, currentNode.getPos().y(), currentNode.getPos().z());
+		gl.glEnd();
+
+		gl.glPopName();
+
 	}
 
 	/**
@@ -304,7 +465,7 @@ public class GLDendrogram
 				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
 
 				ClusterNode currentNode = (ClusterNode) listGraph.get(i);
-				renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i, 4);
+				renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i, 6);
 			}
 		}
 	}
@@ -371,8 +532,25 @@ public class GLDendrogram
 						break;
 				}
 
+			case DENDROGRAM_SELECTION:
+
+				switch (pickingMode) {
+
+					case CLICKED:
+						// System.out.println("dend CLICKED");
+						break;
+					case DRAGGED:
+						// System.out.println("dend DRAGGED");
+						break;
+					case MOUSE_OVER:
+						System.out.println("node " + iExternalID);
+						// System.out.println("dend MOUSE_OVER");
+						break;
+				}
+
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
+
 		}
 	}
 

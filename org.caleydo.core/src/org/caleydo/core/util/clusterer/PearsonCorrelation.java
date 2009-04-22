@@ -13,14 +13,28 @@ public class PearsonCorrelation
 		float mean_x = ClusterHelper.mean(vector1);
 		float mean_y = ClusterHelper.mean(vector2);
 
+		float temp_v1 = 0;
+		float temp_v2 = 0;
+
 		if (vector1.length != vector2.length) {
 			System.out.println("length of vectors not equal!");
 			return 0;
 		}
 
 		for (int i = 0; i < vector1.length; i++) {
-			float delta_x = vector1[i] - mean_x;
-			float delta_y = vector2[i] - mean_y;
+
+			if (Float.isNaN(vector1[i]))
+				temp_v1 = 0;
+			else
+				temp_v1 = vector1[i];
+
+			if (Float.isNaN(vector2[i]))
+				temp_v2 = 0;
+			else
+				temp_v2 = vector2[i];
+
+			float delta_x = temp_v1 - mean_x;
+			float delta_y = temp_v2 - mean_y;
 			sum_sq_x += delta_x * delta_x;
 			sum_sq_y += delta_y * delta_y;
 			sum_coproduct += delta_x * delta_y;

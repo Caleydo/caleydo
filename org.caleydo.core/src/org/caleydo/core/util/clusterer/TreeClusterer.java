@@ -352,6 +352,8 @@ public class TreeClusterer
 			String NodeName = IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());
 			left = new ClusterNode(NodeName, treeStructure[index].getLeft(), 0, 0);
 
+			left.setNrElements(1);
+			
 //			left = new ClusterNode("Leaf_" + treeStructure[index].getLeft(), treeStructure[index].getLeft(), 0, 0);
 			tree.addChild(node, left);
 
@@ -368,6 +370,8 @@ public class TreeClusterer
 
 			String NodeName = IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());
 			right = new ClusterNode(NodeName, treeStructure[index].getRight(), 0, 0);
+			
+			right.setNrElements(1);
 			
 //			right = new ClusterNode("Leaf_" + treeStructure[index].getRight(), treeStructure[index].getRight(), 0, 0);
 			tree.addChild(node, right);

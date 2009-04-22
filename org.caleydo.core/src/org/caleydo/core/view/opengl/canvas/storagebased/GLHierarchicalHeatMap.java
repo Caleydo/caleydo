@@ -43,6 +43,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -131,6 +132,9 @@ public class GLHierarchicalHeatMap
 
 	private boolean bRedrawTextures = false;
 
+	// if only a small number of genes is in the data set, level_1 (overViewBar) should not be rendered
+	private boolean bSkipLevel1 = false;
+
 	// dragging stuff
 	private boolean bIsDraggingActive = false;
 	private int iDraggedCursor = 0;
@@ -139,9 +143,8 @@ public class GLHierarchicalHeatMap
 
 	// clustering/grouping stuff
 	private Tree<ClusterNode> tree = null;
-	private EClustererAlgo eClustererAlgo = EClustererAlgo.TREE_CLUSTERER;
-	private EClustererType eClustererType = EClustererType.GENE_CLUSTERING;
 
+	private ClusterState clusterstate = new ClusterState();
 
 	private boolean bSplitGroupExp = false;
 	private boolean bSplitGroupGene = false;
@@ -202,17 +205,25 @@ public class GLHierarchicalHeatMap
 
 		iNumberOfElements = set.getVA(iContentVAID).size();
 
-		if (iNumberOfElements < 50) {
+		if (iNumberOfElements < MIN_SAMPLES_PER_HEATMAP) {
 			throw new IllegalStateException("Number of elements not supported!!");
 		}
 
-		iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 5);
+		if (iNumberOfElements < 100) {
+			bSkipLevel1 = true;
 
-		if (iSamplesPerTexture > 250)
-			iSamplesPerTexture = 250;
+			iSamplesPerTexture = iNumberOfElements;
+			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
 
-		iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
+		}
+		else {
+			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 5);
 
+			if (iSamplesPerTexture > 250)
+				iSamplesPerTexture = 250;
+
+			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
+		}
 		if (iSamplesPerHeatmap > MAX_SAMPLES_PER_HEATMAP)
 			iSamplesPerTexture = 100;
 
@@ -354,32 +365,25 @@ public class GLHierarchicalHeatMap
 	 */
 	private void initTextures(GL gl) {
 		fAlXDistances.clear();
-		// renderStyle.updateFieldSizes();
 
-		if (set.getVA(iContentVAID).getGroupList() != null) {
-//			System.out.println("group assignmetn, groups : " + set.getVA(iContentVAID).getGroupList().size());
+		if (bSkipLevel1) {
 
-			IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+			iNrSelBar = 1;
 
-			iNrSelBar = groupList.size();
 			AlTextures.clear();
 			iAlNumberSamples.clear();
+
 			Texture tempTextur;
+
 			int iTextureHeight = set.getVA(iContentVAID).size();
 			int iTextureWidth = set.getVA(iStorageVAID).size();
 
 			float fLookupValue = 0;
 			float fOpacity = 0;
 
-			int iCount = 0;
-			int iTextureCounter = 0;
-			int iGroupNr = 0;
-
-			FloatBuffer FbTemp =
-				BufferUtil.newFloatBuffer(groupList.get(iGroupNr).getNrElements() * iTextureWidth * 4);
+			FloatBuffer FbTemp = BufferUtil.newFloatBuffer(iTextureWidth * iTextureHeight * 4);
 
 			for (Integer iContentIndex : set.getVA(iContentVAID)) {
-				iCount++;
 				IVirtualArray storageVA = set.getVA(iStorageVAID);
 				for (Integer iStorageIndex : storageVA) {
 					if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
@@ -401,97 +405,161 @@ public class GLHierarchicalHeatMap
 
 					FbTemp.put(fArRgba);
 				}
-				if (iCount >= groupList.get(iGroupNr).getNrElements()) {
-					FbTemp.rewind();
-
-					TextureData texData =
-						new TextureData(GL.GL_RGBA /* internalFormat */,
-							set.getVA(iStorageVAID).size() /* height */,
-							groupList.get(iGroupNr).getNrElements() /* width */,
-							// set.getVA(iContentVAID).size()/ iNrSelBar /* width */,
-							0 /* border */, GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */,
-							false /* mipmap */, false /* dataIsCompressed */, false /* mustFlipVertically */,
-							FbTemp, null);
-
-					tempTextur = TextureIO.newTexture(0);
-					tempTextur.updateImage(texData);
-
-					AlTextures.add(tempTextur);
-					iAlNumberSamples.add(groupList.get(iGroupNr).getNrElements());
-					if (iGroupNr < iNrSelBar - 1) {
-						iGroupNr++;
-						FbTemp =
-							BufferUtil.newFloatBuffer(groupList.get(iGroupNr).getNrElements() * iTextureWidth
-								* 4);
-					}
-					iTextureCounter++;
-					iCount = 0;
-				}
 			}
+			FbTemp.rewind();
+
+			TextureData texData =
+				new TextureData(GL.GL_RGBA /* internalFormat */, iTextureWidth /* height */,
+					iTextureHeight /* width */, 0 /* border */, GL.GL_RGBA /* pixelFormat */,
+					GL.GL_FLOAT /* pixelType */, false /* mipmap */, false /* dataIsCompressed */,
+					false /* mustFlipVertically */, FbTemp, null);
+
+			tempTextur = TextureIO.newTexture(0);
+			tempTextur.updateImage(texData);
+
+			AlTextures.add(tempTextur);
+			iAlNumberSamples.add(iSamplesPerTexture);
 
 		}
 		else {
-			iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size() / iSamplesPerTexture);
 
-			AlTextures.clear();
-			iAlNumberSamples.clear();
+			if (set.getVA(iContentVAID).getGroupList() != null) {
 
-			Texture tempTextur;
+				IGroupList groupList = set.getVA(iContentVAID).getGroupList();
 
-			int iTextureHeight = set.getVA(iContentVAID).size();
-			int iTextureWidth = set.getVA(iStorageVAID).size();
+				iNrSelBar = groupList.size();
+				AlTextures.clear();
+				iAlNumberSamples.clear();
+				Texture tempTextur;
+				int iTextureHeight = set.getVA(iContentVAID).size();
+				int iTextureWidth = set.getVA(iStorageVAID).size();
 
-			iNrSamplesPerTexture = (int) Math.floor(iTextureHeight / iNrSelBar);
+				float fLookupValue = 0;
+				float fOpacity = 0;
 
-			float fLookupValue = 0;
-			float fOpacity = 0;
+				int iCount = 0;
+				int iTextureCounter = 0;
+				int iGroupNr = 0;
 
-			FloatBuffer FbTemp = BufferUtil.newFloatBuffer(iTextureWidth * iTextureHeight * 4 / iNrSelBar);
+				FloatBuffer FbTemp =
+					BufferUtil.newFloatBuffer(groupList.get(iGroupNr).getNrElements() * iTextureWidth * 4);
 
-			int iCount = 0;
-			int iTextureCounter = 0;
+				for (Integer iContentIndex : set.getVA(iContentVAID)) {
+					iCount++;
+					IVirtualArray storageVA = set.getVA(iStorageVAID);
+					for (Integer iStorageIndex : storageVA) {
+						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
+							|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
+							|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
+							fOpacity = 1.0f;
+						}
+						else {
+							fOpacity = 0.3f;
+						}
 
-			for (Integer iContentIndex : set.getVA(iContentVAID)) {
-				iCount++;
-				IVirtualArray storageVA = set.getVA(iStorageVAID);
-				for (Integer iStorageIndex : storageVA) {
-					if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-						|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-						|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
-						fOpacity = 1.0f;
+						fLookupValue =
+							set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+
+						float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+
+						float[] fArRgba =
+							{ fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity };
+
+						FbTemp.put(fArRgba);
 					}
-					else {
-						fOpacity = 0.3f;
+					if (iCount >= groupList.get(iGroupNr).getNrElements()) {
+						FbTemp.rewind();
+
+						TextureData texData =
+							new TextureData(GL.GL_RGBA /* internalFormat */,
+								set.getVA(iStorageVAID).size() /* height */,
+								groupList.get(iGroupNr).getNrElements() /* width */,
+								// set.getVA(iContentVAID).size()/ iNrSelBar /* width */,
+								0 /* border */, GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */,
+								false /* mipmap */, false /* dataIsCompressed */, false /* mustFlipVertically */,
+								FbTemp, null);
+
+						tempTextur = TextureIO.newTexture(0);
+						tempTextur.updateImage(texData);
+
+						AlTextures.add(tempTextur);
+						iAlNumberSamples.add(groupList.get(iGroupNr).getNrElements());
+						if (iGroupNr < iNrSelBar - 1) {
+							iGroupNr++;
+							FbTemp =
+								BufferUtil.newFloatBuffer(groupList.get(iGroupNr).getNrElements()
+									* iTextureWidth * 4);
+						}
+						iTextureCounter++;
+						iCount = 0;
 					}
-
-					fLookupValue =
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-
-					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-
-					float[] fArRgba =
-						{ fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity };
-
-					FbTemp.put(fArRgba);
 				}
-				if (iCount >= iNrSamplesPerTexture) {
-					FbTemp.rewind();
 
-					TextureData texData =
-						new TextureData(GL.GL_RGBA /* internalFormat */,
-							set.getVA(iStorageVAID).size() /* height */, set.getVA(iContentVAID).size()
-								/ iNrSelBar /* width */, 0 /* border */, GL.GL_RGBA /* pixelFormat */,
-							GL.GL_FLOAT /* pixelType */, false /* mipmap */, false /* dataIsCompressed */,
-							false /* mustFlipVertically */, FbTemp, null);
+			}
+			else {
+				iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size() / iSamplesPerTexture);
 
-					tempTextur = TextureIO.newTexture(0);
-					tempTextur.updateImage(texData);
+				AlTextures.clear();
+				iAlNumberSamples.clear();
 
-					AlTextures.add(tempTextur);
-					iAlNumberSamples.add(iCount);
+				Texture tempTextur;
 
-					iTextureCounter++;
-					iCount = 0;
+				int iTextureHeight = set.getVA(iContentVAID).size();
+				int iTextureWidth = set.getVA(iStorageVAID).size();
+
+				iNrSamplesPerTexture = (int) Math.floor(iTextureHeight / iNrSelBar);
+
+				float fLookupValue = 0;
+				float fOpacity = 0;
+
+				FloatBuffer FbTemp =
+					BufferUtil.newFloatBuffer(iTextureWidth * iTextureHeight * 4 / iNrSelBar);
+
+				int iCount = 0;
+				int iTextureCounter = 0;
+
+				for (Integer iContentIndex : set.getVA(iContentVAID)) {
+					iCount++;
+					IVirtualArray storageVA = set.getVA(iStorageVAID);
+					for (Integer iStorageIndex : storageVA) {
+						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
+							|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
+							|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
+							fOpacity = 1.0f;
+						}
+						else {
+							fOpacity = 0.3f;
+						}
+
+						fLookupValue =
+							set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+
+						float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+
+						float[] fArRgba =
+							{ fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity };
+
+						FbTemp.put(fArRgba);
+					}
+					if (iCount >= iNrSamplesPerTexture) {
+						FbTemp.rewind();
+
+						TextureData texData =
+							new TextureData(GL.GL_RGBA /* internalFormat */,
+								set.getVA(iStorageVAID).size() /* height */, set.getVA(iContentVAID).size()
+									/ iNrSelBar /* width */, 0 /* border */, GL.GL_RGBA /* pixelFormat */,
+								GL.GL_FLOAT /* pixelType */, false /* mipmap */,
+								false /* dataIsCompressed */, false /* mustFlipVertically */, FbTemp, null);
+
+						tempTextur = TextureIO.newTexture(0);
+						tempTextur.updateImage(texData);
+
+						AlTextures.add(tempTextur);
+						iAlNumberSamples.add(iCount);
+
+						iTextureCounter++;
+						iCount = 0;
+					}
 				}
 			}
 		}
@@ -665,9 +733,11 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		// if selected element is in another texture, switch to this texture
-		if (!trigger.equals("GLHeatMap")) {
-			setTexture();
+		if (bSkipLevel1 == false) {
+			// if selected element is in another texture, switch to this texture
+			if (!trigger.equals("GLHeatMap")) {
+				setTexture();
+			}
 		}
 	}
 
@@ -1566,8 +1636,6 @@ public class GLHierarchicalHeatMap
 			handleWiiInput();
 		}
 
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDraggingActive) {
 			handleCursorDragging(gl);
 			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
@@ -1590,27 +1658,28 @@ public class GLHierarchicalHeatMap
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 
 		float fright = 0.0f;
 		float ftop = viewFrustum.getTop();
 
 		float fleftOffset = 0;
 
+		if (bSkipLevel1 == false) {
+			gl.glTranslatef(GAP_LEVEL2_3, 0, 0);
+		}
+
 		// render embedded heat map
 		if (bIsHeatmapInFocus) {
 			fright = viewFrustum.getWidth() - 1.2f;
 			fleftOffset = 0.095f + // width level 1 + boarder
 				GAP_LEVEL1_2 + // width gap between level 1 and 2
-				viewFrustum.getWidth() / 4f * 0.2f + // width level 2
-				GAP_LEVEL2_3; // width gap between level 2 and 3
+				viewFrustum.getWidth() / 4f * 0.2f;
 		}
 		else {
 			fright = viewFrustum.getWidth() - 2.75f;
 			fleftOffset = 0.075f + // width level 1
 				GAP_LEVEL1_2 + // width gap between level 1 and 2
-				viewFrustum.getWidth() / 4f + // width level 2
-				GAP_LEVEL2_3;// width gap between level 2 and 3
+				viewFrustum.getWidth() / 4f;
 		}
 
 		if (glHeatMapView.isInDefaultOrientation()) {
@@ -1634,6 +1703,11 @@ public class GLHierarchicalHeatMap
 		else {
 			gl.glTranslatef(-fleftOffset, +0.2f, 0);
 		}
+
+		if (bSkipLevel1 == false) {
+			gl.glTranslatef(-GAP_LEVEL2_3, 0, 0);
+		}
+
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -1674,23 +1748,19 @@ public class GLHierarchicalHeatMap
 
 		handleTexturePicking(gl);
 
-		// GLHelperFunctions.drawAxis(gl);
-
-		// if (tree != null) {
-		// // System.out.println("renderDendrogram(..)");
-		// iNrNodes = 0;
-		// iNrLeafs = 0;
-		// renderDendrogram(gl, 0.0f, viewFrustum.getHeight(), tree.getRoot(), 0, 1, 0, true, 4);
-		// // System.out.println("\n iNrNodes: " + iNrNodes);
-		// // System.out.println("\n iNrLeafs: " + iNrLeafs);
-		// }
-
 		// all stuff for rendering level 1 (overview bar)
-		renderOverviewBar(gl);
-		renderMarkerOverviewBar(gl);
-		renderSelectedElementsOverviewBar(gl);
+		if (bSkipLevel1 == false) {
+			renderOverviewBar(gl);
+			renderMarkerOverviewBar(gl);
+			renderSelectedElementsOverviewBar(gl);
 
-		gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
+			gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
+		}
+		else {
+			gl.glColor4f(1f, 1f, 0f, 1f);
+			// width of dragging cursor
+			gl.glTranslatef(0.2f, 0.0f, 0);
+		}
 
 		if (bIsHeatmapInFocus) {
 			fAnimationScale = 0.2f;
@@ -1700,6 +1770,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		// all stuff for rendering level 2 (textures)
+		gl.glColor4f(1f, 1f, 1f, 1f);
 		renderTextureHeatMap(gl);
 		renderMarkerTexture(gl);
 		renderSelectedElementsTexture(gl);
@@ -1712,7 +1783,13 @@ public class GLHierarchicalHeatMap
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
 		gl.glTranslatef(-0.1f, -0.4f, 0);
 
-		gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
+		if (bSkipLevel1 == false) {
+			gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
+		}
+		else {
+			// width of dragging cursor}
+			gl.glTranslatef(-0.2f, 0.0f, 0);
+		}
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 
@@ -1823,12 +1900,17 @@ public class GLHierarchicalHeatMap
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		if (bUseClusteredVA) {
-			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
+				// if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
-				iContentVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
+				// iContentVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
+				iContentVAID =
+					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
+						.getClustererType());
 
 			}
-			else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING) {
+			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
+				// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING) {
 				// System.out.println("iStorageVAID before clustering " + iStorageVAID + " size: "
 				// + set.getVA(iStorageVAID).size());
 				// for (int i = 0; i < 6; i++) {
@@ -1836,7 +1918,10 @@ public class GLHierarchicalHeatMap
 				// }
 				// System.out.println(" ");
 
-				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
+				iStorageVAID =
+					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
+						.getClustererType());
+				// iStorageVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
 
 				// System.out.println("iStorageVAID after clustering  " + iStorageVAID + " size: "
 				// + set.getVA(iStorageVAID).size());
@@ -1848,32 +1933,22 @@ public class GLHierarchicalHeatMap
 			else {
 
 				iStorageVAID =
-					set.cluster(iContentVAID, iStorageVAID, eClustererAlgo,
+					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
 						EClustererType.EXPERIMENTS_CLUSTERING);
+				// set.cluster(iContentVAID, iStorageVAID, eClustererAlgo,
+				// EClustererType.EXPERIMENTS_CLUSTERING);
 				iContentVAID =
-					set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, EClustererType.GENE_CLUSTERING);
+					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
+						EClustererType.GENE_CLUSTERING);
+				// set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, EClustererType.GENE_CLUSTERING);
 
 			}
 
-			if (eClustererAlgo == EClustererAlgo.COBWEB_CLUSTERER
-				|| eClustererAlgo == EClustererAlgo.TREE_CLUSTERER) {
+			if (clusterstate.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER
+				|| clusterstate.getClustererAlgo() == EClustererAlgo.TREE_CLUSTERER) {
+				// if (eClustererAlgo == EClustererAlgo.COBWEB_CLUSTERER || eClustererAlgo ==
+				// EClustererAlgo.TREE_CLUSTERER) {
 				tree = set.getClusteredTree();
-				//
-				// try {
-				//				
-				// String filename = "tree.xml";
-				// tree.exportTree(filename);
-				//						
-				// tree = tree.importTree(filename);
-				//				
-				// }
-				// catch (JAXBException e) {
-				// e.printStackTrace();
-				// }
-				// catch (IOException e) {
-				// e.printStackTrace();
-				// }
-
 			}
 			else {
 
@@ -2234,20 +2309,23 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 					case CLICKED:
 
-						if (iExternalID == 1) {
-							iSelectorBar--;
-							initPosCursor();
-							triggerSelectionBlock();
-							setDisplayListDirty();
-						}
-						if (iExternalID == 2) {
-							iSelectorBar++;
-							initPosCursor();
-							triggerSelectionBlock();
-							setDisplayListDirty();
-						}
+						if (bSkipLevel1 == false) {
 
-						setDisplayListDirty();
+							if (iExternalID == 1) {
+								iSelectorBar--;
+								initPosCursor();
+								triggerSelectionBlock();
+								setDisplayListDirty();
+							}
+							if (iExternalID == 2) {
+								iSelectorBar++;
+								initPosCursor();
+								triggerSelectionBlock();
+								setDisplayListDirty();
+							}
+
+							setDisplayListDirty();
+						}
 						break;
 
 					case DRAGGED:
@@ -2287,24 +2365,28 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 					case CLICKED:
 
-						iSelectorBar = iExternalID;
-						// if (iSelectorBar == iNrSelBar) {
-						// iSelectorBar--;
-						// }
-						initPosCursor();
-						triggerSelectionBlock();
-						setDisplayListDirty();
+						if (bSkipLevel1 == false) {
+							iSelectorBar = iExternalID;
+							// if (iSelectorBar == iNrSelBar) {
+							// iSelectorBar--;
+							// }
+							initPosCursor();
+							triggerSelectionBlock();
+							setDisplayListDirty();
+						}
 						break;
 
 					case MOUSE_OVER:
 
-						iSelectorBar = iExternalID;
-						// if (iSelectorBar == iNrSelBar) {
-						// iSelectorBar--;
-						// }
-						initPosCursor();
-						triggerSelectionBlock();
-						setDisplayListDirty();
+						if (bSkipLevel1 == false) {
+							iSelectorBar = iExternalID;
+							// if (iSelectorBar == iNrSelBar) {
+							// iSelectorBar--;
+							// }
+							initPosCursor();
+							triggerSelectionBlock();
+							setDisplayListDirty();
+						}
 						break;
 				}
 
@@ -2401,7 +2483,10 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 	}
 
-	public void startClustering(boolean bStartClustering) {
+	public void startClustering(ClusterState clusterState) {
+
+		this.clusterstate = clusterState;
+
 		bUseClusteredVA = true;
 		initData();
 		bUseClusteredVA = false;
@@ -2488,6 +2573,14 @@ public class GLHierarchicalHeatMap
 		super.initData();
 
 		bRedrawTextures = true;
+	}
+
+	public void setClusterstate(ClusterState clusterstate) {
+		this.clusterstate = clusterstate;
+	}
+
+	public ClusterState getClusterstate() {
+		return clusterstate;
 	}
 
 }

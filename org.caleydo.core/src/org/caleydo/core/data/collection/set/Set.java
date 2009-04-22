@@ -615,6 +615,8 @@ public class Set
 
 		int cluster = 0, cnt = 0;
 
+		groupList.clear();
+		
 		for (int i = 0; i < arGroupInfo.length; i++) {
 			Group group = null;
 			if (cluster != arGroupInfo[i]) {

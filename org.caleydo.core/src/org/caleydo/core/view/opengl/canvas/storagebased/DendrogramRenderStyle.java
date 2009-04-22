@@ -14,10 +14,9 @@ public class DendrogramRenderStyle
 
 	public static final float SIDE_SPACING = 0.1f;
 
-	public DendrogramRenderStyle(GLDendrogram dendroogram, IViewFrustum viewFrustum) {
+	public DendrogramRenderStyle(GLDendrogram dendrogram, IViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 
 	}
-
 }

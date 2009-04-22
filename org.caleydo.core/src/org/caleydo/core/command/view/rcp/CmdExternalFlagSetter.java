@@ -40,11 +40,11 @@ public class CmdExternalFlagSetter
 		Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
 		if (viewObject instanceof GLPathway) {
-			
+
 			// Pathway settings should apply to all pathways
 			for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners()) {
-				
+
 				if (!(glEventListener instanceof GLPathway)) {
 					continue;
 				}
@@ -78,9 +78,6 @@ public class CmdExternalFlagSetter
 					break;
 				case STORAGEBASED_HEATMAP_IN_FOCUS:
 					((GLHierarchicalHeatMap) viewObject).changeFocus(bFlag);
-					break;
-				case STORAGEBASED_START_CLUSTERING:
-					((GLHierarchicalHeatMap) viewObject).startClustering(bFlag);
 					break;
 				case STORAGEBASED_MERGE_CLASSES:
 					((GLHierarchicalHeatMap) viewObject).mergeGroups();

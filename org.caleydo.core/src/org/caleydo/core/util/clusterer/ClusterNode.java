@@ -1,10 +1,14 @@
 package org.caleydo.core.util.clusterer;
 
+import gleem.linalg.Vec3f;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.caleydo.core.data.selection.ESelectionType;
 
 @XmlRootElement(name = "node")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -21,6 +25,9 @@ public class ClusterNode
 	private int iHierarchyDepth;
 	@XmlElement
 	private int iNrElements;
+
+	private Vec3f vPos;
+	private ESelectionType eSelectionType;
 	
 	public ClusterNode() {
 
@@ -31,6 +38,7 @@ public class ClusterNode
 		this.iClusterNr = iClusterNr;
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
+		this.setSelectionType(ESelectionType.NORMAL);
 	}
 
 	@Override
@@ -69,5 +77,21 @@ public class ClusterNode
 
 	public int getNrElements() {
 		return iNrElements;
+	}
+
+	public void setPos(Vec3f vPos) {
+		this.vPos = vPos;
+	}
+
+	public Vec3f getPos() {
+		return vPos;
+	}
+
+	public void setSelectionType(ESelectionType eSelectionType) {
+		this.eSelectionType = eSelectionType;
+	}
+
+	public ESelectionType getSelectionType() {
+		return eSelectionType;
 	}
 }
