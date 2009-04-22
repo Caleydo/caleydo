@@ -1,6 +1,6 @@
-package org.caleydo.core.view.opengl.canvas.storagebased;
+package org.caleydo.core.view.opengl.canvas.histogram;
 
-import static org.caleydo.core.view.opengl.canvas.storagebased.HistogramRenderStyle.SIDE_SPACING;
+import static org.caleydo.core.view.opengl.canvas.histogram.HistogramRenderStyle.SIDE_SPACING;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.histogram.HistogramRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -138,9 +139,9 @@ public class GLHistogram
 		display(gl);
 		checkForHits(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF) {
-			renderBusyMode(gl);
-		}
+		// if (eBusyModeState != EBusyModeState.OFF) {
+		// renderBusyMode(gl);
+		// }
 	}
 
 	@Override
@@ -153,8 +154,6 @@ public class GLHistogram
 
 		display(gl);
 		checkForHits(gl);
-
-		// pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
@@ -175,6 +174,11 @@ public class GLHistogram
 		gl.glEndList();
 	}
 
+	/**
+	 * Render the histogram itself
+	 * 
+	 * @param gl
+	 */
 	private void renderHistogram(GL gl) {
 
 		float fSpacing = (viewFrustum.getWidth() - 2 * SIDE_SPACING) / histogram.size();
@@ -198,6 +202,11 @@ public class GLHistogram
 
 	}
 
+	/**
+	 * Render the color bars for selecting the color mapping
+	 * 
+	 * @param gl
+	 */
 	private void renderColorBars(GL gl) {
 
 		float fRenderWidth = (viewFrustum.getWidth() - 2 * SIDE_SPACING);
@@ -274,6 +283,8 @@ public class GLHistogram
 					pickingManager.getPickingID(iUniqueID, EPickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE,
 						iCount);
 
+				// the polygon between the central line and the right spread
+				// the first part which picks the central line
 				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1], markerPoint.getColor()[2],
 					0.3f);
 				if (!bIsFirstOrLast)
@@ -288,6 +299,7 @@ public class GLHistogram
 				if (!bIsFirstOrLast)
 					gl.glPopName();
 
+				// the second part which picks the spread
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(fLeft + fPickingScaling * (fRight - fLeft), SIDE_SPACING, -0.011f);
@@ -298,8 +310,9 @@ public class GLHistogram
 				gl.glEnd();
 				gl.glPopName();
 
+				// the right spread line
 				gl.glColor3f(0, 0, 1);
-				gl.glPushName(iColorLinePickingID);
+				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() + fRightSpread) * fRenderWidth, 0, 0);
 				gl.glVertex3f(SIDE_SPACING + (markerPoint.getValue() + fRightSpread) * fRenderWidth,
@@ -309,6 +322,7 @@ public class GLHistogram
 
 			}
 
+			// the central line
 			gl.glColor3f(0, 0, 1);
 			if (!bIsFirstOrLast)
 				gl.glPushName(iColorLinePickingID);
@@ -324,6 +338,11 @@ public class GLHistogram
 
 	}
 
+	/**
+	 * React on drag operations of the color lines and areas
+	 * 
+	 * @param gl
+	 */
 	private void updateColorPointPosition(GL gl) {
 		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
 			bUpdateColorPointPosition = false;
@@ -448,7 +467,6 @@ public class GLHistogram
 						bUpdateColorPointPosition = true;
 						bIsFirstTimeUpdateColor = true;
 						iColorMappingPointMoved = iExternalID;
-						// colorManager.initColorMapping(EColorMappingType.GENE_EXPRESSION, )
 						break;
 					case MOUSE_OVER:
 
@@ -464,7 +482,6 @@ public class GLHistogram
 					case CLICKED:
 						bUpdateLeftSpread = true;
 						iColorMappingPointMoved = iExternalID;
-						// colorManager.initColorMapping(EColorMappingType.GENE_EXPRESSION, )
 						break;
 					case MOUSE_OVER:
 
@@ -480,7 +497,6 @@ public class GLHistogram
 					case CLICKED:
 						bUpdateRightSpread = true;
 						iColorMappingPointMoved = iExternalID;
-						// colorManager.initColorMapping(EColorMappingType.GENE_EXPRESSION, )
 						break;
 					case MOUSE_OVER:
 
@@ -538,7 +554,7 @@ public class GLHistogram
 				}
 				break;
 		}
-		
+
 	}
 
 }

@@ -1,10 +1,10 @@
-package org.caleydo.core.view.opengl.canvas.storagebased;
+package org.caleydo.core.view.opengl.canvas.histogram;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
- * Heat Map render styles
+ * Histogram render styles
  * 
  * @author Alexander Lex
  */

@@ -1,5 +1,7 @@
 package org.caleydo.core.util.preferences;
 
+import org.caleydo.core.util.mapping.color.EColorMappingType;
+
 /**
  * Constant definitions for plug-in preferences
  */
@@ -11,7 +13,7 @@ public class PreferenceConstants {
 	public static final String P_STRING = "stringPreference";
 
 	// Color Mapping
-	public static final String GENE_EXPRESSION_PREFIX = "GENE_EXPRESSION_";
+	public static final String GENE_EXPRESSION_PREFIX = EColorMappingType.GENE_EXPRESSION + "_";
 	public static final String NUMBER_OF_COLOR_MARKER_POINTS = "numberOfColorMarkerPoints";
 	public static final String COLOR_MARKER_POINT_VALUE = "colorMarkerPointValue";
 	public static final String COLOR_MARKER_POINT_LEFT_SPREAD = "colorMarkerPointLeftSpread";

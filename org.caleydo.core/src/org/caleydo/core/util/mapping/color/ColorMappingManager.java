@@ -58,10 +58,7 @@ public class ColorMappingManager {
 	 * display list to dirty to have immediate effect.
 	 */
 	public void initiFromPreferenceStore(EColorMappingType colorMappingType) {
-		
-		// TODO not generic
-//		initColorMapping(EColorMappingType.GENE_EXPRESSION, alMarkerPoints);
-		
+				
 		if (hashColorMapping.containsKey(colorMappingType)) {
 			hashColorMapping.get(colorMappingType).initiFromPreferenceStore();
 			return;
