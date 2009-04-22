@@ -312,6 +312,9 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
 
+		ClusterHelper.determineNrElements(tree);
+		ClusterHelper.determineHierarchyDepth(tree);
+
 		AlIndexes = getAl();
 
 		set.setClusteredTree(tree);
@@ -349,12 +352,14 @@ public class TreeClusterer
 
 		if (treeStructure[index].getLeft() >= 0) {
 
-			String NodeName = IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());
+			String NodeName =
+				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());
 			left = new ClusterNode(NodeName, treeStructure[index].getLeft(), 0, 0);
 
 			left.setNrElements(1);
-			
-//			left = new ClusterNode("Leaf_" + treeStructure[index].getLeft(), treeStructure[index].getLeft(), 0, 0);
+
+			// left = new ClusterNode("Leaf_" + treeStructure[index].getLeft(),
+			// treeStructure[index].getLeft(), 0, 0);
 			tree.addChild(node, left);
 
 		}
@@ -368,12 +373,14 @@ public class TreeClusterer
 
 		if (treeStructure[index].getRight() >= 0) {
 
-			String NodeName = IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());
+			String NodeName =
+				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());
 			right = new ClusterNode(NodeName, treeStructure[index].getRight(), 0, 0);
-			
+
 			right.setNrElements(1);
-			
-//			right = new ClusterNode("Leaf_" + treeStructure[index].getRight(), treeStructure[index].getRight(), 0, 0);
+
+			// right = new ClusterNode("Leaf_" + treeStructure[index].getRight(),
+			// treeStructure[index].getRight(), 0, 0);
 			tree.addChild(node, right);
 
 		}

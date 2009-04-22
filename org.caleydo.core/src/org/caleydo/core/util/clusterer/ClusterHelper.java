@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 
 public class ClusterHelper {
@@ -31,6 +32,53 @@ public class ClusterHelper {
 		}
 
 		return mean / vector.length;
+	}
+
+	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
+		int maxDepth = 0;
+		maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
+		// System.out.println("maxDepth: " + maxDepth);
+	}
+
+	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
+
+		if (tree.hasChildren(node)) {
+			int temp = node.getDepth();
+
+			for (ClusterNode current : tree.getChildren(node)) {
+				if (temp < determineHierarchyDepthRec(tree, current))
+					temp = determineHierarchyDepthRec(tree, current) + 1;
+			}
+
+			node.setDepth(temp);
+		}
+		else
+			node.setDepth(1);
+
+		return node.getDepth();
+	}
+
+	public static void determineNrElements(Tree<ClusterNode> tree) {
+
+		int iNrElements = 0;
+		iNrElements = determineNrElementsRec(tree, tree.getRoot());
+		// System.out.println("iNrElements: " + iNrElements);
+	}
+
+	private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
+
+		if (tree.hasChildren(node)) {
+			int temp = 0;
+
+			for (ClusterNode current : tree.getChildren(node)) {
+				temp += determineNrElementsRec(tree, current);
+			}
+
+			node.setNrElements(temp);
+		}
+
+		return node.getNrElements();
+
 	}
 
 	public static void sortClusters(ISet set, int iVAIdContent, int iVAIdStorage,

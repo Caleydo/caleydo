@@ -56,7 +56,6 @@ public class GLDendrogram
 	private boolean bPosistionsDetermined = false;
 
 	private float yPosInit = 0.5f;
-	private float xposInit = 6;
 	private float xmax = 6;
 	private float fSampleHeight = 0;
 	private float fLevelHeight = 0;
@@ -171,19 +170,12 @@ public class GLDendrogram
 			}
 		}
 
-		fSampleHeight = (viewFrustum.getHeight() - 1.4f) / 10;
-		fLevelHeight = (viewFrustum.getWidth() - 1f) / 10;
-
-		xposInit = viewFrustum.getWidth() - 0.2f;
 		xmax = viewFrustum.getWidth() - 0.2f;
+
+		// bPosistionsDetermined = true;
 
 		if (tree == null) {
 			tree = set.getClusteredTree();
-
-			if (tree != null) {
-				determinePositions();
-				bPosistionsDetermined = true;
-			}
 
 			renderSymbol(gl);
 
@@ -195,6 +187,8 @@ public class GLDendrogram
 			gl.glTranslatef(0.1f, 0, 0);
 
 			if (bPosistionsDetermined == false) {
+				fSampleHeight = (viewFrustum.getHeight() - 1.4f) / tree.getRoot().getNrElements();
+				fLevelHeight = (viewFrustum.getWidth() - 1f) / tree.getRoot().getDepth();
 				determinePositions();
 				bPosistionsDetermined = true;
 			}
@@ -288,16 +282,17 @@ public class GLDendrogram
 				positions[i] = determinePosRec(node);
 			}
 
+			float fXmin = Float.MAX_VALUE;
 			float fYmax = Float.MIN_VALUE;
 			float fYmin = Float.MAX_VALUE;
 
 			for (Vec3f vec : positions) {
+				fXmin = Math.min(fXmin, vec.x());
 				fYmax = Math.max(fYmax, vec.y());
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			xposInit -= fLevelHeight;
-			pos.setX(xposInit);
+			pos.setX(fXmin - fLevelHeight);
 
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
 			pos.setZ(0f);
@@ -335,6 +330,8 @@ public class GLDendrogram
 		gl.glVertex3f(currentNode.getPos().x() - 0.1f, currentNode.getPos().y(), currentNode.getPos().z());
 		gl.glEnd();
 
+		gl.glPopName();
+
 		float fDiff = 0;
 		float fTemp = currentNode.getPos().x();
 
@@ -370,6 +367,16 @@ public class GLDendrogram
 
 			fDiff = fTemp - xmin;
 
+			if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+			}
+			else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+				gl.glColor4fv(SELECTED_COLOR, 0);
+			}
+			else {
+				gl.glColor4f(0, 0, 0, 1);
+			}
+			
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(xmin - 0.1f, ymin, currentNode.getPos().z());
 			gl.glVertex3f(xmin - 0.1f, ymax, currentNode.getPos().z());
@@ -386,88 +393,23 @@ public class GLDendrogram
 
 		}
 
+
+		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+		}
+		else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+			gl.glColor4fv(SELECTED_COLOR, 0);
+		}
+		else {
+			gl.glColor4f(0, 0, 0, 1);
+		}
+		
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(currentNode.getPos().x() - fDiff - 0.1f, currentNode.getPos().y(), currentNode.getPos()
 			.z());
 		gl.glVertex3f(currentNode.getPos().x() - 0.1f, currentNode.getPos().y(), currentNode.getPos().z());
 		gl.glEnd();
 
-		gl.glPopName();
-
-	}
-
-	/**
-	 * Render dendrogram recursively
-	 * 
-	 * @param gl
-	 * @param fymin
-	 * @param fymax
-	 * @param parentNode
-	 * @param iDepth
-	 * @param iNrSiblings
-	 * @param iChildNr
-	 * @param fXMax
-	 */
-	private void renderDendrogram(final GL gl, float fymin, float fymax, ClusterNode parentNode, int iDepth,
-		int iNrSiblings, int iChildNr, float fXMax) {
-
-		int currentDepth = iDepth;
-
-		float fxpos = 0.2f * currentDepth;
-		float fypos = 0;
-		float ymaxNew = 0, yminNew = 0;
-		float fdiff = (fymax - fymin);
-		float ywidth = fdiff / (iNrSiblings + 1);
-
-		fypos = fymin + (ywidth * (iChildNr + 1));
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-
-		if (tree.hasChildren(parentNode) == false)
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION,
-				parentNode.getClusterNr()));
-
-		List<ClusterNode> listGraph = null;
-
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fxpos, fypos, SELECTION_Z);
-		if (tree.hasChildren(parentNode)) {
-			gl.glVertex3f(fxpos + 0.2f, fypos, SELECTION_Z);
-			gl.glVertex3f(fxpos + 0.2f, fypos + 0.01f, SELECTION_Z);
-		}
-		else {
-			gl.glVertex3f(fXMax, fypos, SELECTION_Z);
-			gl.glVertex3f(fXMax, fypos + 0.01f, SELECTION_Z);
-		}
-		gl.glVertex3f(fxpos, fypos + 0.01f, SELECTION_Z);
-		gl.glEnd();
-		if (tree.hasChildren(parentNode) == false)
-			gl.glPopName();
-
-		gl.glPopAttrib();
-
-		if (tree.hasChildren(parentNode)) {
-			currentDepth++;
-
-			listGraph = tree.getChildren(parentNode);
-
-			int iNrChildsNode = listGraph.size();
-
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * 0.55f), SELECTION_Z);
-			gl.glVertex3f(fxpos + 0.2f, fymin + (fdiff / (iNrChildsNode + 1) * (iNrChildsNode + 0.55f)),
-				SELECTION_Z);
-			gl.glEnd();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				yminNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 0.5f));
-				ymaxNew = fymin + (fdiff / (iNrChildsNode + 1) * (i + 1.5f));
-
-				ClusterNode currentNode = (ClusterNode) listGraph.get(i);
-				renderDendrogram(gl, yminNew, ymaxNew, currentNode, currentDepth, iNrChildsNode, i, 6);
-			}
-		}
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -497,13 +439,35 @@ public class GLDendrogram
 			&& (fArTargetWorldCoordinates[0] - 0.1f) < (fWidth - 0.1f))
 			fPosCut = fArTargetWorldCoordinates[0] - 0.1f;
 
-		// System.out.println("fPosCut: " + fPosCut);
-
 		setDisplayListDirty();
 
 		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
 			bIsDraggingActive = false;
+
+			determineSelectedNodes();
+
 		}
+	}
+
+	private void determineSelectedNodes() {
+
+		determineSelectedNodesrec(tree.getRoot());
+
+	}
+
+	private void determineSelectedNodesrec(ClusterNode node) {
+
+		if (node.getPos().x() < fPosCut)
+			node.setSelectionType(ESelectionType.SELECTION);
+		else
+			node.setSelectionType(ESelectionType.NORMAL);
+
+		if (tree.hasChildren(node)) {
+			for (ClusterNode current : tree.getChildren(node)) {
+				determineSelectedNodesrec(current);
+			}
+		}
+
 	}
 
 	@Override
@@ -520,17 +484,16 @@ public class GLDendrogram
 				switch (pickingMode) {
 
 					case CLICKED:
-						// System.out.println("cut CLICKED");
 						break;
 					case DRAGGED:
 						bIsDraggingActive = true;
 						setDisplayListDirty();
-						// System.out.println("cut DRAGGED");
 						break;
 					case MOUSE_OVER:
-						// System.out.println("cut MOUSE_OVER");
 						break;
 				}
+				pickingManager.flushHits(iUniqueID, ePickingType);
+				break;
 
 			case DENDROGRAM_SELECTION:
 

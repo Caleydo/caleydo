@@ -3,7 +3,6 @@ package org.caleydo.core.util.clusterer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
@@ -119,7 +118,7 @@ public class HierarchicalClusterer
 		}
 
 		HashMap<Double, Integer> hashClusters = new HashMap<Double, Integer>();
-		
+
 		for (int i = 0; i < clusters.size(); i++) {
 			hashClusters.put(clusters.get(i), i);
 			temp.add(0);
@@ -137,15 +136,15 @@ public class HierarchicalClusterer
 
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
-		// set cluster result Set
-//		HierarchyGraph graph = new HierarchyGraph();
-
 		CNode node = clusterer.m_cobwebTree;
 
 		ClusterNode clusterNode = new ClusterNode("Root", 1, 0f, 0);
 		tree.setRootNode(clusterNode);
 
 		CNodeToTree(clusterNode, node);
+
+		ClusterHelper.determineNrElements(tree);
+		ClusterHelper.determineHierarchyDepth(tree);
 
 		set.setClusteredTree(tree);
 		set.setAlClusterSizes(temp);
@@ -166,6 +165,8 @@ public class HierarchicalClusterer
 				CNode currentNode = (CNode) node.getChilds().elementAt(i);
 				ClusterNode currentGraph =
 					new ClusterNode("Node_" + currentNode.getClusterNum(), currentNode.getClusterNum(), 0f, 0);
+				currentGraph.setNrElements(1);
+
 				tree.addChild(clusterNode, currentGraph);
 				// temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
 				CNodeToTree(currentGraph, currentNode);

@@ -1901,16 +1901,13 @@ public class GLHierarchicalHeatMap
 
 		if (bUseClusteredVA) {
 			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
-				// if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
-				// iContentVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
 				iContentVAID =
 					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
 						.getClustererType());
 
 			}
 			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-				// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING) {
 				// System.out.println("iStorageVAID before clustering " + iStorageVAID + " size: "
 				// + set.getVA(iStorageVAID).size());
 				// for (int i = 0; i < 6; i++) {
@@ -1921,7 +1918,6 @@ public class GLHierarchicalHeatMap
 				iStorageVAID =
 					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
 						.getClustererType());
-				// iStorageVAID = set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, eClustererType);
 
 				// System.out.println("iStorageVAID after clustering  " + iStorageVAID + " size: "
 				// + set.getVA(iStorageVAID).size());
@@ -1935,19 +1931,14 @@ public class GLHierarchicalHeatMap
 				iStorageVAID =
 					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
 						EClustererType.EXPERIMENTS_CLUSTERING);
-				// set.cluster(iContentVAID, iStorageVAID, eClustererAlgo,
-				// EClustererType.EXPERIMENTS_CLUSTERING);
 				iContentVAID =
 					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
 						EClustererType.GENE_CLUSTERING);
-				// set.cluster(iContentVAID, iStorageVAID, eClustererAlgo, EClustererType.GENE_CLUSTERING);
 
 			}
 
 			if (clusterstate.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER
 				|| clusterstate.getClustererAlgo() == EClustererAlgo.TREE_CLUSTERER) {
-				// if (eClustererAlgo == EClustererAlgo.COBWEB_CLUSTERER || eClustererAlgo ==
-				// EClustererAlgo.TREE_CLUSTERER) {
 				tree = set.getClusteredTree();
 			}
 			else {
