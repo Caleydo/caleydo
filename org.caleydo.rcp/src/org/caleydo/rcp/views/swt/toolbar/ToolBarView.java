@@ -129,9 +129,11 @@ public class ToolBarView
 			layout.marginTop =
 				layout.marginLeft =
 					layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 3;
+		layout.marginHeight = layout.marginWidth = 0;
 		group.setLayout(layout);
 		group.setLayoutData(toolBarRenderer.createStandardGridData());
+		
+		// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);

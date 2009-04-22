@@ -68,7 +68,7 @@ public class PartListener
 			return;
 
 		AGLViewPart glView = (AGLViewPart) activePart;
-
+		
 		if (glView == null)
 			return;
 
@@ -88,7 +88,6 @@ public class PartListener
 
 	@Override
 	public void partVisible(IWorkbenchPartReference partRef) {
-		log.info("partVisible() started");
 
 		IWorkbenchPart activePart = partRef.getPart(false);
 		
@@ -97,6 +96,8 @@ public class PartListener
 		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		viewPart.setAttached(isViewAttached(viewPart));
+		
+		log.info("partVisible(): " +viewPart);
 
 		if (viewPart instanceof AGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
@@ -132,6 +133,9 @@ public class PartListener
 			return;
 		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
+		
+		log.info("partHidden(): " +viewPart);
+		
 		viewPart.setAttached(isViewAttached(viewPart));
 
 		if (!(activePart instanceof AGLViewPart)) {
@@ -155,6 +159,8 @@ public class PartListener
 			return;
 		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
+		
+		log.info("partActivated(): " +viewPart);
 
 		sendViewActivationEvent(viewPart);
 	}

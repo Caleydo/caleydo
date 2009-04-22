@@ -164,7 +164,7 @@ public class ViewManager
 				view = new CollabViewRep(iParentContainerID, sLabel);
 				break;
 			default:
-				throw new RuntimeException("StorageManagerSimple.createView() failed due to unhandled type ["
+				throw new IllegalStateException("ViewManager.createView() failed due to unhandled type ["
 					+ type.toString() + "]");
 		}
 

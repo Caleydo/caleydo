@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
+import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
@@ -65,9 +66,13 @@ public class DefaultToolBarRenderJob
 				layout.marginTop =
 					layout.marginLeft =
 						layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-			layout.marginHeight = layout.marginWidth = 3;
+			layout.marginHeight = layout.marginWidth = 0;
 			group.setLayout(layout);
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			group.setLayoutData(toolBarRenderer.createStandardGridData());
+			// group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			
+			// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
+			
 			viewSpecificGroups.add(group);
 
 			// Needed to simulate toolbar wrapping which is not implemented for linux
@@ -81,10 +86,10 @@ public class DefaultToolBarRenderJob
 			resourceLoader.getImage(display, path);
 
 			// TODO: write horizontal renderer
-			// if (bHorizontal) {
-			// Label spacer = new Label(group, SWT.NULL);
-			// spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-			// }
+			 if (!GenomePerspective.bIsWideScreen) {
+				 Label spacer = new Label(group, SWT.NULL);
+				 spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
+			 }
 
 			Label label = new Label(group, SWT.CENTER);
 			label.setText(toolBarContainer.getTitle());
