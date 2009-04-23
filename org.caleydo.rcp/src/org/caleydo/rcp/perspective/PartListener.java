@@ -185,7 +185,7 @@ public class PartListener
 
 		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
 
-//		toolBarManager.removeAll();
+		toolBarManager.removeAll();
 		for (AToolBarContent toolBarContent : toolBarContents) {
 			for (ToolBarContainer container : toolBarContent.getInlineToolBar()) {
 				for (IToolBarItem item : container.getToolBarItems()) {
