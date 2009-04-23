@@ -339,6 +339,21 @@
             id="org.caleydo.rcp.command.openviews.dendrogram"
             name="Open Dendrogram">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.help.HelpContentsHandler"
+            id="org.caleydo.rcp.command.help.help_contents"
+            name="Help Contents">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.help.KnownBugsHandler"
+            id="org.caleydo.rcp.command.help.known_bugs"
+            name="Known Bugs">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.help.ReportBugHandler"
+            id="org.caleydo.rcp.command.help.report_bug"
+            name="Report Bug">
+      </command>
       		
    </extension>
    <extension
@@ -503,7 +518,26 @@
                label="Help"
                tooltip="Help">
             <command
+                  commandId="org.caleydo.rcp.command.help.help_contents"
+                  icon="resources/icons/general/help.gif"
+                  label="Help Contents"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.help.known_bugs"
+                  icon="resources/icons/general/known_bugs.gif"
+                  label="Known Bugs"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.help.report_bug"
+                  icon="resources/icons/general/report_bug.gif"
+                  label="Report Bug"
+                  style="push">
+            </command>
+            <command
                   commandId="org.eclipse.ui.help.aboutAction"
+                  icon="resources/icons/caleydo16.gif"
                   label="About Caleydo"
                   style="push">
             </command>

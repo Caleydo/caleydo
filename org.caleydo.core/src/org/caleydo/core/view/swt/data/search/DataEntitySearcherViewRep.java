@@ -3,6 +3,7 @@ package org.caleydo.core.view.swt.data.search;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
@@ -68,15 +69,15 @@ public class DataEntitySearcherViewRep
 
 		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
 
-		int iPathwayID =
-			generalManager.getPathwayManager().searchPathwayIdByName(sEntity, ePathwayDatabaseType);
+		PathwayGraph pathway =
+			generalManager.getPathwayManager().searchPathwayByName(sEntity, ePathwayDatabaseType);
 
-		if (iPathwayID == -1)
+		if (pathway == null)
 			return false;
 
 		IDListEventContainer<Integer> idListEventContainer =
 			new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
-		idListEventContainer.addID(iPathwayID);
+		idListEventContainer.addID(pathway.getID());
 
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 

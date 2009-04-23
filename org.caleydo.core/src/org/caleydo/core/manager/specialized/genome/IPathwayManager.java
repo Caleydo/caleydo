@@ -25,13 +25,13 @@ public interface IPathwayManager
 
 	public PathwayImageMap getCurrentPathwayImageMap();
 
-	public int searchPathwayIdByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType);
+	public PathwayGraph searchPathwayByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType);
 
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type);
 
-	public void setPathwayVisibilityStateByID(final int iPathwayID, final boolean bVisibilityState);
+	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState);
 
-	public boolean isPathwayVisible(final int iPathwayID);
+	public boolean isPathwayVisible(final PathwayGraph pathway);
 
 	public void resetPathwayVisiblityState();
 

@@ -159,7 +159,7 @@ public final class SearchBox
 		for (int arrowEvent : arrowEvents) {
 			arrow.addListener(arrowEvent, listener);
 		}
-
+		
 		createPopup(null, -1);
 		initAccessible();
 	}

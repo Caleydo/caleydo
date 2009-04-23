@@ -6,6 +6,7 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.IDListEventContainer;
+import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.rcp.Application;
@@ -95,7 +96,7 @@ public class PathwaySearchBox
 				// sSearchEntity = sSearchEntity.substring(0,
 				// sSearchEntity.indexOf(" ("));
 
-				determinePathwayID(sSearchEntity);
+				loadPathway(sSearchEntity);
 			}
 		});
 		
@@ -120,12 +121,12 @@ public class PathwaySearchBox
 	
 	/**
 	 * Method gets a pathway title and tries to determine the pathway ID.
-	 * If this is successfull the load pathway event is triggered.
+	 * If this is successful the load pathway event is triggered.
 	 * 
 	 * @param sEntity Pathway search title
 	 * @return
 	 */
-	private boolean determinePathwayID(String sEntity) {
+	private boolean loadPathway(String sEntity) {
 		EPathwayDatabaseType ePathwayDatabaseType;
 
 		if (sEntity.contains("KEGG")) {
@@ -139,17 +140,21 @@ public class PathwaySearchBox
 
 		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
 
-		int iPathwayID =
-			GeneralManager.get().getPathwayManager().searchPathwayIdByName(sEntity, ePathwayDatabaseType);
+		PathwayGraph pathway =
+			GeneralManager.get().getPathwayManager().searchPathwayByName(sEntity, ePathwayDatabaseType);
 
-		if (iPathwayID == -1)
+		if (pathway == null)
 			return false;
 
 		IDListEventContainer<Integer> idListEventContainer =
 			new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
-		idListEventContainer.addID(iPathwayID);
+		idListEventContainer.addID(pathway.getID());
 
-		pathwayToolBarMediator.loadPathway(iPathwayID);
+		pathwayToolBarMediator.loadPathway(pathway);
+		
+		ChangeURLEvent event = new ChangeURLEvent();
+		event.setUrl(pathway.getExternalLink());
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		return true;
 	}

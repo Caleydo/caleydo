@@ -74,7 +74,7 @@ import org.caleydo.util.graph.IGraphItem;
 public class GLPathway
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender {
-	private int iPathwayID = -1;
+	private PathwayGraph pathway;
 
 	private boolean bEnablePathwayTexture = true;
 
@@ -141,18 +141,23 @@ public class GLPathway
 		// false);
 	}
 
-	public synchronized void setPathwayID(final int iPathwayID) {
+	public synchronized void setPathway(final PathwayGraph pathway) {
 		// Unregister former pathway in visibility list
-		if (iPathwayID != -1) {
-			generalManager.getPathwayManager().setPathwayVisibilityStateByID(this.iPathwayID, false);
+		if (pathway != null) {
+			generalManager.getPathwayManager().setPathwayVisibilityState(pathway, false);
 		}
 
-		this.iPathwayID = iPathwayID;
+		this.pathway = pathway;
 	}
 
-	public int getPathwayID() {
+	public synchronized void setPathway(final int iPathwayID) {
+	
+		setPathway(generalManager.getPathwayManager().getItem(iPathwayID));
+	}
+	
+	public PathwayGraph getPathway() {
 
-		return iPathwayID;
+		return pathway;
 	}
 
 	@Override
@@ -178,7 +183,7 @@ public class GLPathway
 	@Override
 	public void init(final GL gl) {
 		// Check if pathway exists or if it's already loaded
-		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
+		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
 			return;
 
 		initPathwayData(gl);
@@ -188,7 +193,7 @@ public class GLPathway
 	public synchronized void displayLocal(final GL gl) {
 		// Check if pathway exists or if it's already loaded
 		// FIXME: not good because check in every rendered frame
-		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
+		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
 			return;
 
 		pickingManager.handlePicking(iUniqueID, gl);
@@ -204,7 +209,7 @@ public class GLPathway
 	public synchronized void displayRemote(final GL gl) {
 		// Check if pathway exists or if it is already loaded
 		// FIXME: not good because check in every rendered frame
-		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
+		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
 			return;
 
 		if (bIsDisplayListDirtyRemote) {
@@ -222,7 +227,7 @@ public class GLPathway
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		// TODO: also put this in global DL
-		renderPathwayById(gl, iPathwayID);
+		renderPathway(gl, pathway);
 
 		gl.glCallList(iGLDisplayListToCall);
 	}
@@ -230,7 +235,7 @@ public class GLPathway
 	protected void initPathwayData(final GL gl) {
 		// Initialize all elements in selection manager
 		Iterator<IGraphItem> iterPathwayVertexGraphItem =
-			generalManager.getPathwayManager().getItem(iPathwayID).getAllItemsByKind(EGraphItemKind.NODE)
+			pathway.getAllItemsByKind(EGraphItemKind.NODE)
 				.iterator();
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
 		while (iterPathwayVertexGraphItem.hasNext()) {
@@ -246,14 +251,14 @@ public class GLPathway
 			hashGLcontext2TextureManager.put(gl, new GLPathwayTextureManager());
 		}
 
-		calculatePathwayScaling(gl, iPathwayID);
-		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
+		calculatePathwayScaling(gl, pathway);
+		pathwayManager.setPathwayVisibilityState(pathway, true);
 
 		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this,
 		// iPathwayID);
 	}
 
-	private void renderPathwayById(final GL gl, final int iPathwayId) {
+	private void renderPathway(final GL gl, final PathwayGraph pathway) {
 		gl.glPushMatrix();
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
@@ -261,11 +266,11 @@ public class GLPathway
 		if (bEnablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, iPathwayId, fPathwayTransparency,
+			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency,
 				false);
 		}
 
-		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathwayManager.getItem(iPathwayId).getHeight();
+		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
@@ -278,14 +283,14 @@ public class GLPathway
 			// &&
 			// remoteRenderingGLCanvas.getBucketMouseWheelListener().isZoomedIn())
 			if (detailLevel == EDetailLevel.HIGH) {
-				gLPathwayContentCreator.renderPathway(gl, iPathwayId, true);
+				gLPathwayContentCreator.renderPathway(gl, pathway, true);
 			}
 			else {
-				gLPathwayContentCreator.renderPathway(gl, iPathwayId, false);
+				gLPathwayContentCreator.renderPathway(gl, pathway, false);
 			}
 		}
 		else {
-			gLPathwayContentCreator.renderPathway(gl, iPathwayId, false);
+			gLPathwayContentCreator.renderPathway(gl, pathway, false);
 		}
 
 		gl.glTranslatef(0, -tmp, 0);
@@ -297,7 +302,7 @@ public class GLPathway
 	}
 
 	private void rebuildPathwayDisplayList(final GL gl, int iGLDisplayListIndex) {
-		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, iPathwayID);
+		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
 
 		// gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		// renderPathwayName(gl);
@@ -329,7 +334,7 @@ public class GLPathway
 
 		setDisplayListDirty();
 
-		int iPathwayHeight = generalManager.getPathwayManager().getItem(iPathwayID).getHeight();
+		int iPathwayHeight = pathway.getHeight();
 		for (SelectionDeltaItem item : resolvedDelta) {
 			if (item.getSelectionType() != ESelectionType.MOUSE_OVER
 				&& item.getSelectionType() != ESelectionType.SELECTION) {
@@ -449,7 +454,7 @@ public class GLPathway
 			// Convert DAVID ID to pathway graph item representation ID
 			for (IGraphItem tmpGraphItemRep : generalManager.getPathwayItemManager().getItem(
 				iPathwayVertexGraphItemID).getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-				if (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep)) {
+				if (!pathway.containsItem(tmpGraphItemRep)) {
 					continue;
 				}
 
@@ -465,7 +470,7 @@ public class GLPathway
 		return newSelectionDelta;
 	}
 
-	private void calculatePathwayScaling(final GL gl, final int iPathwayId) {
+	private void calculatePathwayScaling(final GL gl, final PathwayGraph pathway) {
 
 		if (hashGLcontext2TextureManager.get(gl) == null)
 			return;
@@ -485,7 +490,7 @@ public class GLPathway
 		float fPathwayScalingFactor = 0;
 		float fPadding = 0.98f;
 
-		if (generalManager.getPathwayManager().getItem(iPathwayId).getType().equals(
+		if (pathway.getType().equals(
 			EPathwayDatabaseType.BIOCARTA)) {
 			fPathwayScalingFactor = 5;
 		}
@@ -493,10 +498,8 @@ public class GLPathway
 			fPathwayScalingFactor = 3.2f;
 		}
 
-		PathwayGraph tmpPathwayGraph = generalManager.getPathwayManager().getItem(iPathwayId);
-
-		int iImageWidth = tmpPathwayGraph.getWidth();
-		int iImageHeight = tmpPathwayGraph.getHeight();
+		int iImageWidth = pathway.getWidth();
+		int iImageHeight = pathway.getHeight();
 
 		generalManager.getLogger().log(Level.FINE,
 			"Pathway texture width=" + iImageWidth + " / height=" + iImageHeight);
@@ -616,15 +619,15 @@ public class GLPathway
 
 						// Load embedded pathway
 						if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
-							int iPathwayID =
-								generalManager.getPathwayManager().searchPathwayIdByName(
+							PathwayGraph pathway =
+								generalManager.getPathwayManager().searchPathwayByName(
 									tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG);
 
-							if (iPathwayID != -1) {
+							if (pathway != null) {
 								IDListEventContainer<Integer> idListEventContainer =
 									new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID,
 										EIDType.PATHWAY);
-								idListEventContainer.addID(iPathwayID);
+								idListEventContainer.addID(pathway.getID());
 
 								triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 							}
@@ -684,7 +687,7 @@ public class GLPathway
 
 	private void createConnectionLines(ESelectionType eSelectionType, int iConnectionID) {
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
-		int iPathwayHeight = generalManager.getPathwayManager().getItem(iPathwayID).getHeight();
+		int iPathwayHeight = pathway.getHeight();
 
 		for (int iVertexRepID : selectionManager.getElements(eSelectionType)) {
 			tmpPathwayVertexGraphItemRep =
@@ -713,7 +716,7 @@ public class GLPathway
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
 	
 		for (IGraphItem tmpPathwayVertexGraphItemRep 
-			: generalManager.getPathwayManager().getItem(iPathwayID).getAllItemsByKind(EGraphItemKind.NODE))
+			: pathway.getAllItemsByKind(EGraphItemKind.NODE))
 		{			
 			for (IGraphItem tmpPathwayVertexGraphItem 
 				: tmpPathwayVertexGraphItemRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) 
@@ -748,7 +751,6 @@ public class GLPathway
 
 	@Override
 	public synchronized String getShortInfo() {
-		PathwayGraph pathway = generalManager.getPathwayManager().getItem(iPathwayID);
 
 		return pathway.getTitle() + " (" + pathway.getType().getName() + ")";
 	}
@@ -756,7 +758,6 @@ public class GLPathway
 	@Override
 	public synchronized String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
-		PathwayGraph pathway = generalManager.getPathwayManager().getItem(iPathwayID);
 
 		sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> " + pathway.getTitle() + "\n<b>Type:</b> "
 			+ pathway.getType().getName());
@@ -892,7 +893,7 @@ public class GLPathway
 
 	@Override
 	public void destroy() {
-		generalManager.getPathwayManager().setPathwayVisibilityStateByID(iPathwayID, false);
+		generalManager.getPathwayManager().setPathwayVisibilityState(pathway, false);
 
 		super.destroy();
 	}

@@ -37,6 +37,7 @@ Export-Package: org.caleydo.rcp;
  org.caleydo.rcp.action.toolbar.view.storagebased;uses:="org.caleydo.rcp.action.view",
  org.caleydo.rcp.action.toolbar.view.storagebased.parcoords;uses:="org.caleydo.rcp.action.view",
  org.caleydo.rcp.command.handler;uses:="org.eclipse.core.commands",
+ org.caleydo.rcp.command.handler.help,
  org.caleydo.rcp.command.handler.view;uses:="org.eclipse.core.commands",
  org.caleydo.rcp.core.bridge;uses:="org.caleydo.core.view.opengl.canvas,org.caleydo.core.bridge.gui",
  org.caleydo.rcp.image,

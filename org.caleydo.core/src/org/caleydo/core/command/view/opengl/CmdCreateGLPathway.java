@@ -60,6 +60,6 @@ public class CmdCreateGLPathway
 	public final void doCommand() {
 		super.doCommand();
 
-		((GLPathway) createdObject).setPathwayID(iPathwayID);
+		((GLPathway) createdObject).setPathway(iPathwayID);
 	}
 }

@@ -108,10 +108,6 @@ public class ToolBarView
 			for (int iRemoteRenderedGLViewID : ((GLRemoteRendering) glView).getRemoteRenderedViews()) {
 				removeViewSpecificToolBar(iRemoteRenderedGLViewID);
 			}
-
-			// Update search bar
-			// bIsBucketViewActive = false;
-//			searchView.updateSearchBar(false);
 		}
 	}
 

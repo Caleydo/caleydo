@@ -27,9 +27,9 @@ public class PathwayManager
 	implements IPathwayManager, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private HashMap<Integer, Boolean> hashPathwayIdToVisibilityState;
+	private HashMap<PathwayGraph, Boolean> hashPathwayToVisibilityState;
 
-	private HashMap<String, Integer> hashPathwayTitleToPathwayId;
+	private HashMap<String, PathwayGraph> hashPathwayTitleToPathway;
 
 	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
 
@@ -53,9 +53,9 @@ public class PathwayManager
 	 * Constructor.
 	 */
 	public PathwayManager() {
-		hashPathwayTitleToPathwayId = new HashMap<String, Integer>();
+		hashPathwayTitleToPathway = new HashMap<String, PathwayGraph>();
 		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
-		hashPathwayIdToVisibilityState = new HashMap<Integer, Boolean>();
+		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
 		rootPathwayGraph = new Graph(0);
 	}
@@ -89,8 +89,8 @@ public class PathwayManager
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
 
 		registerItem(pathway);
-		hashPathwayTitleToPathwayId.put(sTitle, pathway.getID());
-		hashPathwayIdToVisibilityState.put(pathway.getID(), false);
+		hashPathwayTitleToPathway.put(sTitle, pathway);
+		hashPathwayToVisibilityState.put(pathway, false);
 
 		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
 
@@ -100,10 +100,10 @@ public class PathwayManager
 	}
 
 	@Override
-	public int searchPathwayIdByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType) {
+	public PathwayGraph searchPathwayByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType) {
 		waitUntilPathwayLoadingIsFinished();
 
-		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayId.keySet().iterator();
+		Iterator<String> iterPathwayName = hashPathwayTitleToPathway.keySet().iterator();
 		Pattern pattern = Pattern.compile(sPathwayName, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 		String sTmpPathwayName;
@@ -113,20 +113,20 @@ public class PathwayManager
 			regexMatcher = pattern.matcher(sTmpPathwayName);
 
 			if (regexMatcher.find()) {
-				int iPathwayID = hashPathwayTitleToPathwayId.get(sTmpPathwayName);
+				PathwayGraph pathway = hashPathwayTitleToPathway.get(sTmpPathwayName);
 
 				// Ignore the found pathway if it has the same name but is
 				// contained
 				// in a different database
-				if (getItem(iPathwayID).getType() != ePathwayDatabaseType) {
+				if (getItem(pathway.getID()).getType() != ePathwayDatabaseType) {
 					continue;
 				}
 
-				return iPathwayID;
+				return pathway;
 			}
 		}
 
-		return -1;
+		return null;
 	}
 
 	public Graph getRootPathway() {
@@ -141,26 +141,26 @@ public class PathwayManager
 	}
 
 	@Override
-	public void setPathwayVisibilityStateByID(final int iPathwayID, final boolean bVisibilityState) {
+	public void setPathwayVisibilityState(final PathwayGraph pathway, final boolean bVisibilityState) {
 		waitUntilPathwayLoadingIsFinished();
 
-		hashPathwayIdToVisibilityState.put(iPathwayID, bVisibilityState);
+		hashPathwayToVisibilityState.put(pathway, bVisibilityState);
 	}
 
 	@Override
 	public void resetPathwayVisiblityState() {
 		waitUntilPathwayLoadingIsFinished();
 
-		for (int iPathwayID : hashPathwayIdToVisibilityState.keySet()) {
-			hashPathwayIdToVisibilityState.put(iPathwayID, false);
+		for (PathwayGraph pathway : hashPathwayToVisibilityState.keySet()) {
+			hashPathwayToVisibilityState.put(pathway, false);
 		}
 	}
 
 	@Override
-	public boolean isPathwayVisible(final int iPathwayID) {
+	public boolean isPathwayVisible(final PathwayGraph pathway) {
 		waitUntilPathwayLoadingIsFinished();
 
-		return hashPathwayIdToVisibilityState.get(iPathwayID);
+		return hashPathwayToVisibilityState.get(pathway);
 	}
 
 	@Override

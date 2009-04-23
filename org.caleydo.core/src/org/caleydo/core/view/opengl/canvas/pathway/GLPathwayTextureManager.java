@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
@@ -23,7 +24,7 @@ public class GLPathwayTextureManager {
 
 	private IGeneralManager generalManager;
 
-	private HashMap<Integer, Texture> hashPathwayIdToTexture;
+	private HashMap<PathwayGraph, Texture> hashPathwayToTexture;
 
 	/**
 	 * Constructor.
@@ -31,23 +32,23 @@ public class GLPathwayTextureManager {
 	public GLPathwayTextureManager() {
 		this.generalManager = GeneralManager.get();
 
-		hashPathwayIdToTexture = new HashMap<Integer, Texture>();
+		hashPathwayToTexture = new HashMap<PathwayGraph, Texture>();
 	}
 
-	public Texture loadPathwayTextureById(int iPathwayId) {
-		if (hashPathwayIdToTexture.containsKey(iPathwayId))
-			return hashPathwayIdToTexture.get(iPathwayId);
+	public Texture loadPathwayTexture(PathwayGraph pathway) {
+		if (hashPathwayToTexture.containsKey(pathway))
+			return hashPathwayToTexture.get(pathway);
 
 		Texture pathwayTexture = null;
 
-		String sPathwayTexturePath = generalManager.getPathwayManager().getItem(iPathwayId).getImageLink();
-		EPathwayDatabaseType type = generalManager.getPathwayManager().getItem(iPathwayId).getType();
+		String sPathwayTexturePath = pathway.getImageLink();
+		EPathwayDatabaseType type = pathway.getType();
 
 		sPathwayTexturePath =
 			generalManager.getPathwayManager().getPathwayDatabaseByType(type).getImagePath()
 				+ sPathwayTexturePath;
 
-		generalManager.getLogger().log(Level.INFO, "Load pathway texture with ID: " + iPathwayId);
+		generalManager.getLogger().log(Level.INFO, "Load pathway texture with ID: " + pathway.getID());
 
 		pathwayTexture = generalManager.getResourceLoader().getTexture(sPathwayTexturePath);
 
@@ -56,15 +57,15 @@ public class GLPathwayTextureManager {
 		// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER,
 		// GL.GL_LINEAR);
 
-		hashPathwayIdToTexture.put(iPathwayId, pathwayTexture);
+		hashPathwayToTexture.put(pathway, pathwayTexture);
 
 		return pathwayTexture;
 	}
 
-	public void renderPathway(final GL gl, final AGLEventListener containingView, final int iPathwayId,
+	public void renderPathway(final GL gl, final AGLEventListener containingView, final PathwayGraph pathway,
 		final float fTextureTransparency, final boolean bHighlight) {
 
-		Texture tmpPathwayTexture = loadPathwayTextureById(iPathwayId);
+		Texture tmpPathwayTexture = loadPathwayTexture(pathway);
 
 		tmpPathwayTexture.enable();
 		tmpPathwayTexture.bind();
@@ -78,12 +79,8 @@ public class GLPathwayTextureManager {
 
 		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
-		float fTextureWidth =
-			PathwayRenderStyle.SCALING_FACTOR_X
-				* generalManager.getPathwayManager().getItem(iPathwayId).getWidth();
-		float fTextureHeight =
-			PathwayRenderStyle.SCALING_FACTOR_Y
-				* generalManager.getPathwayManager().getItem(iPathwayId).getHeight();
+		float fTextureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
+		float fTextureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
 		// gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().
 		// getPickingManager()
@@ -126,30 +123,30 @@ public class GLPathwayTextureManager {
 	/**
 	 * Method supports lazy loading of pathway textures if they are not present at that time.
 	 * 
-	 * @param iPathwayId
+	 * @param PathwayGraph
 	 * @return Pathway texture
 	 */
-	public Texture getTextureByPathwayId(final int iPathwayId) {
+	public Texture getTextureByPathway(final PathwayGraph pathway) {
 
-		if (hashPathwayIdToTexture.containsKey(iPathwayId))
-			return hashPathwayIdToTexture.get(iPathwayId);
+		if (hashPathwayToTexture.containsKey(pathway))
+			return hashPathwayToTexture.get(pathway);
 
-		loadPathwayTextureById(iPathwayId);
-		return hashPathwayIdToTexture.get(iPathwayId);
+		loadPathwayTexture(pathway);
+		return hashPathwayToTexture.get(pathway);
 	}
 
 	public void unloadUnusedTextures(LinkedList<Integer> iLLVisiblePathways) {
 
 		int iTmpPathwayId = 0;
 		Integer[] iArPathwayId =
-			hashPathwayIdToTexture.keySet().toArray(new Integer[hashPathwayIdToTexture.size()]);
+			hashPathwayToTexture.keySet().toArray(new Integer[hashPathwayToTexture.size()]);
 
 		for (Integer element : iArPathwayId) {
 			iTmpPathwayId = element;
 
 			if (!iLLVisiblePathways.contains(iTmpPathwayId)) {
 				// Remove and dispose texture
-				hashPathwayIdToTexture.remove(iTmpPathwayId).dispose();
+				hashPathwayToTexture.remove(iTmpPathwayId).dispose();
 
 				// generalManager.logMsg(
 				// this.getClass().getSimpleName()
