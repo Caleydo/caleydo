@@ -19,6 +19,7 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.browser.ProgressListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -40,6 +41,11 @@ public class HTMLBrowserViewRep
 
 	protected Browser browser;
 
+	/**
+	 * Subclasses can add widgets to this composite which appear before the browser icons.
+	 */
+	protected Composite subContributionComposite;
+	
 	protected String url = CALEYDO_HOME;
 
 	protected Text textURL;
@@ -80,7 +86,10 @@ public class HTMLBrowserViewRep
 		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 
 		Composite browserBarComposite = new Composite(composite, SWT.NONE);
-		browserBarComposite.setLayout(new GridLayout(2, false));
+		browserBarComposite.setLayout(new GridLayout(3, false));
+		
+		subContributionComposite = new Composite(browserBarComposite, SWT.NONE);
+		subContributionComposite.setLayout(new FillLayout());
 
 		ToolBar toolbar = new ToolBar(browserBarComposite, SWT.NONE);
 		GridData data = new GridData(GridData.FILL_VERTICAL);

@@ -8,16 +8,19 @@ import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedHTMLBrowserView;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -47,9 +50,33 @@ public class GenomeHTMLBrowserViewRep
 		urlGenerator = new URLGenerator();
 		iAlDavidID = new ArrayList<Integer>();
 		
-		registerEventListeners();
+//		registerEventListeners();
 	}
 
+	@Override
+	public void initViewSWTComposite(Composite parentComposite) {
+		super.initViewSWTComposite(parentComposite);
+
+		final Combo queryTypeCombo = new Combo(subContributionComposite, SWT.READ_ONLY);
+		queryTypeCombo.add(EBrowserQueryType.EntrezGene.toString());
+		queryTypeCombo.add(EBrowserQueryType.KEGG.toString());
+		queryTypeCombo.add(EBrowserQueryType.BioCarta.toString());
+		queryTypeCombo.add(EBrowserQueryType.GeneCards.toString());
+		queryTypeCombo.add(EBrowserQueryType.PubMed.toString());
+		
+		queryTypeCombo.select(0);
+		
+		queryTypeCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				changeQueryType(EBrowserQueryType.valueOf(queryTypeCombo.getItem(queryTypeCombo.getSelectionIndex())));
+			}
+		});
+		
+		subContributionComposite.layout();
+		subContributionComposite.getParent().layout();
+	}
+	
 	private void handleSelectionUpdate(IMediatorSender eventTrigger, final ISelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
@@ -135,35 +162,32 @@ public class GenomeHTMLBrowserViewRep
 		}
 	}
 	
-	
-
 	public EBrowserQueryType getCurrentBrowserQueryType() {
 		return eBrowserQueryType;
 	}
 
-
-	public void registerEventListeners() {
-		
-		super.registerEventListeners();
-		
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		
-		changeQueryTypeListener = new ChangeQueryTypeListener();
-		changeQueryTypeListener.setBrowserView(this);
-		eventPublisher.addListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
-
-	}
-	
-	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
-		super.registerEventListeners();
-		
-		if (changeQueryTypeListener != null) {
-			eventPublisher.removeListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
-			changeQueryTypeListener = null;
-		}
-	}
+//	public void registerEventListeners() {
+//		
+//		super.registerEventListeners();
+//		
+//		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+//		
+//		changeQueryTypeListener = new ChangeQueryTypeListener();
+//		changeQueryTypeListener.setBrowserView(this);
+//		eventPublisher.addListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
+//
+//	}
+//	
+//	public void unregisterEventListeners() {
+//		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+//
+//		super.registerEventListeners();
+//		
+//		if (changeQueryTypeListener != null) {
+//			eventPublisher.removeListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
+//			changeQueryTypeListener = null;
+//		}
+//	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {

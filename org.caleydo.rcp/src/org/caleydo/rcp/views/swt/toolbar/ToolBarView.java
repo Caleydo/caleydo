@@ -165,7 +165,7 @@ public class ToolBarView
 								}
 								else {
 									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(
-										SWT.COLOR_GREEN));
+										SWT.COLOR_GRAY));
 								}
 							}
 						}

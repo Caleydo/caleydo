@@ -16,7 +16,6 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
-import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.rcp.views.CaleydoViewPart;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
 import org.caleydo.rcp.views.opengl.GLHeatMapView;
@@ -24,14 +23,12 @@ import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLHistogramView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
-import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ParCoordsToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.RemoteRenderingToolBarContent;
-import org.caleydo.rcp.views.swt.toolbar.content.browser.HTMLBrowserToolBarContent;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -118,13 +115,6 @@ public class ToolBarContentFactory {
 		info.viewClass = GLGlyph.class;
 		info.contentClass = GlyphToolBarContent.class;
 		info.rcpID = GLGlyphView.ID; 
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
-		
-		info = new ToolBarInfo();
-		info.viewClass = GenomeHTMLBrowserViewRep.class;
-		info.contentClass = HTMLBrowserToolBarContent.class;
-		info.rcpID = HTMLBrowserView.ID; 
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
