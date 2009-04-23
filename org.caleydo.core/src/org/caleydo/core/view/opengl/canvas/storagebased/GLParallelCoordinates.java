@@ -1906,7 +1906,7 @@ public class GLParallelCoordinates
 
 				}
 			
-				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), pick.getDepth());
+//				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), pick.getDepth());
 
 				if (polylineSelectionManager.checkStatus(eSelectionType, iExternalID)) {
 					break;

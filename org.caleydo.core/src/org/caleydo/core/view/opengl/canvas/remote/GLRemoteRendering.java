@@ -24,6 +24,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -563,7 +564,7 @@ public class GLRemoteRendering
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
-		// infoAreaManager.renderRemoteInPlaceInfo(gl, size.width, size.height, left, right, bottom, top);
+//		 infoAreaManager.renderRemoteInPlaceInfo(gl, size.width, size.height, left, right, bottom, top);
 		// infoAreaManager.renderInPlaceInfo(gl);
 		// viewFrustum.setBottom(-4);
 		// viewFrustum.setTop(+4);
@@ -571,8 +572,8 @@ public class GLRemoteRendering
 		// viewFrustum.setRight(4);
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0, 0, 4));
 
-		// Dimension size = getParentGLCanvas().getSize();
-		// infoAreaManager.renderRemoteInPlaceInfo(gl, size.width, size.height, viewFrustum);
+		 Dimension size = getParentGLCanvas().getSize();
+		 infoAreaManager.renderRemoteInPlaceInfo(gl, 100, 100, viewFrustum);
 		//		
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, 1, 4));
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, -1, 4));
@@ -2154,6 +2155,8 @@ public class GLRemoteRendering
 						break;
 				}
 
+				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), 0.3f);//pick.getDepth());
+				
 				pickingManager.flushHits(iUniqueID, EPickingType.VIEW_SELECTION);
 
 				break;
