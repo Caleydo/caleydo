@@ -56,6 +56,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -197,7 +198,7 @@ public class GLHierarchicalHeatMap
 
 		createHeatMap();
 
-		glHeatMapView.initRemote(gl, getID(), pickingTriggerMouseAdapter, null);
+		glHeatMapView.initRemote(gl, getID(), pickingTriggerMouseAdapter, null, null);
 
 		iconTextureManager = new GLIconTextureManager();
 		initData();
@@ -250,9 +251,10 @@ public class GLHierarchicalHeatMap
 
 	}
 
+
 	@Override
 	public void initRemote(GL gl, int remoteViewID, PickingMouseListener pickingTriggerMouseAdapter,
-		IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
+		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 

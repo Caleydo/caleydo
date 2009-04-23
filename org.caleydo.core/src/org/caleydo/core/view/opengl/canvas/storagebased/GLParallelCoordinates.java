@@ -79,6 +79,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
@@ -155,8 +156,6 @@ public class GLParallelCoordinates
 
 	private boolean bIsTranslationActive = false;
 
-	// private boolean bRenderInfoArea = false;
-	// private boolean bInfoAreaFirstTime = false;
 
 	private boolean bAngularBrushingSelectPolyline = false;
 	private boolean bIsAngularBrushingActive = false;
@@ -203,6 +202,9 @@ public class GLParallelCoordinates
 	GLHeatMap glSelectionHeatMap;
 	boolean bShowSelectionHeatMap = false;
 
+	private GLInfoAreaManager infoAreaManager;
+	
+
 	/**
 	 * Constructor.
 	 */
@@ -229,6 +231,7 @@ public class GLParallelCoordinates
 		iNumberOfRandomElements =
 			generalManager.getPreferenceStore().getInt(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
 
+		
 		// glSelectionHeatMap =
 		// ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
 	}
@@ -250,20 +253,27 @@ public class GLParallelCoordinates
 		// remoteRenderingGLCanvas);
 
 		createSelectionHeatMap(gl);
+		
+		infoAreaManager = new GLInfoAreaManager();
+		infoAreaManager.initInfoInPlace(viewFrustum);
 
+		
 		init(gl);
 	}
+
+
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 		bRenderOnlyContext = true;
 		bShowSelectionHeatMap = false;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.infoAreaManager = infoAreaManager;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -280,28 +290,11 @@ public class GLParallelCoordinates
 
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
+
+		
 	}
 
-	private void createSelectionHeatMap(GL gl) {
-		// Create selection panel
-		CmdCreateGLEventListener cmdCreateGLView =
-			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
-				ECommandType.CREATE_GL_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
-			viewFrustum.getTop(), -20, 20, null, -1);
-		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setToListMode(true);
-
-		glSelectionHeatMap.addSets(alSets);
-
-		// FIXME: remoteRenderingGLCanvas is null, conceptual error
-		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas);
-		generalManager.getEventPublisher()
-			.addReceiver(EMediatorType.PROPAGATION_MEDIATOR, glSelectionHeatMap);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
-	}
+	
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
@@ -323,7 +316,10 @@ public class GLParallelCoordinates
 		checkForHits(gl);
 
 		display(gl);
-
+//		if (bRenderInfoArea) {
+			infoAreaManager.renderInPlaceInfo(gl);
+//			bInfoAreaFirstTime = false;
+//		}
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
@@ -346,6 +342,7 @@ public class GLParallelCoordinates
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		display(gl);
+
 		checkForHits(gl);
 	}
 
@@ -391,6 +388,8 @@ public class GLParallelCoordinates
 				-0.002f);
 		}
 
+	
+
 		// focusOnArea();
 		// TODO another display list
 		clipToFrustum(gl);
@@ -412,9 +411,7 @@ public class GLParallelCoordinates
 			}
 		}
 
-		// if(bRenderInfoArea)
-		// infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
-		// bInfoAreaFirstTime = false;
+	
 
 		// checkUnselection();
 		// GLHelperFunctions.drawAxis(gl);
@@ -430,13 +427,36 @@ public class GLParallelCoordinates
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
+		
+		
 	}
 
+	private void createSelectionHeatMap(GL gl) {
+		// Create selection panel
+		CmdCreateGLEventListener cmdCreateGLView =
+			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
+				ECommandType.CREATE_GL_HEAT_MAP_3D);
+		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
+			viewFrustum.getTop(), -20, 20, null, -1);
+		cmdCreateGLView.doCommand();
+		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
+		glSelectionHeatMap.setToListMode(true);
+
+		glSelectionHeatMap.addSets(alSets);
+
+		// FIXME: remoteRenderingGLCanvas is null, conceptual error
+		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas, null);
+		generalManager.getEventPublisher()
+			.addReceiver(EMediatorType.PROPAGATION_MEDIATOR, glSelectionHeatMap);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
+	}
+	
 	/**
 	 * Choose whether to render one array as a polyline and every entry across arrays is an axis or whether
 	 * the array corresponds to an axis and every entry across arrays is a polyline
 	 */
-	public synchronized void renderStorageAsPolyline(boolean bRenderStorageHorizontally) {
+	private synchronized void renderStorageAsPolyline(boolean bRenderStorageHorizontally) {
 
 		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally) {
 			if (bRenderStorageHorizontally && set.getVA(iContentVAID).size() > 100) {
@@ -1885,6 +1905,8 @@ public class GLParallelCoordinates
 						return;
 
 				}
+			
+				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), pick.getDepth());
 
 				if (polylineSelectionManager.checkStatus(eSelectionType, iExternalID)) {
 					break;

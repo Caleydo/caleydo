@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -57,6 +58,7 @@ import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
@@ -86,10 +88,12 @@ import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.JukeboxLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.ListLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle.LayoutMode;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -201,13 +205,13 @@ public class GLRemoteRendering
 
 	/** stores if the pathway textures are enabled */
 	private boolean pathwayTexturesEnabled = true;
-	
+
 	/** stores if the "neighborhood" ist enabled */
 	private boolean neighborhoodEnabled = false;
-	
+
 	private ArrayList<ASerializedView> newViews;
-	
-	AddPathwayListener addPathwayListener = null; 
+
+	AddPathwayListener addPathwayListener = null;
 	LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 
 	EnableGeneMappingListener enableGeneMappingListener = null;
@@ -218,11 +222,13 @@ public class GLRemoteRendering
 
 	EnableNeighborhoodListener enableNeighborhoodListener = null;
 	DisableNeighborhoodListener disableNeighborhoodListener = null;
+	private GLInfoAreaManager infoAreaManager;
 
 	EnableConnectionLinesListener enableConnectionLinesListener = null;
 	DisableConnectionLinesListener disableConnectionLinesListener = null;
 
 	CloseOrResetViewsListener closeOrResetViewsListener = null;
+
 	/**
 	 * Constructor.
 	 */
@@ -232,10 +238,9 @@ public class GLRemoteRendering
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
-		// if (generalManager.isWiiModeActive())
-		// {
-		glOffScreenRenderer = new GLOffScreenTextureRenderer();
-		// }
+		if (generalManager.isWiiModeActive()) {
+			glOffScreenRenderer = new GLOffScreenTextureRenderer();
+		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
@@ -321,7 +326,7 @@ public class GLRemoteRendering
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -339,17 +344,18 @@ public class GLRemoteRendering
 		time = new SystemTime();
 		((SystemTime) time).rebase();
 
+		infoAreaManager = new GLInfoAreaManager();
+		infoAreaManager.initInfoInPlace(viewFrustum);
+
 		initializeContainedViews(gl);
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
 
 		glSelectionHeatMap.addSets(alSets);
-		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas);
+		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas, null);
 
-		// colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
-		// colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
-
-		glOffScreenRenderer.init(gl);
+		if (generalManager.isWiiModeActive())
+			glOffScreenRenderer.init(gl);
 	}
 
 	private void createSelectionHeatMap() {
@@ -489,7 +495,6 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void display(final GL gl) {
 		time.update();
-
 		// Update the pool transformations according to the current mouse over object
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
 		layoutRenderStyle.initFocusLevel();
@@ -553,6 +558,27 @@ public class GLRemoteRendering
 			glConnectionLineRenderer.render(gl);
 		}
 		gl.glEnable(GL.GL_DEPTH_TEST);
+
+		// System.out.println(size.height + " - " + size.width);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
+		// infoAreaManager.renderRemoteInPlaceInfo(gl, size.width, size.height, left, right, bottom, top);
+		// infoAreaManager.renderInPlaceInfo(gl);
+		// viewFrustum.setBottom(-4);
+		// viewFrustum.setTop(+4);
+		// viewFrustum.setLeft(-4);
+		// viewFrustum.setRight(4);
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0, 0, 4));
+
+		// Dimension size = getParentGLCanvas().getSize();
+		// infoAreaManager.renderRemoteInPlaceInfo(gl, size.width, size.height, viewFrustum);
+		//		
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, 1, 4));
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, -1, 4));
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(-1, -1, 4));
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(-1, 1, 4));
+
 	}
 
 	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
@@ -580,7 +606,8 @@ public class GLRemoteRendering
 				RemoteLevelElement element = focusLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this,
+					infoAreaManager);
 
 				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
@@ -594,7 +621,8 @@ public class GLRemoteRendering
 				RemoteLevelElement element = stackLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this,
+					infoAreaManager);
 
 				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
@@ -604,7 +632,8 @@ public class GLRemoteRendering
 				RemoteLevelElement element = poolLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this,
+					infoAreaManager);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.VERY_LOW);
 				tmpGLEventListener.setRemoteLevelElement(element);
 			}
@@ -1805,7 +1834,7 @@ public class GLRemoteRendering
 		{
 			// Check if view is already loaded in the stack layer
 			if (stackLevel.containsElement(element)) {
-				
+
 				// Slerp selected view to transition position
 				SlerpAction slerpActionTransition =
 					new SlerpAction(element, transitionLevel.getElementByPositionIndex(0));
@@ -1829,7 +1858,7 @@ public class GLRemoteRendering
 			}
 			// Check if focus position is free
 			else if (focusLevel.hasFreePosition()) {
-				
+
 				// Slerp selected view to focus position
 				SlerpAction slerpActionTransition =
 					new SlerpAction(element, focusLevel.getElementByPositionIndex(0));
@@ -1985,8 +2014,9 @@ public class GLRemoteRendering
 	 * @param iPathwayIDToLoad
 	 */
 	public synchronized void addPathwayView(final int iPathwayID) {
-		
-		if (!generalManager.getPathwayManager().isPathwayVisible(generalManager.getPathwayManager().getItem(iPathwayID))) {
+
+		if (!generalManager.getPathwayManager().isPathwayVisible(
+			generalManager.getPathwayManager().getItem(iPathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView();
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
@@ -2424,7 +2454,7 @@ public class GLRemoteRendering
 		enableBusyMode(false);
 		pickingManager.enablePicking(true);
 
-		ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>(); 
+		ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>();
 		for (ASerializedView view : newViews) {
 			if (!(view instanceof SerializedParallelCoordinatesView || view instanceof SerializedHeatMapView)) {
 				removeNewViews.add(view);
@@ -2694,7 +2724,7 @@ public class GLRemoteRendering
 		SlerpAction slerpActionTransition = new SlerpAction(origin, destination);
 		arSlerpActions.add(slerpActionTransition);
 
-		view.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
+		view.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this, infoAreaManager);
 		view.setDetailLevel(EDetailLevel.MEDIUM);
 
 		return true;
@@ -2725,6 +2755,7 @@ public class GLRemoteRendering
 		cmdView.setSetIDs(iAlSetIDs);
 		cmdView.doCommand();
 		AGLEventListener glView = cmdView.getCreatedObject();
+
 		if (glView instanceof GLPathway) {
 			initializePathwayView((GLPathway) glView);
 		}
@@ -2739,16 +2770,18 @@ public class GLRemoteRendering
 	}
 
 	/**
-	 * initializes the configuration of a pathway to the configuraion 
-	 * currently stored in this remote-renderin-view.
-	 * @param pathway pathway to set the configuration
+	 * initializes the configuration of a pathway to the configuraion currently stored in this
+	 * remote-renderin-view.
+	 * 
+	 * @param pathway
+	 *            pathway to set the configuration
 	 */
 	private void initializePathwayView(GLPathway pathway) {
 		pathway.enablePathwayTextures(pathwayTexturesEnabled);
 		pathway.enableNeighborhood(neighborhoodEnabled);
 		pathway.enableGeneMapping(geneMappingEnabled);
 	}
-	
+
 	/**
 	 * Triggers the most recent user selection to the views. This is especially needed to initialize new added
 	 * views with the current selection information.
@@ -3035,6 +3068,7 @@ public class GLRemoteRendering
 			eventPublisher.removeListener(addPathwayListener);
 			addPathwayListener = null;
 		}
+
 		if (loadPathwaysByGeneListener != null) {
 			eventPublisher.removeListener(loadPathwaysByGeneListener);
 			loadPathwaysByGeneListener = null;
@@ -3067,7 +3101,7 @@ public class GLRemoteRendering
 			eventPublisher.removeListener(closeOrResetViewsListener);
 			closeOrResetViewsListener = null;
 		}
-		
+
 	}
 
 	@Override

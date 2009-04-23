@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 
@@ -279,14 +280,16 @@ public abstract class AGLEventListener
 	 */
 	protected abstract void initLocal(final GL gl);
 
+
 	/**
 	 * Initialization for gl called by a managing view Has to call init internally!
 	 * 
 	 * @param gl
+	 * @param infoAreaManager TODO
 	 */
 	public abstract void initRemote(final GL gl, final int iRemoteViewID,
 		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas);
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager);
 
 	/**
 	 * GL display method that has to be called in all cases
@@ -316,6 +319,7 @@ public abstract class AGLEventListener
 	 * are therefore not reset.
 	 */
 	public abstract void clearAllSelections();
+
 
 	public final GLCaleydoCanvas getParentGLCanvas() {
 		return parentGLCanvas;
@@ -417,6 +421,7 @@ public abstract class AGLEventListener
 
 		return true;
 	}
+
 
 	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
 		return remoteRenderingGLCanvas;

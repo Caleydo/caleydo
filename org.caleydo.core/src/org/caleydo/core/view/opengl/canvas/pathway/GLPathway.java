@@ -65,6 +65,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodL
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -100,7 +101,7 @@ public class GLPathway
 
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
-	
+
 	int iCurrentStorageIndex = -1;
 
 	// private TextRenderer textRenderer;
@@ -110,13 +111,13 @@ public class GLPathway
 
 	EnableTexturesListener enableTexturesListener = null;
 	DisableTexturesListener disableTexturesListener = null;
-	
+
 	EnableGeneMappingListener enableGeneMappingListener = null;
 	DisableGeneMappingListener disableGeneMappingListener = null;
 
 	EnableNeighborhoodListener enableNeighborhoodListener = null;
 	DisableNeighborhoodListener disableNeighborhoodListener = null;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -145,7 +146,7 @@ public class GLPathway
 		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 
 		registerEventListeners();
-		
+
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
 	}
@@ -160,10 +161,10 @@ public class GLPathway
 	}
 
 	public synchronized void setPathway(final int iPathwayID) {
-	
+
 		setPathway(generalManager.getPathwayManager().getItem(iPathwayID));
 	}
-	
+
 	public PathwayGraph getPathway() {
 
 		return pathway;
@@ -180,7 +181,7 @@ public class GLPathway
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas) {
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 
@@ -244,8 +245,7 @@ public class GLPathway
 	protected void initPathwayData(final GL gl) {
 		// Initialize all elements in selection manager
 		Iterator<IGraphItem> iterPathwayVertexGraphItem =
-			pathway.getAllItemsByKind(EGraphItemKind.NODE)
-				.iterator();
+			pathway.getAllItemsByKind(EGraphItemKind.NODE).iterator();
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
 		while (iterPathwayVertexGraphItem.hasNext()) {
 			tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep) iterPathwayVertexGraphItem.next();
@@ -275,8 +275,8 @@ public class GLPathway
 		if (bEnablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
-			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway, fPathwayTransparency,
-				false);
+			hashGLcontext2TextureManager.get(gl)
+				.renderPathway(gl, this, pathway, fPathwayTransparency, false);
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
@@ -324,12 +324,9 @@ public class GLPathway
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
-		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
-		{
-			for (SelectionDeltaItem item : selectionDelta.getAllItems())
-			{
-				if (item.getSelectionType() == ESelectionType.MOUSE_OVER)
-				{
+		if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
+				if (item.getSelectionType() == ESelectionType.MOUSE_OVER) {
 					iCurrentStorageIndex = item.getPrimaryID();
 					break;
 				}
@@ -499,8 +496,7 @@ public class GLPathway
 		float fPathwayScalingFactor = 0;
 		float fPadding = 0.98f;
 
-		if (pathway.getType().equals(
-			EPathwayDatabaseType.BIOCARTA)) {
+		if (pathway.getType().equals(EPathwayDatabaseType.BIOCARTA)) {
 			fPathwayScalingFactor = 5;
 		}
 		else {
@@ -647,9 +643,10 @@ public class GLPathway
 								getRefSeqIDsFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
 
 							for (int iRefSeqID : alRefSeqID) {
-								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
+									new LoadPathwaysByGeneEvent();
 								loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
-								loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);								
+								loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
 							}
 						}
 						break;
@@ -723,13 +720,10 @@ public class GLPathway
 
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.REFSEQ_MRNA_INT);
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
-	
-		for (IGraphItem tmpPathwayVertexGraphItemRep 
-			: pathway.getAllItemsByKind(EGraphItemKind.NODE))
-		{			
-			for (IGraphItem tmpPathwayVertexGraphItem 
-				: tmpPathwayVertexGraphItemRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) 
-			{
+
+		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway.getAllItemsByKind(EGraphItemKind.NODE)) {
+			for (IGraphItem tmpPathwayVertexGraphItem : tmpPathwayVertexGraphItemRep
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 				int iDavidID =
 					generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
 						tmpPathwayVertexGraphItem.getId());
@@ -743,7 +737,7 @@ public class GLPathway
 					idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 				if (iSetRefSeq == null) {
-					
+
 					generalManager.getLogger()
 						.log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
 					continue;
@@ -876,14 +870,14 @@ public class GLPathway
 			case VIEW_COMMAND:
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;
-				
+
 				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
 					setDisplayListDirty();
 				}
 				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
 					clearAllSelections();
 					setDisplayListDirty();
-				} 
+				}
 				break;
 		}
 	}
@@ -914,7 +908,7 @@ public class GLPathway
 
 	public void registerEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		
+
 		enableTexturesListener = new EnableTexturesListener();
 		enableTexturesListener.setGLPathway(this);
 		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
@@ -938,8 +932,8 @@ public class GLPathway
 		disableGeneMappingListener = new DisableGeneMappingListener();
 		disableGeneMappingListener.setGLPathway(this);
 		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
-}
-	
+	}
+
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -973,7 +967,7 @@ public class GLPathway
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 }

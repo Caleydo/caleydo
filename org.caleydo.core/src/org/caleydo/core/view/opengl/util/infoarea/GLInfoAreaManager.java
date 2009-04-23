@@ -13,6 +13,7 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -39,6 +40,8 @@ public class GLInfoAreaManager {
 
 	private float fYElementOrigin = 0;
 
+	private float fDepth = 0;
+
 	private Vec3f vecLowerLeft;
 
 	private InformationContentCreator contentCreator;
@@ -48,6 +51,9 @@ public class GLInfoAreaManager {
 	private boolean bUpdateViewInfo = true;
 
 	private boolean bEnableRendering = true;
+
+	private boolean bRenderInfoArea = false;
+	private boolean bFirstTime = false;
 
 	/**
 	 * Constructor.
@@ -84,8 +90,9 @@ public class GLInfoAreaManager {
 	 * @param bFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
-	public void renderInPlaceInfo(GL gl, boolean bFirstTime) {
-
+	public void renderInPlaceInfo(GL gl) {
+		if (!bRenderInfoArea)
+			return;
 		if (bFirstTime) {
 			float[] fArWorldCoords =
 				GLCoordinateUtils
@@ -93,9 +100,11 @@ public class GLInfoAreaManager {
 
 			fXOrigin = fArWorldCoords[0];
 			fYOrigin = fArWorldCoords[1];
+
 			fXElementOrigin = fXOrigin + 0.2f;
 			fYElementOrigin = fYOrigin + 0.2f;
 			vecLowerLeft.set(fXElementOrigin, fYElementOrigin, 0);
+
 		}
 
 		gl.glColor3fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
@@ -106,7 +115,48 @@ public class GLInfoAreaManager {
 			GeneralRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glEnd();
 
-		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime);
+		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime, 0.05f);
+		bFirstTime = false;
+	}
+
+	/**
+	 * Render the data previously set
+	 * 
+	 * @param gl
+	 * @param bFirstTime
+	 *            this has to be true only the first time you render it and can never be true after that
+	 */
+	public void renderRemoteInPlaceInfo(GL gl, int iWindowWidth, int iWindowHeight, IViewFrustum frustum) {
+		if (!bRenderInfoArea)
+			return;
+		if (bFirstTime) {
+//			 float[] fArWorldCoords =
+//			 GLCoordinateUtils
+//			 .convertWindowToGLCoordinates(iWindowWidth, iWindowHeight, pickedPoint.x, pickedPoint.y,
+//			 frustum);
+
+			float[] fArWorldCoords =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x,
+					pickedPoint.y, fDepth);
+			fXOrigin = fArWorldCoords[0];
+			fYOrigin = fArWorldCoords[1];
+
+			fXElementOrigin = fXOrigin + 0.2f;
+			fYElementOrigin = fYOrigin + 0.2f;
+			vecLowerLeft.set(fXElementOrigin, fYElementOrigin, 0);
+
+		}
+
+		gl.glColor3fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(fXOrigin, fYOrigin, 4);
+		gl.glVertex3f(fXElementOrigin, fYElementOrigin, 4);
+		gl.glVertex3f(fXElementOrigin, fYElementOrigin + infoArea.getHeight(),
+			4);
+		gl.glEnd();
+
+		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime, 4);
+		bFirstTime = false;
 	}
 
 	public void renderInfoOverlay(final int iViewID, final GLAutoDrawable drawable) {
@@ -117,36 +167,38 @@ public class GLInfoAreaManager {
 		hashViewIDToInfoOverlay.get(iViewID).render(drawable);
 	}
 
-	public void setData(final int iViewID, final int iUniqueID, final EIDType eInputDataType,
-		final ArrayList<String> sAlContent) {
+	// public void setData(final int iViewID, final int iUniqueID, final EIDType eInputDataType,
+	// final ArrayList<String> sAlContent) {
+	//
+	// bFirstTime = true;
+	// bRenderInfoArea = true;
+	// bUpdateViewInfo = false;
+	//
+	// sAlContent.add("---------------------------------------------------------");
+	// sAlContent.addAll(contentCreator.getStringContentForID(iUniqueID, eInputDataType));
+	//
+	// Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values().iterator();
+	//
+	// while (iterInfoOverlay.hasNext()) {
+	// iterInfoOverlay.next().setData(sAlContent);
+	// }
+	// }
 
-		bUpdateViewInfo = false;
-
-		sAlContent.add("---------------------------------------------------------");
-		sAlContent.addAll(contentCreator.getStringContentForID(iUniqueID, eInputDataType));
-
-		Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values().iterator();
-
-		while (iterInfoOverlay.hasNext()) {
-			iterInfoOverlay.next().setData(sAlContent);
-		}
-	}
-
-	public void setDataAboutView(final int iViewID) {
-
-		if (bUpdateViewInfo == false) {
-			bUpdateViewInfo = true;
-			return;
-		}
-
-		Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values().iterator();
-
-		while (iterInfoOverlay.hasNext()) {
-			// iterInfoOverlay.next().setData(
-			// (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
-			// .getDetailedInfo());
-		}
-	}
+	// public void setDataAboutView(final int iViewID) {
+	//
+	// if (bUpdateViewInfo == false) {
+	// bUpdateViewInfo = true;
+	// return;
+	// }
+	//
+	// Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values().iterator();
+	//
+	// while (iterInfoOverlay.hasNext()) {
+	// // iterInfoOverlay.next().setData(
+	// // (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
+	// // .getDetailedInfo());
+	// }
+	// }
 
 	/**
 	 * Set the data to be rendered.
@@ -155,10 +207,13 @@ public class GLInfoAreaManager {
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iCaleydoID, EIDType eInputDataTypes, Point pickedPoint) {
+	public void setData(int iCaleydoID, EIDType eInputDataTypes, Point pickedPoint, float fDepth) {
 
 		// this.sContent = contentCreator.getStringContentForID(iCaleydoID,
 		// eInputDataTypes);
+		this.fDepth = fDepth;
+		bFirstTime = true;
+		bRenderInfoArea = true;
 		this.pickedPoint = pickedPoint;
 		vecLowerLeft = new Vec3f();
 

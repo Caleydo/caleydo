@@ -3,16 +3,31 @@ package org.caleydo.core.view.opengl.util;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+
 /**
  * Helper class for converting coordinates
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class GLCoordinateUtils {
 
+	/**
+	 * Converts window coordinates to world coordinates. You need to specify the x and y values of the
+	 * position, plus the z value, scaled to 0 and 1 where 0 is the near and 1 is the far clipping plane
+	 * 
+	 * @param gl
+	 * @param iWindowCoordinatePositionX
+	 *            the x position of the point you want to convert
+	 * @param iWindowCoordinatePositionY
+	 *            the y position of the point you want to convert
+	 * @param fZValue
+	 *            the z value, normalized to 0 and 1, where 0 is the near and 1 is the far clipping plane.
+	 * @return a float array of length 3 with the world coordinates
+	 */
 	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL gl,
-		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY) {
-
+		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY, final float fZValue) {
 		float[] fArWorldCoordinatePosition = new float[3];
 
 		double mvmatrix[] = new double[16];
@@ -35,7 +50,7 @@ public class GLCoordinateUtils {
 		// inaccurate in the bucket
 		// For an explanation look at page 161 in the red book
 		// 0.3 at least works for the bucket when the user zooms in
-		glu.gluUnProject(iWindowCoordinatePositionX, realy, 0.3f, //
+		glu.gluUnProject(iWindowCoordinatePositionX, realy, fZValue, //
 			mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
 
 		// System.out.println("World coords at z=0.0 are ( " //
@@ -54,4 +69,27 @@ public class GLCoordinateUtils {
 		return fArWorldCoordinatePosition;
 	}
 
+	/**
+	 * Convenience version of {@link #convertWindowCoordinatesToWorldCoordinates(GL, int, int, float)} which
+	 * assumes z to be 0.3, which is accurate for the bottom of the bucket
+	 * 
+	 * @param gl
+	 * @param iWindowCoordinatePositionX
+	 * @param iWindowCoordinatePositionY
+	 * @return
+	 */
+	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL gl,
+		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY) {
+		return convertWindowCoordinatesToWorldCoordinates(gl, iWindowCoordinatePositionX,
+			iWindowCoordinatePositionY, 0.3f);
+	}
+
+	public static float[] convertWindowToGLCoordinates(final int iWindowWidth, final int iWindowHeight,
+		final int iPositionX, final int iPositionY, float fWidth, float fHeight) {
+		float[] glCoordinates = new float[2];
+
+		glCoordinates[0] = fWidth / iWindowWidth * iPositionX;
+		glCoordinates[1] = fHeight / iWindowHeight * iPositionY;
+		return glCoordinates;
+	}
 }

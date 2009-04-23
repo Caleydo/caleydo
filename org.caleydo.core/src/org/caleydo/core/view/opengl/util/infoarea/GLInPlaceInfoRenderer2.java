@@ -46,7 +46,7 @@ public class GLInPlaceInfoRenderer2 {
 
 	private float fSpacing = 0;
 
-	private float fZValue = 0.005f;
+//	private float fZValue = 0.005f;
 
 	private InfoAreaRenderStyle renderStyle;
 
@@ -90,7 +90,7 @@ public class GLInPlaceInfoRenderer2 {
 	 * @param bFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
-	public void renderInfoArea(GL gl, Vec3f vecLowerLeft, boolean bFirstTime) {
+	public void renderInfoArea(GL gl, Vec3f vecLowerLeft, boolean bFirstTime, float fZValue) {
 
 		String sCurrent;
 		float fXLowerLeft = vecLowerLeft.x();

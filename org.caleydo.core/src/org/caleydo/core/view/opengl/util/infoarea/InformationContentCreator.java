@@ -55,14 +55,14 @@ public class InformationContentCreator {
 				String sGeneSymbol = "unknown";
 
 				if (iUniqueID != -1) {
-					sRefSeq =
-						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA,
-							iUniqueID);
-					sGeneName =
-						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
-					sGeneSymbol =
-						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
-							iUniqueID);
+					sRefSeq = "as";
+					// generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA,
+					// iUniqueID);
+					sGeneName = "as";
+//					generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
+					sGeneSymbol = "aas";
+//						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
+//							iUniqueID);
 				}
 
 				// Cut too long gene names

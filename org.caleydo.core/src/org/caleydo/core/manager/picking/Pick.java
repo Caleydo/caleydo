@@ -15,6 +15,8 @@ public class Pick {
 
 	private Point dragStartPoint;
 
+	private float fDepth;
+
 	/**
 	 * Constructor.
 	 */
@@ -26,25 +28,23 @@ public class Pick {
 	/**
 	 * Constructor.
 	 */
-	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint) {
-
-		this.iPickingID = iPickingID;
-		this.ePickingMode = ePickingMode;
-		this.pickedPoint = pickedPoint;
-	}
-
+	// public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint) {
+	//
+	// this.iPickingID = iPickingID;
+	// this.ePickingMode = ePickingMode;
+	// this.pickedPoint = pickedPoint;
+	// }
 	/**
 	 * Constructor.
 	 */
-	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint) {
+	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
+		float fDepth) {
 
 		this.iPickingID = iPickingID;
 		this.ePickingMode = ePickingMode;
 		this.pickedPoint = pickedPoint;
 		this.dragStartPoint = dragStartPoint;
-
-		// TODO: throw useful exception if dragStartPoint is not set,
-		// or if it doesn't match the picking mode
+		this.fDepth = fDepth;
 	}
 
 	public int getPickingID() {
@@ -63,8 +63,11 @@ public class Pick {
 	}
 
 	public Point getDragStartPoint() {
-
-		// TODO: throw useful exception if point is not set
 		return dragStartPoint;
 	}
+
+	public float getDepth() {
+		return fDepth;
+	}
+
 }

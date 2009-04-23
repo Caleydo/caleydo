@@ -49,6 +49,7 @@ public class PickingManager {
 	private HashMap<Integer, Boolean> hashViewIDToIsMouseOverPickingEvent;
 
 	private boolean bEnablePicking = true;
+	private float fMinimumZValue;
 
 	/**
 	 * Constructor
@@ -355,12 +356,16 @@ public class PickingManager {
 				// first element is number of names on name stack
 				// second element is min Z Value
 				iMinimumZValue = iArPickingBuffer[iPickingBufferCounter + 1];
+				
 				iNearestObjectIndex = iPickingBufferCounter;
+
 				// third element is max Z Value
 				// fourth element is name of lowest name on stack
 				// iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3
 				// ]);
 			}
+			fMinimumZValue = getDepth(iMinimumZValue);
+//			System.out.println("Z Value: " + getDepth(iMinimumZValue));
 			iPickingBufferCounter = iPickingBufferCounter + 3 + iArPickingBuffer[iPickingBufferCounter];
 
 		}
@@ -376,6 +381,12 @@ public class PickingManager {
 
 		// return iPickedObjectId;
 	}
+
+	private float getDepth(int iZValue) {
+		long depth = (long) iZValue; // large -ve number
+		return (1.0f + ((float) depth / 0x7fffffff));
+		// return as a float between 0 and 1
+	} // end of getDepth()
 
 	private void processPicks(ArrayList<Integer> alPickingIDs, int iViewID, EPickingMode myMode,
 		Point pickedPoint, Point dragStartPoint) {
@@ -435,16 +446,16 @@ public class PickingManager {
 				}
 			}
 
+			Pick pick = new Pick(iPickingID, myMode, pickedPoint, dragStartPoint, fMinimumZValue);
 			if (hashSignatureToHitList.get(iSignature) == null) {
 				ArrayList<Pick> tempList = new ArrayList<Pick>();
-				tempList.add(new Pick(iPickingID, myMode, pickedPoint, dragStartPoint));
+				tempList.add(pick);
 				hashSignatureToHitList.put(iSignature, tempList);
 
 			}
 			else {
 				hashSignatureToHitList.get(iSignature).clear();
-				hashSignatureToHitList.get(iSignature).add(
-					new Pick(iPickingID, myMode, pickedPoint, dragStartPoint));
+				hashSignatureToHitList.get(iSignature).add(pick);
 			}
 		}
 	}

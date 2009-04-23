@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -26,4 +27,6 @@ public interface IGLCanvasRemoteRendering {
 	 * @param view serialized form of the view to add
 	 */
 	public void addInitialRemoteView(ASerializedView view);
+	
+	public GLCaleydoCanvas getParentGLCanvas();
 }
