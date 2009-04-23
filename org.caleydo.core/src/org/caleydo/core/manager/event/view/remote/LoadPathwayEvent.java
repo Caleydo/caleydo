@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.bucket;
+package org.caleydo.core.manager.event.view.remote;
 
 import org.caleydo.core.manager.event.AEvent;
 

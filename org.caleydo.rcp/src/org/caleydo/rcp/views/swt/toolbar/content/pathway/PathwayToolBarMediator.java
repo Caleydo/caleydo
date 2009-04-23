@@ -5,14 +5,18 @@ import java.util.logging.Logger;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
+/**
+ * mediator for pathway-related toolbar items
+ * @author Werner Puff
+ */
 public class PathwayToolBarMediator {
 
 	Logger log = Logger.getLogger(PathwayToolBarMediator.class.getName());

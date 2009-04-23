@@ -16,6 +16,8 @@ public class SerializedRemoteRenderingView
 	
 	private boolean neighborhoodEnabled;
 	
+	private boolean connectionLinesEnabled;
+	
 	@Override
 	public ECommandType getCreationCommandType() {
 		return ECommandType.CREATE_GL_BUCKET_3D;
@@ -48,6 +50,14 @@ public class SerializedRemoteRenderingView
 
 	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
 		this.neighborhoodEnabled = neighborhoodEnabled;
+	}
+
+	public boolean isConnectionLinesEnabled() {
+		return connectionLinesEnabled;
+	}
+
+	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
+		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
 
 }

@@ -152,6 +152,12 @@ public interface IEventPublisher {
 	 * @param listener IMediatorReceiver to handle events
 	 */
 	public void removeListener(Class<? extends AEvent> eventClass, IEventListener listener);
+
+	/**
+	 * removes a listener from all events in this event-publisher
+	 * @param listener listener to remove
+	 */
+	public void removeListener(IEventListener listener);
 	
 	/**
 	 * New central event handling and distribution method

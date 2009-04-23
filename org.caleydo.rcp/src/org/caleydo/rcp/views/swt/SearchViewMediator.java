@@ -5,8 +5,8 @@ import java.util.logging.Logger;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
 public class SearchViewMediator {

@@ -28,7 +28,7 @@ import org.caleydo.rcp.views.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ParCoordsToolBarContent;
-import org.caleydo.rcp.views.swt.toolbar.content.RemoteRenderingToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;

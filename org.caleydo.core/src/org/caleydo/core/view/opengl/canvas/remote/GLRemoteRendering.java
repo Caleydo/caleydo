@@ -36,14 +36,17 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
-import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
+import org.caleydo.core.manager.event.view.remote.CloseOrResetViewsEvent;
+import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
+import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -51,6 +54,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -62,9 +66,12 @@ import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListene
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.remote.listener.AddPathwayListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.CloseOrResetViewsListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.DisableConnectionLinesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableTexturesListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.EnableConnectionLinesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableTexturesListener;
@@ -88,6 +95,8 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
 import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedHeatMapView;
+import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
 import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
 import org.caleydo.util.graph.EGraphItemHierarchy;
@@ -163,7 +172,7 @@ public class GLRemoteRendering
 
 	// private GLColorMappingBarMiniView colorMappingBarMiniView;
 
-	private ArrayList<Integer> iAlContainedViewIDs;
+	private ArrayList<Integer> containedViewIDs;
 
 	/**
 	 * The current view in which the user is performing actions.
@@ -183,7 +192,7 @@ public class GLRemoteRendering
 
 	private boolean bUpdateOffScreenTextures = true;
 
-	private boolean bEnableConnectinLines = true;
+	private boolean connectionLinesEnabled = true;
 
 	private boolean bRightMouseClickEventInvalid = false;
 
@@ -209,7 +218,11 @@ public class GLRemoteRendering
 
 	EnableNeighborhoodListener enableNeighborhoodListener = null;
 	DisableNeighborhoodListener disableNeighborhoodListener = null;
-	
+
+	EnableConnectionLinesListener enableConnectionLinesListener = null;
+	DisableConnectionLinesListener disableConnectionLinesListener = null;
+
+	CloseOrResetViewsListener closeOrResetViewsListener = null;
 	/**
 	 * Constructor.
 	 */
@@ -536,21 +549,21 @@ public class GLRemoteRendering
 
 		// comment here for connection lines
 		gl.glDisable(GL.GL_DEPTH_TEST);
-		if (glConnectionLineRenderer != null && bEnableConnectinLines) {
+		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
 			glConnectionLineRenderer.render(gl);
 		}
 		gl.glEnable(GL.GL_DEPTH_TEST);
 	}
 
 	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
-		iAlContainedViewIDs = iAlInitialContainedViewIDs;
+		containedViewIDs = iAlInitialContainedViewIDs;
 	}
 
 	private void initializeContainedViews(final GL gl) {
-		if (iAlContainedViewIDs == null)
+		if (containedViewIDs == null)
 			return;
 
-		for (int iContainedViewID : iAlContainedViewIDs) {
+		for (int iContainedViewID : containedViewIDs) {
 			AGLEventListener tmpGLEventListener =
 				generalManager.getViewGLCanvasManager().getGLEventListener(iContainedViewID);
 
@@ -2022,7 +2035,7 @@ public class GLRemoteRendering
 
 						removeView(glEventListener);
 						element.setContainedElementID(-1);
-						iAlContainedViewIDs.remove(new Integer(glEventListener.getID()));
+						containedViewIDs.remove(new Integer(glEventListener.getID()));
 
 						if (element.getRemoteLevel() == poolLevel) {
 							compactPoolLevel();
@@ -2398,10 +2411,6 @@ public class GLRemoteRendering
 		parentGLCanvas.setSize(parentGLCanvas.getWidth(), parentGLCanvas.getHeight());
 	}
 
-	public synchronized void toggleConnectionLines() {
-		bEnableConnectinLines = !bEnableConnectinLines;
-	}
-
 	/**
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
@@ -2415,11 +2424,27 @@ public class GLRemoteRendering
 		enableBusyMode(false);
 		pickingManager.enablePicking(true);
 
-		newViews.clear();
-		arSlerpActions.clear();
+		ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>(); 
+		for (ASerializedView view : newViews) {
+			if (!(view instanceof SerializedParallelCoordinatesView || view instanceof SerializedHeatMapView)) {
+				removeNewViews.add(view);
+			}
+		}
+		newViews.removeAll(removeNewViews);
+
+		ArrayList<Integer> removeViewIDs = new ArrayList<Integer>();
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+		for (int viewID : containedViewIDs) {
+			AGLEventListener view = viewManager.getGLEventListener(viewID);
+			if (!(view instanceof GLParallelCoordinates || view instanceof GLHeatMap)) {
+				removeViewIDs.add(viewID);
+			}
+		}
+		containedViewIDs.removeAll(removeViewIDs);
 
 		generalManager.getPathwayManager().resetPathwayVisiblityState();
 
+		arSlerpActions.clear();
 		clearRemoteLevel(focusLevel);
 		clearRemoteLevel(stackLevel);
 		clearRemoteLevel(poolLevel);
@@ -2595,7 +2620,7 @@ public class GLRemoteRendering
 				AGLEventListener view = createView(gl, serView);
 				if (hasFreeViewPosition()) {
 					addSlerpActionForView(gl, view);
-					iAlContainedViewIDs.add(view.getID());
+					containedViewIDs.add(view.getID());
 				}
 				else {
 					newViews.clear();
@@ -2713,6 +2738,11 @@ public class GLRemoteRendering
 		return glView;
 	}
 
+	/**
+	 * initializes the configuration of a pathway to the configuraion 
+	 * currently stored in this remote-renderin-view.
+	 * @param pathway pathway to set the configuration
+	 */
 	private void initializePathwayView(GLPathway pathway) {
 		pathway.enablePathwayTextures(pathwayTexturesEnabled);
 		pathway.enableNeighborhood(neighborhoodEnabled);
@@ -2895,7 +2925,7 @@ public class GLRemoteRendering
 	}
 
 	public ArrayList<Integer> getRemoteRenderedViews() {
-		return iAlContainedViewIDs;
+		return containedViewIDs;
 	}
 
 	private void updateOffScreenTextures(final GL gl) {
@@ -2931,7 +2961,7 @@ public class GLRemoteRendering
 
 	@Override
 	public void clearAllSelections() {
-		for (Integer iViewID : iAlContainedViewIDs) {
+		for (Integer iViewID : containedViewIDs) {
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).clearAllSelections();
 		}
 
@@ -2980,7 +3010,20 @@ public class GLRemoteRendering
 		disableNeighborhoodListener = new DisableNeighborhoodListener();
 		disableNeighborhoodListener.setBucket(this);
 		eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
-}
+
+		enableConnectionLinesListener = new EnableConnectionLinesListener();
+		enableConnectionLinesListener.setBucket(this);
+		eventPublisher.addListener(EnableConnectionLinesEvent.class, enableConnectionLinesListener);
+
+		disableConnectionLinesListener = new DisableConnectionLinesListener();
+		disableConnectionLinesListener.setBucket(this);
+		eventPublisher.addListener(DisableConnectionLinesEvent.class, disableConnectionLinesListener);
+
+		closeOrResetViewsListener = new CloseOrResetViewsListener();
+		closeOrResetViewsListener.setBucket(this);
+		eventPublisher.addListener(CloseOrResetViewsEvent.class, closeOrResetViewsListener);
+
+	}
 
 	/**
 	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
@@ -2989,37 +3032,42 @@ public class GLRemoteRendering
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		if (addPathwayListener != null) {
-			eventPublisher.removeListener(LoadPathwayEvent.class, addPathwayListener);
+			eventPublisher.removeListener(addPathwayListener);
 			addPathwayListener = null;
 		}
 		if (loadPathwaysByGeneListener != null) {
-			eventPublisher.removeListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
+			eventPublisher.removeListener(loadPathwaysByGeneListener);
 			loadPathwaysByGeneListener = null;
 		}
 		if (enableTexturesListener != null) {
-			eventPublisher.removeListener(EnableTexturesEvent.class, enableTexturesListener);
+			eventPublisher.removeListener(enableTexturesListener);
 			enableTexturesListener = null;
 		}
 		if (disableTexturesListener != null) {
-			eventPublisher.removeListener(DisableTexturesEvent.class, disableTexturesListener);
+			eventPublisher.removeListener(disableTexturesListener);
 			disableTexturesListener = null;
 		}
 		if (enableGeneMappingListener != null) {
-			eventPublisher.removeListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+			eventPublisher.removeListener(enableGeneMappingListener);
 			enableGeneMappingListener = null;
 		}
 		if (disableGeneMappingListener != null) {
-			eventPublisher.removeListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
+			eventPublisher.removeListener(disableGeneMappingListener);
 			disableGeneMappingListener = null;
 		}
 		if (enableNeighborhoodListener != null) {
-			eventPublisher.removeListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
+			eventPublisher.removeListener(enableNeighborhoodListener);
 			enableNeighborhoodListener = null;
 		}
 		if (disableNeighborhoodListener != null) {
-			eventPublisher.removeListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
+			eventPublisher.removeListener(disableNeighborhoodListener);
 			disableNeighborhoodListener = null;
 		}
+		if (closeOrResetViewsListener != null) {
+			eventPublisher.removeListener(closeOrResetViewsListener);
+			closeOrResetViewsListener = null;
+		}
+		
 	}
 
 	@Override
@@ -3029,6 +3077,7 @@ public class GLRemoteRendering
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
 		serializedForm.setGeneMappingEnabled(geneMappingEnabled);
+		serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
 		return serializedForm; 
 	}
 
@@ -3054,6 +3103,14 @@ public class GLRemoteRendering
 
 	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
 		this.neighborhoodEnabled = neighborhoodEnabled;
+	}
+
+	public boolean isConnectionLinesEnabled() {
+		return connectionLinesEnabled;
+	}
+
+	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
+		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
 
 }

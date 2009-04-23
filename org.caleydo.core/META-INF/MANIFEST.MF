@@ -133,8 +133,8 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
  org.caleydo.core.manager.event;uses:="org.caleydo.core.manager,org.caleydo.core.data,org.caleydo.core.data.selection",
  org.caleydo.core.manager.event.view,
  org.caleydo.core.manager.event.view.browser,
- org.caleydo.core.manager.event.view.bucket,
  org.caleydo.core.manager.event.view.pathway,
+ org.caleydo.core.manager.event.view.remote,
  org.caleydo.core.manager.general;
   uses:="org.caleydo.core.manager.id,
    org.eclipse.jface.preference,

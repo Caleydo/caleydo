@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views.swt.toolbar.content;
+package org.caleydo.rcp.views.swt.toolbar.content.remote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,10 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
+import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.content.ActionToolBarContainer;
+import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
 import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarContainer;
 import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
 
@@ -42,6 +46,8 @@ public class RemoteRenderingToolBarContent
 	 * @return bucket related toolbar box
 	 */
 	private ToolBarContainer createBucketContainer() {
+		RemoteRenderingToolBarMediator mediator = new RemoteRenderingToolBarMediator();
+		SerializedRemoteRenderingView serializedView = (SerializedRemoteRenderingView) getTargetViewData();
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
 		container.setImagePath(BUCKET_IMAGE_PATH);
@@ -49,13 +55,12 @@ public class RemoteRenderingToolBarContent
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		int targetViewID = getTargetViewData().getViewID();
-
-		IToolBarItem closeOrResetContainedViews = new CloseOrResetContainedViews(targetViewID);
+		IToolBarItem closeOrResetContainedViews = new CloseOrResetContainedViews(mediator);
 		actionList.add(closeOrResetContainedViews);
 		// IAction toggleLayoutAction = new ToggleLayoutAction(viewID);
 		// alToolbar.add(toggleLayoutAction);
-		IToolBarItem toggleConnectionLinesAction = new ToggleConnectionLinesAction(targetViewID);
+		ToggleConnectionLinesAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(mediator);
+		toggleConnectionLinesAction.setConnectionLinesEnabled(serializedView.isConnectionLinesEnabled());
 		actionList.add(toggleConnectionLinesAction);
 
 		return container;

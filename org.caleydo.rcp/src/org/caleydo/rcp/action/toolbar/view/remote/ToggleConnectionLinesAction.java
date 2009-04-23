@@ -1,24 +1,31 @@
 package org.caleydo.rcp.action.toolbar.view.remote;
 
-import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.views.swt.toolbar.content.remote.RemoteRenderingToolBarMediator;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ToggleConnectionLinesAction
-	extends AToolBarAction
+	extends Action
 	implements IToolBarItem {
+
 	public static final String TEXT = "Turn on/off connection lines";
 	public static final String ICON = "resources/icons/view/remote/connection_lines.png";
 
+	/** mediator to handle actions triggered by instances of this class */
+	RemoteRenderingToolBarMediator remoteRenderingToolBarMediator;
+
+	/** status of this toggle-button */
+	private boolean connectionLinesEnabled = true;
+	
 	/**
 	 * Constructor.
 	 */
-	public ToggleConnectionLinesAction(int iViewID) {
-		super(iViewID);
-
+	public ToggleConnectionLinesAction(RemoteRenderingToolBarMediator mediator) {
+		remoteRenderingToolBarMediator = mediator;
+		
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
@@ -30,6 +37,20 @@ public class ToggleConnectionLinesAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE);
+		connectionLinesEnabled = !connectionLinesEnabled;
+		if (connectionLinesEnabled) {
+			remoteRenderingToolBarMediator.enableConnectionLines();
+		} else {
+			remoteRenderingToolBarMediator.disableConnectionLines();
+		}
+	}
+
+	public boolean isConnectionLinesEnabled() {
+		return connectionLinesEnabled;
+	}
+
+	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
+		this.connectionLinesEnabled = connectionLinesEnabled;
+		setChecked(connectionLinesEnabled);
 	};
 }

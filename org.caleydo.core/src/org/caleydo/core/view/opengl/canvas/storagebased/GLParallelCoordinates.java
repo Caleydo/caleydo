@@ -63,7 +63,7 @@ import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
-import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;

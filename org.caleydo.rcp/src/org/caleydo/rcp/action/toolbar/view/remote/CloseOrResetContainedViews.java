@@ -1,24 +1,28 @@
 package org.caleydo.rcp.action.toolbar.view.remote;
 
-import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.views.swt.toolbar.content.remote.RemoteRenderingToolBarMediator;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class CloseOrResetContainedViews
-	extends AToolBarAction
+	extends Action
 	implements IToolBarItem {
+
+	/** mediator to handle actions triggered by instances of this class */
+	RemoteRenderingToolBarMediator remoteRenderingToolBarMediator;
+	
 	public static final String TEXT = "Remove Pathways, Reset Other views";
 	public static final String ICON = "resources/icons/view/remote/close_or_reset_contained_views.png";
 
 	/**
 	 * Constructor.
 	 */
-	public CloseOrResetContainedViews(int iViewID) {
-		super(iViewID);
-
+	public CloseOrResetContainedViews(RemoteRenderingToolBarMediator mediator) {
+		remoteRenderingToolBarMediator = mediator;
+		
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
@@ -28,11 +32,6 @@ public class CloseOrResetContainedViews
 	@Override
 	public void run() {
 		super.run();
-
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				triggerCmdExternalAction(EExternalActionType.CLOSE_OR_RESET_CONTAINED_VIEWS);
-			}
-		});
+		remoteRenderingToolBarMediator.closeOrResetViews();
 	};
 }

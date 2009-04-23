@@ -56,15 +56,17 @@ public class CmdExternalActionTrigger
 		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 		if (viewObject instanceof GLRemoteRendering) {
 			switch (externalActionType) {
-				case CLOSE_OR_RESET_CONTAINED_VIEWS:
-					((GLRemoteRendering) viewObject).clearAll();
-					return;
+// wpuff: migrated to new event system
+//				case CLOSE_OR_RESET_CONTAINED_VIEWS:
+//					((GLRemoteRendering) viewObject).clearAll();
+//					return;
 				case REMOTE_RENDERING_TOGGLE_LAYOUT_MODE:
 					((GLRemoteRendering) viewObject).toggleLayoutMode();
 					return;
-				case REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE:
-					((GLRemoteRendering) viewObject).toggleConnectionLines();
-					return;
+// wpuff: migrated to new event system
+//				case REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE:
+//					((GLRemoteRendering) viewObject).toggleConnectionLines();
+//					return;
 			}
 		}
 		else if (viewObject instanceof AStorageBasedView) {

@@ -116,9 +116,17 @@ public class EventPublisher
 
 	@Override
 	public void removeListener(Class<? extends AEvent> eventClass, IEventListener listener) {
-		
+		Collection<IEventListener> listeners = listenerMap.get(eventClass);
+		listeners.remove(listener);
 	}
-	
+
+	@Override
+	public void removeListener(IEventListener listener) {
+		for (Collection<IEventListener> listeners : listenerMap.values()) {
+			listeners.remove(listener);			
+		}
+	}
+
 	@Override
 	public void triggerEvent(AEvent event) {
 		Collection<IEventListener> listeners = listenerMap.get(event.getClass());
