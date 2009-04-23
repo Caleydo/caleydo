@@ -1792,6 +1792,7 @@ public class GLRemoteRendering
 		{
 			// Check if view is already loaded in the stack layer
 			if (stackLevel.containsElement(element)) {
+				
 				// Slerp selected view to transition position
 				SlerpAction slerpActionTransition =
 					new SlerpAction(element, transitionLevel.getElementByPositionIndex(0));
@@ -1812,6 +1813,15 @@ public class GLRemoteRendering
 					new SlerpAction(element.getContainedElementID(), transitionLevel
 						.getElementByPositionIndex(0), focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
+			}
+			// Check if focus position is free
+			else if (focusLevel.hasFreePosition()) {
+				
+				// Slerp selected view to focus position
+				SlerpAction slerpActionTransition =
+					new SlerpAction(element, focusLevel.getElementByPositionIndex(0));
+				arSlerpActions.add(slerpActionTransition);
+
 			}
 			else {
 				// Slerp selected view to transition position
