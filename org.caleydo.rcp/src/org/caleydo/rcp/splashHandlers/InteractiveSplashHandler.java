@@ -73,7 +73,7 @@ public class InteractiveSplashHandler
 
 		Label brandingLabelTUGNames = new Label(splash, SWT.NONE);
 		brandingLabelTUGNames
-			.setText("Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, Dieter Schmalstieg");
+			.setText("Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, Werner Puff, Dieter Schmalstieg");
 		brandingLabelTUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
 		brandingLabelTUGNames.setBounds(20, 282, 500, 15);
 		brandingLabelTUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
