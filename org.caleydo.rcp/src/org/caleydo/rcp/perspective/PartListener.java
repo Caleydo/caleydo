@@ -106,17 +106,12 @@ public class PartListener
 		
 		if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
 			// viewpart is detached from caleydo main window
-			if (viewPart instanceof CaleydoViewPart) {
-				drawInlineToolBar(viewPart);
-				removeViewSpecificToolBarItems();
-				
-			}
+			drawInlineToolBar(viewPart);
+			removeViewSpecificToolBarItems();
 		} else {
 			// viewpart is attached within caleydo main window
-			if (viewPart instanceof AGLViewPart) {
-				removeInlineToolBar((AGLViewPart) viewPart);
-				sendViewActivationEvent(viewPart);
-			}
+			removeInlineToolBar((CaleydoViewPart) viewPart);
+			sendViewActivationEvent(viewPart);
 		}
 	}
 
@@ -219,7 +214,7 @@ public class PartListener
 	 * removes all inline toolbar items
 	 * @param viewPart view to remove the toolbar items from
 	 */
-	private void removeInlineToolBar(AGLViewPart viewPart) {
+	private void removeInlineToolBar(CaleydoViewPart viewPart) {
 		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
 		toolBarManager.removeAll();
 		toolBarManager.update(true);
