@@ -80,6 +80,8 @@ import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -2713,6 +2715,13 @@ public class GLParallelCoordinates
 			alAxisSpacing.add(fInitAxisSpacing * iCount);
 		}
 		setDisplayListDirty();
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
 	}
 
 }

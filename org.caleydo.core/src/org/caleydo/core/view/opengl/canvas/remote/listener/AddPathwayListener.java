@@ -1,15 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.remote.listener;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
 public class AddPathwayListener
-	implements IEventListener {
+	extends ARemoteRenderingListener {
 
-	private GLRemoteRendering bucket = null;
-	
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof LoadPathwayEvent) {
@@ -17,14 +13,6 @@ public class AddPathwayListener
 			System.out.println("load pathway with id " + loadEvent.getPathwayID());
 			bucket.addPathwayView(loadEvent.getPathwayID());
 		}
-	}
-
-	public GLRemoteRendering getBucket() {
-		return bucket;
-	}
-
-	public void setBucket(GLRemoteRendering bucket) {
-		this.bucket = bucket;
 	}
 
 }

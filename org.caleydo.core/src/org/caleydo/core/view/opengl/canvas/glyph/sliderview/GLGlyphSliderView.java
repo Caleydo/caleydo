@@ -39,6 +39,8 @@ import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -405,6 +407,13 @@ public class GLGlyphSliderView
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
 	}
 
 }

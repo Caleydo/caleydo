@@ -255,7 +255,7 @@ public class ToolBarContentFactory {
 			Class<?> contentClass = info.contentClass;
 			try {
 				content = (AToolBarContent) contentClass.newInstance();
-				content.setTargetViewID(view.getID());
+				content.setTargetViewData(view.getSerializableRepresentation());
 				if (view instanceof AGLEventListener) {
 					if (((AGLEventListener) view).isRenderedRemote()) {
 						content.setRenderType(AToolBarContent.REMOTE_RENDERING);

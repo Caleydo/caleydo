@@ -4,9 +4,11 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -41,15 +43,27 @@ public class PathwayToolBarMediator {
 	}
 
 	public void enableNeighborhood() {
-		log.info("enableNeighborhoodTextures()");
+		log.info("enableNeighborhood()");
 		EnableNeighborhoodEvent event = new EnableNeighborhoodEvent();
 		eventPublisher.triggerEvent(event);
 	}
 	
 	public void disableNeighborhood() {
-		log.info("disableNeighborhoodTextures()");
+		log.info("disableNeighborhood()");
 		DisableNeighborhoodEvent event = new DisableNeighborhoodEvent();
 		eventPublisher.triggerEvent(event);
 	}
 
+	public void enableGeneMapping() {
+		log.info("enableGeneMapping()");
+		EnableGeneMappingEvent event = new EnableGeneMappingEvent();
+		eventPublisher.triggerEvent(event);
+	}
+	
+	public void disableGeneMapping() {
+		log.info("disableGeneMappingTextures()");
+		DisableGeneMappingEvent event = new DisableGeneMappingEvent();
+		eventPublisher.triggerEvent(event);
+	}
+	
 }

@@ -99,7 +99,7 @@ public class DefaultToolBarRenderJob
 			label.setData(group); 
 			
 			group.setData("viewType", toolBarContent.getViewClass().getName());
-			group.setData("viewID", toolBarContent.getTargetViewID());
+			group.setData("viewID", toolBarContent.getTargetViewData().getViewID());
 
 			group.layout();
 			parentComposite.layout();

@@ -12,6 +12,8 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
@@ -194,6 +196,13 @@ public class GlyphDataExportViewRep
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
 	}
 
 }

@@ -34,6 +34,8 @@ import org.caleydo.core.view.opengl.canvas.histogram.HistogramRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 
 /**
  * Rendering the histogram.
@@ -555,6 +557,13 @@ public class GLHistogram
 				break;
 		}
 
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
 	}
 
 }

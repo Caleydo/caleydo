@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
@@ -39,6 +38,12 @@ import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
+import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
+import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -57,6 +62,12 @@ import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListene
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.remote.listener.AddPathwayListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.DisableGeneMappingListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.DisableNeighborhoodListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.DisableTexturesListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.EnableGeneMappingListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.EnableNeighborhoodListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
@@ -76,8 +87,9 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
-import org.caleydo.core.view.serialize.ISerializedView;
+import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
+import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -175,12 +187,29 @@ public class GLRemoteRendering
 
 	private boolean bRightMouseClickEventInvalid = false;
 
-	private ArrayList<ISerializedView> newViews;
+	/** stores if the gene-mapping should be enabled */
+	private boolean geneMappingEnabled = true;
 
-	AddPathwayListener addPathwayListener = null;
+	/** stores if the pathway textures are enabled */
+	private boolean pathwayTexturesEnabled = true;
+	
+	/** stores if the "neighborhood" ist enabled */
+	private boolean neighborhoodEnabled = false;
+	
+	private ArrayList<ASerializedView> newViews;
+	
+	AddPathwayListener addPathwayListener = null; 
+	LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 
-	LoadPathwaysByGeneListener loadPathwaysByGeneListener;
+	EnableGeneMappingListener enableGeneMappingListener = null;
+	DisableGeneMappingListener disableGeneMappingListener = null;
 
+	EnableTexturesListener enableTexturesListener = null;
+	DisableTexturesListener disableTexturesListener = null;
+
+	EnableNeighborhoodListener enableNeighborhoodListener = null;
+	DisableNeighborhoodListener disableNeighborhoodListener = null;
+	
 	/**
 	 * Constructor.
 	 */
@@ -246,7 +275,7 @@ public class GLRemoteRendering
 		arSlerpActions = new ArrayList<SlerpAction>();
 
 		// iAlUninitializedPathwayIDs = new ArrayList<Integer>();
-		newViews = new ArrayList<ISerializedView>();
+		newViews = new ArrayList<ASerializedView>();
 
 		createEventMediator();
 
@@ -1923,7 +1952,7 @@ public class GLRemoteRendering
 	 * 
 	 */
 	@Override
-	public synchronized void addInitialRemoteView(ISerializedView serView) {
+	public synchronized void addInitialRemoteView(ASerializedView serView) {
 		newViews.add(serView);
 	}
 
@@ -2532,33 +2561,6 @@ public class GLRemoteRendering
 		textRenderer.end3DRendering();
 	}
 
-	public synchronized void enableGeneMapping(final boolean bEnableMapping) {
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-			.getAllGLEventListeners()) {
-			if (tmpGLEventListener instanceof GLPathway) {
-				((GLPathway) tmpGLEventListener).enableGeneMapping(bEnableMapping);
-			}
-		}
-	}
-
-	public synchronized void enablePathwayTextures(final boolean bEnablePathwayTexture) {
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-			.getAllGLEventListeners()) {
-			if (tmpGLEventListener instanceof GLPathway) {
-				((GLPathway) tmpGLEventListener).enablePathwayTextures(bEnablePathwayTexture);
-			}
-		}
-	}
-
-	public synchronized void enableNeighborhood(final boolean bEnableNeighborhood) {
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-			.getAllGLEventListeners()) {
-			if (tmpGLEventListener instanceof GLPathway) {
-				((GLPathway) tmpGLEventListener).enableNeighborhood(bEnableNeighborhood);
-			}
-		}
-	}
-
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
@@ -2579,7 +2581,7 @@ public class GLRemoteRendering
 	private synchronized void initNewView(GL gl) {
 		if (arSlerpActions.isEmpty()) {
 			if (!newViews.isEmpty()) {
-				ISerializedView serView = newViews.remove(0);
+				ASerializedView serView = newViews.remove(0);
 				AGLEventListener view = createView(gl, serView);
 				if (hasFreeViewPosition()) {
 					addSlerpActionForView(gl, view);
@@ -2672,7 +2674,7 @@ public class GLRemoteRendering
 	 *            serialized form of the view to create
 	 * @return the created view ready to be used within the application
 	 */
-	private AGLEventListener createView(GL gl, ISerializedView serView) {
+	private AGLEventListener createView(GL gl, ASerializedView serView) {
 
 		ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
 		for (ISet tmpSet : alSets) {
@@ -2935,7 +2937,31 @@ public class GLRemoteRendering
 		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
 		loadPathwaysByGeneListener.setBucket(this);
 		eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
-	}
+
+		enableTexturesListener = new EnableTexturesListener();
+		enableTexturesListener.setBucket(this);
+		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
+
+		disableTexturesListener = new DisableTexturesListener();
+		disableTexturesListener.setBucket(this);
+		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
+
+		enableGeneMappingListener = new EnableGeneMappingListener();
+		enableGeneMappingListener.setBucket(this);
+		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+
+		disableGeneMappingListener = new DisableGeneMappingListener();
+		disableGeneMappingListener.setBucket(this);
+		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
+
+		enableNeighborhoodListener = new EnableNeighborhoodListener();
+		enableNeighborhoodListener.setBucket(this);
+		eventPublisher.addListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
+
+		disableNeighborhoodListener = new DisableNeighborhoodListener();
+		disableNeighborhoodListener.setBucket(this);
+		eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
+}
 
 	/**
 	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
@@ -2945,11 +2971,70 @@ public class GLRemoteRendering
 
 		if (addPathwayListener != null) {
 			eventPublisher.removeListener(LoadPathwayEvent.class, addPathwayListener);
+			addPathwayListener = null;
 		}
-
 		if (loadPathwaysByGeneListener != null) {
 			eventPublisher.removeListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
+			loadPathwaysByGeneListener = null;
 		}
+		if (enableTexturesListener != null) {
+			eventPublisher.removeListener(EnableTexturesEvent.class, enableTexturesListener);
+			enableTexturesListener = null;
+		}
+		if (disableTexturesListener != null) {
+			eventPublisher.removeListener(DisableTexturesEvent.class, disableTexturesListener);
+			disableTexturesListener = null;
+		}
+		if (enableGeneMappingListener != null) {
+			eventPublisher.removeListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+			enableGeneMappingListener = null;
+		}
+		if (disableGeneMappingListener != null) {
+			eventPublisher.removeListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
+			disableGeneMappingListener = null;
+		}
+		if (enableNeighborhoodListener != null) {
+			eventPublisher.removeListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
+			enableNeighborhoodListener = null;
+		}
+		if (disableNeighborhoodListener != null) {
+			eventPublisher.removeListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
+			disableNeighborhoodListener = null;
+		}
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedRemoteRenderingView serializedForm = new SerializedRemoteRenderingView();
+		serializedForm.setViewID(this.getID());
+		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
+		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
+		serializedForm.setGeneMappingEnabled(geneMappingEnabled);
+		return serializedForm; 
+	}
+
+	public boolean isGeneMappingEnabled() {
+		return geneMappingEnabled;
+	}
+
+	public void setGeneMappingEnabled(boolean geneMappingEnabled) {
+		this.geneMappingEnabled = geneMappingEnabled;
+	}
+
+	public boolean isPathwayTexturesEnabled() {
+		return pathwayTexturesEnabled;
+	}
+
+	public void setPathwayTexturesEnabled(boolean pathwayTexturesEnabled) {
+		this.pathwayTexturesEnabled = pathwayTexturesEnabled;
+	}
+
+	public boolean isNeighborhoodEnabled() {
+		return neighborhoodEnabled;
+	}
+
+	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
+		this.neighborhoodEnabled = neighborhoodEnabled;
 	}
 
 }

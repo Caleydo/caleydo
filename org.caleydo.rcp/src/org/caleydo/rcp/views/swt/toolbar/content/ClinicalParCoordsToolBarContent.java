@@ -41,6 +41,7 @@ public class ClinicalParCoordsToolBarContent
 		container.setToolBarItems(actionList);
 
 		// all pc views
+		int targetViewID = getTargetViewData().getViewID();
 		IToolBarItem angularBrushingAction = new AngularBrushingAction(targetViewID);
 		actionList.add(angularBrushingAction);
 		IToolBarItem occlusionPreventionAction = new OcclusionPreventionAction(targetViewID);

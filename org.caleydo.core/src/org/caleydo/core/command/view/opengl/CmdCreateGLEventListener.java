@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.serialize.ISerializedView;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Command creates OpenGL views.
@@ -192,7 +192,7 @@ public class CmdCreateGLEventListener
 	 * Inherited classes should override this method to set the view depended attributes.
 	 * @param serView serialized form of the view to create
 	 */
-	public void setAttributesFromSerializedForm(ISerializedView serView) {
+	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		setViewFrustum(serView.getViewFrustum());
 	}
 

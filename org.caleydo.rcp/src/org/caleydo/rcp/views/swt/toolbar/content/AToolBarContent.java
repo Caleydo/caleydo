@@ -3,6 +3,8 @@ package org.caleydo.rcp.views.swt.toolbar.content;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.view.serialize.ASerializedView;
+
 /**
  * Abstract super class for toolbar content classes to provide lists of toolbar-actions.
  * @author Werner Puff
@@ -20,7 +22,7 @@ public abstract class AToolBarContent {
 	public static final int REMOTE_RENDERING = 2;
 
 	/** FIXME view-id of the target view for the actions contained within this toolbar content */
-	protected int targetViewID = -1;
+	protected ASerializedView targetViewData = null;
 	
 	/** specifies the type of content to render. sub classes may define their own content types */ 
 	protected int renderType = STANDARD_RENDERING;
@@ -72,16 +74,12 @@ public abstract class AToolBarContent {
 	 * The id must be set before retrieving any toolbar content.
 	 * @param viewID as used by IViewManager of the target view  
 	 */
-	public void setTargetViewID(int viewID) {
-		targetViewID = viewID;
+	public void setTargetViewData(ASerializedView serializedView) {
+		targetViewData = serializedView;
 	}
 
-	/**
-	 * returns the target view id for actions provided by this tool bar content
-	 * @return the target view-id as used by IViewManager
-	 */
-	public int getTargetViewID() {
-		return targetViewID;
+	public ASerializedView getTargetViewData() {
+		return targetViewData;
 	}
 	
 	public int getRenderType() {
@@ -99,4 +97,5 @@ public abstract class AToolBarContent {
 	public void setAttached(boolean attached) {
 		this.attached = attached;
 	}
+
 }

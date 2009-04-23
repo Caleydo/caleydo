@@ -9,7 +9,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * @author Werner Puff
  */
 public class SerializedParallelCoordinatesView 
-	implements ISerializedView {
+	extends ASerializedView {
 	
 	/**
 	 * Default constructor with default initialization

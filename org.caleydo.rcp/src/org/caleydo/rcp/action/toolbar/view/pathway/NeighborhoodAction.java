@@ -38,5 +38,16 @@ public class NeighborhoodAction
 			pathwayToolbarMediator.enableNeighborhood();
 		} else {
 			pathwayToolbarMediator.disableNeighborhood();
-		}	};
+		}
+	}
+
+	public boolean isNeighborhoodEnabled() {
+		return neighborhoodEnabled;
+	}
+
+	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
+		this.neighborhoodEnabled = neighborhoodEnabled;
+		super.setChecked(neighborhoodEnabled);
+	};
+
 }

@@ -3,6 +3,7 @@ package org.caleydo.rcp.views.swt.toolbar.content.browser;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.view.serialize.SerializedHTMLBrowserView;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
@@ -31,6 +32,8 @@ public class HTMLBrowserToolBarContent
 		container.setBrowserToolBarMediator(browserToolBarMediator);
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
+		SerializedHTMLBrowserView serializedForm = (SerializedHTMLBrowserView) getTargetViewData(); 
+		container.setSelectedQueryType(serializedForm.getQueryType());
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

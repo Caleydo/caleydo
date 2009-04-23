@@ -29,7 +29,6 @@ public class TextureAction
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
-		setChecked(texturesEnabled);
 	}
 
 	@Override
@@ -42,5 +41,14 @@ public class TextureAction
 		} else {
 			pathwayToolbarMediator.disableTextures();
 		}
+	}
+
+	public boolean isTexturesEnabled() {
+		return texturesEnabled;
+	}
+
+	public void setTexturesEnabled(boolean texturesEnabled) {
+		this.texturesEnabled = texturesEnabled;
+		super.setChecked(texturesEnabled);
 	};
 }

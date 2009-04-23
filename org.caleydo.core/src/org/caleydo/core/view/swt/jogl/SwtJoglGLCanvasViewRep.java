@@ -5,6 +5,8 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
@@ -61,4 +63,12 @@ public class SwtJoglGLCanvasViewRep
 	public int getGLCanvasID() {
 		return iGLCanvasID;
 	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
+	}
+
 }

@@ -6,7 +6,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.serialize.ISerializedView;
+import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
 
 /**
@@ -46,7 +46,7 @@ public class CmdCreateGLPathway
 	}
 
 	@Override
-	public void setAttributesFromSerializedForm(ISerializedView serView) {
+	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		super.setAttributesFromSerializedForm(serView);
 		SerializedPathwayView serPathway = (SerializedPathwayView) serView;
 		setPathwayID(serPathway.getPathwayID());

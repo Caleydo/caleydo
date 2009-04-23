@@ -16,6 +16,8 @@ import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedHTMLBrowserView;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -161,5 +163,14 @@ public class GenomeHTMLBrowserViewRep
 			eventPublisher.removeListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
 			changeQueryTypeListener = null;
 		}
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedHTMLBrowserView serializedForm = new SerializedHTMLBrowserView();
+		serializedForm.setViewID(getID());
+		serializedForm.setQueryType(getCurrentBrowserQueryType());
+		serializedForm.setUrl(getUrl());
+		return serializedForm;
 	}
 }

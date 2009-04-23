@@ -7,15 +7,11 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
 public class LoadPathwaysByGeneListener
-	implements IEventListener {
-
-	private GLRemoteRendering bucket = null;
+	extends ARemoteRenderingListener {
 
 	@Override
 	public void handleEvent(AEvent event) {
@@ -25,14 +21,6 @@ public class LoadPathwaysByGeneListener
 
 			convertGeneIDToVertexList(loadEvent.getIdType(), loadEvent.getGeneID());
 		}
-	}
-
-	public GLRemoteRendering getBucket() {
-		return bucket;
-	}
-
-	public void setBucket(GLRemoteRendering bucket) {
-		this.bucket = bucket;
 	}
 
 	private void convertGeneIDToVertexList(EIDType idType, int geneID) {

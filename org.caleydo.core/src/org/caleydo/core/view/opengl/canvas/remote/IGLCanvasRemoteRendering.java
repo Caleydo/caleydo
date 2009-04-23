@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.remote;
 
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
-import org.caleydo.core.view.serialize.ISerializedView;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Interface for accessing views that remotely render other views.
@@ -25,5 +25,5 @@ public interface IGLCanvasRemoteRendering {
 	 * Adds a view to the initially contained remote rendered views
 	 * @param view serialized form of the view to add
 	 */
-	public void addInitialRemoteView(ISerializedView view);
+	public void addInitialRemoteView(ASerializedView view);
 }

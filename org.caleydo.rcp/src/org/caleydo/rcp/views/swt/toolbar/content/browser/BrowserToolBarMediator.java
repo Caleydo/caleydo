@@ -25,6 +25,8 @@ public class BrowserToolBarMediator {
 		for (Button button : queryTypeButtons) {
 			if (!button.getText().equals(method.toString())) {
 				button.setSelection(false);
+			} else {
+				button.setSelection(true);
 			}
 		}
 		ChangeQueryTypeEvent event = new ChangeQueryTypeEvent();

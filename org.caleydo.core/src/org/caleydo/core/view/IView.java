@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Interface for the view representations.
@@ -73,4 +74,10 @@ public interface IView
 	 */
 	public void clearSets();
 
+	/**
+	 * Retreives a serializeable representation of the view
+	 * @return serialized representation of the view 
+	 */
+	public ASerializedView getSerializableRepresentation();
+	
 }

@@ -1,13 +1,14 @@
-package org.caleydo.core.view.opengl.canvas.pathway.listeners;
+package org.caleydo.core.view.opengl.canvas.remote.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 
 public class DisableTexturesListener
-	extends APathwayListener {
+	extends ARemoteRenderingListener {
+
 
 	@Override
 	public void handleEvent(AEvent event) {
-		glPathway.enablePathwayTextures(false);
+		bucket.setPathwayTexturesEnabled(false);
 	}
 
 }

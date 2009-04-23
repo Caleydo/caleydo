@@ -2,11 +2,6 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;

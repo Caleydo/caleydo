@@ -9,7 +9,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * @author Werner Puff
  */
 public class SerializedPathwayView 
-	implements ISerializedView {
+	extends ASerializedView {
 	
 	/** id of the pathway in caleydo's pathway library, -1 for unknown pathway */
 	private int pathwayID;

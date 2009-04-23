@@ -6,7 +6,6 @@ import java.util.Collections;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**

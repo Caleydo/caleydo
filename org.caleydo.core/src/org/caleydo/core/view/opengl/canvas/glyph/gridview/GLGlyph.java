@@ -54,6 +54,8 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.Gly
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.Screenshot;
@@ -1348,6 +1350,13 @@ public class GLGlyph
 
 		grid_.loadData(null);
 		forceRebuild();
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
 	}
 
 }

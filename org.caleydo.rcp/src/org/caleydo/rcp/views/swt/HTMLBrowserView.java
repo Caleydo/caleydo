@@ -4,15 +4,8 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.swt.browser.EBrowserQueryType;
-import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.rcp.views.CaleydoViewPart;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class HTMLBrowserView

@@ -1,13 +1,13 @@
-package org.caleydo.core.view.opengl.canvas.pathway.listeners;
+package org.caleydo.core.view.opengl.canvas.remote.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 
 public class DisableNeighborhoodListener
-	extends APathwayListener {
+	extends ARemoteRenderingListener {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		glPathway.enableNeighborhood(false);
+		bucket.setNeighborhoodEnabled(false);
 	}
 
 }

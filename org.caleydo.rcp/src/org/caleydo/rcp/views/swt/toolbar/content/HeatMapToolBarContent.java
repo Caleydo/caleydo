@@ -33,6 +33,7 @@ public class HeatMapToolBarContent
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
+		int targetViewID = getTargetViewData().getViewID();
 		IToolBarItem switchAxesToPolylinesAction = new ChangeOrientationAction(targetViewID);
 		actionList.add(switchAxesToPolylinesAction);
 		if (renderType == STANDARD_RENDERING) {

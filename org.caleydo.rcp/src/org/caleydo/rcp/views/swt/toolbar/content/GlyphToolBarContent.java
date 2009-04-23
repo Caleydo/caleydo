@@ -36,6 +36,7 @@ public class GlyphToolBarContent
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
+		int targetViewID = getTargetViewData().getViewID();
 		actionList.add(new OpenNewWindowAction(targetViewID));
 		actionList.add(new ChangeSelectionBrushAction(targetViewID));
 		actionList.add(new RemoveUnselectedFromViewAction(targetViewID));

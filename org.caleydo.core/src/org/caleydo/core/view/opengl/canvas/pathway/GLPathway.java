@@ -41,8 +41,10 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.bucket.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
+import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -55,12 +57,16 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableTexturesListener;
+import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -105,6 +111,9 @@ public class GLPathway
 	EnableTexturesListener enableTexturesListener = null;
 	DisableTexturesListener disableTexturesListener = null;
 	
+	EnableGeneMappingListener enableGeneMappingListener = null;
+	DisableGeneMappingListener disableGeneMappingListener = null;
+
 	EnableNeighborhoodListener enableNeighborhoodListener = null;
 	DisableNeighborhoodListener disableNeighborhoodListener = null;
 	
@@ -921,7 +930,15 @@ public class GLPathway
 		disableNeighborhoodListener = new DisableNeighborhoodListener();
 		disableNeighborhoodListener.setGLPathway(this);
 		eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
-	}
+
+		enableGeneMappingListener = new EnableGeneMappingListener();
+		enableGeneMappingListener.setGLPathway(this);
+		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+
+		disableGeneMappingListener = new DisableGeneMappingListener();
+		disableGeneMappingListener.setGLPathway(this);
+		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
+}
 	
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
@@ -942,6 +959,21 @@ public class GLPathway
 			eventPublisher.removeListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
 			disableNeighborhoodListener = null;
 		}
+		if (enableGeneMappingListener != null) {
+			eventPublisher.removeListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+			enableGeneMappingListener = null;
+		}
+		if (disableGeneMappingListener != null) {
+			eventPublisher.removeListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
+			disableGeneMappingListener = null;
+		}
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
 	}
 
 }

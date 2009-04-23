@@ -3,6 +3,7 @@ package org.caleydo.rcp.views.swt.toolbar.content.pathway;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
 import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
 import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
 import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
@@ -17,6 +18,9 @@ public class PathwayToolBarContainer
 
 	/** Mediator to handle actions triggered by the contributed elements */ 
 	PathwayToolBarMediator pathwayToolBarMediator;
+
+	/** serialized remote rendering view to read the configuration from */
+	SerializedRemoteRenderingView targetViewData;
 	
 	/**
 	 * Creates a the pathway selection box and add the pathway toolbar items.
@@ -26,8 +30,13 @@ public class PathwayToolBarContainer
 
 		List<IToolBarItem> elements = new ArrayList<IToolBarItem>();
 		
-		elements.add(new TextureAction(pathwayToolBarMediator));
-		elements.add(new GeneMappingAction(-1)); // FIXME: What should we provide as view ID?
+		TextureAction textureAction = new TextureAction(pathwayToolBarMediator);
+		textureAction.setTexturesEnabled(targetViewData.isPathwayTexturesEnabled());
+		elements.add(textureAction);
+
+		GeneMappingAction geneMappingAction = new GeneMappingAction(pathwayToolBarMediator);
+		geneMappingAction.setGeneMappingEnabled(targetViewData.isGeneMappingEnabled());
+		elements.add(geneMappingAction);
 
 		// TODO: neighborhood currently broken 
 		//elements.add(new NeighborhoodAction(pathwayToolBarMediator));		
@@ -45,5 +54,13 @@ public class PathwayToolBarContainer
 
 	public void setPathwayToolBarMediator(PathwayToolBarMediator pathwayToolBarMediator) {
 		this.pathwayToolBarMediator = pathwayToolBarMediator;
+	}
+
+	public SerializedRemoteRenderingView getTargetViewData() {
+		return targetViewData;
+	}
+
+	public void setTargetViewData(SerializedRemoteRenderingView targetViewData) {
+		this.targetViewData = targetViewData;
 	}
 }

@@ -33,6 +33,8 @@ public class HierarchicalHeatMapToolBarContent
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
+		int targetViewID = getTargetViewData().getViewID();
+
 		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
 		actionList.add(startClustering);
 

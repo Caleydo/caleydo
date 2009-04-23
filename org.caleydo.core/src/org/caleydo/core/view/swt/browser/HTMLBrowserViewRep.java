@@ -9,6 +9,8 @@ import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.data.loader.ResourceLoader;
@@ -38,7 +40,7 @@ public class HTMLBrowserViewRep
 
 	protected Browser browser;
 
-	protected String sUrl = CALEYDO_HOME;
+	protected String url = CALEYDO_HOME;
 
 	protected Text textURL;
 
@@ -105,7 +107,7 @@ public class HTMLBrowserViewRep
 		textURL = new Text(browserBarComposite, SWT.BORDER);
 
 		if (checkInternetConnection()) {
-			textURL.setText(sUrl);
+			textURL.setText(url);
 		}
 
 		data = new GridData(GridData.FILL_HORIZONTAL);
@@ -131,12 +133,12 @@ public class HTMLBrowserViewRep
 					browser.stop();
 				}
 				else if (item.equals(goButton)) {
-					sUrl = textURL.getText();
+					url = textURL.getText();
 				}
 				else if (item.equals(homeButton)) {
-					sUrl = "www.caleydo.org";
+					url = "www.caleydo.org";
 					textURL.setText(CALEYDO_HOME);
-					browser.setUrl(sUrl);
+					browser.setUrl(url);
 				}
 			}
 		};
@@ -148,7 +150,7 @@ public class HTMLBrowserViewRep
 
 		textURL.addListener(SWT.DefaultSelection, new Listener() {
 			public void handleEvent(Event e) {
-				sUrl = textURL.getText();
+				url = textURL.getText();
 				drawView();
 			}
 		});
@@ -193,7 +195,7 @@ public class HTMLBrowserViewRep
 
 	@Override
 	public void drawView() {
-		generalManager.getLogger().log(Level.INFO, "Load " + sUrl);
+		generalManager.getLogger().log(Level.INFO, "Load " + url);
 
 		try {
 			parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -202,19 +204,23 @@ public class HTMLBrowserViewRep
 					if (!checkInternetConnection())
 						return;
 
-					textURL.setText(sUrl);
-					browser.setUrl(sUrl);
+					textURL.setText(url);
+					browser.setUrl(url);
 					// browser.refresh();
 				}
 			});
 		}
 		catch (SWTException swte) {
-			generalManager.getLogger().log(Level.SEVERE, "Error while loading " + sUrl);
+			generalManager.getLogger().log(Level.SEVERE, "Error while loading " + url);
 		}
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
 	public void setUrl(String sUrl) {
-		this.sUrl = sUrl;
+		this.url = sUrl;
 
 //		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
@@ -251,4 +257,12 @@ public class HTMLBrowserViewRep
 			changeURLListener = null;
 		}
 	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		SerializedDummyView serializedForm = new SerializedDummyView();
+		serializedForm.setViewID(this.getID());
+		return serializedForm; 
+	}
+
 }
