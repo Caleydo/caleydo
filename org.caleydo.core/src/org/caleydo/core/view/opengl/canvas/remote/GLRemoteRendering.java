@@ -2690,6 +2690,9 @@ public class GLRemoteRendering
 		cmdView.setSetIDs(iAlSetIDs);
 		cmdView.doCommand();
 		AGLEventListener glView = cmdView.getCreatedObject();
+		if (glView instanceof GLPathway) {
+			initializePathwayView((GLPathway) glView);
+		}
 
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) glView);
@@ -2700,6 +2703,12 @@ public class GLRemoteRendering
 		return glView;
 	}
 
+	private void initializePathwayView(GLPathway pathway) {
+		pathway.enablePathwayTextures(pathwayTexturesEnabled);
+		pathway.enableNeighborhood(neighborhoodEnabled);
+		pathway.enableGeneMapping(geneMappingEnabled);
+	}
+	
 	/**
 	 * Triggers the most recent user selection to the views. This is especially needed to initialize new added
 	 * views with the current selection information.
