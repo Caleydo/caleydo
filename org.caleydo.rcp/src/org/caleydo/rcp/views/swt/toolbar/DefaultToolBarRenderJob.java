@@ -95,7 +95,9 @@ public class DefaultToolBarRenderJob
 			label.setText(toolBarContainer.getTitle());
 			label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-
+			// Set the group as the labels data to be able to discriminate between spacer when chaning background color
+			label.setData(group); 
+			
 			group.setData("viewType", toolBarContent.getViewClass().getName());
 			group.setData("viewID", toolBarContent.getTargetViewID());
 

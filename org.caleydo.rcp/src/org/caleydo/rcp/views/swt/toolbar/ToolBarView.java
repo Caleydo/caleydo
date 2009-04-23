@@ -158,7 +158,7 @@ public class ToolBarView
 					// Check if toolbar is present
 					for (Group group : viewSpecificGroups) {
 						for (Control subControl : group.getChildren()) {
-							if (subControl instanceof Label) {
+							if (subControl instanceof Label && subControl.getData() == group) {
 								if (group.getData("viewID") != null
 									&& ((Integer) group.getData("viewID")).intValue() == iViewID
 									|| eventTrigger instanceof GLPathway
@@ -168,9 +168,8 @@ public class ToolBarView
 								}
 								else {
 									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(
-										SWT.COLOR_GRAY));
+										SWT.COLOR_GREEN));
 								}
-
 							}
 						}
 					}
