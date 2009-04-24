@@ -3,8 +3,6 @@ package org.caleydo.core.view.opengl.util;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
-
 /**
  * Helper class for converting coordinates
  * 

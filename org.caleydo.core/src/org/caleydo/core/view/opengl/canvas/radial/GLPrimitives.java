@@ -4,8 +4,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 
-import java.lang.Math;
-
 public class GLPrimitives {
 
 	public static void renderPartialDisc(GL gl, GLU glu, float fInnerRadius, float fOuterRadius,

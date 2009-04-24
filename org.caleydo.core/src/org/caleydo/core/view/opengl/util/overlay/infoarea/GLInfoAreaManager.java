@@ -1,15 +1,11 @@
-package org.caleydo.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.overlay.infoarea;
 
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;

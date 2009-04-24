@@ -10,7 +10,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.eclipse.swt.widgets.Composite;
 
 /**

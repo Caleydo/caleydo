@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.overlay.infoarea;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

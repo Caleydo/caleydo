@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.overlay.infoarea;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
