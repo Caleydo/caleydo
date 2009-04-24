@@ -64,10 +64,9 @@ public class FileLoadDataAction
 	public final static String ID = "org.caleydo.rcp.FileLoadDataAction";
 
 	private Composite parentComposite;
+	private Composite composite;
 
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
-
-	private Composite composite;
 
 	private Text txtFileName;
 	private Text txtStartParseAtLine;
@@ -77,7 +76,6 @@ public class FileLoadDataAction
 	private Table previewTable;
 
 	private ArrayList<Button> arSkipColumn;
-	private ArrayList<Combo> arComboDataType;
 
 	private String sInputFile = "";
 	private String sFileName = "";
@@ -85,12 +83,11 @@ public class FileLoadDataAction
 	private String sInputPattern = "";// SKIP;";
 	private String sDelimiter = "";
 	private int iCreatedSetID = -1;
-	private int iStartParseFileAtLine = 2;
+	private int iStartParseFileAtLine = 0;
 
 	private String sDataRepMode = "Normal";
-	// private boolean bLogFilter = false;
 
-	// private boolean bClusterInfo = false;
+	private boolean bUseClusterInfo = false;
 
 	private int iOldSetID;
 
@@ -107,7 +104,6 @@ public class FileLoadDataAction
 		this.parentComposite = parentComposite;
 
 		arSkipColumn = new ArrayList<Button>();
-		arComboDataType = new ArrayList<Combo>();
 	}
 
 	/**
@@ -120,21 +116,11 @@ public class FileLoadDataAction
 
 	@Override
 	public void run() {
-		// // Check if load data GUI is embedded in a wizard or if a own dialog
-		// // must be created.
-		// if (parentComposite == null)
-		// {
-		// Shell shell = new Shell();
-		// // shell.setMaximized(true);
-		// LoadDataDialog loadDataFileDialog = new LoadDataDialog(shell);
-		// loadDataFileDialog.open();
-		// }
-		// else
-		// {
+
 		createGUI();
-		// }
 	}
 
+	
 	private void createGUI() {
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
@@ -501,7 +487,7 @@ public class FileLoadDataAction
 			String sLine = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 2; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++) {
+			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++) {
 				brFile.readLine();
 			}
 
@@ -520,6 +506,15 @@ public class FileLoadDataAction
 
 				while (tokenizer.hasMoreTokens()) {
 					sTmpNextToken = tokenizer.nextToken();
+					
+					// Check for group information
+					if (sTmpNextToken.equals("GROUP_NUMBER") || sTmpNextToken.equals("Cluster_Number"))
+					{
+						bUseClusterInfo = true;
+						// If group info is detected no more columns are parsed
+						break;
+					}
+						
 					final TableColumn dataColumn = new TableColumn(previewTable, SWT.NONE);
 					dataColumn.setWidth(100);
 					dataColumn.setText(sTmpNextToken);
@@ -539,14 +534,18 @@ public class FileLoadDataAction
 					iColIndex++;
 				}
 			}
-
+			
+			createDataClassBar();
+			
 			int iRowCount = 0;
 			boolean bCellFilled = false;
 
+			// Read raw data
 			while ((sLine = brFile.readLine()) != null && iRowCount < MAX_PREVIEW_TABLE_ROWS) {
 				// last flag triggers return of delimiter itself
 				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
 				item = new TableItem(previewTable, SWT.NONE);
+				item.setText("Row " +(iRowCount+1)); // +1 to be intuitive for a non programmer :)
 				iColIndex = 0;
 
 				while (tokenizer.hasMoreTokens()) {
@@ -578,32 +577,15 @@ public class FileLoadDataAction
 		catch (IOException ioe) {
 			throw new IllegalStateException("Input/output problem!");
 		}
-
-		createDataClassBar();
-		createDataTypeBar();
-
-		TableItem[] arTmpLabelColumnItem = previewTable.getItems();
-		arTmpLabelColumnItem[0].setText(0, "Use column");
-		arTmpLabelColumnItem[1].setText(0, "Data type");
-
-		for (int iItemIndex = 2; iItemIndex < arTmpLabelColumnItem.length; iItemIndex++) {
-			arTmpLabelColumnItem[iItemIndex].setText(0, "Row " + (iItemIndex - 1));
-		}
-
-		// for (TableColumn column : previewTable.getColumns())
-		// column.pack();
-
-		// previewTable.pack();
-		// composite.pack();
 	}
 
 	private void createDataClassBar() {
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 1);
+		
+		TableItem tmpItem = new TableItem(previewTable, SWT.NONE);
+		tmpItem.setText("Use column");
+		
 		Button skipButton;
 		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
-			tmpItem = previewTable.getItem(0);
-			tmpItem.setText("");
-
 			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
 			skipButton.setSelection(true);
 			skipButton.setData("column", iColIndex);
@@ -636,44 +618,6 @@ public class FileLoadDataAction
 		}
 	}
 
-	private void createDataTypeBar() {
-
-		for (Combo tmpComboDataType : arComboDataType) {
-			tmpComboDataType.dispose();
-		}
-
-		arComboDataType.clear();
-
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 0);
-
-		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
-			// previewTable.getColumn (iColIndex).pack();
-
-			// Initialize data type selection combo
-			final Combo comboTmpDataType = new Combo(previewTable, SWT.READ_ONLY);
-			// comboTmpDataType.setSize(100, previewTable.getItemHeight());
-			comboTmpDataType.setEnabled(true);
-			comboTmpDataType.setItems(new String[] { "INT", "FLOAT", "STRING", "GROUP_NUMBER",
-					"GROUP_REPRESENTATIVE" });
-			comboTmpDataType.computeSize(SWT.DEFAULT, previewTable.getItemHeight());
-
-			comboTmpDataType.select(1);
-
-			// should be ignored
-			arComboDataType.add(comboTmpDataType);
-
-			TableEditor editor = new TableEditor(previewTable);
-			editor.grabHorizontal = true;
-			editor.minimumHeight = comboTmpDataType.getSize().y;
-			editor.minimumWidth = comboTmpDataType.getSize().x;
-			editor.setEditor(comboTmpDataType, tmpItem, iColIndex);
-
-			// previewTable.getColumn(iColIndex).pack();
-		}
-
-		// previewTable.pack();
-	}
-
 	public void execute() {
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
@@ -685,64 +629,49 @@ public class FileLoadDataAction
 		createData();
 		setDataInViews();
 		clearOldData();
-
-		// TODO: review
-		// Application.applicationMode = EApplicationMode.STANDARD;
 	}
 
 	private void createData() {
 		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
 		String sStorageIDs = "";
 
-		// Build input pattern from data type combos
-		sInputPattern = sInputPattern + "SKIP" + ";";
+		sInputPattern = "SKIP" + ";";
 
-		Combo tmpComboDataType;
+		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
 
-		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++) {
-			tmpComboDataType = arComboDataType.get(iColIndex);
-
-			if (!arSkipColumn.get(iColIndex).getSelection()) {
+			if (!arSkipColumn.get(iColIndex-2).getSelection()) {
 				sInputPattern = sInputPattern + "SKIP" + ";";
 				continue;
 			}
-
-			if (tmpComboDataType.getText().equals("FLOAT") || tmpComboDataType.getText().equals("SKIP")) {
-				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
-			}
-			if (tmpComboDataType.getText().equals("GROUP_NUMBER")) {
-				// System.out.println("cluster nr");
-				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
-			}
-			if (tmpComboDataType.getText().equals("GROUP_REPRESENTATIVE")) {
-				// System.out.println("cluster repr");
-				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
+			else {
+				sInputPattern = sInputPattern + "FLOAT" + ";";				
 			}
 
-			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only allow parsing float data
-			{
-				// Create data storage
-				CmdDataCreateStorage cmdCreateStorage =
-					(CmdDataCreateStorage) GeneralManager.get().getCommandManager().createCommandByType(
-						ECommandType.CREATE_STORAGE);
+			// Currently we only allow parsing float data
+			// Create data storage
+			CmdDataCreateStorage cmdCreateStorage =
+				(CmdDataCreateStorage) GeneralManager.get().getCommandManager().createCommandByType(
+					ECommandType.CREATE_STORAGE);
 
-				cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
-				cmdCreateStorage.doCommand();
+			cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
+			cmdCreateStorage.doCommand();
 
-				INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
+			INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
 
-				String labelText = previewTable.getColumn(iColIndex+2).getText();
-				storage.setLabel(labelText);
+			String labelText = previewTable.getColumn(iColIndex).getText();
+			storage.setLabel(labelText);
 
-				iAlStorageId.add(storage.getID());
+			iAlStorageId.add(storage.getID());
 
-				if (!sStorageIDs.equals("")) {
-					sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
-				}
-
-				sStorageIDs = sStorageIDs + storage.getID();
-
+			if (!sStorageIDs.equals("")) {
+				sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
 			}
+
+			sStorageIDs = sStorageIDs + storage.getID();
+		}
+		
+		if (bUseClusterInfo) {
+			sInputPattern += "GROUP_NUMBER;GROUP_REPRESENTATIVE;";
 		}
 
 		sInputPattern += "ABORT;";
@@ -772,8 +701,9 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
+		// start_parsing_at_line +1 because of label row
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
-			iStartParseFileAtLine - 1, -1);
+			iStartParseFileAtLine+2 - 1, -1); 
 		cmdLoadCsv.doCommand();
 
 		// iSWTGUIManager.setProgressBarVisible(false);
