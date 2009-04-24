@@ -94,6 +94,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.overlay.contextmenue.ContextMenue;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -228,6 +229,7 @@ public class GLRemoteRendering
 	DisableConnectionLinesListener disableConnectionLinesListener = null;
 
 	CloseOrResetViewsListener closeOrResetViewsListener = null;
+	ContextMenue contextMenue;
 
 	/**
 	 * Constructor.
@@ -314,6 +316,7 @@ public class GLRemoteRendering
 		registerEventListeners();
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
+		contextMenue = new ContextMenue();
 	}
 
 	@Override
@@ -376,19 +379,19 @@ public class GLRemoteRendering
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
-		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener.isZoomedIn()
-			&& !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
-			bEnableNavigationOverlay = !bEnableNavigationOverlay;
-
-			bRightMouseClickEventInvalid = true;
-
-			if (glConnectionLineRenderer != null) {
-				glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
-			}
-		}
-		else if (pickingTriggerMouseAdapter.wasMouseReleased()) {
-			bRightMouseClickEventInvalid = false;
-		}
+//		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener.isZoomedIn()
+//			&& !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
+//			bEnableNavigationOverlay = !bEnableNavigationOverlay;
+//
+//			bRightMouseClickEventInvalid = true;
+//
+//			if (glConnectionLineRenderer != null) {
+//				glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
+//			}
+//		}
+//		else if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+//			bRightMouseClickEventInvalid = false;
+//		}
 
 		pickingManager.handlePicking(iUniqueID, gl);
 
@@ -571,8 +574,9 @@ public class GLRemoteRendering
 		// viewFrustum.setRight(4);
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0, 0, 4));
 
-		 Dimension size = getParentGLCanvas().getSize();
-		 infoAreaManager.renderRemoteInPlaceInfo(gl, 100, 100, viewFrustum);
+//		 Dimension size = getParentGLCanvas().getSize();
+//		 infoAreaManager.renderRemoteInPlaceInfo(gl, 100, 100, viewFrustum);
+//		 contextMenue.render(gl);
 		//		
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, 1, 4));
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, -1, 4));
@@ -2152,6 +2156,11 @@ public class GLRemoteRendering
 						// .setDataAboutView(iExternalID);
 
 						break;
+					case RIGHT_CLICKED:
+						contextMenue.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
+						contextMenue.setData();
+						break;
+						
 				}
 
 				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), 0.3f);//pick.getDepth());

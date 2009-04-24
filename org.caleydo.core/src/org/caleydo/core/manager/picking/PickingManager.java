@@ -135,18 +135,20 @@ public class PickingManager {
 			ePickingMode = EPickingMode.DRAGGED;
 		}
 		else if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed())
-		// || bMouseReleased)
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			// bIsMouseOverPickingEvent = false;
 			ePickingMode = EPickingMode.CLICKED;
+		}
+		else if(pickingTriggerMouseAdapter.wasRightMouseButtonPressed())
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			ePickingMode = EPickingMode.RIGHT_CLICKED;
 		}
 		else if (pickingTriggerMouseAdapter.wasMouseMoved()) {
 			// Restart timer
 			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
 			// System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(iViewID, true);
-
 		}
 		else if (hashViewIDToIsMouseOverPickingEvent.get(iViewID) != null
 		// && hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null

@@ -316,7 +316,7 @@ public class GLParallelCoordinates
 		checkForHits(gl);
 
 		display(gl);
-//		if (bRenderInfoArea) {
+//		if (isEnabled) {
 			infoAreaManager.renderInPlaceInfo(gl);
 //			bInfoAreaFirstTime = false;
 //		}
@@ -473,7 +473,7 @@ public class GLParallelCoordinates
 		}
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-		// bRenderInfoArea = false;
+		// isEnabled = false;
 
 		fXTranslation = 0;
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
@@ -533,7 +533,7 @@ public class GLParallelCoordinates
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
 
-		// bRenderInfoArea = false;
+		// isEnabled = false;
 		bIsAngularBrushingActive = false;
 
 		for (ArrayList<Integer> alCurrent : alIsAngleBlocking) {

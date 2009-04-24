@@ -10,7 +10,6 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
@@ -25,7 +24,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  */
 
-public class GLInPlaceInfoRenderer2 {
+public class GLInPlaceInfoRenderer {
 
 	private TextRenderer textRenderer;
 
@@ -53,7 +52,7 @@ public class GLInPlaceInfoRenderer2 {
 	/**
 	 * Constructor
 	 */
-	public GLInPlaceInfoRenderer2(IViewFrustum viewFrustum) {
+	public GLInPlaceInfoRenderer(IViewFrustum viewFrustum) {
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 		contentCreator = new InformationContentCreator();
 		renderStyle = new InfoAreaRenderStyle(viewFrustum);
@@ -78,10 +77,6 @@ public class GLInPlaceInfoRenderer2 {
 		calculateWidthAndHeight();
 	}
 
-	public void setMiniViewData(ArrayList<IStorage> alStorages) {
-
-		miniView.setData(alStorages);
-	}
 
 	/**
 	 * Render the data previously set
