@@ -1,4 +1,6 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.selection.delta;
+
+import org.caleydo.core.data.selection.ESelectionType;
 
 /**
  * Interface for Selection Deltas as they are being sent between views

@@ -1,4 +1,5 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.selection.delta;
+
 
 /**
  * Interface for a virtual array delta

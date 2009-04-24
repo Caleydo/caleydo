@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 

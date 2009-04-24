@@ -1,4 +1,4 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.selection.delta;
 
 import java.util.Set;
 import java.util.logging.Level;

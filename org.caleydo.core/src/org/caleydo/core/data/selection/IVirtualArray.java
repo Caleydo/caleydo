@@ -3,6 +3,7 @@ package org.caleydo.core.data.selection;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static

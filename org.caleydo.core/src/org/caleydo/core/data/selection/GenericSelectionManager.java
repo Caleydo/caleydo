@@ -10,6 +10,12 @@ import java.util.logging.Level;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.data.selection.delta.VADeltaItem;
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**

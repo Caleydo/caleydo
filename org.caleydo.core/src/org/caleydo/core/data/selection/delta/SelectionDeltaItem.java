@@ -1,7 +1,9 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.selection.delta;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.caleydo.core.data.selection.ESelectionType;
 
 /**
  * A SelectionDeltaItem represents one selection in the framework. It holds the id of the selected element,

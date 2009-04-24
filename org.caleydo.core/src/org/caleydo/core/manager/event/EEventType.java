@@ -1,9 +1,9 @@
 package org.caleydo.core.manager.event;
 
-import org.caleydo.core.data.selection.DeltaEventContainer;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.data.selection.delta.DeltaEventContainer;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 
 /**
  * Types of events that can be send from a {@link IMediatorSender} to a {@link IMediatorReceiver} Document

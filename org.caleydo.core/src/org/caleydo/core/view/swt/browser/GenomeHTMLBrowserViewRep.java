@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.SelectionDeltaItem;
+import org.caleydo.core.data.selection.delta.DeltaEventContainer;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;

@@ -1,10 +1,11 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.selection.delta;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ESelectionType;
 
 /**
  * HashMap based implementation of ISelectionDelta. Therefore all elements are unique and no ordering is

@@ -3,6 +3,8 @@ package org.caleydo.core.data.selection;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+
 public class GroupList
 	implements IGroupList {
 

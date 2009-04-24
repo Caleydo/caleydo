@@ -1,4 +1,4 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.data.selection.delta;
 
 import org.caleydo.core.manager.event.AEventContainer;
 import org.caleydo.core.manager.event.EEventType;
