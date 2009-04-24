@@ -120,7 +120,6 @@ public class FileLoadDataAction
 		createGUI();
 	}
 
-	
 	private void createGUI() {
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
@@ -506,15 +505,14 @@ public class FileLoadDataAction
 
 				while (tokenizer.hasMoreTokens()) {
 					sTmpNextToken = tokenizer.nextToken();
-					
+
 					// Check for group information
-					if (sTmpNextToken.equals("GROUP_NUMBER") || sTmpNextToken.equals("Cluster_Number"))
-					{
+					if (sTmpNextToken.equals("GROUP_NUMBER") || sTmpNextToken.equals("Cluster_Number")) {
 						bUseClusterInfo = true;
 						// If group info is detected no more columns are parsed
 						break;
 					}
-						
+
 					final TableColumn dataColumn = new TableColumn(previewTable, SWT.NONE);
 					dataColumn.setWidth(100);
 					dataColumn.setText(sTmpNextToken);
@@ -534,9 +532,9 @@ public class FileLoadDataAction
 					iColIndex++;
 				}
 			}
-			
+
 			createDataClassBar();
-			
+
 			int iRowCount = 0;
 			boolean bCellFilled = false;
 
@@ -545,7 +543,7 @@ public class FileLoadDataAction
 				// last flag triggers return of delimiter itself
 				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
 				item = new TableItem(previewTable, SWT.NONE);
-				item.setText("Row " +(iRowCount+1)); // +1 to be intuitive for a non programmer :)
+				item.setText("Row " + (iRowCount + 1)); // +1 to be intuitive for a non programmer :)
 				iColIndex = 0;
 
 				while (tokenizer.hasMoreTokens()) {
@@ -580,10 +578,10 @@ public class FileLoadDataAction
 	}
 
 	private void createDataClassBar() {
-		
+
 		TableItem tmpItem = new TableItem(previewTable, SWT.NONE);
 		tmpItem.setText("Use column");
-		
+
 		Button skipButton;
 		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
 			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
@@ -639,12 +637,12 @@ public class FileLoadDataAction
 
 		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
 
-			if (!arSkipColumn.get(iColIndex-2).getSelection()) {
+			if (!arSkipColumn.get(iColIndex - 2).getSelection()) {
 				sInputPattern = sInputPattern + "SKIP" + ";";
 				continue;
 			}
 			else {
-				sInputPattern = sInputPattern + "FLOAT" + ";";				
+				sInputPattern = sInputPattern + "FLOAT" + ";";
 			}
 
 			// Currently we only allow parsing float data
@@ -669,7 +667,7 @@ public class FileLoadDataAction
 
 			sStorageIDs = sStorageIDs + storage.getID();
 		}
-		
+
 		if (bUseClusterInfo) {
 			sInputPattern += "GROUP_NUMBER;GROUP_REPRESENTATIVE;";
 		}
@@ -703,7 +701,7 @@ public class FileLoadDataAction
 
 		// start_parsing_at_line +1 because of label row
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
-			iStartParseFileAtLine+2 - 1, -1); 
+			iStartParseFileAtLine + 2 - 1, -1);
 		cmdLoadCsv.doCommand();
 
 		// iSWTGUIManager.setProgressBarVisible(false);
@@ -712,7 +710,7 @@ public class FileLoadDataAction
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
+		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine + 2, -1,
 			"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter, "REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
 		cmdLoadLookupTableFile.doCommand();
 
@@ -721,7 +719,6 @@ public class FileLoadDataAction
 			if (!Float.isNaN(fMin)) {
 				set.setMin(fMin);
 			}
-
 		}
 
 		if (!txtMax.getText().isEmpty()) {

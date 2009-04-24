@@ -2,6 +2,8 @@ package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
@@ -92,18 +94,18 @@ public class KgmlSaxHandler
 			else if (sElementName.equals("graphics")) {
 				handleGraphicsTag();
 			}
-			else if (sElementName.equals("relation")) {
-				handleRelationTag();
-			}
-			else if (sElementName.equals("reaction")) {
-				handleReactionTag();
-			}
-			else if (sElementName.equals("product")) {
-				handleReactionProductTag();
-			}
-			else if (sElementName.equals("substrate")) {
-				handleReactionSubstrateTag();
-			}
+//			else if (sElementName.equals("relation")) {
+//				handleRelationTag();
+//			}
+//			else if (sElementName.equals("reaction")) {
+//				handleReactionTag();
+//			}
+//			else if (sElementName.equals("product")) {
+//				handleReactionProductTag();
+//			}
+//			else if (sElementName.equals("substrate")) {
+//				handleReactionSubstrateTag();
+//			}
 		}
 	}
 
@@ -219,7 +221,8 @@ public class KgmlSaxHandler
 			StringTokenizer sTokenText = new StringTokenizer(sName, " ");
 			Integer iDavidId = -1;
 			String sTmpVertexName = "";
-
+			Set<Integer> iSetDavidID = new HashSet<Integer>();
+			
 			while (sTokenText.hasMoreTokens()) {
 				sTmpVertexName = sTokenText.nextToken();
 
@@ -240,13 +243,12 @@ public class KgmlSaxHandler
 
 					continue;
 				}
-
-				currentVertex =
-					pathwayItemManager.createVertexGene(sTmpVertexName, sType, sExternalLink, sReactionId,
-						iDavidId);
-
-				alCurrentVertex.add(currentVertex);
+				
+				iSetDavidID.add(iDavidId);
 			}
+		
+			alCurrentVertex.addAll(pathwayItemManager.createVertexGene(sTmpVertexName, sType, sExternalLink, sReactionId,
+				iSetDavidID));
 		}
 		else {
 			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink, sReactionId);
