@@ -93,17 +93,16 @@ public class TreePorter {
 		return tree;
 	}
 
-	public boolean exportTree(String fileName, DirectedGraph<ClusterNode, DefaultEdge> graph, ClusterNode root)
-		throws JAXBException, IOException {
+	public boolean exportTree(String fileName, Tree<ClusterNode> tree) throws JAXBException, IOException {
 
-		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) graph.edgeSet();
+		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) tree.graph.edgeSet();
 
 		// FIXME: edges should be stored in an other way (not as strings)
 		for (DefaultEdge edge : edgeSet) {
 			edges.add(edge.toString());
 		}
 
-		nodeSet = graph.vertexSet();
+		nodeSet = tree.graph.vertexSet();
 
 		JAXBContext jaxbContext = JAXBContext.newInstance(TreePorter.class, DefaultEdge.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();

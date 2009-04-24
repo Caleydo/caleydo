@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -116,7 +117,8 @@ public class SetExporter {
 			// export cluster tree to own xml file
 			Tree<ClusterNode> tree = set.getClusteredTree();
 			if (tree != null) {
-				if (tree.exportTree(sFileName + ".xml") == false)
+				TreePorter treePorter = new TreePorter();
+				if (treePorter.exportTree(sFileName + ".xml", tree) == false)
 					System.out.println("Problem during tree export!");
 			}
 		}

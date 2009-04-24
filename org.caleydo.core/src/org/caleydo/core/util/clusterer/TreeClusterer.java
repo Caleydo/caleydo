@@ -33,6 +33,8 @@ public class TreeClusterer
 
 	private int iNrSamples = 0;
 
+	private boolean bStart0 = true;
+
 	private Tree<ClusterNode> tree;
 
 	public TreeClusterer(int iNrSamples) {
@@ -58,6 +60,8 @@ public class TreeClusterer
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+
+			bStart0 = true;
 
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
@@ -90,6 +94,8 @@ public class TreeClusterer
 		}
 		else {
 
+			bStart0 = false;
+
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
@@ -119,6 +125,26 @@ public class TreeClusterer
 				icnt1++;
 			}
 		}
+		normalizeSimilarities();
+
+	}
+
+	private void normalizeSimilarities() {
+
+		float max = Float.MIN_VALUE;
+
+		for (int i = 0; i < similarities.length; i++) {
+			for (int j = 0; j < similarities.length; j++) {
+				max = Math.max(max, similarities[i][j]);
+			}
+		}
+
+		for (int i = 0; i < similarities.length; i++) {
+			for (int j = 0; j < similarities.length; j++) {
+				similarities[i][j] = similarities[i][j] / max;
+			}
+		}
+
 	}
 
 	private ClosestPair find_closest_pair(int n, float[][] distmatrix) {
@@ -149,7 +175,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer palcluster(ISet set) {
+	public Integer palcluster() {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -229,9 +255,12 @@ public class TreeClusterer
 
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
-		ClusterNode node = new ClusterNode("Root", 1, 0f, 0);
+		ClusterNode node = new ClusterNode("Root", 0, 0f, 0);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
+
+		ClusterHelper.determineNrElements(tree);
+		ClusterHelper.determineHierarchyDepth(tree);
 
 		AlIndexes = getAl();
 
@@ -308,7 +337,7 @@ public class TreeClusterer
 
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
-		ClusterNode node = new ClusterNode("Root", 1, 0f, 0);
+		ClusterNode node = new ClusterNode("Root", 0, 0f, 0);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
 
@@ -326,8 +355,10 @@ public class TreeClusterer
 
 	private ArrayList<Integer> traverse(ArrayList<Integer> indexes, ClusterNode node) {
 
-		if (tree.hasChildren(node) == false)
-			indexes.add(node.getClusterNr());
+		if (tree.hasChildren(node) == false) {
+			// FIXME: problem with indexes (storageVA vs. contentVA ???)
+			indexes.add(node.getClusterNr() + 1);
+		}
 		else {
 			for (ClusterNode current : tree.getChildren(node)) {
 				traverse(indexes, current);
@@ -352,9 +383,20 @@ public class TreeClusterer
 
 		if (treeStructure[index].getLeft() >= 0) {
 
-			String NodeName =
-				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());
-			left = new ClusterNode(NodeName, treeStructure[index].getLeft(), 0, 0);
+			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
+
+			NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getLeft() + 1);
+			if (NodeName == null) {
+				NodeName = "Unknown";
+			}
+
+			NodeName += " | ";
+			NodeName +=
+				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft() + 1);
+
+			left =
+				new ClusterNode(NodeName, treeStructure[index].getLeft(), treeStructure[index]
+					.getCorrelation(), 0);
 
 			left.setNrElements(1);
 
@@ -364,18 +406,31 @@ public class TreeClusterer
 
 		}
 		else {
+			int random = (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+
 			left =
-				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), -(treeStructure[index]
-					.getLeft()) - 1, treeStructure[index].getCorrelation(), 0);
+				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
+					treeStructure[index].getCorrelation(), 0);
 			tree.addChild(node, left);
 			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1);
 		}
 
 		if (treeStructure[index].getRight() >= 0) {
 
-			String NodeName =
-				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());
-			right = new ClusterNode(NodeName, treeStructure[index].getRight(), 0, 0);
+			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
+
+			NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getRight() + 1);
+			if (NodeName == null) {
+				NodeName = "Unknown";
+			}
+
+			NodeName += " | ";
+			NodeName +=
+				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight() + 1);
+
+			right =
+				new ClusterNode(NodeName, treeStructure[index].getRight(), treeStructure[index]
+					.getCorrelation(), 0);
 
 			right.setNrElements(1);
 
@@ -385,9 +440,11 @@ public class TreeClusterer
 
 		}
 		else {
+			int random = (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+
 			right =
-				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), -(treeStructure[index]
-					.getRight()) - 1, treeStructure[index].getCorrelation(), 0);
+				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
+					treeStructure[index].getCorrelation(), 0);
 			tree.addChild(node, right);
 			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1);
 		}

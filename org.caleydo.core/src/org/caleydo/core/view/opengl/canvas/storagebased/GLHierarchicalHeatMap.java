@@ -132,6 +132,7 @@ public class GLHierarchicalHeatMap
 	private GLHeatMap glHeatMapView;
 	private IMediator privateMediator;
 	private boolean bIsHeatmapInFocus = false;
+	private float fWidthEHM = 0;
 
 	private boolean bRedrawTextures = false;
 
@@ -672,14 +673,14 @@ public class GLHierarchicalHeatMap
 
 			iTemp = iIndex;
 
-			if (iIndex - iAlNumberSamples.get(0) < 0) {
+			if (iIndex - iAlNumberSamples.get(0) <= 0) {
 				iTexture = 0;
 				iPos = iIndex;
 			}
 			else {
-				for (int i = 0; i < iNrSelBar - 1; i++) {
+				for (int i = 0; i < iNrSelBar; i++) {
 
-					if (iTemp - iAlNumberSamples.get(i) < 0) {
+					if (iTemp - iAlNumberSamples.get(i) <= 0) {
 						iTexture = i;
 						iPos = iTemp;
 						break;
@@ -699,14 +700,14 @@ public class GLHierarchicalHeatMap
 
 			iTemp = iIndex;
 
-			if (iIndex - iAlNumberSamples.get(0) < 0) {
+			if (iIndex - iAlNumberSamples.get(0) <= 0) {
 				iTexture = 0;
 				iPos = iIndex;
 			}
 			else {
-				for (int i = 0; i < iNrSelBar - 1; i++) {
+				for (int i = 0; i < iNrSelBar; i++) {
 
-					if ((iTemp - iAlNumberSamples.get(i)) < 0) {
+					if ((iTemp - iAlNumberSamples.get(i)) <= 0) {
 						iTexture = i;
 						iPos = iTemp;
 						break;
@@ -961,7 +962,55 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
-	private void renderClassAssignmentsExperiments(final GL gl) {
+	private void renderClassAssignmentsExperimentsLevel3(final GL gl) {
+		
+		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
+		int iNrElements = set.getVA(iStorageVAID).size();
+		float fWidthSamples = fWidthEHM / iNrElements;
+		float fxpos = fWidth + GAP_LEVEL2_3;
+		float fHeight = viewFrustum.getHeight() + 0.1f;
+		
+		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+
+		int iNrClasses = groupList.size();
+
+		gl.glLineWidth(1f);
+		
+		for (int i = 0; i < iNrClasses; i++) {
+
+//			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+//				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+
+			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
+
+			if (groupList.get(i).getSelectionType() == ESelectionType.NORMAL)
+				gl.glColor4f(0f, 0f, 1f, 0.5f);
+			if (groupList.get(i).getSelectionType() == ESelectionType.SELECTION)
+				gl.glColor4f(0f, 1f, 0f, 0.5f);
+
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(fxpos, fHeight, 0);
+			gl.glVertex3f(fxpos, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
+			gl.glEnd();
+
+			gl.glColor4f(0f, 0f, 0f, 1);
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fxpos, fHeight, 0);
+			gl.glVertex3f(fxpos, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight + 0.1f, 0);
+			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
+			gl.glEnd();
+
+//			gl.glPopName();
+
+			fxpos = fxpos + classWidth;
+		}
+		
+	}
+	
+	private void renderClassAssignmentsExperimentsLevel2(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		int iNrElements = set.getVA(iStorageVAID).size();
@@ -1699,6 +1748,7 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
 		glHeatMapView.displayRemote(gl);
+		fWidthEHM = glHeatMapView.getViewFrustum().getWidth() - 0.95f;
 		gl.glPopName();
 
 		if (glHeatMapView.isInDefaultOrientation()) {
@@ -1780,8 +1830,10 @@ public class GLHierarchicalHeatMap
 		renderSelectedElementsTexture(gl);
 		renderCursor(gl);
 
-		if (set.getVA(iStorageVAID).getGroupList() != null)
-			renderClassAssignmentsExperiments(gl);
+		if (set.getVA(iStorageVAID).getGroupList() != null) {
+			renderClassAssignmentsExperimentsLevel2(gl);
+			renderClassAssignmentsExperimentsLevel3(gl);
+		}
 
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
@@ -2277,7 +2329,6 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 						System.out.println("node " + iExternalID);
-						System.out.println(((Tree<ClusterNode>) tree).getNameByNumber(iExternalID));
 						setDisplayListDirty();
 						break;
 				}

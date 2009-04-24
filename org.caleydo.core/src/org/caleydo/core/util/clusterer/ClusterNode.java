@@ -25,14 +25,15 @@ public class ClusterNode
 	private int iHierarchyDepth;
 	@XmlElement
 	private int iNrElements;
-
+	@XmlElement
 	private Vec3f vPos;
+	@XmlElement
 	private ESelectionType eSelectionType;
-	
+
 	public ClusterNode() {
 
 	}
-	
+
 	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth) {
 		this.sNodeName = sNodeName;
 		this.iClusterNr = iClusterNr;
@@ -57,7 +58,7 @@ public class ClusterNode
 	public int getClusterNr() {
 		return iClusterNr;
 	}
-		
+
 	@Override
 	public String toString() {
 		return sNodeName;

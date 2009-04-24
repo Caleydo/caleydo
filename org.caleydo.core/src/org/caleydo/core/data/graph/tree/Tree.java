@@ -1,13 +1,10 @@
 package org.caleydo.core.data.graph.tree;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
@@ -26,14 +23,12 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	DirectedGraph<NodeType, DefaultEdge> graph;
 
-	TreePorter porter = new TreePorter();
-
-	private HashMap<Integer, String> hashClusterNames;
+	private HashMap<Integer, NodeType> hashNodes;
 
 	public Tree() {
 
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
-		hashClusterNames = new HashMap<Integer, String>();
+		hashNodes = new HashMap<Integer, NodeType>();
 
 	}
 
@@ -63,8 +58,10 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public void addChild(NodeType parentNode, NodeType childNode) {
 		graph.addVertex(childNode);
 		graph.addEdge(parentNode, childNode);
-		hashClusterNames.put(((ClusterNode) childNode).getClusterNr(), ((ClusterNode) childNode)
-			.getNodeName());
+
+		// TODO: this should be removed later on, only for testing purposes
+		if (childNode instanceof ClusterNode)
+			hashNodes.put(((ClusterNode) childNode).getClusterNr(), childNode);
 	}
 
 	/**
@@ -78,6 +75,9 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public void addChildren(NodeType parentNode, List<NodeType> children) {
 		for (NodeType child : children) {
 			addChild(parentNode, child);
+			// TODO: this should be removed later on, only for testing purposes
+			if (child instanceof ClusterNode)
+				hashNodes.put(((ClusterNode) child).getClusterNr(), child);
 		}
 	}
 
@@ -156,27 +156,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		this.graph = graph;
 	}
 
-	public boolean exportTree(String fileName) throws JAXBException, IOException {
-
-		return porter.exportTree(fileName, (DirectedGraph<ClusterNode, DefaultEdge>) this.graph,
-			(ClusterNode) this.rootNode);
-
-	}
-
-	public Tree<NodeType> importTree(String file) {
-
-		try {
-			return (Tree<NodeType>) porter.importTree(file);
-		}
-		catch (Exception e) {
-
-			System.out.println("Problem during tree import from xml!");
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public String getNameByNumber(int iClusterNr) {
-		return hashClusterNames.get(iClusterNr);
+	public NodeType getNodeByNumber(int iClusterNr) {
+		return hashNodes.get(iClusterNr);
 	}
 }
