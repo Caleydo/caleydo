@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.renderstyle.layout;
+package org.caleydo.core.view.opengl.canvas.remote.jukebox;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -6,21 +6,22 @@ import gleem.linalg.open.Transform;
 
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
- * Render style for list view.
+ * Render style for jukebox view.
  * 
  * @author Marc Streit
  */
-public class ListLayoutRenderStyle
+public class JukeboxLayoutRenderStyle
 	extends ARemoteViewLayoutRenderStyle {
 
 	/**
 	 * Constructor.
 	 */
-	public ListLayoutRenderStyle(IViewFrustum viewFrustum) {
+	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);
 		initLayout();
 	}
@@ -28,7 +29,7 @@ public class ListLayoutRenderStyle
 	/**
 	 * Constructor.
 	 */
-	public ListLayoutRenderStyle(IViewFrustum viewFrustum,
+	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum,
 		final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
 		super(viewFrustum, previousLayoutStyle);
 		initLayout();
@@ -37,21 +38,20 @@ public class ListLayoutRenderStyle
 	private void initLayout() {
 		eProjectionMode = EProjectionMode.ORTHOGRAPHIC;
 
-		fScalingFactorFocusLevel = 0.32f;
+		fScalingFactorFocusLevel = 0.28f;
 		fScalingFactorStackLevel = 0.13f;
 		fScalingFactorPoolLevel = 0.02f;
-		fScalingFactorSelectionLevel = 1f;
+		fScalingFactorSelectionLevel = 0.05f;
 		fScalingFactorTransitionLevel = 0.025f;
 		fScalingFactorSpawnLevel = 0.005f;
 	}
 
 	@Override
 	public RemoteLevel initFocusLevel() {
-
 		fScalingFactorFocusLevel = 4 * 0.045f / fAspectRatio;
 
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(-0.5f / fAspectRatio, -1.4f, 0f));
+		transform.setTranslation(new Vec3f(0f / fAspectRatio, -0.9f, 0f));
 		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
 			fScalingFactorFocusLevel));
 
@@ -62,20 +62,29 @@ public class ListLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initStackLevel(boolean bIsZoomedIn) {
+		float fTiltAngleDegree = 57; // degree
+		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
+		float fLayerYPos = 0.6f;
 		int iMaxLayers = 4;
 
 		// Create free pathway layer spots
 		Transform transform;
-
-		for (int iLayerIndex = 0; iLayerIndex < iMaxLayers; iLayerIndex++) {
+		for (int iLevelIndex = 0; iLevelIndex < iMaxLayers; iLevelIndex++) {
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(0, 0, 0f));
+			transform.setTranslation(new Vec3f(-0.9f / fAspectRatio, fLayerYPos, 0f));
+
+			// DKT horizontal stack
+			// transform.setTranslation(new Vec3f(-2.7f + fLayerYPos, 1.1f, 0));
+			// transform.setRotation(new Rotf(new Vec3f(-0.7f, -1f, 0),
+			// fTiltAngleRad));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel,
 				fScalingFactorStackLevel));
-			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
+			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
 
-			stackLevel.getElementByPositionIndex(iLayerIndex).setTransform(transform);
+			stackLevel.getElementByPositionIndex(iLevelIndex).setTransform(transform);
+
+			fLayerYPos -= 0.7f;
 		}
 
 		return stackLevel;
@@ -83,28 +92,28 @@ public class ListLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID) {
-		Transform transform;
-
 		float fSelectedScaling = 1;
-		float fYAdd = 1.4f;
-		int iRemoteLevelElementIndex = 0;
+		float fYAdd = -1.4f;
 
+		int iRemoteLevelElementID = 0;
 		for (RemoteLevelElement element : poolLevel.getAllElements()) {
 			if (element.getID() == iSelectedRemoteLevelElementID) {
-				fSelectedScaling = 1.3f;
+				fSelectedScaling = 2;
 			}
 			else {
 				fSelectedScaling = 1;
 			}
 
-			transform = new Transform();
-			fYAdd -= 0.15f * fSelectedScaling;
+			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(-1.45f * 1 / fAspectRatio, fYAdd, 4.1f));
+
+			fYAdd += 0.19f * fSelectedScaling;
+
 			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLevel, fSelectedScaling
 				* fScalingFactorPoolLevel, fSelectedScaling * fScalingFactorPoolLevel));
 
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(transform);
-			iRemoteLevelElementIndex++;
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementID).setTransform(transform);
+			iRemoteLevelElementID++;
 		}
 
 		return poolLevel;
@@ -112,20 +121,29 @@ public class ListLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initMemoLevel() {
-		fScalingFactorSelectionLevel = 0.82f;
+		Transform transform;
+		float fMemoPos = 0.0f;
+		for (int iMemoIndex = 0; iMemoIndex < selectionLevel.getCapacity(); iMemoIndex++) {
+			// Store current model-view matrix
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(fMemoPos, -1.4f, 4.1f));
+			transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
+				fScalingFactorSelectionLevel));
 
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(1.6f / fAspectRatio - fPoolLayerWidth, -1.7f, 0f));
-		transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
-			fScalingFactorSelectionLevel));
+			selectionLevel.getElementByPositionIndex(0).setTransform(transform);;
 
-		selectionLevel.getElementByPositionIndex(0).setTransform(transform);
+			fMemoPos += 0.42f;
+		}
 
-		// Init color bar position
-		// fColorBarXPos = 1.1f / fAspectRatio;
-		// fColorBarYPos = -1;
+		fTrashCanXPos = 1.3f / fAspectRatio;
+		fTrashCanYPos = -1.4f;
+		fTrashCanWidth = 0.3f;
+		fTrashCanHeight = 0.35f;
+
+		// fColorBarXPos = -0.1f / fAspectRatio;
+		// fColorBarYPos = -0.9f;
 		// fColorBarWidth = 0.1f;
-		// fColorBarHeight = 2.8f;
+		// fColorBarHeight = 2f;
 
 		return selectionLevel;
 	}
@@ -149,7 +167,7 @@ public class ListLayoutRenderStyle
 		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
 			fScalingFactorSpawnLevel));
 
-		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
+		spawnLevel.getElementByPositionIndex(0).setTransform(transform);;
 
 		return spawnLevel;
 	}

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.renderstyle.layout;
+package org.caleydo.core.view.opengl.canvas.remote.list;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -6,21 +6,22 @@ import gleem.linalg.open.Transform;
 
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
- * Render style for jukebox view.
+ * Render style for list view.
  * 
  * @author Marc Streit
  */
-public class JukeboxLayoutRenderStyle
+public class ListLayoutRenderStyle
 	extends ARemoteViewLayoutRenderStyle {
 
 	/**
 	 * Constructor.
 	 */
-	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum) {
+	public ListLayoutRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);
 		initLayout();
 	}
@@ -28,7 +29,7 @@ public class JukeboxLayoutRenderStyle
 	/**
 	 * Constructor.
 	 */
-	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum,
+	public ListLayoutRenderStyle(IViewFrustum viewFrustum,
 		final ARemoteViewLayoutRenderStyle previousLayoutStyle) {
 		super(viewFrustum, previousLayoutStyle);
 		initLayout();
@@ -37,20 +38,21 @@ public class JukeboxLayoutRenderStyle
 	private void initLayout() {
 		eProjectionMode = EProjectionMode.ORTHOGRAPHIC;
 
-		fScalingFactorFocusLevel = 0.28f;
+		fScalingFactorFocusLevel = 0.32f;
 		fScalingFactorStackLevel = 0.13f;
 		fScalingFactorPoolLevel = 0.02f;
-		fScalingFactorSelectionLevel = 0.05f;
+		fScalingFactorSelectionLevel = 1f;
 		fScalingFactorTransitionLevel = 0.025f;
 		fScalingFactorSpawnLevel = 0.005f;
 	}
 
 	@Override
 	public RemoteLevel initFocusLevel() {
+
 		fScalingFactorFocusLevel = 4 * 0.045f / fAspectRatio;
 
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0f / fAspectRatio, -0.9f, 0f));
+		transform.setTranslation(new Vec3f(-0.5f / fAspectRatio, -1.4f, 0f));
 		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
 			fScalingFactorFocusLevel));
 
@@ -61,29 +63,20 @@ public class JukeboxLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initStackLevel(boolean bIsZoomedIn) {
-		float fTiltAngleDegree = 57; // degree
-		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		float fLayerYPos = 0.6f;
 		int iMaxLayers = 4;
 
 		// Create free pathway layer spots
 		Transform transform;
-		for (int iLevelIndex = 0; iLevelIndex < iMaxLayers; iLevelIndex++) {
+
+		for (int iLayerIndex = 0; iLayerIndex < iMaxLayers; iLayerIndex++) {
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-0.9f / fAspectRatio, fLayerYPos, 0f));
-
-			// DKT horizontal stack
-			// transform.setTranslation(new Vec3f(-2.7f + fLayerYPos, 1.1f, 0));
-			// transform.setRotation(new Rotf(new Vec3f(-0.7f, -1f, 0),
-			// fTiltAngleRad));
+			transform.setTranslation(new Vec3f(0, 0, 0f));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel,
 				fScalingFactorStackLevel));
-			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
+			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 
-			stackLevel.getElementByPositionIndex(iLevelIndex).setTransform(transform);
-
-			fLayerYPos -= 0.7f;
+			stackLevel.getElementByPositionIndex(iLayerIndex).setTransform(transform);
 		}
 
 		return stackLevel;
@@ -91,28 +84,28 @@ public class JukeboxLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID) {
-		float fSelectedScaling = 1;
-		float fYAdd = -1.4f;
+		Transform transform;
 
-		int iRemoteLevelElementID = 0;
+		float fSelectedScaling = 1;
+		float fYAdd = 1.4f;
+		int iRemoteLevelElementIndex = 0;
+
 		for (RemoteLevelElement element : poolLevel.getAllElements()) {
 			if (element.getID() == iSelectedRemoteLevelElementID) {
-				fSelectedScaling = 2;
+				fSelectedScaling = 1.3f;
 			}
 			else {
 				fSelectedScaling = 1;
 			}
 
-			Transform transform = new Transform();
+			transform = new Transform();
+			fYAdd -= 0.15f * fSelectedScaling;
 			transform.setTranslation(new Vec3f(-1.45f * 1 / fAspectRatio, fYAdd, 4.1f));
-
-			fYAdd += 0.19f * fSelectedScaling;
-
 			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLevel, fSelectedScaling
 				* fScalingFactorPoolLevel, fSelectedScaling * fScalingFactorPoolLevel));
 
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementID).setTransform(transform);
-			iRemoteLevelElementID++;
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(transform);
+			iRemoteLevelElementIndex++;
 		}
 
 		return poolLevel;
@@ -120,29 +113,20 @@ public class JukeboxLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initMemoLevel() {
-		Transform transform;
-		float fMemoPos = 0.0f;
-		for (int iMemoIndex = 0; iMemoIndex < selectionLevel.getCapacity(); iMemoIndex++) {
-			// Store current model-view matrix
-			transform = new Transform();
-			transform.setTranslation(new Vec3f(fMemoPos, -1.4f, 4.1f));
-			transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
-				fScalingFactorSelectionLevel));
+		fScalingFactorSelectionLevel = 0.82f;
 
-			selectionLevel.getElementByPositionIndex(0).setTransform(transform);;
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(1.6f / fAspectRatio - fPoolLayerWidth, -1.7f, 0f));
+		transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
+			fScalingFactorSelectionLevel));
 
-			fMemoPos += 0.42f;
-		}
+		selectionLevel.getElementByPositionIndex(0).setTransform(transform);
 
-		fTrashCanXPos = 1.3f / fAspectRatio;
-		fTrashCanYPos = -1.4f;
-		fTrashCanWidth = 0.3f;
-		fTrashCanHeight = 0.35f;
-
-		// fColorBarXPos = -0.1f / fAspectRatio;
-		// fColorBarYPos = -0.9f;
+		// Init color bar position
+		// fColorBarXPos = 1.1f / fAspectRatio;
+		// fColorBarYPos = -1;
 		// fColorBarWidth = 0.1f;
-		// fColorBarHeight = 2f;
+		// fColorBarHeight = 2.8f;
 
 		return selectionLevel;
 	}
@@ -166,7 +150,7 @@ public class JukeboxLayoutRenderStyle
 		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
 			fScalingFactorSpawnLevel));
 
-		spawnLevel.getElementByPositionIndex(0).setTransform(transform);;
+		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return spawnLevel;
 	}

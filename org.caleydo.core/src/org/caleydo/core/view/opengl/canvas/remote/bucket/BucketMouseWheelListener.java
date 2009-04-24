@@ -11,7 +11,6 @@ import java.awt.event.MouseWheelListener;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.

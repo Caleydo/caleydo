@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.renderstyle.layout;
+package org.caleydo.core.view.opengl.canvas.remote;
 
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;

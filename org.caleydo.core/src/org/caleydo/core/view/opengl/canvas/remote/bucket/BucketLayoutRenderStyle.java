@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.renderstyle.layout;
+package org.caleydo.core.view.opengl.canvas.remote.bucket;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -7,6 +7,7 @@ import gleem.linalg.open.Transform;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 

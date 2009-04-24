@@ -9,7 +9,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
 import com.sun.opengl.util.BufferUtil;
