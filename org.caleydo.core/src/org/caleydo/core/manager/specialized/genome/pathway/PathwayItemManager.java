@@ -3,7 +3,6 @@ package org.caleydo.core.manager.specialized.genome.pathway;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -77,6 +76,7 @@ public class PathwayItemManager
 
 				hashDavidIdToPathwayVertexGraphItemId.put(iDavidId, tmpGraphItem.getId());
 				hashPathwayVertexGraphItemIdToDavidId.put(tmpGraphItem.getId(), iDavidId);
+				alGraphItems.add(tmpGraphItem);
 			}
 		}
 
@@ -96,14 +96,9 @@ public class PathwayItemManager
 
 		pathwayVertexRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
 
-		Iterator<IGraphItem> iterVertexGraphItem = alVertexGraphItem.iterator();
-		IGraphItem pathwayVertex;
-		while (iterVertexGraphItem.hasNext()) {
-			pathwayVertex = iterVertexGraphItem.next();
-
-			pathwayVertexRep.addItem(pathwayVertex, EGraphItemProperty.ALIAS_PARENT);
-
-			pathwayVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
+		for (IGraphItem parentVertex : alVertexGraphItem) {
+			pathwayVertexRep.addItem(parentVertex, EGraphItemProperty.ALIAS_PARENT);
+			parentVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
 		}
 
 		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(),
