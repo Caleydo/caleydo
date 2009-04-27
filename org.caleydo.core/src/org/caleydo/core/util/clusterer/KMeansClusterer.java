@@ -131,7 +131,7 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-//		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
+		// ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
@@ -152,11 +152,13 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
-		VAId = cluster(set, idContent, idStorage, eClustererType);
+		iNrCluster = clusterState.getKMeansClusterCnt();
+		
+		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
 
 		return VAId;
 	}

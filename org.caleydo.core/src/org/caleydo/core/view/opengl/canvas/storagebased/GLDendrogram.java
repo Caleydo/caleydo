@@ -292,9 +292,33 @@ public class GLDendrogram
 
 		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
 			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+				.getPos().z());
+			gl.glEnd();
+
 		}
 		else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
 			gl.glColor4fv(SELECTED_COLOR, 0);
+
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+				.getPos().z());
+			gl.glEnd();
+
 		}
 		else {
 			gl.glColor4f(0, 0, 0, 1);
@@ -353,6 +377,8 @@ public class GLDendrogram
 			gl.glVertex3f(xmin - 0.1f, ymax, currentNode.getPos().z());
 			gl.glEnd();
 
+			gl.glColor4f(0, 0, 0, 1);
+
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				gl.glBegin(GL.GL_LINES);
@@ -367,6 +393,16 @@ public class GLDendrogram
 		else {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION,
 				currentNode.getClusterNr()));
+
+			if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+			}
+			else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+				gl.glColor4fv(SELECTED_COLOR, 0);
+			}
+			else {
+				gl.glColor4f(0, 0, 0, 1);
+			}
 
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
@@ -419,9 +455,9 @@ public class GLDendrogram
 
 			gl.glTranslatef(0.1f, 0, 0);
 			gl.glLineWidth(0.1f);
-			gl.glColor4f(0f, 0f, 0f, 1f);
 
 			renderDendrogram(gl, tree.getRoot());
+
 			renderCut(gl);
 
 			gl.glTranslatef(-0.1f, 0, 0);
@@ -519,7 +555,8 @@ public class GLDendrogram
 					case DRAGGED:
 						break;
 					case MOUSE_OVER:
-						System.out.println(tree.getNodeByNumber(iExternalID).getNodeName());
+						if (tree.getNodeByNumber(iExternalID) != null)
+							System.out.println(tree.getNodeByNumber(iExternalID).getNodeName());
 						break;
 				}
 

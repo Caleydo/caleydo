@@ -449,18 +449,20 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			fClusterFactor = 5.0f;
-		if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			fClusterFactor = 1.0f;
+//		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+//			fClusterFactor = 5.0f;
+//		if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+//			fClusterFactor = 1.0f;
 
-		determineSimilarities(set, idContent, idStorage, eClustererType);
+		fClusterFactor = clusterState.getAffinityPropClusterFactor();
+		
+		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
 
-		VAId = affinityPropagation(set, eClustererType);
+		VAId = affinityPropagation(set, clusterState.getClustererType());
 
 		return VAId;
 	}

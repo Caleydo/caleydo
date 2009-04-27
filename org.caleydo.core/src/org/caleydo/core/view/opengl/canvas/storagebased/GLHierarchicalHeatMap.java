@@ -252,7 +252,6 @@ public class GLHierarchicalHeatMap
 
 	}
 
-
 	@Override
 	public void initRemote(GL gl, int remoteViewID, PickingMouseListener pickingTriggerMouseAdapter,
 		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
@@ -269,6 +268,9 @@ public class GLHierarchicalHeatMap
 
 	}
 
+	/**
+	 * If no selected elements are in the current texture, the function switches the texture
+	 */
 	private void setTexture() {
 		boolean bSetCurrentTexture = true;
 
@@ -963,23 +965,23 @@ public class GLHierarchicalHeatMap
 	}
 
 	private void renderClassAssignmentsExperimentsLevel3(final GL gl) {
-		
+
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		int iNrElements = set.getVA(iStorageVAID).size();
 		float fWidthSamples = fWidthEHM / iNrElements;
 		float fxpos = fWidth + GAP_LEVEL2_3;
 		float fHeight = viewFrustum.getHeight() + 0.1f;
-		
+
 		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
 
 		int iNrClasses = groupList.size();
 
 		gl.glLineWidth(1f);
-		
+
 		for (int i = 0; i < iNrClasses; i++) {
 
-//			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-//				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+			// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			// EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
 
 			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
 
@@ -1003,13 +1005,13 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
 			gl.glEnd();
 
-//			gl.glPopName();
+			// gl.glPopName();
 
 			fxpos = fxpos + classWidth;
 		}
-		
+
 	}
-	
+
 	private void renderClassAssignmentsExperimentsLevel2(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
@@ -1958,38 +1960,18 @@ public class GLHierarchicalHeatMap
 		if (bUseClusteredVA) {
 			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
-				iContentVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
-						.getClustererType());
+				iContentVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
 
 			}
 			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-				// System.out.println("iStorageVAID before clustering " + iStorageVAID + " size: "
-				// + set.getVA(iStorageVAID).size());
-				// for (int i = 0; i < 6; i++) {
-				// System.out.print(set.getVA(iStorageVAID).get(i) + " ");
-				// }
-				// System.out.println(" ");
 
-				iStorageVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
-						.getClustererType());
+				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
 
-				// System.out.println("iStorageVAID after clustering  " + iStorageVAID + " size: "
-				// + set.getVA(iStorageVAID).size());
-				// for (int i = 0; i < 6; i++) {
-				// System.out.print(set.getVA(iStorageVAID).get(i) + " ");
-				// }
-				// System.out.println(" ");
 			}
 			else {
 
-				iStorageVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
-						EClustererType.EXPERIMENTS_CLUSTERING);
-				iContentVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
-						EClustererType.GENE_CLUSTERING);
+				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
+				iContentVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
 
 			}
 
@@ -2633,7 +2615,7 @@ public class GLHierarchicalHeatMap
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 }

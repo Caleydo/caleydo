@@ -8,6 +8,8 @@ import org.caleydo.rcp.dialog.file.StartClusteringDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -18,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -39,9 +42,11 @@ public class StartClusteringAction
 	private String clusterAlgo;
 	private String clusterType;
 	private String distmeasure;
+	private int clusterCnt = 0;
+	private float clusterFactor = 1f;
 
 	ClusterState clusterState = null;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -90,6 +95,32 @@ public class StartClusteringAction
 			}
 		});
 
+		ModifyListener listenerInt = new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				valueChangedInt((Text) e.widget);
+			}
+		};
+
+		ModifyListener listenerFloat = new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				valueChangedFloat((Text) e.widget);
+			}
+		};
+
+		Label lblClusterCnt = new Label(composite, SWT.NONE);
+		lblClusterCnt.setText("Cluster cnt for KMeans:");
+		lblClusterCnt.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+
+		final Text clusterCnt = new Text(composite, SWT.NONE);
+		clusterCnt.addModifyListener(listenerInt);
+
+		Label lblClusterFactor = new Label(composite, SWT.NONE);
+		lblClusterFactor.setText("Factor for affinity prop:");
+		lblClusterFactor.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+
+		final Text clusterFactor = new Text(composite, SWT.NONE);
+		clusterFactor.addModifyListener(listenerFloat);
+
 		Label lblClusterType = new Label(composite, SWT.NONE);
 		lblClusterType.setText("Cluster type:");
 		lblClusterType.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
@@ -131,34 +162,69 @@ public class StartClusteringAction
 
 			}
 		});
+	}
+
+	public void valueChangedInt(Text text) {
+		if (!text.isFocusControl())
+			return;
+
+		try {
+			clusterCnt = Integer.parseInt(text.getText());
+		}
+		catch (NumberFormatException e) {
+			System.out.println("unvalid input");
+		}
+
+	}
+
+	public void valueChangedFloat(Text text) {
+		if (!text.isFocusControl())
+			return;
+
+		float temp = 0;
+
+		try {
+			temp = Float.parseFloat(text.getText());
+			if (temp >= 1f && temp < 10)
+				clusterFactor = temp;
+		}
+		catch (NumberFormatException e) {
+			System.out.println("unvalid input");
+		}
 
 	}
 
 	public void execute() {
 
 		clusterState = new ClusterState();
-		
-		if(clusterAlgo.equals("cobweb"))
+
+		if (clusterAlgo.equals("cobweb"))
 			clusterState.setClustererAlgo(EClustererAlgo.COBWEB_CLUSTERER);
-		else if (clusterAlgo.equals("affi"))
+		else if (clusterAlgo.equals("affi")) {
 			clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+			clusterState.setAffinityPropClusterFactor(clusterFactor);
+		}
 		else if (clusterAlgo.equals("tree"))
 			clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-		else if (clusterAlgo.equals("kmeans"))
+		else if (clusterAlgo.equals("kmeans")) {
 			clusterState.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
-		
-		if(clusterType.equals("gene"))
+			if (clusterCnt != 0)
+				System.out.println(clusterCnt);
+			clusterState.setKMeansClusterCnt(clusterCnt);
+		}
+
+		if (clusterType.equals("gene"))
 			clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 		else if (clusterType.equals("exp"))
 			clusterState.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
 		else if (clusterType.equals("bi"))
 			clusterState.setClustererType(EClustererType.BI_CLUSTERING);
-		
-		if(distmeasure.equals("euclid"))
+
+		if (distmeasure.equals("euclid"))
 			clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		else if (distmeasure.equals("pearson"))
 			clusterState.setDistanceMeasure(EDistanceMeasure.PEARSON_CORRELATION);
-		
+
 	}
 
 	/**

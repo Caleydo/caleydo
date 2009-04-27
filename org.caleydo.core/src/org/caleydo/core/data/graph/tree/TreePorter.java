@@ -8,7 +8,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -33,7 +32,7 @@ public class TreePorter {
 
 	@XmlElementWrapper(name = "edges")
 	@XmlElement(name = "edge")
-	ArrayList<String> edges = new ArrayList<String>();
+	ArrayList<String[]> edges = new ArrayList<String[]>();
 
 	@XmlElementWrapper(name = "nodes")
 	@XmlElement(name = "node")
@@ -68,25 +67,14 @@ public class TreePorter {
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
 			hashClusterNodes.put(node.toString(), node);
-			// FIXME: find another way to determine root node
-			if (node.getNodeName().equals("Root"))
+			if (node.isRootNode())
 				rootNode = node;
 		}
 
-		for (String edge : treePorter.edges) {
-
-			StringTokenizer strTokenLine = new StringTokenizer(edge, "(");
-			String temp = strTokenLine.nextToken();
-			strTokenLine = new StringTokenizer(temp, ")");
-			temp = strTokenLine.nextToken();
-			strTokenLine = new StringTokenizer(temp, ":");
-
-			String Node1 = strTokenLine.nextToken().trim();
-			String Node2 = strTokenLine.nextToken().trim();
-
-			graph.addEdge(hashClusterNodes.get(Node1), hashClusterNodes.get(Node2));
-
+		for (String[] edge : treePorter.edges) {
+			graph.addEdge(hashClusterNodes.get(edge[0]), hashClusterNodes.get(edge[1]));
 		}
+
 		tree.setRootNode(rootNode);
 		tree.setGraph(graph);
 
@@ -97,9 +85,15 @@ public class TreePorter {
 
 		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) tree.graph.edgeSet();
 
-		// FIXME: edges should be stored in an other way (not as strings)
 		for (DefaultEdge edge : edgeSet) {
-			edges.add(edge.toString());
+			// ClusterNode temp[] = new ClusterNode[2];
+			// temp[0] = tree.graph.getEdgeSource(edge);
+			// temp[1] = tree.graph.getEdgeTarget(edge);
+
+			String temp[] = new String[2];
+			temp[0] = tree.graph.getEdgeSource(edge).getNodeName();
+			temp[1] = tree.graph.getEdgeTarget(edge).getNodeName();
+			edges.add(temp);
 		}
 
 		nodeSet = tree.graph.vertexSet();

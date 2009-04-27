@@ -29,16 +29,19 @@ public class ClusterNode
 	private Vec3f vPos;
 	@XmlElement
 	private ESelectionType eSelectionType;
+	@XmlElement
+	private boolean bIsRootNode;
 
 	public ClusterNode() {
 
 	}
 
-	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth) {
+	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth, boolean bIsRootNode) {
 		this.sNodeName = sNodeName;
 		this.iClusterNr = iClusterNr;
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
+		this.bIsRootNode = bIsRootNode;
 		this.setSelectionType(ESelectionType.NORMAL);
 	}
 
@@ -94,5 +97,9 @@ public class ClusterNode
 
 	public ESelectionType getSelectionType() {
 		return eSelectionType;
+	}
+
+	public boolean isRootNode() {
+		return bIsRootNode;
 	}
 }

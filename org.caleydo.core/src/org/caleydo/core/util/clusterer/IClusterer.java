@@ -17,6 +17,6 @@ public interface IClusterer {
 	 * @return Id of the sorted VirtualArray
 	 */
 	public Integer getSortedVAId(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
-		EClustererType eclClustererType);
+		ClusterState clusterState);
 
 }

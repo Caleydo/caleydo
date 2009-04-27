@@ -35,6 +35,9 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public void setRootNode(NodeType rootNode) {
 		this.rootNode = rootNode;
 		graph.addVertex(rootNode);
+		// TODO: this should be removed later on, only for testing purposes
+		if (rootNode instanceof ClusterNode)
+			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
 	}
 
 	/**

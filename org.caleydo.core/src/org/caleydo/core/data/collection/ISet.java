@@ -11,6 +11,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 
@@ -204,8 +205,8 @@ public interface ISet
 	public void log2();
 
 	/**
-	 * Creates a default virtual array for the storages in the set.
-	 * This means that each storages can be referenced.
+	 * Creates a default virtual array for the storages in the set. This means that each storages can be
+	 * referenced.
 	 * 
 	 * @return the unique id associated with the virtual array
 	 */
@@ -262,8 +263,7 @@ public interface ISet
 	 * @param bClusterGenes
 	 * @return Integer Id of virtual arrays holding cluster result
 	 */
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, EClustererAlgo eClustererAlgo,
-		EClustererType eClustererType);
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState);
 
 	/**
 	 * Sets clustered Tree
@@ -278,7 +278,7 @@ public interface ISet
 	 * @return Tree
 	 */
 	public Tree<ClusterNode> getClusteredTree();
-	
+
 	/**
 	 * Returns cluster sizes, determined by affinity clusterer
 	 * 
@@ -312,9 +312,9 @@ public interface ISet
 	public void setGroupNrInfo(int[] arGroupInfo);
 
 	public void setGroupReprInfo(int[] arGroupRepr);
-	
+
 	public GroupList getGroupList();
-	
+
 	public boolean isClusterInfo();
 
 	/**
@@ -327,6 +327,5 @@ public interface ISet
 	 *             when used on non-homogeneous sets
 	 */
 	public Histogram getHistogram() throws UnsupportedOperationException;
-
 
 }

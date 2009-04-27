@@ -5,6 +5,8 @@ public class ClusterState {
 	private EClustererAlgo eClustererAlgo;
 	private EClustererType eClustererType;
 	private EDistanceMeasure eDistanceMeasure;
+	private int iKMeansClusterCnt;
+	private float fAffinityPropClusterFactor;
 
 	public ClusterState() {
 
@@ -38,6 +40,22 @@ public class ClusterState {
 
 	public EDistanceMeasure getDistanceMeasure() {
 		return eDistanceMeasure;
+	}
+
+	public void setKMeansClusterCnt(int iKMeansClusterCnt) {
+		this.iKMeansClusterCnt = iKMeansClusterCnt;
+	}
+
+	public int getKMeansClusterCnt() {
+		return iKMeansClusterCnt;
+	}
+
+	public void setAffinityPropClusterFactor(float fAffinityPropClusterFactor) {
+		this.fAffinityPropClusterFactor = fAffinityPropClusterFactor;
+	}
+
+	public float getAffinityPropClusterFactor() {
+		return fAffinityPropClusterFactor;
 	}
 
 }
