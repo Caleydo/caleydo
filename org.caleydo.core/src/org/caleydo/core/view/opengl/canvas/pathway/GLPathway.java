@@ -647,6 +647,7 @@ public class GLPathway
 									new LoadPathwaysByGeneEvent();
 								loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
 								loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
+								generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
 							}
 						}
 						break;
