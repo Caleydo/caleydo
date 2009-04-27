@@ -3,7 +3,7 @@ package org.caleydo.core.view.opengl.util.overlay;
 import java.awt.Point;
 
 /**
- * Base class for overlays such as info areas or context menues
+ * Base class for overlays such as info areas or context menus
  * 
  * @author Alexander Lex
  */

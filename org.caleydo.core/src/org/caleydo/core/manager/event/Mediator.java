@@ -11,6 +11,7 @@ import org.caleydo.core.data.IUniqueObject;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
+@Deprecated
 public class Mediator
 	implements IMediator, IUniqueObject {
 	private EMediatorType eType;

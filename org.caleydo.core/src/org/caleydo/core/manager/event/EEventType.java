@@ -11,6 +11,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  * 
  * @author Alexander Lex
  */
+@Deprecated
 public enum EEventType {
 
 	/**

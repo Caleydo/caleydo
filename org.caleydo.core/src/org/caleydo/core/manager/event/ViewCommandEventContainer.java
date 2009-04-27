@@ -7,6 +7,7 @@ package org.caleydo.core.manager.event;
  * @author Alexander Lex
  * @author Marc Streit
  */
+@Deprecated
 public class ViewCommandEventContainer
 	extends AEventContainer {
 	private EViewCommand eViewCommand;

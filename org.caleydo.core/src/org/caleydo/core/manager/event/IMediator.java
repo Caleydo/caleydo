@@ -7,6 +7,7 @@ import org.caleydo.core.data.IUniqueObject;
  * @author Marc Streit
  * @author Alexander Lex
  */
+@Deprecated
 public interface IMediator
 	extends IUniqueObject {
 

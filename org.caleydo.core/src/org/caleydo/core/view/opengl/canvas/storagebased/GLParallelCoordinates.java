@@ -79,6 +79,9 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.overlay.contextmenue.ContextMenue;
+import org.caleydo.core.view.opengl.util.overlay.contextmenue.item.AddToListItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenue.item.LoadPathwayItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -156,7 +159,6 @@ public class GLParallelCoordinates
 
 	private boolean bIsTranslationActive = false;
 
-
 	private boolean bAngularBrushingSelectPolyline = false;
 	private boolean bIsAngularBrushingActive = false;
 	private boolean bIsAngularBrushingFirstTime = false;
@@ -203,7 +205,8 @@ public class GLParallelCoordinates
 	boolean bShowSelectionHeatMap = false;
 
 	private GLInfoAreaManager infoAreaManager;
-	
+
+	private ContextMenue contextMenue;
 
 	/**
 	 * Constructor.
@@ -231,7 +234,6 @@ public class GLParallelCoordinates
 		iNumberOfRandomElements =
 			generalManager.getPreferenceStore().getInt(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
 
-		
 		// glSelectionHeatMap =
 		// ((ViewManager)generalManager.getViewGLCanvasManager()).getSelectionHeatMap();
 	}
@@ -253,15 +255,14 @@ public class GLParallelCoordinates
 		// remoteRenderingGLCanvas);
 
 		createSelectionHeatMap(gl);
-		
+
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
-		
+		contextMenue = new ContextMenue(iUniqueID);
+
 		init(gl);
 	}
-
-
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
@@ -291,10 +292,7 @@ public class GLParallelCoordinates
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 
-		
 	}
-
-	
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
@@ -315,11 +313,13 @@ public class GLParallelCoordinates
 
 		checkForHits(gl);
 
+		contextMenue.render(gl);
 		display(gl);
-//		if (isEnabled) {
-			infoAreaManager.renderInPlaceInfo(gl);
-//			bInfoAreaFirstTime = false;
-//		}
+	
+//		infoAreaManager.renderInPlaceInfo(gl);
+
+
+	
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
@@ -388,8 +388,6 @@ public class GLParallelCoordinates
 				-0.002f);
 		}
 
-	
-
 		// focusOnArea();
 		// TODO another display list
 		clipToFrustum(gl);
@@ -411,8 +409,6 @@ public class GLParallelCoordinates
 			}
 		}
 
-	
-
 		// checkUnselection();
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
@@ -427,8 +423,7 @@ public class GLParallelCoordinates
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
-		
-		
+
 	}
 
 	private void createSelectionHeatMap(GL gl) {
@@ -451,7 +446,7 @@ public class GLParallelCoordinates
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 	}
-	
+
 	/**
 	 * Choose whether to render one array as a polyline and every entry across arrays is an axis or whether
 	 * the array corresponds to an axis and every entry across arrays is a polyline
@@ -1900,13 +1895,27 @@ public class GLParallelCoordinates
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
 
+					case RIGHT_CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
+						contextMenue = new ContextMenue(iUniqueID);
+						contextMenue.addContextMenueItem(new LoadPathwayItem());
+						contextMenue.addContextMenueItem(new AddToListItem());
+						contextMenue.addContextMenueItem(new LoadPathwayItem());
+						contextMenue.addContextMenueItem(new AddToListItem());
+						contextMenue.addContextMenueItem(new LoadPathwayItem());
+						contextMenue.addContextMenueItem(new AddToListItem());
+						contextMenue.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
+						
+						break;
+
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 
 				}
-			
-//				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), pick.getDepth());
+
+				// infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(),
+				// pick.getDepth());
 
 				if (polylineSelectionManager.checkStatus(eSelectionType, iExternalID)) {
 					break;
@@ -2743,7 +2752,7 @@ public class GLParallelCoordinates
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 }

@@ -312,7 +312,7 @@ public class GLRemoteRendering
 		registerEventListeners();
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
-		contextMenue = new ContextMenue();
+		contextMenue = new ContextMenue(iUniqueID);
 	}
 
 	@Override
@@ -2154,7 +2154,7 @@ public class GLRemoteRendering
 						break;
 					case RIGHT_CLICKED:
 						contextMenue.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
-						contextMenue.setData();
+//						contextMenue.setData();
 						break;
 						
 				}

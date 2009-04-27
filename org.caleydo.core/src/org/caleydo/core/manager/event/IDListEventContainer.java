@@ -9,6 +9,7 @@ import org.caleydo.core.data.mapping.EIDType;
  * 
  * @author Alexander Lex
  */
+@Deprecated
 public class IDListEventContainer<T>
 	extends AEventContainer {
 	ArrayList<T> alIDs;
