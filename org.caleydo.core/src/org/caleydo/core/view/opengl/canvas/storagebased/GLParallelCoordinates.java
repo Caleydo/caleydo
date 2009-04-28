@@ -63,6 +63,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -80,9 +81,9 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenue.ContextMenue;
-import org.caleydo.core.view.opengl.util.overlay.contextmenue.item.AddToListItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenue.item.LoadPathwayItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AddToListItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadAllPathwaysByGeneItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -207,8 +208,6 @@ public class GLParallelCoordinates
 
 	private GLInfoAreaManager infoAreaManager;
 
-	private ContextMenue contextMenue;
-
 	/**
 	 * Constructor.
 	 */
@@ -259,8 +258,6 @@ public class GLParallelCoordinates
 
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
-
-		contextMenue = new ContextMenue(iUniqueID);
 
 		init(gl);
 	}
@@ -314,13 +311,10 @@ public class GLParallelCoordinates
 
 		checkForHits(gl);
 
-		contextMenue.render(gl);
 		display(gl);
-	
-//		infoAreaManager.renderInPlaceInfo(gl);
 
+		// infoAreaManager.renderInPlaceInfo(gl);
 
-	
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
@@ -424,6 +418,9 @@ public class GLParallelCoordinates
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
+
+		if (!isRenderedRemote())
+			contextMenu.render(gl, iUniqueID);
 
 	}
 
@@ -1865,6 +1862,7 @@ public class GLParallelCoordinates
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
+		contextMenu.disable();
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case PCS_VIEW_SELECTION:
@@ -1898,15 +1896,30 @@ public class GLParallelCoordinates
 
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
-						contextMenue = new ContextMenue(iUniqueID);
-						contextMenue.addContextMenueItem(new LoadPathwayItem());
-						contextMenue.addContextMenueItem(new AddToListItem());
-						contextMenue.addContextMenueItem(new LoadPathwayItem());
-						contextMenue.addContextMenueItem(new AddToListItem());
-						contextMenue.addContextMenueItem(new LoadPathwayItem());
-						contextMenue.addContextMenueItem(new AddToListItem());
-						contextMenue.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
-						
+
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterViewID(iUniqueID);
+						}
+
+						// }
+						// else
+						// {
+						// contextMenu.setMasterViewID(getRemoteRenderingGLCanvas().getID());
+						// }
+
+						LoadAllPathwaysByGeneItem loadAllPathwaysByGeneItem = new LoadAllPathwaysByGeneItem();
+						loadAllPathwaysByGeneItem.setRefSeqInt(IDMappingHelper.get()
+							.getRefSeqFromStorageIndex(iExternalID));
+						contextMenu.addContextMenueItem(loadAllPathwaysByGeneItem);
+
+						// contextMenu.addContextMenueItem(new AddToListItem());
+						// contextMenu.addContextMenueItem(new LoadAllPathwaysByGeneItem());
+						// contextMenu.addContextMenueItem(new AddToListItem());
+						// contextMenu.addContextMenueItem(new LoadAllPathwaysByGeneItem());
+						// contextMenu.addContextMenueItem(new AddToListItem());
+
 						break;
 
 					default:

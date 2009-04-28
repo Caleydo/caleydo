@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -10,7 +11,7 @@ import org.caleydo.core.view.serialize.ASerializedView;
  * 
  * @author Marc Streit
  */
-public interface IGLCanvasRemoteRendering {
+public interface IGLCanvasRemoteRendering extends IUniqueObject {
 
 	// public RemoteLevel getHierarchyLayerByGLEventListenerId(
 	// final int iGLEventListenerId);

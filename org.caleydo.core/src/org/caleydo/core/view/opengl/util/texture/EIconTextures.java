@@ -65,7 +65,7 @@ public enum EIconTextures {
 	CELL_MODEL("resources/models/cell.jpg"),
 	
 	// context menue elements
-	LOAD_DEPENDEN_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
+	LOAD_DEPENDING_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
 	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png");
 
 	private String sFileName;
