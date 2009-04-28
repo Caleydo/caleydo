@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -470,8 +471,12 @@ public class GLHeatMap
 							eSelectionType)));
 
 					handleConnectedElementRep(selectionDelta);
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-						selectionDelta));
+					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSelectionDelta(selectionDelta);
+					eventPublisher.triggerEvent(event);
+					
+					// fixme old style because of private mediator
+					// triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 				}
 
 				setDisplayListDirty();
@@ -518,8 +523,9 @@ public class GLHeatMap
 						EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
 							eSelectionType)));
 					ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-						selectionDelta));
+					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSelectionDelta(selectionDelta);
+					eventPublisher.triggerEvent(event);
 				}
 				setDisplayListDirty();
 				break;
@@ -1065,7 +1071,14 @@ public class GLHeatMap
 	@Override
 	public synchronized void broadcastElements() {
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(delta));
+
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSelectionDelta(delta);
+		eventPublisher.triggerEvent(event);
+
+		// fixme old style because of private mediator
+		// triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(delta));
+
 		setDisplayListDirty();
 	}
 

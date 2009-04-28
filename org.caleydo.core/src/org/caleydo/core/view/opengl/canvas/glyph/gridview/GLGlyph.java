@@ -37,6 +37,7 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -253,8 +254,9 @@ public class GLGlyph
 		if (selectionDelta.getAllItems().size() > 0) {
 			handleConnectedElementRep(selectionDelta);
 
-			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR, this,
-				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSelectionDelta(selectionDelta);
+			eventPublisher.triggerEvent(event);
 		}
 	}
 

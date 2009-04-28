@@ -37,6 +37,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IMediator;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -654,7 +655,7 @@ public class GLHierarchicalHeatMap
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(String trigger) {
+	protected void reactOnExternalSelection(boolean scrollToSelection) {
 		int iIndex = 0;
 		int iTemp = 0;
 		int iTexture = 0;
@@ -736,8 +737,8 @@ public class GLHierarchicalHeatMap
 		}
 
 		if (bSkipLevel1 == false) {
-			// if selected element is in another texture, switch to this texture
-			if (!trigger.equals("GLHeatMap")) {
+//			if (!trigger.equals("GLHeatMap")) {
+			if (scrollToSelection) {
 				setTexture();
 			}
 		}
@@ -1888,7 +1889,8 @@ public class GLHierarchicalHeatMap
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		if (selectionDelta.size() > 0) {
-			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+			glHeatMapView.handleSelectionUpdate(selectionDelta, true);
+			// privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 
 		// selected experiments
@@ -1919,7 +1921,8 @@ public class GLHierarchicalHeatMap
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(deltaExp));
 		if (selectionDeltaEx.size() > 0) {
-			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
+			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true);
+			//privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
 		}
 
 	}

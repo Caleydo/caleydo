@@ -48,6 +48,7 @@ import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -2796,8 +2797,9 @@ public class GLRemoteRendering
 	private void triggerMostRecentDelta() {
 		// Trigger last delta to new views
 		if (lastSelectionDelta != null) {
-			triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-				lastSelectionDelta));
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSelectionDelta(lastSelectionDelta);
+			eventPublisher.triggerEvent(event);
 		}
 	}
 

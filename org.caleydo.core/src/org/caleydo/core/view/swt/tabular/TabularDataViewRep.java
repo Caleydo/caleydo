@@ -31,6 +31,7 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
@@ -836,8 +837,9 @@ public class TabularDataViewRep
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 			EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-			selectionDelta));
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSelectionDelta(selectionDelta);
+		eventPublisher.triggerEvent(event);
 	}
 
 	private void triggerStorageSelectionEvent(int iStorageIndex, ESelectionType eSelectionType) {
@@ -850,8 +852,9 @@ public class TabularDataViewRep
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 			EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-			selectionDelta));
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSelectionDelta(selectionDelta);
+		eventPublisher.triggerEvent(event);
 	}
 
 	@Override

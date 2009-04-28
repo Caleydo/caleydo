@@ -64,6 +64,7 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -1784,7 +1785,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	protected void reactOnExternalSelection(String trigger) {
+	protected void reactOnExternalSelection(boolean scrollToSelection) {
 		handleUnselection();
 		resetAxisSpacing();
 	}
@@ -1953,9 +1954,9 @@ public class GLParallelCoordinates
 							eSelectionType)));
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-						selectionDelta));
-
+					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSelectionDelta(selectionDelta);
+					eventPublisher.triggerEvent(event);
 				}
 
 				setDisplayListDirty();
@@ -2000,8 +2001,9 @@ public class GLParallelCoordinates
 				if (eAxisDataType == EIDType.EXPRESSION_INDEX) {
 					handleConnectedElementRep(selectionDelta);
 				}
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-					selectionDelta));
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSelectionDelta(selectionDelta);
+				eventPublisher.triggerEvent(event);
 
 				rePosition(iExternalID);
 				setDisplayListDirty();

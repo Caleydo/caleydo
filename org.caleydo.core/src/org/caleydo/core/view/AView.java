@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -21,7 +22,10 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class AView
 	extends AUniqueObject
 	implements IView {
+
 	protected IGeneralManager generalManager;
+	
+	protected IEventPublisher eventPublisher;
 
 	protected transient ISetManager setManager;
 
@@ -43,6 +47,7 @@ public abstract class AView
 		super(iViewID);
 
 		generalManager = GeneralManager.get();
+		eventPublisher = generalManager.getEventPublisher();
 		setManager = generalManager.getSetManager();
 
 		this.iParentContainerId = iParentContainerId;

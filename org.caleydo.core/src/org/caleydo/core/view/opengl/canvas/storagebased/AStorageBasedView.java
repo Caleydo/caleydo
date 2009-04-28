@@ -22,18 +22,21 @@ import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.SelectionUpdateListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -97,6 +100,8 @@ public abstract class AStorageBasedView
 
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
+	SelectionUpdateListener selectionUpdateListener = null;
+		
 	/**
 	 * Constructor for storage based views
 	 * 
@@ -121,6 +126,7 @@ public abstract class AStorageBasedView
 		// false);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
+		registerEventListeners();
 	}
 
 	/**
@@ -302,7 +308,7 @@ public abstract class AStorageBasedView
 	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException;
 
-	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta) {
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -315,7 +321,7 @@ public abstract class AStorageBasedView
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementRep(internalDelta);
-			reactOnExternalSelection(eventTrigger.getClass().getSimpleName());
+			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
 
@@ -325,7 +331,7 @@ public abstract class AStorageBasedView
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
-			reactOnExternalSelection(eventTrigger.getClass().getSimpleName());
+			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
 
@@ -361,7 +367,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection(String trigger) {
+	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
 	}
 
@@ -412,7 +418,7 @@ public abstract class AStorageBasedView
 			case SELECTION_UPDATE:
 				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
 					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer.getSelectionDelta());
+				handleSelectionUpdate(selectionDeltaEventContainer.getSelectionDelta(), true);
 				break;
 			case VA_UPDATE:
 				if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
@@ -597,4 +603,26 @@ public abstract class AStorageBasedView
 		return contentSelectionManager.getElements(eSelectionType).size();
 	}
 
+	/**
+	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
+	 */
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setView(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
+	}
+
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+	}
+
+	
 }

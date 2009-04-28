@@ -47,6 +47,7 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -682,9 +683,11 @@ public class GLPathway
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 					EIDType.REFSEQ_MRNA_INT,
 					new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-					selectionDelta));
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSelectionDelta(selectionDelta);
+				eventPublisher.triggerEvent(event);
 
 				break;
 		}
