@@ -16,10 +16,6 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -48,15 +44,15 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Bernhard Schlegl
  */
 public class GLDendrogram
-	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver {
+	extends AGLEventListener {
 
 	boolean bUseDetailLevel = true;
 	ISet set;
 
 	private Tree<ClusterNode> tree;
-	private ColorMapping colorMapping;
 	DendrogramRenderStyle renderStyle;
+
+	private boolean bRenderGeneTree = true;
 
 	private boolean bIsDraggingActive = false;
 	private float fPosCut = 0.0f;
@@ -65,6 +61,8 @@ public class GLDendrogram
 	private float xmax = 6;
 	private float fSampleHeight = 0;
 	private float fLevelHeight = 0;
+
+	private ColorMapping colorMapper;
 
 	private TreePorter treePorter = new TreePorter();
 
@@ -82,9 +80,8 @@ public class GLDendrogram
 
 		viewType = EManagedObjectType.GL_DENDOGRAM;
 
-		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
+		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 	}
 
 	@Override
@@ -100,7 +97,10 @@ public class GLDendrogram
 			tree = null;
 		}
 
-		tree = set.getClusteredTree();
+		if (bRenderGeneTree)
+			tree = set.getClusteredTreeGenes();
+		else
+			tree = set.getClusteredTreeExps();
 
 	}
 
@@ -137,6 +137,9 @@ public class GLDendrogram
 
 	@Override
 	public synchronized void displayLocal(GL gl) {
+		if (set == null)
+			return;
+
 		pickingManager.handlePicking(iUniqueID, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -155,6 +158,9 @@ public class GLDendrogram
 
 	@Override
 	public synchronized void displayRemote(GL gl) {
+		if (set == null)
+			return;
+
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
@@ -321,7 +327,13 @@ public class GLDendrogram
 
 		}
 		else {
-			gl.glColor4f(0, 0, 0, 1);
+			float fLookupValue = currentNode.getAverageExpressionValue();
+
+			float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+			float fOpacity = 1;
+
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+
 		}
 
 		float fDiff = 0;
@@ -359,15 +371,22 @@ public class GLDendrogram
 
 			fDiff = fTemp - xmin;
 
-			if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
-				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-			}
-			else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
-				gl.glColor4fv(SELECTED_COLOR, 0);
-			}
-			else {
-				gl.glColor4f(0, 0, 0, 1);
-			}
+			// if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+			// gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+			// }
+			// else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+			// gl.glColor4fv(SELECTED_COLOR, 0);
+			// }
+			// else {
+			// gl.glColor4f(0, 0, 0, 1);
+			// }
+
+			float fLookupValue = currentNode.getAverageExpressionValue();
+
+			float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+			float fOpacity = 1;
+
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION,
 				currentNode.getClusterNr()));
@@ -394,15 +413,22 @@ public class GLDendrogram
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_SELECTION,
 				currentNode.getClusterNr()));
 
-			if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
-				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-			}
-			else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
-				gl.glColor4fv(SELECTED_COLOR, 0);
-			}
-			else {
-				gl.glColor4f(0, 0, 0, 1);
-			}
+			// if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+			// gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+			// }
+			// else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+			// gl.glColor4fv(SELECTED_COLOR, 0);
+			// }
+			// else {
+			// gl.glColor4f(0, 0, 0, 1);
+			// }
+
+			float fLookupValue = currentNode.getAverageExpressionValue();
+
+			float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+			float fOpacity = 1;
+
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
@@ -414,15 +440,22 @@ public class GLDendrogram
 			gl.glPopName();
 		}
 
-		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
-			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-		}
-		else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
-			gl.glColor4fv(SELECTED_COLOR, 0);
-		}
-		else {
-			gl.glColor4f(0, 0, 0, 1);
-		}
+		// if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
+		// gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+		// }
+		// else if (currentNode.getSelectionType() == ESelectionType.SELECTION) {
+		// gl.glColor4fv(SELECTED_COLOR, 0);
+		// }
+		// else {
+		// gl.glColor4f(0, 0, 0, 1);
+		// }
+
+		float fLookupValue = currentNode.getAverageExpressionValue();
+
+		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+		float fOpacity = 1;
+
+		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(currentNode.getPos().x() - fDiff - 0.1f, currentNode.getPos().y(), currentNode.getPos()
@@ -437,15 +470,19 @@ public class GLDendrogram
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		if (tree == null) {
-			tree = set.getClusteredTree();
-			// tree = treePorter.importTree("mit_namen.xml");
+			if (bRenderGeneTree)
+				tree = set.getClusteredTreeGenes();
+			else
+				tree = set.getClusteredTreeExps();
+
+			// tree = treePorter.importTree("riesen_baum.xml");
 
 			renderSymbol(gl);
 
 		}
 		else {
 
-			if (tree != null) {
+			if (tree != null && bRenderGeneTree) {
 				xmax = viewFrustum.getWidth() - 0.2f;
 				fSampleHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getNrElements();
 				fLevelHeight = (viewFrustum.getWidth() - 3f) / tree.getRoot().getDepth();
@@ -549,7 +586,8 @@ public class GLDendrogram
 				switch (pickingMode) {
 
 					case CLICKED:
-						tree.getNodeByNumber(iExternalID).setSelectionType(ESelectionType.SELECTION);
+						if (tree.getNodeByNumber(iExternalID) != null)
+							tree.getNodeByNumber(iExternalID).setSelectionType(ESelectionType.SELECTION);
 						setDisplayListDirty();
 						break;
 					case DRAGGED:
@@ -586,19 +624,6 @@ public class GLDendrogram
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType mediatorType) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

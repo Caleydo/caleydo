@@ -86,10 +86,6 @@ public class TreePorter {
 		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) tree.graph.edgeSet();
 
 		for (DefaultEdge edge : edgeSet) {
-			// ClusterNode temp[] = new ClusterNode[2];
-			// temp[0] = tree.graph.getEdgeSource(edge);
-			// temp[1] = tree.graph.getEdgeTarget(edge);
-
 			String temp[] = new String[2];
 			temp[0] = tree.graph.getEdgeSource(edge).getNodeName();
 			temp[1] = tree.graph.getEdgeTarget(edge).getNodeName();

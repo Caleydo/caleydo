@@ -146,7 +146,11 @@ public class HierarchicalClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
-		set.setClusteredTree(tree);
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			set.setClusteredTreeGenes(tree);
+		else
+			set.setClusteredTreeExps(tree);
+		
 		set.setAlClusterSizes(temp);
 		set.setAlExamples(alExamples);
 

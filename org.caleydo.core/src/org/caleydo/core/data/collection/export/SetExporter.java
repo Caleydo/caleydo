@@ -115,7 +115,7 @@ public class SetExporter {
 			out.close();
 
 			// export cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getClusteredTree();
+			Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				if (treePorter.exportTree(sFileName + ".xml", tree) == false)

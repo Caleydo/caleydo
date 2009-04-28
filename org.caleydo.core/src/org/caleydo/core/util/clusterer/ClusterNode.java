@@ -31,6 +31,10 @@ public class ClusterNode
 	private ESelectionType eSelectionType;
 	@XmlElement
 	private boolean bIsRootNode;
+	@XmlElement
+	private float fAverageExpressionValue;
+	@XmlElement
+	private float fStandardDeviation;
 
 	public ClusterNode() {
 
@@ -42,7 +46,9 @@ public class ClusterNode
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
 		this.bIsRootNode = bIsRootNode;
-		this.setSelectionType(ESelectionType.NORMAL);
+		this.eSelectionType = ESelectionType.NORMAL;
+		this.fAverageExpressionValue = 0f;
+		this.fStandardDeviation = 0f;
 	}
 
 	@Override
@@ -101,5 +107,21 @@ public class ClusterNode
 
 	public boolean isRootNode() {
 		return bIsRootNode;
+	}
+
+	public void setAverageExpressionValue(float fAverageExpressionValue) {
+		this.fAverageExpressionValue = fAverageExpressionValue;
+	}
+
+	public float getAverageExpressionValue() {
+		return fAverageExpressionValue;
+	}
+
+	public void setStandardDeviation(float fStandardDeviation) {
+		this.fStandardDeviation = fStandardDeviation;
+	}
+
+	public float getStandardDeviation() {
+		return fStandardDeviation;
 	}
 }

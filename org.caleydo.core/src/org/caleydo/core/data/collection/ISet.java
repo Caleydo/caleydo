@@ -266,19 +266,33 @@ public interface ISet
 	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState);
 
 	/**
-	 * Sets clustered Tree
+	 * Sets clustered Tree for genes
 	 * 
 	 * @param Tree
 	 */
-	public void setClusteredTree(Tree<ClusterNode> clusteredTree);
+	public void setClusteredTreeGenes(Tree<ClusterNode> clusteredTree);
 
 	/**
-	 * Returns clustered Tree
+	 * Returns clustered Tree for genes
 	 * 
 	 * @return Tree
 	 */
-	public Tree<ClusterNode> getClusteredTree();
+	public Tree<ClusterNode> getClusteredTreeGenes();
 
+	/**
+	 * Sets clustered Tree for experiments
+	 * 
+	 * @param Tree
+	 */
+	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTree);
+	
+	/**
+	 * Returns clustered Tree for experiments
+	 * 
+	 * @return Tree
+	 */
+	public Tree<ClusterNode> getClusteredTreeExps();
+	
 	/**
 	 * Returns cluster sizes, determined by affinity clusterer
 	 * 

@@ -17,7 +17,7 @@ public class KMeansClusterer
 
 	private SimpleKMeans clusterer = null;
 
-	private int iNrCluster = 15;
+	private int iNrCluster = 5;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
@@ -145,6 +145,10 @@ public class KMeansClusterer
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result in Set
+		
+//		count.set(1, 55);
+//		count.set(2, 2);
+//		count.set(3, 2);
 		set.setAlClusterSizes(count);
 		set.setAlExamples(alExamples);
 
@@ -157,7 +161,7 @@ public class KMeansClusterer
 		Integer VAId = 0;
 
 		iNrCluster = clusterState.getKMeansClusterCnt();
-		
+
 		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
 
 		return VAId;

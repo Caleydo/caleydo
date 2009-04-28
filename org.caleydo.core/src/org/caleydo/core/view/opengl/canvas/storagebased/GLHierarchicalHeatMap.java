@@ -17,7 +17,6 @@ import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -42,9 +41,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -146,8 +143,6 @@ public class GLHierarchicalHeatMap
 	private float fPosCursorLastElement = 0;
 
 	// clustering/grouping stuff
-	private Tree<ClusterNode> tree = null;
-
 	private ClusterState clusterstate = new ClusterState();
 
 	private boolean bSplitGroupExp = false;
@@ -1690,7 +1685,7 @@ public class GLHierarchicalHeatMap
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
 		}
-
+		
 		if (bIsDraggingActive) {
 			handleCursorDragging(gl);
 			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
@@ -1975,22 +1970,6 @@ public class GLHierarchicalHeatMap
 
 			}
 
-			if (clusterstate.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER
-				|| clusterstate.getClustererAlgo() == EClustererAlgo.TREE_CLUSTERER) {
-				tree = set.getClusteredTree();
-			}
-			else {
-
-				// System.out.println("\n number of elements per cluster ... ");
-				// for (Integer iter : set.getAlClusterSizes()) {
-				// System.out.print(iter + " ");
-				// }
-				// System.out.println("\n index of example for cluster in data set ... ");
-				// for (Integer iter : set.getAlExamples()) {
-				// System.out.print(iter + " ");
-				// }
-				// System.out.println(" ");
-			}
 		}
 		else if (set.isClusterInfo()) {
 			set.getVA(iContentVAID).setGroupList(set.getGroupList());

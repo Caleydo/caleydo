@@ -68,7 +68,8 @@ public class Set
 	// clustering stuff
 	private ArrayList<Integer> alClusterSizes = null;
 	private ArrayList<Integer> alClusterExamples = null;
-	private Tree<ClusterNode> clusteredTree;
+	private Tree<ClusterNode> clusteredTreeGenes;
+	private Tree<ClusterNode> clusteredTreeExps;
 	private GroupList groupList = new GroupList(0);
 	private boolean bClusterInfo = false;
 
@@ -555,8 +556,8 @@ public class Set
 			IVirtualArray virtualArray = getVA(VAId);
 
 			if (clusterState.getClustererAlgo() == EClustererAlgo.AFFINITY_PROPAGATION
-				|| clusterState.getClustererAlgo() == EClustererAlgo.KMEANS_CLUSTERER
-				|| clusterState.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER) {
+				|| clusterState.getClustererAlgo() == EClustererAlgo.KMEANS_CLUSTERER) {
+				// || clusterState.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER) {
 
 				IGroupList groupList = new GroupList(virtualArray.size());
 
@@ -596,16 +597,6 @@ public class Set
 	@Override
 	public void setAlExamples(ArrayList<Integer> alExamples) {
 		this.alClusterExamples = alExamples;
-	}
-
-	@Override
-	public void setClusteredTree(Tree<ClusterNode> clusteredTree) {
-		this.clusteredTree = clusteredTree;
-	}
-
-	@Override
-	public Tree<ClusterNode> getClusteredTree() {
-		return clusteredTree;
 	}
 
 	@Override
@@ -653,6 +644,26 @@ public class Set
 	@Override
 	public GroupList getGroupList() {
 		return this.groupList;
+	}
+
+	@Override
+	public void setClusteredTreeGenes(Tree<ClusterNode> clusteredTreeGenes) {
+		this.clusteredTreeGenes = clusteredTreeGenes;
+	}
+
+	@Override
+	public Tree<ClusterNode> getClusteredTreeGenes() {
+		return clusteredTreeGenes;
+	}
+
+	@Override
+	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTreeExps) {
+		this.clusteredTreeExps = clusteredTreeExps;
+	}
+
+	@Override
+	public Tree<ClusterNode> getClusteredTreeExps() {
+		return clusteredTreeExps;
 	}
 
 }

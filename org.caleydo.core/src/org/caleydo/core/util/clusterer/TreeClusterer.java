@@ -175,7 +175,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer palcluster() {
+	private Integer palcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -265,13 +265,76 @@ public class TreeClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
+		determineExpressionValue(eClustererType);
+
 		AlIndexes = getAl();
 
-		set.setClusteredTree(tree);
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			set.setClusteredTreeGenes(tree);
+		else
+			set.setClusteredTreeExps(tree);
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
 		return clusteredVAId;
+	}
+
+	private void determineExpressionValue(EClustererType eClustererType) {
+
+		determineExpressionValueRec(tree.getRoot(), eClustererType);
+	}
+
+	private float determineExpressionValueRec(ClusterNode node, EClustererType eClustererType) {
+
+		if (tree.hasChildren(node)) {
+			float temp[] = new float[tree.getChildren(node).size()];
+			int cnt = 0;
+
+			for (ClusterNode current : tree.getChildren(node)) {
+				temp[cnt] = determineExpressionValueRec(current, eClustererType);
+				cnt++;
+			}
+
+			float mean = ClusterHelper.arithmeticMean(temp);
+			float deviation = ClusterHelper.standardDeviation(temp, mean);
+
+			node.setAverageExpressionValue(mean);
+			node.setStandardDeviation(deviation);
+		}
+		else {
+			float averageExpressionvalue = 0f;
+			float[] fArExpressionValues;
+
+			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+				IVirtualArray storageVA = set.getVA(idStorage);
+				fArExpressionValues = new float[storageVA.size()];
+
+				int isto = 0;
+				for (Integer iStorageIndex1 : storageVA) {
+					fArExpressionValues[isto] =
+						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, node.getClusterNr());
+					isto++;
+				}
+
+			}
+			else {
+				IVirtualArray contentVA = set.getVA(idContent);
+				fArExpressionValues = new float[contentVA.size()];
+
+				int isto = 0;
+				for (Integer iContentIndex1 : contentVA) {
+					fArExpressionValues[isto] =
+						set.get(node.getClusterNr()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+					isto++;
+				}
+			}
+			averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
+			float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+			node.setAverageExpressionValue(averageExpressionvalue);
+			node.setStandardDeviation(deviation);
+		}
+
+		return node.getAverageExpressionValue();
 	}
 
 	/**
@@ -281,7 +344,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer pmlcluster() {
+	private Integer pmlcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -350,9 +413,14 @@ public class TreeClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
+		determineExpressionValue(eClustererType);
+
 		AlIndexes = getAl();
 
-		set.setClusteredTree(tree);
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			set.setClusteredTreeGenes(tree);
+		else
+			set.setClusteredTreeExps(tree);
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
@@ -467,8 +535,8 @@ public class TreeClusterer
 		this.idContent = idContent;
 		this.idStorage = idStorage;
 
-		VAId = pmlcluster();
-		// VAId = palcluster();
+		// VAId = pmlcluster(clusterState.getClustererType());
+		VAId = palcluster(clusterState.getClustererType());
 
 		return VAId;
 	}
