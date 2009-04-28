@@ -12,10 +12,13 @@ public class SelectionUpdateEvent
 	extends AEvent {
 	
 	/** delta between old and new selection */
-	ISelectionDelta selectionDelta;
+	private ISelectionDelta selectionDelta;
 
 	/** tells if the selection should be focused (centered, ...) by the receiver */
-	boolean scrollToSelection = true;
+	private boolean scrollToSelection = true;
+	
+	/**	additional information about the selection, e.g. to display in the info-box */
+	private String info;
 	
 	public ISelectionDelta getSelectionDelta() {
 		return selectionDelta;
@@ -31,5 +34,13 @@ public class SelectionUpdateEvent
 
 	public void setScrollToSelection(boolean scrollToSelection) {
 		this.scrollToSelection = scrollToSelection;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
 	}
 }

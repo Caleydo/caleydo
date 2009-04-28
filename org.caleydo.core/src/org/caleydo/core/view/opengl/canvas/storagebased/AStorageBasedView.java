@@ -36,7 +36,8 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -48,7 +49,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
 
 	protected ISet set;
 	protected ESetType setType;
@@ -100,7 +101,7 @@ public abstract class AStorageBasedView
 
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
-	SelectionUpdateListener selectionUpdateListener = null;
+	protected SelectionUpdateListener selectionUpdateListener = null;
 		
 	/**
 	 * Constructor for storage based views
@@ -308,7 +309,8 @@ public abstract class AStorageBasedView
 	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException;
 
-	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection) {
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -415,11 +417,6 @@ public abstract class AStorageBasedView
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
-					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(selectionDeltaEventContainer.getSelectionDelta(), true);
-				break;
 			case VA_UPDATE:
 				if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
 					&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR) {
@@ -604,17 +601,21 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
 	 */
 	public void registerEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setView(this);
+		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-
 	}
 
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 */
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -623,6 +624,5 @@ public abstract class AStorageBasedView
 			selectionUpdateListener = null;
 		}
 	}
-
 	
 }

@@ -473,6 +473,7 @@ public class GLHeatMap
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSelectionDelta(selectionDelta);
+					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 					
 					// fixme old style because of private mediator
@@ -1074,6 +1075,7 @@ public class GLHeatMap
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSelectionDelta(delta);
+		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);
 
 		// fixme old style because of private mediator

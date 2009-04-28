@@ -33,6 +33,7 @@ import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
@@ -52,6 +53,8 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelPlus;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -71,7 +74,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver {
+	implements ISelectionUpdateHandler, IMediatorSender, IMediatorReceiver {
 
 	private static final long serialVersionUID = -7899479912218913482L;
 
@@ -114,6 +117,8 @@ public class GLGlyph
 
 	private int iFrameBufferObject = -1;
 
+	protected SelectionUpdateListener selectionUpdateListener = null;
+	
 	// private long ticker = 0;
 
 	/**
@@ -256,6 +261,7 @@ public class GLGlyph
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSelectionDelta(selectionDelta);
+			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
 		}
 	}
@@ -1065,8 +1071,8 @@ public class GLGlyph
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
-	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta,
-		EMediatorType eMediatorType) {
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
 
@@ -1083,8 +1089,9 @@ public class GLGlyph
 
 		forceRebuild();
 
-		if (eventTrigger instanceof GLGlyph)
-			return;
+//		fixme the selection triggered by a glyph view should be handled view events, so this "if" should not be needed		
+//		if (eventTrigger instanceof GLGlyph)
+//			return;
 
 		// grid_.deSelectAll();
 
@@ -1114,7 +1121,6 @@ public class GLGlyph
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		generalManager.getLogger().log(
@@ -1123,13 +1129,6 @@ public class GLGlyph
 				+ eventTrigger.getClass().getSimpleName());
 
 		switch (eventContainer.getEventType()) {
-			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
-					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
-
-				.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
-				break;
 
 			case TRIGGER_SELECTION_COMMAND:
 				SelectionCommandEventContainer commandEventContainer =
@@ -1360,6 +1359,33 @@ public class GLGlyph
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm; 
+	}
+
+	/**
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 * If inherited classes override this method, they should usually call it via super.    
+	 */
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+	}
+
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 * If inherited classes override this method, they should usually call it via super.    
+	 */
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
 	}
 
 }

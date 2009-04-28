@@ -10,15 +10,4 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 public abstract class AStorageBasedListener
 	implements IEventListener {
 
-	/** view this listener is related to */
-	protected AStorageBasedView view = null;
-
-	public AStorageBasedView getView() {
-		return view;
-	}
-
-	public void setView(AStorageBasedView view) {
-		this.view = view;
-	}
-
 }

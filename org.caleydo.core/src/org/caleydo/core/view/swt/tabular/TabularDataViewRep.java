@@ -24,6 +24,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
@@ -37,6 +38,8 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -74,7 +77,8 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabularDataViewRep
 	extends ASWTView
-	implements IView, ISWTView, IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IView, ISWTView, IMediatorReceiver, IMediatorSender {
+
 	protected ISet set;
 	protected ESetType setType;
 
@@ -121,6 +125,8 @@ public class TabularDataViewRep
 	private Label lastRemoveContent;
 	private Label lastRemoveStorage;
 
+	protected SelectionUpdateListener selectionUpdateListener = null;
+	
 //	private int[] iArCurrentColumnOrder;
 
 	/**
@@ -665,11 +671,6 @@ public class TabularDataViewRep
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
-					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer.getSelectionDelta());
-				break;
 			case VA_UPDATE:
 				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
 					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
@@ -701,7 +702,8 @@ public class TabularDataViewRep
 		}
 	}
 
-	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta) {
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scroolToSelection, String info) {
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
 			|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
@@ -955,6 +957,31 @@ public class TabularDataViewRep
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm; 
+	}
+
+	/**
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 */
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+	}
+	
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 */
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
 	}
 
 }

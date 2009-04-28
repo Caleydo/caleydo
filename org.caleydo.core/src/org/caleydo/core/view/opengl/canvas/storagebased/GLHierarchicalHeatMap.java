@@ -1889,7 +1889,7 @@ public class GLHierarchicalHeatMap
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		if (selectionDelta.size() > 0) {
-			glHeatMapView.handleSelectionUpdate(selectionDelta, true);
+			glHeatMapView.handleSelectionUpdate(selectionDelta, true, null);
 			// privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 
@@ -1921,7 +1921,7 @@ public class GLHierarchicalHeatMap
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(deltaExp));
 		if (selectionDeltaEx.size() > 0) {
-			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true);
+			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true, null);
 			//privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
 		}
 

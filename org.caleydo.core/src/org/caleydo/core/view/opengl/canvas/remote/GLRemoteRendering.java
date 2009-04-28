@@ -26,7 +26,6 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
@@ -62,6 +61,8 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketLayoutRenderStyle;
@@ -119,7 +120,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering {
+	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering {
 
 	Logger log = Logger.getLogger(GLRemoteRendering.class.getName());
 
@@ -209,23 +210,25 @@ public class GLRemoteRendering
 
 	private ArrayList<ASerializedView> newViews;
 
-	AddPathwayListener addPathwayListener = null;
-	LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
+	protected AddPathwayListener addPathwayListener = null;
+	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 
-	EnableGeneMappingListener enableGeneMappingListener = null;
-	DisableGeneMappingListener disableGeneMappingListener = null;
+	protected EnableGeneMappingListener enableGeneMappingListener = null;
+	protected DisableGeneMappingListener disableGeneMappingListener = null;
 
-	EnableTexturesListener enableTexturesListener = null;
-	DisableTexturesListener disableTexturesListener = null;
+	protected EnableTexturesListener enableTexturesListener = null;
+	protected DisableTexturesListener disableTexturesListener = null;
 
-	EnableNeighborhoodListener enableNeighborhoodListener = null;
-	DisableNeighborhoodListener disableNeighborhoodListener = null;
+	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
+	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
 	private GLInfoAreaManager infoAreaManager;
 
-	EnableConnectionLinesListener enableConnectionLinesListener = null;
-	DisableConnectionLinesListener disableConnectionLinesListener = null;
+	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
+	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
 
-	CloseOrResetViewsListener closeOrResetViewsListener = null;
+	protected CloseOrResetViewsListener closeOrResetViewsListener = null;
+	protected SelectionUpdateListener selectionUpdateListener = null;
+
 	ContextMenue contextMenue;
 
 	/**
@@ -1993,12 +1996,14 @@ public class GLRemoteRendering
 				}
 
 				break;
-			case SELECTION_UPDATE:
-				lastSelectionDelta =
-					((DeltaEventContainer<ISelectionDelta>) eventContainer).getSelectionDelta();
 		}
 
 		bUpdateOffScreenTextures = true;
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		lastSelectionDelta = selectionDelta;
 	}
 
 	/**
@@ -2799,6 +2804,7 @@ public class GLRemoteRendering
 		if (lastSelectionDelta != null) {
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSelectionDelta(lastSelectionDelta);
+			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
 		}
 	}
@@ -3065,6 +3071,9 @@ public class GLRemoteRendering
 		closeOrResetViewsListener.setBucket(this);
 		eventPublisher.addListener(CloseOrResetViewsEvent.class, closeOrResetViewsListener);
 
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
 	/**
@@ -3109,6 +3118,10 @@ public class GLRemoteRendering
 		if (closeOrResetViewsListener != null) {
 			eventPublisher.removeListener(closeOrResetViewsListener);
 			closeOrResetViewsListener = null;
+		}
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
 		}
 
 	}

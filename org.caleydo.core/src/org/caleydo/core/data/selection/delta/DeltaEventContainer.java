@@ -13,7 +13,9 @@ public class DeltaEventContainer<T extends IDelta>
 	T delta;
 
 	public DeltaEventContainer(T delta) {
-		super(delta instanceof ISelectionDelta ? EEventType.SELECTION_UPDATE : EEventType.VA_UPDATE);
+		// super(delta instanceof ISelectionDelta ? EEventType.SELECTION_UPDATE : EEventType.VA_UPDATE);
+		super(EEventType.VA_UPDATE);
+
 		if (delta instanceof ISelectionDelta) {
 			log.warn("tried to use old selection update mechanism, " + Thread.getAllStackTraces().get(Thread.currentThread()));
 		}

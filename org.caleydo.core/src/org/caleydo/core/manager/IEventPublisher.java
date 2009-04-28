@@ -164,5 +164,5 @@ public interface IEventPublisher {
 	 * @param event event to distribute to the listeners
 	 */
 	public void triggerEvent(AEvent event);
-	
+
 }

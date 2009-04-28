@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -37,8 +38,12 @@ import org.eclipse.swt.widgets.ToolItem;
 public class HTMLBrowserViewRep
 	extends ASWTView
 	implements ISWTView {
+
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
 
+	protected IGeneralManager generalManager;
+	protected IEventPublisher eventPublisher;
+	
 	protected Browser browser;
 
 	/**
@@ -65,8 +70,7 @@ public class HTMLBrowserViewRep
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
-		
-		registerEventListeners();
+		init();
 	}
 
 	/**
@@ -74,10 +78,19 @@ public class HTMLBrowserViewRep
 	 */
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel, int iViewID) {
 		super(iParentContainerId, sLabel, iViewID);
-		
+		init();
 		registerEventListeners();
 	}
 
+	/**
+	 * Basic initialization, used only within constructors.
+	 * @param parentComposite
+	 */
+	private void init() {
+		generalManager = GeneralManager.get();
+		eventPublisher = generalManager.getEventPublisher();
+	}
+	
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
 		Composite composite = new Composite(parentComposite, SWT.NONE);
@@ -250,23 +263,27 @@ public class HTMLBrowserViewRep
 	}
 	
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		
 		changeURLListener = new ChangeURLListener();
 		changeURLListener.setBrowserView(this);
 		eventPublisher.addListener(ChangeURLEvent.class, changeURLListener);
 
 	}
 	
+	/**
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 */
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
 		if (changeURLListener != null) {
 			eventPublisher.removeListener(ChangeURLEvent.class, changeURLListener);
 			changeURLListener = null;
 		}
 	}
 
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 */
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();

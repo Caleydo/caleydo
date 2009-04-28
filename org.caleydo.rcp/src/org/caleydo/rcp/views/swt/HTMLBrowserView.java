@@ -1,7 +1,5 @@
 package org.caleydo.rcp.views.swt;
 
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
@@ -19,13 +17,11 @@ public class HTMLBrowserView
 		browserView =
 			(HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
 				EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
+		browserView.registerEventListeners();
 
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 		iViewID = browserView.getID();
-
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) browserView);
 	}
 
 	@Override
@@ -36,13 +32,7 @@ public class HTMLBrowserView
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) browserView);
-
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) browserView);
-
+		browserView.unregisterEventListeners();
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(browserView.getID());
 	}
 

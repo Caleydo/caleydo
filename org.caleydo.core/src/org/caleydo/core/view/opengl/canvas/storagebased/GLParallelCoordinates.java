@@ -1956,6 +1956,7 @@ public class GLParallelCoordinates
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSelectionDelta(selectionDelta);
+					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 				}
 

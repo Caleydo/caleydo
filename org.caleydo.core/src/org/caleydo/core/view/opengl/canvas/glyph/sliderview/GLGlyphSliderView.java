@@ -338,6 +338,7 @@ public class GLGlyphSliderView
 				if (selectionDelta.getAllItems().size() > 0) {
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSelectionDelta(selectionDelta);
+					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 				}
 

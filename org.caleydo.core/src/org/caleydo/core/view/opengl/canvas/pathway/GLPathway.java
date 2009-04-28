@@ -58,6 +58,8 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableTexturesListener;
@@ -81,7 +83,8 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class GLPathway
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
+
 	private PathwayGraph pathway;
 
 	private boolean bEnablePathwayTexture = true;
@@ -94,6 +97,7 @@ public class GLPathway
 
 	private GenericSelectionManager selectionManager;
 
+	
 	/**
 	 * Own texture manager is needed for each GL context, because textures cannot be bound to multiple GL
 	 * contexts.
@@ -110,14 +114,16 @@ public class GLPathway
 	// private int iHorizontalTextAlignment = SWT.CENTER;
 	// private int iVerticalTextAlignment = SWT.BOTTOM;
 
-	EnableTexturesListener enableTexturesListener = null;
-	DisableTexturesListener disableTexturesListener = null;
+	protected EnableTexturesListener enableTexturesListener = null;
+	protected DisableTexturesListener disableTexturesListener = null;
 
-	EnableGeneMappingListener enableGeneMappingListener = null;
-	DisableGeneMappingListener disableGeneMappingListener = null;
+	protected EnableGeneMappingListener enableGeneMappingListener = null;
+	protected DisableGeneMappingListener disableGeneMappingListener = null;
 
-	EnableNeighborhoodListener enableNeighborhoodListener = null;
-	DisableNeighborhoodListener disableNeighborhoodListener = null;
+	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
+	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
+
+	protected SelectionUpdateListener selectionUpdateListener = null;
 
 	/**
 	 * Constructor.
@@ -319,7 +325,8 @@ public class GLPathway
 		// gl.glEndList();
 	}
 
-	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta) {
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -687,6 +694,7 @@ public class GLPathway
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSelectionDelta(selectionDelta);
+				event.setInfo(getShortInfo());
 				eventPublisher.triggerEvent(event);
 
 				break;
@@ -849,11 +857,6 @@ public class GLPathway
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
-					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer.getSelectionDelta());
-				break;
 			case VA_UPDATE:
 				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
 					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
@@ -936,6 +939,10 @@ public class GLPathway
 		disableGeneMappingListener = new DisableGeneMappingListener();
 		disableGeneMappingListener.setGLPathway(this);
 		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
 	public void unregisterEventListeners() {
@@ -964,6 +971,10 @@ public class GLPathway
 		if (disableGeneMappingListener != null) {
 			eventPublisher.removeListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
 			disableGeneMappingListener = null;
+		}
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
 		}
 	}
 
