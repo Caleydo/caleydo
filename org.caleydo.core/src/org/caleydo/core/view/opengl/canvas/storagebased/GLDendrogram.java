@@ -7,15 +7,22 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -25,7 +32,6 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
@@ -44,7 +50,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Bernhard Schlegl
  */
 public class GLDendrogram
-	extends AGLEventListener {
+	extends AStorageBasedView {
 
 	boolean bUseDetailLevel = true;
 	ISet set;
@@ -76,9 +82,20 @@ public class GLDendrogram
 	 */
 	public GLDendrogram(ESetType setType, final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+		super(setType, iGLCanvasID, sLabel, viewFrustum);
 
 		viewType = EManagedObjectType.GL_DENDOGRAM;
+
+		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
+		alSelectionTypes.add(ESelectionType.NORMAL);
+		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
+		alSelectionTypes.add(ESelectionType.SELECTION);
+
+		contentSelectionManager =
+			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
+				EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
@@ -106,6 +123,9 @@ public class GLDendrogram
 
 	@Override
 	public void initLocal(GL gl) {
+
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -475,6 +495,8 @@ public class GLDendrogram
 			else
 				tree = set.getClusteredTreeExps();
 
+			initData();
+
 			// tree = treePorter.importTree("riesen_baum.xml");
 
 			renderSymbol(gl);
@@ -500,11 +522,6 @@ public class GLDendrogram
 			gl.glTranslatef(-0.1f, 0, 0);
 		}
 		gl.glEndList();
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return new String("DetailInfo");
 	}
 
 	/**
@@ -605,25 +622,17 @@ public class GLDendrogram
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public int getNumberOfSelections(ESelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public String getShortInfo() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	public String getDetailedInfo() {
+		return new String("DetailInfo");
+	}
+
+	@Override
 	public void clearAllSelections() {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -631,6 +640,101 @@ public class GLDendrogram
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	@Override
+	public void broadcastElements() {
+	}
+
+	@Override
+	public void changeOrientation(boolean defaultOrientation) {
+	}
+
+	@Override
+	protected ArrayList<SelectedElementRep> createElementRep(EIDType idType, int storageIndex)
+		throws InvalidAttributeValueException {
+		return null;
+	}
+
+	@Override
+	protected void initLists() {
+		if (bRenderOnlyContext) {
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		}
+		else {
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
+				initCompleteList();
+			}
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+
+		}
+		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+
+		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+	}
+
+	/**
+	 * Function called any time a update is triggered external
+	 * 
+	 * @param
+	 */
+	@Override
+	protected void reactOnExternalSelection(boolean scrollToSelection) {
+
+		int iIndex;
+
+		Set<ClusterNode> nodeSet = tree.getGraph().vertexSet();
+		for (ClusterNode node : nodeSet) {
+			node.setSelectionType(ESelectionType.NORMAL);
+		}
+
+		Set<Integer> setMouseOverElements = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+		for (Integer iSelectedID : setMouseOverElements) {
+
+			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue());
+			tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.MOUSE_OVER);
+		}
+
+		Set<Integer> setSelectionElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
+		for (Integer iSelectedID : setSelectionElements) {
+
+			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue());
+			tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
+		}
+	}
+
+	@Override
+	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
+
+		Set<Integer> setMouseOverElements = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+
+		if (setMouseOverElements.size() >= 0) {
+			for (Integer iSelectedID : setMouseOverElements) {
+				int i = iSelectedID;
+				System.out.println("mouse over :" + i);
+			}
+		}
+
+		Set<Integer> setSelectionElements = storageSelectionManager.getElements(ESelectionType.SELECTION);
+
+		if (setSelectionElements.size() >= 0) {
+			for (Integer iSelectedID : setSelectionElements) {
+				int i = iSelectedID;
+				System.out.println("selected :" + i);
+			}
+		}
+		setDisplayListDirty();
+
+	}
+
+	@Override
+	public boolean isInDefaultOrientation() {
+		return false;
+	}
+
+	@Override
+	public void renderContext(boolean renderContext) {
 	}
 
 }
