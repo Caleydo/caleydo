@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -30,7 +29,6 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
@@ -44,7 +42,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -268,18 +266,9 @@ public class GLGlyph
 
 	@Override
 	public synchronized void init(GL gl) {
-		ISet glyphData = null;
-
-		for (ISet tmpSet : alSets) {
-			if (tmpSet != null) {
-				if (tmpSet.getLabel().equals("Set for clinical data")) {
-					glyphData = tmpSet;
-				}
-			}
-		}
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
-		grid_.loadData(glyphData);
+		grid_.loadData(stableSetForRendering);
 
 		// grid_.selectAll();
 

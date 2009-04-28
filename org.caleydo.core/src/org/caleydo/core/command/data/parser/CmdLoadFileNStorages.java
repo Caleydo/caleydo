@@ -86,7 +86,8 @@ public class CmdLoadFileNStorages
 	public void setAttributes(final ArrayList<Integer> iAlStorageId, final String sFileName,
 		final String sTokenPattern, final String sTokenSeparator, final int iStartParseFileAtLine,
 		final int iStopParseFileAtLine) {
-		iAlStorageIDs = iAlStorageId;
+		
+		this.iAlStorageIDs = iAlStorageId;
 		this.sFileName = sFileName;
 		this.sTokenPattern = sTokenPattern;
 		this.iStartParseFileAtLine = iStartParseFileAtLine;

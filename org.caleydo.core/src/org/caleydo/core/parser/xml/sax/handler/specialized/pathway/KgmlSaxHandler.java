@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
-import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
+import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.util.graph.IGraph;
@@ -44,11 +44,11 @@ public class KgmlSaxHandler
 
 	private ArrayList<IGraphItem> alCurrentVertex;
 
-	private IGraphItem currentReactionSubstrateEdgeRep;
-
-	private IGraphItem currentReactionProductEdgeRep;
-
-	private int iCurrentEntryId;
+//	private IGraphItem currentReactionSubstrateEdgeRep;
+//
+//	private IGraphItem currentReactionProductEdgeRep;
+//
+//	private int iCurrentEntryId;
 
 	/**
 	 * Constructor.
@@ -179,7 +179,7 @@ public class KgmlSaxHandler
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
 	 */
 	protected void handleEntryTag() {
-		int iEntryId = 0;
+//		int iEntryId = 0;
 		String sName = "";
 		String sType = "";
 		String sExternalLink = "";
@@ -193,7 +193,7 @@ public class KgmlSaxHandler
 			}
 
 			if (sAttributeName.equals("id")) {
-				iEntryId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+//				iEntryId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 			}
 			else if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
@@ -209,7 +209,7 @@ public class KgmlSaxHandler
 			}
 		}
 
-		iCurrentEntryId = iEntryId;
+//		iCurrentEntryId = iEntryId;
 		alCurrentVertex.clear();
 
 		if (sType.equals("gene")) {
@@ -297,7 +297,7 @@ public class KgmlSaxHandler
 			// TODO: investigate!
 			return;
 
-		IGraphItem vertexRep =
+//		IGraphItem vertexRep =
 			pathwayItemManager.createVertexRep(currentPathway, alCurrentVertex, sName, sShapeType,
 				shXPosition, shYPosition, shWidth, shHeight);
 
@@ -313,35 +313,35 @@ public class KgmlSaxHandler
 	 */
 	protected void handleRelationTag() {
 
-		int iSourceVertexId = 0;
-		int iTargetVertexId = 0;
-		String sType = "";
-
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-			sAttributeName = attributes.getLocalName(iAttributeIndex);
-
-			if ("".equals(sAttributeName)) {
-				sAttributeName = attributes.getQName(iAttributeIndex);
-			}
-
-			if (sAttributeName.equals("type")) {
-				sType = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("entry1")) {
-				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-			}
-			else if (sAttributeName.equals("entry2")) {
-				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-			}
-
-			// System.out.println("Attribute name: " +sAttributeName);
-			// System.out.println("Attribute value: "
-			// +attributes.getValue(iAttributeIndex));
-		}
-
+//		int iSourceVertexId = 0;
+//		int iTargetVertexId = 0;
+//		String sType = "";
+//
+//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+//			sAttributeName = attributes.getLocalName(iAttributeIndex);
+//
+//			if ("".equals(sAttributeName)) {
+//				sAttributeName = attributes.getQName(iAttributeIndex);
+//			}
+//
+//			if (sAttributeName.equals("type")) {
+//				sType = attributes.getValue(iAttributeIndex);
+//			}
+//			else if (sAttributeName.equals("entry1")) {
+//				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+//			}
+//			else if (sAttributeName.equals("entry2")) {
+//				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+//			}
+//
+//			// System.out.println("Attribute name: " +sAttributeName);
+//			// System.out.println("Attribute value: "
+//			// +attributes.getValue(iAttributeIndex));
+//		}
+//
 //		IGraphItem graphItemIn = hashKgmlEntryIdToVertexRepId.get(iSourceVertexId);
 //		IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
-
+//
 //		// Create edge (data)
 //		IGraphItem relationEdge =
 //			pathwayItemManager
@@ -406,29 +406,29 @@ public class KgmlSaxHandler
 	 */
 	protected void handleReactionTag() {
 
-		String sReactionName = "";
-		String sReactionType = "";
-
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-			sAttributeName = attributes.getLocalName(iAttributeIndex);
-
-			if ("".equals(sAttributeName)) {
-				sAttributeName = attributes.getQName(iAttributeIndex);
-			}
-
-			if (sAttributeName.equals("type")) {
-				sReactionType = attributes.getValue(iAttributeIndex);
-			}
-			else if (sAttributeName.equals("name")) {
-				sReactionName = attributes.getValue(iAttributeIndex);
-			}
-		}
-
-		currentReactionSubstrateEdgeRep =
-			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
-
-		currentReactionProductEdgeRep =
-			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
+//		String sReactionName = "";
+//		String sReactionType = "";
+//
+//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+//			sAttributeName = attributes.getLocalName(iAttributeIndex);
+//
+//			if ("".equals(sAttributeName)) {
+//				sAttributeName = attributes.getQName(iAttributeIndex);
+//			}
+//
+//			if (sAttributeName.equals("type")) {
+//				sReactionType = attributes.getValue(iAttributeIndex);
+//			}
+//			else if (sAttributeName.equals("name")) {
+//				sReactionName = attributes.getValue(iAttributeIndex);
+//			}
+//		}
+//
+//		currentReactionSubstrateEdgeRep =
+//			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
+//
+//		currentReactionProductEdgeRep =
+//			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
 
 	}
 

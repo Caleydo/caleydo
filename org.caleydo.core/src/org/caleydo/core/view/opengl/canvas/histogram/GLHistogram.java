@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -37,7 +36,6 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 
-
 /**
  * Rendering the histogram.
  * 
@@ -48,7 +46,6 @@ public class GLHistogram
 	implements IMediatorSender, IMediatorReceiver {
 
 	boolean bUseDetailLevel = true;
-	ISet set;
 
 	private Histogram histogram;
 	private ColorMapping colorMapping;
@@ -64,12 +61,11 @@ public class GLHistogram
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHistogram(ESetType setType, final int iGLCanvasID, final String sLabel,
+	public GLHistogram(final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
@@ -85,16 +81,7 @@ public class GLHistogram
 	@Override
 	public void init(GL gl) {
 
-		for (ISet tempSet : alSets) {
-			if (tempSet.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				set = tempSet;
-			}
-		}
-
-		// if (set == null)
-		// return;
-
-		histogram = set.getHistogram();
+		histogram = stableSetForRendering.getHistogram();
 	}
 
 	@Override
@@ -564,7 +551,13 @@ public class GLHistogram
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
+	@Override
+	public synchronized void setSet(ISet set) {
+		super.setSet(set);
+
+		histogram = set.getHistogram();
+	}
 }

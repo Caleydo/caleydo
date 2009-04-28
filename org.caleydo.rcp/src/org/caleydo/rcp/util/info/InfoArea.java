@@ -2,7 +2,6 @@ package org.caleydo.rcp.util.info;
 
 import java.util.Collection;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -25,10 +24,10 @@ import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
@@ -51,14 +50,14 @@ public class InfoArea
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
-	
+
 	private Label lblViewInfoContent;
 
 	private Tree selectionTree;
 
 	private TreeItem geneTree;
 	private TreeItem experimentTree;
-//	private TreeItem pathwayTree;
+	// private TreeItem pathwayTree;
 
 	private AGLEventListener updateTriggeringView;
 	private Composite parentComposite;
@@ -82,7 +81,7 @@ public class InfoArea
 
 		// glyphManager = GeneralManager.get().getGlyphManager();
 		idMappingManager = generalManager.getIDMappingManager();
-		
+
 		registerEventListeners();
 	}
 
@@ -95,21 +94,21 @@ public class InfoArea
 		lblViewInfoContent = new Label(parent, SWT.WRAP);
 		lblViewInfoContent.setAlignment(SWT.CENTER);
 		lblViewInfoContent.setText("");
-		
+
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 
 		// FIXME: horizontal toolbar style support
-//		if (ToolBarView.bHorizontal) {
-//			gridData.minimumWidth = 150;
-//			gridData.widthHint = 150;
-//			gridData.minimumHeight = 72;
-//			gridData.heightHint = 72;
-//		} else {
-			gridData.minimumWidth = 100;
-			gridData.widthHint = 150;
-			gridData.minimumHeight = 82;
-			gridData.heightHint = 82;
-//		}
+		// if (ToolBarView.bHorizontal) {
+		// gridData.minimumWidth = 150;
+		// gridData.widthHint = 150;
+		// gridData.minimumHeight = 72;
+		// gridData.heightHint = 72;
+		// } else {
+		gridData.minimumWidth = 100;
+		gridData.widthHint = 150;
+		gridData.minimumHeight = 82;
+		gridData.heightHint = 82;
+		// }
 
 		lblViewInfoContent.setLayoutData(gridData);
 
@@ -123,25 +122,25 @@ public class InfoArea
 			gridData.widthHint = 145;
 			gridData.minimumWidth = 145;
 		}
-//		else {
-//			gridData.widthHint = 145;
-//			gridData.minimumWidth = 145;
-//		}
+		// else {
+		// gridData.widthHint = 145;
+		// gridData.minimumWidth = 145;
+		// }
 
 		selectionTree.setLayoutData(gridData);
 
 		// selectionTree.setItemCount(2);
-//		selectionTree.addSelectionListener(new SelectionAdapter() {
-//
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				super.widgetSelected(e);
-//
-//				// ((HTMLBrowserView)
-//				// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//				// .findView(HTMLBrowserView.ID)).getHTMLBrowserViewRep().setUrl("bla");
-//			}
-//		});
+		// selectionTree.addSelectionListener(new SelectionAdapter() {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// super.widgetSelected(e);
+		//
+		// // ((HTMLBrowserView)
+		// // PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+		// // .findView(HTMLBrowserView.ID)).getHTMLBrowserViewRep().setUrl("bla");
+		// }
+		// });
 
 		geneTree = new TreeItem(selectionTree, SWT.NONE);
 		geneTree.setText("Genes");
@@ -151,52 +150,51 @@ public class InfoArea
 		experimentTree.setText("Experiments");
 		experimentTree.setExpanded(true);
 		experimentTree.setData(-1);
-//		pathwayTree = new TreeItem(selectionTree, SWT.NONE);
-//		pathwayTree.setText("Pathways");
-//		pathwayTree.setExpanded(false);
-//		pathwayTree.setData(-1);
+		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
+		// pathwayTree.setText("Pathways");
+		// pathwayTree.setExpanded(false);
+		// pathwayTree.setData(-1);
 
 		return parent;
 	}
-	
-	
+
 	@Override
-	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection, final String info) {
+	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection,
+		final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				
+
 				if (info != null) {
 					lblViewInfoContent.setText(info);
 				}
-				
-				if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
-					
+
+				if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
-						
+
 						// Flush old genes from this selection type
-						for (TreeItem item : geneTree.getItems())
-						{
+						for (TreeItem item : geneTree.getItems()) {
 							if (item.getData("selection_type") == selectionItem.getSelectionType()
-								|| ((Integer)item.getData()) == selectionItem.getPrimaryID()) {
-			
+								|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
+
 								item.dispose();
 							}
 						}
-						
-//						if (selectionItem.getSelectionType() == ESelectionType.NORMAL
-//							|| selectionItem.getSelectionType() == ESelectionType.DESELECTED) {
-//							// Flush old items that become deselected/normal
-//							for (TreeItem tmpItem : selectionTree.getItems()) {
-//								if (tmpItem.getData() == null
-//									|| ((Integer) tmpItem.getData()).intValue() == selectionItem
-//										.getPrimaryID()) {
-//									tmpItem.dispose();
-//								}
-//							}
-//						}
+
+						// if (selectionItem.getSelectionType() == ESelectionType.NORMAL
+						// || selectionItem.getSelectionType() == ESelectionType.DESELECTED) {
+						// // Flush old items that become deselected/normal
+						// for (TreeItem tmpItem : selectionTree.getItems()) {
+						// if (tmpItem.getData() == null
+						// || ((Integer) tmpItem.getData()).intValue() == selectionItem
+						// .getPrimaryID()) {
+						// tmpItem.dispose();
+						// }
+						// }
+						// }
 						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
 							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
-							
+
 							Color color;
 							float[] fArColor = null;
 
@@ -207,12 +205,17 @@ public class InfoArea
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							}
 
-							color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+							color =
+								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
+
+							Integer iExpressionIndex =
+								idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+									selectionItem.getPrimaryID());
 
 							String sRefSeqID =
 								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-									selectionItem.getPrimaryID());
+									iExpressionIndex);
 
 							Integer iDavidID =
 								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem
@@ -225,39 +228,39 @@ public class InfoArea
 								sGeneSymbol = "Unknown";
 							}
 
-//							boolean bIsExisting = false;
-//							for (TreeItem existingItem : selectionTree.getItems()) {
-//								if (existingItem.getText().equals(sGeneSymbol)
-//									&& ((Integer) existingItem.getData()).intValue() == selectionItem
-//										.getPrimaryID()) {
-//									existingItem.setBackground(color);
-//									existingItem.getItem(0).setBackground(color);
-//									existingItem.setData("selection_type", selectionItem.getSelectionType());
-//									bIsExisting = true;
-//									break;
-//								}
-//							}
+							// boolean bIsExisting = false;
+							// for (TreeItem existingItem : selectionTree.getItems()) {
+							// if (existingItem.getText().equals(sGeneSymbol)
+							// && ((Integer) existingItem.getData()).intValue() == selectionItem
+							// .getPrimaryID()) {
+							// existingItem.setBackground(color);
+							// existingItem.getItem(0).setBackground(color);
+							// existingItem.setData("selection_type", selectionItem.getSelectionType());
+							// bIsExisting = true;
+							// break;
+							// }
+							// }
 
-//							if (!bIsExisting) {
-								TreeItem item = new TreeItem(geneTree, SWT.NONE);
+							// if (!bIsExisting) {
+							TreeItem item = new TreeItem(geneTree, SWT.NONE);
 
-								// FIXME horizontal toolbar style support 
-								// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
-								if (Application.bIsWindowsOS) {
-									item.setText(sGeneSymbol + " - " + sRefSeqID);
-								}
-								else {
-									item.setText(sGeneSymbol + "\n" + sRefSeqID);
-								}
-								item.setBackground(color);
-								item.setData(selectionItem.getPrimaryID());
-								item.setData("selection_type", selectionItem.getSelectionType());
+							// FIXME horizontal toolbar style support
+							// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
+							if (Application.bIsWindowsOS) {
+								item.setText(sGeneSymbol + " - " + sRefSeqID);
+							}
+							else {
+								item.setText(sGeneSymbol + "\n" + sRefSeqID);
+							}
+							item.setBackground(color);
+							item.setData(selectionItem.getPrimaryID());
+							item.setData("selection_type", selectionItem.getSelectionType());
 
-//								TreeItem subItem = new TreeItem(item, SWT.NONE);
-//								subItem.setText(sRefSeqID);
-//								subItem.setBackground(color);
-								geneTree.setExpanded(true);
-//							}
+							// TreeItem subItem = new TreeItem(item, SWT.NONE);
+							// subItem.setText(sRefSeqID);
+							// subItem.setBackground(color);
+							geneTree.setExpanded(true);
+							// }
 						}
 					}
 				}
@@ -267,19 +270,18 @@ public class InfoArea
 					}
 
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
-						
+
 						if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
 							|| selectionItem.getSelectionType() == ESelectionType.SELECTION) {
-	
+
 							// Flush old experiments from this selection type
-							for (TreeItem item : experimentTree.getItems())
-							{
+							for (TreeItem item : experimentTree.getItems()) {
 								if (item.getData("selection_type") == selectionItem.getSelectionType()
-									|| ((Integer)item.getData()) == selectionItem.getPrimaryID()) {
+									|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
 									item.dispose();
 								}
 							}
-							
+
 							Color color;
 							float[] fArColor = null;
 
@@ -290,30 +292,33 @@ public class InfoArea
 								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
 							}
 
-							color = new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
+							color =
+								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
-							// Retrieve current set 
+							// Retrieve current set
 							// FIXME: This solution is not robust if new data are loaded -> REDESIGN
 							ISet geneExpressionSet = null;
 							Collection<ISet> sets = generalManager.getSetManager().getAllItems();
-							int iSetCount = 0;
+							// int iSetCount = 0;
 							for (ISet set : sets) {
-								if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-									iSetCount++;
-									geneExpressionSet = set;
-								}
+								// if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+								// iSetCount++;
+								geneExpressionSet = set;
+								break;
+								// }
 							}
-							
+
 							TreeItem item = new TreeItem(experimentTree, SWT.NONE);
 							item.setText(geneExpressionSet.get(selectionItem.getPrimaryID()).getLabel());
 							item.setData(selectionItem.getPrimaryID());
-//							item.setData("mapping_type", EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
+							// item.setData("mapping_type",
+							// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
 							item.setData("selection_type", selectionItem.getSelectionType());
 							item.setBackground(color);
-							
+
 							experimentTree.setExpanded(true);
-							
+
 							// addGlyphInfo(selectionItem, item);
 						}
 					}
@@ -357,16 +362,16 @@ public class InfoArea
 
 				lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
 
-//				for (VADeltaItem item : delta) {
-//					if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-//						// Flush old items that become deselected/normal
-//						for (TreeItem tmpItem : selectionTree.getItems()) {
-//							if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID()) {
-//								tmpItem.dispose();
-//							}
-//						}
-//					}
-//				}
+				// for (VADeltaItem item : delta) {
+				// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
+				// // Flush old items that become deselected/normal
+				// for (TreeItem tmpItem : selectionTree.getItems()) {
+				// if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID()) {
+				// tmpItem.dispose();
+				// }
+				// }
+				// }
+				// }
 			}
 		});
 	}
@@ -431,22 +436,22 @@ public class InfoArea
 				}
 				break;
 			case VIEW_COMMAND:
-				
+
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;
-				
+
 				if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
 					geneTree.removeAll();
 					experimentTree.removeAll();
-				} 
+				}
 				break;
-				
+
 			case INFO_AREA_UPDATE:
 				InfoAreaUpdateEventContainer infoEventContainer =
 					(InfoAreaUpdateEventContainer) eventContainer;
 				AGLEventListener view =
-					generalManager.getViewGLCanvasManager().getGLEventListener(
-						infoEventContainer.getViewID());
+					generalManager.getViewGLCanvasManager()
+						.getGLEventListener(infoEventContainer.getViewID());
 
 				shortInfo = view.getShortInfo();
 				parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -459,18 +464,18 @@ public class InfoArea
 	}
 
 	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 * Registers the listeners for this view to the event system. To release the allocated resources
+	 * unregisterEventListeners() has to be called.
 	 */
 	public void registerEventListeners() {
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
-	
+
 	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 * Unregisters the listeners for this view from the event system. To release the allocated resources
+	 * unregisterEventListenrs() has to be called.
 	 */
 	public void unregisterEventListeners() {
 		if (selectionUpdateListener != null) {

@@ -168,13 +168,6 @@ public class TabularDataViewRep
 	}
 
 	public void initData() {
-		set = null;
-
-		for (ISet currentSet : alSets) {
-			if (currentSet.getSetType() == setType) {
-				set = currentSet;
-			}
-		}
 
 		String sLevel =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);

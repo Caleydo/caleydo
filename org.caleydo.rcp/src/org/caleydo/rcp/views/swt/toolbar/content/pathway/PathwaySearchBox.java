@@ -8,7 +8,7 @@ import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.search.SearchBox;

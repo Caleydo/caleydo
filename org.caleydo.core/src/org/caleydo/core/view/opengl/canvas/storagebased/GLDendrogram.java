@@ -12,7 +12,6 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
@@ -75,14 +74,13 @@ public class GLDendrogram
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLDendrogram(ESetType setType, final int iGLCanvasID, final String sLabel,
+	public GLDendrogram(final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
-		super(setType, iGLCanvasID, sLabel, viewFrustum);
+		super( iGLCanvasID, sLabel, viewFrustum);
 
 		viewType = EManagedObjectType.GL_DENDOGRAM;
 
@@ -103,12 +101,6 @@ public class GLDendrogram
 
 	@Override
 	public void init(GL gl) {
-
-		for (ISet tempSet : alSets) {
-			if (tempSet.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				set = tempSet;
-			}
-		}
 
 		if (tree != null) {
 			tree = null;
@@ -737,4 +729,8 @@ public class GLDendrogram
 	public void renderContext(boolean renderContext) {
 	}
 
+	@Override
+	public synchronized void resetView() {
+		// @Bernhard: something to do here?
+	}
 }

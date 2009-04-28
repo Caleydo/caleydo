@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -41,18 +40,15 @@ public class GLHyperbolic
 
 	boolean bUseDetailLevel = true;
 	ISet set;
-	
-//	private int iPathwayID = -1;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHyperbolic(ESetType setType, final int iGLCanvasID, final String sLabel,
+	public GLHyperbolic(final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 

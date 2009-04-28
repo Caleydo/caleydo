@@ -31,7 +31,13 @@ public enum EIDType {
 	CELL_COMPONENT(EStorageType.STRING, "GO cell component", "The GO cell component"),
 
 	// FIXME: Make this general! Needed for Asslaber data
-	OLIGO(EStorageType.STRING, "oligo", "oligo-id");
+	OLIGO(EStorageType.STRING, "oligo", "oligo-id"),
+	
+	/**
+	 * Used for external IDs that are read from arbitrary CSV file which should be used for 
+	 * linking between the views (e.g. use case cytokine data from Leipzig)
+	 */
+	UNSPECIFIED(EStorageType.STRING, "unknown external identifier", "unknown external identifier");
 
 	private final EStorageType storageType;
 

@@ -1,9 +1,9 @@
-package org.caleydo.core.manager.specialized.genome;
+package org.caleydo.core.manager.specialized.genetic;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayDatabase;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.pathway.PathwayDatabase;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMap;
 
 /**

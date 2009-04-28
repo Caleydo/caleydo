@@ -6,7 +6,6 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -60,12 +59,11 @@ public class GLRadialHierarchy
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLRadialHierarchy(ESetType setType, final int iGLCanvasID, final String sLabel,
+	public GLRadialHierarchy(final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 

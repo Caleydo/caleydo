@@ -19,7 +19,7 @@ public class ClinicalGLParCoordsView
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_CLINICAL, glCanvas.getID(), true);
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES, glCanvas.getID(), true);
 	}
 
 }

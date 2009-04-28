@@ -16,10 +16,10 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.swt.tabular.LabelEditorDialog;
 import org.caleydo.rcp.dialog.file.LoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -82,15 +81,19 @@ public class FileLoadDataAction
 	private String sFilePath = "";
 	private String sInputPattern = "";// SKIP;";
 	private String sDelimiter = "";
-	private int iCreatedSetID = -1;
-	private int iStartParseFileAtLine = 0;
+	private int iStartParseFileAtLine = 1;  // ID row should be ignored
 
-	private String sDataRepMode = "Normal";
+	private String sMathFilterMode = "Normal";
 
 	private boolean bUseClusterInfo = false;
 
-	private int iOldSetID;
-
+//	private Combo useIDTypeCombo;
+	
+	/**
+	 * The use case is determined according to the data type that the user wants to parse.
+	 */
+	private IUseCase useCase;
+	
 	/**
 	 * Constructor.
 	 */
@@ -122,14 +125,22 @@ public class FileLoadDataAction
 
 	private void createGUI() {
 		composite = new Composite(parentComposite, SWT.NONE);
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(3, false);
 		composite.setLayout(layout);
 
-		Button buttonFileChooser = new Button(composite, SWT.PUSH);
+		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		inputFileGroup.setText("Input file");
+		inputFileGroup.setLayout(new GridLayout(2, false));
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 3;
+		inputFileGroup.setLayoutData(gridData);
+		
+		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
 		buttonFileChooser.setText("Choose data file..");
+//		buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		txtFileName = new Text(composite, SWT.BORDER);
-		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+		txtFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		buttonFileChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -148,31 +159,29 @@ public class FileLoadDataAction
 			}
 		});
 
-		Label lblStartParseAtLine = new Label(composite, SWT.NONE);
-		lblStartParseAtLine.setText("Ignore lines in header:");
-		lblStartParseAtLine.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		startParseAtLineGroup.setText("Ignore lines in header");
+		startParseAtLineGroup.setLayout(new GridLayout(1, false));
 
-		txtStartParseAtLine = new Text(composite, SWT.BORDER);
+		txtStartParseAtLine = new Text(startParseAtLineGroup, SWT.BORDER);
 		txtStartParseAtLine.setLayoutData(new GridData(50, 15));
 		txtStartParseAtLine.setText("1");
 		txtStartParseAtLine.setTextLimit(2);
 		txtStartParseAtLine.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				
+				// Add 1 because the number that the user enters is human readable and not array index (starting with 0).
 				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
 
 				createDataPreviewTable("\t");
 				composite.pack();
 			}
 		});
-
-		Label lblDelimiter = new Label(composite, SWT.NONE);
-		lblDelimiter.setText("Separated by:");
-		lblDelimiter.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
+		
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		delimiterGroup.setText("Separated by (delimiter)");
 		delimiterGroup.setLayout(new RowLayout());
-		// delimiterGroup.setText("Delimiter (Separator)");
 
 		final Button[] buttonDelimiter = new Button[6];
 
@@ -356,29 +365,26 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
-
-		Label lblMathFilter = new Label(composite, SWT.NONE);
-		lblMathFilter.setText("Apply Filter:");
-		lblMathFilter.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
-		Group mathFiltergGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		mathFiltergGroup.setLayout(new RowLayout());
-		// delimiterGroup.setText("Math filter");
-
-		final Combo dataRepCombo = new Combo(mathFiltergGroup, SWT.DROP_DOWN);
-		String[] sArOptions = { "Normal", "Log10", "Log2" };
-		dataRepCombo.setItems(sArOptions);
-		dataRepCombo.setEnabled(true);
-		dataRepCombo.select(0);
-		dataRepCombo.addSelectionListener(new SelectionAdapter() {
+		
+		Group filterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		filterGroup.setText("Apply filter");
+		filterGroup.setLayout(new RowLayout());
+		filterGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		
+		final Combo mathFilterCombo = new Combo(filterGroup, SWT.DROP_DOWN);
+		String[] filterOptions = { "Normal", "Log10", "Log2" };
+		mathFilterCombo.setItems(filterOptions);
+		mathFilterCombo.setEnabled(true);
+		mathFilterCombo.select(0);
+		mathFilterCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				sDataRepMode = dataRepCombo.getText();
+				sMathFilterMode = mathFilterCombo.getText();
 
 			}
 		});
 
-		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
+		final Button buttonMin = new Button(filterGroup, SWT.CHECK);
 		buttonMin.setText("Min");
 		buttonMin.setEnabled(true);
 		buttonMin.setSelection(false);
@@ -389,7 +395,7 @@ public class FileLoadDataAction
 			}
 		});
 
-		txtMin = new Text(mathFiltergGroup, SWT.BORDER);
+		txtMin = new Text(filterGroup, SWT.BORDER);
 		txtMin.setEnabled(false);
 		txtMin.addListener(SWT.Verify, new Listener() {
 			public void handleEvent(Event e) {
@@ -408,7 +414,7 @@ public class FileLoadDataAction
 			}
 		});
 
-		final Button buttonMax = new Button(mathFiltergGroup, SWT.CHECK);
+		final Button buttonMax = new Button(filterGroup, SWT.CHECK);
 		buttonMax.setText("Max");
 		buttonMax.setEnabled(true);
 		buttonMax.setSelection(false);
@@ -420,7 +426,7 @@ public class FileLoadDataAction
 			}
 		});
 
-		txtMax = new Text(mathFiltergGroup, SWT.BORDER);
+		txtMax = new Text(filterGroup, SWT.BORDER);
 		txtMax.setEnabled(false);
 		txtMax.addListener(SWT.Verify, new Listener() {
 			public void handleEvent(Event e) {
@@ -439,24 +445,21 @@ public class FileLoadDataAction
 			}
 		});
 
-		Label lblPreview = new Label(composite, SWT.NONE);
-		lblPreview.setText("Data preview:");
-		lblPreview.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
-
 		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
 		previewTable.setHeaderVisible(true);
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.heightHint = 300;
-		data.widthHint = 700;
-		previewTable.setLayoutData(data);
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.horizontalSpan = 3;
+		gridData.heightHint = 400;
+		gridData.widthHint = 1000;
+		previewTable.setLayoutData(gridData);
 
 		// Check if an external file name is given to the action
 		if (!sInputFile.isEmpty()) {
 			txtFileName.setText(sInputFile);
 			sFileName = sInputFile;
-			sDataRepMode = "Log10";
-			dataRepCombo.select(1);
+			sMathFilterMode = "Log10";
+			mathFilterCombo.select(1);
 
 			createDataPreviewTable("\t");
 		}
@@ -486,7 +489,7 @@ public class FileLoadDataAction
 			String sLine = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++) {
+			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine-1; iIgnoreLineIndex++) {
 				brFile.readLine();
 			}
 
@@ -617,16 +620,12 @@ public class FileLoadDataAction
 	}
 
 	public void execute() {
-		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
-			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				iOldSetID = set.getID();
-				break;
-			}
-		}
 
 		createData();
-		setDataInViews();
-		clearOldData();
+		
+		//TODO implement with new set policy in views (via use case)
+//		setDataInViews();
+//		clearOldData();
 	}
 
 	private void createData() {
@@ -685,10 +684,20 @@ public class FileLoadDataAction
 		CmdDataCreateSet cmdCreateSet =
 			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.CREATE_SET_DATA);
-		cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
+		
+		IUseCase useCase = GeneralManager.get().getUseCase();
+		
+		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);		}
+		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+			cmdCreateSet.setAttributes(iAlStorageId, ESetType.UNSPECIFIED);		
+		}
+		else {
+			throw new IllegalStateException("Not implemented.");
+		}
+		
 		cmdCreateSet.doCommand();
-		ISet set = cmdCreateSet.getCreatedObject();
-		iCreatedSetID = set.getID();
+//		useCase.setSet(cmdCreateSet.getCreatedObject());
 
 		// Trigger file loading command
 		CmdLoadFileNStorages cmdLoadCsv =
@@ -699,9 +708,8 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-		// start_parsing_at_line +1 because of label row
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
-			iStartParseFileAtLine + 2 - 1, -1);
+			iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
 
 		// iSWTGUIManager.setProgressBarVisible(false);
@@ -710,10 +718,22 @@ public class FileLoadDataAction
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine + 2, -1,
-			"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter, "REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
+		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
+				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter, "REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
+		}
+		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+			cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
+				"UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", sDelimiter, "");			
+		}
+		else {
+			throw new IllegalStateException("Not implemented.");
+		}
+		
 		cmdLoadLookupTableFile.doCommand();
 
+		ISet set = useCase.getSet();
+		
 		if (!txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
 			if (!Float.isNaN(fMin)) {
@@ -728,34 +748,28 @@ public class FileLoadDataAction
 			}
 		}
 
-		if (sDataRepMode.equals("Normal")) {
+		if (sMathFilterMode.equals("Normal")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
 		}
-		else if (sDataRepMode.equals("Log10")) {
+		else if (sMathFilterMode.equals("Log10")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);
 		}
-		else if (sDataRepMode.equals("Log2")) {
+		else if (sMathFilterMode.equals("Log2")) {
 			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
 		}
 		else
 			throw new IllegalStateException("Unknown data representation type");
+
+
+		// Since the data is filled to the new set
+		// the views of the current use case can be updated.
+		useCase.updateSetInViews();
 	}
 
-	private void setDataInViews() {
-		for (AGLEventListener tmpGLEventListener : GeneralManager.get().getViewGLCanvasManager()
-			.getAllGLEventListeners()) {
-			tmpGLEventListener.clearSets();
-			tmpGLEventListener.addSet(iCreatedSetID);
 
-			if (tmpGLEventListener.getClass().getSuperclass().equals(AStorageBasedView.class)) {
-				((AStorageBasedView) tmpGLEventListener).initData();
-			}
-		}
-	}
-
-	private void clearOldData() {
-		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
-	}
+//	private void clearOldData() {
+//		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
+//	}
 
 	/**
 	 * For testing purposes

@@ -26,7 +26,6 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -92,14 +91,14 @@ public class GLHeatMap
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel,
+	public GLHeatMap(final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
-		super(setType, iGLCanvasID, sLabel, viewFrustum);
+		
+		super(iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
@@ -107,10 +106,7 @@ public class GLHeatMap
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager =
-			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
-				EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
@@ -121,8 +117,13 @@ public class GLHeatMap
 	@Override
 	public void init(GL gl) {
 		initData();
-		if (set == null)
+		if (stableSetForRendering == null)
 			return;
+	}
+	
+	@Override
+	public synchronized void resetView() {
+		initData();
 	}
 
 	@Override
@@ -175,7 +176,8 @@ public class GLHeatMap
 
 	@Override
 	public synchronized void displayLocal(GL gl) {
-		if (set == null)
+
+		if (stableSetForRendering == null)
 			return;
 
 		if (bIsTranslationAnimationActive) {
@@ -201,7 +203,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void displayRemote(GL gl) {
 
-		if (set == null)
+		if (stableSetForRendering == null)
 			return;
 
 		if (bIsTranslationAnimationActive) {
@@ -327,20 +329,20 @@ public class GLHeatMap
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
 
-		contentSelectionManager.setVA(set.getVA(iContentVAID));
-		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+		contentSelectionManager.setVA(stableSetForRendering.getVA(iContentVAID));
+		storageSelectionManager.setVA(stableSetForRendering.getVA(iStorageVAID));
 
-		int iNumberOfColumns = set.getVA(iContentVAID).size();
-		int iNumberOfRows = set.getVA(iStorageVAID).size();
+		int iNumberOfColumns = stableSetForRendering.getVA(iContentVAID).size();
+		int iNumberOfRows = stableSetForRendering.getVA(iStorageVAID).size();
 
 		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
+			storageSelectionManager.initialAdd(stableSetForRendering.getVA(iStorageVAID).get(iRowCount));
 
 		}
 
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
+			contentSelectionManager.initialAdd(stableSetForRendering.getVA(iContentVAID).get(iColumnCount));
 		}
 
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -352,7 +354,7 @@ public class GLHeatMap
 
 	@Override
 	public String getShortInfo() {
-		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
+		return "Heat Map - " + stableSetForRendering.getVA(iContentVAID).size() + " genes / " + stableSetForRendering.getVA(iStorageVAID).size()
 			+ " experiments";
 	}
 
@@ -362,12 +364,12 @@ public class GLHeatMap
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
 		if (bRenderStorageHorizontally) {
-			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
-				+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
+			sInfoText.append(stableSetForRendering.getVA(iContentVAID).size() + "Genes in columns and "
+				+ stableSetForRendering.getVA(iStorageVAID).size() + " experiments in rows.\n");
 		}
 		else {
-			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
-				+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+			sInfoText.append(stableSetForRendering.getVA(iContentVAID).size() + " Genes in rows and "
+				+ stableSetForRendering.getVA(iStorageVAID).size() + " experiments in columns.\n");
 		}
 
 		if (bRenderOnlyContext) {
@@ -411,9 +413,8 @@ public class GLHeatMap
 					case DOUBLE_CLICKED:
 
 						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-						loadPathwaysByGeneEvent.setGeneID(IDMappingHelper.get().getRefSeqFromStorageIndex(
-							iExternalID));
-						loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
+						loadPathwaysByGeneEvent.setGeneID(iExternalID);
+						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
 						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
 						// intentionally no break
 
@@ -451,18 +452,21 @@ public class GLHeatMap
 
 				contentSelectionManager.clearSelection(eSelectionType);
 
-				// Resolve multiple spotting on chip and add all to the
-				// selection manager.
-				Integer iRefSeqID =
-					idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
-
+				// TODO: Integrate multi spotting support again
+//				// Resolve multiple spotting on chip and add all to the
+//				// selection manager.
+//				Integer iRefSeqID =
+//					idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+//
 				Integer iMappingID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-				for (Object iExpressionIndex : idMappingManager.getMultiID(
-					EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-					contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
-					contentSelectionManager.addConnectionID(iMappingID, (Integer) iExpressionIndex);
-				}
-
+//				for (Object iExpressionIndex : idMappingManager.getMultiID(
+//					EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+//					contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+//					contentSelectionManager.addConnectionID(iMappingID, (Integer) iExpressionIndex);
+//				}
+				contentSelectionManager.addToType(eSelectionType, iExternalID);
+				contentSelectionManager.addConnectionID(iMappingID, iExternalID);
+				
 				if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
@@ -546,7 +550,7 @@ public class GLHeatMap
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1,0.2f,0));
 		int iCount = 0;
 		ESelectionType currentType;
-		for (Integer iContentIndex : set.getVA(iContentVAID)) {
+		for (Integer iContentIndex : stableSetForRendering.getVA(iContentVAID)) {
 			iCount++;
 			// we treat normal and deselected the same atm
 			if (contentSelectionManager.checkStatus(ESelectionType.NORMAL, iContentIndex)
@@ -573,7 +577,7 @@ public class GLHeatMap
 				fYPosition = 0;
 			}
 
-			for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
+			for (Integer iStorageIndex : stableSetForRendering.getVA(iStorageVAID)) {
 				if (bIsInListMode) {
 					if (currentType == ESelectionType.SELECTION) {
 						if (iCurrentMouseOverElement == iContentIndex) {
@@ -627,18 +631,26 @@ public class GLHeatMap
 				if (detailLevel == EDetailLevel.HIGH) {
 					bRenderRefSeq = true;
 					String sContent;
+					
+					if (stableSetForRendering.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+						sContent = IDMappingHelper.get().getShortNameFromDavid(iContentIndex);
 
-					sContent = IDMappingHelper.get().getShortNameFromDavid(iContentIndex);
-					if (sContent == null) {
-						sContent = "Unknown";
+						if (bRenderRefSeq) {
+							sContent += " | ";
+							// Render heat map element name
+							sContent += IDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+						}						
 					}
-
-					if (bRenderRefSeq) {
-						sContent += " | ";
-						// Render heat map element name
-						sContent += IDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+					else if (stableSetForRendering.getSetType() == ESetType.UNSPECIFIED) {
+						sContent = generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex);
 					}
-
+					else {
+						throw new IllegalStateException("Label extraction for " +stableSetForRendering.getSetType() +" not implemented yet!");
+					}
+					
+					if (sContent == null)
+						 sContent = "Unknown";
+					
 					if (bIsInListMode) {
 
 						if (currentType == ESelectionType.SELECTION) {
@@ -749,10 +761,10 @@ public class GLHeatMap
 
 			// render column captions
 			if (detailLevel == EDetailLevel.HIGH && !bIsInListMode) {
-				if (iCount == set.getVA(iContentVAID).size()) {
+				if (iCount == stableSetForRendering.getVA(iContentVAID).size()) {
 					fYPosition = 0;
-					for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
-						renderCaption(gl, set.get(iStorageIndex).getLabel(), fXPosition + 0.1f, fYPosition
+					for (Integer iStorageIndex : stableSetForRendering.getVA(iStorageVAID)) {
+						renderCaption(gl, stableSetForRendering.get(iStorageIndex).getLabel(), fXPosition + 0.1f, fYPosition
 							+ fFieldHeight / 2, 0, fColumnDegrees, renderStyle.getSmallFontScalingFactor());
 						fYPosition += fFieldHeight;
 					}
@@ -764,7 +776,7 @@ public class GLHeatMap
 	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
 		final float fXPosition, final float fYPosition, final float fFieldWidth, final float fFieldHeight) {
 
-		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+		float fLookupValue = stableSetForRendering.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 1;
 //		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
@@ -817,11 +829,11 @@ public class GLHeatMap
 		}
 
 		int iColumnIndex = 0;
-		for (int iTempColumn : set.getVA(iContentVAID)) {
+		for (int iTempColumn : stableSetForRendering.getVA(iContentVAID)) {
 			for (Integer iCurrentColumn : selectedSet) {
 
 				if (iCurrentColumn == iTempColumn) {
-					fHeight = set.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
+					fHeight = stableSetForRendering.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
 					fXPosition = fAlXDistances.get(iColumnIndex);
 
 					fYPosition = 0;
@@ -848,7 +860,7 @@ public class GLHeatMap
 
 		selectedSet = storageSelectionManager.getElements(eSelectionType);
 		int iLineIndex = 0;
-		for (int iTempLine : set.getVA(iStorageVAID)) {
+		for (int iTempLine : stableSetForRendering.getVA(iStorageVAID)) {
 			for (Integer iCurrentLine : selectedSet) {
 				if (iTempLine == iCurrentLine) {
 					// TODO we need indices of all elements
@@ -879,7 +891,7 @@ public class GLHeatMap
 		fAlXDistances.clear();
 		float fDistance = 0;
 
-		for (Integer iStorageIndex : set.getVA(iContentVAID)) {
+		for (Integer iStorageIndex : stableSetForRendering.getVA(iContentVAID)) {
 			fAlXDistances.add(fDistance);
 			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
 				|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iStorageIndex)) {
@@ -900,7 +912,7 @@ public class GLHeatMap
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int iContentIndex : set.getVA(iContentVAID).indicesOf(iStorageIndex)) {
+		for (int iContentIndex : stableSetForRendering.getVA(iContentVAID).indicesOf(iStorageIndex)) {
 			if (iContentIndex == -1) {
 				// throw new
 				// IllegalStateException("No such element in virtual array");
@@ -958,12 +970,12 @@ public class GLHeatMap
 		}
 
 		float fCurrentPosition =
-			set.getVA(iSelection).indexOf(iElementID) * renderStyle.getNormalFieldWidth();// +
+			stableSetForRendering.getVA(iSelection).indexOf(iElementID) * renderStyle.getNormalFieldWidth();// +
 		// renderStyle.getXSpacing(
 		// );
 
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
-		float fLength = (set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
+		float fLength = (stableSetForRendering.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
 		// :
 		// 1.5
 		// =
@@ -1030,7 +1042,7 @@ public class GLHeatMap
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
 
-		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		contentSelectionManager.setVA(stableSetForRendering.getVA(iContentVAID));
 		// renderStyle.setActiveVirtualArray(iContentVAID);
 
 		setDisplayListDirty();

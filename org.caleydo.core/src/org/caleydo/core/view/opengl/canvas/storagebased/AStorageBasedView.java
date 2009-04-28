@@ -51,9 +51,6 @@ public abstract class AStorageBasedView
 	extends AGLEventListener
 	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
 
-	protected ISet set;
-	protected ESetType setType;
-
 	/**
 	 * map selection type to unique id for virtual array
 	 */
@@ -106,27 +103,20 @@ public abstract class AStorageBasedView
 	/**
 	 * Constructor for storage based views
 	 * 
-	 * @param setType
-	 *            from the type of set the kind of visualization is derived
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(ESetType setType, final int iGLCanvasID, final String sLabel,
+	protected AStorageBasedView(final int iGLCanvasID, final String sLabel,
 		final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
-
-		this.setType = setType;
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		connectedElementRepresentationManager =
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		// textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16),
-		// false);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-
 		registerEventListeners();
 	}
 
@@ -146,25 +136,7 @@ public abstract class AStorageBasedView
 		return bRenderOnlyContext;
 	}
 
-	// /**
-	// * Set which level of data filtering should be applied.
-	// *
-	// * @param bRenderOnlyContext true if only context, else false
-	// */
-	// @Override
-	// public void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
-	// {
-	// this.dataFilterLevel = dataFilterLevel;
-	// }
-
 	public synchronized void initData() {
-		set = null;
-
-		for (ISet currentSet : alSets) {
-			if (currentSet.getSetType() == setType) {
-				set = currentSet;
-			}
-		}
 
 		String sLevel =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
@@ -193,7 +165,7 @@ public abstract class AStorageBasedView
 
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
 				if (mapVAIDs.containsKey(eSelectionType)) {
-					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+					stableSetForRendering.removeVirtualArray(mapVAIDs.get(eSelectionType));
 				}
 			}
 			iContentVAID = -1;
@@ -201,7 +173,7 @@ public abstract class AStorageBasedView
 			mapVAIDs.clear();
 		}
 
-		if (set == null) {
+		if (stableSetForRendering == null) {
 			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
@@ -211,16 +183,16 @@ public abstract class AStorageBasedView
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 		// create VA with empty list
-		int iVAID = set.createStorageVA(alTempList);
+		int iVAID = stableSetForRendering.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
 
 		alTempList = new ArrayList<Integer>();
 
-		for (int iCount = 0; iCount < set.size(); iCount++) {
+		for (int iCount = 0; iCount < stableSetForRendering.size(); iCount++) {
 			alTempList.add(iCount);
 		}
 
-		iVAID = set.createSetVA(alTempList);
+		iVAID = stableSetForRendering.createSetVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
 
 		initLists();
@@ -232,12 +204,13 @@ public abstract class AStorageBasedView
 	 */
 	protected final void initCompleteList() {
 		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
+		ArrayList<Integer> alTempList = new ArrayList<Integer>(stableSetForRendering.depth());
 
-		for (int iCount = 0; iCount < set.depth(); iCount++) {
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
+		for (int iCount = 0; iCount < stableSetForRendering.depth(); iCount++) {
+			if (dataFilterLevel != EDataFilterLevel.COMPLETE
+				&& stableSetForRendering.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+
 				// Here we get mapping data for all values
-				// FIXME: not general, only for genes
 				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
@@ -262,6 +235,7 @@ public abstract class AStorageBasedView
 					}
 				}
 			}
+			
 			alTempList.add(iCount);
 		}
 
@@ -285,7 +259,7 @@ public abstract class AStorageBasedView
 		}
 
 		// TODO: remove possible old virtual array
-		int iVAID = set.createStorageVA(alTempList);
+		int iVAID = stableSetForRendering.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
 
 		setDisplayListDirty();
@@ -402,9 +376,13 @@ public abstract class AStorageBasedView
 	/**
 	 * Reset the view to its initial state, synchronized
 	 */
-	public synchronized final void resetView() {
-		initData();
-		setDisplayListDirty();
+	public abstract void resetView();
+	
+	@Override
+	public synchronized void setSet(ISet set) {
+		super.setSet(set);
+		
+		resetView();
 	}
 
 	@Override
@@ -429,7 +407,7 @@ public abstract class AStorageBasedView
 			case TRIGGER_SELECTION_COMMAND:
 				SelectionCommandEventContainer commandEventContainer =
 					(SelectionCommandEventContainer) eventContainer;
-				
+
 				switch (commandEventContainer.getIDType()) {
 					case DAVID:
 					case REFSEQ_MRNA_INT:
@@ -446,14 +424,14 @@ public abstract class AStorageBasedView
 			case VIEW_COMMAND:
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;
-				
+
 				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
 					setDisplayListDirty();
 				}
 				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
 					clearAllSelections();
 					setDisplayListDirty();
-				} 
+				}
 				break;
 		}
 	}

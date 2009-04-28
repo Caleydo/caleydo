@@ -57,14 +57,6 @@ public interface IViewFrustum {
 	 * 
 	 * @param gl
 	 *            the GL context
-	 */
-	public void setProjectionMatrix(GL gl);
-
-	/**
-	 * Sets the projection matrix, according to the projection mode defined in the frustum
-	 * 
-	 * @param gl
-	 *            the GL context
 	 * @param fAspectRatio
 	 *            the aspect ratio
 	 * @deprecated Because fAspectRatio should not be used any more.

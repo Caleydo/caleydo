@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.glyph;
+package org.caleydo.core.manager.specialized.clinical.glyph;
 
 /**
  * @author Stefan Sauer

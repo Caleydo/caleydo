@@ -1,6 +1,6 @@
 package org.caleydo.rcp.views.swt;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -23,12 +23,12 @@ public class TabularDataView
 		// tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
 		// .getFileNameCurrentDataSet());
 
-		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
-			tabularDataView.addSet(set);
-		}
-
+		IUseCase useCase = GeneralManager.get().getUseCase();
+		tabularDataView.setSet(useCase.getSet());
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
+		
+		useCase.addView(tabularDataView);
 
 		swtComposite = parent;
 
@@ -48,6 +48,8 @@ public class TabularDataView
 			tabularDataView);
 		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
 			tabularDataView);
+
+		GeneralManager.get().getUseCase().removeView(tabularDataView);
 	}
 
 	public TabularDataViewRep getTabularDataView() {

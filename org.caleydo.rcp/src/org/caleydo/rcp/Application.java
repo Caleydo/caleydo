@@ -9,6 +9,7 @@ import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -170,8 +171,12 @@ public class Application
 					case SAMPLE_DATA_RANDOM:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
 						break;
-					default:
+					case SAMPLE_DATA_REAL:
+					case STANDARD:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+						break;
+					default:
+						// do nothing
 				}
 			}
 
@@ -184,6 +189,10 @@ public class Application
 				WizardDialog firstStartWizard = new WizardDialog(shell, new FetchPathwayWizard());
 				firstStartWizard.open();
 			}
+		}
+		else {
+			// Assuming that if an external XML file is provided, the genetic use case applies
+			GeneralManager.get().setUseCase(new GeneticUseCase());
 		}
 
 		try {
@@ -237,12 +246,14 @@ public class Application
 	}
 
 	public static void startCaleydoCore() {
+
 		caleydoCore.setXmlFileName(sCaleydoXMLfile);
 		caleydoCore.start();
 
 		Shell shell = new Shell();
 
 		if (applicationMode == EApplicationMode.SAMPLE_DATA_REAL) {
+
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
 
@@ -251,7 +262,8 @@ public class Application
 			}
 		}
 		else if (applicationMode == EApplicationMode.STANDARD
-			&& sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE)) {
+			 && (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE)
+				 || sCaleydoXMLfile.equals(""))) {
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
@@ -261,7 +273,6 @@ public class Application
 		}
 
 		initializeColorMapping();
-		// initializeViewSettings();
 
 		openRCPViews();
 
@@ -346,6 +357,7 @@ public class Application
 	}
 
 	public static boolean isInternetConnectionOK() {
+
 		// Check internet connection
 		try {
 			InetAddress.getByName(ProxyConfigurationPage.TEST_URL);

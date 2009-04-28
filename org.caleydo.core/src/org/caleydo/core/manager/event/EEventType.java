@@ -2,7 +2,6 @@ package org.caleydo.core.manager.event;
 
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.DeltaEventContainer;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 
 /**

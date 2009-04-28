@@ -35,8 +35,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.parser.parameter,
    org.caleydo.core.command,
    org.caleydo.core.manager.event",
- org.caleydo.core.command.memento,
- org.caleydo.core.command.memento.sample;uses:="org.caleydo.core.command.memento",
  org.caleydo.core.command.queue;
   uses:="org.caleydo.core.parser.ascii,
    org.caleydo.core.command.base,
@@ -165,21 +163,21 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.manager,
    org.eclipse.swt.widgets",
  org.caleydo.core.manager.id,
- org.caleydo.core.manager.memento;uses:="org.caleydo.core.manager,org.caleydo.core.command.memento",
  org.caleydo.core.manager.parser;
   uses:="org.caleydo.core.manager,
    org.caleydo.core.parser.xml.sax.handler,
    org.xml.sax.helpers,
    org.xml.sax",
  org.caleydo.core.manager.picking;uses:="org.caleydo.core.manager.id,javax.media.opengl",
- org.caleydo.core.manager.specialized.genome;
+ org.caleydo.core.manager.specialized.clinical.glyph;uses:="org.caleydo.core.view.opengl.canvas.glyph.gridview,org.caleydo.core.view.opengl.canvas.glyph.gridview.data",
+ org.caleydo.core.manager.specialized.genetic;
   uses:="org.caleydo.core.data.graph.pathway.core,
    org.caleydo.util.graph,
    org.caleydo.core.manager,
    org.caleydo.core.parser.xml.sax.handler.specialized.pathway,
    org.caleydo.core.manager.specialized.genome.pathway,
    org.caleydo.core.data.graph.pathway.item.vertex",
- org.caleydo.core.manager.specialized.genome.pathway;
+ org.caleydo.core.manager.specialized.genetic.pathway;
   uses:="org.caleydo.core.data.graph.pathway.core,
    org.caleydo.util.graph.core,
    org.caleydo.util.graph,
@@ -187,7 +185,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.manager,
    org.caleydo.core.parser.xml.sax.handler.specialized.pathway,
    org.caleydo.core.data.graph.pathway.item.vertex",
- org.caleydo.core.manager.specialized.glyph;uses:="org.caleydo.core.view.opengl.canvas.glyph.gridview,org.caleydo.core.view.opengl.canvas.glyph.gridview.data",
+ org.caleydo.core.manager.usecase,
  org.caleydo.core.manager.view;
   uses:="org.caleydo.core.manager.id,
    org.caleydo.core.view.opengl.util.infoarea,
@@ -455,6 +453,7 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
  org.caleydo.data;bundle-version="1.0.3"
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.caleydo.core.manager
+Import-Package: org.caleydo.core.manager,
+ org.caleydo.core.manager.specialized.clinical.glyph
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Graz University of Technology

@@ -1,6 +1,5 @@
 package org.caleydo.rcp.views.swt;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -19,10 +18,6 @@ public class CollabView
 		testingView =
 			(CollabViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
 				EManagedObjectType.VIEW_SWT_COLLAB, -1, "Collaboration");
-
-		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
-			testingView.addSet(set);
-		}
 
 		testingView.initViewRCP(parent);
 		testingView.drawView();

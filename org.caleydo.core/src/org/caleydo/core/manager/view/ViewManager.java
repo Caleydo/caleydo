@@ -11,7 +11,6 @@ import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -203,25 +202,21 @@ public class ViewManager
 		switch (type) {
 			case CREATE_GL_HEAT_MAP_3D:
 				glEventListener =
-					new GLHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+					new GLHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
+				
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
 				glEventListener =
-					new GLHierarchicalHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+					new GLHierarchicalHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
 				glEventListener = new GLPathway(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
-			case CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION:
+			case CREATE_GL_PARALLEL_COORDINATES:
 				glEventListener =
-					new GLParallelCoordinates(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
-				break;
-
-			case CREATE_GL_PARALLEL_COORDINATES_CLINICAL:
-				glEventListener =
-					new GLParallelCoordinates(ESetType.CLINICAL_DATA, iGLCanvasID, sLabel, viewFrustum);
+					new GLParallelCoordinates(iGLCanvasID, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_GLYPH:
 				glEventListener = new GLGlyph(iGLCanvasID, sLabel, viewFrustum);
@@ -253,22 +248,22 @@ public class ViewManager
 
 			case CREATE_GL_RADIAL_HIERARCHY:
 				glEventListener =
-					new GLRadialHierarchy(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+					new GLRadialHierarchy(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_HYPERBOLIC:
 				glEventListener =
-					new GLHyperbolic(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+					new GLHyperbolic(iGLCanvasID, sLabel, viewFrustum);
 				break;
 				
 			case CREATE_GL_HISTOGRAM:
 				glEventListener =
-					new GLHistogram(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+					new GLHistogram(iGLCanvasID, sLabel, viewFrustum);
 				break;
 				
 			case CREATE_GL_DENDROGRAM:
 				glEventListener =
-					new GLDendrogram(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID, sLabel, viewFrustum);
+					new GLDendrogram(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			default:

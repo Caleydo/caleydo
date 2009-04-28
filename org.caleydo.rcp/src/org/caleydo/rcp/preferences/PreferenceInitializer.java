@@ -1,12 +1,12 @@
 package org.caleydo.rcp.preferences;
 
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_COLOR;
-import static org.caleydo.core.util.preferences.PreferenceConstants.GENE_EXPRESSION_PREFIX;
-import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
-import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
-import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD;
 import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD;
+import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
+import static org.caleydo.core.util.preferences.PreferenceConstants.GENE_EXPRESSION_PREFIX;
+import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
+import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;

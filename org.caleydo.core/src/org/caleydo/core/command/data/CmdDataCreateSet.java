@@ -66,6 +66,10 @@ public class CmdDataCreateSet
 			"New Set with internal ID " + createdObject.getID() + " and external ID " + iExternalID
 				+ " created.");
 
+		// Set data in current use case
+		// TODO: Check if this is always safe
+		GeneralManager.get().getUseCase().setSet(createdObject);
+		
 		commandManager.runDoCommand(this);
 	}
 

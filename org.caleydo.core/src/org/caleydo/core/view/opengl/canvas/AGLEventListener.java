@@ -5,13 +5,11 @@ import gleem.linalg.Vec3f;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -126,6 +124,14 @@ public abstract class AGLEventListener
 	protected ContextMenu contextMenu;
 
 	/**
+	 * This set is not changed during rendering.
+	 * On display list dirty set current set is assigned.
+	 * Therefore in the next rendering of the view the new data is applied.
+	 * This guarantees that the set does not change in the middle of the display method.
+	 */
+	protected ISet stableSetForRendering;
+	
+	/**
 	 * Constructor.
 	 */
 	protected AGLEventListener(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
@@ -232,7 +238,6 @@ public abstract class AGLEventListener
 		gl.glLoadIdentity();
 
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
-
 	}
 
 	/**
@@ -241,6 +246,9 @@ public abstract class AGLEventListener
 	public void setDisplayListDirty() {
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
+		
+		// Update rendering set with set of view
+		stableSetForRendering = set;
 	}
 
 	/**
@@ -596,26 +604,8 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public synchronized void addSet(ISet set) {
-		super.addSet(set);
-		setDisplayListDirty();
-	}
-
-	@Override
-	public synchronized void addSet(int iSetID) {
-		super.addSet(iSetID);
-		setDisplayListDirty();
-	}
-
-	@Override
-	public synchronized void removeSets(ESetType setType) {
-		super.removeSets(setType);
-		setDisplayListDirty();
-	}
-
-	@Override
-	public synchronized void clearSets() {
-		super.clearSets();
+	public synchronized void setSet(ISet set) {
+		super.setSet(set);
 		setDisplayListDirty();
 	}
 

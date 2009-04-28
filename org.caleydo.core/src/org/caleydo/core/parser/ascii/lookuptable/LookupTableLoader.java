@@ -56,7 +56,7 @@ public class LookupTableLoader
 	protected void loadDataParseFile(BufferedReader brFile, int numberOfLinesInFile) throws IOException {
 		String sLine;
 
-		int iLineInFile = 1;
+		int iLineInFile = 0;
 
 		fProgressBarFactor = 100f / iStopParsingAtLine;
 
@@ -64,7 +64,7 @@ public class LookupTableLoader
 			/**
 			 * Start parsing if current line iLineInFile is larger than iStartParsingAtLine ..
 			 */
-			if (iLineInFile > iStartParsingAtLine) {
+			if (iLineInFile >= iStartParsingAtLine) {
 
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = new StringTokenizer(sLine, sTokenSeperator);
@@ -77,7 +77,9 @@ public class LookupTableLoader
 						// TODO review sLine should be integer?
 						if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
 							|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
-							|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)) {
+							|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)
+							|| mappingType.equals(EMappingType.UNSPECIFIED_2_EXPRESSION_INDEX)) {
+							
 							// Remove multiple RefSeqs because all point to the
 							// same gene DAVID ID
 							if (sLine.contains(";")) {
@@ -104,16 +106,20 @@ public class LookupTableLoader
 							// Special case for creating indexing of storages
 							if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
 								|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
-								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)) {
-								// Remove multiple RefSeqs because all point to
-								// the same gene DAVID ID
-								if (buffer.contains(";")) {
-									buffer = sLine.substring(0, sLine.indexOf(";"));
-								}
+								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)
+								|| mappingType.equals(EMappingType.UNSPECIFIED_2_EXPRESSION_INDEX)) {
+								
+								if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)) {
+									// Remove multiple RefSeqs because all point to
+									// the same gene DAVID ID
+									if (buffer.contains(";")) {
+										buffer = sLine.substring(0, sLine.indexOf(";"));
+									}
 
-								// Remove version in RefSeq (NM_*.* -> NM_*)
-								if (buffer.contains(".")) {
-									buffer = buffer.substring(0, buffer.indexOf("."));
+									// Remove version in RefSeq (NM_*.* -> NM_*)
+									if (buffer.contains(".")) {
+										buffer = buffer.substring(0, buffer.indexOf("."));
+									}									
 								}
 
 								// Check for integer values that must be ignored
@@ -175,18 +181,7 @@ public class LookupTableLoader
 					iStopParsingAtLine = -1;
 
 				}
-				// catch (NullPointerException npe)
-				// {
-				// bMaintainLoop = false;
-				//
-				// // reset return value to indicate error
-				// iStopParsingAtLine = 1;
-				//
-				// System.out.println("LookupTableHashMapLoader NullPointerException! "
-				// + npe.toString());
-				// npe.printStackTrace();
-				//
-				// }
+
 			}
 
 			iLineInFile++;

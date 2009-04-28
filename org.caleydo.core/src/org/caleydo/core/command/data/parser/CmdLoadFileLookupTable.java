@@ -101,6 +101,7 @@ public class CmdLoadFileLookupTable
 	public void setAttributes(final String sFileName, final int iStartParseFileAtLine,
 		final int iStopParseFileAtLine, final String sLookupTableInfo, final String sLookupTableDelimiter,
 		final String sCodeResolvingLUTTypes) {
+		
 		this.sFileName = sFileName;
 		this.iStartPareseFileAtLine = iStartParseFileAtLine;
 		this.iStopParseFileAtLine = iStopParseFileAtLine;

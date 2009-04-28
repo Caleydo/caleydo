@@ -11,8 +11,8 @@ import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;

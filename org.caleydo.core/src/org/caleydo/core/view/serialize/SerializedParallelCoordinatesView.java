@@ -20,7 +20,7 @@ public class SerializedParallelCoordinatesView
 
 	@Override
 	public ECommandType getCreationCommandType() {
-		return ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION;
+		return ECommandType.CREATE_GL_PARALLEL_COORDINATES;
 	}
 
 	@Override

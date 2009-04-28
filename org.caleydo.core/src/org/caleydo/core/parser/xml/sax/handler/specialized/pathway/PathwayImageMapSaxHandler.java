@@ -3,7 +3,7 @@ package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

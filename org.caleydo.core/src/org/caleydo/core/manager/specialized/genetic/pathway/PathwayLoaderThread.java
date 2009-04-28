@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.genome.pathway;
+package org.caleydo.core.manager.specialized.genetic.pathway;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

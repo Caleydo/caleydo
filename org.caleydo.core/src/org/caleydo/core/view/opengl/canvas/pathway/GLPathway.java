@@ -52,8 +52,8 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -260,7 +260,7 @@ public class GLPathway
 			selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
 		}
 
-		gLPathwayContentCreator.init(gl, alSets, selectionManager);
+		gLPathwayContentCreator.init(gl, selectionManager);
 
 		// Create new pathway manager for GL context
 		if (!hashGLcontext2TextureManager.containsKey(gl)) {
@@ -370,9 +370,10 @@ public class GLPathway
 			}
 		}
 	}
-
-	private ArrayList<Integer> getRefSeqIDsFromPathwayVertexGraphItemRep(int iPathwayVertexGraphItemRepID) {
-		ArrayList<Integer> alRefSeqID = new ArrayList<Integer>();
+	
+	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexGraphItemRep(int iPathwayVertexGraphItemRepID) {
+	
+		ArrayList<Integer> alExpressionIndex = new ArrayList<Integer>();
 
 		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager().getItem(
 			iPathwayVertexGraphItemRepID).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
@@ -392,12 +393,16 @@ public class GLPathway
 				continue;
 			}
 
-			for (int iRefSeqID : iSetRefSeq) {
-				alRefSeqID.add(iRefSeqID);
+			for (Integer iRefSeqID : iSetRefSeq) {
+				
+				Set<Integer> iSetExpressionIndex = idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID);
+				if (iSetExpressionIndex == null)
+					continue;
+				alExpressionIndex.addAll(iSetExpressionIndex);
 			}
 		}
 
-		return alRefSeqID;
+		return alExpressionIndex;
 	}
 
 	// private ArrayList<Integer> getRefSeqFromPathwayVertexGraphItemRep(
@@ -423,15 +428,15 @@ public class GLPathway
 	// }
 
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta) {
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			for (int iRefSeqID : getRefSeqIDsFromPathwayVertexGraphItemRep(item.getPrimaryID())) {
-				newSelectionDelta.addSelection((Integer) iRefSeqID, item.getSelectionType(), item
+			for (int iExpressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item.getPrimaryID())) {
+				newSelectionDelta.addSelection((Integer) iExpressionIndex, item.getSelectionType(), item
 					.getPrimaryID());
 
 				for (Integer iConnectionID : item.getConnectionID()) {
-					newSelectionDelta.addConnectionID((Integer) iRefSeqID, iConnectionID);
+					newSelectionDelta.addConnectionID((Integer) iExpressionIndex, iConnectionID);
 				}
 			}
 		}
@@ -441,18 +446,23 @@ public class GLPathway
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
 		ISelectionDelta newSelectionDelta =
-			new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.REFSEQ_MRNA_INT);
+			new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.EXPRESSION_INDEX);
 
-		int iRefSeqID = 0;
-		Integer iDavidID = 0;
 		int iPathwayVertexGraphItemID = 0;
 
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			iRefSeqID = item.getPrimaryID();
-
-			iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+			
+			int iExpressionIndex = item.getPrimaryID();
+			Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExpressionIndex);
+			
+			if (iRefSeqID == null) {
+				continue;
+				//throw new IllegalStateException("Cannot resolve Expression Index to RefSeq ID.");
+			}
+			
+			Integer iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
 
 			if (iDavidID == null)
 				throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
@@ -646,11 +656,14 @@ public class GLPathway
 							}
 						}
 						else {
+							
+							//TODO: FIXXXXXXXXXXXXXXXX
+							
 							// Load pathways
-							ArrayList<Integer> alRefSeqID =
-								getRefSeqIDsFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
+							ArrayList<Integer> alExpressionIndexID =
+								getExpressionIndicesFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
 
-							for (int iRefSeqID : alRefSeqID) {
+							for (int iRefSeqID : alExpressionIndexID) {
 								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
 									new LoadPathwaysByGeneEvent();
 								loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
@@ -688,7 +701,7 @@ public class GLPathway
 				createConnectionLines(eSelectionType, iConnectionID);
 
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					EIDType.REFSEQ_MRNA_INT,
+					EIDType.EXPRESSION_INDEX,
 					new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
 
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
@@ -784,14 +797,8 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void addSet(int setID) {
-		super.addSet(setID);
-		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-	}
-
-	@Override
-	public synchronized void addSet(ISet set) {
-		super.addSet(set);
+	public synchronized void setSet(ISet set) {
+		super.setSet(set);
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 	}
 

@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.specialized.genome;
+package org.caleydo.core.manager.specialized.genetic;
 
 import java.util.ArrayList;
 import java.util.List;
