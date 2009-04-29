@@ -66,7 +66,8 @@ public enum EIconTextures {
 	
 	// context menue elements
 	LOAD_DEPENDING_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
-	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png");
+	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png"),
+	MENU_MORE("/resources/icons/general/menu_more.png");
 
 	private String sFileName;
 

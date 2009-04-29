@@ -76,7 +76,7 @@ public enum EPickingType {
 	HISTOGRAM_LEFT_SPREAD_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false),
 	HISTOGRAM_RIGHT_SPREAD_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false),
 	
-	CONTEXT_MENUE_SELECTION(EManagedObjectType.GL_CONTEXT_MENUE, false);
+	CONTEXT_MENU_SELECTION(EManagedObjectType.GL_CONTEXT_MENUE, false);
 
 	private EManagedObjectType viewType;
 

@@ -8,7 +8,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 /**
  * <p>
  * Item for loading all pathway by specifying a gene. The event can either be specified manually or the
- * convenience method {@link LoadAllPathwaysByGeneItem#setRefSeqInt(int)} can be used, which creates the event
+ * convenience method {@link LoadPathwaysByGeneItem#setRefSeqInt(int)} can be used, which creates the event
  * automatically.
  * </p>
  * <p>
@@ -17,13 +17,13 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * 
  * @author Alexander Lex
  */
-public class LoadAllPathwaysByGeneItem
+public class LoadPathwaysByGeneItem
 	extends AContextMenuItem {
 
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
-	public LoadAllPathwaysByGeneItem() {
+	public LoadPathwaysByGeneItem() {
 		super();
 		setIconTexture(EIconTextures.LOAD_DEPENDING_PATHWAYS);
 		setText("Load depending Pathways");

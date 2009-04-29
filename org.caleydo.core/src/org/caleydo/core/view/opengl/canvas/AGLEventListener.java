@@ -384,7 +384,7 @@ public abstract class AGLEventListener
 					}
 
 					EPickingMode ePickingMode = tempPick.getPickingMode();
-					if (ePickingType == EPickingType.CONTEXT_MENUE_SELECTION) {
+					if (ePickingType == EPickingType.CONTEXT_MENU_SELECTION) {
 						contextMenu.handleEvents(ePickingMode, iExternalID);
 						pickingManager.flushHits(iUniqueID, ePickingType);
 					}

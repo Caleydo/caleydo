@@ -2370,7 +2370,7 @@ public class GLRemoteRendering
 				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION);
 
 				break;
-			case CONTEXT_MENUE_SELECTION:
+			case CONTEXT_MENU_SELECTION:
 				System.out.println("Waa");
 				break;
 		}

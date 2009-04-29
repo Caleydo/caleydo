@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -16,6 +18,8 @@ public abstract class AContextMenuItem {
 	private String text;
 	private EIconTextures iconTexture;
 	private AEvent event;
+
+	private ArrayList<AContextMenuItem> subItems;
 
 	/**
 	 * Sets the text which is shown when the item is rendered in a context menu. It is mandatory to set a text
@@ -49,6 +53,22 @@ public abstract class AContextMenuItem {
 	}
 
 	/**
+	 * Add sub items to the item, which will be displayed as an extended context menu. The same rules as for
+	 * {@link ContextMenu#addContextMenueItem(AContextMenuItem)} apply. Most importantly the order specified
+	 * is relevant.
+	 * 
+	 * @param subItem
+	 *            the sub-item to be added
+	 */
+	public void addSubItem(AContextMenuItem subItem) {
+		if (subItems == null)
+			subItems = new ArrayList<AContextMenuItem>();
+
+		subItems.add(subItem);
+
+	}
+
+	/**
 	 * Returns the description of the item
 	 * 
 	 * @return The description of the item
@@ -64,6 +84,26 @@ public abstract class AContextMenuItem {
 	 */
 	public EIconTextures getIconTexture() {
 		return iconTexture;
+	}
+
+	/**
+	 * Returns true if the item contains sub-items, else false
+	 * 
+	 * @return flag determining whether this item contains sub items
+	 */
+	public boolean hasSubItems() {
+		if (subItems == null)
+			return false;
+		return true;
+	}
+
+	/**
+	 * Returns a list of sub items or null if no sub items were specified
+	 * 
+	 * @return
+	 */
+	public ArrayList<AContextMenuItem> getSubItems() {
+		return subItems;
 	}
 
 	/**

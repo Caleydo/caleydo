@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -30,8 +31,16 @@ import com.sun.opengl.util.texture.TextureCoords;
 public class ContextMenu
 	extends AOverlayManager {
 
+	private class ContextMenuMetaData {
+		private float xOrigin;
+		private float yOrigin;
+		private float width;
+		private float height;
+		private float maxTextWidth;
+	}
+
 	// Coordinates stuff
-	private static final float ITEM_SIZE = 0.1f;
+	private static final float ITEM_HEIGHT = 0.1f;
 	private static final float ICON_SIZE = 0.08f;
 	private static final float SPACER_SIZE = 0.02f;
 	private static final float SPACING = 0.02f;
@@ -41,17 +50,15 @@ public class ContextMenu
 	private static final float BUTTON_Z = BASIC_Z + 0.001f;
 	private static final float TEXT_Z = BUTTON_Z + 0.001f;
 
-	/** The list of items that should be displayed and triggered */
-	private ArrayList<AContextMenuItem> contextMenueItems;
+	/** Overhead for width for the context menu which should be added to the maximum text width */
+	private static final float WIDHT_OVERHEAD = 3 * SPACING + 2 * ICON_SIZE;
+	/** Overhead for height for the context menu which should be added to {@literal NrElements * ITEM_HEIGHT} */
+	private static final float HEIGHT_OVERHEAD = SPACING;
 
-	private float xOrigin;
-	private float yOrigin;
-	private float width;
-	private float height;
+	/** The list of items that should be displayed and triggered */
+	private ArrayList<AContextMenuItem> contextMenuItems;
 
 	private TextRenderer textRenderer;
-
-	private float longestTextWidth = 0;
 
 	private GLIconTextureManager iconManager;
 
@@ -68,16 +75,28 @@ public class ContextMenu
 	/** The singleton instance */
 	private static ContextMenu instance;
 
+	private int iPickingIDCounter = 0;
+
+	private HashMap<AContextMenuItem, Integer> hashContextMenuItemToUniqueID;
+	private HashMap<Integer, AContextMenuItem> hashUniqueIDToContextMenuItem;
+	private HashMap<AContextMenuItem, ContextMenuMetaData> hashContextMenuItemToMetaData;
+
+	private ContextMenuMetaData baseMenuMetaData;
+
 	/**
 	 * Private constructor since this is a singleton
 	 */
 	private ContextMenu() {
 		super();
-		contextMenueItems = new ArrayList<AContextMenuItem>();
+		contextMenuItems = new ArrayList<AContextMenuItem>();
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
 		textRenderer.setSmoothing(true);
 		iconManager = new GLIconTextureManager();
 		pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
+
+		hashContextMenuItemToUniqueID = new HashMap<AContextMenuItem, Integer>();
+		hashContextMenuItemToMetaData = new HashMap<AContextMenuItem, ContextMenuMetaData>();
+		hashUniqueIDToContextMenuItem = new HashMap<Integer, AContextMenuItem>();
 	}
 
 	/**
@@ -112,11 +131,23 @@ public class ContextMenu
 	 *            an instance of AContextMenuItem
 	 */
 	public void addContextMenueItem(AContextMenuItem item) {
-		contextMenueItems.add(item);
+		contextMenuItems.add(item);
 
-		float textWidth = (float) textRenderer.getBounds(item.getText()).getWidth() * FONT_SCALING;
-		if (textWidth > longestTextWidth)
-			longestTextWidth = textWidth;
+		// float textWidth = (float) textRenderer.getBounds(item.getText()).getWidth() * FONT_SCALING;
+		// if (textWidth > longestTextWidth)
+		// longestTextWidth = textWidth;
+	}
+
+	/**
+	 * Add a item container to the context menu. The items in the context menu are added automatically
+	 * 
+	 * @param itemContainer
+	 *            the container which holds a list of items
+	 */
+	public void addItemContanier(AItemContainer itemContainer) {
+		for (AContextMenuItem item : itemContainer) {
+			addContextMenueItem(item);
+		}
 	}
 
 	/**
@@ -137,7 +168,7 @@ public class ContextMenu
 		if (isFirstTime) {
 			isFirstTime = false;
 
-			if (contextMenueItems.size() == 0)
+			if (contextMenuItems.size() == 0)
 				return;
 
 			if (displayListIndex == -1) {
@@ -147,17 +178,19 @@ public class ContextMenu
 			float[] fArWorldCoords =
 				GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
-			xOrigin = fArWorldCoords[0];
-			yOrigin = fArWorldCoords[1];
 
-			width = longestTextWidth + 3 * SPACING + ICON_SIZE;
-			height = contextMenueItems.size() * ITEM_SIZE + SPACING;
+			baseMenuMetaData = new ContextMenuMetaData();
+
+			baseMenuMetaData.xOrigin = fArWorldCoords[0];
+			baseMenuMetaData.yOrigin = fArWorldCoords[1];
+
+			initializeSubMenus(contextMenuItems, baseMenuMetaData);
 
 		}
 
 		if (isDisplayListDirty) {
 			gl.glNewList(displayListIndex, GL.GL_COMPILE);
-			drawMenue(gl);
+			drawMenu(gl, contextMenuItems, baseMenuMetaData);
 			gl.glEndList();
 			isDisplayListDirty = false;
 		}
@@ -166,44 +199,73 @@ public class ContextMenu
 	}
 
 	/**
+	 * Initializes a sub menu and recursively initializes the sub menus of the items in contextMenuItems. Sets
+	 * unique IDs for every element and creates the ContextMenuMetaData objects for sub menus. Sets the width
+	 * and height of a sub menu.
+	 * 
+	 * @param contextMenuItems
+	 * @param metaData
+	 */
+	private void initializeSubMenus(ArrayList<AContextMenuItem> contextMenuItems, ContextMenuMetaData metaData) {
+		metaData.maxTextWidth = 0;
+		for (AContextMenuItem item : contextMenuItems) {
+			hashUniqueIDToContextMenuItem.put(iPickingIDCounter, item);
+			hashContextMenuItemToUniqueID.put(item, iPickingIDCounter++);
+
+			float textWidth = (float) textRenderer.getBounds(item.getText()).getWidth() * FONT_SCALING;
+			if (textWidth > metaData.maxTextWidth)
+				metaData.maxTextWidth = textWidth;
+
+			if (item.hasSubItems()) {
+				ContextMenuMetaData newMetaData = new ContextMenuMetaData();
+				hashContextMenuItemToMetaData.put(item, newMetaData);
+				initializeSubMenus(item.getSubItems(), newMetaData);
+			}
+		}
+		metaData.width = metaData.maxTextWidth + WIDHT_OVERHEAD;
+		metaData.height = contextMenuItems.size() * ITEM_HEIGHT + HEIGHT_OVERHEAD;
+	}
+
+	/**
 	 * Drawing the actual menu when rebuilding the display list
 	 * 
 	 * @param gl
 	 */
-	private void drawMenue(GL gl) {
+	private void drawMenu(GL gl, ArrayList<AContextMenuItem> contextMenuItems, ContextMenuMetaData metaData) {
 
 		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(xOrigin, yOrigin, BASIC_Z);
-		gl.glVertex3f(xOrigin, yOrigin - height, BASIC_Z);
-		gl.glVertex3f(xOrigin + width, yOrigin - height, BASIC_Z);
-		gl.glVertex3f(xOrigin + width, yOrigin, BASIC_Z);
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - metaData.height, BASIC_Z);
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - metaData.height, BASIC_Z);
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin, BASIC_Z);
 		gl.glEnd();
 
-		float yPosition = yOrigin;
+		float yPosition = metaData.yOrigin;
 
-		int count = 0;
-		for (AContextMenuItem item : contextMenueItems) {
+		for (AContextMenuItem item : contextMenuItems) {
 
-			float xPosition = xOrigin + SPACING;
-			yPosition -= ITEM_SIZE;
+			Integer itemID = hashContextMenuItemToUniqueID.get(item);
+			float xPosition = metaData.xOrigin + SPACING;
+			yPosition -= ITEM_HEIGHT;
 
 			float alpha = 0f;
-			if (count == mouseOverElement)
+			if (itemID == mouseOverElement || isSubElementSelected(item))
 				alpha = 0.8f;
 
 			gl.glColor4f(1, 1, 1, alpha);
 
 			int iPickingID =
-				pickingManager.getPickingID(masterViewID, EPickingType.CONTEXT_MENUE_SELECTION, count);
+				pickingManager.getPickingID(masterViewID, EPickingType.CONTEXT_MENU_SELECTION, itemID);
 			gl.glPushName(iPickingID);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z);
-			gl.glVertex3f(xPosition, yPosition + ITEM_SIZE - SPACING / 2, BUTTON_Z);
+			gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT - SPACING / 2, BUTTON_Z);
 
 			gl.glColor4f(1, 1, 1, 0.0f);
-			gl.glVertex3f(xPosition + width - 2 * SPACING, yPosition + ITEM_SIZE - SPACING / 2, BUTTON_Z);
-			gl.glVertex3f(xPosition + width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z);
+			gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition + ITEM_HEIGHT - SPACING / 2,
+				BUTTON_Z);
+			gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z);
 
 			gl.glEnd();
 			gl.glPopName();
@@ -241,16 +303,57 @@ public class ContextMenu
 			textRenderer.draw3D(item.getText(), xPosition, yPosition, TEXT_Z, FONT_SCALING);
 			// textRenderer.flush();
 			textRenderer.end3DRendering();
-			count++;
 
+			xPosition += metaData.maxTextWidth;
+			if (item.hasSubItems()) {
+
+				Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.MENU_MORE);
+				tempTexture.enable();
+				tempTexture.bind();
+				TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+				gl.glColor4f(1, 1, 1, 1);
+				gl.glPushName(iPickingID);
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(xPosition, yPosition, TEXT_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(xPosition + ICON_SIZE, yPosition, TEXT_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(xPosition + ICON_SIZE, yPosition + ICON_SIZE, TEXT_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(xPosition, yPosition + ICON_SIZE, TEXT_Z);
+				gl.glEnd();
+				tempTexture.disable();
+				gl.glPopName();
+
+				if (itemID == mouseOverElement || isSubElementSelected(item)) {
+					ContextMenuMetaData subMetaData = hashContextMenuItemToMetaData.get(item);
+					subMetaData.xOrigin = metaData.xOrigin + metaData.width;
+					subMetaData.yOrigin = yPosition + ITEM_HEIGHT;
+					drawMenu(gl, item.getSubItems(), subMetaData);
+				}
+			}
 		}
 		// gl.glEnable(GL.GL_DEPTH_TEST);
+	}
 
+	private boolean isSubElementSelected(AContextMenuItem item) {
+		if (!item.hasSubItems())
+			return false;
+		for (AContextMenuItem tempItem : item.getSubItems()) {
+			if (hashContextMenuItemToUniqueID.get(tempItem) == mouseOverElement)
+				return true;
+
+			if (isSubElementSelected(tempItem))
+				return true;
+		}
+		return false;
 	}
 
 	/**
 	 * The handling of the picking. This has to be called when an element of the type
-	 * {@link EPickingType#CONTEXT_MENUE_SELECTION} is picked.
+	 * {@link EPickingType#CONTEXT_MENU_SELECTION} is picked.
 	 * 
 	 * @param ePickingMode
 	 *            the mode of the picking, eg. mouse-over or clicked. Only mouse-over and clicked are handled.
@@ -264,7 +367,7 @@ public class ContextMenu
 				isDisplayListDirty = true;
 				break;
 			case CLICKED:
-				contextMenueItems.get(iExternalID).triggerEvent();
+				hashUniqueIDToContextMenuItem.get(iExternalID).triggerEvent();
 				isDisplayListDirty = true;
 				break;
 		}
@@ -277,7 +380,7 @@ public class ContextMenu
 	@Override
 	public void disable() {
 		super.disable();
-		contextMenueItems.clear();
+		contextMenuItems.clear();
 		mouseOverElement = -1;
 		isDisplayListDirty = true;
 		masterViewID = -1;

@@ -9,6 +9,7 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderSt
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.LABEL_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NAN_Y_OFFSET;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
@@ -78,7 +79,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadAllPathwaysByGeneItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -206,9 +207,8 @@ public class GLParallelCoordinates
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(final int iGLCanvasID, final String sLabel,
-		final IViewFrustum viewFrustum) {
-		
+	public GLParallelCoordinates(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
+
 		super(iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
 
@@ -282,18 +282,18 @@ public class GLParallelCoordinates
 		fYTranslation = renderStyle.getBottomSpacing();
 
 	}
-	
+
 	@Override
 	public synchronized void resetView() {
 		initData();
 		initGates();
 
-		resetAxisSpacing();		
+		resetAxisSpacing();
 	}
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
-		
+
 		if (stableSetForRendering == null)
 			return;
 
@@ -322,7 +322,7 @@ public class GLParallelCoordinates
 
 	@Override
 	public synchronized void displayRemote(final GL gl) {
-		
+
 		if (stableSetForRendering == null)
 			return;
 
@@ -1037,7 +1037,8 @@ public class GLParallelCoordinates
 					if (iCount == 0) {
 						if (stableSetForRendering.isSetHomogeneous()) {
 							float fNumber =
-								(float) stableSetForRendering.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
+								(float) stableSetForRendering.getRawForNormalized(fCurrentHeight
+									/ renderStyle.getAxisHeight());
 
 							Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(fNumber));
 							float fWidth =
@@ -1067,12 +1068,12 @@ public class GLParallelCoordinates
 					// // Labels
 					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
 
-// Please check ALEX
-//					case EXPRESSION_INDEX:
-//						sAxisLabel =
-//							Integer.toString(IDMappingHelper.get().getRefSeqFromStorageIndex(
-//								stableSetForRendering.getVA(iContentVAID).get(iCount)));
-//						break;
+					// Please check ALEX
+					// case EXPRESSION_INDEX:
+					// sAxisLabel =
+					// Integer.toString(IDMappingHelper.get().getRefSeqFromStorageIndex(
+					// stableSetForRendering.getVA(iContentVAID).get(iCount)));
+					// break;
 					default:
 						sAxisLabel = stableSetForRendering.getStorageFromVA(iStorageVAID, iCount).getLabel();
 						break;
@@ -1583,10 +1584,10 @@ public class GLParallelCoordinates
 
 		gl.glColor4f(1f, 1f, 1f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing, 0.03f);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin - fSmallSpacing, 0.03f);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, 0.03f);
-		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, 0.03f);
+		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing, LABEL_Z);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin - fSmallSpacing, LABEL_Z);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, LABEL_Z);
+		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, LABEL_Z);
 		gl.glEnd();
 
 		renderNumber(sRawValue, fXTextOrigin, fYTextOrigin);
@@ -1602,7 +1603,7 @@ public class GLParallelCoordinates
 		// else
 		// text = getDecimalFormat().format(fRawValue);
 
-		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, 0.031f, renderStyle.getSmallFontScalingFactor());
+		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 	}
 
@@ -1701,10 +1702,14 @@ public class GLParallelCoordinates
 
 			for (int iPolylineIndex : stableSetForRendering.getVA(iPolylineVAID)) {
 				if (bRenderStorageHorizontally) {
-					fCurrentValue = stableSetForRendering.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisID);
+					fCurrentValue =
+						stableSetForRendering.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iAxisID);
 				}
 				else {
-					fCurrentValue = stableSetForRendering.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+					fCurrentValue =
+						stableSetForRendering.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED,
+							iPolylineIndex);
 				}
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1726,10 +1731,14 @@ public class GLParallelCoordinates
 			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
 			for (int iPolylineIndex : stableSetForRendering.getVA(iPolylineVAID)) {
 				if (bRenderStorageHorizontally) {
-					fCurrentValue = stableSetForRendering.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisID);
+					fCurrentValue =
+						stableSetForRendering.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iAxisID);
 				}
 				else {
-					fCurrentValue = stableSetForRendering.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+					fCurrentValue =
+						stableSetForRendering.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED,
+							iPolylineIndex);
 				}
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1755,11 +1764,13 @@ public class GLParallelCoordinates
 				for (int iAxisIndex : stableSetForRendering.getVA(iAxisVAID)) {
 					if (bRenderStorageHorizontally) {
 						fCurrentValue =
-							stableSetForRendering.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisIndex);
+							stableSetForRendering.get(iPolylineIndex).getFloat(
+								EDataRepresentation.NORMALIZED, iAxisIndex);
 					}
 					else {
 						fCurrentValue =
-							stableSetForRendering.get(iAxisIndex).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+							stableSetForRendering.get(iAxisIndex).getFloat(EDataRepresentation.NORMALIZED,
+								iPolylineIndex);
 					}
 
 					if (Float.isNaN(fCurrentValue)) {
@@ -1909,15 +1920,19 @@ public class GLParallelCoordinates
 						// contextMenu.setMasterViewID(getRemoteRenderingGLCanvas().getID());
 						// }
 
-						LoadAllPathwaysByGeneItem loadAllPathwaysByGeneItem = new LoadAllPathwaysByGeneItem();
-						loadAllPathwaysByGeneItem.setRefSeqInt(IDMappingHelper.get()
-							.getRefSeqFromStorageIndex(iExternalID));
-						contextMenu.addContextMenueItem(loadAllPathwaysByGeneItem);
+						GeneContextMenuItemContainer geneContextMenuItemContainer =
+							new GeneContextMenuItemContainer(IDMappingHelper.get().getRefSeqFromStorageIndex(
+								iExternalID));
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
+						// LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
+						// loadPathwaysByGeneItem.setRefSeqInt(IDMappingHelper.get()
+						// .getRefSeqFromStorageIndex(iExternalID));
+						// contextMenu.addContextMenueItem(loadPathwaysByGeneItem);
 
 						// contextMenu.addContextMenueItem(new AddToListItem());
-						// contextMenu.addContextMenueItem(new LoadAllPathwaysByGeneItem());
+						// contextMenu.addContextMenueItem(new LoadPathwaysByGeneItem());
 						// contextMenu.addContextMenueItem(new AddToListItem());
-						// contextMenu.addContextMenueItem(new LoadAllPathwaysByGeneItem());
+						// contextMenu.addContextMenueItem(new LoadPathwaysByGeneItem());
 						// contextMenu.addContextMenueItem(new AddToListItem());
 
 						break;
@@ -1940,33 +1955,33 @@ public class GLParallelCoordinates
 				polylineSelectionManager.clearSelection(eSelectionType);
 
 				// TODO: Integrate multi spotting support again
-//				if (ePolylineDataType == EIDType.EXPRESSION_INDEX) {
-//					// Resolve multiple spotting on chip and add all to the
-//					// selection manager.
-//					Integer iRefSeqID =
-//						idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
-//					if (iRefSeqID == null) {
-//						pickingManager.flushHits(iUniqueID, ePickingType);
-//						return;
-//					}
-//					int iConnectionID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-//					for (Object iExpressionIndex : idMappingManager.getMultiID(
-//						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-//						polylineSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
-//						polylineSelectionManager.addConnectionID(iConnectionID, (Integer) iExpressionIndex);
-//					}
-//				}
-//				else {
-					polylineSelectionManager.addToType(eSelectionType, iExternalID);
-					polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
-						EManagedObjectType.CONNECTION), iExternalID);
-//				}
+				// if (ePolylineDataType == EIDType.EXPRESSION_INDEX) {
+				// // Resolve multiple spotting on chip and add all to the
+				// // selection manager.
+				// Integer iRefSeqID =
+				// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+				// if (iRefSeqID == null) {
+				// pickingManager.flushHits(iUniqueID, ePickingType);
+				// return;
+				// }
+				// int iConnectionID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
+				// for (Object iExpressionIndex : idMappingManager.getMultiID(
+				// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+				// polylineSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+				// polylineSelectionManager.addConnectionID(iConnectionID, (Integer) iExpressionIndex);
+				// }
+				// }
+				// else {
+				polylineSelectionManager.addToType(eSelectionType, iExternalID);
+				polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
+					EManagedObjectType.CONNECTION), iExternalID);
+				// }
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-						
-						EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-							eSelectionType)));
+
+					EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
+						eSelectionType)));
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -2251,7 +2266,8 @@ public class GLParallelCoordinates
 			&& idType == EIDType.EXPERIMENT_INDEX) {
 			for (int iAxisNumber : stableSetForRendering.getVA(iAxisVAID).indicesOf(iStorageIndex)) {
 
-				fXValue = iAxisNumber * renderStyle.getAxisSpacing(stableSetForRendering.getVA(iAxisVAID).size());
+				fXValue =
+					iAxisNumber * renderStyle.getAxisSpacing(stableSetForRendering.getVA(iAxisVAID).size());
 				fXValue = fXValue + renderStyle.getXSpacing();
 				fYValue = renderStyle.getBottomSpacing();
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID, fXValue, fYValue, 0.0f));
@@ -2262,7 +2278,8 @@ public class GLParallelCoordinates
 			fXValue = renderStyle.getXSpacing() + fXTranslation;
 			// get the value on the leftmost axis
 			fYValue =
-				stableSetForRendering.getStorageFromVA(iStorageVAID, 0).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+				stableSetForRendering.getStorageFromVA(iStorageVAID, 0).getFloat(
+					EDataRepresentation.NORMALIZED, iStorageIndex);
 
 			if (Float.isNaN(fYValue)) {
 				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
@@ -2285,13 +2302,14 @@ public class GLParallelCoordinates
 				+ contentSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
 		if (iDisplayEveryNthPolyline == 1) {
 			message =
-				"Parallel Coordinates - " + iNumLines + " genes / " + stableSetForRendering.getVA(iStorageVAID).size()
-					+ " experiments";
+				"Parallel Coordinates - " + iNumLines + " genes / "
+					+ stableSetForRendering.getVA(iStorageVAID).size() + " experiments";
 		}
 		else {
 			message =
 				"Parallel Coordinates - a sample of " + iNumLines / iDisplayEveryNthPolyline + " out of "
-					+ iNumLines + " genes / \n " + stableSetForRendering.getVA(iStorageVAID).size() + " experiments";
+					+ iNumLines + " genes / \n " + stableSetForRendering.getVA(iStorageVAID).size()
+					+ " experiments";
 		}
 		return message;
 
@@ -2432,19 +2450,19 @@ public class GLParallelCoordinates
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
 		if (bRenderStorageHorizontally) {
-			vecLeftPoint.setY(stableSetForRendering.get(iSelectedLineID).getFloat(EDataRepresentation.NORMALIZED,
-				iAxisLeftIndex)
+			vecLeftPoint.setY(stableSetForRendering.get(iSelectedLineID).getFloat(
+				EDataRepresentation.NORMALIZED, iAxisLeftIndex)
 				* renderStyle.getAxisHeight());
-			vecRightPoint.setY(stableSetForRendering.get(iSelectedLineID).getFloat(EDataRepresentation.NORMALIZED,
-				iAxisRightIndex)
+			vecRightPoint.setY(stableSetForRendering.get(iSelectedLineID).getFloat(
+				EDataRepresentation.NORMALIZED, iAxisRightIndex)
 				* renderStyle.getAxisHeight());
 		}
 		else {
-			vecLeftPoint.setY(stableSetForRendering.get(iAxisLeftIndex).getFloat(EDataRepresentation.NORMALIZED,
-				iSelectedLineID)
+			vecLeftPoint.setY(stableSetForRendering.get(iAxisLeftIndex).getFloat(
+				EDataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
-			vecRightPoint.setY(stableSetForRendering.get(iAxisRightIndex).getFloat(EDataRepresentation.NORMALIZED,
-				iSelectedLineID)
+			vecRightPoint.setY(stableSetForRendering.get(iAxisRightIndex).getFloat(
+				EDataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
 		}
 
@@ -2547,17 +2565,19 @@ public class GLParallelCoordinates
 
 		for (Integer iCurrent : stableSetForRendering.getVA(iPolylineVAID)) {
 			if (bRenderStorageHorizontally) {
-				vecLeftPoint.setY(stableSetForRendering.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED, iAxisLeftIndex)
+				vecLeftPoint.setY(stableSetForRendering.get(iCurrent).getFloat(
+					EDataRepresentation.NORMALIZED, iAxisLeftIndex)
 					* renderStyle.getAxisHeight());
-				vecRightPoint.setY(stableSetForRendering.get(iCurrent)
-					.getFloat(EDataRepresentation.NORMALIZED, iAxisRightIndex)
+				vecRightPoint.setY(stableSetForRendering.get(iCurrent).getFloat(
+					EDataRepresentation.NORMALIZED, iAxisRightIndex)
 					* renderStyle.getAxisHeight());
 			}
 			else {
-				vecLeftPoint.setY(stableSetForRendering.get(iAxisLeftIndex).getFloat(EDataRepresentation.NORMALIZED, iCurrent)
+				vecLeftPoint.setY(stableSetForRendering.get(iAxisLeftIndex).getFloat(
+					EDataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
-				vecRightPoint.setY(stableSetForRendering.get(iAxisRightIndex)
-					.getFloat(EDataRepresentation.NORMALIZED, iCurrent)
+				vecRightPoint.setY(stableSetForRendering.get(iAxisRightIndex).getFloat(
+					EDataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
 			}
 
