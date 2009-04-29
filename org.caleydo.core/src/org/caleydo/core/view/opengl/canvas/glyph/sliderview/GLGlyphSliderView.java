@@ -341,10 +341,6 @@ public class GLGlyphSliderView
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 				}
-
-				// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				// new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
-
 			}
 		}
 

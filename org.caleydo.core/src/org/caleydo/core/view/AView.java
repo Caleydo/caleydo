@@ -91,4 +91,20 @@ public abstract class AView
 	public void setUseCase(IUseCase useCase) {
 		this.useCase = useCase;
 	}
+
+	/**
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 */
+	public void registerEventListeners() {
+		// default implementations does not react on events 
+	}
+
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 */
+	public void unregisterEventListeners() {
+		// default implementations does not react on events 
+	}
 }

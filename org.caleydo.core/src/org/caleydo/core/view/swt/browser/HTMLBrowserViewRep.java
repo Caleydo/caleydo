@@ -262,6 +262,7 @@ public class HTMLBrowserViewRep
 		return true;
 	}
 	
+	@Override
 	public void registerEventListeners() {
 		changeURLListener = new ChangeURLListener();
 		changeURLListener.setBrowserView(this);
@@ -273,6 +274,7 @@ public class HTMLBrowserViewRep
 	 * Registers the listeners for this view to the event system.
 	 * To release the allocated resources unregisterEventListeners() has to be called.
 	 */
+	@Override
 	public void unregisterEventListeners() {
 		if (changeURLListener != null) {
 			eventPublisher.removeListener(ChangeURLEvent.class, changeURLListener);

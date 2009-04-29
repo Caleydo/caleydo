@@ -55,7 +55,6 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
@@ -63,7 +62,9 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -576,8 +577,10 @@ public class GLParallelCoordinates
 			triggerEvent(EMediatorType.PROPAGATION_MEDIATOR, new SelectionCommandEventContainer(
 				EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.RESET)));
 
-			triggerEvent(EMediatorType.PROPAGATION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(
-				delta));
+			PropagationEvent propagationEvent = new PropagationEvent();
+			propagationEvent.setVirtualArrayDelta(delta);
+			eventPublisher.triggerEvent(propagationEvent);
+			
 			resetAxisSpacing();
 			setDisplayListDirty();
 		}
@@ -2105,8 +2108,7 @@ public class GLParallelCoordinates
 
 						IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 						vaDelta.add(VADeltaItem.remove(iExternalID));
-						generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+						sendVirtualArrayUpdateEvent(vaDelta);
 						setDisplayListDirty();
 						resetAxisSpacing();
 						break;
@@ -2138,8 +2140,8 @@ public class GLParallelCoordinates
 							stableSetForRendering.getVA(iAxisVAID).copy(iExternalID);
 							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 							vaDelta.add(VADeltaItem.copy(iExternalID));
-							generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-								this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+							sendVirtualArrayUpdateEvent(vaDelta);
+
 							setDisplayListDirty();
 							// resetSelections();
 							// initGates();
@@ -2229,6 +2231,13 @@ public class GLParallelCoordinates
 				}
 				break;
 		}
+	}
+
+	private void sendVirtualArrayUpdateEvent(IVirtualArrayDelta delta) {
+		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
+		virtualArrayUpdateEvent.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 
 	@Override
@@ -2652,8 +2661,7 @@ public class GLParallelCoordinates
 
 			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
-			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR, this,
-				new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+			sendVirtualArrayUpdateEvent(vaDelta);
 			iMovedAxisPosition = iSwitchAxisWithThis;
 		}
 		// if (iMovedAxisPosition > 0 && fWidth <

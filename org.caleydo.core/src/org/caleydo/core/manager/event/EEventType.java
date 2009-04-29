@@ -1,8 +1,6 @@
 package org.caleydo.core.manager.event;
 
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 
 /**
  * Types of events that can be send from a {@link IMediatorSender} to a {@link IMediatorReceiver} Document
@@ -21,14 +19,19 @@ public enum EEventType {
 	 * Type for {@link SelectionCommandEventContainer}
 	 */
 	TRIGGER_SELECTION_COMMAND,
-	/**
-	 * Type for {@link DeltaEventContainer} with {@link ISelectionDelta} as type
-	 */
+
+// wpuff migrated to new event system
+//	/**
+//	 * Type for {@link DeltaEventContainer} with {@link ISelectionDelta} as type
+//	 */
 // 	SELECTION_UPDATE, removed due migration of event system 
-	/**
-	 * Type for {@link DeltaEventContainer} with {@link IVirtualArrayDelta} as type
-	 */
-	VA_UPDATE,
+
+// wpuff migrated to new event system
+//	/**
+//	 * Type for {@link DeltaEventContainer} with {@link IVirtualArrayDelta} as type
+//	 */
+//	VA_UPDATE,
+
 	/**
 	 * Type for {@link ViewCommandEventContainer}. Used to signal views for example to redraw
 	 */

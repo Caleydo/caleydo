@@ -17,8 +17,8 @@ public class HTMLBrowserView
 		browserView =
 			(HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
 				EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
+
 		browserView.registerEventListeners();
-		
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 		iViewID = browserView.getID();

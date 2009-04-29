@@ -23,7 +23,6 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -48,6 +47,7 @@ import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -59,7 +59,9 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableTexturesListener;
@@ -83,7 +85,7 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class GLPathway
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IMediatorReceiver, IMediatorSender {
 
 	private PathwayGraph pathway;
 
@@ -124,6 +126,7 @@ public class GLPathway
 	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
 
 	/**
 	 * Constructor.
@@ -151,8 +154,6 @@ public class GLPathway
 		}
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
-
-		registerEventListeners();
 
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
@@ -770,7 +771,10 @@ public class GLPathway
 			}
 		}
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(delta));
+		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
+		virtualArrayUpdateEvent.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 
 	@Override
@@ -860,11 +864,6 @@ public class GLPathway
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case VA_UPDATE:
-				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
-					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
-				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
-				break;
 			case TRIGGER_SELECTION_COMMAND:
 				SelectionCommandEventContainer commandEventContainer =
 					(SelectionCommandEventContainer) eventContainer;
@@ -892,7 +891,8 @@ public class GLPathway
 		}
 	}
 
-	private void handleVAUpdate(IMediatorSender eventTrigger, IVirtualArrayDelta delta) {
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
 		selectionManager.setVADelta(delta);
 		// reactOnExternalSelection();
 		setDisplayListDirty();
@@ -916,6 +916,7 @@ public class GLPathway
 		selectionManager.clearSelections();
 	}
 
+	@Override
 	public void registerEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -946,8 +947,13 @@ public class GLPathway
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-	}
 
+		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+}
+
+	@Override
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -978,6 +984,10 @@ public class GLPathway
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		if (virtualArrayUpdateListener != null) {
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
 		}
 	}
 

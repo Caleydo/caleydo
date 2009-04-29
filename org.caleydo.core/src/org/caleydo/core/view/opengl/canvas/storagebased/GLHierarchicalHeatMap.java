@@ -26,7 +26,6 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -762,7 +761,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
-		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
+		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 		bRedrawTextures = true;
 
 		Set<Integer> setMouseOverElements = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
@@ -1903,10 +1902,9 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
+		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 		if (selectionDelta.size() > 0) {
 			glHeatMapView.handleSelectionUpdate(selectionDelta, true, null);
-			// privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 
 		// selected experiments
@@ -1935,10 +1933,9 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(deltaExp));
+		glHeatMapView.handleVirtualArrayUpdate(deltaExp, getShortInfo());
 		if (selectionDeltaEx.size() > 0) {
 			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true, null);
-			// privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
 		}
 
 	}

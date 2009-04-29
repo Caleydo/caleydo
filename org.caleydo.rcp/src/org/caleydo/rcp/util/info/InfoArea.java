@@ -9,7 +9,6 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -24,10 +23,13 @@ import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
@@ -46,7 +48,7 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IMediatorReceiver {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IMediatorReceiver {
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
@@ -68,6 +70,7 @@ public class InfoArea
 	private String shortInfo;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
 
 	/**
 	 * Constructor.
@@ -348,32 +351,32 @@ public class InfoArea
 	// }
 	// }
 
-	private void handleVAUpdate(final IMediatorSender eventTrigger, final IVirtualArrayDelta delta) {
+	@Override
+	public void handleVirtualArrayUpdate(final IVirtualArrayDelta delta, final String info) {
 		if (delta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
 		if (parentComposite.isDisposed())
 			return;
 
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				if (!(eventTrigger instanceof AGLEventListener))
-					return;
-
-				lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
-
-				// for (VADeltaItem item : delta) {
-				// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-				// // Flush old items that become deselected/normal
-				// for (TreeItem tmpItem : selectionTree.getItems()) {
-				// if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID()) {
-				// tmpItem.dispose();
-				// }
-				// }
-				// }
-				// }
-			}
-		});
+		if (info != null) {
+			parentComposite.getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					lblViewInfoContent.setText(info);
+	
+					// for (VADeltaItem item : delta) {
+					// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
+					// // Flush old items that become deselected/normal
+					// for (TreeItem tmpItem : selectionTree.getItems()) {
+					// if (((Integer) tmpItem.getData()).intValue() == item.getPrimaryID()) {
+					// tmpItem.dispose();
+					// }
+					// }
+					// }
+					// }
+				}
+			});
+		}
 	}
 
 	// protected ISelectionDelta getSelectionDelta()
@@ -390,11 +393,6 @@ public class InfoArea
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case VA_UPDATE:
-				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
-					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
-				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
-				break;
 			case TRIGGER_SELECTION_COMMAND:
 				final SelectionCommandEventContainer commandEventContainer =
 					(SelectionCommandEventContainer) eventContainer;
@@ -471,6 +469,10 @@ public class InfoArea
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
+		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 	}
 
 	/**
@@ -481,6 +483,10 @@ public class InfoArea
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		if (virtualArrayUpdateListener != null) {
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
 		}
 	}
 

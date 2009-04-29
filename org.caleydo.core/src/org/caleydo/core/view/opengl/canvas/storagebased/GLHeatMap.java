@@ -27,8 +27,10 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
@@ -41,6 +43,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.PropagationListener;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -88,6 +91,8 @@ public class GLHeatMap
 
 	int iCurrentMouseOverElement = -1;
 
+	protected PropagationListener propagationListener = null;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -128,8 +133,6 @@ public class GLHeatMap
 	@Override
 	public void initLocal(GL gl) {
 		bRenderOnlyContext = false;
-
-		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
 
 		bRenderStorageHorizontally = false;
 
@@ -474,10 +477,6 @@ public class GLHeatMap
 					event.setSelectionDelta(selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
-
-					// fixme old style because of private mediator
-					// triggerEvent(EMediatorType.SELECTION_MEDIATOR, new
-					// DeltaEventContainer<ISelectionDelta>(selectionDelta));
 				}
 
 				setDisplayListDirty();
@@ -1088,9 +1087,6 @@ public class GLHeatMap
 		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);
 
-		// fixme old style because of private mediator
-		// triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(delta));
-
 		setDisplayListDirty();
 	}
 
@@ -1102,6 +1098,20 @@ public class GLHeatMap
 	// setDisplayListDirty();
 	// }
 
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
+		if (!bIsInListMode) {
+			super.handleVirtualArrayUpdate(delta, info);
+		}
+	}
+
+	public void handlePropagation(IVirtualArrayDelta delta) {
+//		if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
+//		&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR) {
+//		break;
+		super.handleVirtualArrayUpdate(delta, null);
+	}
+	
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
 		renderHorizontally(defaultOrientation);
@@ -1121,6 +1131,25 @@ public class GLHeatMap
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		
+		propagationListener = new PropagationListener();
+		propagationListener.setHeatMapView(this);
+		eventPublisher.addListener(PropagationEvent.class, propagationListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(propagationListener);
+			propagationListener = null;
+		}
+
+		super.unregisterEventListeners();
 	}
 
 }

@@ -1351,6 +1351,7 @@ public class GLGlyph
 	 * To release the allocated resources unregisterEventListeners() has to be called.
 	 * If inherited classes override this method, they should usually call it via super.    
 	 */
+	@Override
 	public void registerEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -1364,6 +1365,7 @@ public class GLGlyph
 	 * To release the allocated resources unregisterEventListenrs() has to be called.
 	 * If inherited classes override this method, they should usually call it via super.    
 	 */
+	@Override
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 

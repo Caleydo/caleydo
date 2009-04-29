@@ -2745,6 +2745,7 @@ public class GLRemoteRendering
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
+		glView.registerEventListeners();
 		useCase.addView(glView);
 		glView.setUseCase(useCase);
 
@@ -2935,15 +2936,10 @@ public class GLRemoteRendering
 
 	}
 
-	@Override
-	public void destroy() {
-		super.destroy();
-		unregisterEventListeners();
-	}
-
 	/**
 	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
 	 */
+	@Override
 	public void registerEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -2999,6 +2995,7 @@ public class GLRemoteRendering
 	/**
 	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
 	 */
+	@Override
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 

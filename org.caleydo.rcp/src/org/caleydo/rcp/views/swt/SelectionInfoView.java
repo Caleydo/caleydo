@@ -82,6 +82,7 @@ public class SelectionInfoView
 
 		infoComposite.setLayout(layout);
 		InfoArea infoArea = new InfoArea();
+		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);
 	}
 

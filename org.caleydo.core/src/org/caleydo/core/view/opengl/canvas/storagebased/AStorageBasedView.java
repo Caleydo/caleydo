@@ -18,11 +18,9 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -30,6 +28,7 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -37,7 +36,9 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -49,7 +50,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
+	implements 
+		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, 
+		IMediatorReceiver, IMediatorSender {
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -99,7 +102,9 @@ public abstract class AStorageBasedView
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
-		
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+	
+	
 	/**
 	 * Constructor for storage based views
 	 * 
@@ -313,7 +318,8 @@ public abstract class AStorageBasedView
 
 	}
 
-	private void handleVAUpdate(IMediatorSender eventTrigger, IVirtualArrayDelta delta) {
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
@@ -339,7 +345,7 @@ public abstract class AStorageBasedView
 		// reactOnExternalSelection();
 		setDisplayListDirty();
 	}
-
+	
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
@@ -390,20 +396,10 @@ public abstract class AStorageBasedView
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case VA_UPDATE:
-				if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
-					&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR) {
-					break;
-				}
-				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
-					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
-				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
-				break;
 			case TRIGGER_SELECTION_COMMAND:
 				SelectionCommandEventContainer commandEventContainer =
 					(SelectionCommandEventContainer) eventContainer;
@@ -578,28 +574,27 @@ public abstract class AStorageBasedView
 		return contentSelectionManager.getElements(eSelectionType).size();
 	}
 
-	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
-	 */
+	@Override
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		
+		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+		
 	}
 
-	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
-	 */
+	@Override
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		if (virtualArrayUpdateListener != null) {
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
 		}
 	}
 	

@@ -597,8 +597,8 @@ public abstract class AGLEventListener
 		// .clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-
 		generalManager.getViewGLCanvasManager().unregisterGLEventListener(iUniqueID);
+		unregisterEventListeners();
 	}
 
 	@Override

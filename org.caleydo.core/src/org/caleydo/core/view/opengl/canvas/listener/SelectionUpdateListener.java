@@ -17,13 +17,19 @@ public class SelectionUpdateListener
 	/** {@link ISelectionUpdateHandler} this listener is related to */
 	protected ISelectionUpdateHandler handler = null;
 
+	/**
+	 * Handles {@link SelectionUdpateEvent}s by extracting the event's payload 
+	 * and calling the related handler
+	 * @param event {@link SelectionUpdateEvent} to handle, other events will be ignored 
+	 */
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof SelectionUpdateEvent) {
 			SelectionUpdateEvent selectioUpdateEvent = (SelectionUpdateEvent) event; 
 			ISelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
 			boolean scrollToSelection = selectioUpdateEvent.isScrollToSelection();
-			handler.handleSelectionUpdate(delta, scrollToSelection, null);
+			String info = selectioUpdateEvent.getInfo();
+			handler.handleSelectionUpdate(delta, scrollToSelection, info);
 		}
 	}
 
