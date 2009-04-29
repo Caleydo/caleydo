@@ -17,7 +17,6 @@ import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -38,13 +37,12 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IMediator;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -56,7 +54,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -146,8 +144,6 @@ public class GLHierarchicalHeatMap
 	private float fPosCursorLastElement = 0;
 
 	// clustering/grouping stuff
-	private Tree<ClusterNode> tree = null;
-
 	private ClusterState clusterstate = new ClusterState();
 
 	private boolean bSplitGroupExp = false;
@@ -252,7 +248,6 @@ public class GLHierarchicalHeatMap
 
 	}
 
-
 	@Override
 	public void initRemote(GL gl, int remoteViewID, PickingMouseListener pickingTriggerMouseAdapter,
 		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
@@ -269,6 +264,9 @@ public class GLHierarchicalHeatMap
 
 	}
 
+	/**
+	 * If no selected elements are in the current texture, the function switches the texture
+	 */
 	private void setTexture() {
 		boolean bSetCurrentTexture = true;
 
@@ -657,7 +655,7 @@ public class GLHierarchicalHeatMap
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(String trigger) {
+	protected void reactOnExternalSelection(boolean scrollToSelection) {
 		int iIndex = 0;
 		int iTemp = 0;
 		int iTexture = 0;
@@ -739,8 +737,8 @@ public class GLHierarchicalHeatMap
 		}
 
 		if (bSkipLevel1 == false) {
-			// if selected element is in another texture, switch to this texture
-			if (!trigger.equals("GLHeatMap")) {
+//			if (!trigger.equals("GLHeatMap")) {
+			if (scrollToSelection) {
 				setTexture();
 			}
 		}
@@ -963,23 +961,23 @@ public class GLHierarchicalHeatMap
 	}
 
 	private void renderClassAssignmentsExperimentsLevel3(final GL gl) {
-		
+
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 		int iNrElements = set.getVA(iStorageVAID).size();
 		float fWidthSamples = fWidthEHM / iNrElements;
 		float fxpos = fWidth + GAP_LEVEL2_3;
 		float fHeight = viewFrustum.getHeight() + 0.1f;
-		
+
 		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
 
 		int iNrClasses = groupList.size();
 
 		gl.glLineWidth(1f);
-		
+
 		for (int i = 0; i < iNrClasses; i++) {
 
-//			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-//				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+			// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			// EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
 
 			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
 
@@ -1003,13 +1001,13 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
 			gl.glEnd();
 
-//			gl.glPopName();
+			// gl.glPopName();
 
 			fxpos = fxpos + classWidth;
 		}
-		
+
 	}
-	
+
 	private void renderClassAssignmentsExperimentsLevel2(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
@@ -1688,7 +1686,7 @@ public class GLHierarchicalHeatMap
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
 		}
-
+		
 		if (bIsDraggingActive) {
 			handleCursorDragging(gl);
 			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
@@ -1891,7 +1889,8 @@ public class GLHierarchicalHeatMap
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		if (selectionDelta.size() > 0) {
-			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+			glHeatMapView.handleSelectionUpdate(selectionDelta, true, null);
+			// privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 
 		// selected experiments
@@ -1922,7 +1921,8 @@ public class GLHierarchicalHeatMap
 
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(deltaExp));
 		if (selectionDeltaEx.size() > 0) {
-			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
+			glHeatMapView.handleSelectionUpdate(selectionDeltaEx, true, null);
+			//privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDeltaEx));
 		}
 
 	}
@@ -1958,57 +1958,21 @@ public class GLHierarchicalHeatMap
 		if (bUseClusteredVA) {
 			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
-				iContentVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
-						.getClustererType());
+				iContentVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
 
 			}
 			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-				// System.out.println("iStorageVAID before clustering " + iStorageVAID + " size: "
-				// + set.getVA(iStorageVAID).size());
-				// for (int i = 0; i < 6; i++) {
-				// System.out.print(set.getVA(iStorageVAID).get(i) + " ");
-				// }
-				// System.out.println(" ");
 
-				iStorageVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(), clusterstate
-						.getClustererType());
+				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
 
-				// System.out.println("iStorageVAID after clustering  " + iStorageVAID + " size: "
-				// + set.getVA(iStorageVAID).size());
-				// for (int i = 0; i < 6; i++) {
-				// System.out.print(set.getVA(iStorageVAID).get(i) + " ");
-				// }
-				// System.out.println(" ");
 			}
 			else {
 
-				iStorageVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
-						EClustererType.EXPERIMENTS_CLUSTERING);
-				iContentVAID =
-					set.cluster(iContentVAID, iStorageVAID, clusterstate.getClustererAlgo(),
-						EClustererType.GENE_CLUSTERING);
+				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
+				iContentVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
 
 			}
 
-			if (clusterstate.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER
-				|| clusterstate.getClustererAlgo() == EClustererAlgo.TREE_CLUSTERER) {
-				tree = set.getClusteredTree();
-			}
-			else {
-
-				// System.out.println("\n number of elements per cluster ... ");
-				// for (Integer iter : set.getAlClusterSizes()) {
-				// System.out.print(iter + " ");
-				// }
-				// System.out.println("\n index of example for cluster in data set ... ");
-				// for (Integer iter : set.getAlExamples()) {
-				// System.out.print(iter + " ");
-				// }
-				// System.out.println(" ");
-			}
 		}
 		else if (set.isClusterInfo()) {
 			set.getVA(iContentVAID).setGroupList(set.getGroupList());
@@ -2633,7 +2597,7 @@ public class GLHierarchicalHeatMap
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 }

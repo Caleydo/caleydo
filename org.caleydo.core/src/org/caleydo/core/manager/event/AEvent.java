@@ -2,6 +2,8 @@ package org.caleydo.core.manager.event;
 
 import java.util.Date;
 
+import org.caleydo.core.manager.IEventPublisher;
+
 /**
  * Basic class for all types of caleydo events.
  * Events are the communication transport objects between

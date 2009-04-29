@@ -3,9 +3,6 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategyChildIndicator;
-import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
-
 public class PDDrawingStrategyFixedColor
 extends PDDrawingStrategyChildIndicator {
 

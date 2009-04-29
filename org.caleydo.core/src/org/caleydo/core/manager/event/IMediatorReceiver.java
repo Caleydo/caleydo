@@ -7,6 +7,7 @@ package org.caleydo.core.manager.event;
  * @author Marc Streit
  * @author Alexander Lex
  */
+@Deprecated
 public interface IMediatorReceiver {
 	/**
 	 * Interface for objects that are event receivers. Updates of all sorts are transmitted via this interface

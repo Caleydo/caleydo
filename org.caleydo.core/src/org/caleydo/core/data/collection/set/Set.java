@@ -27,6 +27,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.HierarchicalClusterer;
@@ -67,7 +68,8 @@ public class Set
 	// clustering stuff
 	private ArrayList<Integer> alClusterSizes = null;
 	private ArrayList<Integer> alClusterExamples = null;
-	private Tree<ClusterNode> clusteredTree;
+	private Tree<ClusterNode> clusteredTreeGenes;
+	private Tree<ClusterNode> clusteredTreeExps;
 	private GroupList groupList = new GroupList(0);
 	private boolean bClusterInfo = false;
 
@@ -487,8 +489,7 @@ public class Set
 		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, EClustererAlgo eClustererAlgo,
-		EClustererType eClustererType) {
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
@@ -496,12 +497,12 @@ public class Set
 
 			IClusterer clusterer;
 
-			switch (eClustererAlgo) {
+			switch (clusterState.getClustererAlgo()) {
 				case TREE_CLUSTERER:
 
-					if (eClustererType == EClustererType.GENE_CLUSTERING)
+					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 						clusterer = new TreeClusterer(getVA(iVAIdContent).size());
-					else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 						clusterer = new TreeClusterer(getVA(iVAIdStorage).size());
 					else {
 						System.out.println("Not implemented yet");
@@ -509,7 +510,7 @@ public class Set
 					}
 
 					System.out.println("treeClustering in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, eClustererType);
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
 					System.out.println("treeClustering done");
 
 					break;
@@ -519,16 +520,16 @@ public class Set
 					clusterer = new HierarchicalClusterer(0);
 
 					System.out.println("Cobweb in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, eClustererType);
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
 					System.out.println("Cobweb done");
 
 					break;
 
 				case AFFINITY_PROPAGATION:
 
-					if (eClustererType == EClustererType.GENE_CLUSTERING)
+					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 						clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
-					else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 						clusterer = new AffinityClusterer(getVA(iVAIdStorage).size());
 					else {
 						System.out.println("Not implemented yet");
@@ -536,7 +537,7 @@ public class Set
 					}
 
 					System.out.println("affinityPropagation in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, eClustererType);
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
 					System.out.println("affinityPropagation done");
 
 					break;
@@ -546,7 +547,7 @@ public class Set
 					clusterer = new KMeansClusterer(0);
 
 					System.out.println("KMeansClusterer in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, eClustererType);
+					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
 					System.out.println("KMeansClusterer done");
 
 					break;
@@ -554,9 +555,9 @@ public class Set
 
 			IVirtualArray virtualArray = getVA(VAId);
 
-			if (eClustererAlgo == EClustererAlgo.AFFINITY_PROPAGATION
-				|| eClustererAlgo == EClustererAlgo.KMEANS_CLUSTERER
-				|| eClustererAlgo == EClustererAlgo.COBWEB_CLUSTERER) {
+			if (clusterState.getClustererAlgo() == EClustererAlgo.AFFINITY_PROPAGATION
+				|| clusterState.getClustererAlgo() == EClustererAlgo.KMEANS_CLUSTERER) {
+				// || clusterState.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER) {
 
 				IGroupList groupList = new GroupList(virtualArray.size());
 
@@ -599,22 +600,12 @@ public class Set
 	}
 
 	@Override
-	public void setClusteredTree(Tree<ClusterNode> clusteredTree) {
-		this.clusteredTree = clusteredTree;
-	}
-
-	@Override
-	public Tree<ClusterNode> getClusteredTree() {
-		return clusteredTree;
-	}
-
-	@Override
 	public void setGroupNrInfo(int[] arGroupInfo) {
 
 		int cluster = 0, cnt = 0;
 
 		groupList.clear();
-		
+
 		for (int i = 0; i < arGroupInfo.length; i++) {
 			Group group = null;
 			if (cluster != arGroupInfo[i]) {
@@ -653,6 +644,26 @@ public class Set
 	@Override
 	public GroupList getGroupList() {
 		return this.groupList;
+	}
+
+	@Override
+	public void setClusteredTreeGenes(Tree<ClusterNode> clusteredTreeGenes) {
+		this.clusteredTreeGenes = clusteredTreeGenes;
+	}
+
+	@Override
+	public Tree<ClusterNode> getClusteredTreeGenes() {
+		return clusteredTreeGenes;
+	}
+
+	@Override
+	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTreeExps) {
+		this.clusteredTreeExps = clusteredTreeExps;
+	}
+
+	@Override
+	public Tree<ClusterNode> getClusteredTreeExps() {
+		return clusteredTreeExps;
 	}
 
 }

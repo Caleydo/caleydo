@@ -11,6 +11,7 @@ package org.caleydo.core.manager.event;
  * 
  * @author Alexander Lex
  */
+@Deprecated
 public class InfoAreaUpdateEventContainer
 	implements IEventContainer {
 	EEventType eventType = EEventType.INFO_AREA_UPDATE;

@@ -19,12 +19,12 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -39,7 +39,7 @@ import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
-import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 
@@ -336,9 +336,10 @@ public class GLGlyphSliderView
 
 				ISelectionDelta selectionDelta = selectionManager.getDelta();
 				if (selectionDelta.getAllItems().size() > 0) {
-
-					generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR, this,
-						new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSelectionDelta(selectionDelta);
+					event.setInfo(getShortInfo());
+					eventPublisher.triggerEvent(event);
 				}
 
 				// triggerEvent(EMediatorType.SELECTION_MEDIATOR,

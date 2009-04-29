@@ -21,6 +21,7 @@ import org.caleydo.core.manager.IEventPublisher;
  * 
  * @author Alexander Lex
  */
+@Deprecated
 public interface IEventContainer {
 
 	/**

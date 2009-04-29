@@ -62,7 +62,11 @@ public enum EIconTextures {
 	LOADING("resources/loading/loading_background.png"),
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
 
-	CELL_MODEL("resources/models/cell.jpg");
+	CELL_MODEL("resources/models/cell.jpg"),
+	
+	// context menue elements
+	LOAD_DEPENDEN_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
+	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png");
 
 	private String sFileName;
 

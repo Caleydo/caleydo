@@ -1,10 +1,12 @@
-package org.caleydo.core.view.opengl.canvas.remote.bucket;
+package org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 
@@ -22,7 +24,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLConnectionLineRendererBucket
+public class GLGlobalBundlingPointConnectionGraphDrawing
 	extends AGLConnectionLineRenderer {
 
 	/**
@@ -32,7 +34,7 @@ public class GLConnectionLineRendererBucket
 	 * @param stackLevel
 	 * @param poolLevel
 	 */
-	public GLConnectionLineRendererBucket(final RemoteLevel focusLevel, final RemoteLevel stackLevel,
+	public GLGlobalBundlingPointConnectionGraphDrawing(final RemoteLevel focusLevel, final RemoteLevel stackLevel,
 		final RemoteLevel poolLevel) {
 		super(focusLevel, stackLevel, poolLevel);
 	}
@@ -101,4 +103,31 @@ public class GLConnectionLineRendererBucket
 			}
 		}
 	}
+	
+	protected void renderLineBundling(GL gl, float[] arColor) {
+		Set<Integer> keySet = hashViewToPointLists.keySet();
+		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
+
+		for (Integer iKey : keySet) {
+			hashViewToCenterPoint.put(iKey, calculateCenter(hashViewToPointLists.get(iKey)));
+		}
+
+		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
+
+		for (Integer iKey : keySet) {
+			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
+			for (ArrayList<Vec3f> alCurrentPoints : hashViewToPointLists.get(iKey)) {
+				if (alCurrentPoints.size() > 1) {
+					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
+				}
+				else {
+					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, hashViewToCenterPoint
+						.get(iKey), arColor);
+				}
+			}
+			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, arColor);
+		}
+	}
+	
+	
 }

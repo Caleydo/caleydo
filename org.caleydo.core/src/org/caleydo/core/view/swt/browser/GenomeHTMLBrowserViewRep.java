@@ -5,15 +5,13 @@ import java.util.ArrayList;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedHTMLBrowserView;
 import org.eclipse.swt.SWT;
@@ -30,14 +28,16 @@ import org.eclipse.swt.widgets.Display;
  */
 public class GenomeHTMLBrowserViewRep
 	extends HTMLBrowserViewRep
-	implements IMediatorReceiver {
+	implements ISelectionUpdateHandler {
+
 	private URLGenerator urlGenerator;
 
 	private ArrayList<Integer> iAlDavidID;
 
 	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.EntrezGene;
 
-	ChangeQueryTypeListener changeQueryTypeListener;
+	protected ChangeQueryTypeListener changeQueryTypeListener;
+	protected SelectionUpdateListener selectionUpdateListener = null;
 	
 	/**
 	 * Constructor.
@@ -49,8 +49,6 @@ public class GenomeHTMLBrowserViewRep
 
 		urlGenerator = new URLGenerator();
 		iAlDavidID = new ArrayList<Integer>();
-		
-//		registerEventListeners();
 	}
 
 	@Override
@@ -77,7 +75,7 @@ public class GenomeHTMLBrowserViewRep
 		subContributionComposite.getParent().layout();
 	}
 	
-	private void handleSelectionUpdate(IMediatorSender eventTrigger, final ISelectionDelta selectionDelta) {
+	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
@@ -93,12 +91,12 @@ public class GenomeHTMLBrowserViewRep
 					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
 						|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION) {
 						String sRefSeqID =
-							GeneralManager.get().getIDMappingManager()
+							generalManager.getIDMappingManager()
 								.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
 									selectionDeltaItem.getPrimaryID());
 
 						Integer iDavidID =
-							GeneralManager.get().getIDMappingManager().getID(
+							generalManager.getIDMappingManager().getID(
 								EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionDeltaItem.getPrimaryID());
 
 						if (iItemsToLoad == 0) {
@@ -115,7 +113,7 @@ public class GenomeHTMLBrowserViewRep
 						String sOutput = "";
 						sOutput =
 							sOutput
-								+ GeneralManager.get().getIDMappingManager().getID(
+								+ generalManager.getIDMappingManager().getID(
 									EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
 						sOutput = sOutput + "\n";
@@ -138,19 +136,6 @@ public class GenomeHTMLBrowserViewRep
 		});
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
-					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer.getSelectionDelta());
-				break;
-		}
-	}
-
 	public void changeQueryType(EBrowserQueryType eBrowserQueryType) {
 		this.eBrowserQueryType = eBrowserQueryType;
 		if (!iAlDavidID.isEmpty()) {
@@ -166,28 +151,32 @@ public class GenomeHTMLBrowserViewRep
 		return eBrowserQueryType;
 	}
 
-//	public void registerEventListeners() {
-//		
-//		super.registerEventListeners();
-//		
-//		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-//		
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
 //		changeQueryTypeListener = new ChangeQueryTypeListener();
 //		changeQueryTypeListener.setBrowserView(this);
 //		eventPublisher.addListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
-//
-//	}
-//	
-//	public void unregisterEventListeners() {
-//		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-//
-//		super.registerEventListeners();
-//		
+
+	}
+	
+	@Override
+	public void unregisterEventListeners() {
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
 //		if (changeQueryTypeListener != null) {
 //			eventPublisher.removeListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
 //			changeQueryTypeListener = null;
 //		}
-//	}
+		super.unregisterEventListeners();
+	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {

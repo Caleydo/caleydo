@@ -9,8 +9,6 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategyChildIndicator;
-import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
 
 public class PDDrawingStrategyRainbow
 	extends PDDrawingStrategyChildIndicator {

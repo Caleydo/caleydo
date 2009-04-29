@@ -3,13 +3,6 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.canvas.radial.DrawingController;
-import org.caleydo.core.view.opengl.canvas.radial.DrawingState;
-import org.caleydo.core.view.opengl.canvas.radial.DrawingStrategyManager;
-import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
-import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
-
 public class DrawingStateDetailOutside
 	extends DrawingState {
 

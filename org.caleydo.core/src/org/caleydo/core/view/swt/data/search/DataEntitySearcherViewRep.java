@@ -10,7 +10,6 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -19,6 +18,7 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
@@ -96,8 +96,9 @@ public class DataEntitySearcherViewRep
 
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
 		selectionDelta.addSelection(iRefSeqID, ESelectionType.SELECTION);
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-			selectionDelta));
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSelectionDelta(selectionDelta);
+		eventPublisher.triggerEvent(event);
 		return true;
 	}
 
@@ -162,8 +163,10 @@ public class DataEntitySearcherViewRep
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 			EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
 				ESelectionType.SELECTION)));
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-			selectionDelta));
+
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSelectionDelta(selectionDelta);
+		eventPublisher.triggerEvent(event);
 
 		return true;
 	}

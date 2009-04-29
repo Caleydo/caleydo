@@ -29,17 +29,26 @@ public class ClusterNode
 	private Vec3f vPos;
 	@XmlElement
 	private ESelectionType eSelectionType;
+	@XmlElement
+	private boolean bIsRootNode;
+	@XmlElement
+	private float fAverageExpressionValue;
+	@XmlElement
+	private float fStandardDeviation;
 
 	public ClusterNode() {
 
 	}
 
-	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth) {
+	public ClusterNode(String sNodeName, int iClusterNr, float fCoefficient, int iDepth, boolean bIsRootNode) {
 		this.sNodeName = sNodeName;
 		this.iClusterNr = iClusterNr;
 		this.fCoefficient = fCoefficient;
 		this.iHierarchyDepth = iDepth;
-		this.setSelectionType(ESelectionType.NORMAL);
+		this.bIsRootNode = bIsRootNode;
+		this.eSelectionType = ESelectionType.NORMAL;
+		this.fAverageExpressionValue = 0f;
+		this.fStandardDeviation = 0f;
 	}
 
 	@Override
@@ -94,5 +103,25 @@ public class ClusterNode
 
 	public ESelectionType getSelectionType() {
 		return eSelectionType;
+	}
+
+	public boolean isRootNode() {
+		return bIsRootNode;
+	}
+
+	public void setAverageExpressionValue(float fAverageExpressionValue) {
+		this.fAverageExpressionValue = fAverageExpressionValue;
+	}
+
+	public float getAverageExpressionValue() {
+		return fAverageExpressionValue;
+	}
+
+	public void setStandardDeviation(float fStandardDeviation) {
+		this.fStandardDeviation = fStandardDeviation;
+	}
+
+	public float getStandardDeviation() {
+		return fStandardDeviation;
 	}
 }

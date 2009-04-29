@@ -1,7 +1,7 @@
 package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
 
+import java.util.ArrayList;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -185,22 +185,12 @@ public class BioCartaPathwayImageMapSaxHandler
 		if (iSetDavidID == null)
 			return;
 
-		for (Integer iDavidId : iSetDavidID) {
-			if (iDavidId == null || iDavidId == -1 || iDavidId == 0) {
-				// TODO: How to handle this case?
-				generalManager.getLogger()
-					.log(Level.FINE, "Cannot map BioCarta ID " + sName + " to David ID");
+		ArrayList<IGraphItem> alVertex =
+			pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX
+				+ sExternalLink, "", iSetDavidID);
 
-				return;
-			}
-
-			IGraphItem vertex =
-				pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX
-					+ sExternalLink, "", iDavidId);
-
-			generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName, sShape,
-				sCoords);
-		}
+		generalManager.getPathwayItemManager().createVertexRep(currentPathway, alVertex, sName, sShape,
+			sCoords);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -20,14 +21,14 @@ public interface IPathwayItemManager
 	public IGraphItem createVertex(final String sName, final String sType, final String sExternalLink,
 		final String sReactionId);
 
-	public IGraphItem createVertexGene(final String sName, final String sType, final String sExternalLink,
-		final String sReactionId, final int iDavidId);
+	public ArrayList<IGraphItem> createVertexGene(final String sName, final String sType, final String sExternalLink,
+		final String sReactionId, final Set<Integer> iSetDavidId);
 
 	public IGraphItem createVertexRep(final IGraph parentPathway,
 		final ArrayList<IGraphItem> alVertexGraphItem, final String sName, final String sShapeType,
 		final short shHeight, final short shWidth, final short shXPosition, final short shYPosition);
 
-	public IGraphItem createVertexRep(final IGraph parentPathway, final IGraphItem parentVertex,
+	public IGraphItem createVertexRep(final IGraph parentPathway, ArrayList<IGraphItem> alVertexGraphItem,
 		final String sName, final String sShapeType, final String sCoords);
 
 	public IGraphItem createRelationEdge(final List<IGraphItem> alGraphItemIn,

@@ -11,12 +11,12 @@ import org.caleydo.core.data.selection.IVirtualArray;
 public class ClusterHelper {
 
 	/**
-	 * Calculates the mean for a given vector (float array)
+	 * Calculates the arithmetic mean for a given vector (float array)
 	 * 
 	 * @param vector
 	 * @return mean
 	 */
-	public static float mean(float[] vector) {
+	public static float arithmeticMean(float[] vector) {
 		float mean = 0;
 
 		float temp = 0;
@@ -32,6 +32,31 @@ public class ClusterHelper {
 		}
 
 		return mean / vector.length;
+	}
+
+	/**
+	 * Calculates the standard deviation for a given vector (float array)
+	 * 
+	 * @param vector
+	 * @param arithmeticMean
+	 * @return
+	 */
+	public static float standardDeviation(float[] vector, float arithmeticMean) {
+		float standardDeviation = 0;
+
+		float temp = 0;
+
+		for (int i = 0; i < vector.length; i++) {
+
+			if (Float.isNaN(vector[i]))
+				temp = 0;
+			else
+				temp = vector[i];
+
+			standardDeviation += Math.pow(temp - arithmeticMean, 2);
+		}
+
+		return (float) Math.sqrt(standardDeviation / vector.length);
 	}
 
 	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
@@ -98,7 +123,7 @@ public class ClusterHelper {
 
 				for (Integer iStorageIndex1 : storageVA) {
 					fColorSum[icontent] +=
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1 + 1);
+						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
 				}
 				icontent++;
 			}
@@ -114,7 +139,7 @@ public class ClusterHelper {
 
 				for (Integer iContentIndex1 : contentVA) {
 					fColorSum[icontent] +=
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1 + 1);
+						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
 				}
 				icontent++;
 			}

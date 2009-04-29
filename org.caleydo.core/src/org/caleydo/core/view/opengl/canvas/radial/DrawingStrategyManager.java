@@ -2,9 +2,6 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import java.util.HashMap;
 
-import org.caleydo.core.view.opengl.canvas.radial.DrawingStrategyManager;
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
-
 public final class DrawingStrategyManager {
 
 	public static final int PD_DRAWING_STRATEGY_RAINBOW = 0;

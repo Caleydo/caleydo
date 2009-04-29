@@ -37,6 +37,7 @@ public abstract class AGLConnectionLineRenderer {
 
 	protected HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointLists;
 
+	protected int activeViewID = -1;
 	/**
 	 * Constructor.
 	 */
@@ -70,34 +71,9 @@ public abstract class AGLConnectionLineRenderer {
 
 	protected abstract void renderConnectionLines(final GL gl);
 
-	protected void renderLineBundling(final GL gl, float[] fArColor) {
-		Set<Integer> keySet = hashViewToPointLists.keySet();
-		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
-
-		for (Integer iKey : keySet) {
-			hashViewToCenterPoint.put(iKey, calculateCenter(hashViewToPointLists.get(iKey)));
-		}
-
-		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
-
-		for (Integer iKey : keySet) {
-			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
-
-			for (ArrayList<Vec3f> alCurrentPoints : hashViewToPointLists.get(iKey)) {
-				if (alCurrentPoints.size() > 1) {
-					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-				}
-				else {
-					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, hashViewToCenterPoint
-						.get(iKey), fArColor);
-				}
-			}
-
-			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
-		}
-	}
-
-	private Vec3f calculateBundlingPoint(Vec3f vecViewCenter, Vec3f vecCenter) {
+	protected abstract void renderLineBundling(final GL gl, float[] fArColor);
+	
+	protected Vec3f calculateBundlingPoint(Vec3f vecViewCenter, Vec3f vecCenter) {
 		Vec3f vecDirection = new Vec3f();
 		vecDirection = vecCenter.minus(vecViewCenter);
 		float fLength = vecDirection.length();
@@ -112,7 +88,7 @@ public abstract class AGLConnectionLineRenderer {
 		return vecViewBundlingPoint;
 	}
 
-	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints) {
+	protected void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints) {
 
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 1f);// 0.6f);
 		gl.glLineWidth(2 + 4);
@@ -169,7 +145,7 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param iNumberOfLines
 	 * @param fArColor
 	 */
-	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
+	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
 		final int iNumberOfLines, float[] fArColor) {
 		// Line shadow
 		// gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
@@ -203,7 +179,7 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param vecViewCenterPoint
 	 * @param fArColor
 	 */
-	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
+	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 
@@ -310,7 +286,7 @@ public abstract class AGLConnectionLineRenderer {
 	// gl.glEnd();
 	// }
 
-	private Vec3f calculateCenter(ArrayList<ArrayList<Vec3f>> alPointLists) {
+	protected Vec3f calculateCenter(ArrayList<ArrayList<Vec3f>> alPointLists) {
 		Vec3f vecCenterPoint = new Vec3f(0, 0, 0);
 
 		int iCount = 0;
@@ -325,7 +301,7 @@ public abstract class AGLConnectionLineRenderer {
 		return vecCenterPoint;
 	}
 
-	private Vec3f calculateCenter(Collection<Vec3f> pointCollection) {
+	protected Vec3f calculateCenter(Collection<Vec3f> pointCollection) {
 
 		Vec3f vecCenterPoint = new Vec3f(0, 0, 0);
 
@@ -446,5 +422,9 @@ public abstract class AGLConnectionLineRenderer {
 		vecTransformedPoint.add(vecTranslation);
 
 		return vecTransformedPoint;
+	}
+	
+	public void setActiveViewID(int viewID){
+		activeViewID = viewID;
 	}
 }

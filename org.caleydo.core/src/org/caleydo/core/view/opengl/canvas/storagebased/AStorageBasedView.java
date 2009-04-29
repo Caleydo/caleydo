@@ -22,18 +22,22 @@ import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -45,7 +49,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
 
 	protected ISet set;
 	protected ESetType setType;
@@ -97,6 +101,8 @@ public abstract class AStorageBasedView
 
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
+	protected SelectionUpdateListener selectionUpdateListener = null;
+		
 	/**
 	 * Constructor for storage based views
 	 * 
@@ -121,6 +127,7 @@ public abstract class AStorageBasedView
 		// false);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
+		registerEventListeners();
 	}
 
 	/**
@@ -302,7 +309,8 @@ public abstract class AStorageBasedView
 	protected abstract ArrayList<SelectedElementRep> createElementRep(EIDType idType, int iStorageIndex)
 		throws InvalidAttributeValueException;
 
-	private void handleSelectionUpdate(IMediatorSender eventTrigger, ISelectionDelta selectionDelta) {
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -315,7 +323,7 @@ public abstract class AStorageBasedView
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementRep(internalDelta);
-			reactOnExternalSelection(eventTrigger.getClass().getSimpleName());
+			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
 
@@ -325,7 +333,7 @@ public abstract class AStorageBasedView
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
-			reactOnExternalSelection(eventTrigger.getClass().getSimpleName());
+			reactOnExternalSelection(scrollToSelection);
 			setDisplayListDirty();
 		}
 
@@ -361,7 +369,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection(String trigger) {
+	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
 	}
 
@@ -409,11 +417,6 @@ public abstract class AStorageBasedView
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
-					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer.getSelectionDelta());
-				break;
 			case VA_UPDATE:
 				if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
 					&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR) {
@@ -597,4 +600,29 @@ public abstract class AStorageBasedView
 		return contentSelectionManager.getElements(eSelectionType).size();
 	}
 
+	/**
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 */
+	public void registerEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+	}
+
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 */
+	public void unregisterEventListeners() {
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+	}
+	
 }

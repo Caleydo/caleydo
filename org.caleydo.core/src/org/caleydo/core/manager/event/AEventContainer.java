@@ -5,6 +5,7 @@ package org.caleydo.core.manager.event;
  * 
  * @author Alexander Lex
  */
+@Deprecated
 public abstract class AEventContainer
 	implements IEventContainer {
 	EEventType eEventType;

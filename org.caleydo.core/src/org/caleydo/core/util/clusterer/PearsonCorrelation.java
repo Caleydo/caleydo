@@ -10,8 +10,8 @@ public class PearsonCorrelation
 		float sum_sq_x = 0;
 		float sum_sq_y = 0;
 		float sum_coproduct = 0;
-		float mean_x = ClusterHelper.mean(vector1);
-		float mean_y = ClusterHelper.mean(vector2);
+		float mean_x = ClusterHelper.arithmeticMean(vector1);
+		float mean_y = ClusterHelper.arithmeticMean(vector2);
 
 		float temp_v1 = 0;
 		float temp_v2 = 0;

@@ -14,6 +14,8 @@ import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.EViewCommand;
@@ -22,6 +24,9 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -42,7 +47,11 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements IMediatorReceiver {
+	implements ISelectionUpdateHandler, IMediatorReceiver {
+
+	IGeneralManager generalManager = null;
+	IEventPublisher eventPublisher = null;
+	
 	private Label lblViewInfoContent;
 
 	private Tree selectionTree;
@@ -59,15 +68,22 @@ public class InfoArea
 
 	private String shortInfo;
 
+	protected SelectionUpdateListener selectionUpdateListener = null;
+
 	/**
 	 * Constructor.
 	 */
 	public InfoArea() {
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION, this);
+		generalManager = GeneralManager.get();
+		eventPublisher = generalManager.getEventPublisher();
+
+		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
+		eventPublisher.addReceiver(EMediatorType.VIEW_SELECTION, this);
 
 		// glyphManager = GeneralManager.get().getGlyphManager();
-		idMappingManager = GeneralManager.get().getIDMappingManager();
+		idMappingManager = generalManager.getIDMappingManager();
+		
+		registerEventListeners();
 	}
 
 	public Control createControl(final Composite parent) {
@@ -143,12 +159,14 @@ public class InfoArea
 		return parent;
 	}
 	
-	private void handleSelectionUpdate(final IMediatorSender eventTrigger, final ISelectionDelta selectionDelta) {
+	
+	@Override
+	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, final boolean scrollToSelection, final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				
-				if (eventTrigger instanceof AGLEventListener) {
-					lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+				if (info != null) {
+					lblViewInfoContent.setText(info);
 				}
 				
 				if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
@@ -244,7 +262,9 @@ public class InfoArea
 					}
 				}
 				else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX) {
-					lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+					if (info != null) {
+						lblViewInfoContent.setText(info);
+					}
 
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
 						
@@ -276,7 +296,7 @@ public class InfoArea
 							// Retrieve current set 
 							// FIXME: This solution is not robust if new data are loaded -> REDESIGN
 							ISet geneExpressionSet = null;
-							Collection<ISet> sets = GeneralManager.get().getSetManager().getAllItems();
+							Collection<ISet> sets = generalManager.getSetManager().getAllItems();
 							int iSetCount = 0;
 							for (ISet set : sets) {
 								if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
@@ -365,11 +385,6 @@ public class InfoArea
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
-					(DeltaEventContainer<ISelectionDelta>) eventContainer;
-				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer.getSelectionDelta());
-				break;
 			case VA_UPDATE:
 				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
 					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
@@ -430,7 +445,7 @@ public class InfoArea
 				InfoAreaUpdateEventContainer infoEventContainer =
 					(InfoAreaUpdateEventContainer) eventContainer;
 				AGLEventListener view =
-					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+					generalManager.getViewGLCanvasManager().getGLEventListener(
 						infoEventContainer.getViewID());
 
 				shortInfo = view.getShortInfo();
@@ -440,6 +455,27 @@ public class InfoArea
 					}
 				});
 				break;
+		}
+	}
+
+	/**
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 */
+	public void registerEventListeners() {
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+	}
+	
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 */
+	public void unregisterEventListeners() {
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
 		}
 	}
 

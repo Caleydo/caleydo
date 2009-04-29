@@ -14,11 +14,11 @@ import org.eclipse.swt.widgets.Display;
  */
 public class GeneralRenderStyle {
 
-	private static final float VERY_SMALL_FONT_SCALING_FACTOR = 0.0004f;
+	public static final float VERY_SMALL_FONT_SCALING_FACTOR = 0.002f;
 
-	private static final float SMALL_FONT_SCALING_FACTOR = 0.0005f;
+	public static final float SMALL_FONT_SCALING_FACTOR = 0.003f;
 
-	private static final float HEADING_FONT_SCALING_FACTOR = 0.0009f;
+	public static final float HEADING_FONT_SCALING_FACTOR = 0.005f;
 
 	public static final float INFO_AREA_Z = 0.02f;
 
@@ -90,18 +90,18 @@ public class GeneralRenderStyle {
 	}
 
 	public float getSmallFontScalingFactor() {
-		float fScaling = SMALL_FONT_SCALING_FACTOR * getScaling();
+		float fScaling = SMALL_FONT_SCALING_FACTOR; // * getScaling();
 		return fScaling;
 	}
 
 	public float getVerySmallFontScalingFactor() {
 
-		return VERY_SMALL_FONT_SCALING_FACTOR * getScaling();
+		return VERY_SMALL_FONT_SCALING_FACTOR;// * getScaling();
 	}
 
 	public float getHeadingFontScalingFactor() {
 
-		return HEADING_FONT_SCALING_FACTOR * getScaling();
+		return HEADING_FONT_SCALING_FACTOR;// * getScaling();
 	}
 
 	public float getVerySmallSpacing() {

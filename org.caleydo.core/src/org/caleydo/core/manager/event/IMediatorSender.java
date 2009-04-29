@@ -7,6 +7,7 @@ package org.caleydo.core.manager.event;
  * @author Alexander Lex
  * @author Marc Streit
  */
+@Deprecated
 public interface IMediatorSender {
 	/**
 	 * Trigger an update on the selections. The information is contained in the selection delta specified

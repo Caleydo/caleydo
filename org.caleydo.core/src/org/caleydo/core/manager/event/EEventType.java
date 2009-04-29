@@ -11,6 +11,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  * 
  * @author Alexander Lex
  */
+@Deprecated
 public enum EEventType {
 
 	/**
@@ -24,7 +25,7 @@ public enum EEventType {
 	/**
 	 * Type for {@link DeltaEventContainer} with {@link ISelectionDelta} as type
 	 */
-	SELECTION_UPDATE,
+// 	SELECTION_UPDATE, removed due migration of event system 
 	/**
 	 * Type for {@link DeltaEventContainer} with {@link IVirtualArrayDelta} as type
 	 */

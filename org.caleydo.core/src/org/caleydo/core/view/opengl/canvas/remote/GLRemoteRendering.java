@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +26,6 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
@@ -49,6 +47,7 @@ import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -56,19 +55,22 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
-import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
-import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.EGraphType;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLGlobalBundlingPointConnectionGraphDrawing;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLViewCenteredConnectionGraphDrawing;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype.GLConsecutiveConnectionGraphDrawing;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.JukeboxLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
@@ -88,12 +90,12 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.opengl.util.overlay.contextmenue.ContextMenue;
+import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -121,8 +123,9 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering {
+	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering {
 
+	private EGraphType graphType = EGraphType.VIEW_CENTERED;
 	Logger log = Logger.getLogger(GLRemoteRendering.class.getName());
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
@@ -211,23 +214,26 @@ public class GLRemoteRendering
 
 	private ArrayList<ASerializedView> newViews;
 
-	AddPathwayListener addPathwayListener = null;
-	LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
+	protected AddPathwayListener addPathwayListener = null;
+	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 
-	EnableGeneMappingListener enableGeneMappingListener = null;
-	DisableGeneMappingListener disableGeneMappingListener = null;
+	protected EnableGeneMappingListener enableGeneMappingListener = null;
+	protected DisableGeneMappingListener disableGeneMappingListener = null;
 
-	EnableTexturesListener enableTexturesListener = null;
-	DisableTexturesListener disableTexturesListener = null;
+	protected EnableTexturesListener enableTexturesListener = null;
+	protected DisableTexturesListener disableTexturesListener = null;
 
-	EnableNeighborhoodListener enableNeighborhoodListener = null;
-	DisableNeighborhoodListener disableNeighborhoodListener = null;
+	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
+	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
 	private GLInfoAreaManager infoAreaManager;
 
-	EnableConnectionLinesListener enableConnectionLinesListener = null;
-	DisableConnectionLinesListener disableConnectionLinesListener = null;
+	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
+	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
 
-	CloseOrResetViewsListener closeOrResetViewsListener = null;
+	protected CloseOrResetViewsListener closeOrResetViewsListener = null;
+	protected SelectionUpdateListener selectionUpdateListener = null;
+
+	ContextMenue contextMenue;
 
 	/**
 	 * Constructor.
@@ -279,7 +285,17 @@ public class GLRemoteRendering
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel, poolLevel);
+			switch(graphType){
+				case GLOBAL_BUNDLING:
+					glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+					break;
+				case VIEW_CENTERED:
+					glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+					break;
+				case CONSECUTIVE:
+					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+					break;
+			}
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
@@ -314,6 +330,7 @@ public class GLRemoteRendering
 		registerEventListeners();
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
+		contextMenue = new ContextMenue(iUniqueID);
 	}
 
 	@Override
@@ -376,19 +393,19 @@ public class GLRemoteRendering
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
-		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener.isZoomedIn()
-			&& !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
-			bEnableNavigationOverlay = !bEnableNavigationOverlay;
-
-			bRightMouseClickEventInvalid = true;
-
-			if (glConnectionLineRenderer != null) {
-				glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
-			}
-		}
-		else if (pickingTriggerMouseAdapter.wasMouseReleased()) {
-			bRightMouseClickEventInvalid = false;
-		}
+//		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener.isZoomedIn()
+//			&& !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
+//			bEnableNavigationOverlay = !bEnableNavigationOverlay;
+//
+//			bRightMouseClickEventInvalid = true;
+//
+//			if (glConnectionLineRenderer != null) {
+//				glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
+//			}
+//		}
+//		else if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+//			bRightMouseClickEventInvalid = false;
+//		}
 
 		pickingManager.handlePicking(iUniqueID, gl);
 
@@ -555,7 +572,13 @@ public class GLRemoteRendering
 		// comment here for connection lines
 		gl.glDisable(GL.GL_DEPTH_TEST);
 		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
-			glConnectionLineRenderer.render(gl);
+			if (graphType.equals(EGraphType.GLOBAL_BUNDLING)){
+				glConnectionLineRenderer.render(gl);
+			}
+			else{
+				glConnectionLineRenderer.setActiveViewID(iActiveViewID);
+				glConnectionLineRenderer.render(gl);
+			}
 		}
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
@@ -571,8 +594,9 @@ public class GLRemoteRendering
 		// viewFrustum.setRight(4);
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0, 0, 4));
 
-		 Dimension size = getParentGLCanvas().getSize();
-		 infoAreaManager.renderRemoteInPlaceInfo(gl, 100, 100, viewFrustum);
+//		 Dimension size = getParentGLCanvas().getSize();
+//		 infoAreaManager.renderRemoteInPlaceInfo(gl, 100, 100, viewFrustum);
+//		 contextMenue.render(gl);
 		//		
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, 1, 4));
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, -1, 4));
@@ -1992,12 +2016,14 @@ public class GLRemoteRendering
 				}
 
 				break;
-			case SELECTION_UPDATE:
-				lastSelectionDelta =
-					((DeltaEventContainer<ISelectionDelta>) eventContainer).getSelectionDelta();
 		}
 
 		bUpdateOffScreenTextures = true;
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		lastSelectionDelta = selectionDelta;
 	}
 
 	/**
@@ -2152,6 +2178,11 @@ public class GLRemoteRendering
 						// .setDataAboutView(iExternalID);
 
 						break;
+					case RIGHT_CLICKED:
+						contextMenue.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
+//						contextMenue.setData();
+						break;
+						
 				}
 
 				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), 0.3f);//pick.getDepth());
@@ -2401,7 +2432,17 @@ public class GLRemoteRendering
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel, poolLevel);
+			switch(graphType){
+				case GLOBAL_BUNDLING:
+					glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+					break;
+				case VIEW_CENTERED:
+					glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+					break;
+				case CONSECUTIVE:
+					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+					break;
+			}
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum, layoutRenderStyle);
@@ -2791,8 +2832,10 @@ public class GLRemoteRendering
 	private void triggerMostRecentDelta() {
 		// Trigger last delta to new views
 		if (lastSelectionDelta != null) {
-			triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<ISelectionDelta>(
-				lastSelectionDelta));
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSelectionDelta(lastSelectionDelta);
+			event.setInfo(getShortInfo());
+			eventPublisher.triggerEvent(event);
 		}
 	}
 
@@ -3058,6 +3101,9 @@ public class GLRemoteRendering
 		closeOrResetViewsListener.setBucket(this);
 		eventPublisher.addListener(CloseOrResetViewsEvent.class, closeOrResetViewsListener);
 
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
 	/**
@@ -3102,6 +3148,10 @@ public class GLRemoteRendering
 		if (closeOrResetViewsListener != null) {
 			eventPublisher.removeListener(closeOrResetViewsListener);
 			closeOrResetViewsListener = null;
+		}
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
 		}
 
 	}

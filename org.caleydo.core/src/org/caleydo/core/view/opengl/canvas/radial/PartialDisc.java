@@ -9,9 +9,6 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.view.opengl.canvas.radial.DrawingStrategyManager;
-import org.caleydo.core.view.opengl.canvas.radial.PDDrawingStrategy;
-import org.caleydo.core.view.opengl.canvas.radial.PartialDisc;
 
 public class PartialDisc
 	implements Comparable<PartialDisc> {

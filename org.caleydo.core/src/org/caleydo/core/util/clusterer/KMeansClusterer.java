@@ -17,7 +17,7 @@ public class KMeansClusterer
 
 	private SimpleKMeans clusterer = null;
 
-	private int iNrCluster = 15;
+	private int iNrCluster = 5;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
@@ -131,7 +131,7 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-//		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
+		// ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
@@ -145,6 +145,10 @@ public class KMeansClusterer
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result in Set
+		
+//		count.set(1, 55);
+//		count.set(2, 2);
+//		count.set(3, 2);
 		set.setAlClusterSizes(count);
 		set.setAlExamples(alExamples);
 
@@ -152,11 +156,13 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
-		VAId = cluster(set, idContent, idStorage, eClustererType);
+		iNrCluster = clusterState.getKMeansClusterCnt();
+
+		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
 
 		return VAId;
 	}

@@ -1,19 +1,13 @@
-package org.caleydo.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.overlay.infoarea;
 
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
 
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -30,7 +24,7 @@ public class GLInfoAreaManager {
 
 	private Point pickedPoint;
 
-	private GLInPlaceInfoRenderer2 infoArea;
+	private GLInPlaceInfoRenderer infoArea;
 
 	private float fXOrigin = 0;
 
@@ -46,8 +40,6 @@ public class GLInfoAreaManager {
 
 	private InformationContentCreator contentCreator;
 
-	private HashMap<Integer, GLOverlayInfoRenderer> hashViewIDToInfoOverlay;
-
 	private boolean bUpdateViewInfo = true;
 
 	private boolean bEnableRendering = true;
@@ -59,35 +51,20 @@ public class GLInfoAreaManager {
 	 * Constructor.
 	 */
 	public GLInfoAreaManager() {
-		hashViewIDToInfoOverlay = new HashMap<Integer, GLOverlayInfoRenderer>();
+		
 	}
 
 	public void initInfoInPlace(final IViewFrustum viewFrustum) {
 
-		infoArea = new GLInPlaceInfoRenderer2(viewFrustum);
+		infoArea = new GLInPlaceInfoRenderer(viewFrustum);
 	}
 
-	public void initInfoOverlay(final int iViewID, final GLAutoDrawable drawable) {
-
-		// Lazy creation to be sure that all managers are already initialized
-		if (hashViewIDToInfoOverlay.isEmpty()) {
-			contentCreator = new InformationContentCreator();
-		}
-
-		if (!hashViewIDToInfoOverlay.containsKey(iViewID)) {
-			GLOverlayInfoRenderer infoOverlayRenderer = new GLOverlayInfoRenderer();
-
-			hashViewIDToInfoOverlay.put(iViewID, infoOverlayRenderer);
-
-			infoOverlayRenderer.init(drawable);
-		}
-	}
 
 	/**
 	 * Render the data previously set
 	 * 
 	 * @param gl
-	 * @param bFirstTime
+	 * @param isFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
 	public void renderInPlaceInfo(GL gl) {
@@ -123,7 +100,7 @@ public class GLInfoAreaManager {
 	 * Render the data previously set
 	 * 
 	 * @param gl
-	 * @param bFirstTime
+	 * @param isFirstTime
 	 *            this has to be true only the first time you render it and can never be true after that
 	 */
 	public void renderRemoteInPlaceInfo(GL gl, int iWindowWidth, int iWindowHeight, IViewFrustum frustum) {
@@ -159,47 +136,6 @@ public class GLInfoAreaManager {
 		bFirstTime = false;
 	}
 
-	public void renderInfoOverlay(final int iViewID, final GLAutoDrawable drawable) {
-
-		if (!bEnableRendering)
-			return;
-
-		hashViewIDToInfoOverlay.get(iViewID).render(drawable);
-	}
-
-	// public void setData(final int iViewID, final int iUniqueID, final EIDType eInputDataType,
-	// final ArrayList<String> sAlContent) {
-	//
-	// bFirstTime = true;
-	// bRenderInfoArea = true;
-	// bUpdateViewInfo = false;
-	//
-	// sAlContent.add("---------------------------------------------------------");
-	// sAlContent.addAll(contentCreator.getStringContentForID(iUniqueID, eInputDataType));
-	//
-	// Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values().iterator();
-	//
-	// while (iterInfoOverlay.hasNext()) {
-	// iterInfoOverlay.next().setData(sAlContent);
-	// }
-	// }
-
-	// public void setDataAboutView(final int iViewID) {
-	//
-	// if (bUpdateViewInfo == false) {
-	// bUpdateViewInfo = true;
-	// return;
-	// }
-	//
-	// Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values().iterator();
-	//
-	// while (iterInfoOverlay.hasNext()) {
-	// // iterInfoOverlay.next().setData(
-	// // (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
-	// // .getDetailedInfo());
-	// }
-	// }
-
 	/**
 	 * Set the data to be rendered.
 	 * 
@@ -225,10 +161,6 @@ public class GLInfoAreaManager {
 		// fWidth = 0;
 	}
 
-	public void setMiniViewData(ArrayList<IStorage> alStorages) {
-
-		infoArea.setMiniViewData(alStorages);
-	}
 
 	public void enable(final boolean bEnableRendering) {
 

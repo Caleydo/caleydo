@@ -26,11 +26,13 @@ public class EventPublisher
 		listenerMap = new ListenerMap();
 	}
 
+	@Deprecated
 	@Override
 	public IMediator getPrivateMediator() {
 		return new Mediator();
 	}
 
+	@Deprecated
 	@Override
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender) {
 		// Lazy mediator creation
@@ -42,6 +44,7 @@ public class EventPublisher
 
 	}
 
+	@Deprecated
 	@Override
 	public void addReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver) {
 		// Lazy mediator creation
@@ -53,6 +56,7 @@ public class EventPublisher
 
 	}
 
+	@Deprecated
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IMediatorSender eventTrigger,
 		IEventContainer eventContainer) {
@@ -74,6 +78,7 @@ public class EventPublisher
 		}
 	}
 	
+	@Deprecated
 	@Override
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender) {
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
@@ -82,6 +87,7 @@ public class EventPublisher
 		hashMediatorType2Mediator.get(eMediatorType).removeSender(sender);
 	}
 
+	@Deprecated
 	@Override
 	public void removeReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver) {
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
@@ -90,6 +96,7 @@ public class EventPublisher
 		hashMediatorType2Mediator.get(eMediatorType).removeReceiver(receiver);
 	}
 
+	@Deprecated
 	@Override
 	public void removeSenderFromAllGroups(IMediatorSender sender) {
 		for (IMediator mediator : hashMediatorType2Mediator.values()) {
@@ -97,6 +104,7 @@ public class EventPublisher
 		}
 	}
 
+	@Deprecated
 	@Override
 	public void removeReceiverFromAllGroups(IMediatorReceiver receiver) {
 		for (IMediator mediator : hashMediatorType2Mediator.values()) {

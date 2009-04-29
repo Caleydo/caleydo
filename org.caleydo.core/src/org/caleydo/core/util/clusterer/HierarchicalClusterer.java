@@ -138,7 +138,7 @@ public class HierarchicalClusterer
 
 		CNode node = clusterer.m_cobwebTree;
 
-		ClusterNode clusterNode = new ClusterNode("Root", 1, 0f, 0);
+		ClusterNode clusterNode = new ClusterNode("Root", 1, 0f, 0, true);
 		tree.setRootNode(clusterNode);
 
 		CNodeToTree(clusterNode, node);
@@ -146,7 +146,11 @@ public class HierarchicalClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
-		set.setClusteredTree(tree);
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			set.setClusteredTreeGenes(tree);
+		else
+			set.setClusteredTreeExps(tree);
+		
 		set.setAlClusterSizes(temp);
 		set.setAlExamples(alExamples);
 
@@ -164,7 +168,8 @@ public class HierarchicalClusterer
 
 				CNode currentNode = (CNode) node.getChilds().elementAt(i);
 				ClusterNode currentGraph =
-					new ClusterNode("Node_" + currentNode.getClusterNum(), currentNode.getClusterNum(), 0f, 0);
+					new ClusterNode("Node_" + currentNode.getClusterNum(), currentNode.getClusterNum(), 0f,
+						0, false);
 				currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);
@@ -195,11 +200,11 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
-		VAId = cluster(set, idContent, idStorage, eClustererType);
+		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
 
 		return VAId;
 	}

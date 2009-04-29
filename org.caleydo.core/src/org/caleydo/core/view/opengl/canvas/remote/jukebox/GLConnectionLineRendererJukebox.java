@@ -116,4 +116,8 @@ public class GLConnectionLineRendererJukebox
 		// }
 
 	}
+
+	@Override
+	protected void renderLineBundling(GL gl, float[] arColor) {}
+	
 }

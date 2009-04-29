@@ -175,7 +175,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer palcluster() {
+	private Integer palcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -255,20 +255,86 @@ public class TreeClusterer
 
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
-		ClusterNode node = new ClusterNode("Root", 0, 0f, 0);
+
+		int random = (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+
+		ClusterNode node = new ClusterNode("Root", random, 0f, 0, true);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
+		determineExpressionValue(eClustererType);
+
 		AlIndexes = getAl();
 
-		set.setClusteredTree(tree);
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			set.setClusteredTreeGenes(tree);
+		else
+			set.setClusteredTreeExps(tree);
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
 		return clusteredVAId;
+	}
+
+	private void determineExpressionValue(EClustererType eClustererType) {
+
+		determineExpressionValueRec(tree.getRoot(), eClustererType);
+	}
+
+	private float determineExpressionValueRec(ClusterNode node, EClustererType eClustererType) {
+
+		if (tree.hasChildren(node)) {
+			float temp[] = new float[tree.getChildren(node).size()];
+			int cnt = 0;
+
+			for (ClusterNode current : tree.getChildren(node)) {
+				temp[cnt] = determineExpressionValueRec(current, eClustererType);
+				cnt++;
+			}
+
+			float mean = ClusterHelper.arithmeticMean(temp);
+			float deviation = ClusterHelper.standardDeviation(temp, mean);
+
+			node.setAverageExpressionValue(mean);
+			node.setStandardDeviation(deviation);
+		}
+		else {
+			float averageExpressionvalue = 0f;
+			float[] fArExpressionValues;
+
+			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+				IVirtualArray storageVA = set.getVA(idStorage);
+				fArExpressionValues = new float[storageVA.size()];
+
+				int isto = 0;
+				for (Integer iStorageIndex1 : storageVA) {
+					fArExpressionValues[isto] =
+						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, node.getClusterNr());
+					isto++;
+				}
+
+			}
+			else {
+				IVirtualArray contentVA = set.getVA(idContent);
+				fArExpressionValues = new float[contentVA.size()];
+
+				int isto = 0;
+				for (Integer iContentIndex1 : contentVA) {
+					fArExpressionValues[isto] =
+						set.get(node.getClusterNr()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+					isto++;
+				}
+			}
+			averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
+			float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+			node.setAverageExpressionValue(averageExpressionvalue);
+			node.setStandardDeviation(deviation);
+		}
+
+		return node.getAverageExpressionValue();
 	}
 
 	/**
@@ -278,7 +344,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	public Integer pmlcluster() {
+	private Integer pmlcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -337,16 +403,24 @@ public class TreeClusterer
 
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
-		ClusterNode node = new ClusterNode("Root", 0, 0f, 0);
+
+		int random = (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+
+		ClusterNode node = new ClusterNode("Root", random, 0f, 0, true);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
+		determineExpressionValue(eClustererType);
+
 		AlIndexes = getAl();
 
-		set.setClusteredTree(tree);
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			set.setClusteredTreeGenes(tree);
+		else
+			set.setClusteredTreeExps(tree);
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
@@ -357,7 +431,10 @@ public class TreeClusterer
 
 		if (tree.hasChildren(node) == false) {
 			// FIXME: problem with indexes (storageVA vs. contentVA ???)
-			indexes.add(node.getClusterNr() + 1);
+			if (bStart0)
+				indexes.add(node.getClusterNr() + 1);
+			else
+				indexes.add(node.getClusterNr());
 		}
 		else {
 			for (ClusterNode current : tree.getChildren(node)) {
@@ -396,12 +473,10 @@ public class TreeClusterer
 
 			left =
 				new ClusterNode(NodeName, treeStructure[index].getLeft(), treeStructure[index]
-					.getCorrelation(), 0);
+					.getCorrelation(), 0, false);
 
 			left.setNrElements(1);
 
-			// left = new ClusterNode("Leaf_" + treeStructure[index].getLeft(),
-			// treeStructure[index].getLeft(), 0, 0);
 			tree.addChild(node, left);
 
 		}
@@ -410,7 +485,7 @@ public class TreeClusterer
 
 			left =
 				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
-					treeStructure[index].getCorrelation(), 0);
+					treeStructure[index].getCorrelation(), 0, false);
 			tree.addChild(node, left);
 			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1);
 		}
@@ -430,12 +505,10 @@ public class TreeClusterer
 
 			right =
 				new ClusterNode(NodeName, treeStructure[index].getRight(), treeStructure[index]
-					.getCorrelation(), 0);
+					.getCorrelation(), 0, false);
 
 			right.setNrElements(1);
 
-			// right = new ClusterNode("Leaf_" + treeStructure[index].getRight(),
-			// treeStructure[index].getRight(), 0, 0);
 			tree.addChild(node, right);
 
 		}
@@ -444,7 +517,7 @@ public class TreeClusterer
 
 			right =
 				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
-					treeStructure[index].getCorrelation(), 0);
+					treeStructure[index].getCorrelation(), 0, false);
 			tree.addChild(node, right);
 			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1);
 		}
@@ -452,18 +525,18 @@ public class TreeClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, EClustererType eClustererType) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
-		determineSimilarities(set, idContent, idStorage, eClustererType);
+		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
 
 		this.set = set;
 		this.idContent = idContent;
 		this.idStorage = idStorage;
 
-		VAId = pmlcluster();
-		// VAId = palcluster();
+		// VAId = pmlcluster(clusterState.getClustererType());
+		VAId = palcluster(clusterState.getClustererType());
 
 		return VAId;
 	}
