@@ -167,9 +167,10 @@ public class GLRadialHierarchy
 		partialDiscTree.setRootNode(pdRealRootElement);
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
-
 		TreePorter treePorter = new TreePorter();
-		tree = treePorter.importTree("D:\\Eigene Dateien\\Studium\\Bakk_Arbeit\\tree.xml");
+		
+		tree = treePorter.importTree("data/clustering/tree.xml");
+		
 		ClusterNode cnRoot = tree.getRoot();
 		PartialDisc pdRoot =
 			new PartialDisc(childID, cnRoot.getNrElements(), iUniqueID, pickingManager, partialDiscTree,
@@ -593,10 +594,10 @@ public class GLRadialHierarchy
 							drawingController.handleMouseOver(pdPickedElement);
 						break;
 
-					// case RIGHT_CLICKED:
-					// if (pdPickedElement != null)
-					// drawingController.handleDoubleClick(pdPickedElement);
-					// break;
+					 case RIGHT_CLICKED:
+					 if (pdPickedElement != null)
+					 drawingController.handleDoubleClick(pdPickedElement);
+					 break;
 
 					default:
 						return;
