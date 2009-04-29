@@ -48,7 +48,7 @@ public class HierarchicalClusterer
 
 			for (Integer iContentIndex : contentVA) {
 				for (Integer iStorageIndex : storageVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex - 1)
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
 						+ ", ");
 
 				}
@@ -64,7 +64,7 @@ public class HierarchicalClusterer
 
 			for (Integer iStorageIndex : storageVA) {
 				for (Integer iContentIndex : contentVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex - 1)
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
 						+ ", ");
 
 				}

@@ -2,9 +2,11 @@ package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 
@@ -432,7 +434,7 @@ public class TreeClusterer
 		if (tree.hasChildren(node) == false) {
 			// FIXME: problem with indexes (storageVA vs. contentVA ???)
 			if (bStart0)
-				indexes.add(node.getClusterNr() + 1);
+				indexes.add(node.getClusterNr());
 			else
 				indexes.add(node.getClusterNr());
 		}
@@ -462,14 +464,23 @@ public class TreeClusterer
 
 			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
 
-			NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getLeft() + 1);
-			if (NodeName == null) {
-				NodeName = "Unknown";
-			}
+			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+				NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getLeft());// + 1);
 
-			NodeName += " | ";
-			NodeName +=
-				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft() + 1);
+				NodeName += " | ";
+				NodeName +=
+					IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());// + 1);
+			}
+			else if (set.getSetType() == ESetType.UNSPECIFIED) {
+				NodeName =
+					"generalManager.getIDMappingManager().getID(" + treeStructure[index].getLeft() + 1 + " )";
+				// generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
+				// treeStructure[index].getLeft() + 1);
+			}
+			else {
+				throw new IllegalStateException("Label extraction for " + set.getSetType()
+					+ " not implemented yet!");
+			}
 
 			left =
 				new ClusterNode(NodeName, treeStructure[index].getLeft(), treeStructure[index]
@@ -494,14 +505,23 @@ public class TreeClusterer
 
 			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
 
-			NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getRight() + 1);
-			if (NodeName == null) {
-				NodeName = "Unknown";
-			}
+			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+				NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getRight());// + 1);
 
-			NodeName += " | ";
-			NodeName +=
-				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight() + 1);
+				NodeName += " | ";
+				NodeName +=
+					IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());// + 1);
+			}
+			else if (set.getSetType() == ESetType.UNSPECIFIED) {
+				NodeName =
+					"generalManager.getIDMappingManager().getID(" + treeStructure[index].getRight() + 1 + " )";
+				// generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
+				// treeStructure[index].getLeft() + 1);
+			}
+			else {
+				throw new IllegalStateException("Label extraction for " + set.getSetType()
+					+ " not implemented yet!");
+			}
 
 			right =
 				new ClusterNode(NodeName, treeStructure[index].getRight(), treeStructure[index]

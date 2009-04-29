@@ -57,7 +57,7 @@ public class KMeansClusterer
 			for (Integer iContentIndex : contentVA) {
 				for (Integer iStorageIndex : storageVA) {
 					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex - 1)
+						iContentIndex)
 						+ ", ");
 
 				}
@@ -74,7 +74,7 @@ public class KMeansClusterer
 			for (Integer iStorageIndex : storageVA) {
 				for (Integer iContentIndex : contentVA) {
 					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex - 1)
+						iContentIndex)
 						+ ", ");
 
 				}
@@ -145,10 +145,6 @@ public class KMeansClusterer
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result in Set
-		
-//		count.set(1, 55);
-//		count.set(2, 2);
-//		count.set(3, 2);
 		set.setAlClusterSizes(count);
 		set.setAlExamples(alExamples);
 

@@ -222,6 +222,7 @@ public class GLHierarchicalHeatMap
 		}
 		else {
 			bSkipLevel1 = false;
+			iSelectorBar = 1;
 			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 5);
 
 			if (iSamplesPerTexture > 250)
@@ -1876,7 +1877,7 @@ public class GLHierarchicalHeatMap
 		for (int i = 0; i < iSelectorBar - 1; i++)
 			iCount += iAlNumberSamples.get(i);
 
-		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(EIDType.EXPRESSION_INDEX,
+		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(eFieldDataType,
 			new SelectionCommand(ESelectionCommandType.RESET)));
 
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);

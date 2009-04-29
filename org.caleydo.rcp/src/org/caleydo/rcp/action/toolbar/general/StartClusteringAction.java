@@ -74,18 +74,15 @@ public class StartClusteringAction
 
 	private void createGUI() {
 
-		composite = new Composite(parentComposite, SWT.NONE);
+		composite = new Composite(parentComposite, SWT.SHADOW_ETCHED_IN);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
 
-		Label lblClusterAlgo = new Label(composite, SWT.NONE);
-		lblClusterAlgo.setText("Cluster algorithm:");
-		lblClusterAlgo.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		Group clusterAlgoGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		clusterAlgoGroup.setText("Select cluster algorithm");
+		clusterAlgoGroup.setLayout(new GridLayout(1, false));
 
-		Group clusterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		clusterGroup.setLayout(new RowLayout());
-
-		final Combo clusterAlgoCombo = new Combo(clusterGroup, SWT.DROP_DOWN);
+		final Combo clusterAlgoCombo = new Combo(clusterAlgoGroup, SWT.DROP_DOWN);
 		clusterAlgoCombo.setItems(sArAlgoOptions);
 		clusterAlgoCombo.setEnabled(true);
 		clusterAlgoCombo.select(0);
@@ -103,24 +100,28 @@ public class StartClusteringAction
 			}
 		};
 
-		final Label lblClusterCnt = new Label(composite, SWT.NONE);
+		final Group optionsGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		optionsGroup.setText("Additional options for cluster algorithms");
+		optionsGroup.setLayout(new GridLayout(1, false));
+
+		final Label lblClusterCnt = new Label(optionsGroup, SWT.SHADOW_ETCHED_IN);
 		lblClusterCnt.setText("Cluster count for KMeans:");
 		lblClusterCnt.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		lblClusterCnt.setEnabled(false);
-
-		final Text clusterCnt = new Text(composite, SWT.NONE);
+		
+		final Text clusterCnt = new Text(optionsGroup, SWT.SHADOW_ETCHED_IN);
 		clusterCnt.addModifyListener(listenerInt);
-		clusterCnt.setTabs(5);		
+		clusterCnt.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));	
 		clusterCnt.setEnabled(false);
 
-		final Label lblClusterFactor = new Label(composite, SWT.NONE);
+		final Label lblClusterFactor = new Label(optionsGroup, SWT.SHADOW_ETCHED_IN);
 		lblClusterFactor.setText("Factor for affinity propagagtion:");
 		lblClusterFactor.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 		lblClusterFactor.setEnabled(false);
 
-		final Text clusterFactor = new Text(composite, SWT.NONE);
+		final Text clusterFactor = new Text(optionsGroup, SWT.SHADOW_ETCHED_IN);
 		clusterFactor.addModifyListener(listenerFloat);
-		clusterCnt.setTabs(5);	
+		clusterCnt.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterFactor.setEnabled(false);
 
 		clusterAlgoCombo.addSelectionListener(new SelectionAdapter() {
@@ -149,12 +150,9 @@ public class StartClusteringAction
 			}
 		});
 
-		Label lblClusterType = new Label(composite, SWT.NONE);
-		lblClusterType.setText("Cluster type:");
-		lblClusterType.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
 		Group clusterTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		clusterTypeGroup.setLayout(new RowLayout());
+		clusterTypeGroup.setText("Select cluster type");
+		clusterTypeGroup.setLayout(new GridLayout(1, false));
 
 		final Combo clusterTypeCombo = new Combo(clusterTypeGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
@@ -169,12 +167,9 @@ public class StartClusteringAction
 			}
 		});
 
-		Label lblDistMeasure = new Label(composite, SWT.NONE);
-		lblDistMeasure.setText("Distance measure:");
-		lblDistMeasure.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
 		Group distMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		distMeasureGroup.setLayout(new RowLayout());
+		distMeasureGroup.setText("Select distance measure");
+		distMeasureGroup.setLayout(new GridLayout(1, false));
 
 		final Combo distMeasureCombo = new Combo(distMeasureGroup, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptions);

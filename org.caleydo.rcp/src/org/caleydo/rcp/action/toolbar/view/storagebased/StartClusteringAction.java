@@ -15,8 +15,7 @@ public class StartClusteringAction
 	implements IToolBarItem {
 
 	public static final String TEXT = "Start Clustering";
-	// TODO: own icon for "Start Clustering"
-	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
+	public static final String ICON = "resources/icons/view/storagebased/start_clustering.png";
 
 	private boolean bEnable = false;
 
@@ -30,6 +29,7 @@ public class StartClusteringAction
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
+		setChecked(bEnable);
 	}
 
 	@Override

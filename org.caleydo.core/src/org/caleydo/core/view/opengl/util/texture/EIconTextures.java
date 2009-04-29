@@ -29,6 +29,7 @@ public enum EIconTextures {
 	// SAVE_SELECTIONS("resources/icons/general/no_icon_available.png"),
 	// ANGULAR_BRUSHING("resources/icons/view/storagebased/parcoords/angular_brush.png"),
 	HEAT_MAP_SYMBOL("resources/icons/view/storagebased/heatmap/heatmap128x128.png"),
+	DENDROGRAM_SYMBOL("resources/icons/view/storagebased/dendrogram.png"),
 	PAR_COORDS_SYMBOL("resources/icons/view/storagebased/parcoords/parcoords128x128.png"),
 	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
 	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
