@@ -186,7 +186,6 @@ public class GLHyperbolic
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 		switch (ePickingType) {
@@ -200,15 +199,12 @@ public class GLHyperbolic
 
 						break;
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 				}
 
 				setDisplayListDirty();
 				break;
 		}
-
-		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
 	public boolean isInListMode() {

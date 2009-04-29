@@ -1603,7 +1603,8 @@ public class GLParallelCoordinates
 		// else
 		// text = getDecimalFormat().format(fRawValue);
 
-		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, renderStyle.getSmallFontScalingFactor());
+		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, renderStyle
+			.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 	}
 
@@ -1871,15 +1872,12 @@ public class GLParallelCoordinates
 	protected void handleEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
 		final int iExternalID, final Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 		contextMenu.disable();
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case PCS_VIEW_SELECTION:
-
-				pickingManager.flushHits(iUniqueID, EPickingType.PCS_VIEW_SELECTION);
 				break;
 			case POLYLINE_SELECTION:
 				switch (ePickingMode) {
@@ -1938,7 +1936,6 @@ public class GLParallelCoordinates
 						break;
 
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 
 				}
@@ -1991,11 +1988,9 @@ public class GLParallelCoordinates
 				}
 
 				setDisplayListDirty();
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case X_AXIS_SELECTION:
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case Y_AXIS_SELECTION:
 
@@ -2009,7 +2004,6 @@ public class GLParallelCoordinates
 						break;
 
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 
 				}
@@ -2038,7 +2032,6 @@ public class GLParallelCoordinates
 
 				rePosition(iExternalID);
 				setDisplayListDirty();
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case GATE_TIP_SELECTION:
 				switch (ePickingMode) {
@@ -2059,7 +2052,6 @@ public class GLParallelCoordinates
 					// break;
 
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case GATE_BOTTOM_SELECTION:
 				switch (ePickingMode) {
@@ -2074,7 +2066,6 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case GATE_BODY_SELECTION:
@@ -2091,7 +2082,6 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case PC_ICON_SELECTION:
 				switch (ePickingMode) {
@@ -2099,8 +2089,6 @@ public class GLParallelCoordinates
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.PC_ICON_SELECTION);
 				break;
 			case REMOVE_AXIS:
 				switch (ePickingMode) {
@@ -2123,7 +2111,6 @@ public class GLParallelCoordinates
 						resetAxisSpacing();
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_AXIS);
 				break;
 			case MOVE_AXIS:
 				switch (ePickingMode) {
@@ -2138,7 +2125,6 @@ public class GLParallelCoordinates
 						iChangeDropOnAxisNumber = iExternalID;
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS);
 				break;
 
 			case DUPLICATE_AXIS:
@@ -2161,7 +2147,6 @@ public class GLParallelCoordinates
 							break;
 						}
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.DUPLICATE_AXIS);
 				break;
 			case ADD_GATE:
 				switch (ePickingMode) {
@@ -2183,7 +2168,6 @@ public class GLParallelCoordinates
 
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ADD_GATE);
 				break;
 			case ADD_MASTER_GATE:
 				switch (ePickingMode) {
@@ -2194,7 +2178,6 @@ public class GLParallelCoordinates
 						setDisplayListDirty();
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ADD_MASTER_GATE);
 				break;
 
 			case REMOVE_GATE:
@@ -2212,7 +2195,6 @@ public class GLParallelCoordinates
 						}
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_GATE);
 				break;
 			case ANGULAR_UPPER:
 				switch (ePickingMode) {
@@ -2221,7 +2203,6 @@ public class GLParallelCoordinates
 					case DRAGGED:
 						bIsAngularDraggingActive = true;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ANGULAR_UPPER);
 				break;
 
 			case ANGULAR_LOWER:
@@ -2231,7 +2212,6 @@ public class GLParallelCoordinates
 					case DRAGGED:
 						bIsAngularDraggingActive = true;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ANGULAR_LOWER);
 				break;
 			case REMOVE_NAN:
 				switch (ePickingMode) {
@@ -2247,8 +2227,6 @@ public class GLParallelCoordinates
 						break;
 
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_NAN);
-
 				break;
 		}
 	}

@@ -124,13 +124,12 @@ public abstract class AGLEventListener
 	protected ContextMenu contextMenu;
 
 	/**
-	 * This set is not changed during rendering.
-	 * On display list dirty set current set is assigned.
-	 * Therefore in the next rendering of the view the new data is applied.
-	 * This guarantees that the set does not change in the middle of the display method.
+	 * This set is not changed during rendering. On display list dirty set current set is assigned. Therefore
+	 * in the next rendering of the view the new data is applied. This guarantees that the set does not change
+	 * in the middle of the display method.
 	 */
 	protected ISet stableSetForRendering;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -246,7 +245,7 @@ public abstract class AGLEventListener
 	public void setDisplayListDirty() {
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		
+
 		// Update rendering set with set of view
 		stableSetForRendering = set;
 	}
@@ -359,16 +358,16 @@ public abstract class AGLEventListener
 
 		for (EPickingType ePickingType : EPickingType.values()) {
 			EManagedObjectType tempViewType = ePickingType.getViewType();
-//			if (tempViewType != viewType) {
-//				if (viewType == EManagedObjectType.GL_EVENT_LISTENER)
-//					throw new IllegalStateException("Views must define their view type in the constructor");
-//				if (viewType != EManagedObjectType.GL_CONTEXT_MENUE)
-//					continue;
-////				if(viewType == EManagedObjectType.GL_CONTEXT_MENUE && contextMenu.getMasterViewID() != iUniqueID)
-////					continue;
-//			}
+			// if (tempViewType != viewType) {
+			// if (viewType == EManagedObjectType.GL_EVENT_LISTENER)
+			// throw new IllegalStateException("Views must define their view type in the constructor");
+			// if (viewType != EManagedObjectType.GL_CONTEXT_MENUE)
+			// continue;
+			// // if(viewType == EManagedObjectType.GL_CONTEXT_MENUE && contextMenu.getMasterViewID() !=
+			// iUniqueID)
+			// // continue;
+			// }
 
-			
 			ArrayList<Pick> alHits = null;
 
 			alHits = pickingManager.getHits(iUniqueID, ePickingType);
@@ -386,12 +385,11 @@ public abstract class AGLEventListener
 					EPickingMode ePickingMode = tempPick.getPickingMode();
 					if (ePickingType == EPickingType.CONTEXT_MENU_SELECTION) {
 						contextMenu.handleEvents(ePickingMode, iExternalID);
-						pickingManager.flushHits(iUniqueID, ePickingType);
 					}
 					else {
 						handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);
 					}
-
+					pickingManager.flushHits(iUniqueID, ePickingType);
 				}
 			}
 		}

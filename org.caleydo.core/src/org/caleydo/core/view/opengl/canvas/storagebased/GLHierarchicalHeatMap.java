@@ -2242,7 +2242,6 @@ public class GLHierarchicalHeatMap
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 
@@ -2274,8 +2273,6 @@ public class GLHierarchicalHeatMap
 						setDisplayListDirty();
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case HIER_HEAT_MAP_EXPERIMENTS_GROUP:
@@ -2303,7 +2300,6 @@ public class GLHierarchicalHeatMap
 						setDisplayListDirty();
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case DENDROGRAM_SELECTION:
@@ -2317,8 +2313,6 @@ public class GLHierarchicalHeatMap
 						setDisplayListDirty();
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case HIER_HEAT_MAP_INFOCUS_SELECTION:
@@ -2332,8 +2326,6 @@ public class GLHierarchicalHeatMap
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case HIER_HEAT_MAP_TEXTURE_CURSOR:
@@ -2365,7 +2357,6 @@ public class GLHierarchicalHeatMap
 					case MOUSE_OVER:
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case HIER_HEAT_MAP_CURSOR:
@@ -2390,7 +2381,6 @@ public class GLHierarchicalHeatMap
 						// setDisplayListDirty();
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case HIER_HEAT_MAP_TEXTURE_SELECTION:
 				switch (pickingMode) {
@@ -2420,8 +2410,6 @@ public class GLHierarchicalHeatMap
 						}
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case HIER_HEAT_MAP_FIELD_SELECTION:
@@ -2441,8 +2429,6 @@ public class GLHierarchicalHeatMap
 						setDisplayListDirty();
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case HIER_HEAT_MAP_VIEW_SELECTION:
 				switch (pickingMode) {
@@ -2450,19 +2436,11 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case CLICKED:
-
 						// bIsHeatmapInFocus = true;
 						// glHeatMapView.setDisplayListDirty();
 						// setDisplayListDirty();
-
-						break;
-
-					case DRAGGED:
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.HIER_HEAT_MAP_VIEW_SELECTION);
-
 				break;
 		}
 	}

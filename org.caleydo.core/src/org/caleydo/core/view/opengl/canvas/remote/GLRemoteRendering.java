@@ -557,7 +557,7 @@ public class GLRemoteRendering
 		float fZTranslation = 0;
 		if (!bucketMouseWheelListener.isZoomedIn())
 			fZTranslation = 4f;
-		
+
 		gl.glTranslatef(0, 0, fZTranslation);
 		contextMenu.render(gl, iUniqueID);
 		gl.glTranslatef(0, 0, -fZTranslation);
@@ -2031,7 +2031,7 @@ public class GLRemoteRendering
 
 	@Override
 	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
-//		contextMenu.disable();
+		// contextMenu.disable();
 		switch (pickingType) {
 			case BUCKET_DRAG_ICON_SELECTION:
 
@@ -2049,10 +2049,6 @@ public class GLRemoteRendering
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_DRAG_ICON_SELECTION);
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT);
-
 				break;
 
 			case BUCKET_REMOVE_ICON_SELECTION:
@@ -2080,9 +2076,6 @@ public class GLRemoteRendering
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_REMOVE_ICON_SELECTION);
-
 				break;
 
 			case BUCKET_LOCK_ICON_SELECTION:
@@ -2097,9 +2090,6 @@ public class GLRemoteRendering
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_LOCK_ICON_SELECTION);
-
 				break;
 
 			case REMOTE_LEVEL_ELEMENT:
@@ -2124,9 +2114,6 @@ public class GLRemoteRendering
 						}
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, pickingType);
-
 				break;
 
 			case VIEW_SELECTION:
@@ -2167,11 +2154,7 @@ public class GLRemoteRendering
 						break;
 
 				}
-
 				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), 0.3f);// pick.getDepth());
-
-				pickingManager.flushHits(iUniqueID, EPickingType.VIEW_SELECTION);
-
 				break;
 
 			case BUCKET_MOVE_IN_ICON_SELECTION:
@@ -2183,7 +2166,6 @@ public class GLRemoteRendering
 						break;
 
 					case MOUSE_OVER:
-
 						iNavigationMouseOverViewID_left = -1;
 						iNavigationMouseOverViewID_right = -1;
 						iNavigationMouseOverViewID_out = -1;
@@ -2192,9 +2174,6 @@ public class GLRemoteRendering
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_MOVE_IN_ICON_SELECTION);
-
 				break;
 
 			case BUCKET_MOVE_OUT_ICON_SELECTION:
@@ -2232,9 +2211,6 @@ public class GLRemoteRendering
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION);
-
 				break;
 
 			case BUCKET_MOVE_LEFT_ICON_SELECTION:
@@ -2299,9 +2275,6 @@ public class GLRemoteRendering
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION);
-
 				break;
 
 			case BUCKET_MOVE_RIGHT_ICON_SELECTION:
@@ -2366,9 +2339,6 @@ public class GLRemoteRendering
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION);
-
 				break;
 			case CONTEXT_MENU_SELECTION:
 				System.out.println("Waa");
@@ -2465,17 +2435,17 @@ public class GLRemoteRendering
 	 */
 	public void removeView(AGLEventListener glEventListener) {
 		if (glEventListener != null) {
-		
-			useCase.removeView(glEventListener);	
+
+			useCase.removeView(glEventListener);
 			glEventListener.destroy();
 		}
 	}
 
 	public synchronized void clearAll() {
-	
+
 		if (containedViewIDs == null)
 			return;
-		
+
 		enableBusyMode(false);
 		pickingManager.enablePicking(true);
 
@@ -2489,7 +2459,7 @@ public class GLRemoteRendering
 
 		ArrayList<Integer> removeViewIDs = new ArrayList<Integer>();
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		
+
 		for (int viewID : containedViewIDs) {
 			AGLEventListener view = viewManager.getGLEventListener(viewID);
 			if (!(view instanceof GLParallelCoordinates || view instanceof GLHeatMap)) {
@@ -2773,11 +2743,11 @@ public class GLRemoteRendering
 		cmdView.setAttributesFromSerializedForm(serView);
 		cmdView.setSet(stableSetForRendering);
 		cmdView.doCommand();
-		
+
 		AGLEventListener glView = cmdView.getCreatedObject();
 		useCase.addView(glView);
 		glView.setUseCase(useCase);
-		
+
 		if (glView instanceof GLPathway) {
 			initializePathwayView((GLPathway) glView);
 		}
@@ -3118,7 +3088,7 @@ public class GLRemoteRendering
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
-	
+
 	@Override
 	public synchronized void setSet(ISet set) {
 		super.setSet(set);

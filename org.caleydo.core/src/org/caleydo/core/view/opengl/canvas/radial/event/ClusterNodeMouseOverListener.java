@@ -4,7 +4,6 @@ package org.caleydo.core.view.opengl.canvas.radial.event;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.IEventListener;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 
 public class ClusterNodeMouseOverListener
 	implements IEventListener {

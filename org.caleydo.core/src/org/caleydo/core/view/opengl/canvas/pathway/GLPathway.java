@@ -601,7 +601,6 @@ public class GLPathway
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 
@@ -680,7 +679,6 @@ public class GLPathway
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 				}
 
@@ -712,8 +710,6 @@ public class GLPathway
 
 				break;
 		}
-
-		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
 	private void createConnectionLines(ESelectionType eSelectionType, int iConnectionID) {

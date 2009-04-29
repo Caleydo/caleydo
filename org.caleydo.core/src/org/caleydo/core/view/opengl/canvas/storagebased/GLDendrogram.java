@@ -78,9 +78,8 @@ public class GLDendrogram
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLDendrogram(final int iGLCanvasID, final String sLabel,
-		final IViewFrustum viewFrustum) {
-		super( iGLCanvasID, sLabel, viewFrustum);
+	public GLDendrogram(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
+		super(iGLCanvasID, sLabel, viewFrustum);
 
 		viewType = EManagedObjectType.GL_DENDOGRAM;
 
@@ -569,7 +568,6 @@ public class GLDendrogram
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 		switch (ePickingType) {
@@ -587,7 +585,6 @@ public class GLDendrogram
 					case MOUSE_OVER:
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case DENDROGRAM_SELECTION:
@@ -606,8 +603,6 @@ public class GLDendrogram
 							System.out.println(tree.getNodeByNumber(iExternalID).getNodeName());
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 		}

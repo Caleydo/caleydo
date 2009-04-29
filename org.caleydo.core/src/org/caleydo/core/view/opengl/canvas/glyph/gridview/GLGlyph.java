@@ -1011,14 +1011,12 @@ public class GLGlyph
 					if (g == null) {
 						generalManager.getLogger().log(Level.WARNING,
 							"Glyph with external ID " + iExternalID + " not found!");
-						pickingManager.flushHits(iUniqueID, pickingType);
 						return;
 					}
 
 					// nothing changed, we don't need to do anything
 					if (g == oldMouseOverGlyphEntry) {
-						pickingManager.flushHits(iUniqueID, pickingType);
-						return;
+							return;
 					}
 
 					selectionManager.clearSelections();
@@ -1056,8 +1054,6 @@ public class GLGlyph
 
 			}
 		}
-
-		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
 	@Override

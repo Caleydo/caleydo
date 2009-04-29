@@ -13,9 +13,7 @@ public enum EPickingType {
 	BUCKET_DRAG_ICON_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, false),
 	// BUCKET_SEARCH_PATHWAY,
 	VIEW_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, true),
-	/**
-	 * A remote level element is the place-holder for a view, basically the wall behind a view
-	 */
+	/** A remote level element is the place-holder for a view, basically the wall behind a view */
 	REMOTE_LEVEL_ELEMENT(EManagedObjectType.GL_REMOTE_RENDERING, false),
 	MEMO_PAD_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING, false),
 
@@ -38,6 +36,7 @@ public enum EPickingType {
 	DUPLICATE_AXIS(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 	ANGULAR_UPPER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 	ANGULAR_LOWER(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
+	/** Type for selection of views in the parallel coordinates, currently the heat map */
 	PCS_VIEW_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES, true),
 	REMOVE_NAN(EManagedObjectType.GL_PARALLEL_COORDINATES, false),
 
@@ -62,7 +61,7 @@ public enum EPickingType {
 	// dendrogram
 	DENDROGRAM_SELECTION(EManagedObjectType.GL_DENDOGRAM, false),
 	DENDROGRAM_CUT_SELECTION(EManagedObjectType.GL_DENDOGRAM, false),
-	
+
 	// glyph
 	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH, false),
 	// TODO: works only for glyph sliders now, new solution?
@@ -75,7 +74,7 @@ public enum EPickingType {
 	HISTOGRAM_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false),
 	HISTOGRAM_LEFT_SPREAD_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false),
 	HISTOGRAM_RIGHT_SPREAD_COLOR_LINE(EManagedObjectType.GL_HISTOGRAM, false),
-	
+
 	CONTEXT_MENU_SELECTION(EManagedObjectType.GL_CONTEXT_MENUE, false);
 
 	private EManagedObjectType viewType;

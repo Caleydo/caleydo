@@ -65,8 +65,7 @@ public class GLHistogram
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHistogram(final int iGLCanvasID, final String sLabel,
-		final IViewFrustum viewFrustum) {
+	public GLHistogram(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		viewType = EManagedObjectType.GL_HISTOGRAM;
@@ -445,8 +444,7 @@ public class GLHistogram
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
-			return;
+				return;
 		}
 		switch (ePickingType) {
 
@@ -462,7 +460,6 @@ public class GLHistogram
 
 						break;
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 				}
 				setDisplayListDirty();
@@ -477,7 +474,6 @@ public class GLHistogram
 
 						break;
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 				}
 				setDisplayListDirty();
@@ -492,14 +488,11 @@ public class GLHistogram
 
 						break;
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 				}
 				setDisplayListDirty();
 				break;
 		}
-
-		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
 	@Override

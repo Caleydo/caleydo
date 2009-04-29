@@ -378,8 +378,6 @@ public class GLGlyphSliderView
 			}
 		}
 
-		pickingManager.flushHits(iUniqueID, pickingType);
-
 	}
 
 	@Override
