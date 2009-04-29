@@ -10,18 +10,22 @@ public class DrawingController {
 	public static final int DRAWING_STATE_FULL_HIERARCHY = 0;
 	public static final int DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT = 1;
 	public static final int DRAWING_STATE_DETAIL_OUTSIDE = 2;
+	public static final int DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT = 3;
 
 	private HashMap<Integer, DrawingState> drawingStates;
 	private DrawingState currentDrawingState;
 
-	public DrawingController(GLRadialHierarchy radialHierarchy) {
+	public DrawingController(GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		drawingStates = new HashMap<Integer, DrawingState>();
 		// TODO: maybe use AGLEventListener instead of GLRadialHierarchy
-		currentDrawingState = new DrawingStateFullHierarchy(this, radialHierarchy);
+		currentDrawingState = new DrawingStateFullHierarchy(this, radialHierarchy, navigationHistory);
 		drawingStates.put(DRAWING_STATE_FULL_HIERARCHY, currentDrawingState);
 		drawingStates.put(DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT, new AnimationNewRootElement(this,
-			radialHierarchy));
-		drawingStates.put(DRAWING_STATE_DETAIL_OUTSIDE, new DrawingStateDetailOutside(this, radialHierarchy));
+			radialHierarchy, navigationHistory));
+		drawingStates.put(DRAWING_STATE_DETAIL_OUTSIDE, new DrawingStateDetailOutside(this, radialHierarchy,
+			navigationHistory));
+		drawingStates.put(DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT, new AnimationParentRootElement(this,
+			radialHierarchy, navigationHistory));
 	}
 
 	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
@@ -37,7 +41,7 @@ public class DrawingController {
 
 		currentDrawingState.handleClick(pdClicked);
 	}
-	
+
 	public void handleDoubleClick(PartialDisc pdClicked) {
 
 		currentDrawingState.handleDoubleClick(pdClicked);
@@ -46,15 +50,19 @@ public class DrawingController {
 	public void setDrawingState(DrawingState drawingState) {
 		currentDrawingState = drawingState;
 	}
-	
+
 	public void setDrawingState(int iDrawingState) {
 		DrawingState dsNext = drawingStates.get(iDrawingState);
-		
-		if(dsNext != null)
+
+		if (dsNext != null)
 			currentDrawingState = dsNext;
 	}
 
 	public DrawingState getDrawingState(int iStateType) {
 		return drawingStates.get(iStateType);
+	}
+
+	public DrawingState getCurrentDrawingState() {
+		return currentDrawingState;
 	}
 }

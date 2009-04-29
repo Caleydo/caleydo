@@ -17,10 +17,10 @@ public class PDDrawingStrategyRainbow
 
 		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
-		alMarkerPoints.add(new ColorMarkerPoint(0, 1, 0, 0));
-		alMarkerPoints.add(new ColorMarkerPoint((120.0f / 360.0f), 0, 1, 0));
-		alMarkerPoints.add(new ColorMarkerPoint((240.0f / 360.0f), 0, 0, 1));
-		alMarkerPoints.add(new ColorMarkerPoint(1, 1, 0, 0));
+		alMarkerPoints.add(new ColorMarkerPoint(0.0f, 1.0f, 0.0f, 0.0f));
+		alMarkerPoints.add(new ColorMarkerPoint((120.0f / 360.0f), 0.0f, 1.0f, 0.0f));
+		alMarkerPoints.add(new ColorMarkerPoint((240.0f / 360.0f), 0.0f, 0.0f, 1.0f));
+		alMarkerPoints.add(new ColorMarkerPoint(1.0f, 1.0f, 0.0f, 0.0f));
 
 		ColorMappingManager.get().initColorMapping(EColorMappingType.RAINBOW, alMarkerPoints);
 	}
@@ -37,7 +37,7 @@ public class PDDrawingStrategyRainbow
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
 		float fMidAngle = fStartAngle + (fAngle / 2.0f);
-		while (fMidAngle > 360) {
+		while (fMidAngle >= 360) {
 			fMidAngle -= 360;
 		}
 		while (fMidAngle < 0) {
@@ -50,7 +50,7 @@ public class PDDrawingStrategyRainbow
 		}
 
 		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
-		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360);
+		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);
 
 		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], 1);
 

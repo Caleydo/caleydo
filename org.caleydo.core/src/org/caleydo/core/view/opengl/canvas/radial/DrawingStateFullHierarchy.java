@@ -3,11 +3,17 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverEvent;
+
 public class DrawingStateFullHierarchy
 	extends DrawingState {
 
-	public DrawingStateFullHierarchy(DrawingController drawingController, GLRadialHierarchy radialHierarchy) {
-		super(drawingController, radialHierarchy);
+	public DrawingStateFullHierarchy(DrawingController drawingController, GLRadialHierarchy radialHierarchy,
+		NavigationHistory navigationHistory) {
+
+		super(drawingController, radialHierarchy, navigationHistory);
 	}
 
 	@Override
@@ -15,18 +21,19 @@ public class DrawingStateFullHierarchy
 
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
+		int iMaxDisplayedHierarchyDepth = radialHierarchy.getMaxDisplayedHierarchyDepth();
 
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
 		int iDisplayedHierarchyDepth =
-			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdCurrentRootElement
-				.getHierarchyDepth(radialHierarchy.getMaxDisplayedHierarchyDepth()));
+			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement
+				.getHierarchyDepth(iMaxDisplayedHierarchyDepth));
 
 		float fHierarchyOuterRadius = Math.min(fXCenter * 0.9f, fYCenter * 0.9f);
 		float fDiscWidth = fHierarchyOuterRadius / iDisplayedHierarchyDepth;
-		
-		if(pdCurrentMouseOverElement != null) {
+
+		if (pdCurrentMouseOverElement != null) {
 			PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
 			dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
@@ -42,6 +49,7 @@ public class DrawingStateFullHierarchy
 
 		LabelManager.get().drawAllLabels(gl, glu, fXCenter * 2.0f, fYCenter * 2.0f, fHierarchyOuterRadius);
 		LabelManager.get().clearLabels();
+
 	}
 
 	@Override
@@ -59,14 +67,15 @@ public class DrawingStateFullHierarchy
 			if (pdClicked == pdCurrentRootElement) {
 				radialHierarchy.setCurrentRootElement(pdClicked.getParent());
 				radialHierarchy.setCurrentMouseOverElement(pdClicked.getParent());
+				radialHierarchy.setAnimationActive(true);
+				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT);
+				
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdClicked);
-				radialHierarchy.setCurrentRootElement(pdClicked);
-				radialHierarchy.setCurrentMouseOverElement(pdClicked);
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
-			}	
+			}
 			radialHierarchy.setDisplayListDirty();
 		}
 
@@ -86,6 +95,8 @@ public class DrawingStateFullHierarchy
 			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
 			radialHierarchy.setDisplayListDirty();
 		}
+		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		eventPublisher.triggerEvent(new ClusterNodeMouseOverEvent());
 	}
 
 	@Override
@@ -102,8 +113,12 @@ public class DrawingStateFullHierarchy
 
 			radialHierarchy.setCurrentSelectedElement(pdClicked);
 			radialHierarchy.setCurrentMouseOverElement(pdClicked);
-			drawingController.setDrawingState(DrawingController.DRAWING_STATE_DETAIL_OUTSIDE);
+			DrawingState dsNext =
+				drawingController.getDrawingState(DrawingController.DRAWING_STATE_DETAIL_OUTSIDE);
+			drawingController.setDrawingState(dsNext);
 
+			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdClicked, radialHierarchy
+				.getMaxDisplayedHierarchyDepth());
 			radialHierarchy.setDisplayListDirty();
 		}
 	}

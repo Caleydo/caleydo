@@ -84,7 +84,7 @@ public class LabelManager {
 				drawSegmentMarker(gl, glu, fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter);
 			}
 			else if (!doesLabelCollide(labelContainer, alContainers, fXCenter + fSegmentXCenter, fYCenter
-				+ fSegmentYCenter)) {
+				+ fSegmentYCenter, fXCenter, fBendPointX)) {
 				alContainers.add(labelContainer);
 
 				labelContainer.draw(gl, false);
@@ -165,13 +165,17 @@ public class LabelManager {
 	}
 
 	private boolean doesLabelCollide(LabelContainer containerToTest, ArrayList<LabelContainer> alContainers,
-		float fSegmentXCenter, float fSegmentYCenter) {
+		float fSegmentXCenter, float fSegmentYCenter, float fXCenter, float fBendPointX) {
 
 		for (LabelContainer currentContainer : alContainers) {
 			if (currentContainer.doContainersCollide(containerToTest)) {
 				return true;
 			}
 		}
+		if((fBendPointX >= 0) && (fXCenter + fBendPointX > containerToTest.getLeft()))
+			return true;
+		if((fBendPointX < 0) && (fXCenter + fBendPointX < containerToTest.getRight()))
+			return true;
 		// It is assumed that the LabelContainer for the MouseOver Element is created first, since it is
 		// rendered first. So the the following marker collision detection should work for now.
 		if (lcMouseOver != null) {

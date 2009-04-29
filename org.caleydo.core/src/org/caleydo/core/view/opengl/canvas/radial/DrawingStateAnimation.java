@@ -14,8 +14,9 @@ public abstract class DrawingStateAnimation
 	protected float fAnimationDuration;
 	protected ArrayList<MovementValue> alMovementValues;
 
-	public DrawingStateAnimation(DrawingController drawingController, GLRadialHierarchy radialHierarchy) {
-		super(drawingController, radialHierarchy);
+	public DrawingStateAnimation(DrawingController drawingController, GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
+		
+		super(drawingController, radialHierarchy, navigationHistory);
 		fPreviousTimeStamp = 0;
 		bAnimationStarted = false;
 		alMovementValues = new ArrayList<MovementValue>();
@@ -44,7 +45,7 @@ public abstract class DrawingStateAnimation
 	public final void handleMouseOver(PartialDisc pdMouseOver) {
 		// do nothing
 	}
-	
+
 	@Override
 	public final void handleDoubleClick(PartialDisc pdClicked) {
 		// do nothing
@@ -52,7 +53,7 @@ public abstract class DrawingStateAnimation
 
 	public abstract void draw(float fXCenter, float fYCenter, GL gl, GLU glu, double fTimePassed);
 
-	protected boolean areStoppingCreteriaFulfilled() {
+	protected boolean haveMovementValuesReachedTargets() {
 
 		int iNumTargetsReached = 0;
 
@@ -66,7 +67,8 @@ public abstract class DrawingStateAnimation
 		return (iNumTargetsReached == alMovementValues.size());
 	}
 
-	protected MovementValue createNewMovementValue(float fStartValue, float fTargetValue, float fMovementDuration) {
+	protected MovementValue createNewMovementValue(float fStartValue, float fTargetValue,
+		float fMovementDuration) {
 
 		float fSpeed = (fTargetValue - fStartValue) / fMovementDuration;
 		MovementValue movementValue;
@@ -78,12 +80,12 @@ public abstract class DrawingStateAnimation
 				new MovementValue(fStartValue, fTargetValue, fSpeed, MovementValue.CRITERION_SMALLER_OR_EQUAL);
 
 		alMovementValues.add(movementValue);
-		
+
 		return movementValue;
 	}
-	
+
 	protected void moveValues(double dTimePassed) {
-		
+
 		for (MovementValue movementValue : alMovementValues) {
 			movementValue.move(dTimePassed);
 		}

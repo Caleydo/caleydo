@@ -63,6 +63,21 @@ public class PartialDisc
 		}
 	}
 
+	public void simulateDrawHierarchyFull(GL gl, GLU glu, float fWidth, int iDepth) {
+
+		setCurrentDisplayParameters(fWidth, fCurrentStartAngle, 360, 0, iDepth);
+
+		if (iDepth <= 0)
+			return;
+		iDepth--;
+
+		float fAnglePerSizeUnit = 360 / fSize;
+
+		if (iDepth > 0) {
+			drawAllChildren(gl, glu, fWidth, fCurrentStartAngle, fWidth, fAnglePerSizeUnit, iDepth, true);
+		}
+	}
+
 	public void drawHierarchyAngular(GL gl, GLU glu, float fWidth, int iDepth, float fStartAngle,
 		float fAngle, float fInnerRadius) {
 
@@ -150,7 +165,7 @@ public class PartialDisc
 	private void setCurrentDisplayParameters(float fWidth, float fStartAngle, float fAngle,
 		float fInnerRadius, int iDepth) {
 		fCurrentAngle = fAngle;
-		//TODO: Do depth calculation properly (hopefully with clusternode)
+		// TODO: Do depth calculation properly (hopefully with clusternode)
 		iCurrentDepth = Math.min(iDepth, getHierarchyDepth(GLRadialHierarchy.DISP_HIER_DEPTH_DEFAULT));
 		fCurrentInnerRadius = fInnerRadius;
 		fCurrentStartAngle = fStartAngle;
@@ -219,6 +234,11 @@ public class PartialDisc
 		return fCurrentStartAngle;
 	}
 
+	public void setCurrentStartAngle(float fCurrentStartAngle) {
+		
+		this.fCurrentStartAngle = getValidAngle(fCurrentStartAngle);
+	}
+
 	public int getCurrentDepth() {
 		return iCurrentDepth;
 	}
@@ -234,7 +254,7 @@ public class PartialDisc
 	public String getName() {
 		return clusterNode.getNodeName();
 	}
-	
+
 	public float getCoefficient() {
 		return clusterNode.getCoefficient();
 	}
@@ -255,14 +275,14 @@ public class PartialDisc
 	public int getHierarchyDepth(int iMaxDepthToSearch) {
 		// TODO: Maybe this way or another
 		// return clusterNode.getDepth();
-//		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
-//		if (alChildren == null || iMaxDepthToSearch <= 1)
-//			return 1;
-//		int iDepth = 1;
-//		for (PartialDisc child : alChildren) {
-//			int iChildDepth = child.getHierarchyDepth(1, iMaxDepthToSearch);
-//			iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
-//		}
+		// ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+		// if (alChildren == null || iMaxDepthToSearch <= 1)
+		// return 1;
+		// int iDepth = 1;
+		// for (PartialDisc child : alChildren) {
+		// int iChildDepth = child.getHierarchyDepth(1, iMaxDepthToSearch);
+		// iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
+		// }
 		return getHierarchyDepth(0, iMaxDepthToSearch);
 	}
 
@@ -278,6 +298,20 @@ public class PartialDisc
 			iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
 		}
 		return iDepth;
+	}
+
+	public float calculateSizes() {
+		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+
+		fSize = 0;
+		if (alChildren != null) {
+			for(PartialDisc pdChild : alChildren) {
+				fSize += pdChild.calculateSizes();
+			}
+			return fSize;
+		}
+		fSize = 1;
+		return fSize;
 	}
 
 }
