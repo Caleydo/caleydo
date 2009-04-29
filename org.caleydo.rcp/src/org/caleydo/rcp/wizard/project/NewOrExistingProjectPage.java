@@ -89,7 +89,7 @@ public class NewOrExistingProjectPage
 					// Turn off pathway data loading for general data analysis use case
 					Application.bLoadPathwayData = false;
 				}
-				else if (((TabItem) e.item) == generalDataUseCaseTab)
+				else if (((TabItem) e.item) == geneticDataUseCaseTab)
 					useCaseMode = EUseCaseMode.GENETIC_DATA;
 				else
 					throw new IllegalStateException("Not implemented!");
