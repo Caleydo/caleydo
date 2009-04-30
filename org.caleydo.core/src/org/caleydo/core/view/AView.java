@@ -1,10 +1,16 @@
 package org.caleydo.core.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Composite;
 
@@ -107,4 +113,20 @@ public abstract class AView
 	public void unregisterEventListeners() {
 		// default implementations does not react on events 
 	}
+
+	/**
+	 * creates and sends a {@link TriggerSelectioCommand} event and distributes
+	 * it via the related eventPublisher. 
+	 * @param expression_index type of genome this selection command refers to 
+	 * @param command selection-command to distribute
+	 */
+	protected void sendSelectionCommandEvent(EIDType genomeType, SelectionCommand command) {
+		TriggerSelectionCommandEvent event = new TriggerSelectionCommandEvent();
+		event.setType(genomeType);
+		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
+		commands.add(command);
+		event.setSelectionCommands(commands);
+		eventPublisher.triggerEvent(event);
+	}
+
 }

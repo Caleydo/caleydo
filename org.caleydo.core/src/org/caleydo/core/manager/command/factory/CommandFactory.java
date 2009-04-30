@@ -133,6 +133,7 @@ public class CommandFactory
 				// the next entries are all CmdCreateGLEventListener, so we do
 				// it only once
 			case CREATE_GL_HEAT_MAP_3D:
+			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
 			case CREATE_GL_GLYPH:
 			case CREATE_GL_GLYPH_SLIDER:

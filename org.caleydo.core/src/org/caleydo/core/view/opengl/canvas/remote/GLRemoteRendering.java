@@ -19,7 +19,6 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
@@ -84,6 +83,7 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneLis
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLPropagationHeatMap;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
@@ -140,7 +140,7 @@ public class GLRemoteRendering
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
-	private GLHeatMap glSelectionHeatMap;
+	private GLPropagationHeatMap glSelectionHeatMap;
 
 	private Time time;
 
@@ -349,13 +349,11 @@ public class GLRemoteRendering
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
-				ECommandType.CREATE_GL_HEAT_MAP_3D);
+				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, null, -1);
 		cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
-		
-		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setToListMode(true);
+		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
 		glSelectionHeatMap.initData();
 

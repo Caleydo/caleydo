@@ -24,6 +24,7 @@ public enum ECommandType {
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 
 	CREATE_GL_HEAT_MAP_3D("cmd", "type", "-1", "Create Heat Map"),
+	CREATE_GL_PROPAGATION_HEAT_MAP_3D("cmd", "type", "-1", "Create List Heat Map"),
 	CREATE_GL_TEXTURE_HEAT_MAP_3D("cmd", "type", "-1", "Create Texture Heat Map"),
 	CREATE_GL_GLYPH("cmd", "type", "-1", "Create Glyph"),
 	CREATE_GL_GLYPH_SLIDER("cmd", "type", "-1", "Create Glyph Slider View"),

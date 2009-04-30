@@ -18,7 +18,6 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -330,9 +329,8 @@ public class GLGlyphSliderView
 				generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 					EIDType.EXPERIMENT_INDEX);
 
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-						ESelectionType.SELECTION)));
+				SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION);
+				sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 				ISelectionDelta selectionDelta = selectionManager.getDelta();
 				if (selectionDelta.getAllItems().size() > 0) {

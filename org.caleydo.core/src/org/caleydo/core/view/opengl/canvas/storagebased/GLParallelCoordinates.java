@@ -35,6 +35,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -54,13 +55,13 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
+import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -200,7 +201,7 @@ public class GLParallelCoordinates
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
 
-	GLHeatMap glSelectionHeatMap;
+	GLPropagationHeatMap glSelectionHeatMap;
 	boolean bShowSelectionHeatMap = false;
 
 	private GLInfoAreaManager infoAreaManager;
@@ -426,12 +427,11 @@ public class GLParallelCoordinates
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
-				ECommandType.CREATE_GL_HEAT_MAP_3D);
+				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
 			viewFrustum.getTop(), -20, 20, null, -1);
 		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setToListMode(true);
+		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
 		glSelectionHeatMap.initData();
 
@@ -571,9 +571,14 @@ public class GLParallelCoordinates
 		if (!isRenderedRemote()) {
 			bShowSelectionHeatMap = true;
 
-			triggerEvent(EMediatorType.PROPAGATION_MEDIATOR, new SelectionCommandEventContainer(
-				EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.RESET)));
-
+			SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+			TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
+			event.setType(EIDType.EXPRESSION_INDEX);
+			List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
+			commands.add(command);
+			event.setSelectionCommands(commands);
+			eventPublisher.triggerEvent(event);
+			
 			PropagationEvent propagationEvent = new PropagationEvent();
 			propagationEvent.setVirtualArrayDelta(delta);
 			eventPublisher.triggerEvent(propagationEvent);
@@ -1975,10 +1980,10 @@ public class GLParallelCoordinates
 				// }
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+					
+					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+					sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
-					EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-						eSelectionType)));
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -2020,8 +2025,9 @@ public class GLParallelCoordinates
 				// axisSelectionManager
 				// .getDelta(), null);
 
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					eAxisDataType, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+				SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+				sendSelectionCommandEvent(eAxisDataType, command);
+
 				ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
 				if (eAxisDataType == EIDType.EXPRESSION_INDEX) {
 					handleConnectedElementRep(selectionDelta);

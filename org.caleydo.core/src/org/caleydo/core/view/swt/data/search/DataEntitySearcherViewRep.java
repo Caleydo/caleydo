@@ -1,5 +1,7 @@
 package org.caleydo.core.view.swt.data.search;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -9,7 +11,6 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -18,6 +19,7 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -160,9 +162,8 @@ public class DataEntitySearcherViewRep
 			selectionDelta.add(new SelectionDeltaItem((Integer) iRefSeqID, ESelectionType.SELECTION));
 		}
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-			EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-				ESelectionType.SELECTION)));
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION);
+		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSelectionDelta(selectionDelta);

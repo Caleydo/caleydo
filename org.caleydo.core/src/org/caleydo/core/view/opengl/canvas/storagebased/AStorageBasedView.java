@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.management.InvalidAttributeValueException;
@@ -16,7 +17,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
@@ -27,6 +28,7 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -36,8 +38,10 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -51,7 +55,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public abstract class AStorageBasedView
 	extends AGLEventListener
 	implements 
-		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, 
+		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler, 
 		IMediatorReceiver, IMediatorSender {
 
 	/**
@@ -103,7 +107,7 @@ public abstract class AStorageBasedView
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	
+	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
 	
 	/**
 	 * Constructor for storage based views
@@ -399,23 +403,6 @@ public abstract class AStorageBasedView
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-
-				switch (commandEventContainer.getIDType()) {
-					case DAVID:
-					case REFSEQ_MRNA_INT:
-					case EXPRESSION_INDEX:
-						contentSelectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-					case EXPERIMENT_INDEX:
-						storageSelectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-				}
-				break;
 			case VIEW_COMMAND:
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;
@@ -429,6 +416,16 @@ public abstract class AStorageBasedView
 				}
 				break;
 		}
+	}
+
+	@Override
+	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		contentSelectionManager.executeSelectionCommands(selectionCommands);
+	}
+	
+	@Override
+	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		storageSelectionManager.executeSelectionCommands(selectionCommands);
 	}
 
 	/**
@@ -582,7 +579,11 @@ public abstract class AStorageBasedView
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
-		
+
+		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
+		triggerSelectionCommandListener.setHandler(this);
+		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+
 	}
 
 	@Override
@@ -594,6 +595,10 @@ public abstract class AStorageBasedView
 		if (virtualArrayUpdateListener != null) {
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
+		}
+		if (triggerSelectionCommandListener != null) {
+			eventPublisher.removeListener(triggerSelectionCommandListener);
+			triggerSelectionCommandListener = null;
 		}
 	}
 	

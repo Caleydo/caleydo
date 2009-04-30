@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.event;
 
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 
 /**
  * Types of events that can be send from a {@link IMediatorSender} to a {@link IMediatorReceiver} Document
@@ -15,10 +14,12 @@ public enum EEventType {
 	 * Type for loading pathways by pathway IDs, uses {@link IDListEventContainer}
 	 */
 	LOAD_PATHWAY_BY_PATHWAY_ID,
-	/**
-	 * Type for {@link SelectionCommandEventContainer}
-	 */
-	TRIGGER_SELECTION_COMMAND,
+
+// wpuff migrated to new event system
+//	/**
+//	 * Type for {@link SelectionCommandEventContainer}
+//	 */
+//	TRIGGER_SELECTION_COMMAND,
 
 // wpuff migrated to new event system
 //	/**

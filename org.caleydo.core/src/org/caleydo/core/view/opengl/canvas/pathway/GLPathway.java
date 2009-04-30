@@ -22,7 +22,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -699,9 +698,8 @@ public class GLPathway
 
 				createConnectionLines(eSelectionType, iConnectionID);
 
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					EIDType.EXPRESSION_INDEX,
-					new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+				SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+				sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -864,18 +862,6 @@ public class GLPathway
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType()) {
-					case DAVID:
-					case REFSEQ_MRNA_INT:
-					case EXPRESSION_INDEX:
-						selectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-				}
-				break;
 			case VIEW_COMMAND:
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;

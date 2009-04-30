@@ -1,6 +1,7 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
@@ -8,7 +9,6 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -22,13 +22,16 @@ import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
@@ -48,7 +51,8 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IMediatorReceiver {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,  
+	IMediatorReceiver {
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
@@ -71,6 +75,7 @@ public class InfoArea
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
 
 	/**
 	 * Constructor.
@@ -379,10 +384,39 @@ public class InfoArea
 		}
 	}
 
-	// protected ISelectionDelta getSelectionDelta()
-	// {
-	// return selectionDelta;
-	// }
+	@Override
+	public void handleContentTriggerSelectionCommand(EIDType type, final List<SelectionCommand> selectionCommands) {
+		if (parentComposite.isDisposed())
+			return;
+		
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				ESelectionCommandType cmdType;
+				for (SelectionCommand cmd : selectionCommands) {
+					cmdType = cmd.getSelectionCommandType();
+					if (cmdType == ESelectionCommandType.RESET
+						|| cmdType == ESelectionCommandType.CLEAR_ALL) {
+						selectionTree.removeAll();
+						break;
+					}
+					else if (cmdType == ESelectionCommandType.CLEAR) {
+						// Flush old items that become
+						// deselected/normal
+						for (TreeItem tmpItem : selectionTree.getItems()) {
+							if (tmpItem.getData("selection_type") == cmd.getSelectionType()) {
+								tmpItem.dispose();
+							}
+						}
+					}
+				}
+			}
+		});
+	}
+	
+	@Override
+	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		
+	}
 
 	protected AGLEventListener getUpdateTriggeringView() {
 		return updateTriggeringView;
@@ -393,46 +427,6 @@ public class InfoArea
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case TRIGGER_SELECTION_COMMAND:
-				final SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType()) {
-					case DAVID:
-					case REFSEQ_MRNA_INT:
-					case EXPRESSION_INDEX:
-
-						if (parentComposite.isDisposed())
-							return;
-
-						parentComposite.getDisplay().asyncExec(new Runnable() {
-							public void run() {
-								ESelectionCommandType cmdType;
-								for (SelectionCommand cmd : commandEventContainer.getSelectionCommands()) {
-									cmdType = cmd.getSelectionCommandType();
-									if (cmdType == ESelectionCommandType.RESET
-										|| cmdType == ESelectionCommandType.CLEAR_ALL) {
-										selectionTree.removeAll();
-										break;
-									}
-									else if (cmdType == ESelectionCommandType.CLEAR) {
-										// Flush old items that become
-										// deselected/normal
-										for (TreeItem tmpItem : selectionTree.getItems()) {
-											if (tmpItem.getData("selection_type") == cmd.getSelectionType()) {
-												tmpItem.dispose();
-											}
-										}
-									}
-								}
-							}
-						});
-
-						break;
-					case EXPERIMENT_INDEX:
-
-						break;
-				}
-				break;
 			case VIEW_COMMAND:
 
 				ViewCommandEventContainer viewCommandEventContainer =
@@ -473,6 +467,10 @@ public class InfoArea
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+
+		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
+		triggerSelectionCommandListener.setHandler(this);
+		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
 	}
 
 	/**
@@ -488,6 +486,9 @@ public class InfoArea
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
 		}
+		if (triggerSelectionCommandListener != null) {
+			eventPublisher.removeListener(triggerSelectionCommandListener);
+			triggerSelectionCommandListener = null;
+		}
 	}
-
 }

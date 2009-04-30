@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.media.opengl.GL;
@@ -28,14 +29,10 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -52,7 +49,9 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeTyp
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelPlus;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -72,7 +71,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IMediatorSender, IMediatorReceiver {
+	implements ISelectionUpdateHandler, ITriggerSelectionCommandHandler {
 
 	private static final long serialVersionUID = -7899479912218913482L;
 
@@ -106,7 +105,6 @@ public class GLGlyph
 
 	private float iViewScale = 0.15f;
 
-	private String sLabel = null;
 	private String sLabelPersonal = null;
 
 	private boolean bEnableSelection = false;
@@ -116,6 +114,7 @@ public class GLGlyph
 	private int iFrameBufferObject = -1;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
 	
 	// private long ticker = 0;
 
@@ -129,8 +128,6 @@ public class GLGlyph
 	 */
 	public GLGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
 		super(iGLCanvasID, sLabel, viewFrustum, true);
-
-		this.sLabel = sLabel;
 
 		alSelectionBrushCornerPoints = new ArrayList<Vec2i>();
 		mouseListener_ = new GlyphMouseListener(this);
@@ -287,9 +284,6 @@ public class GLGlyph
 
 	@Override
 	public synchronized void initLocal(GL gl) {
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
 		bIsLocal = true;
 
 		float fInitZoom = -10f;
@@ -1038,10 +1032,9 @@ public class GLGlyph
 					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 						EIDType.EXPERIMENT_INDEX);
 
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-						EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-							ESelectionType.MOUSE_OVER)));
-
+					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER);
+					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+					
 					triggerSelectionUpdate();
 
 					// only the glyphs need to be redrawn
@@ -1101,33 +1094,13 @@ public class GLGlyph
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+
 	}
-
+	
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		generalManager.getLogger().log(
-			Level.INFO,
-			sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
-				+ eventTrigger.getClass().getSimpleName());
-
-		switch (eventContainer.getEventType()) {
-
-			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType()) {
-					case EXPERIMENT_INDEX:
-						selectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-				}
-				break;
-
-		}
-
+	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		selectionManager.executeSelectionCommands(selectionCommands);
 	}
 
 	/**
@@ -1358,6 +1331,10 @@ public class GLGlyph
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
+		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
+		triggerSelectionCommandListener.setHandler(this);
+		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
 	}
 
 	/**
@@ -1372,6 +1349,10 @@ public class GLGlyph
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		if (triggerSelectionCommandListener != null) {
+			eventPublisher.removeListener(triggerSelectionCommandListener);
+			triggerSelectionCommandListener = null;
 		}
 	}
 

@@ -3,6 +3,7 @@ package org.caleydo.core.view.swt.tabular;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.ESetType;
@@ -17,7 +18,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
@@ -31,6 +31,7 @@ import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -39,8 +40,10 @@ import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
@@ -79,7 +82,8 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabularDataViewRep
 	extends ASWTView
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IView, ISWTView, IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler, IView, ISWTView,
+	IMediatorReceiver, IMediatorSender {
 
 	protected ISet set;
 	protected ESetType setType;
@@ -129,6 +133,7 @@ public class TabularDataViewRep
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
 	
 //	private int[] iArCurrentColumnOrder;
 
@@ -667,21 +672,6 @@ public class TabularDataViewRep
 	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
 		EMediatorType eMediatorType) {
 		switch (eventContainer.getEventType()) {
-			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType()) {
-					case DAVID:
-					case REFSEQ_MRNA_INT:
-					case EXPRESSION_INDEX:
-						contentSelectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-					case EXPERIMENT_INDEX:
-						storageSelectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-				}
 			case VIEW_COMMAND:
 				ViewCommandEventContainer viewCommandEventContainer =
 					(ViewCommandEventContainer) eventContainer;
@@ -691,6 +681,16 @@ public class TabularDataViewRep
 				} 
 				break;
 		}
+	}
+
+	@Override
+	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		contentSelectionManager.executeSelectionCommands(selectionCommands);
+	}
+	
+	@Override
+	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		storageSelectionManager.executeSelectionCommands(selectionCommands);
 	}
 
 	@Override
@@ -828,8 +828,8 @@ public class TabularDataViewRep
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-			EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+		sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSelectionDelta(selectionDelta);
@@ -843,8 +843,9 @@ public class TabularDataViewRep
 		storageSelectionManager.clearSelection(eSelectionType);
 		storageSelectionManager.addToType(eSelectionType, iStorageIndex);
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-			EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+		sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSelectionDelta(selectionDelta);
@@ -970,6 +971,10 @@ public class TabularDataViewRep
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+
+		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
+		triggerSelectionCommandListener.setHandler(this);
+		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
 	}
 	
 	/**
@@ -987,6 +992,10 @@ public class TabularDataViewRep
 		if (virtualArrayUpdateListener != null) {
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
+		}
+		if (triggerSelectionCommandListener != null) {
+			eventPublisher.removeListener(triggerSelectionCommandListener);
+			triggerSelectionCommandListener = null;
 		}
 	}
 

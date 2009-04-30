@@ -25,12 +25,9 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
-import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
@@ -43,7 +40,6 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.listener.PropagationListener;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -85,14 +81,12 @@ public class GLHeatMap
 
 	private ArrayList<Float> fAlXDistances;
 
-	boolean bIsInListMode = false;
+	boolean listModeEnabled = false;
 
 	boolean bUseDetailLevel = true;
 
 	int iCurrentMouseOverElement = -1;
 
-	protected PropagationListener propagationListener = null;
-	
 	/**
 	 * Constructor.
 	 * 
@@ -147,13 +141,6 @@ public class GLHeatMap
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 
-	}
-
-	public synchronized void setToListMode(boolean bSetToListMode) {
-		this.bIsInListMode = bSetToListMode;
-		super.setDetailLevel(EDetailLevel.HIGH);
-		bUseDetailLevel = false;
-		setDisplayListDirty();
 	}
 
 	@Override
@@ -231,14 +218,14 @@ public class GLHeatMap
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		if (contentSelectionManager.getNumberOfElements() == 0 && !bIsInListMode) {
+		if (contentSelectionManager.getNumberOfElements() == 0 && !listModeEnabled) {
 			renderSymbol(gl);
 		}
 		else {
 
 			float fSpacing = 0;
 			if (!bRenderStorageHorizontally) {
-				if (bIsInListMode) {
+				if (listModeEnabled) {
 					fSpacing = HeatMapRenderStyle.LIST_SPACING;
 				}
 				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight() - fSpacing, vecTranslation.z());
@@ -419,9 +406,8 @@ public class GLHeatMap
 						// ignore
 						if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
 							contentSelectionManager.clearSelection(eSelectionType);
-							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-								new SelectionCommandEventContainer(EIDType.EXPRESSION_INDEX,
-									new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+							SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+							sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 							setDisplayListDirty();
 							return;
 						}
@@ -458,9 +444,8 @@ public class GLHeatMap
 				if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-						EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR,
-							eSelectionType)));
+					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+					sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
 
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -486,9 +471,10 @@ public class GLHeatMap
 						// ignore
 						if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
 							storageSelectionManager.clearSelection(eSelectionType);
-							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-								new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
-									new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+
+							SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+							sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+
 							setDisplayListDirty();
 							return;
 						}
@@ -507,9 +493,9 @@ public class GLHeatMap
 
 				if (eStorageDataType == EIDType.EXPERIMENT_INDEX) {
 
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-						EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-							eSelectionType)));
+					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+
 					ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSelectionDelta(selectionDelta);
@@ -551,7 +537,7 @@ public class GLHeatMap
 				continue;
 			}
 
-			if (bIsInListMode) {
+			if (listModeEnabled) {
 				fYPosition = HeatMapRenderStyle.LIST_SPACING;
 			}
 			else {
@@ -559,7 +545,7 @@ public class GLHeatMap
 			}
 
 			for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
-				if (bIsInListMode) {
+				if (listModeEnabled) {
 					if (currentType == ESelectionType.SELECTION) {
 						if (iCurrentMouseOverElement == iContentIndex) {
 							renderElement(gl, iStorageIndex, iContentIndex, fXPosition + fFieldWidth / 3,
@@ -635,7 +621,7 @@ public class GLHeatMap
 					if (sContent == null)
 						sContent = "Unknown";
 
-					if (bIsInListMode) {
+					if (listModeEnabled) {
 
 						if (currentType == ESelectionType.SELECTION) {
 							if (iCurrentMouseOverElement == iContentIndex) {
@@ -744,7 +730,7 @@ public class GLHeatMap
 			fXPosition += fFieldWidth;
 
 			// render column captions
-			if (detailLevel == EDetailLevel.HIGH && !bIsInListMode) {
+			if (detailLevel == EDetailLevel.HIGH && !listModeEnabled) {
 				if (iCount == set.getVA(iContentVAID).size()) {
 					fYPosition = 0;
 					for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
@@ -794,7 +780,7 @@ public class GLHeatMap
 	}
 
 	private void renderSelection(final GL gl, ESelectionType eSelectionType) {
-		if (bIsInListMode)
+		if (listModeEnabled)
 			return;
 		// content selection
 
@@ -1090,18 +1076,9 @@ public class GLHeatMap
 
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
-		if (!bIsInListMode) {
-			super.handleVirtualArrayUpdate(delta, info);
-		}
+		super.handleVirtualArrayUpdate(delta, info);
 	}
 
-	public void handlePropagation(IVirtualArrayDelta delta) {
-//		if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
-//		&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR) {
-//		break;
-		super.handleVirtualArrayUpdate(delta, null);
-	}
-	
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
 		renderHorizontally(defaultOrientation);
@@ -1112,33 +1089,10 @@ public class GLHeatMap
 		return bRenderStorageHorizontally;
 	}
 
-	public boolean isInListMode() {
-		return bIsInListMode;
-	}
-
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
-	}
-
-	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
-		
-		propagationListener = new PropagationListener();
-		propagationListener.setHeatMapView(this);
-		eventPublisher.addListener(PropagationEvent.class, propagationListener);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(propagationListener);
-			propagationListener = null;
-		}
-
-		super.unregisterEventListeners();
 	}
 }

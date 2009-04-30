@@ -8,6 +8,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -25,7 +26,6 @@ import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -1849,9 +1849,13 @@ public class GLHierarchicalHeatMap
 		for (int i = 0; i < iSelectorBar - 1; i++)
 			iCount += iAlNumberSamples.get(i);
 
-		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(eFieldDataType,
-			new SelectionCommand(ESelectionCommandType.RESET)));
-
+		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+		commands.add(command);
+		glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, commands);
+//		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(eFieldDataType,
+//			new SelectionCommand(ESelectionCommandType.RESET)));
+		
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
 
@@ -1881,8 +1885,12 @@ public class GLHierarchicalHeatMap
 		}
 
 		// selected experiments
-		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(eExperimentDataType,
-			new SelectionCommand(ESelectionCommandType.RESET)));
+		commands = new ArrayList<SelectionCommand>();
+		command = new SelectionCommand(ESelectionCommandType.RESET);
+		commands.add(command);
+		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, commands);
+//		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(eExperimentDataType,
+//			new SelectionCommand(ESelectionCommandType.RESET)));
 
 		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
