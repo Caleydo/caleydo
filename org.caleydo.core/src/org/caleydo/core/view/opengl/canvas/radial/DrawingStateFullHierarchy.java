@@ -96,7 +96,10 @@ public class DrawingStateFullHierarchy
 			radialHierarchy.setDisplayListDirty();
 		}
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-		eventPublisher.triggerEvent(new ClusterNodeMouseOverEvent());
+		ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
+		event.setClusterNodeName(pdMouseOver.getName());
+		
+		eventPublisher.triggerEvent(event);
 	}
 
 	@Override

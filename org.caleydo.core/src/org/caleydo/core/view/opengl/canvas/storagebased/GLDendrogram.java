@@ -16,18 +16,12 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -100,16 +94,12 @@ public class GLDendrogram
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager =
-			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
-				EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener(this);
 		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
 
@@ -124,9 +114,6 @@ public class GLDendrogram
 
 	@Override
 	public void initLocal(GL gl) {
-
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -207,6 +194,11 @@ public class GLDendrogram
 		gl.glCallList(iGLDisplayListToCall);
 	}
 
+	/**
+	 * Render the handles for the "cut of value"
+	 * 
+	 * @param gl
+	 */
 	private void renderCut(final GL gl) {
 
 		float fHeight = 0.1f;
@@ -263,12 +255,24 @@ public class GLDendrogram
 		tempTexture.disable();
 	}
 
+	/**
+	 * This function calls a recursive function which is responsible for the calculation of the position
+	 * inside the view frustum of the nodes in the dendrogram
+	 */
 	private void determinePositions() {
 
 		determinePosRec(tree.getRoot());
 
 	}
 
+	/**
+	 * Function calculates for each node in the dendrogram recursive the corresponding position inside the
+	 * view frustum
+	 * 
+	 * @param currentNode
+	 *            current node for calculation
+	 * @return Vec3f position of the current node
+	 */
 	private Vec3f determinePosRec(ClusterNode currentNode) {
 
 		Vec3f pos = new Vec3f();
@@ -315,6 +319,12 @@ public class GLDendrogram
 		return pos;
 	}
 
+	/**
+	 * Render a node of the dendrogram (recursive)
+	 * 
+	 * @param gl
+	 * @param currentNode
+	 */
 	private void renderDendrogram(final GL gl, ClusterNode currentNode) {
 
 		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
@@ -560,13 +570,23 @@ public class GLDendrogram
 		}
 	}
 
+	/**
+	 * This function calls a recursive function which is responsible for setting nodes in the dendrogram
+	 * selected/mouseOver depending on the current position of the "cut"
+	 */
 	private void determineSelectedNodes() {
 
-		determineSelectedNodesrec(tree.getRoot());
+		determineSelectedNodesRec(tree.getRoot());
 
 	}
 
-	private void determineSelectedNodesrec(ClusterNode node) {
+	/**
+	 * Determines for each node in the dendrogram if the current node is selected by the "cut" or not
+	 * 
+	 * @param node
+	 *            current node
+	 */
+	private void determineSelectedNodesRec(ClusterNode node) {
 
 		if (node.getPos().x() < fPosCut)
 			node.setSelectionType(ESelectionType.MOUSE_OVER);
@@ -575,7 +595,7 @@ public class GLDendrogram
 
 		if (tree.hasChildren(node)) {
 			for (ClusterNode current : tree.getChildren(node)) {
-				determineSelectedNodesrec(current);
+				determineSelectedNodesRec(current);
 			}
 		}
 
@@ -588,8 +608,10 @@ public class GLDendrogram
 			return;
 		}
 
-		boolean updateSelectionManager = false;
+		boolean bupdateSelectionManager = false;
+		boolean bTriggerClusterNodeEvent = false;
 		ESelectionType eSelectionType = ESelectionType.NORMAL;
+
 		switch (ePickingType) {
 
 			case DENDROGRAM_CUT_SELECTION:
@@ -613,9 +635,10 @@ public class GLDendrogram
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
-						if (contentSelectionManager.checkStatus(iExternalID)) {
-							updateSelectionManager = true;
-						}
+						if (contentSelectionManager.checkStatus(iExternalID))
+							bupdateSelectionManager = true;
+						if (storageSelectionManager.checkStatus(iExternalID))
+							bupdateSelectionManager = true;
 
 						if (tree.getNodeByNumber(iExternalID) != null)
 							tree.getNodeByNumber(iExternalID).setSelectionType(ESelectionType.SELECTION);
@@ -624,36 +647,43 @@ public class GLDendrogram
 					case DRAGGED:
 						break;
 					case MOUSE_OVER:
-						updateSelectionManager = false;
+						// if (contentSelectionManager.checkStatus(iExternalID) == false)
+						bTriggerClusterNodeEvent = true;
 						// if (tree.getNodeByNumber(iExternalID) != null)
 						// System.out.println(tree.getNodeByNumber(iExternalID).getNodeName());
 						break;
 				}
 
-				if (updateSelectionManager) {
+				if (bupdateSelectionManager) {
 
-					contentSelectionManager.clearSelection(eSelectionType);
-					contentSelectionManager.addToType(eSelectionType, iExternalID);
+					ISelectionDelta selectionDelta = null;
 
-					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+					if (bRenderGeneTree) {
+						contentSelectionManager.clearSelection(eSelectionType);
+						contentSelectionManager.addToType(eSelectionType, iExternalID);
 
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-						EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR,
-							eSelectionType)));
+						selectionDelta = contentSelectionManager.getDelta();
+					}
+					else {
+						storageSelectionManager.clearSelection(eSelectionType);
+						storageSelectionManager.addToType(eSelectionType, iExternalID);
 
-					// handleConnectedElementRep(selectionDelta);
-					// SelectionUpdateEvent event = new SelectionUpdateEvent();
-					// event.setSelectionDelta(selectionDelta);
-					// event.setInfo(getShortInfo());
-					// eventPublisher.triggerEvent(event);
+						selectionDelta = storageSelectionManager.getDelta();
+					}
+
+					handleConnectedElementRep(selectionDelta);
+					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSelectionDelta(selectionDelta);
+					event.setInfo(getShortInfo());
+					eventPublisher.triggerEvent(event);
 
 				}
-				{
+				if (bTriggerClusterNodeEvent) {
 					if (tree.getNodeByNumber(iExternalID) != null) {
 						ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
 
 						event.setClusterNodeName(tree.getNodeByNumber(iExternalID).getNodeName());
-						clusterNodeMouseOverListener.handleEvent(event);
+						eventPublisher.triggerEvent(event);
 					}
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
@@ -664,12 +694,12 @@ public class GLDendrogram
 
 	@Override
 	public String getShortInfo() {
-		return new String("ShortInfo");
+		return new String("Dendrogram view");
 	}
 
 	@Override
 	public String getDetailedInfo() {
-		return new String("DetailInfo");
+		return new String("Dendrogram view");
 	}
 
 	@Override
@@ -803,7 +833,8 @@ public class GLDendrogram
 	@Override
 	public void handleMouseOver(String clusterNodeName) {
 
-		System.out.println("handleMouseOver: " + clusterNodeName);
+		// if (tree.getNodeByNumber(iIndex) != null)
+		// tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 
 	}
 }
