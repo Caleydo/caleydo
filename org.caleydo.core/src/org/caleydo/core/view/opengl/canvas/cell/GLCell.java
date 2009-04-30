@@ -84,7 +84,7 @@ public class GLCell
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			// rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyLocal = false;

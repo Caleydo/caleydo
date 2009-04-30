@@ -165,6 +165,8 @@ public class ContextMenu
 			return;
 		if (!isEnabled)
 			return;
+		if (contextMenuItems.size() == 0)
+			return;
 		if (isFirstTime) {
 			isFirstTime = false;
 

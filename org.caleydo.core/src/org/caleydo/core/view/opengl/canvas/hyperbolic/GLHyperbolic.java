@@ -111,7 +111,7 @@ public class GLHyperbolic
 
 	@Override
 	public synchronized void displayLocal(GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);

@@ -117,7 +117,7 @@ public class GLHistogram
 
 	@Override
 	public synchronized void displayLocal(GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);

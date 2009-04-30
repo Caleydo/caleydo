@@ -199,7 +199,7 @@ public class GLGlyphSliderView
 
 	@Override
 	public void displayLocal(GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		display(gl);
 		checkForHits(gl);

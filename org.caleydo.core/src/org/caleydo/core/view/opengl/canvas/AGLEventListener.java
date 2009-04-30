@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -356,40 +357,31 @@ public abstract class AGLEventListener
 	 */
 	protected void checkForHits(final GL gl) {
 
-		for (EPickingType ePickingType : EPickingType.values()) {
-			EManagedObjectType tempViewType = ePickingType.getViewType();
-			// if (tempViewType != viewType) {
-			// if (viewType == EManagedObjectType.GL_EVENT_LISTENER)
-			// throw new IllegalStateException("Views must define their view type in the constructor");
-			// if (viewType != EManagedObjectType.GL_CONTEXT_MENUE)
-			// continue;
-			// // if(viewType == EManagedObjectType.GL_CONTEXT_MENUE && contextMenu.getMasterViewID() !=
-			// iUniqueID)
-			// // continue;
-			// }
+		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
+		if (hitTypes == null)
+			return;
+		for (EPickingType pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
 
-			alHits = pickingManager.getHits(iUniqueID, ePickingType);
+			alHits = pickingManager.getHits(iUniqueID, pickingType);
 			if (alHits != null && alHits.size() != 0) {
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {
 					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID, iPickingID);
-
+					int iExternalID = tempPick.getID();
 					if (iExternalID == -1) {
 						continue;
 					}
 
 					EPickingMode ePickingMode = tempPick.getPickingMode();
-					if (ePickingType == EPickingType.CONTEXT_MENU_SELECTION) {
+					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION) {
 						contextMenu.handleEvents(ePickingMode, iExternalID);
 					}
 					else {
-						handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);
+						handleEvents(pickingType, ePickingMode, iExternalID, tempPick);
 					}
-					pickingManager.flushHits(iUniqueID, ePickingType);
+					pickingManager.flushHits(iUniqueID, pickingType);
 				}
 			}
 		}
@@ -584,6 +576,8 @@ public abstract class AGLEventListener
 	public void destroy() {
 		// Propagate remove action of elements to other views
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+
+		pickingManager.removeViewSpecificData(iUniqueID);
 
 		if (this instanceof IMediatorSender) {
 			generalManager.getEventPublisher().removeSenderFromAllGroups((IMediatorSender) this);

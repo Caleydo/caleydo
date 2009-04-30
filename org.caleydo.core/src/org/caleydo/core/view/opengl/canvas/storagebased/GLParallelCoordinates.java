@@ -302,7 +302,7 @@ public class GLParallelCoordinates
 			doTranslation();
 		}
 
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 		handleUnselection();
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);

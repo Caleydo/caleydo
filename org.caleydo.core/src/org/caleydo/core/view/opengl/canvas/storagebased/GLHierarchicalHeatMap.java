@@ -615,7 +615,7 @@ public class GLHierarchicalHeatMap
 		if (stableSetForRendering == null)
 			return;
 
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);

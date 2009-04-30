@@ -385,7 +385,7 @@ public class GLRemoteRendering
 		// bRightMouseClickEventInvalid = false;
 		// }
 
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		// if (bIsDisplayListDirtyLocal)
 		// {

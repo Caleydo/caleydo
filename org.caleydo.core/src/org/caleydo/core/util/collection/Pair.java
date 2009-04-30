@@ -9,9 +9,15 @@ package org.caleydo.core.util.collection;
  * @param <E>
  *            second type
  */
-public class Pair<T, E> {
-	T first;
-	E second;
+public class Pair<T extends Comparable<T>, E extends Comparable<E>>
+	implements Comparable<Pair<T, E>>{
+	private T first;
+	private E second;
+	
+	public Pair()
+	{
+		
+	}
 
 	/**
 	 * Constructor
@@ -34,11 +40,30 @@ public class Pair<T, E> {
 		return second;
 	}
 
+	public void set(T first, E second)
+	{
+		this.first = first;
+		this.second = second;
+	}
+	
 	public void setFirst(T first) {
 		this.first = first;
 	}
 
 	public void setSecond(E second) {
 		this.second = second;
+	}
+
+	@Override
+	public int compareTo(Pair<T, E> checkedPair) {
+		int compareResultFirst = first.compareTo(checkedPair.getFirst());
+		int compareResultSecond = second.compareTo(checkedPair.getSecond());
+		
+		if(compareResultFirst > 0 && compareResultSecond > 0)
+			return 1;
+		if(compareResultFirst == 0 && compareResultSecond == 0)
+			return 0;
+		
+		return -1;
 	}
 }
