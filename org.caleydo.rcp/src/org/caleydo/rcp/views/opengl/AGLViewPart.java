@@ -101,9 +101,12 @@ public abstract class AGLViewPart
 		// TODO: Currently only one use case is supported - this needs to be generalized.
 		IUseCase useCase = GeneralManager.get().getUseCase();
 		glView.setUseCase(useCase);
+		
+		glView.setSet(set);
+		glView.initData();
+		
 		useCase.addView(glView);
 		
-
 		return glView;
 	}
 

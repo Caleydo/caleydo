@@ -295,11 +295,6 @@ public class GLRemoteRendering
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
-		// TODO: the genome mapper should be stored centralized instead of newly
-		// created
-		// colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
-
-		createSelectionHeatMap();
 		// Registration to event system
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, this);
@@ -313,7 +308,7 @@ public class GLRemoteRendering
 	@Override
 	public void initLocal(final GL gl) {
 		// iGLDisplayList = gl.glGenLists(1);
-
+		
 		init(gl);
 	}
 
@@ -343,9 +338,7 @@ public class GLRemoteRendering
 
 		initializeContainedViews(gl);
 
-		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
-
-		glSelectionHeatMap.setSet(stableSetForRendering);
+		createSelectionHeatMap();
 		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas, null);
 
 		if (generalManager.isWiiModeActive())
@@ -358,14 +351,20 @@ public class GLRemoteRendering
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, null, -1);
+		cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
+		
 		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setToListMode(true);
+		glSelectionHeatMap.setRenderedRemote(true);
+		glSelectionHeatMap.initData();
 
 		generalManager.getEventPublisher()
 			.addReceiver(EMediatorType.PROPAGATION_MEDIATOR, glSelectionHeatMap);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
+		
+		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
 	}
 
 	@Override
@@ -2741,14 +2740,16 @@ public class GLRemoteRendering
 		ECommandType cmdType = serView.getCreationCommandType();
 		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) cm.createCommandByType(cmdType);
 		cmdView.setAttributesFromSerializedForm(serView);
-		cmdView.setSet(stableSetForRendering);
+		cmdView.setSet(set);
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
 		glView.registerEventListeners();
 		useCase.addView(glView);
 		glView.setUseCase(useCase);
-
+		glView.setRenderedRemote(true);
+		glView.initData();
+		
 		if (glView instanceof GLPathway) {
 			initializePathwayView((GLPathway) glView);
 		}
@@ -3084,10 +3085,5 @@ public class GLRemoteRendering
 
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
-	}
-
-	@Override
-	public synchronized void setSet(ISet set) {
-		super.setSet(set);
 	}
 }

@@ -120,20 +120,11 @@ public class GLHeatMap
 
 	@Override
 	public void init(GL gl) {
-		initData();
-		if (stableSetForRendering == null)
-			return;
-	}
-
-	@Override
-	public synchronized void resetView() {
-		initData();
+		// nothing to do ATM
 	}
 
 	@Override
 	public void initLocal(GL gl) {
-		bRenderOnlyContext = false;
-
 		bRenderStorageHorizontally = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
@@ -145,7 +136,6 @@ public class GLHeatMap
 	public void initRemote(final GL gl, final int iRemoteViewID,
 		final PickingMouseListener pickingTriggerMouseAdapter,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		bRenderOnlyContext = true;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -178,7 +168,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void displayLocal(GL gl) {
 
-		if (stableSetForRendering == null)
+		if (set == null)
 			return;
 
 		if (bIsTranslationAnimationActive) {
@@ -204,7 +194,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void displayRemote(GL gl) {
 
-		if (stableSetForRendering == null)
+		if (set == null)
 			return;
 
 		if (bIsTranslationAnimationActive) {
@@ -330,20 +320,20 @@ public class GLHeatMap
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
 
-		contentSelectionManager.setVA(stableSetForRendering.getVA(iContentVAID));
-		storageSelectionManager.setVA(stableSetForRendering.getVA(iStorageVAID));
+		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		storageSelectionManager.setVA(set.getVA(iStorageVAID));
 
-		int iNumberOfColumns = stableSetForRendering.getVA(iContentVAID).size();
-		int iNumberOfRows = stableSetForRendering.getVA(iStorageVAID).size();
+		int iNumberOfColumns = set.getVA(iContentVAID).size();
+		int iNumberOfRows = set.getVA(iStorageVAID).size();
 
 		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-			storageSelectionManager.initialAdd(stableSetForRendering.getVA(iStorageVAID).get(iRowCount));
+			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
 
 		}
 
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-			contentSelectionManager.initialAdd(stableSetForRendering.getVA(iContentVAID).get(iColumnCount));
+			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
 		}
 
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -355,8 +345,8 @@ public class GLHeatMap
 
 	@Override
 	public String getShortInfo() {
-		return "Heat Map - " + stableSetForRendering.getVA(iContentVAID).size() + " genes / "
-			+ stableSetForRendering.getVA(iStorageVAID).size() + " experiments";
+		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / "
+			+ set.getVA(iStorageVAID).size() + " experiments";
 	}
 
 	@Override
@@ -365,12 +355,12 @@ public class GLHeatMap
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
 		if (bRenderStorageHorizontally) {
-			sInfoText.append(stableSetForRendering.getVA(iContentVAID).size() + "Genes in columns and "
-				+ stableSetForRendering.getVA(iStorageVAID).size() + " experiments in rows.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
+				+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
 		}
 		else {
-			sInfoText.append(stableSetForRendering.getVA(iContentVAID).size() + " Genes in rows and "
-				+ stableSetForRendering.getVA(iStorageVAID).size() + " experiments in columns.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
+				+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
 		}
 
 		if (bRenderOnlyContext) {
@@ -541,7 +531,7 @@ public class GLHeatMap
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1,0.2f,0));
 		int iCount = 0;
 		ESelectionType currentType;
-		for (Integer iContentIndex : stableSetForRendering.getVA(iContentVAID)) {
+		for (Integer iContentIndex : set.getVA(iContentVAID)) {
 			iCount++;
 			// we treat normal and deselected the same atm
 			if (contentSelectionManager.checkStatus(ESelectionType.NORMAL, iContentIndex)
@@ -568,7 +558,7 @@ public class GLHeatMap
 				fYPosition = 0;
 			}
 
-			for (Integer iStorageIndex : stableSetForRendering.getVA(iStorageVAID)) {
+			for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
 				if (bIsInListMode) {
 					if (currentType == ESelectionType.SELECTION) {
 						if (iCurrentMouseOverElement == iContentIndex) {
@@ -623,7 +613,7 @@ public class GLHeatMap
 					bRenderRefSeq = true;
 					String sContent;
 
-					if (stableSetForRendering.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 						sContent = IDMappingHelper.get().getShortNameFromDavid(iContentIndex);
 
 						if (bRenderRefSeq) {
@@ -632,14 +622,14 @@ public class GLHeatMap
 							sContent += IDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 						}
 					}
-					else if (stableSetForRendering.getSetType() == ESetType.UNSPECIFIED) {
+					else if (set.getSetType() == ESetType.UNSPECIFIED) {
 						sContent =
 							generalManager.getIDMappingManager().getID(
 								EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex);
 					}
 					else {
 						throw new IllegalStateException("Label extraction for "
-							+ stableSetForRendering.getSetType() + " not implemented yet!");
+							+ set.getSetType() + " not implemented yet!");
 					}
 
 					if (sContent == null)
@@ -755,10 +745,10 @@ public class GLHeatMap
 
 			// render column captions
 			if (detailLevel == EDetailLevel.HIGH && !bIsInListMode) {
-				if (iCount == stableSetForRendering.getVA(iContentVAID).size()) {
+				if (iCount == set.getVA(iContentVAID).size()) {
 					fYPosition = 0;
-					for (Integer iStorageIndex : stableSetForRendering.getVA(iStorageVAID)) {
-						renderCaption(gl, stableSetForRendering.get(iStorageIndex).getLabel(),
+					for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
+						renderCaption(gl, set.get(iStorageIndex).getLabel(),
 							fXPosition + 0.1f, fYPosition + fFieldHeight / 2, 0, fColumnDegrees, renderStyle
 								.getSmallFontScalingFactor());
 						fYPosition += fFieldHeight;
@@ -772,7 +762,7 @@ public class GLHeatMap
 		final float fXPosition, final float fYPosition, final float fFieldWidth, final float fFieldHeight) {
 
 		float fLookupValue =
-			stableSetForRendering.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+			set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 1;
 		// if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
@@ -825,11 +815,11 @@ public class GLHeatMap
 		}
 
 		int iColumnIndex = 0;
-		for (int iTempColumn : stableSetForRendering.getVA(iContentVAID)) {
+		for (int iTempColumn : set.getVA(iContentVAID)) {
 			for (Integer iCurrentColumn : selectedSet) {
 
 				if (iCurrentColumn == iTempColumn) {
-					fHeight = stableSetForRendering.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
+					fHeight = set.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
 					fXPosition = fAlXDistances.get(iColumnIndex);
 
 					fYPosition = 0;
@@ -856,7 +846,7 @@ public class GLHeatMap
 
 		selectedSet = storageSelectionManager.getElements(eSelectionType);
 		int iLineIndex = 0;
-		for (int iTempLine : stableSetForRendering.getVA(iStorageVAID)) {
+		for (int iTempLine : set.getVA(iStorageVAID)) {
 			for (Integer iCurrentLine : selectedSet) {
 				if (iTempLine == iCurrentLine) {
 					// TODO we need indices of all elements
@@ -887,7 +877,7 @@ public class GLHeatMap
 		fAlXDistances.clear();
 		float fDistance = 0;
 
-		for (Integer iStorageIndex : stableSetForRendering.getVA(iContentVAID)) {
+		for (Integer iStorageIndex : set.getVA(iContentVAID)) {
 			fAlXDistances.add(fDistance);
 			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
 				|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iStorageIndex)) {
@@ -908,7 +898,7 @@ public class GLHeatMap
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int iContentIndex : stableSetForRendering.getVA(iContentVAID).indicesOf(iStorageIndex)) {
+		for (int iContentIndex : set.getVA(iContentVAID).indicesOf(iStorageIndex)) {
 			if (iContentIndex == -1) {
 				// throw new
 				// IllegalStateException("No such element in virtual array");
@@ -966,13 +956,13 @@ public class GLHeatMap
 		}
 
 		float fCurrentPosition =
-			stableSetForRendering.getVA(iSelection).indexOf(iElementID) * renderStyle.getNormalFieldWidth();// +
+			set.getVA(iSelection).indexOf(iElementID) * renderStyle.getNormalFieldWidth();// +
 		// renderStyle.getXSpacing(
 		// );
 
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
 		float fLength =
-			(stableSetForRendering.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
+			(set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
 		// :
 		// 1.5
 		// =
@@ -1039,7 +1029,7 @@ public class GLHeatMap
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
 
-		contentSelectionManager.setVA(stableSetForRendering.getVA(iContentVAID));
+		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		// renderStyle.setActiveVirtualArray(iContentVAID);
 
 		setDisplayListDirty();
@@ -1151,5 +1141,4 @@ public class GLHeatMap
 
 		super.unregisterEventListeners();
 	}
-
 }

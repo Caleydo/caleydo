@@ -71,8 +71,6 @@ public abstract class AGLEventListener
 
 	protected IViewCamera viewCamera;
 
-	protected IGLCanvasRemoteRendering remoteRenderingGLCanvas;
-
 	/**
 	 * The views current aspect ratio. Value gets updated when reshape is called by the JOGL animator.
 	 */
@@ -85,6 +83,10 @@ public abstract class AGLEventListener
 	 * rendered remote.
 	 */
 	protected RemoteLevelElement remoteLevelElement;
+
+	protected IGLCanvasRemoteRendering remoteRenderingGLCanvas;
+
+	protected boolean bIsRenderedRemote = false;
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
@@ -119,17 +121,16 @@ public abstract class AGLEventListener
 	protected int iStorageVAID = -1;
 
 	/**
-	 * The context menue each view should implement. It has to be created in initLocal or is set via
-	 * initRemote
+	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
 	 */
 	protected ContextMenu contextMenu;
 
 	/**
-	 * This set is not changed during rendering. On display list dirty set current set is assigned. Therefore
-	 * in the next rendering of the view the new data is applied. This guarantees that the set does not change
-	 * in the middle of the display method.
+	 * This set changes during rendering. On display list dirty the global newSet is assigned to the set of
+	 * AView. Therefore in the next rendering of the view the new data is applied. This guarantees that the
+	 * set does not change in the middle of the display method. The new set
 	 */
-	protected ISet stableSetForRendering;
+	private ISet newSet;
 
 	/**
 	 * Constructor.
@@ -180,6 +181,7 @@ public abstract class AGLEventListener
 
 	@Override
 	public synchronized void display(GLAutoDrawable drawable) {
+
 		try {
 			((GLEventListener) parentGLCanvas).display(drawable);
 
@@ -233,11 +235,26 @@ public abstract class AGLEventListener
 
 		fAspectRatio = (float) height / (float) width;
 
-		gl.glViewport(x, y, width, height);
+		// gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
 
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
+	}
+
+	/**
+	 * Method responsible for initialization of the data. Note: This is completely independent of init(gl)!
+	 */
+	public synchronized void initData() {
+
+		set = newSet;
+	}
+
+	/**
+	 * Reset the view to its initial state, synchronized
+	 */
+	public synchronized void resetView() {
+		initData();
 	}
 
 	/**
@@ -246,9 +263,6 @@ public abstract class AGLEventListener
 	public void setDisplayListDirty() {
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-
-		// Update rendering set with set of view
-		stableSetForRendering = set;
 	}
 
 	/**
@@ -430,15 +444,12 @@ public abstract class AGLEventListener
 		return remoteLevelElement;
 	}
 
-	/**
-	 * FIXME: should there be a seperated interface for remote rendered views that only those have to
-	 * implement?
-	 */
 	public boolean isRenderedRemote() {
-		if (remoteRenderingGLCanvas == null)
-			return false;
+		return bIsRenderedRemote;
+	}
 
-		return true;
+	public void setRenderedRemote(boolean bIsRenderedRemote) {
+		this.bIsRenderedRemote = bIsRenderedRemote;
 	}
 
 	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
@@ -597,7 +608,10 @@ public abstract class AGLEventListener
 
 	@Override
 	public synchronized void setSet(ISet set) {
-		super.setSet(set);
+
+		// In GL views the new set is not immediately written to the set variable of AView.
+		// The new set is then assigned to the working set when the display list is dirty the next time.
+		newSet = set;
 		setDisplayListDirty();
 	}
 

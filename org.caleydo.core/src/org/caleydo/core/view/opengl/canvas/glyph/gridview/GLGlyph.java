@@ -268,7 +268,7 @@ public class GLGlyph
 	public synchronized void init(GL gl) {
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
-		grid_.loadData(stableSetForRendering);
+		grid_.loadData(set);
 
 		// grid_.selectAll();
 

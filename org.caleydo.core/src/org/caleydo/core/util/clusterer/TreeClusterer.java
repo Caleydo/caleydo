@@ -6,7 +6,6 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 

@@ -143,6 +143,10 @@ public abstract class AStorageBasedView
 
 	public synchronized void initData() {
 
+		super.initData();
+		
+		bRenderOnlyContext = bIsRenderedRemote;
+		
 		String sLevel =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
 		if (sLevel.equals("complete")) {
@@ -170,7 +174,7 @@ public abstract class AStorageBasedView
 
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
 				if (mapVAIDs.containsKey(eSelectionType)) {
-					stableSetForRendering.removeVirtualArray(mapVAIDs.get(eSelectionType));
+					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 				}
 			}
 			iContentVAID = -1;
@@ -178,7 +182,7 @@ public abstract class AStorageBasedView
 			mapVAIDs.clear();
 		}
 
-		if (stableSetForRendering == null) {
+		if (set == null) {
 			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
@@ -188,16 +192,16 @@ public abstract class AStorageBasedView
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 		// create VA with empty list
-		int iVAID = stableSetForRendering.createStorageVA(alTempList);
+		int iVAID = set.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
 
 		alTempList = new ArrayList<Integer>();
 
-		for (int iCount = 0; iCount < stableSetForRendering.size(); iCount++) {
+		for (int iCount = 0; iCount < set.size(); iCount++) {
 			alTempList.add(iCount);
 		}
 
-		iVAID = stableSetForRendering.createSetVA(alTempList);
+		iVAID = set.createSetVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
 
 		initLists();
@@ -209,11 +213,11 @@ public abstract class AStorageBasedView
 	 */
 	protected final void initCompleteList() {
 		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(stableSetForRendering.depth());
+		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 
-		for (int iCount = 0; iCount < stableSetForRendering.depth(); iCount++) {
+		for (int iCount = 0; iCount < set.depth(); iCount++) {
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE
-				&& stableSetForRendering.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+				&& set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 
 				// Here we get mapping data for all values
 				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
@@ -264,7 +268,7 @@ public abstract class AStorageBasedView
 		}
 
 		// TODO: remove possible old virtual array
-		int iVAID = stableSetForRendering.createStorageVA(alTempList);
+		int iVAID = set.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
 
 		setDisplayListDirty();
@@ -378,11 +382,6 @@ public abstract class AStorageBasedView
 
 		setDisplayListDirty();
 	}
-
-	/**
-	 * Reset the view to its initial state, synchronized
-	 */
-	public abstract void resetView();
 	
 	@Override
 	public synchronized void setSet(ISet set) {

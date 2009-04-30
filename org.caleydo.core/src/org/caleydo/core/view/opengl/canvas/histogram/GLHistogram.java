@@ -80,7 +80,7 @@ public class GLHistogram
 	@Override
 	public void init(GL gl) {
 
-		histogram = stableSetForRendering.getHistogram();
+		histogram = set.getHistogram();
 	}
 
 	@Override
@@ -550,7 +550,6 @@ public class GLHistogram
 	@Override
 	public synchronized void setSet(ISet set) {
 		super.setSet(set);
-
 		histogram = set.getHistogram();
 	}
 }

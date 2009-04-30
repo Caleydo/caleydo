@@ -284,7 +284,7 @@ public class PickingManager {
 
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 
-		gl.glMatrixMode(GL.GL_MODELVIEW);
+		// gl.glMatrixMode(GL.GL_MODELVIEW);
 
 		// Store picked point
 		Point tmpPickPoint = (Point) pickPoint.clone();
@@ -366,9 +366,13 @@ public class PickingManager {
 		hashViewIDToIsMouseOverPickingEvent.remove(iViewID);
 		hashViewIDToViewSpecificHitListContainer.remove(iViewID);
 		ViewSpecificPickingIDContainer container = hashViewIDToViewSpecificPickingIDContainer.get(iViewID);
-		for (Integer pickingID : container.getAllPickingIDs()) {
-			hashPickingIDToViewID.remove(pickingID);
+
+		if (container != null && container.getAllPickingIDs() != null) {
+			for (Integer pickingID : container.getAllPickingIDs()) {
+				hashPickingIDToViewID.remove(pickingID);
+			}
 		}
+
 		hashViewIDToViewSpecificPickingIDContainer.remove(iViewID);
 	}
 
