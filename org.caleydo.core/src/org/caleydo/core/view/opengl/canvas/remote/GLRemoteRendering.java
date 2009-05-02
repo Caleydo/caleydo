@@ -308,7 +308,7 @@ public class GLRemoteRendering
 	@Override
 	public void initLocal(final GL gl) {
 		// iGLDisplayList = gl.glGenLists(1);
-		
+
 		init(gl);
 	}
 
@@ -361,7 +361,7 @@ public class GLRemoteRendering
 			.addReceiver(EMediatorType.PROPAGATION_MEDIATOR, glSelectionHeatMap);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
-		
+
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
 	}
 
@@ -545,11 +545,9 @@ public class GLRemoteRendering
 		// gl.glCallList(iGLDisplayList);
 
 		// comment here for connection lines
-		gl.glDisable(GL.GL_DEPTH_TEST);
 		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
 			glConnectionLineRenderer.render(gl);
 		}
-		gl.glEnable(GL.GL_DEPTH_TEST);
 
 		float fZTranslation = 0;
 		if (!bucketMouseWheelListener.isZoomedIn())
@@ -2028,7 +2026,7 @@ public class GLRemoteRendering
 
 	@Override
 	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
-		// contextMenu.disable();
+
 		switch (pickingType) {
 			case BUCKET_DRAG_ICON_SELECTION:
 
@@ -2747,7 +2745,7 @@ public class GLRemoteRendering
 		glView.setUseCase(useCase);
 		glView.setRenderedRemote(true);
 		glView.initData();
-		
+
 		if (glView instanceof GLPathway) {
 			initializePathwayView((GLPathway) glView);
 		}

@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLContext;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -201,18 +203,18 @@ public class PickingManager {
 	 * the actual picking. It needs the ID of the calling view and a gl context. It calls the display() method
 	 * of the calling view, therefore only elements rendered in the display() can be picked.
 	 * 
-	 * @param canvasUser
+	 * @param glView
 	 *            a reference to the calling view
 	 * @param gl
 	 *            the GL context
 	 */
-	public void handlePicking(final AGLEventListener canvasUser, final GL gl) {
+	public void handlePicking(final AGLEventListener glView, final GL gl) {
 
 		if (bEnablePicking == false)
 			return;
 
 		PickingMouseListener pickingTriggerMouseAdapter =
-			canvasUser.getParentGLCanvas().getJoglMouseListener();
+			glView.getParentGLCanvas().getJoglMouseListener();
 
 		Point pickPoint = null;
 
@@ -221,14 +223,17 @@ public class PickingManager {
 		if (pickingTriggerMouseAdapter.wasMouseDoubleClicked()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			ePickingMode = EPickingMode.DOUBLE_CLICKED;
+			ContextMenu.get().flush();
 		}
 		else if (pickingTriggerMouseAdapter.wasMouseDragged()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			ePickingMode = EPickingMode.DRAGGED;
+			ContextMenu.get().flush();
 		}
 		else if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			ePickingMode = EPickingMode.CLICKED;
+			ContextMenu.get().flush();
 		}
 		else if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
@@ -238,10 +243,10 @@ public class PickingManager {
 			// Restart timer
 			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
 			// System.nanoTime());
-			hashViewIDToIsMouseOverPickingEvent.put(canvasUser.getID(), true);
+			hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), true);
 		}
-		else if (hashViewIDToIsMouseOverPickingEvent.get(canvasUser.getID()) != null
-			&& hashViewIDToIsMouseOverPickingEvent.get(canvasUser.getID()) == true) {
+		else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
+			&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
 			// System.nanoTime());
@@ -251,7 +256,7 @@ public class PickingManager {
 		if (pickPoint == null)
 			return;
 
-		hashViewIDToIsMouseOverPickingEvent.put(canvasUser.getID(), false);
+		hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), false);
 
 		int PICKING_BUFSIZE = 1024;
 
@@ -280,7 +285,7 @@ public class PickingManager {
 
 		float fAspectRatio = (float) (viewport[3] - viewport[1]) / (float) (viewport[2] - viewport[0]);
 
-		IViewFrustum viewFrustum = canvasUser.getViewFrustum();
+		IViewFrustum viewFrustum = glView.getViewFrustum();
 
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 
@@ -291,7 +296,7 @@ public class PickingManager {
 		// Reset picked point
 		pickPoint = null;
 
-		canvasUser.display(gl);
+		glView.display(gl);
 
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glPopMatrix();

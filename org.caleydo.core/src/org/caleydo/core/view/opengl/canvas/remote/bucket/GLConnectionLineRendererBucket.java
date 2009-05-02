@@ -5,6 +5,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -12,6 +13,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -60,9 +62,18 @@ public class GLConnectionLineRendererBucket
 			for (int iSelectedElementID : connectedElementRepManager.getIDList(idType)) {
 				for (SelectedElementRep selectedElementRep : connectedElementRepManager
 					.getSelectedElementRepsByElementID(idType, iSelectedElementID)) {
-					remoteLevelElement =
-						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID())
-							.getRemoteLevelElement();
+
+					AGLEventListener glView =
+						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID());
+
+					if (glView == null)
+					{
+						// TODO: investigate! view must not be null here.
+//						GeneralManager.get().getLogger().log(Level.WARNING, "View in connection line manager is null!");
+						continue;
+					}
+					
+					remoteLevelElement = glView.getRemoteLevelElement();
 					// views that are not rendered remote
 					if (remoteLevelElement == null) {
 						continue;

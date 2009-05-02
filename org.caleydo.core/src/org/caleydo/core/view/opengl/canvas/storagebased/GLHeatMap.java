@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -209,6 +210,9 @@ public class GLHeatMap
 		gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
+		
+		if (!isRenderedRemote())
+			contextMenu.render(gl, iUniqueID);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -248,7 +252,7 @@ public class GLHeatMap
 						.z());
 			}
 
-			gl.glDisable(GL.GL_STENCIL_TEST);
+//			gl.glDisable(GL.GL_STENCIL_TEST);
 		}
 		gl.glEndList();
 	}
@@ -382,6 +386,7 @@ public class GLHeatMap
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
+		
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case HEAT_MAP_LINE_SELECTION:
@@ -413,6 +418,19 @@ public class GLHeatMap
 						}
 
 						break;
+					case RIGHT_CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
+
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterViewID(iUniqueID);
+						}
+
+						GeneContextMenuItemContainer geneContextMenuItemContainer =
+							new GeneContextMenuItemContainer(IDMappingHelper.get().getRefSeqFromStorageIndex(
+								iExternalID));
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					default:
 						return;
 

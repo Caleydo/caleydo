@@ -235,7 +235,7 @@ public abstract class AGLEventListener
 
 		fAspectRatio = (float) height / (float) width;
 
-		// gl.glViewport(x, y, width, height);
+		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
 

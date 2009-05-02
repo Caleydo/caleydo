@@ -416,7 +416,7 @@ public class GLParallelCoordinates
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
-		gl.glDisable(GL.GL_STENCIL_TEST);
+//		gl.glDisable(GL.GL_STENCIL_TEST);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, iUniqueID);
@@ -1879,7 +1879,7 @@ public class GLParallelCoordinates
 		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
 			return;
 		}
-		contextMenu.disable();
+		
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case PCS_VIEW_SELECTION:
@@ -1911,33 +1911,16 @@ public class GLParallelCoordinates
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
+						GeneContextMenuItemContainer geneContextMenuItemContainer =
+							new GeneContextMenuItemContainer(IDMappingHelper.get().getRefSeqFromStorageIndex(
+								iExternalID));
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
+						
 						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());
 							contextMenu.setMasterViewID(iUniqueID);
 						}
-
-						// }
-						// else
-						// {
-						// contextMenu.setMasterViewID(getRemoteRenderingGLCanvas().getID());
-						// }
-
-						GeneContextMenuItemContainer geneContextMenuItemContainer =
-							new GeneContextMenuItemContainer(IDMappingHelper.get().getRefSeqFromStorageIndex(
-								iExternalID));
-						contextMenu.addItemContanier(geneContextMenuItemContainer);
-						// LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-						// loadPathwaysByGeneItem.setRefSeqInt(IDMappingHelper.get()
-						// .getRefSeqFromStorageIndex(iExternalID));
-						// contextMenu.addContextMenueItem(loadPathwaysByGeneItem);
-
-						// contextMenu.addContextMenueItem(new AddToListItem());
-						// contextMenu.addContextMenueItem(new LoadPathwaysByGeneItem());
-						// contextMenu.addContextMenueItem(new AddToListItem());
-						// contextMenu.addContextMenueItem(new LoadPathwaysByGeneItem());
-						// contextMenu.addContextMenueItem(new AddToListItem());
-
 						break;
 
 					default:

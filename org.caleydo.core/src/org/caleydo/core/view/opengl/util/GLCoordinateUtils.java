@@ -34,8 +34,8 @@ public class GLCoordinateUtils {
 		double[] wcoord = new double[4];// wx, wy, wz;// returned xyz coords
 		int viewport[] = new int[4];
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+//
+//		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
 		gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
 		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, projmatrix, 0);
 
@@ -79,7 +79,7 @@ public class GLCoordinateUtils {
 	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL gl,
 		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY) {
 		return convertWindowCoordinatesToWorldCoordinates(gl, iWindowCoordinatePositionX,
-			iWindowCoordinatePositionY, 0.3f);
+			iWindowCoordinatePositionY, 0.055f);
 	}
 
 	public static float[] convertWindowToGLCoordinates(final int iWindowWidth, final int iWindowHeight,

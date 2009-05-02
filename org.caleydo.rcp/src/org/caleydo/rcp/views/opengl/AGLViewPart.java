@@ -76,7 +76,8 @@ public abstract class AGLViewPart
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(glViewType);
 
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -0.5f, 0.5f, -0.5f, 0.5f, 0.95f, 100, set,
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, set,
+//			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f, 2f, 3.82f, 100, set,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH) {

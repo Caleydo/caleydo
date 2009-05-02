@@ -46,7 +46,7 @@ public abstract class AOverlayManager {
 	 * Disables the overlay and resets the relevant elements. This method is intended to be overridden but
 	 * should be called by its overriding method
 	 */
-	public void disable() {
+	public void flush() {
 		pickedPoint = null;
 		isEnabled = false;
 	}

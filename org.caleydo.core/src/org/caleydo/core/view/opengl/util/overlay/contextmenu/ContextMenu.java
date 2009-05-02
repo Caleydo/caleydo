@@ -46,7 +46,7 @@ public class ContextMenu
 	private static final float SPACING = 0.02f;
 	private static final float FONT_SCALING = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
-	private static final float BASIC_Z = 0.01f;
+	private static final float BASIC_Z = 0f;
 	private static final float BUTTON_Z = BASIC_Z + 0.001f;
 	private static final float TEXT_Z = BUTTON_Z + 0.001f;
 
@@ -131,6 +131,7 @@ public class ContextMenu
 	 *            an instance of AContextMenuItem
 	 */
 	public void addContextMenueItem(AContextMenuItem item) {
+
 		contextMenuItems.add(item);
 
 		// float textWidth = (float) textRenderer.getBounds(item.getText()).getWidth() * FONT_SCALING;
@@ -145,6 +146,9 @@ public class ContextMenu
 	 *            the container which holds a list of items
 	 */
 	public void addItemContanier(AItemContainer itemContainer) {
+
+		flush();
+
 		for (AContextMenuItem item : itemContainer) {
 			addContextMenueItem(item);
 		}
@@ -183,16 +187,20 @@ public class ContextMenu
 
 			baseMenuMetaData = new ContextMenuMetaData();
 
-			baseMenuMetaData.xOrigin = fArWorldCoords[0];
-			baseMenuMetaData.yOrigin = fArWorldCoords[1];
+			baseMenuMetaData.xOrigin = fArWorldCoords[0] * 2f;
+			baseMenuMetaData.yOrigin = fArWorldCoords[1] * 2f;
 
+			// TODO: check if view is bucket -> then multiply with 2
+			
 			initializeSubMenus(contextMenuItems, baseMenuMetaData);
 
 		}
 
 		if (isDisplayListDirty) {
 			gl.glNewList(displayListIndex, GL.GL_COMPILE);
+			gl.glDisable(GL.GL_DEPTH_TEST);
 			drawMenu(gl, contextMenuItems, baseMenuMetaData);
+			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glEndList();
 			isDisplayListDirty = false;
 		}
@@ -376,12 +384,12 @@ public class ContextMenu
 	}
 
 	/**
-	 * Overrides the disable method of {@link AOverlayManager}. Disables the context menu and clears the list
+	 * Overrides the flush method of {@link AOverlayManager}. Disables the context menu and clears the list
 	 * of items supplied as well as the masterViewID.
 	 */
 	@Override
-	public void disable() {
-		super.disable();
+	public void flush() {
+		super.flush();
 		contextMenuItems.clear();
 		mouseOverElement = -1;
 		isDisplayListDirty = true;

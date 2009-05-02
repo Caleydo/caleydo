@@ -1835,7 +1835,7 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(-0.2f, 0.0f, 0);
 		}
 
-		gl.glDisable(GL.GL_STENCIL_TEST);
+//		gl.glDisable(GL.GL_STENCIL_TEST);
 
 		gl.glEndList();
 	}

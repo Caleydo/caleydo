@@ -64,8 +64,10 @@ public abstract class AGLConnectionLineRenderer {
 
 		if (connectedElementRepManager.getOccuringIDTypes().size() == 0 || bEnableRendering == false)
 			return;
-
+		
+		gl.glDisable(GL.GL_DEPTH_TEST);
 		renderConnectionLines(gl);
+		gl.glEnable(GL.GL_DEPTH_TEST);
 	}
 
 	protected abstract void renderConnectionLines(final GL gl);
