@@ -12,7 +12,6 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
@@ -56,7 +55,6 @@ public class GLDendrogram
 	implements IClusterNodeEventReceiver {
 
 	boolean bUseDetailLevel = true;
-	ISet set;
 
 	private Tree<ClusterNode> tree;
 	DendrogramRenderStyle renderStyle;
@@ -107,8 +105,6 @@ public class GLDendrogram
 
 	@Override
 	public void init(GL gl) {
-
-		initData();
 
 	}
 
