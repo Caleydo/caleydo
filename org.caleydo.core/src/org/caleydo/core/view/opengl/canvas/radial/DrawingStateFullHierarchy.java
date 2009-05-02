@@ -30,22 +30,31 @@ public class DrawingStateFullHierarchy
 			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement
 				.getHierarchyDepth(iMaxDisplayedHierarchyDepth));
 
+		pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
+			.getDefaultDrawingStrategy(), iDisplayedHierarchyDepth);
+
 		float fHierarchyOuterRadius = Math.min(fXCenter * 0.9f, fYCenter * 0.9f);
 		float fDiscWidth = fHierarchyOuterRadius / iDisplayedHierarchyDepth;
 
 		if (pdCurrentMouseOverElement != null) {
 			PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
-			dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
+			dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDefaultDrawingStrategy());
 			pdCurrentMouseOverElement.setPDDrawingStrategyChildren(dsLabelDecorator, 3);
 
-			dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
-			dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED));
-			pdCurrentMouseOverElement.setPDDrawingStrategy(dsLabelDecorator);
+			// dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+			// dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
+			// DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED));
+			// pdCurrentMouseOverElement.setPDDrawingStrategy(dsLabelDecorator);
 		}
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, fDiscWidth, iDisplayedHierarchyDepth);
+
+		// The mouse over element has to be drawn (again in using different drawing strategy) at last for
+		// correct antialiasing
+		PDDrawingStrategy dsSelected =
+			DrawingStrategyManager.get().getDrawingStrategy(
+				DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED);
+		dsSelected.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
 
 		LabelManager.get().drawAllLabels(gl, glu, fXCenter * 2.0f, fYCenter * 2.0f, fHierarchyOuterRadius);
 		LabelManager.get().clearLabels();
@@ -62,14 +71,14 @@ public class DrawingStateFullHierarchy
 		if (pdClicked != pdRealRootElement && pdClicked.hasChildren()) {
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
+					.getDefaultDrawingStrategy(), 3);
 			}
 			if (pdClicked == pdCurrentRootElement) {
 				radialHierarchy.setCurrentRootElement(pdClicked.getParent());
 				radialHierarchy.setCurrentMouseOverElement(pdClicked.getParent());
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT);
-				
+
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdClicked);
@@ -89,7 +98,7 @@ public class DrawingStateFullHierarchy
 		if (pdMouseOver != pdCurrentMouseOverElement) {
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
+					.getDefaultDrawingStrategy(), 3);
 			}
 
 			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
@@ -98,7 +107,7 @@ public class DrawingStateFullHierarchy
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
 		event.setClusterNodeName(pdMouseOver.getName());
-		
+
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -111,7 +120,7 @@ public class DrawingStateFullHierarchy
 		if (pdClicked != pdCurrentRootElement && pdClicked.hasChildren() && pdClicked.getCurrentDepth() > 1) {
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
+					.getDefaultDrawingStrategy());
 			}
 
 			radialHierarchy.setCurrentSelectedElement(pdClicked);

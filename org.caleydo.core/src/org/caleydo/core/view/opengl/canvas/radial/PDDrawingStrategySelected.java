@@ -3,8 +3,15 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingManager;
+
 public class PDDrawingStrategySelected
-	extends PDDrawingStrategyChildIndicator {
+	extends PDDrawingStrategy {
+	
+	public PDDrawingStrategySelected(PickingManager pickingManager, int iViewID) {
+		super(pickingManager, iViewID);
+	}
 
 	@Override
 	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
@@ -14,13 +21,17 @@ public class PDDrawingStrategySelected
 
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-		gl.glColor4f(0.6f, 0.8f, 0.8f, 1.0f);
+		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
 		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
 
-		gl.glColor4f(1, 1, 1, 1);
-		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc, 2);
+		gl.glColor4fv(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR, 0);
+		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
+			RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
 		gl.glPopAttrib();
+		gl.glPopName();
 
 	}
 
@@ -39,20 +50,20 @@ public class PDDrawingStrategySelected
 		while (fMidAngle > 360) {
 			fMidAngle -= 360;
 		}
+		
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
-			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
-		}
-		
-		gl.glColor4f(0.6f, 0.8f, 0.8f, 1.0f);
+		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
-		gl.glColor4f(1, 1, 1, 1);
+		gl.glColor4fv(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR, 0);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle,
-			fAngle, iNumSlicesPerFullDisc, 2);
-
+			fAngle, iNumSlicesPerFullDisc, RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
+		
 		gl.glPopAttrib();
+		gl.glPopName();
 
 	}
 

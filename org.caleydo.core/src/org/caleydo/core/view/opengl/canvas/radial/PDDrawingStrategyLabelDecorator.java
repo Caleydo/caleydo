@@ -6,6 +6,10 @@ import javax.media.opengl.glu.GLU;
 
 public class PDDrawingStrategyLabelDecorator
 	extends PDDrawingStrategyDecorator {
+	
+	public PDDrawingStrategyLabelDecorator() {
+		super(null, 0);
+	}
 
 	@Override
 	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {

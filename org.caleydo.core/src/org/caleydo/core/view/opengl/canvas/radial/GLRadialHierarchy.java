@@ -81,6 +81,7 @@ public class GLRadialHierarchy
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
+		DrawingStrategyManager.init(pickingManager, iUniqueID);
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		partialDiscTree = new Tree<PartialDisc>();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
@@ -139,8 +140,7 @@ public class GLRadialHierarchy
 			for (ClusterNode cnChild : alChildNodes) {
 				iChildID++;
 				PartialDisc pdCurrentChildDisc =
-					new PartialDisc(iChildID, cnChild.getNrElements(), iUniqueID, pickingManager,
-						partialDiscTree, cnChild);
+					new PartialDisc(iChildID, cnChild.getNrElements(), partialDiscTree, cnChild);
 				try {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
@@ -159,22 +159,13 @@ public class GLRadialHierarchy
 
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		int childID = 0;
-		ClusterNode currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1, true);
-		pdRealRootElement =
-			new PartialDisc(0, 100, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
-		pdCurrentRootElement = pdRealRootElement;
-		hashPartialDiscs.put(0, pdRealRootElement);
-		partialDiscTree.setRootNode(pdRealRootElement);
-
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		TreePorter treePorter = new TreePorter();
-		
+
 		tree = treePorter.importTree("data/clustering/tree.xml");
-		
+
 		ClusterNode cnRoot = tree.getRoot();
-		PartialDisc pdRoot =
-			new PartialDisc(childID, cnRoot.getNrElements(), iUniqueID, pickingManager, partialDiscTree,
-				cnRoot);
+		PartialDisc pdRoot = new PartialDisc(childID, cnRoot.getNrElements(), partialDiscTree, cnRoot);
 		partialDiscTree.setRootNode(pdRoot);
 		hashPartialDiscs.put(childID, pdRoot);
 		buildTree(tree, cnRoot, pdRoot, childID);
@@ -462,6 +453,16 @@ public class GLRadialHierarchy
 		gl.glEnd();
 		gl.glPopName();
 
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION, -4));
+		gl.glColor3f(0, 0, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 2, 0);
+		gl.glVertex3f(1, 2, 0);
+		gl.glVertex3f(1, 1, 0);
+		gl.glVertex3f(0, 1, 0);
+		gl.glEnd();
+		gl.glPopName();
+
 		gl.glPopAttrib();
 
 		// TextRenderer textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
@@ -584,6 +585,8 @@ public class GLRadialHierarchy
 							goBackInHistory();
 						if (iExternalID == -3)
 							goForthInHistory();
+						if (iExternalID == -4)
+							changeColorMode();
 
 						if (pdPickedElement != null)
 							drawingController.handleClick(pdPickedElement);
@@ -594,10 +597,10 @@ public class GLRadialHierarchy
 							drawingController.handleMouseOver(pdPickedElement);
 						break;
 
-					 case RIGHT_CLICKED:
-					 if (pdPickedElement != null)
-					 drawingController.handleDoubleClick(pdPickedElement);
-					 break;
+					case RIGHT_CLICKED:
+						if (pdPickedElement != null)
+							drawingController.handleDoubleClick(pdPickedElement);
+						break;
 
 					default:
 						return;
@@ -612,6 +615,18 @@ public class GLRadialHierarchy
 
 	public void goForthInHistory() {
 		navigationHistory.goForth();
+	}
+
+	public void changeColorMode() {
+
+		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
+		if (drawingStrategyManager.isRainbowStrategyDefault()) {
+			drawingStrategyManager.setExpressionStrategyDefault();
+		}
+		else {
+			drawingStrategyManager.setRainbowStrategyDefault();
+		}
+		setDisplayListDirty();
 	}
 
 	public PartialDisc getRealRootElement() {

@@ -99,7 +99,7 @@ public class LabelManager {
 
 		gl.glLoadIdentity();
 
-		gl.glColor3f(0, 0, 0);
+		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter, 0);
 		gl.glVertex3f(fXCenter + fBendPointX, fYCenter + fBendPointY, 0);
@@ -115,7 +115,7 @@ public class LabelManager {
 	}
 
 	private void drawSegmentMarker(GL gl, GLU glu, float fXPosition, float fYPosition) {
-		gl.glColor3f(0, 0, 0);
+		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glPushMatrix();
 		gl.glTranslatef(fXPosition, fYPosition, 0);
 		GLPrimitives.renderCircle(gl, glu, MARKER_RADIUS, 10);

@@ -200,10 +200,15 @@ public class AnimationNewRootElement
 		float fAngleToAdd = (fMidAngle > fCurrentRootStartAngle) ? -180 : 180;
 		float fRootTargetStartAngle = fMidAngle + fAngleToAdd;
 
-		// TODO: if new colormode is introduced, use correct colormapping, also use target color from renderstyle
-
-		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
-		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360);
+		float fArRGB[];
+		if(DrawingStrategyManager.get().isRainbowStrategyDefault()) {
+			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+			fArRGB = cmRainbow.getColor(fMidAngle / 360);
+		}
+		else {
+			ColorMapping cmExpression = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+			fArRGB = cmExpression.getColor(pdCurrentSelectedElement.getAverageExpressionValue());
+		}
 
 		alMovementValues.clear();
 
