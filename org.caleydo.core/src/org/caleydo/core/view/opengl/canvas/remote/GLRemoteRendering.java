@@ -7,8 +7,6 @@ import gleem.linalg.open.Transform;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -19,7 +17,6 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -100,9 +97,6 @@ import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
 import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraphItem;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -2803,38 +2797,10 @@ public class GLRemoteRendering
 		canvasManager.releaseBusyMode(this);
 	}
 
-	public synchronized void loadDependentPathways(final List<ICaleydoGraphItem> alVertex) {
-		// Remove pathways from stacked layer view
-		// poolLayer.removeAllElements();
-
-		Iterator<ICaleydoGraphItem> iterPathwayGraphItem = alVertex.iterator();
-		// Iterator<IGraphItem> iterIdenticalPathwayGraphItemRep = null;
-
-		// set to avoid duplicate pathways
-		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
-
-		while (iterPathwayGraphItem.hasNext()) {
-			IGraphItem pathwayGraphItem = iterPathwayGraphItem.next();
-
-			if (pathwayGraphItem == null) {
-				// generalManager.logMsg(
-				// this.getClass().getSimpleName() + " (" + iUniqueID
-				// + "): pathway graph item is null.  ",
-				// LoggerType.VERBOSE);
-				continue;
-			}
-
-			List<IGraphItem> pathwayItems =
-				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
-			for (IGraphItem pathwayItem : pathwayItems) {
-				PathwayGraph pathwayGraph =
-					(PathwayGraph) pathwayItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0);
-				newPathways.add(pathwayGraph);
-			}
-		}
+	public synchronized void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		// add new pathways to bucket
-		for (PathwayGraph pathway : newPathways) {
+		for (PathwayGraph pathway : newPathwayGraphs) {
 			addPathwayView(pathway.getID());
 		}
 

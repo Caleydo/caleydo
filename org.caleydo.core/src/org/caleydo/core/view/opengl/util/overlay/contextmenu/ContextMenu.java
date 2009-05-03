@@ -399,6 +399,7 @@ public class ContextMenu
 			case CLICKED:
 				hashUniqueIDToContextMenuItem.get(iExternalID).triggerEvent();
 				isDisplayListDirty = true;
+				flush();
 				break;
 		}
 	}

@@ -1,6 +1,11 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
+import java.util.Set;
+
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -34,16 +39,13 @@ public class ShowPathwaysByGeneItem
 	 * @param iRefSeq
 	 *            the int code associated with a refseq
 	 */
-	public void setRefSeqInt(int iRefSeq) {
-		// RESOLVE GENE LISTS HERE
+	public void setRefSeqInt(int iRefSeqID) {
+		
+		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.REFSEQ_MRNA_INT, iRefSeqID);
 
-		addSubItem(new LoadPathwaysByPathwayIDItem(1234));
-		addSubItem(new LoadPathwaysByPathwayIDItem(1234));
-		addSubItem(new LoadPathwaysByPathwayIDItem(1234));
-		// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-		// loadPathwaysByGeneEvent.setGeneID(iRefSeq);
-		// loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
-		// registerEvent(loadPathwaysByGeneEvent);
+		for (PathwayGraph pathwayGraph : pathwayGraphs) {
+			addSubItem(new LoadPathwaysByPathwayIDItem(pathwayGraph.getID()));
+		}
 	}
 
 }

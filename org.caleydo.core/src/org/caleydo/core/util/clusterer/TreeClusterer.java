@@ -7,7 +7,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 
 public class TreeClusterer
 	implements IClusterer {
@@ -464,11 +464,11 @@ public class TreeClusterer
 			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
 
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getLeft());// + 1);
+				NodeName = GeneticIDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getLeft());// + 1);
 
 				NodeName += " | ";
 				NodeName +=
-					IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());// + 1);
+					GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());// + 1);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {
 				NodeName =
@@ -505,11 +505,11 @@ public class TreeClusterer
 			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
 
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getRight());// + 1);
+				NodeName = GeneticIDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getRight());// + 1);
 
 				NodeName += " | ";
 				NodeName +=
-					IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());// + 1);
+					GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());// + 1);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {
 				NodeName =

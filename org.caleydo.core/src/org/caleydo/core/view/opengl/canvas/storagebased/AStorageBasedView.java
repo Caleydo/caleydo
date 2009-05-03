@@ -32,7 +32,7 @@ import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -224,7 +224,7 @@ public abstract class AStorageBasedView
 				&& set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 
 				// Here we get mapping data for all values
-				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
+				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
 					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");

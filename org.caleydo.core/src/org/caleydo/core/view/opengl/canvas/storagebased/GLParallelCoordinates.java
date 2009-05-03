@@ -67,10 +67,10 @@ import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -1912,7 +1912,7 @@ public class GLParallelCoordinates
 						eSelectionType = ESelectionType.SELECTION;
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
-							new GeneContextMenuItemContainer(IDMappingHelper.get().getRefSeqFromStorageIndex(
+							new GeneContextMenuItemContainer(GeneticIDMappingHelper.get().getRefSeqFromStorageIndex(
 								iExternalID));
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 						

@@ -233,7 +233,7 @@ public class PickingManager {
 		else if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			ePickingMode = EPickingMode.CLICKED;
-			ContextMenu.get().flush();
+//			ContextMenu.get().flush();
 		}
 		else if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed()) {
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();

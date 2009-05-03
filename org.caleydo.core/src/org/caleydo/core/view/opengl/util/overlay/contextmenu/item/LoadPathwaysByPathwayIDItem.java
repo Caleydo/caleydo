@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -22,7 +23,7 @@ public class LoadPathwaysByPathwayIDItem
 	}
 
 	private void setPathwayID(int pathwayID) {
-		setText("SET TO CORRECT PATHWY NAME");
+		setText(GeneralManager.get().getPathwayManager().getItem(pathwayID).getTitle());
 		setIconTexture(EIconTextures.LOAD_DEPENDING_PATHWAYS);
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
 		loadPathwayEvent.setPathwayID(pathwayID);

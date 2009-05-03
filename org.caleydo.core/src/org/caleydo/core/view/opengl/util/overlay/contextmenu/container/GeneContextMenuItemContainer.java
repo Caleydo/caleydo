@@ -17,6 +17,8 @@ public class GeneContextMenuItemContainer
 	 * Constructor that takes a refSeq Integer representation and creates all context menu items that are
 	 * relevant for genes.
 	 * 
+	 * @TODO: RefSeq is probably not the best ID to use here.
+	 * 
 	 * @param refSeqInt
 	 *            a refSeq int representation
 	 */

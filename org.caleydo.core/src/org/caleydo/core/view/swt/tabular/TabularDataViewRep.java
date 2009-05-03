@@ -36,7 +36,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -275,7 +275,7 @@ public class TabularDataViewRep
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
 				// Here we get mapping data for all values
 				// FIXME: not general, only for genes
-				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
+				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
 					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");

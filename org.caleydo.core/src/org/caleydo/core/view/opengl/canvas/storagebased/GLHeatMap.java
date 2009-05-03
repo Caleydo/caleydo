@@ -30,10 +30,10 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -428,7 +428,7 @@ public class GLHeatMap
 						}
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
-							new GeneContextMenuItemContainer(IDMappingHelper.get().getRefSeqFromStorageIndex(
+							new GeneContextMenuItemContainer(GeneticIDMappingHelper.get().getRefSeqFromStorageIndex(
 								iExternalID));
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					default:
@@ -618,12 +618,12 @@ public class GLHeatMap
 					String sContent;
 
 					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-						sContent = IDMappingHelper.get().getShortNameFromDavid(iContentIndex);
+						sContent = GeneticIDMappingHelper.get().getShortNameFromDavid(iContentIndex);
 
 						if (bRenderRefSeq) {
 							sContent += " | ";
 							// Render heat map element name
-							sContent += IDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+							sContent += GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 						}
 					}
 					else if (set.getSetType() == ESetType.UNSPECIFIED) {

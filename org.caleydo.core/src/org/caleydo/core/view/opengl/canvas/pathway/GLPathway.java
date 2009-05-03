@@ -13,6 +13,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -48,7 +49,6 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -100,7 +100,6 @@ public class GLPathway
 
 	private GenericSelectionManager selectionManager;
 
-	
 	/**
 	 * Own texture manager is needed for each GL context, because textures cannot be bound to multiple GL
 	 * contexts.
@@ -372,9 +371,10 @@ public class GLPathway
 			}
 		}
 	}
-	
-	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexGraphItemRep(int iPathwayVertexGraphItemRepID) {
-	
+
+	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexGraphItemRep(
+		int iPathwayVertexGraphItemRepID) {
+
 		ArrayList<Integer> alExpressionIndex = new ArrayList<Integer>();
 
 		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager().getItem(
@@ -396,8 +396,9 @@ public class GLPathway
 			}
 
 			for (Integer iRefSeqID : iSetRefSeq) {
-				
-				Set<Integer> iSetExpressionIndex = idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID);
+
+				Set<Integer> iSetExpressionIndex =
+					idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID);
 				if (iSetExpressionIndex == null)
 					continue;
 				alExpressionIndex.addAll(iSetExpressionIndex);
@@ -406,28 +407,6 @@ public class GLPathway
 
 		return alExpressionIndex;
 	}
-
-	// private ArrayList<Integer> getRefSeqFromPathwayVertexGraphItemRep(
-	// int iPathwayVertexGraphItemRepID)
-	// {
-	// ArrayList<Integer> alRefSeq = new ArrayList<Integer>();
-	//
-	// for (IGraphItem pathwayVertexGraphItem :
-	// generalManager.getPathwayItemManager()
-	// .getItem(iPathwayVertexGraphItemRepID).getAllItemsByProp(
-	// EGraphItemProperty.ALIAS_PARENT))
-	// {
-	// int iRefSeqID = generalManager.getPathwayItemManager()
-	// .getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
-	//
-	// if (iDavidID == -1)
-	// continue;
-	//
-	// alRefSeq.add(iDavidID);
-	// }
-	//
-	// return alRefSeq;
-	// }
 
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta) {
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
@@ -455,15 +434,16 @@ public class GLPathway
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			
+
 			int iExpressionIndex = item.getPrimaryID();
-			Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExpressionIndex);
-			
+			Integer iRefSeqID =
+				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExpressionIndex);
+
 			if (iRefSeqID == null) {
 				continue;
-				//throw new IllegalStateException("Cannot resolve Expression Index to RefSeq ID.");
+				// throw new IllegalStateException("Cannot resolve Expression Index to RefSeq ID.");
 			}
-			
+
 			Integer iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
 
 			if (iDavidID == null)
@@ -657,20 +637,28 @@ public class GLPathway
 							}
 						}
 						else {
-							
-							//TODO: FIXXXXXXXXXXXXXXXX
-							
-							// Load pathways
-							ArrayList<Integer> alExpressionIndexID =
-								getExpressionIndicesFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
 
-							for (int iRefSeqID : alExpressionIndexID) {
-								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
-									new LoadPathwaysByGeneEvent();
-								loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
-								loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
+							// Load pathways
+							for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+								.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+								
+								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+								loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
+								loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
 								generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+	
 							}
+	
+							// ArrayList<Integer> alExpressionIndexID =
+							// getExpressionIndicesFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
+							//
+							// for (int iRefSeqID : alExpressionIndexID) {
+							// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
+							// new LoadPathwaysByGeneEvent();
+							// loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
+							// loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
+							// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+							// }
 						}
 						break;
 
@@ -683,9 +671,14 @@ public class GLPathway
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
-						GeneContextMenuItemContainer geneContextMenuItemContainer =
-							new GeneContextMenuItemContainer(-1); // TODO: fill with pathway vertex
-						contextMenu.addItemContanier(geneContextMenuItemContainer);
+						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+							
+							GeneContextMenuItemContainer geneContextMenuItemContainer =
+								new GeneContextMenuItemContainer(pathwayVertexGraphItem.getId());
+							contextMenu.addItemContanier(geneContextMenuItemContainer);
+						}
+
 					default:
 						return;
 				}
@@ -892,7 +885,7 @@ public class GLPathway
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
-}
+	}
 
 	@Override
 	public void unregisterEventListeners() {
