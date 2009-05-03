@@ -644,7 +644,7 @@ public class GLHierarchicalHeatMap
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 		GeneralManager.get().getUseCase().addView(glHeatMapView);
 		glHeatMapView.setUseCase(useCase);
-		glHeatMapView.isRenderedRemote();
+		glHeatMapView.setRenderedRemote(true);
 		glHeatMapView.initData();
 
 		// privateMediator.addSender(glHeatMapView);
@@ -1811,6 +1811,9 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel1 == false) {
 			gl.glTranslatef(-GAP_LEVEL2_3, 0, 0);
 		}
+		
+		if (!isRenderedRemote())
+			contextMenu.render(gl, this);
 
 	}
 
@@ -2522,6 +2525,12 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case CLICKED:
+						break;
+						
+					case RIGHT_CLICKED:
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
 						break;
 				}
 				break;

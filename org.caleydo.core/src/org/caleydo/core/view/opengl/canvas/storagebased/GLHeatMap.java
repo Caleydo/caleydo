@@ -212,7 +212,7 @@ public class GLHeatMap
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 		
 		if (!isRenderedRemote())
-			contextMenu.render(gl, iUniqueID);
+			contextMenu.render(gl, this);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
@@ -424,7 +424,7 @@ public class GLHeatMap
 						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());
-							contextMenu.setMasterViewID(iUniqueID);
+							contextMenu.setMasterGLView(this);
 						}
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =

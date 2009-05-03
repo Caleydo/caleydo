@@ -33,7 +33,5 @@ public class GeneContextMenuItemContainer
 
 		AddToListItem addToListItem = new AddToListItem();
 		addContextMenuItem(addToListItem);
-
 	}
-
 }

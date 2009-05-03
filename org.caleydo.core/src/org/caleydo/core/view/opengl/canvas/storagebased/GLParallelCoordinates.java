@@ -419,7 +419,7 @@ public class GLParallelCoordinates
 //		gl.glDisable(GL.GL_STENCIL_TEST);
 
 		if (!isRenderedRemote())
-			contextMenu.render(gl, iUniqueID);
+			contextMenu.render(gl, this);
 
 	}
 
@@ -1919,7 +1919,7 @@ public class GLParallelCoordinates
 						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());
-							contextMenu.setMasterViewID(iUniqueID);
+							contextMenu.setMasterGLView(this);
 						}
 						break;
 

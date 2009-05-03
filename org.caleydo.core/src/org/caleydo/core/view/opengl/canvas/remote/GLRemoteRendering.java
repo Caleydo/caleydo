@@ -554,7 +554,7 @@ public class GLRemoteRendering
 			fZTranslation = 4f;
 
 		gl.glTranslatef(0, 0, fZTranslation);
-		contextMenu.render(gl, iUniqueID);
+		contextMenu.render(gl, this);
 		gl.glTranslatef(0, 0, -fZTranslation);
 
 		// System.out.println(size.height + " - " + size.width);
@@ -2144,8 +2144,7 @@ public class GLRemoteRendering
 					case RIGHT_CLICKED:
 						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 							getParentGLCanvas().getHeight());
-						contextMenu.setMasterViewID(iUniqueID);
-						// contextMenu.setData();
+						contextMenu.setMasterGLView(this);
 						break;
 
 				}

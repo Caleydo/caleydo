@@ -10,6 +10,8 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
@@ -64,7 +66,7 @@ public class ContextMenu
 
 	private PickingManager pickingManager;
 
-	private int masterViewID;
+	private AGLEventListener masterGLView;
 
 	private int mouseOverElement = -1;
 
@@ -112,15 +114,15 @@ public class ContextMenu
 	}
 
 	/**
-	 * Set the view ID which is currently rendering the context menu. Only in the view with the specified ID
-	 * will the context menu be rendered. For remote rendering the ID of the remote renderer is required,
+	 * Set the GL view which is currently rendering the context menu. Only in this view 
+	 * will the context menu be rendered. For remote rendering the remote rendering view is required,
 	 * while the rest of the data probably needs to be set in the embedded view.
 	 * 
 	 * @param masterViewID
 	 *            the id of the view where the menu should be rendered
 	 */
-	public void setMasterViewID(int masterViewID) {
-		this.masterViewID = masterViewID;
+	public void setMasterGLView(AGLEventListener masterGLView) {
+		this.masterGLView = masterGLView;
 	}
 
 	/**
@@ -162,10 +164,10 @@ public class ContextMenu
 	 * dirty when an element is picked.
 	 * 
 	 * @param gl
-	 * @param viewID
+	 * @param masterGLView
 	 */
-	public void render(GL gl, int viewID) {
-		if (viewID != masterViewID)
+	public void render(GL gl, AGLEventListener masterGLView) {
+		if (this.masterGLView != masterGLView)
 			return;
 		if (!isEnabled)
 			return;
@@ -187,10 +189,16 @@ public class ContextMenu
 
 			baseMenuMetaData = new ContextMenuMetaData();
 
-			baseMenuMetaData.xOrigin = fArWorldCoords[0] * 2f;
-			baseMenuMetaData.yOrigin = fArWorldCoords[1] * 2f;
+			baseMenuMetaData.xOrigin = fArWorldCoords[0];
+			baseMenuMetaData.yOrigin = fArWorldCoords[1];
 
-			// TODO: check if view is bucket -> then multiply with 2
+			// This is necessary because of the problems
+			// with the frustum and picking in the Bucket view.
+			// FIXME: Find clean solution!!
+			if (masterGLView instanceof GLRemoteRendering) {
+				baseMenuMetaData.xOrigin *= 2f;
+				baseMenuMetaData.yOrigin *= 2f;
+			}
 			
 			initializeSubMenus(contextMenuItems, baseMenuMetaData);
 
@@ -243,6 +251,12 @@ public class ContextMenu
 	 */
 	private void drawMenu(GL gl, ArrayList<AContextMenuItem> contextMenuItems, ContextMenuMetaData metaData) {
 
+		// This is necessary because of the problems
+		// with the frustum and picking in the Bucket view.
+		// FIXME: Find clean solution!!
+		if (!(masterGLView instanceof GLRemoteRendering))
+			gl.glTranslatef(0, 0, 2);
+		
 		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
@@ -266,7 +280,7 @@ public class ContextMenu
 			gl.glColor4f(1, 1, 1, alpha);
 
 			int iPickingID =
-				pickingManager.getPickingID(masterViewID, EPickingType.CONTEXT_MENU_SELECTION, itemID);
+				pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, itemID);
 			gl.glPushName(iPickingID);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z);
@@ -346,6 +360,12 @@ public class ContextMenu
 			}
 		}
 		// gl.glEnable(GL.GL_DEPTH_TEST);
+		
+		// This is necessary because of the problems
+		// with the frustum and picking in the Bucket view.
+		// FIXME: Find clean solution!!
+		if (!(masterGLView instanceof GLRemoteRendering))
+			gl.glTranslatef(0, 0, -2);
 	}
 
 	private boolean isSubElementSelected(AContextMenuItem item) {
@@ -393,6 +413,6 @@ public class ContextMenu
 		contextMenuItems.clear();
 		mouseOverElement = -1;
 		isDisplayListDirty = true;
-		masterViewID = -1;
+		masterGLView = null;
 	}
 }

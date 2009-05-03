@@ -4,12 +4,9 @@ import java.util.List;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.IEventListener;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 
 /**

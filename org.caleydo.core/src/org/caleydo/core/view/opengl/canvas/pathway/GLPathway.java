@@ -48,6 +48,7 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -69,6 +70,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodL
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
@@ -678,6 +680,12 @@ public class GLPathway
 					case MOUSE_OVER:
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
+					case RIGHT_CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
+
+						GeneContextMenuItemContainer geneContextMenuItemContainer =
+							new GeneContextMenuItemContainer(-1); // TODO: fill with pathway vertex
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					default:
 						return;
 				}
@@ -799,59 +807,6 @@ public class GLPathway
 		super.setSet(set);
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 	}
-
-	// public void renderPathwayName(final GL gl)
-	// {
-	// if (!bEnableTitleRendering)
-	// return;
-	//
-	// float fHorizontalPosition = 0;
-	// float fVerticalPosition = 0;
-	//
-	// if (iHorizontalTextAlignment == SWT.LEFT)
-	// fHorizontalPosition = 0.2f;
-	// else if (iHorizontalTextAlignment == SWT.RIGHT)
-	// fHorizontalPosition = 3.5f;
-	// else if (iHorizontalTextAlignment == SWT.CENTER)
-	// fHorizontalPosition = 1.8f;
-	//
-	// if (iVerticalTextAlignment == SWT.TOP)
-	// fVerticalPosition = 7.8f;
-	// else if (iVerticalTextAlignment == SWT.BOTTOM)
-	// fVerticalPosition = 0.2f;
-	// else if (iVerticalTextAlignment == SWT.CENTER)
-	// fVerticalPosition = 1;
-	//
-	// String sPathwayName =
-	// generalManager.getPathwayManager().getItem(iPathwayID)
-	// .getTitle();
-	//
-	// int iMaxChars = 40;
-	// if (iHorizontalTextAlignment == SWT.RIGHT)
-	// iMaxChars = 30;
-	//
-	// if (sPathwayName.length() > iMaxChars)
-	// sPathwayName = sPathwayName.subSequence(0, iMaxChars - 3) + "...";
-	//
-	// textRenderer.begin3DRendering();
-	// textRenderer.setColor(0.2f, 0.2f, 0.2f, 1.0f);
-	// textRenderer.draw3D(sPathwayName, fHorizontalPosition, fVerticalPosition,
-	// 0.05f,
-	// 0.011f);
-	// textRenderer.end3DRendering();
-	// }
-
-	// public void enableTitleRendering(boolean bEnable)
-	// {
-	// bEnableTitleRendering = bEnable;
-	// }
-	//
-	// public void setAlignment(int iHorizontalAlignment, int
-	// iVerticalAlignment)
-	// {
-	// this.iHorizontalTextAlignment = iHorizontalAlignment;
-	// this.iVerticalTextAlignment = iVerticalAlignment;
-	// }
 
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType) {
