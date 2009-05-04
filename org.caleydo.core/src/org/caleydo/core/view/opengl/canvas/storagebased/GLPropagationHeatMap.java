@@ -35,11 +35,11 @@ public class GLPropagationHeatMap
 		super.registerEventListeners();
 		
 		propagationListener = new PropagationListener();
-		propagationListener.setHeatMapView(this);
+		propagationListener.setHandler(this);
 		eventPublisher.addListener(PropagationEvent.class, propagationListener);
 		
 		triggerPropagationCommandListener = new TriggerPropagationCommandListener();
-		triggerPropagationCommandListener.setHeatMapView(this);
+		triggerPropagationCommandListener.setHandler(this);
 		eventPublisher.addListener(TriggerPropagationCommandEvent.class, triggerPropagationCommandListener);
 	}
 

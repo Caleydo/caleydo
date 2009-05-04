@@ -47,8 +47,6 @@ public class TabularDataView
 
 		GeneralManager.get().getEventPublisher().removeSender(EMediatorType.SELECTION_MEDIATOR,
 			tabularDataView);
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
-			tabularDataView);
 
 		GeneralManager.get().getUseCase().removeView(tabularDataView);
 	}

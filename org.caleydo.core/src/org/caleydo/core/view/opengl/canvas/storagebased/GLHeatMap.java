@@ -395,9 +395,10 @@ public class GLHeatMap
 					case DOUBLE_CLICKED:
 
 						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+						loadPathwaysByGeneEvent.setSender(this);
 						loadPathwaysByGeneEvent.setGeneID(iExternalID);
 						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+						eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
 						// intentionally no break
 
 					case CLICKED:
@@ -467,6 +468,7 @@ public class GLHeatMap
 
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSender(this);
 					event.setSelectionDelta(selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
@@ -1077,6 +1079,7 @@ public class GLHeatMap
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
 		event.setSelectionDelta(delta);
 		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);

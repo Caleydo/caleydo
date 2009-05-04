@@ -25,16 +25,19 @@ public class RemoteRenderingToolBarMediator {
 
 	public void enableConnectionLines() {
 		EnableConnectionLinesEvent event = new EnableConnectionLinesEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 
 	public void disableConnectionLines() {
 		DisableConnectionLinesEvent event = new DisableConnectionLinesEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 
 	public void closeOrResetViews() {
 		CloseOrResetViewsEvent event = new CloseOrResetViewsEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 }

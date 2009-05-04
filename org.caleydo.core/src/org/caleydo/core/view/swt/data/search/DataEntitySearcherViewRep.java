@@ -99,6 +99,7 @@ public class DataEntitySearcherViewRep
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
 		selectionDelta.addSelection(iRefSeqID, ESelectionType.SELECTION);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 		return true;
@@ -166,6 +167,7 @@ public class DataEntitySearcherViewRep
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 

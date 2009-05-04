@@ -153,6 +153,7 @@ public class PathwaySearchBox
 		pathwayToolBarMediator.loadPathway(pathway);
 		
 		ChangeURLEvent event = new ChangeURLEvent();
+		event.setSender(this);
 		event.setUrl(pathway.getExternalLink());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 

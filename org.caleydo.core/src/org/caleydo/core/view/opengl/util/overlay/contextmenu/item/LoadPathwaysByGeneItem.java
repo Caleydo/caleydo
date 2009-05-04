@@ -37,6 +37,7 @@ public class LoadPathwaysByGeneItem
 	 */
 	public void setRefSeqInt(int iRefSeq) {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID(iRefSeq);
 		loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
 		registerEvent(loadPathwaysByGeneEvent);

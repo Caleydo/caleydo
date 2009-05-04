@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.browser;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 
 /**
@@ -9,13 +8,12 @@ import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
  * @author Marc Streit
  */
 public class ChangeURLListener
-	extends ABrowserListener
-	implements IEventListener {
+	extends ABrowserListener {
 
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof ChangeURLEvent) {
-			getBrowserView().setUrl(((ChangeURLEvent) event).getUrl());
+			handler.setUrl(((ChangeURLEvent) event).getUrl());
 		}
 	}
 

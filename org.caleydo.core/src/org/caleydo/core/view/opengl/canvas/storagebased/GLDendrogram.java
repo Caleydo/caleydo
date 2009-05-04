@@ -100,7 +100,8 @@ public class GLDendrogram
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
-		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener(this);
+		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
+		clusterNodeMouseOverListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
 
 	}
@@ -672,6 +673,7 @@ public class GLDendrogram
 
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSender(this);
 					event.setSelectionDelta(selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
@@ -680,6 +682,7 @@ public class GLDendrogram
 				if (bTriggerClusterNodeEvent) {
 					if (tree.getNodeByNumber(iExternalID) != null) {
 						ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
+						event.setSender(this);
 
 						event.setClusterNodeName(tree.getNodeByNumber(iExternalID).getNodeName());
 						eventPublisher.triggerEvent(event);

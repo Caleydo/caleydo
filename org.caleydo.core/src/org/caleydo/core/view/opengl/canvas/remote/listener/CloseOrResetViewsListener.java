@@ -7,7 +7,7 @@ public class CloseOrResetViewsListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		bucket.clearAll();
+		handler.clearAll();
 	}
 
 }

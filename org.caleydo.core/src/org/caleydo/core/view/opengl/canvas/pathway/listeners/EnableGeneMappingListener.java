@@ -7,7 +7,7 @@ public class EnableGeneMappingListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		glPathway.enableGeneMapping(true);
+		handler.enableGeneMapping(true);
 	}
 
 }

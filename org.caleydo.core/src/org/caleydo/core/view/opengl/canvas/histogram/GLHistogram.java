@@ -11,13 +11,8 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
-import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -29,6 +24,9 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -43,7 +41,7 @@ import org.caleydo.core.view.serialize.SerializedDummyView;
  */
 public class GLHistogram
 	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver {
+	implements IViewCommandHandler {
 
 	boolean bUseDetailLevel = true;
 
@@ -57,6 +55,9 @@ public class GLHistogram
 	private boolean bIsFirstTimeUpdateColor = false;
 	private float fColorPointPositionOffset = 0.0f;
 	private int iColorMappingPointMoved = -1;
+
+	protected RedrawViewListener redrawViewListener = null;
+	protected ClearSelectionsListener clearSelectionsListener = null;
 
 	/**
 	 * Constructor.
@@ -73,8 +74,6 @@ public class GLHistogram
 		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	@Override
@@ -427,12 +426,10 @@ public class GLHistogram
 		}
 		colorMapping.update();
 
-		ViewCommandEventContainer viewCommandEventContainer =
-			new ViewCommandEventContainer(EViewCommand.REDRAW);
-
 		colorMapping.writeToPrefStore();
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, viewCommandEventContainer);
-
+		RedrawViewEvent event = new RedrawViewEvent();
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 	}
 
 	@Override
@@ -520,24 +517,13 @@ public class GLHistogram
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(mediatorType, this, eventContainer);
-
+	public void handleRedrawView() {
+		setDisplayListDirty();
 	}
 
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType mediatorType) {
-		switch (eventContainer.getEventType()) {
-			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer =
-					(ViewCommandEventContainer) eventContainer;
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-					setDisplayListDirty();
-				}
-				break;
-		}
-
+	public void handleClearSelections() {
+		// nothing to do because histogram has no selections
 	}
 
 	@Override
@@ -552,4 +538,29 @@ public class GLHistogram
 		super.setSet(set);
 		histogram = set.getHistogram();
 	}
+
+
+	@Override
+	public void registerEventListeners() {
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
+		}
+	}
+	
 }

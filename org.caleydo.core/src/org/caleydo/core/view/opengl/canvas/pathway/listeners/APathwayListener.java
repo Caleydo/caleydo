@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.pathway.listeners;
 
-import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 
 /**
@@ -9,16 +9,6 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
  *
  */
 public abstract class APathwayListener
-	implements IEventListener {
-
-	GLPathway glPathway = null;
-	
-	public GLPathway getGLPathway() {
-		return glPathway;
-	}
-
-	public void setGLPathway(GLPathway glPathway) {
-		this.glPathway = glPathway;
-	}
+	extends AEventListener<GLPathway> {
 
 }

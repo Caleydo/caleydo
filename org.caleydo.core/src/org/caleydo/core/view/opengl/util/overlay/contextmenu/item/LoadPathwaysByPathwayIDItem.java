@@ -26,6 +26,7 @@ public class LoadPathwaysByPathwayIDItem
 		setText(GeneralManager.get().getPathwayManager().getItem(pathwayID).getTitle());
 		setIconTexture(EIconTextures.LOAD_DEPENDING_PATHWAYS);
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
+		loadPathwayEvent.setSender(this);
 		loadPathwayEvent.setPathwayID(pathwayID);
 		registerEvent(loadPathwayEvent);
 	}

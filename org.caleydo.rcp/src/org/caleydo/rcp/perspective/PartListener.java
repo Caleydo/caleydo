@@ -207,6 +207,7 @@ public class PartListener
 	private void removeViewSpecificToolBarItems() {
 		RemoveViewSpecificItemsEvent event;
 		event = new RemoveViewSpecificItemsEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 	

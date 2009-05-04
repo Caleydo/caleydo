@@ -255,6 +255,7 @@ public class GLGlyph
 			handleConnectedElementRep(selectionDelta);
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
 			event.setSelectionDelta(selectionDelta);
 			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);

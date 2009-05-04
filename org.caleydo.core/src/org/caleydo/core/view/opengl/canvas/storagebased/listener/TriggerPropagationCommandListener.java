@@ -5,7 +5,7 @@ import java.util.List;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 
@@ -14,10 +14,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
  * @author Werner Puff
  */
 public class TriggerPropagationCommandListener
-	implements IEventListener {
-
-	/** heatmap view this propagation listener is related to */
-	GLHeatMap heatMapView = null;
+	extends AEventListener<GLHeatMap> {
 
 	@Override
 	public void handleEvent(AEvent event) {
@@ -32,18 +29,10 @@ public class TriggerPropagationCommandListener
 					// nothing to do
 					break;
 				case EXPERIMENT_INDEX:
-					heatMapView.handleStorageTriggerSelectionCommand(type, selectionCommands);
+					handler.handleStorageTriggerSelectionCommand(type, selectionCommands);
 					break;
 			}
 		}
 	}
 	
-	public GLHeatMap getHeatMapView() {
-		return heatMapView;
-	}
-
-	public void setHeatMapView(GLHeatMap heatMapView) {
-		this.heatMapView = heatMapView;
-	}
-
 }

@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.browser;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
 import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
 
 /**
@@ -9,13 +8,12 @@ import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
  * @author Werner Puff
  */
 public class ChangeQueryTypeListener
-	extends ABrowserListener
-	implements IEventListener {
+	extends ABrowserListener {
 
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof ChangeQueryTypeEvent) {
-			((GenomeHTMLBrowserViewRep)getBrowserView()).changeQueryType(((ChangeQueryTypeEvent) event).getQueryType());
+			((GenomeHTMLBrowserViewRep) handler).changeQueryType(((ChangeQueryTypeEvent) event).getQueryType());
 		}
 	}
 

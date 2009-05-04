@@ -5,7 +5,7 @@ import java.util.List;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 
 /**
@@ -15,10 +15,7 @@ import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
  * @author Werner Puff
  */
 public class TriggerSelectionCommandListener 
-	implements IEventListener {
-
-	/** {@link ITriggerSelectionCommandHandler} this listener is related to */
-	protected ITriggerSelectionCommandHandler handler = null;
+	extends AEventListener<ITriggerSelectionCommandHandler> {
 
 	/**
 	 * Handles {@link TriggerSelectionCommandEvent}s by extracting the events payload 
@@ -42,14 +39,6 @@ public class TriggerSelectionCommandListener
 					break;
 			}
 		}
-	}
-
-	public ITriggerSelectionCommandHandler getHandler() {
-		return handler;
-	}
-
-	public void setHandler(ITriggerSelectionCommandHandler handler) {
-		this.handler = handler;
 	}
 
 }

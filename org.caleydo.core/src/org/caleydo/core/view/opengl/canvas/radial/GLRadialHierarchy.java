@@ -90,7 +90,8 @@ public class GLRadialHierarchy
 		navigationHistory.setDrawingController(drawingController);
 
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener(this);
+		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
+		clusterNodeMouseOverListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
 
 		glu = new GLU();

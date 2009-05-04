@@ -351,9 +351,6 @@ public class GLRemoteRendering
 		glSelectionHeatMap.setRenderedRemote(true);
 		glSelectionHeatMap.initData();
 
-		generalManager.getEventPublisher()
-			.addReceiver(EMediatorType.PROPAGATION_MEDIATOR, glSelectionHeatMap);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
@@ -2745,7 +2742,6 @@ public class GLRemoteRendering
 
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) glView);
-		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) glView);
 
 		triggerMostRecentDelta();
 
@@ -2773,6 +2769,7 @@ public class GLRemoteRendering
 		// Trigger last delta to new views
 		if (lastSelectionDelta != null) {
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
 			event.setSelectionDelta(lastSelectionDelta);
 			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
@@ -2906,47 +2903,47 @@ public class GLRemoteRendering
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		addPathwayListener = new AddPathwayListener();
-		addPathwayListener.setBucket(this);
+		addPathwayListener.setHandler(this);
 		eventPublisher.addListener(LoadPathwayEvent.class, addPathwayListener);
 
 		loadPathwaysByGeneListener = new LoadPathwaysByGeneListener();
-		loadPathwaysByGeneListener.setBucket(this);
+		loadPathwaysByGeneListener.setHandler(this);
 		eventPublisher.addListener(LoadPathwaysByGeneEvent.class, loadPathwaysByGeneListener);
 
 		enableTexturesListener = new EnableTexturesListener();
-		enableTexturesListener.setBucket(this);
+		enableTexturesListener.setHandler(this);
 		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
 
 		disableTexturesListener = new DisableTexturesListener();
-		disableTexturesListener.setBucket(this);
+		disableTexturesListener.setHandler(this);
 		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
 
 		enableGeneMappingListener = new EnableGeneMappingListener();
-		enableGeneMappingListener.setBucket(this);
+		enableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
 
 		disableGeneMappingListener = new DisableGeneMappingListener();
-		disableGeneMappingListener.setBucket(this);
+		disableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
 
 		enableNeighborhoodListener = new EnableNeighborhoodListener();
-		enableNeighborhoodListener.setBucket(this);
+		enableNeighborhoodListener.setHandler(this);
 		eventPublisher.addListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
 
 		disableNeighborhoodListener = new DisableNeighborhoodListener();
-		disableNeighborhoodListener.setBucket(this);
+		disableNeighborhoodListener.setHandler(this);
 		eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
 
 		enableConnectionLinesListener = new EnableConnectionLinesListener();
-		enableConnectionLinesListener.setBucket(this);
+		enableConnectionLinesListener.setHandler(this);
 		eventPublisher.addListener(EnableConnectionLinesEvent.class, enableConnectionLinesListener);
 
 		disableConnectionLinesListener = new DisableConnectionLinesListener();
-		disableConnectionLinesListener.setBucket(this);
+		disableConnectionLinesListener.setHandler(this);
 		eventPublisher.addListener(DisableConnectionLinesEvent.class, disableConnectionLinesListener);
 
 		closeOrResetViewsListener = new CloseOrResetViewsListener();
-		closeOrResetViewsListener.setBucket(this);
+		closeOrResetViewsListener.setHandler(this);
 		eventPublisher.addListener(CloseOrResetViewsEvent.class, closeOrResetViewsListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();

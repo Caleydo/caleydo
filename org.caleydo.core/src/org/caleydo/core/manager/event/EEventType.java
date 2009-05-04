@@ -33,10 +33,12 @@ public enum EEventType {
 //	 */
 //	VA_UPDATE,
 
-	/**
-	 * Type for {@link ViewCommandEventContainer}. Used to signal views for example to redraw
-	 */
-	VIEW_COMMAND,
+// wpuff migrated to new event system
+//	/**
+//	 * Type for {@link ViewCommandEventContainer}. Used to signal views for example to redraw
+//	 */
+//	VIEW_COMMAND,
+
 	/**
 	 * 
 	 */

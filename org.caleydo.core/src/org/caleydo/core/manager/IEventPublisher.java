@@ -4,7 +4,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IMediator;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
@@ -144,23 +144,24 @@ public interface IEventPublisher {
 	 * @param eventClass event type to register the handler to
 	 * @param listener IMediatorReceiver to handle events
 	 */
-	public void addListener(Class<? extends AEvent> eventClass, IEventListener listener);
+	public void addListener(Class<? extends AEvent> eventClass, AEventListener<?> listener);
 	
 	/**
 	 * removes a contained receiver from the list of event handlers
 	 * @param eventClass event type to remove the handler from 
 	 * @param listener IMediatorReceiver to handle events
 	 */
-	public void removeListener(Class<? extends AEvent> eventClass, IEventListener listener);
+	public void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener);
 
 	/**
 	 * removes a listener from all events in this event-publisher
 	 * @param listener listener to remove
 	 */
-	public void removeListener(IEventListener listener);
+	public void removeListener(AEventListener<?> listener);
 	
 	/**
-	 * New central event handling and distribution method
+	 * New central event handling and distribution method.
+	 * the prohibition of sending events back to its sender is done within {@link AEventListener}
 	 * @param event event to distribute to the listeners
 	 */
 	public void triggerEvent(AEvent event);

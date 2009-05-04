@@ -7,7 +7,7 @@ public class EnableTexturesListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		bucket.setPathwayTexturesEnabled(true);
+		handler.setPathwayTexturesEnabled(true);
 	}
 
 }

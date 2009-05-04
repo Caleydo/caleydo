@@ -5,7 +5,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 /**
  * Interface for views, mediator or manager classes that needs
  * to get virtual-array-update information. Implementation of this interface
- * are called by {@link ViertualArrayUpdateListener}s.
+ * are called by {@link VirtualArrayUpdateListener}s.
  * FIXME link to virtual arrays or explanation about virtual arrays
  *  
  * @author Werner Puff

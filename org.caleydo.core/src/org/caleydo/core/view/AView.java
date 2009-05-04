@@ -122,6 +122,7 @@ public abstract class AView
 	 */
 	protected void sendSelectionCommandEvent(EIDType genomeType, SelectionCommand command) {
 		TriggerSelectionCommandEvent event = new TriggerSelectionCommandEvent();
+		event.setSender(this);
 		event.setType(genomeType);
 		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
 		commands.add(command);

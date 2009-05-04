@@ -13,7 +13,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -33,12 +32,9 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
@@ -46,6 +42,8 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -58,8 +56,11 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableGeneMappingListener;
@@ -86,7 +87,8 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class GLPathway
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler,
+	IMediatorSender {
 
 	private PathwayGraph pathway;
 
@@ -127,6 +129,9 @@ public class GLPathway
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+
+	protected RedrawViewListener redrawViewListener = null;
+	protected ClearSelectionsListener clearSelectionsListener = null;
 
 	/**
 	 * Constructor.
@@ -643,6 +648,7 @@ public class GLPathway
 								.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
 								
 								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+								loadPathwaysByGeneEvent.setSender(this);
 								loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
 								loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
 								generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
@@ -704,6 +710,7 @@ public class GLPathway
 
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
 				event.setSelectionDelta(selectionDelta);
 				event.setInfo(getShortInfo());
 				eventPublisher.triggerEvent(event);
@@ -771,6 +778,7 @@ public class GLPathway
 		}
 
 		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
@@ -807,22 +815,14 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer =
-					(ViewCommandEventContainer) eventContainer;
+	public void handleRedrawView() {
+		setDisplayListDirty();
+	}
 
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-					setDisplayListDirty();
-				}
-				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
-					clearAllSelections();
-					setDisplayListDirty();
-				}
-				break;
-		}
+	@Override
+	public void handleClearSelections() {
+		clearAllSelections();
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -855,27 +855,27 @@ public class GLPathway
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		enableTexturesListener = new EnableTexturesListener();
-		enableTexturesListener.setGLPathway(this);
+		enableTexturesListener.setHandler(this);
 		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
 
 		disableTexturesListener = new DisableTexturesListener();
-		disableTexturesListener.setGLPathway(this);
+		disableTexturesListener.setHandler(this);
 		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
 
 		enableNeighborhoodListener = new EnableNeighborhoodListener();
-		enableNeighborhoodListener.setGLPathway(this);
+		enableNeighborhoodListener.setHandler(this);
 		eventPublisher.addListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
 
 		disableNeighborhoodListener = new DisableNeighborhoodListener();
-		disableNeighborhoodListener.setGLPathway(this);
+		disableNeighborhoodListener.setHandler(this);
 		eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
 
 		enableGeneMappingListener = new EnableGeneMappingListener();
-		enableGeneMappingListener.setGLPathway(this);
+		enableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
 
 		disableGeneMappingListener = new DisableGeneMappingListener();
-		disableGeneMappingListener.setGLPathway(this);
+		disableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
@@ -885,6 +885,14 @@ public class GLPathway
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 
 	@Override

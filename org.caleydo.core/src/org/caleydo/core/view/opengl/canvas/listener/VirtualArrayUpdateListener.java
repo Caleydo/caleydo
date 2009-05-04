@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 
@@ -13,10 +13,7 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
  * @author Werner Puff
  */
 public class VirtualArrayUpdateListener 
-	implements IEventListener {
-
-	/** {@link IVirtualArrayUpdateHandler} this listener is related to */
-	protected IVirtualArrayUpdateHandler handler = null;
+	extends AEventListener<IVirtualArrayUpdateHandler> {
 
 	/**
 	 * Handles {@link VirtualArrayUdpateEvent}s by extracting the events payload 
@@ -31,14 +28,6 @@ public class VirtualArrayUpdateListener
 			String info = virtualArrayUpdateEvent.getInfo();
 			handler.handleVirtualArrayUpdate(delta, info);
 		}
-	}
-
-	public IVirtualArrayUpdateHandler getHandler() {
-		return handler;
-	}
-
-	public void setHandler(IVirtualArrayUpdateHandler handler) {
-		this.handler = handler;
 	}
 
 }

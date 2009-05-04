@@ -106,6 +106,7 @@ public class DrawingStateFullHierarchy
 		}
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
+		event.setSender(this);
 		event.setClusterNodeName(pdMouseOver.getName());
 
 		eventPublisher.triggerEvent(event);

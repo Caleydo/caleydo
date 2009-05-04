@@ -113,34 +113,34 @@ public class EventPublisher
 	}
 
 	@Override
-	public void addListener(Class<? extends AEvent> eventClass, IEventListener listener) {
-		Collection<IEventListener> listeners = listenerMap.get(eventClass);
+	public void addListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
+		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass);
 		if (listeners == null) {
-			listeners = new ArrayList<IEventListener>();
+			listeners = new ArrayList<AEventListener<?>>();
 			listenerMap.put(eventClass, listeners);
 		}
 		listeners.add(listener);
 	}
 
 	@Override
-	public void removeListener(Class<? extends AEvent> eventClass, IEventListener listener) {
-		Collection<IEventListener> listeners = listenerMap.get(eventClass);
+	public void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
+		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass);
 		listeners.remove(listener);
 	}
 
 	@Override
-	public void removeListener(IEventListener listener) {
-		for (Collection<IEventListener> listeners : listenerMap.values()) {
+	public void removeListener(AEventListener<?> listener) {
+		for (Collection<AEventListener<?>> listeners : listenerMap.values()) {
 			listeners.remove(listener);			
 		}
 	}
 
 	@Override
 	public void triggerEvent(AEvent event) {
-		Collection<IEventListener> listeners = listenerMap.get(event.getClass());
+		Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass());
 		if (listeners != null) {
-			for (IEventListener receiver : listeners) {
-				receiver.handleEvent(event);
+			for (AEventListener<?> receiver : listeners) {
+				receiver.handleEventFiltered(event);
 			}
 		}
 	}

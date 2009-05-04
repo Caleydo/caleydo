@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 
 /**
@@ -12,10 +12,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
  * @author Werner Puff
  */
 public class SelectionUpdateListener 
-	implements IEventListener {
-
-	/** {@link ISelectionUpdateHandler} this listener is related to */
-	protected ISelectionUpdateHandler handler = null;
+	extends AEventListener<ISelectionUpdateHandler> {
 
 	/**
 	 * Handles {@link SelectionUdpateEvent}s by extracting the event's payload 
@@ -31,14 +28,6 @@ public class SelectionUpdateListener
 			String info = selectioUpdateEvent.getInfo();
 			handler.handleSelectionUpdate(delta, scrollToSelection, info);
 		}
-	}
-
-	public ISelectionUpdateHandler getHandler() {
-		return handler;
-	}
-
-	public void setHandler(ISelectionUpdateHandler view) {
-		this.handler = view;
 	}
 	
 }

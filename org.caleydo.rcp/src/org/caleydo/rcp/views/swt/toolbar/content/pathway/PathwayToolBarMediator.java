@@ -30,6 +30,7 @@ public class PathwayToolBarMediator {
 	public void loadPathway(PathwayGraph pathway) {
 		log.info("loadPathway()");
 		LoadPathwayEvent event = new LoadPathwayEvent();
+		event.setSender(this);
 		event.setPathwayID(pathway.getID());
 		eventPublisher.triggerEvent(event);
 	}
@@ -37,36 +38,42 @@ public class PathwayToolBarMediator {
 	public void enableTextures() {
 		log.info("enablePathwayTextures()");
 		EnableTexturesEvent event = new EnableTexturesEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 	
 	public void disableTextures() {
 		log.info("disablePathwayTextures()");
 		DisableTexturesEvent event = new DisableTexturesEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 
 	public void enableNeighborhood() {
 		log.info("enableNeighborhood()");
 		EnableNeighborhoodEvent event = new EnableNeighborhoodEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 	
 	public void disableNeighborhood() {
 		log.info("disableNeighborhood()");
 		DisableNeighborhoodEvent event = new DisableNeighborhoodEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 
 	public void enableGeneMapping() {
 		log.info("enableGeneMapping()");
 		EnableGeneMappingEvent event = new EnableGeneMappingEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 	
 	public void disableGeneMapping() {
 		log.info("disableGeneMappingTextures()");
 		DisableGeneMappingEvent event = new DisableGeneMappingEvent();
+		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
 	

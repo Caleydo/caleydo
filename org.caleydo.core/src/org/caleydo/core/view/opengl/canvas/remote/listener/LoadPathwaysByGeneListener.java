@@ -14,7 +14,7 @@ public class LoadPathwaysByGeneListener
 			LoadPathwaysByGeneEvent loadEvent = (LoadPathwaysByGeneEvent) event;
 
 			if (loadEvent.getIdType() == EIDType.DAVID || loadEvent.getIdType() == EIDType.REFSEQ_MRNA_INT) {
-				bucket.loadDependentPathways(GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(loadEvent.getIdType(), loadEvent.getGeneID()));
+				handler.loadDependentPathways(GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(loadEvent.getIdType(), loadEvent.getGeneID()));
 			}
 			else
 				throw new IllegalStateException("Not implemented!");

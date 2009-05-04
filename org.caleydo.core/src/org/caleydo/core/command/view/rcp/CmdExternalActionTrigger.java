@@ -4,10 +4,9 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
@@ -43,14 +42,9 @@ public class CmdExternalActionTrigger
 		// must be registered in the event system. This is also bad in case of commands like this.
 		if (externalActionType == EExternalActionType.CLEAR_SELECTIONS) {
 			IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
-			eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, this);
-			
-			ViewCommandEventContainer viewCommandEventContainer =
-				new ViewCommandEventContainer(EViewCommand.CLEAR_SELECTIONS);
-			triggerEvent(EMediatorType.SELECTION_MEDIATOR, viewCommandEventContainer);
-			
-			eventPublisher.removeSender(EMediatorType.SELECTION_MEDIATOR, this);
+			ClearSelectionsEvent event = new ClearSelectionsEvent();
+			event.setSender(this);
+			eventPublisher.triggerEvent(event);
 		}
 
 		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);

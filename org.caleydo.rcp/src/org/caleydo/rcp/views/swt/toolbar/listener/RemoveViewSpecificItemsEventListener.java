@@ -9,7 +9,7 @@ public class RemoveViewSpecificItemsEventListener
 	
 	@Override
 	public void handleEvent(AEvent event) {
-		toolBarMediator.renderToolBar(new ArrayList<Integer>());
+		handler.renderToolBar(new ArrayList<Integer>());
 	}
 
 }

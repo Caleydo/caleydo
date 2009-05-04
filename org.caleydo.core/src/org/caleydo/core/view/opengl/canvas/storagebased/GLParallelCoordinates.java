@@ -235,7 +235,6 @@ public class GLParallelCoordinates
 	public void initLocal(final GL gl) {
 		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -437,9 +436,6 @@ public class GLParallelCoordinates
 
 		// FIXME: remoteRenderingGLCanvas is null, conceptual error
 		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas, null);
-		generalManager.getEventPublisher()
-			.addReceiver(EMediatorType.PROPAGATION_MEDIATOR, glSelectionHeatMap);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 	}
 
@@ -1888,6 +1884,7 @@ public class GLParallelCoordinates
 				switch (ePickingMode) {
 					case DOUBLE_CLICKED:
 						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+						loadPathwaysByGeneEvent.setSender(this);
 						loadPathwaysByGeneEvent.setGeneID(iExternalID);
 						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
 						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
@@ -1970,6 +1967,7 @@ public class GLParallelCoordinates
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSender(this);
 					event.setSelectionDelta(selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
@@ -2221,6 +2219,7 @@ public class GLParallelCoordinates
 
 	private void sendVirtualArrayUpdateEvent(IVirtualArrayDelta delta) {
 		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);

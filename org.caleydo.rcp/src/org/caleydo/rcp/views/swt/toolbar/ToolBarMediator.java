@@ -68,11 +68,11 @@ public class ToolBarMediator {
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		
 		viewActivationListener = new ViewActivationListener();
-		viewActivationListener.setToolBarMediator(this);
+		viewActivationListener.setHandler(this);
 		eventPublisher.addListener(ViewActivationEvent.class, viewActivationListener);
 		
 		removeViewSpecificItemsEventListener = new RemoveViewSpecificItemsEventListener();
-		removeViewSpecificItemsEventListener.setToolBarMediator(this);
+		removeViewSpecificItemsEventListener.setHandler(this);
 		eventPublisher.addListener(RemoveViewSpecificItemsEvent.class, removeViewSpecificItemsEventListener);
 }
 	

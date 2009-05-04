@@ -22,6 +22,7 @@ public class SearchViewMediator {
 	public void loadPathway(int pathwayID) {
 		log.info("loadPathway()");
 		LoadPathwayEvent event = new LoadPathwayEvent();
+		event.setSender(this);
 		event.setPathwayID(pathwayID);
 		eventPublisher.triggerEvent(event);
 	}
@@ -29,6 +30,7 @@ public class SearchViewMediator {
 	public void loadURLInBrowser(String url) {
 		log.info("loadURLInBrowser()");
 		ChangeURLEvent event = new ChangeURLEvent();
+		event.setSender(this);
 		event.setUrl(url);
 		eventPublisher.triggerEvent(event);
 	}
@@ -36,6 +38,7 @@ public class SearchViewMediator {
 	public void loadPathwayByGene(int davidID) {
 		log.info("loadPathwayByGene()");
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID((davidID));
 		loadPathwaysByGeneEvent.setIdType(EIDType.DAVID);
 		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);		

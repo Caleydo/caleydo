@@ -7,7 +7,7 @@ public class EnableTexturesListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		glPathway.enablePathwayTextures(true);
+		handler.enablePathwayTextures(true);
 	}
 
 }

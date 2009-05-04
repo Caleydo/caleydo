@@ -23,12 +23,11 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -37,9 +36,12 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
@@ -55,8 +57,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public abstract class AStorageBasedView
 	extends AGLEventListener
 	implements 
-		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler, 
-		IMediatorReceiver, IMediatorSender {
+		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
+		IViewCommandHandler, 
+		IMediatorSender {
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -108,6 +111,8 @@ public abstract class AStorageBasedView
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
 	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
+	protected RedrawViewListener redrawViewListener = null;
+	protected ClearSelectionsListener clearSelectionsListener = null;
 	
 	/**
 	 * Constructor for storage based views
@@ -399,23 +404,34 @@ public abstract class AStorageBasedView
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer =
-					(ViewCommandEventContainer) eventContainer;
+//	@Override
+//	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
+//		EMediatorType eMediatorType) {
+//		switch (eventContainer.getEventType()) {
+//			case VIEW_COMMAND:
+//				ViewCommandEventContainer viewCommandEventContainer =
+//					(ViewCommandEventContainer) eventContainer;
+//
+//				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
+//					setDisplayListDirty();
+//				}
+//				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+//					clearAllSelections();
+//					setDisplayListDirty();
+//				}
+//				break;
+//		}
+//	}
 
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-					setDisplayListDirty();
-				}
-				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
-					clearAllSelections();
-					setDisplayListDirty();
-				}
-				break;
-		}
+	@Override
+	public void handleRedrawView() {
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void handleClearSelections() {
+		clearAllSelections();
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -584,6 +600,13 @@ public abstract class AStorageBasedView
 		triggerSelectionCommandListener.setHandler(this);
 		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
 
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 
 	@Override
@@ -599,6 +622,14 @@ public abstract class AStorageBasedView
 		if (triggerSelectionCommandListener != null) {
 			eventPublisher.removeListener(triggerSelectionCommandListener);
 			triggerSelectionCommandListener = null;
+		}
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
 		}
 	}
 	

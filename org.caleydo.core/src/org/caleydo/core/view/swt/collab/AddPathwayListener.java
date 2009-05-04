@@ -21,6 +21,7 @@ public class AddPathwayListener
 	@Override
 	public void handleEvent(Event e) {
 		LoadPathwayEvent loadEvent = new LoadPathwayEvent();
+		loadEvent.setSender(this);
 		loadEvent.setPathwayID(49558);
 		IEventPublisher ep = GeneralManager.get().getEventPublisher();
 		ep.triggerEvent(loadEvent);

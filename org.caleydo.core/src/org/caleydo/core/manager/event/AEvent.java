@@ -17,6 +17,9 @@ public abstract class AEvent {
 	/** timestamp of the event-creation */ 
 	Date creationTime;
 	
+	/** sender object of the event */
+	Object Sender;
+	
 	/**
 	 * Basic constructor
 	 */
@@ -40,6 +43,14 @@ public abstract class AEvent {
 	 */
 	public void setCreationTime(Date creationTime) {
 		this.creationTime = creationTime;
+	}
+
+	public Object getSender() {
+		return Sender;
+	}
+
+	public void setSender(Object sender) {
+		Sender = sender;
 	}
 
 }

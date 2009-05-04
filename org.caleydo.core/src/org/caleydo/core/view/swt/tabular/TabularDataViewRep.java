@@ -23,15 +23,13 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -39,9 +37,12 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
@@ -82,8 +83,9 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabularDataViewRep
 	extends ASWTView
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler, IView, ISWTView,
-	IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler, 
+	IViewCommandHandler, IView, ISWTView,
+	IMediatorSender {
 
 	protected ISet set;
 	protected ESetType setType;
@@ -135,7 +137,10 @@ public class TabularDataViewRep
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
 	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
 	
-//	private int[] iArCurrentColumnOrder;
+	protected RedrawViewListener redrawViewListener = null;
+	protected ClearSelectionsListener clearSelectionsListener = null;
+
+	//	private int[] iArCurrentColumnOrder;
 
 	/**
 	 * Constructor.
@@ -145,7 +150,6 @@ public class TabularDataViewRep
 			EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
 		setType = ESetType.GENE_EXPRESSION_DATA;
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
@@ -522,11 +526,9 @@ public class TabularDataViewRep
 					if (sLabel != null && !sLabel.isEmpty()) {
 						set.get(iStorageIndex).setLabel(sLabel);
 						contentTable.getColumn(iStorageIndex).setText(sLabel);
-
-						ViewCommandEventContainer viewCommandEventContainer =
-							new ViewCommandEventContainer(EViewCommand.REDRAW);
-
-						triggerEvent(EMediatorType.SELECTION_MEDIATOR, viewCommandEventContainer);
+						RedrawViewEvent event = new RedrawViewEvent();
+						event.setSender(this);
+						eventPublisher.triggerEvent(event);
 					}
 				}
 			});
@@ -667,20 +669,14 @@ public class TabularDataViewRep
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer =
-					(ViewCommandEventContainer) eventContainer;
-				
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
-					clearAllSelections();
-				} 
-				break;
-		}
+	public void handleRedrawView() {
+		// nothing to do here
+	}
+
+	@Override
+	public void handleClearSelections() {
+		clearAllSelections();
 	}
 
 	@Override
@@ -832,6 +828,7 @@ public class TabularDataViewRep
 		sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 	}
@@ -848,6 +845,7 @@ public class TabularDataViewRep
 
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 	}
@@ -887,6 +885,7 @@ public class TabularDataViewRep
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
 				vaDelta.add(VADeltaItem.remove(iExpressionIndex));
 				VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+				virtualArrayUpdateEvent.setSender(this);
 				virtualArrayUpdateEvent.setVirtualArrayDelta(vaDelta);
 				virtualArrayUpdateEvent.setInfo(null);
 				eventPublisher.triggerEvent(virtualArrayUpdateEvent);
@@ -929,6 +928,7 @@ public class TabularDataViewRep
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 				vaDelta.add(VADeltaItem.remove(iStorageIndex));
 				VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+				virtualArrayUpdateEvent.setSender(this);
 				virtualArrayUpdateEvent.setVirtualArrayDelta(vaDelta);
 				virtualArrayUpdateEvent.setInfo(null);
 				eventPublisher.triggerEvent(virtualArrayUpdateEvent);
@@ -956,14 +956,8 @@ public class TabularDataViewRep
 		return serializedForm; 
 	}
 
-	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
-	 */
 	@Override
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
@@ -975,16 +969,18 @@ public class TabularDataViewRep
 		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
 		triggerSelectionCommandListener.setHandler(this);
 		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 	
-	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
-	 */
 	@Override
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
@@ -996,6 +992,14 @@ public class TabularDataViewRep
 		if (triggerSelectionCommandListener != null) {
 			eventPublisher.removeListener(triggerSelectionCommandListener);
 			triggerSelectionCommandListener = null;
+		}
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
 		}
 	}
 

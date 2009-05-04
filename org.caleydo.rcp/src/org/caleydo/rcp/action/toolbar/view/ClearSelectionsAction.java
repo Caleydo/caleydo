@@ -1,6 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view;
 
-import org.caleydo.core.command.view.rcp.EExternalActionType;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -25,6 +26,9 @@ public class ClearSelectionsAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalAction(EExternalActionType.CLEAR_SELECTIONS);
+		ClearSelectionsEvent event = new ClearSelectionsEvent();
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		// triggerCmdExternalAction(EExternalActionType.CLEAR_SELECTIONS);
 	};
 }
