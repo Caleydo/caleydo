@@ -429,8 +429,8 @@ public class GLHeatMap
 						}
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
-							new GeneContextMenuItemContainer(GeneticIDMappingHelper.get().getRefSeqFromStorageIndex(
-								iExternalID));
+							new GeneContextMenuItemContainer();
+						geneContextMenuItemContainer.setStorageIndex(iExternalID);
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					default:
 						return;

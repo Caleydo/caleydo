@@ -72,6 +72,15 @@ public class HeatMapRenderStyle
 		}
 
 	}
+	
+	public void updateFieldSizesnofish()
+	{
+		fSelectedFieldWidth =
+			getRenderWidth() / heatMap.getSet().getVA(heatMap.getContentVAID()).size();
+		fNormalFieldWidth = fSelectedFieldWidth;
+		
+		fFieldHeight = getRenderHeight() / heatMap.getSet().getVA(heatMap.getStorageVAID()).size();
+	}
 
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays etc. Call this every time

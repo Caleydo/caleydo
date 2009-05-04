@@ -1,5 +1,9 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AddToListItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadPathwaysByGeneItem;
@@ -18,22 +22,36 @@ public class GeneContextMenuItemContainer
 	 * relevant for genes.
 	 * 
 	 * @TODO: RefSeq is probably not the best ID to use here.
-	 * 
 	 * @param refSeqInt
 	 *            a refSeq int representation
 	 */
-	public GeneContextMenuItemContainer(int refSeqInt) {
+	public GeneContextMenuItemContainer() {
 		super();
 
+		if (GeneralManager.get().getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+			throw new IllegalStateException("This context menu container is only valid for genetic data");
+
+	}
+
+	public void setStorageIndex(int iStorageIndex) {
+		GeneticIDMappingHelper mappingHelper = GeneticIDMappingHelper.get();
+
+		int david = mappingHelper.getDavidIDFromStorageIndex(iStorageIndex);
+		
 		LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-		loadPathwaysByGeneItem.setRefSeqInt(refSeqInt);
+		loadPathwaysByGeneItem.setDavid(david);
 		addContextMenuItem(loadPathwaysByGeneItem);
 
 		ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
-		showPathwaysByGeneItem.setRefSeqInt(refSeqInt);
+		showPathwaysByGeneItem.setDavid(david);
 		addContextMenuItem(showPathwaysByGeneItem);
+	
 
-		AddToListItem addToListItem = new AddToListItem();
+		AddToListItem addToListItem = new AddToListItem(iStorageIndex);
 		addContextMenuItem(addToListItem);
+	}
+
+	public void setDavid() {
+
 	}
 }

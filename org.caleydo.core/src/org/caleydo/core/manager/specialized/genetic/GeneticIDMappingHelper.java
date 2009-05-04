@@ -34,19 +34,6 @@ public class GeneticIDMappingHelper {
 		return idMappingHelper;
 	}
 
-	public int getDavidIDFromStorageIndex(int index) {
-		Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, index);
-
-		if (iRefSeqID == null)
-			return -1;
-
-		Integer iDavidId = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
-
-		if (iDavidId == null)
-			return -1;
-
-		return iDavidId;
-	}
 
 	public int getRefSeqFromStorageIndex(int index) {
 		Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, index);
@@ -55,6 +42,15 @@ public class GeneticIDMappingHelper {
 			return -1;
 
 		return iRefSeqID;
+	}
+	
+	public int getDavidIDFromStorageIndex(int index)
+	{
+		int refSeq = getRefSeqFromStorageIndex(index);
+		Integer david = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, refSeq);
+		if(david == null)
+			return -1;
+		return david;
 	}
 
 	public String getShortNameFromDavid(int index) {

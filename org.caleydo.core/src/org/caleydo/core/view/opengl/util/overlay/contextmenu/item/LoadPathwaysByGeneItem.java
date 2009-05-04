@@ -32,14 +32,14 @@ public class LoadPathwaysByGeneItem
 	/**
 	 * Convenience method that automatically creates a {@link LoadPathwaysByGeneEvent} based on a RefSeqInt
 	 * 
-	 * @param iRefSeq
-	 *            the int code associated with a refseq
+	 * @param david
+	 *            the david ID
 	 */
-	public void setRefSeqInt(int iRefSeq) {
+	public void setDavid(int david) {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
-		loadPathwaysByGeneEvent.setGeneID(iRefSeq);
-		loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
+		loadPathwaysByGeneEvent.setGeneID(david);
+		loadPathwaysByGeneEvent.setIdType(EIDType.DAVID);
 		registerEvent(loadPathwaysByGeneEvent);
 	}
 

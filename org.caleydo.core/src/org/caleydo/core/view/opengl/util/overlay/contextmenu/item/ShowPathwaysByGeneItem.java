@@ -34,14 +34,14 @@ public class ShowPathwaysByGeneItem
 	}
 
 	/**
-	 * Convenience method that automatically creates a {@link LoadPathwaysByGeneEvent} based on a RefSeqInt
+	 * Convenience method that automatically creates a {@link LoadPathwaysByGeneEvent} based on a david ID
 	 * 
-	 * @param iRefSeq
+	 * @param david
 	 *            the int code associated with a refseq
 	 */
-	public void setRefSeqInt(int iRefSeqID) {
+	public void setDavid(int david) {
 		
-		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.REFSEQ_MRNA_INT, iRefSeqID);
+		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.DAVID, david);
 
 		setText("Pathways (" +pathwayGraphs.size()+")");
 		

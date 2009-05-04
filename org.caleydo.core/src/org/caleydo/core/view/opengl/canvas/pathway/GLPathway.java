@@ -677,13 +677,13 @@ public class GLPathway
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
-						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
-							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-							
-							GeneContextMenuItemContainer geneContextMenuItemContainer =
-								new GeneContextMenuItemContainer(pathwayVertexGraphItem.getId());
-							contextMenu.addItemContanier(geneContextMenuItemContainer);
-						}
+//						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+//							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+//							
+//							GeneContextMenuItemContainer geneContextMenuItemContainer =
+//								new GeneContextMenuItemContainer(pathwayVertexGraphItem.getId());
+//							contextMenu.addItemContanier(geneContextMenuItemContainer);
+//						}
 
 					default:
 						return;

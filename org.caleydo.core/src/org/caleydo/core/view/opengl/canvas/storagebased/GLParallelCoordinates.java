@@ -1909,8 +1909,8 @@ public class GLParallelCoordinates
 						eSelectionType = ESelectionType.SELECTION;
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
-							new GeneContextMenuItemContainer(GeneticIDMappingHelper.get().getRefSeqFromStorageIndex(
-								iExternalID));
+							new GeneContextMenuItemContainer();
+						geneContextMenuItemContainer.setStorageIndex(iExternalID);
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 						
 						if (!isRenderedRemote()) {
