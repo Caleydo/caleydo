@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
@@ -34,8 +37,8 @@ public class ContextMenu
 	extends AOverlayManager {
 
 	private class ContextMenuMetaData {
-		private float xOrigin;
-		private float yOrigin;
+		private float xOrigin = -1;
+		private float yOrigin = -1;
 		private float width;
 		private float height;
 		private float maxTextWidth;
@@ -91,7 +94,7 @@ public class ContextMenu
 	private ContextMenu() {
 		super();
 		contextMenuItems = new ArrayList<AContextMenuItem>();
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 32), true, true);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		textRenderer.setSmoothing(true);
 		iconManager = new GLIconTextureManager();
 		pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
@@ -114,9 +117,9 @@ public class ContextMenu
 	}
 
 	/**
-	 * Set the GL view which is currently rendering the context menu. Only in this view 
-	 * will the context menu be rendered. For remote rendering the remote rendering view is required,
-	 * while the rest of the data probably needs to be set in the embedded view.
+	 * Set the GL view which is currently rendering the context menu. Only in this view will the context menu
+	 * be rendered. For remote rendering the remote rendering view is required, while the rest of the data
+	 * probably needs to be set in the embedded view.
 	 * 
 	 * @param masterViewID
 	 *            the id of the view where the menu should be rendered
@@ -187,6 +190,25 @@ public class ContextMenu
 				GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
 
+			float[] fArLeftLimitWorldCoords =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, 0, 0);
+
+			fLeftBorder = fArLeftLimitWorldCoords[0];
+			// notice that top and bottom are inverse in opengl vs window coordinates
+			fTopBorder = fArLeftLimitWorldCoords[1];
+			// GLHelperFunctions.drawPointAt(gl, new
+			// Vec3f(fArLeftLimitWorldCoords[0],fArLeftLimitWorldCoords[1], fArLeftLimitWorldCoords[2]));
+			//			
+			//			
+			float[] fArRightLimitWorldCoords =
+				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, windowWidth, windowHeight);
+
+			fRightBorder = fArRightLimitWorldCoords[0];
+			fBottomBorder = fArRightLimitWorldCoords[1];
+
+			// GLHelperFunctions.drawPointAt(gl, new
+			// Vec3f(fArRightLimitWorldCoords[0],fArRightLimitWorldCoords[1], fArRightLimitWorldCoords[2]));
+
 			baseMenuMetaData = new ContextMenuMetaData();
 
 			baseMenuMetaData.xOrigin = fArWorldCoords[0];
@@ -198,12 +220,25 @@ public class ContextMenu
 			if (masterGLView instanceof GLRemoteRendering) {
 				baseMenuMetaData.xOrigin *= 2f;
 				baseMenuMetaData.yOrigin *= 2f;
+				fRightBorder *=2f;
+				fLeftBorder *= 2f;
+				fTopBorder *= 2f;
+				fBottomBorder *=2f;
 			}
-			
+
 			initializeSubMenus(contextMenuItems, baseMenuMetaData);
+			
+			if ((fRightBorder - baseMenuMetaData.xOrigin) < baseMenuMetaData.width)
+				baseMenuMetaData.xOrigin -= baseMenuMetaData.width;
+			
+			if ((fBottomBorder + baseMenuMetaData.yOrigin) < baseMenuMetaData.height)
+				baseMenuMetaData.yOrigin += baseMenuMetaData.height;
 
 		}
 
+		GLHelperFunctions.drawPointAt(gl, new Vec3f(fRightBorder, fBottomBorder, 0));
+		GLHelperFunctions.drawPointAt(gl, new Vec3f(fLeftBorder, fTopBorder, 0));
+		
 		if (isDisplayListDirty) {
 			gl.glNewList(displayListIndex, GL.GL_COMPILE);
 			gl.glDisable(GL.GL_DEPTH_TEST);
@@ -217,15 +252,31 @@ public class ContextMenu
 	}
 
 	/**
+	 * <p>
 	 * Initializes a sub menu and recursively initializes the sub menus of the items in contextMenuItems. Sets
-	 * unique IDs for every element and creates the ContextMenuMetaData objects for sub menus. Sets the width
-	 * and height of a sub menu.
+	 * unique IDs for every element and creates the ContextMenuMetaData objects for sub menus.
+	 * </p>
+	 * <p>
+	 * Sets the width and height of a sub menu. The origin in X and Y have to be set at another place before
+	 * calling this method.
+	 * </p>
 	 * 
 	 * @param contextMenuItems
+	 *            the list of context menu items for the current sub menu
 	 * @param metaData
+	 *            The metaData information for the current sub menu. height and widht are set, origin hast to
+	 *            be set before.
+	 * @throws IllegalStateException
+	 *             if xOrigin and yOrigin in metaData have not been initialized.
 	 */
 	private void initializeSubMenus(ArrayList<AContextMenuItem> contextMenuItems, ContextMenuMetaData metaData) {
+
+//		if (metaData.xOrigin < 0 || metaData.yOrigin < 0) {
+//			throw new IllegalStateException(
+//				"xOrigin and yOrigin of metaData have to be initialized before calling this method.");
+//		}
 		metaData.maxTextWidth = 0;
+
 		for (AContextMenuItem item : contextMenuItems) {
 			hashUniqueIDToContextMenuItem.put(iPickingIDCounter, item);
 			hashContextMenuItemToUniqueID.put(item, iPickingIDCounter++);
@@ -242,6 +293,8 @@ public class ContextMenu
 		}
 		metaData.width = metaData.maxTextWidth + WIDHT_OVERHEAD;
 		metaData.height = contextMenuItems.size() * ITEM_HEIGHT + HEIGHT_OVERHEAD;
+
+	
 	}
 
 	/**
@@ -256,7 +309,7 @@ public class ContextMenu
 		// FIXME: Find clean solution!!
 		if (!(masterGLView instanceof GLRemoteRendering))
 			gl.glTranslatef(0, 0, 2);
-		
+
 		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
@@ -280,7 +333,8 @@ public class ContextMenu
 			gl.glColor4f(1, 1, 1, alpha);
 
 			int iPickingID =
-				pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, itemID);
+				pickingManager
+					.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, itemID);
 			gl.glPushName(iPickingID);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z);
@@ -355,12 +409,21 @@ public class ContextMenu
 					ContextMenuMetaData subMetaData = hashContextMenuItemToMetaData.get(item);
 					subMetaData.xOrigin = metaData.xOrigin + metaData.width;
 					subMetaData.yOrigin = yPosition + ITEM_HEIGHT;
+					if ((fRightBorder - subMetaData.xOrigin) < subMetaData.width)
+						subMetaData.xOrigin -= subMetaData.width + metaData.width;
+					
+					if ((subMetaData.yOrigin - subMetaData.height) < fBottomBorder)
+						subMetaData.yOrigin = fBottomBorder + subMetaData.height;
+					
+					
 					drawMenu(gl, item.getSubItems(), subMetaData);
+					
+					
 				}
 			}
 		}
 		// gl.glEnable(GL.GL_DEPTH_TEST);
-		
+
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
 		// FIXME: Find clean solution!!
@@ -405,8 +468,8 @@ public class ContextMenu
 	}
 
 	/**
-	 * Overrides the flush method of {@link AOverlayManager}. Disables the context menu and clears the list
-	 * of items supplied as well as the masterViewID.
+	 * Overrides the flush method of {@link AOverlayManager}. Disables the context menu and clears the list of
+	 * items supplied as well as the masterViewID.
 	 */
 	@Override
 	public void flush() {

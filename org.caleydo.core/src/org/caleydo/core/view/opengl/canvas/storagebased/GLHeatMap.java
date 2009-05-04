@@ -462,8 +462,8 @@ public class GLHeatMap
 				if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-					sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
+//					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+//					sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
 
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -490,8 +490,8 @@ public class GLHeatMap
 						if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
 							storageSelectionManager.clearSelection(eSelectionType);
 
-							SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-							sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+//							SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+//							sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 							setDisplayListDirty();
 							return;
@@ -511,8 +511,8 @@ public class GLHeatMap
 
 				if (eStorageDataType == EIDType.EXPERIMENT_INDEX) {
 
-					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+//					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+//					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 					ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 					SelectionUpdateEvent event = new SelectionUpdateEvent();

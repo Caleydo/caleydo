@@ -56,6 +56,9 @@ public class GLHelperFunctions {
 		gl.glVertex3f(vecPoint.x(), vecPoint.y() + 10, vecPoint.z());
 		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() - 10);
 		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() + 10);
+//		gl.glVertex3f(vecPoint.x() - 10, vecPoint.y() -10, vecPoint.z());
+//		gl.glVertex3f(vecPoint.x() + 10, vecPoint.y() +10, vecPoint.z());
+		
 		gl.glEnd();
 	}
 }

@@ -15,6 +15,15 @@ public abstract class AOverlayManager {
 	protected int windowWidth;
 	/** The height of the window where the overlay is rendered */
 	protected int windowHeight;
+	
+	/** The opengl coordinates of the left border in the z plane where the menu is rendered */
+	protected float fLeftBorder;
+	/** The opengl coordinates of the right border in the z plane where the menu is rendered */
+	protected float fRightBorder;
+	/** The opengl coordinates of the top border in the z plane where the menu is rendered */
+	protected float fTopBorder;
+	/** The opengl coordinates of the bottom border in the z plane where the menu is rendered */
+	protected float fBottomBorder;
 
 	/** Flag determining whether the overlay is enabled and should be rendered or not */
 	protected boolean isEnabled = false;
