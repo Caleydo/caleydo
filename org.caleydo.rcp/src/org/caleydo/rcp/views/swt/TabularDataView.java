@@ -34,6 +34,7 @@ public class TabularDataView
 		swtComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
+		iViewID = tabularDataView.getID();
 	}
 
 	@Override
