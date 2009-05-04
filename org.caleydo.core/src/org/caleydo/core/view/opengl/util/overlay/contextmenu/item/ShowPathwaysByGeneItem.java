@@ -43,6 +43,8 @@ public class ShowPathwaysByGeneItem
 		
 		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.REFSEQ_MRNA_INT, iRefSeqID);
 
+		setText("Pathways (" +pathwayGraphs.size()+")");
+		
 		for (PathwayGraph pathwayGraph : pathwayGraphs) {
 			addSubItem(new LoadPathwaysByPathwayIDItem(pathwayGraph.getID()));
 		}

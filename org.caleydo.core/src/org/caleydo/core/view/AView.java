@@ -53,7 +53,6 @@ public abstract class AView
 
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-//		setManager = generalManager.getSetManager();
 
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;

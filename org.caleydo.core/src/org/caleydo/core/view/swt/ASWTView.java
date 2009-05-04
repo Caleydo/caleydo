@@ -25,42 +25,6 @@ public abstract class ASWTView
 	public final void initViewRCP(final Composite parentComposite) {
 		this.parentComposite = parentComposite;
 		initViewSWTComposite(parentComposite);
-
-		// if (this instanceof HTMLBrowserViewRep)
-		// return;
-		//		
-		// parentComposite.addMouseTrackListener(new MouseTrackAdapter(){
-		// @Override
-		// public void mouseEnter(MouseEvent e)
-		// {
-		// super.mouseEnter(e);
-		//				
-		// GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(parentComposite);
-		// }
-		// });
-		//		
-		// parentComposite.addMouseMoveListener(new MouseMoveListener(){
-		//		
-		// @Override
-		// public void mouseMove(MouseEvent e)
-		// {
-		// System.out.println("moved mouse");
-		// }
-		// });
-		//		
-		// parentComposite.addFocusListener(new FocusListener(){
-		//		
-		// @Override
-		// public void focusLost(FocusEvent e)
-		// {
-		// }
-		//		
-		// @Override
-		// public void focusGained(FocusEvent e)
-		// {
-		// GeneralManager.get().getViewGLCanvasManager().setActiveSWTView(parentComposite);
-		// }
-		// });
 	}
 
 	@Override

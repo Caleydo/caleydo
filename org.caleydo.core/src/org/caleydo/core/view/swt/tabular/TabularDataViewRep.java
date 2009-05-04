@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
@@ -87,9 +85,6 @@ public class TabularDataViewRep
 	IViewCommandHandler, IView, ISWTView,
 	IMediatorSender {
 
-	protected ISet set;
-	protected ESetType setType;
-
 	/**
 	 * map selection type to unique id for virtual array
 	 */
@@ -151,7 +146,6 @@ public class TabularDataViewRep
 
 		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 
-		setType = ESetType.GENE_EXPRESSION_DATA;
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		contentSelectionManager =
