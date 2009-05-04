@@ -346,7 +346,7 @@ public class GLPathway
 				}
 			}
 		}
-		else if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+		else if (selectionDelta.getIDType() != EIDType.EXPRESSION_INDEX)
 			return;
 
 		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
