@@ -69,6 +69,8 @@ public class GLDendrogram
 	private float fSampleHeight = 0;
 	private float fLevelHeight = 0;
 
+	private int iMaxDepth = 0;
+
 	private ColorMapping colorMapper;
 
 	private TreePorter treePorter = new TreePorter();
@@ -393,7 +395,8 @@ public class GLDendrogram
 				ymax = Math.max(ymax, current.getPos().y());
 				ymin = Math.min(ymin, current.getPos().y());
 
-				renderDendrogram(gl, current);
+				if (current.getDepth() > iMaxDepth)
+					renderDendrogram(gl, current);
 			}
 
 			fDiff = fTemp - xmin;
@@ -511,7 +514,7 @@ public class GLDendrogram
 				bRenderGeneTree = false;
 			}
 
-			// tree = treePorter.importTree("test.xml");
+//			tree = treePorter.importTree("data/clustering/tree.xml");
 
 			renderSymbol(gl);
 
@@ -828,9 +831,13 @@ public class GLDendrogram
 
 	@Override
 	public void handleMouseOver(String clusterNodeName) {
+		// System.out.println(clusterNodeName);
+	}
 
-		// if (tree.getNodeByNumber(iIndex) != null)
-		// tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
+	public void handleMouseOver(int clusterNr) {
+		if (tree.getNodeByNumber(clusterNr) != null)
+			tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
 
+		setDisplayListDirty();
 	}
 }

@@ -50,6 +50,7 @@ public class TreePorter {
 		TreePorter treePorter = null;
 		Unmarshaller unmarshaller;
 
+		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>();
 		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>();
 
 		try {
@@ -67,6 +68,7 @@ public class TreePorter {
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
 			hashClusterNodes.put(node.toString(), node);
+			hashClusterNr.put(node.getClusterNr(), node);
 			if (node.isRootNode())
 				rootNode = node;
 		}
@@ -75,6 +77,7 @@ public class TreePorter {
 			graph.addEdge(hashClusterNodes.get(edge[0]), hashClusterNodes.get(edge[1]));
 		}
 
+		tree.setHashMap(hashClusterNr);
 		tree.setRootNode(rootNode);
 		tree.setGraph(graph);
 

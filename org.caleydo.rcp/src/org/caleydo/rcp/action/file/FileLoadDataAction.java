@@ -68,6 +68,7 @@ public class FileLoadDataAction
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 
 	private Text txtFileName;
+	private Text txtTreeFileName;
 	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;
@@ -78,6 +79,7 @@ public class FileLoadDataAction
 
 	private String sInputFile = "";
 	private String sFileName = "";
+	private String sTreeFileName = "";
 	private String sFilePath = "";
 	private String sInputPattern = "";// SKIP;";
 	private String sDelimiter = "";
@@ -159,6 +161,35 @@ public class FileLoadDataAction
 			}
 		});
 
+		Group inputTreeFile = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		inputTreeFile.setText("Tree file");
+		inputTreeFile.setLayout(new GridLayout(2, false));
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = 3;
+		inputTreeFile.setLayoutData(gridData);
+		
+		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+		buttonTreeChooser.setText("Choose tree file..");
+//		buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		txtTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+				fileDialog.setText("Open");
+				fileDialog.setFilterPath(sFilePath);
+				String[] filterExt = { "*.xml*" };
+				fileDialog.setFilterExtensions(filterExt);
+				sTreeFileName = fileDialog.open();
+
+				txtTreeFileName.setText(sTreeFileName);
+			}
+		});
+		
 		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Ignore lines in header");
 		startParseAtLineGroup.setLayout(new GridLayout(1, false));
@@ -708,7 +739,7 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sTreeFileName, sInputPattern, sDelimiter,
 			iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
 

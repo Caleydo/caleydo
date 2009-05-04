@@ -120,7 +120,6 @@ public class GLHierarchicalHeatMap
 
 	// embedded heat map
 	private GLHeatMap glHeatMapView;
-	// private IMediator privateMediator;
 	private boolean bIsHeatmapInFocus = false;
 	private float fWidthEHM = 0;
 
@@ -168,10 +167,6 @@ public class GLHierarchicalHeatMap
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		fAlXDistances = new ArrayList<Float>();
-
-		// privateMediator = generalManager.getEventPublisher().getPrivateMediator();
-		// privateMediator.addSender(this);
-		// privateMediator.addReceiver(this);
 
 		// activate clustering
 		bUseClusteredVA = false;
@@ -646,9 +641,6 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setRenderedRemote(true);
 		glHeatMapView.initData();
-
-		// privateMediator.addSender(glHeatMapView);
-		// privateMediator.addReceiver(glHeatMapView);
 	}
 
 	@Override
@@ -1811,7 +1803,7 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel1 == false) {
 			gl.glTranslatef(-GAP_LEVEL2_3, 0, 0);
 		}
-		
+
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 
@@ -1900,7 +1892,7 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(-0.2f, 0.0f, 0);
 		}
 
-//		gl.glDisable(GL.GL_STENCIL_TEST);
+		// gl.glDisable(GL.GL_STENCIL_TEST);
 
 		gl.glEndList();
 	}
@@ -1918,8 +1910,6 @@ public class GLHierarchicalHeatMap
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		commands.add(command);
 		glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, commands);
-		// privateMediator.triggerEvent(this, new SelectionCommandEventContainer(eFieldDataType,
-		// new SelectionCommand(ESelectionCommandType.RESET)));
 
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
@@ -1954,8 +1944,6 @@ public class GLHierarchicalHeatMap
 		command = new SelectionCommand(ESelectionCommandType.RESET);
 		commands.add(command);
 		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, commands);
-		// privateMediator.triggerEvent(this, new SelectionCommandEventContainer(eExperimentDataType,
-		// new SelectionCommand(ESelectionCommandType.RESET)));
 
 		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
@@ -2362,12 +2350,25 @@ public class GLHierarchicalHeatMap
 						setDisplayListDirty();
 						break;
 
+					case RIGHT_CLICKED:
+						// if (!isRenderedRemote()) {
+						// contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+						// getParentGLCanvas().getHeight());
+						// contextMenu.setMasterGLView(this);
+						// }
+						//
+						// GroupContextMenuItemContainer groupContextMenuItemContainer =
+						// new GroupContextMenuItemContainer(iExternalID);
+						// contextMenu.addItemContanier(groupContextMenuItemContainer);
+
+						break;
+
 					case MOUSE_OVER:
-						System.out.print("genes group " + iExternalID);
-						System.out.print(" number elements in group: ");
-						System.out.println(set.getVA(iContentVAID).getGroupList().get(iExternalID)
-							.getNrElements());
-						setDisplayListDirty();
+						// System.out.print("genes group " + iExternalID);
+						// System.out.print(" number elements in group: ");
+						// System.out.println(set.getVA(iContentVAID).getGroupList().get(iExternalID)
+						// .getNrElements());
+						// setDisplayListDirty();
 						break;
 				}
 				break;
@@ -2408,7 +2409,12 @@ public class GLHierarchicalHeatMap
 						bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
 						glHeatMapView.setDisplayListDirty();
 						setDisplayListDirty();
+						break;
 
+					case DRAGGED:
+						break;
+
+					case MOUSE_OVER:
 						break;
 				}
 				break;
@@ -2452,8 +2458,6 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case DRAGGED:
-						// bRenderCaption = true;
-
 						bIsDraggingActive = true;
 						iDraggedCursor = iExternalID;
 						setDisplayListDirty();
@@ -2471,8 +2475,6 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case DRAGGED:
-						// bRenderCaption = true;
-
 						bIsDraggingWholeBlock = true;
 						iDraggedCursor = iExternalID;
 						setDisplayListDirty();
@@ -2499,6 +2501,9 @@ public class GLHierarchicalHeatMap
 						}
 						break;
 
+					case DRAGGED:
+						break;
+
 					case MOUSE_OVER:
 						break;
 				}
@@ -2513,6 +2518,9 @@ public class GLHierarchicalHeatMap
 						setDisplayListDirty();
 						break;
 
+					case DRAGGED:
+						break;
+
 					case MOUSE_OVER:
 						break;
 				}
@@ -2521,16 +2529,19 @@ public class GLHierarchicalHeatMap
 			// handle click on level 3 (EHM)
 			case HIER_HEAT_MAP_VIEW_SELECTION:
 				switch (pickingMode) {
+					case CLICKED:
+						break;
+
+					case DRAGGED:
+						break;
+
 					case MOUSE_OVER:
 						break;
 
-					case CLICKED:
-						break;
-						
 					case RIGHT_CLICKED:
-						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-							getParentGLCanvas().getHeight());
-						contextMenu.setMasterGLView(this);
+						// contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+						// getParentGLCanvas().getHeight());
+						// contextMenu.setMasterGLView(this);
 						break;
 				}
 				break;
