@@ -53,7 +53,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHand
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -121,13 +121,12 @@ public class GLGlyph
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+	public GLGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum, true);
 
 		alSelectionBrushCornerPoints = new ArrayList<Vec2i>();
 		mouseListener_ = new GlyphMouseListener(this);
@@ -302,8 +301,8 @@ public class GLGlyph
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml) {
-				if (l instanceof PickingMouseListener) {
-					((PickingMouseListener) l).setNavigationModes(false, false, false);
+				if (l instanceof GLMouseListener) {
+					((GLMouseListener) l).setNavigationModes(false, false, false);
 				}
 			}
 		}
@@ -331,19 +330,18 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager)
-
-	{
-
+	public synchronized void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		
 		bIsLocal = false;
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
+		// FIXXXME: YOU SHOULD NOT ADD THE KEY LISTENER TO ALL CANVAS OBJECTS!!!!!
 		for (GLCaleydoCanvas c : cc) {
-			c.addKeyListener(keyListener_);
+//			c.addKeyListener(keyListener_);
 		}
 
 		init(gl);

@@ -23,8 +23,9 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -48,8 +49,8 @@ public class GLCell
 	/**
 	 * Constructor.
 	 */
-	public GLCell(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, false);
+	public GLCell(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
 
 //		connectedElementRepresentationManager =
@@ -70,11 +71,11 @@ public class GLCell
 	}
 
 	@Override
-	public void initRemote(GL gl, int remoteViewID, PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
 		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.glMouseListener = glMouseListener;
 		init(gl);
 	}
 

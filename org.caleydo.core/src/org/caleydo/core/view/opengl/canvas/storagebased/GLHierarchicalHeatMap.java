@@ -44,9 +44,11 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -146,14 +148,13 @@ public class GLHierarchicalHeatMap
 	/**
 	 * Constructor.
 	 * 
-	 * @param setType
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalHeatMap(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLHierarchicalHeatMap(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 
-		super(iGLCanvasID, sLabel, viewFrustum);
+		super(glCanvas, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HIER_HEAT_MAP;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
@@ -175,7 +176,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void init(GL gl) {
-		glHeatMapView.initRemote(gl, getID(), pickingTriggerMouseAdapter, null, null);
+		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
 
 		iconTextureManager = new GLIconTextureManager();
 
@@ -246,14 +247,14 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void initRemote(GL gl, int remoteViewID, PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
 		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		bRenderStorageHorizontally = false;
 
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -1726,28 +1727,28 @@ public class GLHierarchicalHeatMap
 
 		if (bIsDraggingActive) {
 			handleCursorDragging(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			if (glMouseListener.wasMouseReleased()) {
 				bIsDraggingActive = false;
 			}
 		}
 
 		if (bIsDraggingWholeBlock) {
 			handleBlockDragging(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			if (glMouseListener.wasMouseReleased()) {
 				bIsDraggingWholeBlock = false;
 			}
 		}
 
 		if (bSplitGroupExp) {
 			handleGroupSplitExperiments(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			if (glMouseListener.wasMouseReleased()) {
 				bSplitGroupExp = false;
 			}
 		}
 
 		if (bSplitGroupGene) {
 			handleGroupSplitGenes(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			if (glMouseListener.wasMouseReleased()) {
 				bSplitGroupExp = false;
 			}
 		}
@@ -2133,7 +2134,7 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void handleGroupSplitGenes(final GL gl) {
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
 		float[] fArDraggedPoint = new float[3];
 
@@ -2147,7 +2148,7 @@ public class GLHierarchicalHeatMap
 		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
 		gl.glEnd();
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bSplitGroupGene = false;
 
 			fArDraggedPoint =
@@ -2178,7 +2179,7 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void handleGroupSplitExperiments(final GL gl) {
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
 		float[] fArDraggedPoint = new float[3];
 
@@ -2192,7 +2193,7 @@ public class GLHierarchicalHeatMap
 		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
 		gl.glEnd();
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bSplitGroupExp = false;
 
 			fArDraggedPoint =
@@ -2221,7 +2222,7 @@ public class GLHierarchicalHeatMap
 	 */
 	private void handleBlockDragging(final GL gl) {
 
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
 		int iselElement;
 
@@ -2257,7 +2258,7 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 		triggerSelectionBlock();
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlock = false;
 		}
 	}
@@ -2268,7 +2269,7 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void handleCursorDragging(final GL gl) {
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
 		int iselElement;
 		int iNrSamples;
@@ -2318,7 +2319,7 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 		triggerSelectionBlock();
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActive = false;
 		}
 	}

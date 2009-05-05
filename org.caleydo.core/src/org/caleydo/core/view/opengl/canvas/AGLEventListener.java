@@ -31,7 +31,8 @@ import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
@@ -65,7 +66,12 @@ public abstract class AGLEventListener
 
 	protected PickingManager pickingManager;
 
-	protected PickingMouseListener pickingTriggerMouseAdapter;
+	/**
+	 * Key listener which is created and registered in specific view.
+	 */
+	protected GLKeyListener glKeyListener;
+
+	protected GLMouseListener glMouseListener;
 
 	protected IViewFrustum viewFrustum;
 
@@ -84,7 +90,7 @@ public abstract class AGLEventListener
 	 */
 	protected RemoteLevelElement remoteLevelElement;
 
-	protected IGLCanvasRemoteRendering remoteRenderingGLCanvas;
+	protected IGLCanvasRemoteRendering remoteRenderingGLView;
 
 	protected boolean bIsRenderedRemote = false;
 
@@ -135,12 +141,14 @@ public abstract class AGLEventListener
 	/**
 	 * Constructor.
 	 */
-	protected AGLEventListener(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
+	protected AGLEventListener(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final boolean bRegisterToParentCanvasNow) {
-		super(iGLCanvasID, sLabel, GeneralManager.get().getIDManager().createID(
+		
+		// If the glCanvas object is null - then the view is rendered remote.
+		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.GL_EVENT_LISTENER));
 
-		parentGLCanvas = generalManager.getViewGLCanvasManager().getCanvas(iGLCanvasID);
+		parentGLCanvas = glCanvas;
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			// Register GL event listener view to GL canvas
@@ -149,7 +157,7 @@ public abstract class AGLEventListener
 			// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
 			// parentGLCanvas.getID(), this);
 
-			pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
+			glMouseListener = parentGLCanvas.getGLMouseListener();
 		}
 		// // Frustum will only be remotely rendered by another view
 		// else
@@ -172,7 +180,7 @@ public abstract class AGLEventListener
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
-		pickingTriggerMouseAdapter.addGLCanvas(this);
+		glMouseListener.addGLCanvas(this);
 
 		((GLEventListener) parentGLCanvas).init(drawable);
 
@@ -214,7 +222,7 @@ public abstract class AGLEventListener
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		if (remoteRenderingGLCanvas != null || this instanceof GLRemoteRendering || this instanceof GLGlyph) {
+		if (remoteRenderingGLView != null || this instanceof GLRemoteRendering || this instanceof GLGlyph) {
 			viewFrustum.considerAspectRatio(true);
 		}
 		else {
@@ -318,8 +326,8 @@ public abstract class AGLEventListener
 	 * @param infoAreaManager
 	 *            TODO
 	 */
-	public abstract void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public abstract void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager);
 
 	/**
@@ -453,7 +461,7 @@ public abstract class AGLEventListener
 	}
 
 	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
-		return remoteRenderingGLCanvas;
+		return remoteRenderingGLView;
 	}
 
 	protected synchronized void renderBusyMode(final GL gl) {
@@ -602,7 +610,7 @@ public abstract class AGLEventListener
 		// .clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-		generalManager.getViewGLCanvasManager().unregisterGLEventListener(iUniqueID);
+		generalManager.getViewGLCanvasManager().unregisterGLEventListener(this);
 		unregisterEventListeners();
 	}
 

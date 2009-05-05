@@ -70,15 +70,16 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
@@ -209,9 +210,9 @@ public class GLParallelCoordinates
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLParallelCoordinates(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 
-		super(iGLCanvasID, sLabel, viewFrustum);
+		super(glCanvas, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
 
 		renderStyle = new ParCoordsRenderStyle(this, viewFrustum);
@@ -241,7 +242,7 @@ public class GLParallelCoordinates
 
 		// glSelectionHeatMap.addSets(alSets);
 		// glSelectionHeatMap.initRemote(gl, getID(),
-		// pickingTriggerMouseAdapter,
+		// glMouseListener,
 		// remoteRenderingGLCanvas);
 
 		createSelectionHeatMap(gl);
@@ -253,13 +254,13 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
 		bShowSelectionHeatMap = false;
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		this.glMouseListener = glMouseListener;
 		this.infoAreaManager = infoAreaManager;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
@@ -389,7 +390,7 @@ public class GLParallelCoordinates
 
 		if (bIsDraggingActive) {
 			handleGateDragging(gl);
-			// if (pickingTriggerMouseAdapter.wasMouseReleased())
+			// if (glMouseListener.wasMouseReleased())
 			// {
 			// bIsDraggingActive = false;
 			// }
@@ -397,7 +398,7 @@ public class GLParallelCoordinates
 
 		if (bWasAxisMoved) {
 			adjustAxisSpacing(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			if (glMouseListener.wasMouseReleased()) {
 				bWasAxisMoved = false;
 			}
 		}
@@ -408,7 +409,7 @@ public class GLParallelCoordinates
 
 		if (bIsAngularBrushingActive && iSelectedLineID != -1) {
 			handleAngularBrushing(gl);
-			// if(pickingTriggerMouseAdapter.wasMouseReleased())
+			// if(glMouseListener.wasMouseReleased())
 			// bIsAngularBrushingActive = false;
 
 		}
@@ -435,7 +436,7 @@ public class GLParallelCoordinates
 		glSelectionHeatMap.initData();
 
 		// FIXME: remoteRenderingGLCanvas is null, conceptual error
-		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas, null);
+		glSelectionHeatMap.initRemote(gl, this, glMouseListener, remoteRenderingGLView, null);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 	}
 
@@ -1618,7 +1619,7 @@ public class GLParallelCoordinates
 
 		// bIsDisplayListDirtyLocal = true;
 		// bIsDisplayListDirtyRemote = true;
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
@@ -1679,7 +1680,7 @@ public class GLParallelCoordinates
 		bIsDisplayListDirtyRemote = true;
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new InfoAreaUpdateEventContainer(iUniqueID));
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActive = false;
 		}
 
@@ -2455,7 +2456,7 @@ public class GLParallelCoordinates
 		float fLegLength = vecCenterLine.length();
 
 		if (bIsAngularDraggingActive) {
-			Point pickedPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			Point pickedPoint = glMouseListener.getPickedPoint();
 			float fArPoint[] =
 				GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
@@ -2576,7 +2577,7 @@ public class GLParallelCoordinates
 
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bIsAngularDraggingActive = false;
 			// bIsAngularBrushingActive = false;
 		}
@@ -2606,7 +2607,7 @@ public class GLParallelCoordinates
 	private void adjustAxisSpacing(GL gl) {
 		IVirtualArray axisVA = set.getVA(iAxisVAID);
 
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);

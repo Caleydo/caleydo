@@ -36,6 +36,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
@@ -117,13 +118,13 @@ public abstract class AStorageBasedView
 	/**
 	 * Constructor for storage based views
 	 * 
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(final int iGLCanvasID, final String sLabel,
+	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel,
 		final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+		super(glCanvas, sLabel, viewFrustum, true);
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 

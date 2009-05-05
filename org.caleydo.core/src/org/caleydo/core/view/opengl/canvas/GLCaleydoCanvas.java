@@ -11,7 +11,7 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.eclipse.swt.widgets.Composite;
 
@@ -31,7 +31,7 @@ public class GLCaleydoCanvas
 
 	private FPSCounter fpsCounter;
 
-	private PickingMouseListener joglMouseListener;
+	private GLMouseListener glMouseListener;
 
 	private Composite parentComposite;
 
@@ -42,15 +42,14 @@ public class GLCaleydoCanvas
 		super(glCapabilities);
 		// this.getContext().setSynchronized(true);
 
-		joglMouseListener = new PickingMouseListener();
+		glMouseListener = new GLMouseListener();
 
 		this.iGLCanvasID = GeneralManager.get().getIDManager().createID(EManagedObjectType.VIEW_GL_CANVAS);
 
 		// Register mouse listener to GL canvas
-		this.addMouseListener(joglMouseListener);
-		this.addMouseMotionListener(joglMouseListener);
-		this.addMouseWheelListener(joglMouseListener);
-
+		this.addMouseListener(glMouseListener);
+		this.addMouseMotionListener(glMouseListener);
+		this.addMouseWheelListener(glMouseListener);
 	}
 
 	@Override
@@ -121,8 +120,8 @@ public class GLCaleydoCanvas
 
 	}
 
-	public final PickingMouseListener getJoglMouseListener() {
-		return joglMouseListener;
+	public final GLMouseListener getGLMouseListener() {
+		return glMouseListener;
 	}
 
 	@Override
@@ -131,7 +130,7 @@ public class GLCaleydoCanvas
 	}
 
 	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom) {
-		joglMouseListener.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
+		glMouseListener.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
 	}
 
 	public void setParentComposite(Composite composite) {

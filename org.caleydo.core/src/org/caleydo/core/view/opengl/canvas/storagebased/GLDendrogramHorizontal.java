@@ -30,11 +30,13 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverEvent;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -78,12 +80,12 @@ public class GLDendrogramHorizontal
 	/**
 	 * Constructor.
 	 * 
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLDendrogramHorizontal(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum);
+	public GLDendrogramHorizontal(final GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum);
 
 		viewType = EManagedObjectType.GL_DENDOGRAM;
 
@@ -118,13 +120,13 @@ public class GLDendrogramHorizontal
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -183,7 +185,7 @@ public class GLDendrogramHorizontal
 
 		if (bIsDraggingActive) {
 			handleDragging(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			if (glMouseListener.wasMouseReleased()) {
 				bIsDraggingActive = false;
 			}
 		}
@@ -541,7 +543,7 @@ public class GLDendrogramHorizontal
 	 * @param gl
 	 */
 	private void handleDragging(final GL gl) {
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
 
 		fArTargetWorldCoordinates =
@@ -554,7 +556,7 @@ public class GLDendrogramHorizontal
 
 		setDisplayListDirty();
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActive = false;
 
 			determineSelectedNodes();

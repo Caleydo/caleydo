@@ -31,12 +31,13 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -76,15 +77,13 @@ public class GLGlyphSliderView
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param iViewId
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyphSliderView(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLGlyphSliderView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+		super(glCanvas, sLabel, viewFrustum, true);
 
 		gman = (GlyphManager) generalManager.getGlyphManager();
 
@@ -103,8 +102,8 @@ public class GLGlyphSliderView
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml) {
-				if (l instanceof PickingMouseListener) {
-					((PickingMouseListener) l).setNavigationModes(true, false, false);
+				if (l instanceof GLMouseListener) {
+					((GLMouseListener) l).setNavigationModes(true, false, false);
 				}
 			}
 		}
@@ -137,8 +136,7 @@ public class GLGlyphSliderView
 			alGlyphAttributeTypes.add(typ);
 
 			// slider
-			GLSliderMiniView slider =
-				new GLSliderMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+			GLSliderMiniView slider = new GLSliderMiniView(glMouseListener, iUniqueID, slidercounter);
 			alSlider.add(slider);
 
 			slider.setBorderStyle(borderStyle);
@@ -149,7 +147,7 @@ public class GLGlyphSliderView
 
 			// distribution
 			GLDistributionMiniView dmv =
-				new GLDistributionMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+				new GLDistributionMiniView(glMouseListener, iUniqueID, slidercounter);
 			alDistribution.add(dmv);
 			dmv.setHeight(fSliderHeight);
 			dmv.setWidth(fSliderWidth);
@@ -183,14 +181,12 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager)
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
-	{
-
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.glMouseListener = glMouseListener;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 		iMaxCols = 5;
 		init(gl);
 
@@ -329,7 +325,8 @@ public class GLGlyphSliderView
 				generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 					EIDType.EXPERIMENT_INDEX);
 
-				SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION);
+				SelectionCommand command =
+					new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION);
 				sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 				ISelectionDelta selectionDelta = selectionManager.getDelta();
@@ -408,7 +405,7 @@ public class GLGlyphSliderView
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 }

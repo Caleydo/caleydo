@@ -24,7 +24,7 @@ public interface IViewManager
 	public IView createView(final EManagedObjectType useViewType, final int iParentContainerId,
 		final String sLabel);
 
-	public AGLEventListener createGLEventListener(ECommandType type, final int iGLCanvasID, String sLabel,
+	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas, String sLabel,
 		IViewFrustum viewFrustum);
 
 	public IView createGLView(final EManagedObjectType type, final int iParentContainerID, final String sLabel);
@@ -35,22 +35,22 @@ public interface IViewManager
 
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas);
 
-	public boolean unregisterGLCanvas(final int iGLCanvasId);
+	public boolean unregisterGLCanvas(final GLCaleydoCanvas glCanvas);
 
-	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
+	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLEventListener gLEventListener);
 
-	public void unregisterGLEventListener(final int iGLEventListenerID);
+	public void unregisterGLEventListener(final AGLEventListener glEventListener);
 
 	/**
 	 * Remove canvas from animator. Therefore the canvas is not rendered anymore.
 	 */
-	public void registerGLCanvasToAnimator(final int iGLCanvasID);
+	public void registerGLCanvasToAnimator(final GLCaleydoCanvas glCanvas);
 
 	/**
 	 * Add canvas to animator. Therefore the canvas is rendered by the animator loop.
 	 */
-	public void unregisterGLCanvasFromAnimator(final int iGLCanvasID);
+	public void unregisterGLCanvasFromAnimator(final GLCaleydoCanvas glCanvas);
 
 	/**
 	 * Get the PickingManager which is responsible for system wide picking

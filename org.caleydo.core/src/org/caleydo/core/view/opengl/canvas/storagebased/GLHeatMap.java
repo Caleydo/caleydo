@@ -38,9 +38,11 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -91,13 +93,13 @@ public class GLHeatMap
 	/**
 	 * Constructor.
 	 * 
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHeatMap(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLHeatMap(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 
-		super(iGLCanvasID, sLabel, viewFrustum);
+		super(glCanvas, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
@@ -111,6 +113,8 @@ public class GLHeatMap
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		fAlXDistances = new ArrayList<Float>();
+
+		glKeyListener = new GLHeatMapKeyListener(this);
 	}
 
 	@Override
@@ -122,26 +126,35 @@ public class GLHeatMap
 	public void initLocal(GL gl) {
 		bRenderStorageHorizontally = false;
 
+		// Register keyboard listener to GL canvas
+		parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);			
+		
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
+		final IGLCanvasRemoteRendering remoteRenderingGLView, GLInfoAreaManager infoAreaManager) {
 
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLView;
 
+		// Register keyboard listener to GL canvas
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);			
+			}
+		});
+		
 		bRenderStorageHorizontally = false;
 
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
-
 	}
 
 	@Override
@@ -199,7 +212,7 @@ public class GLHeatMap
 		display(gl);
 		checkForHits(gl);
 
-		// pickingTriggerMouseAdapter.resetEvents();
+		// glMouseListener.resetEvents();
 	}
 
 	@Override

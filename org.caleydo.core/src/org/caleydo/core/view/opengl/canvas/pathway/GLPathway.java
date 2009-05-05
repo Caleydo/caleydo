@@ -56,6 +56,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -70,8 +71,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableGeneMappingLi
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
@@ -136,8 +136,8 @@ public class GLPathway
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, false);
+	public GLPathway(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_PATHWAY;
 		pathwayManager = generalManager.getPathwayManager();
 
@@ -192,11 +192,11 @@ public class GLPathway
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -298,7 +298,7 @@ public class GLPathway
 		// front level
 		gl.glTranslatef(0, tmp, 0);
 
-		if (remoteRenderingGLCanvas.getBucketMouseWheelListener() != null) {
+		if (remoteRenderingGLView.getBucketMouseWheelListener() != null) {
 			// if
 			// (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 			// .getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)

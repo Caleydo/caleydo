@@ -137,7 +137,7 @@ public class CaleydoProjectWizard
 					if (glEventListener instanceof GLHeatMap
 						|| glEventListener instanceof GLParallelCoordinates) {
 						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-							glEventListener.getID());
+							glEventListener);
 					}
 				}
 

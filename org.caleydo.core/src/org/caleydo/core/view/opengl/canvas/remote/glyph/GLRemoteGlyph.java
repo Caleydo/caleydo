@@ -15,9 +15,10 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -43,14 +44,14 @@ public class GLRemoteGlyph
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+	public GLRemoteGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_GLYPH;
 		viewIDs_ = new ArrayList<Integer>();
 		// mouseWheelListener_ = new GlyphMouseListener(this);
 
 		// Unregister standard mouse wheel listener
-		// parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+		// parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		// Register specialized bucket mouse wheel listener
 		// parentGLCanvas.addMouseWheelListener(mouseWheelListener_);
 	}
@@ -81,8 +82,8 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
 		// not implemented for a remote view
@@ -102,7 +103,7 @@ public class GLRemoteGlyph
 
 		display(gl);
 		checkForHits(gl);
-		// pickingTriggerMouseAdapter.resetEvents();
+		// glMouseListener.resetEvents();
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.PropagationListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.TriggerPropagationCommandListener;
 
@@ -13,8 +14,15 @@ public class GLPropagationHeatMap
 	protected PropagationListener propagationListener = null;
 	protected TriggerPropagationCommandListener triggerPropagationCommandListener = null;
 	
-	public GLPropagationHeatMap(int canvasID, String label, IViewFrustum viewFrustum) {
-		super(canvasID, label, viewFrustum);
+	/**
+	 * Constructor.
+	 * 
+	 * @param glCanvas
+	 * @param label
+	 * @param viewFrustum
+	 */
+	public GLPropagationHeatMap(GLCaleydoCanvas glCanvas, String label, IViewFrustum viewFrustum) {
+		super(glCanvas, label, viewFrustum);
 
 		this.listModeEnabled = true;
 		bUseDetailLevel = false;

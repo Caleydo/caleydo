@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 
-import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 
 import org.caleydo.core.command.ECommandType;
@@ -65,7 +64,7 @@ public class ViewManager
 	implements IViewManager {
 	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
-	protected HashMap<Integer, ArrayList<AGLEventListener>> hashGLCanvasID2GLEventListeners;
+	protected HashMap<GLCaleydoCanvas, ArrayList<AGLEventListener>> hashGLCanvas2GLEventListeners;
 
 	protected HashMap<Integer, AGLEventListener> hashGLEventListenerID2GLEventListener;
 
@@ -92,7 +91,7 @@ public class ViewManager
 		infoAreaManager = new GLInfoAreaManager();
 
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCaleydoCanvas>();
-		hashGLCanvasID2GLEventListeners = new HashMap<Integer, ArrayList<AGLEventListener>>();
+		hashGLCanvas2GLEventListeners = new HashMap<GLCaleydoCanvas, ArrayList<AGLEventListener>>();
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLEventListener>();
 
 		arWorkspaceJFrame = new ArrayList<JFrame>();
@@ -194,7 +193,7 @@ public class ViewManager
 	}
 
 	@Override
-	public AGLEventListener createGLEventListener(ECommandType type, final int iGLCanvasID,
+	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
 		final String sLabel, final IViewFrustum viewFrustum) {
 		GeneralManager.get().getLogger().log(Level.INFO,
 			"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]");
@@ -203,70 +202,79 @@ public class ViewManager
 
 		switch (type) {
 			case CREATE_GL_HEAT_MAP_3D:
-				glEventListener = new GLHeatMap(iGLCanvasID, sLabel, viewFrustum);
+
+				glEventListener =
+					new GLHeatMap(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-				glEventListener = new GLPropagationHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLPropagationHeatMap(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-				glEventListener = new GLHierarchicalHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLHierarchicalHeatMap(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
-				glEventListener = new GLPathway(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLPathway(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PARALLEL_COORDINATES:
-				glEventListener = new GLParallelCoordinates(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLParallelCoordinates(glCanvas, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_GLYPH:
-				glEventListener = new GLGlyph(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLGlyph(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_GLYPH_SLIDER:
-				glEventListener = new GLGlyphSliderView(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLGlyphSliderView(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_CELL:
-				glEventListener = new GLCell(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLCell(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_BUCKET_3D:
 				glEventListener =
-					new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
+					new GLRemoteRendering(glCanvas, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
 				break;
 
 			case CREATE_GL_JUKEBOX_3D:
 				glEventListener =
-					new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
+					new GLRemoteRendering(glCanvas, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
 				break;
 
 			case CREATE_GL_REMOTE_GLYPH:
-				glEventListener = new GLRemoteGlyph(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLRemoteGlyph(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_RADIAL_HIERARCHY:
-				glEventListener = new GLRadialHierarchy(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLRadialHierarchy(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_HYPERBOLIC:
-				glEventListener = new GLHyperbolic(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener =
+					new GLHyperbolic(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_HISTOGRAM:
-				glEventListener = new GLHistogram(iGLCanvasID, sLabel, viewFrustum);
-				break;
 
+				glEventListener =
+					new GLHistogram(glCanvas, sLabel, viewFrustum);
+				break;
+				
 			case CREATE_GL_DENDROGRAM_HORIZONTAL:
-				glEventListener = new GLDendrogramHorizontal(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLDendrogramHorizontal(glCanvas, sLabel, viewFrustum);
 				break;
-
+				
 			case CREATE_GL_DENDROGRAM_VERTICAL:
-				glEventListener = new GLDendrogramVertical(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLDendrogramVertical(glCanvas, sLabel, viewFrustum);
 				break;
 
 			default:
@@ -275,8 +283,8 @@ public class ViewManager
 						+ "]");
 		}
 
-		registerGLEventListenerByGLCanvasID(iGLCanvasID, glEventListener);
-
+		registerGLEventListenerByGLCanvas(glCanvas, glEventListener);
+		
 		return glEventListener;
 	}
 
@@ -298,61 +306,61 @@ public class ViewManager
 	}
 
 	@Override
-	public boolean unregisterGLCanvas(final int iGLCanvasId) {
-		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId)) {
-			fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasId));
+	public boolean unregisterGLCanvas(final GLCaleydoCanvas glCanvas) {
+		
+		if (glCanvas == null)
+			return false;
+		
+		fpsAnimator.remove(glCanvas);
+		hashGLCanvasID2GLCanvas.remove(glCanvas.getID());
+		hashGLCanvas2GLEventListeners.remove(glCanvas);
 
-			hashGLCanvasID2GLCanvas.remove(iGLCanvasId);
-			hashGLCanvasID2GLEventListeners.remove(iGLCanvasId);
-		}
-
-		return false;
+		return true;
 	}
 
 	@Override
-	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
+	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLEventListener gLEventListener) {
 		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener);
 
-		if (iGLCanvasID == -1)
+		// This is the case when a view is rendered remote
+		if (glCanvas == null)
 			return;
-
-		if (!hashGLCanvasID2GLEventListeners.containsKey(iGLCanvasID)) {
-			hashGLCanvasID2GLEventListeners.put(iGLCanvasID, new ArrayList<AGLEventListener>());
+		
+		if (!hashGLCanvas2GLEventListeners.containsKey(glCanvas)) {
+			hashGLCanvas2GLEventListeners.put(glCanvas, new ArrayList<AGLEventListener>());
 		}
 
-		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
-		hashGLCanvasID2GLCanvas.get(iGLCanvasID).addGLEventListener(gLEventListener);
+		hashGLCanvas2GLEventListeners.get(glCanvas).add(gLEventListener);
+		glCanvas.addGLEventListener(gLEventListener);
 	}
 
 	@Override
 	public void cleanup() {
 
 		hashGLCanvasID2GLCanvas.clear();
-		hashGLCanvasID2GLEventListeners.clear();
+		hashGLCanvas2GLEventListeners.clear();
 		hashGLEventListenerID2GLEventListener.clear();
 		hashItems.clear();
 	}
 
 	@Override
-	public void unregisterGLEventListener(final int iGLEventListenerID) {
-		GLEventListener gLEventListenerToRemove =
-			hashGLEventListenerID2GLEventListener.get(iGLEventListenerID);
+	public void unregisterGLEventListener(final AGLEventListener glEventListener) {
 
-		if (gLEventListenerToRemove == null)
+		if (glEventListener == null)
 			return;
 
-		GLCaleydoCanvas parentGLCanvas = ((AGLEventListener) gLEventListenerToRemove).getParentGLCanvas();
+		GLCaleydoCanvas parentGLCanvas = ((AGLEventListener) glEventListener).getParentGLCanvas();
 
 		if (parentGLCanvas != null) {
-			parentGLCanvas.removeGLEventListener(gLEventListenerToRemove);
+			parentGLCanvas.removeGLEventListener(glEventListener);
 
-			if (hashGLCanvasID2GLEventListeners.containsKey(parentGLCanvas.getID())) {
-				hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(gLEventListenerToRemove);
+			if (hashGLCanvas2GLEventListeners.containsKey(parentGLCanvas)) {
+				hashGLCanvas2GLEventListeners.get(parentGLCanvas).remove(glEventListener);
 			}
 		}
 
-		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
+		hashGLEventListenerID2GLEventListener.remove(glEventListener.getID());
 	}
 
 	@Override
@@ -396,13 +404,13 @@ public class ViewManager
 	}
 
 	@Override
-	public void registerGLCanvasToAnimator(final int iGLCanvasID) {
-		fpsAnimator.add(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
+	public void registerGLCanvasToAnimator(final GLCaleydoCanvas glCanvas) {
+		fpsAnimator.add(glCanvas);
 	}
 
 	@Override
-	public void unregisterGLCanvasFromAnimator(final int iGLCanvasID) {
-		fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
+	public void unregisterGLCanvasFromAnimator(final GLCaleydoCanvas glCanvas) {
+		fpsAnimator.remove(glCanvas);
 	}
 
 	public void setActiveSWTView(Composite composite) {

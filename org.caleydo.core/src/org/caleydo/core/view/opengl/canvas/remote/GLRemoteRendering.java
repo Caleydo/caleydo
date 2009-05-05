@@ -40,9 +40,9 @@ import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.CloseOrResetViewsEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
-import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -55,6 +55,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -83,7 +84,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLPropagationHeatMap;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
@@ -225,9 +226,9 @@ public class GLRemoteRendering
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteRendering(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
+	public GLRemoteRendering(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+		super(glCanvas, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
@@ -243,7 +244,7 @@ public class GLRemoteRendering
 				new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
-			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+			parentGLCanvas.removeMouseWheelListener(glMouseListener);
 			// Register specialized bucket mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			// parentGLCanvas.addMouseListener(bucketMouseWheelListener);
@@ -281,7 +282,7 @@ public class GLRemoteRendering
 			glConnectionLineRenderer = null;
 		}
 
-		pickingTriggerMouseAdapter.addGLCanvas(this);
+		glMouseListener.addGLCanvas(this);
 
 		arSlerpActions = new ArrayList<SlerpAction>();
 
@@ -312,8 +313,8 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
@@ -338,7 +339,7 @@ public class GLRemoteRendering
 		initializeContainedViews(gl);
 
 		createSelectionHeatMap();
-		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas, null);
+		glSelectionHeatMap.initRemote(gl, this, glMouseListener, this, null);
 
 		if (generalManager.isWiiModeActive())
 			glOffScreenRenderer.init(gl);
@@ -363,7 +364,7 @@ public class GLRemoteRendering
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
-		// if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed() &&
+		// if (glMouseListener.wasRightMouseButtonPressed() &&
 		// !bucketMouseWheelListener.isZoomedIn()
 		// && !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
 		// bEnableNavigationOverlay = !bEnableNavigationOverlay;
@@ -374,7 +375,7 @@ public class GLRemoteRendering
 		// glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
 		// }
 		// }
-		// else if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		// else if (glMouseListener.wasMouseReleased()) {
 		// bRightMouseClickEventInvalid = false;
 		// }
 
@@ -392,15 +393,15 @@ public class GLRemoteRendering
 			renderBusyMode(gl);
 		}
 
-		if (pickingTriggerMouseAdapter.getPickedPoint() != null) {
-			dragAndDrop.setCurrentMousePos(gl, pickingTriggerMouseAdapter.getPickedPoint());
+		if (glMouseListener.getPickedPoint() != null) {
+			dragAndDrop.setCurrentMousePos(gl, glMouseListener.getPickedPoint());
 		}
 
 		if (dragAndDrop.isDragActionRunning()) {
 			dragAndDrop.renderDragThumbnailTexture(gl);
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
+		if (glMouseListener.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
 			int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
 
 			// System.out.println("over: " +iExternalID);
@@ -601,7 +602,7 @@ public class GLRemoteRendering
 				RemoteLevelElement element = focusLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this,
+				tmpGLEventListener.initRemote(gl, this, glMouseListener, this,
 					infoAreaManager);
 
 				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
@@ -616,7 +617,7 @@ public class GLRemoteRendering
 				RemoteLevelElement element = stackLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this,
+				tmpGLEventListener.initRemote(gl, this, glMouseListener, this,
 					infoAreaManager);
 
 				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
@@ -627,13 +628,13 @@ public class GLRemoteRendering
 				RemoteLevelElement element = poolLevel.getNextFree();
 				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this,
+				tmpGLEventListener.initRemote(gl, this, glMouseListener, this,
 					infoAreaManager);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.VERY_LOW);
 				tmpGLEventListener.setRemoteLevelElement(element);
 			}
 
-			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
+			// glMouseListener.addGLCanvas(tmpGLEventListener);
 			pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID);
 
 			generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
@@ -2372,8 +2373,8 @@ public class GLRemoteRendering
 				new BucketMouseWheelListener(this, (BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
-			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
-			parentGLCanvas.removeMouseListener(pickingTriggerMouseAdapter);
+			parentGLCanvas.removeMouseWheelListener(glMouseListener);
+			parentGLCanvas.removeMouseListener(glMouseListener);
 			// Register specialized bucket mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
@@ -2386,7 +2387,7 @@ public class GLRemoteRendering
 			// Unregister bucket wheel listener
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 			// Register standard mouse wheel listener
-			parentGLCanvas.addMouseWheelListener(pickingTriggerMouseAdapter);
+			parentGLCanvas.addMouseWheelListener(glMouseListener);
 
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
 		}
@@ -2710,7 +2711,7 @@ public class GLRemoteRendering
 		SlerpAction slerpActionTransition = new SlerpAction(origin, destination);
 		arSlerpActions.add(slerpActionTransition);
 
-		view.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this, infoAreaManager);
+		view.initRemote(gl, this, glMouseListener, this, infoAreaManager);
 		view.setDetailLevel(EDetailLevel.MEDIUM);
 
 		return true;

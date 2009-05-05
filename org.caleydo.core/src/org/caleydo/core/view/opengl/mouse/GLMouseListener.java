@@ -23,7 +23,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class PickingMouseListener
+public class GLMouseListener
 	extends MouseAdapter
 	implements MouseMotionListener, MouseWheelListener {
 
@@ -63,7 +63,7 @@ public class PickingMouseListener
 	/**
 	 * Constructor.
 	 */
-	public PickingMouseListener() {
+	public GLMouseListener() {
 		super();
 		pickedPointDragStart = new Point();
 

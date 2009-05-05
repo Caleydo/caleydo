@@ -17,6 +17,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
@@ -208,8 +209,10 @@ public class CmdCreateGLEventListener
 			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
+		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(iParentContainerId);
+		
 		createdObject =
-			glCanvasManager.createGLEventListener(viewType, iParentContainerId, sLabel, viewFrustum);
+			glCanvasManager.createGLEventListener(viewType, glCanvas, sLabel, viewFrustum);
 
 		if (iExternalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);

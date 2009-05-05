@@ -14,7 +14,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 
 import com.sun.opengl.util.BufferUtil;
@@ -213,33 +213,33 @@ public class PickingManager {
 		if (bEnablePicking == false)
 			return;
 
-		PickingMouseListener pickingTriggerMouseAdapter =
-			glView.getParentGLCanvas().getJoglMouseListener();
+		GLMouseListener glMouseListener =
+			glView.getParentGLCanvas().getGLMouseListener();
 
 		Point pickPoint = null;
 
 		EPickingMode ePickingMode = EPickingMode.CLICKED;
 
-		if (pickingTriggerMouseAdapter.wasMouseDoubleClicked()) {
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		if (glMouseListener.wasMouseDoubleClicked()) {
+			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.DOUBLE_CLICKED;
 			ContextMenu.get().flush();
 		}
-		else if (pickingTriggerMouseAdapter.wasMouseDragged()) {
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		else if (glMouseListener.wasMouseDragged()) {
+			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.DRAGGED;
 			ContextMenu.get().flush();
 		}
-		else if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed()) {
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		else if (glMouseListener.wasLeftMouseButtonPressed()) {
+			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.CLICKED;
 //			ContextMenu.get().flush();
 		}
-		else if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed()) {
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		else if (glMouseListener.wasRightMouseButtonPressed()) {
+			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.RIGHT_CLICKED;
 		}
-		else if (pickingTriggerMouseAdapter.wasMouseMoved()) {
+		else if (glMouseListener.wasMouseMoved()) {
 			// Restart timer
 			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
 			// System.nanoTime());
@@ -247,7 +247,7 @@ public class PickingManager {
 		}
 		else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
 			&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true) {
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			pickPoint = glMouseListener.getPickedPoint();
 			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
 			// System.nanoTime());
 			ePickingMode = EPickingMode.MOUSE_OVER;
@@ -310,7 +310,7 @@ public class PickingManager {
 		ArrayList<Integer> iAlPickedObjectId = processHits(iHitCount, iArPickingBuffer);
 
 		if (iAlPickedObjectId.size() > 0) {
-			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint, pickingTriggerMouseAdapter
+			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint, glMouseListener
 				.getPickedPointDragStart());
 		}
 	}

@@ -101,7 +101,7 @@ public class PartListener
 
 		if (viewPart instanceof AGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
-				((AGLViewPart) viewPart).getGLCanvas().getID());
+				((AGLViewPart) viewPart).getGLCanvas());
 		}
 		
 		if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
@@ -139,7 +139,7 @@ public class PartListener
 		AGLViewPart glViewPart = (AGLViewPart) activePart;
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvasFromAnimator(
-			glViewPart.getGLCanvas().getID());
+			glViewPart.getGLCanvas());
 	}
 
 	@Override
@@ -156,6 +156,10 @@ public class PartListener
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		
 		log.info("partActivated(): " +viewPart);
+		
+		// Make sure that keyboard listener gets the events
+		if (viewPart.getSWTComposite() != null)
+			viewPart.getSWTComposite().forceFocus();
 
 		sendViewActivationEvent(viewPart);
 	}
