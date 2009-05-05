@@ -40,6 +40,7 @@ import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.CloseOrResetViewsEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -77,6 +78,7 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.EnableGeneMappingList
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleNavigationModeListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -197,6 +199,8 @@ public class GLRemoteRendering
 	private boolean neighborhoodEnabled = false;
 
 	private ArrayList<ASerializedView> newViews;
+	
+	private GLInfoAreaManager infoAreaManager;
 
 	protected AddPathwayListener addPathwayListener = null;
 	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
@@ -209,8 +213,9 @@ public class GLRemoteRendering
 
 	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
 	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
-	private GLInfoAreaManager infoAreaManager;
-
+	
+	protected ToggleNavigationModeListener toggleNavigationModeListener = null;
+	
 	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
 	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
 
@@ -2949,6 +2954,10 @@ public class GLRemoteRendering
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		
+		toggleNavigationModeListener = new ToggleNavigationModeListener();
+		toggleNavigationModeListener.setHandler(this);
+		eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
 	}
 
 	/**
@@ -3043,5 +3052,9 @@ public class GLRemoteRendering
 
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
+	}
+	
+	public void toggleNavigationMode() {
+		this.bEnableNavigationOverlay = !bEnableNavigationOverlay;
 	}
 }

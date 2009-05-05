@@ -29,6 +29,5 @@ public class ClearSelectionsAction
 		ClearSelectionsEvent event = new ClearSelectionsEvent();
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
-		// triggerCmdExternalAction(EExternalActionType.CLEAR_SELECTIONS);
 	};
 }

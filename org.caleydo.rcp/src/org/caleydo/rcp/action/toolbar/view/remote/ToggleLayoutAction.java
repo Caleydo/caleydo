@@ -1,6 +1,5 @@
 package org.caleydo.rcp.action.toolbar.view.remote;
 
-import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -28,6 +27,7 @@ public class ToggleLayoutAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE);
+		// not in use ATM
+//		triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE);
 	};
 }

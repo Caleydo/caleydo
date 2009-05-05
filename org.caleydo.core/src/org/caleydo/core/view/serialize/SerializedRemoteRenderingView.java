@@ -59,5 +59,4 @@ public class SerializedRemoteRenderingView
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
-
 }

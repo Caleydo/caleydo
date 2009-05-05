@@ -2,13 +2,10 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 
@@ -21,7 +18,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 public class CmdExternalActionTrigger
 	extends ACmdExternalAttributes
 	implements IMediatorSender {
-	
+
 	private EExternalActionType externalActionType;
 
 	private int iViewId;
@@ -36,34 +33,8 @@ public class CmdExternalActionTrigger
 	@Override
 	public void doCommand() {
 
-		// Clear all selections in all GL views.
-		// This method is not good because the selection in SWT views (e.g. the tabular data viewer) is not cleared.
-		// In general a better way is needed - maybe by using a event command. But for this reason the sender (this class)
-		// must be registered in the event system. This is also bad in case of commands like this.
-		if (externalActionType == EExternalActionType.CLEAR_SELECTIONS) {
-			IEventPublisher eventPublisher = generalManager.getEventPublisher();
-			ClearSelectionsEvent event = new ClearSelectionsEvent();
-			event.setSender(this);
-			eventPublisher.triggerEvent(event);
-		}
-
 		AGLEventListener viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
-		if (viewObject instanceof GLRemoteRendering) {
-			switch (externalActionType) {
-// wpuff: migrated to new event system
-//				case CLOSE_OR_RESET_CONTAINED_VIEWS:
-//					((GLRemoteRendering) viewObject).clearAll();
-//					return;
-				case REMOTE_RENDERING_TOGGLE_LAYOUT_MODE:
-					((GLRemoteRendering) viewObject).toggleLayoutMode();
-					return;
-// wpuff: migrated to new event system
-//				case REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE:
-//					((GLRemoteRendering) viewObject).toggleConnectionLines();
-//					return;
-			}
-		}
-		else if (viewObject instanceof AStorageBasedView) {
+		if (viewObject instanceof AStorageBasedView) {
 			switch (externalActionType) {
 				case STORAGEBASED_PROPAGATE_SELECTIONS:
 					((AStorageBasedView) viewObject).broadcastElements();

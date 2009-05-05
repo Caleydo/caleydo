@@ -6,6 +6,7 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.remote.CloseOrResetViewsEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
 
@@ -31,6 +32,12 @@ public class RemoteRenderingToolBarMediator {
 
 	public void disableConnectionLines() {
 		DisableConnectionLinesEvent event = new DisableConnectionLinesEvent();
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
+	}
+
+	public void toggleNavigationMode() {
+		ToggleNavigationModeEvent event = new ToggleNavigationModeEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
