@@ -11,10 +11,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -40,8 +36,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  */
 public class GLCell
-	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender {
+	extends AGLEventListener {
 //	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 //	private GenericSelectionManager selectionManager;
@@ -230,42 +225,6 @@ public class GLCell
 	public int getNumberOfSelections(ESelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		// generalManager.getLogger().log(Level.FINE,
-		// "Update called by " + eventTrigger.getClass().getSimpleName());
-		//
-		// if (selectionDelta.getIDType() != EIDType.DAVID)
-		// return;
-
-		// TODO review this, seems not to do anything??? ADD and REMOVE are no
-		// longer supported
-		// for (SelectionDeltaItem item : selectionDelta)
-		// {
-		// if (item.getSelectionType() == ESelectionType.ADD
-		// || item.getSelectionType() == ESelectionType.REMOVE)
-		// {
-		// break;
-		// }
-		// else
-		// {
-		// selectionManager.clearSelections();
-		// break;
-		// }
-		// }
-		//
-		// resolveExternalSelectionDelta(selectionDelta);
-		//
-		// setDisplayListDirty();
-
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package org.caleydo.rcp.views.swt;
 
 import org.caleydo.core.manager.IUseCase;
-import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
@@ -45,10 +44,6 @@ public class TabularDataView
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		GeneralManager.get().getEventPublisher().removeSender(EMediatorType.SELECTION_MEDIATOR,
-			tabularDataView);
-
 		GeneralManager.get().getUseCase().removeView(tabularDataView);
 	}
 

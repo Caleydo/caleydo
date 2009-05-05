@@ -1,10 +1,5 @@
 package org.caleydo.rcp.views.swt;
 
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.eclipse.swt.SWT;
@@ -19,8 +14,8 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  */
 public class SelectionInfoView
-	extends ViewPart
-	implements IMediatorReceiver { //, ISizeProvider {
+	extends ViewPart {
+
 	public static final String ID = "org.caleydo.rcp.views.swt.SelectionInfoView";
 
 	public static boolean bHorizontal = false;
@@ -29,8 +24,6 @@ public class SelectionInfoView
 
 	@Override
 	public void createPartControl(Composite parent) {
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
 		if (!GenomePerspective.bIsWideScreen) {
@@ -52,13 +45,6 @@ public class SelectionInfoView
 	@Override
 	public void setFocus() {
 
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	private void addInfoBar() {
@@ -84,12 +70,6 @@ public class SelectionInfoView
 		InfoArea infoArea = new InfoArea();
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);
-	}
-
-	@Override
-	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-
 	}
 
 //	@Override

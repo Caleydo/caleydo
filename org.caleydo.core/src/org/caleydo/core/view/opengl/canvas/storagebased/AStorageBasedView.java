@@ -22,9 +22,6 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -59,8 +56,7 @@ public abstract class AStorageBasedView
 	extends AGLEventListener
 	implements 
 		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
-		IViewCommandHandler, 
-		IMediatorSender {
+		IViewCommandHandler { 
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -400,10 +396,10 @@ public abstract class AStorageBasedView
 		resetView();
 	}
 
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-	}
+//	@Override
+//	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
+//		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+//	}
 
 //	@Override
 //	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,

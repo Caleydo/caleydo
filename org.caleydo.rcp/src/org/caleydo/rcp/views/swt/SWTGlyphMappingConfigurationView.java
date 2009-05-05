@@ -1,7 +1,5 @@
 package org.caleydo.rcp.views.swt;
 
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
@@ -35,9 +33,6 @@ public class SWTGlyphMappingConfigurationView
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) GMCview);
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(GMCview.getID());
 	}

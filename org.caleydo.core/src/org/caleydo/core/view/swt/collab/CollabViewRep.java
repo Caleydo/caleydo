@@ -3,10 +3,6 @@ package org.caleydo.core.view.swt.collab;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.IView;
@@ -31,7 +27,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class CollabViewRep
 	extends ASWTView
-	implements IView, ISWTView, IMediatorReceiver, IMediatorSender {
+	implements IView, ISWTView {
 
 	/** utility class for logging */
 	private Logger log = Logger.getLogger(CollabViewRep.class.getName());
@@ -165,20 +161,6 @@ public class CollabViewRep
 	
 	@Override
 	public void drawView() {
-
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-
-		}
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 
 	}
 

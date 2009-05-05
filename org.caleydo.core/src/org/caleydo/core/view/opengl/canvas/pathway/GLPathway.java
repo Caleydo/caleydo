@@ -30,17 +30,13 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.EEventType;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IDListEventContainer;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -87,8 +83,7 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class GLPathway
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler,
-	IMediatorSender {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler {
 
 	private PathwayGraph pathway;
 
@@ -633,12 +628,10 @@ public class GLPathway
 									tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG);
 
 							if (pathway != null) {
-								IDListEventContainer<Integer> idListEventContainer =
-									new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID,
-										EIDType.PATHWAY);
-								idListEventContainer.addID(pathway.getID());
-
-								triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+								LoadPathwayEvent event = new LoadPathwayEvent();
+								event.setSender(this);
+								event.setPathwayID(pathway.getID());
+								eventPublisher.triggerEvent(event);
 							}
 						}
 						else {
@@ -830,12 +823,6 @@ public class GLPathway
 		selectionManager.setVADelta(delta);
 		// reactOnExternalSelection();
 		setDisplayListDirty();
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-
 	}
 
 	@Override

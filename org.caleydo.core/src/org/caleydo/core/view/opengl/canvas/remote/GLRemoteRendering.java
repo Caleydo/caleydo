@@ -25,11 +25,6 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IDListEventContainer;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
@@ -115,7 +110,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering {
+	implements ISelectionUpdateHandler, IGLCanvasRemoteRendering {
 
 	Logger log = Logger.getLogger(GLRemoteRendering.class.getName());
 
@@ -188,7 +183,8 @@ public class GLRemoteRendering
 
 	private boolean connectionLinesEnabled = true;
 
-	private boolean bRightMouseClickEventInvalid = false;
+	// never read locally
+	// private boolean bRightMouseClickEventInvalid = false;
 
 	/** stores if the gene-mapping should be enabled */
 	private boolean geneMappingEnabled = true;
@@ -289,17 +285,10 @@ public class GLRemoteRendering
 		// iAlUninitializedPathwayIDs = new ArrayList<Integer>();
 		newViews = new ArrayList<ASerializedView>();
 
-		createEventMediator();
-
 		dragAndDrop = new GLDragAndDrop();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
-		// Registration to event system
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-		eventPublisher.addSender(EMediatorType.VIEW_SELECTION, this);
 		registerEventListeners();
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
@@ -336,8 +325,6 @@ public class GLRemoteRendering
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
-		initializeContainedViews(gl);
-
 		createSelectionHeatMap();
 		glSelectionHeatMap.initRemote(gl, this, glMouseListener, this, null);
 
@@ -356,8 +343,6 @@ public class GLRemoteRendering
 		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
 		glSelectionHeatMap.initData();
-
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
 	}
@@ -579,69 +564,6 @@ public class GLRemoteRendering
 
 	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
 		containedViewIDs = iAlInitialContainedViewIDs;
-	}
-
-	private void initializeContainedViews(final GL gl) {
-		if (containedViewIDs == null)
-			return;
-
-		for (int iContainedViewID : containedViewIDs) {
-			AGLEventListener tmpGLEventListener =
-				generalManager.getViewGLCanvasManager().getGLEventListener(iContainedViewID);
-
-			// Ignore pathway views upon startup
-			// because they will be activated when pathway loader thread has
-			// finished
-			if (tmpGLEventListener == this || tmpGLEventListener instanceof GLPathway) {
-				continue;
-			}
-
-			int iViewID = tmpGLEventListener.getID();
-
-			if (focusLevel.hasFreePosition()) {
-				RemoteLevelElement element = focusLevel.getNextFree();
-				element.setContainedElementID(iViewID);
-
-				tmpGLEventListener.initRemote(gl, this, glMouseListener, this,
-					infoAreaManager);
-
-				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
-				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
-				tmpGLEventListener.setRemoteLevelElement(element);
-
-				// generalManager.getGUIBridge().setActiveGLSubView(this,
-				// tmpGLEventListener);
-
-			}
-			else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
-				RemoteLevelElement element = stackLevel.getNextFree();
-				element.setContainedElementID(iViewID);
-
-				tmpGLEventListener.initRemote(gl, this, glMouseListener, this,
-					infoAreaManager);
-
-				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
-				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
-				tmpGLEventListener.setRemoteLevelElement(element);
-			}
-			else if (poolLevel.hasFreePosition()) {
-				RemoteLevelElement element = poolLevel.getNextFree();
-				element.setContainedElementID(iViewID);
-
-				tmpGLEventListener.initRemote(gl, this, glMouseListener, this,
-					infoAreaManager);
-				tmpGLEventListener.setDetailLevel(EDetailLevel.VERY_LOW);
-				tmpGLEventListener.setRemoteLevelElement(element);
-			}
-
-			// glMouseListener.addGLCanvas(tmpGLEventListener);
-			pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID);
-
-			generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-				(IMediatorSender) tmpGLEventListener);
-			generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				(IMediatorReceiver) tmpGLEventListener);
-		}
 	}
 
 	public void renderBucketWall(final GL gl, boolean bRenderBorder, RemoteLevelElement element) {
@@ -1928,71 +1850,6 @@ public class GLRemoteRendering
 		iSlerpFactor = 0;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-
-		switch (eventContainer.getEventType()) {
-			// pathway loading based on gene id
-			// case LOAD_PATHWAY_BY_GENE:
-			//
-			// // take care here, if we ever use non integer ids this has to be
-			// // cast to raw type first to determine the actual id data types
-			// IDListEventContainer<Integer> idContainer = (IDListEventContainer<Integer>) eventContainer;
-			// if (idContainer.getIDType() == EIDType.REFSEQ_MRNA_INT) {
-			// int iGraphItemID = 0;
-			// Integer iDavidID = -1;
-			// ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem =
-			// new ArrayList<ICaleydoGraphItem>();
-			//
-			// for (Integer iRefSeqID : idContainer.getIDs()) {
-			// iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
-			//
-			// if (iDavidID == null || iDavidID == -1)
-			// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
-			//
-			// iGraphItemID =
-			// generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(
-			// iDavidID);
-			//
-			// if (iGraphItemID == -1) {
-			// continue;
-			// }
-			//
-			// PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-			// (PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(
-			// iGraphItemID);
-			//
-			// if (tmpPathwayVertexGraphItem == null) {
-			// continue;
-			// }
-			//
-			// alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
-			// }
-			//
-			// if (!alPathwayVertexGraphItem.isEmpty()) {
-			// loadDependentPathways(alPathwayVertexGraphItem);
-			// }
-			// }
-			// else
-			// throw new IllegalStateException("Not Implemented");
-			// break;
-			// Handle incoming pathways
-			case LOAD_PATHWAY_BY_PATHWAY_ID:
-				IDListEventContainer<Integer> pathwayIDContainer =
-					(IDListEventContainer<Integer>) eventContainer;
-
-				for (Integer iPathwayID : pathwayIDContainer.getIDs()) {
-					addPathwayView(iPathwayID);
-				}
-
-				break;
-		}
-
-		bUpdateOffScreenTextures = true;
-	}
-
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		lastSelectionDelta = selectionDelta;
@@ -2349,14 +2206,6 @@ public class GLRemoteRendering
 		return sInfoText.toString();
 	}
 
-	private void createEventMediator() {
-		generalManager.getEventPublisher()
-			.addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) this);
-
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) this);
-	}
-
 	public synchronized void toggleLayoutMode() {
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
@@ -2614,12 +2463,6 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-
-	}
-
-	@Override
 	public synchronized void broadcastElements(EVAOperation type) {
 		// do nothing
 	}
@@ -2745,9 +2588,6 @@ public class GLRemoteRendering
 		if (glView instanceof GLPathway) {
 			initializePathwayView((GLPathway) glView);
 		}
-
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		eventPublisher.addSender(EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) glView);
 
 		triggerMostRecentDelta();
 

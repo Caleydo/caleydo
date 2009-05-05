@@ -22,9 +22,6 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -82,8 +79,7 @@ import org.eclipse.swt.widgets.Text;
 public class TabularDataViewRep
 	extends ASWTView
 	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler, 
-	IViewCommandHandler, IView, ISWTView,
-	IMediatorSender {
+	IViewCommandHandler, IView, ISWTView {
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -143,8 +139,6 @@ public class TabularDataViewRep
 	public TabularDataViewRep(final int iParentContainerId, final String sLabel) {
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
-
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
@@ -842,12 +836,6 @@ public class TabularDataViewRep
 		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-
 	}
 
 	private void addContentRemoveIcon(int iRowIndex) {

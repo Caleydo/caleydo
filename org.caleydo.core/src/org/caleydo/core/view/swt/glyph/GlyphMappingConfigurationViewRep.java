@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.clinical.glyph.EGlyphSettingIDs;
@@ -41,7 +38,8 @@ import org.eclipse.swt.widgets.Composite;
 // FIXME: bad hack, should implement IMediatorReciever
 public class GlyphMappingConfigurationViewRep
 	extends ASWTView
-	implements ISWTView, IMediatorSender {
+	implements ISWTView {
+
 	private class DataPack {
 		public Composite composite;
 		public CCombo comboBox;
@@ -372,11 +370,6 @@ public class GlyphMappingConfigurationViewRep
 		combo.addSelectionListener(listener);
 
 		return combo;
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@Override

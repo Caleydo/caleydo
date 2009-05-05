@@ -15,8 +15,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -597,14 +595,6 @@ public abstract class AGLEventListener
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 		pickingManager.removeViewSpecificData(iUniqueID);
-
-		if (this instanceof IMediatorSender) {
-			generalManager.getEventPublisher().removeSenderFromAllGroups((IMediatorSender) this);
-		}
-
-		if (this instanceof IMediatorReceiver) {
-			generalManager.getEventPublisher().removeReceiverFromAllGroups((IMediatorReceiver) this);
-		}
 
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
 		// .clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);

@@ -15,12 +15,8 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -38,6 +34,7 @@ import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListe
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
@@ -54,9 +51,8 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
-	IViewCommandHandler,
-	IMediatorReceiver {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, 
+	ITriggerSelectionCommandHandler, IViewCommandHandler {
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
@@ -75,7 +71,7 @@ public class InfoArea
 	// private GlyphManager glyphManager;
 	private IIDMappingManager idMappingManager;
 
-	private String shortInfo;
+//	private String shortInfo;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
@@ -83,16 +79,15 @@ public class InfoArea
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
-
+	protected InfoAreaUpdateListener infoAreaUpdateListener = null;
+	
+	
 	/**
 	 * Constructor.
 	 */
 	public InfoArea() {
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-
-		eventPublisher.addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-		eventPublisher.addReceiver(EMediatorType.VIEW_SELECTION, this);
 
 		// glyphManager = GeneralManager.get().getGlyphManager();
 		idMappingManager = generalManager.getIDMappingManager();
@@ -430,29 +425,6 @@ public class InfoArea
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-
-			case INFO_AREA_UPDATE:
-				InfoAreaUpdateEventContainer infoEventContainer =
-					(InfoAreaUpdateEventContainer) eventContainer;
-				AGLEventListener view =
-					generalManager.getViewGLCanvasManager()
-						.getGLEventListener(infoEventContainer.getViewID());
-
-				shortInfo = view.getShortInfo();
-				parentComposite.getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						lblViewInfoContent.setText(shortInfo);
-					}
-				});
-				break;
-		}
-	}
-
-	@Override
 	public void handleRedrawView() {
 		// nothing to do here
 	}
@@ -463,6 +435,18 @@ public class InfoArea
 		experimentTree.removeAll();
 	}
 
+	/**
+	 * handling method for updates about the info text displayed in the this info-area
+	 * @param info short-info of the sender to display 
+	 */
+	public void handleInfoAreaUpdate(final String info) {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				lblViewInfoContent.setText(info);
+			}
+		});
+	}
+	
 	/**
 	 * Registers the listeners for this view to the event system. To release the allocated resources
 	 * unregisterEventListeners() has to be called.
@@ -487,6 +471,10 @@ public class InfoArea
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+		
+		infoAreaUpdateListener = new InfoAreaUpdateListener();
+		infoAreaUpdateListener.setHandler(this);
+		eventPublisher.addListener(InfoAreaUpdateEvent.class, infoAreaUpdateListener);
 	}
 
 	/**
@@ -506,7 +494,6 @@ public class InfoArea
 			eventPublisher.removeListener(triggerSelectionCommandListener);
 			triggerSelectionCommandListener = null;
 		}
-
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -514,6 +501,10 @@ public class InfoArea
 		if (clearSelectionsListener != null) {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
+		}
+		if (infoAreaUpdateListener != null) {
+			eventPublisher.removeListener(infoAreaUpdateListener);
+			infoAreaUpdateListener = null;
 		}
 	}
 }

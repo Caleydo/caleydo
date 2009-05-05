@@ -2,22 +2,15 @@ package org.caleydo.rcp.views.swt.toolbar;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.perspective.GenomePerspective;
-import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -33,7 +26,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class ToolBarView
 	extends ViewPart
-	implements IMediatorReceiver, ISizeProvider {
+	implements ISizeProvider {
 	public static final String ID = "org.caleydo.rcp.views.swt.ToolBarView";
 
 	public static final int TOOLBAR_WIDTH = 173;
@@ -47,8 +40,6 @@ public class ToolBarView
 
 	@Override
 	public void createPartControl(Composite parent) {
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
 		if (GenomePerspective.bIsWideScreen) {
@@ -76,8 +67,6 @@ public class ToolBarView
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	public void removeViewSpecificToolBar(int iViewID) {
@@ -144,9 +133,9 @@ public class ToolBarView
 		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
-	@Override
-	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
+	
+/*
+	public void handleExternalEvent() {
 		if (eventTrigger instanceof AGLEventListener) {
 			final int iViewID = ((AGLEventListener) eventTrigger).getID();
 
@@ -174,7 +163,7 @@ public class ToolBarView
 			});
 		}
 	}
-
+*/
 	@Override
 	public int computePreferredSize(boolean width, int availableParallel, int availablePerpendicular,
 		int preferredResult) {

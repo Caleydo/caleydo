@@ -3,9 +3,6 @@ package org.caleydo.rcp.preferences;
 import java.util.ArrayList;
 
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
@@ -36,7 +33,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class ColorMappingPreferencePage
 	extends FieldEditorPreferencePage
-	implements IWorkbenchPreferencePage, IMediatorSender {
+	implements IWorkbenchPreferencePage {
 
 	private ArrayList<String> sAlTargetColors;
 
@@ -62,9 +59,6 @@ public class ColorMappingPreferencePage
 		sAlBLBY.add("0,0,0");
 		sAlBLBY.add("255,255,0");
 		colorMappings.add(sAlBLBY);
-
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-
 	}
 
 	/**
@@ -184,10 +178,5 @@ public class ColorMappingPreferencePage
 
 		label.setBackground(arColor, iArColorMarkerPoints);
 		label.update();
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer) {
-		GeneralManager.get().getEventPublisher().triggerEvent(mediatorType, this, eventContainer);
 	}
 }

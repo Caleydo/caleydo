@@ -19,10 +19,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -51,8 +47,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Stefan Sauer
  */
 public class GLGlyphSliderView
-	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver {
+	extends AGLEventListener {
 	/**
 	 * 
 	 */
@@ -174,9 +169,6 @@ public class GLGlyphSliderView
 
 	@Override
 	public void initLocal(GL gl) {
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
 		init(gl);
 	}
 
@@ -380,19 +372,6 @@ public class GLGlyphSliderView
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		throw new IllegalStateException("Not implemented yet. Do this now!");
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

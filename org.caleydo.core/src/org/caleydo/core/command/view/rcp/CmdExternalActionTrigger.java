@@ -2,9 +2,6 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -16,8 +13,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
  * @author Marc Streit
  */
 public class CmdExternalActionTrigger
-	extends ACmdExternalAttributes
-	implements IMediatorSender {
+	extends ACmdExternalAttributes {
 
 	private EExternalActionType externalActionType;
 
@@ -71,8 +67,4 @@ public class CmdExternalActionTrigger
 		this.iViewId = iViewId;
 	}
 
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-	}
 }

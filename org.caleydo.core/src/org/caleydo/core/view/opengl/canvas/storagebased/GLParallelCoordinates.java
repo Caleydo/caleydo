@@ -59,9 +59,8 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
+import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -234,9 +233,6 @@ public class GLParallelCoordinates
 
 	@Override
 	public void initLocal(final GL gl) {
-		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
@@ -437,7 +433,6 @@ public class GLParallelCoordinates
 
 		// FIXME: remoteRenderingGLCanvas is null, conceptual error
 		glSelectionHeatMap.initRemote(gl, this, glMouseListener, remoteRenderingGLView, null);
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
 	}
 
 	/**
@@ -1678,7 +1673,10 @@ public class GLParallelCoordinates
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new InfoAreaUpdateEventContainer(iUniqueID));
+		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
+		event.setSender(this);
+		event.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event);
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActive = false;

@@ -5,7 +5,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 

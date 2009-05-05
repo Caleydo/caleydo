@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.GLContext;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.collection.Pair;

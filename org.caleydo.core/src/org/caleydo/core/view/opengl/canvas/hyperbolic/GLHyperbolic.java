@@ -7,10 +7,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -34,8 +30,7 @@ import org.caleydo.core.view.serialize.SerializedDummyView;
  * @author Marc Streit
  */
 public class GLHyperbolic
-	extends AGLEventListener
-	implements IMediatorReceiver {
+	extends AGLEventListener {
 	
 	boolean bIsInListMode = false;
 
@@ -59,9 +54,6 @@ public class GLHyperbolic
 		alSelectionTypes.add(ESelectionType.NORMAL);
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
-		
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) this);
 	}
 
 	@Override
@@ -233,27 +225,6 @@ public class GLHyperbolic
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-
-//		switch (eventContainer.getEventType()) {
-//			// Handle incoming pathways
-//			case LOAD_PATHWAY_BY_PATHWAY_ID:
-//				IDListEventContainer<Integer> pathwayIDContainer =
-//					(IDListEventContainer<Integer>) eventContainer;
-//
-//				iPathwayID = pathwayIDContainer.getIDs().get(0);
-//				
-////				for (Integer iPathwayID : pathwayIDContainer.getIDs()) {
-////					;
-////				}
-//
-//				break;
-//		}
 
 	}
 

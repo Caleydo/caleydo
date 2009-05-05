@@ -5,9 +5,6 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.ViewEvent;
@@ -35,25 +32,19 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  */
 public class PartListener
-	implements IPartListener2, IUniqueObject, IMediatorSender {
+	implements IPartListener2, IUniqueObject {
 
 	Logger log = Logger.getLogger(PartListener.class.getName());
 
 	IEventPublisher eventPublisher; 
 
 	public PartListener() {
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.VIEW_SELECTION, this);
 		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
 	
 	@Override
 	public int getID() {
 		return 815; // FIXXXME unique id for this object or find another uniqueObject to trigger events from
-	}
-	
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		eventPublisher.triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@Override

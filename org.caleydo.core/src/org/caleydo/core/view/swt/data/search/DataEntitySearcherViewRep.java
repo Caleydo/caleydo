@@ -1,7 +1,5 @@
 package org.caleydo.core.view.swt.data.search;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -14,12 +12,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EEventType;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IDListEventContainer;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -37,17 +30,14 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class DataEntitySearcherViewRep
 	extends ASWTView
-	implements ISWTView, IMediatorSender {
+	implements ISWTView {
 
 	/**
 	 * Constructor.
 	 */
 	public DataEntitySearcherViewRep(final int iParentContainerId, final String sLabel) {
-
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER));
-
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	public boolean searchForEntity(final String sEntity) {
@@ -79,11 +69,10 @@ public class DataEntitySearcherViewRep
 		if (pathway == null)
 			return false;
 
-		IDListEventContainer<Integer> idListEventContainer =
-			new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
-		idListEventContainer.addID(pathway.getID());
-
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+		LoadPathwayEvent event = new LoadPathwayEvent();
+		event.setSender(this);
+		event.setPathwayID(pathway.getID());
+		eventPublisher.triggerEvent(event);
 
 		return true;
 	}
@@ -142,11 +131,6 @@ public class DataEntitySearcherViewRep
 
 	@Override
 	public void drawView() {
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	private boolean triggerSearchResult(int iDavidID) {

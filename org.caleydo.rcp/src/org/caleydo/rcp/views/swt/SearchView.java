@@ -12,10 +12,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
@@ -57,8 +53,8 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  */
 public class SearchView
-	extends ViewPart
-	implements IMediatorReceiver {
+	extends ViewPart {
+
 	public static final String ID = "org.caleydo.rcp.views.swt.SearchView";
 
 	public static boolean bHorizontal = false;
@@ -103,7 +99,6 @@ public class SearchView
 	public void createPartControl(Composite parent) {
 
 		generalManager = GeneralManager.get();
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
 		idMappingManager = generalManager.getIDMappingManager();
 
@@ -507,19 +502,6 @@ public class SearchView
 
 	@Override
 	public void setFocus() {
-
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-	}
-
-	@Override
-	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
 
 	}
 
