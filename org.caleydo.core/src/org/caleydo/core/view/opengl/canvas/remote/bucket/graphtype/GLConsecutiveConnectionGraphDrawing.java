@@ -1,32 +1,33 @@
 package org.caleydo.core.view.opengl.canvas.remote.bucket.graphtype;
 
-import gleem.linalg.Mat4f;
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketGraphDrawingAdapter;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
  * Specialized connection line renderer drawing consecutive graphs to bucket view.
  * 
- *TODO: improve connection graph 
-
  */
 public class GLConsecutiveConnectionGraphDrawing
-	extends AGLConnectionLineRenderer {
+	extends BucketGraphDrawingAdapter {
 
+	private final static int BUCKET_TOP = 0;
+	private final static int BUCKET_LEFT = 1;
+	private final static int BUCKET_BOTTOM = 2;
+	private final static int BUCKET_RIGHT = 3;
+	
+	private HashMap<Integer, Vec3f> bundlingPoints = new HashMap<Integer, Vec3f>();
+	private Vec3f vecCenter;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -34,91 +35,24 @@ public class GLConsecutiveConnectionGraphDrawing
 	 * @param stackLevel
 	 * @param poolLevel
 	 */
-	private ArrayList<Vec3f> bundlingPoints = new ArrayList<Vec3f>();
-	
 	public GLConsecutiveConnectionGraphDrawing(final RemoteLevel focusLevel, final RemoteLevel stackLevel,
 		final RemoteLevel poolLevel) {
 		super(focusLevel, stackLevel, poolLevel);
 	}
 
-	@Override
-	protected void renderConnectionLines(final GL gl) {
-		Vec3f vecTranslation;
-		Vec3f vecScale;
 
-		Rotf rotation;
-		Mat4f matSrc = new Mat4f();
-		Mat4f matDest = new Mat4f();
-		matSrc.makeIdent();
-		matDest.makeIdent();
-
-		// int iViewID = 0;
-		RemoteLevel activeLevel = null;
-		RemoteLevelElement remoteLevelElement = null;
-
-		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
-
-		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes()) {
-			ArrayList<ArrayList<Vec3f>> alPointLists = null;
-
-			for (int iSelectedElementID : connectedElementRepManager.getIDList(idType)) {
-				for (SelectedElementRep selectedElementRep : connectedElementRepManager
-					.getSelectedElementRepsByElementID(idType, iSelectedElementID)) {
-					remoteLevelElement =
-						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID())
-							.getRemoteLevelElement();
-					// views that are not rendered remote
-					if (remoteLevelElement == null) {
-						continue;
-					}
-
-					activeLevel = remoteLevelElement.getRemoteLevel();
-
-					if (activeLevel == stackLevel || activeLevel == focusLevel) {
-						vecTranslation = remoteLevelElement.getTransform().getTranslation();
-						vecScale = remoteLevelElement.getTransform().getScale();
-						rotation = remoteLevelElement.getTransform().getRotation();
-
-						ArrayList<Vec3f> alPoints = selectedElementRep.getPoints();
-						ArrayList<Vec3f> alPointsTransformed = new ArrayList<Vec3f>();
-
-						for (Vec3f vecCurrentPoint : alPoints) {
-							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation, vecScale,
-								rotation, remoteLevelElement));
-						}
-						int iKey = selectedElementRep.getContainingViewID();
-
-						alPointLists = hashViewToPointLists.get(iKey);
-						if (alPointLists == null) {
-							alPointLists = new ArrayList<ArrayList<Vec3f>>();
-							hashViewToPointLists.put(iKey, alPointLists);
-						}
-
-						alPointLists.add(alPointsTransformed);
-					}
-				}
-
-				if (hashViewToPointLists.size() > 1) {
-					renderLineBundling(gl, new float[] { 0, 0, 0 });
-					hashViewToPointLists.clear();
-				}
-			}
-		}
-	}
-	
 	protected void renderLineBundling(GL gl, float[] arColor) {
 		Set<Integer> keySet = hashViewToPointLists.keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
-
 		for (Integer iKey : keySet) {
 			hashViewToCenterPoint.put(iKey, calculateCenter(hashViewToPointLists.get(iKey)));
 		}
 
-		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
+		vecCenter = calculateCenter(hashViewToCenterPoint.values());
 
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
-			bundlingPoints.add(vecViewBundlingPoint);
+			bundlingPoints.put(iKey, vecViewBundlingPoint);
 			for (ArrayList<Vec3f> alCurrentPoints : hashViewToPointLists.get(iKey)) {
 				if (alCurrentPoints.size() > 1) {
 					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
@@ -128,11 +62,212 @@ public class GLConsecutiveConnectionGraphDrawing
 						.get(iKey), arColor);
 				}
 			}
-			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, arColor);
 		}
-		for (int points = 0; points < bundlingPoints.size()-1;points++)
-			renderLine(gl, bundlingPoints.get(points), bundlingPoints.get(points+1), 0, arColor);
+		if (activeViewID == focusLevel.getElementByPositionIndex(0).getContainedElementID()){
+			renderFromCenter(gl, arColor);
+		}
+		else{
+			for (int position = 0; position <stackLevel.getCapacity();position++){
+				if (activeViewID == stackLevel.getElementByPositionIndex(position).getContainedElementID()){
+					renderFromAmbience(gl, arColor, position);
+					break;
+				}
+			}
+
+		}
+	}
+	
+	private void renderFromCenter(final GL gl, float[] arColor){
+		
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		for (int views = 0; views < stackLevel.getCapacity(); views++){
+			int id = stackLevel.getElementByPositionIndex(views).getContainedElementID();
+			if (bundlingPoints.containsKey(id)){
+				ids.add(id);
+			}
+		}
+		if (ids.size()>1){
+			Iterator<Integer> idCounter = ids.iterator();
+			int src = idCounter.next();
+			int connectionToFocusLevel = src;
+			while(idCounter.hasNext()){
+				int dst = idCounter.next();
+				renderLine(gl, bundlingPoints.get(src), bundlingPoints.get(dst), 0, vecCenter, arColor);
+				src = dst;
+			}
+			if(bundlingPoints.containsKey(activeViewID)){
+				renderLine(gl, bundlingPoints.get(activeViewID), bundlingPoints.get(connectionToFocusLevel), 0, vecCenter, arColor);
+			}
+		}
+		else{
+			if(bundlingPoints.containsKey(activeViewID)){
+				renderLine(gl, bundlingPoints.get(activeViewID), bundlingPoints.get(ids.get(0)), 0, vecCenter, arColor);
+			}
+		}
+		bundlingPoints.clear();
+	}
+	
+	
+	
+	private void renderFromAmbience(final GL gl, float[] arColor, int activeView){
+		
+		switch (activeView){
+			case BUCKET_TOP:
+				renderFromTop(gl, arColor);
+				break;
+			case BUCKET_LEFT:
+				renderFromLeft(gl, arColor);
+				break;
+			case BUCKET_BOTTOM:
+				renderFromBottom(gl, arColor);
+				break;
+			case BUCKET_RIGHT:
+				renderFromRight(gl, arColor);
+				break;
+		}
+	}
+	
+	private void renderFromTop(final GL gl, float[] arColor){
+		
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		for (int views = 0; views < stackLevel.getCapacity(); views++){
+			int id = stackLevel.getElementByPositionIndex(views).getContainedElementID();
+			if (bundlingPoints.containsKey(id)){
+				ids.add(id);
+			}
+		}
+		
+		if (ids.size()>1){
+			Iterator<Integer> idCounter = ids.iterator();
+			int src = idCounter.next();
+			int dst = 0;
+			while(idCounter.hasNext()){
+				dst = idCounter.next();
+				renderLine(gl, bundlingPoints.get(src), bundlingPoints.get(dst), 0, vecCenter, arColor);
+				src = dst;
+			}
+			int centerID = focusLevel.getElementByPositionIndex(0).getContainedElementID();
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(dst), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
+		else{
+			int centerID = focusLevel.getElementByPositionIndex(0).getContainedElementID();
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(ids.get(0)), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
+		bundlingPoints.clear();
+	}
+	
+	private void renderFromLeft(final GL gl, float[] arColor){
+		
+		LinkedList<Integer> ids = new LinkedList<Integer>();
+		for (int views = 0; views < stackLevel.getCapacity(); views++){
+			int id = stackLevel.getElementByPositionIndex(views).getContainedElementID();
+			if (bundlingPoints.containsKey(id)){
+				ids.add(id);
+			}
+		}
+		
+		if (!ids.getFirst().equals(activeViewID)){
+			Integer temp = ids.getFirst();
+			ids.removeFirst();
+			ids.addLast(temp);
+		}
+		
+		if (ids.size() > 1){
+			Iterator<Integer> idCounter = ids.iterator();
+			int src = idCounter.next();
+			int dst = 0;
+			while(idCounter.hasNext()){
+				dst = idCounter.next();
+				renderLine(gl, bundlingPoints.get(src), bundlingPoints.get(dst), 0, vecCenter, arColor);
+				src = dst;
+			}
+			int centerID = focusLevel.getElementByPositionIndex(0).getContainedElementID();
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(dst), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
+		else{
+			int centerID = focusLevel.getElementByPositionIndex(0).getContainedElementID();
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(ids.getFirst()), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
 		bundlingPoints.clear();
 	}
 
+	private void renderFromBottom(final GL gl, float[] arColor){
+		LinkedList<Integer> ids = new LinkedList<Integer>();
+		int centerID = -1;
+		for (int views = 0; views < stackLevel.getCapacity(); views++){
+			int id = stackLevel.getElementByPositionIndex(views).getContainedElementID();
+			if (bundlingPoints.containsKey(id)){
+				ids.add(id);
+			}
+		}
+		while(!ids.getFirst().equals(activeViewID)){
+			Integer temp = ids.getFirst();
+			ids.removeFirst();
+			ids.addLast(temp);
+		}
+		centerID = focusLevel.getElementByPositionIndex(0).getContainedElementID();
+		if (ids.size() > 1){
+			Iterator<Integer> idCounter = ids.iterator();
+			int src = idCounter.next();
+			int dst = 0;
+			while(idCounter.hasNext()){
+				dst = idCounter.next();
+				renderLine(gl, bundlingPoints.get(src), bundlingPoints.get(dst), 0, vecCenter, arColor);
+				src = dst;
+			}
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(dst), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
+		else{
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(ids.getFirst()), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
+		bundlingPoints.clear();
+	}
+	
+	private void renderFromRight(final GL gl, float[] arColor){
+		
+		LinkedList<Integer> ids = new LinkedList<Integer>();
+		int centerID = -1;
+		for (int views = 0; views < stackLevel.getCapacity(); views++){
+			int id = stackLevel.getElementByPositionIndex(views).getContainedElementID();
+			if (bundlingPoints.containsKey(id)){
+				ids.add(id);
+			}
+		}
+		Integer temp = ids.getLast();
+		ids.removeLast();
+		ids.addFirst(temp);
+		centerID = focusLevel.getElementByPositionIndex(0).getContainedElementID();
+
+		if (ids.size()>1){
+			Iterator<Integer> idCounter = ids.iterator();
+			int src = idCounter.next();
+			int dst = 0;
+			while (idCounter.hasNext()){
+				dst = idCounter.next();
+				renderLine(gl, bundlingPoints.get(src), bundlingPoints.get(dst), 0, vecCenter, arColor);
+				src = dst;
+			}
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(dst), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
+		else{
+			if (bundlingPoints.get(centerID) != null){
+				renderLine(gl, bundlingPoints.get(ids.getFirst()), bundlingPoints.get(centerID), 0, vecCenter, arColor);
+			}
+		}
+		bundlingPoints.clear();		
+	}
 }

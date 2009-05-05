@@ -19,6 +19,7 @@ public class HTMLBrowserView
 				EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
 		browserView.registerEventListeners();
 
+		browserView.registerEventListeners();
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 		iViewID = browserView.getID();

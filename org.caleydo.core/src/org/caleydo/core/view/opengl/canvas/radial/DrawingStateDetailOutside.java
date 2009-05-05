@@ -19,9 +19,10 @@ public class DrawingStateDetailOutside
 	private int iDisplayedOverviewDepth;
 	private boolean bInitialDraw;
 
-	public DrawingStateDetailOutside(DrawingController drawingController, GLRadialHierarchy radialHierarchy) {
+	public DrawingStateDetailOutside(DrawingController drawingController, GLRadialHierarchy radialHierarchy,
+		NavigationHistory navigationHistory) {
 
-		super(drawingController, radialHierarchy);
+		super(drawingController, radialHierarchy, navigationHistory);
 		bInitialDraw = true;
 	}
 
@@ -38,9 +39,7 @@ public class DrawingStateDetailOutside
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
-		PDDrawingStrategy dsRainbow =
-			DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
+		PDDrawingStrategy dsDefault = DrawingStrategyManager.get().getDefaultDrawingStrategy();
 		PDDrawingStrategy dsSelected =
 			DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED);
@@ -48,54 +47,47 @@ public class DrawingStateDetailOutside
 			DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_TRANSPARENT);
 
+		pdCurrentRootElement.setPDDrawingStrategyChildren(dsDefault, iDisplayedOverviewDepth);
+
 		boolean bMouseOverElementInDetailOutside = false;
 		if (pdCurrentMouseOverElement != null) {
 			bMouseOverElementInDetailOutside =
 				pdCurrentMouseOverElement.hasParent(pdCurrentSelectedElement, iDisplayedDetailViewDepth - 1);
+			if (!bMouseOverElementInDetailOutside)
+				bMouseOverElementInDetailOutside = pdCurrentMouseOverElement == pdCurrentSelectedElement;
 		}
+		
+		PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+		dsLabelDecorator.setDrawingStrategy(dsDefault);
 
-		if ((pdCurrentMouseOverElement == pdCurrentSelectedElement) || (bMouseOverElementInDetailOutside)) {
-
-			PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
-			dsLabelDecorator.setDrawingStrategy(dsRainbow);
+		if (bMouseOverElementInDetailOutside) {	
 			pdCurrentMouseOverElement.setPDDrawingStrategyChildren(dsLabelDecorator, 3);
-
-			dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
-			dsLabelDecorator.setDrawingStrategy(dsSelected);
+		}
+		else if (pdCurrentMouseOverElement != null) {
 			pdCurrentMouseOverElement.setPDDrawingStrategy(dsLabelDecorator);
+		}
 
-		}
-		else {
-			pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsRainbow, pdCurrentSelectedElement
-				.getCurrentDepth());
-			if (pdCurrentMouseOverElement != null) {
-				pdCurrentMouseOverElement.setPDDrawingStrategy(dsSelected);
-			}
-		}
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, fDetailViewDiscWidth,
 			iDisplayedDetailViewDepth, fDetailViewStartAngle, 360, fDetailViewInnerRadius);
-
-		pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsTransparent, pdCurrentSelectedElement
-			.getCurrentDepth());
-		pdCurrentRootElement.drawHierarchyFull(gl, glu, fOverviewDiscWidth, iDisplayedOverviewDepth);
-
-		// Draw the MouseOverElement again at last for correct antialiasing in overview
-		if (pdCurrentMouseOverElement != null) {
-			if ((!bMouseOverElementInDetailOutside)
-				&& (pdCurrentMouseOverElement != pdCurrentSelectedElement)) {
-				PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
-				dsLabelDecorator.setDrawingStrategy(dsSelected);
-				if (pdCurrentMouseOverElement != pdCurrentRootElement) {
-					dsLabelDecorator.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
-				}
-				else {
-					dsLabelDecorator.drawFullCircle(gl, glu, pdCurrentMouseOverElement);
-				}
-			}
+		
+		// The mouse over element has to be drawn (again in using different drawing strategy) at last for
+		// correct antialiasing
+		if(bMouseOverElementInDetailOutside) {
 			dsSelected.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
 		}
 
-		pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsRainbow, pdCurrentSelectedElement
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsTransparent, pdCurrentSelectedElement
+			.getCurrentDepth());
+
+		pdCurrentRootElement.drawHierarchyFull(gl, glu, fOverviewDiscWidth, iDisplayedOverviewDepth);
+
+		// The mouse over element has to be drawn (again in using different drawing strategy) at last for
+		// correct antialiasing
+		if(pdCurrentMouseOverElement != null) {
+			dsSelected.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
+		}
+		
+		pdCurrentSelectedElement.setPDDrawingStrategyChildren(dsDefault, pdCurrentSelectedElement
 			.getCurrentDepth());
 
 		float fHierarchyOuterRadius = Math.min(fXCenter * 0.9f, fYCenter * 0.9f);
@@ -161,15 +153,14 @@ public class DrawingStateDetailOutside
 		if (pdClicked != pdRealRootElement && pdClicked.hasChildren()) {
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
+					.getDefaultDrawingStrategy(), 3);
 			}
 			if (pdClicked == pdCurrentRootElement) {
 				radialHierarchy.setCurrentRootElement(pdClicked.getParent());
 				radialHierarchy.setCurrentSelectedElement(pdClicked.getParent());
 				radialHierarchy.setCurrentMouseOverElement(pdClicked.getParent());
 				radialHierarchy.setAnimationActive(true);
-				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
-				bInitialDraw = true;
+				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT);
 			}
 			else {
 				pdCurrentSelectedElement.simulateDrawHierarchyAngular(fDetailViewDiscWidth,
@@ -180,9 +171,9 @@ public class DrawingStateDetailOutside
 				radialHierarchy.setCurrentMouseOverElement(pdClicked);
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
-				bInitialDraw = true;
 			}
 
+			bInitialDraw = true;
 			radialHierarchy.setDisplayListDirty();
 		}
 
@@ -195,7 +186,7 @@ public class DrawingStateDetailOutside
 		if (pdMouseOver != pdCurrentMouseOverElement) {
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
+					.getDefaultDrawingStrategy(), 3);
 			}
 
 			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
@@ -214,21 +205,28 @@ public class DrawingStateDetailOutside
 		if (pdClicked != pdCurrentRootElement && pdClicked.hasChildren() && pdClicked.getCurrentDepth() > 1) {
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-					.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW), 3);
+					.getDefaultDrawingStrategy(), 3);
 			}
 
 			if (pdClicked == pdCurrentSelectedElement) {
 				radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
 				radialHierarchy.setCurrentMouseOverElement(pdCurrentRootElement);
-				drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
-				bInitialDraw = true;
+
+				DrawingState dsNext =
+					drawingController.getDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
+				drawingController.setDrawingState(dsNext);
+				navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentRootElement,
+					radialHierarchy.getMaxDisplayedHierarchyDepth());
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdClicked);
 				radialHierarchy.setCurrentMouseOverElement(pdClicked);
-				bInitialDraw = true;
+
+				navigationHistory.addNewHistoryEntry(this, pdCurrentRootElement, pdClicked, radialHierarchy
+					.getMaxDisplayedHierarchyDepth());
 			}
 
+			bInitialDraw = true;
 			radialHierarchy.setDisplayListDirty();
 		}
 	}

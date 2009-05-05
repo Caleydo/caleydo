@@ -33,7 +33,7 @@ public class GLParCoordsView
 		}
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, glCanvas.getID(),
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES, glCanvas.getID(),
 			true);
 	}
 

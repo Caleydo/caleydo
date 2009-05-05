@@ -5,7 +5,7 @@ import gleem.linalg.Vec4f;
 import java.util.Vector;
 import java.util.logging.Level;
 
-import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.clinical.glyph.EGlyphSettingIDs;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition;

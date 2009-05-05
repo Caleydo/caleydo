@@ -7,10 +7,12 @@ public abstract class DrawingState {
 
 	protected DrawingController drawingController;
 	protected GLRadialHierarchy radialHierarchy;
+	protected NavigationHistory navigationHistory;
 
-	public DrawingState(DrawingController drawingController, GLRadialHierarchy radialHierarchy) {
+	public DrawingState(DrawingController drawingController, GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		this.drawingController = drawingController;
 		this.radialHierarchy = radialHierarchy;
+		this.navigationHistory = navigationHistory;
 	}
 
 	public abstract void draw(float fXCenter, float fYCenter, GL gl, GLU glu);

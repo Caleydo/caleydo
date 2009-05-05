@@ -26,6 +26,7 @@ public class KnownBugsHandler
 		}
 		
 		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+		changeURLEvent.setSender(this);
 		changeURLEvent.setUrl(URL_KNOWN_BUGS);
 		GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
 

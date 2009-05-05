@@ -2,8 +2,8 @@ package org.caleydo.rcp.progress;
 
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayLoaderThread;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.pathway.PathwayLoaderThread;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

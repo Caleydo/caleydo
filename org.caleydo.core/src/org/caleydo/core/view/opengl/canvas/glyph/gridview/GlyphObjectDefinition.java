@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.clinical.glyph.EGlyphSettingIDs;
 import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectGroup;
 import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectLoader;
 import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectModel;

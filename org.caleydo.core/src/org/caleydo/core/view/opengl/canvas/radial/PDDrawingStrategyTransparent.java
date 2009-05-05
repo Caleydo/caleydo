@@ -3,12 +3,18 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 public class PDDrawingStrategyTransparent
-	extends PDDrawingStrategyChildIndicator {
+	extends PDDrawingStrategy {
+	
+	public PDDrawingStrategyTransparent(PickingManager pickingManager, int iViewID) {
+		super(pickingManager, iViewID);
+	}
 
 	@Override
 	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
@@ -16,6 +22,8 @@ public class PDDrawingStrategyTransparent
 		if (pdDiscToDraw == null)
 			return;
 
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+			pdDiscToDraw.getElementID()));
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
@@ -26,6 +34,7 @@ public class PDDrawingStrategyTransparent
 		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc, 2);
 
 		gl.glPopAttrib();
+		gl.glPopName();
 
 	}
 
@@ -44,11 +53,10 @@ public class PDDrawingStrategyTransparent
 		while (fMidAngle > 360) {
 			fMidAngle -= 360;
 		}
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 		
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
-			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
-		}
+		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+			pdDiscToDraw.getElementID()));
+		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
 		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
 		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360);
@@ -66,7 +74,7 @@ public class PDDrawingStrategyTransparent
 			fAngle, iNumSlicesPerFullDisc, 2);
 
 		gl.glPopMatrix();
-
 		gl.glPopAttrib();
+		gl.glPopName();
 	}
 }

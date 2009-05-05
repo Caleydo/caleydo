@@ -38,14 +38,7 @@ public class GLRemoteRenderingView
 		// Only create parcoords and heatmap if the application is NOT in
 		// pathway viewer mode
 		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER) {
-/*
-			AGLEventListener heatmap = createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1, true); 
-			iAlContainedViewIDs.add(heatmap.getID());
-			
-			AGLEventListener parcoords = createGLEventListener(
-				ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true);
-			iAlContainedViewIDs.add(parcoords.getID());
-*/
+
 			// iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL,
 			// -1, true));
 

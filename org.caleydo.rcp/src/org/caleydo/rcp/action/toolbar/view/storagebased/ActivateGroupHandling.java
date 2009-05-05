@@ -10,9 +10,9 @@ import org.eclipse.ui.PlatformUI;
 public class ActivateGroupHandling
 	extends AToolBarAction
 	implements IToolBarItem {
+
 	public static final String TEXT = "Activate Group Handling";
-	// TODO: own icon for "Start Clustering"
-	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
+	public static final String ICON = "resources/icons/view/storagebased/activate_groupHandling.png";
 
 	private boolean bEnable = false;
 

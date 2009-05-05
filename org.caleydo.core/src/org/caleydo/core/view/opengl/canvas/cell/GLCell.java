@@ -11,10 +11,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -23,8 +19,9 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -39,8 +36,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  */
 public class GLCell
-	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender {
+	extends AGLEventListener {
 //	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 //	private GenericSelectionManager selectionManager;
@@ -48,8 +44,8 @@ public class GLCell
 	/**
 	 * Constructor.
 	 */
-	public GLCell(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, false);
+	public GLCell(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
 
 //		connectedElementRepresentationManager =
@@ -70,11 +66,11 @@ public class GLCell
 	}
 
 	@Override
-	public void initRemote(GL gl, int remoteViewID, PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
 		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.glMouseListener = glMouseListener;
 		init(gl);
 	}
 
@@ -84,7 +80,7 @@ public class GLCell
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			// rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyLocal = false;
@@ -183,7 +179,6 @@ public class GLCell
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 
@@ -230,42 +225,6 @@ public class GLCell
 	public int getNumberOfSelections(ESelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		// generalManager.getLogger().log(Level.FINE,
-		// "Update called by " + eventTrigger.getClass().getSimpleName());
-		//
-		// if (selectionDelta.getIDType() != EIDType.DAVID)
-		// return;
-
-		// TODO review this, seems not to do anything??? ADD and REMOVE are no
-		// longer supported
-		// for (SelectionDeltaItem item : selectionDelta)
-		// {
-		// if (item.getSelectionType() == ESelectionType.ADD
-		// || item.getSelectionType() == ESelectionType.REMOVE)
-		// {
-		// break;
-		// }
-		// else
-		// {
-		// selectionManager.clearSelections();
-		// break;
-		// }
-		// }
-		//
-		// resolveExternalSelectionDelta(selectionDelta);
-		//
-		// setDisplayListDirty();
-
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 	@Override

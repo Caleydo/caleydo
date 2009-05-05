@@ -32,6 +32,10 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	}
 
+	public void setHashMap(HashMap<Integer, NodeType> hashNodes){
+		this.hashNodes = hashNodes;
+	}
+	
 	public void setRootNode(NodeType rootNode) {
 		this.rootNode = rootNode;
 		graph.addVertex(rootNode);

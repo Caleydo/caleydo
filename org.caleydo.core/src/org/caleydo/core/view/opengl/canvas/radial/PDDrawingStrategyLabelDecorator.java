@@ -6,6 +6,10 @@ import javax.media.opengl.glu.GLU;
 
 public class PDDrawingStrategyLabelDecorator
 	extends PDDrawingStrategyDecorator {
+	
+	public PDDrawingStrategyLabelDecorator() {
+		super(null, 0);
+	}
 
 	@Override
 	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
@@ -15,9 +19,7 @@ public class PDDrawingStrategyLabelDecorator
 
 		Label label = new Label(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
 		label.addLine(pdDiscToDraw.getName());
-		label.addLine("another loooooong liiiiiiiiine");
-		label.addLine(pdDiscToDraw.getName());
-		label.addLine("another loooooong liiiiiiiiine");
+		label.addLine("Coefficient: " + pdDiscToDraw.getCoefficient());
 		LabelManager.get().addLabel(label);
 	}
 

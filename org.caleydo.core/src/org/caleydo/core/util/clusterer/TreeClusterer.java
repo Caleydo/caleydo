@@ -2,11 +2,12 @@ package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 
 public class TreeClusterer
 	implements IClusterer {
@@ -260,7 +261,7 @@ public class TreeClusterer
 
 		ClusterNode node = new ClusterNode("Root", random, 0f, 0, true);
 		tree.setRootNode(node);
-		treeStructureToTree(node, result, result.length - 1);
+		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
@@ -408,7 +409,7 @@ public class TreeClusterer
 
 		ClusterNode node = new ClusterNode("Root", random, 0f, 0, true);
 		tree.setRootNode(node);
-		treeStructureToTree(node, result, result.length - 1);
+		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
@@ -432,7 +433,7 @@ public class TreeClusterer
 		if (tree.hasChildren(node) == false) {
 			// FIXME: problem with indexes (storageVA vs. contentVA ???)
 			if (bStart0)
-				indexes.add(node.getClusterNr() + 1);
+				indexes.add(node.getClusterNr());
 			else
 				indexes.add(node.getClusterNr());
 		}
@@ -453,23 +454,51 @@ public class TreeClusterer
 		return indexes;
 	}
 
-	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index) {
+	/**
+	 * Returns name of the node. Therefore we need an index of the gene/experiment
+	 * 
+	 * @param eClustererType
+	 *            either gene or expression clustering
+	 * @param index
+	 *            index of the current node in the VA
+	 * @return name of the current node
+	 */
+	private String getNodeName(EClustererType eClustererType, int index) {
+		String nodeName = null;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+				nodeName = GeneticIDMappingHelper.get().getShortNameFromDavid(index);
+
+				nodeName += " | ";
+				nodeName += GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(index);// + 1);
+			}
+			else if (set.getSetType() == ESetType.UNSPECIFIED) {
+				nodeName = "generalManager.getIDMappingManager().getID(" + index + 1 + " )";
+				// generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
+				// treeStructure[index].getLeft() + 1);
+			}
+			else {
+				throw new IllegalStateException("Label extraction for " + set.getSetType()
+					+ " not implemented yet!");
+			}
+		}
+		else {
+			nodeName = set.get(index).getLabel();
+		}
+
+		return nodeName;
+	}
+
+	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index,
+		EClustererType eClustererType) {
 
 		ClusterNode left = null;
 		ClusterNode right = null;
 
 		if (treeStructure[index].getLeft() >= 0) {
 
-			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
-
-			NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getLeft() + 1);
-			if (NodeName == null) {
-				NodeName = "Unknown";
-			}
-
-			NodeName += " | ";
-			NodeName +=
-				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft() + 1);
+			String NodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
 
 			left =
 				new ClusterNode(NodeName, treeStructure[index].getLeft(), treeStructure[index]
@@ -487,21 +516,12 @@ public class TreeClusterer
 				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
 					treeStructure[index].getCorrelation(), 0, false);
 			tree.addChild(node, left);
-			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1);
+			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1, eClustererType);
 		}
 
 		if (treeStructure[index].getRight() >= 0) {
 
-			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
-
-			NodeName = IDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getRight() + 1);
-			if (NodeName == null) {
-				NodeName = "Unknown";
-			}
-
-			NodeName += " | ";
-			NodeName +=
-				IDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight() + 1);
+			String NodeName = getNodeName(eClustererType, treeStructure[index].getRight());
 
 			right =
 				new ClusterNode(NodeName, treeStructure[index].getRight(), treeStructure[index]
@@ -519,7 +539,7 @@ public class TreeClusterer
 				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
 					treeStructure[index].getCorrelation(), 0, false);
 			tree.addChild(node, right);
-			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1);
+			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1, eClustererType);
 		}
 
 	}

@@ -25,7 +25,7 @@ import org.caleydo.core.parser.ascii.IParserObject;
 public class TabularAsciiDataReader
 	extends AbstractLoader
 	implements IParserObject {
-
+	
 	/**
 	 * Imports data from file to this set. uses first storage and overwrites first selection.
 	 */
@@ -83,11 +83,9 @@ public class TabularAsciiDataReader
 			}
 			else if (sBuffer.equalsIgnoreCase("int")) {
 				alColumnDataTypes.add(EStorageType.INT);
-
 			}
 			else if (sBuffer.equalsIgnoreCase("float")) {
 				alColumnDataTypes.add(EStorageType.FLOAT);
-
 			}
 			else if (sBuffer.equalsIgnoreCase("string")) {
 				alColumnDataTypes.add(EStorageType.STRING);
@@ -104,8 +102,7 @@ public class TabularAsciiDataReader
 				GeneralManager.get().getLogger().log(Level.WARNING,
 					"Unknown column data type: " + tokenPattern);
 			}
-
-		} // end of while
+		}
 
 		return bAllTokensProper;
 	}
@@ -248,15 +245,7 @@ public class TabularAsciiDataReader
 		int iStringArrayIndex = 0;
 		int iStorageIndex = 0;
 
-		ISet set = null;
-		int iCount = 0;
-		for (ISet tempSet : GeneralManager.get().getSetManager().getAllItems()) {
-			set = tempSet;
-			iCount++;
-		}
-		if (iCount > 1) {
-			throw new IllegalStateException("Set is not unique - a better way of handling this is needed");
-		}
+		ISet set = GeneralManager.get().getUseCase().getSet();
 
 		for (EStorageType storageType : alColumnDataTypes) {
 			// if(iStorageIndex + 1 == alTargetStorages.size())
@@ -275,14 +264,12 @@ public class TabularAsciiDataReader
 				case STRING:
 					((INominalStorage<String>) alTargetStorages.get(iStorageIndex))
 						.setRawNominalData(alStringBuffers.get(iStringArrayIndex));
-					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
+					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine));
 					iStringArrayIndex++;
 					iStorageIndex++;
 					break;
 				case SKIP: // do nothing
 					break;
-				case ABORT:
-					return;
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = alGroupInfo.get(0);
@@ -297,13 +284,14 @@ public class TabularAsciiDataReader
 
 					iIntArrayIndex++;
 					break;
+				case ABORT:
+					return;
 
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
 						+ storageType.toString());
 			}
-		}
-
+		}		
 	}
 
 	/**

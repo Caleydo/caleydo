@@ -17,7 +17,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 
 /**

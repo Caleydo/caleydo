@@ -1,8 +1,7 @@
 package org.caleydo.core.command.view.opengl;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
@@ -34,12 +33,11 @@ public class CmdCreateGLPathway
 		iPathwayID = Integer.valueOf(sAttribute4).intValue();
 	}
 
-	public void setAttributes(final int iPathwayID, final ArrayList<Integer> iArSetIDs,
+	public void setAttributes(final int iPathwayID, final ISet set,
 		final EProjectionMode eProjectionMode, final float fLeft, final float fRight, final float fTop,
 		final float fBottom, final float fNear, final float fFar) {
-		super.setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iArSetIDs, -1);
+		super.setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, set, -1);
 
-		this.iAlSetIDs = iArSetIDs;
 		this.iPathwayID = iPathwayID;
 		this.iExternalID = iUniqueID;
 		iParentContainerId = -1;

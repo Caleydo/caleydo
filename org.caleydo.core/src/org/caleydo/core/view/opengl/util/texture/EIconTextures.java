@@ -29,6 +29,8 @@ public enum EIconTextures {
 	// SAVE_SELECTIONS("resources/icons/general/no_icon_available.png"),
 	// ANGULAR_BRUSHING("resources/icons/view/storagebased/parcoords/angular_brush.png"),
 	HEAT_MAP_SYMBOL("resources/icons/view/storagebased/heatmap/heatmap128x128.png"),
+	DENDROGRAM_HORIZONTAL_SYMBOL("resources/icons/view/storagebased/dendrogram_horizontal.png"),
+	DENDROGRAM_VERTICAL_SYMBOL("resources/icons/view/storagebased/dendrogram_vertical.png"),
 	PAR_COORDS_SYMBOL("resources/icons/view/storagebased/parcoords/parcoords128x128.png"),
 	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
 	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
@@ -65,8 +67,9 @@ public enum EIconTextures {
 	CELL_MODEL("resources/models/cell.jpg"),
 	
 	// context menue elements
-	LOAD_DEPENDEN_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
-	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png");
+	LOAD_DEPENDING_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
+	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png"),
+	MENU_MORE("/resources/icons/general/menu_more.png");
 
 	private String sFileName;
 

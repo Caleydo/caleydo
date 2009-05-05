@@ -26,6 +26,7 @@ public class HelpContentsHandler
 		}
 		
 		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+		changeURLEvent.setSender(this);
 		changeURLEvent.setUrl(URL_HELP_CONTENTS);
 		GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
 

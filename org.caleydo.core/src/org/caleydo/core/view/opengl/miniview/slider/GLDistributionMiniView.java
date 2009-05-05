@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.IBorderRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -39,7 +39,7 @@ public class GLDistributionMiniView
 
 	private IBorderRenderStyle borderStyle;
 
-	public GLDistributionMiniView(PickingMouseListener pickingTriggerMouseAdapter, final int iViewID,
+	public GLDistributionMiniView(GLMouseListener glMouseListener, final int iViewID,
 		final int iDistributionID) {
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
 		textRenderer.setColor(0, 0, 0, 1);

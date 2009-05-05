@@ -13,7 +13,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.IBorderRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
@@ -28,7 +28,7 @@ public class GLSliderMiniView
 	extends AGLMiniView {
 
 	protected PickingManager pickingManager = null;
-	protected PickingMouseListener pickingTriggerMouseAdapter;
+	protected GLMouseListener glMouseListener;
 
 	private int iSliderID = 0;
 
@@ -52,10 +52,10 @@ public class GLSliderMiniView
 	private TextRenderer textRenderer = null;
 	private IBorderRenderStyle borderStyle = null;
 
-	public GLSliderMiniView(PickingMouseListener pickingTriggerMouseAdapter, final int iViewID,
+	public GLSliderMiniView(GLMouseListener glMouseListener, final int iViewID,
 		final int iSliderID) {
 		this.pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.glMouseListener = glMouseListener;
 		this.iUniqueId = iViewID;
 		this.iSliderID = iSliderID;
 
@@ -226,7 +226,7 @@ public class GLSliderMiniView
 			if (bDoDragging && iDraggedSeperator == Seperator.getID()) {
 				float[] fArTargetWorldCoordinates =
 					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, 0,
-						pickingTriggerMouseAdapter.getPickedPoint().y);
+						glMouseListener.getPickedPoint().y);
 				float canvasY = fArTargetWorldCoordinates[1];
 
 				if (canvasY > fHeight) {
@@ -313,7 +313,7 @@ public class GLSliderMiniView
 			gl.glPopMatrix();
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bDoDragging = false;
 		}
 

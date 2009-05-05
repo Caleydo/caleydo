@@ -7,7 +7,7 @@ public class EnableNeighborhoodListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		bucket.setNeighborhoodEnabled(true);
+		handler.setNeighborhoodEnabled(true);
 	}
 
 }

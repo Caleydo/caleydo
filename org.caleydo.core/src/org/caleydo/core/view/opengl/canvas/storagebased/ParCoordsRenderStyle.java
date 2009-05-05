@@ -20,6 +20,8 @@ public class ParCoordsRenderStyle
 	public static final float NAN_Z = 0.003f;
 
 	public static final float AXIS_Z = 0.0f;
+	public static final float LABEL_Z = 0.004f;
+	public static final float TEXT_ON_LABEL_Z = LABEL_Z + 0.0001f;
 
 	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 

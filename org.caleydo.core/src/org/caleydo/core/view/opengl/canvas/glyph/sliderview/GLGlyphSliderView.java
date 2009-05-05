@@ -18,26 +18,22 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -51,8 +47,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Stefan Sauer
  */
 public class GLGlyphSliderView
-	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver {
+	extends AGLEventListener {
 	/**
 	 * 
 	 */
@@ -77,15 +72,13 @@ public class GLGlyphSliderView
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param iViewId
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyphSliderView(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLGlyphSliderView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+		super(glCanvas, sLabel, viewFrustum, true);
 
 		gman = (GlyphManager) generalManager.getGlyphManager();
 
@@ -104,8 +97,8 @@ public class GLGlyphSliderView
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml) {
-				if (l instanceof PickingMouseListener) {
-					((PickingMouseListener) l).setNavigationModes(true, false, false);
+				if (l instanceof GLMouseListener) {
+					((GLMouseListener) l).setNavigationModes(true, false, false);
 				}
 			}
 		}
@@ -138,8 +131,7 @@ public class GLGlyphSliderView
 			alGlyphAttributeTypes.add(typ);
 
 			// slider
-			GLSliderMiniView slider =
-				new GLSliderMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+			GLSliderMiniView slider = new GLSliderMiniView(glMouseListener, iUniqueID, slidercounter);
 			alSlider.add(slider);
 
 			slider.setBorderStyle(borderStyle);
@@ -150,7 +142,7 @@ public class GLGlyphSliderView
 
 			// distribution
 			GLDistributionMiniView dmv =
-				new GLDistributionMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+				new GLDistributionMiniView(glMouseListener, iUniqueID, slidercounter);
 			alDistribution.add(dmv);
 			dmv.setHeight(fSliderHeight);
 			dmv.setWidth(fSliderWidth);
@@ -177,21 +169,16 @@ public class GLGlyphSliderView
 
 	@Override
 	public void initLocal(GL gl) {
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager)
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
-	{
-
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.glMouseListener = glMouseListener;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 		iMaxCols = 5;
 		init(gl);
 
@@ -199,7 +186,7 @@ public class GLGlyphSliderView
 
 	@Override
 	public void displayLocal(GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		display(gl);
 		checkForHits(gl);
@@ -330,21 +317,18 @@ public class GLGlyphSliderView
 				generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 					EIDType.EXPERIMENT_INDEX);
 
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-						ESelectionType.SELECTION)));
+				SelectionCommand command =
+					new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION);
+				sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 				ISelectionDelta selectionDelta = selectionManager.getDelta();
 				if (selectionDelta.getAllItems().size() > 0) {
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSender(this);
 					event.setSelectionDelta(selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 				}
-
-				// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				// new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
-
 			}
 		}
 
@@ -378,8 +362,6 @@ public class GLGlyphSliderView
 			}
 		}
 
-		pickingManager.flushHits(iUniqueID, pickingType);
-
 	}
 
 	@Override
@@ -393,19 +375,6 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
 
@@ -415,7 +384,7 @@ public class GLGlyphSliderView
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 }

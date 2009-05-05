@@ -11,7 +11,7 @@ public class AddPathwayListener
 		if (event instanceof LoadPathwayEvent) {
 			LoadPathwayEvent loadEvent = (LoadPathwayEvent) event;
 			System.out.println("load pathway with id " + loadEvent.getPathwayID());
-			bucket.addPathwayView(loadEvent.getPathwayID());
+			handler.addPathwayView(loadEvent.getPathwayID());
 		}
 	}
 

@@ -4,20 +4,20 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
@@ -34,8 +34,8 @@ public class CmdCreateGLEventListener
 
 	protected Vec3f cameraOrigin;
 	protected Rotf cameraRotation;
-
-	protected ArrayList<Integer> iAlSetIDs;
+	
+	protected ISet set;
 
 	/**
 	 * Constructor.
@@ -47,8 +47,6 @@ public class CmdCreateGLEventListener
 		cameraOrigin = new Vec3f(0, 0, 0);
 
 		viewType = cmdType;
-
-		iAlSetIDs = new ArrayList<Integer>();
 	}
 
 	@Override
@@ -116,71 +114,65 @@ public class CmdCreateGLEventListener
 		viewFrustum =
 			new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear,
 				fFar);
-
-		// }
-		// catch (Exception e)
-		// {
-		//
-		// generalManager.getLogger().log(Level.SEVERE,
-		// "Error in extraction view frustum from XML argument.", e);
-		// }
 	}
 
 	/**
 	 * Extract set and selection IDs from detail string. Example:
 	 * "SET_ID_1 SET_ID_2@SELECTION_ID_1 SELECTION_ID_2"
+	 * 
+	 * @deprecated
 	 */
 	private void extractDataIDs() {
 
-		// Read Set and Selection IDs
-		StringTokenizer divideSetAndSelectionIDs =
-			new StringTokenizer(sDetail, IGeneralManager.sDelimiter_Paser_DataItemBlock);
-
-		// Fill set IDs
-		if (divideSetAndSelectionIDs.hasMoreTokens()) {
-			StringTokenizer divideIDs =
-				new StringTokenizer(divideSetAndSelectionIDs.nextToken(),
-					IGeneralManager.sDelimiter_Parser_DataItems);
-
-			while (divideIDs.hasMoreTokens()) {
-				iAlSetIDs.add(Integer.valueOf(divideIDs.nextToken()).intValue());
-			}
-		}
-
-		// Fill selection IDs
-		// if (divideSetAndSelectionIDs.hasMoreTokens())
-		// {
-		// StringTokenizer divideIDs = new
-		// StringTokenizer(divideSetAndSelectionIDs
-		// .nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
-		//
-		// while (divideIDs.hasMoreTokens())
-		// {
-		// iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
-		// .nextToken(), -1));
-		// }
-		// }
-
-		// Convert external IDs from XML file to internal IDs
-		iAlSetIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlSetIDs);
+//		// Read Set and Selection IDs
+//		StringTokenizer divideSetAndSelectionIDs =
+//			new StringTokenizer(sDetail, IGeneralManager.sDelimiter_Paser_DataItemBlock);
+//
+//		// Fill set IDs
+//		if (divideSetAndSelectionIDs.hasMoreTokens()) {
+//			StringTokenizer divideIDs =
+//				new StringTokenizer(divideSetAndSelectionIDs.nextToken(),
+//					IGeneralManager.sDelimiter_Parser_DataItems);
+//
+//			while (divideIDs.hasMoreTokens()) {
+//				iAlSetIDs.add(Integer.valueOf(divideIDs.nextToken()).intValue());
+//			}
+//		}
+//
+//		// Fill selection IDs
+//		// if (divideSetAndSelectionIDs.hasMoreTokens())
+//		// {
+//		// StringTokenizer divideIDs = new
+//		// StringTokenizer(divideSetAndSelectionIDs
+//		// .nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
+//		//
+//		// while (divideIDs.hasMoreTokens())
+//		// {
+//		// iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
+//		// .nextToken(), -1));
+//		// }
+//		// }
+//
+//		// Convert external IDs from XML file to internal IDs
+//		set = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlSetIDs);
 
 	}
 
 	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
 		final float fBottom, final float fTop, final float fNear, final float fFar,
-		final ArrayList<Integer> iArSetIDs, final int iParentCanvasID) {
+		final ISet set, final int iParentCanvasID) {
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar);
 
-		this.iAlSetIDs = iArSetIDs;
+		this.set = set;
 		this.iParentContainerId = iParentCanvasID;
 	}
 
 	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
 		final float fBottom, final float fTop, final float fNear, final float fFar,
-		final ArrayList<Integer> iArSetIDs, final int iParentCanvasID, final float fCamOriginX,
+		final ISet set, final int iParentCanvasID, final float fCamOriginX,
 		final float fCamOriginY, final float fCamOriginZ, final float fCamRotationX,
 		final float fCamRotationY, final float fCamRotationZ, final float fCamRotationAngle) {
-		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iArSetIDs, iParentCanvasID);
+		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, set, iParentCanvasID);
 
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
 		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ), (float) Math
@@ -200,8 +192,8 @@ public class CmdCreateGLEventListener
 		this.iParentContainerId = parentCanvasID;
 	}
 	
-	public void setSetIDs(ArrayList<Integer> setIDs) {
-		this.iAlSetIDs = setIDs;
+	public void setSet(ISet set) {
+		this.set = set;
 	}
 
 	public void setViewFrustum(ViewFrustum viewFrustum) {
@@ -217,8 +209,10 @@ public class CmdCreateGLEventListener
 			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 
+		GLCaleydoCanvas glCanvas = generalManager.getViewGLCanvasManager().getCanvas(iParentContainerId);
+		
 		createdObject =
-			glCanvasManager.createGLEventListener(viewType, iParentContainerId, sLabel, viewFrustum);
+			glCanvasManager.createGLEventListener(viewType, glCanvas, sLabel, viewFrustum);
 
 		if (iExternalID != -1) {
 			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
@@ -226,14 +220,7 @@ public class CmdCreateGLEventListener
 
 		createdObject.getViewCamera().setCameraPosition(cameraOrigin);
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
-
-		// Set sets in views
-		if (iAlSetIDs == null)
-			return;
-
-		for (Integer iSetID : iAlSetIDs) {
-			createdObject.addSet(iSetID);
-		}
+		createdObject.setSet(set);
 
 		commandManager.runDoCommand(this);
 	}

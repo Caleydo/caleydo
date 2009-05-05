@@ -11,8 +11,8 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.command.CommandManager;
@@ -24,13 +24,12 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
-import org.caleydo.core.manager.memento.MementoManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
-import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
-import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
+import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -56,16 +55,7 @@ public class GeneralManager
 	 */
 	private PreferenceStore preferenceStore;
 
-	/**
-	 * Determines whether Caleydo runs as standalone test GUI or in RCP mode.
-	 */
-	private boolean bIsStandalone = true;
-
-	private boolean bAllManagersInitialized = false;
-
 	private IStorageManager storageManager;
-	private IMementoManager mementoManager;
-	// protected IVirtualArrayManager virtualArrayManager;
 	private ISetManager setManager;
 	private ICommandManager commandManager;
 	private ISWTGUIManager sWTGUIManager;
@@ -85,8 +75,18 @@ public class GeneralManager
 	private ResourceLoader resourceLoader;
 
 	private WiiRemote wiiRemote;
-
+	
+	/**
+	 * The use case determines which kind of data is loaded in the views.
+	 */
+	private IUseCase useCase;
+	
 	private boolean bIsWiiMode = false;
+
+	/**
+	 * Determines whether Caleydo runs as standalone test GUI or in RCP mode.
+	 */
+	private boolean bIsStandalone = true;
 
 	@Override
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge) {
@@ -99,16 +99,9 @@ public class GeneralManager
 	public void init(boolean bIsStandalone) {
 		this.bIsStandalone = bIsStandalone;
 
-		if (bAllManagersInitialized)
-			throw new IllegalStateException("Tried to initialize managers multiple times. Abort.");
-
-		bAllManagersInitialized = true;
-
 		storageManager = new StorageManager();
-		// virtualArrayManager = new VirtualArrayManager(this, 4);
 		setManager = new SetManager();
 		// connectedElementRepManager = new SelectionManager();
-		mementoManager = new MementoManager();
 		commandManager = new CommandManager();
 		viewGLCanvasManager = new ViewManager();
 		sWTGUIManager = new SWTGUIManager();
@@ -140,8 +133,9 @@ public class GeneralManager
 	}
 
 	/**
-	 * Returns the general method as a singleton object. 
-	 * When first called the general manager is created (lazy).
+	 * Returns the general method as a singleton object. When first called the general manager is created
+	 * (lazy).
+	 * 
 	 * @return singleton GeneralManager instance
 	 */
 	public static IGeneralManager get() {
@@ -211,22 +205,9 @@ public class GeneralManager
 	}
 
 	@Override
-	public IMementoManager getMementoManager() {
-		return mementoManager;
-	}
-
-	@Override
 	public IStorageManager getStorageManager() {
 		return storageManager;
 	}
-
-	// public IVirtualArrayManager getVirtualArrayManager() {
-	// return virtualArrayManager;
-	// }
-	// public ISelectionManager getSelectionManager()
-	// {
-	// return connectedElementRepManager;
-	// }
 
 	@Override
 	public ISetManager getSetManager() {
@@ -306,5 +287,16 @@ public class GeneralManager
 	@Override
 	public WiiRemote getWiiRemote() {
 		return wiiRemote;
+	}
+	
+	@Override
+	public void setUseCase(IUseCase useCase) {
+		this.useCase = useCase;
+	}
+
+	@Override
+	public IUseCase getUseCase() {
+
+		return useCase;
 	}
 }

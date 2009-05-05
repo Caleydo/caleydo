@@ -3,15 +3,14 @@ package org.caleydo.rcp.views.opengl;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -30,20 +29,20 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class GLHistogramView
 	extends AGLViewPart
-	implements IMediatorReceiver {
+	implements IViewCommandHandler {
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
 
 	private CLabel colorMappingPreviewLabel;
 	
+	protected RedrawViewListener redrawViewListener = null;
+	protected ClearSelectionsListener clearSelectionsListener = null;
+
 	/**
 	 * Constructor.
 	 */
 	public GLHistogramView() {
 		super();
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
-
-	
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -125,20 +124,40 @@ public class GLHistogramView
 	}
 
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType mediatorType) {
-		switch (eventContainer.getEventType()) {
-			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer =
-					(ViewCommandEventContainer) eventContainer;
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-					colorMappingPreviewLabel.getDisplay().asyncExec(new Runnable() {
-						public void run() {
-							updateColorLabel();
-						}
-					});
-				}
-				break;
+	public void handleRedrawView() {
+		colorMappingPreviewLabel.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				updateColorLabel();
+			}
+		});
+	}
+
+	@Override
+	public void handleClearSelections() {
+		// nothing to do here
+	}
+
+	@Override
+	public void registerEventListeners() {
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
 		}
 	}
+
 }

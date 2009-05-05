@@ -7,7 +7,7 @@ public class EnableGeneMappingListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		bucket.setGeneMappingEnabled(true);
+		handler.setGeneMappingEnabled(true);
 	}
 
 }

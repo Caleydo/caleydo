@@ -9,6 +9,7 @@ import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -69,25 +70,22 @@ public abstract class AGLViewPart
 		boolean bRegisterToOverallMediator) {
 		IGeneralManager generalManager = GeneralManager.get();
 
-		ArrayList<Integer> iAlSets = new ArrayList<Integer>();
-		for (ISet set : generalManager.getSetManager().getAllItems()) {
-			iAlSets.add(set.getID());
-		}
+		ISet set = generalManager.getUseCase().getSet();
 
 		CmdCreateGLEventListener cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(glViewType);
 
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f, 2.87f, 100, iAlSets,
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, set,
+//			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f, 2f, 3.82f, 100, set,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH) {
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, iAlSets,
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, set,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
-			cmdView
-				.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iAlSets, iParentCanvasID);
+			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, set, iParentCanvasID);
 		}
 
 		cmdView.doCommand();
@@ -101,6 +99,15 @@ public abstract class AGLViewPart
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
+		// TODO: Currently only one use case is supported - this needs to be generalized.
+		IUseCase useCase = GeneralManager.get().getUseCase();
+		glView.setUseCase(useCase);
+		
+		glView.setSet(set);
+		glView.initData();
+		
+		useCase.addView(glView);
+		
 		return glView;
 	}
 
@@ -142,20 +149,21 @@ public abstract class AGLViewPart
 	public void dispose() {
 		super.dispose();
 
+		GeneralManager.get().getUseCase().removeView(glEventListener);
 		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID).destroy();
 	}
 
 	@Override
 	public List<Integer> getAllViewIDs() {
-		
-		// FIXXXME: rcp-view id is the same as the first gl-view-id, so rcp-view-ids have to be omitted  
+
+		// FIXXXME: rcp-view id is the same as the first gl-view-id, so rcp-view-ids have to be omitted
 		// List<Integer> ids = super.getAllViewIDs();
-		
+
 		List<Integer> ids = new ArrayList<Integer>();
 		ids.addAll(this.getGLEventListener().getAllViewIDs());
 		return ids;
 	}
-	
+
 	public AGLEventListener getGLEventListener() {
 		return glEventListener;
 	}

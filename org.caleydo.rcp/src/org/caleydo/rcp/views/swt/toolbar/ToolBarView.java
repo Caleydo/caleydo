@@ -2,10 +2,6 @@ package org.caleydo.rcp.views.swt.toolbar;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
@@ -33,7 +29,7 @@ import org.eclipse.ui.part.ViewPart;
  */
 public class ToolBarView
 	extends ViewPart
-	implements IMediatorReceiver, ISizeProvider {
+	implements ISizeProvider {
 	public static final String ID = "org.caleydo.rcp.views.swt.ToolBarView";
 
 	public static final int TOOLBAR_WIDTH = 173;
@@ -47,8 +43,6 @@ public class ToolBarView
 
 	@Override
 	public void createPartControl(Composite parent) {
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
 		if (GenomePerspective.bIsWideScreen) {
@@ -76,8 +70,6 @@ public class ToolBarView
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	public void removeViewSpecificToolBar(int iViewID) {
@@ -144,9 +136,7 @@ public class ToolBarView
 		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
-	@Override
-	public void handleExternalEvent(final IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
+	public void highlightViewSpecificGroup(final Object eventTrigger) {
 		if (eventTrigger instanceof AGLEventListener) {
 			final int iViewID = ((AGLEventListener) eventTrigger).getID();
 

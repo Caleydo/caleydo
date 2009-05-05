@@ -12,8 +12,6 @@ import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EClustererType;
 
 /**
  * Interface for Sets

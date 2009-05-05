@@ -7,7 +7,7 @@ public class EnableNeighborhoodListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		glPathway.enableNeighborhood(true);
+		handler.enableNeighborhood(true);
 	}
 
 }

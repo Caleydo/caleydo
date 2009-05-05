@@ -84,7 +84,7 @@ public class LabelManager {
 				drawSegmentMarker(gl, glu, fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter);
 			}
 			else if (!doesLabelCollide(labelContainer, alContainers, fXCenter + fSegmentXCenter, fYCenter
-				+ fSegmentYCenter)) {
+				+ fSegmentYCenter, fXCenter, fBendPointX)) {
 				alContainers.add(labelContainer);
 
 				labelContainer.draw(gl, false);
@@ -99,7 +99,7 @@ public class LabelManager {
 
 		gl.glLoadIdentity();
 
-		gl.glColor3f(0, 0, 0);
+		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter, 0);
 		gl.glVertex3f(fXCenter + fBendPointX, fYCenter + fBendPointY, 0);
@@ -115,7 +115,7 @@ public class LabelManager {
 	}
 
 	private void drawSegmentMarker(GL gl, GLU glu, float fXPosition, float fYPosition) {
-		gl.glColor3f(0, 0, 0);
+		gl.glColor3f(0.2f, 0.2f, 0.2f);
 		gl.glPushMatrix();
 		gl.glTranslatef(fXPosition, fYPosition, 0);
 		GLPrimitives.renderCircle(gl, glu, MARKER_RADIUS, 10);
@@ -165,13 +165,17 @@ public class LabelManager {
 	}
 
 	private boolean doesLabelCollide(LabelContainer containerToTest, ArrayList<LabelContainer> alContainers,
-		float fSegmentXCenter, float fSegmentYCenter) {
+		float fSegmentXCenter, float fSegmentYCenter, float fXCenter, float fBendPointX) {
 
 		for (LabelContainer currentContainer : alContainers) {
 			if (currentContainer.doContainersCollide(containerToTest)) {
 				return true;
 			}
 		}
+		if((fBendPointX >= 0) && (fXCenter + fBendPointX > containerToTest.getLeft()))
+			return true;
+		if((fBendPointX < 0) && (fXCenter + fBendPointX < containerToTest.getRight()))
+			return true;
 		// It is assumed that the LabelContainer for the MouseOver Element is created first, since it is
 		// rendered first. So the the following marker collision detection should work for now.
 		if (lcMouseOver != null) {

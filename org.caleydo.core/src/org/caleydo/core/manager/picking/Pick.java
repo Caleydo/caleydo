@@ -3,11 +3,13 @@ package org.caleydo.core.manager.picking;
 import java.awt.Point;
 
 /**
+ * All data associated with a single pick
+ * 
  * @author Alexander Lex
  */
 public class Pick {
 
-	private int iPickingID = 0;
+	private int iExternalID = 0;
 
 	private EPickingMode ePickingMode = EPickingMode.CLICKED;
 
@@ -20,52 +22,52 @@ public class Pick {
 	/**
 	 * Constructor.
 	 */
-	public Pick(int iPickingID) {
-
-		this.iPickingID = iPickingID;
-	}
-
-	/**
-	 * Constructor.
-	 */
-	// public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint) {
-	//
-	// this.iPickingID = iPickingID;
-	// this.ePickingMode = ePickingMode;
-	// this.pickedPoint = pickedPoint;
-	// }
-	/**
-	 * Constructor.
-	 */
-	public Pick(int iPickingID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
+	public Pick(int iExternalID, EPickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
 		float fDepth) {
 
-		this.iPickingID = iPickingID;
+		this.iExternalID = iExternalID;
 		this.ePickingMode = ePickingMode;
 		this.pickedPoint = pickedPoint;
 		this.dragStartPoint = dragStartPoint;
 		this.fDepth = fDepth;
 	}
 
-	public int getPickingID() {
+	/**
+	 * Returns the ID which was previously specified as externalID in the
+	 * {@link PickingManager#getPickingID(int, EPickingType, int)} method
+	 * 
+	 * @return
+	 */
+	public int getID() {
 
-		return iPickingID;
+		return iExternalID;
 	}
 
+	/**
+	 * Returns the mode of the pick (eg. MOUSE_OVER or CLICKED)
+	 * 
+	 * @return
+	 */
 	public EPickingMode getPickingMode() {
 
 		return ePickingMode;
 	}
 
+	/**
+	 * The 2D screen coordinates of the position of the mouse at the time the pick occured
+	 * 
+	 * @return
+	 */
 	public Point getPickedPoint() {
 
 		return pickedPoint;
 	}
 
-	public Point getDragStartPoint() {
-		return dragStartPoint;
-	}
-
+	/**
+	 * The z-value of the picked element
+	 * 
+	 * @return
+	 */
 	public float getDepth() {
 		return fDepth;
 	}

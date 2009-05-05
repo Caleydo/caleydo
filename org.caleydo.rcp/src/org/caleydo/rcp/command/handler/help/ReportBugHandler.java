@@ -26,6 +26,7 @@ public class ReportBugHandler
 		}
 		
 		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+		changeURLEvent.setSender(this);
 		changeURLEvent.setUrl(URL_REPORT_BUG);
 		GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
 

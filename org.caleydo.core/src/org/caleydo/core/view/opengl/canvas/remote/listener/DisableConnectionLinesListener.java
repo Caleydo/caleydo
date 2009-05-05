@@ -7,7 +7,7 @@ public class DisableConnectionLinesListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		bucket.setConnectionLinesEnabled(false);
+		handler.setConnectionLinesEnabled(false);
 	}
 
 }

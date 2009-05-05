@@ -453,11 +453,6 @@ public class AffinityClusterer
 
 		Integer VAId = 0;
 
-//		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-//			fClusterFactor = 5.0f;
-//		if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-//			fClusterFactor = 1.0f;
-
 		fClusterFactor = clusterState.getAffinityPropClusterFactor();
 		
 		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());

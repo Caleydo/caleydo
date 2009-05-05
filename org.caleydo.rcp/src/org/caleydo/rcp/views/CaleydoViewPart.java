@@ -3,14 +3,22 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
 public abstract class CaleydoViewPart
 	extends ViewPart {
 	protected static ArrayList<IAction> alToolbar;
 	// protected static ArrayList<IContributionItem> alToolbarContributions;
+
+	protected IGeneralManager generalManager = null;
+	protected IEventPublisher eventPublisher = null; 
 
 	protected int iViewID;
 
@@ -19,6 +27,14 @@ public abstract class CaleydoViewPart
 	
 	protected Composite swtComposite;
 
+	@Override
+	public void init(IViewSite site) throws PartInitException {
+		super.init(site);
+		generalManager = GeneralManager.get();
+		eventPublisher = generalManager.getEventPublisher();
+		registerEventListeners();
+	}
+	
 	/**
 	 * Generates and returns a list of all view-ids, caleydo-view-part-ids and gl-view-ids, 
 	 * contained in this view. 
@@ -44,5 +60,19 @@ public abstract class CaleydoViewPart
 
 	public void setAttached(boolean attached) {
 		this.attached = attached;
+	}
+
+	@Override
+	public void dispose() {
+		unregisterEventListeners();
+		super.dispose();
+	}
+	
+	public void registerEventListeners() {
+		// no registration to the event system in the default implementation 
+	}
+
+	public void unregisterEventListeners() {
+		// no registration to the event system in the default implementation 
 	}
 }

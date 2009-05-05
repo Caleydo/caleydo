@@ -1,19 +1,8 @@
 package org.caleydo.core.view.swt.browser;
 
-import org.caleydo.core.manager.event.IEventListener;
+import org.caleydo.core.manager.event.AEventListener;
 
 public abstract class ABrowserListener 
-	implements IEventListener {
+	extends AEventListener<HTMLBrowserViewRep> {
 	
-	/** browser related to this listener */
-	HTMLBrowserViewRep browserView;
-
-	public HTMLBrowserViewRep getBrowserView() {
-		return browserView;
-	}
-
-	public void setBrowserView(HTMLBrowserViewRep browserView) {
-		this.browserView = browserView;
-	}
-
 }

@@ -24,20 +24,12 @@ public enum ECommandType {
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 
 	CREATE_GL_HEAT_MAP_3D("cmd", "type", "-1", "Create Heat Map"),
+	CREATE_GL_PROPAGATION_HEAT_MAP_3D("cmd", "type", "-1", "Create List Heat Map"),
 	CREATE_GL_TEXTURE_HEAT_MAP_3D("cmd", "type", "-1", "Create Texture Heat Map"),
 	CREATE_GL_GLYPH("cmd", "type", "-1", "Create Glyph"),
 	CREATE_GL_GLYPH_SLIDER("cmd", "type", "-1", "Create Glyph Slider View"),
 	CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
-	CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION(
-		"cmd",
-		"type",
-		"-1",
-		"Create Parallel Coordinates for gene expression"),
-	CREATE_GL_PARALLEL_COORDINATES_CLINICAL(
-		"cmd",
-		"type",
-		"-1",
-		"Create Parallel Coordinates for clinical data"),
+	CREATE_GL_PARALLEL_COORDINATES("cmd", "type", "-1", "Create Parallel Coordinates "),
 	CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),
 	CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
 	CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
@@ -45,7 +37,8 @@ public enum ECommandType {
 	CREATE_GL_RADIAL_HIERARCHY("cmd", "type", "-1", "Create Radial Hierarchys"),
 	CREATE_GL_HYPERBOLIC("cmd", "type", "-1", "Create Hyperbolic"),
 	CREATE_GL_HISTOGRAM("cmd", "type", "-1", "Create Hyperbolic"),
-	CREATE_GL_DENDROGRAM("cmd", "type", "-1", "Create Dendrogram"),
+	CREATE_GL_DENDROGRAM_HORIZONTAL("cmd", "type", "-1", "Create horizontal Dendrogram"),
+	CREATE_GL_DENDROGRAM_VERTICAL("cmd", "type", "-1", "Create vertical Dendrogram"),
 
 	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),

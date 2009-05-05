@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.management.InvalidAttributeValueException;
@@ -16,28 +17,32 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
+import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -49,10 +54,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
-
-	protected ISet set;
-	protected ESetType setType;
+	implements 
+		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
+		IViewCommandHandler { 
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -102,31 +106,28 @@ public abstract class AStorageBasedView
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
-		
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
+	protected RedrawViewListener redrawViewListener = null;
+	protected ClearSelectionsListener clearSelectionsListener = null;
+	
 	/**
 	 * Constructor for storage based views
 	 * 
-	 * @param setType
-	 *            from the type of set the kind of visualization is derived
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(ESetType setType, final int iGLCanvasID, final String sLabel,
+	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel,
 		final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
-
-		this.setType = setType;
+		super(glCanvas, sLabel, viewFrustum, true);
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		connectedElementRepresentationManager =
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		// textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16),
-		// false);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-
 		registerEventListeners();
 	}
 
@@ -146,26 +147,12 @@ public abstract class AStorageBasedView
 		return bRenderOnlyContext;
 	}
 
-	// /**
-	// * Set which level of data filtering should be applied.
-	// *
-	// * @param bRenderOnlyContext true if only context, else false
-	// */
-	// @Override
-	// public void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
-	// {
-	// this.dataFilterLevel = dataFilterLevel;
-	// }
-
 	public synchronized void initData() {
-		set = null;
 
-		for (ISet currentSet : alSets) {
-			if (currentSet.getSetType() == setType) {
-				set = currentSet;
-			}
-		}
-
+		super.initData();
+		
+		bRenderOnlyContext = bIsRenderedRemote;
+		
 		String sLevel =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
 		if (sLevel.equals("complete")) {
@@ -235,10 +222,11 @@ public abstract class AStorageBasedView
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 
 		for (int iCount = 0; iCount < set.depth(); iCount++) {
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
+			if (dataFilterLevel != EDataFilterLevel.COMPLETE
+				&& set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+
 				// Here we get mapping data for all values
-				// FIXME: not general, only for genes
-				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
+				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
 					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");
@@ -262,6 +250,7 @@ public abstract class AStorageBasedView
 					}
 				}
 			}
+			
 			alTempList.add(iCount);
 		}
 
@@ -339,7 +328,8 @@ public abstract class AStorageBasedView
 
 	}
 
-	private void handleVAUpdate(IMediatorSender eventTrigger, IVirtualArrayDelta delta) {
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
@@ -365,7 +355,7 @@ public abstract class AStorageBasedView
 		// reactOnExternalSelection();
 		setDisplayListDirty();
 	}
-
+	
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
@@ -398,64 +388,57 @@ public abstract class AStorageBasedView
 
 		setDisplayListDirty();
 	}
+	
+	@Override
+	public synchronized void setSet(ISet set) {
+		super.setSet(set);
+		
+		resetView();
+	}
 
-	/**
-	 * Reset the view to its initial state, synchronized
-	 */
-	public synchronized final void resetView() {
-		initData();
+//	@Override
+//	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
+//		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+//	}
+
+//	@Override
+//	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
+//		EMediatorType eMediatorType) {
+//		switch (eventContainer.getEventType()) {
+//			case VIEW_COMMAND:
+//				ViewCommandEventContainer viewCommandEventContainer =
+//					(ViewCommandEventContainer) eventContainer;
+//
+//				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
+//					setDisplayListDirty();
+//				}
+//				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+//					clearAllSelections();
+//					setDisplayListDirty();
+//				}
+//				break;
+//		}
+//	}
+
+	@Override
+	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	public void handleClearSelections() {
+		clearAllSelections();
+		setDisplayListDirty();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-			case VA_UPDATE:
-				if (eMediatorType != null && this instanceof GLHeatMap && ((GLHeatMap) this).bIsInListMode
-					&& eMediatorType != EMediatorType.PROPAGATION_MEDIATOR) {
-					break;
-				}
-				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
-					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
-				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
-				break;
-			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-				
-				switch (commandEventContainer.getIDType()) {
-					case DAVID:
-					case REFSEQ_MRNA_INT:
-					case EXPRESSION_INDEX:
-						contentSelectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-					case EXPERIMENT_INDEX:
-						storageSelectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-				}
-				break;
-			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer =
-					(ViewCommandEventContainer) eventContainer;
-				
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-					setDisplayListDirty();
-				}
-				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
-					clearAllSelections();
-					setDisplayListDirty();
-				} 
-				break;
-		}
+	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		contentSelectionManager.executeSelectionCommands(selectionCommands);
+	}
+	
+	@Override
+	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		storageSelectionManager.executeSelectionCommands(selectionCommands);
 	}
 
 	/**
@@ -600,28 +583,50 @@ public abstract class AStorageBasedView
 		return contentSelectionManager.getElements(eSelectionType).size();
 	}
 
-	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
-	 */
+	@Override
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		
+		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+
+		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
+		triggerSelectionCommandListener.setHandler(this);
+		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 
-	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
-	 */
+	@Override
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		if (virtualArrayUpdateListener != null) {
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
+		}
+		if (triggerSelectionCommandListener != null) {
+			eventPublisher.removeListener(triggerSelectionCommandListener);
+			triggerSelectionCommandListener = null;
+		}
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
 		}
 	}
 	

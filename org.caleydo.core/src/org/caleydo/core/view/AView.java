@@ -1,14 +1,16 @@
 package org.caleydo.core.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,12 +29,15 @@ public abstract class AView
 	
 	protected IEventPublisher eventPublisher;
 
-	protected transient ISetManager setManager;
+	/**
+	 * The use case which determines the use case specific behavior of the view.
+	 */
+	protected IUseCase useCase;
 
 	/**
-	 * List for all ISet objects providing data for this ViewRep.
+	 * Data set which the view operates on.
 	 */
-	protected ArrayList<ISet> alSets;
+	protected ISet set;
 
 	protected int iParentContainerId;
 
@@ -48,12 +53,9 @@ public abstract class AView
 
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
-		setManager = generalManager.getSetManager();
 
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
-
-		alSets = new ArrayList<ISet>();
 	}
 
 	/**
@@ -79,34 +81,52 @@ public abstract class AView
 			parentComposite.getShell().setText(label);
 		}
 	}
-
+	
 	@Override
-	public synchronized void addSet(ISet set) {
-		alSets.add(set);
+	public void setSet(ISet set) {
+		this.set = set;
+	}
+	
+	@Override
+	public ISet getSet(){
+		return set;
+	}
+	
+	@Override
+	public void setUseCase(IUseCase useCase) {
+		this.useCase = useCase;
 	}
 
-	@Override
-	public synchronized void addSets(ArrayList<ISet> alSets) {
-		this.alSets.addAll(alSets);
+	/**
+	 * Registers the listeners for this view to the event system.
+	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 */
+	public void registerEventListeners() {
+		// default implementations does not react on events 
 	}
 
-	@Override
-	public synchronized void addSet(int iSetID) {
-		alSets.add(generalManager.getSetManager().getItem(iSetID));
+	/**
+	 * Unregisters the listeners for this view from the event system.
+	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 */
+	public void unregisterEventListeners() {
+		// default implementations does not react on events 
 	}
 
-	@Override
-	public synchronized void removeSets(ESetType setType) {
-		Iterator<ISet> iter = alSets.iterator();
-		while (iter.hasNext()) {
-			if (iter.next().getSetType() == setType) {
-				iter.remove();
-			}
-		}
+	/**
+	 * creates and sends a {@link TriggerSelectioCommand} event and distributes
+	 * it via the related eventPublisher. 
+	 * @param expression_index type of genome this selection command refers to 
+	 * @param command selection-command to distribute
+	 */
+	protected void sendSelectionCommandEvent(EIDType genomeType, SelectionCommand command) {
+		TriggerSelectionCommandEvent event = new TriggerSelectionCommandEvent();
+		event.setSender(this);
+		event.setType(genomeType);
+		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
+		commands.add(command);
+		event.setSelectionCommands(commands);
+		eventPublisher.triggerEvent(event);
 	}
 
-	@Override
-	public synchronized void clearSets() {
-		alSets.clear();
-	}
 }

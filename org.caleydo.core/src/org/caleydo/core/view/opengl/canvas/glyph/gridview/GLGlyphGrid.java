@@ -16,7 +16,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphDataLoader;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModel;

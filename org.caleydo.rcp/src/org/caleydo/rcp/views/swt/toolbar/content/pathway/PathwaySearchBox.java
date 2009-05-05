@@ -3,12 +3,9 @@ package org.caleydo.rcp.views.swt.toolbar.content.pathway;
 import java.util.Collection;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.manager.event.EEventType;
-import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.search.SearchBox;
@@ -146,13 +143,10 @@ public class PathwaySearchBox
 		if (pathway == null)
 			return false;
 
-		IDListEventContainer<Integer> idListEventContainer =
-			new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
-		idListEventContainer.addID(pathway.getID());
-
 		pathwayToolBarMediator.loadPathway(pathway);
 		
 		ChangeURLEvent event = new ChangeURLEvent();
+		event.setSender(this);
 		event.setUrl(pathway.getExternalLink());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 

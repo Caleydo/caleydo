@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
@@ -71,8 +70,6 @@ public class GLPathwayContentCreator {
 
 	private IIDMappingManager idMappingManager;
 
-	private ArrayList<ISet> alSetData;
-
 	/**
 	 * Constructor.
 	 */
@@ -92,8 +89,7 @@ public class GLPathwayContentCreator {
 		idMappingManager = generalManager.getIDMappingManager();
 	}
 
-	public void init(final GL gl, final ArrayList<ISet> alSetData,
-		final GenericSelectionManager internalSelectionManager) {
+	public void init(final GL gl, final GenericSelectionManager internalSelectionManager) {
 
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);
@@ -101,7 +97,6 @@ public class GLPathwayContentCreator {
 		buildHighlightedCompoundNodeDisplayList(gl);
 
 		this.internalSelectionManager = internalSelectionManager;
-		this.alSetData = alSetData;
 
 		// hashElementId2MappingColorArray.clear();
 
@@ -825,7 +820,7 @@ public class GLPathwayContentCreator {
 						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, ((Integer) iRefSeqID))) {
 
 						return colorMapper
-							.getColor(alSetData.get(0).get(glPathwayView.iCurrentStorageIndex).getFloat(
+							.getColor(glPathwayView.getSet().get(glPathwayView.iCurrentStorageIndex).getFloat(
 								EDataRepresentation.NORMALIZED, ((Integer) iExpressionIndex).intValue()));
 					}
 				}

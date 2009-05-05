@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -29,22 +29,17 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -54,9 +49,11 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeTyp
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelPlus;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -74,7 +71,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IMediatorSender, IMediatorReceiver {
+	implements ISelectionUpdateHandler, ITriggerSelectionCommandHandler {
 
 	private static final long serialVersionUID = -7899479912218913482L;
 
@@ -108,7 +105,6 @@ public class GLGlyph
 
 	private float iViewScale = 0.15f;
 
-	private String sLabel = null;
 	private String sLabelPersonal = null;
 
 	private boolean bEnableSelection = false;
@@ -118,21 +114,19 @@ public class GLGlyph
 	private int iFrameBufferObject = -1;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
 	
 	// private long ticker = 0;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
-
-		this.sLabel = sLabel;
+	public GLGlyph(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum, true);
 
 		alSelectionBrushCornerPoints = new ArrayList<Vec2i>();
 		mouseListener_ = new GlyphMouseListener(this);
@@ -260,6 +254,7 @@ public class GLGlyph
 			handleConnectedElementRep(selectionDelta);
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
 			event.setSelectionDelta(selectionDelta);
 			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
@@ -268,18 +263,9 @@ public class GLGlyph
 
 	@Override
 	public synchronized void init(GL gl) {
-		ISet glyphData = null;
-
-		for (ISet tmpSet : alSets) {
-			if (tmpSet != null) {
-				if (tmpSet.getLabel().equals("Set for clinical data")) {
-					glyphData = tmpSet;
-				}
-			}
-		}
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
-		grid_.loadData(glyphData);
+		grid_.loadData(set);
 
 		// grid_.selectAll();
 
@@ -298,9 +284,6 @@ public class GLGlyph
 
 	@Override
 	public synchronized void initLocal(GL gl) {
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
 		bIsLocal = true;
 
 		float fInitZoom = -10f;
@@ -318,8 +301,8 @@ public class GLGlyph
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml) {
-				if (l instanceof PickingMouseListener) {
-					((PickingMouseListener) l).setNavigationModes(false, false, false);
+				if (l instanceof GLMouseListener) {
+					((GLMouseListener) l).setNavigationModes(false, false, false);
 				}
 			}
 		}
@@ -347,19 +330,18 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager)
-
-	{
-
+	public synchronized void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		
 		bIsLocal = false;
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
+		// FIXXXME: YOU SHOULD NOT ADD THE KEY LISTENER TO ALL CANVAS OBJECTS!!!!!
 		for (GLCaleydoCanvas c : cc) {
-			c.addKeyListener(keyListener_);
+//			c.addKeyListener(keyListener_);
 		}
 
 		init(gl);
@@ -372,7 +354,7 @@ public class GLGlyph
 
 	@Override
 	public synchronized void displayLocal(GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		display(gl);
 		checkForHits(gl);
@@ -1022,14 +1004,12 @@ public class GLGlyph
 					if (g == null) {
 						generalManager.getLogger().log(Level.WARNING,
 							"Glyph with external ID " + iExternalID + " not found!");
-						pickingManager.flushHits(iUniqueID, pickingType);
 						return;
 					}
 
 					// nothing changed, we don't need to do anything
 					if (g == oldMouseOverGlyphEntry) {
-						pickingManager.flushHits(iUniqueID, pickingType);
-						return;
+							return;
 					}
 
 					selectionManager.clearSelections();
@@ -1051,10 +1031,9 @@ public class GLGlyph
 					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 						EIDType.EXPERIMENT_INDEX);
 
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-						EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-							ESelectionType.MOUSE_OVER)));
-
+					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER);
+					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+					
 					triggerSelectionUpdate();
 
 					// only the glyphs need to be redrawn
@@ -1067,8 +1046,6 @@ public class GLGlyph
 
 			}
 		}
-
-		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
 	@Override
@@ -1116,33 +1093,13 @@ public class GLGlyph
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+
 	}
-
+	
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		generalManager.getLogger().log(
-			Level.INFO,
-			sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
-				+ eventTrigger.getClass().getSimpleName());
-
-		switch (eventContainer.getEventType()) {
-
-			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType()) {
-					case EXPERIMENT_INDEX:
-						selectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-				}
-				break;
-
-		}
-
+	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+		selectionManager.executeSelectionCommands(selectionCommands);
 	}
 
 	/**
@@ -1366,12 +1323,17 @@ public class GLGlyph
 	 * To release the allocated resources unregisterEventListeners() has to be called.
 	 * If inherited classes override this method, they should usually call it via super.    
 	 */
+	@Override
 	public void registerEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
+		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
+		triggerSelectionCommandListener.setHandler(this);
+		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
 	}
 
 	/**
@@ -1379,12 +1341,17 @@ public class GLGlyph
 	 * To release the allocated resources unregisterEventListenrs() has to be called.
 	 * If inherited classes override this method, they should usually call it via super.    
 	 */
+	@Override
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		if (triggerSelectionCommandListener != null) {
+			eventPublisher.removeListener(triggerSelectionCommandListener);
+			triggerSelectionCommandListener = null;
 		}
 	}
 

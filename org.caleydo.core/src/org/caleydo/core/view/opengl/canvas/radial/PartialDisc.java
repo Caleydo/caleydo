@@ -6,16 +6,12 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 public class PartialDisc
 	implements Comparable<PartialDisc> {
 
 	private float fSize;
-	private PickingManager pickingManager;
-	private int iViewID;
 	private PDDrawingStrategy drawingStrategy;
 	private ClusterNode clusterNode;
 	private Tree<PartialDisc> partialDiscTree;
@@ -28,18 +24,13 @@ public class PartialDisc
 	private float fCurrentInnerRadius;
 	private int iDrawingStrategyDepth;
 
-	public PartialDisc(int iElementID, float fSize, int iViewID, PickingManager pickingManager,
-		Tree<PartialDisc> partialDiscTree, ClusterNode clusterNode) {
+	public PartialDisc(int iElementID, float fSize, Tree<PartialDisc> partialDiscTree, ClusterNode clusterNode) {
 
 		this.iElementID = iElementID;
 		this.fSize = fSize;
-		this.iViewID = iViewID;
-		this.pickingManager = pickingManager;
 		this.partialDiscTree = partialDiscTree;
 		this.clusterNode = clusterNode;
-		drawingStrategy =
-			DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
+		drawingStrategy = DrawingStrategyManager.get().getDefaultDrawingStrategy();
 		fCurrentStartAngle = 0;
 	}
 
@@ -50,10 +41,7 @@ public class PartialDisc
 		if (iDepth <= 0)
 			return;
 
-		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
-			iElementID));
 		drawingStrategy.drawFullCircle(gl, glu, this);
-		gl.glPopName();
 		iDepth--;
 
 		float fAnglePerSizeUnit = 360 / fSize;
@@ -63,16 +51,28 @@ public class PartialDisc
 		}
 	}
 
+	public void simulateDrawHierarchyFull(GL gl, GLU glu, float fWidth, int iDepth) {
+
+		setCurrentDisplayParameters(fWidth, fCurrentStartAngle, 360, 0, iDepth);
+
+		if (iDepth <= 0)
+			return;
+		iDepth--;
+
+		float fAnglePerSizeUnit = 360 / fSize;
+
+		if (iDepth > 0) {
+			drawAllChildren(gl, glu, fWidth, fCurrentStartAngle, fWidth, fAnglePerSizeUnit, iDepth, true);
+		}
+	}
+
 	public void drawHierarchyAngular(GL gl, GLU glu, float fWidth, int iDepth, float fStartAngle,
 		float fAngle, float fInnerRadius) {
 
 		fStartAngle = getValidAngle(fStartAngle);
 		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
 
-		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
-			iElementID));
 		drawingStrategy.drawPartialDisc(gl, glu, this);
-		gl.glPopName();
 		iDepth--;
 
 		float fAnglePerSizeUnit = fAngle / fSize;
@@ -106,10 +106,7 @@ public class PartialDisc
 		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
 
 		if (!bSimulation) {
-			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
-				iElementID));
 			drawingStrategy.drawPartialDisc(gl, glu, this);
-			gl.glPopName();
 		}
 
 		iDepth--;
@@ -150,11 +147,15 @@ public class PartialDisc
 	private void setCurrentDisplayParameters(float fWidth, float fStartAngle, float fAngle,
 		float fInnerRadius, int iDepth) {
 		fCurrentAngle = fAngle;
-		//TODO: Do depth calculation properly (hopefully with clusternode)
+		// TODO: Do depth calculation properly (hopefully with clusternode)
 		iCurrentDepth = Math.min(iDepth, getHierarchyDepth(GLRadialHierarchy.DISP_HIER_DEPTH_DEFAULT));
 		fCurrentInnerRadius = fInnerRadius;
 		fCurrentStartAngle = fStartAngle;
 		fCurrentWidth = fWidth;
+	}
+	
+	public int getElementID() {
+		return iElementID;
 	}
 
 	public float getSize() {
@@ -163,14 +164,6 @@ public class PartialDisc
 
 	public void setSize(float fSize) {
 		this.fSize = fSize;
-	}
-
-	public void setPickingManager(PickingManager pickingManager) {
-		this.pickingManager = pickingManager;
-	}
-
-	public void setViewID(int iViewID) {
-		this.iViewID = iViewID;
 	}
 
 	public void setPDDrawingStrategy(PDDrawingStrategy drawingStrategy) {
@@ -219,6 +212,11 @@ public class PartialDisc
 		return fCurrentStartAngle;
 	}
 
+	public void setCurrentStartAngle(float fCurrentStartAngle) {
+
+		this.fCurrentStartAngle = getValidAngle(fCurrentStartAngle);
+	}
+
 	public int getCurrentDepth() {
 		return iCurrentDepth;
 	}
@@ -234,7 +232,7 @@ public class PartialDisc
 	public String getName() {
 		return clusterNode.getNodeName();
 	}
-	
+
 	public float getCoefficient() {
 		return clusterNode.getCoefficient();
 	}
@@ -247,6 +245,10 @@ public class PartialDisc
 		this.iDrawingStrategyDepth = iDrawingStrategyDepth;
 	}
 
+	public float getAverageExpressionValue() {
+		return clusterNode.getAverageExpressionValue();
+	}
+
 	@Override
 	public int compareTo(PartialDisc disc) {
 		return clusterNode.getClusterNr() - disc.clusterNode.getClusterNr();
@@ -255,15 +257,16 @@ public class PartialDisc
 	public int getHierarchyDepth(int iMaxDepthToSearch) {
 		// TODO: Maybe this way or another
 		// return clusterNode.getDepth();
-//		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
-//		if (alChildren == null || iMaxDepthToSearch <= 1)
-//			return 1;
-//		int iDepth = 1;
-//		for (PartialDisc child : alChildren) {
-//			int iChildDepth = child.getHierarchyDepth(1, iMaxDepthToSearch);
-//			iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
-//		}
+		// ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+		// if (alChildren == null || iMaxDepthToSearch <= 1)
+		// return 1;
+		// int iDepth = 1;
+		// for (PartialDisc child : alChildren) {
+		// int iChildDepth = child.getHierarchyDepth(1, iMaxDepthToSearch);
+		// iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
+		// }
 		return getHierarchyDepth(0, iMaxDepthToSearch);
+		//return clusterNode.getDepth();
 	}
 
 	private int getHierarchyDepth(int iCurDepth, int iMaxDepthToSearch) {
@@ -278,6 +281,20 @@ public class PartialDisc
 			iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
 		}
 		return iDepth;
+	}
+
+	public float calculateSizes() {
+		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+
+		fSize = 0;
+		if (alChildren != null) {
+			for (PartialDisc pdChild : alChildren) {
+				fSize += pdChild.calculateSizes();
+			}
+			return fSize;
+		}
+		fSize = 1;
+		return fSize;
 	}
 
 }

@@ -615,6 +615,10 @@ public class Set
 				cnt = 0;
 			}
 			cnt++;
+			if (i == arGroupInfo.length - 1) {
+				group = new Group(cnt, false, 0, ESelectionType.NORMAL);
+				groupList.append(group);
+			}
 		}
 		bClusterInfo = true;
 	}

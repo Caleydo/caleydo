@@ -9,7 +9,7 @@ public class ViewActivationListener
 	@Override
 	public void handleEvent(AEvent event) {
 		ViewActivationEvent viewActivationEvent = (ViewActivationEvent) event;
-		toolBarMediator.renderToolBar(viewActivationEvent.getViewIDs());
+		handler.renderToolBar(viewActivationEvent.getViewIDs());
 	}
 
 }

@@ -89,6 +89,11 @@ public class CaleydoBootloader {
 	 * Start Caleydo core.
 	 */
 	public synchronized void start() {
+		
+		// Do nothing if no XML input file is specified
+		if (sFileName == null || sFileName == "")
+			return;
+			
 		xmlParserManager.parseXmlFileByName(sFileName);
 	}
 

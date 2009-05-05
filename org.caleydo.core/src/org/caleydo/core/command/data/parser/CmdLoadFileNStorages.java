@@ -6,10 +6,14 @@ import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.system.StringConversionTool;
 
 /**
@@ -22,6 +26,8 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdLoadFileNStorages
 	extends ACommand {
 	private String sFileName;
+	private String sGenesTreeFileName;
+	private String sExperimentsTreeFileName;
 	private String sTokenPattern;
 	private String sTokenSeparator = "";
 
@@ -46,6 +52,7 @@ public class CmdLoadFileNStorages
 		super.setParameterHandler(parameterHandler);
 
 		this.sFileName = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
+		// this.sTreeFileName = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
 		this.sTokenPattern = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
 
 		StringTokenizer tokenizer =
@@ -84,10 +91,13 @@ public class CmdLoadFileNStorages
 	}
 
 	public void setAttributes(final ArrayList<Integer> iAlStorageId, final String sFileName,
-		final String sTokenPattern, final String sTokenSeparator, final int iStartParseFileAtLine,
-		final int iStopParseFileAtLine) {
-		iAlStorageIDs = iAlStorageId;
+		final String sGeneTreeFileName, final String sExperimentsTreeFileName, final String sTokenPattern,
+		final String sTokenSeparator, final int iStartParseFileAtLine, final int iStopParseFileAtLine) {
+
+		this.iAlStorageIDs = iAlStorageId;
 		this.sFileName = sFileName;
+		this.sGenesTreeFileName = sGeneTreeFileName;
+		this.sExperimentsTreeFileName = sExperimentsTreeFileName;
 		this.sTokenPattern = sTokenPattern;
 		this.iStartParseFileAtLine = iStartParseFileAtLine;
 		this.iStopParseFileAtLine = iStopParseFileAtLine;
@@ -113,6 +123,36 @@ public class CmdLoadFileNStorages
 		loader.loadData();
 
 		generalManager.getGUIBridge().setFileNameCurrentDataSet(sFileName);
+
+		// import gene tree
+		if (sGenesTreeFileName != null) {
+			if (sGenesTreeFileName.equals("") == false) {
+				generalManager.getLogger().log(Level.INFO,
+					"Loading gene tree from file " + sGenesTreeFileName);
+
+				TreePorter treePorter = new TreePorter();
+				Tree<ClusterNode> tree = treePorter.importTree(sGenesTreeFileName);
+
+				ISet set = generalManager.getUseCase().getSet();
+				set.setClusteredTreeGenes(tree);
+
+			}
+		}
+
+		// import experiment tree
+		if (sExperimentsTreeFileName != null) {
+			if (sExperimentsTreeFileName.equals("") == false) {
+				generalManager.getLogger().log(Level.INFO,
+					"Loading experiments tree from file " + sExperimentsTreeFileName);
+
+				TreePorter treePorter = new TreePorter();
+				Tree<ClusterNode> tree = treePorter.importTree(sExperimentsTreeFileName);
+
+				ISet set = generalManager.getUseCase().getSet();
+				set.setClusteredTreeExps(tree);
+
+			}
+		}
 
 		commandManager.runDoCommand(this);
 	}

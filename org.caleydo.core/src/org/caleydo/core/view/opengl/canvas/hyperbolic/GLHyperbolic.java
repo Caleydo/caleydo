@@ -4,14 +4,9 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -19,8 +14,9 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -34,27 +30,23 @@ import org.caleydo.core.view.serialize.SerializedDummyView;
  * @author Marc Streit
  */
 public class GLHyperbolic
-	extends AGLEventListener
-	implements IMediatorReceiver {
+	extends AGLEventListener {
 	
 	boolean bIsInListMode = false;
 
 	boolean bUseDetailLevel = true;
 	ISet set;
-	
-//	private int iPathwayID = -1;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param iViewID
-	 * @param iGLCanvasID
+	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHyperbolic(ESetType setType, final int iGLCanvasID, final String sLabel,
+	public GLHyperbolic(GLCaleydoCanvas glCanvas, final String sLabel,
 		final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, true);
+		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = EManagedObjectType.GL_HYPERBOLIC;
 
@@ -62,9 +54,6 @@ public class GLHyperbolic
 		alSelectionTypes.add(ESelectionType.NORMAL);
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
-		
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-			(IMediatorReceiver) this);
 	}
 
 	@Override
@@ -83,13 +72,13 @@ public class GLHyperbolic
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -115,7 +104,7 @@ public class GLHyperbolic
 
 	@Override
 	public synchronized void displayLocal(GL gl) {
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -142,7 +131,7 @@ public class GLHyperbolic
 		display(gl);
 		checkForHits(gl);
 
-		// pickingTriggerMouseAdapter.resetEvents();
+		// glMouseListener.resetEvents();
 	}
 
 	@Override
@@ -190,7 +179,6 @@ public class GLHyperbolic
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 		switch (ePickingType) {
@@ -204,15 +192,12 @@ public class GLHyperbolic
 
 						break;
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 				}
 
 				setDisplayListDirty();
 				break;
 		}
-
-		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
 	public boolean isInListMode() {
@@ -240,27 +225,6 @@ public class GLHyperbolic
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-
-//		switch (eventContainer.getEventType()) {
-//			// Handle incoming pathways
-//			case LOAD_PATHWAY_BY_PATHWAY_ID:
-//				IDListEventContainer<Integer> pathwayIDContainer =
-//					(IDListEventContainer<Integer>) eventContainer;
-//
-//				iPathwayID = pathwayIDContainer.getIDs().get(0);
-//				
-////				for (Integer iPathwayID : pathwayIDContainer.getIDs()) {
-////					;
-////				}
-//
-//				break;
-//		}
 
 	}
 

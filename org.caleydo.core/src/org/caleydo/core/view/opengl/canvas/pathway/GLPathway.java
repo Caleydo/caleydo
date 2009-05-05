@@ -22,8 +22,6 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -32,34 +30,36 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.EEventType;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.EViewCommand;
-import org.caleydo.core.manager.event.IDListEventContainer;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
+import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableTexturesListener;
@@ -67,7 +67,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableGeneMappingLi
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
@@ -83,7 +83,7 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class GLPathway
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IMediatorReceiver, IMediatorSender {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler {
 
 	private PathwayGraph pathway;
 
@@ -97,7 +97,6 @@ public class GLPathway
 
 	private GenericSelectionManager selectionManager;
 
-	
 	/**
 	 * Own texture manager is needed for each GL context, because textures cannot be bound to multiple GL
 	 * contexts.
@@ -124,12 +123,16 @@ public class GLPathway
 	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+
+	protected RedrawViewListener redrawViewListener = null;
+	protected ClearSelectionsListener clearSelectionsListener = null;
 
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum) {
-		super(iGLCanvasID, sLabel, viewFrustum, false);
+	public GLPathway(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+		super(glCanvas, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_PATHWAY;
 		pathwayManager = generalManager.getPathwayManager();
 
@@ -151,8 +154,6 @@ public class GLPathway
 		}
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
-
-		registerEventListeners();
 
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
@@ -186,11 +187,11 @@ public class GLPathway
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -213,7 +214,7 @@ public class GLPathway
 		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
 			return;
 
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
@@ -260,7 +261,7 @@ public class GLPathway
 			selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
 		}
 
-		gLPathwayContentCreator.init(gl, alSets, selectionManager);
+		gLPathwayContentCreator.init(gl, selectionManager);
 
 		// Create new pathway manager for GL context
 		if (!hashGLcontext2TextureManager.containsKey(gl)) {
@@ -292,7 +293,7 @@ public class GLPathway
 		// front level
 		gl.glTranslatef(0, tmp, 0);
 
-		if (remoteRenderingGLCanvas.getBucketMouseWheelListener() != null) {
+		if (remoteRenderingGLView.getBucketMouseWheelListener() != null) {
 			// if
 			// (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 			// .getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
@@ -340,7 +341,7 @@ public class GLPathway
 				}
 			}
 		}
-		else if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+		else if (selectionDelta.getIDType() != EIDType.EXPRESSION_INDEX)
 			return;
 
 		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
@@ -371,8 +372,10 @@ public class GLPathway
 		}
 	}
 
-	private ArrayList<Integer> getRefSeqIDsFromPathwayVertexGraphItemRep(int iPathwayVertexGraphItemRepID) {
-		ArrayList<Integer> alRefSeqID = new ArrayList<Integer>();
+	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexGraphItemRep(
+		int iPathwayVertexGraphItemRepID) {
+
+		ArrayList<Integer> alExpressionIndex = new ArrayList<Integer>();
 
 		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager().getItem(
 			iPathwayVertexGraphItemRepID).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
@@ -392,46 +395,29 @@ public class GLPathway
 				continue;
 			}
 
-			for (int iRefSeqID : iSetRefSeq) {
-				alRefSeqID.add(iRefSeqID);
+			for (Integer iRefSeqID : iSetRefSeq) {
+
+				Set<Integer> iSetExpressionIndex =
+					idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID);
+				if (iSetExpressionIndex == null)
+					continue;
+				alExpressionIndex.addAll(iSetExpressionIndex);
 			}
 		}
 
-		return alRefSeqID;
+		return alExpressionIndex;
 	}
 
-	// private ArrayList<Integer> getRefSeqFromPathwayVertexGraphItemRep(
-	// int iPathwayVertexGraphItemRepID)
-	// {
-	// ArrayList<Integer> alRefSeq = new ArrayList<Integer>();
-	//
-	// for (IGraphItem pathwayVertexGraphItem :
-	// generalManager.getPathwayItemManager()
-	// .getItem(iPathwayVertexGraphItemRepID).getAllItemsByProp(
-	// EGraphItemProperty.ALIAS_PARENT))
-	// {
-	// int iRefSeqID = generalManager.getPathwayItemManager()
-	// .getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
-	//
-	// if (iDavidID == -1)
-	// continue;
-	//
-	// alRefSeq.add(iDavidID);
-	// }
-	//
-	// return alRefSeq;
-	// }
-
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta) {
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			for (int iRefSeqID : getRefSeqIDsFromPathwayVertexGraphItemRep(item.getPrimaryID())) {
-				newSelectionDelta.addSelection((Integer) iRefSeqID, item.getSelectionType(), item
+			for (int iExpressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item.getPrimaryID())) {
+				newSelectionDelta.addSelection((Integer) iExpressionIndex, item.getSelectionType(), item
 					.getPrimaryID());
 
 				for (Integer iConnectionID : item.getConnectionID()) {
-					newSelectionDelta.addConnectionID((Integer) iRefSeqID, iConnectionID);
+					newSelectionDelta.addConnectionID((Integer) iExpressionIndex, iConnectionID);
 				}
 			}
 		}
@@ -441,18 +427,24 @@ public class GLPathway
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
 		ISelectionDelta newSelectionDelta =
-			new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.REFSEQ_MRNA_INT);
+			new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.EXPRESSION_INDEX);
 
-		int iRefSeqID = 0;
-		Integer iDavidID = 0;
 		int iPathwayVertexGraphItemID = 0;
 
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			iRefSeqID = item.getPrimaryID();
 
-			iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+			int iExpressionIndex = item.getPrimaryID();
+			Integer iRefSeqID =
+				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExpressionIndex);
+
+			if (iRefSeqID == null) {
+				continue;
+				// throw new IllegalStateException("Cannot resolve Expression Index to RefSeq ID.");
+			}
+
+			Integer iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
 
 			if (iDavidID == null)
 				throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
@@ -591,7 +583,6 @@ public class GLPathway
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
 
@@ -637,26 +628,36 @@ public class GLPathway
 									tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG);
 
 							if (pathway != null) {
-								IDListEventContainer<Integer> idListEventContainer =
-									new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID,
-										EIDType.PATHWAY);
-								idListEventContainer.addID(pathway.getID());
-
-								triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+								LoadPathwayEvent event = new LoadPathwayEvent();
+								event.setSender(this);
+								event.setPathwayID(pathway.getID());
+								eventPublisher.triggerEvent(event);
 							}
 						}
 						else {
-							// Load pathways
-							ArrayList<Integer> alRefSeqID =
-								getRefSeqIDsFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
 
-							for (int iRefSeqID : alRefSeqID) {
-								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
-									new LoadPathwaysByGeneEvent();
-								loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
-								loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
+							// Load pathways
+							for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+								.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+								
+								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+								loadPathwaysByGeneEvent.setSender(this);
+								loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
+								loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
 								generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+	
 							}
+	
+							// ArrayList<Integer> alExpressionIndexID =
+							// getExpressionIndicesFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
+							//
+							// for (int iRefSeqID : alExpressionIndexID) {
+							// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
+							// new LoadPathwaysByGeneEvent();
+							// loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
+							// loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
+							// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+							// }
 						}
 						break;
 
@@ -666,8 +667,18 @@ public class GLPathway
 					case MOUSE_OVER:
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
+					case RIGHT_CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
+
+//						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+//							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+//							
+//							GeneContextMenuItemContainer geneContextMenuItemContainer =
+//								new GeneContextMenuItemContainer(pathwayVertexGraphItem.getId());
+//							contextMenu.addItemContanier(geneContextMenuItemContainer);
+//						}
+
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 				}
 
@@ -687,20 +698,18 @@ public class GLPathway
 
 				createConnectionLines(eSelectionType, iConnectionID);
 
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					EIDType.REFSEQ_MRNA_INT,
-					new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+				SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+				sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
 				event.setSelectionDelta(selectionDelta);
 				event.setInfo(getShortInfo());
 				eventPublisher.triggerEvent(event);
 
 				break;
 		}
-
-		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
 	private void createConnectionLines(ESelectionType eSelectionType, int iConnectionID) {
@@ -761,7 +770,11 @@ public class GLPathway
 			}
 		}
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(delta));
+		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		virtualArrayUpdateEvent.setSender(this);
+		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
+		virtualArrayUpdateEvent.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 
 	@Override
@@ -784,69 +797,10 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void addSet(int setID) {
-		super.addSet(setID);
+	public synchronized void setSet(ISet set) {
+		super.setSet(set);
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 	}
-
-	@Override
-	public synchronized void addSet(ISet set) {
-		super.addSet(set);
-		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-	}
-
-	// public void renderPathwayName(final GL gl)
-	// {
-	// if (!bEnableTitleRendering)
-	// return;
-	//
-	// float fHorizontalPosition = 0;
-	// float fVerticalPosition = 0;
-	//
-	// if (iHorizontalTextAlignment == SWT.LEFT)
-	// fHorizontalPosition = 0.2f;
-	// else if (iHorizontalTextAlignment == SWT.RIGHT)
-	// fHorizontalPosition = 3.5f;
-	// else if (iHorizontalTextAlignment == SWT.CENTER)
-	// fHorizontalPosition = 1.8f;
-	//
-	// if (iVerticalTextAlignment == SWT.TOP)
-	// fVerticalPosition = 7.8f;
-	// else if (iVerticalTextAlignment == SWT.BOTTOM)
-	// fVerticalPosition = 0.2f;
-	// else if (iVerticalTextAlignment == SWT.CENTER)
-	// fVerticalPosition = 1;
-	//
-	// String sPathwayName =
-	// generalManager.getPathwayManager().getItem(iPathwayID)
-	// .getTitle();
-	//
-	// int iMaxChars = 40;
-	// if (iHorizontalTextAlignment == SWT.RIGHT)
-	// iMaxChars = 30;
-	//
-	// if (sPathwayName.length() > iMaxChars)
-	// sPathwayName = sPathwayName.subSequence(0, iMaxChars - 3) + "...";
-	//
-	// textRenderer.begin3DRendering();
-	// textRenderer.setColor(0.2f, 0.2f, 0.2f, 1.0f);
-	// textRenderer.draw3D(sPathwayName, fHorizontalPosition, fVerticalPosition,
-	// 0.05f,
-	// 0.011f);
-	// textRenderer.end3DRendering();
-	// }
-
-	// public void enableTitleRendering(boolean bEnable)
-	// {
-	// bEnableTitleRendering = bEnable;
-	// }
-	//
-	// public void setAlignment(int iHorizontalAlignment, int
-	// iVerticalAlignment)
-	// {
-	// this.iHorizontalTextAlignment = iHorizontalAlignment;
-	// this.iVerticalTextAlignment = iVerticalAlignment;
-	// }
 
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType) {
@@ -854,51 +808,21 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-		EMediatorType eMediatorType) {
-		switch (eventContainer.getEventType()) {
-			case VA_UPDATE:
-				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer =
-					(DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
-				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
-				break;
-			case TRIGGER_SELECTION_COMMAND:
-				SelectionCommandEventContainer commandEventContainer =
-					(SelectionCommandEventContainer) eventContainer;
-				switch (commandEventContainer.getIDType()) {
-					case DAVID:
-					case REFSEQ_MRNA_INT:
-					case EXPRESSION_INDEX:
-						selectionManager.executeSelectionCommands(commandEventContainer
-							.getSelectionCommands());
-						break;
-				}
-				break;
-			case VIEW_COMMAND:
-				ViewCommandEventContainer viewCommandEventContainer =
-					(ViewCommandEventContainer) eventContainer;
-
-				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-					setDisplayListDirty();
-				}
-				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
-					clearAllSelections();
-					setDisplayListDirty();
-				}
-				break;
-		}
-	}
-
-	private void handleVAUpdate(IMediatorSender eventTrigger, IVirtualArrayDelta delta) {
-		selectionManager.setVADelta(delta);
-		// reactOnExternalSelection();
+	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	public void handleClearSelections() {
+		clearAllSelections();
+		setDisplayListDirty();
+	}
 
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
+		selectionManager.setVADelta(delta);
+		// reactOnExternalSelection();
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -913,38 +837,52 @@ public class GLPathway
 		selectionManager.clearSelections();
 	}
 
+	@Override
 	public void registerEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		enableTexturesListener = new EnableTexturesListener();
-		enableTexturesListener.setGLPathway(this);
+		enableTexturesListener.setHandler(this);
 		eventPublisher.addListener(EnableTexturesEvent.class, enableTexturesListener);
 
 		disableTexturesListener = new DisableTexturesListener();
-		disableTexturesListener.setGLPathway(this);
+		disableTexturesListener.setHandler(this);
 		eventPublisher.addListener(DisableTexturesEvent.class, disableTexturesListener);
 
 		enableNeighborhoodListener = new EnableNeighborhoodListener();
-		enableNeighborhoodListener.setGLPathway(this);
+		enableNeighborhoodListener.setHandler(this);
 		eventPublisher.addListener(EnableNeighborhoodEvent.class, enableNeighborhoodListener);
 
 		disableNeighborhoodListener = new DisableNeighborhoodListener();
-		disableNeighborhoodListener.setGLPathway(this);
+		disableNeighborhoodListener.setHandler(this);
 		eventPublisher.addListener(DisableNeighborhoodEvent.class, disableNeighborhoodListener);
 
 		enableGeneMappingListener = new EnableGeneMappingListener();
-		enableGeneMappingListener.setGLPathway(this);
+		enableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
 
 		disableGeneMappingListener = new DisableGeneMappingListener();
-		disableGeneMappingListener.setGLPathway(this);
+		disableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+
+		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 
+	@Override
 	public void unregisterEventListeners() {
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
@@ -975,6 +913,10 @@ public class GLPathway
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+		if (virtualArrayUpdateListener != null) {
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
 		}
 	}
 

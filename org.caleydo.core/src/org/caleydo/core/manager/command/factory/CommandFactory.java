@@ -9,7 +9,6 @@ import org.caleydo.core.command.data.CmdSetDataRepresentation;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
@@ -133,19 +132,20 @@ public class CommandFactory
 				// the next entries are all CmdCreateGLEventListener, so we do
 				// it only once
 			case CREATE_GL_HEAT_MAP_3D:
+			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
 			case CREATE_GL_GLYPH:
 			case CREATE_GL_GLYPH_SLIDER:
-			case CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION:
-			case CREATE_GL_PARALLEL_COORDINATES_CLINICAL:
+			case CREATE_GL_PARALLEL_COORDINATES:
 			case CREATE_GL_BUCKET_3D:
 			case CREATE_GL_JUKEBOX_3D:
 			case CREATE_GL_CELL:
 			case CREATE_GL_REMOTE_GLYPH:
 			case CREATE_GL_RADIAL_HIERARCHY:
-			case CREATE_GL_HYPERBOLIC: 
-			case CREATE_GL_HISTOGRAM: 
-			case CREATE_GL_DENDROGRAM:{
+			case CREATE_GL_HYPERBOLIC:
+			case CREATE_GL_HISTOGRAM:
+			case CREATE_GL_DENDROGRAM_VERTICAL:
+			case CREATE_GL_DENDROGRAM_HORIZONTAL: {
 				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
 			}
@@ -159,10 +159,6 @@ public class CommandFactory
 			}
 			case EXTERNAL_ACTION_TRIGGER: {
 				createdCommand = new CmdExternalActionTrigger(cmdType);
-				break;
-			}
-			case EVENT_MEDIATOR_ADD_OBJECT: {
-				createdCommand = new CmdEventMediatorAddObject(cmdType);
 				break;
 			}
 			case SYSTEM_SHUT_DOWN: {
@@ -185,11 +181,6 @@ public class CommandFactory
 				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
-				// case DATA_FILTER_MATH:
-				// {
-				// createdCommand = new CmdDataFilterMath(cmdType);
-				// break;
-				// }
 			case SET_DATA_REPRESENTATION: {
 				createdCommand = new CmdSetDataRepresentation(cmdType);
 				break;

@@ -1,10 +1,8 @@
 package org.caleydo.core.view;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
@@ -38,42 +36,24 @@ public interface IView
 	void setLabel(String label);
 
 	/**
-	 * Add a set to a view by passing the set itself
-	 * 
-	 * @param set
-	 *            the set
+	 * Set the data set on which the view is operating on.
+	 * @param set The new set to be used
 	 */
-	public void addSet(ISet set);
-
+	public void setSet(ISet set);
+	
 	/**
-	 * Add a set to a view by passing the ID of the set
-	 * 
-	 * @param iSetID
-	 *            the id of the set
+	 * Returns the current set which the view is rendering.
 	 */
-	public void addSet(int iSetID);
-
+	public ISet getSet();
+	
 	/**
-	 * Add a list of sets to the view
+	 * Set the use case which determines the behavior of the view.
+	 * Attention: The use case need not be changed during runtime of the view.
 	 * 
-	 * @param alSets
-	 *            the list of sets
+	 * @param useCase
 	 */
-	public void addSets(ArrayList<ISet> alSets);
-
-	/**
-	 * Remove all sets that have the specified set type
-	 * 
-	 * @param setType
-	 *            the type of the set
-	 */
-	public void removeSets(ESetType setType);
-
-	/**
-	 * Remove all sets from the view
-	 */
-	public void clearSets();
-
+	public void setUseCase(IUseCase useCase);
+	
 	/**
 	 * Retreives a serializeable representation of the view
 	 * @return serialized representation of the view 

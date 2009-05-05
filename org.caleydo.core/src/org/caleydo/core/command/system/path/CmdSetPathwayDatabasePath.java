@@ -2,8 +2,8 @@ package org.caleydo.core.command.system.path;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**

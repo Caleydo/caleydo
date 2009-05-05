@@ -5,18 +5,16 @@ import gleem.linalg.Vec3f;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -31,9 +29,11 @@ import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
@@ -64,13 +64,16 @@ public abstract class AGLEventListener
 
 	protected PickingManager pickingManager;
 
-	protected PickingMouseListener pickingTriggerMouseAdapter;
+	/**
+	 * Key listener which is created and registered in specific view.
+	 */
+	protected GLKeyListener glKeyListener;
+
+	protected GLMouseListener glMouseListener;
 
 	protected IViewFrustum viewFrustum;
 
 	protected IViewCamera viewCamera;
-
-	protected IGLCanvasRemoteRendering remoteRenderingGLCanvas;
 
 	/**
 	 * The views current aspect ratio. Value gets updated when reshape is called by the JOGL animator.
@@ -84,6 +87,10 @@ public abstract class AGLEventListener
 	 * rendered remote.
 	 */
 	protected RemoteLevelElement remoteLevelElement;
+
+	protected IGLCanvasRemoteRendering remoteRenderingGLView;
+
+	protected boolean bIsRenderedRemote = false;
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
@@ -118,14 +125,28 @@ public abstract class AGLEventListener
 	protected int iStorageVAID = -1;
 
 	/**
+	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
+	 */
+	protected ContextMenu contextMenu;
+
+	/**
+	 * This set changes during rendering. On display list dirty the global newSet is assigned to the set of
+	 * AView. Therefore in the next rendering of the view the new data is applied. This guarantees that the
+	 * set does not change in the middle of the display method. The new set
+	 */
+	private ISet newSet;
+
+	/**
 	 * Constructor.
 	 */
-	protected AGLEventListener(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
+	protected AGLEventListener(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final boolean bRegisterToParentCanvasNow) {
-		super(iGLCanvasID, sLabel, GeneralManager.get().getIDManager().createID(
+		
+		// If the glCanvas object is null - then the view is rendered remote.
+		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.GL_EVENT_LISTENER));
 
-		parentGLCanvas = generalManager.getViewGLCanvasManager().getCanvas(iGLCanvasID);
+		parentGLCanvas = glCanvas;
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null) {
 			// Register GL event listener view to GL canvas
@@ -134,7 +155,7 @@ public abstract class AGLEventListener
 			// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
 			// parentGLCanvas.getID(), this);
 
-			pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
+			glMouseListener = parentGLCanvas.getGLMouseListener();
 		}
 		// // Frustum will only be remotely rendered by another view
 		// else
@@ -151,12 +172,13 @@ public abstract class AGLEventListener
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
 		iconTextureManager = new GLIconTextureManager();
+		contextMenu = ContextMenu.get();
 	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
-		pickingTriggerMouseAdapter.addGLCanvas(this);
+		glMouseListener.addGLCanvas(this);
 
 		((GLEventListener) parentGLCanvas).init(drawable);
 
@@ -165,6 +187,7 @@ public abstract class AGLEventListener
 
 	@Override
 	public synchronized void display(GLAutoDrawable drawable) {
+
 		try {
 			((GLEventListener) parentGLCanvas).display(drawable);
 
@@ -197,7 +220,7 @@ public abstract class AGLEventListener
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		if (remoteRenderingGLCanvas != null || this instanceof GLRemoteRendering || this instanceof GLGlyph) {
+		if (remoteRenderingGLView != null || this instanceof GLRemoteRendering || this instanceof GLGlyph) {
 			viewFrustum.considerAspectRatio(true);
 		}
 		else {
@@ -223,7 +246,21 @@ public abstract class AGLEventListener
 		gl.glLoadIdentity();
 
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
+	}
 
+	/**
+	 * Method responsible for initialization of the data. Note: This is completely independent of init(gl)!
+	 */
+	public synchronized void initData() {
+
+		set = newSet;
+	}
+
+	/**
+	 * Reset the view to its initial state, synchronized
+	 */
+	public synchronized void resetView() {
+		initData();
 	}
 
 	/**
@@ -280,15 +317,15 @@ public abstract class AGLEventListener
 	 */
 	protected abstract void initLocal(final GL gl);
 
-
 	/**
 	 * Initialization for gl called by a managing view Has to call init internally!
 	 * 
 	 * @param gl
-	 * @param infoAreaManager TODO
+	 * @param infoAreaManager
+	 *            TODO
 	 */
-	public abstract void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public abstract void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager);
 
 	/**
@@ -320,7 +357,6 @@ public abstract class AGLEventListener
 	 */
 	public abstract void clearAllSelections();
 
-
 	public final GLCaleydoCanvas getParentGLCanvas() {
 		return parentGLCanvas;
 	}
@@ -341,29 +377,31 @@ public abstract class AGLEventListener
 	 */
 	protected void checkForHits(final GL gl) {
 
-		for (EPickingType ePickingType : EPickingType.values()) {
-			if (ePickingType.getViewType() != viewType) {
-				if (viewType == EManagedObjectType.GL_EVENT_LISTENER)
-					throw new IllegalStateException("Views must define their view type in the constructor");
-				continue;
-			}
+		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
+		if (hitTypes == null)
+			return;
+		for (EPickingType pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
 
-			alHits = pickingManager.getHits(iUniqueID, ePickingType);
+			alHits = pickingManager.getHits(iUniqueID, pickingType);
 			if (alHits != null && alHits.size() != 0) {
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {
 					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID, iPickingID);
-
+					int iExternalID = tempPick.getID();
 					if (iExternalID == -1) {
 						continue;
 					}
 
 					EPickingMode ePickingMode = tempPick.getPickingMode();
-					handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);
+					if (pickingType == EPickingType.CONTEXT_MENU_SELECTION) {
+						contextMenu.handleEvents(ePickingMode, iExternalID);
+					}
+					else {
+						handleEvents(pickingType, ePickingMode, iExternalID, tempPick);
+					}
+					pickingManager.flushHits(iUniqueID, pickingType);
 				}
 			}
 		}
@@ -412,19 +450,16 @@ public abstract class AGLEventListener
 		return remoteLevelElement;
 	}
 
-	/**
-	 * FIXME: should there be a seperated interface for remote rendered views that only those have to implement?
-	 */
 	public boolean isRenderedRemote() {
-		if (remoteRenderingGLCanvas == null)
-			return false;
-
-		return true;
+		return bIsRenderedRemote;
 	}
 
+	public void setRenderedRemote(boolean bIsRenderedRemote) {
+		this.bIsRenderedRemote = bIsRenderedRemote;
+	}
 
 	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
-		return remoteRenderingGLCanvas;
+		return remoteRenderingGLView;
 	}
 
 	protected synchronized void renderBusyMode(final GL gl) {
@@ -453,7 +488,7 @@ public abstract class AGLEventListener
 		}
 		else {
 			fXCenter = (viewFrustum.getRight() - viewFrustum.getLeft()) / 2;
-			fYCenter = (viewFrustum.getTop() - viewFrustum.getBottom()) / 2;			
+			fYCenter = (viewFrustum.getTop() - viewFrustum.getBottom()) / 2;
 		}
 
 		// TODO bad hack here, frustum wrong or renderStyle null
@@ -559,51 +594,30 @@ public abstract class AGLEventListener
 		// Propagate remove action of elements to other views
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
-		if (this instanceof IMediatorSender) {
-			generalManager.getEventPublisher().removeSenderFromAllGroups((IMediatorSender) this);
-		}
-
-		if (this instanceof IMediatorReceiver) {
-			generalManager.getEventPublisher().removeReceiverFromAllGroups((IMediatorReceiver) this);
-		}
+		pickingManager.removeViewSpecificData(iUniqueID);
 
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
 		// .clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
-
-		generalManager.getViewGLCanvasManager().unregisterGLEventListener(iUniqueID);
+		generalManager.getViewGLCanvasManager().unregisterGLEventListener(this);
+		unregisterEventListeners();
 	}
 
 	@Override
-	public synchronized void addSet(ISet set) {
-		super.addSet(set);
-		setDisplayListDirty();
-	}
+	public synchronized void setSet(ISet set) {
 
-	@Override
-	public synchronized void addSet(int iSetID) {
-		super.addSet(iSetID);
-		setDisplayListDirty();
-	}
-
-	@Override
-	public synchronized void removeSets(ESetType setType) {
-		super.removeSets(setType);
-		setDisplayListDirty();
-	}
-
-	@Override
-	public synchronized void clearSets() {
-		super.clearSets();
+		// In GL views the new set is not immediately written to the set variable of AView.
+		// The new set is then assigned to the working set when the display list is dirty the next time.
+		newSet = set;
 		setDisplayListDirty();
 	}
 
 	/**
-	 * Retrieves all the contained view-types from a given view.
-	 * FIXME: remote views does only work for bucket
-	 * FIXME: some kind of integration to IGLRemoteRendering   
-	 * @return list of view-types contained in the given view 
+	 * Retrieves all the contained view-types from a given view. FIXME: remote views does only work for bucket
+	 * FIXME: some kind of integration to IGLRemoteRendering
+	 * 
+	 * @return list of view-types contained in the given view
 	 */
 	public List<Integer> getAllViewIDs() {
 		List<Integer> viewIDs = new ArrayList<Integer>();

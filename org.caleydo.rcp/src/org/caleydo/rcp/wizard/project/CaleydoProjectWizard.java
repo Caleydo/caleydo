@@ -1,6 +1,10 @@
 package org.caleydo.rcp.wizard.project;
 
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -49,16 +53,36 @@ public class CaleydoProjectWizard
 			NewOrExistingProjectPage page =
 				(NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME);
 
-			if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-				Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
-			}
-			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
-				Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
-			}
-			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
-				Application.applicationMode = EApplicationMode.SAMPLE_DATA_REAL;
-			}
+			IUseCase useCase;
+			
+			if (page.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
+				useCase = new GeneticUseCase();
+				
+				if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
+					Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
+				}
+				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
+					Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
+				}
+				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
+					Application.applicationMode = EApplicationMode.SAMPLE_DATA_REAL;
+				}
+				else if (page.getProjectType() == EProjectType.NEW_PROJECT) {
+					Application.applicationMode = EApplicationMode.STANDARD;
+				}
+//				else
+//					throw new IllegalStateException("Not implemented!");
+			}
+			else if (page.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+				
+				useCase = new UnspecifiedUseCase();
+			}
+			else
+				throw new IllegalStateException("Not implemented!");
+
+			GeneralManager.get().setUseCase(useCase);
+			
 			return true;
 		}
 
@@ -113,7 +137,7 @@ public class CaleydoProjectWizard
 					if (glEventListener instanceof GLHeatMap
 						|| glEventListener instanceof GLParallelCoordinates) {
 						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-							glEventListener.getID());
+							glEventListener);
 					}
 				}
 

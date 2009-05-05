@@ -9,19 +9,14 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EEventType;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IDListEventContainer;
-import org.caleydo.core.manager.event.IEventContainer;
-import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
@@ -35,17 +30,14 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class DataEntitySearcherViewRep
 	extends ASWTView
-	implements ISWTView, IMediatorSender {
+	implements ISWTView {
 
 	/**
 	 * Constructor.
 	 */
 	public DataEntitySearcherViewRep(final int iParentContainerId, final String sLabel) {
-
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER));
-
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	public boolean searchForEntity(final String sEntity) {
@@ -77,11 +69,10 @@ public class DataEntitySearcherViewRep
 		if (pathway == null)
 			return false;
 
-		IDListEventContainer<Integer> idListEventContainer =
-			new IDListEventContainer<Integer>(EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
-		idListEventContainer.addID(pathway.getID());
-
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+		LoadPathwayEvent event = new LoadPathwayEvent();
+		event.setSender(this);
+		event.setPathwayID(pathway.getID());
+		eventPublisher.triggerEvent(event);
 
 		return true;
 	}
@@ -97,6 +88,7 @@ public class DataEntitySearcherViewRep
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
 		selectionDelta.addSelection(iRefSeqID, ESelectionType.SELECTION);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 		return true;
@@ -141,11 +133,6 @@ public class DataEntitySearcherViewRep
 	public void drawView() {
 	}
 
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-	}
-
 	private boolean triggerSearchResult(int iDavidID) {
 		Set<Integer> iSetRefSeq =
 			generalManager.getIDMappingManager().getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
@@ -160,11 +147,11 @@ public class DataEntitySearcherViewRep
 			selectionDelta.add(new SelectionDeltaItem((Integer) iRefSeqID, ESelectionType.SELECTION));
 		}
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-			EIDType.EXPRESSION_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
-				ESelectionType.SELECTION)));
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.SELECTION);
+		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
 		event.setSelectionDelta(selectionDelta);
 		eventPublisher.triggerEvent(event);
 

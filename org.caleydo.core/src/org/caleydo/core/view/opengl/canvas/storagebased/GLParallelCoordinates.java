@@ -9,6 +9,7 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderSt
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.LABEL_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NAN_Y_OFFSET;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
@@ -34,6 +35,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -41,13 +43,11 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -55,18 +55,17 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.delta.DeltaEventContainer;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.InfoAreaUpdateEventContainer;
+import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
+import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -75,14 +74,14 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.PickingMouseListener;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.overlay.contextmenue.ContextMenue;
-import org.caleydo.core.view.opengl.util.overlay.contextmenue.item.AddToListItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenue.item.LoadPathwayItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -202,30 +201,23 @@ public class GLParallelCoordinates
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
 
-	GLHeatMap glSelectionHeatMap;
+	GLPropagationHeatMap glSelectionHeatMap;
 	boolean bShowSelectionHeatMap = false;
 
 	private GLInfoAreaManager infoAreaManager;
 
-	private ContextMenue contextMenue;
-
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(ESetType setType, final int iGLCanvasID, final String sLabel,
-		final IViewFrustum viewFrustum) {
-		super(setType, iGLCanvasID, sLabel, viewFrustum);
+	public GLParallelCoordinates(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+
+		super(glCanvas, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
 
 		renderStyle = new ParCoordsRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
 
-		contentSelectionManager =
-			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).mappingType(
-				EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).externalIDType(EIDType.REFSEQ_MRNA_INT)
-				.build();
-
+		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
@@ -241,18 +233,12 @@ public class GLParallelCoordinates
 
 	@Override
 	public void initLocal(final GL gl) {
-		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-
-		bRenderOnlyContext = false;
-
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// glSelectionHeatMap.addSets(alSets);
 		// glSelectionHeatMap.initRemote(gl, getID(),
-		// pickingTriggerMouseAdapter,
+		// glMouseListener,
 		// remoteRenderingGLCanvas);
 
 		createSelectionHeatMap(gl);
@@ -260,21 +246,17 @@ public class GLParallelCoordinates
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
-		contextMenue = new ContextMenue(iUniqueID);
-
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-		final PickingMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		bRenderOnlyContext = true;
+
 		bShowSelectionHeatMap = false;
-
-		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		this.glMouseListener = glMouseListener;
 		this.infoAreaManager = infoAreaManager;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
@@ -285,18 +267,27 @@ public class GLParallelCoordinates
 
 	@Override
 	public void init(final GL gl) {
-		initData();
-		initGates();
-
-		resetAxisSpacing();
 
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
+	}
 
+	@Override
+	public synchronized void initData() {
+		super.initData();
+
+		initGates();
+		resetAxisSpacing();
+	}
+	
+	@Override
+	public synchronized void resetView() {
+	
 	}
 
 	@Override
 	public synchronized void displayLocal(final GL gl) {
+
 		if (set == null)
 			return;
 
@@ -304,7 +295,7 @@ public class GLParallelCoordinates
 			doTranslation();
 		}
 
-		pickingManager.handlePicking(iUniqueID, gl);
+		pickingManager.handlePicking(this, gl);
 		handleUnselection();
 		if (bIsDisplayListDirtyLocal) {
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
@@ -314,13 +305,10 @@ public class GLParallelCoordinates
 
 		checkForHits(gl);
 
-		contextMenue.render(gl);
 		display(gl);
-	
-//		infoAreaManager.renderInPlaceInfo(gl);
 
+		// infoAreaManager.renderInPlaceInfo(gl);
 
-	
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
@@ -328,6 +316,7 @@ public class GLParallelCoordinates
 
 	@Override
 	public synchronized void displayRemote(final GL gl) {
+
 		if (set == null)
 			return;
 
@@ -397,7 +386,7 @@ public class GLParallelCoordinates
 
 		if (bIsDraggingActive) {
 			handleGateDragging(gl);
-			// if (pickingTriggerMouseAdapter.wasMouseReleased())
+			// if (glMouseListener.wasMouseReleased())
 			// {
 			// bIsDraggingActive = false;
 			// }
@@ -405,7 +394,7 @@ public class GLParallelCoordinates
 
 		if (bWasAxisMoved) {
 			adjustAxisSpacing(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+			if (glMouseListener.wasMouseReleased()) {
 				bWasAxisMoved = false;
 			}
 		}
@@ -416,14 +405,17 @@ public class GLParallelCoordinates
 
 		if (bIsAngularBrushingActive && iSelectedLineID != -1) {
 			handleAngularBrushing(gl);
-			// if(pickingTriggerMouseAdapter.wasMouseReleased())
+			// if(glMouseListener.wasMouseReleased())
 			// bIsAngularBrushingActive = false;
 
 		}
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
-		gl.glDisable(GL.GL_STENCIL_TEST);
+//		gl.glDisable(GL.GL_STENCIL_TEST);
+
+		if (!isRenderedRemote())
+			contextMenu.render(gl, this);
 
 	}
 
@@ -431,21 +423,16 @@ public class GLParallelCoordinates
 		// Create selection panel
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
-				ECommandType.CREATE_GL_HEAT_MAP_3D);
+				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
 			viewFrustum.getTop(), -20, 20, null, -1);
 		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLHeatMap) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setToListMode(true);
-
-		glSelectionHeatMap.addSets(alSets);
+		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
+		glSelectionHeatMap.setRenderedRemote(true);
+		glSelectionHeatMap.initData();
 
 		// FIXME: remoteRenderingGLCanvas is null, conceptual error
-		glSelectionHeatMap.initRemote(gl, getID(), pickingTriggerMouseAdapter, remoteRenderingGLCanvas, null);
-		generalManager.getEventPublisher()
-			.addReceiver(EMediatorType.PROPAGATION_MEDIATOR, glSelectionHeatMap);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, glSelectionHeatMap);
+		glSelectionHeatMap.initRemote(gl, this, glMouseListener, remoteRenderingGLView, null);
 	}
 
 	/**
@@ -576,11 +563,18 @@ public class GLParallelCoordinates
 		if (!isRenderedRemote()) {
 			bShowSelectionHeatMap = true;
 
-			triggerEvent(EMediatorType.PROPAGATION_MEDIATOR, new SelectionCommandEventContainer(
-				EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.RESET)));
-
-			triggerEvent(EMediatorType.PROPAGATION_MEDIATOR, new DeltaEventContainer<IVirtualArrayDelta>(
-				delta));
+			SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+			TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
+			event.setType(EIDType.EXPRESSION_INDEX);
+			List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
+			commands.add(command);
+			event.setSelectionCommands(commands);
+			eventPublisher.triggerEvent(event);
+			
+			PropagationEvent propagationEvent = new PropagationEvent();
+			propagationEvent.setVirtualArrayDelta(delta);
+			eventPublisher.triggerEvent(propagationEvent);
+			
 			resetAxisSpacing();
 			setDisplayListDirty();
 		}
@@ -1040,7 +1034,8 @@ public class GLParallelCoordinates
 					if (iCount == 0) {
 						if (set.isSetHomogeneous()) {
 							float fNumber =
-								(float) set.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
+								(float) set.getRawForNormalized(fCurrentHeight
+									/ renderStyle.getAxisHeight());
 
 							Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(fNumber));
 							float fWidth =
@@ -1070,11 +1065,12 @@ public class GLParallelCoordinates
 					// // Labels
 					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
 
-					case EXPRESSION_INDEX:
-						sAxisLabel =
-							Integer.toString(IDMappingHelper.get().getRefSeqFromStorageIndex(
-								set.getVA(iContentVAID).get(iCount)));
-						break;
+					// Please check ALEX
+					// case EXPRESSION_INDEX:
+					// sAxisLabel =
+					// Integer.toString(IDMappingHelper.get().getRefSeqFromStorageIndex(
+					// set.getVA(iContentVAID).get(iCount)));
+					// break;
 					default:
 						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
 						break;
@@ -1585,10 +1581,10 @@ public class GLParallelCoordinates
 
 		gl.glColor4f(1f, 1f, 1f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing, 0.03f);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin - fSmallSpacing, 0.03f);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, 0.03f);
-		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, 0.03f);
+		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing, LABEL_Z);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin - fSmallSpacing, LABEL_Z);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, LABEL_Z);
+		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, LABEL_Z);
 		gl.glEnd();
 
 		renderNumber(sRawValue, fXTextOrigin, fYTextOrigin);
@@ -1604,7 +1600,8 @@ public class GLParallelCoordinates
 		// else
 		// text = getDecimalFormat().format(fRawValue);
 
-		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, 0.031f, renderStyle.getSmallFontScalingFactor());
+		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, renderStyle
+			.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 	}
 
@@ -1617,7 +1614,7 @@ public class GLParallelCoordinates
 
 		// bIsDisplayListDirtyLocal = true;
 		// bIsDisplayListDirtyRemote = true;
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
@@ -1676,9 +1673,12 @@ public class GLParallelCoordinates
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new InfoAreaUpdateEventContainer(iUniqueID));
+		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
+		event.setSender(this);
+		event.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(event);
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActive = false;
 		}
 
@@ -1703,10 +1703,14 @@ public class GLParallelCoordinates
 
 			for (int iPolylineIndex : set.getVA(iPolylineVAID)) {
 				if (bRenderStorageHorizontally) {
-					fCurrentValue = set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisID);
+					fCurrentValue =
+						set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iAxisID);
 				}
 				else {
-					fCurrentValue = set.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+					fCurrentValue =
+						set.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED,
+							iPolylineIndex);
 				}
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1728,10 +1732,14 @@ public class GLParallelCoordinates
 			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
 			for (int iPolylineIndex : set.getVA(iPolylineVAID)) {
 				if (bRenderStorageHorizontally) {
-					fCurrentValue = set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisID);
+					fCurrentValue =
+						set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iAxisID);
 				}
 				else {
-					fCurrentValue = set.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+					fCurrentValue =
+						set.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED,
+							iPolylineIndex);
 				}
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1757,11 +1765,13 @@ public class GLParallelCoordinates
 				for (int iAxisIndex : set.getVA(iAxisVAID)) {
 					if (bRenderStorageHorizontally) {
 						fCurrentValue =
-							set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisIndex);
+							set.get(iPolylineIndex).getFloat(
+								EDataRepresentation.NORMALIZED, iAxisIndex);
 					}
 					else {
 						fCurrentValue =
-							set.get(iAxisIndex).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+							set.get(iAxisIndex).getFloat(EDataRepresentation.NORMALIZED,
+								iPolylineIndex);
 					}
 
 					if (Float.isNaN(fCurrentValue)) {
@@ -1862,22 +1872,20 @@ public class GLParallelCoordinates
 	protected void handleEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
 		final int iExternalID, final Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
-			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
+		
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case PCS_VIEW_SELECTION:
-
-				pickingManager.flushHits(iUniqueID, EPickingType.PCS_VIEW_SELECTION);
 				break;
 			case POLYLINE_SELECTION:
 				switch (ePickingMode) {
 					case DOUBLE_CLICKED:
 						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-						loadPathwaysByGeneEvent.setGeneID(IDMappingHelper.get().getRefSeqFromStorageIndex(
-							iExternalID));
-						loadPathwaysByGeneEvent.setIdType(EIDType.REFSEQ_MRNA_INT);
+						loadPathwaysByGeneEvent.setSender(this);
+						loadPathwaysByGeneEvent.setGeneID(iExternalID);
+						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
 						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
 						// intentionally no break
 
@@ -1898,19 +1906,20 @@ public class GLParallelCoordinates
 
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
-						contextMenue = new ContextMenue(iUniqueID);
-						contextMenue.addContextMenueItem(new LoadPathwayItem());
-						contextMenue.addContextMenueItem(new AddToListItem());
-						contextMenue.addContextMenueItem(new LoadPathwayItem());
-						contextMenue.addContextMenueItem(new AddToListItem());
-						contextMenue.addContextMenueItem(new LoadPathwayItem());
-						contextMenue.addContextMenueItem(new AddToListItem());
-						contextMenue.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
+
+						GeneContextMenuItemContainer geneContextMenuItemContainer =
+							new GeneContextMenuItemContainer();
+						geneContextMenuItemContainer.setStorageIndex(iExternalID);
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
 						
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+						}
 						break;
 
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 
 				}
@@ -1926,46 +1935,47 @@ public class GLParallelCoordinates
 
 				polylineSelectionManager.clearSelection(eSelectionType);
 
-				if (ePolylineDataType == EIDType.EXPRESSION_INDEX) {
-					// Resolve multiple spotting on chip and add all to the
-					// selection manager.
-					Integer iRefSeqID =
-						idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
-					if (iRefSeqID == null) {
-						pickingManager.flushHits(iUniqueID, ePickingType);
-						return;
-					}
-					int iConnectionID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-					for (Object iExpressionIndex : idMappingManager.getMultiID(
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-						polylineSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
-						polylineSelectionManager.addConnectionID(iConnectionID, (Integer) iExpressionIndex);
-					}
-				}
-				else {
-					polylineSelectionManager.addToType(eSelectionType, iExternalID);
-					polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
-						EManagedObjectType.CONNECTION), iExternalID);
-				}
+				// TODO: Integrate multi spotting support again
+				// if (ePolylineDataType == EIDType.EXPRESSION_INDEX) {
+				// // Resolve multiple spotting on chip and add all to the
+				// // selection manager.
+				// Integer iRefSeqID =
+				// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+				// if (iRefSeqID == null) {
+				// pickingManager.flushHits(iUniqueID, ePickingType);
+				// return;
+				// }
+				// int iConnectionID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
+				// for (Object iExpressionIndex : idMappingManager.getMultiID(
+				// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+				// polylineSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+				// polylineSelectionManager.addConnectionID(iConnectionID, (Integer) iExpressionIndex);
+				// }
+				// }
+				// else {
+				polylineSelectionManager.addToType(eSelectionType, iExternalID);
+				polylineSelectionManager.addConnectionID(generalManager.getIDManager().createID(
+					EManagedObjectType.CONNECTION), iExternalID);
+				// }
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
-					triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-						EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR,
-							eSelectionType)));
+					
+					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+//					sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
+					event.setSender(this);
 					event.setSelectionDelta(selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 				}
 
 				setDisplayListDirty();
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case X_AXIS_SELECTION:
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case Y_AXIS_SELECTION:
 
@@ -1979,7 +1989,6 @@ public class GLParallelCoordinates
 						break;
 
 					default:
-						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
 
 				}
@@ -1996,8 +2005,9 @@ public class GLParallelCoordinates
 				// axisSelectionManager
 				// .getDelta(), null);
 
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-					eAxisDataType, new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType)));
+				SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+				sendSelectionCommandEvent(eAxisDataType, command);
+
 				ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
 				if (eAxisDataType == EIDType.EXPRESSION_INDEX) {
 					handleConnectedElementRep(selectionDelta);
@@ -2008,7 +2018,6 @@ public class GLParallelCoordinates
 
 				rePosition(iExternalID);
 				setDisplayListDirty();
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case GATE_TIP_SELECTION:
 				switch (ePickingMode) {
@@ -2029,7 +2038,6 @@ public class GLParallelCoordinates
 					// break;
 
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case GATE_BOTTOM_SELECTION:
 				switch (ePickingMode) {
@@ -2044,7 +2052,6 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case GATE_BODY_SELECTION:
@@ -2061,7 +2068,6 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case PC_ICON_SELECTION:
 				switch (ePickingMode) {
@@ -2069,8 +2075,6 @@ public class GLParallelCoordinates
 
 						break;
 				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.PC_ICON_SELECTION);
 				break;
 			case REMOVE_AXIS:
 				switch (ePickingMode) {
@@ -2087,13 +2091,11 @@ public class GLParallelCoordinates
 
 						IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 						vaDelta.add(VADeltaItem.remove(iExternalID));
-						generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+						sendVirtualArrayUpdateEvent(vaDelta);
 						setDisplayListDirty();
 						resetAxisSpacing();
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_AXIS);
 				break;
 			case MOVE_AXIS:
 				switch (ePickingMode) {
@@ -2108,7 +2110,6 @@ public class GLParallelCoordinates
 						iChangeDropOnAxisNumber = iExternalID;
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS);
 				break;
 
 			case DUPLICATE_AXIS:
@@ -2122,8 +2123,8 @@ public class GLParallelCoordinates
 							set.getVA(iAxisVAID).copy(iExternalID);
 							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 							vaDelta.add(VADeltaItem.copy(iExternalID));
-							generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-								this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+							sendVirtualArrayUpdateEvent(vaDelta);
+
 							setDisplayListDirty();
 							// resetSelections();
 							// initGates();
@@ -2131,7 +2132,6 @@ public class GLParallelCoordinates
 							break;
 						}
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.DUPLICATE_AXIS);
 				break;
 			case ADD_GATE:
 				switch (ePickingMode) {
@@ -2153,7 +2153,6 @@ public class GLParallelCoordinates
 
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ADD_GATE);
 				break;
 			case ADD_MASTER_GATE:
 				switch (ePickingMode) {
@@ -2164,7 +2163,6 @@ public class GLParallelCoordinates
 						setDisplayListDirty();
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ADD_MASTER_GATE);
 				break;
 
 			case REMOVE_GATE:
@@ -2182,7 +2180,6 @@ public class GLParallelCoordinates
 						}
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_GATE);
 				break;
 			case ANGULAR_UPPER:
 				switch (ePickingMode) {
@@ -2191,7 +2188,6 @@ public class GLParallelCoordinates
 					case DRAGGED:
 						bIsAngularDraggingActive = true;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ANGULAR_UPPER);
 				break;
 
 			case ANGULAR_LOWER:
@@ -2201,7 +2197,6 @@ public class GLParallelCoordinates
 					case DRAGGED:
 						bIsAngularDraggingActive = true;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.ANGULAR_LOWER);
 				break;
 			case REMOVE_NAN:
 				switch (ePickingMode) {
@@ -2217,10 +2212,16 @@ public class GLParallelCoordinates
 						break;
 
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_NAN);
-
 				break;
 		}
+	}
+
+	private void sendVirtualArrayUpdateEvent(IVirtualArrayDelta delta) {
+		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
+		virtualArrayUpdateEvent.setSender(this);
+		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
+		virtualArrayUpdateEvent.setInfo(getShortInfo());
+		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 
 	@Override
@@ -2236,7 +2237,8 @@ public class GLParallelCoordinates
 			&& idType == EIDType.EXPERIMENT_INDEX) {
 			for (int iAxisNumber : set.getVA(iAxisVAID).indicesOf(iStorageIndex)) {
 
-				fXValue = iAxisNumber * renderStyle.getAxisSpacing(set.getVA(iAxisVAID).size());
+				fXValue =
+					iAxisNumber * renderStyle.getAxisSpacing(set.getVA(iAxisVAID).size());
 				fXValue = fXValue + renderStyle.getXSpacing();
 				fYValue = renderStyle.getBottomSpacing();
 				alElementReps.add(new SelectedElementRep(idType, iUniqueID, fXValue, fYValue, 0.0f));
@@ -2247,7 +2249,8 @@ public class GLParallelCoordinates
 			fXValue = renderStyle.getXSpacing() + fXTranslation;
 			// get the value on the leftmost axis
 			fYValue =
-				set.getStorageFromVA(iStorageVAID, 0).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+				set.getStorageFromVA(iStorageVAID, 0).getFloat(
+					EDataRepresentation.NORMALIZED, iStorageIndex);
 
 			if (Float.isNaN(fYValue)) {
 				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
@@ -2270,13 +2273,14 @@ public class GLParallelCoordinates
 				+ contentSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
 		if (iDisplayEveryNthPolyline == 1) {
 			message =
-				"Parallel Coordinates - " + iNumLines + " genes / " + set.getVA(iStorageVAID).size()
-					+ " experiments";
+				"Parallel Coordinates - " + iNumLines + " genes / "
+					+ set.getVA(iStorageVAID).size() + " experiments";
 		}
 		else {
 			message =
 				"Parallel Coordinates - a sample of " + iNumLines / iDisplayEveryNthPolyline + " out of "
-					+ iNumLines + " genes / \n " + set.getVA(iStorageVAID).size() + " experiments";
+					+ iNumLines + " genes / \n " + set.getVA(iStorageVAID).size()
+					+ " experiments";
 		}
 		return message;
 
@@ -2417,19 +2421,19 @@ public class GLParallelCoordinates
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
 		if (bRenderStorageHorizontally) {
-			vecLeftPoint.setY(set.get(iSelectedLineID).getFloat(EDataRepresentation.NORMALIZED,
-				iAxisLeftIndex)
+			vecLeftPoint.setY(set.get(iSelectedLineID).getFloat(
+				EDataRepresentation.NORMALIZED, iAxisLeftIndex)
 				* renderStyle.getAxisHeight());
-			vecRightPoint.setY(set.get(iSelectedLineID).getFloat(EDataRepresentation.NORMALIZED,
-				iAxisRightIndex)
+			vecRightPoint.setY(set.get(iSelectedLineID).getFloat(
+				EDataRepresentation.NORMALIZED, iAxisRightIndex)
 				* renderStyle.getAxisHeight());
 		}
 		else {
-			vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(EDataRepresentation.NORMALIZED,
-				iSelectedLineID)
+			vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(
+				EDataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
-			vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(EDataRepresentation.NORMALIZED,
-				iSelectedLineID)
+			vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(
+				EDataRepresentation.NORMALIZED, iSelectedLineID)
 				* renderStyle.getAxisHeight());
 		}
 
@@ -2450,7 +2454,7 @@ public class GLParallelCoordinates
 		float fLegLength = vecCenterLine.length();
 
 		if (bIsAngularDraggingActive) {
-			Point pickedPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			Point pickedPoint = glMouseListener.getPickedPoint();
 			float fArPoint[] =
 				GLCoordinateUtils
 					.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
@@ -2532,17 +2536,19 @@ public class GLParallelCoordinates
 
 		for (Integer iCurrent : set.getVA(iPolylineVAID)) {
 			if (bRenderStorageHorizontally) {
-				vecLeftPoint.setY(set.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED, iAxisLeftIndex)
+				vecLeftPoint.setY(set.get(iCurrent).getFloat(
+					EDataRepresentation.NORMALIZED, iAxisLeftIndex)
 					* renderStyle.getAxisHeight());
-				vecRightPoint.setY(set.get(iCurrent)
-					.getFloat(EDataRepresentation.NORMALIZED, iAxisRightIndex)
+				vecRightPoint.setY(set.get(iCurrent).getFloat(
+					EDataRepresentation.NORMALIZED, iAxisRightIndex)
 					* renderStyle.getAxisHeight());
 			}
 			else {
-				vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(EDataRepresentation.NORMALIZED, iCurrent)
+				vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(
+					EDataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
-				vecRightPoint.setY(set.get(iAxisRightIndex)
-					.getFloat(EDataRepresentation.NORMALIZED, iCurrent)
+				vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(
+					EDataRepresentation.NORMALIZED, iCurrent)
 					* renderStyle.getAxisHeight());
 			}
 
@@ -2569,7 +2575,7 @@ public class GLParallelCoordinates
 
 		}
 
-		if (pickingTriggerMouseAdapter.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased()) {
 			bIsAngularDraggingActive = false;
 			// bIsAngularBrushingActive = false;
 		}
@@ -2599,7 +2605,7 @@ public class GLParallelCoordinates
 	private void adjustAxisSpacing(GL gl) {
 		IVirtualArray axisVA = set.getVA(iAxisVAID);
 
-		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
@@ -2639,8 +2645,7 @@ public class GLParallelCoordinates
 
 			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
-			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR, this,
-				new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+			sendVirtualArrayUpdateEvent(vaDelta);
 			iMovedAxisPosition = iSwitchAxisWithThis;
 		}
 		// if (iMovedAxisPosition > 0 && fWidth <

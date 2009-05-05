@@ -122,7 +122,7 @@ public class LabelContainer {
 			gl.glEnd();
 			gl.glPopAttrib();
 		}
-		
+		textRenderer.setColor(0.2f, 0.2f, 0.2f, 1);
 		textRenderer.begin3DRendering();
 		for (int i = 0; i < alLineTexts.size(); i++) {
 			textRenderer.draw3D(alLineTexts.get(i), alLinePositions.get(i).x(), alLinePositions.get(i).y(),

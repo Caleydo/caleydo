@@ -6,9 +6,9 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDManager;
-import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
-import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
+import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -36,8 +36,6 @@ public interface IGeneralManager {
 	 * Init method for external GUI embedding (e.g. RCP)
 	 */
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge);
-
-	public IMementoManager getMementoManager();
 
 	public IStorageManager getStorageManager();
 
@@ -94,4 +92,16 @@ public interface IGeneralManager {
 	public boolean isWiiModeActive();
 
 	public WiiRemote getWiiRemote();
+	
+	/**
+	 * Returns the current use case. The use case determines which views are showing what kind of data 
+	 * and which data set is currently in use.
+	 */
+	public IUseCase getUseCase();
+	
+	/**
+	 * Set a different use case. The use case changes the behavior of the views and its loaded data.
+	 * @param useCase
+	 */
+	public void setUseCase(IUseCase useCase);
 }

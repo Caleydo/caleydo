@@ -48,7 +48,7 @@ public class HierarchicalClusterer
 
 			for (Integer iContentIndex : contentVA) {
 				for (Integer iStorageIndex : storageVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex - 1)
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
 						+ ", ");
 
 				}
@@ -64,7 +64,7 @@ public class HierarchicalClusterer
 
 			for (Integer iStorageIndex : storageVA) {
 				for (Integer iContentIndex : contentVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex - 1)
+					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
 						+ ", ");
 
 				}
@@ -101,11 +101,11 @@ public class HierarchicalClusterer
 		}
 
 		double[] clusterAssignments = eval.getClusterAssignments();
-		int nrclusters = eval.getNumClusters();
 
-		System.out.println(nrclusters);
-		System.out.println(data.numAttributes());
-		System.out.println(data.numInstances());
+//		int nrclusters = eval.getNumClusters();
+//		System.out.println(nrclusters);
+//		System.out.println(data.numAttributes());
+//		System.out.println(data.numInstances());
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();

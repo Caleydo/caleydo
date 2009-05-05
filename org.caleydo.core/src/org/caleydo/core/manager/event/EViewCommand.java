@@ -8,8 +8,8 @@ package org.caleydo.core.manager.event;
 @Deprecated
 public enum EViewCommand {
 
-	REDRAW,
+//	REDRAW,
 	ACTIVATION,
 	UPDATE,
-	CLEAR_SELECTIONS
+//	CLEAR_SELECTIONS
 }

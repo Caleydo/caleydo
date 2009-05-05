@@ -64,11 +64,10 @@ public class SetExporter {
 
 			if (contentVA.getGroupList() != null)
 				out.print("Cluster_Number\tCluster_Repr\t");
-			// out.print("Cluster_Number\t");
 
 			out.println();
 
-			int cnt = 0;
+			int cnt = -1;
 			int cluster = 0;
 			int index = 0;
 			int offset = 0;
@@ -90,7 +89,7 @@ public class SetExporter {
 					out.print("\t");
 				}
 				if (contentVA.getGroupList() != null) {
-					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 0) {
+					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 1) {
 						offset = offset + contentVA.getGroupList().get(cluster).getNrElements();
 						cluster++;
 						cnt = 0;
@@ -98,15 +97,19 @@ public class SetExporter {
 					else {
 						cnt++;
 					}
-					if (cluster < contentVA.getGroupList().size()) {
-						if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
-							out.print(cluster + "\t" + 1 + "\t");
-						else
-							out.print(cluster + "\t" + 0 + "\t");
-					}
+					
+					if(cnt == 0)
+						out.print(cluster + "\t" + 1 + "\t");
 					else
 						out.print(cluster + "\t" + 0 + "\t");
-					// out.print(cluster + "\t");
+//					if (cluster < contentVA.getGroupList().size()) {
+//						if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
+//							out.print(cluster + "\t" + 1 + "\t");
+//						else
+//							out.print(cluster + "\t" + 0 + "\t");
+//					}
+//					else
+//						out.print(cluster + "\t" + 0 + "\t");
 					index++;
 				}
 				out.println();
@@ -114,13 +117,21 @@ public class SetExporter {
 
 			out.close();
 
-			// export cluster tree to own xml file
+			// export gene cluster tree to own xml file
 			Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
-				if (treePorter.exportTree(sFileName + ".xml", tree) == false)
-					System.out.println("Problem during tree export!");
+				if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
+					System.out.println("Problem during gene tree export!");
 			}
+			// export experiment cluster tree to own xml file
+			tree = set.getClusteredTreeExps();
+			if (tree != null) {
+				TreePorter treePorter = new TreePorter();
+				if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
+					System.out.println("Problem during experiments tree export!");
+			}
+			
 		}
 		catch (IOException e) {
 
