@@ -9,7 +9,6 @@ import org.caleydo.core.command.data.CmdSetDataRepresentation;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
@@ -162,10 +161,6 @@ public class CommandFactory
 				createdCommand = new CmdExternalActionTrigger(cmdType);
 				break;
 			}
-			case EVENT_MEDIATOR_ADD_OBJECT: {
-				createdCommand = new CmdEventMediatorAddObject(cmdType);
-				break;
-			}
 			case SYSTEM_SHUT_DOWN: {
 				createdCommand = new CmdSystemExit(cmdType);
 				break;
@@ -186,11 +181,6 @@ public class CommandFactory
 				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
-				// case DATA_FILTER_MATH:
-				// {
-				// createdCommand = new CmdDataFilterMath(cmdType);
-				// break;
-				// }
 			case SET_DATA_REPRESENTATION: {
 				createdCommand = new CmdSetDataRepresentation(cmdType);
 				break;

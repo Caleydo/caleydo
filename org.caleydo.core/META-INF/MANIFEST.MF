@@ -30,11 +30,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.command",
  org.caleydo.core.command.data.filter;uses:="org.caleydo.core.data.collection,org.caleydo.core.command.base,org.caleydo.core.command",
  org.caleydo.core.command.data.parser;uses:="org.caleydo.core.command.base,org.caleydo.core.parser.parameter,org.caleydo.core.command",
- org.caleydo.core.command.event;
-  uses:="org.caleydo.core.command.base,
-   org.caleydo.core.parser.parameter,
-   org.caleydo.core.command,
-   org.caleydo.core.manager.event",
  org.caleydo.core.command.queue;
   uses:="org.caleydo.core.parser.ascii,
    org.caleydo.core.command.base,
