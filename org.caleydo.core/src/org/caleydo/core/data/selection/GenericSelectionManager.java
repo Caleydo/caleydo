@@ -307,7 +307,7 @@ public class GenericSelectionManager {
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
 		}
 		if (virtualArray != null) {
-			virtualArray.clear();
+			virtualArray = null;
 		}
 		selectionDelta = new SelectionDelta(internalIDType);
 	}

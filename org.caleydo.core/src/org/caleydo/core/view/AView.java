@@ -83,7 +83,7 @@ public abstract class AView
 	}
 	
 	@Override
-	public void setSet(ISet set) {
+	public synchronized void setSet(ISet set) {
 		this.set = set;
 	}
 	

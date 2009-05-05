@@ -283,14 +283,14 @@ public interface ISet
 	 * @param Tree
 	 */
 	public void setClusteredTreeExps(Tree<ClusterNode> clusteredTree);
-	
+
 	/**
 	 * Returns clustered Tree for experiments
 	 * 
 	 * @return Tree
 	 */
 	public Tree<ClusterNode> getClusteredTreeExps();
-	
+
 	/**
 	 * Returns cluster sizes, determined by affinity clusterer
 	 * 
@@ -339,5 +339,11 @@ public interface ISet
 	 *             when used on non-homogeneous sets
 	 */
 	public Histogram getHistogram() throws UnsupportedOperationException;
+
+	/**
+	 * Removes all data related to the set (Storages, Virtual Arrays and Sets) from the managers so that the
+	 * garbage collector can handle it.
+	 */
+	public void destroy();
 
 }

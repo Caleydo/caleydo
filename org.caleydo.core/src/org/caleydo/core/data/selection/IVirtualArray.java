@@ -226,4 +226,12 @@ public interface IVirtualArray
 	 * @return true if operation executed correctly otherwise false
 	 */
 	public boolean setGroupList(IGroupList groupList);
+
+	/**
+	 * Sets the internal list holding the indices to null so any later access should fail with a null pointer
+	 * exception. It should not be necessary to call this, since the VA should be replaced and therefore
+	 * automatically deleted if a set changes. However, to make sure views use VAs correctly it is save to do
+	 * this.
+	 */
+	public void destroy();
 }

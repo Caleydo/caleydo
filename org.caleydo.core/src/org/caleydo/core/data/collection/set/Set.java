@@ -22,7 +22,9 @@ import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
@@ -668,6 +670,25 @@ public class Set
 	@Override
 	public Tree<ClusterNode> getClusteredTreeExps() {
 		return clusteredTreeExps;
+	}
+
+	@Override
+	public void destroy() {
+		IGeneralManager gm = GeneralManager.get();
+		IStorageManager sm = gm.getStorageManager();
+		for (IStorage storage : alStorages) {
+			sm.unregisterItem(storage.getID());
+		}
+		gm.getSetManager().unregisterItem(iUniqueID);
+		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
+		// However, to make sure.
+		for (IVirtualArray va : hashSetVAs.values()) {
+			va.destroy();
+		}
+		for (IVirtualArray va : hashStorageVAs.values()) {
+			va.destroy();
+		}
+
 	}
 
 }
