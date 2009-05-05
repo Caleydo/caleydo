@@ -6,8 +6,11 @@ import java.util.logging.Logger;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.views.swt.toolbar.listener.GroupHighlightingListener;
 import org.caleydo.rcp.views.swt.toolbar.listener.RemoveViewSpecificItemsEventListener;
 import org.caleydo.rcp.views.swt.toolbar.listener.ViewActivationListener;
 import org.eclipse.swt.widgets.Display;
@@ -24,8 +27,9 @@ public class ToolBarMediator {
 	/** the related toolbar that should react to events */
 	ToolBarView toolBarView;
 
-	ViewActivationListener viewActivationListener;
-	RemoveViewSpecificItemsEventListener removeViewSpecificItemsEventListener;
+	protected ViewActivationListener viewActivationListener;
+	protected RemoveViewSpecificItemsEventListener removeViewSpecificItemsEventListener;
+	protected GroupHighlightingListener groupHighlightingListener;
 	
 	public ToolBarMediator() {
 		registerEventListeners();
@@ -48,6 +52,14 @@ public class ToolBarMediator {
 		}
 	}
 
+	/**
+	 * Highlight a toolbar-group related to the trigger of the event
+	 * @param eventTrigger to highlight a related toolbar-group of
+	 */
+	public void highlightViewSpecificGroup(final Object eventTrigger) {
+		toolBarView.highlightViewSpecificGroup(eventTrigger);
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -74,6 +86,11 @@ public class ToolBarMediator {
 		removeViewSpecificItemsEventListener = new RemoveViewSpecificItemsEventListener();
 		removeViewSpecificItemsEventListener.setHandler(this);
 		eventPublisher.addListener(RemoveViewSpecificItemsEvent.class, removeViewSpecificItemsEventListener);
+		
+		groupHighlightingListener = new GroupHighlightingListener();
+		groupHighlightingListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, groupHighlightingListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, groupHighlightingListener);
 }
 	
 	public void unregisterEventListeners() {
@@ -86,6 +103,10 @@ public class ToolBarMediator {
 		if (removeViewSpecificItemsEventListener != null) {
 			eventPublisher.removeListener(RemoveViewSpecificItemsEvent.class, removeViewSpecificItemsEventListener);
 			removeViewSpecificItemsEventListener = null;
+		}
+		if (groupHighlightingListener != null) {
+			eventPublisher.removeListener(groupHighlightingListener);
+			groupHighlightingListener = null;
 		}
 	}
 	

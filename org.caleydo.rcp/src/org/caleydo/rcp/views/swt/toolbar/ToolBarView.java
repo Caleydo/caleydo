@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.perspective.GenomePerspective;
+import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -133,9 +136,7 @@ public class ToolBarView
 		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
-	
-/*
-	public void handleExternalEvent() {
+	public void highlightViewSpecificGroup(final Object eventTrigger) {
 		if (eventTrigger instanceof AGLEventListener) {
 			final int iViewID = ((AGLEventListener) eventTrigger).getID();
 
@@ -163,7 +164,7 @@ public class ToolBarView
 			});
 		}
 	}
-*/
+
 	@Override
 	public int computePreferredSize(boolean width, int availableParallel, int availablePerpendicular,
 		int preferredResult) {
