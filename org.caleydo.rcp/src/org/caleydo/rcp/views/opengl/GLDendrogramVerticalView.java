@@ -6,23 +6,23 @@ import org.caleydo.core.command.ECommandType;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLDendrogramView
+public class GLDendrogramVerticalView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLDendrogramView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.GLDendrogramVerticalView";
 
 	/**
 	 * Constructor.
 	 */
-	public GLDendrogramView() {
+	public GLDendrogramVerticalView() {
 		super();
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
-		
+
 		super.createPartControl(parent);
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_DENDROGRAM, glCanvas.getID(), true);
+		createGLEventListener(ECommandType.CREATE_GL_DENDROGRAM_VERTICAL, glCanvas.getID(), true);
 	}
 
 	public static void createToolBarItems(int iViewID) {

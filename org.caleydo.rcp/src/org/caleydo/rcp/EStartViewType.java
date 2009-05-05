@@ -1,6 +1,7 @@
 package org.caleydo.rcp;
 
-import org.caleydo.rcp.views.opengl.GLDendrogramView;
+import org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView;
+import org.caleydo.rcp.views.opengl.GLDendrogramVerticalView;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
 import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLHistogramView;
@@ -21,7 +22,8 @@ public enum EStartViewType {
 	GLYPHVIEW("glyphview", GLGlyphView.ID), PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID), HEATMAP(
 		"heatmap", GLHierarchicalHeatMapView.ID), REMOTE("remote", GLRemoteRenderingView.ID), BROWSER("browser",
 		HTMLBrowserView.ID), TABULAR("tabular", TabularDataView.ID), RADIAL_HIERARCHY("radial", GLRadialHierarchyView.ID), 
-		HYPERBOLIC("hyperbolic", GLHyperbolicView.ID), HISTOGRAM("histogram", GLHistogramView.ID), DENDROGRAM("dendrogram", GLDendrogramView.ID);;
+		HYPERBOLIC("hyperbolic", GLHyperbolicView.ID), HISTOGRAM("histogram", GLHistogramView.ID), 
+		DENDROGRAM_HORIZONTAL("dendrogram_horizontal", GLDendrogramHorizontalView.ID), DENDROGRAM_VERTICAL("dendrogram_vertical", GLDendrogramVerticalView.ID);;
 
 	private String sCommandLineArgument;
 	private String sRCPViewID;

@@ -261,7 +261,7 @@ public class TreeClusterer
 
 		ClusterNode node = new ClusterNode("Root", random, 0f, 0, true);
 		tree.setRootNode(node);
-		treeStructureToTree(node, result, result.length - 1);
+		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
@@ -409,7 +409,7 @@ public class TreeClusterer
 
 		ClusterNode node = new ClusterNode("Root", random, 0f, 0, true);
 		tree.setRootNode(node);
-		treeStructureToTree(node, result, result.length - 1);
+		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
@@ -454,25 +454,27 @@ public class TreeClusterer
 		return indexes;
 	}
 
-	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index) {
+	/**
+	 * Returns name of the node. Therefore we need an index of the gene/experiment
+	 * 
+	 * @param eClustererType
+	 *            either gene or expression clustering
+	 * @param index
+	 *            index of the current node in the VA
+	 * @return name of the current node
+	 */
+	private String getNodeName(EClustererType eClustererType, int index) {
+		String nodeName = null;
 
-		ClusterNode left = null;
-		ClusterNode right = null;
-
-		if (treeStructure[index].getLeft() >= 0) {
-
-			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
-
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				NodeName = GeneticIDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getLeft());// + 1);
+				nodeName = GeneticIDMappingHelper.get().getShortNameFromDavid(index);
 
-				NodeName += " | ";
-				NodeName +=
-					GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getLeft());// + 1);
+				nodeName += " | ";
+				nodeName += GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(index);// + 1);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {
-				NodeName =
-					"generalManager.getIDMappingManager().getID(" + treeStructure[index].getLeft() + 1 + " )";
+				nodeName = "generalManager.getIDMappingManager().getID(" + index + 1 + " )";
 				// generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
 				// treeStructure[index].getLeft() + 1);
 			}
@@ -480,6 +482,23 @@ public class TreeClusterer
 				throw new IllegalStateException("Label extraction for " + set.getSetType()
 					+ " not implemented yet!");
 			}
+		}
+		else {
+			nodeName = set.get(index).getLabel();
+		}
+
+		return nodeName;
+	}
+
+	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index,
+		EClustererType eClustererType) {
+
+		ClusterNode left = null;
+		ClusterNode right = null;
+
+		if (treeStructure[index].getLeft() >= 0) {
+
+			String NodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
 
 			left =
 				new ClusterNode(NodeName, treeStructure[index].getLeft(), treeStructure[index]
@@ -497,30 +516,12 @@ public class TreeClusterer
 				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
 					treeStructure[index].getCorrelation(), 0, false);
 			tree.addChild(node, left);
-			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1);
+			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1, eClustererType);
 		}
 
 		if (treeStructure[index].getRight() >= 0) {
 
-			String NodeName; // = "Leaf_" + treeStructure[index].getLeft();
-
-			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				NodeName = GeneticIDMappingHelper.get().getShortNameFromDavid(treeStructure[index].getRight());// + 1);
-
-				NodeName += " | ";
-				NodeName +=
-					GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(treeStructure[index].getRight());// + 1);
-			}
-			else if (set.getSetType() == ESetType.UNSPECIFIED) {
-				NodeName =
-					"generalManager.getIDMappingManager().getID(" + treeStructure[index].getRight() + 1 + " )";
-				// generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
-				// treeStructure[index].getLeft() + 1);
-			}
-			else {
-				throw new IllegalStateException("Label extraction for " + set.getSetType()
-					+ " not implemented yet!");
-			}
+			String NodeName = getNodeName(eClustererType, treeStructure[index].getRight());
 
 			right =
 				new ClusterNode(NodeName, treeStructure[index].getRight(), treeStructure[index]
@@ -538,7 +539,7 @@ public class TreeClusterer
 				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
 					treeStructure[index].getCorrelation(), 0, false);
 			tree.addChild(node, right);
-			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1);
+			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1, eClustererType);
 		}
 
 	}

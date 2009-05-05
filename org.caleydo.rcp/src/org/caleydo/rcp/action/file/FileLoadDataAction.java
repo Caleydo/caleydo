@@ -68,7 +68,8 @@ public class FileLoadDataAction
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 
 	private Text txtFileName;
-	private Text txtTreeFileName;
+	private Text txtGeneTreeFileName;
+	private Text txtExperimentsTreeFileName;
 	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;
@@ -79,7 +80,8 @@ public class FileLoadDataAction
 
 	private String sInputFile = "";
 	private String sFileName = "";
-	private String sTreeFileName = "";
+	private String sGeneTreeFileName = "";
+	private String sExperimentsFileName = "";
 	private String sFilePath = "";
 	private String sInputPattern = "";// SKIP;";
 	private String sDelimiter = "";
@@ -131,7 +133,7 @@ public class FileLoadDataAction
 		composite.setLayout(layout);
 
 		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Input file");
+		inputFileGroup.setText("Input files");
 		inputFileGroup.setLayout(new GridLayout(2, false));
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
@@ -161,19 +163,18 @@ public class FileLoadDataAction
 			}
 		});
 
-		Group inputTreeFile = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputTreeFile.setText("Tree file");
-		inputTreeFile.setLayout(new GridLayout(2, false));
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = 3;
-		inputTreeFile.setLayoutData(gridData);
+//		Group inputTreeFile = new Group(composite, SWT.SHADOW_ETCHED_IN);
+//		inputTreeFile.setText("Tree file");
+//		inputTreeFile.setLayout(new GridLayout(2, false));
+//		gridData = new GridData(GridData.FILL_HORIZONTAL);
+//		gridData.horizontalSpan = 3;
+//		inputTreeFile.setLayoutData(gridData);
 		
 		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonTreeChooser.setText("Choose tree file..");
-//		buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		buttonTreeChooser.setText("Choose gene tree file..");
 
-		txtTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-		txtTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -184,9 +185,30 @@ public class FileLoadDataAction
 				fileDialog.setFilterPath(sFilePath);
 				String[] filterExt = { "*.xml*" };
 				fileDialog.setFilterExtensions(filterExt);
-				sTreeFileName = fileDialog.open();
+				sGeneTreeFileName = fileDialog.open();
 
-				txtTreeFileName.setText(sTreeFileName);
+				txtGeneTreeFileName.setText(sGeneTreeFileName);
+			}
+		});
+		
+		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+		buttonExperimentsTreeChooser.setText("Choose experiments tree file..");
+
+		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+				fileDialog.setText("Open");
+				fileDialog.setFilterPath(sFilePath);
+				String[] filterExt = { "*.xml*" };
+				fileDialog.setFilterExtensions(filterExt);
+				sExperimentsFileName = fileDialog.open();
+
+				txtExperimentsTreeFileName.setText(sExperimentsFileName);
 			}
 		});
 		
@@ -739,7 +761,7 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sTreeFileName, sInputPattern, sDelimiter,
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sGeneTreeFileName, sExperimentsFileName, sInputPattern, sDelimiter,
 			iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
 

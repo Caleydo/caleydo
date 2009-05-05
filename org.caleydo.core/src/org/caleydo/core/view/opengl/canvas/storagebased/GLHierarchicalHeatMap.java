@@ -485,7 +485,7 @@ public class GLHierarchicalHeatMap
 				AlTextures.clear();
 				iAlNumberSamples.clear();
 				Texture tempTextur;
-				int iTextureHeight = set.getVA(iContentVAID).size();
+//				int iTextureHeight = set.getVA(iContentVAID).size();
 				int iTextureWidth = set.getVA(iStorageVAID).size();
 
 				float fLookupValue = 0;

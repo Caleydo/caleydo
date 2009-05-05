@@ -30,11 +30,12 @@ import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogramHorizontal;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogramVertical;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLPropagationHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLPropagationHeatMap;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
@@ -81,7 +82,7 @@ public class ViewManager
 	private Composite activeSWTView;
 
 	private Set<Object> busyRequests;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -96,7 +97,7 @@ public class ViewManager
 
 		arWorkspaceJFrame = new ArrayList<JFrame>();
 		fpsAnimator = new FPSAnimator(null, 60);
-		
+
 		busyRequests = new HashSet<Object>();
 	}
 
@@ -202,18 +203,15 @@ public class ViewManager
 
 		switch (type) {
 			case CREATE_GL_HEAT_MAP_3D:
-				glEventListener =
-					new GLHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-				glEventListener =
-					new GLPropagationHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLPropagationHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-				glEventListener =
-					new GLHierarchicalHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLHierarchicalHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
@@ -221,8 +219,7 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_PARALLEL_COORDINATES:
-				glEventListener =
-					new GLParallelCoordinates(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLParallelCoordinates(iGLCanvasID, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_GLYPH:
 				glEventListener = new GLGlyph(iGLCanvasID, sLabel, viewFrustum);
@@ -253,23 +250,23 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_RADIAL_HIERARCHY:
-				glEventListener =
-					new GLRadialHierarchy(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLRadialHierarchy(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_HYPERBOLIC:
-				glEventListener =
-					new GLHyperbolic(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLHyperbolic(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_HISTOGRAM:
-				glEventListener =
-					new GLHistogram(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLHistogram(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
-			case CREATE_GL_DENDROGRAM:
-				glEventListener =
-					new GLDendrogram(iGLCanvasID, sLabel, viewFrustum);
+
+			case CREATE_GL_DENDROGRAM_HORIZONTAL:
+				glEventListener = new GLDendrogramHorizontal(iGLCanvasID, sLabel, viewFrustum);
+				break;
+
+			case CREATE_GL_DENDROGRAM_VERTICAL:
+				glEventListener = new GLDendrogramVertical(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			default:

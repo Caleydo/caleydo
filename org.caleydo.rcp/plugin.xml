@@ -173,10 +173,10 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLDendrogramView"
+            class="org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView"
             icon="resources/icons/view/color_mapping.png"
-            id="org.caleydo.rcp.views.opengl.GLDendrogramView"
-            name="Dendrogram">
+            id="org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView"
+            name="Dendrogram Horizontal">
       </view>
       <view
             allowMultiple="true"
@@ -185,6 +185,14 @@
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLHistogramView"
             name="Histogram">
+      </view>
+      <view
+            allowMultiple="false"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.opengl.GLDendrogramVerticalView"
+            icon="resources/icons/view/color_mapping.png"
+            id="org.caleydo.rcp.views.opengl.GLDendrogramVerticalView"
+            name="Dendrogram Vertical">
       </view>
 
       
@@ -335,9 +343,9 @@
             name="Open Histogram">
       </command>
       <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDendrogramHandler"
-            id="org.caleydo.rcp.command.openviews.dendrogram"
-            name="Open Dendrogram">
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDendrogramHorizontalHandler"
+            id="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
+            name="Open Dendrogram Horizontal">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.help.HelpContentsHandler"
@@ -353,6 +361,11 @@
             defaultHandler="org.caleydo.rcp.command.handler.help.ReportBugHandler"
             id="org.caleydo.rcp.command.help.report_bug"
             name="Report Bug">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDendrogramVerticallHandler"
+            id="org.caleydo.rcp.command.openviews.dendrogram_vertical"
+            name="Open Dendrogram Vertical">
       </command>
       		
    </extension>
@@ -476,9 +489,15 @@
                    style="push">
              </command>
              <command
-                   commandId="org.caleydo.rcp.command.openviews.dendrogram"
+                   commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
                    icon="resources/icons/view/heatmap.png"
-                   label="Dendrogram"
+                   label="Dendrogram Horizontal"
+                   style="push">
+             </command>
+             <command
+                   commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
+                   icon="resources/icons/view/heatmap.png"
+                   label="Dendrogram Vertical"
                    style="push">
              </command>
 	          

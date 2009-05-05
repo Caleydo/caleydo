@@ -26,7 +26,8 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdLoadFileNStorages
 	extends ACommand {
 	private String sFileName;
-	private String sTreeFileName;
+	private String sGenesTreeFileName;
+	private String sExperimentsTreeFileName;
 	private String sTokenPattern;
 	private String sTokenSeparator = "";
 
@@ -90,12 +91,13 @@ public class CmdLoadFileNStorages
 	}
 
 	public void setAttributes(final ArrayList<Integer> iAlStorageId, final String sFileName,
-		final String sTreeFileName, final String sTokenPattern, final String sTokenSeparator,
-		final int iStartParseFileAtLine, final int iStopParseFileAtLine) {
+		final String sGeneTreeFileName, final String sExperimentsTreeFileName, final String sTokenPattern,
+		final String sTokenSeparator, final int iStartParseFileAtLine, final int iStopParseFileAtLine) {
 
 		this.iAlStorageIDs = iAlStorageId;
 		this.sFileName = sFileName;
-		this.sTreeFileName = sTreeFileName;
+		this.sGenesTreeFileName = sGeneTreeFileName;
+		this.sExperimentsTreeFileName = sExperimentsTreeFileName;
 		this.sTokenPattern = sTokenPattern;
 		this.iStartParseFileAtLine = iStartParseFileAtLine;
 		this.iStopParseFileAtLine = iStopParseFileAtLine;
@@ -122,15 +124,32 @@ public class CmdLoadFileNStorages
 
 		generalManager.getGUIBridge().setFileNameCurrentDataSet(sFileName);
 
-		if (sTreeFileName != null) {
-			if (sTreeFileName.equals("") == false) {
-				generalManager.getLogger().log(Level.INFO, "Loading tree from file " + sTreeFileName);
+		// import gene tree
+		if (sGenesTreeFileName != null) {
+			if (sGenesTreeFileName.equals("") == false) {
+				generalManager.getLogger().log(Level.INFO,
+					"Loading gene tree from file " + sGenesTreeFileName);
 
 				TreePorter treePorter = new TreePorter();
-				Tree<ClusterNode> tree = treePorter.importTree(sTreeFileName);
+				Tree<ClusterNode> tree = treePorter.importTree(sGenesTreeFileName);
 
 				ISet set = generalManager.getUseCase().getSet();
 				set.setClusteredTreeGenes(tree);
+
+			}
+		}
+
+		// import experiment tree
+		if (sExperimentsTreeFileName != null) {
+			if (sExperimentsTreeFileName.equals("") == false) {
+				generalManager.getLogger().log(Level.INFO,
+					"Loading experiments tree from file " + sExperimentsTreeFileName);
+
+				TreePorter treePorter = new TreePorter();
+				Tree<ClusterNode> tree = treePorter.importTree(sExperimentsTreeFileName);
+
+				ISet set = generalManager.getUseCase().getSet();
+				set.setClusteredTreeExps(tree);
 
 			}
 		}

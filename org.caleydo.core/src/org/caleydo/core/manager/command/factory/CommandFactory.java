@@ -143,9 +143,10 @@ public class CommandFactory
 			case CREATE_GL_CELL:
 			case CREATE_GL_REMOTE_GLYPH:
 			case CREATE_GL_RADIAL_HIERARCHY:
-			case CREATE_GL_HYPERBOLIC: 
-			case CREATE_GL_HISTOGRAM: 
-			case CREATE_GL_DENDROGRAM:{
+			case CREATE_GL_HYPERBOLIC:
+			case CREATE_GL_HISTOGRAM:
+			case CREATE_GL_DENDROGRAM_VERTICAL:
+			case CREATE_GL_DENDROGRAM_HORIZONTAL: {
 				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
 			}

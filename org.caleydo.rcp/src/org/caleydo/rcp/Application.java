@@ -125,8 +125,11 @@ public class Application
 					else if (element.equals(EStartViewType.HISTOGRAM.getCommandLineArgument())) {
 						alStartViews.add(EStartViewType.HISTOGRAM);
 					}
-					else if (element.equals(EStartViewType.DENDROGRAM.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.DENDROGRAM);
+					else if (element.equals(EStartViewType.DENDROGRAM_HORIZONTAL.getCommandLineArgument())) {
+						alStartViews.add(EStartViewType.DENDROGRAM_HORIZONTAL);
+					}
+					else if (element.equals(EStartViewType.DENDROGRAM_VERTICAL.getCommandLineArgument())) {
+						alStartViews.add(EStartViewType.DENDROGRAM_VERTICAL);
 					}
 					else {
 						sCaleydoXMLfile = element;
