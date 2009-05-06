@@ -406,7 +406,7 @@ public class GenericSelectionManager {
 		// }
 
 		for (ESelectionType currentType : alSelectionTypes) {
-			// TODO: Please Alex check if the the second if statement is valid in all cases
+			// ignore if target == current, also MOUSE_OVEr does not override SELECTION
 			if (currentType == targetType || currentType == ESelectionType.SELECTION
 				&& targetType == ESelectionType.MOUSE_OVER) {
 				continue;

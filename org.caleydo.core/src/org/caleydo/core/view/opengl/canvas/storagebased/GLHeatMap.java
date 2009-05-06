@@ -102,10 +102,10 @@ public class GLHeatMap
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
 
-		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-		alSelectionTypes.add(ESelectionType.NORMAL);
-		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		alSelectionTypes.add(ESelectionType.SELECTION);
+//		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
+//		alSelectionTypes.add(ESelectionType.NORMAL);
+//		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
+//		alSelectionTypes.add(ESelectionType.SELECTION);
 
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();

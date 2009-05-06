@@ -25,6 +25,19 @@ public interface IIDMappingManager {
 
 	public boolean hasMapping(EMappingType type);
 
+	/**
+	 * Returns the mapped ID of type ValueType or null if no such mapping exists.
+	 * 
+	 * @param <KeyType>
+	 *            the type of the key used in the mapping
+	 * @param <ValueType>
+	 *            the type of the value used in the mapping
+	 * @param type
+	 *            the mapping type, specifying the actual relationship between key and value
+	 * @param key
+	 *            the key for which the mapping is requested
+	 * @return the value, or null if no such mapping exists
+	 */
 	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key);
 
 	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key);

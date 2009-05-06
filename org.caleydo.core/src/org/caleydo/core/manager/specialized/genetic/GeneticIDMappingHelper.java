@@ -14,6 +14,12 @@ import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 
+/**
+ * TODO: Document
+ * 
+ * @author Marc Streit
+ * @author Alexander Lex
+ */
 public class GeneticIDMappingHelper {
 	private static GeneticIDMappingHelper idMappingHelper;
 
@@ -34,7 +40,13 @@ public class GeneticIDMappingHelper {
 		return idMappingHelper;
 	}
 
-
+	/**
+	 * Converts a storage index to a refSeq int. Returns -1 if no mapping can be found.
+	 * 
+	 * @param index
+	 *            The index in the storage which should be converted to a refseq
+	 * @return the int representation of a refseq, or -1 if no mapping was found
+	 */
 	public int getRefSeqFromStorageIndex(int index) {
 		Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, index);
 
@@ -43,12 +55,18 @@ public class GeneticIDMappingHelper {
 
 		return iRefSeqID;
 	}
-	
-	public int getDavidIDFromStorageIndex(int index)
-	{
+
+	/**
+	 * Converts a storage index to a david ID. Returns the david ID or -1 if no mapping was found.
+	 * 
+	 * @param index
+	 *            The index in the storage which should be converted to a refSeq
+	 * @return the int representation of a david ID, or -1 if no mapping was found
+	 */
+	public int getDavidIDFromStorageIndex(int index) {
 		int refSeq = getRefSeqFromStorageIndex(index);
 		Integer david = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, refSeq);
-		if(david == null)
+		if (david == null)
 			return -1;
 		return david;
 	}
@@ -67,30 +85,53 @@ public class GeneticIDMappingHelper {
 			return sGeneSymbol;
 	}
 
-	public String getRefSeqStringFromStorageIndex(int iIndex) {
-		int iRefSeqID = getRefSeqFromStorageIndex(iIndex);
+	/**
+	 * Returns the refSeq String mapped to a storage index, or null if no string was found
+	 * 
+	 * @param index
+	 *            the storage index for which the mapping is requested
+	 * @return the String containing the refSeq, or null if no such mapping existed.
+	 */
+	public String getRefSeqStringFromStorageIndex(int index) {
+		int iRefSeqID = getRefSeqFromStorageIndex(index);
 		return idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID);
 	}
-	
+
+	/**
+	 * TODO
+	 * 
+	 * @param idType
+	 * @param geneID
+	 * @return a Set of PathwayGraphs or null if no such mapping exists
+	 */
 	public Set<PathwayGraph> getPathwayGraphsByGeneID(EIDType idType, int geneID) {
-		
+
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
 
 		PathwayVertexGraphItem pathwayVertexGraphItem = convertGeneIDToPathwayVertex(idType, geneID);
-		
+		if(pathwayVertexGraphItem == null)
+			return null;
+
 		List<IGraphItem> pathwayItems =
 			pathwayVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
-		
+
 		for (IGraphItem pathwayItem : pathwayItems) {
 			PathwayGraph pathwayGraph =
 				(PathwayGraph) pathwayItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0);
 			newPathways.add(pathwayGraph);
 		}
-		
+
 		return newPathways;
 	}
-	
+
+	/**
+	 * TODO: Marc document
+	 * 
+	 * @param idType
+	 * @param geneID
+	 * @return the PathwayVertexGraphItem corresponding to the mapping or null if no such mapping exists
+	 */
 	public PathwayVertexGraphItem convertGeneIDToPathwayVertex(EIDType idType, int geneID) {
 
 		int iGraphItemID = 0;
