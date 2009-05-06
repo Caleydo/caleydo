@@ -87,9 +87,11 @@ public class PickingManager {
 	private class ViewSpecificPickingIDContainer {
 
 		HashMap<Integer, Integer> hashPickingIDToExternalID;
+		HashMap<Integer, Integer> hashExternaldIDToPickingID;
 
 		public ViewSpecificPickingIDContainer() {
 			hashPickingIDToExternalID = new HashMap<Integer, Integer>();
+			hashExternaldIDToPickingID = new HashMap<Integer, Integer>();
 		}
 
 		/**
@@ -100,6 +102,7 @@ public class PickingManager {
 		 */
 		public void put(Integer pickingID, Integer externalID) {
 			hashPickingIDToExternalID.put(pickingID, externalID);
+			hashExternaldIDToPickingID.put(externalID, pickingID);
 		}
 
 		/**
@@ -110,6 +113,10 @@ public class PickingManager {
 		 */
 		public Integer getExternalID(Integer pickingID) {
 			return hashPickingIDToExternalID.get(pickingID);
+		}
+
+		public Integer getPickingID(Integer externalID) {
+			return hashExternaldIDToPickingID.get(externalID);
 		}
 
 		/**
@@ -185,13 +192,16 @@ public class PickingManager {
 	 */
 	public int getPickingID(int iViewID, EPickingType ePickingType, int iExternalID) {
 
-		int pickingID = calculateID();
 		ViewSpecificPickingIDContainer pickingIDContainer =
 			hashViewIDToViewSpecificPickingIDContainer.get(iViewID);
 		if (pickingIDContainer == null) {
 			pickingIDContainer = new ViewSpecificPickingIDContainer();
 			hashViewIDToViewSpecificPickingIDContainer.put(iViewID, pickingIDContainer);
 		}
+		Integer pickingID = pickingIDContainer.getPickingID(iExternalID);
+		if (pickingID == null)
+			pickingID = calculateID();
+		
 		pickingIDContainer.put(pickingID, iExternalID);
 		hashPickingIDToViewID.put(pickingID, new Pair<Integer, EPickingType>(iViewID, ePickingType));
 		return pickingID;
@@ -212,8 +222,7 @@ public class PickingManager {
 		if (bEnablePicking == false)
 			return;
 
-		GLMouseListener glMouseListener =
-			glView.getParentGLCanvas().getGLMouseListener();
+		GLMouseListener glMouseListener = glView.getParentGLCanvas().getGLMouseListener();
 
 		Point pickPoint = null;
 
@@ -232,7 +241,7 @@ public class PickingManager {
 		else if (glMouseListener.wasLeftMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.CLICKED;
-//			ContextMenu.get().flush();
+			// ContextMenu.get().flush();
 		}
 		else if (glMouseListener.wasRightMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();
