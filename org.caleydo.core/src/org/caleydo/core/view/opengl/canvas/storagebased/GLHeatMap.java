@@ -320,8 +320,8 @@ public class GLHeatMap
 		}
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
-		contentSelectionManager.resetSelectionManager();
-		storageSelectionManager.resetSelectionManager();
+//		contentSelectionManager.resetSelectionManager();
+//		storageSelectionManager.resetSelectionManager();
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));

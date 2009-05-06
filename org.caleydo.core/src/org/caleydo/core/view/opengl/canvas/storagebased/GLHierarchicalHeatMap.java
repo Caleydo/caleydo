@@ -1925,10 +1925,10 @@ public class GLHierarchicalHeatMap
 			iCount += iAlNumberSamples.get(i);
 
 		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
-		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-		commands.add(command);
+//		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+//		commands.add(command);
 		glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, commands);
-
+		glHeatMapView.resetView();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
 
@@ -1959,7 +1959,7 @@ public class GLHierarchicalHeatMap
 
 		// selected experiments
 		commands = new ArrayList<SelectionCommand>();
-		command = new SelectionCommand(ESelectionCommandType.RESET);
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		commands.add(command);
 		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, commands);
 
