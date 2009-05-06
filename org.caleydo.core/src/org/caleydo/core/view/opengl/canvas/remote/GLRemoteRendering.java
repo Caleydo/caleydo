@@ -638,8 +638,10 @@ public class GLRemoteRendering
 		AGLEventListener glEventListener =
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
-		if (glEventListener == null)
-			throw new IllegalStateException("Cannot render canvas object which is null!");
+		if (glEventListener == null) {
+			generalManager.getLogger().log(Level.WARNING, "Bucket level element is null and cannot be rendered!");
+			return;
+		}
 
 		gl.glPushMatrix();
 
@@ -1652,53 +1654,12 @@ public class GLRemoteRendering
 			else {
 				glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
 			}
-
-			// if (glActiveSubView instanceof GLPathway)
-			// {
-			// ((GLPathway) glActiveSubView).enableTitleRendering(true);
-			// ((GLPathway) glActiveSubView).setAlignment(SWT.CENTER,
-			// SWT.BOTTOM);
-			// }
-
-			// generalManager.getGUIBridge().setActiveGLSubView(this,
-			// glActiveSubView);
 		}
 		else if (destinationLevel == stackLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
-
-			// if (glActiveSubView instanceof GLPathway)
-			// {
-			// ((GLPathway) glActiveSubView).enableTitleRendering(true);
-			//
-			// int iStackPos = stackLevel.getPositionIndexByElementID(element);
-			// switch (iStackPos)
-			// {
-			// case 0:
-			// ((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.TOP);
-			// break;
-			// case 1:
-			// ((GLPathway) glActiveSubView).setAlignment(SWT.LEFT, SWT.BOTTOM);
-			// break;
-			// case 2:
-			// ((GLPathway) glActiveSubView).setAlignment(SWT.CENTER,
-			// SWT.BOTTOM);
-			// break;
-			// case 3:
-			// ((GLPathway) glActiveSubView).setAlignment(SWT.RIGHT,
-			// SWT.BOTTOM);
-			// break;
-			// default:
-			// break;
-			// }
-			// }
 		}
 		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
-
-			// if (glActiveSubView instanceof GLPathway)
-			// {
-			// ((GLPathway) glActiveSubView).enableTitleRendering(false);
-			// }
 		}
 
 		compactPoolLevel();
@@ -2310,10 +2271,27 @@ public class GLRemoteRendering
 
 		generalManager.getPathwayManager().resetPathwayVisiblityState();
 
+		// Send out remove broadcast for views that are currently slerped
+		for (SlerpAction slerpAction : arSlerpActions) {
+			viewManager.getGLEventListener(slerpAction.getElementId()).broadcastElements(EVAOperation.REMOVE_ELEMENT);
+		}
 		arSlerpActions.clear();
+		
 		clearRemoteLevel(focusLevel);
 		clearRemoteLevel(stackLevel);
 		clearRemoteLevel(poolLevel);
+		clearRemoteLevel(transitionLevel);
+		
+		// Add heat map and par coords view to its initial position in the bucket
+		for (int viewID : containedViewIDs) {
+			AGLEventListener view = viewManager.getGLEventListener(viewID);
+			if (view instanceof GLParallelCoordinates) {
+				stackLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+			}
+			else if (view instanceof GLHeatMap) {
+				focusLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+			}
+		}
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 	}
@@ -2342,34 +2320,12 @@ public class GLRemoteRendering
 			}
 			else {
 				removeView(glEventListener);
-				element.setContainedElementID(-1);
+				glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 			}
+
+			element.setContainedElementID(-1);
 		}
 	}
-
-	// @Override
-	// public synchronized RemoteLevel getHierarchyLayerByGLEventListenerId(
-	// final int iGLEventListenerId)
-	// {
-	// if (focusLevel.containsElement(iGLEventListenerId))
-	// return focusLevel;
-	// else if (stackLevel.containsElement(iGLEventListenerId))
-	// return stackLevel;
-	// else if (poolLevel.containsElement(iGLEventListenerId))
-	// return poolLevel;
-	// else if (transitionLevel.containsElement(iGLEventListenerId))
-	// return transitionLevel;
-	// else if (spawnLevel.containsElement(iGLEventListenerId))
-	// return spawnLevel;
-	// else if (selectionLevel.containsElement(iGLEventListenerId))
-	// return selectionLevel;
-	//
-	// generalManager.getLogger().log(Level.WARNING,
-	// "GL Event Listener " + iGLEventListenerId +
-	// " is not contained in any layer!");
-	//
-	// return null;
-	// }
 
 	@Override
 	public RemoteLevel getFocusLevel() {
