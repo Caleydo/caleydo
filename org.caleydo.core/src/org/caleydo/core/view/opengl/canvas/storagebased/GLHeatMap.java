@@ -20,11 +20,10 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
@@ -102,10 +101,10 @@ public class GLHeatMap
 		super(glCanvas, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
 
-//		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-//		alSelectionTypes.add(ESelectionType.NORMAL);
-//		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-//		alSelectionTypes.add(ESelectionType.SELECTION);
+		// ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
+		// alSelectionTypes.add(ESelectionType.NORMAL);
+		// alSelectionTypes.add(ESelectionType.MOUSE_OVER);
+		// alSelectionTypes.add(ESelectionType.SELECTION);
 
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
@@ -127,8 +126,8 @@ public class GLHeatMap
 		bRenderStorageHorizontally = false;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);			
-		
+		parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
@@ -136,18 +135,18 @@ public class GLHeatMap
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLView, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLView,
+		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLView;
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);			
+				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
 			}
 		});
-		
+
 		bRenderStorageHorizontally = false;
 
 		this.glMouseListener = glMouseListener;
@@ -223,7 +222,7 @@ public class GLHeatMap
 		gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-		
+
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 	}
@@ -265,7 +264,7 @@ public class GLHeatMap
 						.z());
 			}
 
-//			gl.glDisable(GL.GL_STENCIL_TEST);
+			// gl.glDisable(GL.GL_STENCIL_TEST);
 		}
 		gl.glEndList();
 	}
@@ -349,8 +348,8 @@ public class GLHeatMap
 
 	@Override
 	public String getShortInfo() {
-		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / "
-			+ set.getVA(iStorageVAID).size() + " experiments";
+		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
+			+ " experiments";
 	}
 
 	@Override
@@ -399,7 +398,7 @@ public class GLHeatMap
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-		
+
 		ESelectionType eSelectionType;
 		switch (ePickingType) {
 			case HEAT_MAP_LINE_SELECTION:
@@ -423,13 +422,14 @@ public class GLHeatMap
 
 						// Check if mouse over element is already selected ->
 						// ignore
-						if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
-							contentSelectionManager.clearSelection(eSelectionType);
-							SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-							sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-							setDisplayListDirty();
-							return;
-						}
+						// if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
+						// contentSelectionManager.clearSelection(eSelectionType);
+						// SelectionCommand command =
+						// new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+						// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+						// setDisplayListDirty();
+						// return;
+						// }
 
 						break;
 					case RIGHT_CLICKED:
@@ -450,44 +450,8 @@ public class GLHeatMap
 
 				}
 
-				if (contentSelectionManager.checkStatus(eSelectionType, iExternalID)) {
-					break;
-				}
+				createContentSelection(eSelectionType, iExternalID);
 
-				connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-
-				contentSelectionManager.clearSelection(eSelectionType);
-
-				// TODO: Integrate multi spotting support again
-				// // Resolve multiple spotting on chip and add all to the
-				// // selection manager.
-				// Integer iRefSeqID =
-				// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
-				//
-				Integer iMappingID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-				// for (Object iExpressionIndex : idMappingManager.getMultiID(
-				// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-				// contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
-				// contentSelectionManager.addConnectionID(iMappingID, (Integer) iExpressionIndex);
-				// }
-				contentSelectionManager.addToType(eSelectionType, iExternalID);
-				contentSelectionManager.addConnectionID(iMappingID, iExternalID);
-
-				if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
-					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-
-//					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-//					sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
-
-					handleConnectedElementRep(selectionDelta);
-					SelectionUpdateEvent event = new SelectionUpdateEvent();
-					event.setSender(this);
-					event.setSelectionDelta(selectionDelta);
-					event.setInfo(getShortInfo());
-					eventPublisher.triggerEvent(event);
-				}
-
-				setDisplayListDirty();
 				break;
 
 			case HEAT_MAP_STORAGE_SELECTION:
@@ -505,38 +469,138 @@ public class GLHeatMap
 						if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
 							storageSelectionManager.clearSelection(eSelectionType);
 
-//							SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-//							sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+							// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+							// eSelectionType);
+							// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
 							setDisplayListDirty();
 							return;
 						}
 
+						createStorageSelection(eSelectionType, iExternalID);
 						break;
 					default:
 						return;
 				}
 
-				if (storageSelectionManager.checkStatus(eSelectionType, iExternalID)) {
-					break;
-				}
-
-				storageSelectionManager.clearSelection(eSelectionType);
-				storageSelectionManager.addToType(eSelectionType, iExternalID);
-
-				if (eStorageDataType == EIDType.EXPERIMENT_INDEX) {
-
-//					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-//					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
-
-					ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
-					SelectionUpdateEvent event = new SelectionUpdateEvent();
-					event.setSelectionDelta(selectionDelta);
-					eventPublisher.triggerEvent(event);
-				}
-				setDisplayListDirty();
 				break;
 		}
+	}
+
+	private void createContentSelection(ESelectionType selectionType, int contentID) {
+
+		if (contentSelectionManager.checkStatus(selectionType, contentID))
+			return;
+
+		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+
+		contentSelectionManager.clearSelection(selectionType);
+
+		// TODO: Integrate multi spotting support again
+		// // Resolve multiple spotting on chip and add all to the
+		// // selection manager.
+		// Integer iRefSeqID =
+		// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+		//
+		Integer iMappingID = generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
+		// for (Object iExpressionIndex : idMappingManager.getMultiID(
+		// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+		// contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+		// contentSelectionManager.addConnectionID(iMappingID, (Integer) iExpressionIndex);
+		// }
+		contentSelectionManager.addToType(selectionType, contentID);
+		contentSelectionManager.addConnectionID(iMappingID, contentID);
+
+		if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
+			ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+
+			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+			// eSelectionType);
+			// sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
+
+			handleConnectedElementRep(selectionDelta);
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta(selectionDelta);
+			event.setInfo(getShortInfo());
+			eventPublisher.triggerEvent(event);
+		}
+
+		setDisplayListDirty();
+	}
+
+	private void createStorageSelection(ESelectionType selectionType, int storageID) {
+		if (storageSelectionManager.checkStatus(selectionType, storageID)) {
+			return;
+		}
+
+		storageSelectionManager.clearSelection(selectionType);
+		storageSelectionManager.addToType(selectionType, storageID);
+
+		if (eStorageDataType == EIDType.EXPERIMENT_INDEX) {
+
+			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+			// eSelectionType);
+			// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+
+			ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
+			SelectionUpdateEvent event = new SelectionUpdateEvent();
+			event.setSender(this);
+			event.setSelectionDelta(selectionDelta);
+			eventPublisher.triggerEvent(event);
+		}
+		setDisplayListDirty();
+	}
+
+	public void upDownSelect(boolean isUp) {
+		IVirtualArray virtualArray = set.getVA(iContentVAID);
+		if (virtualArray == null)
+			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
+		int selectedElement = cursorSelect(virtualArray, contentSelectionManager, isUp);
+		if (selectedElement < 0)
+			return;
+		createContentSelection(ESelectionType.MOUSE_OVER, selectedElement);
+	}
+
+	public void leftRightSelect(boolean isLeft) {
+		IVirtualArray virtualArray = set.getVA(iStorageVAID);
+		if (virtualArray == null)
+			throw new IllegalStateException("Virtual Array is required for selectNext Operation");
+		int selectedElement = cursorSelect(virtualArray, storageSelectionManager, isLeft);
+		if (selectedElement < 0)
+			return;
+		createStorageSelection(ESelectionType.MOUSE_OVER, selectedElement);
+	}
+
+	private int cursorSelect(IVirtualArray virtualArray, GenericSelectionManager selectionManager,
+		boolean isUp) {
+	
+		Set<Integer> elements = selectionManager.getElements(ESelectionType.MOUSE_OVER);
+		if (elements.size() == 0) {
+			elements = selectionManager.getElements(ESelectionType.SELECTION);
+			if (elements.size() == 0)
+				return -1;
+		}
+
+		if (elements.size() == 1) {
+			Integer element = elements.iterator().next();
+			int index = virtualArray.indexOf(element);
+			int newIndex;
+			if (isUp) {
+				newIndex = index - 1;
+				if (newIndex < 0)
+					return -1;
+			}
+			else {
+				newIndex = index + 1;
+				if (newIndex == virtualArray.size())
+					return -1;
+				
+			}
+			return virtualArray.get(newIndex);
+
+		}
+		return -1;
 	}
 
 	private void renderHeatMap(final GL gl) {
@@ -638,7 +702,8 @@ public class GLHeatMap
 						if (bRenderRefSeq) {
 							sContent += " | ";
 							// Render heat map element name
-							sContent += GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+							sContent +=
+								GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 						}
 					}
 					else if (set.getSetType() == ESetType.UNSPECIFIED) {
@@ -647,8 +712,8 @@ public class GLHeatMap
 								EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex);
 					}
 					else {
-						throw new IllegalStateException("Label extraction for "
-							+ set.getSetType() + " not implemented yet!");
+						throw new IllegalStateException("Label extraction for " + set.getSetType()
+							+ " not implemented yet!");
 					}
 
 					if (sContent == null)
@@ -767,9 +832,8 @@ public class GLHeatMap
 				if (iCount == set.getVA(iContentVAID).size()) {
 					fYPosition = 0;
 					for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
-						renderCaption(gl, set.get(iStorageIndex).getLabel(),
-							fXPosition + 0.1f, fYPosition + fFieldHeight / 2, 0, fColumnDegrees, renderStyle
-								.getSmallFontScalingFactor());
+						renderCaption(gl, set.get(iStorageIndex).getLabel(), fXPosition + 0.1f, fYPosition
+							+ fFieldHeight / 2, 0, fColumnDegrees, renderStyle.getSmallFontScalingFactor());
 						fYPosition += fFieldHeight;
 					}
 				}
@@ -777,11 +841,29 @@ public class GLHeatMap
 		}
 	}
 
+	// public void selectElements() {
+	// ISelectionDelta delta = contentSelectionManager.selectNext(ESelectionType.MOUSE_OVER);
+	// if (delta == null)
+	// return;
+	// SelectionUpdateEvent event = new SelectionUpdateEvent();
+	// event.setSelectionDelta(delta);
+	// event.setSender(this);
+	// eventPublisher.triggerEvent(event);
+	// setDisplayListDirty();
+	// }
+
+	// @Override
+	// public synchronized void clear()
+	// {
+	// contentSelectionManager.clearSelections();
+	// storageSelectionManager.clearSelections();
+	// setDisplayListDirty();
+	// }
+
 	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
 		final float fXPosition, final float fYPosition, final float fFieldWidth, final float fFieldHeight) {
 
-		float fLookupValue =
-			set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
 		float fOpacity = 1;
 		// if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
@@ -980,8 +1062,7 @@ public class GLHeatMap
 		// );
 
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
-		float fLength =
-			(set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
+		float fLength = (set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
 		// :
 		// 1.5
 		// =
@@ -1100,14 +1181,6 @@ public class GLHeatMap
 		setDisplayListDirty();
 	}
 
-	// @Override
-	// public synchronized void clear()
-	// {
-	// contentSelectionManager.clearSelections();
-	// storageSelectionManager.clearSelections();
-	// setDisplayListDirty();
-	// }
-
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
 		super.handleVirtualArrayUpdate(delta, info);
@@ -1129,7 +1202,7 @@ public class GLHeatMap
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();

@@ -284,7 +284,7 @@ public class GenericSelectionManager {
 	 * virtual array.
 	 * </p>
 	 * <p>
-	 * If you reset this virtual array at runtime the manager is completely reseted and reinitialized with the
+	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with the
 	 * data of the virtual array
 	 * </p>
 	 * 
@@ -298,7 +298,7 @@ public class GenericSelectionManager {
 	}
 
 	/**
-	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta Sets
+	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Sets
 	 * virtual array to null
 	 */
 	public void resetSelectionManager() {
