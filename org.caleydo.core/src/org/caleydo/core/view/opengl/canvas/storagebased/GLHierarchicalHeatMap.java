@@ -31,7 +31,8 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
+import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -49,11 +50,15 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingActionListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.GroupMergingActionListener;
+import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsInterChangingActionReceiver;
+import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsMergingActionReceiver;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
@@ -74,7 +79,9 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Alexander Lex
  */
 public class GLHierarchicalHeatMap
-	extends AStorageBasedView {
+	extends AStorageBasedView
+	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver {
+
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.4f;
 
@@ -137,6 +144,8 @@ public class GLHierarchicalHeatMap
 	// dragging stuff
 	private boolean bIsDraggingActive = false;
 	private boolean bIsDraggingWholeBlock = false;
+	private boolean bDisableCursorDragging = false;
+	private boolean bDisableBlockDragging = false;
 	private int iDraggedCursor = 0;
 	private float fPosCursorFirstElement = 0;
 	private float fPosCursorLastElement = 0;
@@ -149,6 +158,8 @@ public class GLHierarchicalHeatMap
 	private int iGroupToSplit = 0;
 	private Point DraggingPoint = null;
 
+	private GroupMergingActionListener groupMergingActionListener;
+	private GroupInterChangingActionListener groupInterChangingActionListener;
 	private UpdateViewListener updateViewListener;
 
 	/**
@@ -177,7 +188,6 @@ public class GLHierarchicalHeatMap
 
 		// activate clustering
 		bUseClusteredVA = false;
-
 	}
 
 	@Override
@@ -240,7 +250,6 @@ public class GLHierarchicalHeatMap
 		initHierarchy();
 
 	}
-	
 
 	@Override
 	public void initLocal(GL gl) {
@@ -301,6 +310,10 @@ public class GLHierarchicalHeatMap
 	 * @param
 	 */
 	private void initPosCursor() {
+
+		if (iSamplesPerHeatmap > iAlNumberSamples.get(iSelectorBar - 1) / 2)
+			iSamplesPerHeatmap = (int) Math.floor(iAlNumberSamples.get(iSelectorBar - 1) / 3);
+
 		if (AlSelection.size() > 0) {
 			int iNumberSample = iAlNumberSamples.get(iSelectorBar - 1);
 			// int iNumberSample = iNrSamplesPerTexture; // * 2;
@@ -1157,44 +1170,42 @@ public class GLHierarchicalHeatMap
 
 		float fHeightElem = fHeight / set.getVA(iContentVAID).size();
 
-		float fStartElem = 0;
+		int iStartElem = 0;
+		int iLastElem = 0;
 
-		for (int i = 0; i < iSelectorBar - 1; i++)
-			fStartElem += iAlNumberSamples.get(i);
+		boolean colorToggle = true;
 
-		gl.glColor4f(1f, 1f, 0f, 1f);
 		gl.glLineWidth(2f);
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, fHeight - fHeightElem * fStartElem, 0);
-		gl.glVertex3f(fFieldWith, fHeight - fHeightElem * fStartElem, 0);
-		gl.glVertex3f(fFieldWith, fHeight - fHeightElem
-			* (fStartElem + iAlNumberSamples.get(iSelectorBar - 1)), 0);
-		gl.glVertex3f(0, fHeight - fHeightElem * (fStartElem + iAlNumberSamples.get(iSelectorBar - 1)), 0);
-		gl.glEnd();
 
-		// float foffsetPick =
-		// (fStep * (iNrSelBar - iSelectorBar + 1) - fStep * (iNrSelBar - iSelectorBar))
-		// / iAlNumberSamples.get(iSelectorBar - 1);
-		//		
-		// gl.glBegin(GL.GL_LINE_LOOP);
-		// gl.glVertex3f(0, fStep * (iNrSelBar - iSelectorBar + 1) - iFirstSample * foffsetPick, 0);
-		// gl.glVertex3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1) - iFirstSample * foffsetPick, 0);
-		// gl
-		// .glVertex3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1) - (iLastSample + 1) * foffsetPick,
-		// 0);
-		// gl.glVertex3f(0, fStep * (iNrSelBar - iSelectorBar + 1) - (iLastSample + 1) * foffsetPick, 0);
-		// gl.glEnd();
+		for (int currentGroup = 0; currentGroup < iNrSelBar; currentGroup++) {
 
-		startpoint1 = new Vec3f(fFieldWith, fHeight - fHeightElem * fStartElem, 0);
-		endpoint1 = new Vec3f(GAP_LEVEL1_2, fHeight, 0);
-		// startpoint2 = new Vec3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar - 1), 0);
-		startpoint2 =
-			new Vec3f(fFieldWith, fHeight - fHeightElem
-				* (fStartElem + iAlNumberSamples.get(iSelectorBar - 1)), 0);
-		endpoint2 = new Vec3f(GAP_LEVEL1_2, 0, 0);
+			iStartElem = iLastElem;
+			iLastElem += iAlNumberSamples.get(currentGroup);
 
-		renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
+			if (colorToggle)
+				gl.glColor4f(0f, 0f, 0f, 1f);
+			else
+				gl.glColor4f(1f, 1f, 1f, 1f);
 
+			colorToggle = (colorToggle == true) ? false : true;
+
+			if (currentGroup == iSelectorBar - 1) {
+				startpoint1 = new Vec3f(fFieldWith, fHeight - fHeightElem * iStartElem, 0);
+				endpoint1 = new Vec3f(GAP_LEVEL1_2, fHeight, 0);
+				startpoint2 = new Vec3f(fFieldWith, fHeight - fHeightElem * iLastElem, 0);
+				endpoint2 = new Vec3f(GAP_LEVEL1_2, 0, 0);
+				renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
+
+				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+			}
+
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(0, fHeight - fHeightElem * iStartElem, 0);
+			gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iStartElem, 0);
+			gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iLastElem, 0);
+			gl.glVertex3f(0, fHeight - fHeightElem * iLastElem, 0);
+			gl.glEnd();
+		}
 	}
 
 	/**
@@ -1792,14 +1803,13 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(fleftOffset, -0.2f, 0);
 		}
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_VIEW_SELECTION,
-			glHeatMapView.getID()));
-
 		glHeatMapView.getViewFrustum().setTop(ftop);
 		glHeatMapView.getViewFrustum().setRight(fright);
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_VIEW_SELECTION,
+			glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
-		fWidthEHM = glHeatMapView.getViewFrustum().getWidth() - 0.95f;
 		gl.glPopName();
+		fWidthEHM = glHeatMapView.getViewFrustum().getWidth() - 0.95f;
 
 		if (glHeatMapView.isInDefaultOrientation()) {
 			gl.glTranslatef(-fleftOffset, -0.4f, 0);
@@ -2267,6 +2277,7 @@ public class GLHierarchicalHeatMap
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlock = false;
+			bDisableCursorDragging = false;
 		}
 	}
 
@@ -2328,6 +2339,7 @@ public class GLHierarchicalHeatMap
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActive = false;
+			bDisableBlockDragging = false;
 		}
 	}
 
@@ -2352,6 +2364,7 @@ public class GLHierarchicalHeatMap
 					case DRAGGED:
 						if (bSplitGroupGene == false) {
 							bSplitGroupGene = true;
+							bSplitGroupExp = false;
 							iGroupToSplit = iExternalID;
 							DraggingPoint = pick.getPickedPoint();
 						}
@@ -2359,16 +2372,16 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case RIGHT_CLICKED:
-						// if (!isRenderedRemote()) {
-						// contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-						// getParentGLCanvas().getHeight());
-						// contextMenu.setMasterGLView(this);
-						// }
-						//
-						// GroupContextMenuItemContainer groupContextMenuItemContainer =
-						// new GroupContextMenuItemContainer(iExternalID);
-						// contextMenu.addItemContanier(groupContextMenuItemContainer);
+						GroupContextMenuItemContainer groupContextMenuItemContainer =
+							new GroupContextMenuItemContainer();
+						groupContextMenuItemContainer.setGeneExperimentFlag(true);
+						contextMenu.addItemContanier(groupContextMenuItemContainer);
 
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+						}
 						break;
 
 					case MOUSE_OVER:
@@ -2392,18 +2405,32 @@ public class GLHierarchicalHeatMap
 					case DRAGGED:
 						if (bSplitGroupExp == false) {
 							bSplitGroupExp = true;
+							bSplitGroupGene = false;
 							iGroupToSplit = iExternalID;
 							DraggingPoint = pick.getPickedPoint();
 						}
 						setDisplayListDirty();
 						break;
 
+					case RIGHT_CLICKED:
+						GroupContextMenuItemContainer groupContextMenuItemContainer =
+							new GroupContextMenuItemContainer();
+						groupContextMenuItemContainer.setGeneExperimentFlag(false);
+						contextMenu.addItemContanier(groupContextMenuItemContainer);
+
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+						}
+						break;
+
 					case MOUSE_OVER:
-						System.out.print("patients group " + iExternalID);
-						System.out.print(" number elements in group: ");
-						System.out.println(set.getVA(iStorageVAID).getGroupList().get(iExternalID)
-							.getNrElements());
-						setDisplayListDirty();
+						// System.out.print("patients group " + iExternalID);
+						// System.out.print(" number elements in group: ");
+						// System.out.println(set.getVA(iStorageVAID).getGroupList().get(iExternalID)
+						// .getNrElements());
+						// setDisplayListDirty();
 						break;
 				}
 				break;
@@ -2417,6 +2444,7 @@ public class GLHierarchicalHeatMap
 						bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
 						glHeatMapView.setDisplayListDirty();
 						setDisplayListDirty();
+
 						break;
 
 					case DRAGGED:
@@ -2466,7 +2494,10 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case DRAGGED:
+						if (bDisableCursorDragging)
+							return;
 						bIsDraggingActive = true;
+						bDisableBlockDragging = true;
 						iDraggedCursor = iExternalID;
 						setDisplayListDirty();
 						break;
@@ -2483,7 +2514,10 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case DRAGGED:
+						if (bDisableBlockDragging)
+							return;
 						bIsDraggingWholeBlock = true;
+						bDisableCursorDragging = true;
 						iDraggedCursor = iExternalID;
 						setDisplayListDirty();
 						break;
@@ -2585,6 +2619,21 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 		triggerSelectionBlock();
 		glHeatMapView.setDisplayListDirty();
+
+		// group/cluster selections
+		if (set.getVA(iStorageVAID).getGroupList() != null) {
+			IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+
+			for (Group group : groupList)
+				group.setSelectionType(ESelectionType.NORMAL);
+		}
+		if (set.getVA(iContentVAID).getGroupList() != null) {
+
+			IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+
+			for (Group group : groupList)
+				group.setSelectionType(ESelectionType.NORMAL);
+		}
 	}
 
 	@Override
@@ -2596,8 +2645,6 @@ public class GLHierarchicalHeatMap
 	public boolean isInDefaultOrientation() {
 		return bRenderStorageHorizontally;
 	}
-	
-	
 
 	public void changeFocus(boolean bInFocus) {
 		bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
@@ -2634,44 +2681,6 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 
-	}
-
-	public void mergeGroups() {
-
-		IGroupList groupList = set.getVA(iContentVAID).getGroupList();
-
-		ArrayList<Integer> selGroups = new ArrayList<Integer>();
-
-		if (groupList == null) {
-			System.out.println("No group assignment available!");
-			return;
-		}
-
-		for (Group iter : groupList) {
-			if (iter.getSelectionType() == ESelectionType.SELECTION)
-				selGroups.add(groupList.indexOf(iter));
-		}
-		if (selGroups.size() != 2) {
-			System.out.println("Number of selected elements has to be 2!!!");
-			return;
-		}
-
-		// interchange
-		// if (groupList.interchange(set.getVA(iContentVAID), selGroups.get(0),
-		// selGroups.get(1)) == false) {
-		// System.out.println("Problem during interchange!!!");
-		// return;
-		// }
-
-		// merge
-		if (groupList.merge(set.getVA(iContentVAID), selGroups.get(0), selGroups.get(1)) == false) {
-			System.out.println("Problem during merge!!!");
-			return;
-		}
-
-		bRedrawTextures = true;
-
-		setDisplayListDirty();
 	}
 
 	public boolean isInFocus() {
@@ -2718,9 +2727,93 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
+	public void handleInterchangeGroups(boolean bGeneGroup) {
+		int iVAId = 0;
+
+		if (bGeneGroup)
+			iVAId = iContentVAID;
+		else
+			iVAId = iStorageVAID;
+
+		IGroupList groupList = set.getVA(iVAId).getGroupList();
+
+		ArrayList<Integer> selGroups = new ArrayList<Integer>();
+
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
+		for (Group iter : groupList) {
+			if (iter.getSelectionType() == ESelectionType.SELECTION)
+				selGroups.add(groupList.indexOf(iter));
+		}
+		if (selGroups.size() != 2) {
+			System.out.println("Number of selected elements has to be 2!!!");
+			return;
+		}
+
+		// interchange
+		if (groupList.interchange(set.getVA(iVAId), selGroups.get(0), selGroups.get(1)) == false) {
+			System.out.println("Problem during interchange!!!");
+			return;
+		}
+
+		bRedrawTextures = true;
+
+		setDisplayListDirty();
+
+	}
+
+	@Override
+	public void handleMergeGroups(boolean bGeneGroup) {
+		int iVAId = 0;
+
+		if (bGeneGroup)
+			iVAId = iContentVAID;
+		else
+			iVAId = iStorageVAID;
+
+		IGroupList groupList = set.getVA(iVAId).getGroupList();
+
+		ArrayList<Integer> selGroups = new ArrayList<Integer>();
+
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
+		for (Group iter : groupList) {
+			if (iter.getSelectionType() == ESelectionType.SELECTION)
+				selGroups.add(groupList.indexOf(iter));
+		}
+		if (selGroups.size() != 2) {
+			System.out.println("Number of selected elements has to be 2!!!");
+			return;
+		}
+
+		// merge
+		if (groupList.merge(set.getVA(iVAId), selGroups.get(0), selGroups.get(1)) == false) {
+			System.out.println("Problem during merge!!!");
+			return;
+		}
+
+		bRedrawTextures = true;
+
+		setDisplayListDirty();
+
+	}
+
+	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
+		groupMergingActionListener = new GroupMergingActionListener();
+		groupMergingActionListener.setHandler(this);
+		eventPublisher.addListener(MergeGroupsEvent.class, groupMergingActionListener);
+		groupInterChangingActionListener = new GroupInterChangingActionListener();
+		groupInterChangingActionListener.setHandler(this);
+		eventPublisher.addListener(InterchangeGroupsEvent.class, groupInterChangingActionListener);
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
@@ -2730,12 +2823,21 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
+
+		if (groupMergingActionListener != null) {
+			eventPublisher.removeListener(groupMergingActionListener);
+			groupMergingActionListener = null;
+		}
+		if (groupInterChangingActionListener != null) {
+			eventPublisher.removeListener(groupInterChangingActionListener);
+			groupInterChangingActionListener = null;
+		}
 		if (updateViewListener != null) {
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
 		}
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		bRedrawTextures = true;

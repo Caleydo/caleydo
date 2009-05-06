@@ -171,7 +171,7 @@ public class FileLoadDataAction
 //		inputTreeFile.setLayoutData(gridData);
 		
 		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonTreeChooser.setText("Choose gene tree file..");
+		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
 
 		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
 		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -192,7 +192,7 @@ public class FileLoadDataAction
 		});
 		
 		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonExperimentsTreeChooser.setText("Choose experiments tree file..");
+		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
 
 		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
 		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

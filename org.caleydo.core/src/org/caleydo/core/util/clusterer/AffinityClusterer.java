@@ -98,7 +98,7 @@ public class AffinityClusterer
 						s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
 						if (bStart0 == true) {
 							i[count] = iContentIndex1;
-							k[count] = iContentIndex1;
+							k[count] = iContentIndex2;
 						}
 						else {
 							i[count] = iContentIndex1 - 1;
