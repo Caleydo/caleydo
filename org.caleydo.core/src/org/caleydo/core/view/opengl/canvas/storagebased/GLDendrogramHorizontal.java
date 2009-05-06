@@ -853,4 +853,9 @@ public class GLDendrogramHorizontal
 
 		setDisplayListDirty();
 	}
+	
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
 }

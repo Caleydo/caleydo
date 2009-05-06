@@ -717,22 +717,22 @@ public class GLParallelCoordinates
 				renderGlobalBrush(gl);
 			}
 
-//			if (bShowSelectionHeatMap) {
-//
-//				gl.glTranslatef(viewFrustum.getRight() - glSelectionHeatMap.getViewFrustum().getWidth(), 0,
-//					0.002f);
-//				// gl.glTranslatef(1, 0, 0);
-//				int iPickingID =
-//					pickingManager.getPickingID(iUniqueID, EPickingType.PCS_VIEW_SELECTION,
-//						glSelectionHeatMap.getID());
-//				gl.glPushName(iPickingID);
-//				glSelectionHeatMap.displayRemote(gl);
-//
-//				gl.glPopName();
-//				// gl.glTranslatef(-1, 0, 0);
-//				gl.glTranslatef(-viewFrustum.getRight() + glSelectionHeatMap.getViewFrustum().getWidth(), 0,
-//					-0.002f);
-//			}
+			// if (bShowSelectionHeatMap) {
+			//
+			// gl.glTranslatef(viewFrustum.getRight() - glSelectionHeatMap.getViewFrustum().getWidth(), 0,
+			// 0.002f);
+			// // gl.glTranslatef(1, 0, 0);
+			// int iPickingID =
+			// pickingManager.getPickingID(iUniqueID, EPickingType.PCS_VIEW_SELECTION,
+			// glSelectionHeatMap.getID());
+			// gl.glPushName(iPickingID);
+			// glSelectionHeatMap.displayRemote(gl);
+			//
+			// gl.glPopName();
+			// // gl.glTranslatef(-1, 0, 0);
+			// gl.glTranslatef(-viewFrustum.getRight() + glSelectionHeatMap.getViewFrustum().getWidth(), 0,
+			// -0.002f);
+			// }
 
 		}
 
@@ -2747,6 +2747,11 @@ public class GLParallelCoordinates
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
 	}
 
 }

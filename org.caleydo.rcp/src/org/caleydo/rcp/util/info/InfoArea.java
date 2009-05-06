@@ -428,6 +428,12 @@ public class InfoArea
 	public void handleRedrawView() {
 		// nothing to do here
 	}
+	
+	@Override
+	public void handleUpdateView() {
+		// nothing to do here
+	}
+
 
 	@Override
 	public void handleClearSelections() {
@@ -446,6 +452,7 @@ public class InfoArea
 			}
 		});
 	}
+	
 	
 	/**
 	 * Registers the listeners for this view to the event system. To release the allocated resources

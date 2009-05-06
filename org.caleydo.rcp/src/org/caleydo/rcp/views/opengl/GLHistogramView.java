@@ -131,6 +131,12 @@ public class GLHistogramView
 			}
 		});
 	}
+	
+	@Override
+	public void handleUpdateView() {
+		handleRedrawView();
+	}
+
 
 	@Override
 	public void handleClearSelections() {

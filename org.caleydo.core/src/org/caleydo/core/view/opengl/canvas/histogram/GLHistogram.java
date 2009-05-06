@@ -13,6 +13,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -334,6 +335,11 @@ public class GLHistogram
 	 */
 	private void updateColorPointPosition(GL gl) {
 		if (glMouseListener.wasMouseReleased()) {
+			// send out a major update which tells the hhm to update its textures
+			UpdateViewEvent event = new UpdateViewEvent();
+			event.setSender(this);
+			eventPublisher.triggerEvent(event);
+			
 			bUpdateColorPointPosition = false;
 			bUpdateLeftSpread = false;
 			bUpdateRightSpread = false;
@@ -521,6 +527,12 @@ public class GLHistogram
 	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
+	
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
+
 
 	@Override
 	public void handleClearSelections() {

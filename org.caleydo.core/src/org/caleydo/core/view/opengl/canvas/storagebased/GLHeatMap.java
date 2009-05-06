@@ -1129,4 +1129,9 @@ public class GLHeatMap
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
+	
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
 }

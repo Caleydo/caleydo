@@ -31,6 +31,8 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -47,6 +49,8 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -145,6 +149,8 @@ public class GLHierarchicalHeatMap
 	private int iGroupToSplit = 0;
 	private Point DraggingPoint = null;
 
+	private UpdateViewListener updateViewListener;
+
 	/**
 	 * Constructor.
 	 * 
@@ -234,6 +240,7 @@ public class GLHierarchicalHeatMap
 		initHierarchy();
 
 	}
+	
 
 	@Override
 	public void initLocal(GL gl) {
@@ -486,7 +493,7 @@ public class GLHierarchicalHeatMap
 				AlTextures.clear();
 				iAlNumberSamples.clear();
 				Texture tempTextur;
-//				int iTextureHeight = set.getVA(iContentVAID).size();
+				// int iTextureHeight = set.getVA(iContentVAID).size();
 				int iTextureWidth = set.getVA(iStorageVAID).size();
 
 				float fLookupValue = 0;
@@ -2589,6 +2596,8 @@ public class GLHierarchicalHeatMap
 	public boolean isInDefaultOrientation() {
 		return bRenderStorageHorizontally;
 	}
+	
+	
 
 	public void changeFocus(boolean bInFocus) {
 		bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
@@ -2706,6 +2715,31 @@ public class GLHierarchicalHeatMap
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+
+		updateViewListener = new UpdateViewListener();
+		updateViewListener.setHandler(this);
+		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		if (updateViewListener != null) {
+			eventPublisher.removeListener(updateViewListener);
+			updateViewListener = null;
+		}
+	}
+	
+	@Override
+	public void handleUpdateView() {
+		bRedrawTextures = true;
+		setDisplayListDirty();
 	}
 
 }

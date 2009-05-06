@@ -811,6 +811,12 @@ public class GLPathway
 	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
+	
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
+
 
 	@Override
 	public void handleClearSelections() {

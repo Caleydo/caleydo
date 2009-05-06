@@ -78,7 +78,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabularDataViewRep
 	extends ASWTView
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler, 
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
 	IViewCommandHandler, IView, ISWTView {
 
 	/**
@@ -127,11 +127,11 @@ public class TabularDataViewRep
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
 	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
-	
+
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
 
-	//	private int[] iArCurrentColumnOrder;
+	// private int[] iArCurrentColumnOrder;
 
 	/**
 	 * Constructor.
@@ -564,7 +564,7 @@ public class TabularDataViewRep
 			// });
 		}
 
-//		iArCurrentColumnOrder = contentTable.getColumnOrder();
+		// iArCurrentColumnOrder = contentTable.getColumnOrder();
 
 		IVirtualArray storageVA = set.getVA(iStorageVAID);
 
@@ -663,6 +663,11 @@ public class TabularDataViewRep
 	}
 
 	@Override
+	public void handleUpdateView() {
+		// nothing to do here
+	}
+
+	@Override
 	public void handleClearSelections() {
 		clearAllSelections();
 	}
@@ -671,7 +676,7 @@ public class TabularDataViewRep
 	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		contentSelectionManager.executeSelectionCommands(selectionCommands);
 	}
-	
+
 	@Override
 	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		storageSelectionManager.executeSelectionCommands(selectionCommands);
@@ -925,7 +930,7 @@ public class TabularDataViewRep
 			}
 		});
 	}
-	
+
 	private void clearAllSelections() {
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
@@ -935,7 +940,7 @@ public class TabularDataViewRep
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 	@Override
@@ -960,7 +965,7 @@ public class TabularDataViewRep
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
-	
+
 	@Override
 	public void unregisterEventListeners() {
 		if (selectionUpdateListener != null) {
