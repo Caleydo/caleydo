@@ -5,6 +5,15 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Shell;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
@@ -33,6 +42,9 @@ public class AffinityClusterer
 	private int iVAIdStorage = 0;
 
 	private boolean bStart0 = true;
+	private ProgressBar pbSimilarity;
+	private ProgressBar pbAffiProp;
+	private Shell shell;
 
 	public AffinityClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
@@ -69,6 +81,10 @@ public class AffinityClusterer
 			else
 				bStart0 = false;
 
+			int iNrElements = contentVA.size();
+			pbSimilarity.setMinimum(0);
+			pbSimilarity.setMaximum(iNrElements);
+
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
 
@@ -76,6 +92,8 @@ public class AffinityClusterer
 			int count = 0;
 
 			for (Integer iContentIndex1 : contentVA) {
+
+				pbSimilarity.setSelection(icnt1);
 
 				isto = 0;
 				for (Integer iStorageIndex1 : storageVA) {
@@ -133,6 +151,10 @@ public class AffinityClusterer
 			else
 				bStart0 = false;
 
+			int iNrElements = storageVA.size();
+			pbSimilarity.setMinimum(0);
+			pbSimilarity.setMaximum(iNrElements);
+
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
@@ -140,6 +162,8 @@ public class AffinityClusterer
 			int count = 0;
 
 			for (Integer iStorageIndex1 : storageVA) {
+
+				pbSimilarity.setSelection(icnt1);
 
 				isto = 0;
 				for (Integer iContentIndex1 : contentVA) {
@@ -230,8 +254,13 @@ public class AffinityClusterer
 		// (Math.random() / 2f);
 		// }
 
+		pbAffiProp.setMinimum(0);
+		pbAffiProp.setMaximum(iMaxIterations);
+
 		while (bIterate) {
 			iNrIterations++;
+
+			pbAffiProp.setSelection(iNrIterations);
 
 			// Compute responsibilities
 			for (j = 0; j < iNrSamples; j++) {
@@ -448,16 +477,54 @@ public class AffinityClusterer
 		return fClusterFactor;
 	}
 
+	private void buildProgressBar() {
+
+		shell = new Shell();
+
+		Composite composite = new Composite(shell, SWT.NONE);
+		GridLayout layout = new GridLayout(3, false);
+		composite.setLayout(layout);
+		composite.setFocus();
+
+		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		inputFileGroup.setText("Progress");
+		inputFileGroup.setLayout(new RowLayout(4));
+		GridData gridData = new GridData(GridData.FILL_VERTICAL);
+		gridData.horizontalSpan = 3;
+		inputFileGroup.setLayoutData(gridData);
+
+		Label label = new Label(inputFileGroup, SWT.NULL);
+		label.setText("Determine similarties in progress");
+		label.setAlignment(SWT.RIGHT);
+
+		pbSimilarity = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+
+		Label label2 = new Label(inputFileGroup, SWT.NULL);
+		label2.setText("Affinity propagation in progress");
+		label2.setAlignment(SWT.RIGHT);
+
+		pbAffiProp = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+
+		composite.pack();
+
+		shell.pack();
+		shell.open();
+	}
+
 	@Override
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
 		fClusterFactor = clusterState.getAffinityPropClusterFactor();
-		
+
+		buildProgressBar();
+
 		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
 
 		VAId = affinityPropagation(set, clusterState.getClustererType());
+
+		shell.close();
 
 		return VAId;
 	}

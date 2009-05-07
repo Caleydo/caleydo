@@ -86,6 +86,9 @@ public class StartClusteringAction
 		createKMeansTab(tabFolder);
 		createCobwebTab(tabFolder);
 
+		// set default value for cluster algo
+		clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+		
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			@Override

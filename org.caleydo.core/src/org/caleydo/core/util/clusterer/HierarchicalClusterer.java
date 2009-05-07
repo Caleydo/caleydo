@@ -11,6 +11,15 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.IGraph;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Shell;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.core.Instances;
@@ -22,10 +31,48 @@ public class HierarchicalClusterer
 
 	Tree<ClusterNode> tree = new Tree<ClusterNode>();
 
+	private ProgressBar pbBuildInstances;
+	private ProgressBar pbClusterer;
+	private Shell shell;
+	
 	public HierarchicalClusterer(int iNrElements) {
 		clusterer = new Cobweb();
 	}
 
+	private void buildProgressBar() {
+
+		shell = new Shell();
+
+		Composite composite = new Composite(shell, SWT.NONE);
+		GridLayout layout = new GridLayout(3, false);
+		composite.setLayout(layout);
+		composite.setFocus();
+
+		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		inputFileGroup.setText("Progress");
+		inputFileGroup.setLayout(new RowLayout(4));
+		GridData gridData = new GridData(GridData.FILL_VERTICAL);
+		gridData.horizontalSpan = 3;
+		inputFileGroup.setLayoutData(gridData);
+
+		Label label = new Label(inputFileGroup, SWT.NULL);
+		label.setText("Building instances used by weka clusterer in progress");
+		label.setAlignment(SWT.RIGHT);
+
+		pbBuildInstances = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+
+		Label label2 = new Label(inputFileGroup, SWT.NULL);
+		label2.setText("KMeans clustering in progress");
+		label2.setAlignment(SWT.RIGHT);
+
+		pbClusterer = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+
+		composite.pack();
+
+		shell.pack();
+		shell.open();
+	}
+	
 	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage,
 		EClustererType eClustererType) {
 
@@ -40,35 +87,51 @@ public class HierarchicalClusterer
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			
+			int iNrElements = contentVA.size();
+			pbBuildInstances.setMinimum(0);
+			pbBuildInstances.setMaximum(iNrElements);
+			
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
 
 			buffer.append("@data\n");
 
+			int icnt = 0;
 			for (Integer iContentIndex : contentVA) {
+				pbBuildInstances.setSelection(icnt);
 				for (Integer iStorageIndex : storageVA) {
 					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
 						+ ", ");
 
 				}
 				buffer.append("\n");
+				icnt++;
 			}
 		}
 		else {
+			
+			int iNrElements = storageVA.size();
+			pbBuildInstances.setMinimum(0);
+			pbBuildInstances.setMaximum(iNrElements);
+			
 			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
 
 			buffer.append("@data\n");
 
+			int icnt = 0;
 			for (Integer iStorageIndex : storageVA) {
+				pbBuildInstances.setSelection(icnt);
 				for (Integer iContentIndex : contentVA) {
 					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
 						+ ", ");
 
 				}
 				buffer.append("\n");
+				icnt++;
 			}
 		}
 
@@ -80,6 +143,11 @@ public class HierarchicalClusterer
 			e1.printStackTrace();
 		}
 
+		pbClusterer.setMinimum(0);
+		pbClusterer.setMaximum(5);
+		
+		pbClusterer.setSelection(1);	
+		
 		// unsupervised learning --> no class given
 		data.setClassIndex(-1);
 
@@ -90,7 +158,8 @@ public class HierarchicalClusterer
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		pbClusterer.setSelection(2);
+		
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
@@ -99,7 +168,8 @@ public class HierarchicalClusterer
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		pbClusterer.setSelection(3);
+		
 		double[] clusterAssignments = eval.getClusterAssignments();
 
 //		int nrclusters = eval.getNumClusters();
@@ -133,7 +203,8 @@ public class HierarchicalClusterer
 				}
 			}
 		}
-
+		pbClusterer.setSelection(4);
+		
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		CNode node = clusterer.m_cobwebTree;
@@ -146,6 +217,8 @@ public class HierarchicalClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
+		pbClusterer.setSelection(5);	
+		
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
 		else
@@ -203,9 +276,13 @@ public class HierarchicalClusterer
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
+		
+		buildProgressBar();
 
 		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
 
+		shell.close();
+		
 		return VAId;
 	}
 }

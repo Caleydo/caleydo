@@ -133,7 +133,7 @@ public class FileLoadDataAction
 		composite.setLayout(layout);
 
 		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Input files");
+		inputFileGroup.setText("Input file");
 		inputFileGroup.setLayout(new GridLayout(2, false));
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
@@ -163,54 +163,47 @@ public class FileLoadDataAction
 			}
 		});
 
-//		Group inputTreeFile = new Group(composite, SWT.SHADOW_ETCHED_IN);
-//		inputTreeFile.setText("Tree file");
-//		inputTreeFile.setLayout(new GridLayout(2, false));
-//		gridData = new GridData(GridData.FILL_HORIZONTAL);
-//		gridData.horizontalSpan = 3;
-//		inputTreeFile.setLayoutData(gridData);
+//		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+//		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
+//
+//		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+//		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//
+//		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent event) {
+//
+//				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+//				fileDialog.setText("Open");
+//				fileDialog.setFilterPath(sFilePath);
+//				String[] filterExt = { "*.xml*" };
+//				fileDialog.setFilterExtensions(filterExt);
+//				sGeneTreeFileName = fileDialog.open();
+//
+//				txtGeneTreeFileName.setText(sGeneTreeFileName);
+//			}
+//		});
 		
-		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
-
-		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-				fileDialog.setText("Open");
-				fileDialog.setFilterPath(sFilePath);
-				String[] filterExt = { "*.xml*" };
-				fileDialog.setFilterExtensions(filterExt);
-				sGeneTreeFileName = fileDialog.open();
-
-				txtGeneTreeFileName.setText(sGeneTreeFileName);
-			}
-		});
-		
-		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
-
-		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-				fileDialog.setText("Open");
-				fileDialog.setFilterPath(sFilePath);
-				String[] filterExt = { "*.xml*" };
-				fileDialog.setFilterExtensions(filterExt);
-				sExperimentsFileName = fileDialog.open();
-
-				txtExperimentsTreeFileName.setText(sExperimentsFileName);
-			}
-		});
+//		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+//		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
+//
+//		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+//		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//
+//		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent event) {
+//
+//				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+//				fileDialog.setText("Open");
+//				fileDialog.setFilterPath(sFilePath);
+//				String[] filterExt = { "*.xml*" };
+//				fileDialog.setFilterExtensions(filterExt);
+//				sExperimentsFileName = fileDialog.open();
+//
+//				txtExperimentsTreeFileName.setText(sExperimentsFileName);
+//			}
+//		});
 		
 		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Ignore lines in header");

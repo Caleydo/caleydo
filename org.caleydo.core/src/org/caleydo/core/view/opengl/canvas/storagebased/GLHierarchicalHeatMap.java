@@ -136,6 +136,9 @@ public class GLHierarchicalHeatMap
 	private boolean bIsHeatmapInFocus = false;
 	private float fWidthEHM = 0;
 
+	// embedded dendrogram
+//	private GLDendrogramVertical glDendrogram;
+
 	private boolean bRedrawTextures = false;
 
 	// if only a small number of genes is in the data set, level_1 (overViewBar) should not be rendered
@@ -188,11 +191,14 @@ public class GLHierarchicalHeatMap
 
 		// activate clustering
 		bUseClusteredVA = false;
+
+		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
 	}
 
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
+//		glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		iconTextureManager = TextureManager.get();
 
@@ -209,6 +215,7 @@ public class GLHierarchicalHeatMap
 			return;
 
 		createHeatMap();
+//		createDendrogram();
 
 		iNumberOfElements = set.getVA(iContentVAID).size();
 
@@ -239,8 +246,6 @@ public class GLHierarchicalHeatMap
 
 		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
 			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
-
-		// initPosCursor();
 	}
 
 	@Override
@@ -256,6 +261,9 @@ public class GLHierarchicalHeatMap
 
 		bRenderStorageHorizontally = false;
 
+		// Register keyboard listener to GL canvas
+		// parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
@@ -263,10 +271,17 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
+	public void initRemote(GL gl, final AGLEventListener glParentView, GLMouseListener glMouseListener,
 		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+
+		// Register keyboard listener to GL canvas
+		// glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		// glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
+		// }
+		// });
 
 		bRenderStorageHorizontally = false;
 
@@ -663,6 +678,26 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setRenderedRemote(true);
 		glHeatMapView.initData();
 	}
+
+//	private void createDendrogram() {
+//		CmdCreateGLEventListener cmdView =
+//			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
+//				ECommandType.CREATE_GL_DENDROGRAM_VERTICAL);
+//
+//		float fHeatMapHeight = viewFrustum.getHeight();
+//		float fHeatMapWidth = viewFrustum.getWidth();
+//
+//		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
+//			set, -1);
+//
+//		cmdView.doCommand();
+//
+//		glDendrogram = (GLDendrogramVertical) cmdView.getCreatedObject();
+//		GeneralManager.get().getUseCase().addView(glDendrogram);
+//		glDendrogram.setUseCase(useCase);
+//		glDendrogram.setRenderedRemote(true);
+//		glDendrogram.initData();
+//	}
 
 	@Override
 	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
@@ -1822,6 +1857,27 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(-GAP_LEVEL2_3, 0, 0);
 		}
 
+		// // render embedded dendrogram
+		// if (bIsHeatmapInFocus) {
+		// fright = viewFrustum.getWidth() - 1.2f;
+		// fleftOffset = 0.095f + // width level 1 + boarder
+		// GAP_LEVEL1_2 + // width gap between level 1 and 2
+		// viewFrustum.getWidth() / 4f * 0.2f;
+		// }
+		// else {
+		// fright = viewFrustum.getWidth() - 2.75f;
+		// fleftOffset = 0.075f + // width level 1
+		// GAP_LEVEL1_2 + // width gap between level 1 and 2
+		// viewFrustum.getWidth() / 4f;
+		// }
+		// gl.glTranslatef(fleftOffset, 0, 1);
+		//
+		// glDendrogram.getViewFrustum().setTop(ftop);
+		// glDendrogram.getViewFrustum().setRight(fright);
+		// glDendrogram.displayRemote(gl);
+		//
+		// gl.glTranslatef(-fleftOffset, -0, -1);
+
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
 
@@ -1836,6 +1892,7 @@ public class GLHierarchicalHeatMap
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
+//			glDendrogram.setDisplayListDirty();
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -1925,8 +1982,8 @@ public class GLHierarchicalHeatMap
 			iCount += iAlNumberSamples.get(i);
 
 		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
-//		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-//		commands.add(command);
+		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+		// commands.add(command);
 		glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, commands);
 		glHeatMapView.resetView();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
@@ -2022,19 +2079,24 @@ public class GLHierarchicalHeatMap
 
 			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
-				iContentVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-
+				int iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
+				if (iVAid != -1)
+					iContentVAID = iVAid;
 			}
 			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
 
-				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-
+				int iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
+				if (iVAid != -1)
+					iStorageVAID = iVAid;
 			}
 			else {
 
-				iStorageVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-				iContentVAID = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-
+				int iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
+				if (iVAid != -1)
+					iStorageVAID = iVAid;
+				iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
+				if (iVAid != -1)
+					iContentVAID = iVAid;
 			}
 
 		}
@@ -2060,6 +2122,7 @@ public class GLHierarchicalHeatMap
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
 			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
 		}
+		
 	}
 
 	@Override

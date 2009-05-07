@@ -24,7 +24,6 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
@@ -36,6 +35,9 @@ import org.caleydo.core.util.clusterer.HierarchicalClusterer;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.core.util.clusterer.TreeClusterer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Implementation of the ISet interface
@@ -494,88 +496,113 @@ public class Set
 	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
+		boolean bSkipClustering = false;
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
 			IClusterer clusterer;
 
-			switch (clusterState.getClustererAlgo()) {
-				case TREE_CLUSTERER:
+			Shell shell = new Shell();
+			MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
+			messageBox.setText("Start Clustering");
+			messageBox
+				.setMessage("VA contains more than 1000 elements because of this the cluster process will take a long time."
+					+ "Press OK to start clustering. " + "Press Cancel to skip clustering.");
 
-					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-						clusterer = new TreeClusterer(getVA(iVAIdContent).size());
-					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-						clusterer = new TreeClusterer(getVA(iVAIdStorage).size());
-					else {
-						System.out.println("Not implemented yet");
-						clusterer = new TreeClusterer(getVA(iVAIdContent).size());
-					}
+			int iNrElem = 0;
 
-					System.out.println("treeClustering in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-					System.out.println("treeClustering done");
+			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+				iNrElem = getVA(iVAIdContent).size();
+			else
+				iNrElem = getVA(iVAIdStorage).size();
 
-					break;
+			if (iNrElem > 1000) {
 
-				case COBWEB_CLUSTERER:
+				if (messageBox.open() == SWT.CANCEL)
+					bSkipClustering = true;
 
-					clusterer = new HierarchicalClusterer(0);
-
-					System.out.println("Cobweb in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-					System.out.println("Cobweb done");
-
-					break;
-
-				case AFFINITY_PROPAGATION:
-
-					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-						clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
-					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-						clusterer = new AffinityClusterer(getVA(iVAIdStorage).size());
-					else {
-						System.out.println("Not implemented yet");
-						clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
-					}
-
-					System.out.println("affinityPropagation in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-					System.out.println("affinityPropagation done");
-
-					break;
-
-				case KMEANS_CLUSTERER:
-
-					clusterer = new KMeansClusterer(0);
-
-					System.out.println("KMeansClusterer in progress ... ");
-					VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-					System.out.println("KMeansClusterer done");
-
-					break;
 			}
 
-			IVirtualArray virtualArray = getVA(VAId);
+			if (bSkipClustering == false) {
+				switch (clusterState.getClustererAlgo()) {
+					case TREE_CLUSTERER:
 
-			if (clusterState.getClustererAlgo() == EClustererAlgo.AFFINITY_PROPAGATION
-				|| clusterState.getClustererAlgo() == EClustererAlgo.KMEANS_CLUSTERER) {
-				// || clusterState.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER) {
+						if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+							clusterer = new TreeClusterer(getVA(iVAIdContent).size());
+						else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+							clusterer = new TreeClusterer(getVA(iVAIdStorage).size());
+						else {
+							System.out.println("Not implemented yet");
+							clusterer = new TreeClusterer(getVA(iVAIdContent).size());
+						}
 
-				IGroupList groupList = new GroupList(virtualArray.size());
+						// System.out.println("treeClustering in progress ... ");
+						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
+						// System.out.println("treeClustering done");
 
-				ArrayList<Integer> examples = getAlExamples();
-				int cnt = 0;
-				for (Integer iter : getAlClusterSizes()) {
-					Group temp = new Group(iter, false, examples.get(cnt), ESelectionType.NORMAL);
-					groupList.append(temp);
-					cnt++;
+						break;
+
+					case COBWEB_CLUSTERER:
+
+						clusterer = new HierarchicalClusterer(0);
+
+						// System.out.println("Cobweb in progress ... ");
+						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
+						// System.out.println("Cobweb done");
+
+						break;
+
+					case AFFINITY_PROPAGATION:
+
+						if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+							clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
+						else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+							clusterer = new AffinityClusterer(getVA(iVAIdStorage).size());
+						else {
+							System.out.println("Not implemented yet");
+							clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
+						}
+
+						// System.out.println("affinityPropagation in progress ... ");
+						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
+						// System.out.println("affinityPropagation done");
+
+						break;
+
+					case KMEANS_CLUSTERER:
+
+						clusterer = new KMeansClusterer(0);
+
+						// System.out.println("KMeansClusterer in progress ... ");
+						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
+						// System.out.println("KMeansClusterer done");
+
+						break;
 				}
-				virtualArray.setGroupList(groupList);
+
+				IVirtualArray virtualArray = getVA(VAId);
+
+				if (clusterState.getClustererAlgo() == EClustererAlgo.AFFINITY_PROPAGATION
+					|| clusterState.getClustererAlgo() == EClustererAlgo.KMEANS_CLUSTERER) {
+					// || clusterState.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER) {
+
+					IGroupList groupList = new GroupList(virtualArray.size());
+
+					ArrayList<Integer> examples = getAlExamples();
+					int cnt = 0;
+					for (Integer iter : getAlClusterSizes()) {
+						Group temp = new Group(iter, false, examples.get(cnt), ESelectionType.NORMAL);
+						groupList.append(temp);
+						cnt++;
+					}
+					virtualArray.setGroupList(groupList);
+				}
+
+				hashSetVAs.put(virtualArray.getID(), virtualArray);
+
+				return VAId;
 			}
-
-			hashSetVAs.put(virtualArray.getID(), virtualArray);
-
-			return VAId;
+			return -1;
 		}
 		else {
 			System.out.println("Set is not numerical/homogeneous --> clustering not allowed !");
