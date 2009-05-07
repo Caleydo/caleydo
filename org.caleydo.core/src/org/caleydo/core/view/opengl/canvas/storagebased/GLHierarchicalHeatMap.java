@@ -1878,8 +1878,7 @@ public class GLHierarchicalHeatMap
 		//
 		// gl.glTranslatef(-fleftOffset, -0, -1);
 
-		if (!isRenderedRemote())
-			contextMenu.render(gl, this);
+		contextMenu.render(gl, this);
 
 	}
 
@@ -2440,11 +2439,11 @@ public class GLHierarchicalHeatMap
 						groupContextMenuItemContainer.setGeneExperimentFlag(true);
 						contextMenu.addItemContanier(groupContextMenuItemContainer);
 
-						if (!isRenderedRemote()) {
+//						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());
 							contextMenu.setMasterGLView(this);
-						}
+//						}
 						break;
 
 					case MOUSE_OVER:
@@ -2481,11 +2480,11 @@ public class GLHierarchicalHeatMap
 						groupContextMenuItemContainer.setGeneExperimentFlag(false);
 						contextMenu.addItemContanier(groupContextMenuItemContainer);
 
-						if (!isRenderedRemote()) {
+//						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());
 							contextMenu.setMasterGLView(this);
-						}
+//						}
 						break;
 
 					case MOUSE_OVER:

@@ -43,11 +43,17 @@ public class ShowPathwaysByGeneItem
 		
 		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.DAVID, david);
 
-		setText("Pathways (" +pathwayGraphs.size()+")");
+		int iPathwayCount = 0;
 		
-		for (PathwayGraph pathwayGraph : pathwayGraphs) {
-			addSubItem(new LoadPathwaysByPathwayIDItem(pathwayGraph.getID()));
-		}
-	}
+		if (pathwayGraphs != null) {
 
+			iPathwayCount = pathwayGraphs.size();
+
+			for (PathwayGraph pathwayGraph : pathwayGraphs) {
+				addSubItem(new LoadPathwaysByPathwayIDItem(pathwayGraph.getID()));
+			}
+		}
+		
+		setText("Pathways ("+iPathwayCount+")");		
+	}
 }

@@ -94,11 +94,6 @@ public class FileLoadDataAction
 //	private Combo useIDTypeCombo;
 	
 	/**
-	 * The use case is determined according to the data type that the user wants to parse.
-	 */
-	private IUseCase useCase;
-	
-	/**
 	 * Constructor.
 	 */
 	public FileLoadDataAction(final Composite parentComposite) {
