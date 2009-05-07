@@ -61,7 +61,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 
@@ -101,7 +101,7 @@ public class GLHierarchicalHeatMap
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eExperimentDataType = EIDType.EXPERIMENT_INDEX;
 
-	private GLIconTextureManager iconTextureManager;
+	private TextureManager iconTextureManager;
 
 	private ArrayList<Float> fAlXDistances;
 
@@ -194,7 +194,7 @@ public class GLHierarchicalHeatMap
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
 
-		iconTextureManager = new GLIconTextureManager();
+		iconTextureManager = TextureManager.get();
 
 		initTextures(gl);
 	}

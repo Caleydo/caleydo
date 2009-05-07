@@ -52,6 +52,9 @@ public enum EPickingType {
 	// heat map
 	HEAT_MAP_LINE_SELECTION,
 	HEAT_MAP_STORAGE_SELECTION,
+	
+	// list heat map
+	LIST_HEAT_MAP_CLEAR_ALL,
 
 	// hierarchical heat map
 	HIER_HEAT_MAP_FIELD_SELECTION,
@@ -63,6 +66,8 @@ public enum EPickingType {
 	HIER_HEAT_MAP_TEXTURE_CURSOR,
 	HIER_HEAT_MAP_GENES_GROUP,
 	HIER_HEAT_MAP_EXPERIMENTS_GROUP,
+	
+	
 
 	// dendrogram
 	DENDROGRAM_HORI_SELECTION,

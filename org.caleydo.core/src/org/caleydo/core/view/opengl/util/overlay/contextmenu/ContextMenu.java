@@ -19,7 +19,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -65,7 +65,7 @@ public class ContextMenu
 
 	private TextRenderer textRenderer;
 
-	private GLIconTextureManager iconManager;
+	private TextureManager iconManager;
 
 	private PickingManager pickingManager;
 
@@ -96,7 +96,7 @@ public class ContextMenu
 		contextMenuItems = new ArrayList<AContextMenuItem>();
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		textRenderer.setSmoothing(true);
-		iconManager = new GLIconTextureManager();
+		iconManager = TextureManager.get();
 		pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
 
 		hashContextMenuItemToUniqueID = new HashMap<AContextMenuItem, Integer>();

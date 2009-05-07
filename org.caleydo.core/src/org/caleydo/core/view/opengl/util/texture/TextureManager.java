@@ -14,18 +14,25 @@ import com.sun.opengl.util.texture.Texture;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLIconTextureManager {
+public class TextureManager {
 
 	EnumMap<EIconTextures, Texture> mapIconTextures;
+	private static TextureManager instance;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param gl
 	 */
-	public GLIconTextureManager() {
+	private TextureManager() {
 		mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
 
+	}
+
+	public static TextureManager get() {
+		if (instance == null)
+			instance = new TextureManager();
+		return instance;
 	}
 
 	public Texture getIconTexture(GL gl, final EIconTextures eIconTextures) {

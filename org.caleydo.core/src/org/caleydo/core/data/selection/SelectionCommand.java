@@ -11,6 +11,13 @@ public class SelectionCommand {
 	private ESelectionCommandType eSelectionCommandType;
 	private ESelectionType eSelectionType;
 
+	/**
+	 * Constructor that can be used for selection commands that don't depend on a particular
+	 * {@link ESelectionType} such as {@link ESelectionCommandType#CLEAR_ALL} or
+	 * {@link ESelectionCommandType#RESET}.
+	 * 
+	 * @param eSelectionCommandType
+	 */
 	public SelectionCommand(ESelectionCommandType eSelectionCommandType) {
 		this.eSelectionCommandType = eSelectionCommandType;
 	}

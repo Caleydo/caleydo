@@ -20,12 +20,15 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -46,6 +49,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 
@@ -242,7 +246,36 @@ public class GLHeatMap
 			float fSpacing = 0;
 			if (!bRenderStorageHorizontally) {
 				if (listModeEnabled) {
-					fSpacing = HeatMapRenderStyle.LIST_SPACING;
+					fSpacing = HeatMapRenderStyle.LIST_SPACING * 3;
+
+					gl.glColor4f(1, 0, 0, 1);
+
+					Texture tempTexture =
+						TextureManager.get().getIconTexture(gl, EIconTextures.POOL_REMOVE_VIEW);
+					tempTexture.enable();
+					tempTexture.bind();
+					TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+					float ICON_SIZE = 0.13f;
+					float xPosition = viewFrustum.getWidth() - ICON_SIZE - 0.02f;
+					float yPosition = renderStyle.getRenderHeight() + 0.1f;
+
+					gl.glColor4f(1, 1, 1, 1);
+					gl.glPushName(pickingManager.getPickingID(iUniqueID,
+						EPickingType.LIST_HEAT_MAP_CLEAR_ALL, 0));
+					gl.glBegin(GL.GL_POLYGON);
+					gl.glTexCoord2f(texCoords.left(), texCoords.top());
+					gl.glVertex3f(xPosition, yPosition, HeatMapRenderStyle.FIELD_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.top());
+					gl.glVertex3f(xPosition + ICON_SIZE, yPosition, HeatMapRenderStyle.FIELD_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+					gl.glVertex3f(xPosition + ICON_SIZE, yPosition + ICON_SIZE, HeatMapRenderStyle.FIELD_Z);
+					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+					gl.glVertex3f(xPosition, yPosition + ICON_SIZE, HeatMapRenderStyle.FIELD_Z);
+					gl.glEnd();
+					gl.glPopName();
+					tempTexture.disable();
+
 				}
 				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight() - fSpacing, vecTranslation.z());
 				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
@@ -320,8 +353,8 @@ public class GLHeatMap
 		}
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
-//		contentSelectionManager.resetSelectionManager();
-//		storageSelectionManager.resetSelectionManager();
+		// contentSelectionManager.resetSelectionManager();
+		// storageSelectionManager.resetSelectionManager();
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
@@ -484,6 +517,24 @@ public class GLHeatMap
 				}
 
 				break;
+			case LIST_HEAT_MAP_CLEAR_ALL:
+				switch (pickingMode) {
+					case CLICKED:
+						contentSelectionManager.resetSelectionManager();
+						setDisplayListDirty();
+						SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+						
+						ArrayList<SelectionCommand> commands = new ArrayList<SelectionCommand>();
+						commands.add(command);
+						TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
+						event.setType(EIDType.EXPRESSION_INDEX);
+						event.setSelectionCommands(commands);
+						event.setSender(this);
+						eventPublisher.triggerEvent(event);
+						break;
+
+				}
+				break;
 		}
 	}
 
@@ -574,7 +625,7 @@ public class GLHeatMap
 
 	private int cursorSelect(IVirtualArray virtualArray, GenericSelectionManager selectionManager,
 		boolean isUp) {
-	
+
 		Set<Integer> elements = selectionManager.getElements(ESelectionType.MOUSE_OVER);
 		if (elements.size() == 0) {
 			elements = selectionManager.getElements(ESelectionType.SELECTION);
@@ -595,7 +646,7 @@ public class GLHeatMap
 				newIndex = index + 1;
 				if (newIndex == virtualArray.size())
 					return -1;
-				
+
 			}
 			return virtualArray.get(newIndex);
 

@@ -180,7 +180,7 @@ public class HeatMapRenderStyle
 
 	public float getRenderHeight() {
 		if (heatMap.listModeEnabled)
-			return viewFrustum.getHeight() - 3 * LIST_SPACING;
+			return viewFrustum.getHeight() - 5 * LIST_SPACING;
 		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getHeight() - 2 * getYSpacing();
 		return viewFrustum.getHeight();

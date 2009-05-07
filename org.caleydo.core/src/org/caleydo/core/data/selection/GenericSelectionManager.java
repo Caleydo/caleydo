@@ -298,8 +298,7 @@ public class GenericSelectionManager {
 	}
 
 	/**
-	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Sets
-	 * virtual array to null
+	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears the virtual array.
 	 */
 	public void resetSelectionManager() {
 		hashSelectionTypes.clear();

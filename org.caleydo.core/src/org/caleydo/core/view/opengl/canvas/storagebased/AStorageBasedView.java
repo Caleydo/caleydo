@@ -431,11 +431,13 @@ resetView();
 	@Override
 	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		contentSelectionManager.executeSelectionCommands(selectionCommands);
+		setDisplayListDirty();
 	}
 	
 	@Override
 	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		storageSelectionManager.executeSelectionCommands(selectionCommands);
+		setDisplayListDirty();
 	}
 
 	/**

@@ -317,7 +317,7 @@ public class GLRemoteRendering
 			glConnectionLineRenderer.init(gl);
 		}
 
-		// iconTextureManager = new GLIconTextureManager(gl);
+		// iconTextureManager = new TextureManager(gl);
 
 		time = new SystemTime();
 		((SystemTime) time).rebase();
