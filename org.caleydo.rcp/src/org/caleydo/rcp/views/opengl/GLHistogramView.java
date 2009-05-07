@@ -1,5 +1,6 @@
 package org.caleydo.rcp.views.opengl;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
@@ -33,9 +34,13 @@ public class GLHistogramView
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
 
 	private CLabel colorMappingPreviewLabel;
-	
+
+	private ArrayList<CLabel> labels;
+
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
+
+	PreferenceStore store = GeneralManager.get().getPreferenceStore();
 
 	/**
 	 * Constructor.
@@ -51,13 +56,21 @@ public class GLHistogramView
 		super.createPartControl(baseComposite);
 		swtComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		Composite buttonComposite = new Composite(baseComposite, SWT.NULL);
-		buttonComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		buttonComposite.setLayout(new FillLayout());
+		Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
+		colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginWidth = 0;
+		layout.marginHeight = 0;
+		colorMappingComposite.setLayout(layout);
 		// Button button = new Button(buttonComposite, SWT.PUSH);
-		colorMappingPreviewLabel = new CLabel(buttonComposite, SWT.SHADOW_IN);
+		colorMappingPreviewLabel = new CLabel(colorMappingComposite, SWT.SHADOW_IN);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.heightHint = 10;
+		gridData.grabExcessHorizontalSpace = true;
+		// colorData.
+		colorMappingPreviewLabel.setLayoutData(gridData);
+		// colorMappingPreviewLabel.setBounds(0, 0, buttonComposite.getSize().x, 3);//setSize(, 3);
 
-		updateColorLabel();
 		colorMappingPreviewLabel.addMouseListener(new MouseListener() {
 			public void mouseDown(MouseEvent e) {
 
@@ -82,6 +95,58 @@ public class GLHistogramView
 			}
 
 		});
+
+		// layout = new GridLayout(3, true);
+		// layout.marginWidth = 0;
+		// layout.marginHeight = 0;
+		//		
+
+		FillLayout fillLayout = new FillLayout();
+		Composite labelComposite = new Composite(baseComposite, SWT.NULL);
+		// gridData = new GridData();
+		// gridData.grabExcessHorizontalSpace = true;
+		labelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		labelComposite.setLayout(fillLayout);
+
+		labels = new ArrayList<CLabel>(3);
+
+		int iNumberOfMarkerPoints =
+			store.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
+				+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+
+		for (int count = 0; count < iNumberOfMarkerPoints; count++) {
+			CLabel label = new CLabel(labelComposite, SWT.NONE);
+			labels.add(label);
+			if (count == iNumberOfMarkerPoints - 1) {
+				label.setAlignment(SWT.RIGHT);
+			}
+			else if (count > 0) {
+				label.setAlignment(SWT.CENTER);
+			}
+		}
+
+		// gridData = new GridData(SWT.LEFT, SWT.CENTER,false, true);
+		// gridData.widthHint = 100;
+
+		// label.setLayoutData(gridData);
+
+		// gridData = new GridData(SWT.CENTER, SWT.CENTER,true, true);
+		// gridData.widthHint = 100;
+
+		// // label.setLayoutData(gridData);
+		// centerLabel.setText("2.02");
+		//		
+		//
+		// // gridData = new GridData(SWT.RIGHT, SWT.CENTER,false, true);
+		// // gridData.widthHint = 100;
+		// // gridData.horizontalAlignment = SWT.RIGHT;
+		// rightLabel = new CLabel(labelComposite, SWT.NONE);
+		// // label.setLayoutData(gridData);
+		// rightLabel.setText("10.03");
+		// rightLabel.setAlignment(SWT.RIGHT);
+
+		updateColorLabel();
+
 		// button.setText("true");
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_HISTOGRAM, glCanvas.getID(), true);
@@ -90,16 +155,25 @@ public class GLHistogramView
 
 	private void updateColorLabel() {
 
-		PreferenceStore store = GeneralManager.get().getPreferenceStore();
+		DecimalFormat decimalFormat = new DecimalFormat("#####.##");
 		int iNumberOfMarkerPoints =
-			store.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+			store.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
+				+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
 
 		Color[] alColor = new Color[iNumberOfMarkerPoints];
 		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
 		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
-			int iColorMarkerPoint =
-				(int) (100 * store.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX + PreferenceConstants.COLOR_MARKER_POINT_VALUE
-					+ iCount));
+
+			float normalizedValue =
+				store.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
+					+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+
+			// FIXME: bad hack - need to access the correct set - this works only for exactly one set
+			double correspondingValue =
+				GeneralManager.get().getSetManager().getAllItems().iterator().next().getRawForNormalized(
+					normalizedValue);
+			labels.get(iCount - 1).setText(decimalFormat.format(correspondingValue));
+			int iColorMarkerPoint = (int) (100 * normalizedValue);
 
 			// Gradient label does not need the 0 point
 			if (iColorMarkerPoint != 0) {
@@ -107,8 +181,9 @@ public class GLHistogramView
 			}
 
 			String color =
-				store.getString(PreferenceConstants.GENE_EXPRESSION_PREFIX + PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
-			
+				store.getString(PreferenceConstants.GENE_EXPRESSION_PREFIX
+					+ PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
+
 			int[] iArColor = ConversionTools.getIntColorFromString(color);
 
 			alColor[iCount - 1] =
@@ -131,12 +206,11 @@ public class GLHistogramView
 			}
 		});
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		handleRedrawView();
 	}
-
 
 	@Override
 	public void handleClearSelections() {
@@ -165,5 +239,4 @@ public class GLHistogramView
 			clearSelectionsListener = null;
 		}
 	}
-
 }

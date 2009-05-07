@@ -2,7 +2,9 @@ package org.caleydo.core.view.opengl.canvas.histogram;
 
 import static org.caleydo.core.view.opengl.canvas.histogram.HistogramRenderStyle.SIDE_SPACING;
 
+import java.awt.Font;
 import java.awt.Point;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -31,10 +33,13 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Rendering the histogram.
@@ -61,6 +66,10 @@ public class GLHistogram
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
 
+	private TextRenderer textRenderer;
+
+	float fRenderWidth;
+
 	/**
 	 * Constructor.
 	 * 
@@ -76,6 +85,7 @@ public class GLHistogram
 		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 	}
 
 	@Override
@@ -94,8 +104,8 @@ public class GLHistogram
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
@@ -177,6 +187,7 @@ public class GLHistogram
 		float fOneHeightValue = (viewFrustum.getHeight() - 2 * SIDE_SPACING) / histogram.getLargestValue();
 
 		int iCount = 0;
+
 		for (Integer iValue : histogram) {
 			gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion * iCount), 0);
 			gl.glLineWidth(3.0f);
@@ -187,6 +198,7 @@ public class GLHistogram
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING + iValue * fOneHeightValue, 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + SIDE_SPACING, SIDE_SPACING, 0);
 			gl.glEnd();
+
 			iCount++;
 		}
 
@@ -199,7 +211,7 @@ public class GLHistogram
 	 */
 	private void renderColorBars(GL gl) {
 
-		float fRenderWidth = (viewFrustum.getWidth() - 2 * SIDE_SPACING);
+		fRenderWidth = (viewFrustum.getWidth() - 2 * SIDE_SPACING);
 		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
 
 		int iCount = 0;
@@ -323,9 +335,28 @@ public class GLHistogram
 			if (!bIsFirstOrLast)
 				gl.glPopName();
 
+			renderCaption(gl, markerPoint.getValue());
+
 			iCount++;
 		}
 
+	}
+
+	private void renderCaption(GL gl, float normalizedValue) {
+		DecimalFormat decimalFormat = new DecimalFormat("#####.##");
+
+		textRenderer.begin3DRendering();
+		textRenderer.setColor(0, 0, 0, 1);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		double correspondingValue = set.getRawForNormalized(normalizedValue);
+
+		String text = decimalFormat.format(correspondingValue);
+
+		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth, 0f, 0.001f,
+			GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR);
+		// textRenderer.flush();
+		textRenderer.end3DRendering();
 	}
 
 	/**
@@ -339,7 +370,7 @@ public class GLHistogram
 			UpdateViewEvent event = new UpdateViewEvent();
 			event.setSender(this);
 			eventPublisher.triggerEvent(event);
-			
+
 			bUpdateColorPointPosition = false;
 			bUpdateLeftSpread = false;
 			bUpdateRightSpread = false;
@@ -448,7 +479,7 @@ public class GLHistogram
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
-				return;
+			return;
 		}
 		switch (ePickingType) {
 
@@ -527,12 +558,11 @@ public class GLHistogram
 	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();
 	}
-
 
 	@Override
 	public void handleClearSelections() {
@@ -551,7 +581,6 @@ public class GLHistogram
 		super.setSet(set);
 		histogram = set.getHistogram();
 	}
-
 
 	@Override
 	public void registerEventListeners() {
@@ -575,5 +604,5 @@ public class GLHistogram
 			clearSelectionsListener = null;
 		}
 	}
-	
+
 }
