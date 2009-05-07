@@ -219,17 +219,16 @@ public class InfoArea
 								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
-							Integer iExpressionIndex =
+							Integer iRefSeq =
 								idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
 									selectionItem.getPrimaryID());
 
 							String sRefSeqID =
 								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-									iExpressionIndex);
+									iRefSeq);
 
 							Integer iDavidID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionItem
-									.getPrimaryID());
+								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
 
 							String sGeneSymbol =
 								idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
