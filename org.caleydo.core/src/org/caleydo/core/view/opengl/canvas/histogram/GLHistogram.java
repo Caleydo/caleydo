@@ -272,6 +272,8 @@ public class GLHistogram
 					viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
+				if (fLeftSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+				renderCaption(gl, markerPoint.getValue() - fLeftSpread);
 
 			}
 
@@ -321,6 +323,8 @@ public class GLHistogram
 					viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
+				if (fRightSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+					renderCaption(gl, markerPoint.getValue() + fRightSpread);
 
 			}
 
@@ -344,6 +348,9 @@ public class GLHistogram
 
 	private void renderCaption(GL gl, float normalizedValue) {
 		DecimalFormat decimalFormat = new DecimalFormat("#####.##");
+		
+		if(getParentGLCanvas().getSize().getWidth() < 500)
+			return;
 
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0, 0, 0, 1);
@@ -351,9 +358,18 @@ public class GLHistogram
 
 		double correspondingValue = set.getRawForNormalized(normalizedValue);
 
+		if (Math.abs(correspondingValue) > 10000)
+			decimalFormat = new DecimalFormat("0.#E0");
+		else if (Math.abs(correspondingValue) > 100)
+			decimalFormat = new DecimalFormat("#####");
+		else if (Math.abs(correspondingValue) > 10)
+			decimalFormat = new DecimalFormat("#####.#");
+		else
+			decimalFormat = new DecimalFormat("#####.##");
+
 		String text = decimalFormat.format(correspondingValue);
 
-		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth, 0f, 0.001f,
+		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth + HistogramRenderStyle.CAPTION_SPACING, HistogramRenderStyle.CAPTION_SPACING, 0.001f,
 			GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR);
 		// textRenderer.flush();
 		textRenderer.end3DRendering();

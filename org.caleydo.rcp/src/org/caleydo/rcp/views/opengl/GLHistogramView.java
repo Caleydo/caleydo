@@ -52,18 +52,22 @@ public class GLHistogramView
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite baseComposite = new Composite(parent, SWT.NULL);
-		baseComposite.setLayout(new GridLayout(1, false));
+		GridLayout baseLayout = new GridLayout(1, false);
+		baseLayout.verticalSpacing = 2;
+		baseComposite.setLayout(baseLayout);
+		
 		super.createPartControl(baseComposite);
 		swtComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
-		colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		colorMappingComposite.setLayout(layout);
+//		Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
+//		colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		GridLayout layout = new GridLayout(1, false);
+//		layout.marginWidth = 0;
+//		layout.marginHeight = 0;
+//		layout.verticalSpacing = 0;
+//		colorMappingComposite.setLayout(layout);
 		// Button button = new Button(buttonComposite, SWT.PUSH);
-		colorMappingPreviewLabel = new CLabel(colorMappingComposite, SWT.SHADOW_IN);
+		colorMappingPreviewLabel = new CLabel(baseComposite, SWT.SHADOW_IN);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 10;
 		gridData.grabExcessHorizontalSpace = true;
@@ -98,7 +102,6 @@ public class GLHistogramView
 
 		FillLayout fillLayout = new FillLayout();
 		Composite labelComposite = new Composite(baseComposite, SWT.NULL);
-
 		labelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		labelComposite.setLayout(fillLayout);
 

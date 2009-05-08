@@ -2674,9 +2674,9 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case RIGHT_CLICKED:
-						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-							getParentGLCanvas().getHeight());
-						contextMenu.setMasterGLView(this);
+						 contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+						 getParentGLCanvas().getHeight());
+						 contextMenu.setMasterGLView(this);
 						break;
 				}
 				break;

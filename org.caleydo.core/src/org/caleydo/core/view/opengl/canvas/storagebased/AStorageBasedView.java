@@ -54,9 +54,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements 
-		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
-		IViewCommandHandler { 
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
+	IViewCommandHandler {
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -110,7 +109,7 @@ public abstract class AStorageBasedView
 	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
-	
+
 	/**
 	 * Constructor for storage based views
 	 * 
@@ -118,8 +117,7 @@ public abstract class AStorageBasedView
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel,
-		final IViewFrustum viewFrustum) {
+	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
@@ -150,9 +148,9 @@ public abstract class AStorageBasedView
 	public synchronized void initData() {
 
 		super.initData();
-		
+
 		bRenderOnlyContext = bIsRenderedRemote;
-		
+
 		String sLevel =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
 		if (sLevel.equals("complete")) {
@@ -247,7 +245,7 @@ public abstract class AStorageBasedView
 					}
 				}
 			}
-			
+
 			alTempList.add(iCount);
 		}
 
@@ -352,7 +350,7 @@ public abstract class AStorageBasedView
 		// reactOnExternalSelection();
 		setDisplayListDirty();
 	}
-	
+
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
@@ -385,37 +383,37 @@ public abstract class AStorageBasedView
 
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	public synchronized void setSet(ISet set) {
 		super.setSet(set);
-		
-resetView();
+
+		resetView();
 	}
 
-//	@Override
-//	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-//		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-//	}
+	// @Override
+	// public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
+	// generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	// }
 
-//	@Override
-//	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-//		EMediatorType eMediatorType) {
-//		switch (eventContainer.getEventType()) {
-//			case VIEW_COMMAND:
-//				ViewCommandEventContainer viewCommandEventContainer =
-//					(ViewCommandEventContainer) eventContainer;
-//
-//				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-//					setDisplayListDirty();
-//				}
-//				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
-//					clearAllSelections();
-//					setDisplayListDirty();
-//				}
-//				break;
-//		}
-//	}
+	// @Override
+	// public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
+	// EMediatorType eMediatorType) {
+	// switch (eventContainer.getEventType()) {
+	// case VIEW_COMMAND:
+	// ViewCommandEventContainer viewCommandEventContainer =
+	// (ViewCommandEventContainer) eventContainer;
+	//
+	// if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
+	// setDisplayListDirty();
+	// }
+	// else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+	// clearAllSelections();
+	// setDisplayListDirty();
+	// }
+	// break;
+	// }
+	// }
 
 	@Override
 	public void handleRedrawView() {
@@ -433,7 +431,7 @@ resetView();
 		contentSelectionManager.executeSelectionCommands(selectionCommands);
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		storageSelectionManager.executeSelectionCommands(selectionCommands);
@@ -587,7 +585,7 @@ resetView();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-		
+
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
@@ -628,5 +626,5 @@ resetView();
 			clearSelectionsListener = null;
 		}
 	}
-	
+
 }
