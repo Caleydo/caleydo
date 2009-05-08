@@ -96,15 +96,9 @@ public class GLHistogramView
 
 		});
 
-		// layout = new GridLayout(3, true);
-		// layout.marginWidth = 0;
-		// layout.marginHeight = 0;
-		//		
-
 		FillLayout fillLayout = new FillLayout();
 		Composite labelComposite = new Composite(baseComposite, SWT.NULL);
-		// gridData = new GridData();
-		// gridData.grabExcessHorizontalSpace = true;
+
 		labelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		labelComposite.setLayout(fillLayout);
 
@@ -125,29 +119,8 @@ public class GLHistogramView
 			}
 		}
 
-		// gridData = new GridData(SWT.LEFT, SWT.CENTER,false, true);
-		// gridData.widthHint = 100;
-
-		// label.setLayoutData(gridData);
-
-		// gridData = new GridData(SWT.CENTER, SWT.CENTER,true, true);
-		// gridData.widthHint = 100;
-
-		// // label.setLayoutData(gridData);
-		// centerLabel.setText("2.02");
-		//		
-		//
-		// // gridData = new GridData(SWT.RIGHT, SWT.CENTER,false, true);
-		// // gridData.widthHint = 100;
-		// // gridData.horizontalAlignment = SWT.RIGHT;
-		// rightLabel = new CLabel(labelComposite, SWT.NONE);
-		// // label.setLayoutData(gridData);
-		// rightLabel.setText("10.03");
-		// rightLabel.setAlignment(SWT.RIGHT);
-
 		updateColorLabel();
 
-		// button.setText("true");
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_HISTOGRAM, glCanvas.getID(), true);
 
@@ -155,7 +128,8 @@ public class GLHistogramView
 
 	private void updateColorLabel() {
 
-		DecimalFormat decimalFormat = new DecimalFormat("#####.##");
+		DecimalFormat decimalFormat;
+
 		int iNumberOfMarkerPoints =
 			store.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
 				+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
@@ -168,10 +142,20 @@ public class GLHistogramView
 				store.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 					+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			// FIXME: bad hack - need to access the correct set - this works only for exactly one set
 			double correspondingValue =
-				GeneralManager.get().getSetManager().getAllItems().iterator().next().getRawForNormalized(
+				GeneralManager.get().getUseCase().getSet().getRawForNormalized(
 					normalizedValue);
+
+			if (Math.abs(correspondingValue) > 10000)
+				decimalFormat = new DecimalFormat("0.#E0");
+			else if(Math.abs(correspondingValue) > 100)
+				decimalFormat = new DecimalFormat("#####");
+			else if(Math.abs(correspondingValue) > 10)
+				decimalFormat = new DecimalFormat("#####.#");
+			else
+				decimalFormat = new DecimalFormat("#####.##");
+				
+
 			labels.get(iCount - 1).setText(decimalFormat.format(correspondingValue));
 			int iColorMarkerPoint = (int) (100 * normalizedValue);
 

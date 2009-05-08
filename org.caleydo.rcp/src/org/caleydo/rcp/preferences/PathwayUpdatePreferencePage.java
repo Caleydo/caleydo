@@ -1,8 +1,10 @@
 package org.caleydo.rcp.preferences;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayDataPage;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -98,6 +100,12 @@ public class PathwayUpdatePreferencePage
 	@Override
 	public boolean performCancel() {
 		super.performCancel();
+		
+		PreferenceStore store = GeneralManager.get().getPreferenceStore();
+
+		if(store.getBoolean(PreferenceConstants.PATHWAY_DATA_OK))
+			return true;
+		
 
 		MessageBox messageBox = new MessageBox(this.getShell(), SWT.OK);
 		messageBox.setText("Pathway Update Notification");
