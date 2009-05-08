@@ -34,7 +34,7 @@ public class HierarchicalClusterer
 	private ProgressBar pbBuildInstances;
 	private ProgressBar pbClusterer;
 	private Shell shell;
-	
+
 	public HierarchicalClusterer(int iNrElements) {
 		clusterer = new Cobweb();
 	}
@@ -48,31 +48,30 @@ public class HierarchicalClusterer
 		composite.setLayout(layout);
 		composite.setFocus();
 
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Progress");
-		inputFileGroup.setLayout(new RowLayout(4));
+		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		progressBarGroup.setText("Progress");
+		progressBarGroup.setLayout(new RowLayout(1));
 		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		gridData.horizontalSpan = 3;
-		inputFileGroup.setLayoutData(gridData);
+		progressBarGroup.setLayoutData(gridData);
 
-		Label label = new Label(inputFileGroup, SWT.NULL);
+		Label label = new Label(progressBarGroup, SWT.NULL);
 		label.setText("Building instances used by weka clusterer in progress");
 		label.setAlignment(SWT.RIGHT);
 
-		pbBuildInstances = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbBuildInstances = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
-		Label label2 = new Label(inputFileGroup, SWT.NULL);
-		label2.setText("KMeans clustering in progress");
+		Label label2 = new Label(progressBarGroup, SWT.NULL);
+		label2.setText("Cobweb clustering in progress");
 		label2.setAlignment(SWT.RIGHT);
 
-		pbClusterer = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
 		composite.pack();
 
 		shell.pack();
 		shell.open();
 	}
-	
+
 	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage,
 		EClustererType eClustererType) {
 
@@ -87,11 +86,11 @@ public class HierarchicalClusterer
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
-			
+
 			int iNrElements = contentVA.size();
 			pbBuildInstances.setMinimum(0);
 			pbBuildInstances.setMaximum(iNrElements);
-			
+
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
@@ -111,11 +110,11 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-			
+
 			int iNrElements = storageVA.size();
 			pbBuildInstances.setMinimum(0);
 			pbBuildInstances.setMaximum(iNrElements);
-			
+
 			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
@@ -140,14 +139,15 @@ public class HierarchicalClusterer
 			data = new Instances(new StringReader(buffer.toString()));
 		}
 		catch (IOException e1) {
-			e1.printStackTrace();
+			return -1;
+			// e1.printStackTrace();
 		}
 
 		pbClusterer.setMinimum(0);
 		pbClusterer.setMaximum(5);
-		
-		pbClusterer.setSelection(1);	
-		
+
+		pbClusterer.setSelection(1);
+
 		// unsupervised learning --> no class given
 		data.setClassIndex(-1);
 
@@ -156,26 +156,28 @@ public class HierarchicalClusterer
 			clusterer.buildClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			return -1;
+			// e.printStackTrace();
 		}
 		pbClusterer.setSelection(2);
-		
+
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
 			eval.evaluateClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			return -1;
+			// e.printStackTrace();
 		}
 		pbClusterer.setSelection(3);
-		
+
 		double[] clusterAssignments = eval.getClusterAssignments();
 
-//		int nrclusters = eval.getNumClusters();
-//		System.out.println(nrclusters);
-//		System.out.println(data.numAttributes());
-//		System.out.println(data.numInstances());
+		// int nrclusters = eval.getNumClusters();
+		// System.out.println(nrclusters);
+		// System.out.println(data.numAttributes());
+		// System.out.println(data.numInstances());
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
@@ -204,7 +206,7 @@ public class HierarchicalClusterer
 			}
 		}
 		pbClusterer.setSelection(4);
-		
+
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		CNode node = clusterer.m_cobwebTree;
@@ -217,13 +219,13 @@ public class HierarchicalClusterer
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
-		pbClusterer.setSelection(5);	
-		
+		pbClusterer.setSelection(5);
+
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
 		else
 			set.setClusteredTreeExps(tree);
-		
+
 		set.setAlClusterSizes(temp);
 		set.setAlExamples(alExamples);
 
@@ -276,13 +278,13 @@ public class HierarchicalClusterer
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
-		
+
 		buildProgressBar();
 
 		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
 
 		shell.close();
-		
+
 		return VAId;
 	}
 }

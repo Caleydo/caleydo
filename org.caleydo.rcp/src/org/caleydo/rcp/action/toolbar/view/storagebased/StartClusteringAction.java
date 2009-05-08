@@ -40,7 +40,9 @@ public class StartClusteringAction
 		dialog.open();
 		ClusterState clusterState = dialog.getClusterState();
 
-		triggerCmdExternalObjectSetter(clusterState, EExternalObjectSetterType.STORAGEBASED_START_CLUSTERING);
+		if (clusterState != null)
+			triggerCmdExternalObjectSetter(clusterState,
+				EExternalObjectSetterType.STORAGEBASED_START_CLUSTERING);
 
 	}
 

@@ -43,7 +43,7 @@ public class StartClusteringAction
 	private int iClusterCnt = 5;
 	private float fclusterFactor = 1f;
 
-	String[] sArTypeOptions = { "Gene", "Experiment", "Bi-Clustering" };
+	String[] sArTypeOptions = { "Gene", "Experiment" }; //, "Bi-Clustering" };
 	String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
 
 	ClusterState clusterState = new ClusterState();
@@ -76,8 +76,8 @@ public class StartClusteringAction
 
 	private void createGUI() {
 
-		Composite composite = new Composite(parentComposite, SWT.NONE);
-		composite.setLayout(new FillLayout(SWT.VERTICAL));
+		Composite composite = new Composite(parentComposite, SWT.OK);
+//		composite.setLayout(new FillLayout(SWT.VERTICAL));
 
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
 
@@ -290,8 +290,13 @@ public class StartClusteringAction
 
 	}
 
-	public void execute() {
+	public void execute(boolean cancelPressed) {
 
+		if(cancelPressed) {
+			clusterState = null;
+			return;
+		}
+			
 		if (clusterType.equals(sArTypeOptions[0]))
 			clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 		else if (clusterType.equals(sArTypeOptions[1]))

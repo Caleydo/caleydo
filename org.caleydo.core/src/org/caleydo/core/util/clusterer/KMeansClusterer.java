@@ -45,24 +45,23 @@ public class KMeansClusterer
 		composite.setLayout(layout);
 		composite.setFocus();
 
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Progress");
-		inputFileGroup.setLayout(new RowLayout(4));
+		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		progressBarGroup.setText("Progress");
+		progressBarGroup.setLayout(new RowLayout(1));
 		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		gridData.horizontalSpan = 3;
-		inputFileGroup.setLayoutData(gridData);
+		progressBarGroup.setLayoutData(gridData);
 
-		Label label = new Label(inputFileGroup, SWT.NULL);
+		Label label = new Label(progressBarGroup, SWT.NULL);
 		label.setText("Building instances used by weka clusterer in progress");
 		label.setAlignment(SWT.RIGHT);
 
-		pbBuildInstances = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbBuildInstances = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
-		Label label2 = new Label(inputFileGroup, SWT.NULL);
+		Label label2 = new Label(progressBarGroup, SWT.NULL);
 		label2.setText("KMeans clustering in progress");
 		label2.setAlignment(SWT.RIGHT);
 
-		pbClusterer = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
 		composite.pack();
 
@@ -84,7 +83,8 @@ public class KMeansClusterer
 			clusterer.setMaxIterations(1000);
 		}
 		catch (Exception e2) {
-			e2.printStackTrace();
+			return -1;
+			// e2.printStackTrace();
 		}
 
 		StringBuffer buffer = new StringBuffer();
@@ -97,6 +97,10 @@ public class KMeansClusterer
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
 			int iNrElements = contentVA.size();
+			
+			if(iNrCluster >= iNrElements)
+				return -1;
+			
 			pbBuildInstances.setMinimum(0);
 			pbBuildInstances.setMaximum(iNrElements);
 
@@ -105,7 +109,7 @@ public class KMeansClusterer
 			}
 
 			buffer.append("@data\n");
-			
+
 			int icnt = 0;
 			for (Integer iContentIndex : contentVA) {
 				pbBuildInstances.setSelection(icnt);
@@ -120,12 +124,16 @@ public class KMeansClusterer
 			}
 		}
 		else {
+
+			int iNrElements = storageVA.size();
 			
-			int iNrElements = contentVA.size();
+			if(iNrCluster >= iNrElements)
+				return -1;
+			
 			pbBuildInstances.setMinimum(0);
 			pbBuildInstances.setMaximum(iNrElements);
-			
-			for (int nr = 0; nr < storageVA.size(); nr++) {
+
+			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
 
@@ -153,32 +161,35 @@ public class KMeansClusterer
 			data = new Instances(new StringReader(buffer.toString()));
 		}
 		catch (IOException e1) {
-			e1.printStackTrace();
+			return -1;
+			// e1.printStackTrace();
 		}
 
 		pbClusterer.setMinimum(0);
 		pbClusterer.setMaximum(5);
-		
-		pbClusterer.setSelection(0);	
+
+		pbClusterer.setSelection(0);
 		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			return -1;
+			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(1);	
-		
+		pbClusterer.setSelection(1);
+
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
 			eval.evaluateClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			return -1;
+			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(2);	
-		
+		pbClusterer.setSelection(2);
+
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
 		for (int i = 0; i < iNrCluster; i++) {
@@ -197,8 +208,8 @@ public class KMeansClusterer
 				}
 			}
 		}
-		pbClusterer.setSelection(3);	
-		
+		pbClusterer.setSelection(3);
+
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
@@ -211,9 +222,8 @@ public class KMeansClusterer
 				}
 			}
 		}
-		pbClusterer.setSelection(4);	
-			
-		
+		pbClusterer.setSelection(4);
+
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result in Set

@@ -585,24 +585,23 @@ public class TreeClusterer
 		composite.setLayout(layout);
 		composite.setFocus();
 
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Progress");
-		inputFileGroup.setLayout(new RowLayout(4));
+		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		progressBarGroup.setText("Progress");
+		progressBarGroup.setLayout(new RowLayout(1));
 		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		gridData.horizontalSpan = 3;
-		inputFileGroup.setLayoutData(gridData);
+		progressBarGroup.setLayoutData(gridData);
 
-		Label label = new Label(inputFileGroup, SWT.NULL);
+		Label label = new Label(progressBarGroup, SWT.NULL);
 		label.setText("Determine similarties in progress");
 		label.setAlignment(SWT.RIGHT);
 
-		pbSimilarity = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbSimilarity = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
-		Label label2 = new Label(inputFileGroup, SWT.NULL);
-		label2.setText("Affinity propagation in progress");
+		Label label2 = new Label(progressBarGroup, SWT.NULL);
+		label2.setText("Tree clusterer in progress");
 		label2.setAlignment(SWT.RIGHT);
 
-		pbTreeClusterer = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbTreeClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 		
 		composite.pack();
 

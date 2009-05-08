@@ -94,6 +94,7 @@ public class AffinityClusterer
 			for (Integer iContentIndex1 : contentVA) {
 
 				pbSimilarity.setSelection(icnt1);
+				shell.update();
 
 				isto = 0;
 				for (Integer iStorageIndex1 : storageVA) {
@@ -164,6 +165,7 @@ public class AffinityClusterer
 			for (Integer iStorageIndex1 : storageVA) {
 
 				pbSimilarity.setSelection(icnt1);
+				shell.update();
 
 				isto = 0;
 				for (Integer iContentIndex1 : contentVA) {
@@ -261,6 +263,7 @@ public class AffinityClusterer
 			iNrIterations++;
 
 			pbAffiProp.setSelection(iNrIterations);
+			shell.update();
 
 			// Compute responsibilities
 			for (j = 0; j < iNrSamples; j++) {
@@ -422,11 +425,15 @@ public class AffinityClusterer
 			// System.out.println("Number of identified clusters: " + iNrClusters);
 			// System.out.println("Number of iterations: " + iNrIterations);
 		}
-		else
-			throw new IllegalStateException("Did not identify any clusters!!");
-		if (bConverged == false)
-			throw new IllegalStateException("Algorithm did not converge!!");
-
+		else {
+			return -1;
+//			throw new IllegalStateException("Did not identify any clusters!!");
+		}
+		if (bConverged == false) {
+			return -1;
+//			throw new IllegalStateException("Algorithm did not converge!!");
+		}
+		
 		ArrayList<Integer> idxExamples = new ArrayList<Integer>();
 
 		for (int i = 0; i < alExamples.size(); i++) {
@@ -486,24 +493,23 @@ public class AffinityClusterer
 		composite.setLayout(layout);
 		composite.setFocus();
 
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Progress");
-		inputFileGroup.setLayout(new RowLayout(4));
+		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		progressBarGroup.setText("Progress");
+		progressBarGroup.setLayout(new RowLayout(1));
 		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		gridData.horizontalSpan = 3;
-		inputFileGroup.setLayoutData(gridData);
+		progressBarGroup.setLayoutData(gridData);
 
-		Label label = new Label(inputFileGroup, SWT.NULL);
+		Label label = new Label(progressBarGroup, SWT.NULL);
 		label.setText("Determine similarties in progress");
 		label.setAlignment(SWT.RIGHT);
 
-		pbSimilarity = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbSimilarity = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
-		Label label2 = new Label(inputFileGroup, SWT.NULL);
+		Label label2 = new Label(progressBarGroup, SWT.NULL);
 		label2.setText("Affinity propagation in progress");
 		label2.setAlignment(SWT.RIGHT);
 
-		pbAffiProp = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		pbAffiProp = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
 		composite.pack();
 

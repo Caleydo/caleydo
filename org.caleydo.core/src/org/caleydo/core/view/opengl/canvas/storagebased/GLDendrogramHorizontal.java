@@ -98,6 +98,9 @@ public class GLDendrogramHorizontal
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
+		
+		fPosCut = viewFrustum.getTop() - 0.1f;
+		
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
@@ -200,23 +203,23 @@ public class GLDendrogramHorizontal
 	 */
 	private void renderCut(final GL gl) {
 
-		float fHeight = 0.1f;
-		float fWidth = viewFrustum.getWidth() - 0.2f;
-
-		gl.glColor4f(0f, 0f, 0f, 0.4f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(0, 0.1f, 0);
-		gl.glVertex3f(0, 0.1f + fHeight, 0);
-		gl.glVertex3f(fWidth, 0.1f + fHeight, 0);
-		gl.glVertex3f(fWidth, 0.1f, 0);
-		gl.glEnd();
+		float fHeight = viewFrustum.getHeight();
+		
+//		float fWidth = viewFrustum.getWidth() - 0.2f;
+//		gl.glColor4f(0f, 0f, 0f, 0.4f);
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0, 0.1f, 0);
+//		gl.glVertex3f(0, 0.1f + fHeight, 0);
+//		gl.glVertex3f(fWidth, 0.1f + fHeight, 0);
+//		gl.glVertex3f(fWidth, 0.1f, 0);
+//		gl.glEnd();
 
 		gl.glColor4f(1f, 0f, 0f, 0.4f);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_HORI_SELECTION, 1));
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(fPosCut, 0.0f, 0);
-		gl.glVertex3f(fPosCut, 0.2f + fHeight, 0);
-		gl.glVertex3f(fPosCut + 0.1f, 0.2f + fHeight, 0);
+		gl.glVertex3f(fPosCut, fHeight, 0);
+		gl.glVertex3f(fPosCut + 0.1f, fHeight, 0);
 		gl.glVertex3f(fPosCut + 0.1f, 0.0f, 0);
 		gl.glEnd();
 		gl.glPopName();

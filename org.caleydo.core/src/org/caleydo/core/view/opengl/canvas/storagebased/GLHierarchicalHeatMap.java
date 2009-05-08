@@ -137,7 +137,7 @@ public class GLHierarchicalHeatMap
 	private float fWidthEHM = 0;
 
 	// embedded dendrogram
-//	private GLDendrogramVertical glDendrogram;
+	private GLDendrogramVertical glDendrogram;
 
 	private boolean bRedrawTextures = false;
 
@@ -193,14 +193,14 @@ public class GLHierarchicalHeatMap
 		bUseClusteredVA = false;
 
 		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
-		
+
 		createHeatMap();
 	}
 
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
-//		glDendrogram.initRemote(gl, this, glMouseListener, null, null);
+		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		iconTextureManager = TextureManager.get();
 
@@ -216,7 +216,7 @@ public class GLHierarchicalHeatMap
 		if (set == null)
 			return;
 
-//		createDendrogram();
+		createDendrogram();
 
 		iNumberOfElements = set.getVA(iContentVAID).size();
 
@@ -278,11 +278,11 @@ public class GLHierarchicalHeatMap
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		// Register keyboard listener to GL canvas
-		// glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
-		// }
-		// });
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		bRenderStorageHorizontally = false;
 
@@ -679,25 +679,25 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setRenderedRemote(true);
 	}
 
-//	private void createDendrogram() {
-//		CmdCreateGLEventListener cmdView =
-//			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
-//				ECommandType.CREATE_GL_DENDROGRAM_VERTICAL);
-//
-//		float fHeatMapHeight = viewFrustum.getHeight();
-//		float fHeatMapWidth = viewFrustum.getWidth();
-//
-//		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
-//			set, -1);
-//
-//		cmdView.doCommand();
-//
-//		glDendrogram = (GLDendrogramVertical) cmdView.getCreatedObject();
-//		GeneralManager.get().getUseCase().addView(glDendrogram);
-//		glDendrogram.setUseCase(useCase);
-//		glDendrogram.setRenderedRemote(true);
-//		glDendrogram.initData();
-//	}
+	private void createDendrogram() {
+		CmdCreateGLEventListener cmdView =
+			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
+				ECommandType.CREATE_GL_DENDROGRAM_VERTICAL);
+
+		float fHeatMapHeight = viewFrustum.getHeight();
+		float fHeatMapWidth = viewFrustum.getWidth();
+
+		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
+			set, -1);
+
+		cmdView.doCommand();
+
+		glDendrogram = (GLDendrogramVertical) cmdView.getCreatedObject();
+		GeneralManager.get().getUseCase().addView(glDendrogram);
+		glDendrogram.setUseCase(useCase);
+		glDendrogram.setRenderedRemote(true);
+		glDendrogram.initData();
+	}
 
 	@Override
 	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
@@ -1871,11 +1871,12 @@ public class GLHierarchicalHeatMap
 		// viewFrustum.getWidth() / 4f;
 		// }
 		// gl.glTranslatef(fleftOffset, 0, 1);
-		//
+		//				
 		// glDendrogram.getViewFrustum().setTop(ftop);
 		// glDendrogram.getViewFrustum().setRight(fright);
+		// glDendrogram.setDisplayListDirty();
 		// glDendrogram.displayRemote(gl);
-		//
+		//				
 		// gl.glTranslatef(-fleftOffset, -0, -1);
 
 		contextMenu.render(gl, this);
@@ -1891,7 +1892,7 @@ public class GLHierarchicalHeatMap
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
-//			glDendrogram.setDisplayListDirty();
+			glDendrogram.setDisplayListDirty();
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -2063,44 +2064,74 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void initLists() {
 
-		if (bRenderOnlyContext) {
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
-		}
-		else {
-			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-				initCompleteList();
-			}
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-		}
-		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-
+		// clustering triggered by StartClusteringAction
 		if (bUseClusteredVA) {
+
+			int iContentVAIDtemp = 0, iStorageVAIDtemp = 0;
+
+			if (bRenderOnlyContext) {
+				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+			}
+			else {
+				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
+					initCompleteList();
+				}
+				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+			}
+			iStorageVAIDtemp = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
-				int iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-				if (iVAid != -1)
+				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				if (iVAid == -1)
+					iContentVAID = iContentVAIDtemp;
+				else
 					iContentVAID = iVAid;
+
+				iStorageVAID = iStorageVAIDtemp;
 			}
 			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
 
-				int iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-				if (iVAid != -1)
+				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				if (iVAid == -1)
+					iStorageVAID = iStorageVAIDtemp;
+				else
 					iStorageVAID = iVAid;
+
+				iContentVAID = iContentVAIDtemp;
 			}
 			else {
 
-				int iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-				if (iVAid != -1)
+				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				if (iVAid == -1)
+					iStorageVAID = iStorageVAIDtemp;
+				else
 					iStorageVAID = iVAid;
-				iVAid = set.cluster(iContentVAID, iStorageVAID, clusterstate);
-				if (iVAid != -1)
+
+				iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				if (iVAid == -1)
+					iContentVAID = iContentVAIDtemp;
+				else
 					iContentVAID = iVAid;
 			}
 
 		}
-		else if (set.isClusterInfo()) {
-			set.getVA(iContentVAID).setGroupList(set.getGroupList());
+		// normal startup
+		else {
+			if (bRenderOnlyContext) {
+				iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+			}
+			else {
+				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
+					initCompleteList();
+				}
+				iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+			}
+			iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+
+			// In case of importing group info
+			if (set.isClusterInfo())
+				set.getVA(iContentVAID).setGroupList(set.getGroupList());
 		}
 
 		contentSelectionManager.resetSelectionManager();
@@ -2121,7 +2152,7 @@ public class GLHierarchicalHeatMap
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
 			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
 		}
-		
+
 	}
 
 	@Override
@@ -2439,11 +2470,11 @@ public class GLHierarchicalHeatMap
 						groupContextMenuItemContainer.setGeneExperimentFlag(true);
 						contextMenu.addItemContanier(groupContextMenuItemContainer);
 
-//						if (!isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(this);
-//						}
+						// if (!isRenderedRemote()) {
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						// }
 						break;
 
 					case MOUSE_OVER:
@@ -2480,11 +2511,11 @@ public class GLHierarchicalHeatMap
 						groupContextMenuItemContainer.setGeneExperimentFlag(false);
 						contextMenu.addItemContanier(groupContextMenuItemContainer);
 
-//						if (!isRenderedRemote()) {
-							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(this);
-//						}
+						// if (!isRenderedRemote()) {
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						// }
 						break;
 
 					case MOUSE_OVER:
@@ -2643,9 +2674,9 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case RIGHT_CLICKED:
-						// contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-						// getParentGLCanvas().getHeight());
-						// contextMenu.setMasterGLView(this);
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
 						break;
 				}
 				break;
@@ -2766,14 +2797,14 @@ public class GLHierarchicalHeatMap
 	public synchronized void initData() {
 
 		super.initData();
-		
+
 		initHierarchy();
 		calculateTextures();
 		initPosCursor();
-		
+
 		glHeatMapView.setSet(set);
 		glHeatMapView.initData();
-		
+
 		bRedrawTextures = true;
 	}
 

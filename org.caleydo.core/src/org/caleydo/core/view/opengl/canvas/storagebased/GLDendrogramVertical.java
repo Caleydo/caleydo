@@ -198,16 +198,16 @@ public class GLDendrogramVertical
 	 */
 	private void renderCut(final GL gl) {
 
-		float fWidth = 0.1f;
-		float fHeight = viewFrustum.getHeight() - 0.2f;
-
-		gl.glColor4f(0f, 0f, 0f, 0.4f);
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(0.1f, 0f, 0);
-		gl.glVertex3f(0.1f, fHeight, 0);
-		gl.glVertex3f(0.1f + fWidth, fHeight, 0);
-		gl.glVertex3f(0.1f + fWidth, 0f, 0);
-		gl.glEnd();
+		float fWidth = viewFrustum.getWidth();
+		
+//		float fHeight = viewFrustum.getHeight() - 0.2f;
+//		gl.glColor4f(0f, 0f, 0f, 0.4f);
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(0.1f, 0f, 0);
+//		gl.glVertex3f(0.1f, fHeight, 0);
+//		gl.glVertex3f(0.2f, fHeight, 0);
+//		gl.glVertex3f(0.2f, 0f, 0);
+//		gl.glEnd();
 
 		gl.glColor4f(1f, 0f, 0f, 0.4f);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_VERTI_SELECTION, 1));
@@ -480,7 +480,7 @@ public class GLDendrogramVertical
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		// tree = treePorter.importTree("riesen_baum.xml");
+//		tree = treePorter.importTree("Cop.xml");
 
 		// tree = set.getClusteredTreeExps();
 		if (tree == null) {
@@ -670,7 +670,7 @@ public class GLDendrogramVertical
 
 	@Override
 	public void clearAllSelections() {
-		fPosCut = 0f;
+		fPosCut = viewFrustum.getHeight() - 0.1f;
 		Set<ClusterNode> nodeSet = tree.getGraph().vertexSet();
 		for (ClusterNode node : nodeSet) {
 			node.setSelectionType(ESelectionType.NORMAL);

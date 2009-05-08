@@ -49,11 +49,18 @@ public class StartClusteringDialog
 
 	@Override
 	protected void okPressed() {
-		startClusteringAction.execute();
+		startClusteringAction.execute(false);
 
 		super.okPressed();
 	}
 
+	@Override
+	protected void cancelPressed() {
+		startClusteringAction.execute(true);
+
+		super.cancelPressed();
+	}
+	
 	public ClusterState getClusterState() {
 		return startClusteringAction.getClusterState();
 	}
