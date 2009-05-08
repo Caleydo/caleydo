@@ -76,7 +76,7 @@ public class GenomeHTMLBrowserViewRep
 	}
 	
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+		if (selectionDelta.getIDType() != EIDType.EXPRESSION_INDEX)
 			return;
 
 		Display.getDefault().asyncExec(new Runnable() {
@@ -90,10 +90,15 @@ public class GenomeHTMLBrowserViewRep
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
 					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
 						|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION) {
+						
+						Integer iRefSeqID = generalManager.getIDMappingManager()
+							.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+							selectionDeltaItem.getPrimaryID());
+						
 						String sRefSeqID =
 							generalManager.getIDMappingManager()
 								.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-									selectionDeltaItem.getPrimaryID());
+									iRefSeqID);
 
 						Integer iDavidID =
 							generalManager.getIDMappingManager().getID(
