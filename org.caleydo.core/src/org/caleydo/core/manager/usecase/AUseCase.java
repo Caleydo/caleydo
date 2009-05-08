@@ -34,8 +34,6 @@ public abstract class AUseCase
 	 */
 	protected ISet set;
 
-	private ISet oldSet;
-
 	@Override
 	public EUseCaseMode getUseCaseMode() {
 		return eUseCaseMode;
@@ -52,7 +50,6 @@ public abstract class AUseCase
 		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && eUseCaseMode == EUseCaseMode.GENETIC_DATA)
 			|| (set.getSetType() == ESetType.CLINICAL_DATA && eUseCaseMode == EUseCaseMode.CLINICAL_DATA)
 			|| (set.getSetType() == ESetType.UNSPECIFIED && eUseCaseMode == EUseCaseMode.UNSPECIFIED_DATA)) {
-			oldSet = this.set;
 			this.set = set;
 		}
 		else {

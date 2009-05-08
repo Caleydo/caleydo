@@ -26,6 +26,8 @@ public class StartClusteringDialog
 		super(parentShell);
 
 		parentShell.setText("Open project file");
+		
+		// Center dialog on screen
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		Rectangle rect = parentShell.getBounds();

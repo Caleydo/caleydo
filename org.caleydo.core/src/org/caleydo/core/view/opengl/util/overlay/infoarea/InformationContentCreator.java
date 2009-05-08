@@ -6,7 +6,6 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 
 /**
  * Creates the content for e.g. the InfoArea. Just pass it an ID and an Inputdatatype, it returns an AL of
@@ -19,7 +18,7 @@ import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 public class InformationContentCreator {
 	private ArrayList<String> sContent;
 
-	private GeneAnnotationMapper mapper;
+//	private GeneAnnotationMapper mapper;
 
 	private IGeneralManager generalManager;
 
@@ -30,7 +29,7 @@ public class InformationContentCreator {
 	 */
 	public InformationContentCreator() {
 		sContent = new ArrayList<String>();
-		mapper = new GeneAnnotationMapper();
+//		mapper = new GeneAnnotationMapper();
 
 		this.generalManager = GeneralManager.get();
 	}

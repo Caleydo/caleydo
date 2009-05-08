@@ -14,7 +14,7 @@ public interface IToolBarRenderer {
 
 	public abstract GridLayout createLayout();
 
-	public abstract void addTakeSnapshotAction(ToolBarManager toolBarManager, Group group);
+	public abstract void addGeneralToolBarActions(ToolBarManager toolBarManager, Group group);
 
 	public abstract GridData createStandardGridData();
 

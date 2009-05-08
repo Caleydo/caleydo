@@ -61,7 +61,7 @@ public class GenomePerspective
 			layout.addStandaloneView(SelectionInfoView.ID, true, IPageLayout.RIGHT, 0.8f, "top");
 			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.RIGHT, 0.7f, "top", true);
 			
-			IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);		
+//			IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);		
 			
 //			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio,
 //				IPageLayout.ID_EDITOR_AREA);

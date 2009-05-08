@@ -183,7 +183,7 @@ public abstract class AStorage
 
 	@Override
 	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID) {
-		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
+		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer<?>))
 			throw new IllegalArgumentException("Requested storage kind is not a subtype of Number");
 
 		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers.get(storageKind);

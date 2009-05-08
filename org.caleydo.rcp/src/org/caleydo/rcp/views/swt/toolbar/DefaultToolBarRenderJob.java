@@ -69,9 +69,6 @@ public class DefaultToolBarRenderJob
 			layout.marginHeight = layout.marginWidth = 0;
 			group.setLayout(layout);
 			group.setLayoutData(toolBarRenderer.createStandardGridData());
-			// group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			
-			// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 			
 			viewSpecificGroups.add(group);
 
@@ -95,6 +92,7 @@ public class DefaultToolBarRenderJob
 			label.setText(toolBarContainer.getTitle());
 			label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+			
 			// Set the group as the labels data to be able to discriminate between spacer when chaning background color
 			label.setData(group); 
 			

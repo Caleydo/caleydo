@@ -60,33 +60,33 @@ public class ClusterHelper {
 	}
 
 	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
-		int maxDepth = 0;
-		maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
+//		int maxDepth = 0;
+//		maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
 		// System.out.println("maxDepth: " + maxDepth);
 	}
 
-	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
-
-		if (tree.hasChildren(node)) {
-			int temp = node.getDepth();
-
-			for (ClusterNode current : tree.getChildren(node)) {
-				if (temp < determineHierarchyDepthRec(tree, current))
-					temp = determineHierarchyDepthRec(tree, current) + 1;
-			}
-
-			node.setDepth(temp);
-		}
-		else
-			node.setDepth(1);
-
-		return node.getDepth();
-	}
+//	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
+//
+//		if (tree.hasChildren(node)) {
+//			int temp = node.getDepth();
+//
+//			for (ClusterNode current : tree.getChildren(node)) {
+//				if (temp < determineHierarchyDepthRec(tree, current))
+//					temp = determineHierarchyDepthRec(tree, current) + 1;
+//			}
+//
+//			node.setDepth(temp);
+//		}
+//		else
+//			node.setDepth(1);
+//
+//		return node.getDepth();
+//	}
 
 	public static void determineNrElements(Tree<ClusterNode> tree) {
 
-		int iNrElements = 0;
-		iNrElements = determineNrElementsRec(tree, tree.getRoot());
+//		int iNrElements = 0;
+//		iNrElements = determineNrElementsRec(tree, tree.getRoot());
 		// System.out.println("iNrElements: " + iNrElements);
 	}
 

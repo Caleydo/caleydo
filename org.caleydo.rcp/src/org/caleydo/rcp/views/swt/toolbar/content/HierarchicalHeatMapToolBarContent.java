@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ActivateGroupHandling;
-import org.caleydo.rcp.action.toolbar.view.storagebased.MergeClasses;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 
 /**

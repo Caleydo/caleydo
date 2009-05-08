@@ -68,8 +68,8 @@ public class FileLoadDataAction
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 
 	private Text txtFileName;
-	private Text txtGeneTreeFileName;
-	private Text txtExperimentsTreeFileName;
+//	private Text txtGeneTreeFileName;
+//	private Text txtExperimentsTreeFileName;
 	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;

@@ -47,7 +47,7 @@ public class ContextMenu
 	// Coordinates stuff
 	private static final float ITEM_HEIGHT = 0.1f;
 	private static final float ICON_SIZE = 0.08f;
-	private static final float SPACER_SIZE = 0.02f;
+//	private static final float SPACER_SIZE = 0.02f;
 	private static final float SPACING = 0.02f;
 	private static final float FONT_SCALING = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 

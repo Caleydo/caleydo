@@ -123,11 +123,7 @@ public class ToolBarView
 
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-//		toolBarManager.add(new LoadDataAction());
-//		toolBarManager.add(new ExportDataAction());
-
-		toolBarRenderer.addTakeSnapshotAction(toolBarManager, group);
-
+		toolBarRenderer.addGeneralToolBarActions(toolBarManager, group);
 		toolBarManager.update(true);
 
 		Label label = new Label(group, SWT.CENTER);

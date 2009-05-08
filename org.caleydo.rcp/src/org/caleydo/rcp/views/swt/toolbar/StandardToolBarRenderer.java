@@ -36,7 +36,7 @@ public class StandardToolBarRenderer
 		return new GridLayout(10, false);
 	}
 
-	public void addTakeSnapshotAction(ToolBarManager toolBarManager, Group group) {
+	public void addGeneralToolBarActions(ToolBarManager toolBarManager, Group group) {
 		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 		toolBarManager2.add(new LoadDataAction());

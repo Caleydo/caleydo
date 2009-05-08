@@ -337,12 +337,12 @@ public class GLGlyph
 		bIsLocal = false;
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
-		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
+//		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
 		// FIXXXME: YOU SHOULD NOT ADD THE KEY LISTENER TO ALL CANVAS OBJECTS!!!!!
-		for (GLCaleydoCanvas c : cc) {
+//		for (GLCaleydoCanvas c : cc) {
 //			c.addKeyListener(keyListener_);
-		}
+//		}
 
 		init(gl);
 

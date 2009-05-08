@@ -13,7 +13,6 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
@@ -73,7 +72,7 @@ public class GLDendrogramHorizontal
 
 	private ColorMapping colorMapper;
 
-	private TreePorter treePorter = new TreePorter();
+//	private TreePorter treePorter = new TreePorter();
 
 	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
 
