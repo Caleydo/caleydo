@@ -25,7 +25,7 @@
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
 			detail="KEGG"
 			attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/hsa/" 
-			attrib2="user.home/.caleydo/www.genome.ad.jp/kegg/pathway/hsa/" 
+			attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/hsa/" 
 			attrib3="user.home/.caleydo/?" /> 								
 
 
