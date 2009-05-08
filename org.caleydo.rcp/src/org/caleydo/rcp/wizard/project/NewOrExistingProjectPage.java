@@ -17,8 +17,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
@@ -39,7 +37,7 @@ public class NewOrExistingProjectPage
 	public enum EProjectType {
 		NEW_PROJECT,
 		EXISTING_PROJECT,
-		PATHWAY_VIEWER_MODE,
+//		PATHWAY_VIEWER_MODE,
 		SAMPLE_DATA_RANDOM,
 		SAMPLE_DATA_REAL
 	}
@@ -170,9 +168,9 @@ public class NewOrExistingProjectPage
 		buttonNewProject.setLayoutData(new GridData(GridData.FILL_BOTH));
 		setPageComplete(true);
 
-		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
-		buttonPathwayViewerMode.setText("Pathway viewer mode");
-		buttonPathwayViewerMode.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
+//		buttonPathwayViewerMode.setText("Pathway viewer mode");
+//		buttonPathwayViewerMode.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		Button buttonExistingProject = new Button(composite, SWT.RADIO);
 		buttonExistingProject.setText("Open existing project");
@@ -199,17 +197,17 @@ public class NewOrExistingProjectPage
 			public void widgetSelected(SelectionEvent e) {
 				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
 
-				if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
-					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-					messageBox.setText("Load KEGG and BioCarta pathway data");
-					messageBox
-						.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
-					messageBox.open();
-
-					((Button) e.widget).setSelection(true);
-
-					return;
-				}
+//				if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
+//					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
+//					messageBox.setText("Load KEGG and BioCarta pathway data");
+//					messageBox
+//						.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
+//					messageBox.open();
+//
+//					((Button) e.widget).setSelection(true);
+//
+//					return;
+//				}
 
 				Application.bLoadPathwayData = bLoadPathwayData;
 			}
@@ -234,14 +232,14 @@ public class NewOrExistingProjectPage
 			}
 		});
 
-		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				projectType = EProjectType.PATHWAY_VIEWER_MODE;
-				btnLoadPathwayData.setSelection(true);
-				setPageComplete(true);
-			}
-		});
+//		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				projectType = EProjectType.PATHWAY_VIEWER_MODE;
+//				btnLoadPathwayData.setSelection(true);
+//				setPageComplete(true);
+//			}
+//		});
 
 		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
 			@Override

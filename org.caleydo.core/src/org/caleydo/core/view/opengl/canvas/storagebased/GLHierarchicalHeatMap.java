@@ -193,6 +193,8 @@ public class GLHierarchicalHeatMap
 		bUseClusteredVA = false;
 
 		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
+		
+		createHeatMap();
 	}
 
 	@Override
@@ -214,7 +216,6 @@ public class GLHierarchicalHeatMap
 		if (set == null)
 			return;
 
-		createHeatMap();
 //		createDendrogram();
 
 		iNumberOfElements = set.getVA(iContentVAID).size();
@@ -676,7 +677,6 @@ public class GLHierarchicalHeatMap
 		GeneralManager.get().getUseCase().addView(glHeatMapView);
 		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setRenderedRemote(true);
-		glHeatMapView.initData();
 	}
 
 //	private void createDendrogram() {
@@ -2766,10 +2766,14 @@ public class GLHierarchicalHeatMap
 	public synchronized void initData() {
 
 		super.initData();
+		
 		initHierarchy();
 		calculateTextures();
 		initPosCursor();
-
+		
+		glHeatMapView.setSet(set);
+		glHeatMapView.initData();
+		
 		bRedrawTextures = true;
 	}
 

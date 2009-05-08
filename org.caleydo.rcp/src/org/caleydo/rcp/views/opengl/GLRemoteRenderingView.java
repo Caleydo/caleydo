@@ -62,10 +62,13 @@ public class GLRemoteRenderingView
 		GLRemoteRendering bucket = (GLRemoteRendering) createGLRemoteEventListener(
 			ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
 
-		SerializedHeatMapView heatMap = new SerializedHeatMapView();
-		bucket.addInitialRemoteView(heatMap);
-		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
-		bucket.addInitialRemoteView(parCoords);
+		// Only add parallel coordinates and heat map to bucket when not in pathway viewer mode.
+		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER) {
+			SerializedHeatMapView heatMap = new SerializedHeatMapView();
+			bucket.addInitialRemoteView(heatMap);
+			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
+			bucket.addInitialRemoteView(parCoords);			
+		}
 	}
 
 	@Override

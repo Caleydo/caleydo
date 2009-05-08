@@ -5,9 +5,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.file.FileOpenProjectAction;
@@ -59,10 +56,10 @@ public class CaleydoProjectWizard
 
 				useCase = new GeneticUseCase();
 				
-				if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-					Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
-				}
-				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
+//				if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
+//					Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
+//				}
+				if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
 					Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
 				}
 				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
@@ -129,20 +126,20 @@ public class CaleydoProjectWizard
 				.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-				.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-				// Remove heatmap and par coord views
-				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
-					.getAllGLEventListeners()) {
-					if (glEventListener instanceof GLHeatMap
-						|| glEventListener instanceof GLParallelCoordinates) {
-						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-							glEventListener);
-					}
-				}
-
-				this.performFinish();
-			}
+//			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+//				.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
+//				// Remove heatmap and par coord views
+//				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
+//					.getAllGLEventListeners()) {
+//					if (glEventListener instanceof GLHeatMap
+//						|| glEventListener instanceof GLParallelCoordinates) {
+//						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
+//							glEventListener);
+//					}
+//				}
+//
+//				this.performFinish();
+//			}
 		}
 
 		return page;
