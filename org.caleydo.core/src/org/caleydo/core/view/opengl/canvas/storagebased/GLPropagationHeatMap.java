@@ -8,9 +8,17 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.PropagationListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.TriggerPropagationCommandListener;
 
+/**
+ * The list heat map that shows elements on the right of a view that have been selected. It is registered to
+ * special listeners that are triggered in such a event. Other than that it is equivalent to the
+ * {@link GLHeatMap}
+ * 
+ * @author Alexander Lex
+ */
 public class GLPropagationHeatMap
 	extends GLHeatMap {
 
+	
 	protected PropagationListener propagationListener = null;
 	protected TriggerPropagationCommandListener triggerPropagationCommandListener = null;
 	

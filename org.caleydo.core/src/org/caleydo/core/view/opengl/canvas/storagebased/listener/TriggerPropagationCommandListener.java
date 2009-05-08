@@ -26,7 +26,7 @@ public class TriggerPropagationCommandListener
 				case DAVID:
 				case REFSEQ_MRNA_INT:
 				case EXPRESSION_INDEX:
-					// nothing to do
+					handler.handleContentTriggerSelectionCommand(type, selectionCommands);
 					break;
 				case EXPERIMENT_INDEX:
 					handler.handleStorageTriggerSelectionCommand(type, selectionCommands);

@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -104,7 +104,7 @@ public abstract class AGLEventListener
 
 	protected GeneralRenderStyle renderStyle;
 
-	protected GLIconTextureManager iconTextureManager;
+	protected TextureManager iconTextureManager;
 
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
@@ -171,7 +171,8 @@ public abstract class AGLEventListener
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
-		iconTextureManager = new GLIconTextureManager();
+		iconTextureManager = TextureManager.get();
+		contextMenu = ContextMenu.get();
 		contextMenu = ContextMenu.get();
 	}
 

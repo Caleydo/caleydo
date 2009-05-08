@@ -5,6 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -86,10 +87,14 @@ public class PickingManager {
 	 */
 	private class ViewSpecificPickingIDContainer {
 
-		HashMap<Integer, Integer> hashPickingIDToExternalID;
+		EnumMap<EPickingType, HashMap<Integer, Integer>> hashTypeToPickingIDToExternalID;
+		EnumMap<EPickingType, HashMap<Integer, Integer>> hashTypeToExternaldIDToPickingID;
 
 		public ViewSpecificPickingIDContainer() {
-			hashPickingIDToExternalID = new HashMap<Integer, Integer>();
+			hashTypeToPickingIDToExternalID =
+				new EnumMap<EPickingType, HashMap<Integer, Integer>>(EPickingType.class);
+			hashTypeToExternaldIDToPickingID =
+				new EnumMap<EPickingType, HashMap<Integer, Integer>>(EPickingType.class);
 		}
 
 		/**
@@ -98,18 +103,53 @@ public class PickingManager {
 		 * @param pickingID
 		 * @param externalID
 		 */
-		public void put(Integer pickingID, Integer externalID) {
+		public void put(EPickingType pickingType, Integer pickingID, Integer externalID) {
+			HashMap<Integer, Integer> hashPickingIDToExternalID =
+				hashTypeToPickingIDToExternalID.get(pickingType);
+			if (hashPickingIDToExternalID == null) {
+				hashPickingIDToExternalID = new HashMap<Integer, Integer>();
+				hashTypeToPickingIDToExternalID.put(pickingType, hashPickingIDToExternalID);
+			}
 			hashPickingIDToExternalID.put(pickingID, externalID);
+
+			HashMap<Integer, Integer> hashExternaldIDToPickingID =
+				hashTypeToExternaldIDToPickingID.get(pickingType);
+			if (hashExternaldIDToPickingID == null) {
+				hashExternaldIDToPickingID = new HashMap<Integer, Integer>();
+				hashTypeToExternaldIDToPickingID.put(pickingType, hashExternaldIDToPickingID);
+			}
+			hashExternaldIDToPickingID.put(externalID, pickingID);
 		}
 
 		/**
-		 * Returns the external ID associated with the provided pickingID
+		 * Returns the external ID associated with the provided pickingID and pickingType or null if no such
+		 * mapping exists
 		 * 
 		 * @param pickingID
-		 * @return the externalID
+		 * @param pickingType
+		 * @return the externalID or null
 		 */
-		public Integer getExternalID(Integer pickingID) {
-			return hashPickingIDToExternalID.get(pickingID);
+		public Integer getExternalID(EPickingType pickingType, Integer pickingID) {
+			HashMap<Integer, Integer> hashMap = hashTypeToPickingIDToExternalID.get(pickingType);
+			if (hashMap == null)
+				return null;
+
+			return hashMap.get(pickingID);
+		}
+
+		/**
+		 * Returns the picking ID associated with the provided external ID or null if no such mapping exists
+		 * 
+		 * @param pickingType
+		 * @param externalID
+		 * @return the pickingID or null
+		 */
+		public Integer getPickingID(EPickingType pickingType, Integer externalID) {
+			HashMap<Integer, Integer> hashMap = hashTypeToExternaldIDToPickingID.get(pickingType);
+			if (hashMap == null)
+				return null;
+
+			return hashMap.get(externalID);
 		}
 
 		/**
@@ -118,7 +158,13 @@ public class PickingManager {
 		 * @return all picking IDs
 		 */
 		public Set<Integer> getAllPickingIDs() {
-			return hashPickingIDToExternalID.keySet();
+			Set<Integer> set = new HashSet<Integer>();
+			for(EPickingType type : hashTypeToPickingIDToExternalID.keySet())
+			{
+				set.addAll(hashTypeToPickingIDToExternalID.get(type).keySet());
+			}
+				
+			return set;
 		}
 	}
 
@@ -185,14 +231,17 @@ public class PickingManager {
 	 */
 	public int getPickingID(int iViewID, EPickingType ePickingType, int iExternalID) {
 
-		int pickingID = calculateID();
 		ViewSpecificPickingIDContainer pickingIDContainer =
 			hashViewIDToViewSpecificPickingIDContainer.get(iViewID);
 		if (pickingIDContainer == null) {
 			pickingIDContainer = new ViewSpecificPickingIDContainer();
 			hashViewIDToViewSpecificPickingIDContainer.put(iViewID, pickingIDContainer);
 		}
-		pickingIDContainer.put(pickingID, iExternalID);
+		Integer pickingID = pickingIDContainer.getPickingID(ePickingType, iExternalID);
+		if (pickingID == null)
+			pickingID = calculateID();
+
+		pickingIDContainer.put(ePickingType, pickingID, iExternalID);
 		hashPickingIDToViewID.put(pickingID, new Pair<Integer, EPickingType>(iViewID, ePickingType));
 		return pickingID;
 	}
@@ -212,8 +261,7 @@ public class PickingManager {
 		if (bEnablePicking == false)
 			return;
 
-		GLMouseListener glMouseListener =
-			glView.getParentGLCanvas().getGLMouseListener();
+		GLMouseListener glMouseListener = glView.getParentGLCanvas().getGLMouseListener();
 
 		Point pickPoint = null;
 
@@ -232,7 +280,7 @@ public class PickingManager {
 		else if (glMouseListener.wasLeftMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.CLICKED;
-//			ContextMenu.get().flush();
+			// ContextMenu.get().flush();
 		}
 		else if (glMouseListener.wasRightMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();
@@ -390,8 +438,8 @@ public class PickingManager {
 	 *            the picking ID of which the external id mapping is desired
 	 * @return the external ID, null if no entry for that pickingID
 	 */
-	private Integer getExternalIDFromPickingID(int viewID, int pickingID) {
-		return hashViewIDToViewSpecificPickingIDContainer.get(viewID).getExternalID(pickingID);
+	private Integer getExternalIDFromPickingID(int viewID, EPickingType pickingType, int pickingID) {
+		return hashViewIDToViewSpecificPickingIDContainer.get(viewID).getExternalID(pickingType, pickingID);
 	}
 
 	/**
@@ -484,7 +532,7 @@ public class PickingManager {
 			int viewIDToUse = pickAssociatedValues.getFirst();
 
 			Pick pick =
-				new Pick(getExternalIDFromPickingID(viewIDToUse, pickingID), myMode, pickedPoint,
+				new Pick(getExternalIDFromPickingID(viewIDToUse, eType, pickingID), myMode, pickedPoint,
 					dragStartPoint, fMinimumZValue);
 
 			ViewSpecificHitListContainer hitContainer =

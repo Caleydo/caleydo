@@ -175,9 +175,6 @@ public abstract class AStorageBasedView
 
 		if (!mapVAIDs.isEmpty()) {
 
-			// This should be done once we get some thread safety, memory leak,
-			// and a big one
-
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
 				if (mapVAIDs.containsKey(eSelectionType)) {
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
@@ -393,7 +390,7 @@ public abstract class AStorageBasedView
 	public synchronized void setSet(ISet set) {
 		super.setSet(set);
 		
-		resetView();
+resetView();
 	}
 
 //	@Override
@@ -434,11 +431,13 @@ public abstract class AStorageBasedView
 	@Override
 	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		contentSelectionManager.executeSelectionCommands(selectionCommands);
+		setDisplayListDirty();
 	}
 	
 	@Override
 	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		storageSelectionManager.executeSelectionCommands(selectionCommands);
+		setDisplayListDirty();
 	}
 
 	/**

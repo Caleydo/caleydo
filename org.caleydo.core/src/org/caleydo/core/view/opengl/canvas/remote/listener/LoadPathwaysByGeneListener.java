@@ -1,8 +1,13 @@
 package org.caleydo.core.view.opengl.canvas.remote.listener;
 
+import java.util.Set;
+import java.util.logging.Level;
+
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 
 public class LoadPathwaysByGeneListener
@@ -14,7 +19,16 @@ public class LoadPathwaysByGeneListener
 			LoadPathwaysByGeneEvent loadEvent = (LoadPathwaysByGeneEvent) event;
 
 			if (loadEvent.getIdType() == EIDType.DAVID || loadEvent.getIdType() == EIDType.REFSEQ_MRNA_INT) {
-				handler.loadDependentPathways(GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(loadEvent.getIdType(), loadEvent.getGeneID()));
+				Set<PathwayGraph> pathwayGraphs =
+					GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(loadEvent.getIdType(),
+						loadEvent.getGeneID());
+				if (pathwayGraphs == null)
+				{
+					GeneralManager.get().getLogger().log(Level.WARNING,
+						"No mapping found for Gene ID to pathway graphs.");
+					return;
+				}
+				handler.loadDependentPathways(pathwayGraphs);
 			}
 			else
 				throw new IllegalStateException("Not implemented!");

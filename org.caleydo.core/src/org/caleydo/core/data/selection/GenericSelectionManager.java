@@ -284,7 +284,7 @@ public class GenericSelectionManager {
 	 * virtual array.
 	 * </p>
 	 * <p>
-	 * If you reset this virtual array at runtime the manager is completely reseted and reinitialized with the
+	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with the
 	 * data of the virtual array
 	 * </p>
 	 * 
@@ -298,8 +298,7 @@ public class GenericSelectionManager {
 	}
 
 	/**
-	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta Sets
-	 * virtual array to null
+	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears the virtual array.
 	 */
 	public void resetSelectionManager() {
 		hashSelectionTypes.clear();
@@ -307,6 +306,7 @@ public class GenericSelectionManager {
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
 		}
 		if (virtualArray != null) {
+			// null here?
 			virtualArray.clear();
 		}
 		selectionDelta = new SelectionDelta(internalIDType);
@@ -406,7 +406,7 @@ public class GenericSelectionManager {
 		// }
 
 		for (ESelectionType currentType : alSelectionTypes) {
-			// TODO: Please Alex check if the the second if statement is valid in all cases
+			// ignore if target == current, also MOUSE_OVEr does not override SELECTION
 			if (currentType == targetType || currentType == ESelectionType.SELECTION
 				&& targetType == ESelectionType.MOUSE_OVER) {
 				continue;

@@ -8,6 +8,15 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Shell;
 
 public class TreeClusterer
 	implements IClusterer {
@@ -38,6 +47,10 @@ public class TreeClusterer
 
 	private Tree<ClusterNode> tree;
 
+	private ProgressBar pbSimilarity;
+	private ProgressBar pbTreeClusterer;
+	private Shell shell;
+	
 	public TreeClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
 		this.similarities = new float[this.iNrSamples][this.iNrSamples];
@@ -64,10 +77,17 @@ public class TreeClusterer
 
 			bStart0 = true;
 
+			int iNrElements = contentVA.size();
+			pbSimilarity.setMinimum(0);
+			pbSimilarity.setMaximum(iNrElements);
+			
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
 
 			for (Integer iContentIndex1 : contentVA) {
+				
+				pbSimilarity.setSelection(icnt1);
+				
 				isto = 0;
 				for (Integer iStorageIndex1 : storageVA) {
 					dArInstance1[isto] =
@@ -96,11 +116,18 @@ public class TreeClusterer
 		else {
 
 			bStart0 = false;
+			
+			int iNrElements = storageVA.size();
+			pbSimilarity.setMinimum(0);
+			pbSimilarity.setMaximum(iNrElements);
 
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
 			for (Integer iStorageIndex1 : storageVA) {
+				
+				pbSimilarity.setSelection(icnt1);
+				
 				isto = 0;
 				for (Integer iContentIndex1 : contentVA) {
 					dArInstance1[isto] =
@@ -196,10 +223,15 @@ public class TreeClusterer
 		float[][] distmatrix = new float[iNrSamples][iNrSamples];
 		distmatrix = similarities.clone();
 
+		pbTreeClusterer.setMinimum(0);
+		pbTreeClusterer.setMaximum(iNrSamples);
+		
 		for (int n = iNrSamples; n > 1; n--) {
 			int sum;
 			int is = 1;
 			int js = 0;
+			
+			pbTreeClusterer.setSelection(n);
 
 			pair = find_closest_pair(n, distmatrix);
 
@@ -544,11 +576,48 @@ public class TreeClusterer
 
 	}
 
+	private void buildProgressBar() {
+
+		shell = new Shell();
+
+		Composite composite = new Composite(shell, SWT.NONE);
+		GridLayout layout = new GridLayout(3, false);
+		composite.setLayout(layout);
+		composite.setFocus();
+
+		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		inputFileGroup.setText("Progress");
+		inputFileGroup.setLayout(new RowLayout(4));
+		GridData gridData = new GridData(GridData.FILL_VERTICAL);
+		gridData.horizontalSpan = 3;
+		inputFileGroup.setLayoutData(gridData);
+
+		Label label = new Label(inputFileGroup, SWT.NULL);
+		label.setText("Determine similarties in progress");
+		label.setAlignment(SWT.RIGHT);
+
+		pbSimilarity = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+
+		Label label2 = new Label(inputFileGroup, SWT.NULL);
+		label2.setText("Affinity propagation in progress");
+		label2.setAlignment(SWT.RIGHT);
+
+		pbTreeClusterer = new ProgressBar(inputFileGroup, SWT.SMOOTH);
+		
+		composite.pack();
+
+		shell.pack();
+		shell.open();
+	}
+
+	
 	@Override
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
+		buildProgressBar();
+		
 		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
 
 		this.set = set;
@@ -558,6 +627,8 @@ public class TreeClusterer
 		// VAId = pmlcluster(clusterState.getClustererType());
 		VAId = palcluster(clusterState.getClustererType());
 
+		shell.close();
+		
 		return VAId;
 	}
 }

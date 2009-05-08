@@ -1,4 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.remote.bucket;
+/**
+ *  This class implements the renderConnectionLines method which is the same for all connection
+ *  graph types. renderLinBundling is forwarded to the specific graph drawing classes 
+ */
+
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;

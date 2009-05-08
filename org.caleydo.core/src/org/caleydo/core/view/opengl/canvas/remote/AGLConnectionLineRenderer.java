@@ -426,6 +426,10 @@ public abstract class AGLConnectionLineRenderer {
 		return vecTransformedPoint;
 	}
 	
+	/**
+	 * Sets ID of view in which the mouse cursor is currently positioned
+	 * @param viewID ID of current active View
+	 */
 	public void setActiveViewID(int viewID){
 		activeViewID = viewID;
 	}

@@ -38,8 +38,8 @@ public class HierarchicalHeatMapToolBarContent
 		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
 		actionList.add(startClustering);
 
-		IToolBarItem mergeGroup = new MergeClasses(targetViewID);
-		actionList.add(mergeGroup);
+//		IToolBarItem mergeGroup = new MergeClasses(targetViewID);
+//		actionList.add(mergeGroup);
 		
 		IToolBarItem activateGroup = new ActivateGroupHandling(targetViewID);
 		actionList.add(activateGroup);

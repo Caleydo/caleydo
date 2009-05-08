@@ -15,7 +15,9 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
 /**
  * Specialized connection line renderer drawing consecutive graphs to bucket view.
- * 
+ * Connection lines between bundling points are always drawn in the following order:
+ * if mouse position is in stackLevel: connect stackLevel elements counterclockwise and then connect to focusLevel
+ * if mouse position is in focusLevel: connect focusLevel to stackLevel and then counterclockwise through stackLevel
  */
 public class GLConsecutiveConnectionGraphDrawing
 	extends BucketGraphDrawingAdapter {

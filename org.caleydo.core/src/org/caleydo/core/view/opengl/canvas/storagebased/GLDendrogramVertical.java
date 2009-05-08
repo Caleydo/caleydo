@@ -796,4 +796,9 @@ public class GLDendrogramVertical
 
 		setDisplayListDirty();
 	}
+	
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
 }
