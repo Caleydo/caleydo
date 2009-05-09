@@ -187,7 +187,7 @@ public class AnimationParentRootElement
 		// TODO: if new colormode is introduced, use correct colormapping, also use target color from renderstyle
 		
 		float fArRGB[];
-		if(DrawingStrategyManager.get().isRainbowStrategyDefault()) {
+		if(DrawingStrategyManager.get().getDefaultStrategyType() == DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW) {
 			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
 			fArRGB = cmRainbow.getColor(fCurrentMidAngle / 360);
 		}

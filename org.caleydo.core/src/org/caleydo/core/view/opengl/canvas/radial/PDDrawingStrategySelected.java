@@ -7,7 +7,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 
 public class PDDrawingStrategySelected
-	extends PDDrawingStrategy {
+	extends PDDrawingStrategyChildIndicator {
 	
 	public PDDrawingStrategySelected(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
@@ -24,12 +24,19 @@ public class PDDrawingStrategySelected
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
+				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
+		}
+		
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
 		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR, 0);
 		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
 			RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
+
 		gl.glPopAttrib();
 		gl.glPopName();
 
@@ -54,6 +61,10 @@ public class PDDrawingStrategySelected
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
+		}
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,

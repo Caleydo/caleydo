@@ -13,7 +13,7 @@ public class ClusterNodeMouseOverListener
 		
 		if (event instanceof ClusterNodeMouseOverEvent) {
 			ClusterNodeMouseOverEvent mouseOverEvent = (ClusterNodeMouseOverEvent) event;
-			handler.handleMouseOver(mouseOverEvent.getClusterNodeName());
+			handler.handleMouseOver(mouseOverEvent.getClusterNumber());
 		}
 	}
 

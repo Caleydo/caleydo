@@ -3,6 +3,10 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
+
 
 public class PDDrawingStrategyLabelDecorator
 	extends PDDrawingStrategyDecorator {
@@ -18,8 +22,40 @@ public class PDDrawingStrategyLabelDecorator
 		}
 
 		Label label = new Label(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
-		label.addLine(pdDiscToDraw.getName());
-		label.addLine("Coefficient: " + pdDiscToDraw.getCoefficient());
+		
+		TextItem nameItem = new TextItem(pdDiscToDraw.getName());
+		LabelLine firstLine = new LabelLine();
+		firstLine.addLabelItem(nameItem);
+		
+		TextItem coefficientItem = new TextItem("Coefficient: " + pdDiscToDraw.getCoefficient());
+		LabelLine secondLine = new LabelLine();
+		secondLine.addLabelItem(coefficientItem);
+		
+		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
+		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
+		ColorMapping cmExpression =
+			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		
+		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue - fStandardDeviation);
+		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1);
+		
+		fArRGB = cmExpression.getColor(fAverageExpressionValue);
+		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1);
+		
+		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
+		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
+		
+		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
+		LabelLine thirdLine = new LabelLine();
+		thirdLine.addLabelItem(meanItem);
+		thirdLine.addLabelItem(leftRectangleItem);
+		thirdLine.addLabelItem(middleRectangleItem);
+		thirdLine.addLabelItem(rightRectangleItem);
+		
+		label.addLine(firstLine);
+		label.addLine(secondLine);
+		label.addLine(thirdLine);
+		
 		LabelManager.get().addLabel(label);
 	}
 
@@ -43,8 +79,39 @@ public class PDDrawingStrategyLabelDecorator
 		Label label =
 			new Label(fSegmentXCenter, fSegmentYCenter, fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
 
-		label.addLine(pdDiscToDraw.getName());
-		label.addLine("Coefficient: " + pdDiscToDraw.getCoefficient());
+		TextItem nameItem = new TextItem(pdDiscToDraw.getName());
+		LabelLine firstLine = new LabelLine();
+		firstLine.addLabelItem(nameItem);
+		
+		TextItem coefficientItem = new TextItem("Coefficient: " + pdDiscToDraw.getCoefficient());
+		LabelLine secondLine = new LabelLine();
+		secondLine.addLabelItem(coefficientItem);
+		
+		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
+		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
+		ColorMapping cmExpression =
+			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		
+		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue - fStandardDeviation);
+		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1);
+		
+		fArRGB = cmExpression.getColor(fAverageExpressionValue);
+		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1);
+		
+		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
+		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
+		
+		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
+		LabelLine thirdLine = new LabelLine();
+		thirdLine.addLabelItem(meanItem);
+		thirdLine.addLabelItem(leftRectangleItem);
+		thirdLine.addLabelItem(middleRectangleItem);
+		thirdLine.addLabelItem(rightRectangleItem);
+		
+		label.addLine(firstLine);
+		label.addLine(secondLine);
+		label.addLine(thirdLine);
+		
 		LabelManager.get().addLabel(label);
 	}
 

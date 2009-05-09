@@ -147,11 +147,12 @@ public class LabelManager {
 			lcMouseOver = labelContainer;
 		}
 
-		ArrayList<String> alLines = label.getLines();
-
-		for (String currentLine : alLines) {
-			labelContainer.addTextLine(currentLine);
-		}
+		labelContainer.addLabelLines(label.getLines());
+//		ArrayList<LabelLine> alLines = label.getLines();
+//
+//		for (LabelLine currentLine : alLines) {
+//			labelContainer.addTextLine(currentLine);
+//		}
 
 		if (labelContainer.getTop() > fScreenHeight) {
 			labelContainer.setContainerPosition(labelContainer.getLeft(), fScreenHeight

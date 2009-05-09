@@ -5,14 +5,14 @@ import org.caleydo.core.manager.event.AEvent;
 public class ClusterNodeMouseOverEvent
 	extends AEvent {
 
-	private String sClusterNodeName;
+	private int iClusterNumber;
 
-	public String getClusterNodeName() {
-		return sClusterNodeName;
+	public int getClusterNumber() {
+		return iClusterNumber;
 	}
 
-	public void setClusterNodeName(String sClusterNodeName) {
-		this.sClusterNodeName = sClusterNodeName;
+	public void setClusterNumber(int iClusterNumber) {
+		this.iClusterNumber = iClusterNumber;
 	}
 	
 }

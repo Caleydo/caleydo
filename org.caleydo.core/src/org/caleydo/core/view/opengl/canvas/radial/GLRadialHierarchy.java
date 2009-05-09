@@ -119,8 +119,8 @@ public class GLRadialHierarchy
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
@@ -142,11 +142,11 @@ public class GLRadialHierarchy
 			for (ClusterNode cnChild : alChildNodes) {
 				iChildID++;
 				PartialDisc pdCurrentChildDisc =
-					new PartialDisc(iChildID, cnChild.getNrElements(), partialDiscTree, cnChild);
+					new PartialDisc(cnChild.getClusterNr(), cnChild.getNrElements(), partialDiscTree, cnChild);
 				try {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
-					hashPartialDiscs.put(iChildID, pdCurrentChildDisc);
+					hashPartialDiscs.put(cnChild.getClusterNr(), pdCurrentChildDisc);
 					iChildID += buildTree(tree, cnChild, pdCurrentChildDisc, iChildID);
 				}
 				catch (Exception e) {
@@ -167,9 +167,10 @@ public class GLRadialHierarchy
 		tree = treePorter.importTree("data/clustering/tree.xml");
 
 		ClusterNode cnRoot = tree.getRoot();
-		PartialDisc pdRoot = new PartialDisc(childID, cnRoot.getNrElements(), partialDiscTree, cnRoot);
+		PartialDisc pdRoot =
+			new PartialDisc(cnRoot.getClusterNr(), cnRoot.getNrElements(), partialDiscTree, cnRoot);
 		partialDiscTree.setRootNode(pdRoot);
-		hashPartialDiscs.put(childID, pdRoot);
+		hashPartialDiscs.put(cnRoot.getClusterNr(), pdRoot);
 		buildTree(tree, cnRoot, pdRoot, childID);
 
 		// pdRoot.calculateSizes();
@@ -616,17 +617,19 @@ public class GLRadialHierarchy
 	}
 
 	public void goForthInHistory() {
+		//handleMouseOver(10);
 		navigationHistory.goForth();
 	}
 
 	public void changeColorMode() {
 
 		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
-		if (drawingStrategyManager.isRainbowStrategyDefault()) {
-			drawingStrategyManager.setExpressionStrategyDefault();
+		if (drawingStrategyManager.getDefaultStrategyType() == DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW) {
+			drawingStrategyManager
+				.setDefaultStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_EXPRESSION_COLOR);
 		}
 		else {
-			drawingStrategyManager.setRainbowStrategyDefault();
+			drawingStrategyManager.setDefaultStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
 		}
 		setDisplayListDirty();
 	}
@@ -711,11 +714,13 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public void handleMouseOver(String clusterNodeName) {
-		// pdCurrentSelectedElement = pdRealRootElement;
-		// pdCurrentMouseOverElement = pdRealRootElement;
-		// setDisplayListDirty();
-
+	public void handleMouseOver(int iClusterNumber) {
+		PartialDisc pdMouseOver = hashPartialDiscs.get(iClusterNumber);
+		if (pdMouseOver != null) {
+			pdCurrentMouseOverElement = pdMouseOver;
+			drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
+			setDisplayListDirty();
+		}
 	}
 
 }

@@ -153,7 +153,7 @@ public class PartialDisc
 		fCurrentStartAngle = fStartAngle;
 		fCurrentWidth = fWidth;
 	}
-	
+
 	public int getElementID() {
 		return iElementID;
 	}
@@ -194,6 +194,28 @@ public class PartialDisc
 			return true;
 		}
 		return pdCurrentParent.hasParent(pdParent, iDepth - 1);
+	}
+
+	public ArrayList<PartialDisc> getParentPath(PartialDisc pdParent) {
+		ArrayList<PartialDisc> alParentPath = new ArrayList<PartialDisc>();
+		return getParentPath(pdParent, alParentPath);
+	}
+
+	private ArrayList<PartialDisc> getParentPath(PartialDisc pdParent, ArrayList<PartialDisc> alParentPath) {
+		
+		PartialDisc pdCurrentParent = partialDiscTree.getParent(this);
+
+		if (pdCurrentParent == null) {
+			return null;
+		}
+		
+		alParentPath.add(pdCurrentParent);
+		
+		if (pdCurrentParent == pdParent) {
+			return alParentPath;
+		}
+		
+		return pdCurrentParent.getParentPath(pdParent, alParentPath);
 	}
 
 	public PartialDisc getParent() {
@@ -248,6 +270,10 @@ public class PartialDisc
 	public float getAverageExpressionValue() {
 		return clusterNode.getAverageExpressionValue();
 	}
+	
+	public float getStandardDeviation() {
+		return clusterNode.getStandardDeviation();
+	}
 
 	@Override
 	public int compareTo(PartialDisc disc) {
@@ -266,7 +292,7 @@ public class PartialDisc
 		// iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
 		// }
 		return getHierarchyDepth(0, iMaxDepthToSearch);
-		//return clusterNode.getDepth();
+		// return clusterNode.getDepth();
 	}
 
 	private int getHierarchyDepth(int iCurDepth, int iMaxDepthToSearch) {

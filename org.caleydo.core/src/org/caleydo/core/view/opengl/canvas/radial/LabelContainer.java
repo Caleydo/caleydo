@@ -1,73 +1,70 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
-import gleem.linalg.Vec2f;
-
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-
 public class LabelContainer {
-	
-	private static float CONTAINER_BOUNDARY_SPACING = 0.02f;
-	private static float CONTAINER_LINE_SPACING = 0.01f;
-	
+
+	private static float CONTAINER_BOUNDARY_SPACING = 0.03f;
+	private static float CONTAINER_LINE_SPACING = 0.02f;
+
 	private float fWidth;
 	private float fHeight;
 	private float fXContainerLeft;
 	private float fYContainerCenter;
 	private float fLabelScaling;
 
-	private ArrayList<String> alLineTexts;
-	private ArrayList<Vec2f> alLinePositions;
-	private ArrayList<Float> alLineHeights;
+	private ArrayList<LabelLine> alLabelLines;
 	private TextRenderer textRenderer;
 
-	public LabelContainer(float fXContainerLeft, float fYContainerCenter, float fLabelScaling, TextRenderer textRenderer) {
+	public LabelContainer(float fXContainerLeft, float fYContainerCenter, float fLabelScaling,
+		TextRenderer textRenderer) {
 
 		this.fXContainerLeft = fXContainerLeft;
 		this.fYContainerCenter = fYContainerCenter;
 		this.fLabelScaling = fLabelScaling;
 		this.textRenderer = textRenderer;
-		alLineTexts = new ArrayList<String>();
-		alLinePositions = new ArrayList<Vec2f>();
-		alLineHeights = new ArrayList<Float>();
+		alLabelLines = new ArrayList<LabelLine>();
 		fWidth = 0;
 		fHeight = 0;
 	}
 
-	public void addTextLine(String sText) {
+	public void addLabelLines(ArrayList<LabelLine> alLines) {
 
-		Rectangle2D bounds = textRenderer.getBounds(sText);
-		float fTextHeight = (float) bounds.getHeight() * fLabelScaling;
-		float fTextWidth = (float) bounds.getWidth() * fLabelScaling;
-		float fYLinePosition;
+		for (LabelLine currentLine : alLines) {
+			currentLine.calculateSize(textRenderer, fLabelScaling);
+			addLine(currentLine);
+		}
+	}
 
-		if ((fTextWidth + 2.0f * CONTAINER_BOUNDARY_SPACING) > fWidth) {
-			fWidth = 2.0f * CONTAINER_BOUNDARY_SPACING + fTextWidth;
+	public void addLine(LabelLine labelLine) {
+
+		float fLineHeight = labelLine.getHeight();
+		float fLineWidth = labelLine.getWidth();
+
+		if ((fLineWidth + 2.0f * CONTAINER_BOUNDARY_SPACING) > fWidth) {
+			fWidth = fLineWidth + 2.0f * CONTAINER_BOUNDARY_SPACING;
 		}
 
 		float fXLinePosition = fXContainerLeft + CONTAINER_BOUNDARY_SPACING;
+		float fYLinePosition;
 
-		if (alLineTexts.size() == 0) {
-			fHeight += 2.0f * CONTAINER_BOUNDARY_SPACING + fTextHeight;
-			fYLinePosition =
-				fYContainerCenter + (fHeight / 2.0f) - CONTAINER_BOUNDARY_SPACING - fTextHeight;
+		if (alLabelLines.size() == 0) {
+			fHeight += 2.0f * CONTAINER_BOUNDARY_SPACING + fLineHeight;
+			fYLinePosition = fYContainerCenter + (fHeight / 2.0f) - CONTAINER_BOUNDARY_SPACING - fLineHeight;
 		}
 		else {
-			fHeight += CONTAINER_LINE_SPACING + fTextHeight;
+			fHeight += CONTAINER_LINE_SPACING + fLineHeight;
 			updateLinePositions();
-			fYLinePosition =
-				alLinePositions.get(alLinePositions.size() - 1).y() - CONTAINER_LINE_SPACING
-					- fTextHeight;
+			LabelLine lastLine = alLabelLines.get(alLabelLines.size() - 1);
+			fYLinePosition = lastLine.getPosition().y() - CONTAINER_LINE_SPACING - fLineHeight;
 		}
-
-		alLineTexts.add(sText);
-		alLinePositions.add(new Vec2f(fXLinePosition, fYLinePosition));
-		alLineHeights.add(new Float(fTextHeight));
+		
+		labelLine.setPosition(fXLinePosition, fYLinePosition);
+		alLabelLines.add(labelLine);
 	}
 
 	public void setContainerPosition(float fXContainerLeft, float fYContainerCenter) {
@@ -78,21 +75,21 @@ public class LabelContainer {
 
 	private void updateLinePositions() {
 
-		if (alLineTexts.size() == 0) {
+		if (alLabelLines.size() == 0) {
 			return;
 		}
 		else {
 			float fXLinePosition = fXContainerLeft + CONTAINER_BOUNDARY_SPACING;
 
-			Vec2f vecCurrentPosition = alLinePositions.get(0);
-			float fCurrentYPosition =
-				fYContainerCenter + (fHeight / 2.0f) - CONTAINER_BOUNDARY_SPACING - alLineHeights.get(0);
-			vecCurrentPosition.set(fXLinePosition, fCurrentYPosition);
+			LabelLine firstLine = alLabelLines.get(0);
+			float fYLinePosition =
+				fYContainerCenter + (fHeight / 2.0f) - CONTAINER_BOUNDARY_SPACING - firstLine.getHeight();
+			firstLine.setPosition(fXLinePosition, fYLinePosition);
 
-			for (int i = 1; i < alLinePositions.size(); i++) {
-				vecCurrentPosition = alLinePositions.get(i);
-				vecCurrentPosition.set(fXLinePosition, alLinePositions.get(i - 1).y()
-					- CONTAINER_LINE_SPACING - alLineHeights.get(i));
+			for (int i = 1; i < alLabelLines.size(); i++) {
+				LabelLine currentLine = alLabelLines.get(i);
+				fYLinePosition -= (currentLine.getHeight() + CONTAINER_LINE_SPACING);
+				currentLine.setPosition(fXLinePosition, fYLinePosition);
 			}
 		}
 	}
@@ -105,15 +102,15 @@ public class LabelContainer {
 		}
 		return true;
 	}
-	
+
 	public void draw(GL gl, boolean bDrawLabelBackground) {
-		
+
 		gl.glLoadIdentity();
-		
-		if(bDrawLabelBackground) {
+
+		if (bDrawLabelBackground) {
 			gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 			gl.glColor4f(1, 1, 1, 0.4f);
-			
+
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(fXContainerLeft, getTop(), 0);
 			gl.glVertex3f(getRight(), getTop(), 0);
@@ -122,23 +119,10 @@ public class LabelContainer {
 			gl.glEnd();
 			gl.glPopAttrib();
 		}
-		textRenderer.setColor(0.2f, 0.2f, 0.2f, 1);
-		textRenderer.begin3DRendering();
-		for (int i = 0; i < alLineTexts.size(); i++) {
-			textRenderer.draw3D(alLineTexts.get(i), alLinePositions.get(i).x(), alLinePositions.get(i).y(),
-				0, fLabelScaling);
-		}
-		textRenderer.end3DRendering();
-		textRenderer.flush();
 		
-	}
-
-	public ArrayList<String> getLineTexts() {
-		return alLineTexts;
-	}
-
-	public ArrayList<Vec2f> getLinePositions() {
-		return alLinePositions;
+		for(LabelLine currentLine : alLabelLines) {
+			currentLine.draw(gl);
+		}
 	}
 
 	public float getWidth() {
@@ -169,12 +153,12 @@ public class LabelContainer {
 		return fXContainerLeft + fWidth;
 	}
 
-	public float getFLabelScaling() {
+	public float getLabelScaling() {
 		return fLabelScaling;
 	}
 
-	public void setFLabelScaling(float labelScaling) {
-		fLabelScaling = labelScaling;
+	public void setLabelScaling(float fLabelScaling) {
+		this.fLabelScaling = fLabelScaling;
 	}
-	
+
 }

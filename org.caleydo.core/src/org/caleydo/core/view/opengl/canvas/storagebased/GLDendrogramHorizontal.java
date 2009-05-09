@@ -680,7 +680,7 @@ public class GLDendrogramHorizontal
 						ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
 						event.setSender(this);
 
-						event.setClusterNodeName(tree.getNodeByNumber(iExternalID).getNodeName());
+						event.setClusterNumber(tree.getNodeByNumber(iExternalID).getClusterNr());
 						eventPublisher.triggerEvent(event);
 					}
 				}
@@ -829,10 +829,10 @@ public class GLDendrogramHorizontal
 		tree = null;
 	}
 
-	@Override
-	public void handleMouseOver(String clusterNodeName) {
-		// System.out.println(clusterNodeName);
-	}
+	
+//	public void handleMouseOver(String clusterNodeName) {
+//		// System.out.println(clusterNodeName);
+//	}
 
 	private void resetAllTreeSelections() {
 		resetAllTreeSelectionsRec(tree.getRoot());
@@ -849,6 +849,7 @@ public class GLDendrogramHorizontal
 		}
 	}
 
+	@Override
 	public void handleMouseOver(int clusterNr) {
 		if (tree.getNodeByNumber(clusterNr) != null)
 			tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);

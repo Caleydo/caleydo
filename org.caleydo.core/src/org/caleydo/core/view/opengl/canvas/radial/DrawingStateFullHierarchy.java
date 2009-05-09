@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
@@ -35,26 +37,58 @@ public class DrawingStateFullHierarchy
 
 		float fHierarchyOuterRadius = Math.min(fXCenter * 0.9f, fYCenter * 0.9f);
 		float fDiscWidth = fHierarchyOuterRadius / iDisplayedHierarchyDepth;
+		boolean bIsMouseOverElementDisplayed = true;
+		boolean bIsMouseOverElementParentOfCurrentRoot = false;
 
 		if (pdCurrentMouseOverElement != null) {
-			PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
-			dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDefaultDrawingStrategy());
-			pdCurrentMouseOverElement.setPDDrawingStrategyChildren(dsLabelDecorator, 3);
 
-			// dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
-			// dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
-			// DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED));
-			// pdCurrentMouseOverElement.setPDDrawingStrategy(dsLabelDecorator);
+			if (pdCurrentMouseOverElement != pdCurrentRootElement) {
+				ArrayList<PartialDisc> alParentPath =
+					pdCurrentMouseOverElement.getParentPath(pdCurrentRootElement);
+				if (alParentPath != null) {
+					if (alParentPath.size() >= iDisplayedHierarchyDepth) {
+						DrawingStrategyManager drawingStategyManager = DrawingStrategyManager.get();
+						PDDrawingStrategyChildIndicator dsDefault =
+							(PDDrawingStrategyChildIndicator) drawingStategyManager
+								.createDrawingStrategy(drawingStategyManager.getDefaultStrategyType());
+
+						dsDefault.setChildIndicatorColor(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR);
+						alParentPath.get(alParentPath.size() - iDisplayedHierarchyDepth)
+							.setPDDrawingStrategy(dsDefault);
+						bIsMouseOverElementDisplayed = false;
+					}
+				}
+				else {
+					bIsMouseOverElementParentOfCurrentRoot = true;
+					bIsMouseOverElementDisplayed = false;					
+				}
+			}
+			
+			if(bIsMouseOverElementDisplayed) {
+				PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+				dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDefaultDrawingStrategy());
+				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(dsLabelDecorator, 3);
+			}
 		}
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, fDiscWidth, iDisplayedHierarchyDepth);
 
 		// The mouse over element has to be drawn (again in using different drawing strategy) at last for
 		// correct antialiasing
-		PDDrawingStrategy dsSelected =
-			DrawingStrategyManager.get().getDrawingStrategy(
-				DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED);
-		dsSelected.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
+		if(bIsMouseOverElementDisplayed) {
+			PDDrawingStrategy dsSelected =
+				DrawingStrategyManager.get().getDrawingStrategy(
+					DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED);
+			dsSelected.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
+		}
+		
+		if(bIsMouseOverElementParentOfCurrentRoot) {
+			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
+			gl.glColor3fv(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR, 0);
+			GLPrimitives.renderCircle(gl, glu, fDiscWidth/2.0f, 100);
+			GLPrimitives.renderCircleBorder(gl, glu, fDiscWidth/2.0f, 100, 2);
+			gl.glPopAttrib();
+		}
 
 		LabelManager.get().drawAllLabels(gl, glu, fXCenter * 2.0f, fYCenter * 2.0f, fHierarchyOuterRadius);
 		LabelManager.get().clearLabels();
@@ -107,7 +141,7 @@ public class DrawingStateFullHierarchy
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
 		event.setSender(this);
-		event.setClusterNodeName(pdMouseOver.getName());
+		event.setClusterNumber(pdMouseOver.getElementID());
 
 		eventPublisher.triggerEvent(event);
 	}

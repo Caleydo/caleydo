@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
 import java.util.HashMap;
-
 import org.caleydo.core.manager.picking.PickingManager;
 
 public final class DrawingStrategyManager {
@@ -11,33 +10,34 @@ public final class DrawingStrategyManager {
 	public static final int PD_DRAWING_STRATEGY_FIXED_COLOR = 2;
 	public static final int PD_DRAWING_STRATEGY_TRANSPARENT = 3;
 	public static final int PD_DRAWING_STRATEGY_LABEL_DECORATOR = 4;
-	public static final int PD_DRAWING_STRATEGY_CHILD_INDICATOR_DECORATOR = 5;
 	public static final int PD_DRAWING_STRATEGY_EXPRESSION_COLOR = 5;
 
 	private static DrawingStrategyManager instance;
 	private HashMap<Integer, PDDrawingStrategy> hashDrawingStrategies;
-	PDDrawingStrategy dsDefault;
-	PDDrawingStrategyChildIndicatorDecorator dsRainbowChildDecorator;
-	PDDrawingStrategyChildIndicatorDecorator dsExpressionChildDecorator;
+	private PDDrawingStrategy dsDefault;
+	private PDDrawingStrategyChildIndicator dsRainbow;
+	private PDDrawingStrategyChildIndicator dsExpressionColor;
+	private PickingManager pickingManager;
+	private int iViewID;
+	private int iDefaultStrategyType;
+	
 
 	private DrawingStrategyManager(PickingManager pickingManager, int iViewID) {
 		
+		this.pickingManager = pickingManager;
+		this.iViewID = iViewID;
+		
 		hashDrawingStrategies = new HashMap<Integer, PDDrawingStrategy>();
-		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_RAINBOW, new PDDrawingStrategyRainbow(pickingManager, iViewID));
+		dsRainbow = new PDDrawingStrategyRainbow(pickingManager, iViewID);
+		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_RAINBOW, dsRainbow);
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_SELECTED, new PDDrawingStrategySelected(pickingManager, iViewID));
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_FIXED_COLOR, new PDDrawingStrategyFixedColor(pickingManager, iViewID));
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_TRANSPARENT, new PDDrawingStrategyTransparent(pickingManager, iViewID));
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_LABEL_DECORATOR, new PDDrawingStrategyLabelDecorator());
-		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_CHILD_INDICATOR_DECORATOR,
-			new PDDrawingStrategyChildIndicatorDecorator(pickingManager, iViewID));
-		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_EXPRESSION_COLOR, new PDDrawingStrategyExpressionColor(pickingManager, iViewID));
-
-		dsRainbowChildDecorator = new PDDrawingStrategyChildIndicatorDecorator(pickingManager, iViewID);
-		dsRainbowChildDecorator.setDrawingStrategy(hashDrawingStrategies.get(PD_DRAWING_STRATEGY_RAINBOW));
-		dsExpressionChildDecorator = new PDDrawingStrategyChildIndicatorDecorator(pickingManager, iViewID);
-		dsExpressionChildDecorator.setDrawingStrategy(hashDrawingStrategies.get(PD_DRAWING_STRATEGY_EXPRESSION_COLOR));
-	
-		dsDefault = dsExpressionChildDecorator;
+		dsExpressionColor = new PDDrawingStrategyExpressionColor(pickingManager, iViewID);
+		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_EXPRESSION_COLOR, dsExpressionColor);
+		dsDefault = dsExpressionColor;
+		iDefaultStrategyType = PD_DRAWING_STRATEGY_EXPRESSION_COLOR;
 	}
 	
 	public synchronized static void init(PickingManager pickingManager, int iViewID) {
@@ -46,8 +46,20 @@ public final class DrawingStrategyManager {
 		}
 	}
 
-	public synchronized static DrawingStrategyManager get() {
+	public static DrawingStrategyManager get() {
 		return instance;
+	}
+	
+	public PDDrawingStrategy createDrawingStrategy(int iDrawingStrategyType) {
+		switch(iDrawingStrategyType) {
+			case PD_DRAWING_STRATEGY_RAINBOW: return new PDDrawingStrategyRainbow(pickingManager, iViewID);
+			case PD_DRAWING_STRATEGY_SELECTED: return new PDDrawingStrategySelected(pickingManager, iViewID);
+			case PD_DRAWING_STRATEGY_FIXED_COLOR: return new PDDrawingStrategyFixedColor(pickingManager, iViewID);
+			case PD_DRAWING_STRATEGY_TRANSPARENT: return new PDDrawingStrategyTransparent(pickingManager, iViewID);
+			case PD_DRAWING_STRATEGY_LABEL_DECORATOR: return new PDDrawingStrategyLabelDecorator();
+			case PD_DRAWING_STRATEGY_EXPRESSION_COLOR: return new PDDrawingStrategyExpressionColor(pickingManager, iViewID);
+			default: return null;
+		}
 	}
 
 	public PDDrawingStrategy getDrawingStrategy(int iDrawingStrategyType) {
@@ -58,15 +70,12 @@ public final class DrawingStrategyManager {
 		return dsDefault;
 	}
 
-	public void setRainbowStrategyDefault() {
-		dsDefault = dsRainbowChildDecorator;
+	public void setDefaultStrategy(int iDrawingStrategyType) {
+		dsDefault = hashDrawingStrategies.get(iDrawingStrategyType);
+		iDefaultStrategyType = iDrawingStrategyType;
 	}
 	
-	public void setExpressionStrategyDefault() {
-		dsDefault = dsExpressionChildDecorator;
-	}
-	
-	boolean isRainbowStrategyDefault() {
-		return dsDefault == dsRainbowChildDecorator;
+	public int getDefaultStrategyType() {
+		return iDefaultStrategyType;
 	}
 }

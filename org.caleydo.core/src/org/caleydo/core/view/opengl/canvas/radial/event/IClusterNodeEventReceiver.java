@@ -8,5 +8,5 @@ package org.caleydo.core.view.opengl.canvas.radial.event;
 
 public interface IClusterNodeEventReceiver {
 
-	public void handleMouseOver(String sClusterNodeName);
+	public void handleMouseOver(int iClusterNumber);
 }
