@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -21,6 +20,7 @@ import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
 import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -28,6 +28,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -153,7 +154,7 @@ public class Application
 				new WizardDialog(shell, new InternetConfigurationWizard());
 			internetConfigurationWizard.open();
 		}
-
+		
 		// If no file is provided as command line argument a XML file open
 		// dialog is opened
 		if (sCaleydoXMLfile.equals("")) {
@@ -220,14 +221,15 @@ public class Application
 	private void shutDown() {
 		// Save preferences before shutdown
 		try {
-			GeneralManager.get().getLogger().log(Level.INFO, "Save Caleydo preferences...");
+			GeneralManager.get().getLogger().log(new Status(Status.WARNING, Activator.PLUGIN_ID,
+				"Save Caleydo preferences..."));
 			GeneralManager.get().getPreferenceStore().save();
 		}
 		catch (IOException e) {
 			throw new IllegalStateException("Unable to save preference file.");
 		}
 
-		GeneralManager.get().getLogger().log(Level.INFO, "Bye bye!");
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, "Bye bye!"));
 		// display.dispose();
 	}
 

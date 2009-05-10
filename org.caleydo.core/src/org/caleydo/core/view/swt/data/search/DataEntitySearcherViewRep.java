@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.data.search;
 
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
@@ -21,6 +20,7 @@ import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -138,7 +138,8 @@ public class DataEntitySearcherViewRep
 			generalManager.getIDMappingManager().getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 		if (iSetRefSeq == null) {
-			generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
+			generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID, 
+				"No RefSeq IDs found for David: " + iDavidID));
 			return false;
 		}
 

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -26,6 +25,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.Gly
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRectangle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Glyph View Grid saves & organizes the positions in the grid
@@ -334,8 +334,8 @@ public class GLGlyphGrid {
 			}
 		}
 
-		generalManager.getLogger().log(Level.WARNING,
-			"Someone wanted a Glyph GL List on the grid position " + x + ", " + y + ", but there is nothing");
+		generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+			"Someone wanted a Glyph GL List on the grid position " + x + ", " + y + ", but there is nothing"));
 		return -1;
 	}
 
@@ -394,8 +394,8 @@ public class GLGlyphGrid {
 	public GlyphEntry getGlyph(int id) {
 
 		if (!glyphs_.containsKey(id)) {
-			generalManager.getLogger().log(Level.WARNING,
-				"Someone wanted a Glyph with the id " + id + " but it doesn't exist.");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"Someone wanted a Glyph with the id " + id + " but it doesn't exist."));
 			return null;
 		}
 		return glyphs_.get(id);

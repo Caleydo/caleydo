@@ -13,6 +13,8 @@ import org.eclipse.ui.PlatformUI;
 public class GenomePerspective
 	implements IPerspectiveFactory {
 	public static boolean bIsWideScreen = false;
+	
+	private static final String LOG_VIEW = "org.eclipse.pde.runtime.LogView";
 
 	public void createInitialLayout(final IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
@@ -60,7 +62,7 @@ public class GenomePerspective
 
 			layout.addStandaloneView(SelectionInfoView.ID, true, IPageLayout.RIGHT, 0.8f, "top");
 			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.RIGHT, 0.7f, "top", true);
-			
+					
 //			IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);		
 			
 //			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio,
@@ -69,6 +71,8 @@ public class GenomePerspective
 //				IPageLayout.ID_EDITOR_AREA);
 		}
 
+//		layout.addPlaceholder(LOG_VIEW,IPageLayout.BOTTOM, (float) 0.8, "right");
+		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(
 			new PartListener());
 	}

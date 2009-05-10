@@ -9,8 +9,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -95,6 +93,7 @@ import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
 import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -111,8 +110,6 @@ import com.sun.opengl.util.texture.TextureCoords;
 public class GLRemoteRendering
 	extends AGLEventListener
 	implements ISelectionUpdateHandler, IGLCanvasRemoteRendering {
-
-	Logger log = Logger.getLogger(GLRemoteRendering.class.getName());
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
@@ -639,7 +636,8 @@ public class GLRemoteRendering
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		if (glEventListener == null) {
-			generalManager.getLogger().log(Level.WARNING, "Bucket level element is null and cannot be rendered!");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
 
@@ -2453,7 +2451,6 @@ public class GLRemoteRendering
 	 * Triggers a toolbar update by sending an event similar to the view activation
 	 */
 	private void triggerToolBarUpdate() {
-		log.info("triggerToolBarUpdate() called");
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
 		List<Integer> viewIDs = this.getAllViewIDs();
@@ -2500,8 +2497,9 @@ public class GLRemoteRendering
 		else if (poolLevel.hasFreePosition()) {
 			destination = poolLevel.getNextFree();
 		}
-		else {
-			log.log(Level.SEVERE, "No empty space left to add new pathway!");
+		else {			
+			GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID, 
+			 "No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
 		}

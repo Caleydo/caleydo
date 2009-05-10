@@ -1,14 +1,11 @@
 package org.caleydo.rcp.views.swt.toolbar.content.remote;
 
-import java.util.logging.Logger;
-
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.remote.CloseOrResetViewsEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
 
 /**
  * mediator for remote-rendering (bucket) related toolbar items
@@ -16,8 +13,6 @@ import org.caleydo.rcp.views.swt.toolbar.content.pathway.PathwayToolBarMediator;
  */
 public class RemoteRenderingToolBarMediator {
 
-	Logger log = Logger.getLogger(PathwayToolBarMediator.class.getName());
-	
 	IEventPublisher eventPublisher;
 	
 	public RemoteRenderingToolBarMediator() {

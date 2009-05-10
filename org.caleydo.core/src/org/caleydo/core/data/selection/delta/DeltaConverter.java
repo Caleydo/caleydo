@@ -1,11 +1,11 @@
 package org.caleydo.core.data.selection.delta;
 
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
@@ -78,8 +78,8 @@ public class DeltaConverter {
 					GeneralManager.get().getIDMappingManager().<Integer, Integer> getMultiID(
 						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, item.getPrimaryID());
 				if (setExpressionIndices == null) {
-					GeneralManager.get().getLogger().log(Level.WARNING,
-						"No mapping found for david to expression index");
+					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"No mapping found for david to expression index"));
 					continue;
 				}
 				for (int iExpressionIndex : setExpressionIndices) {

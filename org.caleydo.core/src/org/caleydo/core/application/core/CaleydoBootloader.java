@@ -1,12 +1,11 @@
 package org.caleydo.core.application.core;
 
-import java.util.logging.Level;
-
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Basic Caleydo Bootloader.
@@ -45,7 +44,8 @@ public class CaleydoBootloader {
 		generalManager = GeneralManager.get();
 		generalManager.init(bIsStandalone);
 
-		generalManager.getLogger().log(Level.INFO, "Start Caleydo Core");
+		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, 
+			"Start Caleydo Core"));
 
 		swtGUIManager = generalManager.getSWTGUIManager();
 		xmlParserManager = generalManager.getXmlParserManager();

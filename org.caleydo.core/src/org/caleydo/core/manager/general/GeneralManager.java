@@ -2,8 +2,6 @@ package org.caleydo.core.manager.general;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.bridge.gui.standalone.SWTStandaloneBridge;
@@ -34,6 +32,9 @@ import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -68,7 +69,7 @@ public class GeneralManager
 	private GlyphManager glyphManager;
 	private IDManager IDManager;
 
-	private Logger logger;
+	private ILog logger;
 
 	private IGUIBridge guiBridge;
 
@@ -164,8 +165,8 @@ public class GeneralManager
 				throw new IllegalStateException(
 					"Unable to create log folder .caleydo/log. Check user permissions!");
 
-			logger.log(Level.INFO, "Create new preference store at " + IGeneralManager.CALEYDO_HOME_PATH
-				+ PREFERENCE_FILE_NAME);
+			logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at " + IGeneralManager.CALEYDO_HOME_PATH
+				+ PREFERENCE_FILE_NAME));
 
 			try {
 				preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
@@ -191,11 +192,11 @@ public class GeneralManager
 	 * Initialize the Java internal logger
 	 */
 	private void initLogger() {
-		logger = Logger.getLogger("Caleydo Log");
+		logger = Platform.getLog(Platform.getBundle("org.caleydo.rcp"));
 	}
 
 	@Override
-	public final Logger getLogger() {
+	public final ILog getLogger() {
 		return logger;
 	}
 

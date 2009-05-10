@@ -2,7 +2,6 @@ package org.caleydo.core.command.data.parser;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
@@ -15,6 +14,7 @@ import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Command loads data from file using a token pattern and a target ISet. Use AMicroArrayLoader to load data
@@ -78,10 +78,9 @@ public class CmdLoadFileNStorages
 			if (iArrayStartStop.length > 1) {
 
 				if (iArrayStartStop[0] > iArrayStartStop[1] && iArrayStartStop[1] != -1) {
-					generalManager.getLogger().log(
-						Level.SEVERE,
+					generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
 						"Ignore stop inde=" + iArrayStartStop[1] + " because it is maller that start index="
-							+ iArrayStartStop[0]);
+							+ iArrayStartStop[0]));
 
 					return;
 				}
@@ -106,10 +105,9 @@ public class CmdLoadFileNStorages
 
 	@Override
 	public void doCommand() {
-		generalManager.getLogger().log(
-			Level.INFO,
+		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
 			"Loading data from file " + sFileName + " using token pattern " + sTokenPattern
-				+ ". Data is stored in Storage with ID " + iAlStorageIDs.toString());
+				+ ". Data is stored in Storage with ID " + iAlStorageIDs.toString()));
 
 		TabularAsciiDataReader loader = new TabularAsciiDataReader(sFileName);
 		loader.setTokenPattern(sTokenPattern);
@@ -127,8 +125,8 @@ public class CmdLoadFileNStorages
 		// import gene tree
 		if (sGenesTreeFileName != null) {
 			if (sGenesTreeFileName.equals("") == false) {
-				generalManager.getLogger().log(Level.INFO,
-					"Loading gene tree from file " + sGenesTreeFileName);
+				generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+					"Loading gene tree from file " + sGenesTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree = treePorter.importTree(sGenesTreeFileName);
@@ -142,8 +140,8 @@ public class CmdLoadFileNStorages
 		// import experiment tree
 		if (sExperimentsTreeFileName != null) {
 			if (sExperimentsTreeFileName.equals("") == false) {
-				generalManager.getLogger().log(Level.INFO,
-					"Loading experiments tree from file " + sExperimentsTreeFileName);
+				generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+					"Loading experiments tree from file " + sExperimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree = treePorter.importTree(sExperimentsTreeFileName);

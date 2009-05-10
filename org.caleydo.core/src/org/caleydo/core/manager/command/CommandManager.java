@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
@@ -24,6 +23,7 @@ import org.caleydo.core.manager.command.factory.ICommandFactory;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Manager for creating and exporting commands.
@@ -242,8 +242,8 @@ public class CommandManager
 			for (ICommand tmpCmd : vecUndo) {
 				out.writeObject(tmpCmd);
 
-				GeneralManager.get().getLogger().log(Level.INFO,
-					"Serialize command: [" + tmpCmd.getInfoText() + "]");
+				GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+					"Serialize command: [" + tmpCmd.getInfoText() + "]"));
 			}
 
 			out.close();

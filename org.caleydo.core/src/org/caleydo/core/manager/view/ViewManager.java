@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
 import javax.swing.JFrame;
 
@@ -47,6 +46,7 @@ import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sun.opengl.util.Animator;
@@ -195,8 +195,8 @@ public class ViewManager
 	@Override
 	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
 		final String sLabel, final IViewFrustum viewFrustum) {
-		GeneralManager.get().getLogger().log(Level.INFO,
-			"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]");
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]"));
 
 		AGLEventListener glEventListener = null;
 
@@ -293,8 +293,8 @@ public class ViewManager
 		int iGLCanvasID = glCanvas.getID();
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
-			generalManager.getLogger().log(Level.WARNING,
-				"GL Canvas with ID " + iGLCanvasID + " is already registered! Do nothing.");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"GL Canvas with ID " + iGLCanvasID + " is already registered! Do nothing."));
 
 			return false;
 		}

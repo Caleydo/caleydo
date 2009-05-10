@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
@@ -58,6 +57,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.Screenshot;
@@ -1002,8 +1002,8 @@ public class GLGlyph
 					GlyphEntry g = grid_.getGlyph(iExternalID);
 
 					if (g == null) {
-						generalManager.getLogger().log(Level.WARNING,
-							"Glyph with external ID " + iExternalID + " not found!");
+						generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+							"Glyph with external ID " + iExternalID + " not found!"));
 						return;
 					}
 

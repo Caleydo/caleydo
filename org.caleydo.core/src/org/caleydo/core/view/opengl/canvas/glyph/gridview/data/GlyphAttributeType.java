@@ -3,10 +3,10 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * This class defines a data type It uses GlyphAttributeGroup to combines more than one data type into one
@@ -92,16 +92,16 @@ public class GlyphAttributeType {
 			hmNominalLookup.put(sValue, gag);
 		}
 		else {
-			generalManager.getLogger().log(Level.WARNING,
-				"double nominal value (" + sValue + ") found in " + sName + " (" + group + ")");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"double nominal value (" + sValue + ") found in " + sName + " (" + group + ")"));
 		}
 
 		if (!hmOrdinalLookup.containsKey(fValue)) {
 			hmOrdinalLookup.put(fValue, gag);
 		}
 		else {
-			generalManager.getLogger().log(Level.WARNING,
-				"double ordinal value (" + sValue + ") found in " + sName + " (" + group + ")");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"double ordinal value (" + sValue + ") found in " + sName + " (" + group + ")"));
 		}
 
 		if (!hmDistribution.containsKey(group)) {

@@ -16,6 +16,11 @@ public class LoadDataHandler
 		LoadDataDialog dialog = new LoadDataDialog(shell);
 		dialog.open();
 
+//		
+//		org.eclipse.ui.internal.views.log.LogView log;
+//		log.
+//		log.P_USE_LIMIT
+		
 		return null;
 	}
 }

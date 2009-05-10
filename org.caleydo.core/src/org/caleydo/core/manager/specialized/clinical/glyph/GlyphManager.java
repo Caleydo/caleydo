@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -12,6 +11,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Glyph manager
@@ -50,7 +50,8 @@ public class GlyphManager {
 	}
 
 	public void loadGlyphDefinitaion(String xmlPath) {
-		generalManager.getLogger().log(Level.INFO, "loadGlyphDefinitaion");
+		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			"loadGlyphDefinitaion"));
 		generalManager.getXmlParserManager().parseXmlFileByName(xmlPath);
 
 		bIsActive = true;
@@ -111,8 +112,8 @@ public class GlyphManager {
 		int index = type.getExternalColumnNumber();
 		if (dataTypesExt.containsKey(index)) {
 			dataTypesExt.remove(index);
-			generalManager.getLogger().log(Level.WARNING,
-				"GlyphManager::addColumnAttributeType() - double column definition, dropping first one");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"GlyphManager::addColumnAttributeType() - double column definition, dropping first one"));
 		}
 		dataTypesExt.put(index, type);
 	}

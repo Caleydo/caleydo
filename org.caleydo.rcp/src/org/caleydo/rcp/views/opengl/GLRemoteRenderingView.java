@@ -1,7 +1,6 @@
 package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -11,6 +10,7 @@ import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLRemoteRenderingView
@@ -54,8 +54,8 @@ public class GLRemoteRenderingView
 				iAlContainedViewIDs.add(glyph2.getID());
 			}
 			catch (IllegalArgumentException e) {
-				GeneralManager.get().getLogger().log(Level.WARNING,
-					"Cannot add glyph to bucket! No glyph data loaded!");
+				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Cannot add glyph to bucket! No glyph data loaded!"));
 			}
 		}
 

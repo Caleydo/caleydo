@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
@@ -47,6 +46,7 @@ import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TableEditor;
@@ -270,7 +270,8 @@ public class TabularDataViewRep
 				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
-					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");
+					generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"Cannot resolve gene to DAVID ID!"));
 					continue;
 				}
 

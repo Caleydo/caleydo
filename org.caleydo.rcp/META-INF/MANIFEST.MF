@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.caleydo.lib.jogl;bundle-version="1.0.0",
  org.caleydo.util.gleem;bundle-version="1.0.0",
  org.caleydo.util.graph;bundle-version="1.0.0",
- org.caleydo.data;bundle-version="1.0.3"
+ org.caleydo.data;bundle-version="1.0.3",
+ org.eclipse.ui.views.log
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  resources/

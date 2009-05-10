@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -42,6 +41,7 @@ import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -74,6 +74,7 @@ import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Single OpenGL pathway view
@@ -188,8 +189,8 @@ public class GLPathway
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 		this.glMouseListener = glMouseListener;
 
@@ -391,7 +392,9 @@ public class GLPathway
 				idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 			if (iSetRefSeq == null) {
-				generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
+				generalManager.getLogger().log(
+					new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "No RefSeq IDs found for David: "
+						+ iDavidID));
 				continue;
 			}
 
@@ -506,12 +509,14 @@ public class GLPathway
 		int iImageWidth = pathway.getWidth();
 		int iImageHeight = pathway.getHeight();
 
-		generalManager.getLogger().log(Level.FINE,
-			"Pathway texture width=" + iImageWidth + " / height=" + iImageHeight);
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Pathway texture width=" + iImageWidth
+				+ " / height=" + iImageHeight));
 
 		if (iImageWidth == -1 || iImageHeight == -1) {
-			generalManager.getLogger().log(Level.SEVERE,
-				"Problem because pathway texture width or height is invalid!");
+			generalManager.getLogger().log(
+				new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+					"Problem because pathway texture width or height is invalid!"));
 		}
 
 		float fTmpPathwayWidth = iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X * fPathwayScalingFactor;
@@ -639,15 +644,16 @@ public class GLPathway
 							// Load pathways
 							for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 								.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-								
-								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+
+								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
+									new LoadPathwaysByGeneEvent();
 								loadPathwaysByGeneEvent.setSender(this);
 								loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
 								loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
 								generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-	
+
 							}
-	
+
 							// ArrayList<Integer> alExpressionIndexID =
 							// getExpressionIndicesFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
 							//
@@ -670,13 +676,13 @@ public class GLPathway
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
-//						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
-//							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-//							
-//							GeneContextMenuItemContainer geneContextMenuItemContainer =
-//								new GeneContextMenuItemContainer(pathwayVertexGraphItem.getId());
-//							contextMenu.addItemContanier(geneContextMenuItemContainer);
-//						}
+						// for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+						// .getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+						//							
+						// GeneContextMenuItemContainer geneContextMenuItemContainer =
+						// new GeneContextMenuItemContainer(pathwayVertexGraphItem.getId());
+						// contextMenu.addItemContanier(geneContextMenuItemContainer);
+						// }
 
 					default:
 						return;
@@ -750,7 +756,8 @@ public class GLPathway
 						tmpPathwayVertexGraphItem.getId());
 
 				if (iDavidID == -1 || iDavidID == 0) {
-					generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
+					generalManager.getLogger().log(
+						new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Invalid David Gene ID."));
 					continue;
 				}
 
@@ -759,8 +766,9 @@ public class GLPathway
 
 				if (iSetRefSeq == null) {
 
-					generalManager.getLogger()
-						.log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
+					generalManager.getLogger().log(
+						new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "No RefSeq IDs found for David: "
+							+ iDavidID));
 					continue;
 				}
 
@@ -811,12 +819,11 @@ public class GLPathway
 	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();
 	}
-
 
 	@Override
 	public void handleClearSelections() {

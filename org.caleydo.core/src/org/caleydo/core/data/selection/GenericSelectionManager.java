@@ -6,7 +6,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -17,6 +16,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
@@ -735,8 +735,8 @@ public class GenericSelectionManager {
 				iSelectionID = item.getPrimaryID();
 
 				if (iSelectionID == -1) {
-					GeneralManager.get().getLogger().log(Level.WARNING,
-						"No internal id for " + item.getPrimaryID());
+					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"No internal id for " + item.getPrimaryID()));
 
 					continue;
 				}
@@ -760,8 +760,8 @@ public class GenericSelectionManager {
 
 				for (Integer iTmpSelectionID : iTmpSetID) {
 					if (iTmpSelectionID == null || iTmpSelectionID == -1) {
-						GeneralManager.get().getLogger().log(Level.WARNING,
-							"No internal id for " + item.getPrimaryID());
+						GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+							"No internal id for " + item.getPrimaryID()));
 
 						continue;
 					}

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -35,6 +34,7 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 import org.caleydo.util.graph.algorithm.GraphVisitorSearchBFS;
+import org.eclipse.core.runtime.Status;
 
 /**
  * OpenGL pathway manager.
@@ -110,7 +110,6 @@ public class GLPathwayContentCreator {
 
 	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,
 		final PathwayGraph pathway) {
-		generalManager.getLogger().log(Level.FINE, "Build display list for pathway " + pathway.getID());
 
 		if (pathway == null)
 			return;
@@ -433,9 +432,9 @@ public class GLPathwayContentCreator {
 
 		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0) {
 			generalManager.getLogger().log(
-				Level.WARNING,
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
 				"Cannot create pathway vertex. Pathway node representation " + vertexRep.getName()
-					+ " has not parent in graph!");
+					+ " has not parent in graph!"));
 			return;
 		}
 
@@ -795,14 +794,16 @@ public class GLPathwayContentCreator {
 				vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0).getId());
 
 		if (iDavidID == -1 || iDavidID == 0) {
-			generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"Invalid David Gene ID."));
 		}
 		else {
 			Set<Integer> iSetRefSeq =
 				idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 			if (iSetRefSeq == null) {
-				generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " + iDavidID);
+				generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+					"No RefSeq IDs found for David: " + iDavidID));
 			}
 			else {
 				// Check for multiple mapping

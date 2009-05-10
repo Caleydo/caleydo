@@ -2,8 +2,6 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
@@ -19,6 +17,7 @@ import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Loading data into the glyph storage
@@ -47,8 +46,6 @@ public class GlyphDataLoader {
 		if (gman.storageLoaded(glyphData.getLabel()))
 			return;
 
-		Logger logger = this.generalManager.getLogger();
-
 		glyphs = new HashMap<Integer, GlyphEntry>();
 
 		ArrayList<int[]> aliStoreMapped = new ArrayList<int[]>();
@@ -74,8 +71,9 @@ public class GlyphDataLoader {
 						if (tmpStorage instanceof NominalStorage) {
 							INominalStorage<String> storage = (INominalStorage<String>) tmpStorage;
 							if (storage.getRaw(i) == null) {
-								logger.log(Level.WARNING, "GlyphDataLoader: no numerical data found"
-									+ " - empty line in csv file?????");
+								GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+									"GlyphDataLoader: no numerical data found"
+									+ " - empty line in csv file?????"));
 								temp2[i] = -1;
 								continue;
 							}
@@ -85,8 +83,9 @@ public class GlyphDataLoader {
 						else if (tmpStorage instanceof NumericalStorage) {
 							INumericalStorage storage = (INumericalStorage) tmpStorage;
 							if (storage.get(EDataRepresentation.RAW, i) == null) {
-								logger.log(Level.WARNING, "GlyphDataLoader: no numerical data found"
-									+ " - empty line in csv file?????");
+								GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+									"GlyphDataLoader: no numerical data found"
+									+ " - empty line in csv file?????"));
 								temp2[i] = -1;
 								continue;
 							}
@@ -106,9 +105,9 @@ public class GlyphDataLoader {
 
 						if (t2 == -1 && !value.equals("-1")) {
 							this.generalManager.getLogger().log(
-								Level.WARNING,
+								new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
 								"GlyphDataLoader: No data mapping found for " + tmpStorage.getLabel()
-									+ " value " + value);
+									+ " value " + value));
 						}
 
 						temp2[i] = t2;
@@ -136,7 +135,8 @@ public class GlyphDataLoader {
 		}
 
 		if (aliStoreMapped.size() <= 0) {
-			this.generalManager.getLogger().log(Level.SEVERE, "GlyphDataLoader: No data in file found");
+			this.generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+				"GlyphDataLoader: No data in file found"));
 			return;
 		}
 
@@ -144,8 +144,8 @@ public class GlyphDataLoader {
 		// now convert the storages to real glyphs
 
 		if (!IdMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)) {
-			this.generalManager.getLogger().log(Level.WARNING,
-				"GlyphDataLoader: No ID Mapping found - using internal ids");
+			this.generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"GlyphDataLoader: No ID Mapping found - using internal ids"));
 		}
 
 		int counter = gman.getGlyphs().size();

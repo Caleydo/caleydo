@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
@@ -14,6 +13,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Loader for tabular data.
@@ -99,8 +99,8 @@ public class TabularAsciiDataReader
 			else {
 				bAllTokensProper = false;
 
-				GeneralManager.get().getLogger().log(Level.WARNING,
-					"Unknown column data type: " + tokenPattern);
+				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Unknown column data type: " + tokenPattern));
 			}
 		}
 

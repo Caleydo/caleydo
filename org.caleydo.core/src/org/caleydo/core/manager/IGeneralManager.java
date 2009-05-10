@@ -1,7 +1,5 @@
 package org.caleydo.core.manager;
 
-import java.util.logging.Logger;
-
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
@@ -11,6 +9,7 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -21,6 +20,9 @@ import org.eclipse.jface.preference.PreferenceStore;
  * @author Alexander Lex
  */
 public interface IGeneralManager {
+	
+	public static final String PLUGIN_ID = "org.caleydo.core";
+	
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + "/.caleydo/";
@@ -66,7 +68,7 @@ public interface IGeneralManager {
 	 * 
 	 * @return logger
 	 */
-	public Logger getLogger();
+	public ILog getLogger();
 
 	/**
 	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo

@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.event;
 
-import java.util.logging.Logger;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * General event listener interface for classes that handle events.
@@ -10,8 +11,6 @@ import java.util.logging.Logger;
  * @author Werner Puff
  */
 public abstract class AEventListener<T> {
-
-	Logger log = Logger.getLogger(AEventListener.class.getName());
 
 	/** related handling object, usually a view or manager-type class */
 	protected T handler = null;
@@ -40,7 +39,8 @@ public abstract class AEventListener<T> {
 	 */
 	public void handleEventFiltered(AEvent event) {
 		if (event.getSender() == null) {
-			log.warning("handling " + this.getClass().getName() + " with sender==null");
+			GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID, 
+				"handling " + this.getClass().getName() + " with sender==null"));
 		}
 		if (event.getSender() != this.getHandler()) {
 			handleEvent(event);

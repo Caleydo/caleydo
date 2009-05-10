@@ -1,7 +1,6 @@
 package org.caleydo.rcp.perspective;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IEventPublisher;
@@ -9,6 +8,7 @@ import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.ViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.views.CaleydoViewPart;
 import org.caleydo.rcp.views.opengl.AGLViewPart;
 import org.caleydo.rcp.views.swt.toolbar.ToolBarContentFactory;
@@ -16,6 +16,7 @@ import org.caleydo.rcp.views.swt.toolbar.ToolBarView;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.views.swt.toolbar.content.ToolBarContainer;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -33,8 +34,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public class PartListener
 	implements IPartListener2, IUniqueObject {
-
-	Logger log = Logger.getLogger(PartListener.class.getName());
 
 	IEventPublisher eventPublisher; 
 
@@ -88,7 +87,8 @@ public class PartListener
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		viewPart.setAttached(isViewAttached(viewPart));
 		
-		log.info("partVisible(): " +viewPart);
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
+			"partVisible(): " +viewPart));
 
 		if (viewPart instanceof AGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
@@ -120,7 +120,8 @@ public class PartListener
 		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		
-		log.info("partHidden(): " +viewPart);
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
+			"partHidden(): " +viewPart));
 		
 		viewPart.setAttached(isViewAttached(viewPart));
 
@@ -146,7 +147,8 @@ public class PartListener
 		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		
-		log.info("partActivated(): " +viewPart);
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
+			"partActivated(): " +viewPart));
 		
 		// Make sure that keyboard listener gets the events
 		if (viewPart.getSWTComposite() != null)

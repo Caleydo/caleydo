@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.management.InvalidAttributeValueException;
 
@@ -43,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -224,7 +224,8 @@ public abstract class AStorageBasedView
 				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
-					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");
+					generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"Cannot resolve gene to DAVID ID!"));
 					continue;
 				}
 
@@ -502,8 +503,8 @@ public abstract class AStorageBasedView
 			}
 		}
 		catch (InvalidAttributeValueException e) {
-			generalManager.getLogger().log(Level.WARNING,
-				"Can not handle data type of update in selectionDelta");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"Can not handle data type of update in selectionDelta", e));
 		}
 	}
 

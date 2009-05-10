@@ -1,7 +1,6 @@
 package org.caleydo.rcp.views.swt.toolbar;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
@@ -21,8 +20,6 @@ import org.eclipse.swt.widgets.Display;
  * @author Werner Puff
  */
 public class ToolBarMediator {
-
-	public static Logger log = Logger.getLogger(ToolBarMediator.class.getName());
 
 	/** the related toolbar that should react to events */
 	ToolBarView toolBarView;
