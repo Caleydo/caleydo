@@ -97,6 +97,18 @@ public class PathwaySearchBox
 			}
 		});
 		
+//		pathwaySearchBox.addKeyListener(new KeyAdapter() {
+//		@Override
+//			public void keyReleased(KeyEvent e) {
+//
+//				if (e.character != SWT.CR)
+//					return;
+//				
+//				String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox.getSelectionIndex());
+//				loadPathway(sSearchEntity);
+//			}	
+//		});
+		
 		return pathwaySearchBox;
 	}
 

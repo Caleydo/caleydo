@@ -6,8 +6,10 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -136,6 +138,12 @@ public class ToolBarView
 		if (eventTrigger instanceof AGLEventListener) {
 			final int iViewID = ((AGLEventListener) eventTrigger).getID();
 
+			if (parentComposite == null) {
+				GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
+					"Parent composite is null. The toolbars can't be updated.", new NullPointerException()));
+				return;
+			}
+				
 			parentComposite.getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					// Check if toolbar is present
