@@ -513,4 +513,8 @@ public class InfoArea
 			infoAreaUpdateListener = null;
 		}
 	}
+	
+	public void dispose() {
+		unregisterEventListeners();
+	}
 }

@@ -2453,6 +2453,7 @@ public class GLRemoteRendering
 	private void triggerToolBarUpdate() {
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
+		viewActivationEvent.setSender(this);
 		List<Integer> viewIDs = this.getAllViewIDs();
 		viewActivationEvent.setViewIDs(viewIDs);
 

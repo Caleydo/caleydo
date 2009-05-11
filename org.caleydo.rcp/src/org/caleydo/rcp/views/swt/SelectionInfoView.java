@@ -21,6 +21,8 @@ public class SelectionInfoView
 	public static boolean bHorizontal = false;
 
 	private Composite parentComposite;
+	
+	private InfoArea infoArea;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -67,11 +69,18 @@ public class SelectionInfoView
 		layout.marginHeight = layout.marginWidth = 0;
 
 		infoComposite.setLayout(layout);
-		InfoArea infoArea = new InfoArea();
+		infoArea = new InfoArea();
 		infoArea.registerEventListeners();
 		infoArea.createControl(infoComposite);
 	}
 
+	@Override
+	public void dispose() {
+		super.dispose();
+
+		infoArea.dispose();
+	}
+	
 //	@Override
 //	public int computePreferredSize(boolean width, int availableParallel, int availablePerpendicular,
 //		int preferredResult) {

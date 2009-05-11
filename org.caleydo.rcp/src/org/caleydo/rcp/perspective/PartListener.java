@@ -145,6 +145,7 @@ public class PartListener
 		if (!(activePart instanceof CaleydoViewPart)) {
 			return;
 		}
+		
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		
 		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
@@ -160,7 +161,8 @@ public class PartListener
 		
 	private void sendViewActivationEvent(CaleydoViewPart viewPart) { 
 		ViewEvent viewActivationEvent;
-		viewActivationEvent = new ViewActivationEvent();			
+		viewActivationEvent = new ViewActivationEvent();
+		viewActivationEvent.setSender(this);
 		List<Integer> viewIDs = getAllViewIDs(viewPart);
 		viewActivationEvent.setViewIDs(viewIDs);
 		eventPublisher.triggerEvent(viewActivationEvent);

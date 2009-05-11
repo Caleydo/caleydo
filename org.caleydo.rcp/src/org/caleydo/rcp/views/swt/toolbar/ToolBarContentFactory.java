@@ -124,6 +124,13 @@ public class ToolBarContentFactory {
 		info.rcpID = GLHistogramView.ID;
 		info.ignored = true;
 		toolBarInfos.put(info.viewClass, info);
+
+		info = new ToolBarInfo();
+		info.viewClass = GLHistogram.class;
+		info.contentClass = null;
+		info.rcpID = GLHistogramView.ID;
+		info.ignored = true;
+		toolBarInfos.put(info.viewClass, info);		
 	}
 
 	/**
