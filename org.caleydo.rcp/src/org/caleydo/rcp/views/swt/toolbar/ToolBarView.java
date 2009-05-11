@@ -7,9 +7,15 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.Activator;
+import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
+import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
+import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
+import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
+import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -123,10 +129,7 @@ public class ToolBarView
 		
 		// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 
-		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
-		toolBarRenderer.addGeneralToolBarActions(toolBarManager, group);
-		toolBarManager.update(true);
+		toolBarRenderer.addGeneralToolBarActions(group);
 
 		Label label = new Label(group, SWT.CENTER);
 		label.setText("General");

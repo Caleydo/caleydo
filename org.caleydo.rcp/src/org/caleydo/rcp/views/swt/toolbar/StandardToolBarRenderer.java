@@ -1,5 +1,6 @@
 package org.caleydo.rcp.views.swt.toolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
@@ -8,6 +9,7 @@ import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.views.swt.toolbar.content.AToolBarContent;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -36,15 +38,36 @@ public class StandardToolBarRenderer
 		return new GridLayout(10, false);
 	}
 
-	public void addGeneralToolBarActions(ToolBarManager toolBarManager, Group group) {
+	public void addGeneralToolBarActions(Group group) {
+		
+		// Needed to simulate toolbar wrapping which is not implemented for
+		// linux
+		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
+		ArrayList<ToolBar> alToolBar = new ArrayList<ToolBar>();
+		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
+
+		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
+		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
+		alToolBar.add(toolBar);
+		alToolBarManager.add(toolBarManager);
+
 		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
-		toolBarManager2.add(new LoadDataAction());
-		toolBarManager2.add(new ExportDataAction());
-		toolBarManager2.add(new TakeSnapshotAction());
+		alToolBar.add(toolBar2);
+		alToolBarManager.add(toolBarManager2);
+		
+		toolBarManager.add(new LoadDataAction());
+		toolBarManager.add(new ExportDataAction());
+		toolBarManager.add(new TakeSnapshotAction());
 		toolBarManager2.add(new OpenSearchViewAction());
 		toolBarManager2.add(new ClearSelectionsAction());
-		toolBarManager2.update(true);
+
+		toolBarManager.update(true);
+
+		if (toolBarManager2.isEmpty())
+			toolBarManager2.dispose();
+		else
+			toolBarManager2.update(true);
 
 		Label spacer = new Label(group, SWT.NULL);
 		spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
