@@ -270,8 +270,8 @@ public class TabularDataViewRep
 				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
-					generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-						"Cannot resolve gene to DAVID ID!"));
+//					generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+//						"Cannot resolve gene to DAVID ID!"));
 					continue;
 				}
 

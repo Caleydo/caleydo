@@ -33,7 +33,7 @@ public class ToolBarView
 	public static final String ID = "org.caleydo.rcp.views.swt.ToolBarView";
 
 	public static final int TOOLBAR_WIDTH = 173;
-	public static final int TOOLBAR_HEIGHT = 123;
+	public static final int TOOLBAR_HEIGHT = 110;
 
 	private IToolBarRenderer toolBarRenderer;
 

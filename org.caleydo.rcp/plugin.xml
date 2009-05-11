@@ -519,7 +519,7 @@
                label="Admin">
             <command
                   commandId="org.eclipse.ui.views.showView"
-                  label="Show error log"
+                  label="Show Error Log"
                   style="push">
                <parameter
                      name="org.eclipse.ui.views.showView.viewId"

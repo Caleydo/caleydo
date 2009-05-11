@@ -449,8 +449,10 @@ public class GLPathway
 
 			Integer iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
 
-			if (iDavidID == null)
-				throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
+			if (iDavidID == null) {
+				continue;
+//				throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");				
+			}
 
 			iPathwayVertexGraphItemID =
 				generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);

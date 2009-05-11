@@ -115,7 +115,7 @@ public class InfoArea
 		// gridData.heightHint = 72;
 		// } else {
 		gridData.minimumWidth = 100;
-		gridData.widthHint = 150;
+		gridData.widthHint = 100;
 		gridData.minimumHeight = 82;
 		gridData.heightHint = 82;
 		// }
@@ -132,6 +132,7 @@ public class InfoArea
 			gridData.widthHint = 145;
 			gridData.minimumWidth = 145;
 		}
+		
 		// else {
 		// gridData.widthHint = 145;
 		// gridData.minimumWidth = 145;

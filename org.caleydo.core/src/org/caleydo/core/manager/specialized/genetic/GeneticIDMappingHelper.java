@@ -149,7 +149,8 @@ public class GeneticIDMappingHelper {
 			return null;
 
 		if (iDavidID == null || iDavidID == -1)
-			throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
+			return null;
+//			throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 
 		iGraphItemID =
 			GeneralManager.get().getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);

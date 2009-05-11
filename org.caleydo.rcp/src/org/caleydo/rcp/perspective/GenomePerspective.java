@@ -60,15 +60,16 @@ public class GenomePerspective
 				layout.createFolder("top", IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);
 			topFolder.addView(ToolBarView.ID);
 
-			layout.addStandaloneView(SelectionInfoView.ID, true, IPageLayout.RIGHT, 0.8f, "top");
-			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.RIGHT, 0.7f, "top", true);
+			layout.addStandaloneView(SelectionInfoView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
+			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.RIGHT, 0.8f, "top", true);
 					
 //			IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);		
 			
 //			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio,
 //				IPageLayout.ID_EDITOR_AREA);
-//			layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
-//				IPageLayout.ID_EDITOR_AREA);
+			
+			layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
+				IPageLayout.ID_EDITOR_AREA);
 		}
 
 //		layout.addPlaceholder(LOG_VIEW,IPageLayout.BOTTOM, (float) 0.8, "right");
