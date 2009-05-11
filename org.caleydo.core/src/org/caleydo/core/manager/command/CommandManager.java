@@ -196,7 +196,7 @@ public class CommandManager
 	// }
 
 	@Override
-	public synchronized void runDoCommand(ICommand runCmd) {
+	public void runDoCommand(ICommand runCmd) {
 
 		vecUndo.addElement(runCmd);
 
@@ -215,7 +215,7 @@ public class CommandManager
 	}
 
 	@Override
-	public synchronized void runUndoCommand(ICommand runCmd) {
+	public void runUndoCommand(ICommand runCmd) {
 
 		iCountRedoCommand++;
 		vecUndo.remove(runCmd);

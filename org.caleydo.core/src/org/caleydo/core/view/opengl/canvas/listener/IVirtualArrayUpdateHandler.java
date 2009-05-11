@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
  * Interface for views, mediator or manager classes that needs
@@ -10,7 +11,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  *  
  * @author Werner Puff
  */
-public interface IVirtualArrayUpdateHandler {
+public interface IVirtualArrayUpdateHandler extends IListenerOwner{
 	
 	/**
 	 * Handler method to be called when a virtual array update event is catched 

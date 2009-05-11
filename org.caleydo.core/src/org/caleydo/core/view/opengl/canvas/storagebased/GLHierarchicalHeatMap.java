@@ -250,7 +250,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void resetView() {
+	public void resetView() {
 
 		super.resetView();
 		initHierarchy();
@@ -700,12 +700,12 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 
 		if (set == null)
 			return;
@@ -727,7 +727,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 
 		if (set == null)
 			return;
@@ -1289,9 +1289,9 @@ public class GLHierarchicalHeatMap
 			else if (selection.getSelectionType() == ESelectionType.SELECTION) {
 				gl.glColor4fv(SELECTED_COLOR, 0);
 			}
-//			else if (selection.getSelectionType() == ESelectionType.DESELECTED) {
-//				gl.glColor4f(1, 1, 1, 0.5f);
-//			}
+			// else if (selection.getSelectionType() == ESelectionType.DESELECTED) {
+			// gl.glColor4f(1, 1, 1, 0.5f);
+			// }
 			else
 				continue;
 
@@ -1517,10 +1517,10 @@ public class GLHierarchicalHeatMap
 			else if (selection.getSelectionType() == ESelectionType.SELECTION) {
 				gl.glColor4fv(SELECTED_COLOR, 0);
 			}
-//			else if (selection.getSelectionType() == ESelectionType.DESELECTED) {
-//				gl.glColor4f(1, 1, 1, 0.5f);
-//			}
-			else 
+			// else if (selection.getSelectionType() == ESelectionType.DESELECTED) {
+			// gl.glColor4f(1, 1, 1, 0.5f);
+			// }
+			else
 				continue;
 
 			// elements in texture
@@ -1811,7 +1811,8 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
+	public void display(GL gl) {
+		processEvents();
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
 		}
@@ -2087,7 +2088,7 @@ public class GLHierarchicalHeatMap
 
 	}
 
-	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally) {
+	public void renderHorizontally(boolean bRenderStorageHorizontally) {
 
 		if (glHeatMapView.isInDefaultOrientation()) {
 			glHeatMapView.changeOrientation(false);
@@ -2737,7 +2738,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void clearAllSelections() {
+	public void clearAllSelections() {
 
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
@@ -2832,7 +2833,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public synchronized void initData() {
+	public void initData() {
 
 		super.initData();
 

@@ -161,7 +161,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -170,7 +170,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 
 		if (set == null)
 			return;
@@ -196,7 +196,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 
 		if (set == null)
 			return;
@@ -219,8 +219,8 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
-
+	public void display(GL gl) {
+		processEvents();
 		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
@@ -333,7 +333,7 @@ public class GLHeatMap
 		tempTexture.disable();
 	}
 
-	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally) {
+	public void renderHorizontally(boolean bRenderStorageHorizontally) {
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		// renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
@@ -905,7 +905,7 @@ public class GLHeatMap
 	// }
 
 	// @Override
-	// public synchronized void clear()
+	// public void clear()
 	// {
 	// contentSelectionManager.clearSelections();
 	// storageSelectionManager.clearSelections();
@@ -1221,7 +1221,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void broadcastElements() {
+	public void broadcastElements() {
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();

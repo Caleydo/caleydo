@@ -30,7 +30,7 @@ public class TabularDataView
 		
 		useCase.addView(tabularDataView);
 
-		swtComposite = parent;
+		parentComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
 		iViewID = tabularDataView.getID();

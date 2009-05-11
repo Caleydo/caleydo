@@ -143,7 +143,7 @@ public class GLDendrogramVertical
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -151,7 +151,7 @@ public class GLDendrogramVertical
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 		if (set == null)
 			return;
 
@@ -172,7 +172,7 @@ public class GLDendrogramVertical
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 		if (set == null)
 			return;
 
@@ -187,8 +187,8 @@ public class GLDendrogramVertical
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
-
+	public void display(GL gl) {
+		processEvents();
 		// GLHelperFunctions.drawAxis(gl);
 
 		if (bIsDraggingActive) {
@@ -775,7 +775,7 @@ public class GLDendrogramVertical
 	}
 
 	@Override
-	public synchronized void resetView() {
+	public void resetView() {
 		tree = null;
 	}
 

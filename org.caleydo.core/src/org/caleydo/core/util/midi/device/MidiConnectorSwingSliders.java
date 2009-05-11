@@ -377,7 +377,7 @@ public class MidiConnectorSwingSliders
 		return false;
 	}
 	
-	public synchronized void allocateNumberOfMidiDevices( final int iMidiDevices ) {
+	public void allocateNumberOfMidiDevices( final int iMidiDevices ) {
 		if ( iMidiDevices < 0 )
 		{
 			return;

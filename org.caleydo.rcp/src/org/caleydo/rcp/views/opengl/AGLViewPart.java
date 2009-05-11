@@ -52,7 +52,7 @@ public abstract class AGLViewPart
 		cmdCanvas.doCommand();
 
 		glCanvas = cmdCanvas.getCreatedObject();
-		glCanvas.setParentComposite(swtComposite);
+		glCanvas.setParentComposite(parentComposite);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public abstract class AGLViewPart
 
 	@Override
 	public void createPartControl(Composite parent) {
-		swtComposite = new Composite(parent, SWT.EMBEDDED);
+		parentComposite = new Composite(parent, SWT.EMBEDDED);
 		// fillToolBar();
 	}
 
@@ -131,7 +131,7 @@ public abstract class AGLViewPart
 
 	public void createPartControlGL() {
 		if (frameGL == null) {
-			frameGL = SWT_AWT.new_Frame(swtComposite);
+			frameGL = SWT_AWT.new_Frame(parentComposite);
 		}
 
 		frameGL.add(glCanvas);

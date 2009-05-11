@@ -21,7 +21,7 @@ public class CollabView
 		testingView.initViewRCP(parent);
 		testingView.drawView();
 
-		swtComposite = parent;
+		parentComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(testingView);
 	}

@@ -41,7 +41,7 @@ public final class DrawingStrategyManager {
 		iDefaultStrategyType = PD_DRAWING_STRATEGY_EXPRESSION_COLOR;
 	}
 	
-	public synchronized static void init(PickingManager pickingManager, int iViewID) {
+	public static void init(PickingManager pickingManager, int iViewID) {
 		if (instance == null) {
 			instance = new DrawingStrategyManager(pickingManager, iViewID);
 		}

@@ -273,7 +273,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void initData() {
+	public void initData() {
 		super.initData();
 
 		if (glSelectionHeatMap != null)
@@ -283,12 +283,12 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void resetView() {
+	public void resetView() {
 
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) {
 
 		if (set == null)
 			return;
@@ -317,7 +317,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) {
 
 		if (set == null)
 			return;
@@ -339,8 +339,9 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void display(final GL gl) {
+	public void display(final GL gl) {
 
+		processEvents();
 		if (bShowSelectionHeatMap) {
 
 			gl.glTranslatef(viewFrustum.getRight() - glSelectionHeatMap.getViewFrustum().getWidth(), 0,
@@ -442,7 +443,7 @@ public class GLParallelCoordinates
 	 * Choose whether to render one array as a polyline and every entry across arrays is an axis or whether
 	 * the array corresponds to an axis and every entry across arrays is a polyline
 	 */
-	private synchronized void renderStorageAsPolyline(boolean bRenderStorageHorizontally) {
+	private void renderStorageAsPolyline(boolean bRenderStorageHorizontally) {
 
 		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally) {
 			if (bRenderStorageHorizontally && set.getVA(iContentVAID).size() > 100) {
@@ -471,13 +472,13 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 	}
 
-	public synchronized void triggerAngularBrushing() {
+	public void triggerAngularBrushing() {
 		bAngularBrushingSelectPolyline = true;
 		setDisplayListDirty();
 	}
 
 	@Override
-	public synchronized void renderContext(boolean bRenderOnlyContext) {
+	public void renderContext(boolean bRenderOnlyContext) {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
@@ -504,7 +505,7 @@ public class GLParallelCoordinates
 	 * 
 	 * @param bPreventOcclusion
 	 */
-	public synchronized void preventOcclusion(boolean bPreventOcclusion) {
+	public void preventOcclusion(boolean bPreventOcclusion) {
 		this.bPreventOcclusion = bPreventOcclusion;
 		setDisplayListDirty();
 	}
@@ -513,7 +514,7 @@ public class GLParallelCoordinates
 	 * Reset all selections and deselections
 	 */
 	@Override
-	public synchronized void clearAllSelections() {
+	public void clearAllSelections() {
 
 		initGates();
 		contentSelectionManager.clearSelections();
@@ -550,7 +551,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void broadcastElements() {
+	public void broadcastElements() {
 
 		// saveSelection();
 
@@ -583,7 +584,7 @@ public class GLParallelCoordinates
 		}
 	}
 
-	public synchronized void saveSelection() {
+	public void saveSelection() {
 
 		// polylineSelectionManager.moveType(ESelectionType.DESELECTED,
 		// ESelectionType.REMOVE);
@@ -2254,7 +2255,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized String getShortInfo() {
+	public String getShortInfo() {
 		String message;
 		int iNumLines =
 			contentSelectionManager.getNumberOfElements(ESelectionType.NORMAL)
@@ -2275,7 +2276,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized String getDetailedInfo() {
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
 		sInfoText.append(set.getVA(iPolylineVAID).size() + " Genes as polylines and "

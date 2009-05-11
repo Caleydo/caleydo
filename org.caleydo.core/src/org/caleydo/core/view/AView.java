@@ -10,6 +10,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class AView
 	extends AUniqueObject
-	implements IView {
+	implements IView, IListenerOwner {
 
 	protected IGeneralManager generalManager;
 	
@@ -83,7 +84,7 @@ public abstract class AView
 	}
 	
 	@Override
-	public synchronized void setSet(ISet set) {
+	public void setSet(ISet set) {
 		this.set = set;
 	}
 	

@@ -40,7 +40,7 @@ public class GLColorMappingBarMiniView
 	}
 
 	@Override
-	public synchronized void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
+	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
 		// TODO: generalize
 		textRenderer.setColor(0, 0, 0, 1);
 		ColorMapping colorMapper =

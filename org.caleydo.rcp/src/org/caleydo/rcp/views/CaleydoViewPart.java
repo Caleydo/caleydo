@@ -25,7 +25,7 @@ public abstract class CaleydoViewPart
 	/** stores the attach status of the viewpart, true means within caleydo's main window, false otherwise */
 	protected boolean attached;
 	
-	protected Composite swtComposite;
+	protected Composite parentComposite;
 
 	@Override
 	public void init(IViewSite site) throws PartInitException {
@@ -51,7 +51,7 @@ public abstract class CaleydoViewPart
 	}
 
 	public Composite getSWTComposite() {
-		return swtComposite;
+		return parentComposite;
 	}
 
 	public boolean isAttached() {

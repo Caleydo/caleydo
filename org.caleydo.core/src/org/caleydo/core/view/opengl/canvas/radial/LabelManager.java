@@ -200,7 +200,7 @@ public class LabelManager {
 		iMaxSegmentDepth = 0;
 	}
 
-	public synchronized static LabelManager get() {
+	public static LabelManager get() {
 		if (instance == null) {
 			instance = new LabelManager();
 		}

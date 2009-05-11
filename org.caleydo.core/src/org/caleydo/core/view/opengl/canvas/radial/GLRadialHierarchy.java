@@ -342,7 +342,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -351,7 +351,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
@@ -369,7 +369,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 		if (bIsDisplayListDirtyRemote && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
@@ -383,8 +383,8 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
-
+	public void display(GL gl) {
+		processEvents();
 		render(gl);
 		// clipToFrustum(gl);
 		//

@@ -134,7 +134,7 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public synchronized ISWTWidget createWidget(final EManagedObjectType useWidgetType,
+	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
 		final Composite externalParentComposite) {
 		ASWTWidget newSWTWidget;
 

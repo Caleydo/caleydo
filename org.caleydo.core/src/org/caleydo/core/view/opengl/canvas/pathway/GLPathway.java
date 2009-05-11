@@ -160,7 +160,7 @@ public class GLPathway
 		// false);
 	}
 
-	public synchronized void setPathway(final PathwayGraph pathway) {
+	public void setPathway(final PathwayGraph pathway) {
 		// Unregister former pathway in visibility list
 		if (pathway != null) {
 			generalManager.getPathwayManager().setPathwayVisibilityState(pathway, false);
@@ -169,7 +169,7 @@ public class GLPathway
 		this.pathway = pathway;
 	}
 
-	public synchronized void setPathway(final int iPathwayID) {
+	public void setPathway(final int iPathwayID) {
 
 		setPathway(generalManager.getPathwayManager().getItem(iPathwayID));
 	}
@@ -209,7 +209,7 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) {
 		// Check if pathway exists or if it's already loaded
 		// FIXME: not good because check in every rendered frame
 		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
@@ -225,7 +225,7 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) {
 		// Check if pathway exists or if it is already loaded
 		// FIXME: not good because check in every rendered frame
 		if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
@@ -240,7 +240,8 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void display(final GL gl) {
+	public void display(final GL gl) {
+		processEvents();
 		checkForHits(gl);
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
@@ -554,35 +555,35 @@ public class GLPathway
 		}
 	}
 
-	public synchronized void setMappingRowCount(final int iMappingRowCount) {
+	public void setMappingRowCount(final int iMappingRowCount) {
 		gLPathwayContentCreator.setMappingRowCount(iMappingRowCount);
 	}
 
-	public synchronized void enableGeneMapping(final boolean bEnableMapping) {
+	public void enableGeneMapping(final boolean bEnableMapping) {
 		gLPathwayContentCreator.enableGeneMapping(bEnableMapping);
 		setDisplayListDirty();
 	}
 
-	public synchronized void enablePathwayTextures(final boolean bEnablePathwayTexture) {
+	public void enablePathwayTextures(final boolean bEnablePathwayTexture) {
 		gLPathwayContentCreator.enableEdgeRendering(!bEnablePathwayTexture);
 		setDisplayListDirty();
 
 		this.bEnablePathwayTexture = bEnablePathwayTexture;
 	}
 
-	public synchronized void enableNeighborhood(final boolean bEnableNeighborhood) {
+	public void enableNeighborhood(final boolean bEnableNeighborhood) {
 		setDisplayListDirty();
 
 		gLPathwayContentCreator.enableNeighborhood(bEnableNeighborhood);
 	}
 
-	public synchronized void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
+	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
 		setDisplayListDirty();
 
 		gLPathwayContentCreator.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 
-	public synchronized void enableAnnotation(final boolean bEnableAnnotation) {
+	public void enableAnnotation(final boolean bEnableAnnotation) {
 		gLPathwayContentCreator.enableAnnotation(bEnableAnnotation);
 	}
 
@@ -745,7 +746,7 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type) {
 
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.REFSEQ_MRNA_INT);
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
@@ -788,13 +789,13 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized String getShortInfo() {
+	public String getShortInfo() {
 
 		return pathway.getTitle() + " (" + pathway.getType().getName() + ")";
 	}
 
 	@Override
-	public synchronized String getDetailedInfo() {
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 
 		sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> " + pathway.getTitle() + "\n<b>Type:</b> "
@@ -807,7 +808,7 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void setSet(ISet set) {
+	public void setSet(ISet set) {
 		super.setSet(set);
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 	}

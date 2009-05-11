@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -15,12 +17,17 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.IPollingListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
@@ -50,7 +57,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLEventListener
 	extends AView
-	implements GLEventListener {
+	implements GLEventListener, IPollingListenerOwner {
 	public enum EBusyModeState {
 		SWITCH_OFF,
 		ON,
@@ -136,12 +143,14 @@ public abstract class AGLEventListener
 	 */
 	private ISet newSet;
 
+	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
+
 	/**
 	 * Constructor.
 	 */
 	protected AGLEventListener(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final boolean bRegisterToParentCanvasNow) {
-		
+
 		// If the glCanvas object is null - then the view is rendered remote.
 		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.GL_EVENT_LISTENER));
@@ -173,6 +182,8 @@ public abstract class AGLEventListener
 		idMappingManager = generalManager.getIDMappingManager();
 		iconTextureManager = TextureManager.get();
 		contextMenu = ContextMenu.get();
+
+		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 	}
 
 	@Override
@@ -186,7 +197,7 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public synchronized void display(GLAutoDrawable drawable) {
+	public void display(GLAutoDrawable drawable) {
 
 		try {
 			((GLEventListener) parentGLCanvas).display(drawable);
@@ -251,7 +262,7 @@ public abstract class AGLEventListener
 	/**
 	 * Method responsible for initialization of the data. Note: This is completely independent of init(gl)!
 	 */
-	public synchronized void initData() {
+	public void initData() {
 
 		set = newSet;
 	}
@@ -259,7 +270,7 @@ public abstract class AGLEventListener
 	/**
 	 * Reset the view to its initial state, synchronized
 	 */
-	public synchronized void resetView() {
+	public void resetView() {
 		initData();
 	}
 
@@ -325,8 +336,8 @@ public abstract class AGLEventListener
 	 *            TODO
 	 */
 	public abstract void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager);
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager);
 
 	/**
 	 * GL display method that has to be called in all cases
@@ -334,6 +345,19 @@ public abstract class AGLEventListener
 	 * @param gl
 	 */
 	public abstract void display(final GL gl);
+
+	/**
+	 * This method should be called every display cycle when it is save to change the state of the object. It
+	 * processes all the previously submitted events.
+	 */
+	public void processEvents() {
+		Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
+		while (queue.peek() != null) {
+			pair = queue.poll();
+			pair.getFirst().handleEvent(pair.getSecond());
+		}
+
+	}
 
 	/**
 	 * Intended for internal use when no other view is managing the scene. Has to call display internally!
@@ -437,12 +461,12 @@ public abstract class AGLEventListener
 	 */
 	public abstract void broadcastElements(EVAOperation type);
 
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		this.detailLevel = detailLevel;
 		setDisplayListDirty();
 	}
 
-	public synchronized void setRemoteLevelElement(RemoteLevelElement element) {
+	public void setRemoteLevelElement(RemoteLevelElement element) {
 		this.remoteLevelElement = element;
 	}
 
@@ -462,7 +486,7 @@ public abstract class AGLEventListener
 		return remoteRenderingGLView;
 	}
 
-	protected synchronized void renderBusyMode(final GL gl) {
+	protected void renderBusyMode(final GL gl) {
 		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
 		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;
 
@@ -605,7 +629,7 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public synchronized void setSet(ISet set) {
+	public void setSet(ISet set) {
 
 		// In GL views the new set is not immediately written to the set variable of AView.
 		// The new set is then assigned to the working set when the display list is dirty the next time.
@@ -628,4 +652,24 @@ public abstract class AGLEventListener
 		}
 		return viewIDs;
 	}
+
+	// /*
+	// * *
+	// * @deprecated Use {@link #queueEvent(AEventListener,AEvent)} instead
+	// */
+	// @Override
+	// public void queueEvent(AEventListener<IListenerOwner> listener, AEvent event) {
+	// queueEvent(listener, event);
+	// }
+
+	@Override
+	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
+	}
+
+	@Override
+	public synchronized Pair<AEventListener<? extends IListenerOwner>, AEvent> getEvent() {
+		return queue.poll();
+	}
+
 }

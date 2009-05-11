@@ -153,7 +153,7 @@ public class GLGlyph
 	 * 
 	 * @param iconIDs
 	 */
-	public synchronized void setPositionModel(EIconIDs iconIDs) {
+	public void setPositionModel(EIconIDs iconIDs) {
 		grid_.setGlyphPositions(iconIDs);
 		forceRebuild();
 
@@ -164,7 +164,7 @@ public class GLGlyph
 	/**
 	 * Gets the used positioning model
 	 */
-	public synchronized EIconIDs getPositionModel() {
+	public EIconIDs getPositionModel() {
 		if (grid_ != null)
 			return grid_.getGlyphPositions();
 		return EIconIDs.DISPLAY_RECTANGLE;
@@ -178,7 +178,7 @@ public class GLGlyph
 	 * @param internal
 	 *            column number
 	 */
-	public synchronized void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value) {
+	public void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value) {
 		if (positionmodel == EIconIDs.DISPLAY_SCATTERPLOT) {
 			GlyphGridPositionModelScatterplot model =
 				(GlyphGridPositionModelScatterplot) grid_.getGlyphPositionModel(positionmodel);
@@ -214,7 +214,7 @@ public class GLGlyph
 	 * @param size
 	 *            of the brush
 	 */
-	public synchronized void setSelectionBrush(int size) {
+	public void setSelectionBrush(int size) {
 		if (size <= 0) {
 			bEnableSelection = false;
 			ArrayList<Integer> ids = null;
@@ -262,7 +262,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void init(GL gl) {
+	public void init(GL gl) {
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
 		grid_.loadData(set);
@@ -283,7 +283,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void initLocal(GL gl) {
+	public void initLocal(GL gl) {
 		bIsLocal = true;
 
 		float fInitZoom = -10f;
@@ -330,7 +330,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void initRemote(final GL gl, final AGLEventListener glParentView,
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
 		final GLMouseListener glMouseListener,
 		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 		
@@ -353,7 +353,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -362,14 +362,15 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 
 		display(gl);
 		checkForHits(gl);
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
+	public void display(GL gl) {
+		processEvents();
 		if (grid_ == null) {
 			renderSymbol(gl);
 			return;
@@ -977,7 +978,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized String getShortInfo() {
+	public String getShortInfo() {
 		if (sLabelPersonal != null)
 			return "Glpyh - " + sLabelPersonal;
 
@@ -985,7 +986,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized String getDetailedInfo() {
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Type: Glyph Map");
 		sInfoText.append("GL: Showing Glyphs for clinical data");
@@ -993,7 +994,7 @@ public class GLGlyph
 	}
 
 	@Override
-	protected synchronized void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
+	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
 		int iExternalID, Pick pick) {
 
 		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
@@ -1105,13 +1106,13 @@ public class GLGlyph
 	/**
 	 * This method forces a rebuild of every display list in this view
 	 */
-	public synchronized void forceRebuild() {
+	public void forceRebuild() {
 		bRedrawDisplayListGrid = true;
 		bRedrawDisplayListGlyph = true;
 	}
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type) {
 
 	}
 
@@ -1153,7 +1154,7 @@ public class GLGlyph
 		}
 	}
 
-	public synchronized void removeUnselected() {
+	public void removeUnselected() {
 		grid_.loadData(null);
 		forceRebuild();
 	}

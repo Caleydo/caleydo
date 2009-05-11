@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -30,7 +33,7 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class GLHistogramView
 	extends AGLViewPart
-	implements IViewCommandHandler {
+	implements IViewCommandHandler, IListenerOwner {
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
 
 	private CLabel colorMappingPreviewLabel;
@@ -55,17 +58,17 @@ public class GLHistogramView
 		GridLayout baseLayout = new GridLayout(1, false);
 		baseLayout.verticalSpacing = 2;
 		baseComposite.setLayout(baseLayout);
-		
-		super.createPartControl(baseComposite);
-		swtComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-//		Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
-//		colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		GridLayout layout = new GridLayout(1, false);
-//		layout.marginWidth = 0;
-//		layout.marginHeight = 0;
-//		layout.verticalSpacing = 0;
-//		colorMappingComposite.setLayout(layout);
+		super.createPartControl(baseComposite);
+		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		// Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
+		// colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// GridLayout layout = new GridLayout(1, false);
+		// layout.marginWidth = 0;
+		// layout.marginHeight = 0;
+		// layout.verticalSpacing = 0;
+		// colorMappingComposite.setLayout(layout);
 		// Button button = new Button(buttonComposite, SWT.PUSH);
 		colorMappingPreviewLabel = new CLabel(baseComposite, SWT.SHADOW_IN);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -146,18 +149,16 @@ public class GLHistogramView
 					+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
 			double correspondingValue =
-				GeneralManager.get().getUseCase().getSet().getRawForNormalized(
-					normalizedValue);
+				GeneralManager.get().getUseCase().getSet().getRawForNormalized(normalizedValue);
 
 			if (Math.abs(correspondingValue) > 10000)
 				decimalFormat = new DecimalFormat("0.#E0");
-			else if(Math.abs(correspondingValue) > 100)
+			else if (Math.abs(correspondingValue) > 100)
 				decimalFormat = new DecimalFormat("#####");
-			else if(Math.abs(correspondingValue) > 10)
+			else if (Math.abs(correspondingValue) > 10)
 				decimalFormat = new DecimalFormat("#####.#");
 			else
 				decimalFormat = new DecimalFormat("#####.##");
-				
 
 			labels.get(iCount - 1).setText(decimalFormat.format(correspondingValue));
 			int iColorMarkerPoint = (int) (100 * normalizedValue);
@@ -225,5 +226,16 @@ public class GLHistogramView
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
+	}
+
+	@Override
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+		final AEvent event) {
+		
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				listener.handleEvent(event);
+			}
+		});
 	}
 }

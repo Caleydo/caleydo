@@ -245,7 +245,7 @@ public class ViewCameraPitchRollYaw
 	 * @param bImmediateUpdate
 	 *            TRUE force an immediate update once a setter is called, which recalulates the ViewMatrix
 	 */
-	public synchronized void setImmediateCameraUpdate(final boolean bImmediateUpdate) {
+	public void setImmediateCameraUpdate(final boolean bImmediateUpdate) {
 
 		bEnableImmediateCameraUpdate = bImmediateUpdate;
 	}

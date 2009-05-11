@@ -57,7 +57,7 @@ public class EventPublisher
 		Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass());
 		if (listeners != null) {
 			for (AEventListener<?> receiver : listeners) {
-				receiver.handleEventFiltered(event);
+				receiver.queueEvent(event);
 			}
 		}
 	}

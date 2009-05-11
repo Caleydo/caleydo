@@ -145,7 +145,7 @@ public abstract class AStorageBasedView
 		return bRenderOnlyContext;
 	}
 
-	public synchronized void initData() {
+	public void initData() {
 
 		super.initData();
 
@@ -377,7 +377,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public synchronized void clearAllSelections() {
+	public void clearAllSelections() {
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
@@ -386,7 +386,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public synchronized void setSet(ISet set) {
+	public void setSet(ISet set) {
 		super.setSet(set);
 
 		resetView();
@@ -514,7 +514,7 @@ public abstract class AStorageBasedView
 	public abstract void broadcastElements();
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type) {
 		// nothing to do
 	}
 
@@ -523,7 +523,7 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param bUseRandomSampling
 	 */
-	public synchronized final void useRandomSampling(boolean bUseRandomSampling) {
+	public final void useRandomSampling(boolean bUseRandomSampling) {
 		if (this.bUseRandomSampling != bUseRandomSampling) {
 			this.bUseRandomSampling = bUseRandomSampling;
 		}
@@ -539,7 +539,7 @@ public abstract class AStorageBasedView
 	 * @param iNumberOfRandomElements
 	 *            the number
 	 */
-	public synchronized final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
+	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
 		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling) {
 			this.iNumberOfRandomElements = iNumberOfRandomElements;
 			initData();
@@ -556,7 +556,7 @@ public abstract class AStorageBasedView
 	 * @param iNumberOfSamplesPerTexture
 	 *            the number
 	 */
-	public synchronized final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
+	public final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
 		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
 	}
 
@@ -566,7 +566,7 @@ public abstract class AStorageBasedView
 	 * @param iNumberOfSamplesPerHeatmap
 	 *            the number
 	 */
-	public synchronized final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
+	public final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
 		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 

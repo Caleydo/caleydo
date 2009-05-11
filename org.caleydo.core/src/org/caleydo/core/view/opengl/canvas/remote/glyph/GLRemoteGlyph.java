@@ -108,7 +108,7 @@ public class GLRemoteGlyph
 
 	@Override
 	public void display(GL gl) {
-
+		processEvents();
 		gl.glTranslatef(0f, 0f, -5f);
 
 		// GLHelperFunctions.drawAxis(gl);

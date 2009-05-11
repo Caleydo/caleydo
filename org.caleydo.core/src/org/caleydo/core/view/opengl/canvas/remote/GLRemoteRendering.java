@@ -345,7 +345,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) {
 		// if (glMouseListener.wasRightMouseButtonPressed() &&
 		// !bucketMouseWheelListener.isZoomedIn()
 		// && !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
@@ -459,13 +459,14 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) {
 		display(gl);
 	}
 
 	@Override
-	public synchronized void display(final GL gl) {
+	public void display(final GL gl) {
 		time.update();
+		processEvents();
 		// Update the pool transformations according to the current mouse over object
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
 		layoutRenderStyle.initFocusLevel();
@@ -559,7 +560,7 @@ public class GLRemoteRendering
 
 	}
 
-	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
+	public void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
 		containedViewIDs = iAlInitialContainedViewIDs;
 	}
 
@@ -1818,7 +1819,7 @@ public class GLRemoteRendering
 	 * 
 	 */
 	@Override
-	public synchronized void addInitialRemoteView(ASerializedView serView) {
+	public void addInitialRemoteView(ASerializedView serView) {
 		newViews.add(serView);
 	}
 
@@ -1827,7 +1828,7 @@ public class GLRemoteRendering
 	 * 
 	 * @param iPathwayIDToLoad
 	 */
-	public synchronized void addPathwayView(final int iPathwayID) {
+	public void addPathwayView(final int iPathwayID) {
 
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 			generalManager.getPathwayManager().getItem(iPathwayID))) {
@@ -2165,7 +2166,7 @@ public class GLRemoteRendering
 		return sInfoText.toString();
 	}
 
-	public synchronized void toggleLayoutMode() {
+	public void toggleLayoutMode() {
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
@@ -2240,7 +2241,7 @@ public class GLRemoteRendering
 		}
 	}
 
-	public synchronized void clearAll() {
+	public void clearAll() {
 
 		if (containedViewIDs == null)
 			return;
@@ -2336,7 +2337,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
 		// Update aspect ratio and reinitialize stack and focus layer
@@ -2417,7 +2418,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type) {
 		// do nothing
 	}
 
@@ -2427,7 +2428,7 @@ public class GLRemoteRendering
 	 * 
 	 * @param GL
 	 */
-	private synchronized void initNewView(GL gl) {
+	private void initNewView(GL gl) {
 		if (arSlerpActions.isEmpty()) {
 			if (!newViews.isEmpty()) {
 				ASerializedView serView = newViews.remove(0);
@@ -2595,7 +2596,7 @@ public class GLRemoteRendering
 		canvasManager.releaseBusyMode(this);
 	}
 
-	public synchronized void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
+	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		// add new pathways to bucket
 		for (PathwayGraph pathway : newPathwayGraphs) {

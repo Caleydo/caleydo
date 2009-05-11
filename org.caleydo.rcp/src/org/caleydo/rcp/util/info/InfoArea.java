@@ -15,6 +15,9 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
@@ -51,8 +54,8 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, 
-	ITriggerSelectionCommandHandler, IViewCommandHandler {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
+	IViewCommandHandler {
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
@@ -71,7 +74,7 @@ public class InfoArea
 	// private GlyphManager glyphManager;
 	private IIDMappingManager idMappingManager;
 
-//	private String shortInfo;
+	// private String shortInfo;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
@@ -80,8 +83,7 @@ public class InfoArea
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
 	protected InfoAreaUpdateListener infoAreaUpdateListener = null;
-	
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -132,7 +134,7 @@ public class InfoArea
 			gridData.widthHint = 145;
 			gridData.minimumWidth = 145;
 		}
-		
+
 		// else {
 		// gridData.widthHint = 145;
 		// gridData.minimumWidth = 145;
@@ -225,8 +227,7 @@ public class InfoArea
 									selectionItem.getPrimaryID());
 
 							String sRefSeqID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-									iRefSeq);
+								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeq);
 
 							Integer iDavidID =
 								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
@@ -370,7 +371,7 @@ public class InfoArea
 			parentComposite.getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					lblViewInfoContent.setText(info);
-	
+
 					// for (VADeltaItem item : delta) {
 					// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
 					// // Flush old items that become deselected/normal
@@ -387,17 +388,17 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, final List<SelectionCommand> selectionCommands) {
+	public void handleContentTriggerSelectionCommand(EIDType type,
+		final List<SelectionCommand> selectionCommands) {
 		if (parentComposite.isDisposed())
 			return;
-		
+
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				ESelectionCommandType cmdType;
 				for (SelectionCommand cmd : selectionCommands) {
 					cmdType = cmd.getSelectionCommandType();
-					if (cmdType == ESelectionCommandType.RESET
-						|| cmdType == ESelectionCommandType.CLEAR_ALL) {
+					if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
 						selectionTree.removeAll();
 						break;
 					}
@@ -414,10 +415,10 @@ public class InfoArea
 			}
 		});
 	}
-	
+
 	@Override
 	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		
+
 	}
 
 	protected AGLEventListener getUpdateTriggeringView() {
@@ -428,12 +429,11 @@ public class InfoArea
 	public void handleRedrawView() {
 		// nothing to do here
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		// nothing to do here
 	}
-
 
 	@Override
 	public void handleClearSelections() {
@@ -443,7 +443,9 @@ public class InfoArea
 
 	/**
 	 * handling method for updates about the info text displayed in the this info-area
-	 * @param info short-info of the sender to display 
+	 * 
+	 * @param info
+	 *            short-info of the sender to display
 	 */
 	public void handleInfoAreaUpdate(final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -452,8 +454,7 @@ public class InfoArea
 			}
 		});
 	}
-	
-	
+
 	/**
 	 * Registers the listeners for this view to the event system. To release the allocated resources
 	 * unregisterEventListeners() has to be called.
@@ -478,7 +479,7 @@ public class InfoArea
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-		
+
 		infoAreaUpdateListener = new InfoAreaUpdateListener();
 		infoAreaUpdateListener.setHandler(this);
 		eventPublisher.addListener(InfoAreaUpdateEvent.class, infoAreaUpdateListener);
@@ -514,8 +515,18 @@ public class InfoArea
 			infoAreaUpdateListener = null;
 		}
 	}
-	
+
 	public void dispose() {
 		unregisterEventListeners();
+	}
+
+	@Override
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+		final AEvent event) {
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				listener.handleEvent(event);
+			}
+		});
 	}
 }

@@ -73,7 +73,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) {
 		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			// rebuildPathwayDisplayList(gl);
@@ -83,7 +83,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) {
 		if (bIsDisplayListDirtyRemote) {
 			// rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyRemote = false;
@@ -93,7 +93,8 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized void display(final GL gl) {
+	public void display(final GL gl) {
+		processEvents();
 		checkForHits(gl);
 		renderScene(gl);
 	}
@@ -182,7 +183,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized String getShortInfo() {
+	public String getShortInfo() {
 		// PathwayGraph pathway =
 		// (generalManager.getPathwayManager().getItem(iPathwayID));
 		//		
@@ -192,7 +193,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized String getDetailedInfo() {
+	public String getDetailedInfo() {
 		// StringBuffer sInfoText = new StringBuffer();
 		// PathwayGraph pathway =
 		// (generalManager.getPathwayManager().getItem(iPathwayID));
