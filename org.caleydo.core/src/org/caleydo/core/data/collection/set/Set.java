@@ -35,6 +35,8 @@ import org.caleydo.core.util.clusterer.HierarchicalClusterer;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.core.util.clusterer.TreeClusterer;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -271,11 +273,25 @@ public class Set
 			throw new IllegalStateException(
 				"Can not produce raw data on set level for inhomogenous sets. Access via storages");
 
+		double result;
+
 		if (dNormalized == 0)
-			return getMin();
+			result = getMin();
 		// if(getMin() > 0)
-		return getMin() + dNormalized * (getMax() - getMin());
+		result = getMin() + dNormalized * (getMax() - getMin());
 		// return (dNormalized) * (getMax() + getMin());
+		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
+			return result;
+		}
+		else if (externalDataRep == EExternalDataRepresentation.LOG2) {
+
+			return Math.pow(2, result);
+		}
+		else if (externalDataRep == EExternalDataRepresentation.LOG10) {
+			return Math.pow(10, result);
+		}
+		throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
+			+ externalDataRep);
 	}
 
 	public double getNormalizedForRaw(double dRaw) {
@@ -283,10 +299,32 @@ public class Set
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
 
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+				"This method is untested - test when first used"));
+
+		double result;
 		if (dRaw < getMin() || dRaw > getMax())
 			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
 
-		return (dRaw - getMin()) / (getMax() - getMin());
+		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
+			result = dRaw;
+		}
+		if (externalDataRep == EExternalDataRepresentation.LOG2) {
+			result = Math.log(dRaw) / Math.log(2);
+		}
+		else if (externalDataRep == EExternalDataRepresentation.LOG10) {
+			result = Math.log10(dRaw);
+		}
+		else {
+			throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
+				+ externalDataRep);
+		}
+
+		result = (result - getMin()) / (getMax() - getMin());
+
+		return result;
+
 	}
 
 	@Override

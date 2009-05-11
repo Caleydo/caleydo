@@ -183,7 +183,11 @@ public class GenericSelectionManager {
 		this.externalToInternalMapping = builder.externalToInternalMapping;
 		this.internalToExternalMapping = builder.internalToExternalMapping;
 		this.internalIDType = builder.internalIDType;
-		this.externalIDType = builder.externalIDType;
+		if (builder.externalIDType == null)
+			this.externalIDType = builder.internalIDType;
+		else
+			this.externalIDType = builder.externalIDType;
+		
 		if (builder.alSelectionTypes == null) {
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values()) {
@@ -284,8 +288,8 @@ public class GenericSelectionManager {
 	 * virtual array.
 	 * </p>
 	 * <p>
-	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with the
-	 * data of the virtual array
+	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with
+	 * the data of the virtual array
 	 * </p>
 	 * 
 	 * @param virtualArray
@@ -298,7 +302,8 @@ public class GenericSelectionManager {
 	}
 
 	/**
-	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears the virtual array.
+	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears
+	 * the virtual array.
 	 */
 	public void resetSelectionManager() {
 		hashSelectionTypes.clear();
@@ -735,8 +740,9 @@ public class GenericSelectionManager {
 				iSelectionID = item.getPrimaryID();
 
 				if (iSelectionID == -1) {
-					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-						"No internal id for " + item.getPrimaryID()));
+					GeneralManager.get().getLogger().log(
+						new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
+							+ item.getPrimaryID()));
 
 					continue;
 				}
@@ -760,8 +766,9 @@ public class GenericSelectionManager {
 
 				for (Integer iTmpSelectionID : iTmpSetID) {
 					if (iTmpSelectionID == null || iTmpSelectionID == -1) {
-						GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-							"No internal id for " + item.getPrimaryID()));
+						GeneralManager.get().getLogger().log(
+							new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
+								+ item.getPrimaryID()));
 
 						continue;
 					}

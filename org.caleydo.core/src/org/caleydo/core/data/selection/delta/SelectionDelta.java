@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.management.InvalidAttributeValueException;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 
@@ -22,12 +24,16 @@ public class SelectionDelta
 	private EIDType secondaryIDType = null;
 
 	public SelectionDelta(EIDType idType) {
+		if(idType == null)
+			throw new IllegalArgumentException("idType was null");
 		hashSelectionItems = new HashMap<Integer, SelectionDeltaItem>();
 		this.idType = idType;
 	}
 
 	public SelectionDelta(EIDType idType, EIDType internalIDType) {
 		this(idType);
+
+		
 		this.secondaryIDType = internalIDType;
 	}
 
