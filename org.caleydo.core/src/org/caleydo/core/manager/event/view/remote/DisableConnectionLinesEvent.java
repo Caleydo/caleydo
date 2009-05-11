@@ -9,4 +9,9 @@ import org.caleydo.core.manager.event.AEvent;
 public class DisableConnectionLinesEvent
 	extends AEvent {
 	
+	@Override
+	public boolean checkIntegrity() {
+		// nothing to check
+		return true;
+	}
 }

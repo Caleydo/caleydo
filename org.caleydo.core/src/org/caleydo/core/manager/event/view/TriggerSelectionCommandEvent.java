@@ -7,7 +7,8 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * TODO javadoc  
+ * TODO javadoc
+ * 
  * @author Werner Puff
  */
 public class TriggerSelectionCommandEvent
@@ -15,7 +16,7 @@ public class TriggerSelectionCommandEvent
 
 	/** selected genome data-type */
 	EIDType type;
-	
+
 	/** list of selection commands to handle by the receiver */
 	List<SelectionCommand> selectionCommands = null;
 
@@ -34,5 +35,13 @@ public class TriggerSelectionCommandEvent
 	public void setType(EIDType type) {
 		this.type = type;
 	}
-	
+
+	@Override
+	public boolean checkIntegrity() {
+		if (type == null)
+			throw new NullPointerException("type was null");
+		if(selectionCommands == null)
+			throw new NullPointerException("selectionCommands was null");
+		return true;
+	}
 }

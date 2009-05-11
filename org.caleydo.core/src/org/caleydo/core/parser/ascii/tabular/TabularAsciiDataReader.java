@@ -238,6 +238,7 @@ public class TabularAsciiDataReader
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void setArraysToStorages() {
 
 		int iIntArrayIndex = 0;

@@ -1949,10 +1949,10 @@ public class GLParallelCoordinates
 				// }
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
-
-					SelectionCommand command =
-						new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-					// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+//
+//					SelectionCommand command =
+//						new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+//					// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);

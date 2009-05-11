@@ -10,7 +10,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Parser;
-import org.eclipse.core.runtime.Status;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;

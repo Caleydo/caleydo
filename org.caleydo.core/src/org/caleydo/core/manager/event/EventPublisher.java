@@ -50,6 +50,10 @@ public class EventPublisher
 
 	@Override
 	public void triggerEvent(AEvent event) {
+		if(!event.checkIntegrity())
+		{
+			throw new IllegalStateException("Event " + event + " has failed integrity check");			
+		}
 		Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass());
 		if (listeners != null) {
 			for (AEventListener<?> receiver : listeners) {

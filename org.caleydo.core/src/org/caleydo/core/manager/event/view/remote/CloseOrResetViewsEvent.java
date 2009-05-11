@@ -8,5 +8,9 @@ import org.caleydo.core.manager.event.AEvent;
  */
 public class CloseOrResetViewsEvent
 	extends AEvent {
-	
+	@Override
+	public boolean checkIntegrity() {
+		// nothing to check
+		return true;
+	}
 }

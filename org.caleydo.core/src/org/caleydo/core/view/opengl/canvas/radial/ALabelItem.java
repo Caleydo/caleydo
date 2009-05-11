@@ -1,8 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
-import javax.media.opengl.GL;
-
 import gleem.linalg.Vec2f;
+
+import javax.media.opengl.GL;
 
 
 public abstract class ALabelItem {

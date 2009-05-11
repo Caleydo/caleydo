@@ -4,10 +4,8 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.eclipse.core.runtime.Status;
 
 /**
  * Command creates a new storage.

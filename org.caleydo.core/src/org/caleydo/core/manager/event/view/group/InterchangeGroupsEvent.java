@@ -15,4 +15,10 @@ public class InterchangeGroupsEvent
 		return bGeneGroup;
 	}
 
+	@Override
+	public boolean checkIntegrity() {
+		// nothing to check
+		return true;
+	}
+
 }

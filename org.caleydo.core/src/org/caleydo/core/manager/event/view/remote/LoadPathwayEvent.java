@@ -3,17 +3,19 @@ package org.caleydo.core.manager.event.view.remote;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that a pathway should be loaded. 
+ * Event to signal that a pathway should be loaded.
+ * 
  * @author Werner Puff
  */
 public class LoadPathwayEvent
 	extends AEvent {
-	
+
 	/** id of the pathway to load */
 	private int pathwayID = -1;
 
 	/**
 	 * gets the id of the pathway to load
+	 * 
 	 * @return pathway-id to load
 	 */
 	public int getPathwayID() {
@@ -22,10 +24,19 @@ public class LoadPathwayEvent
 
 	/**
 	 * sets the id of the pathway to load
-	 * @param pathwayID pathway-id to load
+	 * 
+	 * @param pathwayID
+	 *            pathway-id to load
 	 */
 	public void setPathwayID(int pathwayID) {
 		this.pathwayID = pathwayID;
 	}
-	
+
+	@Override
+	public boolean checkIntegrity() {
+		if (pathwayID == -1)
+			throw new IllegalStateException("pathwayID was not set");
+		return true;
+	}
+
 }

@@ -4,22 +4,22 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that the user's selection has been updated.
- * Migration from EEventType.SELECTION_UPDATE 
+ * Event to signal that the user's selection has been updated. Migration from EEventType.SELECTION_UPDATE
+ * 
  * @author Werner Puff
  */
 public class SelectionUpdateEvent
 	extends AEvent {
-	
+
 	/** delta between old and new selection */
 	private ISelectionDelta selectionDelta;
 
 	/** tells if the selection should be focused (centered, ...) by the receiver */
 	private boolean scrollToSelection = true;
-	
-	/**	additional information about the selection, e.g. to display in the info-box */
+
+	/** additional information about the selection, e.g. to display in the info-box */
 	private String info;
-	
+
 	public ISelectionDelta getSelectionDelta() {
 		return selectionDelta;
 	}
@@ -42,5 +42,12 @@ public class SelectionUpdateEvent
 
 	public void setInfo(String info) {
 		this.info = info;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		if (selectionDelta == null)
+			throw new NullPointerException("selectionDelta was null");
+		return true;
 	}
 }

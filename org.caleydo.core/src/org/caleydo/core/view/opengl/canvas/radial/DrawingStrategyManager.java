@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
 import java.util.HashMap;
+
 import org.caleydo.core.manager.picking.PickingManager;
 
 public final class DrawingStrategyManager {
