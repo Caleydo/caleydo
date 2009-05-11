@@ -21,6 +21,14 @@ import org.eclipse.jface.preference.PreferenceStore;
  */
 public interface IGeneralManager {
 	
+	/**
+	 * This is the current version of Caleydo. 
+	 * The value must be the same as specified in the plugin/bundle.
+	 * We need to access the version before the workbench is started.
+	 * Therefore we have to set it hardcoded at this point.
+	 */
+	public static final String VERSION = "1.2";
+	
 	public static final String PLUGIN_ID = "org.caleydo.core";
 	
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";

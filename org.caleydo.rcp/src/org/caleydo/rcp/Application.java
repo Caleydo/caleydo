@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.Constants;
 
 /**
  * This class controls all aspects of the application's execution
@@ -141,7 +142,8 @@ public class Application
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
-		caleydoCore = new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
+		caleydoCore =
+			new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
 
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
@@ -153,7 +155,7 @@ public class Application
 				new WizardDialog(shell, new InternetConfigurationWizard());
 			internetConfigurationWizard.open();
 		}
-		
+
 		// If no file is provided as command line argument a XML file open
 		// dialog is opened
 		if (sCaleydoXMLfile.equals("")) {
@@ -182,20 +184,20 @@ public class Application
 						// do nothing
 				}
 			}
-
-			if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-				PreferenceConstants.PATHWAY_DATA_OK)
-				&& bLoadPathwayData)
-			// && !caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-			// PreferenceConstants.FIRST_START))
-			{
-				WizardDialog firstStartWizard = new WizardDialog(shell, new FetchPathwayWizard());
-				firstStartWizard.open();
-			}
 		}
 		else {
 			// Assuming that if an external XML file is provided, the genetic use case applies
 			GeneralManager.get().setUseCase(new GeneticUseCase());
+		}
+		
+		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+			PreferenceConstants.PATHWAY_DATA_OK)
+			&& bLoadPathwayData)
+		// && !caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+		// PreferenceConstants.FIRST_START))
+		{
+			WizardDialog firstStartWizard = new WizardDialog(shell, new FetchPathwayWizard());
+			firstStartWizard.open();
 		}
 
 		try {
@@ -220,8 +222,8 @@ public class Application
 	private void shutDown() {
 		// Save preferences before shutdown
 		try {
-			GeneralManager.get().getLogger().log(new Status(Status.WARNING, Activator.PLUGIN_ID,
-				"Save Caleydo preferences..."));
+			GeneralManager.get().getLogger().log(
+				new Status(Status.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));
 			GeneralManager.get().getPreferenceStore().save();
 		}
 		catch (IOException e) {
@@ -266,8 +268,7 @@ public class Application
 			}
 		}
 		else if (applicationMode == EApplicationMode.STANDARD
-			 && (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE)
-				 || sCaleydoXMLfile.equals(""))) {
+			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 

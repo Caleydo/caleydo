@@ -59,7 +59,6 @@ public class CaleydoBootloader {
 	public CaleydoBootloader(boolean bIsStandalone, IGUIBridge externalGUIBridge) {
 		generalManager = GeneralManager.get();
 		generalManager.init(bIsStandalone, externalGUIBridge);
-
 		init();
 	}
 
