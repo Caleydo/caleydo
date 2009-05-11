@@ -231,7 +231,8 @@ public class TreeClusterer
 			int is = 1;
 			int js = 0;
 			
-			pbTreeClusterer.setSelection(n);
+			shell.update();
+			pbTreeClusterer.setSelection(iNrSamples - n);
 
 			pair = find_closest_pair(n, distmatrix);
 
@@ -396,8 +397,14 @@ public class TreeClusterer
 		float[][] distmatrix = new float[iNrSamples][iNrSamples];
 		distmatrix = similarities.clone();
 
+		pbTreeClusterer.setMinimum(0);
+		pbTreeClusterer.setMaximum(iNrSamples);
+		
 		for (int n = iNrSamples; n > 1; n--) {
 
+			shell.update();
+			pbTreeClusterer.setSelection(iNrSamples - n);
+			
 			int is = 1;
 			int js = 0;
 

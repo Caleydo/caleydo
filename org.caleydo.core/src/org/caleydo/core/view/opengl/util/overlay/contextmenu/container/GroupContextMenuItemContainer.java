@@ -7,8 +7,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.InterchangeGro
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.MergeClustersItem;
 
 /**
- * Implementation of AItemContainer for groups/clusters. By passing a group number code all relevant context
- * menu items are constructed automatically
+ * Implementation of AItemContainer for groups/clusters. In this context menu all operations related to group
+ * handling are included.
  * 
  * @author Bernhard Schlegl
  */

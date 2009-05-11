@@ -13,6 +13,7 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
@@ -72,7 +73,7 @@ public class GLDendrogramHorizontal
 
 	private ColorMapping colorMapper;
 
-//	private TreePorter treePorter = new TreePorter();
+	private TreePorter treePorter = new TreePorter();
 
 	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
 
@@ -83,7 +84,8 @@ public class GLDendrogramHorizontal
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLDendrogramHorizontal(final GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLDendrogramHorizontal(final GLCaleydoCanvas glCanvas, final String sLabel,
+		final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum);
 
 		viewType = EManagedObjectType.GL_DENDOGRAM;
@@ -97,17 +99,28 @@ public class GLDendrogramHorizontal
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
-		
-		fPosCut = viewFrustum.getTop() - 0.1f;
-		
-		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
-		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
-		clusterNodeMouseOverListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
+		fPosCut = viewFrustum.getTop() - 0.1f;
+
+		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 	}
 
+	@Override
+	public void registerEventListeners() {
+		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
+		clusterNodeMouseOverListener.setHandler(this);
+		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (clusterNodeMouseOverListener != null) {
+			eventPublisher.removeListener(clusterNodeMouseOverListener);
+			clusterNodeMouseOverListener = null;
+		}
+	}
+	
 	@Override
 	public void init(GL gl) {
 
@@ -123,8 +136,8 @@ public class GLDendrogramHorizontal
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
@@ -203,15 +216,15 @@ public class GLDendrogramHorizontal
 	private void renderCut(final GL gl) {
 
 		float fHeight = viewFrustum.getHeight();
-		
-//		float fWidth = viewFrustum.getWidth() - 0.2f;
-//		gl.glColor4f(0f, 0f, 0f, 0.4f);
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0, 0.1f, 0);
-//		gl.glVertex3f(0, 0.1f + fHeight, 0);
-//		gl.glVertex3f(fWidth, 0.1f + fHeight, 0);
-//		gl.glVertex3f(fWidth, 0.1f, 0);
-//		gl.glEnd();
+
+		// float fWidth = viewFrustum.getWidth() - 0.2f;
+		// gl.glColor4f(0f, 0f, 0f, 0.4f);
+		// gl.glBegin(GL.GL_QUADS);
+		// gl.glVertex3f(0, 0.1f, 0);
+		// gl.glVertex3f(0, 0.1f + fHeight, 0);
+		// gl.glVertex3f(fWidth, 0.1f + fHeight, 0);
+		// gl.glVertex3f(fWidth, 0.1f, 0);
+		// gl.glEnd();
 
 		gl.glColor4f(1f, 0f, 0f, 0.4f);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_HORI_SELECTION, 1));
@@ -508,11 +521,11 @@ public class GLDendrogramHorizontal
 		// tree = set.getClusteredTreeGenes();
 		if (tree == null) {
 
-			if (set.getClusteredTreeGenes() != null) {
-				tree = set.getClusteredTreeGenes();
-			}
+			// if (set.getClusteredTreeGenes() != null) {
+			// tree = set.getClusteredTreeGenes();
+			// }
 
-			// tree = treePorter.importTree("data/clustering/tree.xml");
+			tree = treePorter.importTree("data/clustering/tree.xml");
 
 			renderSymbol(gl);
 
@@ -678,9 +691,9 @@ public class GLDendrogramHorizontal
 				if (bTriggerClusterNodeEvent) {
 					if (tree.getNodeByNumber(iExternalID) != null) {
 						ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
-						event.setSender(this);
+//						event.setSender(this);
 
-						event.setClusterNumber(tree.getNodeByNumber(iExternalID).getClusterNr());
+						event.setClusterNumber(iExternalID);
 						eventPublisher.triggerEvent(event);
 					}
 				}
@@ -829,11 +842,6 @@ public class GLDendrogramHorizontal
 		tree = null;
 	}
 
-	
-//	public void handleMouseOver(String clusterNodeName) {
-//		// System.out.println(clusterNodeName);
-//	}
-
 	private void resetAllTreeSelections() {
 		resetAllTreeSelectionsRec(tree.getRoot());
 	}
@@ -844,19 +852,22 @@ public class GLDendrogramHorizontal
 
 		if (tree.hasChildren(currentNode)) {
 			for (ClusterNode current : tree.getChildren(currentNode)) {
-				determineSelectedNodesRec(current);
+				resetAllTreeSelectionsRec(current);
 			}
 		}
 	}
 
 	@Override
 	public void handleMouseOver(int clusterNr) {
-		if (tree.getNodeByNumber(clusterNr) != null)
-			tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
+		if (tree != null) {
+			resetAllTreeSelections();
+			if (tree.getNodeByNumber(clusterNr) != null)
+				tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
 
-		setDisplayListDirty();
+			setDisplayListDirty();
+		}
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();

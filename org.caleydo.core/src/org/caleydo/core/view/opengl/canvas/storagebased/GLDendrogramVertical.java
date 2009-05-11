@@ -70,7 +70,7 @@ public class GLDendrogramVertical
 
 	private ColorMapping colorMapper;
 
-//	private TreePorter treePorter = new TreePorter();
+	// private TreePorter treePorter = new TreePorter();
 
 	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
 
@@ -97,10 +97,21 @@ public class GLDendrogramVertical
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
+	}
+
+	@Override
+	public void registerEventListeners() {
 		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
 		clusterNodeMouseOverListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
+	}
 
+	@Override
+	public void unregisterEventListeners() {
+		if (clusterNodeMouseOverListener != null) {
+			eventPublisher.removeListener(clusterNodeMouseOverListener);
+			clusterNodeMouseOverListener = null;
+		}
 	}
 
 	@Override
@@ -118,8 +129,8 @@ public class GLDendrogramVertical
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
@@ -198,15 +209,15 @@ public class GLDendrogramVertical
 	private void renderCut(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth();
-		
-//		float fHeight = viewFrustum.getHeight() - 0.2f;
-//		gl.glColor4f(0f, 0f, 0f, 0.4f);
-//		gl.glBegin(GL.GL_QUADS);
-//		gl.glVertex3f(0.1f, 0f, 0);
-//		gl.glVertex3f(0.1f, fHeight, 0);
-//		gl.glVertex3f(0.2f, fHeight, 0);
-//		gl.glVertex3f(0.2f, 0f, 0);
-//		gl.glEnd();
+
+		// float fHeight = viewFrustum.getHeight() - 0.2f;
+		// gl.glColor4f(0f, 0f, 0f, 0.4f);
+		// gl.glBegin(GL.GL_QUADS);
+		// gl.glVertex3f(0.1f, 0f, 0);
+		// gl.glVertex3f(0.1f, fHeight, 0);
+		// gl.glVertex3f(0.2f, fHeight, 0);
+		// gl.glVertex3f(0.2f, 0f, 0);
+		// gl.glEnd();
 
 		gl.glColor4f(1f, 0f, 0f, 0.4f);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_VERTI_SELECTION, 1));
@@ -479,7 +490,7 @@ public class GLDendrogramVertical
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-//		tree = treePorter.importTree("Cop.xml");
+		// tree = treePorter.importTree("Cop.xml");
 
 		// tree = set.getClusteredTreeExps();
 		if (tree == null) {
@@ -645,9 +656,9 @@ public class GLDendrogramVertical
 				if (bTriggerClusterNodeEvent) {
 					if (tree.getNodeByNumber(iExternalID) != null) {
 						ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
-						event.setSender(this);
+						// event.setSender(this);
 
-						event.setClusterNumber(tree.getNodeByNumber(iExternalID).getClusterNr());
+						event.setClusterNumber(iExternalID);
 						eventPublisher.triggerEvent(event);
 					}
 				}
@@ -768,11 +779,6 @@ public class GLDendrogramVertical
 		tree = null;
 	}
 
-	
-//	public void handleMouseOver(int iClusterNumber) {
-//		// System.out.println(clusterNodeName);
-//	}
-
 	private void resetAllTreeSelections() {
 		resetAllTreeSelectionsRec(tree.getRoot());
 	}
@@ -783,20 +789,22 @@ public class GLDendrogramVertical
 
 		if (tree.hasChildren(currentNode)) {
 			for (ClusterNode current : tree.getChildren(currentNode)) {
-				determineSelectedNodesRec(current);
+				resetAllTreeSelectionsRec(current);
 			}
 		}
-
 	}
-	
+
 	@Override
 	public void handleMouseOver(int clusterNr) {
-		if (tree.getNodeByNumber(clusterNr) != null)
-			tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
+		if (tree != null) {
+			resetAllTreeSelections();
+			if (tree.getNodeByNumber(clusterNr) != null)
+				tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
 
-		setDisplayListDirty();
+			setDisplayListDirty();
+		}
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();

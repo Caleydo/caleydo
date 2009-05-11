@@ -9,8 +9,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.IGraph;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -232,8 +230,6 @@ public class HierarchicalClusterer
 		return clusteredVAId;
 	}
 
-	private int cnt = 0;
-
 	private void CNodeToTree(ClusterNode clusterNode, CNode node) {
 
 		if (node.getChilds() != null) {
@@ -253,25 +249,6 @@ public class HierarchicalClusterer
 			}
 		}
 
-	}
-
-	private HierarchyGraph matchTree(IGraph graph, CNode Node) {
-		HierarchyGraph temp = new HierarchyGraph("Node" + Node.getClusterNum(), Node.getClusterNum(), 0);
-		cnt++;
-		graph = temp;
-
-		if (Node.getChilds() != null) {
-			int iNrChildsNode = Node.getChilds().size();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				CNode currentNode = (CNode) Node.getChilds().elementAt(i);
-				HierarchyGraph currentGraph = new HierarchyGraph();
-				temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
-			}
-		}
-
-		return temp;
 	}
 
 	@Override

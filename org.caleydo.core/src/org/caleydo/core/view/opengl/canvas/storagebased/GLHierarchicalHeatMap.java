@@ -811,6 +811,32 @@ public class GLHierarchicalHeatMap
 			AlSelection.add(temp);
 		}
 
+		Set<Integer> setDeselctedElements = contentSelectionManager.getElements(ESelectionType.DESELECTED);
+		for (Integer iSelectedID : setDeselctedElements) {
+			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
+
+			iTemp = iIndex;
+
+			if (iIndex - iAlNumberSamples.get(0) <= 0) {
+				iTexture = 0;
+				iPos = iIndex;
+			}
+			else {
+				for (int i = 0; i < iNrSelBar; i++) {
+
+					if ((iTemp - iAlNumberSamples.get(i)) <= 0) {
+						iTexture = i;
+						iPos = iTemp;
+						break;
+					}
+					iTemp -= iAlNumberSamples.get(i);
+				}
+			}
+
+			temp = new HeatMapSelection(iTexture, iPos, iSelectedID.intValue(), ESelectionType.DESELECTED);
+			AlSelection.add(temp);
+		}
+
 		setMouseOverElements = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 
 		AlExpMouseOver.clear();
@@ -1234,13 +1260,15 @@ public class GLHierarchicalHeatMap
 				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 			}
 
+			// TODO: find a better way to render cluster assignments (--> +0.01f)
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(0, fHeight - fHeightElem * iStartElem, 0);
 			gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iStartElem, 0);
-			gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iLastElem, 0);
-			gl.glVertex3f(0, fHeight - fHeightElem * iLastElem, 0);
+			gl.glVertex3f(fFieldWith, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
+			gl.glVertex3f(0, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
 			gl.glEnd();
 		}
+		gl.glColor4f(1f, 1f, 1f, 1f);
 	}
 
 	/**
@@ -1258,9 +1286,14 @@ public class GLHierarchicalHeatMap
 			if (selection.getSelectionType() == ESelectionType.MOUSE_OVER) {
 				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 			}
-			else {
+			else if (selection.getSelectionType() == ESelectionType.SELECTION) {
 				gl.glColor4fv(SELECTED_COLOR, 0);
 			}
+//			else if (selection.getSelectionType() == ESelectionType.DESELECTED) {
+//				gl.glColor4f(1, 1, 1, 0.5f);
+//			}
+			else
+				continue;
 
 			float fStartElem = 0;
 
@@ -1481,9 +1514,14 @@ public class GLHierarchicalHeatMap
 			if (selection.getSelectionType() == ESelectionType.MOUSE_OVER) {
 				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 			}
-			else {
+			else if (selection.getSelectionType() == ESelectionType.SELECTION) {
 				gl.glColor4fv(SELECTED_COLOR, 0);
 			}
+//			else if (selection.getSelectionType() == ESelectionType.DESELECTED) {
+//				gl.glColor4f(1, 1, 1, 0.5f);
+//			}
+			else 
+				continue;
 
 			// elements in texture
 			if (iSelectorBar == selection.getTexture() + 1) {
@@ -2674,9 +2712,9 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case RIGHT_CLICKED:
-						 contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-						 getParentGLCanvas().getHeight());
-						 contextMenu.setMasterGLView(this);
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
 						break;
 				}
 				break;
