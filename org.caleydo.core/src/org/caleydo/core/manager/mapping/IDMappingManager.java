@@ -113,7 +113,7 @@ public class IDMappingManager
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
 		EMappingType destMappingType) {
 		Map codeResolvedMap = null;
-		int iMappingErrors = 0;
+		//int iMappingErrors = 0;
 
 		EIDType originKeyType = mappingType.getTypeOrigin();
 		EIDType originValueType = mappingType.getTypeTarget();
@@ -237,8 +237,8 @@ public class IDMappingManager
 							iResolvedID = generalManager.getIDMappingManager().getID(conversionType, key);
 
 							if (iResolvedID == null) {
-								generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-									iMappingErrors++ + ": No DAVID mapping for RefSeq " + key));
+//								generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+//									iMappingErrors++ + ": No DAVID mapping for RefSeq " + key));
 								continue;
 							}
 

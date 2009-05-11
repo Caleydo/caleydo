@@ -102,8 +102,11 @@ public class GenomeHTMLBrowserViewRep
 
 						Integer iDavidID =
 							generalManager.getIDMappingManager().getID(
-								EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionDeltaItem.getPrimaryID());
-
+								EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+						
+						if (iDavidID == null)
+							continue;
+						
 						if (iItemsToLoad == 0) {
 							String sURL = urlGenerator.createURL(eBrowserQueryType, iDavidID);
 

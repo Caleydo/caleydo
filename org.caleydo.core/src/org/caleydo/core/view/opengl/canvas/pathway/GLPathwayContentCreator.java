@@ -802,8 +802,8 @@ public class GLPathwayContentCreator {
 				idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
 
 			if (iSetRefSeq == null) {
-				generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-					"No RefSeq IDs found for David: " + iDavidID));
+//				generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+//					"No RefSeq IDs found for David: " + iDavidID));
 			}
 			else {
 				// Check for multiple mapping
