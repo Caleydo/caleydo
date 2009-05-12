@@ -660,16 +660,12 @@ public class FileLoadDataAction
 		}
 	}
 
-	public void execute() {
+	public boolean execute() {
 
-		createData();
-		
-		//TODO implement with new set policy in views (via use case)
-//		setDataInViews();
-//		clearOldData();
+		return createData();
 	}
 
-	private void createData() {
+	private boolean createData() {
 		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
 		String sStorageIDs = "";
 
@@ -718,7 +714,7 @@ public class FileLoadDataAction
 
 		if (sFileName.equals("")) {
 			MessageDialog.openError(parentComposite.getShell(), "Invalid filename", "Invalid filename");
-			return;
+			return false;
 		}
 
 		// Create SET
@@ -752,6 +748,11 @@ public class FileLoadDataAction
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sGeneTreeFileName, sExperimentsFileName, sInputPattern, sDelimiter,
 			iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
+		
+		if (!cmdLoadCsv.isParsingOK()) {
+			// TODO: Clear created set and storages which are empty
+			return false;
+		}
 
 		// iSWTGUIManager.setProgressBarVisible(false);
 
@@ -805,12 +806,9 @@ public class FileLoadDataAction
 		// Since the data is filled to the new set
 		// the views of the current use case can be updated.
 		useCase.updateSetInViews();
+		
+		return true;
 	}
-
-
-//	private void clearOldData() {
-//		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
-//	}
 
 	/**
 	 * For testing purposes

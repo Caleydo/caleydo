@@ -193,18 +193,16 @@ public abstract class AbstractLoader
 
 		try {
 			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		if (brFile != null) {
-			try {
+			if (brFile != null) {
 				brFile.close();
 			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+		}
+		catch (IOException ioe) {
+			return false;
+		}
+		catch (NumberFormatException nfe) {
+			return false;
 		}
 
 		GeneralManager.get().getLogger().log(

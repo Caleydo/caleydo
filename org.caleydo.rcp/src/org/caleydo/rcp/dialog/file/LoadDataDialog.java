@@ -50,9 +50,9 @@ public class LoadDataDialog
 
 	@Override
 	protected void okPressed() {
-		fileLoadDataAction.execute();
-
-		super.okPressed();
+		
+		if (fileLoadDataAction.execute())
+			super.okPressed();
 	}
 
 	/**

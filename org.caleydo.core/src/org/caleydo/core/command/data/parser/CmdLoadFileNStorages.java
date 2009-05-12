@@ -40,6 +40,8 @@ public class CmdLoadFileNStorages
 
 	private ArrayList<Integer> iAlStorageIDs;
 
+	private boolean bParsingOK = false;
+
 	/**
 	 * Constructor.
 	 */
@@ -118,7 +120,7 @@ public class CmdLoadFileNStorages
 			loader.setTokenSeperator(sTokenSeparator);
 		}
 
-		loader.loadData();
+		bParsingOK = loader.loadData();
 
 		generalManager.getGUIBridge().setFileNameCurrentDataSet(sFileName);
 
@@ -158,5 +160,9 @@ public class CmdLoadFileNStorages
 	@Override
 	public void undoCommand() {
 
+	}
+	
+	public boolean isParsingOK() {
+		return bParsingOK;
 	}
 }

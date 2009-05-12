@@ -51,8 +51,12 @@ public class DataImportWizard
 	@Override
 	public boolean performFinish() {
 		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete()) {
-			((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).getFileLoadDataAction()
-				.execute();
+			
+			if (!((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
+			.getFileLoadDataAction().execute()) {
+				return false;				
+			}
+			
 			Application.applicationMode = EApplicationMode.STANDARD;
 			return true;
 		}

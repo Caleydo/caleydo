@@ -14,6 +14,8 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Loader for tabular data.
@@ -25,7 +27,7 @@ import org.eclipse.core.runtime.Status;
 public class TabularAsciiDataReader
 	extends AbstractLoader
 	implements IParserObject {
-	
+
 	/**
 	 * Imports data from file to this set. uses first storage and overwrites first selection.
 	 */
@@ -99,8 +101,9 @@ public class TabularAsciiDataReader
 			else {
 				bAllTokensProper = false;
 
-				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"Unknown column data type: " + tokenPattern));
+				GeneralManager.get().getLogger().log(
+					new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Unknown column data type: "
+						+ tokenPattern));
 			}
 		}
 
@@ -152,7 +155,7 @@ public class TabularAsciiDataReader
 		swtGuiManager.setProgressBarText("Load data file " + this.getFileName());
 
 		String sLine;
-
+		String sTmpToken;
 		int iColumnIndex = 0;
 		float fProgressBarFactor = 100f / iStopParsingAtLine;
 
@@ -162,18 +165,6 @@ public class TabularAsciiDataReader
 				iLineInFile++;
 				continue;
 			}
-
-			// StringTokenizer strTokenText = new StringTokenizer(sLine, "\"");
-			// strLineBuffer.setLength(0);
-			// int iCountTokens = strTokenText.countTokens();
-			// if ((iCountTokens % 2) == 0)
-			// {
-			// strTokenText = new StringTokenizer(sLine.replace("\"\"",
-			// "\" \""), "\"");
-			// }
-
-			// System.out.println("Line: " +iLineInFile);
-			// System.out.println(" I:" + sLine );
 
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
 
@@ -189,11 +180,21 @@ public class TabularAsciiDataReader
 							break;
 						case FLOAT:
 							Float fValue;
+							sTmpToken = strTokenLine.nextToken();
 							try {
-								fValue = Float.valueOf(strTokenLine.nextToken()).floatValue();
+								fValue = Float.valueOf(sTmpToken).floatValue();
 							}
 							catch (NumberFormatException nfe) {
-								fValue = Float.NaN;
+
+								String sErrorMessage =
+									"Unable to parse the data file. \""
+										+ sTmpToken
+										+ "\" cannot be converted to a number. Please change the data selection and try again.";
+								MessageDialog.openError(new Shell(), "Error during parsing", sErrorMessage);
+
+								GeneralManager.get().getLogger().log(
+									new Status(Status.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage));
+								throw nfe;
 							}
 							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = fValue;
 							iColumnIndex++;
@@ -292,7 +293,7 @@ public class TabularAsciiDataReader
 					throw new IllegalStateException("Unknown token pattern detected: "
 						+ storageType.toString());
 			}
-		}		
+		}
 	}
 
 	/**
