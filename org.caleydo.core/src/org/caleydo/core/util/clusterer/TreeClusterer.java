@@ -50,7 +50,9 @@ public class TreeClusterer
 	private ProgressBar pbSimilarity;
 	private ProgressBar pbTreeClusterer;
 	private Shell shell;
-	
+
+	private EDistanceMeasure eDistanceMeasure;
+
 	public TreeClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
 		this.similarities = new float[this.iNrSamples][this.iNrSamples];
@@ -69,7 +71,11 @@ public class TreeClusterer
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
-		IDistanceMeasure distanceMeasure = new EuclideanDistance();
+		IDistanceMeasure distanceMeasure;
+		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
+			distanceMeasure = new EuclideanDistance();
+		else
+			distanceMeasure = new PearsonCorrelation();
 
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 
@@ -80,14 +86,14 @@ public class TreeClusterer
 			int iNrElements = contentVA.size();
 			pbSimilarity.setMinimum(0);
 			pbSimilarity.setMaximum(iNrElements);
-			
+
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
 
 			for (Integer iContentIndex1 : contentVA) {
-				
+
 				pbSimilarity.setSelection(icnt1);
-				
+
 				isto = 0;
 				for (Integer iStorageIndex1 : storageVA) {
 					dArInstance1[isto] =
@@ -116,7 +122,7 @@ public class TreeClusterer
 		else {
 
 			bStart0 = false;
-			
+
 			int iNrElements = storageVA.size();
 			pbSimilarity.setMinimum(0);
 			pbSimilarity.setMaximum(iNrElements);
@@ -125,9 +131,9 @@ public class TreeClusterer
 			float[] dArInstance2 = new float[contentVA.size()];
 
 			for (Integer iStorageIndex1 : storageVA) {
-				
+
 				pbSimilarity.setSelection(icnt1);
-				
+
 				isto = 0;
 				for (Integer iContentIndex1 : contentVA) {
 					dArInstance1[isto] =
@@ -225,12 +231,12 @@ public class TreeClusterer
 
 		pbTreeClusterer.setMinimum(0);
 		pbTreeClusterer.setMaximum(iNrSamples);
-		
+
 		for (int n = iNrSamples; n > 1; n--) {
 			int sum;
 			int is = 1;
 			int js = 0;
-			
+
 			shell.update();
 			pbTreeClusterer.setSelection(iNrSamples - n);
 
@@ -318,35 +324,57 @@ public class TreeClusterer
 		determineExpressionValueRec(tree.getRoot(), eClustererType);
 	}
 
-	private float determineExpressionValueRec(ClusterNode node, EClustererType eClustererType) {
+	private float[] determineExpressionValueRec(ClusterNode node, EClustererType eClustererType) {
+
+		float[] fArExpressionValues;
+		float averageExpressionvalue = 0f;
 
 		if (tree.hasChildren(node)) {
-			float temp[] = new float[tree.getChildren(node).size()];
+
+			int iNrNodes = tree.getChildren(node).size();
+			int iNrElements = 0;
+			float[][] fArTempValues;
+
+			if (eClustererType == EClustererType.GENE_CLUSTERING) {
+				IVirtualArray storageVA = set.getVA(idStorage);
+				iNrElements = storageVA.size();
+			}
+			else {
+				IVirtualArray contentVA = set.getVA(idContent);
+				iNrElements = contentVA.size();
+			}
+
+			fArTempValues = new float[iNrNodes][iNrElements];
+
 			int cnt = 0;
 
 			for (ClusterNode current : tree.getChildren(node)) {
-				temp[cnt] = determineExpressionValueRec(current, eClustererType);
+				fArTempValues[cnt] = determineExpressionValueRec(current, eClustererType);
 				cnt++;
 			}
 
-			float mean = ClusterHelper.arithmeticMean(temp);
-			float deviation = ClusterHelper.standardDeviation(temp, mean);
+			fArExpressionValues = new float[iNrElements];
 
-			node.setAverageExpressionValue(mean);
-			node.setStandardDeviation(deviation);
+			for (int i = 0; i < iNrElements; i++) {
+				float means = 0;
+
+				for (int nodes = 0; nodes < iNrNodes; nodes++) {
+					means += fArTempValues[nodes][i];
+				}
+				fArExpressionValues[i] = means / iNrNodes;
+			}
 		}
+		// no children --> leaf node
 		else {
-			float averageExpressionvalue = 0f;
-			float[] fArExpressionValues;
 
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
 				IVirtualArray storageVA = set.getVA(idStorage);
 				fArExpressionValues = new float[storageVA.size()];
 
 				int isto = 0;
-				for (Integer iStorageIndex1 : storageVA) {
+				for (Integer iStorageIndex : storageVA) {
 					fArExpressionValues[isto] =
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, node.getClusterNr());
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, node.getClusterNr());
 					isto++;
 				}
 
@@ -355,20 +383,20 @@ public class TreeClusterer
 				IVirtualArray contentVA = set.getVA(idContent);
 				fArExpressionValues = new float[contentVA.size()];
 
-				int isto = 0;
-				for (Integer iContentIndex1 : contentVA) {
-					fArExpressionValues[isto] =
-						set.get(node.getClusterNr()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
-					isto++;
+				int icon = 0;
+				for (Integer iContentIndex : contentVA) {
+					fArExpressionValues[icon] =
+						set.get(node.getClusterNr()).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+					icon++;
 				}
 			}
-			averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
-			float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
-			node.setAverageExpressionValue(averageExpressionvalue);
-			node.setStandardDeviation(deviation);
 		}
+		averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
+		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+		node.setAverageExpressionValue(averageExpressionvalue);
+		node.setStandardDeviation(deviation);
 
-		return node.getAverageExpressionValue();
+		return fArExpressionValues;
 	}
 
 	/**
@@ -399,12 +427,12 @@ public class TreeClusterer
 
 		pbTreeClusterer.setMinimum(0);
 		pbTreeClusterer.setMaximum(iNrSamples);
-		
+
 		for (int n = iNrSamples; n > 1; n--) {
 
 			shell.update();
 			pbTreeClusterer.setSelection(iNrSamples - n);
-			
+
 			int is = 1;
 			int js = 0;
 
@@ -609,21 +637,22 @@ public class TreeClusterer
 		label2.setAlignment(SWT.RIGHT);
 
 		pbTreeClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-		
+
 		composite.pack();
 
 		shell.pack();
 		shell.open();
 	}
 
-	
 	@Override
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
 
 		buildProgressBar();
-		
+
+		eDistanceMeasure = clusterState.getDistanceMeasure();
+
 		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
 
 		this.set = set;
@@ -634,7 +663,7 @@ public class TreeClusterer
 		VAId = palcluster(clusterState.getClustererType());
 
 		shell.close();
-		
+
 		return VAId;
 	}
 }

@@ -34,6 +34,8 @@ public class AffinityClusterer
 	// cluster genes
 	private float fClusterFactor = 1.0f;
 
+	private EDistanceMeasure eDistanceMeasure;
+
 	private int iNrSamples = 0;
 
 	private int iNrSimilarities = 0;
@@ -73,7 +75,12 @@ public class AffinityClusterer
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
-		IDistanceMeasure distanceMeasure = new EuclideanDistance();
+		IDistanceMeasure distanceMeasure;
+
+		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
+			distanceMeasure = new EuclideanDistance();
+		else
+			distanceMeasure = new PearsonCorrelation();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (contentVA.get(0) == 0)
@@ -427,13 +434,13 @@ public class AffinityClusterer
 		}
 		else {
 			return -1;
-//			throw new IllegalStateException("Did not identify any clusters!!");
+			// throw new IllegalStateException("Did not identify any clusters!!");
 		}
 		if (bConverged == false) {
 			return -1;
-//			throw new IllegalStateException("Algorithm did not converge!!");
+			// throw new IllegalStateException("Algorithm did not converge!!");
 		}
-		
+
 		ArrayList<Integer> idxExamples = new ArrayList<Integer>();
 
 		for (int i = 0; i < alExamples.size(); i++) {
@@ -522,7 +529,12 @@ public class AffinityClusterer
 
 		Integer VAId = 0;
 
-		fClusterFactor = clusterState.getAffinityPropClusterFactor();
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+			fClusterFactor = clusterState.getAffinityPropClusterFactorGenes();
+		else
+			fClusterFactor = clusterState.getAffinityPropClusterFactorExperiments();
+
+		eDistanceMeasure = clusterState.getDistanceMeasure();
 
 		buildProgressBar();
 

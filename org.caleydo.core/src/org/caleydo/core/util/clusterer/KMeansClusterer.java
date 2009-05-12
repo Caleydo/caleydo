@@ -97,10 +97,10 @@ public class KMeansClusterer
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
 			int iNrElements = contentVA.size();
-			
-			if(iNrCluster >= iNrElements)
+
+			if (iNrCluster >= iNrElements)
 				return -1;
-			
+
 			pbBuildInstances.setMinimum(0);
 			pbBuildInstances.setMaximum(iNrElements);
 
@@ -126,10 +126,10 @@ public class KMeansClusterer
 		else {
 
 			int iNrElements = storageVA.size();
-			
-			if(iNrCluster >= iNrElements)
+
+			if (iNrCluster >= iNrElements)
 				return -1;
-			
+
 			pbBuildInstances.setMinimum(0);
 			pbBuildInstances.setMaximum(iNrElements);
 
@@ -203,7 +203,7 @@ public class KMeansClusterer
 		for (int j = 0; j < iNrCluster; j++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == j) {
-					alExamples.add(i);// - 1);
+					alExamples.add(i);
 					break;
 				}
 			}
@@ -238,7 +238,10 @@ public class KMeansClusterer
 
 		Integer VAId = 0;
 
-		iNrCluster = clusterState.getKMeansClusterCnt();
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+			iNrCluster = clusterState.getKMeansClusterCntGenes();
+		else
+			iNrCluster = clusterState.getKMeansClusterCntExperiments();
 
 		buildProgressBar();
 

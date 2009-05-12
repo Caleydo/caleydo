@@ -5,8 +5,10 @@ public class ClusterState {
 	private EClustererAlgo eClustererAlgo;
 	private EClustererType eClustererType;
 	private EDistanceMeasure eDistanceMeasure;
-	private int iKMeansClusterCnt;
-	private float fAffinityPropClusterFactor;
+	private int iKMeansClusterCntGenes;
+	private int iKMeansClusterCntExperiments;
+	private float fAffinityPropClusterFactorGenes;
+	private float fAffinityPropClusterFactorExperiments;
 
 	public ClusterState() {
 
@@ -42,20 +44,36 @@ public class ClusterState {
 		return eDistanceMeasure;
 	}
 
-	public void setKMeansClusterCnt(int iKMeansClusterCnt) {
-		this.iKMeansClusterCnt = iKMeansClusterCnt;
+	public void setKMeansClusterCntGenes(int iKMeansClusterCntGenes) {
+		this.iKMeansClusterCntGenes = iKMeansClusterCntGenes;
 	}
 
-	public int getKMeansClusterCnt() {
-		return iKMeansClusterCnt;
+	public int getKMeansClusterCntGenes() {
+		return iKMeansClusterCntGenes;
 	}
 
-	public void setAffinityPropClusterFactor(float fAffinityPropClusterFactor) {
-		this.fAffinityPropClusterFactor = fAffinityPropClusterFactor;
+	public void setKMeansClusterCntExperiments(int iKMeansClusterCntExperiments) {
+		this.iKMeansClusterCntExperiments = iKMeansClusterCntExperiments;
 	}
 
-	public float getAffinityPropClusterFactor() {
-		return fAffinityPropClusterFactor;
+	public int getKMeansClusterCntExperiments() {
+		return iKMeansClusterCntExperiments;
+	}
+
+	public void setAffinityPropClusterFactorGenes(float fAffinityPropClusterFactorGenes) {
+		this.fAffinityPropClusterFactorGenes = fAffinityPropClusterFactorGenes;
+	}
+
+	public float getAffinityPropClusterFactorGenes() {
+		return fAffinityPropClusterFactorGenes;
+	}
+
+	public void setAffinityPropClusterFactorExperiments(float fAffinityPropClusterFactorExperiments) {
+		this.fAffinityPropClusterFactorExperiments = fAffinityPropClusterFactorExperiments;
+	}
+
+	public float getAffinityPropClusterFactorExperiments() {
+		return fAffinityPropClusterFactorExperiments;
 	}
 
 }

@@ -42,10 +42,12 @@ public class StartClusteringAction
 
 	private String clusterType;
 	private String distmeasure;
-	private int iClusterCnt = 5;
-	private float fclusterFactor = 1f;
+	private int iClusterCntGenes = 5;
+	private int iClusterCntExperiments = 5;
+	private float fclusterFactorGenes = 1f;
+	private float fclusterFactorExperiments = 1f;
 
-	String[] sArTypeOptions = { "Gene", "Experiment" , "Bi-Clustering" };
+	String[] sArTypeOptions = { "Gene", "Experiment", "Bi-Clustering" };
 	String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
 
 	ClusterState clusterState = new ClusterState();
@@ -79,7 +81,7 @@ public class StartClusteringAction
 	private void createGUI() {
 
 		Composite composite = new Composite(parentComposite, SWT.OK);
-//		composite.setLayout(new FillLayout(SWT.VERTICAL));
+		// composite.setLayout(new FillLayout(SWT.VERTICAL));
 
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
 
@@ -90,7 +92,7 @@ public class StartClusteringAction
 
 		// set default value for cluster algo
 		clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-		
+
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -149,31 +151,60 @@ public class StartClusteringAction
 
 		final Combo clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
-		clusterTypeCombo.setEnabled(true);
 		clusterTypeCombo.select(0);
 		clusterType = sArTypeOptions[0];
+
+		ModifyListener listenerIntGenes = new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				valueChangedInt((Text) e.widget, true);
+			}
+		};
+		ModifyListener listenerIntExperiments = new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				valueChangedInt((Text) e.widget, false);
+			}
+		};
+
+		final Label lblClusterCntGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
+		lblClusterCntGenes.setText("Number clusters for clustering genes");
+		lblClusterCntGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+
+		final Text clusterCntGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterCntGenes.addModifyListener(listenerIntGenes);
+		clusterCntGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		clusterCntGenes.setText("5");
+		clusterCntGenes.setToolTipText("Integer value. Range: 1 up to the number of samples in data set");
+
+		final Label lblClusterCntExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
+		lblClusterCntExperiments.setText("Number clusters for clustering experiments");
+		lblClusterCntExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+
+		final Text clusterCntExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterCntExperiments.addModifyListener(listenerIntExperiments);
+		clusterCntExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		clusterCntExperiments.setText("5");
+		clusterCntExperiments
+			.setToolTipText("Integer value. Range: 1 up to the number of samples in data set");
+		clusterCntExperiments.setEnabled(false);
+
 		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				clusterType = clusterTypeCombo.getText();
+				if (clusterType.equals(sArTypeOptions[0])) {
+					clusterCntGenes.setEnabled(true);
+					clusterCntExperiments.setEnabled(false);
+				}
+				else if (clusterType.equals(sArTypeOptions[1])) {
+					clusterCntGenes.setEnabled(false);
+					clusterCntExperiments.setEnabled(true);
+				}
+				else {
+					clusterCntGenes.setEnabled(true);
+					clusterCntExperiments.setEnabled(true);
+				}
 			}
 		});
-
-		final Label lblClusterCnt = new Label(composite, SWT.SHADOW_ETCHED_IN);
-		lblClusterCnt.setText("Cluster count for KMeans:");
-		lblClusterCnt.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
-		ModifyListener listenerInt = new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				valueChangedInt((Text) e.widget);
-			}
-		};
-
-		final Text clusterCnt = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		clusterCnt.addModifyListener(listenerInt);
-		clusterCnt.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterCnt.setText("5");
-		clusterCnt.setToolTipText("Integer value. Range: 1 up to the number of samples in data set");
 
 	}
 
@@ -187,15 +218,8 @@ public class StartClusteringAction
 
 		final Combo clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
-		clusterTypeCombo.setEnabled(true);
 		clusterTypeCombo.select(0);
 		clusterType = sArTypeOptions[0];
-		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clusterType = clusterTypeCombo.getText();
-			}
-		});
 
 		final Combo distMeasureCombo = new Combo(composite, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptions);
@@ -209,22 +233,60 @@ public class StartClusteringAction
 			}
 		});
 
-		final Label lblClusterFactor = new Label(composite, SWT.SHADOW_ETCHED_IN);
-		lblClusterFactor.setText("Factor for affinity propagagtion:");
-		lblClusterFactor.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
-
-		ModifyListener listenerFloat = new ModifyListener() {
+		ModifyListener listenerFloatGenes = new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				valueChangedFloat((Text) e.widget);
+				valueChangedFloat((Text) e.widget, true);
 			}
 		};
 
-		final Text clusterFactor = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		clusterFactor.addModifyListener(listenerFloat);
-		clusterFactor.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterFactor.setText("1.0");
-		clusterFactor
+		ModifyListener listenerFloatExperiments = new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				valueChangedFloat((Text) e.widget, false);
+			}
+		};
+
+		final Label lblClusterFactorGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
+		lblClusterFactorGenes.setText("Factor for clustering genes");
+		lblClusterFactorGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+
+		final Text clusterFactorGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterFactorGenes.addModifyListener(listenerFloatGenes);
+		clusterFactorGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		clusterFactorGenes.setText("1.0");
+		clusterFactorGenes
 			.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
+
+		final Label lblClusterFactorExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
+		lblClusterFactorExperiments.setText("Factor for clustering experiments");
+		lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+
+		final Text clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterFactorExperiments.addModifyListener(listenerFloatExperiments);
+		clusterFactorExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		clusterFactorExperiments.setText("1.0");
+		clusterFactorExperiments
+			.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
+		clusterFactorExperiments.setEnabled(false);
+
+		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				clusterType = clusterTypeCombo.getText();
+				if (clusterType.equals(sArTypeOptions[0])) {
+					clusterFactorGenes.setEnabled(true);
+					clusterFactorExperiments.setEnabled(false);
+				}
+				else if (clusterType.equals(sArTypeOptions[1])) {
+					clusterFactorGenes.setEnabled(false);
+					clusterFactorExperiments.setEnabled(true);
+				}
+				else {
+					clusterFactorGenes.setEnabled(true);
+					clusterFactorExperiments.setEnabled(true);
+				}
+
+			}
+		});
 
 	}
 
@@ -238,7 +300,6 @@ public class StartClusteringAction
 
 		final Combo clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
-		clusterTypeCombo.setEnabled(true);
 		clusterTypeCombo.select(0);
 		clusterType = sArTypeOptions[0];
 		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
@@ -262,20 +323,28 @@ public class StartClusteringAction
 
 	}
 
-	public void valueChangedInt(Text text) {
+	private void valueChangedInt(Text text, boolean bGeneFactor) {
 		if (!text.isFocusControl())
 			return;
 
+		int temp = 0;
+
 		try {
-			iClusterCnt = Integer.parseInt(text.getText());
+			temp = Integer.parseInt(text.getText());
+			if (temp > 0) {
+				if (bGeneFactor == true)
+					iClusterCntGenes = temp;
+				else
+					iClusterCntExperiments = temp;
+			}
 		}
 		catch (NumberFormatException e) {
-			System.out.println("unvalid input");
+			System.out.println("Invalid input");
 		}
 
 	}
 
-	public void valueChangedFloat(Text text) {
+	private void valueChangedFloat(Text text, boolean bGeneFactor) {
 		if (!text.isFocusControl())
 			return;
 
@@ -283,8 +352,12 @@ public class StartClusteringAction
 
 		try {
 			temp = Float.parseFloat(text.getText());
-			if (temp >= 1f && temp < 10)
-				fclusterFactor = temp;
+			if (temp >= 1f && temp < 10) {
+				if (bGeneFactor == true)
+					fclusterFactorGenes = temp;
+				else
+					fclusterFactorExperiments = temp;
+			}
 		}
 		catch (NumberFormatException e) {
 			System.out.println("Invalid input");
@@ -294,11 +367,11 @@ public class StartClusteringAction
 
 	public void execute(boolean cancelPressed) {
 
-		if(cancelPressed) {
+		if (cancelPressed) {
 			clusterState = null;
 			return;
 		}
-			
+
 		if (clusterType.equals(sArTypeOptions[0]))
 			clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 		else if (clusterType.equals(sArTypeOptions[1]))
@@ -311,8 +384,10 @@ public class StartClusteringAction
 		else if (distmeasure.equals(sArDistOptions[1]))
 			clusterState.setDistanceMeasure(EDistanceMeasure.PEARSON_CORRELATION);
 
-		clusterState.setAffinityPropClusterFactor(fclusterFactor);
-		clusterState.setKMeansClusterCnt(iClusterCnt);
+		clusterState.setAffinityPropClusterFactorGenes(fclusterFactorGenes);
+		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
+		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
+		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
 
 	}
 
