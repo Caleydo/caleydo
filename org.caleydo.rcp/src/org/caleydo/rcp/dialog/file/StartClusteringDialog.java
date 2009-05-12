@@ -25,7 +25,7 @@ public class StartClusteringDialog
 	public StartClusteringDialog(Shell parentShell) {
 		super(parentShell);
 
-		parentShell.setText("Open project file");
+		parentShell.setText(StartClusteringAction.TEXT);
 		
 		// Center dialog on screen
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
@@ -39,7 +39,7 @@ public class StartClusteringDialog
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Start Clustering");
+		newShell.setText(StartClusteringAction.TEXT);
 	}
 
 	@Override

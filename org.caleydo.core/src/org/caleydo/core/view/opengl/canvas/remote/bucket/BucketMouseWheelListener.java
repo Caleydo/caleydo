@@ -92,7 +92,7 @@ public class BucketMouseWheelListener
 			}
 
 			bucketLayoutRenderStyle.initStackLevel(false);
-			bucketLayoutRenderStyle.initFocusLevel();
+			bucketLayoutRenderStyle.initFocusLevel(false);
 			bucketLayoutRenderStyle.initPoolLevel(false, -1);
 		}
 		else

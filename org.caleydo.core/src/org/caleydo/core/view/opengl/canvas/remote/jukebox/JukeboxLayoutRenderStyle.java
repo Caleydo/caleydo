@@ -47,7 +47,7 @@ public class JukeboxLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initFocusLevel() {
+	public RemoteLevel initFocusLevel(boolean bIsZoomedIn) {
 		fScalingFactorFocusLevel = 4 * 0.045f / fAspectRatio;
 
 		Transform transform = new Transform();

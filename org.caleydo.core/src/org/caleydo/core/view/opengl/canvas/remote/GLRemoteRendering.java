@@ -193,7 +193,7 @@ public class GLRemoteRendering
 	private boolean neighborhoodEnabled = false;
 
 	private ArrayList<ASerializedView> newViews;
-	
+
 	private GLInfoAreaManager infoAreaManager;
 
 	protected AddPathwayListener addPathwayListener = null;
@@ -207,9 +207,9 @@ public class GLRemoteRendering
 
 	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
 	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
-	
+
 	protected ToggleNavigationModeListener toggleNavigationModeListener = null;
-	
+
 	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
 	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
 
@@ -250,7 +250,7 @@ public class GLRemoteRendering
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum);
 		}
 
-		focusLevel = layoutRenderStyle.initFocusLevel();
+		focusLevel = layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
 
 		if (GeneralManager.get().isWiiModeActive()
 			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
@@ -300,8 +300,8 @@ public class GLRemoteRendering
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -467,12 +467,13 @@ public class GLRemoteRendering
 	public void display(final GL gl) {
 		time.update();
 		processEvents();
+
 		// Update the pool transformations according to the current mouse over object
-		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
-		layoutRenderStyle.initFocusLevel();
+		layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), iMouseOverObjectID);
+		layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
 
 		// Just for layout testing during runtime
-		// layoutRenderStyle.initStackLevel(false);
+//		 layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
 		// layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
@@ -503,14 +504,14 @@ public class GLRemoteRendering
 		// If user zooms to the bucket bottom all but the under
 		// focus layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn()) {
-
-			renderPoolAndMemoLayerBackground(gl);
-
 			renderRemoteLevel(gl, transitionLevel);
 			renderRemoteLevel(gl, spawnLevel);
-			renderRemoteLevel(gl, poolLevel);
-			renderRemoteLevel(gl, externalSelectionLevel);
+			renderPoolAndMemoLayerBackground(gl);
 		}
+
+		
+		renderRemoteLevel(gl, poolLevel);
+		renderRemoteLevel(gl, externalSelectionLevel);
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			bucketMouseWheelListener.render();
@@ -637,8 +638,9 @@ public class GLRemoteRendering
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		if (glEventListener == null) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"Bucket level element is null and cannot be rendered!"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
 
@@ -2216,7 +2218,7 @@ public class GLRemoteRendering
 			// stackLevel.clear();
 		}
 
-		focusLevel = layoutRenderStyle.initFocusLevel();
+		focusLevel = layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
 		stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
 		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
 		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
@@ -2272,15 +2274,16 @@ public class GLRemoteRendering
 
 		// Send out remove broadcast for views that are currently slerped
 		for (SlerpAction slerpAction : arSlerpActions) {
-			viewManager.getGLEventListener(slerpAction.getElementId()).broadcastElements(EVAOperation.REMOVE_ELEMENT);
+			viewManager.getGLEventListener(slerpAction.getElementId()).broadcastElements(
+				EVAOperation.REMOVE_ELEMENT);
 		}
 		arSlerpActions.clear();
-		
+
 		clearRemoteLevel(focusLevel);
 		clearRemoteLevel(stackLevel);
 		clearRemoteLevel(poolLevel);
 		clearRemoteLevel(transitionLevel);
-		
+
 		// Add heat map and par coords view to its initial position in the bucket
 		for (int viewID : containedViewIDs) {
 			AGLEventListener view = viewManager.getGLEventListener(viewID);
@@ -2343,17 +2346,21 @@ public class GLRemoteRendering
 		// Update aspect ratio and reinitialize stack and focus layer
 		layoutRenderStyle.setAspectRatio(fAspectRatio);
 
-		layoutRenderStyle.initFocusLevel();
+		layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
 		layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
 		layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), iMouseOverObjectID);
 		layoutRenderStyle.initMemoLevel();
 	}
 
 	protected void renderPoolAndMemoLayerBackground(final GL gl) {
-		// Pool layer background
 
-		float fWidth = 0.8f;
 		float fXCorrection = 0.07f; // Detach pool level from stack
+
+		float fZ;
+		if (bucketMouseWheelListener.isZoomedIn())
+			fZ = -0.005f;
+		else
+			fZ = 4f;
 
 		if (layoutMode.equals(LayoutMode.BUCKET)) {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
@@ -2362,10 +2369,10 @@ public class GLRemoteRendering
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, -2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
 			gl.glEnd();
 
 			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID) {
@@ -2378,31 +2385,31 @@ public class GLRemoteRendering
 			}
 
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, -2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
 			gl.glEnd();
 
 			gl.glPopName();
 
-			// Render memo pad background
+			// Render selection heat map list background
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, -2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
 			gl.glEnd();
 
 			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, -2, 4);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
 			gl.glEnd();
 		}
 
@@ -2413,7 +2420,7 @@ public class GLRemoteRendering
 		String sTmp = "POOL AREA";
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0.6f, 0.6f, 0.6f, 1.0f);
-		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / fAspectRatio, -1.97f, 4.001f, 0.003f);
+		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / fAspectRatio, -1.97f, fZ + 0.01f, 0.003f);
 		textRenderer.end3DRendering();
 	}
 
@@ -2499,9 +2506,10 @@ public class GLRemoteRendering
 		else if (poolLevel.hasFreePosition()) {
 			destination = poolLevel.getNextFree();
 		}
-		else {			
-			GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID, 
-			 "No empty space left to add new pathway!"));
+		else {
+			GeneralManager.get().getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
 		}
@@ -2751,7 +2759,7 @@ public class GLRemoteRendering
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-		
+
 		toggleNavigationModeListener = new ToggleNavigationModeListener();
 		toggleNavigationModeListener.setHandler(this);
 		eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
@@ -2850,7 +2858,7 @@ public class GLRemoteRendering
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
-	
+
 	public void toggleNavigationMode() {
 		this.bEnableNavigationOverlay = !bEnableNavigationOverlay;
 	}

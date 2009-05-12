@@ -4,9 +4,10 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.dialog.file.StartClusteringDialog;
-import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -21,8 +22,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Action responsible for starting clustering
@@ -34,6 +35,8 @@ public class StartClusteringAction
 	implements ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.rcp.StartClusteringAction";
+	public static final String TEXT = "Clustering";
+	public static final String ICON = "resources/icons/view/storagebased/clustering.png";
 
 	private Composite parentComposite;
 
@@ -56,11 +59,11 @@ public class StartClusteringAction
 	 * Constructor.
 	 */
 	public StartClusteringAction(final Composite parentComposite) {
-		super("Start Clustering");
+		super(TEXT);
 		setId(ID);
-		setToolTipText("Start Clustering");
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
+		setToolTipText(TEXT);
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
+			.getWorkbench().getDisplay(), ICON)));
 
 		this.parentComposite = parentComposite;
 
@@ -284,7 +287,7 @@ public class StartClusteringAction
 				fclusterFactor = temp;
 		}
 		catch (NumberFormatException e) {
-			System.out.println("unvalid input");
+			System.out.println("Invalid input");
 		}
 
 	}

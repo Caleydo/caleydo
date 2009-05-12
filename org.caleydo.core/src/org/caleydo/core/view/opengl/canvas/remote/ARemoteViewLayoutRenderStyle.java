@@ -85,7 +85,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 		spawnLevel = previousLayoutStyle.getSpawnLayer();
 	}
 
-	public abstract RemoteLevel initFocusLevel();
+	public abstract RemoteLevel initFocusLevel(boolean bIsZoomedIn);
 
 	public abstract RemoteLevel initStackLevel(boolean bIsZoomedIn);
 

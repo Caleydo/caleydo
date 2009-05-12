@@ -14,8 +14,8 @@ public class StartClusteringAction
 	extends AToolBarAction
 	implements IToolBarItem {
 
-	public static final String TEXT = "Start Clustering";
-	public static final String ICON = "resources/icons/view/storagebased/start_clustering.png";
+	public static final String TEXT = "Clustering";
+	public static final String ICON = "resources/icons/view/storagebased/clustering.png";
 
 	private boolean bEnable = false;
 
