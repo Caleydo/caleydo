@@ -207,6 +207,8 @@ public class GLHistogramView
 
 	@Override
 	public void registerEventListeners() {
+	super.registerEventListeners();
+	
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -218,6 +220,7 @@ public class GLHistogramView
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;

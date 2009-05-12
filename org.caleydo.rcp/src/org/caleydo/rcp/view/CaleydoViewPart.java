@@ -12,6 +12,11 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
+/**
+ * TODO document
+ * 
+ * @author Marc Streit
+ */
 public abstract class CaleydoViewPart
 	extends ViewPart {
 	protected static ArrayList<IAction> alToolbar;
