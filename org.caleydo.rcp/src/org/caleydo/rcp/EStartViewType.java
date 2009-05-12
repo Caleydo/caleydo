@@ -1,16 +1,16 @@
 package org.caleydo.rcp;
 
-import org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView;
-import org.caleydo.rcp.views.opengl.GLDendrogramVerticalView;
-import org.caleydo.rcp.views.opengl.GLGlyphView;
-import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
-import org.caleydo.rcp.views.opengl.GLHistogramView;
-import org.caleydo.rcp.views.opengl.GLHyperbolicView;
-import org.caleydo.rcp.views.opengl.GLParCoordsView;
-import org.caleydo.rcp.views.opengl.GLRadialHierarchyView;
-import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
-import org.caleydo.rcp.views.swt.HTMLBrowserView;
-import org.caleydo.rcp.views.swt.TabularDataView;
+import org.caleydo.rcp.view.opengl.GLDendrogramHorizontalView;
+import org.caleydo.rcp.view.opengl.GLDendrogramVerticalView;
+import org.caleydo.rcp.view.opengl.GLGlyphView;
+import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
+import org.caleydo.rcp.view.opengl.GLHistogramView;
+import org.caleydo.rcp.view.opengl.GLHyperbolicView;
+import org.caleydo.rcp.view.opengl.GLParCoordsView;
+import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
+import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.view.swt.HTMLBrowserView;
+import org.caleydo.rcp.view.swt.TabularDataView;
 
 /**
  * Enum for triggering view loading in RCP over the command line.

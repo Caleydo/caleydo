@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.views.opengl.GLDendrogramVerticalView;
+import org.caleydo.rcp.view.opengl.GLDendrogramVerticalView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

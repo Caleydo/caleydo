@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView;
+import org.caleydo.rcp.view.swt.SWTGlyphMappingConfigurationView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

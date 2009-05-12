@@ -1,8 +1,8 @@
 package org.caleydo.rcp.action.toolbar.view.remote;
 
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
-import org.caleydo.rcp.views.swt.toolbar.content.remote.RemoteRenderingToolBarMediator;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.swt.toolbar.content.remote.RemoteRenderingToolBarMediator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
