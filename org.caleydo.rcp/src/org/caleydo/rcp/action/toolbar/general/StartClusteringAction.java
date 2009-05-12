@@ -42,7 +42,7 @@ public class StartClusteringAction
 	private int iClusterCnt = 5;
 	private float fclusterFactor = 1f;
 
-	String[] sArTypeOptions = { "Gene", "Experiment" }; //, "Bi-Clustering" };
+	String[] sArTypeOptions = { "Gene", "Experiment" , "Bi-Clustering" };
 	String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
 
 	ClusterState clusterState = new ClusterState();

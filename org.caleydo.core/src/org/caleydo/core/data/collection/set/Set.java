@@ -542,8 +542,7 @@ public class Set
 			MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
 			messageBox.setText("Start Clustering");
 			messageBox
-				.setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time. \n"
-					+ "Press OK to start clustering. \n" + "Press Cancel to skip clustering.");
+				.setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time.");
 
 			int iNrElem = 0;
 

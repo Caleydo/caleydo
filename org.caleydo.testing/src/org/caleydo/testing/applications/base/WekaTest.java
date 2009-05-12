@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.Cobweb;
-import weka.core.Instance;
 import weka.core.Instances;
 
 // Code from: http://weka.wiki.sourceforge.net/Use+Weka+in+your+Java+code

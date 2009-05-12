@@ -2103,6 +2103,22 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void initLists() {
 
+		if (bRenderOnlyContext) {
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		}
+		else {
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
+				initCompleteList();
+			}
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		}
+		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+
+		// In case of importing group info
+		if (set.isClusterInfo())
+			set.getVA(iContentVAID).setGroupList(set.getGroupList());
+		
+		
 		// clustering triggered by StartClusteringAction
 		if (bUseClusteredVA) {
 
@@ -2140,14 +2156,16 @@ public class GLHierarchicalHeatMap
 				iContentVAID = iContentVAIDtemp;
 			}
 			else {
-
+				
+				clusterstate.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
 				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
 				if (iVAid == -1)
 					iStorageVAID = iStorageVAIDtemp;
 				else
 					iStorageVAID = iVAid;
-
-				iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				
+				clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
+				iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate);
 				if (iVAid == -1)
 					iContentVAID = iContentVAIDtemp;
 				else
@@ -2155,23 +2173,23 @@ public class GLHierarchicalHeatMap
 			}
 
 		}
-		// normal startup
-		else {
-			if (bRenderOnlyContext) {
-				iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
-			}
-			else {
-				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-					initCompleteList();
-				}
-				iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-			}
-			iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-
-			// In case of importing group info
-			if (set.isClusterInfo())
-				set.getVA(iContentVAID).setGroupList(set.getGroupList());
-		}
+//		// normal startup
+//		else {
+//			if (bRenderOnlyContext) {
+//				iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+//			}
+//			else {
+//				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
+//					initCompleteList();
+//				}
+//				iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+//			}
+//			iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+//
+//			// In case of importing group info
+//			if (set.isClusterInfo())
+//				set.getVA(iContentVAID).setGroupList(set.getGroupList());
+//		}
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();

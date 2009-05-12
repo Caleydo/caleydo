@@ -28,7 +28,7 @@ public class ClusterHelper {
 			else
 				temp = vector[i];
 
-			mean += temp;
+			mean += temp; 
 		}
 
 		return mean / vector.length;
@@ -56,7 +56,7 @@ public class ClusterHelper {
 			standardDeviation += Math.pow(temp - arithmeticMean, 2);
 		}
 
-		return (float) Math.sqrt(standardDeviation / vector.length);
+		return (float) Math.sqrt(standardDeviation / (vector.length - 1));
 	}
 
 	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
