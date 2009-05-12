@@ -40,9 +40,6 @@ public class HTMLBrowserViewRep
 	implements ISWTView {
 
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
-
-	protected IGeneralManager generalManager;
-	protected IEventPublisher eventPublisher;
 	
 	protected Browser browser;
 
@@ -79,7 +76,6 @@ public class HTMLBrowserViewRep
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel, int iViewID) {
 		super(iParentContainerId, sLabel, iViewID);
 		init();
-		registerEventListeners();
 	}
 
 	/**

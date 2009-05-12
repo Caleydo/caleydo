@@ -19,7 +19,6 @@ public class TabularDataView
 			(TabularDataViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
 				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1, "Tabular Data Viewer");
 
-		tabularDataView.registerEventListeners();
 		// tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
 		// .getFileNameCurrentDataSet());
 

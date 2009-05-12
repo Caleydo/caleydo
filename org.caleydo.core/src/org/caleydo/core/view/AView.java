@@ -61,6 +61,7 @@ public abstract class AView
 
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
+		registerEventListeners();
 	}
 
 	/**
@@ -103,9 +104,15 @@ public abstract class AView
 	}
 
 	/**
+	 * <p>
 	 * Registers the listeners for this view to the event system. To release the allocated resources
 	 * unregisterEventListeners() has to be called. This method is intended to be overridden, but it's super()
 	 * should be called to be registered to the listeners defined by other classes in the hierarchy.
+	 * </p>
+	 * <p>
+	 * This method is called by the Constructor of {@link AView}, therefore there is no need to call it
+	 * yourself.
+	 * </p>
 	 */
 	public void registerEventListeners() {
 		newSetListener = new NewSetListener();

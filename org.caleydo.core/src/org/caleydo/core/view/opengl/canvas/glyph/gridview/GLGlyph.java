@@ -1321,11 +1321,7 @@ public class GLGlyph
 		return serializedForm;
 	}
 
-	/**
-	 * Registers the listeners for this view to the event system. To release the allocated resources
-	 * unregisterEventListeners() has to be called. If inherited classes override this method, they should
-	 * usually call it via super.
-	 */
+	
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();

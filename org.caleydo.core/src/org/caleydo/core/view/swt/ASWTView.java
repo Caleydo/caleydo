@@ -46,8 +46,8 @@ public abstract class ASWTView
 	}
 
 	@Override
-	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
-		
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+		final AEvent event) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);

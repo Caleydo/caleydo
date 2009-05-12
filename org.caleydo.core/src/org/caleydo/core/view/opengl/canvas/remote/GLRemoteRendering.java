@@ -286,8 +286,6 @@ public class GLRemoteRendering
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
-		registerEventListeners();
-
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
@@ -2543,7 +2541,6 @@ public class GLRemoteRendering
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
-		glView.registerEventListeners();
 		useCase.addView(glView);
 		glView.setUseCase(useCase);
 		glView.setRenderedRemote(true);

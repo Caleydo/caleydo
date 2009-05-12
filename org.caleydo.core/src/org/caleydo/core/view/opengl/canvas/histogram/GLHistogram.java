@@ -85,7 +85,7 @@ public class GLHistogram
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
-		registerEventListeners();
+//		registerEventListeners();
 	}
 
 	@Override
