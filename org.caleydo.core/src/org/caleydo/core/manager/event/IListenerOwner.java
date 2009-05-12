@@ -16,5 +16,5 @@ public interface IListenerOwner {
 	 * @param event
 	 *            The event which is to be executed
 	 */
-	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event);
+	public void queueEvent(final AEventListener<? extends IListenerOwner> listener, final AEvent event);
 }

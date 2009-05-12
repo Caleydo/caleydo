@@ -350,6 +350,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.view.serialize,
    org.caleydo.core.data.selection",
  org.caleydo.core.view.opengl.canvas.remote.jukebox;uses:="org.caleydo.core.view.opengl.canvas.remote,org.caleydo.core.view.opengl.util.hierarchy,javax.media.opengl",
+ org.caleydo.core.view.opengl.canvas.remote.listener,
  org.caleydo.core.view.opengl.canvas.storagebased;
   uses:="org.caleydo.core.view.opengl.canvas.remote,
    org.caleydo.core.manager.view,

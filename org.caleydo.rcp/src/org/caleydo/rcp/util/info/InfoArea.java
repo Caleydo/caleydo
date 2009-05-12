@@ -46,6 +46,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Info area that is located in the side-bar. It shows the current view and the current selection (in a tree).
@@ -523,7 +524,7 @@ public class InfoArea
 	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);
 			}

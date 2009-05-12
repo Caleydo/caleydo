@@ -14,6 +14,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.view.opengl.GLHistogramView;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
@@ -31,7 +32,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.osgi.framework.Constants;
 
 /**
  * This class controls all aspects of the application's execution
@@ -307,6 +307,10 @@ public class Application
 	}
 
 	private static void openRCPViews() {
+		
+		// Create RCP view manager
+		RCPViewManager.get();
+		
 		// Create view list dynamically when not specified via the command line
 		if (alStartViews.isEmpty()) {
 
