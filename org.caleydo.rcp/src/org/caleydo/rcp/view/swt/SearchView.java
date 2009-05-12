@@ -1,6 +1,8 @@
 package org.caleydo.rcp.view.swt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +15,9 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
+import org.caleydo.rcp.view.opengl.GLParCoordsView;
 import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -238,7 +242,8 @@ public class SearchView
 			geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
 			addGeneContextMenu();
 
-			String[] titles = { "RefSeq ID", "David ID", "Entrez Gene ID", "Gene Symbol", "Gene Name" };
+			String[] titles =
+				{ "Expression", "RefSeq ID", "David ID", "Entrez Gene ID", "Gene Symbol", "Gene Name" };
 			for (int i = 0; i < titles.length; i++) {
 				TableColumn column = new TableColumn(geneTable, SWT.NONE);
 				column.setText(titles[i]);
@@ -342,14 +347,14 @@ public class SearchView
 	private void startSearch() {
 
 		if (searchText.getText().length() < 3) {
-			
+
 			MessageBox messageBox = new MessageBox(composite.getShell(), SWT.OK);
 			messageBox.setText("Invalid search query");
 			messageBox.setMessage("Please enter a search query with the minimum of 3 characters.");
 			messageBox.open();
 			return;
 		}
-		
+
 		// Initialize result content
 		addResultsContent(resultsGroup);
 
@@ -475,12 +480,21 @@ public class SearchView
 			if (sGeneName == null)
 				sGeneName = "<Unknown>";
 
+			// Determine whether the gene has a valid expression value in the current data set
+			String sExpressionValueInCurrentDataSet = "NOT FOUND";
+			ArrayList<Integer> alExpIndex =
+				GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(iDavidID);
+
+			if (alExpIndex != null && alExpIndex.size() > 0)
+				sExpressionValueInCurrentDataSet = "FOUND";
+
 			TableItem item = new TableItem(geneTable, SWT.NULL);
-			item.setText(0, sRefSeqIDs);
-			item.setText(1, Integer.toString(iDavidID));
-			item.setText(2, sEntrezGeneID);
-			item.setText(3, sGeneSymbol);
-			item.setText(4, sGeneName);
+			item.setText(0, new String(sExpressionValueInCurrentDataSet));
+			item.setText(1, sRefSeqIDs);
+			item.setText(2, Integer.toString(iDavidID));
+			item.setText(3, sEntrezGeneID);
+			item.setText(4, sGeneSymbol);
+			item.setText(5, sGeneName);
 
 			item.setData(iDavidID);
 
@@ -493,11 +507,15 @@ public class SearchView
 			}
 		}
 
+		// Sort gene table using the info whether expression data is available or not.
+		sortTable(geneTable, 0);
+
 		for (TableColumn column : geneTable.getColumns())
 			column.pack();
 
-		geneTable.getColumn(0).setWidth(300);
+		geneTable.getColumn(0).setWidth(100);
 		geneTable.getColumn(4).setWidth(200);
+		geneTable.getColumn(1).setWidth(300);
 	}
 
 	@Override
@@ -519,12 +537,18 @@ public class SearchView
 
 				for (final TableItem tableItem : geneTable.getSelection()) {
 
+					// Do not create context menu for genes that have to expression value
+					if (!tableItem.getText(0).equals("FOUND"))
+						continue;
+					
 					MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 					openInBrowserMenuItem.setText("Open in browser");
 					openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
 						geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
 					openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
+
+							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
 
 							// Switch to browser view
 							try {
@@ -545,15 +569,6 @@ public class SearchView
 					loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 
-							// Switch to bucket view
-							try {
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(GLRemoteRenderingView.ID);
-							}
-							catch (PartInitException e1) {
-								e1.printStackTrace();
-							}
-
 							searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
 						};
 					});
@@ -566,10 +581,34 @@ public class SearchView
 					loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 
-							// Switch to heat map view
+							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
+
+							// Switch to browser view
 							try {
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 									.showView(GLHierarchicalHeatMapView.ID);
+							}
+							catch (PartInitException e1) {
+								e1.printStackTrace();
+							}
+						};
+					});
+
+					MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(menu, SWT.PUSH);
+					loadGeneInParallelCoordinatesMenuItem.setText("Show gene in parallel coordinates");
+					loadGeneInParallelCoordinatesMenuItem.setImage(generalManager.getResourceLoader()
+						.getImage(geneTable.getDisplay(),
+							"resources/icons/view/storagebased/parcoords/parcoords.png"));
+
+					loadGeneInParallelCoordinatesMenuItem.addSelectionListener(new SelectionAdapter() {
+						public void widgetSelected(SelectionEvent e) {
+
+							searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
+
+							// Switch to browser view
+							try {
+								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+									.showView(GLParCoordsView.ID);
 							}
 							catch (PartInitException e1) {
 								e1.printStackTrace();
@@ -666,5 +705,36 @@ public class SearchView
 		}
 
 		return pathwaysContainingGene;
+	}
+
+	public static void sortTable(Table table, int iColumnIndex) {
+		if (table == null || table.getColumnCount() <= 1)
+			return;
+		if (iColumnIndex < 0 || iColumnIndex >= table.getColumnCount())
+			throw new IllegalArgumentException("The specified column does not exits. ");
+
+		final int colIndex = iColumnIndex;
+		Comparator comparator = new Comparator() {
+			public int compare(Object o1, Object o2) {
+				return ((TableItem) o1).getText(colIndex).compareTo(((TableItem) o2).getText(colIndex));
+			}
+
+			public boolean equals(Object obj) {
+				return false;
+			}
+		};
+
+		TableItem[] tableItems = table.getItems();
+		Arrays.sort(tableItems, comparator);
+
+		for (int i = 0; i < tableItems.length; i++) {
+			TableItem item = new TableItem(table, SWT.NULL);
+			for (int j = 0; j < table.getColumnCount(); j++) {
+				item.setText(j, tableItems[i].getText(j));
+				item.setImage(j, tableItems[i].getImage(j));
+				item.setData(tableItems[i].getData());
+			}
+			tableItems[i].dispose();
+		}
 	}
 }

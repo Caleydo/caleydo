@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.specialized.genetic;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -85,6 +86,35 @@ public class GeneticIDMappingHelper {
 			return sGeneSymbol;
 	}
 
+	public ArrayList<Integer> getExpressionIndicesFromDavid(int davidID) {
+
+		Set<Integer> setRefSeqMRNA = idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT,
+			davidID);
+		
+		if (setRefSeqMRNA == null)
+			return null;
+		
+		ArrayList<Integer> alExpIndex = new ArrayList<Integer>();
+		
+		for (Integer refSeqMRNA : setRefSeqMRNA) {
+			
+			Set<Integer> setExpIndex = idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX,
+				refSeqMRNA);
+			
+			if (setExpIndex == null) {
+				// No expression index available in the current dataset
+				continue;
+			}
+			
+			alExpIndex.addAll(setExpIndex);
+		}
+
+		if (alExpIndex == null)
+			return null;
+
+		return alExpIndex;
+	}
+
 	/**
 	 * Returns the refSeq String mapped to a storage index, or null if no string was found
 	 * 
@@ -110,7 +140,7 @@ public class GeneticIDMappingHelper {
 		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
 
 		PathwayVertexGraphItem pathwayVertexGraphItem = convertGeneIDToPathwayVertex(idType, geneID);
-		if(pathwayVertexGraphItem == null)
+		if (pathwayVertexGraphItem == null)
 			return null;
 
 		List<IGraphItem> pathwayItems =
@@ -150,7 +180,7 @@ public class GeneticIDMappingHelper {
 
 		if (iDavidID == null || iDavidID == -1)
 			return null;
-//			throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
+		// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 
 		iGraphItemID =
 			GeneralManager.get().getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);

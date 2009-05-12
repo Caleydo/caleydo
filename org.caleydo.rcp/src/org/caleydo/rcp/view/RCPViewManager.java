@@ -4,6 +4,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.view.listener.ActivateViewListener;
 import org.eclipse.ui.PlatformUI;
@@ -48,6 +49,8 @@ implements IListenerOwner {
 		activateBucketViewListener = new ActivateViewListener();
 		activateBucketViewListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(LoadPathwayEvent.class,
+			activateBucketViewListener);
+		GeneralManager.get().getEventPublisher().addListener(LoadPathwaysByGeneEvent.class,
 			activateBucketViewListener);
 	}
 
