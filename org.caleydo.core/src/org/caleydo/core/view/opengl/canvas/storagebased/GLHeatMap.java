@@ -510,11 +510,12 @@ public class GLHeatMap
 							return;
 						}
 
-						createStorageSelection(eSelectionType, iExternalID);
 						break;
 					default:
 						return;
 				}
+
+				createStorageSelection(eSelectionType, iExternalID);
 
 				break;
 			case LIST_HEAT_MAP_CLEAR_ALL:
@@ -523,7 +524,7 @@ public class GLHeatMap
 						contentSelectionManager.resetSelectionManager();
 						setDisplayListDirty();
 						SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-						
+
 						ArrayList<SelectionCommand> commands = new ArrayList<SelectionCommand>();
 						commands.add(command);
 						TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
