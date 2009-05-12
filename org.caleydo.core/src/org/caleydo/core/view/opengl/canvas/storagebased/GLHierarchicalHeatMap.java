@@ -250,14 +250,6 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void resetView() {
-
-		super.resetView();
-		initHierarchy();
-
-	}
-
-	@Override
 	public void initLocal(GL gl) {
 
 		bRenderStorageHorizontally = false;

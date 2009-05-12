@@ -9,7 +9,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -27,7 +26,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
@@ -452,7 +450,7 @@ public class GLPathway
 
 			if (iDavidID == null) {
 				continue;
-//				throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");				
+				// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 			}
 
 			iPathwayVertexGraphItemID =
@@ -808,9 +806,10 @@ public class GLPathway
 	}
 
 	@Override
-	public void setSet(ISet set) {
-		super.setSet(set);
+	public void initData() {
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+		super.initData();
+
 	}
 
 	@Override
@@ -855,7 +854,7 @@ public class GLPathway
 
 	@Override
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		super.registerEventListeners();
 
 		enableTexturesListener = new EnableTexturesListener();
 		enableTexturesListener.setHandler(this);
@@ -900,7 +899,7 @@ public class GLPathway
 
 	@Override
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		super.unregisterEventListeners();
 
 		if (enableTexturesListener != null) {
 			eventPublisher.removeListener(EnableTexturesEvent.class, enableTexturesListener);

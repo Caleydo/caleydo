@@ -945,6 +945,7 @@ public class TabularDataViewRep
 
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
@@ -968,6 +969,7 @@ public class TabularDataViewRep
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;

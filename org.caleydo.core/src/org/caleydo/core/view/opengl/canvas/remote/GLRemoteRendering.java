@@ -2710,7 +2710,7 @@ public class GLRemoteRendering
 	 */
 	@Override
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		super.registerEventListeners();
 
 		addPathwayListener = new AddPathwayListener();
 		addPathwayListener.setHandler(this);
@@ -2770,8 +2770,8 @@ public class GLRemoteRendering
 	 */
 	@Override
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-
+	
+		super.unregisterEventListeners();
 		if (addPathwayListener != null) {
 			eventPublisher.removeListener(addPathwayListener);
 			addPathwayListener = null;

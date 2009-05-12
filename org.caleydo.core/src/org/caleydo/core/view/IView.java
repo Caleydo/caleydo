@@ -3,6 +3,7 @@ package org.caleydo.core.view;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
@@ -13,7 +14,7 @@ import org.caleydo.core.view.serialize.ASerializedView;
  * @author Alexander Lex
  */
 public interface IView
-	extends IUniqueObject {
+	extends IUniqueObject, INewSetHandler {
 	/**
 	 * Sets the unique ID of the parent container. Normally it is already set in the constructor. Use this
 	 * method only if you want to change the parent during runtime.
@@ -35,11 +36,6 @@ public interface IView
 	 */
 	void setLabel(String label);
 
-	/**
-	 * Set the data set on which the view is operating on.
-	 * @param set The new set to be used
-	 */
-	public void setSet(ISet set);
 	
 	/**
 	 * Returns the current set which the view is rendering.

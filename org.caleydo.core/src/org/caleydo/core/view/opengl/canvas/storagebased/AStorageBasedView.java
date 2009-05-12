@@ -9,7 +9,6 @@ import java.util.List;
 import javax.management.InvalidAttributeValueException;
 
 import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -126,7 +125,7 @@ public abstract class AStorageBasedView
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-		registerEventListeners();
+//		registerEventListeners();
 	}
 
 	/**
@@ -224,8 +223,8 @@ public abstract class AStorageBasedView
 				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
-//					generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-//						"Cannot resolve gene to DAVID ID!"));
+					// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					// "Cannot resolve gene to DAVID ID!"));
 					continue;
 				}
 
@@ -385,12 +384,12 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void setSet(ISet set) {
-		super.setSet(set);
-
-		resetView();
-	}
+//	@Override
+//	public void setSet(ISet set) {
+//		super.setSet(set);
+//
+////		resetView();
+//	}
 
 	// @Override
 	// public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
@@ -503,8 +502,9 @@ public abstract class AStorageBasedView
 			}
 		}
 		catch (InvalidAttributeValueException e) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"Can not handle data type of update in selectionDelta", e));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Can not handle data type of update in selectionDelta", e));
 		}
 	}
 
@@ -583,6 +583,7 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
@@ -606,6 +607,7 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;

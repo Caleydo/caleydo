@@ -265,6 +265,7 @@ public class HTMLBrowserViewRep
 	
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		changeURLListener = new ChangeURLListener();
 		changeURLListener.setHandler(this);
 		eventPublisher.addListener(ChangeURLEvent.class, changeURLListener);
@@ -277,6 +278,7 @@ public class HTMLBrowserViewRep
 	 */
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (changeURLListener != null) {
 			eventPublisher.removeListener(ChangeURLEvent.class, changeURLListener);
 			changeURLListener = null;

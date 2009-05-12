@@ -11,8 +11,10 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -27,7 +29,7 @@ public abstract class AView
 	implements IView, IListenerOwner {
 
 	protected IGeneralManager generalManager;
-	
+
 	protected IEventPublisher eventPublisher;
 
 	/**
@@ -45,6 +47,8 @@ public abstract class AView
 	protected Composite parentComposite;
 
 	protected String sLabel;
+
+	private NewSetListener newSetListener;
 
 	/**
 	 * Constructor.
@@ -82,43 +86,54 @@ public abstract class AView
 			parentComposite.getShell().setText(label);
 		}
 	}
-	
+
 	@Override
 	public void setSet(ISet set) {
 		this.set = set;
 	}
-	
+
 	@Override
-	public ISet getSet(){
+	public ISet getSet() {
 		return set;
 	}
-	
+
 	@Override
 	public void setUseCase(IUseCase useCase) {
 		this.useCase = useCase;
 	}
 
 	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 * Registers the listeners for this view to the event system. To release the allocated resources
+	 * unregisterEventListeners() has to be called. This method is intended to be overridden, but it's super()
+	 * should be called to be registered to the listeners defined by other classes in the hierarchy.
 	 */
 	public void registerEventListeners() {
-		// default implementations does not react on events 
+		newSetListener = new NewSetListener();
+		newSetListener.setHandler(this);
+		eventPublisher.addListener(NewSetEvent.class, newSetListener);
+		// default implementations does not react on events
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 * Unregisters the listeners for this view from the event system. To release the allocated resources
+	 * unregisterEventListenrs() has to be called. This method is intended to be overridden, but it's super()
+	 * should be called to unregistered the listeners defined by other classes in the hierarchy.
 	 */
 	public void unregisterEventListeners() {
-		// default implementations does not react on events 
+		if (newSetListener != null) {
+			eventPublisher.removeListener(newSetListener);
+			newSetListener = null;
+		}
 	}
 
 	/**
-	 * creates and sends a {@link TriggerSelectioCommand} event and distributes
-	 * it via the related eventPublisher. 
-	 * @param expression_index type of genome this selection command refers to 
-	 * @param command selection-command to distribute
+	 * creates and sends a {@link TriggerSelectioCommand} event and distributes it via the related
+	 * eventPublisher.
+	 * 
+	 * @param expression_index
+	 *            type of genome this selection command refers to
+	 * @param command
+	 *            selection-command to distribute
 	 */
 	protected void sendSelectionCommandEvent(EIDType genomeType, SelectionCommand command) {
 		TriggerSelectionCommandEvent event = new TriggerSelectionCommandEvent();

@@ -756,13 +756,17 @@ public class Set
 		gm.getSetManager().unregisterItem(iUniqueID);
 		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
 		// However, to make sure.
-		for (IVirtualArray va : hashSetVAs.values()) {
-			va.destroy();
-		}
-		for (IVirtualArray va : hashStorageVAs.values()) {
-			va.destroy();
-		}
+	}
 
+	@Override
+	public void finalize() {
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
+	}
+
+	@Override
+	public String toString() {
+		return "Set " + getLabel() + " with " + alStorages.size() + " storages.";
 	}
 
 }

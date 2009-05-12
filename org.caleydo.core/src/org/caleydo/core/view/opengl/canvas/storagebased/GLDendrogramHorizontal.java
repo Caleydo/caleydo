@@ -839,6 +839,7 @@ public class GLDendrogramHorizontal
 
 	@Override
 	public void resetView() {
+		super.resetView();
 		tree = null;
 	}
 

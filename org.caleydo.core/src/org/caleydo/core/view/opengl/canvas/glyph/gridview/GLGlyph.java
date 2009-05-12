@@ -115,7 +115,7 @@ public class GLGlyph
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
-	
+
 	// private long ticker = 0;
 
 	/**
@@ -331,18 +331,18 @@ public class GLGlyph
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
+
 		bIsLocal = false;
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
-//		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
+		// Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
 		// FIXXXME: YOU SHOULD NOT ADD THE KEY LISTENER TO ALL CANVAS OBJECTS!!!!!
-//		for (GLCaleydoCanvas c : cc) {
-//			c.addKeyListener(keyListener_);
-//		}
+		// for (GLCaleydoCanvas c : cc) {
+		// c.addKeyListener(keyListener_);
+		// }
 
 		init(gl);
 
@@ -994,8 +994,7 @@ public class GLGlyph
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
-		int iExternalID, Pick pick) {
+	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
 			switch (pickingMode) {
@@ -1003,14 +1002,15 @@ public class GLGlyph
 					GlyphEntry g = grid_.getGlyph(iExternalID);
 
 					if (g == null) {
-						generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-							"Glyph with external ID " + iExternalID + " not found!"));
+						generalManager.getLogger().log(
+							new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Glyph with external ID "
+								+ iExternalID + " not found!"));
 						return;
 					}
 
 					// nothing changed, we don't need to do anything
 					if (g == oldMouseOverGlyphEntry) {
-							return;
+						return;
 					}
 
 					selectionManager.clearSelections();
@@ -1032,9 +1032,10 @@ public class GLGlyph
 					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 						EIDType.EXPERIMENT_INDEX);
 
-					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER);
+					SelectionCommand command =
+						new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER);
 					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
-					
+
 					triggerSelectionUpdate();
 
 					// only the glyphs need to be redrawn
@@ -1067,9 +1068,10 @@ public class GLGlyph
 
 		forceRebuild();
 
-//		fixme the selection triggered by a glyph view should be handled view events, so this "if" should not be needed		
-//		if (eventTrigger instanceof GLGlyph)
-//			return;
+		// fixme the selection triggered by a glyph view should be handled view events, so this "if" should
+		// not be needed
+		// if (eventTrigger instanceof GLGlyph)
+		// return;
 
 		// grid_.deSelectAll();
 
@@ -1097,7 +1099,7 @@ public class GLGlyph
 	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 
 	}
-	
+
 	@Override
 	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
 		selectionManager.executeSelectionCommands(selectionCommands);
@@ -1316,16 +1318,17 @@ public class GLGlyph
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
-	 * If inherited classes override this method, they should usually call it via super.    
+	 * Registers the listeners for this view to the event system. To release the allocated resources
+	 * unregisterEventListeners() has to be called. If inherited classes override this method, they should
+	 * usually call it via super.
 	 */
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		selectionUpdateListener = new SelectionUpdateListener();
@@ -1338,12 +1341,13 @@ public class GLGlyph
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
-	 * If inherited classes override this method, they should usually call it via super.    
+	 * Unregisters the listeners for this view from the event system. To release the allocated resources
+	 * unregisterEventListenrs() has to be called. If inherited classes override this method, they should
+	 * usually call it via super.
 	 */
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		if (selectionUpdateListener != null) {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
@@ -86,12 +85,12 @@ public class GLHistogram
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
+		registerEventListeners();
 	}
 
 	@Override
 	public void init(GL gl) {
 
-		histogram = set.getHistogram();
 	}
 
 	@Override
@@ -117,6 +116,13 @@ public class GLHistogram
 
 	}
 
+	@Override
+	public void initData()
+	{
+		super.initData();
+		histogram = set.getHistogram();
+	}
+	
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
@@ -593,13 +599,8 @@ public class GLHistogram
 	}
 
 	@Override
-	public void setSet(ISet set) {
-		super.setSet(set);
-		histogram = set.getHistogram();
-	}
-
-	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -611,6 +612,7 @@ public class GLHistogram
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -620,5 +622,4 @@ public class GLHistogram
 			clearSelectionsListener = null;
 		}
 	}
-
 }

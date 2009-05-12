@@ -137,12 +137,8 @@ public abstract class AGLEventListener
 	protected ContextMenu contextMenu;
 
 	/**
-	 * This set changes during rendering. On display list dirty the global newSet is assigned to the set of
-	 * AView. Therefore in the next rendering of the view the new data is applied. This guarantees that the
-	 * set does not change in the middle of the display method. The new set
+	 * The queue which holds the events
 	 */
-	private ISet newSet;
-
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
 
 	/**
@@ -197,7 +193,7 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public void display(GLAutoDrawable drawable) {
+	public final void display(GLAutoDrawable drawable) {
 
 		try {
 			((GLEventListener) parentGLCanvas).display(drawable);
@@ -224,7 +220,7 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+	public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
 
 		((GLEventListener) parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
 	}
@@ -260,22 +256,26 @@ public abstract class AGLEventListener
 	}
 
 	/**
-	 * Method responsible for initialization of the data. Note: This is completely independent of init(gl)!
+	 * <p>
+	 * Method responsible for initialization of the data. It is intended to be overridden, all subclasses must
+	 * use this method to initialize their members related to {@link AView#set}.
+	 * </p>
+	 * <p>
+	 * Note: This is completely independent of {@link #init(GL)}
+	 * </p>
 	 */
 	public void initData() {
-
-		set = newSet;
 	}
 
 	/**
-	 * Reset the view to its initial state, synchronized
+	 * Reset the view to its initial state by calling {@link #initData()}
 	 */
 	public void resetView() {
 		initData();
 	}
 
 	/**
-	 * Set the display list to dirty
+	 * Set the display list to dirty. May be overridden by subclasses.
 	 */
 	public void setDisplayListDirty() {
 		bIsDisplayListDirtyLocal = true;
@@ -350,7 +350,7 @@ public abstract class AGLEventListener
 	 * This method should be called every display cycle when it is save to change the state of the object. It
 	 * processes all the previously submitted events.
 	 */
-	public void processEvents() {
+	public final void processEvents() {
 		Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
 		while (queue.peek() != null) {
 			pair = queue.poll();
@@ -389,7 +389,7 @@ public abstract class AGLEventListener
 		return viewFrustum;
 	}
 
-	public void setFrustum(IViewFrustum viewFrustum) {
+	public final void setFrustum(IViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
 	}
 
@@ -399,7 +399,7 @@ public abstract class AGLEventListener
 	 * 
 	 * @param gl
 	 */
-	protected void checkForHits(final GL gl) {
+	protected final void checkForHits(final GL gl) {
 
 		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
 		if (hitTypes == null)
@@ -461,28 +461,33 @@ public abstract class AGLEventListener
 	 */
 	public abstract void broadcastElements(EVAOperation type);
 
+	/**
+	 * Set the level of detail to be displayed
+	 * 
+	 * @param detailLevel
+	 */
 	public void setDetailLevel(EDetailLevel detailLevel) {
 		this.detailLevel = detailLevel;
 		setDisplayListDirty();
 	}
 
-	public void setRemoteLevelElement(RemoteLevelElement element) {
+	public final void setRemoteLevelElement(RemoteLevelElement element) {
 		this.remoteLevelElement = element;
 	}
 
-	public RemoteLevelElement getRemoteLevelElement() {
+	public final RemoteLevelElement getRemoteLevelElement() {
 		return remoteLevelElement;
 	}
 
-	public boolean isRenderedRemote() {
+	public final boolean isRenderedRemote() {
 		return bIsRenderedRemote;
 	}
 
-	public void setRenderedRemote(boolean bIsRenderedRemote) {
+	public final void setRenderedRemote(boolean bIsRenderedRemote) {
 		this.bIsRenderedRemote = bIsRenderedRemote;
 	}
 
-	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
+	public final IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
 		return remoteRenderingGLView;
 	}
 
@@ -580,6 +585,13 @@ public abstract class AGLEventListener
 		// System.out.println("Busy mode status: " +eBusyModeState);
 	}
 
+	/**
+	 * Enables the busy mode, which renders the loading dialog and disables the picking. This method may be
+	 * overridden if different behaviour is desired.
+	 * 
+	 * @param bBusyMode
+	 *            true if the busy mode should be enabled, false if it should be disabled
+	 */
 	public void enableBusyMode(final boolean bBusyMode) {
 		if (!bBusyMode && eBusyModeState == EBusyModeState.ON) {
 			eBusyModeState = EBusyModeState.SWITCH_OFF;
@@ -589,28 +601,23 @@ public abstract class AGLEventListener
 			pickingManager.enablePicking(false);
 			eBusyModeState = EBusyModeState.ON;
 		}
-
-		// System.out.println("Busy mode change: " +eBusyModeState.toString());
 	}
 
-	/**
-	 * Method return true if an element is currently selected for a given selection type.
-	 */
 	public abstract int getNumberOfSelections(ESelectionType eSelectionType);
 
-	public float getAspectRatio() {
+	public final float getAspectRatio() {
 		return fAspectRatio;
 	}
 
-	public int getContentVAID() {
+	public final int getContentVAID() {
 		return iContentVAID;
 	}
 
-	public int getStorageVAID() {
+	public final int getStorageVAID() {
 		return iStorageVAID;
 	}
 
-	public EDetailLevel getDetailLevel() {
+	public final EDetailLevel getDetailLevel() {
 		return detailLevel;
 	}
 
@@ -628,13 +635,19 @@ public abstract class AGLEventListener
 		unregisterEventListeners();
 	}
 
+	/**
+	 * Sets the set, calls {@link #initData()} and sets display lists dirty
+	 */
 	@Override
-	public void setSet(ISet set) {
+	public final void setSet(ISet set) {
 
+		this.set = set;
+		initData();
+		setDisplayListDirty();
 		// In GL views the new set is not immediately written to the set variable of AView.
 		// The new set is then assigned to the working set when the display list is dirty the next time.
-		newSet = set;
-		setDisplayListDirty();
+		// newSet = set;
+		// setDisplayListDirty();
 	}
 
 	/**

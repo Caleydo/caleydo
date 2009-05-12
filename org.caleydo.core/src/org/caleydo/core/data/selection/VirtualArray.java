@@ -283,12 +283,5 @@ public class VirtualArray
 		
 		return true;
 	}
-	
-	@Override
-	public void destroy()
-	{
-		iAlVirtualArray = null;
-		iGroupList = null;
-	}
 
 }

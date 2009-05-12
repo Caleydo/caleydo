@@ -283,11 +283,6 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void resetView() {
-
-	}
-
-	@Override
 	public void displayLocal(final GL gl) {
 
 		if (set == null)

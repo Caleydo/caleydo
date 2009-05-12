@@ -776,6 +776,7 @@ public class GLDendrogramVertical
 
 	@Override
 	public void resetView() {
+		super.resetView();
 		tree = null;
 	}
 
