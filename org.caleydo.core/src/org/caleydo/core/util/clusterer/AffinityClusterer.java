@@ -43,7 +43,6 @@ public class AffinityClusterer
 	private int iVAIdContent = 0;
 	private int iVAIdStorage = 0;
 
-	private boolean bStart0 = true;
 	private ProgressBar pbSimilarity;
 	private ProgressBar pbAffiProp;
 	private Shell shell;
@@ -83,10 +82,6 @@ public class AffinityClusterer
 			distanceMeasure = new PearsonCorrelation();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
-			if (contentVA.get(0) == 0)
-				bStart0 = true;
-			else
-				bStart0 = false;
 
 			int iNrElements = contentVA.size();
 			pbSimilarity.setMinimum(0);
@@ -122,14 +117,8 @@ public class AffinityClusterer
 
 					if (icnt1 != icnt2) {
 						s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-						if (bStart0 == true) {
-							i[count] = iContentIndex1;
-							k[count] = iContentIndex2;
-						}
-						else {
-							i[count] = iContentIndex1 - 1;
-							k[count] = iContentIndex2 - 1;
-						}
+						i[count] = icnt1;
+						k[count] = icnt2;
 						count++;
 					}
 					icnt2++;
@@ -140,24 +129,16 @@ public class AffinityClusterer
 			// determine median of the similarity values
 			float median = ClusterHelper.median(s);
 
+			int cnt = 0;
 			for (Integer iContentIndex1 : contentVA) {
 				s[count] = median * fClusterFactor;
-				if (bStart0 == true) {
-					i[count] = iContentIndex1;
-					k[count] = iContentIndex1;
-				}
-				else {
-					i[count] = iContentIndex1 - 1;
-					k[count] = iContentIndex1 - 1;
-				}
+				i[count] = cnt;
+				k[count] = cnt;
 				count++;
+				cnt++;
 			}
 		}
 		else {
-			if (storageVA.get(0) == 0)
-				bStart0 = true;
-			else
-				bStart0 = false;
 
 			int iNrElements = storageVA.size();
 			pbSimilarity.setMinimum(0);
@@ -166,62 +147,52 @@ public class AffinityClusterer
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
-			int icnt1 = 0, icnt2 = 0, isto = 0;
+			int isto1 = 0, isto2 = 0, icnt = 0;
 			int count = 0;
 
 			for (Integer iStorageIndex1 : storageVA) {
 
-				pbSimilarity.setSelection(icnt1);
+				pbSimilarity.setSelection(isto1);
 				shell.update();
 
-				isto = 0;
+				icnt = 0;
 				for (Integer iContentIndex1 : contentVA) {
-					dArInstance1[isto] =
+					dArInstance1[icnt] =
 						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
-					isto++;
+					icnt++;
 				}
 
-				icnt2 = 0;
+				isto2 = 0;
 				for (Integer iStorageIndex2 : storageVA) {
 
-					isto = 0;
+					icnt = 0;
 					for (Integer iContentIndex2 : contentVA) {
-						dArInstance2[isto] =
+						dArInstance2[icnt] =
 							set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex2);
-						isto++;
+						icnt++;
 					}
 
-					if (icnt1 != icnt2) {
+					if (isto1 != isto2) {
 						s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-						if (bStart0 == true) {
-							i[count] = iStorageIndex1;
-							k[count] = iStorageIndex2;
-						}
-						else {
-							i[count] = iStorageIndex1 - 1;
-							k[count] = iStorageIndex2 - 1;
-						}
+						i[count] = isto1;
+						k[count] = isto2;
 						count++;
 					}
-					icnt2++;
+					isto2++;
 				}
-				icnt1++;
+				isto1++;
 			}
 
 			// determine median of the similarity values
 			float median = ClusterHelper.median(s);
 
+			int sto = 0;
 			for (Integer iStorageIndex1 : storageVA) {
 				s[count] = median * fClusterFactor;
-				if (bStart0 == true) {
-					i[count] = iStorageIndex1;
-					k[count] = iStorageIndex1;
-				}
-				else {
-					i[count] = iStorageIndex1 - 1;
-					k[count] = iStorageIndex1 - 1;
-				}
+				i[count] = sto;
+				k[count] = sto;
 				count++;
+				sto++;
 			}
 		}
 	}
@@ -456,10 +427,7 @@ public class AffinityClusterer
 		for (Integer example : alExamples) {
 			for (int sampleNr = 0; sampleNr < iNrSamples; sampleNr++) {
 				if (idx[sampleNr] == example) {
-					if (bStart0 == true)
-						AlIndexes.add(sampleNr);
-					else
-						AlIndexes.add(sampleNr + 1);
+					AlIndexes.add(sampleNr);
 					count.set(counter, count.get(counter) + 1);
 				}
 				if (example == sampleNr) {

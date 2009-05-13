@@ -221,7 +221,8 @@ public class GLHierarchicalHeatMap
 		iNumberOfElements = set.getVA(iContentVAID).size();
 
 		if (iNumberOfElements < MIN_SAMPLES_PER_HEATMAP) {
-			throw new IllegalStateException("Number of elements not supported!!");
+			System.out.println("Number of elements not supported!! Problems with visualization may occur!");
+//			throw new IllegalStateException("Number of elements not supported!!");
 		}
 
 		if (iNumberOfElements < 100) {
@@ -2163,6 +2164,8 @@ public class GLHierarchicalHeatMap
 				else
 					iContentVAID = iVAid;
 			}
+			
+			AlSelection.clear();
 
 		}
 //		// normal startup
