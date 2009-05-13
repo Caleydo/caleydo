@@ -73,6 +73,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -1908,6 +1909,10 @@ public class GLParallelCoordinates
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
+						// Prevent handling of non genetic data in context menu
+						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+							break;
+						
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
 							new GeneContextMenuItemContainer();
 						geneContextMenuItemContainer.setStorageIndex(iExternalID);

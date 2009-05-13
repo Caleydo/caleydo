@@ -1,8 +1,6 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased.parcoords;
 
-import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.core.manager.event.view.storagebased.ActivateAngularBrushingEvent;
-import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;

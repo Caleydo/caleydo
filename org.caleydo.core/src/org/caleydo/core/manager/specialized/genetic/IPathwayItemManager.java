@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.util.graph.IGraph;
@@ -40,9 +41,9 @@ public interface IPathwayItemManager
 	public IGraphItem createReactionEdge(final IGraph parentPathway, final String sReactionName,
 		final String sReactionType);
 
-	public int getPathwayVertexGraphItemIdByDavidId(final int iDavidId);
+	public PathwayVertexGraphItem getPathwayVertexGraphItemByDavidId(final int iDavidId);
 
-	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId);
+	public int getDavidIdByPathwayVertexGraphItem(final PathwayVertexGraphItem pathwayVertexGraphItem);
 
 	public PathwayVertexGraphItemRep getPathwayVertexRep(int iID);
 }

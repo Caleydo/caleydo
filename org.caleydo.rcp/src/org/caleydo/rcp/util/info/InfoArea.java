@@ -25,6 +25,7 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -65,7 +66,7 @@ public class InfoArea
 
 	private Tree selectionTree;
 
-	private TreeItem geneTree;
+	private TreeItem contentTree;
 	private TreeItem experimentTree;
 	// private TreeItem pathwayTree;
 
@@ -156,14 +157,21 @@ public class InfoArea
 		// }
 		// });
 
-		geneTree = new TreeItem(selectionTree, SWT.NONE);
-		geneTree.setText("Genes");
-		geneTree.setExpanded(true);
-		geneTree.setData(-1);
+		contentTree = new TreeItem(selectionTree, SWT.NONE);
+		contentTree.setExpanded(true);
+		contentTree.setData(-1);
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);
-		experimentTree.setText("Experiments");
 		experimentTree.setExpanded(true);
 		experimentTree.setData(-1);
+		experimentTree.setText("Experiments");
+
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			contentTree.setText("Genes");
+		}
+		else {
+			contentTree.setText("Entity");
+		}
+
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");
 		// pathwayTree.setExpanded(false);
@@ -187,7 +195,7 @@ public class InfoArea
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
 
 						// Flush old genes from this selection type
-						for (TreeItem item : geneTree.getItems()) {
+						for (TreeItem item : contentTree.getItems()) {
 							if (item.getData("selection_type") == selectionItem.getSelectionType()
 								|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
 
@@ -223,56 +231,48 @@ public class InfoArea
 								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
-							Integer iRefSeq =
-								idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-									selectionItem.getPrimaryID());
+							String sContentName = "";
+							if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
-							String sRefSeqID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeq);
+								Integer iRefSeq =
+									idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+										selectionItem.getPrimaryID());
 
-							Integer iDavidID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
+								String sRefSeqID =
+									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeq);
 
-							String sGeneSymbol =
-								idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
+								Integer iDavidID =
+									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
 
-							if (sGeneSymbol == null) {
-								sGeneSymbol = "Unknown";
-							}
+								sContentName =
+									idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
-							// boolean bIsExisting = false;
-							// for (TreeItem existingItem : selectionTree.getItems()) {
-							// if (existingItem.getText().equals(sGeneSymbol)
-							// && ((Integer) existingItem.getData()).intValue() == selectionItem
-							// .getPrimaryID()) {
-							// existingItem.setBackground(color);
-							// existingItem.getItem(0).setBackground(color);
-							// existingItem.setData("selection_type", selectionItem.getSelectionType());
-							// bIsExisting = true;
-							// break;
-							// }
-							// }
 
-							// if (!bIsExisting) {
-							TreeItem item = new TreeItem(geneTree, SWT.NONE);
-
-							// FIXME horizontal toolbar style support
-							// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
-							if (Application.bIsWindowsOS) {
-								item.setText(sGeneSymbol + " - " + sRefSeqID);
+								// FIXME horizontal toolbar style support
+								// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
+								if (Application.bIsWindowsOS) {
+									sContentName = sContentName + " - " + sRefSeqID;
+								}
+								else {
+									sContentName = sContentName + "\n" + sRefSeqID;
+								}
 							}
 							else {
-								item.setText(sGeneSymbol + "\n" + sRefSeqID);
+								sContentName = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, selectionItem.getPrimaryID());
 							}
+
+							if (sContentName == null) {
+								sContentName = "Unknown";
+							}
+
+							TreeItem item = new TreeItem(contentTree, SWT.NONE);
+
+							item.setText(sContentName);
 							item.setBackground(color);
 							item.setData(selectionItem.getPrimaryID());
 							item.setData("selection_type", selectionItem.getSelectionType());
 
-							// TreeItem subItem = new TreeItem(item, SWT.NONE);
-							// subItem.setText(sRefSeqID);
-							// subItem.setBackground(color);
-							geneTree.setExpanded(true);
-							// }
+							contentTree.setExpanded(true);
 						}
 					}
 				}
@@ -438,7 +438,7 @@ public class InfoArea
 
 	@Override
 	public void handleClearSelections() {
-		geneTree.removeAll();
+		contentTree.removeAll();
 		experimentTree.removeAll();
 	}
 

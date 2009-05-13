@@ -5,12 +5,14 @@ import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECT
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
@@ -525,7 +527,17 @@ public class GLDendrogramHorizontal
 			// tree = set.getClusteredTreeGenes();
 			// }
 
-			tree = treePorter.importTree("data/clustering/tree.xml");
+			try {
+				tree = treePorter.importTree("data/clustering/tree.xml");
+			}
+			catch (FileNotFoundException e) {
+				// TODO Bernhard: Handle me!
+				e.printStackTrace();
+			}
+			catch (JAXBException e) {
+				// TODO Bernhard: Handle me!
+				e.printStackTrace();
+			}
 
 			renderSymbol(gl);
 

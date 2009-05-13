@@ -685,15 +685,11 @@ public class SearchView
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
 
-		int iPathwayVertexGraphItemID =
-			generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
+		PathwayVertexGraphItem pathwayGraphItem =
+			generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
 
 		// Only handle David IDs that does exist in any pathway
-		if (iPathwayVertexGraphItemID != -1) {
-
-			PathwayVertexGraphItem pathwayGraphItem =
-				(PathwayVertexGraphItem) GeneralManager.get().getPathwayItemManager().getItem(
-					iPathwayVertexGraphItemID);
+		if (pathwayGraphItem != null) {
 
 			List<IGraphItem> pathwayItems =
 				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);

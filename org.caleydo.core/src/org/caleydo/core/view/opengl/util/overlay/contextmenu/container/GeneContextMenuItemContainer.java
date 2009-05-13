@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
@@ -35,22 +37,30 @@ public class GeneContextMenuItemContainer
 	public void setStorageIndex(int iStorageIndex) {
 		GeneticIDMappingHelper mappingHelper = GeneticIDMappingHelper.get();
 
-		int david = mappingHelper.getDavidIDFromStorageIndex(iStorageIndex);
-		
+		int davidID = mappingHelper.getDavidIDFromStorageIndex(iStorageIndex);
+		createMenuContent(davidID);
+	}
+
+	public void setDavid(int davidID) {
+		createMenuContent(davidID);
+	}
+	
+	private void createMenuContent(int davidID) {
 		LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-		loadPathwaysByGeneItem.setDavid(david);
+		loadPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(loadPathwaysByGeneItem);
 
 		ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
-		showPathwaysByGeneItem.setDavid(david);
+		showPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(showPathwaysByGeneItem);
-	
 
-		AddToListItem addToListItem = new AddToListItem(iStorageIndex);
+		ArrayList<Integer> alStorageIndex = GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
+		
+		if (alStorageIndex == null)
+			return;
+		
+		AddToListItem addToListItem =
+			new AddToListItem(alStorageIndex);
 		addContextMenuItem(addToListItem);
-	}
-
-	public void setDavid() {
-
 	}
 }

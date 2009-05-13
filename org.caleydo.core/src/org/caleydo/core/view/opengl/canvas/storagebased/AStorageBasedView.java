@@ -230,15 +230,8 @@ public abstract class AStorageBasedView
 
 				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 					// Here all values are contained within pathways as well
-					int iGraphItemID =
-						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
-
-					if (iGraphItemID == -1) {
-						continue;
-					}
-
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-						(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
+						generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
 
 					if (tmpPathwayVertexGraphItem == null) {
 						continue;

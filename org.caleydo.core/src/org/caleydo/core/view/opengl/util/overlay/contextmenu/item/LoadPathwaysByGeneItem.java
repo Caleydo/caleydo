@@ -42,5 +42,4 @@ public class LoadPathwaysByGeneItem
 		loadPathwaysByGeneEvent.setIdType(EIDType.DAVID);
 		registerEvent(loadPathwaysByGeneEvent);
 	}
-
 }

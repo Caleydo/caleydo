@@ -10,6 +10,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -79,6 +80,10 @@ public class GenomeHTMLBrowserViewRep
 		if (selectionDelta.getIDType() != EIDType.EXPRESSION_INDEX)
 			return;
 
+		// Prevent handling of non genetic entities
+		if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+			return;
+		
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				if (!checkInternetConnection())

@@ -29,13 +29,13 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -468,6 +468,10 @@ public class GLHeatMap
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
+						// Prevent handling of non genetic data in context menu
+						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+							break;
+						
 						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());

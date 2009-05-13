@@ -60,14 +60,11 @@ public class IDExtractionLocationListener
 			if (iDavidId == null || iDavidId == -1)
 				return;
 
-			int iPathwayGraphItemId =
-				generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidId);
-
-			if (iPathwayGraphItemId == -1)
-				return;
-
 			PathwayVertexGraphItem vertexItemBuffer =
-				(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iPathwayGraphItemId);
+				generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidId);
+
+			if (vertexItemBuffer == null)
+				return;
 
 			Iterator<IGraphItem> iterList =
 				vertexItemBuffer.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
