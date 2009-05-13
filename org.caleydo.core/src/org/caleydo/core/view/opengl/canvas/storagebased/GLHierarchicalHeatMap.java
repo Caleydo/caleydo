@@ -530,13 +530,11 @@ public class GLHierarchicalHeatMap
 					iCount++;
 					IVirtualArray storageVA = set.getVA(iStorageVAID);
 					for (Integer iStorageIndex : storageVA) {
-						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-							|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-							|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
-							fOpacity = 1.0f;
+						if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
+							fOpacity = 0.3f;
 						}
 						else {
-							fOpacity = 0.3f;
+							fOpacity = 1.0f;
 						}
 
 						fLookupValue =
@@ -603,13 +601,11 @@ public class GLHierarchicalHeatMap
 					iCount++;
 					IVirtualArray storageVA = set.getVA(iStorageVAID);
 					for (Integer iStorageIndex : storageVA) {
-						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-							|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-							|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
-							fOpacity = 1.0f;
+						if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
+							fOpacity = 0.3f;
 						}
 						else {
-							fOpacity = 0.3f;
+							fOpacity = 1.0f;
 						}
 
 						fLookupValue =
@@ -2758,6 +2754,7 @@ public class GLHierarchicalHeatMap
 		AlExpSelected.clear();
 		iSelectorBar = 1;
 		initPosCursor();
+		bRedrawTextures = true;
 		setDisplayListDirty();
 		triggerSelectionBlock();
 		glHeatMapView.setDisplayListDirty();
