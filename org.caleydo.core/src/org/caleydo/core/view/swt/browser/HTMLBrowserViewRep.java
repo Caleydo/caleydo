@@ -3,8 +3,6 @@ package org.caleydo.core.view.swt.browser;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -32,6 +30,8 @@ import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * Simple HTML browser.
+ * 
+ * 
  * 
  * @author Marc Streit
  */

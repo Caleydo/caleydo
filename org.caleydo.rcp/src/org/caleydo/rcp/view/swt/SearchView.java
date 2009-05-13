@@ -707,6 +707,7 @@ public class SearchView
 		return pathwaysContainingGene;
 	}
 
+	@SuppressWarnings(value={"unchecked"})
 	public static void sortTable(Table table, int iColumnIndex) {
 		if (table == null || table.getColumnCount() <= 1)
 			return;

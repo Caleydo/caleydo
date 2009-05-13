@@ -278,10 +278,10 @@ public class ToolBarContentFactory {
 			}
 		}
 		else {
-			GeneralManager.get().getLogger().log(
-				new Status(Status.WARNING, Activator.PLUGIN_ID,
-					"No toolbar content providing class known for " + view
-						+ "; add its ToolBarInfo to ToolBarContentFactory"));
+//			GeneralManager.get().getLogger().log(
+//				new Status(Status.WARNING, Activator.PLUGIN_ID,
+//					"No toolbar content providing class known for " + view
+//						+ "; add its ToolBarInfo to ToolBarContentFactory"));
 		}
 		return content;
 	}

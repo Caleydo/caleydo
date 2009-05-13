@@ -34,7 +34,6 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -642,29 +641,18 @@ public class GLPathway
 						}
 						else {
 
-							// Load pathways
-							for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
-								.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-
-								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
-									new LoadPathwaysByGeneEvent();
-								loadPathwaysByGeneEvent.setSender(this);
-								loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
-								loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
-								generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-
-							}
-
-							// ArrayList<Integer> alExpressionIndexID =
-							// getExpressionIndicesFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep.getID());
-							//
-							// for (int iRefSeqID : alExpressionIndexID) {
-							// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
-							// new LoadPathwaysByGeneEvent();
-							// loadPathwaysByGeneEvent.setGeneID(iRefSeqID);
-							// loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
-							// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-							// }
+//							// Load pathways
+//							for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+//								.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+//
+//								LoadPathwaysByGeneEvent loadPathwaysByGeneEvent =
+//									new LoadPathwaysByGeneEvent();
+//								loadPathwaysByGeneEvent.setSender(this);
+//								loadPathwaysByGeneEvent.setGeneID(pathwayVertexGraphItem.getId());
+//								loadPathwaysByGeneEvent.setIdType(EIDType.PATHWAY_VERTEX);
+//								generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+//
+//							}
 						}
 						break;
 

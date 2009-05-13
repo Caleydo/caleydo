@@ -8,7 +8,6 @@ import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.ViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.view.CaleydoViewPart;
 import org.caleydo.rcp.view.opengl.AGLViewPart;
 import org.caleydo.rcp.view.swt.toolbar.ToolBarContentFactory;
@@ -16,7 +15,6 @@ import org.caleydo.rcp.view.swt.toolbar.ToolBarView;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.view.swt.toolbar.content.ToolBarContainer;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -87,8 +85,8 @@ public class PartListener
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		viewPart.setAttached(isViewAttached(viewPart));
 		
-		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
-			"partVisible(): " +viewPart));
+//		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
+//			"partVisible(): " +viewPart));
 
 		if (viewPart instanceof AGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
@@ -120,8 +118,8 @@ public class PartListener
 		}
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		
-		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
-			"partHidden(): " +viewPart));
+//		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
+//			"partHidden(): " +viewPart));
 		
 		viewPart.setAttached(isViewAttached(viewPart));
 
@@ -148,8 +146,8 @@ public class PartListener
 		
 		CaleydoViewPart viewPart = (CaleydoViewPart) activePart;
 		
-		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
-			"partActivated(): " +viewPart));
+//		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
+//			"partActivated(): " +viewPart));
 		
 		// Make sure that keyboard listener gets the events
 		if (viewPart.getSWTComposite() != null)

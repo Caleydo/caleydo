@@ -12,7 +12,7 @@ public class NavigationModeAction
 	implements IToolBarItem {
 
 	public static final String TEXT = "Toggle navigation mode";
-	public static final String ICON = "resources/icons/general/info.png";
+	public static final String ICON = "resources/icons/view/remote/navigation_mode.png";
 
 	/** mediator to handle actions triggered by instances of this class */
 	RemoteRenderingToolBarMediator remoteRenderingToolBarMediator;

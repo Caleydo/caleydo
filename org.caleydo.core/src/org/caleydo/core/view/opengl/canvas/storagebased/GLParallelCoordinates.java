@@ -61,7 +61,6 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
@@ -1867,13 +1866,13 @@ public class GLParallelCoordinates
 				break;
 			case POLYLINE_SELECTION:
 				switch (ePickingMode) {
-					case DOUBLE_CLICKED:
-						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-						loadPathwaysByGeneEvent.setSender(this);
-						loadPathwaysByGeneEvent.setGeneID(iExternalID);
-						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-						// intentionally no break
+//					case DOUBLE_CLICKED:
+//						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+//						loadPathwaysByGeneEvent.setSender(this);
+//						loadPathwaysByGeneEvent.setGeneID(iExternalID);
+//						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
+//						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+//						// intentionally no break
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
