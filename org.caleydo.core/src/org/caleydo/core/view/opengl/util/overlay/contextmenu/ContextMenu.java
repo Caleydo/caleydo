@@ -96,7 +96,7 @@ public class ContextMenu
 		contextMenuItems = new ArrayList<AContextMenuItem>();
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		textRenderer.setSmoothing(true);
-		iconManager = TextureManager.get();
+		iconManager = new TextureManager();
 		pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
 
 		hashContextMenuItemToUniqueID = new HashMap<AContextMenuItem, Integer>();

@@ -599,7 +599,7 @@ public class GLGlyph
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 1.3f * renderStyle.getScaling();
 		float fYButtonOrigin = 1.3f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 

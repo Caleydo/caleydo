@@ -49,7 +49,6 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 
@@ -251,7 +250,7 @@ public class GLHeatMap
 					gl.glColor4f(1, 0, 0, 1);
 
 					Texture tempTexture =
-						TextureManager.get().getIconTexture(gl, EIconTextures.POOL_REMOVE_VIEW);
+						textureManager.getIconTexture(gl, EIconTextures.POOL_REMOVE_VIEW);
 					tempTexture.enable();
 					tempTexture.bind();
 					TextureCoords texCoords = tempTexture.getImageTexCoords();
@@ -310,7 +309,7 @@ public class GLHeatMap
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 

@@ -112,7 +112,7 @@ public abstract class AGLEventListener
 
 	protected GeneralRenderStyle renderStyle;
 
-	protected TextureManager iconTextureManager;
+	protected TextureManager textureManager;
 
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
@@ -177,7 +177,7 @@ public abstract class AGLEventListener
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
-		iconTextureManager = TextureManager.get();
+		textureManager = new TextureManager();
 		contextMenu = ContextMenu.get();
 
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
@@ -525,7 +525,7 @@ public abstract class AGLEventListener
 
 		// TODO bad hack here, frustum wrong or renderStyle null
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.LOADING);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.LOADING);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -554,7 +554,7 @@ public abstract class AGLEventListener
 		tempTexture.disable();
 
 		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-		Texture circleTexture = iconTextureManager.getIconTexture(gl, EIconTextures.LOADING_CIRCLE);
+		Texture circleTexture = textureManager.getIconTexture(gl, EIconTextures.LOADING_CIRCLE);
 		circleTexture.enable();
 		circleTexture.bind();
 		texCoords = circleTexture.getImageTexCoords();

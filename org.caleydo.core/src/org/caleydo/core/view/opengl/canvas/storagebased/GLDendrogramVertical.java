@@ -239,7 +239,7 @@ public class GLDendrogramVertical
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.DENDROGRAM_VERTICAL_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.DENDROGRAM_VERTICAL_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 

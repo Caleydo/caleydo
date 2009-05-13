@@ -249,7 +249,7 @@ public class GLDendrogramHorizontal
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
 		Texture tempTexture =
-			iconTextureManager.getIconTexture(gl, EIconTextures.DENDROGRAM_HORIZONTAL_SYMBOL);
+			textureManager.getIconTexture(gl, EIconTextures.DENDROGRAM_HORIZONTAL_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 

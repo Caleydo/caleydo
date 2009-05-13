@@ -692,7 +692,7 @@ public class GLRemoteRendering
 			else {
 				// Render view background frame
 				Texture tempTexture =
-					iconTextureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
+					textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
 				tempTexture.enable();
 				tempTexture.bind();
 
@@ -1028,7 +1028,7 @@ public class GLRemoteRendering
 		EIconTextures eIconTexture, float fWidth, float fHeight) {
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType, iRemoteLevelElementID));
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, eIconTexture);
+		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1079,19 +1079,19 @@ public class GLRemoteRendering
 			generalManager.getViewGLCanvasManager().getGLEventListener(
 				remoteLevelElement.getContainedElementID());
 		if (view instanceof GLHeatMap) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		}
 		else if (view instanceof GLParallelCoordinates) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
 		}
 		else if (view instanceof GLPathway) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.PATHWAY_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.PATHWAY_SYMBOL);
 		}
 		else if (view instanceof GLGlyph) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		}
 		else if (view instanceof GLCell) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		}
 		else
 			throw new IllegalStateException("Unknown view that has no symbol assigned.");
@@ -1128,10 +1128,10 @@ public class GLRemoteRendering
 				tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			}
 
-			textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-			textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-			textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-			textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+			textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+			textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 		}
 		else {
 			if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 0) // top
@@ -1158,10 +1158,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 2) // bottom
 			{
@@ -1187,10 +1187,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 1) // left
 			{
@@ -1216,10 +1216,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 3) // right
 			{
@@ -1245,10 +1245,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			// else if
 			// (underInteractionLayer.getPositionIndexByElementID(iViewID) == 0)
@@ -1514,7 +1514,7 @@ public class GLRemoteRendering
 		gl.glEnd();
 
 		Texture tempTexture =
-			iconTextureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
+			textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
 		tempTexture.enable();
 		tempTexture.bind();
 

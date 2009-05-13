@@ -61,7 +61,6 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 
@@ -100,8 +99,6 @@ public class GLHierarchicalHeatMap
 
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eExperimentDataType = EIDType.EXPERIMENT_INDEX;
-
-	private TextureManager iconTextureManager;
 
 	private ArrayList<Float> fAlXDistances;
 
@@ -201,8 +198,6 @@ public class GLHierarchicalHeatMap
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
 		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
-
-		iconTextureManager = TextureManager.get();
 
 		initTextures(gl);
 	}
@@ -950,7 +945,7 @@ public class GLHierarchicalHeatMap
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glColor4f(1, 1, 1, 1);
 
-		Texture TextureMask = iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_MASK_CURVE);
+		Texture TextureMask = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_MASK_CURVE);
 		TextureMask.enable();
 		TextureMask.bind();
 
@@ -985,7 +980,7 @@ public class GLHierarchicalHeatMap
 		TextureMask.disable();
 
 		Texture TextureMaskNeg =
-			iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_MASK_CURVE_NEG);
+			textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_MASK_CURVE_NEG);
 		TextureMaskNeg.enable();
 		TextureMaskNeg.bind();
 
@@ -1398,7 +1393,7 @@ public class GLHierarchicalHeatMap
 
 		renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1554,7 +1549,7 @@ public class GLHierarchicalHeatMap
 		float fHeight = viewFrustum.getHeight();
 		float fWidth = viewFrustum.getWidth() / 4.0f;
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_SIDE);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_SIDE);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1605,7 +1600,7 @@ public class GLHierarchicalHeatMap
 				gl.glEnd();
 			}
 
-			tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
 			tempTexture.enable();
 			tempTexture.bind();
 
@@ -1652,7 +1647,7 @@ public class GLHierarchicalHeatMap
 			gl.glPopName();
 		}
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_SIDE);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_SIDE);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1701,7 +1696,7 @@ public class GLHierarchicalHeatMap
 				gl.glEnd();
 			}
 
-			tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
 			tempTexture.enable();
 			tempTexture.bind();
 
@@ -1748,7 +1743,7 @@ public class GLHierarchicalHeatMap
 			gl.glPopName();
 		}
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_SMALL);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_SMALL);
 		tempTexture.enable();
 		tempTexture.bind();
 

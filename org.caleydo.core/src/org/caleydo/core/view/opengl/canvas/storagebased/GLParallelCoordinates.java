@@ -1006,7 +1006,7 @@ public class GLParallelCoordinates
 			// NaN Button
 			float fXButtonOrigin = alAxisSpacing.get(iCount);
 
-			Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAN);
+			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAN);
 
 			tempTexture.enable();
 			tempTexture.bind();
@@ -1135,7 +1135,7 @@ public class GLParallelCoordinates
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
 				iPickingID =
 					pickingManager.getPickingID(iUniqueID, EPickingType.ADD_GATE, axisVA.get(iCount));
-				tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
 
 				tempTexture.enable();
 				tempTexture.bind();
@@ -1165,13 +1165,13 @@ public class GLParallelCoordinates
 				if (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount))) {
 					// the mouse over drop
 					if (iChangeDropOnAxisNumber == iCount) {
-						tempTexture = iconTextureManager.getIconTexture(gl, dropTexture);
+						tempTexture = textureManager.getIconTexture(gl, dropTexture);
 						if (!bWasAxisMoved) {
 							dropTexture = EIconTextures.DROP_NORMAL;
 						}
 					}
 					else {
-						tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.DROP_NORMAL);
+						tempTexture = textureManager.getIconTexture(gl, EIconTextures.DROP_NORMAL);
 					}
 					tempTexture.enable();
 					tempTexture.bind();
@@ -1228,7 +1228,7 @@ public class GLParallelCoordinates
 				}
 				else {
 					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.MOVE_AXIS, iCount);
-					tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
+					tempTexture = textureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
 					tempTexture.enable();
 					tempTexture.bind();
 
@@ -1270,7 +1270,7 @@ public class GLParallelCoordinates
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1351,7 +1351,7 @@ public class GLParallelCoordinates
 		gl.glEnd();
 		gl.glPopName();
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_TOP);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_TOP);
 		tempTexture.enable();
 		tempTexture.bind();
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
@@ -1370,7 +1370,7 @@ public class GLParallelCoordinates
 		gl.glEnd();
 		tempTexture.disable();
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1411,7 +1411,7 @@ public class GLParallelCoordinates
 		//
 		// }
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1445,7 +1445,7 @@ public class GLParallelCoordinates
 		// }
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BOTTOM_SELECTION, iGateID));
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1463,7 +1463,7 @@ public class GLParallelCoordinates
 			GATE_Z);
 		gl.glEnd();
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1530,7 +1530,7 @@ public class GLParallelCoordinates
 		// the gate add button
 		float fYGateAddOrigin = renderStyle.getAxisHeight();
 		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.ADD_MASTER_GATE, 1);
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
 		tempTexture.enable();
 		tempTexture.bind();
 

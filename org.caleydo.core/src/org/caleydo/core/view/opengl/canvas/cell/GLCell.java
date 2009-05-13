@@ -103,7 +103,7 @@ public class GLCell
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
 		tempTexture.enable();
 		tempTexture.bind();
 
