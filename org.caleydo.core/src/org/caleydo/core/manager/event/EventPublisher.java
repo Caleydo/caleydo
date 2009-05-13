@@ -27,6 +27,7 @@ public class EventPublisher
 
 	@Override
 	public void addListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
+		listener.checkIntegrity();
 		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass);
 		if (listeners == null) {
 			listeners = new ArrayList<AEventListener<?>>();
@@ -44,15 +45,14 @@ public class EventPublisher
 	@Override
 	public void removeListener(AEventListener<?> listener) {
 		for (Collection<AEventListener<?>> listeners : listenerMap.values()) {
-			listeners.remove(listener);			
+			listeners.remove(listener);
 		}
 	}
 
 	@Override
 	public void triggerEvent(AEvent event) {
-		if(!event.checkIntegrity())
-		{
-			throw new IllegalStateException("Event " + event + " has failed integrity check");			
+		if (!event.checkIntegrity()) {
+			throw new IllegalStateException("Event " + event + " has failed integrity check");
 		}
 		Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass());
 		if (listeners != null) {

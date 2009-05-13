@@ -1,12 +1,12 @@
-package org.caleydo.core.manager.event.view.remote;
+package org.caleydo.core.manager.event.view;
 
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that a connection lines should be disabled 
+ * Event to signal that all views should be reset
  * @author Werner Puff
  */
-public class CloseOrResetViewsEvent
+public class ResetAllViewsEvent
 	extends AEvent {
 	@Override
 	public boolean checkIntegrity() {

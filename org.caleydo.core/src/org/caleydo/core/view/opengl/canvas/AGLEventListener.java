@@ -34,6 +34,7 @@ import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
@@ -57,7 +58,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLEventListener
 	extends AView
-	implements GLEventListener, IPollingListenerOwner {
+	implements GLEventListener, IPollingListenerOwner, IResettableView {
 	public enum EBusyModeState {
 		SWITCH_OFF,
 		ON,
@@ -266,6 +267,13 @@ public abstract class AGLEventListener
 	 */
 	public void initData() {
 	}
+	
+	/**
+	 * Clears all selections, meaning that no element is selected or deselected after this method was called.
+	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
+	 * are therefore not reset.
+	 */
+	public abstract void clearAllSelections();
 
 	/**
 	 * Reset the view to its initial state by calling {@link #initData()}
@@ -374,12 +382,7 @@ public abstract class AGLEventListener
 	 */
 	public abstract void displayRemote(final GL gl);
 
-	/**
-	 * Clears all selections, meaning that no element is selected or deselected after this method was called.
-	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
-	 * are therefore not reset.
-	 */
-	public abstract void clearAllSelections();
+	
 
 	public final GLCaleydoCanvas getParentGLCanvas() {
 		return parentGLCanvas;

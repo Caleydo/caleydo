@@ -55,7 +55,6 @@ public abstract class AEventListener<T extends IListenerOwner> {
 		}
 		if (event.getSender() != this.getHandler()) {
 			handler.queueEvent(this, event);
-			// handleEvent(event);
 		}
 	}
 
@@ -74,4 +73,18 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	 */
 	public abstract void handleEvent(AEvent event);
 
+	/**
+	 * Integrity check for listener. Most importantly the existence of a handler is checked. This method can
+	 * be overridden, if further checks are necessary.
+	 * 
+	 * @return true if a handler is present else throws exception
+	 * @throws NullPointerException
+	 *             when handler is null
+	 */
+	public boolean checkIntegrity() {
+		if (handler == null)
+			throw new NullPointerException("Handler in " + this + " was null");
+
+		return true;
+	}
 }

@@ -16,8 +16,6 @@ import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
-import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
-import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.CmdExternalObjectSetter;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
@@ -153,14 +151,10 @@ public class CommandFactory
 				createdCommand = new CmdExternalObjectSetter(cmdType);
 				break;
 			}
-			case EXTERNAL_FLAG_SETTER: {
-				createdCommand = new CmdExternalFlagSetter(cmdType);
-				break;
-			}
-			case EXTERNAL_ACTION_TRIGGER: {
-				createdCommand = new CmdExternalActionTrigger(cmdType);
-				break;
-			}
+//			case EXTERNAL_FLAG_SETTER: {
+//				createdCommand = new CmdExternalFlagSetter(cmdType);
+//				break;
+//			}
 			case SYSTEM_SHUT_DOWN: {
 				createdCommand = new CmdSystemExit(cmdType);
 				break;

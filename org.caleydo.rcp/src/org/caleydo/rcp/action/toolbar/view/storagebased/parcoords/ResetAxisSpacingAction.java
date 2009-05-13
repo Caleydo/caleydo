@@ -1,6 +1,8 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased.parcoords;
 
 import org.caleydo.core.command.view.rcp.EExternalActionType;
+import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -34,6 +36,6 @@ public class ResetAxisSpacingAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalAction(EExternalActionType.PARCOORDS_RESET_AXIS_SPACING);
+		GeneralManager.get().getEventPublisher().triggerEvent(new ResetAxisSpacingEvent());
 	};
 }

@@ -1,6 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased;
 
-import org.caleydo.core.command.view.rcp.EExternalActionType;
+import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -10,8 +11,8 @@ import org.eclipse.ui.PlatformUI;
 public class PropagateSelectionsAction
 	extends AToolBarAction
 	implements IToolBarItem {
-	public static final String TEXT = "Broadcast elements to other views";
-	public static final String ICON = "resources/icons/view/storagebased/broadcast_elements.png";
+	public static final String TEXT = "Bookmark current selection";
+	public static final String ICON = "resources/icons/view/storagebased/parcoords/bookmark.png";
 
 	/**
 	 * Constructor.
@@ -29,6 +30,6 @@ public class PropagateSelectionsAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalAction(EExternalActionType.STORAGEBASED_PROPAGATE_SELECTIONS);
+		GeneralManager.get().getEventPublisher().triggerEvent(new BookmarkEvent());
 	};
 }

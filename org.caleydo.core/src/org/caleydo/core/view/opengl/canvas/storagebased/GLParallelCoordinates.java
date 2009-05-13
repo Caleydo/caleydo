@@ -59,9 +59,14 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
+import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
+import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
+import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -76,7 +81,11 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.BookmarkListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ResetAxisSpacingListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -204,6 +213,12 @@ public class GLParallelCoordinates
 	boolean bShowSelectionHeatMap = false;
 
 	private GLInfoAreaManager infoAreaManager;
+
+	// listeners
+	private ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener;
+	private ResetAxisSpacingListener resetAxisSpacingListener;
+	private BookmarkListener bookmarkListener;
+	private ResetViewListener resetViewListener;
 
 	/**
 	 * Constructor.
@@ -547,6 +562,7 @@ public class GLParallelCoordinates
 	@Override
 	public void broadcastElements() {
 
+		// FIXME - this does not what broadcast should actually do
 		// saveSelection();
 
 		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
@@ -1944,10 +1960,10 @@ public class GLParallelCoordinates
 				// }
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
-//
-//					SelectionCommand command =
-//						new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-//					// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+					//
+					// SelectionCommand command =
+					// new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+					// // sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
@@ -2747,6 +2763,53 @@ public class GLParallelCoordinates
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		applyCurrentSelectionToVirtualArrayListener = new ApplyCurrentSelectionToVirtualArrayListener();
+		applyCurrentSelectionToVirtualArrayListener.setHandler(this);
+		eventPublisher.addListener(ApplyCurrentSelectionToVirtualArrayEvent.class,
+			applyCurrentSelectionToVirtualArrayListener);
+
+		resetAxisSpacingListener = new ResetAxisSpacingListener();
+		resetAxisSpacingListener.setHandler(this);
+		eventPublisher.addListener(ResetAxisSpacingEvent.class, resetAxisSpacingListener);
+
+		bookmarkListener = new BookmarkListener();
+		bookmarkListener.setHandler(this);
+		eventPublisher.addListener(BookmarkEvent.class, bookmarkListener);
+		
+		resetViewListener = new ResetViewListener();
+		resetViewListener.setHandler(this);
+		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
+		
+		eventPublisher.addListener(ResetParallelCoordinatesEvent.class, resetViewListener);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		if (applyCurrentSelectionToVirtualArrayListener != null) {
+			eventPublisher.removeListener(applyCurrentSelectionToVirtualArrayListener);
+			applyCurrentSelectionToVirtualArrayListener = null;
+		}
+
+		if (resetAxisSpacingListener != null) {
+			eventPublisher.removeListener(resetAxisSpacingListener);
+			resetAxisSpacingListener = null;
+		}
+
+		if (bookmarkListener != null) {
+			eventPublisher.removeListener(bookmarkListener);
+			bookmarkListener = null;
+		}
+		if (resetViewListener != null) {
+			eventPublisher.removeListener(resetViewListener);
+			resetViewListener = null;
+		}
 	}
 
 }

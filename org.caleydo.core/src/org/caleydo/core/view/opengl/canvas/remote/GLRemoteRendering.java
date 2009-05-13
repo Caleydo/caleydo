@@ -23,6 +23,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
@@ -30,11 +31,11 @@ import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
-import org.caleydo.core.manager.event.view.remote.CloseOrResetViewsEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -52,6 +53,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
@@ -62,7 +64,6 @@ import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRender
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.JukeboxLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.listener.AddPathwayListener;
-import org.caleydo.core.view.opengl.canvas.remote.listener.CloseOrResetViewsListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableConnectionLinesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableNeighborhoodListener;
@@ -213,7 +214,7 @@ public class GLRemoteRendering
 	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
 	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
 
-	protected CloseOrResetViewsListener closeOrResetViewsListener = null;
+	protected ResetViewListener resetViewListener = null;
 	protected SelectionUpdateListener selectionUpdateListener = null;
 
 	/**
@@ -471,7 +472,7 @@ public class GLRemoteRendering
 		layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
 
 		// Just for layout testing during runtime
-//		 layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
+		// layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
 		// layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
@@ -507,7 +508,6 @@ public class GLRemoteRendering
 			renderPoolAndMemoLayerBackground(gl);
 		}
 
-		
 		renderRemoteLevel(gl, poolLevel);
 		renderRemoteLevel(gl, externalSelectionLevel);
 
@@ -2241,7 +2241,8 @@ public class GLRemoteRendering
 		}
 	}
 
-	public void clearAll() {
+	@Override
+	public void resetView() {
 
 		if (containedViewIDs == null)
 			return;
@@ -2369,8 +2370,10 @@ public class GLRemoteRendering
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, fZ);
 			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
+				fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
+				fZ);
 			gl.glEnd();
 
 			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID) {
@@ -2385,8 +2388,10 @@ public class GLRemoteRendering
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, fZ);
 			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
+				fZ);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
+				fZ);
 			gl.glEnd();
 
 			gl.glPopName();
@@ -2397,8 +2402,11 @@ public class GLRemoteRendering
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, fZ);
 			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
+			gl
+				.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
+					fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
+				fZ);
 			gl.glEnd();
 
 			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
@@ -2406,8 +2414,11 @@ public class GLRemoteRendering
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, fZ);
 			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2, fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2, fZ);
+			gl
+				.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
+					fZ);
+			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
+				fZ);
 			gl.glEnd();
 		}
 
@@ -2749,9 +2760,11 @@ public class GLRemoteRendering
 		disableConnectionLinesListener.setHandler(this);
 		eventPublisher.addListener(DisableConnectionLinesEvent.class, disableConnectionLinesListener);
 
-		closeOrResetViewsListener = new CloseOrResetViewsListener();
-		closeOrResetViewsListener.setHandler(this);
-		eventPublisher.addListener(CloseOrResetViewsEvent.class, closeOrResetViewsListener);
+		resetViewListener = new ResetViewListener();
+		resetViewListener.setHandler(this);
+		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
+		
+		eventPublisher.addListener(ResetRemoteRendererEvent.class, resetViewListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -2760,6 +2773,12 @@ public class GLRemoteRendering
 		toggleNavigationModeListener = new ToggleNavigationModeListener();
 		toggleNavigationModeListener.setHandler(this);
 		eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
+		
+
+	
+//		resetRemoteRendererListener = new ResetRemoteRendererListener();
+//		resetRemoteRendererListener.setHandler(this);
+//		eventPublisher.addListener(ResetRemoteRendererEvent.class, resetRemoteRendererListener);
 	}
 
 	/**
@@ -2767,7 +2786,7 @@ public class GLRemoteRendering
 	 */
 	@Override
 	public void unregisterEventListeners() {
-	
+
 		super.unregisterEventListeners();
 		if (addPathwayListener != null) {
 			eventPublisher.removeListener(addPathwayListener);
@@ -2802,9 +2821,9 @@ public class GLRemoteRendering
 			eventPublisher.removeListener(disableNeighborhoodListener);
 			disableNeighborhoodListener = null;
 		}
-		if (closeOrResetViewsListener != null) {
-			eventPublisher.removeListener(closeOrResetViewsListener);
-			closeOrResetViewsListener = null;
+		if (resetViewListener != null) {
+			eventPublisher.removeListener(resetViewListener);
+			resetViewListener = null;
 		}
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);

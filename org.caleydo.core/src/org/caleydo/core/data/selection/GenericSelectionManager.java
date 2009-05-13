@@ -278,7 +278,7 @@ public class GenericSelectionManager {
 		Integer[] tempAr = new Integer[elementMap.size()];
 		tempAr = elementMap.keySet().toArray(tempAr);
 		for (Integer element : tempAr) {
-			remove(element, true);
+			remove(element.intValue(), true);
 		}
 	}
 
