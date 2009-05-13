@@ -437,14 +437,14 @@ public class GLHeatMap
 			case HEAT_MAP_LINE_SELECTION:
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
-//					case DOUBLE_CLICKED:
-//
-//						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-//						loadPathwaysByGeneEvent.setSender(this);
-//						loadPathwaysByGeneEvent.setGeneID(iExternalID);
-//						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-//						eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
-//						// intentionally no break
+					// case DOUBLE_CLICKED:
+					//
+					// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+					// loadPathwaysByGeneEvent.setSender(this);
+					// loadPathwaysByGeneEvent.setGeneID(iExternalID);
+					// loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
+					// eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
+					// // intentionally no break
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
@@ -918,15 +918,13 @@ public class GLHeatMap
 
 		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-		float fOpacity = 1;
-		// if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-		// || contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-		// || detailLevel.compareTo(EDetailLevel.LOW) > 0) {
-		// fOpacity = 1f;
-		// }
-		// else {
-		// fOpacity = 0.3f;
-		// }
+		float fOpacity = 0;
+		if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
+			fOpacity = 0.3f;
+		}
+		else {
+			fOpacity = 1.0f;
+		}
 
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 

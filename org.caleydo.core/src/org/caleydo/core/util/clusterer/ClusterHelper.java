@@ -14,24 +14,26 @@ public class ClusterHelper {
 	 * Calculates the arithmetic mean for a given vector (float array)
 	 * 
 	 * @param vector
-	 * @return mean
+	 * @return arthmetic mean
 	 */
 	public static float arithmeticMean(float[] vector) {
 		float mean = 0;
-
 		float temp = 0;
+		int iCnt = 0;
 
 		for (int i = 0; i < vector.length; i++) {
 
 			if (Float.isNaN(vector[i]))
 				temp = 0;
-			else
+			else {
 				temp = vector[i];
+				iCnt++;
+			}
 
 			mean += temp;
 		}
 
-		return mean / vector.length;
+		return mean / iCnt;
 	}
 
 	/**
@@ -39,24 +41,26 @@ public class ClusterHelper {
 	 * 
 	 * @param vector
 	 * @param arithmeticMean
-	 * @return
+	 * @return standard deviation
 	 */
 	public static float standardDeviation(float[] vector, float arithmeticMean) {
 		float standardDeviation = 0;
-
 		float temp = 0;
+		int iCnt = 0;
 
 		for (int i = 0; i < vector.length; i++) {
 
 			if (Float.isNaN(vector[i]))
 				temp = 0;
-			else
+			else {
 				temp = (float) Math.pow(vector[i] - arithmeticMean, 2);
+				iCnt++;
+			}
 
 			standardDeviation += temp;
 		}
 
-		return (float) Math.sqrt(standardDeviation / (vector.length - 0));
+		return (float) Math.sqrt(standardDeviation / iCnt);
 	}
 
 	/**
@@ -158,12 +162,13 @@ public class ClusterHelper {
 			for (Integer iStorageIndex : examples) {
 
 				for (Integer iContentIndex : contentVA) {
-					float temp = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+					float temp =
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
 					else
 						fColorSum[icontent] += temp;
-						
+
 				}
 				icontent++;
 			}

@@ -222,7 +222,7 @@ public class GLHierarchicalHeatMap
 
 		if (iNumberOfElements < MIN_SAMPLES_PER_HEATMAP) {
 			System.out.println("Number of elements not supported!! Problems with visualization may occur!");
-//			throw new IllegalStateException("Number of elements not supported!!");
+			// throw new IllegalStateException("Number of elements not supported!!");
 		}
 
 		if (iNumberOfElements < 100) {
@@ -470,13 +470,11 @@ public class GLHierarchicalHeatMap
 			for (Integer iContentIndex : set.getVA(iContentVAID)) {
 				IVirtualArray storageVA = set.getVA(iStorageVAID);
 				for (Integer iStorageIndex : storageVA) {
-					if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-						|| contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-						|| detailLevel.compareTo(EDetailLevel.LOW) > 0) {
-						fOpacity = 1.0f;
+					if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
+						fOpacity = 0.3f;
 					}
 					else {
-						fOpacity = 0.3f;
+						fOpacity = 1.0f;
 					}
 
 					fLookupValue =
@@ -2110,8 +2108,7 @@ public class GLHierarchicalHeatMap
 		// In case of importing group info
 		if (set.isClusterInfo())
 			set.getVA(iContentVAID).setGroupList(set.getGroupList());
-		
-		
+
 		// clustering triggered by StartClusteringAction
 		if (bUseClusteredVA) {
 
@@ -2149,14 +2146,14 @@ public class GLHierarchicalHeatMap
 				iContentVAID = iContentVAIDtemp;
 			}
 			else {
-				
+
 				clusterstate.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
 				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
 				if (iVAid == -1)
 					iStorageVAID = iStorageVAIDtemp;
 				else
 					iStorageVAID = iVAid;
-				
+
 				clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
 				iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate);
 				if (iVAid == -1)
@@ -2164,27 +2161,27 @@ public class GLHierarchicalHeatMap
 				else
 					iContentVAID = iVAid;
 			}
-			
+
 			AlSelection.clear();
 
 		}
-//		// normal startup
-//		else {
-//			if (bRenderOnlyContext) {
-//				iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
-//			}
-//			else {
-//				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-//					initCompleteList();
-//				}
-//				iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-//			}
-//			iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-//
-//			// In case of importing group info
-//			if (set.isClusterInfo())
-//				set.getVA(iContentVAID).setGroupList(set.getGroupList());
-//		}
+		// // normal startup
+		// else {
+		// if (bRenderOnlyContext) {
+		// iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		// }
+		// else {
+		// if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
+		// initCompleteList();
+		// }
+		// iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		// }
+		// iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+		//
+		// // In case of importing group info
+		// if (set.isClusterInfo())
+		// set.getVA(iContentVAID).setGroupList(set.getGroupList());
+		// }
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();

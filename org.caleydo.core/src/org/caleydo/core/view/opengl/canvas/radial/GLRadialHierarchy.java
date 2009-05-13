@@ -1,10 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -164,7 +166,17 @@ public class GLRadialHierarchy
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		TreePorter treePorter = new TreePorter();
 
-		tree = treePorter.importTree("data/clustering/tree.xml");
+		try {
+			tree = treePorter.importTree("data/clustering/hcc_5000.xml");
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		ClusterNode cnRoot = tree.getRoot();
 		PartialDisc pdRoot =

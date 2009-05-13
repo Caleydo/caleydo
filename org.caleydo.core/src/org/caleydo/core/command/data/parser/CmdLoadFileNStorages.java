@@ -1,7 +1,10 @@
 package org.caleydo.core.command.data.parser;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
@@ -131,11 +134,18 @@ public class CmdLoadFileNStorages
 					"Loading gene tree from file " + sGenesTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
-				Tree<ClusterNode> tree = treePorter.importTree(sGenesTreeFileName);
-
-				ISet set = generalManager.getUseCase().getSet();
-				set.setClusteredTreeGenes(tree);
-
+				Tree<ClusterNode> tree;
+				try {
+					tree = treePorter.importTree(sGenesTreeFileName);
+					ISet set = generalManager.getUseCase().getSet();
+					set.setClusteredTreeGenes(tree);
+				}
+				catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				catch (JAXBException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -146,11 +156,18 @@ public class CmdLoadFileNStorages
 					"Loading experiments tree from file " + sExperimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
-				Tree<ClusterNode> tree = treePorter.importTree(sExperimentsTreeFileName);
-
-				ISet set = generalManager.getUseCase().getSet();
-				set.setClusteredTreeExps(tree);
-
+				Tree<ClusterNode> tree;
+				try {
+					tree = treePorter.importTree(sExperimentsTreeFileName);
+					ISet set = generalManager.getUseCase().getSet();
+					set.setClusteredTreeExps(tree);
+				}
+				catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				catch (JAXBException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 

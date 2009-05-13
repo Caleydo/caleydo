@@ -38,7 +38,7 @@ public class TreePorter {
 	@XmlElement(name = "node")
 	Set<ClusterNode> nodeSet;
 
-	public Tree<ClusterNode> importTree(String fileName) {
+	public Tree<ClusterNode> importTree(String fileName) throws FileNotFoundException, JAXBException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		ClusterNode rootNode = null;
@@ -59,10 +59,12 @@ public class TreePorter {
 			treePorter = (TreePorter) unmarshaller.unmarshal(new FileReader(fileName));
 		}
 		catch (FileNotFoundException e) {
-			e.printStackTrace();
+//			e.printStackTrace()
+			throw new FileNotFoundException();
 		}
 		catch (JAXBException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			throw new JAXBException(e.getErrorCode());
 		}
 
 		for (ClusterNode node : treePorter.nodeSet) {

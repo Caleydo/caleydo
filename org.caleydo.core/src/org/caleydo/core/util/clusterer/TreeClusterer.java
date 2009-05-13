@@ -12,9 +12,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
@@ -163,6 +166,12 @@ public class TreeClusterer
 
 	}
 
+	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE/2);
+	
+	private int getNodeCounter(){
+		return iNodeCounter++;
+	}
+	
 	private void normalizeSimilarities() {
 
 		float max = Float.MIN_VALUE;
@@ -327,7 +336,6 @@ public class TreeClusterer
 	private float[] determineExpressionValueRec(ClusterNode node, EClustererType eClustererType) {
 
 		float[] fArExpressionValues;
-		float averageExpressionvalue = 0f;
 
 		if (tree.hasChildren(node)) {
 
@@ -391,7 +399,7 @@ public class TreeClusterer
 				}
 			}
 		}
-		averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
+		float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
 		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
 		node.setAverageExpressionValue(averageExpressionvalue);
 		node.setStandardDeviation(deviation);
@@ -577,7 +585,7 @@ public class TreeClusterer
 
 		}
 		else {
-			int random = (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+			int random = getNodeCounter();//(int) ((Math.random() * Integer.MAX_VALUE) + 1);
 
 			left =
 				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
@@ -600,7 +608,7 @@ public class TreeClusterer
 
 		}
 		else {
-			int random = (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+			int random = getNodeCounter();//(int) ((Math.random() * Integer.MAX_VALUE) + 1);
 
 			right =
 				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
@@ -611,6 +619,17 @@ public class TreeClusterer
 
 	}
 
+
+    Listener listener = new Listener() {
+		public void handleEvent(Event e) {
+			switch (e.type) {
+				case SWT.Selection:
+					System.out.println("Button pressed");
+					break;
+			}
+		}
+	};
+	
 	private void buildProgressBar() {
 
 		shell = new Shell();
@@ -638,6 +657,10 @@ public class TreeClusterer
 
 		pbTreeClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
 
+		Button cancelButton = new Button(progressBarGroup, SWT.PUSH);
+		cancelButton.setText("Cancel");
+		cancelButton.setBounds(20, 35, 40, 25);
+		cancelButton.addListener(SWT.Selection, listener);
 		composite.pack();
 
 		shell.pack();
