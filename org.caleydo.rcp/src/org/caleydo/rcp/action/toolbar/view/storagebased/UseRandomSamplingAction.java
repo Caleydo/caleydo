@@ -1,6 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -29,6 +30,6 @@ public class UseRandomSamplingAction
 	public void run() {
 		super.run();
 		bFlag = !bFlag;
-		triggerCmdExternalFlagSetter(bFlag, EExternalFlagSetterType.STORAGEBASED_USE_RANDOM_SAMPLING);
+		GeneralManager.get().getEventPublisher().triggerEvent(new UseRandomSamplingEvent(bFlag));
 	};
 }

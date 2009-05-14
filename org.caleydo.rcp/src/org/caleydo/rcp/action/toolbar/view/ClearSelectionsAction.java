@@ -1,6 +1,6 @@
 package org.caleydo.rcp.action.toolbar.view;
 
-import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;

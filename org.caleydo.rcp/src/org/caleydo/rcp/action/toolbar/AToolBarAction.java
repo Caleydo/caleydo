@@ -1,9 +1,7 @@
 package org.caleydo.rcp.action.toolbar;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.CmdExternalObjectSetter;
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.jface.action.Action;
@@ -29,15 +27,15 @@ public class AToolBarAction
 //		tmpCmd.doCommand();
 //	}
 
-	public final void triggerCmdExternalFlagSetter(final boolean bFlag, EExternalFlagSetterType type) {
-
-		CmdExternalFlagSetter tmpCmd =
-			(CmdExternalFlagSetter) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.EXTERNAL_FLAG_SETTER);
-
-		tmpCmd.setAttributes(iViewID, bFlag, type);
-		tmpCmd.doCommand();
-	}
+//	public final void triggerCmdExternalFlagSetter(final boolean bFlag, EExternalFlagSetterType type) {
+//
+//		CmdExternalFlagSetter tmpCmd =
+//			(CmdExternalFlagSetter) GeneralManager.get().getCommandManager().createCommandByType(
+//				ECommandType.EXTERNAL_FLAG_SETTER);
+//
+//		tmpCmd.setAttributes(iViewID, bFlag, type);
+//		tmpCmd.doCommand();
+//	}
 
 	public final void triggerCmdExternalObjectSetter(final Object object, EExternalObjectSetterType type) {
 

@@ -64,15 +64,19 @@ import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
+import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
+import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -86,7 +90,10 @@ import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.BookmarkListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ChangeOrientationListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.PreventOcclusionListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ResetAxisSpacingListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.UseRandomSamplingListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -95,6 +102,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -220,6 +228,9 @@ public class GLParallelCoordinates
 	private ResetAxisSpacingListener resetAxisSpacingListener;
 	private BookmarkListener bookmarkListener;
 	private ResetViewListener resetViewListener;
+	private UseRandomSamplingListener useRandomSamplingListener;
+	private ChangeOrientationListener changeOrientationListener;
+	private PreventOcclusionListener preventOcclusionListener;
 
 	/**
 	 * Constructor.
@@ -457,11 +468,24 @@ public class GLParallelCoordinates
 
 		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally) {
 			if (bRenderStorageHorizontally && set.getVA(iContentVAID).size() > 100) {
-				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-				messageBox
-					.setMessage("Can not show more than 100 axis - reduce polylines to less than 100 first");
-				messageBox.open();
+
+				getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
+							"Axis Limit",
+							"Can not show more than 100 axis - reduce polylines to less than 100 first");
+						// MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
+						// messageBox
+						// .setMessage("Can not show more than 100 axis - reduce polylines to less than 100 first");
+						// messageBox.open();
+						return;
+					}
+				});
+
 				return;
+
 			}
 
 			EIDType eTempType = eAxisDataType;
@@ -1073,18 +1097,22 @@ public class GLParallelCoordinates
 				String sAxisLabel = null;
 				switch (eAxisDataType) {
 					// TODO not very generic here
-					// case EXPERIMENT:
-					// // Labels
-					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
 
-					// Please check ALEX
-					// case EXPRESSION_INDEX:
-					// sAxisLabel =
-					// Integer.toString(IDMappingHelper.get().getRefSeqFromStorageIndex(
-					// set.getVA(iContentVAID).get(iCount)));
-					// break;
+					case EXPRESSION_INDEX:
+						sAxisLabel =
+							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(
+								set.getVA(iAxisVAID).get(iCount));
+						if (sAxisLabel == null)
+							sAxisLabel = "Unknown";
+						break;
+
+					case EXPERIMENT:
 					default:
-						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
+						if (bRenderStorageHorizontally) {
+							sAxisLabel = "TODO: gene labels for axis";
+						}
+						else
+							sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
 						break;
 
 				}
@@ -1883,13 +1911,13 @@ public class GLParallelCoordinates
 				break;
 			case POLYLINE_SELECTION:
 				switch (ePickingMode) {
-//					case DOUBLE_CLICKED:
-//						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-//						loadPathwaysByGeneEvent.setSender(this);
-//						loadPathwaysByGeneEvent.setGeneID(iExternalID);
-//						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-//						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-//						// intentionally no break
+					// case DOUBLE_CLICKED:
+					// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+					// loadPathwaysByGeneEvent.setSender(this);
+					// loadPathwaysByGeneEvent.setGeneID(iExternalID);
+					// loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
+					// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+					// // intentionally no break
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
@@ -1912,7 +1940,7 @@ public class GLParallelCoordinates
 						// Prevent handling of non genetic data in context menu
 						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
 							break;
-						
+
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
 							new GeneContextMenuItemContainer();
 						geneContextMenuItemContainer.setStorageIndex(iExternalID);
@@ -2785,12 +2813,25 @@ public class GLParallelCoordinates
 		bookmarkListener = new BookmarkListener();
 		bookmarkListener.setHandler(this);
 		eventPublisher.addListener(BookmarkEvent.class, bookmarkListener);
-		
+
 		resetViewListener = new ResetViewListener();
 		resetViewListener.setHandler(this);
 		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
-		
+		// second event for same listener
 		eventPublisher.addListener(ResetParallelCoordinatesEvent.class, resetViewListener);
+
+		useRandomSamplingListener = new UseRandomSamplingListener();
+		useRandomSamplingListener.setHandler(this);
+		eventPublisher.addListener(UseRandomSamplingEvent.class, useRandomSamplingListener);
+
+		changeOrientationListener = new ChangeOrientationListener();
+		changeOrientationListener.setHandler(this);
+		eventPublisher
+			.addListener(ChangeOrientationParallelCoordinatesEvent.class, changeOrientationListener);
+
+		preventOcclusionListener = new PreventOcclusionListener();
+		preventOcclusionListener.setHandler(this);
+		eventPublisher.addListener(PreventOcclusionEvent.class, preventOcclusionListener);
 
 	}
 
@@ -2814,6 +2855,16 @@ public class GLParallelCoordinates
 		if (resetViewListener != null) {
 			eventPublisher.removeListener(resetViewListener);
 			resetViewListener = null;
+		}
+
+		if (changeOrientationListener != null) {
+			eventPublisher.removeListener(changeOrientationListener);
+			changeOrientationListener = null;
+		}
+
+		if (preventOcclusionListener != null) {
+			eventPublisher.removeListener(preventOcclusionListener);
+			preventOcclusionListener = null;
 		}
 	}
 

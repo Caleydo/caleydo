@@ -5,7 +5,7 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview;
  * 
  * @author Stefan Sauer
  */
-public enum EIconIDs {
+public enum EPositionModel {
 	DISPLAY_CIRCLE,
 	DISPLAY_RECTANGLE,
 	DISPLAY_RANDOM,

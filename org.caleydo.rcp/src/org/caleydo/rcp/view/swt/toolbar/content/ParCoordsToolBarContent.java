@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.AngularBrushingAction;
+import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.ChangeOrientationAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.ResetAxisSpacingAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.SaveSelectionsAction;
 

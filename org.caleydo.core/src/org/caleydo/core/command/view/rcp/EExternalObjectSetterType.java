@@ -1,5 +1,6 @@
 package org.caleydo.core.command.view.rcp;
 
+@Deprecated
 public enum EExternalObjectSetterType {
 	GLYPH_SELECTIONBRUSH,
 	GLYPH_CHANGEPERSONALNAME,

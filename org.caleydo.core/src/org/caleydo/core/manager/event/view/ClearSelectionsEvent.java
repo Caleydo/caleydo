@@ -1,9 +1,9 @@
-package org.caleydo.core.manager.event.view.storagebased;
+package org.caleydo.core.manager.event.view;
 
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * TODO description Migration from EEventType.VIEW_COMMAND and EViewCommand.CLEAR_SELECTIONS
+ * Clears all selections in a receiving view
  * 
  * @author Werner Puff
  */

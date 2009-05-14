@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.RenderContextAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.AngularBrushingAction;
+import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.ChangeOrientationAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.OcclusionPreventionAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.SaveSelectionsAction;
 import org.eclipse.jface.preference.PreferenceStore;

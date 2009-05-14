@@ -20,8 +20,8 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
@@ -125,7 +125,7 @@ public abstract class AStorageBasedView
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-//		registerEventListeners();
+		// registerEventListeners();
 	}
 
 	/**
@@ -377,12 +377,12 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
-//	@Override
-//	public void setSet(ISet set) {
-//		super.setSet(set);
-//
-////		resetView();
-//	}
+	// @Override
+	// public void setSet(ISet set) {
+	// super.setSet(set);
+	//
+	// // resetView();
+	// }
 
 	// @Override
 	// public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
@@ -565,6 +565,14 @@ public abstract class AStorageBasedView
 
 	// public abstract void resetSelections();
 
+	/**
+	 * Causes the view to change its orientation, i.e. whether a gene (content) is rendered horizontally
+	 * (default) or vertically.
+	 * 
+	 * @param bDefaultOrientation
+	 *            true for the default orientation (where the content is horizontally) false for the alternate
+	 *            orientation (where the content is vertically)
+	 */
 	public abstract void changeOrientation(boolean bDefaultOrientation);
 
 	public abstract boolean isInDefaultOrientation();

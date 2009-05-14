@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
-import org.caleydo.rcp.action.toolbar.view.storagebased.ActivateGroupHandling;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 
 /**
@@ -40,8 +39,9 @@ public class HierarchicalHeatMapToolBarContent
 //		IToolBarItem mergeGroup = new MergeClasses(targetViewID);
 //		actionList.add(mergeGroup);
 		
-		IToolBarItem activateGroup = new ActivateGroupHandling(targetViewID);
-		actionList.add(activateGroup);
+		// after release 1.2 this should be enabled by default
+//		IToolBarItem activateGroup = new ActivateGroupHandling(targetViewID);
+//		actionList.add(activateGroup);
 		
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

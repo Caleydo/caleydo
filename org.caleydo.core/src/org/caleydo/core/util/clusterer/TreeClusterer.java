@@ -166,12 +166,12 @@ public class TreeClusterer
 
 	}
 
-	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE/2);
-	
-	private int getNodeCounter(){
+	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
+
+	private int getNodeCounter() {
 		return iNodeCounter++;
 	}
-	
+
 	private void normalizeSimilarities() {
 
 		float max = Float.MIN_VALUE;
@@ -543,7 +543,7 @@ public class TreeClusterer
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				nodeName = GeneticIDMappingHelper.get().getShortNameFromDavid(index);
+				nodeName = GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(index);
 
 				nodeName += " | ";
 				nodeName += GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(index);// + 1);
@@ -585,7 +585,7 @@ public class TreeClusterer
 
 		}
 		else {
-			int random = getNodeCounter();//(int) ((Math.random() * Integer.MAX_VALUE) + 1);
+			int random = getNodeCounter();// (int) ((Math.random() * Integer.MAX_VALUE) + 1);
 
 			left =
 				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
@@ -608,7 +608,7 @@ public class TreeClusterer
 
 		}
 		else {
-			int random = getNodeCounter();//(int) ((Math.random() * Integer.MAX_VALUE) + 1);
+			int random = getNodeCounter();// (int) ((Math.random() * Integer.MAX_VALUE) + 1);
 
 			right =
 				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
@@ -619,8 +619,7 @@ public class TreeClusterer
 
 	}
 
-
-    Listener listener = new Listener() {
+	Listener listener = new Listener() {
 		public void handleEvent(Event e) {
 			switch (e.type) {
 				case SWT.Selection:
@@ -629,7 +628,7 @@ public class TreeClusterer
 			}
 		}
 	};
-	
+
 	private void buildProgressBar() {
 
 		shell = new Shell();

@@ -47,7 +47,7 @@ public class GLGlyphGrid {
 
 	private int GLGridList_ = -1;
 
-	private EIconIDs iPositionType = EIconIDs.DISPLAY_RECTANGLE;
+	private EPositionModel iPositionType = EPositionModel.DISPLAY_RECTANGLE;
 
 	private Vec2i worldLimit_ = null;
 
@@ -58,7 +58,7 @@ public class GLGlyphGrid {
 
 	private GlyphRenderStyle renderStyle = null;
 
-	private HashMap<EIconIDs, GlyphGridPositionModel> positionModels = null;
+	private HashMap<EPositionModel, GlyphGridPositionModel> positionModels = null;
 
 	private GLGlyphGenerator glyphGenerator;
 
@@ -75,12 +75,12 @@ public class GLGlyphGrid {
 
 		glyphMap_ = new Vector<Vector<GlyphGridPosition>>();
 
-		positionModels = new HashMap<EIconIDs, GlyphGridPositionModel>();
-		positionModels.put(EIconIDs.DISPLAY_PLUS, new GlyphGridPositionModelPlus(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_RANDOM, new GlyphGridPositionModelRandom(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_CIRCLE, new GlyphGridPositionModelCircle(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_RECTANGLE, new GlyphGridPositionModelRectangle(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_SCATTERPLOT, new GlyphGridPositionModelScatterplot(renderStyle));
+		positionModels = new HashMap<EPositionModel, GlyphGridPositionModel>();
+		positionModels.put(EPositionModel.DISPLAY_PLUS, new GlyphGridPositionModelPlus(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_RANDOM, new GlyphGridPositionModelRandom(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_CIRCLE, new GlyphGridPositionModelCircle(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_RECTANGLE, new GlyphGridPositionModelRectangle(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_SCATTERPLOT, new GlyphGridPositionModelScatterplot(renderStyle));
 
 		setGridSize(50, 100);
 
@@ -488,11 +488,11 @@ public class GLGlyphGrid {
 		gl.glEndList();
 	}
 
-	public EIconIDs getGlyphPositions() {
+	public EPositionModel getGlyphPositions() {
 		return iPositionType;
 	}
 
-	public GlyphGridPositionModel getGlyphPositionModel(EIconIDs model) {
+	public GlyphGridPositionModel getGlyphPositionModel(EPositionModel model) {
 		return positionModels.get(iPositionType);
 	}
 
@@ -500,7 +500,7 @@ public class GLGlyphGrid {
 		setGlyphPositions(iPositionType);
 	}
 
-	public void setGlyphPositions(EIconIDs iTyp) {
+	public void setGlyphPositions(EPositionModel iTyp) {
 		iPositionType = iTyp;
 
 		if (this.positionModels.containsKey(iTyp)) {

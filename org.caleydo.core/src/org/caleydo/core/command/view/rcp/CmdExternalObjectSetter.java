@@ -2,10 +2,8 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.EPositionModel;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 
 /**
  * Command for setting objects in org.caleydo.core from the RCP interface.
@@ -14,6 +12,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
  * @author Marc Streit
  * @author Stefan Sauer
  */
+@Deprecated
 public class CmdExternalObjectSetter
 	extends ACmdExternalAttributes {
 
@@ -58,45 +57,32 @@ public class CmdExternalObjectSetter
 				case GLYPH_CHANGE_SCATTERPLOT_AXIS_X:
 					if (object instanceof Integer) {
 						int value = (Integer) object;
-						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_SCATTERPLOT, 0, value);
+						glyphview.setPositionModelAxis(EPositionModel.DISPLAY_SCATTERPLOT, 0, value);
 					}
 					return;
 
 				case GLYPH_CHANGE_SCATTERPLOT_AXIS_Y:
 					if (object instanceof Integer) {
 						int value = (Integer) object;
-						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_SCATTERPLOT, 1, value);
+						glyphview.setPositionModelAxis(EPositionModel.DISPLAY_SCATTERPLOT, 1, value);
 					}
 					return;
 
 				case GLYPH_CHANGE_PLUSMODEL_AXIS_X:
 					if (object instanceof Integer) {
 						int value = (Integer) object;
-						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_PLUS, 0, value);
+						glyphview.setPositionModelAxis(EPositionModel.DISPLAY_PLUS, 0, value);
 					}
 					return;
 
 				case GLYPH_CHANGE_PLUSMODEL_AXIS_Y:
 					if (object instanceof Integer) {
 						int value = (Integer) object;
-						glyphview.setPositionModelAxis(EIconIDs.DISPLAY_PLUS, 1, value);
+						glyphview.setPositionModelAxis(EPositionModel.DISPLAY_PLUS, 1, value);
 					}
 					return;
 			}
-
 		}
-		if (viewObject instanceof GLHierarchicalHeatMap) {
-			GLHierarchicalHeatMap glHHeatMap = (GLHierarchicalHeatMap) viewObject;
-			switch (externalSetterType) {
-				case STORAGEBASED_START_CLUSTERING:
-					if (object instanceof ClusterState) {
-						ClusterState clusterState = (ClusterState) object;
-						glHHeatMap.startClustering(clusterState);
-					}
-					break;
-			}
-		}
-
 	}
 
 	@Override

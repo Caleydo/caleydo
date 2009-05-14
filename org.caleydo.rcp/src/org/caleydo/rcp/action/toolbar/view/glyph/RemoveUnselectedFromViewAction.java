@@ -1,6 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view.glyph;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.manager.event.view.glyph.RemoveUnselectedGlyphsEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -27,6 +28,6 @@ public class RemoveUnselectedFromViewAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalFlagSetter(true, EExternalFlagSetterType.GLYPH_SELECTION);
+		GeneralManager.get().getEventPublisher().triggerEvent(new RemoveUnselectedGlyphsEvent());
 	};
 }

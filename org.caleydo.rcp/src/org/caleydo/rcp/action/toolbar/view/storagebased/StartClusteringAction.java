@@ -1,6 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased;
 
-import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
+import org.caleydo.core.manager.event.data.StartClusteringEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
@@ -41,8 +42,7 @@ public class StartClusteringAction
 		ClusterState clusterState = dialog.getClusterState();
 
 		if (clusterState != null)
-			triggerCmdExternalObjectSetter(clusterState,
-				EExternalObjectSetterType.STORAGEBASED_START_CLUSTERING);
+			GeneralManager.get().getEventPublisher().triggerEvent(new StartClusteringEvent(clusterState));
 
 	}
 

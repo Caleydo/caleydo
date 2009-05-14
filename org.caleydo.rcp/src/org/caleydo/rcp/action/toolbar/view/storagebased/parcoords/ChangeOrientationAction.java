@@ -1,6 +1,6 @@
-package org.caleydo.rcp.action.toolbar.view.storagebased;
+package org.caleydo.rcp.action.toolbar.view.storagebased.parcoords;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.data.loader.ResourceLoader;
@@ -37,6 +37,7 @@ public class ChangeOrientationAction
 	public void run() {
 		super.run();
 		bEnable = !bEnable;
-		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_CHANGE_ORIENTATION);
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ChangeOrientationParallelCoordinatesEvent(bEnable));
 	};
 }

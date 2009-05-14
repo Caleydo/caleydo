@@ -752,7 +752,7 @@ public class GLHeatMap
 					String sContent;
 
 					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-						sContent = GeneticIDMappingHelper.get().getShortNameFromDavid(iContentIndex);
+						sContent = GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(iContentIndex);
 
 						if (bRenderRefSeq) {
 							sContent += " | ";

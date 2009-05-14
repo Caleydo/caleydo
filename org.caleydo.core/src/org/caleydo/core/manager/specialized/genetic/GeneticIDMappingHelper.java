@@ -72,7 +72,7 @@ public class GeneticIDMappingHelper {
 		return david;
 	}
 
-	public String getShortNameFromDavid(int index) {
+	public String getShortNameFromExpressionIndex(int index) {
 		// Convert expression storage ID to RefSeq
 		Integer iDavidID = getDavidIDFromStorageIndex(index);
 
@@ -80,7 +80,7 @@ public class GeneticIDMappingHelper {
 			return "Unknown Gene";
 
 		String sGeneSymbol = idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
-		if (sGeneSymbol == "")
+		if (sGeneSymbol == "" || sGeneSymbol == null)
 			return "Unkonwn Gene";
 		else
 			return sGeneSymbol;
