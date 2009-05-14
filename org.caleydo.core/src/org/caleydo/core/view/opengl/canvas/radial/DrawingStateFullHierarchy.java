@@ -108,8 +108,7 @@ public class DrawingStateFullHierarchy
 					.getDefaultDrawingStrategy(), 3);
 			}
 			if (pdClicked == pdCurrentRootElement) {
-				radialHierarchy.setCurrentRootElement(pdClicked.getParent());
-				radialHierarchy.setCurrentMouseOverElement(pdClicked.getParent());
+				radialHierarchy.setCurrentSelectedElement(pdClicked);
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT);
 
@@ -160,12 +159,8 @@ public class DrawingStateFullHierarchy
 
 			radialHierarchy.setCurrentSelectedElement(pdClicked);
 			radialHierarchy.setCurrentMouseOverElement(pdClicked);
-			DrawingState dsNext =
-				drawingController.getDrawingState(DrawingController.DRAWING_STATE_DETAIL_OUTSIDE);
-			drawingController.setDrawingState(dsNext);
-
-			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdClicked, radialHierarchy
-				.getMaxDisplayedHierarchyDepth());
+			drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_POP_OUT_DETAIL_OUTSIDE);
+			radialHierarchy.setAnimationActive(true);
 			radialHierarchy.setDisplayListDirty();
 		}
 	}

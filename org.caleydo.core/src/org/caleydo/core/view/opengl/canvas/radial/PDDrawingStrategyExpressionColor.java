@@ -69,7 +69,7 @@ public class PDDrawingStrategyExpressionColor
 			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue);
 
-		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], 1);
+		gl.glColor3fv(fArRGB, 0);
 
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);

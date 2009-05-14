@@ -13,7 +13,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -23,6 +23,8 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverEvent;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.IClusterNodeEventReceiver;
@@ -40,7 +42,7 @@ import org.caleydo.core.view.serialize.SerializedDummyView;
  */
 public class GLRadialHierarchy
 	extends AGLEventListener
-	implements IClusterNodeEventReceiver {
+	implements IClusterNodeEventReceiver, IViewCommandHandler {
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 5;
 
@@ -61,6 +63,7 @@ public class GLRadialHierarchy
 	private NavigationHistory navigationHistory;
 
 	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
+	private RedrawViewListener redrawViewListener;
 
 	boolean bIsInListMode = false;
 
@@ -92,11 +95,9 @@ public class GLRadialHierarchy
 		drawingController = new DrawingController(this, navigationHistory);
 		navigationHistory.setDrawingController(drawingController);
 
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
-		clusterNodeMouseOverListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
-
+		//TODO: Where to call register and unregister really?
+		registerEventListeners();
+		
 		glu = new GLU();
 		bIsAnimationActive = false;
 	}
@@ -167,7 +168,7 @@ public class GLRadialHierarchy
 		TreePorter treePorter = new TreePorter();
 
 		try {
-			tree = treePorter.importTree("data/clustering/hcc_5000.xml");
+			tree = treePorter.importTree("data/clustering/tree.xml");
 		}
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -730,9 +731,61 @@ public class GLRadialHierarchy
 		PartialDisc pdMouseOver = hashPartialDiscs.get(iClusterNumber);
 		if (pdMouseOver != null) {
 			pdCurrentMouseOverElement = pdMouseOver;
-			drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
 			setDisplayListDirty();
 		}
 	}
+	
+//	public void setDisplayListDirty() {
+//		int x = 0;
+//	}
+	
+	@Override
+	public void registerEventListeners() {
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+		
+		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
+		clusterNodeMouseOverListener.setHandler(this);
+		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
+
+
+//		clearSelectionsListener = new ClearSelectionsListener();
+//		clearSelectionsListener.setHandler(this);
+//		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+		if (clusterNodeMouseOverListener != null) {
+			eventPublisher.removeListener(clusterNodeMouseOverListener);
+			clusterNodeMouseOverListener = null;
+		}
+//		if (clearSelectionsListener != null) {
+//			eventPublisher.removeListener(clearSelectionsListener);
+//			clearSelectionsListener = null;
+//		}
+	}
+
+	@Override
+	public void handleClearSelections() {
+		//TODO: Later on when using Selection Manager
+		
+	}
+
+	@Override
+	public void handleRedrawView() {
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
+
 
 }

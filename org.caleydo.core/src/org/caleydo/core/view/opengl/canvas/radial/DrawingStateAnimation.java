@@ -60,7 +60,6 @@ public abstract class DrawingStateAnimation
 		for (MovementValue movementValue : alMovementValues) {
 			if (movementValue.isTargetValueReached()) {
 				iNumTargetsReached++;
-				movementValue.setCriterionToTargetValue();
 			}
 		}
 

@@ -10,7 +10,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 public class PDDrawingStrategyTransparent
-	extends PDDrawingStrategy {
+	extends PDDrawingStrategyChildIndicator {
 	
 	public PDDrawingStrategyTransparent(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
@@ -26,6 +26,11 @@ public class PDDrawingStrategyTransparent
 			pdDiscToDraw.getElementID()));
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
+				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
+		}
 
 		gl.glColor4f(1, 1, 1, 0.5f);
 		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
@@ -57,9 +62,21 @@ public class PDDrawingStrategyTransparent
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
+		}
 
-		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
-		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360);
+		float fArRGB[];
+		if (DrawingStrategyManager.get().getDefaultStrategyType() == DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW) {
+			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+			fArRGB = cmRainbow.getColor(fMidAngle / 360);
+		}
+		else {
+			ColorMapping cmExpression =
+				ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+			fArRGB = cmExpression.getColor(pdDiscToDraw.getAverageExpressionValue());
+		}
 
 		gl.glPushMatrix();
 

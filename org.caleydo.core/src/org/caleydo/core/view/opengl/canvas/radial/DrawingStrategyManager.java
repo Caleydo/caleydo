@@ -12,6 +12,7 @@ public final class DrawingStrategyManager {
 	public static final int PD_DRAWING_STRATEGY_TRANSPARENT = 3;
 	public static final int PD_DRAWING_STRATEGY_LABEL_DECORATOR = 4;
 	public static final int PD_DRAWING_STRATEGY_EXPRESSION_COLOR = 5;
+	public static final int PD_DRAWING_STRATEGY_INVISIBLE = 6;
 
 	private static DrawingStrategyManager instance;
 	private HashMap<Integer, PDDrawingStrategy> hashDrawingStrategies;
@@ -37,6 +38,8 @@ public final class DrawingStrategyManager {
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_LABEL_DECORATOR, new PDDrawingStrategyLabelDecorator());
 		dsExpressionColor = new PDDrawingStrategyExpressionColor(pickingManager, iViewID);
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_EXPRESSION_COLOR, dsExpressionColor);
+		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_INVISIBLE, new PDDrawingStrategyInvisible(pickingManager, iViewID));
+		
 		dsDefault = dsExpressionColor;
 		iDefaultStrategyType = PD_DRAWING_STRATEGY_EXPRESSION_COLOR;
 	}

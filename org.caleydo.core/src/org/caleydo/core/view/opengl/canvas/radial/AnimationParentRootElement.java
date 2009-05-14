@@ -41,10 +41,6 @@ public class AnimationParentRootElement
 
 		moveValues(dTimePassed);
 
-		if (haveMovementValuesReachedTargets()) {
-			bAnimationStarted = false;
-		}
-
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
@@ -54,6 +50,10 @@ public class AnimationParentRootElement
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, mvCurrentWidth.getMovementValue(),
 			iTargetDepth, mvCurrentStartAngle.getMovementValue(), mvCurrentAngle.getMovementValue(),
 			mvCurrentInnerRadius.getMovementValue());
+		
+		if (haveMovementValuesReachedTargets()) {
+			bAnimationStarted = false;
+		}
 
 		if (!bAnimationStarted) {
 			DrawingState dsNext =

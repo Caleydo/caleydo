@@ -47,10 +47,6 @@ public class AnimationNewRootElement
 
 		moveValues(dTimePassed);
 
-		if (haveMovementValuesReachedTargets()) {
-			bAnimationStarted = false;
-		}
-
 		dsFixedColor.setFillColor(mvCurrentRootColorR.getMovementValue(), mvCurrentRootColorG
 			.getMovementValue(), mvCurrentRootColorB.getMovementValue(), 1);
 
@@ -60,6 +56,10 @@ public class AnimationNewRootElement
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, mvCurrentWidth.getMovementValue(),
 			fTargetDepth, mvCurrentRootStartAngle.getMovementValue(), mvCurrentRootAngle.getMovementValue(),
 			mvCurrentRootInnerRadius.getMovementValue());
+		
+		if (haveMovementValuesReachedTargets()) {
+			bAnimationStarted = false;
+		}
 
 		if (!bAnimationStarted) {
 			DrawingState dsNext =
