@@ -620,10 +620,9 @@ public class Set
 			}
 
 			if (VAId == -1) {
-				messageBox = new MessageBox(shell, SWT.OK);
+				messageBox = new MessageBox(new Shell(), SWT.OK);
 				messageBox.setText("Start Clustering");
 				messageBox.setMessage("Problem during cluster process!");
-
 				messageBox.open();
 
 				return -1;

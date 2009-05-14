@@ -21,7 +21,7 @@ public class BucketLayoutRenderStyle
 	public final static float BUCKET_WIDTH = 2f;
 	public final static float BUCKET_HEIGHT = 2f;
 	public final static float BUCKET_DEPTH = 4f;
-	
+
 	public final static float SIDE_PANEL_WIDTH = 0.8f;
 
 	private float fBucketBottomLeft = 0;
@@ -30,6 +30,8 @@ public class BucketLayoutRenderStyle
 	private float fBucketBottomBottom = 0;
 	private float fHeadDist = 0;
 	private float[] fArHeadPosition;
+	
+	private boolean bIsZoomedIn = false;
 
 	/**
 	 * Constructor.
@@ -60,31 +62,62 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initFocusLevel(boolean bIsZoomedIn) {
+	public RemoteLevel initFocusLevel() {
 		Transform transform = new Transform();
 
+		float fXScaling = 1;
+		float fYScaling = 1;
+
+		if (fAspectRatio < 1f) {
+			fXScaling = 1 / fAspectRatio;
+			fYScaling = 1;
+		}
+		else {
+			fXScaling = 1;
+			fYScaling = fAspectRatio;
+		}
+
+		float fLeftSceneBorder = -2 * fXScaling + SIDE_PANEL_WIDTH;
+		float fBottomSceneBorder = -2 * fYScaling;
+
 		if (bIsZoomedIn) {
-//			transform.setTranslation(new Vec3f(-1f/fAspectRatio, -1f/fAspectRatio, 0));
-//			transform.setScale(new Vec3f(fScalingFactorFocusLevel/fAspectRatio * 0.5f, fScalingFactorFocusLevel/fAspectRatio * 0.5f,
-//				fScalingFactorFocusLevel/fAspectRatio * 0.5f));
-			
-			transform.setTranslation(new Vec3f(-2, -2, 0));
-			transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
-				fScalingFactorFocusLevel));
+			transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder, 0));
+
+			if (fAspectRatio < 0.65f) {
+
+				if (fAspectRatio < 0.61f) {
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fYScaling* 0.97f,
+						fScalingFactorFocusLevel * fYScaling* 0.97f, fScalingFactorFocusLevel));
+				}
+				else {
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fYScaling * 0.9f,
+						fScalingFactorFocusLevel * fYScaling * 0.9f, fScalingFactorFocusLevel));
+				}
+			}
+			else {
+				if (fAspectRatio > 0.75f) {
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fXScaling * 0.6f,
+						fScalingFactorFocusLevel * fXScaling * 0.6f, fScalingFactorFocusLevel));
+				}
+				else {
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fXScaling * 0.52f,
+						fScalingFactorFocusLevel * fXScaling * 0.52f, fScalingFactorFocusLevel));
+				}
+			}
 		}
 		else {
 			transform.setTranslation(new Vec3f(-2, -2, 0));
 			transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
-				fScalingFactorFocusLevel));			
+				fScalingFactorFocusLevel));
 		}
-		
+
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return focusLevel;
 	}
 
 	@Override
-	public RemoteLevel initStackLevel(boolean bIsZoomedIn) {
+	public RemoteLevel initStackLevel() {
 		Transform transform;
 
 		if (!bIsZoomedIn) {
@@ -199,11 +232,40 @@ public class BucketLayoutRenderStyle
 
 		}
 		else {
-			float fScalingFactorZoomedIn = 0.4f;
+			float fScalingFactorZoomedIn;
+
+			float fXScaling = 1;
+			float fYScaling = 1;
+
+			if (fAspectRatio < 1f) {
+				fXScaling = 1 / fAspectRatio;
+				fYScaling = 1;
+			}
+			else {
+				fXScaling = 1;
+				fYScaling = fAspectRatio;
+			}
+
+			float fLeftSceneBorder = 0;
+			float fBottomSceneBorder = 0;
+
+			boolean bVerticalStack = true;
+			if (fAspectRatio < 0.75f) {
+				bVerticalStack = true;
+				fLeftSceneBorder = (2 * fXScaling - 2.05f * SIDE_PANEL_WIDTH);
+				fBottomSceneBorder = -2 * fYScaling;
+				fScalingFactorZoomedIn = 0.113f;
+			}
+			else {
+				bVerticalStack = false;
+				fLeftSceneBorder = (-2 * fXScaling + SIDE_PANEL_WIDTH);
+				fBottomSceneBorder = (2 - 0.65f) * fYScaling;
+				fScalingFactorZoomedIn = 0.08f;
+			}
 
 			// TOP BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-7.25f, 0.8f, -4f));
+			transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder, 0f));
 			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
 				fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
@@ -212,7 +274,12 @@ public class BucketLayoutRenderStyle
 
 			// LEFT BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(4.05f, 0.8f, -4f));
+			if (bVerticalStack)
+				transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder + 9
+					* fScalingFactorZoomedIn, 0));
+			else
+				transform.setTranslation(new Vec3f(fLeftSceneBorder + 9 * fScalingFactorZoomedIn,
+					fBottomSceneBorder, 0));
 			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
 				fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
@@ -221,7 +288,12 @@ public class BucketLayoutRenderStyle
 
 			// BOTTOM BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-7.25f, -4, -4f));
+			if (bVerticalStack)
+				transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder + 18
+					* fScalingFactorZoomedIn, 0));
+			else
+				transform.setTranslation(new Vec3f(fLeftSceneBorder + 18 * fScalingFactorZoomedIn,
+					fBottomSceneBorder, 0));
 			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
 				fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
@@ -230,7 +302,12 @@ public class BucketLayoutRenderStyle
 
 			// RIGHT BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(4.05f, -4, -4f));;
+			if (bVerticalStack)
+				transform.setTranslation(new Vec3f(fLeftSceneBorder, fBottomSceneBorder + 27
+					* fScalingFactorZoomedIn, 0));
+			else
+				transform.setTranslation(new Vec3f(fLeftSceneBorder + 27 * fScalingFactorZoomedIn,
+					fBottomSceneBorder, 0));
 			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
 				fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
@@ -243,7 +320,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID) {
+	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID) {
 		Transform transform;
 
 		float fSelectedScaling = 1;
@@ -281,9 +358,15 @@ public class BucketLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initMemoLevel() {
-		
+
+		float fZ = 0;
+		if (bIsZoomedIn)
+			fZ = 0.02f;
+		else
+			fZ = 4.02f;
+
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.10f, -2.01f, 4.02f));
+		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.10f, -2.01f, fZ));
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
 			fScalingFactorSelectionLevel));
 
@@ -306,8 +389,9 @@ public class BucketLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initSpawnLevel() {
+		
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 0));
+		transform.setTranslation(new Vec3f(-2f, 0, 0f));
 		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
 			fScalingFactorSpawnLevel));
 
@@ -315,7 +399,7 @@ public class BucketLayoutRenderStyle
 
 		return spawnLevel;
 	}
-	
+
 	public RemoteLevel initFocusLevelWii() {
 		fArHeadPosition = GeneralManager.get().getWiiRemote().getCurrentSmoothHeadPosition();
 		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
@@ -416,5 +500,9 @@ public class BucketLayoutRenderStyle
 
 	public float getHeadDistance() {
 		return fHeadDist;
+	}
+	
+	public void setZoomedIn(boolean bIsZoomedIn) {
+		this.bIsZoomedIn = bIsZoomedIn;
 	}
 }

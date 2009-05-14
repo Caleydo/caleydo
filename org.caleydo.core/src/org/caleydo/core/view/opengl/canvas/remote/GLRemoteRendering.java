@@ -251,17 +251,17 @@ public class GLRemoteRendering
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum);
 		}
 
-		focusLevel = layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
+		focusLevel = layoutRenderStyle.initFocusLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
 			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			stackLevel = ((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
 		}
 		else {
-			stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
+			stackLevel = layoutRenderStyle.initStackLevel();
 		}
 
-		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
+		poolLevel = layoutRenderStyle.initPoolLevel(-1);
 		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
@@ -379,7 +379,7 @@ public class GLRemoteRendering
 		}
 
 		if (dragAndDrop.isDragActionRunning()) {
-			dragAndDrop.renderDragThumbnailTexture(gl);
+			dragAndDrop.renderDragThumbnailTexture(gl, bucketMouseWheelListener.isZoomedIn());
 		}
 
 		if (glMouseListener.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
@@ -468,11 +468,11 @@ public class GLRemoteRendering
 		processEvents();
 
 		// Update the pool transformations according to the current mouse over object
-		layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), iMouseOverObjectID);
-		layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
+		layoutRenderStyle.initPoolLevel(iMouseOverObjectID);
+		layoutRenderStyle.initFocusLevel();
 
 		// Just for layout testing during runtime
-		// layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
+		// layoutRenderStyle.initStackLevel();
 		// layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
@@ -500,24 +500,17 @@ public class GLRemoteRendering
 				(BucketLayoutRenderStyle) layoutRenderStyle, this);
 		}
 
-		// If user zooms to the bucket bottom all but the under
-		// focus layer is _not_ rendered.
-		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn()) {
-			renderRemoteLevel(gl, transitionLevel);
-			renderRemoteLevel(gl, spawnLevel);
+		if (!bucketMouseWheelListener.isZoomActionRunning()) {
 			renderPoolAndMemoLayerBackground(gl);
+			renderRemoteLevel(gl, externalSelectionLevel);
+			renderRemoteLevel(gl, spawnLevel);
+			renderRemoteLevel(gl, transitionLevel);
+			renderRemoteLevel(gl, poolLevel);
 		}
-
-		renderRemoteLevel(gl, poolLevel);
-		renderRemoteLevel(gl, externalSelectionLevel);
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			bucketMouseWheelListener.render();
 		}
-
-		// colorMappingBarMiniView.render(gl,
-		// layoutRenderStyle.getColorBarXPos(),
-		// layoutRenderStyle.getColorBarYPos(), 4);
 
 		renderHandles(gl);
 
@@ -691,8 +684,7 @@ public class GLRemoteRendering
 			}
 			else {
 				// Render view background frame
-				Texture tempTexture =
-					textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
+				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
 				tempTexture.enable();
 				tempTexture.bind();
 
@@ -861,21 +853,18 @@ public class GLRemoteRendering
 	}
 
 	private void renderHandles(final GL gl) {
-		float fZoomedInScalingFactor = 0.4f;
 
 		// Bucket stack top
 		RemoteLevelElement element = stackLevel.getElementByPositionIndex(0);
 		if (element.getContainedElementID() != -1) {
+
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2, 0, 4.02f);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glTranslatef(2, 0, -4.02f);
 			}
 			else {
-				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, 0, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(2 + 4 * fZoomedInScalingFactor, 0, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
@@ -885,15 +874,12 @@ public class GLRemoteRendering
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2, 0, 4.02f);
 				gl.glRotatef(180, 1, 0, 0);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, true, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, true, 2);
 				gl.glRotatef(-180, 1, 0, 0);
 				gl.glTranslatef(2, 0, -4.02f);
 			}
 			else {
-				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, -4 + 4 * fZoomedInScalingFactor, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(2 + 4 * fZoomedInScalingFactor, +4 - 4 * fZoomedInScalingFactor, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
@@ -903,15 +889,12 @@ public class GLRemoteRendering
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2f / fAspectRatio + 2 + 0.8f, -2, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(-90, 0, 0, 1);
 				gl.glTranslatef(2f / fAspectRatio - 2 - 0.8f, 2, -4.02f);
 			}
 			else {
-				gl.glTranslatef(2, 0, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(-2, 0, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
@@ -921,47 +904,72 @@ public class GLRemoteRendering
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(2f / fAspectRatio - 0.8f - 2, 2, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(90, 0, 0, 1);
 				gl.glTranslatef(-2f / fAspectRatio + 0.8f + 2, -2, -4.02f);
 			}
 			else {
-				gl.glTranslatef(2, -4 + 4 * fZoomedInScalingFactor, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(-2, +4 - 4 * fZoomedInScalingFactor, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
-		// Bucket center
+		// Bucket center (focus)
 		element = focusLevel.getElementByPositionIndex(0);
 		if (element.getContainedElementID() != -1) {
-			float fYCorrection = 0f;
 
+			Transform transform;
+			Vec3f translation;
+			Vec3f scale;
+
+			float fYCorrection = 0f;
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				fYCorrection = 0f;
 			}
 			else {
-				fYCorrection = 0.1f;
+				fYCorrection = 0.145f;
 			}
 
-			Transform transform = element.getTransform();
-			Vec3f translation = transform.getTranslation();
+			transform = element.getTransform();
+			translation = transform.getTranslation();
+			scale = transform.getScale();
 
 			gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
 				translation.z() + 0.001f);
 
-			gl.glScalef(2, 2, 2);
+			gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
 			renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
-			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
+			gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
 
 			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
 				-translation.z() - 0.001f);
 		}
 	}
 
+	private void renderStackViewHandleBarZoomedIn(final GL gl, RemoteLevelElement element) {
+		Transform transform = element.getTransform();
+		Vec3f translation = transform.getTranslation();
+		Vec3f scale = transform.getScale();
+		float fZoomedInScalingFactor = 0.1f;
+		float fYCorrection = 0f;
+		if (!bucketMouseWheelListener.isZoomedIn()) {
+			fYCorrection = 0f;
+		}
+		else {
+			fYCorrection = 0.145f;
+		}
+
+		gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
+			translation.z() + 0.001f);
+		gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
+		renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
+		gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
+		gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
+			-translation.z() - 0.001f);
+	}
+
 	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element, float fHandleWidth,
 		float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
+
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
@@ -1014,8 +1022,9 @@ public class GLRemoteRendering
 
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(sText, 2 / fScalingFactor - (float) textRenderer.getBounds(sText).getWidth() / 2f
-			* fTextScalingFactor, 2.02f, 0f, fTextScalingFactor);
+		textRenderer.draw3D(sText, fHandleWidth / fScalingFactor
+			- (float) textRenderer.getBounds(sText).getWidth() / 2f * fTextScalingFactor, 2.02f, 0f,
+			fTextScalingFactor);
 		textRenderer.end3DRendering();
 
 		if (bUpsideDown) {
@@ -1513,8 +1522,7 @@ public class GLRemoteRendering
 
 		gl.glEnd();
 
-		Texture tempTexture =
-			textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -2216,9 +2224,9 @@ public class GLRemoteRendering
 			// stackLevel.clear();
 		}
 
-		focusLevel = layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
-		stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
-		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
+		focusLevel = layoutRenderStyle.initFocusLevel();
+		stackLevel = layoutRenderStyle.initStackLevel();
+		poolLevel = layoutRenderStyle.initPoolLevel(-1);
 		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
@@ -2345,9 +2353,9 @@ public class GLRemoteRendering
 		// Update aspect ratio and reinitialize stack and focus layer
 		layoutRenderStyle.setAspectRatio(fAspectRatio);
 
-		layoutRenderStyle.initFocusLevel(bucketMouseWheelListener.isZoomedIn());
-		layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
-		layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), iMouseOverObjectID);
+		layoutRenderStyle.initFocusLevel();
+		layoutRenderStyle.initStackLevel();
+		layoutRenderStyle.initPoolLevel(iMouseOverObjectID);
 		layoutRenderStyle.initMemoLevel();
 	}
 
@@ -2361,19 +2369,36 @@ public class GLRemoteRendering
 		else
 			fZ = 4f;
 
+		float fXScaling = 1;
+		float fYScaling = 1;
+
+		if (fAspectRatio < 1) {
+			fXScaling = 1 / fAspectRatio;
+			fYScaling = 1;
+		}
+		else {
+			fXScaling = 1;
+			fYScaling = fAspectRatio;
+		}
+
+		float fLeftSceneBorder = (-2 - fXCorrection) * fXScaling;
+		float fBottomSceneBorder = -2 * fYScaling;
+
 		if (layoutMode.equals(LayoutMode.BUCKET)) {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
 				iPoolLevelCommonID));
 
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
+
 			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
+			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
 				fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
-				fZ);
+			gl
+				.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
+					fZ);
 			gl.glEnd();
 
 			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID) {
@@ -2386,12 +2411,13 @@ public class GLRemoteRendering
 			}
 
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
+			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
 				fZ);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
-				fZ);
+			gl
+				.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
+					fZ);
 			gl.glEnd();
 
 			gl.glPopName();
@@ -2400,24 +2426,22 @@ public class GLRemoteRendering
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, fZ);
-			gl
-				.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
-					fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
+			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
+				fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
 				fZ);
 			gl.glEnd();
 
 			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, fZ);
-			gl
-				.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, 2,
-					fZ);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -2,
+			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
+				fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
 				fZ);
 			gl.glEnd();
 		}
@@ -2763,7 +2787,7 @@ public class GLRemoteRendering
 		resetViewListener = new ResetViewListener();
 		resetViewListener.setHandler(this);
 		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
-		
+
 		eventPublisher.addListener(ResetRemoteRendererEvent.class, resetViewListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
@@ -2773,12 +2797,10 @@ public class GLRemoteRendering
 		toggleNavigationModeListener = new ToggleNavigationModeListener();
 		toggleNavigationModeListener.setHandler(this);
 		eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
-		
 
-	
-//		resetRemoteRendererListener = new ResetRemoteRendererListener();
-//		resetRemoteRendererListener.setHandler(this);
-//		eventPublisher.addListener(ResetRemoteRendererEvent.class, resetRemoteRendererListener);
+		// resetRemoteRendererListener = new ResetRemoteRendererListener();
+		// resetRemoteRendererListener.setHandler(this);
+		// eventPublisher.addListener(ResetRemoteRendererEvent.class, resetRemoteRendererListener);
 	}
 
 	/**

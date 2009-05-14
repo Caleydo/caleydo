@@ -47,7 +47,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 	protected float fTrashCanYPos;
 	protected float fTrashCanWidth;
 	protected float fTrashCanHeight;
-
+	
 	// protected float fColorBarXPos;
 	// protected float fColorBarYPos;
 	// protected float fColorBarWidth;
@@ -85,11 +85,11 @@ public abstract class ARemoteViewLayoutRenderStyle
 		spawnLevel = previousLayoutStyle.getSpawnLayer();
 	}
 
-	public abstract RemoteLevel initFocusLevel(boolean bIsZoomedIn);
+	public abstract RemoteLevel initFocusLevel();
 
-	public abstract RemoteLevel initStackLevel(boolean bIsZoomedIn);
+	public abstract RemoteLevel initStackLevel();
 
-	public abstract RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iMouseOverViewID);
+	public abstract RemoteLevel initPoolLevel(int iMouseOverViewID);
 
 	public abstract RemoteLevel initMemoLevel();
 

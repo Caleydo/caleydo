@@ -47,7 +47,7 @@ public class ListLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initFocusLevel(boolean bIsZoomedIn) {
+	public RemoteLevel initFocusLevel() {
 
 		fScalingFactorFocusLevel = 4 * 0.045f / fAspectRatio;
 
@@ -62,7 +62,7 @@ public class ListLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initStackLevel(boolean bIsZoomedIn) {
+	public RemoteLevel initStackLevel() {
 		int iMaxLayers = 4;
 
 		// Create free pathway layer spots
@@ -83,7 +83,7 @@ public class ListLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID) {
+	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID) {
 		Transform transform;
 
 		float fSelectedScaling = 1;
