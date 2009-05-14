@@ -267,7 +267,7 @@ public abstract class AGLEventListener
 	 */
 	public void initData() {
 	}
-	
+
 	/**
 	 * Clears all selections, meaning that no element is selected or deselected after this method was called.
 	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
@@ -382,9 +382,10 @@ public abstract class AGLEventListener
 	 */
 	public abstract void displayRemote(final GL gl);
 
-	
-
 	public final GLCaleydoCanvas getParentGLCanvas() {
+		if (this.isRenderedRemote())
+			return getRemoteRenderingGLCanvas().getParentGLCanvas();
+
 		return parentGLCanvas;
 	}
 
@@ -426,6 +427,8 @@ public abstract class AGLEventListener
 						contextMenu.handleEvents(ePickingMode, iExternalID);
 					}
 					else {
+						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
+							contextMenu.flush();
 						handleEvents(pickingType, ePickingMode, iExternalID, tempPick);
 					}
 					pickingManager.flushHits(iUniqueID, pickingType);

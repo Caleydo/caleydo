@@ -12,15 +12,15 @@ import java.util.Iterator;
  * @author Alexander Lex
  */
 public abstract class AItemContainer
-	implements Iterable<AContextMenuItem> {
+	implements Iterable<IContextMenuEntry> {
 
-	private ArrayList<AContextMenuItem> contextMenuItems;
+	private ArrayList<IContextMenuEntry> contextMenuEntries;
 
 	/**
 	 * Constructor
 	 */
 	public AItemContainer() {
-		contextMenuItems = new ArrayList<AContextMenuItem>();
+		contextMenuEntries = new ArrayList<IContextMenuEntry>();
 	}
 
 	/**
@@ -29,19 +29,31 @@ public abstract class AItemContainer
 	 * @param contextMenuItem
 	 */
 	public void addContextMenuItem(AContextMenuItem contextMenuItem) {
-		contextMenuItems.add(contextMenuItem);
+		contextMenuEntries.add(contextMenuItem);
 	}
 
+	/**
+	 * Adds a separator to the context menu
+	 */
+	public void addSeparator()
+	{
+		contextMenuEntries.add(new Separator());
+	}
+	
+	public void addHeading(String text)
+	{
+		contextMenuEntries.add(new Heading(text));
+	}
 	/**
 	 * Returns the list of context menu items
 	 * @return
 	 */
-	public ArrayList<AContextMenuItem> getContextMenuItems() {
-		return contextMenuItems;
+	public ArrayList<IContextMenuEntry> getContextMenuItems() {
+		return contextMenuEntries;
 	}
 
 	@Override
-	public Iterator<AContextMenuItem> iterator() {
-		return contextMenuItems.iterator();
+	public Iterator<IContextMenuEntry> iterator() {
+		return contextMenuEntries.iterator();
 	}
 }

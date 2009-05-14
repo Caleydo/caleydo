@@ -172,7 +172,7 @@ public class GLPathway
 
 		setPathway(generalManager.getPathwayManager().getItem(iPathwayID));
 	}
-	
+
 	public PathwayGraph getPathway() {
 
 		return pathway;
@@ -382,7 +382,7 @@ public class GLPathway
 			iPathwayVertexGraphItemRepID).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 			int iDavidID =
 				generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItem(
-					(PathwayVertexGraphItem)pathwayVertexGraphItem);
+					(PathwayVertexGraphItem) pathwayVertexGraphItem);
 
 			if (iDavidID == -1) {
 				continue;
@@ -463,7 +463,8 @@ public class GLPathway
 			}
 
 			// Convert DAVID ID to pathway graph item representation ID
-			for (IGraphItem tmpGraphItemRep : pathwayVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
+			for (IGraphItem tmpGraphItemRep : pathwayVertexGraphItem
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
 				if (!pathway.containsItem(tmpGraphItemRep)) {
 					continue;
 				}
@@ -665,7 +666,7 @@ public class GLPathway
 						break;
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
-
+						
 						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
@@ -674,12 +675,11 @@ public class GLPathway
 							// Wait for redesign of context menu by Alex
 							GeneContextMenuItemContainer geneContextMenuItemContainer =
 								new GeneContextMenuItemContainer();
-							geneContextMenuItemContainer.setDavid(generalManager
-								.getPathwayItemManager().getDavidIdByPathwayVertexGraphItem(
-									(PathwayVertexGraphItem)pathwayVertexGraphItem));
+							geneContextMenuItemContainer.setDavid(generalManager.getPathwayItemManager()
+								.getDavidIdByPathwayVertexGraphItem(
+									(PathwayVertexGraphItem) pathwayVertexGraphItem));
 							contextMenu.addItemContanier(geneContextMenuItemContainer);
-							
-							break;
+
 						}
 
 					default:
@@ -751,7 +751,7 @@ public class GLPathway
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 				int iDavidID =
 					generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItem(
-						(PathwayVertexGraphItem)tmpPathwayVertexGraphItem);
+						(PathwayVertexGraphItem) tmpPathwayVertexGraphItem);
 
 				if (iDavidID == -1 || iDavidID == 0) {
 					generalManager.getLogger().log(

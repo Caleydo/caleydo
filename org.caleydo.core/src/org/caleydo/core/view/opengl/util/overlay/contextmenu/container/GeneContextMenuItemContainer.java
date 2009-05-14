@@ -46,10 +46,12 @@ public class GeneContextMenuItemContainer
 	}
 	
 	private void createMenuContent(int davidID) {
+		addHeading(GeneticIDMappingHelper.get().getShortNameFromDavid(davidID));
+		
 		LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
 		loadPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(loadPathwaysByGeneItem);
-
+		
 		ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
 		showPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(showPathwaysByGeneItem);

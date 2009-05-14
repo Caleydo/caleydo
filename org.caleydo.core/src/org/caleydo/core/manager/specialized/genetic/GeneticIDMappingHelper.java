@@ -75,7 +75,10 @@ public class GeneticIDMappingHelper {
 	public String getShortNameFromExpressionIndex(int index) {
 		// Convert expression storage ID to RefSeq
 		Integer iDavidID = getDavidIDFromStorageIndex(index);
+		return getShortNameFromDavid(iDavidID);
+	}
 
+	public String getShortNameFromDavid(Integer iDavidID) {
 		if (iDavidID == null)
 			return "Unknown Gene";
 
@@ -88,24 +91,24 @@ public class GeneticIDMappingHelper {
 
 	public ArrayList<Integer> getExpressionIndicesFromDavid(int davidID) {
 
-		Set<Integer> setRefSeqMRNA = idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT,
-			davidID);
-		
+		Set<Integer> setRefSeqMRNA =
+			idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, davidID);
+
 		if (setRefSeqMRNA == null)
 			return null;
-		
+
 		ArrayList<Integer> alExpIndex = new ArrayList<Integer>();
-		
+
 		for (Integer refSeqMRNA : setRefSeqMRNA) {
-			
-			Set<Integer> setExpIndex = idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX,
-				refSeqMRNA);
-			
+
+			Set<Integer> setExpIndex =
+				idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, refSeqMRNA);
+
 			if (setExpIndex == null) {
 				// No expression index available in the current dataset
 				continue;
 			}
-			
+
 			alExpIndex.addAll(setExpIndex);
 		}
 

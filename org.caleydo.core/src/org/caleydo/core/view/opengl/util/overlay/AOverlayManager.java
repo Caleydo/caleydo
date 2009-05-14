@@ -15,7 +15,7 @@ public abstract class AOverlayManager {
 	protected int windowWidth;
 	/** The height of the window where the overlay is rendered */
 	protected int windowHeight;
-	
+
 	/** The opengl coordinates of the left border in the z plane where the menu is rendered */
 	protected float fLeftBorder;
 	/** The opengl coordinates of the right border in the z plane where the menu is rendered */
@@ -43,7 +43,6 @@ public abstract class AOverlayManager {
 	 * @param windowHeight
 	 */
 	public void setLocation(Point pickedPoint, int windowWidth, int windowHeight) {
-
 		this.pickedPoint = pickedPoint;
 		this.windowWidth = windowWidth;
 		this.windowHeight = windowHeight;
