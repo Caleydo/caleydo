@@ -35,6 +35,7 @@ import org.caleydo.core.util.clusterer.HierarchicalClusterer;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.core.util.clusterer.TreeClusterer;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;

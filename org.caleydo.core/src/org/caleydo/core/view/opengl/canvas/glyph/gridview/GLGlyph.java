@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
@@ -32,7 +31,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.glyph.RemoveUnselectedGlyphsEvent;
 import org.caleydo.core.manager.event.view.glyph.SetPositionModelEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -54,10 +53,10 @@ import org.caleydo.core.view.opengl.canvas.glyph.listener.RemoveUnselectedGlyphs
 import org.caleydo.core.view.opengl.canvas.glyph.listener.SetPositionModelListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -78,7 +77,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, ITriggerSelectionCommandHandler, IViewCommandHandler {
+	implements ISelectionUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private static final long serialVersionUID = -7899479912218913482L;
 
@@ -121,7 +120,7 @@ public class GLGlyph
 	private int iFrameBufferObject = -1;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
-	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
+	protected SelectionCommandListener selectionCommandListener = null;
 
 	private RemoveUnselectedGlyphsListener removeUnselectedGlyphsListener;
 	private SetPositionModelListener setPositionModelListener;
@@ -1107,13 +1106,13 @@ public class GLGlyph
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
 
 	}
 
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		selectionManager.executeSelectionCommands(selectionCommands);
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		selectionManager.executeSelectionCommand(selectionCommand);
 	}
 
 	/**
@@ -1341,9 +1340,9 @@ public class GLGlyph
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
-		triggerSelectionCommandListener.setHandler(this);
-		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		removeUnselectedGlyphsListener = new RemoveUnselectedGlyphsListener();
 		removeUnselectedGlyphsListener.setHandler(this);
@@ -1373,9 +1372,9 @@ public class GLGlyph
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-		if (triggerSelectionCommandListener != null) {
-			eventPublisher.removeListener(triggerSelectionCommandListener);
-			triggerSelectionCommandListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 
 		if (removeUnselectedGlyphsListener != null) {

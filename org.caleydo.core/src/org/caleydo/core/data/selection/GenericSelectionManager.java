@@ -187,7 +187,7 @@ public class GenericSelectionManager {
 			this.externalIDType = builder.internalIDType;
 		else
 			this.externalIDType = builder.externalIDType;
-		
+
 		if (builder.alSelectionTypes == null) {
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values()) {
@@ -860,26 +860,24 @@ public class GenericSelectionManager {
 	 * Execeutes certain commands, as specified in a {@link SelectionCommand}. Typical examples are to clear a
 	 * particular selection.
 	 * 
-	 * @param colSelectionCommand
-	 *            a container with selection commands
+	 * @param selectionCommand
+	 *            a selection command
 	 */
-	public void executeSelectionCommands(Collection<SelectionCommand> colSelectionCommand) {
-		if (colSelectionCommand == null)
+	public void executeSelectionCommand(SelectionCommand selectionCommand) {
+		if (selectionCommand == null)
 			return;
 
-		for (SelectionCommand command : colSelectionCommand) {
-			ESelectionCommandType commandType = command.getSelectionCommandType();
-			switch (commandType) {
-				case CLEAR:
-					clearSelection(command.getSelectionType());
-					break;
-				case CLEAR_ALL:
-					clearSelections();
-					break;
-				case RESET:
-					resetSelectionManager();
-					break;
-			}
+		ESelectionCommandType commandType = selectionCommand.getSelectionCommandType();
+		switch (commandType) {
+			case CLEAR:
+				clearSelection(selectionCommand.getSelectionType());
+				break;
+			case CLEAR_ALL:
+				clearSelections();
+				break;
+			case RESET:
+				resetSelectionManager();
+				break;
 		}
 	}
 

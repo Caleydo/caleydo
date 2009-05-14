@@ -35,7 +35,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -605,9 +604,7 @@ public class GLParallelCoordinates
 			SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 			TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
 			event.setType(EIDType.EXPRESSION_INDEX);
-			List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
-			commands.add(command);
-			event.setSelectionCommands(commands);
+			event.setSelectionCommand(command);
 			eventPublisher.triggerEvent(event);
 
 			PropagationEvent propagationEvent = new PropagationEvent();

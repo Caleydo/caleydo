@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import java.util.List;
-
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -11,23 +9,23 @@ import org.caleydo.core.manager.event.IListenerOwner;
  * 
  * @author Werner Puff
  */
-public interface ITriggerSelectionCommandHandler
+public interface ISelectionCommandHandler
 	extends IListenerOwner {
 
 	/**
 	 * Handler method to be called when a TriggerSelectionCommand event is catched that should trigger a
-	 * content-selection-command by a related. by a related {@link TriggerSelectionCommandListener}.
+	 * content-selection-command by a related. by a related {@link SelectionCommandListener}.
 	 * 
 	 * @param selectionCommands
 	 */
-	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands);
+	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand);
 
 	/**
 	 * Handler method to be called when a TriggerSelectionCommand event is catched that should trigger a
-	 * storage-selection-command by a related. by a related {@link TriggerSelectionCommandListener}.
+	 * storage-selection-command by a related. by a related {@link SelectionCommandListener}.
 	 * 
 	 * @param selectionCommands
 	 */
-	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands);
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand);
 
 }

@@ -29,6 +29,7 @@ import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
@@ -53,9 +54,11 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableGeneMappingListener;
@@ -83,7 +86,8 @@ import org.eclipse.core.runtime.Status;
  */
 public class GLPathway
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, IViewCommandHandler,
+	ISelectionCommandHandler {
 
 	private PathwayGraph pathway;
 
@@ -127,6 +131,8 @@ public class GLPathway
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
+
+	protected SelectionCommandListener selectionCommandListener = null;
 
 	/**
 	 * Constructor.
@@ -666,7 +672,7 @@ public class GLPathway
 						break;
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
-						
+
 						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
@@ -893,6 +899,10 @@ public class GLPathway
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 	}
 
 	@Override
@@ -931,6 +941,10 @@ public class GLPathway
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
 		}
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
+		}
 	}
 
 	@Override
@@ -938,6 +952,17 @@ public class GLPathway
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	@Override
+	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		selectionManager.executeSelectionCommand(selectionCommand);
+
+	}
+
+	@Override
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		// no storage selection manager
 	}
 
 }

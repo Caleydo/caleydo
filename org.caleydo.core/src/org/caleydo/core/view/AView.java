@@ -1,8 +1,5 @@
 package org.caleydo.core.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
@@ -12,7 +9,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.NewSetEvent;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.eclipse.swt.widgets.Composite;
@@ -143,12 +140,10 @@ public abstract class AView
 	 *            selection-command to distribute
 	 */
 	protected void sendSelectionCommandEvent(EIDType genomeType, SelectionCommand command) {
-		TriggerSelectionCommandEvent event = new TriggerSelectionCommandEvent();
+		SelectionCommandEvent event = new SelectionCommandEvent();
 		event.setSender(this);
 		event.setType(genomeType);
-		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
-		commands.add(command);
-		event.setSelectionCommands(commands);
+		event.setSelectionCommand(command);
 		eventPublisher.triggerEvent(event);
 	}
 

@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.listener;
 
-import java.util.List;
-
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.AEvent;
@@ -21,15 +19,15 @@ public class TriggerPropagationCommandListener
 		if (event instanceof TriggerPropagationCommandEvent) {
 			TriggerPropagationCommandEvent triggerSelectionCommandEvent = (TriggerPropagationCommandEvent) event; 
 			EIDType type = triggerSelectionCommandEvent.getType();
-			List<SelectionCommand> selectionCommands= triggerSelectionCommandEvent.getSelectionCommands();
+			SelectionCommand selectionCommand = triggerSelectionCommandEvent.getSelectionCommand();
 			switch (type) {
 				case DAVID:
 				case REFSEQ_MRNA_INT:
 				case EXPRESSION_INDEX:
-					handler.handleContentTriggerSelectionCommand(type, selectionCommands);
+					handler.handleContentTriggerSelectionCommand(type, selectionCommand);
 					break;
 				case EXPERIMENT_INDEX:
-					handler.handleStorageTriggerSelectionCommand(type, selectionCommands);
+					handler.handleStorageTriggerSelectionCommand(type, selectionCommand);
 					break;
 			}
 		}

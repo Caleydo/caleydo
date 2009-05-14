@@ -1,7 +1,6 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
@@ -19,7 +18,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -29,12 +28,12 @@ import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
@@ -56,7 +55,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
 	IViewCommandHandler {
 
 	IGeneralManager generalManager = null;
@@ -80,7 +79,7 @@ public class InfoArea
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
+	protected SelectionCommandListener selectionCommandListener = null;
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
@@ -239,14 +238,14 @@ public class InfoArea
 										selectionItem.getPrimaryID());
 
 								String sRefSeqID =
-									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeq);
+									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+										iRefSeq);
 
 								Integer iDavidID =
 									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
 
 								sContentName =
 									idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
-
 
 								// FIXME horizontal toolbar style support
 								// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
@@ -258,7 +257,9 @@ public class InfoArea
 								}
 							}
 							else {
-								sContentName = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, selectionItem.getPrimaryID());
+								sContentName =
+									idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
+										selectionItem.getPrimaryID());
 							}
 
 							if (sContentName == null) {
@@ -389,36 +390,34 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type,
-		final List<SelectionCommand> selectionCommands) {
+	public void handleContentTriggerSelectionCommand(EIDType type, final SelectionCommand selectionCommand) {
 		if (parentComposite.isDisposed())
 			return;
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				ESelectionCommandType cmdType;
-				for (SelectionCommand cmd : selectionCommands) {
-					cmdType = cmd.getSelectionCommandType();
-					if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
-						selectionTree.removeAll();
-						break;
-					}
-					else if (cmdType == ESelectionCommandType.CLEAR) {
-						// Flush old items that become
-						// deselected/normal
-						for (TreeItem tmpItem : selectionTree.getItems()) {
-							if (tmpItem.getData("selection_type") == cmd.getSelectionType()) {
-								tmpItem.dispose();
-							}
+
+				cmdType = selectionCommand.getSelectionCommandType();
+				if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
+					selectionTree.removeAll();
+				}
+				else if (cmdType == ESelectionCommandType.CLEAR) {
+					// Flush old items that become
+					// deselected/normal
+					for (TreeItem tmpItem : selectionTree.getItems()) {
+						if (tmpItem.getData("selection_type") == selectionCommand.getSelectionType()) {
+							tmpItem.dispose();
 						}
 					}
+
 				}
 			}
 		});
 	}
 
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
 
 	}
 
@@ -469,9 +468,9 @@ public class InfoArea
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
-		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
-		triggerSelectionCommandListener.setHandler(this);
-		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -499,9 +498,9 @@ public class InfoArea
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
 		}
-		if (triggerSelectionCommandListener != null) {
-			eventPublisher.removeListener(triggerSelectionCommandListener);
-			triggerSelectionCommandListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);

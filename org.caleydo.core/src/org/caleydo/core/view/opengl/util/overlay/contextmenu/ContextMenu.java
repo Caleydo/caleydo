@@ -48,7 +48,7 @@ public class ContextMenu
 	private static final float SPACING = 0.02f;
 	private static final float FONT_SCALING = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
-	private static final float BASIC_Z = 0f;
+	private static final float BASIC_Z = 0.04f;
 	private static final float BUTTON_Z = BASIC_Z + 0.001f;
 	private static final float TEXT_Z = BUTTON_Z + 0.001f;
 

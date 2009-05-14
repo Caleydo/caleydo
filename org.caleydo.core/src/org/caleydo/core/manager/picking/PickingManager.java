@@ -15,7 +15,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 
 import com.sun.opengl.util.BufferUtil;
 

@@ -8,7 +8,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.media.opengl.GL;
@@ -2004,10 +2003,10 @@ public class GLHierarchicalHeatMap
 		for (int i = 0; i < iSelectorBar - 1; i++)
 			iCount += iAlNumberSamples.get(i);
 
-		List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
+	
 		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		// commands.add(command);
-		glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, commands);
+//		glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, command);
 		glHeatMapView.resetView();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
@@ -2038,10 +2037,9 @@ public class GLHierarchicalHeatMap
 		}
 
 		// selected experiments
-		commands = new ArrayList<SelectionCommand>();
+		
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-		commands.add(command);
-		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, commands);
+		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, command);
 
 		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
