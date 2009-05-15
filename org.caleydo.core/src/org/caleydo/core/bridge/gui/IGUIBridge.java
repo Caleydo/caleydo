@@ -1,5 +1,7 @@
 package org.caleydo.core.bridge.gui;
 
+import org.eclipse.swt.widgets.Display;
+
 public interface IGUIBridge {
 	public void closeApplication();
 
@@ -13,4 +15,6 @@ public interface IGUIBridge {
 	public void setFileNameCurrentDataSet(String sFileName);
 
 	public String getFileNameCurrentDataSet();
+
+	public Display getDisplay();
 }

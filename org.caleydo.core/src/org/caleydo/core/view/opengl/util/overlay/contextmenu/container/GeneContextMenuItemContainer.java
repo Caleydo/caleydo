@@ -18,13 +18,9 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ShowPathwaysBy
  */
 public class GeneContextMenuItemContainer
 	extends AItemContainer {
+
 	/**
-	 * Constructor that takes a refSeq Integer representation and creates all context menu items that are
-	 * relevant for genes.
-	 * 
-	 * @TODO: RefSeq is probably not the best ID to use here.
-	 * @param refSeqInt
-	 *            a refSeq int representation
+	 * Constructor.
 	 */
 	public GeneContextMenuItemContainer() {
 		super();
@@ -44,25 +40,25 @@ public class GeneContextMenuItemContainer
 	public void setDavid(int davidID) {
 		createMenuContent(davidID);
 	}
-	
+
 	private void createMenuContent(int davidID) {
 		addHeading(GeneticIDMappingHelper.get().getShortNameFromDavid(davidID));
-		
+
 		LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
 		loadPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(loadPathwaysByGeneItem);
-		
+
 		ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
 		showPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(showPathwaysByGeneItem);
 
-		ArrayList<Integer> alStorageIndex = GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
-		
+		ArrayList<Integer> alStorageIndex =
+			GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
+
 		if (alStorageIndex == null)
 			return;
-		
-		AddToListItem addToListItem =
-			new AddToListItem(alStorageIndex);
+
+		AddToListItem addToListItem = new AddToListItem(alStorageIndex);
 		addContextMenuItem(addToListItem);
 	}
 }

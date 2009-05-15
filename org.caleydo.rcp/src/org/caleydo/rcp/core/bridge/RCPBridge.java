@@ -3,6 +3,8 @@ package org.caleydo.rcp.core.bridge;
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.rcp.command.handler.ExitHandler;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 public class RCPBridge
 	implements IGUIBridge {
@@ -31,5 +33,11 @@ public class RCPBridge
 	@Override
 	public String getFileNameCurrentDataSet() {
 		return sFileNameCurrentDataSet;
+	}
+
+	@Override
+	public Display getDisplay() {
+
+		return PlatformUI.getWorkbench().getDisplay();
 	}
 }

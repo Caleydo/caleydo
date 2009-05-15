@@ -78,7 +78,7 @@ public class Application
 		if (System.getProperty("os.name").contains("Win")) {
 			bIsWindowsOS = true;
 		}
-
+		
 		alStartViews = new ArrayList<EStartViewType>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
@@ -98,7 +98,7 @@ public class Application
 					else if (element.equals("load_pathways")) {
 						bLoadPathwayData = true;
 						bOverrulePrefStoreLoadPathwayData = true;
-					}
+					}									
 					else if (element.equals(EStartViewType.PARALLEL_COORDINATES.getCommandLineArgument())) {
 						alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
 					}

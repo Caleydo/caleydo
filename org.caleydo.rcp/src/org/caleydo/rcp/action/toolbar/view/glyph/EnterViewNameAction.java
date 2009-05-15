@@ -55,6 +55,5 @@ public class EnterViewNameAction
 		if (newname != null) {
 			triggerCmdExternalObjectSetter(newname, EExternalObjectSetterType.GLYPH_CHANGEPERSONALNAME);
 		}
-
 	};
 }

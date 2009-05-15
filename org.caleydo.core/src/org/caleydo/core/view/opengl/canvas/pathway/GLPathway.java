@@ -53,8 +53,8 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
@@ -69,6 +69,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodL
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.EmbeddedPathwayContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -607,21 +608,6 @@ public class GLPathway
 				PathwayVertexGraphItemRep tmpVertexGraphItemRep =
 					(PathwayVertexGraphItemRep) generalManager.getPathwayItemManager().getItem(iExternalID);
 
-				// Do nothing if new selection is the same as previous selection
-				// if ((selectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-				// tmpVertexGraphItemRep.getId()) && pickingMode
-				// .equals(EPickingMode.MOUSE_OVER))
-				// || (selectionManager.checkStatus(ESelectionType.SELECTION,
-				// tmpVertexGraphItemRep.getId()) && pickingMode
-				// .equals(EPickingMode.CLICKED))
-				// || (selectionManager.checkStatus(ESelectionType.SELECTION,
-				// tmpVertexGraphItemRep.getId()) && pickingMode
-				// .equals(EPickingMode.DOUBLE_CLICKED)))
-				// {
-				// pickingManager.flushHits(iUniqueID, ePickingType);
-				// return;
-				// }
-
 				setDisplayListDirty();
 
 				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_1);
@@ -673,19 +659,29 @@ public class GLPathway
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 
-						for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
-							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
+						if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
+							
+							EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer = 
+								new EmbeddedPathwayContextMenuItemContainer();
+							pathwayContextMenuItemContainer.setPathway(generalManager.getPathwayManager().searchPathwayByName(
+									tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG));
+							contextMenu.addItemContanier(pathwayContextMenuItemContainer);
+						}
+						else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
+							for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
+								.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
-							// TODO: menu item container should be created only once
-							// All davidIDs need to be given as a parameter
-							// Wait for redesign of context menu by Alex
-							GeneContextMenuItemContainer geneContextMenuItemContainer =
-								new GeneContextMenuItemContainer();
-							geneContextMenuItemContainer.setDavid(generalManager.getPathwayItemManager()
-								.getDavidIdByPathwayVertexGraphItem(
-									(PathwayVertexGraphItem) pathwayVertexGraphItem));
-							contextMenu.addItemContanier(geneContextMenuItemContainer);
-
+								GeneContextMenuItemContainer geneContextMenuItemContainer =
+									new GeneContextMenuItemContainer();
+								geneContextMenuItemContainer.setDavid(generalManager.getPathwayItemManager()
+									.getDavidIdByPathwayVertexGraphItem(
+										(PathwayVertexGraphItem) pathwayVertexGraphItem));
+								contextMenu.addItemContanier(geneContextMenuItemContainer);
+							}
+						}
+						else {
+							// do nothing if the type is neither a gene nor an embedded pathway
+							break;
 						}
 
 					default:

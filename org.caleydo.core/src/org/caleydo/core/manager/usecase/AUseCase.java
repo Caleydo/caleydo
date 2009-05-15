@@ -54,16 +54,16 @@ public abstract class AUseCase
 		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && eUseCaseMode == EUseCaseMode.GENETIC_DATA)
 			|| (set.getSetType() == ESetType.CLINICAL_DATA && eUseCaseMode == EUseCaseMode.CLINICAL_DATA)
 			|| (set.getSetType() == ESetType.UNSPECIFIED && eUseCaseMode == EUseCaseMode.UNSPECIFIED_DATA)) {
+			
 			oldSet = this.set;
 			this.set = set;
-			if (oldSet != null)
-			{
+			if (oldSet != null) {
 				oldSet.destroy();
 				oldSet = null;
 			}
 		}
 		else {
-			throw new IllegalStateException("The Set " + set + "specified is not suited for the use case "
+			throw new IllegalStateException("The Set " + set + " specified is not suited for the use case "
 				+ this);
 		}
 	}
