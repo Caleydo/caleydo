@@ -167,7 +167,7 @@ public class GeneticIDMappingHelper {
 	 */
 	public PathwayVertexGraphItem convertGeneIDToPathwayVertex(EIDType idType, int geneID) {
 
-		int iGraphItemID = 0;
+		//int iGraphItemID = 0;
 		Integer iDavidID = -1;
 
 		if (idType == EIDType.REFSEQ_MRNA_INT) {

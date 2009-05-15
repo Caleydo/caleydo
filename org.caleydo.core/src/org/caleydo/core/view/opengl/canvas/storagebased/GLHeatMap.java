@@ -250,14 +250,14 @@ public class GLHeatMap
 					gl.glColor4f(1, 0, 0, 1);
 
 					Texture tempTexture =
-						textureManager.getIconTexture(gl, EIconTextures.POOL_REMOVE_VIEW);
+						textureManager.getIconTexture(gl, EIconTextures.REMOVE);
 					tempTexture.enable();
 					tempTexture.bind();
 					TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-					float ICON_SIZE = 0.13f;
-					float xPosition = viewFrustum.getWidth() - ICON_SIZE - 0.02f;
-					float yPosition = renderStyle.getRenderHeight() + 0.1f;
+					float ICON_SIZE = 0.08f;
+					float xPosition = viewFrustum.getWidth() - ICON_SIZE + 0.03f;
+					float yPosition = renderStyle.getRenderHeight() + 0.2f;
 
 					gl.glColor4f(1, 1, 1, 1);
 					gl.glPushName(pickingManager.getPickingID(iUniqueID,

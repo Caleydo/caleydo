@@ -410,6 +410,16 @@
             </command>
          </menu>
          <menu
+               label="Search"
+               tooltip="Search">
+            <command
+                  commandId="org.caleydo.rcp.command.help.report_bug"
+                  icon="resources/icons/view/search.png"
+                  label="Search Gene/Pathway"
+                  style="push">
+            </command>
+         </menu>
+         <menu
                id="viewMenu"
                label="View">
             <command
@@ -441,67 +451,65 @@
                   icon="resources/icons/view/tabular_data_viewer.png"
                   label="Tabular Data Viewer"
                   style="push">
-            </command>    
-     
-	            <command
-	                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
-	                  icon="resources/icons/view/parcoords.png"
-	                  label="Clinical Parallel Coordinates"
-	                  style="push">
-	            </command>
-	            <command
-	                  commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
-	                  icon="resources/icons/view/heatmap.png"
-	                  label="Radial Hierarchy"
-	                  style="push">
-	            </command>
-	            <command
-	                  commandId="org.caleydo.rcp.command.openviews.hyperbolic"
-	                  icon="resources/icons/view/heatmap.png"
-	                  label="Hyperbolic"
-	                  style="push">
-	            </command>
-	            <menu
-	                  icon="resources/icons/view/glyph.png"
-	                  label="Glyph">
-	               <command
-	                     commandId="org.caleydo.rcp.command.openviews.glyphview"
-	                     icon="resources/icons/view/glyph.png"
-	                     label="Glyph View"
-	                     style="push">
-	               </command>
-	               <command
-	                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
-	                     icon="resources/icons/view/glyph.png"
-	                     label="Glyph Slider View"
-	                     style="push">
-	               </command>
-	               <command
-	                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
-	                     icon="resources/icons/view/glyph.png"
-	                     label="Glyph Mapping Configuration"
-	                     style="push">
-	               </command>
-	            </menu>
-             <command
-                   commandId="org.caleydo.rcp.command.openviews.histogram"
-                   icon="resources/icons/view/heatmap.png"
-                   label="Histogram"
-                   style="push">
-             </command>
-             <command
-                   commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
-                   icon="resources/icons/view/heatmap.png"
-                   label="Dendrogram Horizontal"
-                   style="push">
-             </command>
-             <command
-                   commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
-                   icon="resources/icons/view/heatmap.png"
-                   label="Dendrogram Vertical"
-                   style="push">
-             </command>
-	          
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
+                  icon="resources/icons/view/parcoords.png"
+                  label="Clinical Parallel Coordinates"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Radial Hierarchy"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.hyperbolic"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Hyperbolic"
+                  style="push">
+            </command>
+            <menu
+                  icon="resources/icons/view/glyph.png"
+                  label="Glyph">
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph Slider View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph Mapping Configuration"
+                     style="push">
+               </command>
+            </menu>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.histogram"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Histogram"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Dendrogram Horizontal"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Dendrogram Vertical"
+                  style="push">
+            </command>
          </menu>
          <menu
                id="windowMenu"
@@ -519,15 +527,6 @@
                id="adminMenu"
                label="Admin">
             <command
-                  commandId="org.eclipse.ui.views.showView"
-                  label="Show Error Log"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="org.eclipse.pde.runtime.LogView">
-               </parameter>
-            </command>
-            <command
                   commandId="org.caleydo.rcp.command.open_collab"
                   label="Collaboration"
                   mnemonic="T"
@@ -542,6 +541,16 @@
                   icon="resources/icons/general/help.gif"
                   label="Help Contents"
                   style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="resources/icons/general/error_log.gif"
+                  label="Error Log"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="org.eclipse.pde.runtime.LogView">
+               </parameter>
             </command>
             <command
                   commandId="org.caleydo.rcp.command.help.known_bugs"
