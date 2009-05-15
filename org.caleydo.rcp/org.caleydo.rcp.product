@@ -36,7 +36,6 @@ All Rights Reserved.
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -44,7 +43,7 @@ All Rights Reserved.
    </plugins>
 
    <features>
-      <feature id="org.caleydo.rcp.feature" version="1.1.0"/>
+      <feature id="org.caleydo.rcp.feature" version="1.2.0"/>
    </features>
 
 

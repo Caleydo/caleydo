@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core Plug-in
 Bundle-SymbolicName: org.caleydo.core
-Bundle-Version: 1.1.0
+Bundle-Version: 1.2.0
 Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manager,org.caleydo.core.bridge.gui",
  org.caleydo.core.application.helper,
  org.caleydo.core.application.helper.cacher.biocarta;uses:="org.caleydo.core.command.system,org.caleydo.core.application.helper.cacher,org.eclipse.swt.widgets",

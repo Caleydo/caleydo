@@ -368,6 +368,11 @@
             id="org.caleydo.rcp.command.openviews.dendrogram_vertical"
             name="Open Dendrogram Vertical">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenSearchHandler"
+            id="org.caleydo.rcp.command.openviews.search"
+            name="Open Search">
+      </command>
       		
    </extension>
    <extension
@@ -413,7 +418,7 @@
                label="Search"
                tooltip="Search">
             <command
-                  commandId="org.caleydo.rcp.command.help.report_bug"
+                  commandId="org.caleydo.rcp.command.openviews.search"
                   icon="resources/icons/view/search.png"
                   label="Search Gene/Pathway"
                   style="push">
