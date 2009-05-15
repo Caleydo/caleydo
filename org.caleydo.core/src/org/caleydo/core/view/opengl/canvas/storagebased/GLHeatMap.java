@@ -548,6 +548,9 @@ public class GLHeatMap
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 		contentSelectionManager.clearSelection(selectionType);
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
+		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
+
 
 		// TODO: Integrate multi spotting support again
 		// // Resolve multiple spotting on chip and add all to the

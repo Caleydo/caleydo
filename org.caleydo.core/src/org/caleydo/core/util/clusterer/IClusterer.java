@@ -1,8 +1,10 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.event.IListenerOwner;
 
-public interface IClusterer {
+public interface IClusterer
+	extends IListenerOwner {
 
 	/**
 	 * Clusters a given set and returns the Id of the new generated virtual array with sorted indexes
@@ -18,5 +20,7 @@ public interface IClusterer {
 	 */
 	public Integer getSortedVAId(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
 		ClusterState clusterState);
+
+	public void cancel();
 
 }

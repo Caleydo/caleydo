@@ -5,19 +5,13 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
 public class AffinityClusterer
+	extends AClusterer
 	implements IClusterer {
 	private float[] s = null;
 	private int[] i = null;
@@ -58,7 +52,7 @@ public class AffinityClusterer
 	}
 
 	/**
-	 * Calculates the similarity matrix for a given set and VA´s
+	 * Calculates the similarity matrix for a given set and VAï¿½s
 	 * 
 	 * @param set
 	 * @param iVAIdContent
@@ -459,39 +453,6 @@ public class AffinityClusterer
 		return fClusterFactor;
 	}
 
-	private void buildProgressBar() {
-
-		shell = new Shell();
-
-		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
-		composite.setLayout(layout);
-		composite.setFocus();
-
-		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		progressBarGroup.setText("Progress");
-		progressBarGroup.setLayout(new RowLayout(1));
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		progressBarGroup.setLayoutData(gridData);
-
-		Label label = new Label(progressBarGroup, SWT.NULL);
-		label.setText("Determine similarties in progress");
-		label.setAlignment(SWT.RIGHT);
-
-		pbSimilarity = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-
-		Label label2 = new Label(progressBarGroup, SWT.NULL);
-		label2.setText("Affinity propagation in progress");
-		label2.setAlignment(SWT.RIGHT);
-
-		pbAffiProp = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-
-		composite.pack();
-
-		shell.pack();
-		shell.open();
-	}
-
 	@Override
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
@@ -503,8 +464,6 @@ public class AffinityClusterer
 			fClusterFactor = clusterState.getAffinityPropClusterFactorExperiments();
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
-
-		buildProgressBar();
 
 		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
 

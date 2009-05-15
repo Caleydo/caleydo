@@ -7,13 +7,6 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
@@ -22,6 +15,7 @@ import weka.clusterers.SimpleKMeans;
 import weka.core.Instances;
 
 public class KMeansClusterer
+	extends AClusterer
 	implements IClusterer {
 
 	private SimpleKMeans clusterer = null;
@@ -34,39 +28,6 @@ public class KMeansClusterer
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
-	}
-
-	private void buildProgressBar() {
-
-		shell = new Shell();
-
-		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
-		composite.setLayout(layout);
-		composite.setFocus();
-
-		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		progressBarGroup.setText("Progress");
-		progressBarGroup.setLayout(new RowLayout(1));
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		progressBarGroup.setLayoutData(gridData);
-
-		Label label = new Label(progressBarGroup, SWT.NULL);
-		label.setText("Building instances used by weka clusterer in progress");
-		label.setAlignment(SWT.RIGHT);
-
-		pbBuildInstances = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-
-		Label label2 = new Label(progressBarGroup, SWT.NULL);
-		label2.setText("KMeans clustering in progress");
-		label2.setAlignment(SWT.RIGHT);
-
-		pbClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-
-		composite.pack();
-
-		shell.pack();
-		shell.open();
 	}
 
 	public Integer cluster(ISet set, Integer iVAIdContent, Integer iVAIdStorage, EClustererType eClustererType) {
@@ -242,8 +203,6 @@ public class KMeansClusterer
 			iNrCluster = clusterState.getKMeansClusterCntGenes();
 		else
 			iNrCluster = clusterState.getKMeansClusterCntExperiments();
-
-		buildProgressBar();
 
 		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
 

@@ -364,7 +364,6 @@ public abstract class AGLEventListener
 			pair = queue.poll();
 			pair.getFirst().handleEvent(pair.getSecond());
 		}
-
 	}
 
 	/**

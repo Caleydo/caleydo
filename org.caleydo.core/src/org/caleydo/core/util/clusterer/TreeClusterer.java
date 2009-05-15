@@ -7,22 +7,12 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
 
 public class TreeClusterer
-	implements IClusterer {
+	extends AClusterer {
 
 	private class ClosestPair {
 		private float correlation;
@@ -49,10 +39,6 @@ public class TreeClusterer
 	private boolean bStart0 = true;
 
 	private Tree<ClusterNode> tree;
-
-	private ProgressBar pbSimilarity;
-	private ProgressBar pbTreeClusterer;
-	private Shell shell;
 
 	private EDistanceMeasure eDistanceMeasure;
 
@@ -87,15 +73,19 @@ public class TreeClusterer
 			bStart0 = true;
 
 			int iNrElements = contentVA.size();
-			pbSimilarity.setMinimum(0);
-			pbSimilarity.setMaximum(iNrElements);
+			// pbSimilarity.setMinimum(0);
+			// pbSimilarity.setMaximum(iNrElements);
 
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
 
 			for (Integer iContentIndex1 : contentVA) {
 
-				pbSimilarity.setSelection(icnt1);
+				// 
+				// pbSimilarity.setSelection(icnt1);
+
+				GeneralManager.get().getEventPublisher().triggerEvent(
+					new ClusterProgressEvent((int) ((float) icnt1 / contentVA.size() * 100), true));
 
 				isto = 0;
 				for (Integer iStorageIndex1 : storageVA) {
@@ -106,6 +96,7 @@ public class TreeClusterer
 
 				icnt2 = 0;
 				for (Integer iContentIndex2 : contentVA) {
+					processEvents();
 					isto = 0;
 
 					if (icnt2 < icnt1) {
@@ -127,15 +118,14 @@ public class TreeClusterer
 			bStart0 = false;
 
 			int iNrElements = storageVA.size();
-			pbSimilarity.setMinimum(0);
-			pbSimilarity.setMaximum(iNrElements);
 
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
 			for (Integer iStorageIndex1 : storageVA) {
-
-				pbSimilarity.setSelection(icnt1);
+	
+				GeneralManager.get().getEventPublisher().triggerEvent(
+					new ClusterProgressEvent((int) ((float) icnt1 / contentVA.size() * 100), true));
 
 				isto = 0;
 				for (Integer iContentIndex1 : contentVA) {
@@ -238,16 +228,13 @@ public class TreeClusterer
 		float[][] distmatrix = new float[iNrSamples][iNrSamples];
 		distmatrix = similarities.clone();
 
-		pbTreeClusterer.setMinimum(0);
-		pbTreeClusterer.setMaximum(iNrSamples);
-
 		for (int n = iNrSamples; n > 1; n--) {
 			int sum;
 			int is = 1;
 			int js = 0;
 
-			shell.update();
-			pbTreeClusterer.setSelection(iNrSamples - n);
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new ClusterProgressEvent((int) ((float) (iNrSamples - n) / iNrSamples * 100), false));
 
 			pair = find_closest_pair(n, distmatrix);
 
@@ -433,13 +420,10 @@ public class TreeClusterer
 		float[][] distmatrix = new float[iNrSamples][iNrSamples];
 		distmatrix = similarities.clone();
 
-		pbTreeClusterer.setMinimum(0);
-		pbTreeClusterer.setMaximum(iNrSamples);
-
 		for (int n = iNrSamples; n > 1; n--) {
 
-			shell.update();
-			pbTreeClusterer.setSelection(iNrSamples - n);
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new ClusterProgressEvent((int) (((float) (iNrSamples - n)) / iNrSamples * 100), false));
 
 			int is = 1;
 			int js = 0;
@@ -619,59 +603,10 @@ public class TreeClusterer
 
 	}
 
-	Listener listener = new Listener() {
-		public void handleEvent(Event e) {
-			switch (e.type) {
-				case SWT.Selection:
-					System.out.println("Button pressed");
-					break;
-			}
-		}
-	};
-
-	private void buildProgressBar() {
-
-		shell = new Shell();
-
-		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
-		composite.setLayout(layout);
-		composite.setFocus();
-
-		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		progressBarGroup.setText("Progress");
-		progressBarGroup.setLayout(new RowLayout(1));
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		progressBarGroup.setLayoutData(gridData);
-
-		Label label = new Label(progressBarGroup, SWT.NULL);
-		label.setText("Determine similarties in progress");
-		label.setAlignment(SWT.RIGHT);
-
-		pbSimilarity = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-
-		Label label2 = new Label(progressBarGroup, SWT.NULL);
-		label2.setText("Tree clusterer in progress");
-		label2.setAlignment(SWT.RIGHT);
-
-		pbTreeClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-
-		Button cancelButton = new Button(progressBarGroup, SWT.PUSH);
-		cancelButton.setText("Cancel");
-		cancelButton.setBounds(20, 35, 40, 25);
-		cancelButton.addListener(SWT.Selection, listener);
-		composite.pack();
-
-		shell.pack();
-		shell.open();
-	}
-
 	@Override
 	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
 
 		Integer VAId = 0;
-
-		buildProgressBar();
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 
@@ -683,8 +618,6 @@ public class TreeClusterer
 
 		// VAId = pmlcluster(clusterState.getClustererType());
 		VAId = palcluster(clusterState.getClustererType());
-
-		shell.close();
 
 		return VAId;
 	}

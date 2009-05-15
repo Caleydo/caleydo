@@ -36,9 +36,6 @@ import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.KMeansClusterer;
 import org.caleydo.core.util.clusterer.TreeClusterer;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Implementation of the ISet interface
@@ -538,26 +535,26 @@ public class Set
 
 			IClusterer clusterer;
 
-			Shell shell = new Shell();
-			MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
-			messageBox.setText("Start Clustering");
-			messageBox
-				.setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time.");
+//			Shell shell = new Shell();
+//			MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
+//			messageBox.setText("Start Clustering");
+//			messageBox
+//				.setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time.");
 
-			int iNrElem = 0;
-
-			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-				iNrElem = getVA(iVAIdContent).size();
-			else
-				iNrElem = getVA(iVAIdStorage).size();
-
-			if (iNrElem > 1000) {
-
-				if (messageBox.open() == SWT.CANCEL)
-					return -1;
-
-				shell.close();
-			}
+//			int iNrElem = 0;
+//
+//			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+//				iNrElem = getVA(iVAIdContent).size();
+//			else
+//				iNrElem = getVA(iVAIdStorage).size();
+//
+//			if (iNrElem > 1000) {
+//
+//				if (messageBox.open() == SWT.CANCEL)
+//					return -1;
+//
+//				shell.close();
+//			}
 
 			switch (clusterState.getClustererAlgo()) {
 				case TREE_CLUSTERER:
@@ -620,10 +617,10 @@ public class Set
 			}
 
 			if (VAId == -1) {
-				messageBox = new MessageBox(new Shell(), SWT.OK);
-				messageBox.setText("Start Clustering");
-				messageBox.setMessage("Problem during cluster process!");
-				messageBox.open();
+//				messageBox = new MessageBox(new Shell(), SWT.OK);
+//				messageBox.setText("Start Clustering");
+//				messageBox.setMessage("Problem during cluster process!");
+//				messageBox.open();
 
 				return -1;
 			}

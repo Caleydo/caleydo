@@ -6,6 +6,7 @@ import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.dialog.file.StartClusteringDialog;
+import org.caleydo.rcp.progress.ClusteringProgressBar;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -388,6 +389,9 @@ public class StartClusteringAction
 		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
 		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
+		
+		ClusteringProgressBar progressBar = new ClusteringProgressBar(clusterState.getClustererAlgo());
+		progressBar.run();
 
 	}
 

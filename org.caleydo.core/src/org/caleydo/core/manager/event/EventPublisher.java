@@ -26,7 +26,7 @@ public class EventPublisher
 	}
 
 	@Override
-	public void addListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
+	public synchronized void addListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
 		listener.checkIntegrity();
 		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass);
 		if (listeners == null) {
@@ -37,20 +37,20 @@ public class EventPublisher
 	}
 
 	@Override
-	public void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
+	public synchronized void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
 		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass);
 		listeners.remove(listener);
 	}
 
 	@Override
-	public void removeListener(AEventListener<?> listener) {
+	public synchronized void removeListener(AEventListener<?> listener) {
 		for (Collection<AEventListener<?>> listeners : listenerMap.values()) {
 			listeners.remove(listener);
 		}
 	}
 
 	@Override
-	public void triggerEvent(AEvent event) {
+	public synchronized void triggerEvent(AEvent event) {
 		if (!event.checkIntegrity()) {
 			throw new IllegalStateException("Event " + event + " has failed integrity check");
 		}
