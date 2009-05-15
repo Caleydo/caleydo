@@ -2591,8 +2591,8 @@ public class GLRemoteRendering
 	}
 
 	/**
-	 * initializes the configuration of a pathway to the configuraion currently stored in this
-	 * remote-renderin-view.
+	 * initializes the configuration of a pathway to the configuration currently stored in this
+	 * remote-rendering-view.
 	 * 
 	 * @param pathway
 	 *            pathway to set the configuration

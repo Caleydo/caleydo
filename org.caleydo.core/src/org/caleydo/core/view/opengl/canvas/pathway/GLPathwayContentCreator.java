@@ -101,10 +101,7 @@ public class GLPathwayContentCreator {
 
 		// hashElementId2MappingColorArray.clear();
 
-		if (generalManager.getIDMappingManager().hasMapping(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX)) {
-			bEnableGeneMapping = true;
-		}
-		else {
+		if (!generalManager.getIDMappingManager().hasMapping(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX)) {
 			bEnableGeneMapping = false;
 		}
 	}
