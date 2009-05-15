@@ -8,6 +8,7 @@ import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.NavigationModeAction;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
+import org.caleydo.rcp.action.toolbar.view.remote.ToggleZoomAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
@@ -66,6 +67,9 @@ public class RemoteRenderingToolBarContent
 		
 		NavigationModeAction navigationModeAction = new NavigationModeAction(mediator);
 		actionList.add(navigationModeAction);
+		
+		ToggleZoomAction toggleZoomAction = new ToggleZoomAction(mediator);
+		actionList.add(toggleZoomAction);
 		
 		return container;
 	}

@@ -37,6 +37,7 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -74,6 +75,7 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.EnableNeighborhoodLis
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleNavigationModeListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleZoomListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -199,21 +201,16 @@ public class GLRemoteRendering
 
 	protected AddPathwayListener addPathwayListener = null;
 	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
-
 	protected EnableGeneMappingListener enableGeneMappingListener = null;
 	protected DisableGeneMappingListener disableGeneMappingListener = null;
-
 	protected EnableTexturesListener enableTexturesListener = null;
 	protected DisableTexturesListener disableTexturesListener = null;
-
 	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
 	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
-
 	protected ToggleNavigationModeListener toggleNavigationModeListener = null;
-
+	protected ToggleZoomListener toggleZoomListener = null;
 	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
 	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
-
 	protected ResetViewListener resetViewListener = null;
 	protected SelectionUpdateListener selectionUpdateListener = null;
 
@@ -2798,6 +2795,10 @@ public class GLRemoteRendering
 		toggleNavigationModeListener.setHandler(this);
 		eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
 
+		toggleZoomListener = new ToggleZoomListener();
+		toggleZoomListener.setHandler(this);
+		eventPublisher.addListener(ToggleZoomEvent.class, toggleZoomListener);
+		
 		// resetRemoteRendererListener = new ResetRemoteRendererListener();
 		// resetRemoteRendererListener.setHandler(this);
 		// eventPublisher.addListener(ResetRemoteRendererEvent.class, resetRemoteRendererListener);
@@ -2851,7 +2852,10 @@ public class GLRemoteRendering
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-
+		if (toggleZoomListener != null) {
+			eventPublisher.removeListener(toggleZoomListener);
+			toggleZoomListener = null;
+		}
 	}
 
 	@Override
@@ -2899,5 +2903,9 @@ public class GLRemoteRendering
 
 	public void toggleNavigationMode() {
 		this.bEnableNavigationOverlay = !bEnableNavigationOverlay;
+	}
+	
+	public void toggleZoom() {
+		bucketMouseWheelListener.triggerZoom(!bucketMouseWheelListener.isZoomedIn());
 	}
 }

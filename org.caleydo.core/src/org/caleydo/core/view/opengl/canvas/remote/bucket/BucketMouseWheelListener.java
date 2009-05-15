@@ -23,7 +23,7 @@ public class BucketMouseWheelListener
 
 	private GLRemoteRendering bucketGLEventListener;
 
-	private float fBuketZoomMax = 0;
+	private float fBuketZoomMax = BUCKET_ZOOM_MAX;
 
 	private final static int BUCKET_ZOOM_MAX = 400;
 
@@ -193,6 +193,7 @@ public class BucketMouseWheelListener
 	public void triggerZoom(boolean bZoomIn) {
 		bZoomActionRunning = true;
 		this.bZoomIn = bZoomIn;
+		bucketLayoutRenderStyle.setZoomedIn(bZoomIn);
 		bucketLayoutRenderStyle.initStackLevel();
 		bucketLayoutRenderStyle.initPoolLevel(-1);
 		bucketLayoutRenderStyle.initMemoLevel();

@@ -5,6 +5,7 @@ import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
@@ -40,6 +41,12 @@ public class RemoteRenderingToolBarMediator {
 
 	public void closeOrResetViews() {
 		ResetRemoteRendererEvent event = new ResetRemoteRendererEvent();
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
+	}
+	
+	public void toggleZoom() {
+		ToggleZoomEvent event = new ToggleZoomEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
