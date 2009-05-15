@@ -45,16 +45,16 @@ public class ClusteringProgressBar
 	}
 
 	public void setProgress(boolean forSimilaritiesBar, int progress) {
+
 		if (forSimilaritiesBar) {
 			pbSimilarity.setSelection(progress);
 		}
 		else {
-			if (progress == 99)
+			if (progress >= 99)
 				close();
 			else
 				pbClusterer.setSelection(progress);
 		}
-
 	}
 
 	private void buildProgressBar() {
@@ -67,7 +67,7 @@ public class ClusteringProgressBar
 		composite.setFocus();
 
 		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		progressBarGroup.setText("Progress");
+		progressBarGroup.setText(algorithmType.toString());
 		progressBarGroup.setLayout(new RowLayout(1));
 		GridData gridData = new GridData(GridData.FILL_VERTICAL);
 		progressBarGroup.setLayoutData(gridData);
@@ -81,7 +81,7 @@ public class ClusteringProgressBar
 		pbSimilarity.setMaximum(100);
 
 		Label label2 = new Label(progressBarGroup, SWT.NULL);
-		label2.setText("Tree clusterer in progress");
+		label2.setText("Clusterer in progress");
 		label2.setAlignment(SWT.RIGHT);
 
 		pbClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
+import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
@@ -21,10 +21,6 @@ public class KMeansClusterer
 	private SimpleKMeans clusterer = null;
 
 	private int iNrCluster = 5;
-
-	private ProgressBar pbBuildInstances;
-	private ProgressBar pbClusterer;
-	private Shell shell;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
@@ -55,15 +51,14 @@ public class KMeansClusterer
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
+		int iPercentage = 1;
+
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
 			int iNrElements = contentVA.size();
 
 			if (iNrCluster >= iNrElements)
 				return -1;
-
-			pbBuildInstances.setMinimum(0);
-			pbBuildInstances.setMaximum(iNrElements);
 
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
@@ -73,15 +68,28 @@ public class KMeansClusterer
 
 			int icnt = 0;
 			for (Integer iContentIndex : contentVA) {
-				pbBuildInstances.setSelection(icnt);
-				for (Integer iStorageIndex : storageVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex)
-						+ ", ");
 
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, true));
+						iPercentage++;
+					}
+
+					for (Integer iStorageIndex : storageVA) {
+						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iContentIndex)
+							+ ", ");
+
+					}
+					buffer.append("\n");
+					icnt++;
+
+					processEvents();
 				}
-				buffer.append("\n");
-				icnt++;
+				else
+					return -1;
 			}
 		}
 		else {
@@ -91,28 +99,38 @@ public class KMeansClusterer
 			if (iNrCluster >= iNrElements)
 				return -1;
 
-			pbBuildInstances.setMinimum(0);
-			pbBuildInstances.setMaximum(iNrElements);
-
 			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
 
 			buffer.append("@data\n");
 
-			int icnt = 0;
+			int isto = 0;
 			for (Integer iStorageIndex : storageVA) {
-				pbBuildInstances.setSelection(icnt);
-				for (Integer iContentIndex : contentVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex)
-						+ ", ");
 
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) isto / contentVA.size() * 100);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, true));
+						iPercentage++;
+					}
+
+					for (Integer iContentIndex : contentVA) {
+						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iContentIndex)
+							+ ", ");
+
+					}
+					buffer.append("\n");
+					isto++;
+					processEvents();
 				}
-				buffer.append("\n");
-				icnt++;
+				else
+					return -1;
 			}
 		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 
 		Instances data = null;
 
@@ -126,10 +144,8 @@ public class KMeansClusterer
 			// e1.printStackTrace();
 		}
 
-		pbClusterer.setMinimum(0);
-		pbClusterer.setMaximum(5);
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(10, false));
 
-		pbClusterer.setSelection(0);
 		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
@@ -138,7 +154,11 @@ public class KMeansClusterer
 			return -1;
 			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(1);
+
+		processEvents();
+		if (bClusteringCanceled)
+			return -1;
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
 
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
@@ -149,7 +169,10 @@ public class KMeansClusterer
 			return -1;
 			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(2);
+		processEvents();
+		if (bClusteringCanceled)
+			return -1;
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
 
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
@@ -169,7 +192,10 @@ public class KMeansClusterer
 				}
 			}
 		}
-		pbClusterer.setSelection(3);
+		processEvents();
+		if (bClusteringCanceled)
+			return -1;
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
@@ -183,13 +209,14 @@ public class KMeansClusterer
 				}
 			}
 		}
-		pbClusterer.setSelection(4);
 
 		Integer clusteredVAId = set.createStorageVA(indexes);
 
 		// set cluster result in Set
 		set.setAlClusterSizes(count);
 		set.setAlExamples(alExamples);
+
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 
 		return clusteredVAId;
 	}
@@ -205,8 +232,6 @@ public class KMeansClusterer
 			iNrCluster = clusterState.getKMeansClusterCntExperiments();
 
 		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
-
-		shell.close();
 
 		return VAId;
 	}

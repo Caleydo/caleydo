@@ -22,7 +22,9 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -35,8 +37,10 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverEvent;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverListener;
+import org.caleydo.core.view.opengl.canvas.radial.event.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -44,6 +48,9 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -78,6 +85,7 @@ public class GLDendrogramHorizontal
 	private TreePorter treePorter = new TreePorter();
 
 	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
+	private UpdateViewListener updateViewListener;
 
 	/**
 	 * Constructor.
@@ -110,6 +118,11 @@ public class GLDendrogramHorizontal
 
 	@Override
 	public void registerEventListeners() {
+
+		updateViewListener = new UpdateViewListener();
+		updateViewListener.setHandler(this);
+		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
+
 		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
 		clusterNodeMouseOverListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
@@ -117,12 +130,16 @@ public class GLDendrogramHorizontal
 
 	@Override
 	public void unregisterEventListeners() {
+		if (updateViewListener != null) {
+			eventPublisher.removeListener(updateViewListener);
+			updateViewListener = null;
+		}
 		if (clusterNodeMouseOverListener != null) {
 			eventPublisher.removeListener(clusterNodeMouseOverListener);
 			clusterNodeMouseOverListener = null;
 		}
 	}
-	
+
 	@Override
 	public void init(GL gl) {
 
@@ -248,8 +265,7 @@ public class GLDendrogramHorizontal
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture =
-			textureManager.getIconTexture(gl, EIconTextures.DENDROGRAM_HORIZONTAL_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.DENDROGRAM_HORIZONTAL_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -374,15 +390,11 @@ public class GLDendrogramHorizontal
 			gl.glEnd();
 
 		}
-		else {
-			float fLookupValue = currentNode.getAverageExpressionValue();
 
-			float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-			float fOpacity = 1;
-
-			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
-
-		}
+		float fLookupValue = currentNode.getAverageExpressionValue();
+		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+		float fOpacity = 1;
+		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		float fDiff = 0;
 		float fTemp = currentNode.getPos().x();
@@ -430,12 +442,12 @@ public class GLDendrogramHorizontal
 			// gl.glColor4f(0, 0, 0, 1);
 			// }
 
-			float fLookupValue = currentNode.getAverageExpressionValue();
-
-			float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-			float fOpacity = 1;
-
-			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+			// fLookupValue = currentNode.getAverageExpressionValue();
+			//
+			// fArMappingColor = colorMapper.getColor(fLookupValue);
+			// fOpacity = 1;
+			//
+			// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_HORI_SELECTION,
 				currentNode.getClusterNr()));
@@ -445,7 +457,7 @@ public class GLDendrogramHorizontal
 			gl.glVertex3f(xmin - 0.1f, ymax, currentNode.getPos().z());
 			gl.glEnd();
 
-			gl.glColor4f(0, 0, 0, 1);
+			// gl.glColor4f(0, 0, 0, 1);
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
@@ -472,12 +484,12 @@ public class GLDendrogramHorizontal
 			// gl.glColor4f(0, 0, 0, 1);
 			// }
 
-			float fLookupValue = currentNode.getAverageExpressionValue();
-
-			float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-			float fOpacity = 1;
-
-			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+			// fLookupValue = currentNode.getAverageExpressionValue();
+			//
+			// fArMappingColor = colorMapper.getColor(fLookupValue);
+			// fOpacity = 1;
+			//
+			// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
@@ -499,12 +511,12 @@ public class GLDendrogramHorizontal
 		// gl.glColor4f(0, 0, 0, 1);
 		// }
 
-		float fLookupValue = currentNode.getAverageExpressionValue();
-
-		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		float fOpacity = 1;
-
-		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+		// fLookupValue = currentNode.getAverageExpressionValue();
+		//
+		// fArMappingColor = colorMapper.getColor(fLookupValue);
+		// fOpacity = 1;
+		//
+		// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(currentNode.getPos().x() - fDiff - 0.1f, currentNode.getPos().y(), currentNode.getPos()
@@ -518,26 +530,22 @@ public class GLDendrogramHorizontal
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		// tree = treePorter.importTree("riesen_baum.xml");
-
-		// tree = set.getClusteredTreeGenes();
 		if (tree == null) {
 
-			// if (set.getClusteredTreeGenes() != null) {
-			// tree = set.getClusteredTreeGenes();
-			// }
+			if (set.getClusteredTreeGenes() != null) {
+				tree = set.getClusteredTreeGenes();
+			}
 
-			try {
-				tree = treePorter.importTree("data/clustering/tree.xml");
-			}
-			catch (FileNotFoundException e) {
-				// TODO Bernhard: Handle me!
-				e.printStackTrace();
-			}
-			catch (JAXBException e) {
-				// TODO Bernhard: Handle me!
-				e.printStackTrace();
-			}
+			// try {
+			// tree = treePorter.importTree("data/clustering/tee.xml");
+			// }
+			// catch (FileNotFoundException e) {
+			// tree = null;
+			// System.out.println("File not found!!");
+			// }
+			// catch (JAXBException e) {
+			// e.printStackTrace();
+			// }
 
 			renderSymbol(gl);
 
@@ -703,8 +711,6 @@ public class GLDendrogramHorizontal
 				if (bTriggerClusterNodeEvent) {
 					if (tree.getNodeByNumber(iExternalID) != null) {
 						ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
-//						event.setSender(this);
-
 						event.setClusterNumber(iExternalID);
 						eventPublisher.triggerEvent(event);
 					}
@@ -838,6 +844,9 @@ public class GLDendrogramHorizontal
 
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
+
+		int i = 0;
+		i++;
 	}
 
 	@Override

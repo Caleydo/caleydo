@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -57,6 +58,9 @@ public class StartClusteringAction
 	private TabItem affinityPropagationTab;
 	private TabItem kMeansTab;
 	private TabItem cobwebTab;
+	
+	private Text clusterFactorGenes = null;
+	private Text clusterFactorExperiments = null;
 
 	/**
 	 * Constructor.
@@ -250,7 +254,7 @@ public class StartClusteringAction
 		lblClusterFactorGenes.setText("Factor for clustering genes");
 		lblClusterFactorGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 
-		final Text clusterFactorGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterFactorGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
 		clusterFactorGenes.addModifyListener(listenerFloatGenes);
 		clusterFactorGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterFactorGenes.setText("1.0");
@@ -261,7 +265,7 @@ public class StartClusteringAction
 		lblClusterFactorExperiments.setText("Factor for clustering experiments");
 		lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
 
-		final Text clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
+		clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
 		clusterFactorExperiments.addModifyListener(listenerFloatExperiments);
 		clusterFactorExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterFactorExperiments.setText("1.0");
@@ -338,6 +342,13 @@ public class StartClusteringAction
 				else
 					iClusterCntExperiments = temp;
 			}
+			else {
+				Shell shell = new Shell();
+				MessageBox messageBox = new MessageBox(shell, SWT.OK);
+				messageBox.setText("Start Clustering");
+				messageBox.setMessage("Number of clusters must be positive");
+				messageBox.open();
+			}
 		}
 		catch (NumberFormatException e) {
 			System.out.println("Invalid input");
@@ -358,6 +369,13 @@ public class StartClusteringAction
 					fclusterFactorGenes = temp;
 				else
 					fclusterFactorExperiments = temp;
+			}
+			else {
+				Shell shell = new Shell();
+				MessageBox messageBox = new MessageBox(shell, SWT.OK);
+				messageBox.setText("Start Clustering");
+				messageBox.setMessage("Factor for affinity propagation has to be between 1.0 and 10.0");
+				messageBox.open();
 			}
 		}
 		catch (NumberFormatException e) {
@@ -389,7 +407,7 @@ public class StartClusteringAction
 		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
 		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
-		
+
 		ClusteringProgressBar progressBar = new ClusteringProgressBar(clusterState.getClustererAlgo());
 		progressBar.run();
 

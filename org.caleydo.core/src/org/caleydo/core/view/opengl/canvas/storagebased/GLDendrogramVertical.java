@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -32,6 +33,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverEvent;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
@@ -73,6 +75,7 @@ public class GLDendrogramVertical
 	// private TreePorter treePorter = new TreePorter();
 
 	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
+	private UpdateViewListener updateViewListener;
 
 	/**
 	 * Constructor.
@@ -101,6 +104,9 @@ public class GLDendrogramVertical
 
 	@Override
 	public void registerEventListeners() {
+		updateViewListener = new UpdateViewListener();
+		updateViewListener.setHandler(this);
+		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
 		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
 		clusterNodeMouseOverListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
@@ -108,6 +114,10 @@ public class GLDendrogramVertical
 
 	@Override
 	public void unregisterEventListeners() {
+		if (updateViewListener != null) {
+			eventPublisher.removeListener(updateViewListener);
+			updateViewListener = null;
+		}
 		if (clusterNodeMouseOverListener != null) {
 			eventPublisher.removeListener(clusterNodeMouseOverListener);
 			clusterNodeMouseOverListener = null;
@@ -489,8 +499,6 @@ public class GLDendrogramVertical
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-
-		// tree = treePorter.importTree("Cop.xml");
 
 		// tree = set.getClusteredTreeExps();
 		if (tree == null) {

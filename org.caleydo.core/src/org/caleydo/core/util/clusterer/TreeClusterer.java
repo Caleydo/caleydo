@@ -36,8 +36,6 @@ public class TreeClusterer
 
 	private int iNrSamples = 0;
 
-	private boolean bStart0 = true;
-
 	private Tree<ClusterNode> tree;
 
 	private EDistanceMeasure eDistanceMeasure;
@@ -48,15 +46,16 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Calculates the similarity matrix for a given set and VA�s
+	 * Calculates the similarity matrix for a given set and VAs
 	 * 
 	 * @param set
 	 * @param iVAIdContent
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	public void determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
+	public int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
 		EClustererType eClustererType) {
+		
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
@@ -67,93 +66,105 @@ public class TreeClusterer
 			distanceMeasure = new PearsonCorrelation();
 
 		int icnt1 = 0, icnt2 = 0, isto = 0;
+		int iPercentage = 1;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
-
-			bStart0 = true;
-
-			int iNrElements = contentVA.size();
-			// pbSimilarity.setMinimum(0);
-			// pbSimilarity.setMaximum(iNrElements);
 
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
 
 			for (Integer iContentIndex1 : contentVA) {
 
-				// 
-				// pbSimilarity.setSelection(icnt1);
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) icnt1 / contentVA.size() * 100);
 
-				GeneralManager.get().getEventPublisher().triggerEvent(
-					new ClusterProgressEvent((int) ((float) icnt1 / contentVA.size() * 100), true));
-
-				isto = 0;
-				for (Integer iStorageIndex1 : storageVA) {
-					dArInstance1[isto] =
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
-					isto++;
-				}
-
-				icnt2 = 0;
-				for (Integer iContentIndex2 : contentVA) {
-					processEvents();
-					isto = 0;
-
-					if (icnt2 < icnt1) {
-						for (Integer iStorageIndex2 : storageVA) {
-							dArInstance2[isto] =
-								set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
-							isto++;
-						}
-
-						similarities[icnt1][icnt2] = distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, true));
+						iPercentage++;
 					}
-					icnt2++;
+
+					isto = 0;
+					for (Integer iStorageIndex1 : storageVA) {
+						dArInstance1[isto] =
+							set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
+						isto++;
+					}
+
+					icnt2 = 0;
+					for (Integer iContentIndex2 : contentVA) {
+						processEvents();
+						isto = 0;
+
+						if (icnt2 < icnt1) {
+							for (Integer iStorageIndex2 : storageVA) {
+								dArInstance2[isto] =
+									set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
+								isto++;
+							}
+
+							similarities[icnt1][icnt2] =
+								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+						}
+						icnt2++;
+					}
+					icnt1++;
+					processEvents();
 				}
-				icnt1++;
+				else
+					return -1;
 			}
 		}
 		else {
-
-			bStart0 = false;
-
-			int iNrElements = storageVA.size();
 
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
 			for (Integer iStorageIndex1 : storageVA) {
-	
-				GeneralManager.get().getEventPublisher().triggerEvent(
-					new ClusterProgressEvent((int) ((float) icnt1 / contentVA.size() * 100), true));
 
-				isto = 0;
-				for (Integer iContentIndex1 : contentVA) {
-					dArInstance1[isto] =
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
-					isto++;
-				}
-
-				icnt2 = 0;
-				for (Integer iStorageIndex2 : storageVA) {
-					isto = 0;
-
-					if (icnt2 < icnt1) {
-						for (Integer iContentIndex2 : contentVA) {
-							dArInstance2[isto] =
-								set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
-							isto++;
-						}
-
-						similarities[icnt1][icnt2] = distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) icnt1 / storageVA.size() * 100);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, true));
+						iPercentage++;
 					}
-					icnt2++;
+
+					isto = 0;
+					for (Integer iContentIndex1 : contentVA) {
+						dArInstance1[isto] =
+							set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
+						isto++;
+					}
+
+					icnt2 = 0;
+					for (Integer iStorageIndex2 : storageVA) {
+						isto = 0;
+
+						if (icnt2 < icnt1) {
+							for (Integer iContentIndex2 : contentVA) {
+								dArInstance2[isto] =
+									set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
+								isto++;
+							}
+
+							similarities[icnt1][icnt2] =
+								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+						}
+						icnt2++;
+					}
+					icnt1++;
+					processEvents();
 				}
-				icnt1++;
+				else
+					return -1;
 			}
 		}
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(100, true));
 		normalizeSimilarities();
 
+		return 0;
 	}
 
 	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
@@ -228,58 +239,69 @@ public class TreeClusterer
 		float[][] distmatrix = new float[iNrSamples][iNrSamples];
 		distmatrix = similarities.clone();
 
+		int iPercentage = 1;
+
 		for (int n = iNrSamples; n > 1; n--) {
-			int sum;
-			int is = 1;
-			int js = 0;
+			if (bClusteringCanceled == false) {
+				int sum;
+				int is = 1;
+				int js = 0;
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new ClusterProgressEvent((int) ((float) (iNrSamples - n) / iNrSamples * 100), false));
+				int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
+				if (iPercentage == tempPercentage) {
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new ClusterProgressEvent(iPercentage, false));
+					iPercentage++;
+				}
 
-			pair = find_closest_pair(n, distmatrix);
+				pair = find_closest_pair(n, distmatrix);
 
-			if (pair.update) {
-				is = pair.x;
-				js = pair.y;
+				if (pair.update) {
+					is = pair.x;
+					js = pair.y;
+				}
+
+				// Update clusterids
+				Node node = new Node();
+
+				node.setCorrelation(pair.correlation);
+				node.setLeft(clusterid[is]);
+				node.setRight(clusterid[js]);
+
+				// Save result
+				result[iNrSamples - n] = node;
+
+				// Fix the distances
+				sum = number[is] + number[js];
+				for (j = 0; j < js; j++) {
+					distmatrix[js][j] = distmatrix[is][j] * number[is] + distmatrix[js][j] * number[js];
+					distmatrix[js][j] /= sum;
+				}
+				for (j = js + 1; j < is; j++) {
+					distmatrix[j][js] = distmatrix[is][j] * number[is] + distmatrix[j][js] * number[js];
+					distmatrix[j][js] /= sum;
+				}
+				for (j = is + 1; j < n; j++) {
+					distmatrix[j][js] = distmatrix[j][is] * number[is] + distmatrix[j][js] * number[js];
+					distmatrix[j][js] /= sum;
+				}
+
+				for (j = 0; j < is; j++)
+					distmatrix[is][j] = distmatrix[n - 1][j];
+				for (j = is + 1; j < n - 1; j++)
+					distmatrix[j][is] = distmatrix[n - 1][j];
+
+				// Update number of elements in the clusters
+				number[js] = sum;
+				number[is] = number[n - 1];
+
+				// Update clusterids
+				clusterid[js] = n - iNrSamples - 1;
+				clusterid[is] = clusterid[n - 1];
+				processEvents();
 			}
-
-			// Update clusterids
-			Node node = new Node();
-
-			node.setCorrelation(pair.correlation);
-			node.setLeft(clusterid[is]);
-			node.setRight(clusterid[js]);
-
-			// Save result
-			result[iNrSamples - n] = node;
-
-			// Fix the distances
-			sum = number[is] + number[js];
-			for (j = 0; j < js; j++) {
-				distmatrix[js][j] = distmatrix[is][j] * number[is] + distmatrix[js][j] * number[js];
-				distmatrix[js][j] /= sum;
-			}
-			for (j = js + 1; j < is; j++) {
-				distmatrix[j][js] = distmatrix[is][j] * number[is] + distmatrix[j][js] * number[js];
-				distmatrix[j][js] /= sum;
-			}
-			for (j = is + 1; j < n; j++) {
-				distmatrix[j][js] = distmatrix[j][is] * number[is] + distmatrix[j][js] * number[js];
-				distmatrix[j][js] /= sum;
-			}
-
-			for (j = 0; j < is; j++)
-				distmatrix[is][j] = distmatrix[n - 1][j];
-			for (j = is + 1; j < n - 1; j++)
-				distmatrix[j][is] = distmatrix[n - 1][j];
-
-			// Update number of elements in the clusters
-			number[js] = sum;
-			number[is] = number[n - 1];
-
-			// Update clusterids
-			clusterid[js] = n - iNrSamples - 1;
-			clusterid[is] = clusterid[n - 1];
+			else
+				return -1;
 		}
 
 		for (int i = 0; i < result.length; i++) {
@@ -312,6 +334,9 @@ public class TreeClusterer
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(100, false));
+		
 		return clusteredVAId;
 	}
 
@@ -420,45 +445,56 @@ public class TreeClusterer
 		float[][] distmatrix = new float[iNrSamples][iNrSamples];
 		distmatrix = similarities.clone();
 
+		int iPercentage = 1;
+
 		for (int n = iNrSamples; n > 1; n--) {
 
-			GeneralManager.get().getEventPublisher().triggerEvent(
-				new ClusterProgressEvent((int) (((float) (iNrSamples - n)) / iNrSamples * 100), false));
+			if (bClusteringCanceled == false) {
+				int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
+				if (iPercentage == tempPercentage) {
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new ClusterProgressEvent(iPercentage, false));
+					iPercentage++;
+				}
 
-			int is = 1;
-			int js = 0;
+				int is = 1;
+				int js = 0;
 
-			pair = find_closest_pair(n, distmatrix);
+				pair = find_closest_pair(n, distmatrix);
 
-			if (pair.update) {
-				is = pair.x;
-				js = pair.y;
+				if (pair.update) {
+					is = pair.x;
+					js = pair.y;
+				}
+
+				// Fix the distances
+				for (j = 0; j < js; j++)
+					distmatrix[js][j] = Math.max(distmatrix[is][j], distmatrix[js][j]);
+				for (j = js + 1; j < is; j++)
+					distmatrix[j][js] = Math.max(distmatrix[is][j], distmatrix[j][js]);
+				for (j = is + 1; j < n; j++)
+					distmatrix[j][js] = Math.max(distmatrix[j][is], distmatrix[j][js]);
+
+				for (j = 0; j < is; j++)
+					distmatrix[is][j] = distmatrix[n - 1][j];
+				for (j = is + 1; j < n - 1; j++)
+					distmatrix[j][is] = distmatrix[n - 1][j];
+
+				// Update clusterids
+				Node node = new Node();
+
+				node.setCorrelation(pair.correlation);
+				node.setLeft(clusterid[is]);
+				node.setRight(clusterid[js]);
+
+				result[iNrSamples - n] = node;
+
+				clusterid[js] = n - iNrSamples - 1;
+				clusterid[is] = clusterid[n - 1];
+				processEvents();
 			}
-
-			// Fix the distances
-			for (j = 0; j < js; j++)
-				distmatrix[js][j] = Math.max(distmatrix[is][j], distmatrix[js][j]);
-			for (j = js + 1; j < is; j++)
-				distmatrix[j][js] = Math.max(distmatrix[is][j], distmatrix[j][js]);
-			for (j = is + 1; j < n; j++)
-				distmatrix[j][js] = Math.max(distmatrix[j][is], distmatrix[j][js]);
-
-			for (j = 0; j < is; j++)
-				distmatrix[is][j] = distmatrix[n - 1][j];
-			for (j = is + 1; j < n - 1; j++)
-				distmatrix[j][is] = distmatrix[n - 1][j];
-
-			// Update clusterids
-			Node node = new Node();
-
-			node.setCorrelation(pair.correlation);
-			node.setLeft(clusterid[is]);
-			node.setRight(clusterid[js]);
-
-			result[iNrSamples - n] = node;
-
-			clusterid[js] = n - iNrSamples - 1;
-			clusterid[is] = clusterid[n - 1];
+			else
+				return -1;
 		}
 
 		// set cluster result in Set
@@ -484,17 +520,16 @@ public class TreeClusterer
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(100, false));
+		
 		return clusteredVAId;
 	}
 
 	private ArrayList<Integer> traverse(ArrayList<Integer> indexes, ClusterNode node) {
 
 		if (tree.hasChildren(node) == false) {
-			// FIXME: problem with indexes (storageVA vs. contentVA ???)
-			if (bStart0)
-				indexes.add(node.getClusterNr());
-			else
-				indexes.add(node.getClusterNr());
+			indexes.add(node.getClusterNr());
 		}
 		else {
 			for (ClusterNode current : tree.getChildren(node)) {
@@ -610,7 +645,8 @@ public class TreeClusterer
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 
-		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
+		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1)
+			return -1;
 
 		this.set = set;
 		this.idContent = idContent;

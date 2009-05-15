@@ -349,30 +349,30 @@ public class GLHierarchicalHeatMap
 					}
 					break;
 				}
-				else if (iter.getTexture() == iSelectorBar) {
-					iPickedSample = iter.getPos() + iAlNumberSamples.get(iSelectorBar - 1);
-
-					if (iSamplesPerHeatmap % 2 == 0) {
-						iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
-						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
-					}
-					else {
-						iFirstSample = iPickedSample - (int) Math.ceil(iSamplesPerHeatmap / 2);
-						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
-					}
-
-					if (iPickedSample < iSamplesPerHeatmap / 2) {
-						iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
-						iFirstSample = 0;
-						iLastSample = iSamplesPerHeatmap - 1;
-					}
-					else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2) {
-						iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
-						iLastSample = iNumberSample - 1;
-						iFirstSample = iNumberSample - iSamplesPerHeatmap;
-					}
-					break;
-				}
+				// else if (iter.getTexture() == iSelectorBar) {
+				// iPickedSample = iter.getPos() + iAlNumberSamples.get(iSelectorBar - 1);
+				//
+				// if (iSamplesPerHeatmap % 2 == 0) {
+				// iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
+				// iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
+				// }
+				// else {
+				// iFirstSample = iPickedSample - (int) Math.ceil(iSamplesPerHeatmap / 2);
+				// iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
+				// }
+				//
+				// if (iPickedSample < iSamplesPerHeatmap / 2) {
+				// iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
+				// iFirstSample = 0;
+				// iLastSample = iSamplesPerHeatmap - 1;
+				// }
+				// else if (iPickedSample > iNumberSample - 1 - iSamplesPerHeatmap / 2) {
+				// iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
+				// iLastSample = iNumberSample - 1;
+				// iFirstSample = iNumberSample - iSamplesPerHeatmap;
+				// }
+				// break;
+				// }
 				iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
 				iFirstSample = 0;
 				iLastSample = iSamplesPerHeatmap - 1;
@@ -1520,23 +1520,23 @@ public class GLHierarchicalHeatMap
 					SELECTION_Z);
 				gl.glEnd();
 			}
-			else if (iSelectorBar + 1 == selection.getTexture() + 1) {
-				gl.glLineWidth(2f);
-				gl.glBegin(GL.GL_LINE_LOOP);
-				gl.glVertex3f(-0.1f, viewFrustum.getHeight()
-					- (selection.getPos() - 1 + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
-					SELECTION_Z);
-				gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
-					- (selection.getPos() - 1 + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
-					SELECTION_Z);
-				gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
-					- (selection.getPos() + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
-					SELECTION_Z);
-				gl.glVertex3f(-0.1f, viewFrustum.getHeight()
-					- (selection.getPos() + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
-					SELECTION_Z);
-				gl.glEnd();
-			}
+			// else if (iSelectorBar + 1 == selection.getTexture() + 1) {
+			// gl.glLineWidth(2f);
+			// gl.glBegin(GL.GL_LINE_LOOP);
+			// gl.glVertex3f(-0.1f, viewFrustum.getHeight()
+			// - (selection.getPos() - 1 + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
+			// SELECTION_Z);
+			// gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
+			// - (selection.getPos() - 1 + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
+			// SELECTION_Z);
+			// gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
+			// - (selection.getPos() + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
+			// SELECTION_Z);
+			// gl.glVertex3f(-0.1f, viewFrustum.getHeight()
+			// - (selection.getPos() + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample,
+			// SELECTION_Z);
+			// gl.glEnd();
+			// }
 		}
 	}
 
@@ -2003,10 +2003,9 @@ public class GLHierarchicalHeatMap
 		for (int i = 0; i < iSelectorBar - 1; i++)
 			iCount += iAlNumberSamples.get(i);
 
-	
 		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		// commands.add(command);
-//		glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, command);
+		// glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, command);
 		glHeatMapView.resetView();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
@@ -2037,7 +2036,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		// selected experiments
-		
+
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, command);
 
@@ -2786,13 +2785,39 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 	}
 
+	boolean bSkipClustering = false;
+
 	public void startClustering(ClusterState clusterState) {
 
 		this.clusterstate = clusterState;
 
-		bUseClusteredVA = true;
-		initData();
-		bUseClusteredVA = false;
+		// int iNrElem = 0;
+		//
+		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		// iNrElem = set.getVA(iContentVAID).size();
+		// else
+		// iNrElem = set.getVA(iStorageVAID).size();
+		//
+		// if (iNrElem > 1000) {
+		//
+		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		// Shell shell = new Shell();
+		// MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
+		// messageBox.setText("Start Clustering");
+		// messageBox
+		// .setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time.");
+		// if (messageBox.open() == SWT.CANCEL)
+		// bSkipClustering = true;
+		// }
+		// });
+		// }
+
+		if (bSkipClustering == false) {
+			bUseClusteredVA = true;
+			initData();
+			bUseClusteredVA = false;
+		}
 
 		setDisplayListDirty();
 	}
@@ -2957,7 +2982,7 @@ public class GLHierarchicalHeatMap
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
-		
+
 		startClusteringListener = new StartClusteringListener();
 		startClusteringListener.setHandler(this);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
