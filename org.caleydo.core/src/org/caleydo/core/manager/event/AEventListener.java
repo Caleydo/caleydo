@@ -1,7 +1,5 @@
 package org.caleydo.core.manager.event;
 
-import org.caleydo.core.manager.general.GeneralManager;
-import org.eclipse.core.runtime.Status;
 
 /**
  * General event listener interface for classes that handle events. Inherited classes should usually handle
