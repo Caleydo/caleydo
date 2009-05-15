@@ -12,7 +12,7 @@ which means you can use it in any way you want provided you keep the link to the
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <title>Caleydo Project - Help</title>
-<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -23,21 +23,21 @@ which means you can use it in any way you want provided you keep the link to the
 
 <div id="menu">
 <ul>
-	<li><a href="index.html">HOME</a></li>
+	<li><a href="../index.html">HOME</a></li>
 
-	<li><a href="projects/index.html">Projects</a></li>
+	<li><a href="../projects/index.html">Projects</a></li>
 
-	<li><a href="publications.html">Publications</a></li>
+	<li><a href="../publications.html">Publications</a></li>
 
-	<li><a href="team.html">Team</a></li>
+	<li><a href="../team.html">Team</a></li>
 
-	<li><a href="sponsors.html">Sponsors</a></li>
+	<li><a href="../sponsors.html">Sponsors</a></li>
 
-	<li><a href="downloads.html">Downloads</a></li>
+	<li><a href="../downloads.html">Downloads</a></li>
 
 	<li><a href="#">Help</a></li>
 
-	<li><a href="contact.html">Contact</a></li>
+	<li><a href="../contact.html">Contact</a></li>
 </ul>
 </div>
 </div>
@@ -50,11 +50,13 @@ which means you can use it in any way you want provided you keep the link to the
 <ul>
 	<li><a href="#Prerequisites">Prerequisites</a></li>
 	<li><a href="#Installation">Installation</a></li>
+	<li><a href="#FirstRun">FirstRun</a></li>
 	<li><a href="#Startup">Startup</a></li>
+	<li><a href="#DataFormat">Data Format</a></li>
 	<li><a href="#Dataloading">Data Loading</a></li>
-	<!--li><a href="#Pathways">Pathways</a></li>
+	<li><a href="#Pathways">Pathways</a></li>
 	<li><a href="#ParallelCoordinates">Parallel Coordinates</a></li>
-	<li><a href="#HeatMap">Heat Map</a></li-->
+	<li><a href="#HeatMap">Heat Map</a></li>
 	<li><a href="#Uninstallation">Uninstallation</a></li>
 	<li><a href="#KnownIssues">Known Issues</a></li>
 </ul>
@@ -79,7 +81,8 @@ following hardware and software configurations:</p>
 </ul>
 <h2><a name="Installation"></a>Installation</h2>
 
-<h3>Webstart intallation</h3>
+<h3>Installation</h3>
+<h4>Webstart</h4>
 <p>To run <b>Caleydo</b> as a webstart application, make sure you
 have Java installed and then simply click the large web start icon on
 the <a href="index.html">home</a> or the <a href="downloads.html">downloads</a>
@@ -90,78 +93,130 @@ do that.</p>
 <p>Using web start ensures that you always have the most current
 version of <b>Caleydo</b>.</p>
 
-<h3>Pathway Fetching</h3>
-<p>When you start <b>Caleydo</b> for the first time you will be
+<h4>Manual Installation</h4>
+To manually install Caleydo download the compressed file appropriate for
+your operating system from the <a href="downloads.html">download
+page</a>. Extract the archive, enter the created caleydo folder and click
+the executable (caleydo.exe on Windows)
+
+
+<h2><a name="Startup"></a>Startup</h2>
+
+<p><img src="images/help/project_wizard.png" alt="Project Wizard"
+	style="border-style: none; float: right; padding-left: 1em;" /> Upon
+startup you are presented with choices for different execution modes:</p>
+<ul>
+	<li>Genetic Analysis and</li>
+	<li>General Data Analysis</li>
+</ul>
+<p>While the former is tailored to the analysis of microarray gene
+expression data and pathways, the latter can load any kind of csv file.
+Of course, the pathways are not available in the general data analysis
+mode.</p>
+<p>The genetic analysis page currently lets you choose between three
+options:</p>
+<ol>
+	<li><b>Start with sample gene expression data.</b> This starts
+	Caleydo with a set of clustered gene expression data.</li>
+	<li><b>Start with random generated sample gene expression data</b>
+	starts Caleydo with a set of random data.</li>
+	<li><b>Load data from file</b> let you load your own microarray
+	data, as long as it adheres to the following criteria specified in <a
+		href="#DataFormat">Data Format</a></li>
+</ol>
+<p>Finally, a check box let's you choose whether you want to load
+pathways for the analysis (which makes startup slower) or not.</p>
+
+<p>In case of <b>General Data Analysis</b> you currently have only
+the option to load comma separated data.</p>
+
+<h2><a name="FirstRun"></a>First Run, Pathway Fetching</h2>
+<p><img src="images/help/pathway_fetching.png"
+	alt="Pathway Fetching"
+	style="border-style: none; float: right; padding-left: 1em;" /> When
+you start <b>Caleydo</b> for the first time in Genetic Analysis mode
+with pathways enabled (see <a href="#Startup">Startup</a>) you will be
 asked to fetch the pathways from <a
 	href="http://www.biocarta.com/Biocarta">BioCarta</a> and <a
 	href="http://www.genome.jp/kegg/">KEGG</a>. Click <i>Fetch pathways</i>
 to start the process. <b>Caleydo</b> will then load the pathways from
 the databases and store them on your local computer.</p>
 <p>The download will not surpass 30MB, but will exceed 1000 files.
-The data is stored in your users home directory.</p>
+The data is stored in your users home directory in a folder called <code>.caleydo</code>.</p>
 <p>When the download is complete click <i>Finish</i>. You will need
-to do this only once, but you can redo it to update the pathway
-database.</p>
+to do this only once, but you can manually redo it to update the pathway
+database via the preferences.</p>
+<p>In case you update Caleydo from a previous version, pathway
+fetching can be necessary as well.</p>
+<br />
+<br />
 
-<h2><a name="Startup"></a>Startup</h2>
-<p>Upon startup you are presented with choices for different
-execution modes:</p>
+
+<h2><a name="DataFormat"></a>Data Format</h2>
+<p>To analyze gene expression data in Caleydo the data currently has
+to be provided in a specific way:</p>
 <ul>
-	<li>Create new project</li>
-	<li>Pathway viewer mode</li>
-	<li>Start with sample gene expression data</li>
+	<li><b>File Format</b> Comma separated files (as can be exported
+	from for example Microsoft Excel) with the extensions of *.csv or *.txt
+	are supported.</li>
+	<li><b>Delimiters</b> Any kind of delimiter is possible. The most
+	common are TAB and Semicolon.</li>
+	<li><b>Header</b> The file may contain a header, which can be
+	ignored upon import</li>
+	<li><b>Identifier</b> The first column in the file <b>has to
+	contain NCBI Accession numbers with the prefix NM</b>. While it is legal to
+	have rows without accession number in the file, those values will not
+	be available during the analysis.</li>
+	<li><b>Columns</b> The file may contain columns with other data,
+	such as gene short names. Those columns will have to be deselected upon
+	import.</li>
+	<li><b>Values</b> Any real value is legal. The decimal symbol is
+	period (.) not comma (,). 0.3445 is a legal value, 0,3445 is not. Non
+	existing values are legal. They can either be left blank or be
+	specified as NaN (not a number).</li>
+	<li><b>Column captions</b> The row before the actual values has to
+	contain column captions (this would be the first line in the file, if
+	no header is present). It is legal (but unwise) to leave them blank</li>
+	<li><b>Length</b> All columns are of equal length</li>
 </ul>
-<p>Select <i>Create new project</i> if you have your own gene
-expression data that you want to load. Select the <i>Pathway viewer
-mode</i> if you don't have gene expression data but are interested in
-browsing pathways and their interconnections. Select <i>Start with
-sample gene expression data</i> if you want to try out <b>Caleydo</b>
-without bothering loading your own data. The data you see in this mode
-is randomly generated.</p>
+
 
 
 <h2><a name="Dataloading"></a>Data Loading</h2>
 <p><img src="images/help/data_import.png"
 	alt="Data loader screenshot"
-	style="border-style: none; float: right; padding-left: 1em;" /> To be
-able to import gene expression data in <b>Caleydo</b> you have to follow
-these conventions:</p>
-<ul>
-	<li>The first column of the file has to contain a valid RefSeq
-	accession number.</li>
-	<li>Data for one microarray experiment is in one column and all
-	columns are of equal length.</li>
-	<li>If you have not-a-number values, they have to be specified by
-	<i>NaN</i>.</li>
-	<li>Every experiment has a caption</li>
-	<li>The file has to be comma separated text file. The delimiter is
-	arbitrary (can be selected upon import).</li>
-	<li>You may have columns in the file which you do not want to
-	import.</li>
-	<li>Your file may contain a header which is to be ignored.</li>
-</ul>
+	style="border-style: none; float: right; padding-left: 1em;" />
 <p>To select a data file click the <i>Choose data file</i> button.
-If you have a header in your file, adjust the number of ignored lines by
-editing the <i>Ignore lines in header</i> text field.</p>
-<p>The delimiter of your file can be adjusted by checking the
-appropriate box for the separators. The data preview will adjust
-immediately.</p>
-<p>If you want your data to be logarithmized for the visualizations
-check the log 10 box.</p>
+You now get a file dialog where you can navigate to your .csv or .txt
+file.</p>
+<p>Once loaded you can see a preview of your data in the table. If
+you have a delimiter different then TAB you have to specify the
+delimiter, which will automatically update the preview.</p>
+<p>If you have a header in your file, adjust the number of ignored
+lines by editing the <i>Ignore lines in header</i> text field.</p>
+<p>Data can be logarithmized (log10 and log2 are available). By
+using this filter, the original data remains untouched, and you will
+also see the original values in the visualization. However,
+visualizations, for example diagrams will display the data
+logarithmized.</p>
 <p>The <i>min</i> and <i>max</i> options are disabled by default. If
 you want to clip your data to a certain range use min and max to do
-that. Note that you currently have to use both or none for it to work.</p>
-<p>To import data you have to select the type for each column.
-Currently the first column has to be the RefSeq list. Therefore you have
-to select RefSeq at the first drop down box. The rest should be
-experiments. If you want to ignore a line simply don't select it.</p>
-<!--h2>The Bucket</h2>
+that. All values greater then max resp. smaller than min will be
+displayed as max resp. min in the visualizations.</p>
+
+<p>If you have data that you don't want to import uncheck the
+checkbox on to of the column. You have to uncheck any columns containing
+text etc.</p>
+
+<p>Now click <b>Finish</b> and Caleydo will begin to load the data.</p>
+
+<h2>The Bucket</h2>
 
 <h2><a name="Pathways"></a>Pathways</h2>
 
 <h2><a name="ParallelCoordinates"></a>Parallel Coordinates</h2>
 
-<h2><a name="HeatMap"></a>Heat Map</h2-->
+<h2><a name="HeatMap"></a>Heat Map</h2>
 
 <h2><a name="Uninstallation"></a>Uninstallation</h2>
 
@@ -175,10 +230,7 @@ Settings\User\</i> in Windows or <i>/home/user/</i> in Linux) and delete the
 <i>.caleydo</i> folder.</p>
 
 <h2><a name="KnownIssues"></a>Known Issues</h2>
-<br />
-<a href="https://trac.icg.tugraz.at/projects/org.caleydo/report/1">Known bugs</a> are listed in our bug tracking system.
-<br />Please help us to improve Caleydo by creating a <a href="https://trac.icg.tugraz.at/projects/org.caleydo/newticket">new bug report</a>.
-
+<h3>General</h3>
 <h3>Windows</h3>
 Many issues on Windows are due to old Java versions or old graphics card
 drivers. Please update those if possible. <!-- If you do not want to or can
