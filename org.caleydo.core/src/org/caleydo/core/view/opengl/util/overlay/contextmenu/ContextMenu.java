@@ -142,13 +142,14 @@ public class ContextMenu
 	public void addSeparator() {
 		contextMenuEntries.add(new Separator());
 	}
-	
+
 	/**
 	 * Adds a heading at the next space
-	 * @param text the text to be displayed for the heading
+	 * 
+	 * @param text
+	 *            the text to be displayed for the heading
 	 */
-	public void addHeading(String text)
-	{
+	public void addHeading(String text) {
 		contextMenuEntries.add(new Heading(text));
 	}
 
@@ -160,7 +161,7 @@ public class ContextMenu
 	 */
 	public void addItemContanier(AItemContainer itemContainer) {
 
-		if(contextMenuEntries.size() != 0)
+		if (contextMenuEntries.size() != 0)
 			addSeparator();
 		for (IContextMenuEntry entry : itemContainer) {
 			contextMenuEntries.add(entry);
@@ -244,8 +245,8 @@ public class ContextMenu
 
 		}
 
-//		GLHelperFunctions.drawPointAt(gl, new Vec3f(fRightBorder, fBottomBorder, 0));
-//		GLHelperFunctions.drawPointAt(gl, new Vec3f(fLeftBorder, fTopBorder, 0));
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(fRightBorder, fBottomBorder, 0));
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(fLeftBorder, fTopBorder, 0));
 
 		if (isDisplayListDirty) {
 			gl.glNewList(displayListIndex, GL.GL_COMPILE);
@@ -261,8 +262,8 @@ public class ContextMenu
 
 	/**
 	 * <p>
-	 * Initializes a sub menu and recursively initializes the sub menus of the items in contextMenuEntries. Sets
-	 * unique IDs for every element and creates the ContextMenuMetaData objects for sub menus.
+	 * Initializes a sub menu and recursively initializes the sub menus of the items in contextMenuEntries.
+	 * Sets unique IDs for every element and creates the ContextMenuMetaData objects for sub menus.
 	 * </p>
 	 * <p>
 	 * Sets the width and height of a sub menu. The origin in X and Y have to be set at another place before
@@ -302,6 +303,14 @@ public class ContextMenu
 					hashContextMenuItemToMetaData.put(item, newMetaData);
 					initializeSubMenus(item.getSubItems(), newMetaData);
 				}
+			}
+			else if (entry instanceof Heading) {
+				Heading heading = (Heading) entry;
+				float textWidth = (float) textRenderer.getBounds(heading.getText()).getWidth() * FONT_SCALING;
+				// headings don't have a icon
+				textWidth -= ICON_SIZE - SPACING;
+				if (textWidth > metaData.maxTextWidth)
+					metaData.maxTextWidth = textWidth;
 			}
 		}
 		metaData.width = metaData.maxTextWidth + WIDHT_OVERHEAD;
@@ -436,23 +445,24 @@ public class ContextMenu
 					}
 				}
 			}
-			else if (entry instanceof Separator){
+			else if (entry instanceof Separator) {
 
 				gl.glColor3f(1, 1, 1);
-				gl.glLineStipple(2, (short)0xAAAA);
+				gl.glLineStipple(2, (short) 0xAAAA);
 				gl.glEnable(GL.GL_LINE_STIPPLE);
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT/2, BUTTON_Z);
-				gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition + ITEM_HEIGHT/2, BUTTON_Z);
+				gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT / 2, BUTTON_Z);
+				gl
+					.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition + ITEM_HEIGHT / 2,
+						BUTTON_Z);
 				// gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z);
 
 				gl.glEnd();
-				
+
 			}
-			else if (entry instanceof Heading)
-			{
-				Heading heading = (Heading)entry;
-				
+			else if (entry instanceof Heading) {
+				Heading heading = (Heading) entry;
+
 				textRenderer.begin3DRendering();
 				textRenderer.setColor(1, 1, 1, 1);
 				gl.glDisable(GL.GL_DEPTH_TEST);

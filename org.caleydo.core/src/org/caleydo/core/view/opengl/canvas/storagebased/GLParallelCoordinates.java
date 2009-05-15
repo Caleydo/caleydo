@@ -69,6 +69,7 @@ import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -1118,7 +1119,10 @@ public class GLParallelCoordinates
 					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
 				gl.glRotatef(25, 0, 0, 1);
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(sAxisLabel, 0, 0, 0, renderStyle.getSmallFontScalingFactor());
+				float fScaling = renderStyle.getSmallFontScalingFactor();
+				if (isRenderedRemote())
+					fScaling *= 1.5f;
+				textRenderer.draw3D(sAxisLabel, 0, 0, 0, fScaling);
 				textRenderer.end3DRendering();
 				gl.glRotatef(-25, 0, 0, 1);
 				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
@@ -1601,6 +1605,9 @@ public class GLParallelCoordinates
 	private void renderBoxedYValues(GL gl, float fXOrigin, float fYOrigin, String sRawValue,
 		ESelectionType renderMode) {
 
+		float fScaling = renderStyle.getSmallFontScalingFactor();
+		if (isRenderedRemote())
+			fScaling *= 1.5f;
 		// don't render values that are below the y axis
 		if (fYOrigin < 0)
 			return;
@@ -1611,8 +1618,8 @@ public class GLParallelCoordinates
 
 		Rectangle2D tempRectangle = textRenderer.getBounds(sRawValue);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
-		float fBackPlaneWidth = (float) tempRectangle.getWidth() * renderStyle.getSmallFontScalingFactor();
-		float fBackPlaneHeight = (float) tempRectangle.getHeight() * renderStyle.getSmallFontScalingFactor();
+		float fBackPlaneWidth = (float) tempRectangle.getWidth() * fScaling;
+		float fBackPlaneHeight = (float) tempRectangle.getHeight() * fScaling;
 		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 
@@ -1637,8 +1644,11 @@ public class GLParallelCoordinates
 		// else
 		// text = getDecimalFormat().format(fRawValue);
 
-		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, renderStyle
-			.getSmallFontScalingFactor());
+		float fScaling = renderStyle.getSmallFontScalingFactor();
+		if (isRenderedRemote())
+			fScaling *= 1.5f;
+
+		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, fScaling);
 		textRenderer.end3DRendering();
 	}
 
@@ -1716,6 +1726,7 @@ public class GLParallelCoordinates
 		eventPublisher.triggerEvent(event);
 
 		if (glMouseListener.wasMouseReleased()) {
+
 			bIsDraggingActive = false;
 		}
 
@@ -1885,6 +1896,9 @@ public class GLParallelCoordinates
 			// hashDeselectedPolylines.put(iCurrent, null);
 			// }
 		}
+		if (bIsDraggingActive || bIsAngularBrushingActive) {
+			triggerSelectionUpdate();
+		}
 
 		// for (int iCurrent : hashDeselectedPolylines.keySet())
 		// {
@@ -1893,6 +1907,17 @@ public class GLParallelCoordinates
 		// polylineSelectionManager.addToType(ESelectionType.DESELECTED,
 		// iCurrent);
 		// }
+	}
+
+	private void triggerSelectionUpdate() {
+		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
+		selectionUpdateEvent.setSelectionDelta(polylineSelectionManager.getDelta());
+		selectionUpdateEvent.setSender(this);
+		eventPublisher.triggerEvent(selectionUpdateEvent);
+		// send out a major update which tells the hhm to update its textures
+		UpdateViewEvent updateView = new UpdateViewEvent();
+		updateView.setSender(this);
+		eventPublisher.triggerEvent(updateView);
 	}
 
 	@Override
@@ -1995,7 +2020,7 @@ public class GLParallelCoordinates
 					// new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
 					// // sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
-					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+					ISelectionDelta selectionDelta = polylineSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
@@ -2181,6 +2206,8 @@ public class GLParallelCoordinates
 						hashGates.put(iGateID, new Pair<Float, Float>(0f, renderStyle.getAxisHeight() / 2f));
 
 						hashIsGateBlocking.put(iGateID, new ArrayList<Integer>());
+						handleUnselection();
+						triggerSelectionUpdate();
 						setDisplayListDirty();
 
 						break;
@@ -2192,6 +2219,8 @@ public class GLParallelCoordinates
 						hashMasterGates.put(++iNumberOfMasterGates, new Pair<Float, Float>(0f, renderStyle
 							.getAxisHeight() / 2f));
 						hashIsGateBlocking.put(iNumberOfMasterGates, new ArrayList<Integer>());
+						handleUnselection();
+						triggerSelectionUpdate();
 						setDisplayListDirty();
 						break;
 				}
@@ -2202,14 +2231,15 @@ public class GLParallelCoordinates
 					case CLICKED:
 						if (iExternalID > 999) {
 							hashGates.remove(iExternalID);
-							hashIsGateBlocking.remove(iExternalID);
-							setDisplayListDirty();
+							hashIsGateBlocking.remove(iExternalID);							
 						}
 						else {
 							hashMasterGates.remove(iExternalID);
-							hashIsGateBlocking.remove(iExternalID);
-							setDisplayListDirty();
+							hashIsGateBlocking.remove(iExternalID);						
 						}
+						handleUnselection();
+						triggerSelectionUpdate();
+						setDisplayListDirty();
 						break;
 				}
 				break;

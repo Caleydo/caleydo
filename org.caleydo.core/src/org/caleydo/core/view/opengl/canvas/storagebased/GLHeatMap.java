@@ -43,6 +43,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -249,8 +250,7 @@ public class GLHeatMap
 
 					gl.glColor4f(1, 0, 0, 1);
 
-					Texture tempTexture =
-						textureManager.getIconTexture(gl, EIconTextures.REMOVE);
+					Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.REMOVE);
 					tempTexture.enable();
 					tempTexture.bind();
 					TextureCoords texCoords = tempTexture.getImageTexCoords();
@@ -470,7 +470,7 @@ public class GLHeatMap
 						// Prevent handling of non genetic data in context menu
 						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
 							break;
-						
+
 						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 								getParentGLCanvas().getHeight());
@@ -550,7 +550,6 @@ public class GLHeatMap
 		contentSelectionManager.clearSelection(selectionType);
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-
 
 		// TODO: Integrate multi spotting support again
 		// // Resolve multiple spotting on chip and add all to the
@@ -736,7 +735,7 @@ public class GLHeatMap
 			}
 
 			// render line captions
-			if (fFieldWidth > 0.1f) {
+			if (fFieldWidth > 0.055f) {
 				boolean bRenderRefSeq = false;
 				// if (fFieldWidth < 0.2f)
 				// {
@@ -749,17 +748,19 @@ public class GLHeatMap
 				// }
 
 				if (detailLevel == EDetailLevel.HIGH) {
-					bRenderRefSeq = true;
+					// bRenderRefSeq = true;
 					String sContent;
+					String refSeq = null;
 
 					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-						sContent = GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(iContentIndex);
+						sContent =
+							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(iContentIndex);
+						refSeq = GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 
 						if (bRenderRefSeq) {
 							sContent += " | ";
 							// Render heat map element name
-							sContent +=
-								GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+							sContent += refSeq;
 						}
 					}
 					else if (set.getSetType() == ESetType.UNSPECIFIED) {
@@ -872,8 +873,19 @@ public class GLHeatMap
 					}
 					else {
 						textRenderer.setColor(0, 0, 0, 1);
-						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.1f,
-							0, fLineDegrees, fFontScaling);
+
+						if (currentType == ESelectionType.SELECTION
+							|| currentType == ESelectionType.MOUSE_OVER) {
+							renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 2.5f,
+								fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
+							if (refSeq != null)
+								renderCaption(gl, refSeq, fXPosition + fFieldWidth / 6 * 4.5f,
+									fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
+						}
+						else {
+							renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f,
+								fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
+						}
 					}
 				}
 
@@ -1204,7 +1216,8 @@ public class GLHeatMap
 	// }
 	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fZOrigin,
 		float fRotation, float fFontScaling) {
-
+		if (isRenderedRemote() && remoteRenderingGLView instanceof GLRemoteRendering)
+			fFontScaling *= 1.5;
 		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
 			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
 			sLabel = sLabel + "..";

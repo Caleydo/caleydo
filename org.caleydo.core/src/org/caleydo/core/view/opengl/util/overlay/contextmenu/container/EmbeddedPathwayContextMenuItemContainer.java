@@ -7,14 +7,14 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadPathwaysByPathwayIDItem;
 
 /**
- * Implementation of AItemContainer for embedded pathways. By passing a pathway ID  all relevant context menu items
- * are constructed automatically
+ * Implementation of AItemContainer for embedded pathways. By passing a pathway ID all relevant context menu
+ * items are constructed automatically
  * 
  * @author Marc Streit
  */
 public class EmbeddedPathwayContextMenuItemContainer
 	extends AItemContainer {
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -29,9 +29,9 @@ public class EmbeddedPathwayContextMenuItemContainer
 	public void setPathway(PathwayGraph pathway) {
 		createMenuContent(pathway);
 	}
-	
+
 	private void createMenuContent(PathwayGraph pathway) {
-//		addHeading(pathway.getTitle());
+		addHeading("Load embedded pathway");
 		addContextMenuItem(new LoadPathwaysByPathwayIDItem(pathway.getID()));
 	}
 }
