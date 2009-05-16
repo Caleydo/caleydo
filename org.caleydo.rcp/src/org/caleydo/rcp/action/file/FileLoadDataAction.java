@@ -22,7 +22,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.swt.tabular.LabelEditorDialog;
 import org.caleydo.rcp.dialog.file.LoadDataDialog;
-import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -49,7 +48,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Action responsible for importing data to current Caleydo project.
@@ -97,12 +95,7 @@ public class FileLoadDataAction
 	 * Constructor.
 	 */
 	public FileLoadDataAction(final Composite parentComposite) {
-		super("Load Data");
-		setId(ID);
-		setToolTipText("Import data from text file");
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
-
+		super("Load data");
 		this.parentComposite = parentComposite;
 
 		arSkipColumn = new ArrayList<Button>();

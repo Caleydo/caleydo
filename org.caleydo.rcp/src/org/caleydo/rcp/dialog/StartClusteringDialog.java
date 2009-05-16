@@ -1,12 +1,11 @@
-package org.caleydo.rcp.dialog.file;
+package org.caleydo.rcp.dialog;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.rcp.action.toolbar.general.StartClusteringAction;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -24,22 +23,15 @@ public class StartClusteringDialog
 	 */
 	public StartClusteringDialog(Shell parentShell) {
 		super(parentShell);
-
-		parentShell.setText(StartClusteringAction.TEXT);
-		
-		// Center dialog on screen
-		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
-		Rectangle bounds = primary.getBounds();
-		Rectangle rect = parentShell.getBounds();
-		int x = bounds.x + (bounds.width - rect.width) / 2;
-		int y = bounds.y + (bounds.height - rect.height) / 2;
-		parentShell.setLocation(x, y);
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
+
 		newShell.setText(StartClusteringAction.TEXT);
+		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
+			StartClusteringAction.ICON));
 	}
 
 	@Override
@@ -62,18 +54,8 @@ public class StartClusteringDialog
 
 		super.cancelPressed();
 	}
-	
+
 	public ClusterState getClusterState() {
 		return startClusteringAction.getClusterState();
-	}
-
-	/**
-	 * For testing purposes
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
-		dialog.open();
 	}
 }

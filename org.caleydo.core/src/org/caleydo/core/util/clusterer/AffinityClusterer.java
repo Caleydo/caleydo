@@ -7,8 +7,6 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
@@ -123,8 +121,11 @@ public class AffinityClusterer
 					icnt1++;
 					processEvents();
 				}
-				else
+				else {
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new ClusterProgressEvent(100, false));
 					return -1;
+				}
 			}
 
 			// determine median of the similarity values
@@ -187,8 +188,11 @@ public class AffinityClusterer
 					isto1++;
 					processEvents();
 				}
-				else
+				else {
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new ClusterProgressEvent(100, false));
 					return -1;
+				}
 			}
 
 			// determine median of the similarity values
@@ -346,8 +350,10 @@ public class AffinityClusterer
 				}
 			}
 			processEvents();
-			if (bClusteringCanceled)
+			if (bClusteringCanceled) {
+				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 				return -1;
+			}
 		}
 
 		// If clusters were identified, find the assignments
@@ -420,10 +426,12 @@ public class AffinityClusterer
 			// System.out.println("Number of iterations: " + iNrIterations);
 		}
 		else {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 			return -1;
 			// throw new IllegalStateException("Did not identify any clusters!!");
 		}
 		if (bConverged == false) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 			return -1;
 			// throw new IllegalStateException("Algorithm did not converge!!");
 		}
@@ -489,8 +497,10 @@ public class AffinityClusterer
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 
-		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1)
+		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 			return -1;
+		}
 
 		VAId = affinityPropagation(set, clusterState.getClustererType());
 

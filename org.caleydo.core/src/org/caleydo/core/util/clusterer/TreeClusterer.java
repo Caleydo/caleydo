@@ -55,7 +55,7 @@ public class TreeClusterer
 	 */
 	public int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
 		EClustererType eClustererType) {
-		
+
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
@@ -111,8 +111,11 @@ public class TreeClusterer
 					icnt1++;
 					processEvents();
 				}
-				else
+				else {
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new ClusterProgressEvent(100, false));
 					return -1;
+				}
 			}
 		}
 		else {
@@ -156,12 +159,14 @@ public class TreeClusterer
 					icnt1++;
 					processEvents();
 				}
-				else
+				else {
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new ClusterProgressEvent(100, false));
 					return -1;
+				}
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(100, true));
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 		normalizeSimilarities();
 
 		return 0;
@@ -300,8 +305,10 @@ public class TreeClusterer
 				clusterid[is] = clusterid[n - 1];
 				processEvents();
 			}
-			else
+			else {
+				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 				return -1;
+			}
 		}
 
 		for (int i = 0; i < result.length; i++) {
@@ -334,9 +341,8 @@ public class TreeClusterer
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(100, false));
-		
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+
 		return clusteredVAId;
 	}
 
@@ -493,8 +499,10 @@ public class TreeClusterer
 				clusterid[is] = clusterid[n - 1];
 				processEvents();
 			}
-			else
+			else {
+				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 				return -1;
+			}
 		}
 
 		// set cluster result in Set
@@ -520,9 +528,8 @@ public class TreeClusterer
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(
-			new ClusterProgressEvent(100, false));
-		
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+
 		return clusteredVAId;
 	}
 
@@ -645,8 +652,10 @@ public class TreeClusterer
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 
-		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1)
+		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 			return -1;
+		}
 
 		this.set = set;
 		this.idContent = idContent;

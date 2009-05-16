@@ -11,7 +11,6 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.dialog.file.LoadDataDialog;
-import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,7 +24,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Action responsible for exporting data to current Caleydo project.
@@ -55,14 +53,8 @@ public class ExportDataAction
 	 * Constructor.
 	 */
 	public ExportDataAction(final Composite parentComposite) {
-		super("Load Data");
-		setId(ID);
-		setToolTipText("Import data from text file");
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
-
+		super("Export Data");
 		this.parentComposite = parentComposite;
-
 	}
 
 	@Override

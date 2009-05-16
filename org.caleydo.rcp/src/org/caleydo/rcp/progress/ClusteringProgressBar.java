@@ -10,13 +10,13 @@ import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -46,6 +46,9 @@ public class ClusteringProgressBar
 
 	public void setProgress(boolean forSimilaritiesBar, int progress) {
 
+		if (pbSimilarity.isDisposed())
+			return;
+
 		if (forSimilaritiesBar) {
 			pbSimilarity.setSelection(progress);
 		}
@@ -60,37 +63,44 @@ public class ClusteringProgressBar
 	private void buildProgressBar() {
 
 		shell = new Shell();
+		shell.setText(algorithmType.getName());
+		shell.setImage(GeneralManager.get().getResourceLoader().getImage(shell.getDisplay(),
+			"resources/icons/view/storagebased/clustering.png"));
+
+		// Center shell on screen
+		Monitor primary = shell.getDisplay().getPrimaryMonitor();
+		Rectangle bounds = primary.getBounds();
+		Rectangle rect = shell.getBounds();
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		shell.setLocation(x, y);
 
 		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
-		composite.setLayout(layout);
-		composite.setFocus();
+		composite.setLayout(new GridLayout(1, false));
 
-		Group progressBarGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		progressBarGroup.setText(algorithmType.toString());
-		progressBarGroup.setLayout(new RowLayout(1));
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		progressBarGroup.setLayoutData(gridData);
+		Label label = new Label(composite, SWT.NULL);
+		label.setText("Determination of similarities");
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.widthHint = 310;
+		label.setLayoutData(gridData);
 
-		Label label = new Label(progressBarGroup, SWT.NULL);
-		label.setText("Determine similarties in progress");
-		label.setAlignment(SWT.RIGHT);
-
-		pbSimilarity = new ProgressBar(progressBarGroup, SWT.SMOOTH);
+		pbSimilarity = new ProgressBar(composite, SWT.SMOOTH);
 		pbSimilarity.setMinimum(0);
 		pbSimilarity.setMaximum(100);
+		pbSimilarity.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label label2 = new Label(progressBarGroup, SWT.NULL);
-		label2.setText("Clusterer in progress");
-		label2.setAlignment(SWT.RIGHT);
+		Label label2 = new Label(composite, SWT.NULL);
+		label2.setText("Cluster progress");
+		label2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		pbClusterer = new ProgressBar(progressBarGroup, SWT.SMOOTH);
+		pbClusterer = new ProgressBar(composite, SWT.SMOOTH);
 		pbClusterer.setMinimum(0);
 		pbClusterer.setMaximum(100);
+		pbClusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Button cancelButton = new Button(progressBarGroup, SWT.PUSH);
-		cancelButton.setText("Cancel");
-		cancelButton.setBounds(20, 35, 40, 25);
+		Button cancelButton = new Button(composite, SWT.PUSH);
+		cancelButton.setText("Abort");
+		cancelButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -100,7 +110,6 @@ public class ClusteringProgressBar
 		});
 
 		composite.pack();
-
 		shell.pack();
 		shell.open();
 	}

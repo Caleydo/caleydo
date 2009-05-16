@@ -7,7 +7,6 @@ import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.action.file.FileOpenProjectAction;
 import org.caleydo.rcp.wizard.project.NewOrExistingProjectPage.EProjectType;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
@@ -113,8 +112,8 @@ public class CaleydoProjectWizard
 			}
 			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
 				.getProjectType() == EProjectType.EXISTING_PROJECT) {
-				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
-				fileOpenProjectAction.run();
+//				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
+//				fileOpenProjectAction.run();
 
 				this.performFinish();
 			}

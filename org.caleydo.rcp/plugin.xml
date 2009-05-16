@@ -386,11 +386,13 @@
                label="File">
             <command
                   commandId="org.caleydo.rcp.command.load_data"
+                  icon="resources/icons/general/load_data.png"
                   label="Load Data"
                   style="push">
             </command>
             <command
                   commandId="org.caleydo.rcp.command.export"
+                  icon="resources/icons/general/export_data.png"
                   label="Export"
                   style="push">
             </command>
@@ -458,6 +460,12 @@
                   style="push">
             </command>
             <command
+                  commandId="org.caleydo.rcp.command.openviews.histogram"
+                  icon="resources/icons/view/color_mapping.png"
+                  label="Color Mapper"
+                  style="push">
+            </command>
+            <command
                   commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
                   icon="resources/icons/view/parcoords.png"
                   label="Clinical Parallel Coordinates"
@@ -497,12 +505,6 @@
                      style="push">
                </command>
             </menu>
-            <command
-                  commandId="org.caleydo.rcp.command.openviews.histogram"
-                  icon="resources/icons/view/heatmap.png"
-                  label="Histogram"
-                  style="push">
-            </command>
             <command
                   commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
                   icon="resources/icons/view/heatmap.png"

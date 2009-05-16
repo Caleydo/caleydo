@@ -19,9 +19,9 @@ public class GenomePerspective
 	public void createInitialLayout(final IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
 		// layout.setFixed(true);
-		layout.getViewLayout("org.caleydo.rcp.views.HTMLBrowserView").setCloseable(false);
-		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setCloseable(false);
-		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setMoveable(false);
+//		layout.getViewLayout("org.caleydo.rcp.views.HTMLBrowserView").setCloseable(false);
+//		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setCloseable(false);
+//		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setMoveable(false);
 
 		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
 		float fRatio = (float) rectDisplay.width / rectDisplay.height;

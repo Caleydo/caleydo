@@ -5,7 +5,7 @@ import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.data.loader.ResourceLoader;
-import org.caleydo.rcp.dialog.file.StartClusteringDialog;
+import org.caleydo.rcp.dialog.StartClusteringDialog;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
