@@ -201,10 +201,16 @@ public class KMeansClusterer
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
+		IVirtualArray virualArray;
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			virualArray = set.getVA(iVAIdContent);
+		else
+			virualArray = set.getVA(iVAIdStorage);
+
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == cluster) {
-					indexes.add(i);
+					indexes.add(virualArray.get(i));
 					count.set(cluster, count.get(cluster) + 1);
 				}
 			}

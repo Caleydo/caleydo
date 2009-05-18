@@ -23,12 +23,15 @@ public class HierarchicalClusterer
 
 	private Tree<ClusterNode> tree = new Tree<ClusterNode>();
 
+	private int iVAIdContent = 0;
+	private int iVAIdStorage = 0;
+	private ISet set;
+
 	public HierarchicalClusterer(int iNrElements) {
 		clusterer = new Cobweb();
 	}
 
-	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage,
-		EClustererType eClustererType) {
+	public Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, EClustererType eClustererType) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -54,7 +57,7 @@ public class HierarchicalClusterer
 			for (Integer iContentIndex : contentVA) {
 
 				if (bClusteringCanceled == false) {
-					
+
 					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
@@ -87,7 +90,7 @@ public class HierarchicalClusterer
 			int isto = 0;
 			for (Integer iStorageIndex : storageVA) {
 				if (bClusteringCanceled == false) {
-					
+
 					int tempPercentage = (int) ((float) isto / storageVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
@@ -109,10 +112,9 @@ public class HierarchicalClusterer
 			}
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-		
+
 		Instances data = null;
-		
-		
+
 		try {
 			data = new Instances(new StringReader(buffer.toString()));
 		}
@@ -134,12 +136,12 @@ public class HierarchicalClusterer
 			return -1;
 			// e.printStackTrace();
 		}
-		
+
 		processEvents();
 		if (bClusteringCanceled)
 			return -1;
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
-		
+
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
@@ -199,7 +201,7 @@ public class HierarchicalClusterer
 		ClusterNode clusterNode = new ClusterNode("Root", 1, 0f, 0, true);
 		tree.setRootNode(clusterNode);
 
-		CNodeToTree(clusterNode, node);
+		CNodeToTree(clusterNode, node, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
@@ -218,11 +220,18 @@ public class HierarchicalClusterer
 		set.setAlExamples(alExamples);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
-		
+
 		return clusteredVAId;
 	}
 
-	private void CNodeToTree(ClusterNode clusterNode, CNode node) {
+	private void CNodeToTree(ClusterNode clusterNode, CNode node, EClustererType eClustererType) {
+
+//		IVirtualArray virtualArray;
+//
+//		if (eClustererType == EClustererType.GENE_CLUSTERING)
+//			virtualArray = set.getVA(iVAIdContent);
+//		else
+//			virtualArray = set.getVA(iVAIdStorage);
 
 		if (node.getChilds() != null) {
 			int iNrChildsNode = node.getChilds().size();
@@ -230,14 +239,16 @@ public class HierarchicalClusterer
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				CNode currentNode = (CNode) node.getChilds().elementAt(i);
-				ClusterNode currentGraph =
-					new ClusterNode("Node_" + currentNode.getClusterNum(), currentNode.getClusterNum(), 0f,
-						0, false);
+
+				int clusterNr = 0;
+				clusterNr = currentNode.getClusterNum();
+
+				ClusterNode currentGraph = new ClusterNode("Node_" + clusterNr, clusterNr, 0f, 0, false);
 				currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);
 				// temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
-				CNodeToTree(currentGraph, currentNode);
+				CNodeToTree(currentGraph, currentNode, eClustererType);
 			}
 		}
 
@@ -248,7 +259,11 @@ public class HierarchicalClusterer
 
 		Integer VAId = 0;
 
-		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
+		this.set = set;
+		this.iVAIdContent = idContent;
+		this.iVAIdStorage = idStorage;
+
+		VAId = cluster(idContent, idStorage, clusterState.getClustererType());
 
 		return VAId;
 	}

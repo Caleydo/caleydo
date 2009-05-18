@@ -25,7 +25,6 @@ public class AffinityClusterer
 
 	private int iConvIterations = 30;
 
-	// cluster genes
 	private float fClusterFactor = 1.0f;
 
 	private EDistanceMeasure eDistanceMeasure;
@@ -36,6 +35,8 @@ public class AffinityClusterer
 
 	private int iVAIdContent = 0;
 	private int iVAIdStorage = 0;
+
+	private ISet set;
 
 	public AffinityClusterer(int iNrSamples) {
 		this.iNrSamples = iNrSamples;
@@ -112,8 +113,8 @@ public class AffinityClusterer
 
 						if (icnt1 != icnt2) {
 							s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-							i[count] = icnt1;
-							k[count] = icnt2;
+							i[count] = contentVA.indexOf(iContentIndex1);
+							k[count] = contentVA.indexOf(iContentIndex2);
 							count++;
 						}
 						icnt2++;
@@ -132,10 +133,10 @@ public class AffinityClusterer
 			float median = ClusterHelper.median(s);
 
 			int cnt = 0;
-			for (Integer iContentIndex1 : contentVA) {
+			for (Integer iContentIndex : contentVA) {
 				s[count] = median * fClusterFactor;
-				i[count] = cnt;
-				k[count] = cnt;
+				i[count] = contentVA.indexOf(iContentIndex);
+				k[count] = contentVA.indexOf(iContentIndex);
 				count++;
 				cnt++;
 			}
@@ -179,8 +180,8 @@ public class AffinityClusterer
 
 						if (isto1 != isto2) {
 							s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-							i[count] = isto1;
-							k[count] = isto2;
+							i[count] = storageVA.indexOf(iStorageIndex1);
+							k[count] = storageVA.indexOf(iStorageIndex2);
 							count++;
 						}
 						isto2++;
@@ -199,10 +200,10 @@ public class AffinityClusterer
 			float median = ClusterHelper.median(s);
 
 			int sto = 0;
-			for (Integer iStorageIndex1 : storageVA) {
+			for (Integer iStorageIndex : storageVA) {
 				s[count] = median * fClusterFactor;
-				i[count] = sto;
-				k[count] = sto;
+				i[count] = storageVA.indexOf(iStorageIndex);
+				k[count] = storageVA.indexOf(iStorageIndex);
 				count++;
 				sto++;
 			}
@@ -219,7 +220,7 @@ public class AffinityClusterer
 	 * @param set
 	 * @return Integer
 	 */
-	public Integer affinityPropagation(ISet set, EClustererType eClustererType) {
+	public Integer affinityPropagation(EClustererType eClustererType) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
@@ -446,22 +447,7 @@ public class AffinityClusterer
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
-		int counter = 0;
-		int idxCnt = 0;
-		for (Integer example : alExamples) {
-			for (int sampleNr = 0; sampleNr < iNrSamples; sampleNr++) {
-				if (idx[sampleNr] == example) {
-					AlIndexes.add(sampleNr);
-					count.set(counter, count.get(counter) + 1);
-				}
-				if (example == sampleNr) {
-					idxExamples.add(idxCnt);
-					idxCnt = 0;
-				}
-				idxCnt++;
-			}
-			counter++;
-		}
+		AlIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
@@ -471,6 +457,52 @@ public class AffinityClusterer
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 
 		return clusteredVAId;
+	}
+
+	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples, ArrayList<Integer> count,
+		ArrayList<Integer> idxExamples, int[] idx, EClustererType eClustererType) {
+
+		ArrayList<Integer> indexes = new ArrayList<Integer>();
+
+		IVirtualArray contentVA = set.getVA(iVAIdContent);
+		IVirtualArray storageVA = set.getVA(iVAIdStorage);
+
+		int counter = 0;
+		int idxCnt = 0;
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			for (Integer example : alExamples) {
+				for (Integer icontent : contentVA) {
+					if (idx[contentVA.indexOf(icontent)] == example) {
+						indexes.add(icontent);
+						count.set(counter, count.get(counter) + 1);
+					}
+					if (example == contentVA.indexOf(icontent)) {
+						idxExamples.add(idxCnt);
+						idxCnt = 0;
+					}
+					idxCnt++;
+				}
+				counter++;
+			}
+		}
+		else {
+			for (Integer example : alExamples) {
+				for (Integer icontent : storageVA) {
+					if (idx[storageVA.indexOf(icontent)] == example) {
+						indexes.add(icontent);
+						count.set(counter, count.get(counter) + 1);
+					}
+					if (example == storageVA.indexOf(icontent)) {
+						idxExamples.add(idxCnt);
+						idxCnt = 0;
+					}
+					idxCnt++;
+				}
+				counter++;
+			}
+		}
+
+		return indexes;
 	}
 
 	public int getNrClusters() {
@@ -502,7 +534,9 @@ public class AffinityClusterer
 			return -1;
 		}
 
-		VAId = affinityPropagation(set, clusterState.getClustererType());
+		this.set = set;
+
+		VAId = affinityPropagation(clusterState.getClustererType());
 
 		return VAId;
 	}

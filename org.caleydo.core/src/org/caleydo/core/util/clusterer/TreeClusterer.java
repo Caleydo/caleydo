@@ -103,7 +103,7 @@ public class TreeClusterer
 								isto++;
 							}
 
-							similarities[icnt1][icnt2] =
+							similarities[contentVA.indexOf(iContentIndex1)][contentVA.indexOf(iContentIndex2)] =
 								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
 						}
 						icnt2++;
@@ -151,7 +151,7 @@ public class TreeClusterer
 								isto++;
 							}
 
-							similarities[icnt1][icnt2] =
+							similarities[storageVA.indexOf(iStorageIndex1)][storageVA.indexOf(iStorageIndex2)] =
 								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
 						}
 						icnt2++;
@@ -547,7 +547,7 @@ public class TreeClusterer
 		return indexes;
 	}
 
-	public ArrayList<Integer> getAl() {
+	private ArrayList<Integer> getAl() {
 
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
 		traverse(indexes, tree.getRoot());
@@ -567,15 +567,20 @@ public class TreeClusterer
 	private String getNodeName(EClustererType eClustererType, int index) {
 		String nodeName = null;
 
+		IVirtualArray contentVA = set.getVA(idContent);
+		IVirtualArray storageVA = set.getVA(idStorage);
+
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				nodeName = GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(index);
+				nodeName = GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(contentVA.get(index));
 
 				nodeName += " | ";
-				nodeName += GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(index);// + 1);
+				nodeName +=
+					GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(contentVA.get(index));// +
+																										// 1);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {
-				nodeName = "generalManager.getIDMappingManager().getID(" + index + 1 + " )";
+				nodeName = "generalManager.getIDMappingManager().getID(" + contentVA.get(index) + " )";
 				// generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
 				// treeStructure[index].getLeft() + 1);
 			}
@@ -585,10 +590,27 @@ public class TreeClusterer
 			}
 		}
 		else {
-			nodeName = set.get(index).getLabel();
+			nodeName = set.get(storageVA.get(index)).getLabel();
 		}
 
 		return nodeName;
+	}
+
+	private int getNodeNr(EClustererType eClustererType, int index) {
+
+		int nodeNr = 0;
+
+		IVirtualArray contentVA = set.getVA(idContent);
+		IVirtualArray storageVA = set.getVA(idStorage);
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			nodeNr = contentVA.get(index);
+		}
+		else {
+			nodeNr = storageVA.get(index);
+		}
+
+		return nodeNr;
 	}
 
 	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index,
@@ -600,10 +622,9 @@ public class TreeClusterer
 		if (treeStructure[index].getLeft() >= 0) {
 
 			String NodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
+			int NodeNr = getNodeNr(eClustererType, treeStructure[index].getLeft());
 
-			left =
-				new ClusterNode(NodeName, treeStructure[index].getLeft(), treeStructure[index]
-					.getCorrelation(), 0, false);
+			left = new ClusterNode(NodeName, NodeNr, treeStructure[index].getCorrelation(), 0, false);
 
 			left.setNrElements(1);
 
@@ -611,7 +632,7 @@ public class TreeClusterer
 
 		}
 		else {
-			int random = getNodeCounter();// (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+			int random = getNodeCounter();
 
 			left =
 				new ClusterNode("Node_" + (-(treeStructure[index].getLeft()) - 1), random,
@@ -623,10 +644,9 @@ public class TreeClusterer
 		if (treeStructure[index].getRight() >= 0) {
 
 			String NodeName = getNodeName(eClustererType, treeStructure[index].getRight());
+			int NodeNr = getNodeNr(eClustererType, treeStructure[index].getRight());
 
-			right =
-				new ClusterNode(NodeName, treeStructure[index].getRight(), treeStructure[index]
-					.getCorrelation(), 0, false);
+			right = new ClusterNode(NodeName, NodeNr, treeStructure[index].getCorrelation(), 0, false);
 
 			right.setNrElements(1);
 
@@ -634,7 +654,7 @@ public class TreeClusterer
 
 		}
 		else {
-			int random = getNodeCounter();// (int) ((Math.random() * Integer.MAX_VALUE) + 1);
+			int random = getNodeCounter();
 
 			right =
 				new ClusterNode("Node_" + (-(treeStructure[index].getRight()) - 1), random,
