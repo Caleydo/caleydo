@@ -845,6 +845,9 @@ public class GenericSelectionManager {
 	}
 
 	private Set<Integer> convertExternalToInternal(Integer iSelectionID) {
+		if (externalToInternalMapping == null)
+			throw new IllegalStateException("Cannot convert ID's in selection manager " + this
+				+ "because no external ID mapping was set");
 		if (externalToInternalMapping.isMultiMap())
 			return GeneralManager.get().getIDMappingManager().getMultiID(externalToInternalMapping,
 				iSelectionID);
