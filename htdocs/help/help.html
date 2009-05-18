@@ -45,29 +45,35 @@ which means you can use it in any way you want provided you keep the link to the
 
 <div id="main">
 <div id="content">
-<h1 class="red">Help</h1>
+<h1 class="red">Help: Starting Up</h1>
 
 <ul>
-	<li><a href="#Prerequisites">Prerequisites</a></li>
-	<li><a href="#Installation">Installation</a></li>
-	<li><a href="#FirstRun">FirstRun</a></li>
-	<li><a href="#Startup">Startup</a></li>
-	<li><a href="#DataFormat">Data Format</a></li>
-	<li><a href="#Dataloading">Data Loading</a></li>
-	<li><a href="#Pathways">Pathways</a></li>
-	<li><a href="#ParallelCoordinates">Parallel Coordinates</a></li>
-	<li><a href="#HeatMap">Heat Map</a></li>
-	<li><a href="#Uninstallation">Uninstallation</a></li>
-	<li><a href="#KnownIssues">Known Issues</a></li>
+	<li><b>Starting Up</b>
+	<ul>
+		<li><a href="#Prerequisites">Prerequisites</a></li>
+		<li><a href="#Installation">Installation</a></li>
+		<li><a href="#FirstRun">FirstRun</a></li>
+		<li><a href="#Startup">Startup</a></li>
+		<li><a href="#DataFormat">Data Format</a></li>
+		<li><a href="#Dataloading">Data Loading</a></li>
+	</ul>
+	</li>
+	<li><a href="user_interface.html">The user interface</a></li>
+	<li><a href="gene_expression.html">Analyzing gene expression
+	regulation data</a></li>
+	<li><a href="bucket.html">Using the Bucket, working with
+	pathways</a></li>
+	<li><a href="uninstallation.html">Uninstallation</a></li>
+	<li><a href="issues.html">Known Issues and Bugs</a></li>
 </ul>
 
 <h2><a name="Prerequisites"></a>Prerequisites</h2>
 
-<p><b>Caleydo</b> visualizes thousands of data points and therefore
-is a resource intensive application and requires somewhat recent
-hardware. The system requirements vary widely with the amount of data
-you want to load and visualize simultaneously. We recommend the
-following hardware and software configurations:</p>
+<p>Caleydo visualizes thousands of data points and therefore is a
+resource intensive application and requires somewhat recent hardware.
+The system requirements vary widely with the amount of data you want to
+load and visualize simultaneously. We recommend the following hardware
+and software configurations:</p>
 <ul>
 	<li>A graphics card with at least 64 MB RAM is recommended.</li>
 	<li>Up to date graphics card drivers</li>
@@ -81,28 +87,30 @@ following hardware and software configurations:</p>
 </ul>
 <h2><a name="Installation"></a>Installation</h2>
 
-<h3>Installation</h3>
-<h4>Webstart</h4>
-<p>To run <b>Caleydo</b> as a webstart application, make sure you
-have Java installed and then simply click the large web start icon on
-the <a href="index.html">home</a> or the <a href="downloads.html">downloads</a>
+<h3>Webstart</h3>
+<p>Java Webstart allows you to run Caleydo without the need to
+install it. All the files will be downloaded automatically to your
+computer and Caleydo will start automatically once download is complete.</p>
+<p>To run Caleydo as a webstart application, make sure you have Java
+installed and then simply click the large web start icon on the <a
+	href="index.html">home</a> or the <a href="downloads.html">downloads</a>
 page.</p>
 <p>The application now downloads to your local hard drive and then
 executes. Note that you do not need to have administrator privileges to
 do that.</p>
 <p>Using web start ensures that you always have the most current
-version of <b>Caleydo</b>.</p>
+version of Caleydo.</p>
 
-<h4>Manual Installation</h4>
-To manually install Caleydo download the compressed file appropriate for
-your operating system from the <a href="downloads.html">download
+<h3>Manual Installation</h3>
+<p>To manually install Caleydo download the compressed file
+appropriate for your operating system from the <a href="downloads.html">download
 page</a>. Extract the archive, enter the created caleydo folder and click
-the executable (caleydo.exe on Windows)
+the executable (caleydo.exe on Windows).</p>
 
 
 <h2><a name="Startup"></a>Startup</h2>
 
-<p><img src="images/help/project_wizard.png" alt="Project Wizard"
+<p><img src="../images/help/project_wizard.png" alt="Project Wizard"
 	style="border-style: none; float: right; padding-left: 1em;" /> Upon
 startup you are presented with choices for different execution modes:</p>
 <ul>
@@ -131,15 +139,15 @@ pathways for the analysis (which makes startup slower) or not.</p>
 the option to load comma separated data.</p>
 
 <h2><a name="FirstRun"></a>First Run, Pathway Fetching</h2>
-<p><img src="images/help/pathway_fetching.png"
+
+<p><img src="../images/help/pathway_fetching.png"
 	alt="Pathway Fetching"
 	style="border-style: none; float: right; padding-left: 1em;" /> When
-you start <b>Caleydo</b> for the first time in Genetic Analysis mode
-with pathways enabled (see <a href="#Startup">Startup</a>) you will be
-asked to fetch the pathways from <a
-	href="http://www.biocarta.com/Biocarta">BioCarta</a> and <a
-	href="http://www.genome.jp/kegg/">KEGG</a>. Click <i>Fetch pathways</i>
-to start the process. <b>Caleydo</b> will then load the pathways from
+you start Caleydo for the first time in Genetic Analysis mode with
+pathways enabled (see <a href="#Startup">Startup</a>) you will be asked
+to fetch the pathways from <a href="http://www.biocarta.com/Biocarta">BioCarta</a>
+and <a href="http://www.genome.jp/kegg/">KEGG</a>. Click <i>Fetch
+pathways</i> to start the process. Caleydo will then load the pathways from
 the databases and store them on your local computer.</p>
 <p>The download will not surpass 30MB, but will exceed 1000 files.
 The data is stored in your users home directory in a folder called <code>.caleydo</code>.</p>
@@ -147,48 +155,47 @@ The data is stored in your users home directory in a folder called <code>.caleyd
 to do this only once, but you can manually redo it to update the pathway
 database via the preferences.</p>
 <p>In case you update Caleydo from a previous version, pathway
-fetching can be necessary as well.</p>
-<br />
-<br />
+fetching can be necessary as well. <br />
+<br /> <br />
+</p>
 
 
 <h2><a name="DataFormat"></a>Data Format</h2>
 <p>To analyze gene expression data in Caleydo the data currently has
 to be provided in a specific way:</p>
 <ul>
-	<li><b>File Format</b> Comma separated files (as can be exported
+	<li><b>File Format:</b> Comma separated files (as can be exported
 	from for example Microsoft Excel) with the extensions of *.csv or *.txt
 	are supported.</li>
-	<li><b>Delimiters</b> Any kind of delimiter is possible. The most
+	<li><b>Delimiters:</b> Any kind of delimiter is possible. The most
 	common are TAB and Semicolon.</li>
-	<li><b>Header</b> The file may contain a header, which can be
+	<li><b>Header:</b> The file may contain a header, which can be
 	ignored upon import</li>
-	<li><b>Identifier</b> The first column in the file <b>has to
+	<li><b>Identifier:</b> The first column in the file <b>has to
 	contain NCBI Accession numbers with the prefix NM</b>. While it is legal to
 	have rows without accession number in the file, those values will not
 	be available during the analysis.</li>
-	<li><b>Columns</b> The file may contain columns with other data,
+	<li><b>Columns:</b> The file may contain columns with other data,
 	such as gene short names. Those columns will have to be deselected upon
 	import.</li>
-	<li><b>Values</b> Any real value is legal. The decimal symbol is
+	<li><b>Values:</b> Any real value is legal. The decimal symbol is
 	period (.) not comma (,). 0.3445 is a legal value, 0,3445 is not. Non
 	existing values are legal. They can either be left blank or be
 	specified as NaN (not a number).</li>
-	<li><b>Column captions</b> The row before the actual values has to
+	<li><b>Column captions:</b> The row before the actual values has to
 	contain column captions (this would be the first line in the file, if
 	no header is present). It is legal (but unwise) to leave them blank</li>
-	<li><b>Length</b> All columns are of equal length</li>
+	<li><b>Length:</b> All columns are of equal length</li>
 </ul>
 
 
 
 <h2><a name="Dataloading"></a>Data Loading</h2>
-<p><img src="images/help/data_import.png"
+<p><img src="../images/help/data_import.png"
 	alt="Data loader screenshot"
-	style="border-style: none; float: right; padding-left: 1em;" />
-<p>To select a data file click the <i>Choose data file</i> button.
-You now get a file dialog where you can navigate to your .csv or .txt
-file.</p>
+	style="border-style: none; float: right; padding-left: 1em;" /> To
+select a data file click the <i>Choose data file</i> button. You now get
+a file dialog where you can navigate to your .csv or .txt file.</p>
 <p>Once loaded you can see a preview of your data in the table. If
 you have a delimiter different then TAB you have to specify the
 delimiter, which will automatically update the preview.</p>
@@ -210,42 +217,13 @@ text etc.</p>
 
 <p>Now click <b>Finish</b> and Caleydo will begin to load the data.</p>
 
-<h2>The Bucket</h2>
-
-<h2><a name="Pathways"></a>Pathways</h2>
-
-<h2><a name="ParallelCoordinates"></a>Parallel Coordinates</h2>
-
-<h2><a name="HeatMap"></a>Heat Map</h2>
-
-<h2><a name="Uninstallation"></a>Uninstallation</h2>
-
-<p>When you want to uninstall <b>Caleydo</b> you need to run <i>javaws
--viewer</i> in a console, which will bring up the Java web start management
-console. In the Java Cache Viewer select <b>Caleydo</b> and remove it.
-Now switch to <i>Resources</i> in the cache viewer and delete all <b>Caleydo</b>
-resources as well.</p>
-<p>Finally, go to your home directory (<i>C:\Documents and
-Settings\User\</i> in Windows or <i>/home/user/</i> in Linux) and delete the
-<i>.caleydo</i> folder.</p>
-
-<h2><a name="KnownIssues"></a>Known Issues</h2>
-<h3>General</h3>
-<h3>Windows</h3>
-Many issues on Windows are due to old Java versions or old graphics card
-drivers. Please update those if possible. <!-- If you do not want to or can
-not update your system, we provide a compatibility mode, which can be
-downloaded <a href="download/webstart/caleydo_compatibility_mode.jnlp">here</a>.
-However, using this mode will seriously impair the rendering performance
-of Caleydo. -->
-<ul>
-	<li><b>Web start windows are blank</b><br />
-	When starting via web start the download window and the security alert
-	window are blank (render the background). This is an issue with
-	graphics card drivers. <br />
-	<b>Solution:</b> Install the latest graphics card drivers.</li>
-</ul>
-
+<br />
+<table style="width: 100%">
+	<tr>
+		<td></td>
+		<td style="text-align: right"><a href="user_interface.html">Next: The user interface &gt;</a></td>
+	</tr>
+</table>
 
 <!-- Website maintenance message -->
 <div id="maintenance" style="text-align: right">
