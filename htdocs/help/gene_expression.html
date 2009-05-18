@@ -58,14 +58,57 @@ which means you can use it in any way you want provided you keep the link to the
 	</li>
 	<li><a href="bucket.html">Using the Bucket, working with
 	pathways</a></li>
+	<li><a href="search.html">Searching for genes and pathways</a></li>
 	<li><a href="uninstallation.html">Uninstallation</a></li>
 	<li><a href="issues.html">Known Issues and Bugs</a></li>
 </ul>
 
 
 <h2><a name="ParallelCoordinates"></a>Parallel Coordinates</h2>
+<h3>Introduction</h3>
+<p><img
+	src="../images/help/gene_expression/parallel_coordinates.png"
+	alt="Parallel Coordinates"
+	style="border-style: none; float: right; padding-left: 1em;" />
+Parallel coordinates visualize multidimensional data by drawing lines
+between a set of axis. Each line represents one entity, typically a
+gene. Each axis a dimension, typically an experiment. When one gene is
+viewed in the parallel coordinates, all it's expression values for the
+experiments are visible simultaneously. By drawing multiple lines at the
+same time, trends in a dataset can be identified. In the screen-shot a
+dense (dark) area around the bottom signals that many genes have
+expression values in this area.</p>
+
+<h3>Brushing</h3>
+Our parallel coordinates implementation, as shown in Figure
+\ref{gfx:pcs}, allows the arbitrary rearrangement, duplication or
+removal of axes. We also provide several logarithmic transformations,
+which can be changed at run-time. We support individual selection of
+lines, single-dimensional brushing, angular brushes~\cite{Hauser2002} as
+well as a brush that allows to remove all lines that never leave a
+specified corridor. The latter was inspired by our users' need to remove
+those genes, that are neither over- nor underexpressed in any condition.
+
+<h3>Swapping Dimensions</h3>
+TODO: image
+<p>When using parallel coordinates, it is possible to show the data
+in two different ways. In our case we have experiments and genes. Both
+can be the axes or the polylines, but exchanging them produces radically
+different results. Showing genes as axes is desired when differences
+between the experiments are of interest. One example is the comparison
+of gene expression patterns from carcinogenic tissue with healthy
+tissue. However, when discontinuities of gene expression over several
+experiments are of interest, it is beneficial to show the experiments as
+axes. As an example, consider a user is interested in different
+expression values of a small number of genes in many different
+experimental conditions.</p>
 
 <h2><a name="HeatMap"></a>Heat Map</h2>
+
+<h2><a name="Clustering"></a>Clustering</h2>
+
+<h2><a name="TabularDataViewer"></a>Tabular Data Viewer</h2>
+
 
 
 <br />
