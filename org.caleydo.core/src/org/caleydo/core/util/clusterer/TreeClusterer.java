@@ -601,7 +601,7 @@ public class TreeClusterer
 			int iNr = 1;
 			if(duplicatedNodes.containsKey(nodeName)){
 				iNr = duplicatedNodes.get(nodeName);
-				duplicatedNodes.put(nodeName, iNr + 1);
+				duplicatedNodes.put(nodeName, ++iNr);
 			}
 			else	
 				duplicatedNodes.put(nodeName, iNr);
