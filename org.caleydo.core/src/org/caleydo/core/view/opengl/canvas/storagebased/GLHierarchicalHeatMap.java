@@ -135,7 +135,7 @@ public class GLHierarchicalHeatMap
 	private float fWidthEHM = 0;
 
 	// embedded dendrogram
-	private GLDendrogramVertical glDendrogram;
+	private GLDendrogram glDendrogram;
 
 	private boolean bRedrawTextures = false;
 
@@ -199,7 +199,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
-		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
+		glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		initTextures(gl);
 	}
@@ -317,8 +317,13 @@ public class GLHierarchicalHeatMap
 	 */
 	private void initPosCursor() {
 
+		// if current textures contains little number of elements, set samples per textures to a small value
 		if (iSamplesPerHeatmap > iAlNumberSamples.get(iSelectorBar - 1) / 2)
 			iSamplesPerHeatmap = (int) Math.floor(iAlNumberSamples.get(iSelectorBar - 1) / 3);
+		// if previous texture contained little number of elements, set samples per textures to
+		// MIN_SAMPLES_PER_HEATMAP
+		else if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
+			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
 
 		if (AlSelection.size() > 0) {
 			int iNumberSample = iAlNumberSamples.get(iSelectorBar - 1);
@@ -676,7 +681,7 @@ public class GLHierarchicalHeatMap
 
 		cmdView.doCommand();
 
-		glDendrogram = (GLDendrogramVertical) cmdView.getCreatedObject();
+		glDendrogram = (GLDendrogram) cmdView.getCreatedObject();
 		GeneralManager.get().getUseCase().addView(glDendrogram);
 		glDendrogram.setUseCase(useCase);
 		glDendrogram.setRenderedRemote(true);

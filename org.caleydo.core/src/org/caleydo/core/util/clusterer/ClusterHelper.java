@@ -83,7 +83,7 @@ public class ClusterHelper {
 			int temp = node.getDepth();
 
 			for (ClusterNode current : tree.getChildren(node)) {
-				if (temp < determineHierarchyDepthRec(tree, current))
+				if (temp <= determineHierarchyDepthRec(tree, current))
 					temp = determineHierarchyDepthRec(tree, current) + 1;
 			}
 

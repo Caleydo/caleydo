@@ -28,8 +28,7 @@ import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogramHorizontal;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogramVertical;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -270,11 +269,11 @@ public class ViewManager
 				break;
 				
 			case CREATE_GL_DENDROGRAM_HORIZONTAL:
-				glEventListener = new GLDendrogramHorizontal(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, true);
 				break;
 				
 			case CREATE_GL_DENDROGRAM_VERTICAL:
-				glEventListener = new GLDendrogramVertical(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, false);
 				break;
 
 			default:

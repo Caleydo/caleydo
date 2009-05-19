@@ -1,6 +1,7 @@
 package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -555,6 +556,9 @@ public class TreeClusterer
 		return indexes;
 	}
 
+	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
+	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
+	
 	/**
 	 * Returns name of the node. Therefore we need an index of the gene/experiment
 	 * 
@@ -593,6 +597,20 @@ public class TreeClusterer
 			nodeName = set.get(storageVA.get(index)).getLabel();
 		}
 
+		if(hashedNodeNames.containsKey(nodeName)){
+			int iNr = 1;
+			if(duplicatedNodes.containsKey(nodeName)){
+				iNr = duplicatedNodes.get(nodeName);
+				duplicatedNodes.put(nodeName, iNr + 1);
+			}
+			else	
+				duplicatedNodes.put(nodeName, iNr);
+			
+			nodeName = nodeName + "__" + iNr;
+		}
+		else
+			hashedNodeNames.put(nodeName, 1);
+		
 		return nodeName;
 	}
 

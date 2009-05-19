@@ -66,8 +66,8 @@ public class FileLoadDataAction
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 
 	private Text txtFileName;
-//	private Text txtGeneTreeFileName;
-//	private Text txtExperimentsTreeFileName;
+	private Text txtGeneTreeFileName;
+	private Text txtExperimentsTreeFileName;
 	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;
@@ -151,47 +151,47 @@ public class FileLoadDataAction
 			}
 		});
 
-//		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-//		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
-//
-//		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-//		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//
-//		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent event) {
-//
-//				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-//				fileDialog.setText("Open");
-//				fileDialog.setFilterPath(sFilePath);
-//				String[] filterExt = { "*.xml*" };
-//				fileDialog.setFilterExtensions(filterExt);
-//				sGeneTreeFileName = fileDialog.open();
-//
-//				txtGeneTreeFileName.setText(sGeneTreeFileName);
-//			}
-//		});
+		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
+
+		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+				fileDialog.setText("Open");
+				fileDialog.setFilterPath(sFilePath);
+				String[] filterExt = { "*.xml*" };
+				fileDialog.setFilterExtensions(filterExt);
+				sGeneTreeFileName = fileDialog.open();
+
+				txtGeneTreeFileName.setText(sGeneTreeFileName);
+			}
+		});
 		
-//		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-//		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
-//
-//		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-//		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//
-//		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent event) {
-//
-//				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-//				fileDialog.setText("Open");
-//				fileDialog.setFilterPath(sFilePath);
-//				String[] filterExt = { "*.xml*" };
-//				fileDialog.setFilterExtensions(filterExt);
-//				sExperimentsFileName = fileDialog.open();
-//
-//				txtExperimentsTreeFileName.setText(sExperimentsFileName);
-//			}
-//		});
+		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
+
+		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+				fileDialog.setText("Open");
+				fileDialog.setFilterPath(sFilePath);
+				String[] filterExt = { "*.xml*" };
+				fileDialog.setFilterExtensions(filterExt);
+				sExperimentsFileName = fileDialog.open();
+
+				txtExperimentsTreeFileName.setText(sExperimentsFileName);
+			}
+		});
 		
 		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Ignore lines in header");
@@ -734,10 +734,6 @@ public class FileLoadDataAction
 			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.LOAD_DATA_FILE);
 
-		// ISWTGUIManager iSWTGUIManager =
-		// GeneralManager.get().getSWTGUIManager();
-		// iSWTGUIManager.setProgressBarVisible(true);
-
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sGeneTreeFileName, sExperimentsFileName, sInputPattern, sDelimiter,
 			iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
@@ -746,8 +742,6 @@ public class FileLoadDataAction
 			// TODO: Clear created set and storages which are empty
 			return false;
 		}
-
-		// iSWTGUIManager.setProgressBarVisible(false);
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
