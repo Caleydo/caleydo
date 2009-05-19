@@ -33,6 +33,8 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
+import org.caleydo.core.manager.event.view.keyboard.ArrowDownPressedEvent;
+import org.caleydo.core.manager.event.view.keyboard.KeyPressedEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -50,6 +52,8 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.IKeyPressedHandler;
+import org.caleydo.core.view.opengl.canvas.listener.KeyPressedListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingActionListener;
@@ -80,7 +84,7 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
-	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver {
+	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver, IKeyPressedHandler {
 
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.4f;
@@ -163,6 +167,7 @@ public class GLHierarchicalHeatMap
 	private GroupInterChangingActionListener groupInterChangingActionListener;
 	private UpdateViewListener updateViewListener;
 	private StartClusteringListener startClusteringListener;
+	private KeyPressedListener keyPressedListener;
 
 	/**
 	 * Constructor.
@@ -1261,7 +1266,7 @@ public class GLHierarchicalHeatMap
 				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 			}
 
-			// TODO: find a better way to render cluster assignments (--> +0.01f)
+			// TODO: find a better way to render cluster assignments (--> +0.01f is not a fine way)
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(0, fHeight - fHeightElem * iStartElem, 0);
 			gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iStartElem, 0);
@@ -3005,6 +3010,10 @@ public class GLHierarchicalHeatMap
 		startClusteringListener.setHandler(this);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
 
+		keyPressedListener = new KeyPressedListener();
+		keyPressedListener.setHandler(this);
+		eventPublisher.addListener(KeyPressedEvent.class, keyPressedListener);
+
 	}
 
 	@Override
@@ -3023,10 +3032,13 @@ public class GLHierarchicalHeatMap
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
 		}
-
 		if (startClusteringListener != null) {
 			eventPublisher.removeListener(startClusteringListener);
 			startClusteringListener = null;
+		}
+		if (keyPressedListener != null) {
+			eventPublisher.removeListener(keyPressedListener);
+			keyPressedListener = null;
 		}
 	}
 
@@ -3057,6 +3069,54 @@ public class GLHierarchicalHeatMap
 	public void handleUpdateView() {
 		bRedrawTextures = true;
 		setDisplayListDirty();
+	}
+
+	@Override
+	public void handleArrowDownAltPressed() {
+		System.out.println("handleArrowDownAltPressed");
+
+	}
+
+	@Override
+	public void handleArrowDownCtrlPressed() {
+		System.out.println("handleArrowDownCtrlPressed");
+
+	}
+
+	@Override
+	public void handleArrowDownPressed() {
+		System.out.println("handleArrowDownPressed");
+
+	}
+
+	@Override
+	public void handleArrowLeftPressed() {
+		System.out.println("handleArrowLeftPressed");
+
+	}
+
+	@Override
+	public void handleArrowRightPressed() {
+		System.out.println("handleArrowRightPressed");
+
+	}
+
+	@Override
+	public void handleArrowUpAltPressed() {
+		System.out.println("handleArrowUpAltPressed");
+
+	}
+
+	@Override
+	public void handleArrowUpCtrlPressed() {
+		System.out.println("handleArrowUpCtrlPressed");
+
+	}
+
+	@Override
+	public void handleArrowUpPressed() {
+		System.out.println("handleArrowUpPressed");
+
 	}
 
 }
