@@ -497,18 +497,20 @@ public class SearchView
 			item.setText(5, sGeneName);
 
 			item.setData(iDavidID);
+		}
 
-			// Highlight content if it matches the search query
-			for (int iIndex = 0; iIndex < geneTable.getColumnCount(); iIndex++) {
+		// Sort gene table using the info whether expression data is available or not.
+		sortTable(geneTable, 0);
+
+		// Highlight content if it matches the search query
+		for (int iIndex = 0; iIndex < geneTable.getColumnCount(); iIndex++) {
+			for (TableItem item : geneTable.getItems()) {
 				regexMatcher = pattern.matcher(item.getText(iIndex));
 				if (regexMatcher.find()) {
 					item.setBackground(iIndex, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 				}
 			}
 		}
-
-		// Sort gene table using the info whether expression data is available or not.
-		sortTable(geneTable, 0);
 
 		for (TableColumn column : geneTable.getColumns())
 			column.pack();
@@ -540,7 +542,7 @@ public class SearchView
 					// Do not create context menu for genes that have to expression value
 					if (!tableItem.getText(0).equals("FOUND"))
 						continue;
-					
+
 					MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 					openInBrowserMenuItem.setText("Open in browser");
 					openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
@@ -703,7 +705,7 @@ public class SearchView
 		return pathwaysContainingGene;
 	}
 
-	@SuppressWarnings(value={"unchecked"})
+	@SuppressWarnings(value = { "unchecked" })
 	public static void sortTable(Table table, int iColumnIndex) {
 		if (table == null || table.getColumnCount() <= 1)
 			return;

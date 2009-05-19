@@ -14,7 +14,7 @@ public class HelpContentsHandler
 	extends AbstractHandler
 	implements IHandler {
 
-	private final static String URL_HELP_CONTENTS = "http://www.caleydo.org/help.html";
+	private final static String URL_HELP_CONTENTS = "http://www.caleydo.org/help/help.html";
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
