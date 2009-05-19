@@ -196,6 +196,15 @@ public class GLHierarchicalHeatMap
 		createHeatMap();
 	}
 
+	/**
+	 * Function used in keyListener to forward upDownselection to EHM
+	 * 
+	 * @return embedded heat map
+	 */
+	public GLHeatMap getEmbeddedHeatMap() {
+		return glHeatMapView;
+	}
+
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
@@ -253,7 +262,11 @@ public class GLHierarchicalHeatMap
 		bRenderStorageHorizontally = false;
 
 		// Register keyboard listener to GL canvas
-		// parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -3014,6 +3027,29 @@ public class GLHierarchicalHeatMap
 		if (startClusteringListener != null) {
 			eventPublisher.removeListener(startClusteringListener);
 			startClusteringListener = null;
+		}
+	}
+
+	public void pageUpDownSelected(boolean bPageDown) {
+
+		// switching the textures is only allowed when level 1 active (--> more than 1 texture available)
+		if (bSkipLevel1 == false) {
+			if (bPageDown) {
+				if (iSelectorBar > 1) {
+					iSelectorBar--;
+					initPosCursor();
+					triggerSelectionBlock();
+					setDisplayListDirty();
+				}
+			}
+			else {
+				if (iSelectorBar < iNrSelBar) {
+					iSelectorBar++;
+					initPosCursor();
+					triggerSelectionBlock();
+					setDisplayListDirty();
+				}
+			}
 		}
 	}
 

@@ -120,11 +120,12 @@ public class GLDendrogram
 		if (bRenderGeneTree)
 			fPosCut = 0.1f;
 		else
-			fPosCut =  2f;
+			fPosCut = 2f;
 	}
 
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
@@ -137,6 +138,8 @@ public class GLDendrogram
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+
 		if (updateViewListener != null) {
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
@@ -812,8 +815,10 @@ public class GLDendrogram
 						if (storageSelectionManager.checkStatus(iExternalID))
 							bupdateSelectionManager = true;
 
-						if (tree.getNodeByNumber(iExternalID) != null)
+						if (tree.getNodeByNumber(iExternalID) != null) {
+							resetAllTreeSelections();
 							tree.getNodeByNumber(iExternalID).setSelectionType(ESelectionType.SELECTION);
+						}
 						setDisplayListDirty();
 						break;
 					case DRAGGED:
@@ -865,8 +870,10 @@ public class GLDendrogram
 						if (storageSelectionManager.checkStatus(iExternalID))
 							bupdateSelectionManager = true;
 
-						if (tree.getNodeByNumber(iExternalID) != null)
+						if (tree.getNodeByNumber(iExternalID) != null) {
+							resetAllTreeSelections();
 							tree.getNodeByNumber(iExternalID).setSelectionType(ESelectionType.SELECTION);
+						}
 						setDisplayListDirty();
 						break;
 					case DRAGGED:
@@ -1084,13 +1091,13 @@ public class GLDendrogram
 	@Override
 	public void handleMouseOver(int clusterNr) {
 		// cluster mouse over events only used for gene trees
-		// if (tree != null) {
-		// resetAllTreeSelections();
-		// if (tree.getNodeByNumber(clusterNr) != null)
-		// tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
-		//
-		// setDisplayListDirty();
-		// }
+		if (tree != null && bRenderGeneTree) {
+			resetAllTreeSelections();
+			if (tree.getNodeByNumber(clusterNr) != null)
+				tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
+
+			setDisplayListDirty();
+		}
 	}
 
 	@Override
