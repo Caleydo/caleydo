@@ -30,7 +30,7 @@ public class DrawingStateFullHierarchy
 
 		int iDisplayedHierarchyDepth =
 			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement
-				.getHierarchyDepth(iMaxDisplayedHierarchyDepth));
+				.getHierarchyDepth());
 
 		pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 			.getDefaultDrawingStrategy(), iDisplayedHierarchyDepth);
@@ -60,11 +60,11 @@ public class DrawingStateFullHierarchy
 				}
 				else {
 					bIsMouseOverElementParentOfCurrentRoot = true;
-					bIsMouseOverElementDisplayed = false;					
+					bIsMouseOverElementDisplayed = false;
 				}
 			}
-			
-			if(bIsMouseOverElementDisplayed) {
+
+			if (bIsMouseOverElementDisplayed) {
 				PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
 				dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDefaultDrawingStrategy());
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(dsLabelDecorator, 3);
@@ -75,18 +75,18 @@ public class DrawingStateFullHierarchy
 
 		// The mouse over element has to be drawn (again in using different drawing strategy) at last for
 		// correct antialiasing
-		if(bIsMouseOverElementDisplayed) {
+		if (bIsMouseOverElementDisplayed) {
 			PDDrawingStrategy dsSelected =
 				DrawingStrategyManager.get().getDrawingStrategy(
 					DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED);
 			dsSelected.drawPartialDisc(gl, glu, pdCurrentMouseOverElement);
 		}
-		
-		if(bIsMouseOverElementParentOfCurrentRoot) {
+
+		if (bIsMouseOverElementParentOfCurrentRoot) {
 			gl.glPushClientAttrib(GL.GL_COLOR_BUFFER_BIT);
 			gl.glColor3fv(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR, 0);
-			GLPrimitives.renderCircle(gl, glu, fDiscWidth/2.0f, 100);
-			GLPrimitives.renderCircleBorder(gl, glu, fDiscWidth/2.0f, 100, 2);
+			GLPrimitives.renderCircle(gl, glu, fDiscWidth / 2.0f, 100);
+			GLPrimitives.renderCircleBorder(gl, glu, fDiscWidth / 2.0f, 100, 2);
 			gl.glPopAttrib();
 		}
 
@@ -96,13 +96,14 @@ public class DrawingStateFullHierarchy
 	}
 
 	@Override
-	public void handleClick(PartialDisc pdClicked) {
+	public void handleSelection(PartialDisc pdClicked) {
 
 		PartialDisc pdRealRootElement = radialHierarchy.getRealRootElement();
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
 		if (pdClicked != pdRealRootElement && pdClicked.hasChildren()) {
+			
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 					.getDefaultDrawingStrategy(), 3);
@@ -124,7 +125,7 @@ public class DrawingStateFullHierarchy
 	}
 
 	@Override
-	public void handleMouseOver(PartialDisc pdMouseOver) {
+	public void handleFocus(PartialDisc pdMouseOver) {
 
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
@@ -146,12 +147,13 @@ public class DrawingStateFullHierarchy
 	}
 
 	@Override
-	public void handleDoubleClick(PartialDisc pdClicked) {
+	public void handleAlternativeSelection(PartialDisc pdClicked) {
 
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
 		if (pdClicked != pdCurrentRootElement && pdClicked.hasChildren() && pdClicked.getCurrentDepth() > 1) {
+			
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategy(DrawingStrategyManager.get()
 					.getDefaultDrawingStrategy());

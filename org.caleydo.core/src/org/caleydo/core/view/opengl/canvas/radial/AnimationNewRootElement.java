@@ -56,7 +56,7 @@ public class AnimationNewRootElement
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, mvCurrentWidth.getMovementValue(),
 			fTargetDepth, mvCurrentRootStartAngle.getMovementValue(), mvCurrentRootAngle.getMovementValue(),
 			mvCurrentRootInnerRadius.getMovementValue());
-		
+
 		if (haveMovementValuesReachedTargets()) {
 			bAnimationStarted = false;
 		}
@@ -183,7 +183,7 @@ public class AnimationNewRootElement
 
 		fTargetDepth =
 			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdCurrentSelectedElement
-				.getHierarchyDepth(radialHierarchy.getMaxDisplayedHierarchyDepth()));
+				.getHierarchyDepth());
 		float fTargetWidth = Math.min(fXCenter * 0.9f, fYCenter * 0.9f) / fTargetDepth;
 
 		float fMidAngle = fCurrentRootStartAngle + (fCurrentRootAngle / 2.0f);

@@ -94,13 +94,16 @@ public class AnimationPopOutDetailOutside
 
 		float fCurrentRootWidth = pdCurrentRootElement.getCurrentWidth();
 
-		int iCurrentSelectedElementDepth = pdCurrentSelectedElement.getCurrentDepth();
+		int iMaxDisplayedHierarchyDepth = radialHierarchy.getMaxDisplayedHierarchyDepth();
+		int iCurrentSelectedElementHierarchyDepth = pdCurrentSelectedElement.getHierarchyDepth();
 		float fCurrentSelectedElementWidth = pdCurrentSelectedElement.getCurrentWidth();
 		float fCurrentSelecedElementInnderRadius = pdCurrentSelectedElement.getCurrentInnerRadius();
-
-		int iMaxDisplayedHierarchyDepth = radialHierarchy.getMaxDisplayedHierarchyDepth();
+		int iDepthToRoot = pdCurrentSelectedElement.getParentPathLength(pdCurrentRootElement);
+		
 		float fDetailViewScreenPercentage;
 
+		iDisplayedDetailViewDepth = Math.min(iMaxDisplayedHierarchyDepth - iDepthToRoot, iCurrentSelectedElementHierarchyDepth);
+		
 		if (iMaxDisplayedHierarchyDepth <= RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH + 1) {
 			fDetailViewScreenPercentage = RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE;
 		}
@@ -112,11 +115,10 @@ public class AnimationPopOutDetailOutside
 
 			fDetailViewScreenPercentage =
 				RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE
-					+ (iCurrentSelectedElementDepth - RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH)
+					+ (iDisplayedDetailViewDepth - RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH)
 					* fPercentageStep;
 		}
 
-		iDisplayedDetailViewDepth = Math.min(iMaxDisplayedHierarchyDepth, iCurrentSelectedElementDepth);
 		float fDetailViewTargetWidth =
 			Math.min(fXCenter * fDetailViewScreenPercentage, fYCenter * fDetailViewScreenPercentage)
 				/ iDisplayedDetailViewDepth;
@@ -125,7 +127,7 @@ public class AnimationPopOutDetailOutside
 			100.0f - (fDetailViewScreenPercentage + (100.0f - RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE));
 		iDisplayedOverviewDepth =
 			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement
-				.getHierarchyDepth(iMaxDisplayedHierarchyDepth));
+				.getHierarchyDepth());
 
 		float fTotalOverviewWidth =
 			Math.min(fXCenter * fOverviewScreenPercentage, fYCenter * fOverviewScreenPercentage);

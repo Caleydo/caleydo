@@ -37,17 +37,17 @@ public abstract class DrawingStateAnimation
 	}
 
 	@Override
-	public final void handleClick(PartialDisc pdClicked) {
+	public final void handleSelection(PartialDisc pdClicked) {
 		// do nothing
 	}
 
 	@Override
-	public final void handleMouseOver(PartialDisc pdMouseOver) {
+	public final void handleFocus(PartialDisc pdMouseOver) {
 		// do nothing
 	}
 
 	@Override
-	public final void handleDoubleClick(PartialDisc pdClicked) {
+	public final void handleAlternativeSelection(PartialDisc pdClicked) {
 		// do nothing
 	}
 

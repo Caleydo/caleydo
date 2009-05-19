@@ -2,6 +2,9 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
+import org.caleydo.core.manager.general.GeneralManager;
+
 public class NavigationHistory {
 
 	private ArrayList<HistoryEntry> alHistoryEntries;
@@ -35,6 +38,7 @@ public class NavigationHistory {
 		if (iCurrentEntryPosition <= 0) {
 			return;
 		}
+
 		iCurrentEntryPosition--;
 
 		applyCurrentHistoryEntry();
@@ -45,6 +49,7 @@ public class NavigationHistory {
 		if ((iCurrentEntryPosition < 0) || (iCurrentEntryPosition >= alHistoryEntries.size() - 1)) {
 			return;
 		}
+
 		iCurrentEntryPosition++;
 
 		applyCurrentHistoryEntry();
@@ -65,8 +70,15 @@ public class NavigationHistory {
 
 		radialHierarchy.setCurrentRootElement(pdRootElement);
 		radialHierarchy.setCurrentSelectedElement(pdSelectedElement);
+
 		radialHierarchy.setCurrentMouseOverElement(pdSelectedElement);
 		radialHierarchy.setMaxDisplayedHierarchyDepth(heCurrentEntry.getMaxDisplayedHierarchyDepth());
+		
+		UpdateDepthSliderPositionEvent updateDepthSliderPositionEvent = new UpdateDepthSliderPositionEvent();
+		updateDepthSliderPositionEvent.setSender(this);
+		updateDepthSliderPositionEvent.setDepthSliderPosition(heCurrentEntry.getMaxDisplayedHierarchyDepth());
+		GeneralManager.get().getEventPublisher().triggerEvent(updateDepthSliderPositionEvent);
+		
 		drawingController.setDrawingState(heCurrentEntry.getDrawingState());
 
 		radialHierarchy.setDisplayListDirty();
@@ -82,5 +94,34 @@ public class NavigationHistory {
 
 	public int getSize() {
 		return alHistoryEntries.size() - 1;
+	}
+
+	public void setCurrentMaxDisplayedHierarchyDepth(int iMaxDisplayedHierarchyDepth) {
+
+		if (iCurrentEntryPosition < 0)
+			return;
+		HistoryEntry heCurrentEntry = alHistoryEntries.get(iCurrentEntryPosition);
+		if (heCurrentEntry == null) {
+			return;
+		}
+
+		heCurrentEntry.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+	}
+	
+	public void replaceCurrentHistoryEntry(DrawingState drawingState, PartialDisc pdCurrentRootElement,
+		PartialDisc pdCurrentSelectedElement, int iMaxDisplayedHierarchyDepth) {
+
+		if (iCurrentEntryPosition < 0)
+			return;
+		HistoryEntry heCurrentEntry = alHistoryEntries.get(iCurrentEntryPosition);
+		if (heCurrentEntry == null) {
+			return;
+		}
+
+		heCurrentEntry.setDrawingState(drawingState);
+		heCurrentEntry.setRootElement(pdCurrentRootElement);
+		heCurrentEntry.setSelectedElement(pdCurrentSelectedElement);
+		heCurrentEntry.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+		
 	}
 }

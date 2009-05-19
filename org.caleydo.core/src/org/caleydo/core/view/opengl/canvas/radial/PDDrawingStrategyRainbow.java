@@ -27,7 +27,7 @@ public class PDDrawingStrategyRainbow
 
 		ColorMappingManager.get().initColorMapping(EColorMappingType.RAINBOW, alMarkerPoints);
 	}
-	
+
 	@Override
 	public void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
 
@@ -44,7 +44,7 @@ public class PDDrawingStrategyRainbow
 			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
 				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
-		
+
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR, 0);
 		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
 
@@ -55,7 +55,6 @@ public class PDDrawingStrategyRainbow
 		gl.glPopAttrib();
 		gl.glPopName();
 	}
-
 
 	@Override
 	public void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw) {
@@ -75,7 +74,7 @@ public class PDDrawingStrategyRainbow
 		while (fMidAngle < 0) {
 			fMidAngle += 360;
 		}
-		
+
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
@@ -85,8 +84,8 @@ public class PDDrawingStrategyRainbow
 		}
 
 		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
+		
 		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);
-
 		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], 1);
 
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,

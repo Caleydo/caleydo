@@ -141,6 +141,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
  org.caleydo.core.manager.event.view.glyph,
  org.caleydo.core.manager.event.view.infoarea,
  org.caleydo.core.manager.event.view.pathway;uses:="org.caleydo.core.manager.event",
+ org.caleydo.core.manager.event.view.radial,
  org.caleydo.core.manager.event.view.remote;uses:="org.caleydo.core.data.mapping,org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.storagebased,
  org.caleydo.core.manager.general;
@@ -321,6 +322,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.view.opengl.canvas,
    org.caleydo.core.manager.picking,
    org.caleydo.core.data.selection",
+ org.caleydo.core.view.opengl.canvas.radial,
  org.caleydo.core.view.opengl.canvas.remote;
   uses:="org.caleydo.core.manager.view,
    org.caleydo.core.view.opengl.util.infoarea,

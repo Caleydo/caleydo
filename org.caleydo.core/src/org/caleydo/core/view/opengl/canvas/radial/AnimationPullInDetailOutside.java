@@ -72,9 +72,10 @@ public class AnimationPullInDetailOutside
 
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
-			radialHierarchy.setCurrentMouseOverElement(pdCurrentSelectedElement);
-
-			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentSelectedElement,
+			radialHierarchy.setCurrentMouseOverElement(pdCurrentRootElement);
+			radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
+			
+			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentRootElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
 
 			// pdCurrentSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(

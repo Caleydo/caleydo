@@ -65,7 +65,7 @@ public class AnimationParentRootElement
 			radialHierarchy.setCurrentRootElement(pdNewRootElement);
 			radialHierarchy.setCurrentMouseOverElement(pdNewRootElement);
 			radialHierarchy.setCurrentSelectedElement(pdNewRootElement);
-
+			
 			navigationHistory.addNewHistoryEntry(dsNext, pdNewRootElement, pdNewRootElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
 
@@ -147,7 +147,7 @@ public class AnimationParentRootElement
 
 		int iDisplayedHierarchyDepth =
 			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdNewRootElement
-				.getHierarchyDepth(radialHierarchy.getMaxDisplayedHierarchyDepth()));
+				.getHierarchyDepth());
 		
 		float fTargetWidth = Math.min(fXCenter * 0.9f, fYCenter * 0.9f) / (float)iDisplayedHierarchyDepth;
 		

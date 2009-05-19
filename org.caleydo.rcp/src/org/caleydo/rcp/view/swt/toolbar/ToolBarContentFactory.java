@@ -11,6 +11,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
+import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
@@ -22,12 +23,14 @@ import org.caleydo.rcp.view.opengl.GLHeatMapView;
 import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.view.opengl.GLHistogramView;
 import org.caleydo.rcp.view.opengl.GLParCoordsView;
+import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
 import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ParCoordsToolBarContent;
+import org.caleydo.rcp.view.swt.toolbar.content.radial.RadialHierarchyToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;
@@ -131,6 +134,15 @@ public class ToolBarContentFactory {
 		info.rcpID = GLHistogramView.ID;
 		info.ignored = true;
 		toolBarInfos.put(info.viewClass, info);		
+		
+		
+		
+		info = new ToolBarInfo();
+		info.viewClass = GLRadialHierarchy.class;
+		info.contentClass = RadialHierarchyToolBarContent.class;
+		info.rcpID = GLRadialHierarchyView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
 	}
 
 	/**

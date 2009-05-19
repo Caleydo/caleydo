@@ -37,19 +37,19 @@ public class DrawingController {
 		currentDrawingState.draw(fXCenter, fYCenter, gl, glu);
 	}
 
-	public void handleMouseOver(PartialDisc pdMouseOver) {
+	public void handleFocus(PartialDisc pdMouseOver) {
 
-		currentDrawingState.handleMouseOver(pdMouseOver);
+		currentDrawingState.handleFocus(pdMouseOver);
 	}
 
-	public void handleClick(PartialDisc pdClicked) {
+	public void handleSelection(PartialDisc pdClicked) {
 
-		currentDrawingState.handleClick(pdClicked);
+		currentDrawingState.handleSelection(pdClicked);
 	}
 
-	public void handleDoubleClick(PartialDisc pdClicked) {
+	public void handleAlternativeSelection(PartialDisc pdClicked) {
 
-		currentDrawingState.handleDoubleClick(pdClicked);
+		currentDrawingState.handleAlternativeSelection(pdClicked);
 	}
 
 	public void setDrawingState(DrawingState drawingState) {

@@ -130,8 +130,12 @@ public class GLHeatMap
 		bRenderStorageHorizontally = false;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
+		
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);

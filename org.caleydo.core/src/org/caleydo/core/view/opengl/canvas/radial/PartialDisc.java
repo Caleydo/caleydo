@@ -148,7 +148,7 @@ public class PartialDisc
 		float fInnerRadius, int iDepth) {
 		fCurrentAngle = fAngle;
 		// TODO: Do depth calculation properly (hopefully with clusternode)
-		iCurrentDepth = Math.min(iDepth, getHierarchyDepth(GLRadialHierarchy.DISP_HIER_DEPTH_DEFAULT));
+		iCurrentDepth = Math.min(iDepth, getHierarchyDepth());
 		fCurrentInnerRadius = fInnerRadius;
 		fCurrentStartAngle = fStartAngle;
 		fCurrentWidth = fWidth;
@@ -202,20 +202,40 @@ public class PartialDisc
 	}
 
 	private ArrayList<PartialDisc> getParentPath(PartialDisc pdParent, ArrayList<PartialDisc> alParentPath) {
-		
+
 		PartialDisc pdCurrentParent = partialDiscTree.getParent(this);
 
 		if (pdCurrentParent == null) {
 			return null;
 		}
-		
+
 		alParentPath.add(pdCurrentParent);
-		
+
 		if (pdCurrentParent == pdParent) {
 			return alParentPath;
 		}
-		
+
 		return pdCurrentParent.getParentPath(pdParent, alParentPath);
+	}
+
+	public int getParentPathLength(PartialDisc pdParent) {
+		return getParentPathLength(pdParent, 0);
+	}
+
+	private int getParentPathLength(PartialDisc pdParent, int iDepth) {
+		PartialDisc pdCurrentParent = partialDiscTree.getParent(this);
+
+		if (pdCurrentParent == null) {
+			return -1;
+		}
+
+		iDepth++;
+
+		if (pdCurrentParent == pdParent) {
+			return iDepth;
+		}
+
+		return pdCurrentParent.getParentPathLength(pdParent, iDepth);
 	}
 
 	public PartialDisc getParent() {
@@ -270,7 +290,7 @@ public class PartialDisc
 	public float getAverageExpressionValue() {
 		return clusterNode.getAverageExpressionValue();
 	}
-	
+
 	public float getStandardDeviation() {
 		return clusterNode.getStandardDeviation();
 	}
@@ -280,9 +300,9 @@ public class PartialDisc
 		return clusterNode.getClusterNr() - disc.clusterNode.getClusterNr();
 	}
 
-	public int getHierarchyDepth(int iMaxDepthToSearch) {
+	public int getHierarchyDepth() {
 		// TODO: Maybe this way or another
-		// return clusterNode.getDepth();
+		 return clusterNode.getDepth();
 		// ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
 		// if (alChildren == null || iMaxDepthToSearch <= 1)
 		// return 1;
@@ -291,23 +311,23 @@ public class PartialDisc
 		// int iChildDepth = child.getHierarchyDepth(1, iMaxDepthToSearch);
 		// iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
 		// }
-		return getHierarchyDepth(0, iMaxDepthToSearch);
+		//return getHierarchyDepth(0, iMaxDepthToSearch);
 		// return clusterNode.getDepth();
 	}
 
-	private int getHierarchyDepth(int iCurDepth, int iMaxDepthToSearch) {
-
-		iCurDepth++;
-		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
-		if (alChildren == null || iMaxDepthToSearch <= iCurDepth)
-			return iCurDepth;
-		int iDepth = 1;
-		for (PartialDisc child : alChildren) {
-			int iChildDepth = child.getHierarchyDepth(iCurDepth, iMaxDepthToSearch);
-			iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
-		}
-		return iDepth;
-	}
+//	private int getHierarchyDepth(int iCurDepth, int iMaxDepthToSearch) {
+//
+//		iCurDepth++;
+//		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+//		if (alChildren == null || iMaxDepthToSearch <= iCurDepth)
+//			return iCurDepth;
+//		int iDepth = 1;
+//		for (PartialDisc child : alChildren) {
+//			int iChildDepth = child.getHierarchyDepth(iCurDepth, iMaxDepthToSearch);
+//			iDepth = (iChildDepth > iDepth) ? iChildDepth : iDepth;
+//		}
+//		return iDepth;
+//	}
 
 	public float calculateSizes() {
 		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
@@ -321,6 +341,15 @@ public class PartialDisc
 		}
 		fSize = 1;
 		return fSize;
+	}
+
+	public PartialDisc getChild(int iChildNumber) {
+		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+
+		if ((alChildren == null) || (iChildNumber > alChildren.size()) || (iChildNumber < 0)) {
+			return null;
+		}
+		return alChildren.get(iChildNumber);
 	}
 
 }
