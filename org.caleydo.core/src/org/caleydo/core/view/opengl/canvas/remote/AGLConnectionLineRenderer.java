@@ -189,7 +189,7 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param vecViewCenterPoint
 	 * @param fArColor
 	 */
-	protected void altrenderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
+	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 
@@ -212,33 +212,29 @@ public abstract class AGLConnectionLineRenderer {
 		// Line shadow
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
-//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
-//		//gl.glLineWidth(10f); // FIXME: TEST
-//		gl.glBegin(GL.GL_LINE_STRIP);
-//		for (int i = 0; i <= 10; i++) {
-//			gl.glEvalCoord1f((float) i / 10);
-//		}
-//		gl.glEnd();
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
+		//gl.glLineWidth(10f); // FIXME: TEST
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i <= 10; i++) {
+			gl.glEvalCoord1f((float) i / 10);
+		}
+		gl.glEnd();
 
 		// gl.glColor4fv(fArColor, 0);
 		
 		// Point to mask artefacts
-		//gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-		setLineColor( 1.0f, 1.0f, 0.0f, 1.0f ); // FIXME: added
-		gl.glColor4fv(lineColor, 0); // FIXME: added
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
 
-//		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
-//		gl.glBegin(GL.GL_POINTS);
-//		for (int i = 0; i <= 10; i++) {
-//			gl.glEvalCoord1f((float) i / 10);
-//		}
-//		gl.glEnd();
+		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
+		gl.glBegin(GL.GL_POINTS);
+		for (int i = 0; i <= 10; i++) {
+			gl.glEvalCoord1f((float) i / 10);
+		}
+		gl.glEnd();
 
 		// The spline
-		//gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-		setLineWidth(4f); // FIXME: added
-		gl.glLineWidth(lineWidth); // FIXME: added
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 		
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i <= 10; i++) {
@@ -472,7 +468,7 @@ public abstract class AGLConnectionLineRenderer {
 		lineWidth = width;
 	}
 	
-	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
+	protected void altRenderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 
