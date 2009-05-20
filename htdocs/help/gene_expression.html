@@ -52,8 +52,10 @@ which means you can use it in any way you want provided you keep the link to the
 	<li><a href="user_interface.html">The user interface</a></li>
 	<li><b>Analyzing gene expression regulation data</b>
 	<ul>
-		<li>Heat Map</li>
-		<li>Parallel Coordinates</li>
+		<li><a href="#ParallelCoordinates">Parallel Coordinates</a></li>
+		<li><a href="#HeatMap">Heat Map</a></li>
+		<li><a href="#Clustering">Clustering</a></li>
+		<li><a href="#HeatMap">Tabular Data Viewer</a></li>
 	</ul>
 	</li>
 	<li><a href="bucket.html">Using the Bucket, working with
@@ -66,9 +68,11 @@ which means you can use it in any way you want provided you keep the link to the
 
 <h2><a name="ParallelCoordinates"></a>Parallel Coordinates</h2>
 <h3>Introduction</h3>
-<p><img
+<p><img src="../images/help/gene_expression/parcoords.png"
+	alt="Parallel coordinates icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> <img
 	src="../images/help/gene_expression/parallel_coordinates.png"
-	alt="Parallel Coordinates"
+	alt="Parallel coordinates"
 	style="border-style: none; float: right; padding-left: 1em;" />
 Parallel coordinates visualize multidimensional data by drawing lines
 between a set of axis. Each line represents one entity, typically a
@@ -76,18 +80,79 @@ gene. Each axis a dimension, typically an experiment. When one gene is
 viewed in the parallel coordinates, all it's expression values for the
 experiments are visible simultaneously. By drawing multiple lines at the
 same time, trends in a dataset can be identified. In the screen-shot a
-dense (dark) area around the bottom signals that many genes have
+dense (dark) area around the bottom shows that many genes have
 expression values in this area.</p>
+<p>In parallel coordinates you can select the polylines as well as
+the axis. Selections and some brief information is shown in the <a
+	href="user_interface.html#SideBar">Info Area</a>.</p>
 
-<h3>Brushing</h3>
-Our parallel coordinates implementation, as shown in Figure
-\ref{gfx:pcs}, allows the arbitrary rearrangement, duplication or
-removal of axes. We also provide several logarithmic transformations,
-which can be changed at run-time. We support individual selection of
-lines, single-dimensional brushing, angular brushes~\cite{Hauser2002} as
-well as a brush that allows to remove all lines that never leave a
-specified corridor. The latter was inspired by our users' need to remove
-those genes, that are neither over- nor underexpressed in any condition.
+<h3>Rearranging axis</h3>
+<p><img src="../images/help/gene_expression/drop.png"
+	alt="Axis drop"
+	style="border-style: none; float: right; padding-left: 1em;" /> To
+make an accurate comparison between two different experiments it is
+often necessary to place them side by side. Therefore it is important to
+be able to re-arrange and duplicate, possibly also remove unneeded
+experiments.</p>
+<p><img src="../images/help/gene_expression/reset_axis_spacing.png"
+	alt="Reset the axis spacing"
+	style="border-style: none; float: left; padding-right: 1em;" />The
+parallel coordinates use a drop below the axis, shown in the picture on
+the right to achieve this task. By default the drop is shown in a small,
+simplified version. Once the mouse is placed over it, it changes to the
+version containing three buttons. By clicking the left button, the
+associated axis is <b>duplicated</b>. By clicking the right button, the
+axis is <b>removed</b>. By dragging the central button to the sides, the
+axis is dragged along and consequently <b>rearranged</b>. When dragging
+around axes, the spacing between the axes can become uneven. To balance
+the spacing between the axes again, click the icon shown on the left in
+the tool bar.</p>
+
+<h3>Filtering</h3>
+<p><img src="../images/help/gene_expression/drop_gate.png"
+	alt="Filter drop"
+	style="border-style: none; float: right; padding-left: 1em;" />The
+parallel coordinates support three types of filters, a one dimensional
+filter, a global filter and an angular filter.</p>
+<p><img src="../images/help/gene_expression/gate.png" alt="Filter"
+	style="border-style: none; float: left; padding-right: 1em;" />The <b>one
+dimensional filter</b> allows you to remove all genes that are smaller
+and/or larger then a specified value. To activate the brush for a
+particular axis click the small drop on top of the axis (shown on the
+right). This makes the filter, as shown on the left appear.</p>
+<p>To change the height of the filter, click the black labels with
+the caption and drag them up or down. This adjusts the size of the
+filter an thereby adds or removes polylines. By dragging the body of the
+filter the top and the bottom are moved simultaneously.</p>
+<p>To remove the brush click the handle right of the top label.</p>
+<p>The <b>global filter</b> works excatly the same, but has
+different consequences. To activate the global filter, click the drop at
+the tip of the line on the far left of the parallel coordinates. Again,
+the filter appears.</p>
+<p>This filter allows to remove all lines that never leave a
+specified corridor. This helps to remove those genes, that are neither
+over- nor underexpressed in any experiment. It removes all polylines
+that don't leave the spanned region in any of the experimental
+conditions currently visible. So, if you set this filter to span the
+region between 1 and 3, all genes, that only have expression values
+between 1 and 3 are removed. If only one value for that gene is smaller
+or bigger, the gene is not removed.</p>
+
+<p><img src="../images/help/gene_expression/angular_brush.png"
+	alt="Angular Filter"
+	style="border-style: none; float: left; padding-right: 1em;" /> <img
+	src="../images/help/gene_expression/angular_brush_screenshot.png"
+	alt="Angular Filter"
+	style="border-style: none; float: right; padding-left: 1em;" />The <b>angular
+filter</b> can be used to identify discontinuities between two experiments.
+It allows you to remove all lines, that are not similar to a certain
+slope of a master line. First click on the icon for the angular brush in
+the toolbar (shown on the left). Then click on a polyline, between two
+axis where it has a slope which you would like to use as the basis for
+your filter. Once you clicked the polyline, the brush appears, as shown
+on the right.</p>
+<p>By dragging the legs up or down, you can adjust the level of
+tolerance for matching the slope of other polylines.</p>
 
 <h3>Swapping Dimensions</h3>
 TODO: image
@@ -132,7 +197,6 @@ Streit</strong></a> and <a href="http://www.icg.tugraz.at/Members/alex"><strong>
 Lex</strong></a><br />
 last updated on 2009-03-10</p>
 </div>
-
 </div>
 </div>
 <!-- end main --> <!-- footer -->
