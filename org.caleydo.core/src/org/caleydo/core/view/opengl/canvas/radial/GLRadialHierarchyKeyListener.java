@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.events.KeyEvent;
 
@@ -18,6 +19,12 @@ public class GLRadialHierarchyKeyListener
 			radialHierarchy.handleKeyboardAlternativeDiscSelection();
 		}
 
+	}
+
+	@Override
+	public void handleEvent(AEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
