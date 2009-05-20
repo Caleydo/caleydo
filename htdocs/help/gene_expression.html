@@ -154,26 +154,164 @@ on the right.</p>
 <p>By dragging the legs up or down, you can adjust the level of
 tolerance for matching the slope of other polylines.</p>
 
+<p><img src="../images/help/gene_expression/clear_selections.png"
+	alt="Clear Selections"
+	style="border-style: none; float: left; padding-right: 1em;" /> To <b>clear
+selections and filters</b> press the clear selections icon. This will remove
+all filters, mouse-over and clicked selections you previously applied.</p>
+
+<p><img src="../images/help/gene_expression/save_selections.png"
+	alt="Save Brushes"
+	style="border-style: none; float: left; padding-right: 1em;" /> The <b>save
+filters</b> feature allows you to actually remove all items that you
+currently filtered out. This is useful, if you handle a lot of data and
+want to continue working with a subset. Also, if you want to export your
+filtered data you have to press this button first. The same is true for
+swapping dimensions and bookmarking genes, which will be explained
+later.</p>
+
+<h3>Bookmarking</h3>
+<p><img src="../images/help/gene_expression/bookmark.png"
+	alt="Bookmarking"
+	style="border-style: none; float: left; padding-right: 1em;" /> <img
+	src="../images/help/gene_expression/bookmark_screenshot.png"
+	alt="Bookmarking screenshot"
+	style="border-style: none; float: right; padding-left: 1em;" /> By
+clicking the bookmark icon, all elements which are not currently
+filtered out are added to the bookmark bar, which appears on the right,
+once it is filled with content. Notice however, that you can only
+bookmark 20 items or less, so you have to modify your filters to show
+less than 20 items.</p>
+<p>If you want to bookmark genes individually, you can right-click
+on a gene, which makes the context menu appear and bookmark it from
+there.</p>
+<p>The bookmarks are synchronized with the bucket. Any element that
+appears in this bookmark bar is also visible in the buckets bookmark
+bar.</p>
+
+<h3>Resetting the View</h3>
+<p><img src="../images/help/gene_expression/reset_view.png"
+	alt="Save Brushes"
+	style="border-style: none; float: left; padding-right: 1em;" />By
+clicking the reset button, the view is reset to its initial state. All
+re-arranged axes, all removed polylines are added again.</p>
+
 <h3>Swapping Dimensions</h3>
-TODO: image
-<p>When using parallel coordinates, it is possible to show the data
-in two different ways. In our case we have experiments and genes. Both
-can be the axes or the polylines, but exchanging them produces radically
+<p><img src="../images/help/gene_expression/change_orientation.png"
+	alt="Swap dimensions"
+	style="border-style: none; float: left; padding-right: 1em;" /> <img
+	src="../images/help/gene_expression/pcs_after.png"
+	alt="Swap dimensions"
+	style="border-style: none; float: right; padding-left: 1em;" /> <img
+	src="../images/help/gene_expression/pcs_before.png"
+	alt="Swap dimensions"
+	style="border-style: none; float: right; padding-left: 1em;" /> When
+using parallel coordinates, it is possible to show the data in two
+different ways. In our case we have experiments and genes. Both can be
+the axes or the polylines, but exchanging them produces radically
 different results. Showing genes as axes is desired when differences
 between the experiments are of interest. One example is the comparison
 of gene expression patterns from carcinogenic tissue with healthy
 tissue. However, when discontinuities of gene expression over several
 experiments are of interest, it is beneficial to show the experiments as
-axes. As an example, consider a user is interested in different
-expression values of a small number of genes in many different
-experimental conditions.</p>
+axes. As an example, consider beeing interested in different expression
+values of a small number of genes in many different experimental
+conditions.</p>
+<p>In Caleydo you can switch between what the parallel coordinates
+treat as axes and what as polylines. In the left picture you see 13
+experiments treated as axes. The number of genes has been reduced to 6.
+By clicking the switch dimensions button the picture on the right is
+produced. Now the 6 genes which were polylines in the left picture are
+now axes in the right, and vice versa.</p>
+<p>This feature is also particularly useful if you only have a view
+genes, but many experiments. Then you can switch dimensions immediately
+and analyze the differences of the experiments at a glance.</p>
 
 <h2><a name="HeatMap"></a>Heat Map</h2>
+<p><img src="../images/help/gene_expression/heatmap.png"
+	alt="Heat map icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> <img
+	src="../images/help/gene_expression/hhm.png" alt="Heat map screenshot"
+	style="border-style: none; float: right; padding-left: 1em;" /> The
+heat map is a visualization that maps a color to the magnitude of a
+value. One gene corresponds to one row, and one experiment to one
+column.</p>
+<p>A heat map is especially useful, if the underlying data is <a
+	href="#Clustering">clustered</a>. Clustering gives the ordering of
+elements meaning. Elements close to each other have similar properties
+(and therefore also similar color).</p>
+<p>The heat map in Caleydo makes use of this. Its three levels (two
+for smaller amounts of data) allow you to browse thousands of values. On
+the left side, a thin overview bar shows all values. In this overview
+trends are visible. The overview bar can contain up to 30,000 values.</p>
+<p>The second level shows an enlarged version of the area selected
+in the overview bar. This level contains up to 1,000 values. Here trends
+and differences are clearly visible.</p>
+<p>The final level contains less than 100 values. Genes and
+experiments are labeled an all detail is visible.</p>
+<p><img src="../images/help/gene_expression/hhm_overview.png"
+	alt="Heat map handle bars"
+	style="border-style: none; float: right; padding-left: 1em;" /> The
+width of the second level can be adjusted by clicking the arrow button
+between the second and third level. To select which part of the overview
+should be shown in the detailed levels simply click the region.</p>
+<p>The amount of data to be shown in the last level can be adjusted
+by dragging the handle bars shown on the right. Dragging the grey area
+between the handles lets you scroll through the overview smoothly.</p>
+
+<p><b>Selections</b> are handled <a
+	href="user_interface.htlm#SelectingElements">the same way</a> as in all
+other views. Additionaly, indications of selections are also shown on
+the first and second level, by displaying colored bars respectively
+lines. When a selection is triggered by another linked view, the second
+and third layer jump directly to the selected element. In case of
+multiple selections, the heat map jumps to the first, and the others are
+indicated in the second and third level.</p>
+
 
 <h2><a name="Clustering"></a>Clustering</h2>
+<p><img src="../images/help/gene_expression/clustering.png"
+	alt="Clustering icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> <img
+	src="../images/help/gene_expression/clustering_screenshot.png"
+	alt="Clustering GUI screenshot"
+	style="border-style: none; float: right; padding-left: 1em;" />
+Caleydo currently supports four clustering algorithms, two partitional
+(where no relation between the separate cluster is known) and two
+hierarchical (which build a complete tree of relations):</p>
+<ul>
+	<li>A tree clusterer, using similarities (hierarchical),</li>
+	<li>affinity propagation clustering, which usually delivers the
+	best results (partitional),</li>
+	<li>KMeans clustering, as implemented by WEKA (hierarchical), and</li>
+	<li>Cobweb, as implemented by WEKA (partitional).</li>
+</ul>
+<p>All algorithms can be used to cluster either the genes, the
+experiments or both (bi-clustering).</p>
+<p>Two different distance measures are available: the euclidian
+distance and the pearson correlation.</p>
+<p>Affinity propagation lets you choose a factor which influences
+the number of clusters returned, which may be between 1 and 10. KMeans
+requires you to specify the number of clusters.</p>
+<p>When you have chosen the clustering algorithm and the parameters,
+press OK. A status bar will pop up, displaying the progress of the
+algorithm. Depending on the algorithm and the size of the data this
+process can take a while. Once clustering is complete, the heat map will
+show the updated ordering of the elements.</p>
 
 <h2><a name="TabularDataViewer"></a>Tabular Data Viewer</h2>
-
+<p><img src="../images/help/gene_expression/tabular_data_viewer.png"
+	alt="Tabular data viewer icon"
+	style="border-style: none; float: left; padding-right: 1em;" /><img
+	src="../images/help/gene_expression/tabular.png"
+	alt="Tabular data viewer screen shot"
+	style="border-style: none; float: right; padding-left: 1em;padding-bottom: 1em;" /> The
+tabular data viewer is a table containing the original values. It is
+synchronized with the rest of the system and always jumps to the
+currently active value.</p>
+<p>The gene short name and the RefSeq ID are always shown in the two
+leftmost columns. Furthermore you can delete columns by pressing the
+button at the bottom of the column.</p>
 
 
 <br />
