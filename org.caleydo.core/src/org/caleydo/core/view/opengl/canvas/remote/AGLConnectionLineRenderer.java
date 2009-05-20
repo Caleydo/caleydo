@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.media.opengl.GL;
 
@@ -18,6 +19,8 @@ import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+
+import com.sun.opengl.util.BufferUtil;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp. planes) between views in the
@@ -38,6 +41,11 @@ public abstract class AGLConnectionLineRenderer {
 	protected HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointLists;
 
 	protected int activeViewID = -1;
+	
+	protected float[] lineColor = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1; // FIXME: added
+	
+	protected float lineWidth = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH; // FIXME: added
+	
 	/**
 	 * Constructor.
 	 */
@@ -181,7 +189,7 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param vecViewCenterPoint
 	 * @param fArColor
 	 */
-	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
+	protected void altrenderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 
@@ -204,28 +212,34 @@ public abstract class AGLConnectionLineRenderer {
 		// Line shadow
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
+//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
+//		//gl.glLineWidth(10f); // FIXME: TEST
+//		gl.glBegin(GL.GL_LINE_STRIP);
+//		for (int i = 0; i <= 10; i++) {
+//			gl.glEvalCoord1f((float) i / 10);
+//		}
+//		gl.glEnd();
 
 		// gl.glColor4fv(fArColor, 0);
+		
 		// Point to mask artefacts
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+		//gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+		setLineColor( 1.0f, 1.0f, 0.0f, 1.0f ); // FIXME: added
+		gl.glColor4fv(lineColor, 0); // FIXME: added
 		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
 
-		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
-		gl.glBegin(GL.GL_POINTS);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
+//		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
+//		gl.glBegin(GL.GL_POINTS);
+//		for (int i = 0; i <= 10; i++) {
+//			gl.glEvalCoord1f((float) i / 10);
+//		}
+//		gl.glEnd();
 
 		// The spline
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-
+		//gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+		setLineWidth(4f); // FIXME: added
+		gl.glLineWidth(lineWidth); // FIXME: added
+		
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i <= 10; i++) {
 			gl.glEvalCoord1f((float) i / 10);
@@ -433,4 +447,104 @@ public abstract class AGLConnectionLineRenderer {
 	public void setActiveViewID(int viewID){
 		activeViewID = viewID;
 	}
+	
+	/**
+	 * Set color of connection lines.
+	 * 
+	 * @param red
+	 * @param green
+	 * @param blue
+	 * @param alpha
+	 */
+	public void setLineColor(float red, float green, float blue, float aplha) {
+		// FIXME: exception should be thrown when values are < 0 or > 1 (and of course, catched)
+		float[] color = {red, green, blue, aplha};
+		lineColor = color;
+	}
+	
+	/**
+	 * Set width of connection lines.
+	 * 
+	 * @param width
+	 */
+	public void setLineWidth(float width) {
+		// FIXME: exception should be thrown when width is < 0 or > 10 (and of course, catched)
+		lineWidth = width;
+	}
+	
+	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
+		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
+		Vec3f[] arSplinePoints = new Vec3f[3];
+
+		arSplinePoints[0] = vecSrcPoint.copy();
+		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint);
+		arSplinePoints[2] = vecDestPoint.copy();
+
+		FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
+		// float[] fArPoints =
+		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
+		float[] fArPoints =
+			{ arSplinePoints[0].x(), arSplinePoints[0].y(), arSplinePoints[0].z(), arSplinePoints[1].x(),
+					arSplinePoints[1].y(), arSplinePoints[1].z(), arSplinePoints[2].x(),
+					arSplinePoints[2].y(), arSplinePoints[2].z() };
+		splinePoints.put(fArPoints);
+		splinePoints.rewind();
+
+		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
+		
+		// The spline
+		setLineColor( 1.0f, 1.0f, 0.0f, 1.0f ); // FIXME: added
+		gl.glColor4fv(lineColor, 0); // FIXME: added
+		setLineWidth(4f); // FIXME: added
+		gl.glLineWidth(lineWidth); // FIXME: added
+		
+		float feedBuffer[] = new float[(100)]; // there are 10 (vertices) * 7 = 70 values
+		FloatBuffer feedbackBuffer = BufferUtil.newFloatBuffer(100);
+		gl.glFeedbackBuffer(100, GL.GL_3D, feedbackBuffer );
+		gl.glRenderMode(GL.GL_FEEDBACK);
+
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i <= 10; i++) {
+			gl.glEvalCoord1f((float) i / 10);
+		}
+		gl.glEnd();
+		feedbackBuffer.get(feedBuffer);
+		
+		int size = gl.glRenderMode(GL.GL_RENDER); // returns the number of values transferred to the feedback buffer
+		float token;
+		int count = size;
+		
+		count = size;
+		FloatBuffer coordBuffer = BufferUtil.newFloatBuffer(30);
+		int bufferElements = 0;
+		while (count >= 4) {
+			token = feedBuffer[size - count];
+			count--;
+			if (token == GL.GL_LINE_TOKEN || token == GL.GL_LINE_RESET_TOKEN) {
+				coordBuffer.put(feedBuffer[size-count]);
+				count--;
+				coordBuffer.put(feedBuffer[size-count]);
+				count--;
+				coordBuffer.put(feedBuffer[size-count]);
+				count--;
+				bufferElements += 3;
+            }
+		}
+		
+		float x,y,z; // temp coords for the vertices
+		
+		// the curve
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for(int i = 0; i < (bufferElements-2); i++) {
+			x = coordBuffer.get(i);
+			y = coordBuffer.get(i+1);
+			z = coordBuffer.get(i+2);
+			i +=2;
+			gl.glVertex3f(x, y, z);
+			//System.out.println("renderLine: created vertex " + x + " " + y + " " + z);
+		}
+		gl.glEnd();
+		//System.out.println("----------------------------");
+	}	
+	
 }
