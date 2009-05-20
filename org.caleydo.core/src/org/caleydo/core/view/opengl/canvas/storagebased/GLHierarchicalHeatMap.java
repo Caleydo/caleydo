@@ -33,8 +33,6 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
-import org.caleydo.core.manager.event.view.keyboard.ArrowDownPressedEvent;
-import org.caleydo.core.manager.event.view.keyboard.KeyPressedEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -52,8 +50,6 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.listener.IKeyPressedHandler;
-import org.caleydo.core.view.opengl.canvas.listener.KeyPressedListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingActionListener;
@@ -84,7 +80,7 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
-	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver, IKeyPressedHandler {
+	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver {
 
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.4f;
@@ -167,7 +163,6 @@ public class GLHierarchicalHeatMap
 	private GroupInterChangingActionListener groupInterChangingActionListener;
 	private UpdateViewListener updateViewListener;
 	private StartClusteringListener startClusteringListener;
-	private KeyPressedListener keyPressedListener;
 
 	/**
 	 * Constructor.
@@ -2140,7 +2135,7 @@ public class GLHierarchicalHeatMap
 
 			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
-				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
 				if (iVAid == -1)
 					iContentVAID = iContentVAIDtemp;
 				else
@@ -2150,7 +2145,7 @@ public class GLHierarchicalHeatMap
 			}
 			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
 
-				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
 				if (iVAid == -1)
 					iStorageVAID = iStorageVAIDtemp;
 				else
@@ -2161,14 +2156,14 @@ public class GLHierarchicalHeatMap
 			else {
 
 				clusterstate.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate);
+				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 1);
 				if (iVAid == -1)
 					iStorageVAID = iStorageVAIDtemp;
 				else
 					iStorageVAID = iVAid;
 
 				clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
-				iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate);
+				iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate, 50, 1);
 				if (iVAid == -1)
 					iContentVAID = iContentVAIDtemp;
 				else
@@ -3010,10 +3005,6 @@ public class GLHierarchicalHeatMap
 		startClusteringListener.setHandler(this);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
 
-		keyPressedListener = new KeyPressedListener();
-		keyPressedListener.setHandler(this);
-		eventPublisher.addListener(KeyPressedEvent.class, keyPressedListener);
-
 	}
 
 	@Override
@@ -3036,33 +3027,6 @@ public class GLHierarchicalHeatMap
 			eventPublisher.removeListener(startClusteringListener);
 			startClusteringListener = null;
 		}
-		if (keyPressedListener != null) {
-			eventPublisher.removeListener(keyPressedListener);
-			keyPressedListener = null;
-		}
-	}
-
-	public void pageUpDownSelected(boolean bPageDown) {
-
-		// switching the textures is only allowed when level 1 active (--> more than 1 texture available)
-		if (bSkipLevel1 == false) {
-			if (bPageDown) {
-				if (iSelectorBar > 1) {
-					iSelectorBar--;
-					initPosCursor();
-					triggerSelectionBlock();
-					setDisplayListDirty();
-				}
-			}
-			else {
-				if (iSelectorBar < iNrSelBar) {
-					iSelectorBar++;
-					initPosCursor();
-					triggerSelectionBlock();
-					setDisplayListDirty();
-				}
-			}
-		}
 	}
 
 	@Override
@@ -3071,52 +3035,40 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 	}
 
-	@Override
 	public void handleArrowDownAltPressed() {
-		System.out.println("handleArrowDownAltPressed");
-
 	}
 
-	@Override
-	public void handleArrowDownCtrlPressed() {
-		System.out.println("handleArrowDownCtrlPressed");
-
-	}
-
-	@Override
-	public void handleArrowDownPressed() {
-		System.out.println("handleArrowDownPressed");
-
-	}
-
-	@Override
-	public void handleArrowLeftPressed() {
-		System.out.println("handleArrowLeftPressed");
-
-	}
-
-	@Override
-	public void handleArrowRightPressed() {
-		System.out.println("handleArrowRightPressed");
-
-	}
-
-	@Override
 	public void handleArrowUpAltPressed() {
-		System.out.println("handleArrowUpAltPressed");
-
 	}
 
-	@Override
+	public void handleArrowDownCtrlPressed() {
+		if (iSelectorBar < iNrSelBar) {
+			iSelectorBar++;
+			initPosCursor();
+			triggerSelectionBlock();
+			setDisplayListDirty();
+		}
+	}
+
 	public void handleArrowUpCtrlPressed() {
-		System.out.println("handleArrowUpCtrlPressed");
-
+		if (iSelectorBar > 1) {
+			iSelectorBar--;
+			initPosCursor();
+			triggerSelectionBlock();
+			setDisplayListDirty();
+		}
 	}
 
-	@Override
-	public void handleArrowUpPressed() {
-		System.out.println("handleArrowUpPressed");
+	public void handleArrowDownPressed() {
+	}
 
+	public void handleArrowLeftPressed() {
+	}
+
+	public void handleArrowRightPressed() {
+	}
+
+	public void handleArrowUpPressed() {
 	}
 
 }

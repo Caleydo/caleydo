@@ -5,6 +5,7 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
+import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.eclipse.swt.SWT;
@@ -24,11 +25,13 @@ import org.eclipse.ui.PlatformUI;
 public class ClusteringProgressBar
 	implements IListenerOwner {
 
-	private ProgressBar pbSimilarity;
+	private ProgressBar pbOverall;
 	private ProgressBar pbClusterer;
 	private EClustererAlgo algorithmType;
 	private ClusterProgressListener clusterProgressListener;
+
 	private Shell shell;
+	private Label lbProgressBarClusterer;
 
 	public ClusteringProgressBar(EClustererAlgo algorithmType) {
 		this.algorithmType = algorithmType;
@@ -41,22 +44,31 @@ public class ClusteringProgressBar
 		clusterProgressListener.setHandler(this);
 		GeneralManager.get().getEventPublisher().addListener(ClusterProgressEvent.class,
 			clusterProgressListener);
+		GeneralManager.get().getEventPublisher().addListener(RenameProgressBarEvent.class,
+			clusterProgressListener);
 
+	}
+
+	public void setProgressBarLabel(String stProgressBarLable) {
+		if (lbProgressBarClusterer.isDisposed())
+			return;
+		lbProgressBarClusterer.setText(stProgressBarLable);
 	}
 
 	public void setProgress(boolean forSimilaritiesBar, int progress) {
 
-		if (pbSimilarity.isDisposed())
+		if (pbOverall.isDisposed())
 			return;
 
 		if (forSimilaritiesBar) {
-			pbSimilarity.setSelection(progress);
-		}
-		else {
 			if (progress >= 99)
 				close();
 			else
-				pbClusterer.setSelection(progress);
+				pbOverall.setSelection(progress);
+		}
+		else {
+
+			pbClusterer.setSelection(progress);
 		}
 	}
 
@@ -79,19 +91,18 @@ public class ClusteringProgressBar
 		composite.setLayout(new GridLayout(1, false));
 
 		Label label = new Label(composite, SWT.NULL);
-		label.setText("Determination of similarities");
+		label.setText("Clustering in process");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.widthHint = 310;
 		label.setLayoutData(gridData);
 
-		pbSimilarity = new ProgressBar(composite, SWT.SMOOTH);
-		pbSimilarity.setMinimum(0);
-		pbSimilarity.setMaximum(100);
-		pbSimilarity.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		pbOverall = new ProgressBar(composite, SWT.SMOOTH);
+		pbOverall.setMinimum(0);
+		pbOverall.setMaximum(100);
+		pbOverall.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label label2 = new Label(composite, SWT.NULL);
-		label2.setText("Cluster progress");
-		label2.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		lbProgressBarClusterer = new Label(composite, SWT.NULL);
+		lbProgressBarClusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		pbClusterer = new ProgressBar(composite, SWT.SMOOTH);
 		pbClusterer.setMinimum(0);
@@ -106,6 +117,7 @@ public class ClusteringProgressBar
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				GeneralManager.get().getEventPublisher().triggerEvent(new ClustererCanceledEvent());
+				shell.close();
 			}
 		});
 

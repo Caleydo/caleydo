@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
 import weka.clusterers.ClusterEvaluation;
@@ -47,6 +48,9 @@ public class HierarchicalClusterer
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+			
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
@@ -61,7 +65,7 @@ public class HierarchicalClusterer
 					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, true));
+							new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -81,6 +85,9 @@ public class HierarchicalClusterer
 		}
 		else {
 
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+			
 			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
@@ -94,7 +101,7 @@ public class HierarchicalClusterer
 					int tempPercentage = (int) ((float) isto / storageVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, true));
+							new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -111,7 +118,15 @@ public class HierarchicalClusterer
 					return -1;
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
+		else
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Cobweb clustering of experiments in progress"));
 
 		Instances data = null;
 
@@ -219,19 +234,20 @@ public class HierarchicalClusterer
 		set.setAlClusterSizes(temp);
 		set.setAlExamples(alExamples);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		return clusteredVAId;
 	}
 
 	private void CNodeToTree(ClusterNode clusterNode, CNode node, EClustererType eClustererType) {
 
-//		IVirtualArray virtualArray;
-//
-//		if (eClustererType == EClustererType.GENE_CLUSTERING)
-//			virtualArray = set.getVA(iVAIdContent);
-//		else
-//			virtualArray = set.getVA(iVAIdStorage);
+		// IVirtualArray virtualArray;
+		//
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// virtualArray = set.getVA(iVAIdContent);
+		// else
+		// virtualArray = set.getVA(iVAIdStorage);
 
 		if (node.getChilds() != null) {
 			int iNrChildsNode = node.getChilds().size();
@@ -255,13 +271,17 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
 		this.set = set;
 		this.iVAIdContent = idContent;
 		this.iVAIdStorage = idStorage;
+
+		this.iProgressBarMultiplier = iProgressBarMultiplier;
+		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
 		VAId = cluster(idContent, idStorage, clusterState.getClustererType());
 

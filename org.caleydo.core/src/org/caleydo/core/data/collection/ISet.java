@@ -259,9 +259,16 @@ public interface ISet
 	 * @param iVAIdStorage
 	 * @param eClustererAlgo
 	 * @param bClusterGenes
+	 * @param iProgressBarOffset
+	 *            Offset value used for overall progress bar. Used in case of bi clustering to avoid problems
+	 *            with disposed shell
+	 * @param iProgressBarMultiplier
+	 *            Multiplier used for overall progress bar. Used in case of bi clustering to avoid problems
+	 *            with disposed shell
 	 * @return Integer Id of virtual arrays holding cluster result
 	 */
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState);
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
+		int iProgressBarOffset, int iProgressBarMultiplier);
 
 	/**
 	 * Sets clustered Tree for genes

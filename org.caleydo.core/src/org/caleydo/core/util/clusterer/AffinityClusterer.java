@@ -6,6 +6,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 
 // http://www.psi.toronto.edu/affinitypropagation/
@@ -76,6 +77,9 @@ public class AffinityClusterer
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
 
@@ -89,7 +93,7 @@ public class AffinityClusterer
 
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, true));
+							new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -124,7 +128,7 @@ public class AffinityClusterer
 				}
 				else {
 					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(100, false));
+						new ClusterProgressEvent(100, true));
 					return -1;
 				}
 			}
@@ -143,6 +147,9 @@ public class AffinityClusterer
 		}
 		else {
 
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
@@ -156,7 +163,7 @@ public class AffinityClusterer
 
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, true));
+							new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -191,7 +198,7 @@ public class AffinityClusterer
 				}
 				else {
 					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(100, false));
+						new ClusterProgressEvent(100, true));
 					return -1;
 				}
 			}
@@ -208,7 +215,8 @@ public class AffinityClusterer
 				sto++;
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 		return 0;
 	}
 
@@ -250,6 +258,13 @@ public class AffinityClusterer
 		// }
 
 		int iPercentage = 1;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Affinity propagation of genes in progress"));
+		else
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Affinity propagation of experiments in progress"));
 
 		while (bIterate) {
 			iNrIterations++;
@@ -352,7 +367,7 @@ public class AffinityClusterer
 			}
 			processEvents();
 			if (bClusteringCanceled) {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 				return -1;
 			}
 		}
@@ -454,7 +469,8 @@ public class AffinityClusterer
 		set.setAlClusterSizes(count);
 		set.setAlExamples(idxExamples);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		return clusteredVAId;
 	}
@@ -518,7 +534,8 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
@@ -528,6 +545,9 @@ public class AffinityClusterer
 			fClusterFactor = clusterState.getAffinityPropClusterFactorExperiments();
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
+
+		this.iProgressBarMultiplier = iProgressBarMultiplier;
+		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
 		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));

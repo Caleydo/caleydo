@@ -40,7 +40,8 @@ public class ClusterManager {
 	 * @param clusterState
 	 * @return -1 in case of error, Id of VA
 	 */
-	public int cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState) {
+	public int cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressMultiplier) {
 
 		Integer VAId = 0;
 
@@ -61,7 +62,9 @@ public class ClusterManager {
 					return -1;
 
 				// System.out.println("treeClustering in progress ... ");
-				VAId = clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState);
+				VAId =
+					clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState,
+						iProgressBarOffsetValue, iProgressMultiplier);
 				// System.out.println("treeClustering done");
 
 				clusterer.destroy();
@@ -72,7 +75,9 @@ public class ClusterManager {
 				clusterer = new HierarchicalClusterer(0);
 
 				// System.out.println("Cobweb in progress ... ");
-				VAId = clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState);
+				VAId =
+					clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState,
+						iProgressBarOffsetValue, iProgressMultiplier);
 				// System.out.println("Cobweb done");
 
 				clusterer.destroy();
@@ -92,7 +97,9 @@ public class ClusterManager {
 					return -1;
 
 				// System.out.println("affinityPropagation in progress ... ");
-				VAId = clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState);
+				VAId =
+					clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState,
+						iProgressBarOffsetValue, iProgressMultiplier);
 				// System.out.println("affinityPropagation done");
 
 				clusterer.destroy();
@@ -103,7 +110,9 @@ public class ClusterManager {
 				clusterer = new KMeansClusterer(0);
 
 				// System.out.println("KMeansClusterer in progress ... ");
-				VAId = clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState);
+				VAId =
+					clusterer.getSortedVAId(set, iVAIdContent, iVAIdStorage, clusterState,
+						iProgressBarOffsetValue, iProgressMultiplier);
 				// System.out.println("KMeansClusterer done");
 
 				clusterer.destroy();

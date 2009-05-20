@@ -24,6 +24,9 @@ public abstract class AClusterer
 
 	protected boolean bClusteringCanceled = false;
 
+	protected int iProgressBarMultiplier;
+	protected int iProgressBarOffsetValue;
+	
 	public AClusterer() {
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 		clustererCanceledListener = new ClustererCanceledListener();

@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 
@@ -71,6 +72,9 @@ public class TreeClusterer
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
 
@@ -81,7 +85,7 @@ public class TreeClusterer
 
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, true));
+							new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -113,13 +117,16 @@ public class TreeClusterer
 					processEvents();
 				}
 				else {
-					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(100, false));
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
 					return -1;
 				}
 			}
 		}
 		else {
+
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
@@ -130,7 +137,7 @@ public class TreeClusterer
 					int tempPercentage = (int) ((float) icnt1 / storageVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher().triggerEvent(
-							new ClusterProgressEvent(iPercentage, true));
+							new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
@@ -161,13 +168,14 @@ public class TreeClusterer
 					processEvents();
 				}
 				else {
-					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(100, false));
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
 					return -1;
 				}
 			}
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(iProgressBarMultiplier * 25 + iProgressBarOffsetValue, true));
 		normalizeSimilarities();
 
 		return 0;
@@ -247,6 +255,13 @@ public class TreeClusterer
 
 		int iPercentage = 1;
 
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Tree clustering of genes in progress"));
+		else
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Tree clustering of experiments in progress"));
+
 		for (int n = iNrSamples; n > 1; n--) {
 			if (bClusteringCanceled == false) {
 				int sum;
@@ -307,7 +322,7 @@ public class TreeClusterer
 				processEvents();
 			}
 			else {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 				return -1;
 			}
 		}
@@ -342,7 +357,8 @@ public class TreeClusterer
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		return clusteredVAId;
 	}
@@ -454,6 +470,13 @@ public class TreeClusterer
 
 		int iPercentage = 1;
 
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Tree clustering of genes in progress"));
+		else
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Tree clustering of experiments in progress"));
+		
 		for (int n = iNrSamples; n > 1; n--) {
 
 			if (bClusteringCanceled == false) {
@@ -558,7 +581,7 @@ public class TreeClusterer
 
 	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
 	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
-	
+
 	/**
 	 * Returns name of the node. Therefore we need an index of the gene/experiment
 	 * 
@@ -581,7 +604,7 @@ public class TreeClusterer
 				nodeName += " | ";
 				nodeName +=
 					GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(contentVA.get(index));// +
-																										// 1);
+				// 1);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {
 				nodeName = "generalManager.getIDMappingManager().getID(" + contentVA.get(index) + " )";
@@ -597,20 +620,20 @@ public class TreeClusterer
 			nodeName = set.get(storageVA.get(index)).getLabel();
 		}
 
-		if(hashedNodeNames.containsKey(nodeName)){
+		if (hashedNodeNames.containsKey(nodeName)) {
 			int iNr = 1;
-			if(duplicatedNodes.containsKey(nodeName)){
+			if (duplicatedNodes.containsKey(nodeName)) {
 				iNr = duplicatedNodes.get(nodeName);
 				duplicatedNodes.put(nodeName, ++iNr);
 			}
-			else	
+			else
 				duplicatedNodes.put(nodeName, iNr);
-			
+
 			nodeName = nodeName + "__" + iNr;
 		}
 		else
 			hashedNodeNames.put(nodeName, 1);
-		
+
 		return nodeName;
 	}
 
@@ -684,11 +707,14 @@ public class TreeClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
+		this.iProgressBarMultiplier = iProgressBarMultiplier;
+		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
 		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));

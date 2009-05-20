@@ -520,12 +520,14 @@ public class Set
 		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState) {
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
 			ClusterManager clusterManager = new ClusterManager(this);
-			return clusterManager.cluster(iVAIdContent, iVAIdStorage, clusterState);
+			return clusterManager.cluster(iVAIdContent, iVAIdStorage, clusterState, iProgressBarOffsetValue,
+				iProgressBarMultiplier);
 		}
 		else
 			return -1;
