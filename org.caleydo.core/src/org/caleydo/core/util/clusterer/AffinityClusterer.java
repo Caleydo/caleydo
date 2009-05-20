@@ -129,7 +129,7 @@ public class AffinityClusterer
 				else {
 					GeneralManager.get().getEventPublisher().triggerEvent(
 						new ClusterProgressEvent(100, true));
-					return -1;
+					return -2;
 				}
 			}
 
@@ -199,7 +199,7 @@ public class AffinityClusterer
 				else {
 					GeneralManager.get().getEventPublisher().triggerEvent(
 						new ClusterProgressEvent(100, true));
-					return -1;
+					return -2;
 				}
 			}
 
@@ -368,7 +368,7 @@ public class AffinityClusterer
 			processEvents();
 			if (bClusteringCanceled) {
 				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-				return -1;
+				return -2;
 			}
 		}
 

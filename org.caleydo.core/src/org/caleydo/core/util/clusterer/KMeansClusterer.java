@@ -92,8 +92,11 @@ public class KMeansClusterer
 
 					processEvents();
 				}
-				else
-					return -1;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 		}
 		else {
@@ -133,8 +136,11 @@ public class KMeansClusterer
 					isto++;
 					processEvents();
 				}
-				else
-					return -1;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(
@@ -171,8 +177,11 @@ public class KMeansClusterer
 		}
 
 		processEvents();
-		if (bClusteringCanceled)
-			return -1;
+		if (bClusteringCanceled){
+			GeneralManager.get().getEventPublisher()
+			.triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
 
 		ClusterEvaluation eval = new ClusterEvaluation();
@@ -185,8 +194,11 @@ public class KMeansClusterer
 			// e.printStackTrace();
 		}
 		processEvents();
-		if (bClusteringCanceled)
-			return -1;
+		if (bClusteringCanceled){
+			GeneralManager.get().getEventPublisher()
+			.triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
 
 		double[] ClusterAssignments = eval.getClusterAssignments();
@@ -208,8 +220,11 @@ public class KMeansClusterer
 			}
 		}
 		processEvents();
-		if (bClusteringCanceled)
-			return -1;
+		if (bClusteringCanceled){
+			GeneralManager.get().getEventPublisher()
+			.triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
 		// Sort cluster depending on their color values

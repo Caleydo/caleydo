@@ -50,7 +50,7 @@ public class HierarchicalClusterer
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
-			
+
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
@@ -78,16 +78,18 @@ public class HierarchicalClusterer
 					icnt++;
 					processEvents();
 				}
-				else
-					return -1;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
-
 		}
 		else {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
-			
+
 			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
@@ -114,8 +116,11 @@ public class HierarchicalClusterer
 					isto++;
 					processEvents();
 				}
-				else
-					return -1;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(
@@ -153,8 +158,10 @@ public class HierarchicalClusterer
 		}
 
 		processEvents();
-		if (bClusteringCanceled)
-			return -1;
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
 
 		ClusterEvaluation eval = new ClusterEvaluation();
@@ -167,8 +174,10 @@ public class HierarchicalClusterer
 			// e.printStackTrace();
 		}
 		processEvents();
-		if (bClusteringCanceled)
-			return -1;
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
 
 		double[] clusterAssignments = eval.getClusterAssignments();
@@ -205,8 +214,10 @@ public class HierarchicalClusterer
 			}
 		}
 		processEvents();
-		if (bClusteringCanceled)
-			return -1;
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
 		Integer clusteredVAId = set.createStorageVA(indexes);
@@ -222,8 +233,10 @@ public class HierarchicalClusterer
 		ClusterHelper.determineHierarchyDepth(tree);
 
 		processEvents();
-		if (bClusteringCanceled)
-			return -1;
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)

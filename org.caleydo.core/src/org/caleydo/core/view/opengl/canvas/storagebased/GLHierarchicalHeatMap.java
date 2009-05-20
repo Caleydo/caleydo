@@ -135,7 +135,7 @@ public class GLHierarchicalHeatMap
 	private float fWidthEHM = 0;
 
 	// embedded dendrogram
-	private GLDendrogram glDendrogram;
+	// private GLDendrogram glDendrogram;
 
 	private boolean bRedrawTextures = false;
 
@@ -208,7 +208,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
-		glDendrogram.initRemote(gl, this, glMouseListener, null, null);
+		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		initTextures(gl);
 	}
@@ -222,7 +222,7 @@ public class GLHierarchicalHeatMap
 		if (set == null)
 			return;
 
-		createDendrogram();
+		// createDendrogram();
 
 		iNumberOfElements = set.getVA(iContentVAID).size();
 
@@ -681,25 +681,25 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setRenderedRemote(true);
 	}
 
-	private void createDendrogram() {
-		CmdCreateGLEventListener cmdView =
-			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
-				ECommandType.CREATE_GL_DENDROGRAM_VERTICAL);
-
-		float fHeatMapHeight = viewFrustum.getHeight();
-		float fHeatMapWidth = viewFrustum.getWidth();
-
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
-			set, -1);
-
-		cmdView.doCommand();
-
-		glDendrogram = (GLDendrogram) cmdView.getCreatedObject();
-		GeneralManager.get().getUseCase().addView(glDendrogram);
-		glDendrogram.setUseCase(useCase);
-		glDendrogram.setRenderedRemote(true);
-		glDendrogram.initData();
-	}
+	// private void createDendrogram() {
+	// CmdCreateGLEventListener cmdView =
+	// (CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
+	// ECommandType.CREATE_GL_DENDROGRAM_VERTICAL);
+	//
+	// float fHeatMapHeight = viewFrustum.getHeight();
+	// float fHeatMapWidth = viewFrustum.getWidth();
+	//
+	// cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
+	// set, -1);
+	//
+	// cmdView.doCommand();
+	//
+	// glDendrogram = (GLDendrogram) cmdView.getCreatedObject();
+	// GeneralManager.get().getUseCase().addView(glDendrogram);
+	// glDendrogram.setUseCase(useCase);
+	// glDendrogram.setRenderedRemote(true);
+	// glDendrogram.initData();
+	// }
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
@@ -1833,14 +1833,14 @@ public class GLHierarchicalHeatMap
 		}
 
 		if (bSplitGroupExp) {
-			handleGroupSplitExperiments(gl);
+			// handleGroupSplitExperiments(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bSplitGroupExp = false;
 			}
 		}
 
 		if (bSplitGroupGene) {
-			handleGroupSplitGenes(gl);
+			// handleGroupSplitGenes(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bSplitGroupExp = false;
 			}
@@ -1932,7 +1932,7 @@ public class GLHierarchicalHeatMap
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
-			glDendrogram.setDisplayListDirty();
+			// glDendrogram.setDisplayListDirty();
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -2136,7 +2136,7 @@ public class GLHierarchicalHeatMap
 			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
 				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
-				if (iVAid == -1)
+				if (iVAid < 0)
 					iContentVAID = iContentVAIDtemp;
 				else
 					iContentVAID = iVAid;
@@ -2146,7 +2146,7 @@ public class GLHierarchicalHeatMap
 			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
 
 				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
-				if (iVAid == -1)
+				if (iVAid < 0)
 					iStorageVAID = iStorageVAIDtemp;
 				else
 					iStorageVAID = iVAid;
@@ -2155,19 +2155,27 @@ public class GLHierarchicalHeatMap
 			}
 			else {
 
+				boolean bSkipGeneClustering = false;
+
 				clusterstate.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
 				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 1);
-				if (iVAid == -1)
+				if (iVAid < 0) {
 					iStorageVAID = iStorageVAIDtemp;
+					iContentVAID = iContentVAIDtemp;
+					bSkipGeneClustering = true;
+				}
 				else
 					iStorageVAID = iVAid;
 
-				clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
-				iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate, 50, 1);
-				if (iVAid == -1)
-					iContentVAID = iContentVAIDtemp;
-				else
-					iContentVAID = iVAid;
+				// in case of user requests abort during experiment clustering do not cluster genes
+				if (bSkipGeneClustering == false) {
+					clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
+					iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate, 50, 1);
+					if (iVAid < 0)
+						iContentVAID = iContentVAIDtemp;
+					else
+						iContentVAID = iVAid;
+				}
 			}
 
 			AlSelection.clear();

@@ -8,7 +8,8 @@ public interface IClusterer
 
 	/**
 	 * Clusters a given set and returns the Id of the new generated virtual array with sorted indexes
-	 * according to the cluster result
+	 * according to the cluster result. If an error occurs or an user aborts the cluster process a negative
+	 * value will be returned.
 	 * 
 	 * @param set
 	 *            Set
@@ -24,7 +25,8 @@ public interface IClusterer
 	 * @param iProgressBarMultiplier
 	 *            multiplier needed for overall progress bar. In case of bi clustering the value is 1. In case
 	 *            of normal clustering the value is 2.
-	 * @return Id of the sorted VirtualArray
+	 * @return Id of the sorted VirtualArray. In case of an error(exception or algorithm do not converge) -1
+	 *         will be returned. In case use abort triggered by user -2 will be returned
 	 */
 	public Integer getSortedVAId(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
 		ClusterState clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier);

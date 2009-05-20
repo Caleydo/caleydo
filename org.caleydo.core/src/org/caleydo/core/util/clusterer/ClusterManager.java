@@ -125,13 +125,17 @@ public class ClusterManager {
 				public void run() {
 					Shell shell = new Shell();
 					MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
-					messageBox.setText("Problem");
+					messageBox.setText("Error");
 					messageBox.setMessage("A problem occured during clustering!");
 					messageBox.open();
 				}
 			});
 
 			return -1;
+		}
+		if (VAId == -2) {
+
+			return -2;
 		}
 
 		IVirtualArray virtualArray = set.getVA(VAId);
