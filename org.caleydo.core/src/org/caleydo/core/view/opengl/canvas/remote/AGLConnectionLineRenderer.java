@@ -189,7 +189,7 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param vecViewCenterPoint
 	 * @param fArColor
 	 */
-	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
+	protected void altRenderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 
@@ -468,7 +468,7 @@ public abstract class AGLConnectionLineRenderer {
 		lineWidth = width;
 	}
 	
-	protected void altRenderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
+	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 
@@ -537,10 +537,10 @@ public abstract class AGLConnectionLineRenderer {
 			z = coordBuffer.get(i+2);
 			i +=2;
 			gl.glVertex3f(x, y, z);
-			//System.out.println("renderLine: created vertex " + x + " " + y + " " + z);
+			System.out.println("renderLine: created vertex " + x + " " + y + " " + z);
 		}
 		gl.glEnd();
-		//System.out.println("----------------------------");
+		System.out.println("----------------------------");
 	}	
 	
 }
