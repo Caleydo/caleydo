@@ -2293,9 +2293,11 @@ public class GLRemoteRendering
 			AGLEventListener view = viewManager.getGLEventListener(viewID);
 			if (view instanceof GLParallelCoordinates) {
 				stackLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+				view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
 			}
 			else if (view instanceof GLHeatMap) {
 				focusLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+				view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
 			}
 		}
 

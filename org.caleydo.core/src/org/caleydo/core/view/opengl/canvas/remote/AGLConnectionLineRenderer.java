@@ -40,9 +40,9 @@ public abstract class AGLConnectionLineRenderer {
 	/**
 	 * Constructor.
 	 */
-	public AGLConnectionLineRenderer(final RemoteLevel underInteractionLayer, final RemoteLevel stackLayer,
+	public AGLConnectionLineRenderer(final RemoteLevel focusLevel, final RemoteLevel stackLayer,
 		final RemoteLevel poolLayer) {
-		this.focusLevel = underInteractionLayer;
+		this.focusLevel = focusLevel;
 		this.stackLevel = stackLayer;
 
 		connectedElementRepManager =
