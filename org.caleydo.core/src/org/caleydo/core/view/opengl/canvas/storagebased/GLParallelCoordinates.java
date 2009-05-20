@@ -103,9 +103,6 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -476,10 +473,6 @@ public class GLParallelCoordinates
 						MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
 							"Axis Limit",
 							"Can not show more than 100 axis - reduce polylines to less than 100 first");
-						// MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-						// messageBox
-						// .setMessage("Can not show more than 100 axis - reduce polylines to less than 100 first");
-						// messageBox.open();
 						return;
 					}
 				});
@@ -592,10 +585,17 @@ public class GLParallelCoordinates
 
 		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
 		if (delta.size() > 20) {
-			MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-			messageBox
-				.setMessage("Can not show more than 20 selected elements - reduce polylines to less than 20 first");
-			messageBox.open();
+			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
+						"Bookmark Limit",
+						"Can not bookmar more than 20 elements - reduce polylines to less than 20 first");
+		
+					return;
+				}
+			});
 			return;
 		}
 
