@@ -91,7 +91,7 @@ public class ClusteringProgressBar
 		composite.setLayout(new GridLayout(1, false));
 
 		Label label = new Label(composite, SWT.NULL);
-		label.setText("Clustering in process");
+		label.setText("Overall progress");
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.widthHint = 310;
 		label.setLayoutData(gridData);

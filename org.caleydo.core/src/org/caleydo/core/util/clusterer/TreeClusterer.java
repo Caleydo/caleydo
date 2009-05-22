@@ -43,8 +43,13 @@ public class TreeClusterer
 	private EDistanceMeasure eDistanceMeasure;
 
 	public TreeClusterer(int iNrSamples) {
-		this.iNrSamples = iNrSamples;
-		this.similarities = new float[this.iNrSamples][this.iNrSamples];
+		try {
+			this.iNrSamples = iNrSamples;
+			this.similarities = new float[this.iNrSamples][this.iNrSamples];
+		}
+		catch (OutOfMemoryError e) {
+			throw new OutOfMemoryError();
+		}
 	}
 
 	/**
@@ -250,7 +255,15 @@ public class TreeClusterer
 
 		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
 
-		float[][] distmatrix = new float[iNrSamples][iNrSamples];
+		float[][] distmatrix;
+
+		try {
+			distmatrix = new float[iNrSamples][iNrSamples];
+		}
+		catch (OutOfMemoryError e) {
+			return -1;
+		}
+
 		distmatrix = similarities.clone();
 
 		int iPercentage = 1;
@@ -465,7 +478,15 @@ public class TreeClusterer
 
 		ClosestPair pair = null;
 
-		float[][] distmatrix = new float[iNrSamples][iNrSamples];
+		float[][] distmatrix;
+
+		try {
+			distmatrix = new float[iNrSamples][iNrSamples];
+		}
+		catch (OutOfMemoryError e) {
+			return -1;
+		}
+
 		distmatrix = similarities.clone();
 
 		int iPercentage = 1;
@@ -476,7 +497,7 @@ public class TreeClusterer
 		else
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Tree clustering of experiments in progress"));
-		
+
 		for (int n = iNrSamples; n > 1; n--) {
 
 			if (bClusteringCanceled == false) {
@@ -524,7 +545,7 @@ public class TreeClusterer
 				processEvents();
 			}
 			else {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 				return -2;
 			}
 		}
@@ -552,7 +573,8 @@ public class TreeClusterer
 
 		Integer clusteredVAId = set.createStorageVA(AlIndexes);
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		return clusteredVAId;
 	}
@@ -716,9 +738,17 @@ public class TreeClusterer
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+		int iReturnValue = 0;
+
+		iReturnValue = determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
+
+		if (iReturnValue == -1) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
+		}
+		else if (iReturnValue == -2) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
 		}
 
 		this.set = set;

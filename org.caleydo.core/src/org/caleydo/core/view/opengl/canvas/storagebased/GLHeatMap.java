@@ -130,12 +130,8 @@ public class GLHeatMap
 		bRenderStorageHorizontally = false;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
-		
+		parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
@@ -384,6 +380,10 @@ public class GLHeatMap
 
 	@Override
 	public String getShortInfo() {
+		// FIXME this should not be needed
+		if (iContentVAID == -1 || iStorageVAID == -1)
+			return "Heat Map - 0 genes / 0 experiments";
+
 		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
 			+ " experiments";
 	}

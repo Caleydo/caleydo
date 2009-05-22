@@ -50,16 +50,25 @@ public class ClusterManager {
 		switch (clusterState.getClustererAlgo()) {
 			case TREE_CLUSTERER:
 
-				if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-					clusterer = new TreeClusterer(set.getVA(iVAIdContent).size());
-				else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-					clusterer = new TreeClusterer(set.getVA(iVAIdStorage).size());
-				else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-					System.out.println("Not implemented yet");
-					clusterer = new TreeClusterer(set.getVA(iVAIdContent).size());
+				clusterer = new TreeClusterer(0);
+
+				try {
+					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+						clusterer = new TreeClusterer(set.getVA(iVAIdContent).size());
+					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+						clusterer = new TreeClusterer(set.getVA(iVAIdStorage).size());
+					else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
+						System.out.println("Not implemented yet");
+						clusterer = new TreeClusterer(set.getVA(iVAIdContent).size());
+					}
+					else
+						return -1;
 				}
-				else
-					return -1;
+				catch (OutOfMemoryError e) {
+					clusterer.destroy();
+					VAId = -1;
+					break;
+				}
 
 				// System.out.println("treeClustering in progress ... ");
 				VAId =
@@ -85,16 +94,25 @@ public class ClusterManager {
 
 			case AFFINITY_PROPAGATION:
 
-				if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-					clusterer = new AffinityClusterer(set.getVA(iVAIdContent).size());
-				else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-					clusterer = new AffinityClusterer(set.getVA(iVAIdStorage).size());
-				else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-					System.out.println("Not implemented yet");
-					clusterer = new AffinityClusterer(set.getVA(iVAIdContent).size());
+				clusterer = new AffinityClusterer(0);
+
+				try {
+					if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+						clusterer = new AffinityClusterer(set.getVA(iVAIdContent).size());
+					else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+						clusterer = new AffinityClusterer(set.getVA(iVAIdStorage).size());
+					else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
+						System.out.println("Not implemented yet");
+						clusterer = new AffinityClusterer(set.getVA(iVAIdContent).size());
+					}
+					else
+						return -1;
 				}
-				else
-					return -1;
+				catch (OutOfMemoryError e) {
+					clusterer.destroy();
+					VAId = -1;
+					break;
+				}
 
 				// System.out.println("affinityPropagation in progress ... ");
 				VAId =

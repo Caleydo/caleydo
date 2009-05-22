@@ -161,6 +161,7 @@ public class KMeansClusterer
 			data = new Instances(new StringReader(buffer.toString()));
 		}
 		catch (IOException e1) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// e1.printStackTrace();
 		}
@@ -172,14 +173,14 @@ public class KMeansClusterer
 			clusterer.buildClusterer(data);
 		}
 		catch (Exception e) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// e.printStackTrace();
 		}
 
 		processEvents();
-		if (bClusteringCanceled){
-			GeneralManager.get().getEventPublisher()
-			.triggerEvent(new ClusterProgressEvent(100, true));
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -2;
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
@@ -190,13 +191,13 @@ public class KMeansClusterer
 			eval.evaluateClusterer(data);
 		}
 		catch (Exception e) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// e.printStackTrace();
 		}
 		processEvents();
-		if (bClusteringCanceled){
-			GeneralManager.get().getEventPublisher()
-			.triggerEvent(new ClusterProgressEvent(100, true));
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -2;
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
@@ -220,9 +221,8 @@ public class KMeansClusterer
 			}
 		}
 		processEvents();
-		if (bClusteringCanceled){
-			GeneralManager.get().getEventPublisher()
-			.triggerEvent(new ClusterProgressEvent(100, true));
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -2;
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));

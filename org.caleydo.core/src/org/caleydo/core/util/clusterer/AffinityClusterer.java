@@ -40,13 +40,18 @@ public class AffinityClusterer
 	private ISet set;
 
 	public AffinityClusterer(int iNrSamples) {
-		this.iNrSamples = iNrSamples;
-		this.iNrSimilarities = iNrSamples * iNrSamples;
-		this.s = new float[this.iNrSimilarities];
-		this.i = new int[this.iNrSimilarities];
-		this.k = new int[this.iNrSimilarities];
-		this.iVAIdContent = 0;
-		this.iVAIdStorage = 0;
+		try {
+			this.iNrSamples = iNrSamples;
+			this.iNrSimilarities = iNrSamples * iNrSamples;
+			this.s = new float[this.iNrSimilarities];
+			this.i = new int[this.iNrSimilarities];
+			this.k = new int[this.iNrSimilarities];
+			this.iVAIdContent = 0;
+			this.iVAIdStorage = 0;
+		}
+		catch (OutOfMemoryError e) {
+			throw new OutOfMemoryError();
+		}
 	}
 
 	/**
@@ -127,8 +132,8 @@ public class AffinityClusterer
 					processEvents();
 				}
 				else {
-					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(100, true));
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
 					return -2;
 				}
 			}
@@ -197,8 +202,8 @@ public class AffinityClusterer
 					processEvents();
 				}
 				else {
-					GeneralManager.get().getEventPublisher().triggerEvent(
-						new ClusterProgressEvent(100, true));
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
 					return -2;
 				}
 			}
@@ -442,12 +447,12 @@ public class AffinityClusterer
 			// System.out.println("Number of iterations: " + iNrIterations);
 		}
 		else {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// throw new IllegalStateException("Did not identify any clusters!!");
 		}
 		if (bConverged == false) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// throw new IllegalStateException("Algorithm did not converge!!");
 		}
@@ -549,9 +554,17 @@ public class AffinityClusterer
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		if (determineSimilarities(set, idContent, idStorage, clusterState.getClustererType()) == -1) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
+		int iReturnValue = 0;
+
+		iReturnValue = determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
+
+		if (iReturnValue == -1) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
+		}
+		else if (iReturnValue == -2) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
 		}
 
 		this.set = set;
@@ -560,5 +573,4 @@ public class AffinityClusterer
 
 		return VAId;
 	}
-
 }

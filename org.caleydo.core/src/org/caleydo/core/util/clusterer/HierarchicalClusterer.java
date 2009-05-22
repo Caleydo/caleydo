@@ -139,6 +139,7 @@ public class HierarchicalClusterer
 			data = new Instances(new StringReader(buffer.toString()));
 		}
 		catch (IOException e1) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// e1.printStackTrace();
 		}
@@ -153,6 +154,7 @@ public class HierarchicalClusterer
 			clusterer.buildClusterer(data);
 		}
 		catch (Exception e) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// e.printStackTrace();
 		}
@@ -170,6 +172,7 @@ public class HierarchicalClusterer
 			eval.evaluateClusterer(data);
 		}
 		catch (Exception e) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// e.printStackTrace();
 		}

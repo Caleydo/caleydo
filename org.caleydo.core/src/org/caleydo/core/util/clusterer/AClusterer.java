@@ -26,7 +26,7 @@ public abstract class AClusterer
 
 	protected int iProgressBarMultiplier;
 	protected int iProgressBarOffsetValue;
-	
+
 	public AClusterer() {
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 		clustererCanceledListener = new ClustererCanceledListener();
@@ -40,6 +40,7 @@ public abstract class AClusterer
 	 */
 	public void destroy() {
 		if (clustererCanceledListener != null) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			GeneralManager.get().getEventPublisher().removeListener(clustererCanceledListener);
 			clustererCanceledListener = null;
 		}
