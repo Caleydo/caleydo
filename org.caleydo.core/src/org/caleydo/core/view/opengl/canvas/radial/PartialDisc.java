@@ -23,6 +23,7 @@ public class PartialDisc
 	private float fCurrentWidth;
 	private float fCurrentInnerRadius;
 	private int iDrawingStrategyDepth;
+	private int iHierarchyLevel;
 
 	public PartialDisc(int iElementID, float fSize, Tree<PartialDisc> partialDiscTree, ClusterNode clusterNode) {
 
@@ -255,7 +256,6 @@ public class PartialDisc
 	}
 
 	public void setCurrentStartAngle(float fCurrentStartAngle) {
-
 		this.fCurrentStartAngle = getValidAngle(fCurrentStartAngle);
 	}
 
@@ -350,6 +350,35 @@ public class PartialDisc
 			return null;
 		}
 		return alChildren.get(iChildNumber);
+	}
+	
+	public void calculateHierarchyLevels(int iLevel) {
+		iHierarchyLevel = iLevel;
+		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+		
+		if(alChildren == null) {
+			return;
+		}
+		
+		for(PartialDisc pdChild : alChildren) {
+			pdChild.calculateHierarchyLevels(iLevel + 1);
+		}
+	}
+	
+	public int getHierarchyLevel() {
+		return iHierarchyLevel;
+	}
+	
+	public PartialDisc getParentWithLevel(int iHierarchyLevel) {
+		PartialDisc pdParent = partialDiscTree.getParent(this);
+		
+		if(pdParent == null) {
+			return null;
+		}
+		if(pdParent.getHierarchyLevel() == iHierarchyLevel) {
+			return pdParent;
+		}
+		return pdParent.getParentWithLevel(iHierarchyLevel);
 	}
 
 }

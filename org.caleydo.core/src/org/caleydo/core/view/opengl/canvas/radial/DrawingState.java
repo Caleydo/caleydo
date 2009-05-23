@@ -17,9 +17,11 @@ public abstract class DrawingState {
 
 	public abstract void draw(float fXCenter, float fYCenter, GL gl, GLU glu);
 
-	public abstract void handleFocus(PartialDisc pdMouseOver);
+	public abstract void handleFocus(PartialDisc pdFocused);
 
-	public abstract void handleSelection(PartialDisc pdClicked);
+	public abstract void handleSelection(PartialDisc pdSelected);
 	
-	public abstract void handleAlternativeSelection(PartialDisc pdClicked);
+	public abstract void handleAlternativeSelection(PartialDisc pdSelected);
+	
+	public abstract PartialDisc getSelectedElement();
 }

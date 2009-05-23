@@ -37,17 +37,17 @@ public abstract class DrawingStateAnimation
 	}
 
 	@Override
-	public final void handleSelection(PartialDisc pdClicked) {
+	public final void handleSelection(PartialDisc pdSelected) {
 		// do nothing
 	}
 
 	@Override
-	public final void handleFocus(PartialDisc pdMouseOver) {
+	public final void handleFocus(PartialDisc pdFocused) {
 		// do nothing
 	}
 
 	@Override
-	public final void handleAlternativeSelection(PartialDisc pdClicked) {
+	public final void handleAlternativeSelection(PartialDisc pdSelected) {
 		// do nothing
 	}
 
@@ -96,6 +96,11 @@ public abstract class DrawingStateAnimation
 
 	public void setAnimationDuration(float fAnimationDuration) {
 		this.fAnimationDuration = fAnimationDuration;
+	}
+	
+	@Override
+	public PartialDisc getSelectedElement() {
+		return null;
 	}
 
 }

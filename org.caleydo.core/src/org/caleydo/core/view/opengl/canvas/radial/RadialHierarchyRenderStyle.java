@@ -25,6 +25,8 @@ public class RadialHierarchyRenderStyle
 	public static final float USED_SCREEN_PERCENTAGE = 0.8f;
 	public static final int MIN_DISPLAYED_DETAIL_DEPTH = 2;
 	
+	public static final int MAX_LABELING_DEPTH = 5;
+	
 	
 
 	public RadialHierarchyRenderStyle(IViewFrustum viewFrustum) {

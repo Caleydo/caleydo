@@ -5,7 +5,7 @@ import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.events.KeyEvent;
 
 public class GLRadialHierarchyKeyListener
-	extends GLKeyListener {
+	extends GLKeyListener<GLRadialHierarchy> {
 	
 	GLRadialHierarchy radialHierarchy;
 	

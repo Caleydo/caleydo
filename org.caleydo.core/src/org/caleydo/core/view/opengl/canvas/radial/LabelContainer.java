@@ -109,7 +109,7 @@ public class LabelContainer {
 
 		if (bDrawLabelBackground) {
 			gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-			gl.glColor4f(1, 1, 1, 0.4f);
+			gl.glColor4f(1, 1, 1, 0.6f);
 
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(fXContainerLeft, getTop(), 0);

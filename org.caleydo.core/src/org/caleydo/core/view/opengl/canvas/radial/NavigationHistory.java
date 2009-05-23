@@ -2,8 +2,11 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
 
 public class NavigationHistory {
 
@@ -74,14 +77,24 @@ public class NavigationHistory {
 		radialHierarchy.setCurrentMouseOverElement(pdSelectedElement);
 		radialHierarchy.setMaxDisplayedHierarchyDepth(heCurrentEntry.getMaxDisplayedHierarchyDepth());
 		
+		radialHierarchy.setNewSelection(true);
+		
 		UpdateDepthSliderPositionEvent updateDepthSliderPositionEvent = new UpdateDepthSliderPositionEvent();
-		updateDepthSliderPositionEvent.setSender(this);
+		updateDepthSliderPositionEvent.setSender(radialHierarchy);
 		updateDepthSliderPositionEvent.setDepthSliderPosition(heCurrentEntry.getMaxDisplayedHierarchyDepth());
 		GeneralManager.get().getEventPublisher().triggerEvent(updateDepthSliderPositionEvent);
 		
 		drawingController.setDrawingState(heCurrentEntry.getDrawingState());
 
 		radialHierarchy.setDisplayListDirty();
+		
+		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
+		event.setSender(this);
+		event.setClusterNumber(pdSelectedElement.getElementID());
+		event.setSelectionType(ESelectionType.SELECTION);
+
+		eventPublisher.triggerEvent(event);
 	}
 
 	public void setDrawingController(DrawingController drawingController) {

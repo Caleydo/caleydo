@@ -26,6 +26,7 @@ public class LabelManager {
 	private TextRenderer textRenderer;
 	private int iMaxSegmentDepth;
 	private LabelContainer lcMouseOver;
+	private Rectangle rectControlBox;
 	private static LabelManager instance;
 
 	private LabelManager() {
@@ -78,6 +79,9 @@ public class LabelManager {
 				fXMouseOverContainerPosition =
 					fXCenter + fSegmentXCenter - MARKER_RADIUS - labelContainer.getWidth();
 			}
+
+			updateContainerPositionOnControlBoxCollision(labelContainer, fXCenter);
+
 			if (label.getSegmentDepth() >= iMaxSegmentDepth) {
 				labelContainer.setContainerPosition(fXMouseOverContainerPosition, fYCenter + fSegmentYCenter);
 				labelContainer.draw(gl, true);
@@ -104,7 +108,7 @@ public class LabelManager {
 		gl.glVertex3f(fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter, 0);
 		gl.glVertex3f(fXCenter + fBendPointX, fYCenter + fBendPointY, 0);
 		if (fSegmentXCenter <= 0) {
-			gl.glVertex3f(LEFT_CONTAINER_SPACING + labelContainer.getWidth(), fYCenter + fBendPointY, 0);
+			gl.glVertex3f(labelContainer.getRight(), fYCenter + fBendPointY, 0);
 		}
 		else {
 			gl.glVertex3f(labelContainer.getLeft(), fYCenter + fBendPointY, 0);
@@ -137,22 +141,21 @@ public class LabelManager {
 				LABEL_FONT_SCALING_FACTOR
 					* (((float) (iMaxSegmentDepth - 1) - (float) label.getSegmentDepth()) * LABEL_SEGMENT_DEPTH_SCALING_PERCENT);
 			fLabelScaling =
-				(fSegmentScalingFactor > 1) ? LABEL_MIN_FONT_SCALING_FACTOR
+				(fSegmentScalingFactor > LABEL_FONT_SCALING_FACTOR) ? LABEL_MIN_FONT_SCALING_FACTOR
 					: (LABEL_FONT_SCALING_FACTOR - fSegmentScalingFactor);
 		}
 
-		labelContainer =
-			new LabelContainer(LEFT_CONTAINER_SPACING, fYContainerCenter, fLabelScaling, textRenderer);
+		labelContainer = new LabelContainer(fXContainerLeft, fYContainerCenter, fLabelScaling, textRenderer);
 		if (iMaxSegmentDepth <= label.getSegmentDepth()) {
 			lcMouseOver = labelContainer;
 		}
 
 		labelContainer.addLabelLines(label.getLines());
-//		ArrayList<LabelLine> alLines = label.getLines();
-//
-//		for (LabelLine currentLine : alLines) {
-//			labelContainer.addTextLine(currentLine);
-//		}
+		// ArrayList<LabelLine> alLines = label.getLines();
+		//
+		// for (LabelLine currentLine : alLines) {
+		// labelContainer.addTextLine(currentLine);
+		// }
 
 		if (labelContainer.getTop() > fScreenHeight) {
 			labelContainer.setContainerPosition(labelContainer.getLeft(), fScreenHeight
@@ -165,6 +168,29 @@ public class LabelManager {
 		return labelContainer;
 	}
 
+	private void updateContainerPositionOnControlBoxCollision(LabelContainer labelContainer, float fXCenter) {
+
+		if (rectControlBox != null) {
+			if (rectControlBox.getMinY() > labelContainer.getTop())
+				return;
+			if (rectControlBox.getMaxY() < labelContainer.getBottom())
+				return;
+			if (rectControlBox.getMinX() > labelContainer.getRight())
+				return;
+			if (rectControlBox.getMaxX() < labelContainer.getLeft())
+				return;
+		}
+
+		if (labelContainer.getLeft() < fXCenter) {
+			labelContainer.setContainerPosition((float) rectControlBox.getMaxX() + LEFT_CONTAINER_SPACING,
+				labelContainer.getYContainerCenter());
+		}
+		else {
+			labelContainer.setContainerPosition((float) rectControlBox.getMinX() - RIGHT_CONTAINER_SPACING
+				- labelContainer.getWidth(), labelContainer.getYContainerCenter());
+		}
+	}
+
 	private boolean doesLabelCollide(LabelContainer containerToTest, ArrayList<LabelContainer> alContainers,
 		float fSegmentXCenter, float fSegmentYCenter, float fXCenter, float fBendPointX) {
 
@@ -173,9 +199,9 @@ public class LabelManager {
 				return true;
 			}
 		}
-		if((fBendPointX >= 0) && (fXCenter + fBendPointX > containerToTest.getLeft()))
+		if ((fBendPointX >= 0) && (fXCenter + fBendPointX > containerToTest.getLeft()))
 			return true;
-		if((fBendPointX < 0) && (fXCenter + fBendPointX < containerToTest.getRight()))
+		if ((fBendPointX < 0) && (fXCenter + fBendPointX < containerToTest.getRight()))
 			return true;
 		// It is assumed that the LabelContainer for the MouseOver Element is created first, since it is
 		// rendered first. So the the following marker collision detection should work for now.
@@ -198,6 +224,10 @@ public class LabelManager {
 		alLeftContainers.clear();
 		alRightContainers.clear();
 		iMaxSegmentDepth = 0;
+	}
+
+	public void setControlBox(Rectangle rectControlBox) {
+		this.rectControlBox = rectControlBox;
 	}
 
 	public static LabelManager get() {

@@ -35,8 +35,8 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverEvent;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverListener;
+import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
+import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -87,7 +87,7 @@ public class GLDendrogram
 
 	private TreePorter treePorter = new TreePorter();
 
-	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
+	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
 	private UpdateViewListener updateViewListener;
 
 	/**
@@ -131,9 +131,9 @@ public class GLDendrogram
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
 
-		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
+		clusterNodeMouseOverListener = new ClusterNodeSelectionListener();
 		clusterNodeMouseOverListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeMouseOverListener);
 	}
 
 	@Override
@@ -852,7 +852,7 @@ public class GLDendrogram
 				}
 				if (bTriggerClusterNodeEvent) {
 					if (tree.getNodeByNumber(iExternalID) != null) {
-						ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
+						ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 						event.setClusterNumber(iExternalID);
 						eventPublisher.triggerEvent(event);
 					}
@@ -1089,7 +1089,7 @@ public class GLDendrogram
 	}
 
 	@Override
-	public void handleMouseOver(int clusterNr) {
+	public void handleClusterNodeSelection(int clusterNr, ESelectionType selectionType) {
 		// cluster mouse over events only used for gene trees
 		if (tree != null && bRenderGeneTree) {
 			resetAllTreeSelections();

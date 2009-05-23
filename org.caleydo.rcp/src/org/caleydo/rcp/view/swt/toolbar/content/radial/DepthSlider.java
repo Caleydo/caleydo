@@ -27,7 +27,7 @@ public class DepthSlider
 	private Slider slider;
 	private Listener listener;
 	private UpdateDepthSliderPositionListener updateSliderPositionListener;
-	private static int iSelection = 5;
+	private static int iSelection = 7;
 	
 	public DepthSlider(String str) {
 		super(str);
@@ -64,6 +64,7 @@ public class DepthSlider
 
 		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
 		updateSliderPositionListener.setHandler(this);
+		//TODO: Unregister Listener, but where?
 		GeneralManager.get().getEventPublisher().addListener(UpdateDepthSliderPositionEvent.class,
 			updateSliderPositionListener);
 		return composite;
