@@ -64,10 +64,78 @@ which means you can use it in any way you want provided you keep the link to the
 </ul>
 
 
-
 <h2>The Bucket</h2>
+<h3>Introduction</h3>
+<p><img src="../images/help/bucket/bucket.png"
+	alt="Bucket icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> 
+The <b>bucket</b> allows the arrangement of pathways in a 3D setup.<br />The bucket consists of three levels:
+<ul>
+  <li>Center</li>
+  <li>Bucket walls</li>
+  <li>Pool level</li>
+</ul>
 
+A contextual heat map and a parallel coordinates view show genes which are contained in the loaded 
+pathways at the center and wall level. Genes inside the pathways are highlighted on mouse over. Short information
+on the gene is presented in an info area located near the tool bar. The selected gene is automatically queried in the embedded browser view (if opened).
+</p>
 
+<p>Pathways can be directly loaded by using the drop down search field in the pathway tool bar. In addition it is possible to load
+pathways by using the search view or via the gene context menu (activated with a right-click on a gene).</p>
+
+<br /> 
+
+<img src="../images/help/bucket/bucket_full_PRKACA_gene.png"
+	alt="Bucket"
+	style="border-style: none;" />
+
+<h3>Navigation</h3>
+
+<p>
+	<img src="../images/help/bucket/bucket_navigation_mode_screenshot.png"
+	alt="Bucket navigation mode"
+	style="border-style: none; float: right; padding-left: 1em;" />
+
+All views inside the bucket (pathways, heat map, parallel coordinates) can be rearranged in the bucket 
+by using <b>drag&drop</b>. The user can simply grab the view by clicking (without releasing the button) the
+title bar of the view and move it to another position in the bucket (i.e. center, bucket wall, or pool).
+When the designated position is reached, the user has to release the mouse button.
+In the case another view is already at the designated position, the two views are switched. 
+<br /><br />
+
+<img src="../images/help/bucket/bucket_navigation_mode.png"
+	alt="Bucket navigation mode icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> 
+The <b>navigation mode</b>, which is accessible via the tool bar, is an alternative method for rearranging
+the views inside the bucket. It shows an overlay with arrows pointing in the designated moving direction.
+When the aimed direction is already occupied by another view, the views are switched.</p>
+
+<br /><br /><br /><br /><br />
+<img src="../images/help/bucket/bucket_zoom.png"
+	alt="Bucket zoom icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> 
+	<img src="../images/help/bucket/bucket_zoomed_PRKACA_gene.png"
+	alt="Bucket zoom"
+	style="border-style: none; float: right; padding-left: 1em;" />
+The user can <b>zoom</b> into the bucket by either using the mouse wheel or by triggering the zoom action via the tool bar.
+The zoomed in mode of the bucket displays the center view in detail. 
+<br />
+
+<p><img src="../images/help/bucket/bucket_connection_lines.png"
+	alt="Bucket connection lines icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> 
+
+The <b>connection lines</b> icon allows the user to switch on/off the connection lines inside the bucket. The visual links
+support the identity visualization of a specific gene contained in different pathways.</p>
+
+<p><img src="../images/help/bucket/bucket_reset.png"
+	alt="Bucket reset icon"
+	style="border-style: none; float: left; padding-right: 1em;" /> 
+	Resetting the bucket throws away all previously loaded pathways. After a <b>reset</b> the bucket appears in its 
+	initial state with an empty heat map and a parallel coordinates view.
+</p>
+<br /><br /><br />
 <br />
 <table style="width: 100%">
 	<tr>
@@ -77,8 +145,6 @@ which means you can use it in any way you want provided you keep the link to the
 		Searching for genes and pathways</a> &gt;</a></td>
 	</tr>
 </table>
-
-
 
 <!-- Website maintenance message -->
 <div id="maintenance" style="text-align: right">
