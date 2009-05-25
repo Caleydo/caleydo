@@ -26,9 +26,9 @@ public class CaleydoProjectWizard
 	 * Constructor.
 	 */
 	public CaleydoProjectWizard(final Shell parentShell) {
-		super();
-
-		parentShell.setText("Open project file");
+	
+		this.setWindowTitle("Caleydo - Project Wizard");
+	
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		Rectangle rect = parentShell.getBounds();

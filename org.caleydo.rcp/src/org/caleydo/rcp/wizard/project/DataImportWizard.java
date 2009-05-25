@@ -24,6 +24,7 @@ public class DataImportWizard
 	public DataImportWizard(final Shell parentShell) {
 		super();
 
+		this.setWindowTitle("Caleydo - Import Data");
 		parentShell.setText("Open project file");
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();

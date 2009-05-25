@@ -231,11 +231,12 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2009.&#x0A;All Rights Reserved.">
+               value="Test">
          </property>
       </product>
    </extension>
    <extension
+         name="Caleydo"
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
             class="org.caleydo.rcp.splashHandlers.InteractiveSplashHandler"

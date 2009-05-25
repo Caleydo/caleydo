@@ -591,7 +591,7 @@ public class GLParallelCoordinates
 				public void run() {
 					MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
 						"Bookmark Limit",
-						"Can not bookmar more than 20 elements - reduce polylines to less than 20 first");
+						"Can not bookmark more than 20 elements - reduce polylines to less than 20 first");
 		
 					return;
 				}
