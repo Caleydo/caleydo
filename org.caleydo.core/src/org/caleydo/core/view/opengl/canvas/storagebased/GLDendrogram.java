@@ -63,6 +63,8 @@ public class GLDendrogram
 	private Tree<ClusterNode> tree;
 	DendrogramRenderStyle renderStyle;
 
+	private ClusterNode currentRootNode;
+
 	// true for gene tree, false for experiment tree
 	private boolean bRenderGeneTree;
 
@@ -312,7 +314,8 @@ public class GLDendrogram
 	private void determinePositions() {
 
 		if (bRenderGeneTree)
-			determinePosRecGenes(tree.getRoot());
+			determinePosRecGenes(currentRootNode);
+		// determinePosRecGenes(tree.getRoot());
 		else
 			determinePosRecExperiments(tree.getRoot());
 
@@ -648,8 +651,23 @@ public class GLDendrogram
 		if (tree == null) {
 
 			if (bRenderGeneTree == true) {
+
+				// try {
+				// tree = treePorter.importTree("data/clustering/tree.xml");
+				// currentRootNode = tree.getRoot();
+				// }
+				// catch (FileNotFoundException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+				// catch (JAXBException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+
 				if (set.getClusteredTreeGenes() != null) {
 					tree = set.getClusteredTreeGenes();
+					currentRootNode = tree.getRoot();
 				}
 			}
 			else {
@@ -683,7 +701,10 @@ public class GLDendrogram
 
 			if (bRenderGeneTree) {
 				gl.glTranslatef(0.1f, 0, 0);
-				renderDendrogramGenes(gl, tree.getRoot());
+				{
+					renderDendrogramGenes(gl, currentRootNode);
+					// renderDendrogramGenes(gl, tree.getRoot());
+				}
 			}
 			else {
 				gl.glTranslatef(0, 0.1f, 0);
@@ -815,15 +836,13 @@ public class GLDendrogram
 						if (storageSelectionManager.checkStatus(iExternalID))
 							bupdateSelectionManager = true;
 
-						if (tree.getNodeByNumber(iExternalID) != null) {
-							resetAllTreeSelections();
-							tree.getNodeByNumber(iExternalID).setSelectionType(ESelectionType.SELECTION);
-						}
-						setDisplayListDirty();
+						bTriggerClusterNodeEvent = true;
+
 						break;
 					case DRAGGED:
 						break;
 					case MOUSE_OVER:
+						eSelectionType = ESelectionType.MOUSE_OVER;
 						// if (contentSelectionManager.checkStatus(iExternalID) == false)
 						bTriggerClusterNodeEvent = true;
 						// if (tree.getNodeByNumber(iExternalID) != null)
@@ -854,6 +873,7 @@ public class GLDendrogram
 					if (tree.getNodeByNumber(iExternalID) != null) {
 						ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 						event.setClusterNumber(iExternalID);
+						event.setSelectionType(eSelectionType);
 						eventPublisher.triggerEvent(event);
 					}
 				}
@@ -870,15 +890,13 @@ public class GLDendrogram
 						if (storageSelectionManager.checkStatus(iExternalID))
 							bupdateSelectionManager = true;
 
-						if (tree.getNodeByNumber(iExternalID) != null) {
-							resetAllTreeSelections();
-							tree.getNodeByNumber(iExternalID).setSelectionType(ESelectionType.SELECTION);
-						}
-						setDisplayListDirty();
+						bTriggerClusterNodeEvent = true;
+
 						break;
 					case DRAGGED:
 						break;
 					case MOUSE_OVER:
+						eSelectionType = ESelectionType.MOUSE_OVER;
 						// if (contentSelectionManager.checkStatus(iExternalID) == false)
 						bTriggerClusterNodeEvent = true;
 						// if (tree.getNodeByNumber(iExternalID) != null)
@@ -910,6 +928,7 @@ public class GLDendrogram
 				// if (tree.getNodeByNumber(iExternalID) != null) {
 				// ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
 				// event.setClusterNumber(iExternalID);
+				// event.setSelectionType(eSelectionType);
 				// eventPublisher.triggerEvent(event);
 				// }
 				// }
@@ -1093,8 +1112,10 @@ public class GLDendrogram
 		// cluster mouse over events only used for gene trees
 		if (tree != null && bRenderGeneTree) {
 			resetAllTreeSelections();
-			if (tree.getNodeByNumber(clusterNr) != null)
-				tree.getNodeByNumber(clusterNr).setSelectionType(ESelectionType.MOUSE_OVER);
+			if (tree.getNodeByNumber(clusterNr) != null) {
+				// currentRootNode = tree.getNodeByNumber(clusterNr);
+				tree.getNodeByNumber(clusterNr).setSelectionType(selectionType);
+			}
 
 			setDisplayListDirty();
 		}

@@ -4,7 +4,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 
 /**
- * Listener for IClusterer that checks wheter a cancel was triggered
+ * Listener for IClusterer that checks whether a cancel was triggered
  * 
  * @author Alexander Lex
  */

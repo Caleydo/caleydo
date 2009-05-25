@@ -13,7 +13,10 @@ import org.caleydo.core.manager.general.GeneralManager;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
+import weka.core.DistanceFunction;
+import weka.core.EuclideanDistance;
 import weka.core.Instances;
+import weka.core.ManhattanDistance;
 
 public class KMeansClusterer
 	extends AClusterer
@@ -22,6 +25,8 @@ public class KMeansClusterer
 	private SimpleKMeans clusterer = null;
 
 	private int iNrCluster = 5;
+
+	private EDistanceMeasure eDistanceMeasure;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
@@ -36,11 +41,20 @@ public class KMeansClusterer
 		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 
+		DistanceFunction distFunc = null;
+		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
+			distFunc = new EuclideanDistance();
+		else if (eDistanceMeasure == EDistanceMeasure.MANHATTAHN_DISTANCE)
+			distFunc = new ManhattanDistance();
+
 		try {
 			clusterer.setNumClusters(iNrCluster);
 			clusterer.setMaxIterations(1000);
+			if (distFunc != null)
+				clusterer.setDistanceFunction(distFunc);
 		}
 		catch (Exception e2) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return -1;
 			// e2.printStackTrace();
 		}
@@ -264,6 +278,7 @@ public class KMeansClusterer
 
 		Integer VAId = 0;
 
+		this.eDistanceMeasure = clusterState.getDistanceMeasure();
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 

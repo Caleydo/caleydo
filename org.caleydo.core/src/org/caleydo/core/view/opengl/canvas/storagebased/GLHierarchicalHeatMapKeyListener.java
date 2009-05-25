@@ -42,9 +42,9 @@ public class GLHierarchicalHeatMapKeyListener
 				else if (keyEvent.stateMask == SWT.ALT) {
 					glHierarchicalHeatMap.handleArrowUpAltPressed();
 				}
-				// else {
-				// glHierarchicalHeatMap.handleArrowUpPressed();
-				// }
+				else {
+					glHierarchicalHeatMap.handleArrowUpPressed();
+				}
 
 				break;
 			case SWT.ARROW_DOWN:
@@ -55,19 +55,19 @@ public class GLHierarchicalHeatMapKeyListener
 				else if (keyEvent.stateMask == SWT.ALT) {
 					glHierarchicalHeatMap.handleArrowDownAltPressed();
 				}
-				// else {
-				// glHierarchicalHeatMap.handleArrowDownPressed();
-				// }
+				else {
+					glHierarchicalHeatMap.handleArrowDownPressed();
+				}
 
 				break;
 			case SWT.ARROW_LEFT:
 
-				// glHierarchicalHeatMap.handleArrowLeftPressed();
+				glHierarchicalHeatMap.handleArrowLeftPressed();
 
 				break;
 			case SWT.ARROW_RIGHT:
 
-				// glHierarchicalHeatMap.handleArrowRightPressed();
+				glHierarchicalHeatMap.handleArrowRightPressed();
 
 				break;
 		}

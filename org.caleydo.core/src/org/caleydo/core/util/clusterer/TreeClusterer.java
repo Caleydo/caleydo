@@ -97,7 +97,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iStorageIndex1 : storageVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
+							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
@@ -109,7 +109,8 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer iStorageIndex2 : storageVA) {
 								dArInstance2[isto] =
-									set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
+									set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+										iContentIndex2);
 								isto++;
 							}
 
@@ -149,7 +150,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iContentIndex1 : contentVA) {
 						dArInstance1[isto] =
-							set.get(iStorageIndex1).getFloat(EDataRepresentation.RAW, iContentIndex1);
+							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
@@ -160,7 +161,8 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer iContentIndex2 : contentVA) {
 								dArInstance2[isto] =
-									set.get(iStorageIndex2).getFloat(EDataRepresentation.RAW, iContentIndex2);
+									set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+										iContentIndex2);
 								isto++;
 							}
 

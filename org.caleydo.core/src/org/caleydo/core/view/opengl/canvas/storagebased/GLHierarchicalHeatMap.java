@@ -3044,9 +3044,17 @@ public class GLHierarchicalHeatMap
 	}
 
 	public void handleArrowDownAltPressed() {
+		iSamplesPerHeatmap--;
+		initPosCursor();
+		triggerSelectionBlock();
+		setDisplayListDirty();
 	}
 
 	public void handleArrowUpAltPressed() {
+		iSamplesPerHeatmap++;
+		initPosCursor();
+		triggerSelectionBlock();
+		setDisplayListDirty();
 	}
 
 	public void handleArrowDownCtrlPressed() {
@@ -3067,16 +3075,20 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	public void handleArrowUpPressed() {
+		// glHeatMapView.upDownSelect(true);
+	}
+
 	public void handleArrowDownPressed() {
+		// glHeatMapView.upDownSelect(false);
 	}
 
 	public void handleArrowLeftPressed() {
+		// glHeatMapView.leftRightSelect(true);
 	}
 
 	public void handleArrowRightPressed() {
-	}
-
-	public void handleArrowUpPressed() {
+		// glHeatMapView.leftRightSelect(false);
 	}
 
 }

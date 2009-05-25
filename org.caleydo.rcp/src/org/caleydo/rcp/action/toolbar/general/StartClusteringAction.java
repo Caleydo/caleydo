@@ -51,6 +51,7 @@ public class StartClusteringAction
 
 	String[] sArTypeOptions = { "Gene", "Experiment", "Bi-Clustering" };
 	String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
+	String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan Distance"};
 
 	ClusterState clusterState = new ClusterState();
 
@@ -170,6 +171,18 @@ public class StartClusteringAction
 			}
 		};
 
+		final Combo distMeasureCombo = new Combo(composite, SWT.DROP_DOWN);
+		distMeasureCombo.setItems(sArDistOptionsWeka);
+		distMeasureCombo.setEnabled(true);
+		distMeasureCombo.select(0);
+		distmeasure = sArDistOptionsWeka[0];
+		distMeasureCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				distmeasure = distMeasureCombo.getText();
+			}
+		});
+		
 		final Label lblClusterCntGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterCntGenes.setText("Number clusters for clustering genes");
 		lblClusterCntGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
@@ -402,6 +415,8 @@ public class StartClusteringAction
 			clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		else if (distmeasure.equals(sArDistOptions[1]))
 			clusterState.setDistanceMeasure(EDistanceMeasure.PEARSON_CORRELATION);
+		else if (distmeasure.equals(sArDistOptionsWeka[1]))
+			clusterState.setDistanceMeasure(EDistanceMeasure.MANHATTAHN_DISTANCE);
 
 		clusterState.setAffinityPropClusterFactorGenes(fclusterFactorGenes);
 		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
