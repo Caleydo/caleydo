@@ -211,7 +211,7 @@ public class GLHierarchicalHeatMap
 		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		initTextures(gl);
-		activateGroupHandling();
+//		activateGroupHandling();
 	}
 
 	/**
@@ -2317,12 +2317,12 @@ public class GLHierarchicalHeatMap
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
-		gl.glEnd();
+		// gl.glBegin(GL.GL_QUADS);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
+		// gl.glEnd();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bSplitGroupGene = false;
@@ -2362,12 +2362,12 @@ public class GLHierarchicalHeatMap
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
-		gl.glEnd();
+		// gl.glBegin(GL.GL_QUADS);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
+		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
+		// gl.glEnd();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bSplitGroupExp = false;
