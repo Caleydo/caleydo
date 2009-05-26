@@ -3,10 +3,14 @@
 #
 
 mount_point="/mnt/webdav"
+download_folder=$mount_point"/htdocs/download"
+webstart_plugins_folder=$download_folder"/webstart/plugins"
 
-copy_to_web()
+export_root=$HOME"/caleydo_export"
+webstart_export_path=$export_root"/webstart"
+
+mount_webdav()
 {
-
   already_mounted=false
   for i in `cat /proc/mounts | cut -d' ' -f2`; do
     if [ "$mount_point" = "$i" ]; then
@@ -16,11 +20,18 @@ copy_to_web()
   done
 
   if [ "$already_mounted" = "false" ]; then
-    sudo mount -t davfs https://caleydo.icg.tugraz.at/dav/ /mnt/webdav
+    sudo mount -t davfs https://caleydo.icg.tugraz.at/dav/ $mount_point
   fi
+}
 
-  sudo cp  $export_path /mnt/webdav/htdocs/download -R
+copy_to_web()
+{
+  sudo cp $export_path $download_folder -R
+}
 
+copy_webstart()
+{
+  sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder
 }
 
 make_archive()
@@ -41,19 +52,21 @@ print_help()
   echo "Usage: export.sh [ option ]"
   echo ""
   echo "Options:"
-  echo "-a make archive"
-  echo "-c copy to web"
+  echo "-a package standalone"
+  echo "-c copy standalone"
+  echo "-s package and copy standalone"
+  echo "-w copy webstart"
   echo ""
-  echo "If none of the options is present all first the archive is made then the result is copied to the web"
+  echo "If none of the options is present all first the archive is made then the result is copied to the web, then the webstart is copied"
 }
 
-echo "Caleydo packaging"
-echo "Enter the version number for the export"
-read version_number
-
-export_root=$HOME"/caleydo_export"
-export_path=$export_root/$version_number
-
+ask_for_version()
+{
+  echo "Caleydo packaging"
+  echo "Enter the version number for the export"
+  read version_number
+  export_path=$export_root/$version_number
+}
 #echo $*
 
 #$# number of params
@@ -65,10 +78,21 @@ then
   while [ "$count" -lt $# ]
   do
     case $1 in
-      # rename
-      -a) make_archive "y";;
-      # resize
-      -c) copy_to_web "y";;
+      # package standalone
+      -a) ask_for_version
+	  make_archive;;
+      # copy standalone
+      -c) ask_for_version
+	  mount_webdav
+	  copy_to_web;;
+      # package and copy standalone
+      -s) ask_for_version
+	  make_archive
+	  mount_webdav
+	  copy_to_web;;
+      # copy webstart
+      -w) mount_webdav
+	  copy_webstart;;
       # command not recognized
       *) print_help;;
     esac
@@ -77,11 +101,26 @@ then
   done
 else
 
-  make_archive
-  echo "Do you want to copy the release to the website? (y/n)"
+  echo "Do you want to package the standalone release? (y/n)"
   read copy
   if [ $copy = "y" ];
     then
-    copy_to_web
+    ask_for_version
+    make_archive
+    echo "Do you want to copy the release to the website? (y/n)"
+    read copy
+    if [ $copy = "y" ];
+      then
+      mount_webdav
+      copy_to_web
+    fi
+  fi
+
+  echo "Do you want to copy the webstart release to the website? (y/n)"
+  read copy
+  if [ $copy = "y" ];
+    then
+    mount_webdav
+    copy_webstart
   fi
 fi
