@@ -49,7 +49,6 @@ public abstract class AClusterer
 	@Override
 	public void cancel() {
 		bClusteringCanceled = true;
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, false));
 	}
 
 	/**

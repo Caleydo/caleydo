@@ -1,5 +1,10 @@
 package org.caleydo.core.util.clusterer;
 
+/**
+ * Pearson correlation measure, implements {@link IDistanceMeasure}.
+ * 
+ * @author Bernhard Schlegl
+ */
 public class PearsonCorrelation
 	implements IDistanceMeasure {
 

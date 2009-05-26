@@ -10,6 +10,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.caleydo.core.data.selection.ESelectionType;
 
+/**
+ * Implementation of a node used in the cluster tree. Cluster node contains information needed in the
+ * dendrogram and the radial hierarchy view. Additionally cluster node implements {@link Comparable}.
+ * 
+ * @author Bernhard Schlegl
+ */
 @XmlRootElement(name = "node")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode

@@ -5,12 +5,14 @@ import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECT
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
@@ -65,7 +67,9 @@ public class GLDendrogram
 
 	private ClusterNode currentRootNode;
 
-	// true for gene tree, false for experiment tree
+	/**
+	 * true for gene tree, false for experiment tree
+	 */
 	private boolean bRenderGeneTree;
 
 	private boolean bIsDraggingActive = false;
@@ -357,8 +361,9 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			pos.setX(fXmin - fLevelWidth);
+			float fCoeff = currentNode.getCoefficient();
 
+			pos.setX(fXmin - fLevelWidth * (1 + fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
 			pos.setZ(0f);
 
@@ -405,8 +410,10 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
+			float fCoeff = currentNode.getCoefficient();
+
 			pos.setX(fXmin + (fXmax - fXmin) / 2);
-			pos.setY(fYmax + fLevelHeight);
+			pos.setY(fYmax + fLevelHeight * (1 + fCoeff));
 			pos.setZ(0f);
 
 		}

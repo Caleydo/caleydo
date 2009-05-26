@@ -328,12 +328,27 @@ public interface ISet
 	 */
 	public void setAlExamples(ArrayList<Integer> alExamples);
 
+	/**
+	 * Sets imported group information
+	 * 
+	 * @param arGroupInfo
+	 */
 	public void setGroupNrInfo(int[] arGroupInfo);
 
+	/**
+	 * Sets imported representatives
+	 * 
+	 * @param arGroupRepr
+	 */
 	public void setGroupReprInfo(int[] arGroupRepr);
 
 	public GroupList getGroupList();
 
+	/**
+	 * Flag determines if cluster information was imported or not.
+	 * 
+	 * @return cluster info flag
+	 */
 	public boolean isClusterInfo();
 
 	/**

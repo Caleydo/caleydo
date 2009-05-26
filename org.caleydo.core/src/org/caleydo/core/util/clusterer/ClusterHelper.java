@@ -8,6 +8,11 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 
+/**
+ * Cluster helper provides methodes needed in cluster algorithms such as median, arithmetic mean, etc.
+ * 
+ * @author Bernhard Schlegl
+ */
 public class ClusterHelper {
 
 	/**
@@ -84,8 +89,8 @@ public class ClusterHelper {
 
 			for (ClusterNode current : tree.getChildren(node)) {
 				int iChildDepth = determineHierarchyDepthRec(tree, current);
-	            if (temp <= iChildDepth)
-	            	temp = iChildDepth + 1;
+				if (temp <= iChildDepth)
+					temp = iChildDepth + 1;
 			}
 
 			node.setDepth(temp);

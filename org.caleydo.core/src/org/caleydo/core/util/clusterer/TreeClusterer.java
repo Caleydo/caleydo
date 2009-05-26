@@ -60,7 +60,7 @@ public class TreeClusterer
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	public int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
+	private int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
 		EClustererType eClustererType) {
 
 		IVirtualArray contentVA = set.getVA(iVAIdContent);

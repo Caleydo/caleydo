@@ -3,6 +3,11 @@ package org.caleydo.core.util.clusterer;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.IListenerOwner;
 
+/**
+ * Interface class for all clustering algorithms.
+ * 
+ * @author Bernhard Schlegl
+ */
 public interface IClusterer
 	extends IListenerOwner {
 

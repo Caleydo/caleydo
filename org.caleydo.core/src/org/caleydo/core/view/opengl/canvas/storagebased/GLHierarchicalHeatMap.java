@@ -211,6 +211,7 @@ public class GLHierarchicalHeatMap
 		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		initTextures(gl);
+		activateGroupHandling();
 	}
 
 	/**
@@ -658,7 +659,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Create embedded heatmap, register heatmap as a sender and receiver
+	 * Create embedded heat map
 	 * 
 	 * @param
 	 */
@@ -1833,14 +1834,14 @@ public class GLHierarchicalHeatMap
 		}
 
 		if (bSplitGroupExp) {
-			// handleGroupSplitExperiments(gl);
+			handleGroupSplitExperiments(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bSplitGroupExp = false;
 			}
 		}
 
 		if (bSplitGroupGene) {
-			// handleGroupSplitGenes(gl);
+			handleGroupSplitGenes(gl);
 			if (glMouseListener.wasMouseReleased()) {
 				bSplitGroupExp = false;
 			}
@@ -2811,8 +2812,6 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 	}
 
-	boolean bSkipClustering = false;
-
 	public void startClustering(ClusterState clusterState) {
 
 		this.clusterstate = clusterState;
@@ -2839,16 +2838,14 @@ public class GLHierarchicalHeatMap
 		// });
 		// }
 
-		if (bSkipClustering == false) {
-			bUseClusteredVA = true;
-			initData();
-			bUseClusteredVA = false;
-		}
+		bUseClusteredVA = true;
+		initData();
+		bUseClusteredVA = false;
 
 		setDisplayListDirty();
 	}
 
-	public void activateGroupHandling() {
+	private void activateGroupHandling() {
 
 		if (set.getVA(iContentVAID).getGroupList() == null) {
 			IGroupList groupList = new GroupList(0);
@@ -2898,14 +2895,6 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.initData();
 
 		bRedrawTextures = true;
-	}
-
-	public void setClusterstate(ClusterState clusterstate) {
-		this.clusterstate = clusterstate;
-	}
-
-	public ClusterState getClusterstate() {
-		return clusterstate;
 	}
 
 	@Override

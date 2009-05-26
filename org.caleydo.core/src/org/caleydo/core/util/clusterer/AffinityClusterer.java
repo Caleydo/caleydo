@@ -11,6 +11,11 @@ import org.caleydo.core.manager.general.GeneralManager;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
+/**
+ * Affinity propagation clusterer.
+ * 
+ * @author Bernhard Schlegl
+ */
 public class AffinityClusterer
 	extends AClusterer
 	implements IClusterer {
@@ -62,7 +67,7 @@ public class AffinityClusterer
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	public int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
+	private int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
 		EClustererType eClustererType) {
 
 		this.iVAIdContent = iVAIdContent;
@@ -233,7 +238,7 @@ public class AffinityClusterer
 	 * @param set
 	 * @return Integer
 	 */
-	public Integer affinityPropagation(EClustererType eClustererType) {
+	private Integer affinityPropagation(EClustererType eClustererType) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
@@ -524,18 +529,6 @@ public class AffinityClusterer
 		}
 
 		return indexes;
-	}
-
-	public int getNrClusters() {
-		return iNrClusters;
-	}
-
-	public void setClusterFactor(float dClusterFactor) {
-		this.fClusterFactor = dClusterFactor;
-	}
-
-	public float getClusterFactor() {
-		return fClusterFactor;
 	}
 
 	@Override

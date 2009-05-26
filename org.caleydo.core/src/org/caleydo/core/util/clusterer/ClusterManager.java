@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Cluster manager handels clusterstate and calls corresponding clusterer.
+ * Cluster manager handels {@link ClusterState} and calls corresponding clusterer.
  * 
  * @author Bernhard Schlegl
  */

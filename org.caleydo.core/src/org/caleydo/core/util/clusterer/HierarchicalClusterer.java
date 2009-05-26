@@ -32,7 +32,7 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	public Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, EClustererType eClustererType) {
+	private Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, EClustererType eClustererType) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();

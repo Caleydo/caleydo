@@ -14,6 +14,9 @@ import weka.core.Instances;
 import weka.core.RevisionUtils;
 import weka.core.Capabilities.Capability;
 
+/**
+ * Cobweb cluster algorithm
+ */
 public class Cobweb
 	extends RandomizableClusterer
 	implements UpdateableClusterer {

@@ -1,5 +1,11 @@
 package org.caleydo.core.util.clusterer;
 
+/**
+ * Stores the cluster state which is determined in the {@link StartClusteringAction}. Depending on the
+ * selected algorithm different variables (cluster factor, cluster number) are needed.
+ * 
+ * @author Bernhard Schlegl
+ */
 public class ClusterState {
 
 	private EClustererAlgo eClustererAlgo;
