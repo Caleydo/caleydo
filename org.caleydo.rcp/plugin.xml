@@ -223,7 +223,7 @@
          </property>
          <property
                name="windowImages"
-               value="resources/icons/caleydo16.gif">
+               value="resources/icons/caleydo16.gif,resources/icons/caleydo32.gif,resources/icons/caleydo48.gif,resources/icons/caleydo64.gif,resources/icons/caleydo128.gif">
          </property>
          <property
                name="preferenceCustomization"
@@ -231,7 +231,7 @@
          </property>
          <property
                name="aboutText"
-               value="Test">
+               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2009.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>
