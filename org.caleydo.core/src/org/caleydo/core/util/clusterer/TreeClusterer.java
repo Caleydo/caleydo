@@ -370,7 +370,12 @@ public class TreeClusterer
 		else
 			set.setClusteredTreeExps(tree);
 
-		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(AlIndexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(AlIndexes);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
@@ -573,7 +578,12 @@ public class TreeClusterer
 		else
 			set.setClusteredTreeExps(tree);
 
-		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(AlIndexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(AlIndexes);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));

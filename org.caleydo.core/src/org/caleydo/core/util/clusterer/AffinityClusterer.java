@@ -474,7 +474,12 @@ public class AffinityClusterer
 
 		AlIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
 
-		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(AlIndexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(AlIndexes);
 
 		set.setAlClusterSizes(count);
 		set.setAlExamples(idxExamples);

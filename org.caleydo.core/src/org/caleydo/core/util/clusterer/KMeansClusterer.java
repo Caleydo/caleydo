@@ -260,7 +260,12 @@ public class KMeansClusterer
 			}
 		}
 
-		Integer clusteredVAId = set.createStorageVA(indexes);
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(indexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(indexes);
 
 		// set cluster result in Set
 		set.setAlClusterSizes(count);

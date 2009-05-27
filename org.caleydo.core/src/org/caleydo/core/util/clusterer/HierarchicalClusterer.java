@@ -223,7 +223,12 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
-		Integer clusteredVAId = set.createStorageVA(indexes);
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(indexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(indexes);
 
 		CNode node = clusterer.m_cobwebTree;
 
