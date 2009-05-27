@@ -211,7 +211,7 @@ public class GLHierarchicalHeatMap
 		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		initTextures(gl);
-//		activateGroupHandling();
+		// activateGroupHandling();
 	}
 
 	/**
@@ -2531,16 +2531,37 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case RIGHT_CLICKED:
-						GroupContextMenuItemContainer groupContextMenuItemContainer =
-							new GroupContextMenuItemContainer();
-						groupContextMenuItemContainer.setGeneExperimentFlag(true);
-						contextMenu.addItemContanier(groupContextMenuItemContainer);
 
-						// if (!isRenderedRemote()) {
-						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-							getParentGLCanvas().getHeight());
-						contextMenu.setMasterGLView(this);
-						// }
+						boolean bEnableInterchange = false;
+						boolean bEnableMerge = false;
+						int iNrSelectedGroups = 0;
+
+						IGroupList tempGroupList = set.getVA(iContentVAID).getGroupList();
+
+						for (Group group : tempGroupList) {
+							if (group.getSelectionType() == ESelectionType.SELECTION)
+								iNrSelectedGroups++;
+						}
+
+						if (iNrSelectedGroups >= 2) {
+
+							bEnableMerge = true;
+
+							if (iNrSelectedGroups == 2)
+								bEnableInterchange = true;
+
+							GroupContextMenuItemContainer groupContextMenuItemContainer =
+								new GroupContextMenuItemContainer();
+							groupContextMenuItemContainer.setContextMenuFlags(true, bEnableMerge,
+								bEnableInterchange);
+							contextMenu.addItemContanier(groupContextMenuItemContainer);
+
+							// if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+							// }
+						}
 						break;
 
 					case MOUSE_OVER:
@@ -2572,16 +2593,37 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case RIGHT_CLICKED:
-						GroupContextMenuItemContainer groupContextMenuItemContainer =
-							new GroupContextMenuItemContainer();
-						groupContextMenuItemContainer.setGeneExperimentFlag(false);
-						contextMenu.addItemContanier(groupContextMenuItemContainer);
 
-						// if (!isRenderedRemote()) {
-						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-							getParentGLCanvas().getHeight());
-						contextMenu.setMasterGLView(this);
-						// }
+						boolean bEnableInterchange = false;
+						boolean bEnableMerge = false;
+						int iNrSelectedGroups = 0;
+
+						IGroupList tempGroupList = set.getVA(iStorageVAID).getGroupList();
+
+						for (Group group : tempGroupList) {
+							if (group.getSelectionType() == ESelectionType.SELECTION)
+								iNrSelectedGroups++;
+						}
+
+						if (iNrSelectedGroups >= 2) {
+
+							bEnableMerge = true;
+
+							if (iNrSelectedGroups == 2)
+								bEnableInterchange = true;
+
+							GroupContextMenuItemContainer groupContextMenuItemContainer =
+								new GroupContextMenuItemContainer();
+							groupContextMenuItemContainer.setContextMenuFlags(false, bEnableMerge,
+								bEnableInterchange);
+							contextMenu.addItemContanier(groupContextMenuItemContainer);
+
+							// if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+							// }
+						}
 						break;
 
 					case MOUSE_OVER:
@@ -2965,15 +3007,19 @@ public class GLHierarchicalHeatMap
 			if (iter.getSelectionType() == ESelectionType.SELECTION)
 				selGroups.add(groupList.indexOf(iter));
 		}
-		if (selGroups.size() != 2) {
-			System.out.println("Number of selected elements has to be 2!!!");
-			return;
-		}
 
 		// merge
-		if (groupList.merge(set.getVA(iVAId), selGroups.get(0), selGroups.get(1)) == false) {
-			System.out.println("Problem during merge!!!");
-			return;
+		while (selGroups.size() >= 2) {
+
+			int iLastSelected = selGroups.size() - 1;
+
+			// merge last and the one before last
+			if (groupList.merge(set.getVA(iVAId), selGroups.get(iLastSelected - 1), selGroups
+				.get(iLastSelected)) == false) {
+				System.out.println("Problem during merge!!!");
+				return;
+			}
+			selGroups.remove(iLastSelected);
 		}
 
 		bRedrawTextures = true;
