@@ -3,10 +3,11 @@
 #
 # this script expects to be run from the root website svn repository directory
 
-
-
+temp_dir="/tmp/caleydo_website"
+temp_htdocs=$temp_dir"/htdocs"
 mount_point="/mnt/webdav"
 htdocs=$mount_point"/htdocs"
+
 
 mount_website()
 {
@@ -19,7 +20,7 @@ mount_website()
   done
 
   if [ "$already_mounted" = "false" ]; then
-    mkdir -p $mount_points
+    #mkdir -p $mount_points
     sudo mount -t davfs https://caleydo.icg.tugraz.at/dav/ $mount_point
   fi
 } 
@@ -27,20 +28,28 @@ mount_website()
 update_website()
 {
   current_directory=$PWD
-  echo $current_directory
+  
+  sudo rm $temp_dir -Rf
+  sudo mkdir -p $temp_htdocs || exit
+  sudo cp htdocs/* $temp_htdocs -R
+  sudo cp images $temp_dir -R
+  purge_svn_folders
+
   cd $htdocs
-  ls | grep -v download | xargs sudo rm -R
+  ls | grep -v download | xargs sudo rm -Rv
   sudo rm downloads.html
   cd $mount_point
   sudo rm images -R
-  cd $current_directory
+  cd $temp_dir
   sudo cp htdocs/* $htdocs -Rv
   sudo cp images $mount_point -Rv
 }
 
+
 purge_svn_folders()
 {
-  sudo find $mount_point -type d -name .svn -exec rm -rv {} \;
+  sudo find $temp_dir -type d -name .svn | xargs sudo rm -Rf  
+  #sudo find $mount_point -type d -name .svn -exec rm -rfv {} \;
   #sudo find $mount_point -type d -name .svn
   #sudo rm -rfv `find $mount_point -type d -name .svn` 
 }
@@ -66,7 +75,6 @@ print_help()
   echo "Options:"
   echo "-d update the dates of the html pages"
   echo "-c copy website"
-  echo "-p purge svn folders"
   echo ""
   echo "If none of the options is present first the dates are updated and then the website is copied"
 }
@@ -82,10 +90,7 @@ then
       -d) update_dates;;
       # copy website
       -c) mount_website
-	  update_website
-	  purge_svn_folders;;
-      -p) mount_website
-	  purge_svn_folders;;
+	  update_website;;
       # command not recognized
       *) print_help;;
     esac
@@ -96,5 +101,4 @@ else
   update_dates
   mount_website
   update_website
-  purge_svn_folders
 fi
