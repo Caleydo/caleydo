@@ -155,6 +155,21 @@ public class ClusterManager {
 
 			return -2;
 		}
+		if (VAId == -3) {
+
+			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = new Shell();
+					MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
+					messageBox.setText("Error");
+					messageBox
+						.setMessage("Algorithm did not converge! \n\nIn case of affinity propagation please try to use another cluster factor");
+					messageBox.open();
+				}
+			});
+
+			return -1;
+		}
 
 		IVirtualArray virtualArray = set.getVA(VAId);
 

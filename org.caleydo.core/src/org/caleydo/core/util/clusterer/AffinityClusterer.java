@@ -458,7 +458,7 @@ public class AffinityClusterer
 		}
 		if (bConverged == false) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -1;
+			return -3;
 			// throw new IllegalStateException("Algorithm did not converge!!");
 		}
 
