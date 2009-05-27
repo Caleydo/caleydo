@@ -3022,6 +3022,10 @@ public class GLHierarchicalHeatMap
 			selGroups.remove(iLastSelected);
 		}
 
+		// set current texture
+		if (bGeneGroup)
+			iSelectorBar = selGroups.get(0) + 1;
+
 		bRedrawTextures = true;
 
 		setDisplayListDirty();
