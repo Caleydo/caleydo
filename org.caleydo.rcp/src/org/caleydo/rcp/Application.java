@@ -61,7 +61,7 @@ public class Application
 	public static boolean bIsWindowsOS = false;
 	public static boolean bIsInterentConnectionOK = false;
 
-	public static EApplicationMode applicationMode = EApplicationMode.STANDARD;
+	public static EApplicationMode applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 
 	public static String sCaleydoXMLfile = "";
 
@@ -78,7 +78,7 @@ public class Application
 		if (System.getProperty("os.name").contains("Win")) {
 			bIsWindowsOS = true;
 		}
-		
+
 		alStartViews = new ArrayList<EStartViewType>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
@@ -98,7 +98,7 @@ public class Application
 					else if (element.equals("load_pathways")) {
 						bLoadPathwayData = true;
 						bOverrulePrefStoreLoadPathwayData = true;
-					}									
+					}
 					else if (element.equals(EStartViewType.PARALLEL_COORDINATES.getCommandLineArgument())) {
 						alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
 					}
@@ -142,8 +142,7 @@ public class Application
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
-		caleydoCore =
-			new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
+		caleydoCore = new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
 
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
@@ -170,18 +169,22 @@ public class Application
 
 			if (sCaleydoXMLfile.equals("")) {
 				switch (applicationMode) {
-					case PATHWAY_VIEWER:
+					case GENE_EXPRESSION_PATHWAY_VIEWER:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
 						break;
-					case SAMPLE_DATA_RANDOM:
+					case GENE_EXPRESSION_SAMPLE_DATA_RANDOM:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
 						break;
-					case SAMPLE_DATA_REAL:
-					case STANDARD:
+					case GENE_EXPRESSION_SAMPLE_DATA_REAL:
+					case GENE_EXPRESSION_NEW_DATA:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
 						break;
+					case UNSPECIFIED_NEW_DATA:
+						// not necessary to load any mapping or XML files
+						sCaleydoXMLfile = "";
+						break;
 					default:
-						// do nothing
+						throw new IllegalStateException("Unknown application mode " + applicationMode);
 				}
 			}
 		}
@@ -189,7 +192,7 @@ public class Application
 			// Assuming that if an external XML file is provided, the genetic use case applies
 			GeneralManager.get().setUseCase(new GeneticUseCase());
 		}
-		
+
 		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
 			PreferenceConstants.PATHWAY_DATA_OK)
 			&& bLoadPathwayData)
@@ -258,7 +261,7 @@ public class Application
 
 		Shell shell = new Shell();
 
-		if (applicationMode == EApplicationMode.SAMPLE_DATA_REAL) {
+		if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL) {
 
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
@@ -267,7 +270,8 @@ public class Application
 				bDoExit = true;
 			}
 		}
-		else if (applicationMode == EApplicationMode.STANDARD
+		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA 
+			|| applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
@@ -307,16 +311,16 @@ public class Application
 	}
 
 	private static void openRCPViews() {
-		
+
 		// Create RCP view manager
 		RCPViewManager.get();
-		
+
 		// Create view list dynamically when not specified via the command line
 		if (alStartViews.isEmpty()) {
 
 			alStartViews.add(EStartViewType.BROWSER);
 
-			if (applicationMode != EApplicationMode.PATHWAY_VIEWER) {
+			if (applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
 				// alStartViews.add(EStartViewType.TABULAR);
 				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
 				alStartViews.add(EStartViewType.HEATMAP);
@@ -328,7 +332,7 @@ public class Application
 			}
 		}
 		else {
-			if (applicationMode == EApplicationMode.PATHWAY_VIEWER) {
+			if (applicationMode == EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
 				// Filter all views except remote and browser in case of pathway
 				// viewer mode
 				Iterator<EStartViewType> iterStartViewsType = alStartViews.iterator();

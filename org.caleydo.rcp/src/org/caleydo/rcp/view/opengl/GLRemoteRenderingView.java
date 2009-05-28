@@ -37,7 +37,7 @@ public class GLRemoteRenderingView
 
 		// Only create parcoords and heatmap if the application is NOT in
 		// pathway viewer mode
-		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER) {
+		if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
 
 			// iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL,
 			// -1, true));
@@ -63,7 +63,7 @@ public class GLRemoteRenderingView
 			ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
 
 		// Only add parallel coordinates and heat map to bucket when not in pathway viewer mode.
-		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER) {
+		if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
 			SerializedHeatMapView heatMap = new SerializedHeatMapView();
 			bucket.addInitialRemoteView(heatMap);
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();

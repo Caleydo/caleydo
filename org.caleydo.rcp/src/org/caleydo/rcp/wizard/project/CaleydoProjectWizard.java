@@ -59,13 +59,13 @@ public class CaleydoProjectWizard
 //					Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
 //				}
 				if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
-					Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
+					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_RANDOM;
 				}
 				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
-					Application.applicationMode = EApplicationMode.SAMPLE_DATA_REAL;
+					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL;
 				}
 				else if (page.getProjectType() == EProjectType.NEW_PROJECT) {
-					Application.applicationMode = EApplicationMode.STANDARD;
+					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 				}
 //				else
 //					throw new IllegalStateException("Not implemented!");
@@ -73,6 +73,7 @@ public class CaleydoProjectWizard
 			else if (page.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
 				
 				useCase = new UnspecifiedUseCase();
+				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 			}
 			else
 				throw new IllegalStateException("Not implemented!");

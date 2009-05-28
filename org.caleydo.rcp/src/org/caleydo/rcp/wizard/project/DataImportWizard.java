@@ -58,7 +58,7 @@ public class DataImportWizard
 				return false;				
 			}
 			
-			Application.applicationMode = EApplicationMode.STANDARD;
+			Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 			return true;
 		}
 

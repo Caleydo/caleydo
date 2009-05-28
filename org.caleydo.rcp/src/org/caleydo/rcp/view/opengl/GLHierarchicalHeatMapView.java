@@ -23,7 +23,7 @@ public class GLHierarchicalHeatMapView
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER) {
+		if (Application.applicationMode == EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();
