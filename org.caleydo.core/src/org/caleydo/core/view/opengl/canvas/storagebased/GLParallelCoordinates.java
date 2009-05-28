@@ -2070,6 +2070,7 @@ public class GLParallelCoordinates
 					handleConnectedElementRep(selectionDelta);
 				}
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
 				event.setSelectionDelta(selectionDelta);
 				eventPublisher.triggerEvent(event);
 

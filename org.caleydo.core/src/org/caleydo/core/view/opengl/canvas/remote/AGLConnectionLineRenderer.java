@@ -7,11 +7,13 @@ import gleem.linalg.Vec3f;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -35,7 +37,7 @@ public abstract class AGLConnectionLineRenderer {
 
 	protected boolean bEnableRendering = true;
 
-	protected HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointLists;
+	protected EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>> hashIDTypeToViewToPointLists;
 
 	/**
 	 * Constructor.
@@ -48,7 +50,7 @@ public abstract class AGLConnectionLineRenderer {
 		connectedElementRepManager =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		hashViewToPointLists = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
+		hashIDTypeToViewToPointLists = new EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>>(EIDType.class);
 	}
 
 	public void enableRendering(final boolean bEnableRendering) {
@@ -72,12 +74,12 @@ public abstract class AGLConnectionLineRenderer {
 
 	protected abstract void renderConnectionLines(final GL gl);
 
-	protected void renderLineBundling(final GL gl, float[] fArColor) {
-		Set<Integer> keySet = hashViewToPointLists.keySet();
+	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
+		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
 		for (Integer iKey : keySet) {
-			hashViewToCenterPoint.put(iKey, calculateCenter(hashViewToPointLists.get(iKey)));
+			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
 		}
 
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
@@ -85,7 +87,7 @@ public abstract class AGLConnectionLineRenderer {
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
 
-			for (ArrayList<Vec3f> alCurrentPoints : hashViewToPointLists.get(iKey)) {
+			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
 				if (alCurrentPoints.size() > 1) {
 					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
 				}

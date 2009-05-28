@@ -95,23 +95,23 @@ public class GLConnectionLineRendererJukebox
 		// }
 		// int iKey = selectedElementRep.getContainingViewID();
 		//
-		// alPointLists = hashViewToPointLists.get(iKey);
+		// alPointLists = hashIDTypeToViewToPointLists.get(iKey);
 		// if (alPointLists == null)
 		// {
 		// alPointLists = new ArrayList<ArrayList<Vec3f>>();
-		// hashViewToPointLists.put(iKey, alPointLists);
+		// hashIDTypeToViewToPointLists.put(iKey, alPointLists);
 		// }
 		// alPointLists.add(alPointsTransformed);
 		//
 		// }
 		// }
 		//
-		// if (hashViewToPointLists.size() > 1)
+		// if (hashIDTypeToViewToPointLists.size() > 1)
 		// {
 		// renderLineBundling(gl);
 		// }
 		//
-		// hashViewToPointLists.clear();
+		// hashIDTypeToViewToPointLists.clear();
 		// }
 		// }
 

@@ -5,6 +5,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -57,10 +58,21 @@ public class GLConnectionLineRendererBucket
 
 		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
+			
+			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointList = hashIDTypeToViewToPointLists.get(idType);
+			
+			if(hashViewToPointList == null)
+			{
+				hashViewToPointList = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
+				hashIDTypeToViewToPointLists.put(idType, hashViewToPointList);
+			}
 
 			for (int iSelectedElementID : connectedElementRepManager.getIDList(idType)) {
 				for (SelectedElementRep selectedElementRep : connectedElementRepManager
 					.getSelectedElementRepsByElementID(idType, iSelectedElementID)) {
+					
+					if(selectedElementRep.getIDType() != idType)
+						throw new IllegalStateException("Current ID Type does not match the selected elemen rep's");
 
 					AGLEventListener glView =
 						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID());
@@ -94,19 +106,21 @@ public class GLConnectionLineRendererBucket
 						}
 						int iKey = selectedElementRep.getContainingViewID();
 
-						alPointLists = hashViewToPointLists.get(iKey);
+				
+						
+						alPointLists = hashIDTypeToViewToPointLists.get(idType).get(iKey);
 						if (alPointLists == null) {
 							alPointLists = new ArrayList<ArrayList<Vec3f>>();
-							hashViewToPointLists.put(iKey, alPointLists);
+							hashViewToPointList.put(iKey, alPointLists);
 						}
 
 						alPointLists.add(alPointsTransformed);
 					}
 				}
 
-				if (hashViewToPointLists.size() > 1) {
-					renderLineBundling(gl, new float[] { 0, 0, 0 });
-					hashViewToPointLists.clear();
+				if (hashViewToPointList.size() > 1) {
+					renderLineBundling(gl, idType, new float[] { 0, 0, 0 });
+					hashIDTypeToViewToPointLists.clear();
 				}
 			}
 		}
