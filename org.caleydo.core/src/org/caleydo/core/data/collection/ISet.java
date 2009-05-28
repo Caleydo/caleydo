@@ -6,6 +6,7 @@ import java.util.List;
 import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.set.SetIterator;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.GroupList;
@@ -245,12 +246,13 @@ public interface ISet
 	public IVirtualArray getVA(int iUniqueID);
 
 	/**
-	 * Export a manipulated subset of the data to the destination specifiedn in sFileName. Determine whether
+	 * Export a manipulated subset of the data to the destination specified in sFileName. Determine which view
+	 * to export by the int flag. This is only temporary.
 	 * 
 	 * @param sFileName
 	 * @param bExportBucketInternal
 	 */
-	public void export(String sFileName, boolean bExportBucketInternal);
+	public void export(String sFileName, EWhichViewToExport eWhichViewToExport);
 
 	/**
 	 * Clusters a Storage

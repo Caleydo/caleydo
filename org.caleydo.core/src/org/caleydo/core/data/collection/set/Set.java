@@ -14,6 +14,7 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.export.SetExporter;
+import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -515,9 +516,9 @@ public class Set
 		return bIsSetHomogeneous;
 	}
 
-	public void export(String sFileName, boolean bExportBucketInternal) {
+	public void export(String sFileName, EWhichViewToExport eWichViewToExport) {
 		SetExporter exporter = new SetExporter();
-		exporter.export(this, sFileName, bExportBucketInternal);
+		exporter.export(this, sFileName, eWichViewToExport);
 	}
 
 	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
