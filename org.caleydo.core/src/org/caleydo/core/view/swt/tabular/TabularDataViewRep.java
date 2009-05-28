@@ -141,10 +141,6 @@ public class TabularDataViewRep
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
-		// contentSelectionManager =
-		// new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
-		// EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-		// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
@@ -787,20 +783,23 @@ public class TabularDataViewRep
 			return;
 
 		contentSelectionManager.clearSelection(eSelectionType);
-
-		// Resolve multiple spotting on chip and add all to the
-		// selection manager.
-		Integer iRefSeqID =
-			idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
-		for (Object iExpressionIndex : idMappingManager.getMultiID(
-			EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-			contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+		contentSelectionManager.addToType(eSelectionType, (Integer) iContentIndex);
+		
+		if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			// Resolve multiple spotting on chip and add all to the
+			// selection manager.
+			Integer iRefSeqID =
+				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+			for (Object iExpressionIndex : idMappingManager.getMultiID(
+				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+				contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+			}			
 		}
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-		sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
+		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
