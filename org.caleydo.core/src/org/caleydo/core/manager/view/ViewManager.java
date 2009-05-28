@@ -37,14 +37,10 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.collab.CollabViewRep;
-import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphDataExportViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
-import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
-import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
-import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -128,30 +124,14 @@ public class ViewManager
 		switch (type) {
 			case VIEW:
 				break;
-			case VIEW_SWT_PATHWAY:
-				// return new Pathway2DViewRep(generalManager, iViewID,
-				// iParentContainerID, sLabel);
-				break;
 			case VIEW_SWT_TABULAR_DATA_VIEWER:
 				view = new TabularDataViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_MIXER:
-				view = new MixerViewRep(iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_BROWSER_GENERAL:
 				view = new HTMLBrowserViewRep(iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_BROWSER_GENOME:
 				view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_IMAGE:
-				view = new ImageViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_UNDO_REDO:
-				view = new UndoRedoViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_DATA_ENTITY_SEARCHER:
-				view = new DataEntitySearcherViewRep(iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_GLYPH_DATAEXPORT:
 				view = new GlyphDataExportViewRep(iParentContainerID, sLabel);

@@ -165,6 +165,9 @@ public class TabularAsciiDataReader
 				iLineInFile++;
 				continue;
 			}
+			
+			// Replace empty cells with NaN
+			sLine = sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
 
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
 

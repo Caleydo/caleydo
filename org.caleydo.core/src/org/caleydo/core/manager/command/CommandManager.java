@@ -6,9 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.caleydo.core.command.ECommandType;
@@ -22,7 +20,6 @@ import org.caleydo.core.manager.command.factory.CommandFactory;
 import org.caleydo.core.manager.command.factory.ICommandFactory;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -52,8 +49,6 @@ public class CommandManager
 	protected Vector<ICommand> vecUndo;
 	protected Vector<ICommand> vecRedo;
 
-	protected ArrayList<UndoRedoViewRep> arUndoRedoViews;
-
 	private int iCountRedoCommand = 0;
 
 	/**
@@ -70,8 +65,6 @@ public class CommandManager
 
 		vecUndo = new Vector<ICommand>(100);
 		vecRedo = new Vector<ICommand>(100);
-
-		arUndoRedoViews = new ArrayList<UndoRedoViewRep>();
 	}
 
 	@Override
@@ -204,14 +197,6 @@ public class CommandManager
 			vecRedo.remove(runCmd);
 			iCountRedoCommand--;
 		}
-
-		Iterator<UndoRedoViewRep> iter = arUndoRedoViews.iterator();
-
-		assert iter != null : "arUndoRedoViews was not inizalized! Iterator ist null-pointer";
-
-		while (iter.hasNext()) {
-			iter.next().addCommand(runCmd);
-		}
 	}
 
 	@Override
@@ -221,13 +206,6 @@ public class CommandManager
 		vecUndo.remove(runCmd);
 
 		vecRedo.addElement(runCmd);
-	}
-
-	@Override
-	public void addUndoRedoViewRep(UndoRedoViewRep undoRedoViewRep) {
-
-		arUndoRedoViews.add(undoRedoViewRep);
-		arUndoRedoViews.get(0).updateCommandList(vecUndo);
 	}
 
 	@Override

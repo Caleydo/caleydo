@@ -409,11 +409,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.manager.event,
    org.eclipse.swt.widgets,
    org.caleydo.core.view.serialize",
- org.caleydo.core.view.swt.data.search;
-  uses:="org.caleydo.core.view.swt,
-   org.caleydo.core.manager.event,
-   org.eclipse.swt.widgets,
-   org.caleydo.core.view.serialize",
  org.caleydo.core.view.swt.glyph;
   uses:="org.caleydo.core.view.swt,
    org.eclipse.swt.events,
@@ -422,13 +417,11 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.manager.event,
    org.eclipse.swt.widgets,
    org.caleydo.core.view.serialize",
- org.caleydo.core.view.swt.image;uses:="org.caleydo.core.view.swt,org.eclipse.swt.widgets,org.caleydo.core.view.serialize",
  org.caleydo.core.view.swt.jogl;
   uses:="org.caleydo.core.view.swt,
    org.caleydo.core.view.opengl.canvas,
    org.eclipse.swt.widgets,
    org.caleydo.core.view.serialize",
- org.caleydo.core.view.swt.mixer;uses:="org.caleydo.core.view.swt,org.eclipse.swt.widgets,org.caleydo.core.view.serialize",
  org.caleydo.core.view.swt.tabular;
   uses:="org.caleydo.core.view.swt,
    org.caleydo.core.data.collection,
@@ -438,11 +431,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.view.opengl.canvas.storagebased,
    org.caleydo.core.view.serialize,
    org.caleydo.core.data.selection",
- org.caleydo.core.view.swt.undoredo;
-  uses:="org.caleydo.core.view.swt,
-   org.caleydo.core.command,
-   org.eclipse.swt.widgets,
-   org.caleydo.core.view.serialize",
  org.caleydo.core.view.swt.widget;uses:="org.caleydo.core.view.swt,org.caleydo.core.view.opengl.canvas,org.eclipse.swt.widgets"
 Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
  org.eclipse.jface;bundle-version="3.4.0",

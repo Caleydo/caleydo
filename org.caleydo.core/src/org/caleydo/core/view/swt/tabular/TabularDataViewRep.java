@@ -28,6 +28,7 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -140,12 +141,11 @@ public class TabularDataViewRep
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
-//		contentSelectionManager =
-//			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
-//				EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-//				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
-		contentSelectionManager =
-			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+		// contentSelectionManager =
+		// new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
+		// EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+		// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		idMappingManager = generalManager.getIDMappingManager();
@@ -264,14 +264,15 @@ public class TabularDataViewRep
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 
 		for (int iCount = 0; iCount < set.depth(); iCount++) {
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
+			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA
+				&& dataFilterLevel != EDataFilterLevel.COMPLETE) {
 				// Here we get mapping data for all values
 				// FIXME: not general, only for genes
 				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
-//					generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-//						"Cannot resolve gene to DAVID ID!"));
+					// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					// "Cannot resolve gene to DAVID ID!"));
 					continue;
 				}
 
@@ -486,14 +487,32 @@ public class TabularDataViewRep
 		column.setText("#");
 		column.setWidth(50);
 
-		column = new TableColumn(labelTable, SWT.NONE);
-		column.setText("RefSeq ID");
-		column.setWidth(110);
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
-		column = new TableColumn(labelTable, SWT.NONE);
-		column.setText("Gene Symbol");
-		column.setWidth(110);
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("RefSeq ID");
+			column.setWidth(110);
 
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("Gene Symbol");
+			column.setWidth(110);
+		}
+		else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+			
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("ID");
+			column.setWidth(200);
+
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("Not specified");
+			column.setWidth(0);
+		}
+		else {
+			throw new IllegalStateException("The use case type "
+				+ GeneralManager.get().getUseCase().getUseCaseMode()
+				+ " is not implemented in the tabular data viewer.");
+		}
+		
 		for (final Integer iStorageIndex : set.getVA(iStorageVAID)) {
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText(set.get(iStorageIndex).getLabel());
@@ -514,85 +533,54 @@ public class TabularDataViewRep
 					}
 				}
 			});
-
-			// column.addListener(SWT.Move, new Listener() {
-			//
-			// @Override
-			// public void handleEvent(Event event)
-			// {
-			// if (iArCurrentColumnOrder == null)
-			// {
-			// return;
-			// }
-			//					
-			// int iLastColumnPos = 0;
-			// int iNewColumnPos = 0;
-			// int[] iArNewColumnOrder = contentTable.getColumnOrder();
-			// for (int iColumnIndex = 0; iColumnIndex <
-			// iArCurrentColumnOrder.length; iColumnIndex++)
-			// {
-			// iLastColumnPos = iArCurrentColumnOrder[iColumnIndex];
-			// iNewColumnPos = iArNewColumnOrder[iColumnIndex];
-			//						
-			// if (iLastColumnPos != iNewColumnPos)
-			// {
-			// // Move left detected
-			// if (iLastColumnPos == iArNewColumnOrder[iColumnIndex+1])
-			// {
-			// for
-			//								
-			// set.getVA(iStorageVAID).move(iLastColumnPos, iNewColumnPos);
-			// }
-			//							
-			//							
-			// IVirtualArrayDelta vaDelta = new
-			// VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
-			// vaDelta.add(VADeltaItem.move(iLastColumnPos, iNewColumnPos));
-			// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-			// new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
-			// }
-			// }
-			//					
-			// iArCurrentColumnOrder = iArNewColumnOrder;
-			// }
-			// });
 		}
 
 		// iArCurrentColumnOrder = contentTable.getColumnOrder();
 
 		IVirtualArray storageVA = set.getVA(iStorageVAID);
 
-		int iRefSeqID = 0;
-		String sGeneSymbol = "";
 		for (Integer iContentIndex : set.getVA(iContentVAID)) {
 			// line number
 			item = new TableItem(labelTable, SWT.NONE);
 			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(iContentIndex));
 
-			iRefSeqID =
-				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+				String sGeneSymbol = "";
+				int iRefSeqID = 0;
+				iRefSeqID =
+					idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
 
-			// RefSeq ID
-			item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-				iRefSeqID));
+				// RefSeq ID
+				item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+					iRefSeqID));
 
-			// Gene Symbol
-			sGeneSymbol =
-				(String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, idMappingManager.getID(
-					EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
+				// Gene Symbol
+				sGeneSymbol =
+					(String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, idMappingManager.getID(
+						EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
 
-			if (sGeneSymbol != null) {
-				item.setText(2, sGeneSymbol);
+				if (sGeneSymbol != null) {
+					item.setText(2, sGeneSymbol);
+				}
+				else {
+					item.setText(2, "Unknown");
+				}
+			}
+			else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+
+				item.setText(1, (String)idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex));
 			}
 			else {
-				item.setText(2, "Unknown");
+				throw new IllegalStateException("The use case type "
+					+ GeneralManager.get().getUseCase().getUseCaseMode()
+					+ " is not implemented in the tabular data viewer.");
 			}
 
 			item = new TableItem(contentTable, SWT.NONE);
 
 			for (Integer iStorageIndex : storageVA) {
-				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex);
 
 				item.setText(iStorageIndex, Float.toString(fValue));
 			}

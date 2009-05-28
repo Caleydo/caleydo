@@ -4,16 +4,20 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.PreferenceDialog;
@@ -33,7 +37,8 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 
 public class GLHistogramView
 	extends AGLViewPart
-	implements IViewCommandHandler, IListenerOwner {
+	implements IViewCommandHandler, IListenerOwner, INewSetHandler {
+
 	public static final String ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
 
 	private CLabel colorMappingPreviewLabel;
@@ -42,9 +47,10 @@ public class GLHistogramView
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
+	protected NewSetListener newSetListener = null;
 
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
-
+	
 	/**
 	 * Constructor.
 	 */
@@ -148,8 +154,7 @@ public class GLHistogramView
 				store.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 					+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			double correspondingValue =
-				GeneralManager.get().getUseCase().getSet().getRawForNormalized(normalizedValue);
+			double correspondingValue = GeneralManager.get().getUseCase().getSet().getRawForNormalized(normalizedValue);
 
 			if (Math.abs(correspondingValue) > 10000)
 				decimalFormat = new DecimalFormat("0.#E0");
@@ -207,8 +212,8 @@ public class GLHistogramView
 
 	@Override
 	public void registerEventListeners() {
-	super.registerEventListeners();
-	
+		super.registerEventListeners();
+
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -216,11 +221,17 @@ public class GLHistogramView
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
+		newSetListener = new NewSetListener();
+		newSetListener.setHandler(this);
+		eventPublisher.addListener(NewSetEvent.class, newSetListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
+		
 		super.unregisterEventListeners();
+		
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -229,16 +240,28 @@ public class GLHistogramView
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
+		if (newSetListener != null) {
+			eventPublisher.removeListener(newSetListener);
+			newSetListener = null;
+		}
 	}
 
 	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
-		
+
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				listener.handleEvent(event);
 			}
 		});
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		
+		// We no not need a private set here (it is taken from the use case)
+		// we only react to the new set event
+		updateColorLabel();
 	}
 }
