@@ -22,8 +22,8 @@ public class GroupContextMenuItemContainer
 	public GroupContextMenuItemContainer() {
 		super();
 
-		if (GeneralManager.get().getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
-			throw new IllegalStateException("This context menu container is only valid for genetic data");
+//		if (GeneralManager.get().getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+//			throw new IllegalStateException("This context menu container is only valid for genetic data");
 
 	}
 

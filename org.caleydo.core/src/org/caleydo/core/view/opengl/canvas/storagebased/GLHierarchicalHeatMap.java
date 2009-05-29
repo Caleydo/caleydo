@@ -3023,7 +3023,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		// set current texture
-		if (bGeneGroup)
+		if (bGeneGroup && bSkipLevel1 == false)
 			iSelectorBar = selGroups.get(0) + 1;
 
 		bRedrawTextures = true;
