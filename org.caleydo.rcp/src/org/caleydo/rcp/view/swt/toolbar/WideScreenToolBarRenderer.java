@@ -3,6 +3,8 @@ package org.caleydo.rcp.view.swt.toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
@@ -59,9 +61,15 @@ public class WideScreenToolBarRenderer implements IToolBarRenderer {
 		
 		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
-		toolBarManager.add(new TakeSnapshotAction());
-		toolBarManager2.add(new OpenSearchViewAction());
-		toolBarManager2.add(new ClearSelectionsAction());
+		toolBarManager.add(new TakeSnapshotAction());		
+		
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			toolBarManager2.add(new OpenSearchViewAction());
+			toolBarManager2.add(new ClearSelectionsAction());
+		}
+		else {
+			toolBarManager.add(new ClearSelectionsAction());			
+		}
 
 		toolBarManager.update(true);
 

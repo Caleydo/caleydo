@@ -1,6 +1,9 @@
 package org.caleydo.rcp;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -45,6 +48,26 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		if (Application.bIsWebstart && !Application.bDoExit) {
 			Application.startCaleydoCore();
+		}
+		
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+
+			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
+			
+			// deletes unwanted Menuitems
+			IContributionItem[] menuItems = configurer.getMenuManager().getItems();
+			for (int i = 0; i < menuItems.length; i++) {
+				IContributionItem menuItem = menuItems[i];
+				if (menuItem.getId().equals("org.caleydo.search.menu")) {
+					configurer.getMenuManager().remove(menuItem);
+				}
+				else if (menuItem.getId().equals("viewMenu")) {
+					IContributionItem itemToRemove = ((MenuManager)menuItem).find("org.caleydo.rcp.command.openviews.remote");
+					
+					if (itemToRemove != null)
+						itemToRemove.dispose();				
+				}
+			}					
 		}
 	}
 }

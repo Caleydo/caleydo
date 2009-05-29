@@ -418,6 +418,7 @@
             </command>
          </menu>
          <menu
+               id="org.caleydo.search.menu"
                label="Search"
                tooltip="Search">
             <command

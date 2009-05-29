@@ -1,8 +1,11 @@
 package org.caleydo.rcp;
 
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.ToolBarContributionItem;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
