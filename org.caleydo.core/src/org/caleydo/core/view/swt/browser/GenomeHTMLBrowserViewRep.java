@@ -38,7 +38,7 @@ public class GenomeHTMLBrowserViewRep
 	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.EntrezGene;
 
 	protected ChangeQueryTypeListener changeQueryTypeListener;
-	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected SelectionUpdateListener selectionUpdateListener;
 	
 	/**
 	 * Constructor.
@@ -180,6 +180,8 @@ public class GenomeHTMLBrowserViewRep
 	
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
@@ -188,7 +190,6 @@ public class GenomeHTMLBrowserViewRep
 //			eventPublisher.removeListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
 //			changeQueryTypeListener = null;
 //		}
-		super.unregisterEventListeners();
 	}
 
 	@Override

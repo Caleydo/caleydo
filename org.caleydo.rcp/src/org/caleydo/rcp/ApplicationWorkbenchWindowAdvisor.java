@@ -65,7 +65,7 @@ public class ApplicationWorkbenchWindowAdvisor
 					IContributionItem itemToRemove = ((MenuManager)menuItem).find("org.caleydo.rcp.command.openviews.remote");
 					
 					if (itemToRemove != null)
-						itemToRemove.dispose();				
+						itemToRemove.setVisible(false);				
 				}
 			}					
 		}
