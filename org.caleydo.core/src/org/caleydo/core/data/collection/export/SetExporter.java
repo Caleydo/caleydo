@@ -6,14 +6,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
@@ -139,27 +144,27 @@ public class SetExporter {
 
 			out.close();
 
-			// // export gene cluster tree to own xml file
-			// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-			// if (tree != null) {
-			// TreePorter treePorter = new TreePorter();
-			// if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
-			// System.out.println("Problem during gene tree export!");
-			// }
-			// // export experiment cluster tree to own xml file
-			// tree = set.getClusteredTreeExps();
-			// if (tree != null) {
-			// TreePorter treePorter = new TreePorter();
-			// if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
-			// System.out.println("Problem during experiments tree export!");
-			// }
+			 // export gene cluster tree to own xml file
+			 Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+			 if (tree != null) {
+			 TreePorter treePorter = new TreePorter();
+			 if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
+			 System.out.println("Problem during gene tree export!");
+			 }
+			 // export experiment cluster tree to own xml file
+			 tree = set.getClusteredTreeExps();
+			 if (tree != null) {
+			 TreePorter treePorter = new TreePorter();
+			 if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
+			 System.out.println("Problem during experiments tree export!");
+			 }
 
 		}
 		catch (IOException e) {
 
 		}
-		// catch (JAXBException e) {
-		// e.printStackTrace();
-		// }
+		catch (JAXBException e) {
+			e.printStackTrace();
+		}
 	}
 }

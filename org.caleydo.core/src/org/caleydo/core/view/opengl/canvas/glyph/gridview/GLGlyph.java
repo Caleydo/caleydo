@@ -32,6 +32,9 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
+import org.caleydo.core.manager.event.view.glyph.GlyphSelectionBrushEvent;
+import org.caleydo.core.manager.event.view.glyph.GlyphUpdatePositionModelEvent;
 import org.caleydo.core.manager.event.view.glyph.RemoveUnselectedGlyphsEvent;
 import org.caleydo.core.manager.event.view.glyph.SetPositionModelEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -49,6 +52,9 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelPlus;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.GlyphChangePersonalNameListener;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.GlyphSelectionBrushListener;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.GlyphUpdatePositionModelListener;
 import org.caleydo.core.view.opengl.canvas.glyph.listener.RemoveUnselectedGlyphsListener;
 import org.caleydo.core.view.opengl.canvas.glyph.listener.SetPositionModelListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -124,7 +130,10 @@ public class GLGlyph
 
 	private RemoveUnselectedGlyphsListener removeUnselectedGlyphsListener;
 	private SetPositionModelListener setPositionModelListener;
-	ClearSelectionsListener clearSelectionsListener;
+	private ClearSelectionsListener clearSelectionsListener;
+	private GlyphSelectionBrushListener glyphSelectionBrushListener;
+	private GlyphChangePersonalNameListener glyphChangePersonalNameListener;
+	private GlyphUpdatePositionModelListener glyphUpdatePositionModelListener;
 
 	// private long ticker = 0;
 
@@ -1352,9 +1361,21 @@ public class GLGlyph
 		setPositionModelListener.setHandler(this);
 		eventPublisher.addListener(SetPositionModelEvent.class, setPositionModelListener);
 
-		ClearSelectionsListener clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
+		glyphSelectionBrushListener = new GlyphSelectionBrushListener();
+		glyphSelectionBrushListener.setHandler(this);
+		eventPublisher.addListener(GlyphSelectionBrushEvent.class, glyphSelectionBrushListener);
+
+		glyphChangePersonalNameListener = new GlyphChangePersonalNameListener();
+		glyphChangePersonalNameListener.setHandler(this);
+		eventPublisher.addListener(GlyphChangePersonalNameEvent.class, glyphChangePersonalNameListener);
+
+		glyphUpdatePositionModelListener = new GlyphUpdatePositionModelListener();
+		glyphUpdatePositionModelListener.setHandler(this);
+		eventPublisher.addListener(GlyphUpdatePositionModelEvent.class, glyphUpdatePositionModelListener);
 
 	}
 
@@ -1390,6 +1411,21 @@ public class GLGlyph
 		if (clearSelectionsListener != null) {
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
+		}
+
+		if (glyphSelectionBrushListener != null) {
+			eventPublisher.removeListener(glyphSelectionBrushListener);
+			glyphSelectionBrushListener = null;
+		}
+
+		if (glyphChangePersonalNameListener != null) {
+			eventPublisher.removeListener(glyphChangePersonalNameListener);
+			glyphChangePersonalNameListener = null;
+		}
+
+		if (glyphUpdatePositionModelListener != null) {
+			eventPublisher.removeListener(glyphUpdatePositionModelListener);
+			glyphUpdatePositionModelListener = null;
 		}
 	}
 

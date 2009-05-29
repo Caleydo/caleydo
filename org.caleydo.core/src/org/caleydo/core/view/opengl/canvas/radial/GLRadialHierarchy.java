@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+import gleem.linalg.Vec2f;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +43,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
-
-import gleem.linalg.Vec2f;
 
 /**
  * Rendering the GLHeatMap

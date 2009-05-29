@@ -1,6 +1,6 @@
 package org.caleydo.rcp.action.toolbar.view.glyph;
 
-import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
+import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
@@ -53,7 +53,8 @@ public class EnterViewNameAction
 		String newname = dialog.open();
 
 		if (newname != null) {
-			triggerCmdExternalObjectSetter(newname, EExternalObjectSetterType.GLYPH_CHANGEPERSONALNAME);
+			GeneralManager.get().getEventPublisher().triggerEvent(new GlyphChangePersonalNameEvent(newname));
+
 		}
 	};
 }

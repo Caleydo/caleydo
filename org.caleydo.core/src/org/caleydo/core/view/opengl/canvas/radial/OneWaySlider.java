@@ -1,8 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
-import java.awt.Point;
-
 import gleem.linalg.Vec2f;
+
+import java.awt.Point;
 
 import javax.media.opengl.GL;
 
