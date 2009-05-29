@@ -1,5 +1,6 @@
 package org.caleydo.rcp.action.toolbar.general;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -49,11 +50,11 @@ public class StartClusteringAction
 	private float fclusterFactorGenes = 1f;
 	private float fclusterFactorExperiments = 1f;
 
-	String[] sArTypeOptions = { "Gene", "Experiment", "Bi-Clustering" };
-	String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
-	String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan Distance"};
-
-	ClusterState clusterState = new ClusterState();
+	private String[] sArTypeOptions = {"DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Bi-Clustering"};
+	private String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
+	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance"};
+	
+	private ClusterState clusterState = new ClusterState();
 
 	private TabItem treeClusteringTab;
 	private TabItem affinityPropagationTab;
@@ -74,7 +75,9 @@ public class StartClusteringAction
 			.getWorkbench().getDisplay(), ICON)));
 
 		this.parentComposite = parentComposite;
-
+		
+		// Determine content label dynamically
+		sArTypeOptions[0] = GeneralManager.get().getUseCase().getContentLabel(true, false);
 	}
 
 	@Override

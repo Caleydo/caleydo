@@ -22,6 +22,9 @@ public abstract class AUseCase
 
 	private ISet oldSet;
 
+	protected String sContentLabelSingular = "<not specified>";
+	protected String sContentLabelPlural = "<not specified>";
+
 	/**
 	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
@@ -54,7 +57,7 @@ public abstract class AUseCase
 		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && eUseCaseMode == EUseCaseMode.GENETIC_DATA)
 			|| (set.getSetType() == ESetType.CLINICAL_DATA && eUseCaseMode == EUseCaseMode.CLINICAL_DATA)
 			|| (set.getSetType() == ESetType.UNSPECIFIED && eUseCaseMode == EUseCaseMode.UNSPECIFIED_DATA)) {
-			
+
 			oldSet = this.set;
 			this.set = set;
 			if (oldSet != null) {
@@ -108,5 +111,26 @@ public abstract class AUseCase
 	public void removeView(IView view) {
 
 		alView.remove(view);
+	}
+
+	@Override
+	public String getContentLabel(boolean bCapitalized, boolean bPlural) {
+
+		String sContentLabel = "";
+
+		if (bPlural)
+			sContentLabel = sContentLabelPlural;
+		else
+			sContentLabel = sContentLabelSingular;
+
+		if (bCapitalized) {
+		
+			// Make first char capitalized
+			sContentLabel =
+				sContentLabel.substring(0, 1).toUpperCase()
+					+ sContentLabel.substring(1, sContentLabel.length());
+		}
+		
+		return sContentLabel;
 	}
 }

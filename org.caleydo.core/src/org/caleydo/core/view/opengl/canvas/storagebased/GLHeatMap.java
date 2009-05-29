@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -382,10 +383,10 @@ public class GLHeatMap
 	public String getShortInfo() {
 		// FIXME this should not be needed
 		if (iContentVAID == -1 || iStorageVAID == -1)
-			return "Heat Map - 0 genes / 0 experiments";
+			return "Heat Map - 0 " + useCase.getContentLabel(false, true) + " / 0 experiments";
 
-		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
-			+ " experiments";
+		return "Heat Map - " + set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(false, true)
+			+ " / " + set.getVA(iStorageVAID).size() + " experiments";
 	}
 
 	@Override
@@ -394,16 +395,17 @@ public class GLHeatMap
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
 		if (bRenderStorageHorizontally) {
-			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
-				+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(false, true)
+				+ " in columns and " + set.getVA(iStorageVAID).size() + " experiments in rows.\n");
 		}
 		else {
-			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
-				+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(true, true)
+				+ " in rows and " + set.getVA(iStorageVAID).size() + " experiments in columns.\n");
 		}
 
 		if (bRenderOnlyContext) {
-			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
+			sInfoText.append("Showing only " + " " + useCase.getContentLabel(false, true)
+				+ " which occur in one of the other views in focus\n");
 		}
 		else {
 			if (bUseRandomSampling) {

@@ -592,7 +592,7 @@ public class GLParallelCoordinates
 					MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
 						"Bookmark Limit",
 						"Can not bookmark more than 20 elements - reduce polylines to less than 20 first");
-		
+
 					return;
 				}
 			});
@@ -2232,11 +2232,11 @@ public class GLParallelCoordinates
 					case CLICKED:
 						if (iExternalID > 999) {
 							hashGates.remove(iExternalID);
-							hashIsGateBlocking.remove(iExternalID);							
+							hashIsGateBlocking.remove(iExternalID);
 						}
 						else {
 							hashMasterGates.remove(iExternalID);
-							hashIsGateBlocking.remove(iExternalID);						
+							hashIsGateBlocking.remove(iExternalID);
 						}
 						handleUnselection();
 						triggerSelectionUpdate();
@@ -2334,13 +2334,14 @@ public class GLParallelCoordinates
 				+ contentSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
 		if (iDisplayEveryNthPolyline == 1) {
 			message =
-				"Parallel Coordinates - " + iNumLines + " genes / " + set.getVA(iStorageVAID).size()
-					+ " experiments";
+				"Parallel Coordinates - " + iNumLines + " " + useCase.getContentLabel(false, true) + " / "
+					+ set.getVA(iStorageVAID).size() + " experiments";
 		}
 		else {
 			message =
 				"Parallel Coordinates - a sample of " + iNumLines / iDisplayEveryNthPolyline + " out of "
-					+ iNumLines + " genes / \n " + set.getVA(iStorageVAID).size() + " experiments";
+					+ iNumLines + " " + useCase.getContentLabel(false, true) + " / \n "
+					+ set.getVA(iStorageVAID).size() + " experiments";
 		}
 		return message;
 
@@ -2350,8 +2351,8 @@ public class GLParallelCoordinates
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
-		sInfoText.append(set.getVA(iPolylineVAID).size() + " Genes as polylines and "
-			+ set.getVA(iAxisVAID).size() + " experiments as axis.\n");
+		sInfoText.append(set.getVA(iPolylineVAID).size() + useCase.getContentLabel(false, true)
+			+ " as polylines and " + set.getVA(iAxisVAID).size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
@@ -2365,10 +2366,11 @@ public class GLParallelCoordinates
 			}
 
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all Genes in the dataset\n");
+				sInfoText.append("Showing all " + useCase.getContentLabel(false, true) + " in the dataset\n");
 			}
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all Genes that have a known DAVID ID mapping\n");
+				sInfoText.append("Showing all " + useCase.getContentLabel(false, true)
+					+ " that have a known DAVID ID mapping\n");
 			}
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText

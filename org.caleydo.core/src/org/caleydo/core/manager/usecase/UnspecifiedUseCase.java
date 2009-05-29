@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.usecase;
 
+
 /**
  * Use case for arbitrary data which is not further specified.
  * 
@@ -16,5 +17,7 @@ public class UnspecifiedUseCase
 		
 		super();
 		eUseCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
+		sContentLabelSingular = "entity";
+		sContentLabelPlural = "entities";
 	}
 }

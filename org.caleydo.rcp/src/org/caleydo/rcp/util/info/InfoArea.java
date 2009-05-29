@@ -163,13 +163,7 @@ public class InfoArea
 		experimentTree.setExpanded(true);
 		experimentTree.setData(-1);
 		experimentTree.setText("Experiments");
-
-		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-			contentTree.setText("Genes");
-		}
-		else {
-			contentTree.setText("Entity");
-		}
+		contentTree.setText(GeneralManager.get().getUseCase().getContentLabel(true, true));
 
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");

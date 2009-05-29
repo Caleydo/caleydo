@@ -83,12 +83,16 @@ public class ChooseProjectTypePage
 		createGeneralDataUseCaseTab(tabFolder);
 		String dataModeLastUsed =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_MODE_LAST_USED);
+
 		if (dataModeLastUsed == null || dataModeLastUsed.isEmpty() || dataModeLastUsed.equals(GENE_DATA_MODE)) {
 			tabFolder.setSelection(0);
-
+			useCaseMode = EUseCaseMode.GENETIC_DATA;
+			Application.bLoadPathwayData = true;
 		}
 		else if (dataModeLastUsed.equals(GENERAL_DATA_MODE)) {
 			tabFolder.setSelection(1);
+			useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
+			Application.bLoadPathwayData = false;
 		}
 
 		tabFolder.addSelectionListener(new SelectionAdapter() {
@@ -98,17 +102,17 @@ public class ChooseProjectTypePage
 
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
 					useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
-			
+
 					// Turn off pathway data loading for general data analysis use case
 					Application.bLoadPathwayData = false;
-					
+
 					GeneralManager.get().getPreferenceStore().setValue(
 						PreferenceConstants.DATA_MODE_LAST_USED, GENERAL_DATA_MODE);
 				}
 				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
 					useCaseMode = EUseCaseMode.GENETIC_DATA;
 					Application.bLoadPathwayData = true;
-					
+
 					GeneralManager.get().getPreferenceStore().setValue(
 						PreferenceConstants.DATA_MODE_LAST_USED, GENE_DATA_MODE);
 				}

@@ -18,5 +18,7 @@ public class GeneticUseCase
 
 		super();
 		eUseCaseMode = EUseCaseMode.GENETIC_DATA;
+		sContentLabelSingular = "gene";
+		sContentLabelPlural = "genes";
 	} 
 }

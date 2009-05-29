@@ -51,4 +51,13 @@ public interface IUseCase {
 	 */
 	public void updateSetInViews();
 
+	/**
+	 * Returns the content label.
+	 * E.g. gene for genome use case, entity for generic use case
+	 * 
+	 * @param bUpperCase TRUE makes the label upper case
+	 * @param bPlural TRUE label = plural, FALSE label = singular
+	 * @return label valid for the specific use case
+	 */
+	public String getContentLabel(boolean bUpperCase, boolean bPlural);
 }

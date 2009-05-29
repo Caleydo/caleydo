@@ -678,7 +678,7 @@ public class GLHierarchicalHeatMap
 
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 		GeneralManager.get().getUseCase().addView(glHeatMapView);
-		glHeatMapView.setUseCase(useCase);
+		glHeatMapView.setUseCase(GeneralManager.get().getUseCase());
 		glHeatMapView.setRenderedRemote(true);
 	}
 
@@ -2223,7 +2223,8 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public String getShortInfo() {
-		return "Hierarchical Heat Map (" + set.getVA(iContentVAID).size() + " genes / "
+		return "Hierarchical Heat Map (" + set.getVA(iContentVAID).size()
+			+ useCase.getContentLabel(false, true) + " / "
 			+ set.getVA(iStorageVAID).size() + " experiments)";
 	}
 
@@ -2233,23 +2234,25 @@ public class GLHierarchicalHeatMap
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
 		if (bRenderStorageHorizontally) {
-			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
-				+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(false, true)
+				+ " in columns and " + set.getVA(iStorageVAID).size() + " experiments in rows.\n");
 		}
 		else {
-			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
-				+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(true, true)
+				+ " in rows and " + set.getVA(iStorageVAID).size() + " experiments in columns.\n");
 		}
 
 		if (bRenderOnlyContext) {
-			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
+			sInfoText.append("Showing only " + " " + useCase.getContentLabel(false, true)
+				+ " which occur in one of the other views in focus\n");
 		}
 		else {
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all genes in the dataset\n");
+				sInfoText.append("Showing all " + useCase.getContentLabel(false, true) + " in the dataset\n");
 			}
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
+				sInfoText.append("Showing all " + useCase.getContentLabel(false, true)
+					+ " that have a known DAVID ID mapping\n");
 			}
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText
