@@ -7,7 +7,7 @@ import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.wizard.project.NewOrExistingProjectPage.EProjectType;
+import org.caleydo.rcp.wizard.project.ChooseProjectTypePage.EProjectType;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Rectangle;
@@ -40,14 +40,14 @@ public class CaleydoProjectWizard
 
 	@Override
 	public void addPages() {
-		addPage(new NewOrExistingProjectPage());
+		addPage(new ChooseProjectTypePage());
 	}
 
 	@Override
 	public boolean performFinish() {
-		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete()) {
-			NewOrExistingProjectPage page =
-				(NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME);
+		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).isPageComplete()) {
+			ChooseProjectTypePage page =
+				(ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME);
 
 			IUseCase useCase;
 			
@@ -95,7 +95,7 @@ public class CaleydoProjectWizard
 
 	@Override
 	public boolean canFinish() {
-		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete())
+		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).isPageComplete())
 			return true;
 
 		return false;
@@ -103,30 +103,30 @@ public class CaleydoProjectWizard
 
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-		if (page instanceof NewOrExistingProjectPage) {
-			if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.NEW_PROJECT) {
+		if (page instanceof ChooseProjectTypePage) {
+			if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() == EProjectType.NEW_PROJECT) {
 				NewProjectImportDataPage nextPage =
 					(NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
 
 				nextPage.setPageComplete(true);
 				return nextPage;
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.EXISTING_PROJECT) {
 //				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
 //				fileOpenProjectAction.run();
 
 				this.performFinish();
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
 
 			}
-//			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+//			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 //				.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
 //				// Remove heatmap and par coord views
 //				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()

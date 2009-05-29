@@ -50,4 +50,6 @@ public class PreferenceConstants {
 	public static final String PROXY_PORT = "proxyPort";
 
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
+	
+	public static final String DATA_MODE_LAST_USED = "dataModeLastUsed";
 }

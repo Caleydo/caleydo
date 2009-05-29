@@ -2,6 +2,7 @@ package org.caleydo.rcp.wizard.project;
 
 import java.lang.reflect.Method;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
@@ -21,14 +22,19 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 
 /**
- * 1st wizard page: The user have to choose if she wants to create a new project or load an existing one.
+ * 1st wizard page: The user has to choose the type of project, if she wants to create a new project or load
+ * an existing one, or load sample data
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
-public class NewOrExistingProjectPage
+public class ChooseProjectTypePage
 	extends WizardPage {
 
 	public static final String PAGE_NAME = "Project Wizard";
+
+	public static final String GENE_DATA_MODE = "gene";
+	public static final String GENERAL_DATA_MODE = "general";
 
 	private static final String HCC_SAMPLE_DATASET_PAPER_LINK = "http://www.ncbi.nlm.nih.gov/pubmed/17241883";
 
@@ -37,7 +43,7 @@ public class NewOrExistingProjectPage
 	public enum EProjectType {
 		NEW_PROJECT,
 		EXISTING_PROJECT,
-//		PATHWAY_VIEWER_MODE,
+		// PATHWAY_VIEWER_MODE,
 		SAMPLE_DATA_RANDOM,
 		SAMPLE_DATA_REAL
 	}
@@ -52,7 +58,7 @@ public class NewOrExistingProjectPage
 	/**
 	 * Constructor.
 	 */
-	public NewOrExistingProjectPage() {
+	public ChooseProjectTypePage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
 		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
@@ -75,6 +81,15 @@ public class NewOrExistingProjectPage
 
 		createGeneticUseCaseTab(tabFolder);
 		createGeneralDataUseCaseTab(tabFolder);
+		String dataModeLastUsed =
+			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_MODE_LAST_USED);
+		if (dataModeLastUsed == null || dataModeLastUsed.isEmpty() || dataModeLastUsed.equals(GENE_DATA_MODE)) {
+			tabFolder.setSelection(0);
+
+		}
+		else if (dataModeLastUsed.equals(GENERAL_DATA_MODE)) {
+			tabFolder.setSelection(1);
+		}
 
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
@@ -83,13 +98,19 @@ public class NewOrExistingProjectPage
 
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
 					useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
-					
+			
 					// Turn off pathway data loading for general data analysis use case
 					Application.bLoadPathwayData = false;
+					
+					GeneralManager.get().getPreferenceStore().setValue(
+						PreferenceConstants.DATA_MODE_LAST_USED, GENERAL_DATA_MODE);
 				}
 				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
 					useCaseMode = EUseCaseMode.GENETIC_DATA;
-					Application.bLoadPathwayData = true;					
+					Application.bLoadPathwayData = true;
+					
+					GeneralManager.get().getPreferenceStore().setValue(
+						PreferenceConstants.DATA_MODE_LAST_USED, GENE_DATA_MODE);
 				}
 				else
 					throw new IllegalStateException("Not implemented!");
@@ -168,9 +189,9 @@ public class NewOrExistingProjectPage
 		buttonNewProject.setLayoutData(new GridData(GridData.FILL_BOTH));
 		setPageComplete(true);
 
-//		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
-//		buttonPathwayViewerMode.setText("Pathway viewer mode");
-//		buttonPathwayViewerMode.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
+		// buttonPathwayViewerMode.setText("Pathway viewer mode");
+		// buttonPathwayViewerMode.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		Button buttonExistingProject = new Button(composite, SWT.RADIO);
 		buttonExistingProject.setText("Open existing project");
@@ -197,17 +218,17 @@ public class NewOrExistingProjectPage
 			public void widgetSelected(SelectionEvent e) {
 				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
 
-//				if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
-//					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-//					messageBox.setText("Load KEGG and BioCarta pathway data");
-//					messageBox
-//						.setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
-//					messageBox.open();
-//
-//					((Button) e.widget).setSelection(true);
-//
-//					return;
-//				}
+				// if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
+				// MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
+				// messageBox.setText("Load KEGG and BioCarta pathway data");
+				// messageBox
+				// .setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
+				// messageBox.open();
+				//
+				// ((Button) e.widget).setSelection(true);
+				//
+				// return;
+				// }
 
 				Application.bLoadPathwayData = bLoadPathwayData;
 			}
@@ -232,14 +253,14 @@ public class NewOrExistingProjectPage
 			}
 		});
 
-//		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				projectType = EProjectType.PATHWAY_VIEWER_MODE;
-//				btnLoadPathwayData.setSelection(true);
-//				setPageComplete(true);
-//			}
-//		});
+		// buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// projectType = EProjectType.PATHWAY_VIEWER_MODE;
+		// btnLoadPathwayData.setSelection(true);
+		// setPageComplete(true);
+		// }
+		// });
 
 		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter() {
 			@Override
