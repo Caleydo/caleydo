@@ -61,7 +61,7 @@ terms.</p>
 <p>The webstart version runs on Windows and Linux. If you are
 running into problems with the webstart version, please try the
 stand-alone application.</p>
-<a STYLE="text-decoration: none"
+<a style="text-decoration: none"
 	href="http://www.caleydo.org/download/webstart/caleydo.jnlp"><img
 	src="images/logos/webstart.png" alt="Start Caleydo"
 	style="border-style: none" /><br />
@@ -74,16 +74,58 @@ Linux 32-bit machines. A 64-bit version can be provided upon request.
 You have to download the compressed file and extract it to your local
 hard disk.</p>
 <br />
-<b><a href="download/caleydo_release_win32_x86.zip">Windows XP,
-2000 - 32-bit (zip-compressed)</a></b> <br />
+<b><a href="download/1.2.2/caleydo_1.2.2_win_xp_x86.tar.gz">Windows
+XP, 2000 - 32-bit (zip-compressed)</a></b> <br />
 <br />
-<b><a href="download/caleydo_release_win32_wpf_x86.zip">Windows
+<b><a href="download/1.2.2/caleydo_1.2.2_win_vista_x86.tar.gz">Windows
 Vista - 32-bit (zip-compressed)</a></b> <br />
 <br />
-<b><a href="download/caleydo_release_linux_gtk_x86.tar.gz">Linux
+<b><a href="download/1.2.2/caleydo_1.2.2_linux_x86.tar.gz">Linux
 - 32-bit (tar.gz-compressed)</a></b>
 
 <h2>Changelog</h2>
+
+<h3>Version 1.2.3, May, 29, 2009</h3>
+<h4>New Features</h4>
+<ul>
+	<li>Caleydo now remembers the type of analysis (gene or general)
+	you used previously</li>
+	<li>Caleydo now only shows the buttons that actually make sense in
+	general data analysis mode</li>
+	<li>When exporting you can now decide which data, associated with
+	which view to export (heat map, bucket or parallel coordinates)</li>
+	<li>Reduced startup speed and memory footprint of general data
+	analysis significantly</li>
+</ul>
+<h4>Fixed Bugs</h4>
+<ul>
+	<li>Tabular data viewer now shows the original, not the normalized
+	values</li>
+	<li>Tabular data viewer now works in the general data analysis
+	mode</li>
+	<li>Again a lot of clustering problems are fixed</li>
+	<li>Exporting in general data mode now works</li>
+	<li>Caleydo now truly treats empty cells in a file to import as
+	NaN</li>
+	<li>Update of color-mapper when loading files during runtime now
+	works correctly</li>
+	<li>Fixed a bug concerning the connection lines in the bucket -
+	they wrongly connected axes when an axes was selected.</li>
+</ul>
+
+<h3>Version 1.2.2, May, 25, 2009</h3>
+<h4>Fixed Bugs</h4>
+<ul>
+	<li>Fixed issues with clustering and clustering dialogs.</li>
+</ul>
+
+<h3>Version 1.2.1, May, 20, 2009</h3>
+<h4>Fixed Bugs</h4>
+<ul>
+	<li>Fixed issue with connection lines in bucket, which were wrong
+	in some cases</li>
+	<li>Fixed some bugs in clustering dialogs</li>
+</ul>
 
 <h3>Version 1.2, May, 18, 2009</h3>
 <h4>New Features</h4>
@@ -153,7 +195,7 @@ Vista - 32-bit (zip-compressed)</a></b> <br />
 	<li>Views have a new "reset view" function that clears all changes</li>
 	<li>Genes in pool layer are highlighted as well</li>
 	<li>Added log base 2 support</li>
-	<li>Added an XP classic style mode. (Enable via Preferences ->
+	<li>Added an XP classic style mode. (Enable via Preferences -&gt;
 	General)</li>
 	<li>Added support for different filter levels (all genes - genes
 	with DAVID mapping - genes that occur in pathways). All genes mode is
@@ -170,7 +212,7 @@ Vista - 32-bit (zip-compressed)</a></b> <br />
 	<li>Pathways can be loaded more than once now</li>
 	<li>Selection consistency when moving views improved</li>
 	<li>Data RefSeq mapping loader ignores version of RefSeqs (NM_*.*
-	-> NM_*).</li>
+	-&gt; NM_*).</li>
 	<li>Multiple RefSeq numbers per micro-array spot in data files are
 	ignored because they all point to the same DAVID gene ID.</li>
 	<li>All experiments in data loader are selected by default.</li>
@@ -204,7 +246,7 @@ November 2007. A more recent video will follow soon.</p>
 website maintained by <a href="http://www.icg.tugraz.at/Members/streit"><strong>Marc
 Streit</strong></a> and <a href="http://www.icg.tugraz.at/Members/alex"><strong>Alexander
 Lex</strong></a><br />
-last updated on 2009-05-27</p>
+last updated on 2009-05-29</p>
 </div>
 
 </div>
