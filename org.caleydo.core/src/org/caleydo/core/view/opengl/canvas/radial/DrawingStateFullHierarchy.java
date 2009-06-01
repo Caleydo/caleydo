@@ -6,9 +6,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
 
 public class DrawingStateFullHierarchy
 	extends DrawingState {
@@ -144,52 +141,37 @@ public class DrawingStateFullHierarchy
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT);
-
+				
+				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getParent().getElementID());
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				radialHierarchy.setAnimationActive(true);
 				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
+				
+				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
 			}
 			radialHierarchy.setDisplayListDirty();
-			
-			radialHierarchy.setNewSelection(true);
-			
-			IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-			ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
-			event.setSender(radialHierarchy);
-			event.setClusterNumber(pdSelected.getElementID());
-			event.setSelectionType(ESelectionType.SELECTION);
-
-			eventPublisher.triggerEvent(event);
 		}
 
 	}
 
 	@Override
-	public void handleFocus(PartialDisc pdFocused) {
+	public void handleMouseOver(PartialDisc pdMouseOver) {
 
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
-		radialHierarchy.setNewSelection(false);
-
-		if (pdFocused != pdCurrentMouseOverElement) {
+		if (pdMouseOver != pdCurrentMouseOverElement) {
 			if (pdCurrentMouseOverElement != null) {
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 					.getDefaultDrawingStrategy(), Math.min(RadialHierarchyRenderStyle.MAX_LABELING_DEPTH,
 					iDisplayedHierarchyDepth));
 			}
 
-			radialHierarchy.setCurrentMouseOverElement(pdFocused);
+			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
 			radialHierarchy.setDisplayListDirty();
 		}
-		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-		ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
-		event.setSender(radialHierarchy);
-		event.setClusterNumber(pdFocused.getElementID());
-		event.setSelectionType(ESelectionType.MOUSE_OVER);
-
-		eventPublisher.triggerEvent(event);
+		radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver.getElementID());
 	}
 
 	@Override
@@ -211,15 +193,7 @@ public class DrawingStateFullHierarchy
 			radialHierarchy.setAnimationActive(true);
 			radialHierarchy.setDisplayListDirty();
 			
-			radialHierarchy.setNewSelection(true);
-			
-			IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-			ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
-			event.setSender(radialHierarchy);
-			event.setClusterNumber(pdSelected.getElementID());
-			event.setSelectionType(ESelectionType.SELECTION);
-
-			eventPublisher.triggerEvent(event);
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
 		}
 	}
 

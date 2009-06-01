@@ -23,14 +23,6 @@ public class PDDrawingStrategyLabelDecorator
 
 		Label label = new Label(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
 		
-		TextItem nameItem = new TextItem(pdDiscToDraw.getName());
-		LabelLine firstLine = new LabelLine();
-		firstLine.addLabelItem(nameItem);
-		
-		TextItem coefficientItem = new TextItem("Coefficient: " + pdDiscToDraw.getCoefficient());
-		LabelLine secondLine = new LabelLine();
-		secondLine.addLabelItem(coefficientItem);
-		
 		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
 		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
 		ColorMapping cmExpression =
@@ -46,16 +38,33 @@ public class PDDrawingStrategyLabelDecorator
 		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
 		
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
-		LabelLine thirdLine = new LabelLine();
-		thirdLine.addLabelItem(meanItem);
-		thirdLine.addLabelItem(leftRectangleItem);
-		thirdLine.addLabelItem(middleRectangleItem);
-		thirdLine.addLabelItem(rightRectangleItem);
+		LabelLine expressionLine = new LabelLine();
+		expressionLine.addLabelItem(meanItem);
+		expressionLine.addLabelItem(leftRectangleItem);
+		expressionLine.addLabelItem(middleRectangleItem);
+		expressionLine.addLabelItem(rightRectangleItem);
 		
-		label.addLine(firstLine);
-		label.addLine(secondLine);
-		label.addLine(thirdLine);
+		if(pdDiscToDraw.hasChildren()) {
+			TextItem numElementsItem = new TextItem("Elements: " + new Integer((int)pdDiscToDraw.getSize()).toString());
+			LabelLine numElementsLine = new LabelLine();
+			numElementsLine.addLabelItem(numElementsItem);
+			
+			TextItem hierarchyDepthItem = new TextItem("Hierarchy Depth: " + pdDiscToDraw.getHierarchyDepth());
+			LabelLine hierarchyDepthLine = new LabelLine();
+			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
+			
+			label.addLine(numElementsLine);
+			label.addLine(hierarchyDepthLine);
+		}
+		else {
+			TextItem nameItem = new TextItem(pdDiscToDraw.getName());
+			LabelLine nameLine = new LabelLine();
+			nameLine.addLabelItem(nameItem);
+			
+			label.addLine(nameLine);
+		}
 		
+		label.addLine(expressionLine);	
 		LabelManager.get().addLabel(label);
 	}
 
@@ -79,14 +88,6 @@ public class PDDrawingStrategyLabelDecorator
 		Label label =
 			new Label(fSegmentXCenter, fSegmentYCenter, fCenterRadius, pdDiscToDraw.getDrawingStrategyDepth());
 
-		TextItem nameItem = new TextItem(pdDiscToDraw.getName());
-		LabelLine firstLine = new LabelLine();
-		firstLine.addLabelItem(nameItem);
-		
-		TextItem coefficientItem = new TextItem("Coefficient: " + pdDiscToDraw.getCoefficient());
-		LabelLine secondLine = new LabelLine();
-		secondLine.addLabelItem(coefficientItem);
-		
 		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
 		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
 		ColorMapping cmExpression =
@@ -102,16 +103,33 @@ public class PDDrawingStrategyLabelDecorator
 		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
 		
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
-		LabelLine thirdLine = new LabelLine();
-		thirdLine.addLabelItem(meanItem);
-		thirdLine.addLabelItem(leftRectangleItem);
-		thirdLine.addLabelItem(middleRectangleItem);
-		thirdLine.addLabelItem(rightRectangleItem);
+		LabelLine expressionLine = new LabelLine();
+		expressionLine.addLabelItem(meanItem);
+		expressionLine.addLabelItem(leftRectangleItem);
+		expressionLine.addLabelItem(middleRectangleItem);
+		expressionLine.addLabelItem(rightRectangleItem);
 		
-		label.addLine(firstLine);
-		label.addLine(secondLine);
-		label.addLine(thirdLine);
+		if(pdDiscToDraw.hasChildren()) {
+			TextItem numElementsItem = new TextItem("Elements: " + new Integer((int)pdDiscToDraw.getSize()).toString());
+			LabelLine numElementsLine = new LabelLine();
+			numElementsLine.addLabelItem(numElementsItem);
+			
+			TextItem hierarchyDepthItem = new TextItem("Hierarchy Depth: " + pdDiscToDraw.getHierarchyDepth());
+			LabelLine hierarchyDepthLine = new LabelLine();
+			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
+			
+			label.addLine(numElementsLine);
+			label.addLine(hierarchyDepthLine);
+		}
+		else {
+			TextItem nameItem = new TextItem(pdDiscToDraw.getName());
+			LabelLine nameLine = new LabelLine();
+			nameLine.addLabelItem(nameItem);
+			
+			label.addLine(nameLine);
+		}
 		
+		label.addLine(expressionLine);	
 		LabelManager.get().addLabel(label);
 	}
 

@@ -8,6 +8,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 public class TextItem
 	extends ALabelItem {
+	
+private static final String sTextForHeightCalculation = "Text without characters below the bottom textline";
 
 	private String sText;
 	private TextRenderer textRenderer;
@@ -33,8 +35,9 @@ public class TextItem
 		this.textRenderer = textRenderer;
 		this.fTextScaling = fTextScaling;
 
-		Rectangle2D bounds = textRenderer.getBounds(sText);
+		Rectangle2D bounds = textRenderer.getBounds(sTextForHeightCalculation);
 		fHeight = (float) bounds.getHeight() * fTextScaling;
+		bounds = textRenderer.getBounds(sText);
 		fWidth = (float) bounds.getWidth() * fTextScaling;
 	}
 }

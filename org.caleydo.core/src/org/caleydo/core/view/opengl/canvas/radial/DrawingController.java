@@ -37,9 +37,9 @@ public class DrawingController {
 		currentDrawingState.draw(fXCenter, fYCenter, gl, glu);
 	}
 
-	public void handleFocus(PartialDisc pdMouseOver) {
+	public void handleMouseOver(PartialDisc pdMouseOver) {
 
-		currentDrawingState.handleFocus(pdMouseOver);
+		currentDrawingState.handleMouseOver(pdMouseOver);
 	}
 
 	public void handleSelection(PartialDisc pdClicked) {

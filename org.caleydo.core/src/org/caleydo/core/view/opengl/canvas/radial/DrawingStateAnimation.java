@@ -42,7 +42,7 @@ public abstract class DrawingStateAnimation
 	}
 
 	@Override
-	public final void handleFocus(PartialDisc pdFocused) {
+	public final void handleMouseOver(PartialDisc pdMouseOver) {
 		// do nothing
 	}
 

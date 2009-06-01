@@ -29,6 +29,7 @@ public enum EIDType {
 	EXPERIMENT(EStorageType.STRING, "experiment id", "The ID that connects clinical with microarray data"),
 	EXPERIMENT_INDEX(EStorageType.INT, "experiment index", "The experiment index"),
 	CELL_COMPONENT(EStorageType.STRING, "GO cell component", "The GO cell component"),
+	CLUSTER_NUMBER(EStorageType.INT, "cluster-number", "The cluster number of clusters and genes"),
 
 	// FIXME: Make this general! Needed for Asslaber data
 	OLIGO(EStorageType.STRING, "oligo", "oligo-id"),
