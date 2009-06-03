@@ -73,6 +73,7 @@ public class GLGlyphGrid {
 		worldLimit_ = new Vec2i();
 		glyphCenter = new Vec2f();
 
+		glyphs_ = new HashMap<Integer, GlyphEntry>();
 		glyphMap_ = new Vector<Vector<GlyphGridPosition>>();
 
 		positionModels = new HashMap<EPositionModel, GlyphGridPositionModel>();

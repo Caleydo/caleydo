@@ -6,6 +6,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.serialize.SerializedGlyphView;
 import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.rcp.Application;
@@ -35,6 +36,9 @@ public class GLRemoteRenderingView
 
 		createGLCanvas();
 
+		GLRemoteRendering bucket = (GLRemoteRendering) createGLRemoteEventListener(
+			ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
+
 		// Only create parcoords and heatmap if the application is NOT in
 		// pathway viewer mode
 		if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
@@ -47,20 +51,17 @@ public class GLRemoteRenderingView
 			try {
 				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
 
-				AGLEventListener glyph1 = createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true);
-				iAlContainedViewIDs.add(glyph1.getID());
+				SerializedGlyphView glyph1 = new SerializedGlyphView();
+				bucket.addInitialRemoteView(glyph1);			
 
-				AGLEventListener glyph2 = createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true);
-				iAlContainedViewIDs.add(glyph2.getID());
+				SerializedGlyphView glyph2 = new SerializedGlyphView();
+				bucket.addInitialRemoteView(glyph2);			
 			}
 			catch (IllegalArgumentException e) {
 				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
 					"Cannot add glyph to bucket! No glyph data loaded!"));
 			}
 		}
-
-		GLRemoteRendering bucket = (GLRemoteRendering) createGLRemoteEventListener(
-			ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
 
 		// Only add parallel coordinates and heat map to bucket when not in pathway viewer mode.
 		if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {

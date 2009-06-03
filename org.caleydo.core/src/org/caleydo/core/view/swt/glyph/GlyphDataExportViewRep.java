@@ -73,6 +73,8 @@ public class GlyphDataExportViewRep
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
+//		GlyphDatadefinition def = new GlyphDatadefinition();
+
 		initComponents();
 	}
 

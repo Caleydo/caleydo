@@ -19,6 +19,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -284,7 +285,8 @@ public class GLGlyph
 	public void init(GL gl) {
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
-		grid_.loadData(set);
+		if(set.getSetType() == ESetType.CLINICAL_DATA)		
+			grid_.loadData(set);
 
 		// grid_.selectAll();
 
@@ -401,7 +403,9 @@ public class GLGlyph
 		}
 
 		if (grid_.getGlyphList().keySet().size() == 0) {
-			renderSymbol(gl);
+			//FIXME This should not be - it only happens, if the glyph view didn't get an clinical set
+			grid_.loadData(null);
+//			renderSymbol(gl);
 			return;
 		}
 
@@ -1087,13 +1091,6 @@ public class GLGlyph
 
 		forceRebuild();
 
-		// fixme the selection triggered by a glyph view should be handled view events, so this "if" should
-		// not be needed
-		// if (eventTrigger instanceof GLGlyph)
-		// return;
-
-		// grid_.deSelectAll();
-
 		GlyphEntry actualGlyph = null;
 		for (SelectionDeltaItem item : selectionDelta) {
 			actualGlyph = grid_.getGlyph(item.getPrimaryID());
@@ -1102,11 +1099,11 @@ public class GLGlyph
 				continue;
 			}
 
-			if (item.getSelectionType() == ESelectionType.DESELECTED) {
+			if (item.getSelectionType() == ESelectionType.DESELECTED && actualGlyph.isSelected()) {
 				actualGlyph.deSelect();
 			}
 
-			if (item.getSelectionType() == ESelectionType.SELECTION) {
+			if (item.getSelectionType() == ESelectionType.SELECTION && !actualGlyph.isSelected()) {
 				actualGlyph.select();
 			}
 
@@ -1320,7 +1317,6 @@ public class GLGlyph
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		return selectionManager.getElements(eSelectionType).size();
-		// throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 
 	@Override
