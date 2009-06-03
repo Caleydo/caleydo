@@ -4,6 +4,7 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDManager;
+import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
@@ -114,4 +115,15 @@ public interface IGeneralManager {
 	 * @param useCase
 	 */
 	public void setUseCase(IUseCase useCase);
+	
+	/**
+	 * Returns the current clinical use case.
+	 */
+	public ClinicalUseCase getClinicalUseCase();
+	
+	/**
+	 * Set a different clinical use case. The use case changes the behavior of the views and its loaded data.
+	 * @param useCase
+	 */
+	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase);
 }

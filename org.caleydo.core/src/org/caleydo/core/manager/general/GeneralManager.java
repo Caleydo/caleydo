@@ -24,6 +24,7 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
+import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
@@ -85,6 +86,14 @@ public class GeneralManager
 	 * The use case determines which kind of data is loaded in the views.
 	 */
 	private IUseCase useCase;
+	
+	/**
+	 * FIXME: Think about a more general way for loading clinical data 
+	 * and gene expression data concurrently.
+	 * 
+	 * @deprecated A more general way for handling multiple use cases is needed.
+	 */
+	private ClinicalUseCase clinicalUseCase;
 
 	private boolean bIsWiiMode = false;
 
@@ -329,7 +338,20 @@ public class GeneralManager
 
 	@Override
 	public IUseCase getUseCase() {
-
 		return useCase;
+	}
+
+	@Override
+	public ClinicalUseCase getClinicalUseCase() {
+		
+		if (clinicalUseCase == null)
+			clinicalUseCase = new ClinicalUseCase();
+		
+		return clinicalUseCase;
+	}
+	
+	@Override
+	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase) {
+		this.clinicalUseCase = clinicalUseCase;
 	}
 }

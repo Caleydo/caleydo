@@ -70,21 +70,33 @@ public abstract class AGLViewPart
 		boolean bRegisterToOverallMediator) {
 		IGeneralManager generalManager = GeneralManager.get();
 
-		ISet set = generalManager.getUseCase().getSet();
-
 		CmdCreateGLEventListener cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(glViewType);
-
+	
+		IUseCase useCase;
+		ISet set;
+		
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
+			
+			useCase = GeneralManager.get().getUseCase();
+			set = useCase.getSet();
+			
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, set,
 //			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f, 2f, 3.82f, 100, set,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH) {
+			
+			useCase = GeneralManager.get().getClinicalUseCase();
+			set = useCase.getSet();
+			
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, set,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
+			useCase = GeneralManager.get().getUseCase();
+			set = useCase.getSet();
+			
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, set, iParentCanvasID);
 		}
 
@@ -99,8 +111,6 @@ public abstract class AGLViewPart
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
-		// TODO: Currently only one use case is supported - this needs to be generalized.
-		IUseCase useCase = GeneralManager.get().getUseCase();
 		glView.setUseCase(useCase);
 				
 		useCase.addView(glView);

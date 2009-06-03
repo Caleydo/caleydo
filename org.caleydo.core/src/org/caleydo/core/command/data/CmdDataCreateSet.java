@@ -61,14 +61,20 @@ public class CmdDataCreateSet
 
 		fillSets(createdObject);
 
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"New Set with internal ID " + createdObject.getID() + " and external ID " + iExternalID
-				+ " created."));
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "New Set with internal ID "
+				+ createdObject.getID() + " and external ID " + iExternalID + " created."));
 
-		// Set data in current use case
-		// TODO: Check if this is always safe
-		GeneralManager.get().getUseCase().setSet(createdObject);
-		
+		if (createdObject.getSetType() == ESetType.GENE_EXPRESSION_DATA
+			|| createdObject.getSetType() == ESetType.UNSPECIFIED) {
+			GeneralManager.get().getUseCase().setSet(createdObject);
+		}
+		else if (createdObject.getSetType() == ESetType.CLINICAL_DATA) {
+			GeneralManager.get().getClinicalUseCase().setSet(createdObject);
+		}
+		else
+			throw new IllegalStateException("Cannot find use case for set type " + createdObject.getSetType() + ".");
+
 		commandManager.runDoCommand(this);
 	}
 
