@@ -285,6 +285,11 @@ public class GLGlyph
 	public void init(GL gl) {
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
+		
+		if(generalManager.getClinicalUseCase() != null)
+			if(generalManager.getClinicalUseCase().getSet() != null)
+				set = generalManager.getClinicalUseCase().getSet();
+		
 		if(set.getSetType() == ESetType.CLINICAL_DATA)		
 			grid_.loadData(set);
 
