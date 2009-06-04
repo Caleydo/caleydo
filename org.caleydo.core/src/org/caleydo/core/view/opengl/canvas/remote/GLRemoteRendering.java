@@ -335,6 +335,7 @@ public class GLRemoteRendering
 		cmdCreateGLView.doCommand();
 		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
+		glSelectionHeatMap.setUseCase(useCase);
 		glSelectionHeatMap.initData();
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
@@ -946,7 +947,7 @@ public class GLRemoteRendering
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
 		Vec3f scale = transform.getScale();
-		float fZoomedInScalingFactor = 0.1f;
+//		float fZoomedInScalingFactor = 0.1f;
 		float fYCorrection = 0f;
 		if (!bucketMouseWheelListener.isZoomedIn()) {
 			fYCorrection = 0f;
