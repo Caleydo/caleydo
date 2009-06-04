@@ -5,7 +5,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.eclipse.core.runtime.Status;
 
 /**
  * Basic Caleydo Bootloader.
@@ -40,25 +39,9 @@ public class CaleydoBootloader {
 	/**
 	 * Constructor.
 	 */
-	public CaleydoBootloader(boolean bIsStandalone) {
+	public CaleydoBootloader(IGUIBridge externalGUIBridge) {
 		generalManager = GeneralManager.get();
-		generalManager.init(bIsStandalone);
-
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, 
-			"Start Caleydo Core"));
-
-		swtGUIManager = generalManager.getSWTGUIManager();
-		xmlParserManager = generalManager.getXmlParserManager();
-
-		init();
-	}
-
-	/**
-	 * Constructor.
-	 */
-	public CaleydoBootloader(boolean bIsStandalone, IGUIBridge externalGUIBridge) {
-		generalManager = GeneralManager.get();
-		generalManager.init(bIsStandalone, externalGUIBridge);
+		generalManager.init(externalGUIBridge);
 		init();
 	}
 
@@ -94,30 +77,5 @@ public class CaleydoBootloader {
 			return;
 			
 		xmlParserManager.parseXmlFileByName(sFileName);
-	}
-
-	/**
-	 * Run the stand alone Caleydo core application ..
-	 */
-	public static void main(String[] args) {
-
-		CaleydoBootloader caleydo = new CaleydoBootloader(true);
-
-		if (args.length > 0) {
-			caleydo.setXmlFileName(args[0]);
-		}
-
-		caleydo.start();
-
-		if (GeneralManager.get().isStandalone()) {
-			// Start OpenGL rendering
-			GeneralManager.get().getViewGLCanvasManager().startAnimator();
-
-			GeneralManager.get().getSWTGUIManager().runApplication();
-		}
-
-		System.exit(0);
-
-		return;
 	}
 }

@@ -1,5 +1,6 @@
 package org.caleydo.rcp;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -13,14 +14,13 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
-import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.view.RCPViewManager;
-import org.caleydo.rcp.view.opengl.GLHistogramView;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
 import org.caleydo.rcp.wizard.firststart.ProxyConfigurationPage;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -29,13 +29,15 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.WorkbenchPlugin;
 
 /**
  * This class controls all aspects of the application's execution
  */
+@SuppressWarnings("restriction")
 public class Application
 	implements IApplication {
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
@@ -60,6 +62,7 @@ public class Application
 	public static boolean bOverrulePrefStoreLoadPathwayData = false;
 	public static boolean bIsWindowsOS = false;
 	public static boolean bIsInterentConnectionOK = false;
+	public static boolean bDeleteRestoredWorkbenchState = false;
 
 	public static EApplicationMode applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 
@@ -142,7 +145,7 @@ public class Application
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
-		caleydoCore = new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
+		caleydoCore = new CaleydoBootloader(rcpGuiBridge);
 
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
@@ -203,6 +206,9 @@ public class Application
 			firstStartWizard.open();
 		}
 
+		if (bDeleteRestoredWorkbenchState)
+			removeStoredWorkbenchState();
+
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
 
@@ -232,7 +238,9 @@ public class Application
 		catch (IOException e) {
 			throw new IllegalStateException("Unable to save preference file.");
 		}
-
+		
+		GeneralManager.get().getViewGLCanvasManager().stopAnimator();
+		
 		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, "Bye bye!"));
 		// display.dispose();
 	}
@@ -270,8 +278,7 @@ public class Application
 				bDoExit = true;
 			}
 		}
-		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA 
-			|| applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
+		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
@@ -283,21 +290,13 @@ public class Application
 
 		initializeColorMapping();
 
-		openRCPViews();
+		// openRCPViews();
 
-		if (!bDoExit && bLoadPathwayData) {
-			// Trigger pathway loading
-			new PathwayLoadingProgressIndicatorAction().run(null);
-
-			// ((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-			// .getActivePage().getViewReferences()[0].getView(false)).addPathwayLoadingProgress();
-		}
-
-		if (GeneralManager.get().isStandalone()) {
-			// Start OpenGL rendering
-			GeneralManager.get().getViewGLCanvasManager().startAnimator();
-			GeneralManager.get().getSWTGUIManager().runApplication();
-		}
+		// if (GeneralManager.get().isStandalone()) {
+		// // Start OpenGL rendering
+		// GeneralManager.get().getViewGLCanvasManager().startAnimator();
+		// GeneralManager.get().getSWTGUIManager().runApplication();
+		// }
 	}
 
 	public static void initializeColorMapping() {
@@ -310,7 +309,7 @@ public class Application
 		ColorMappingManager.get().initiFromPreferenceStore(EColorMappingType.GENE_EXPRESSION);
 	}
 
-	private static void openRCPViews() {
+	public static void openRCPViews(IFolderLayout layout) {
 
 		// Create RCP view manager
 		RCPViewManager.get();
@@ -346,26 +345,8 @@ public class Application
 			}
 		}
 
-		// Open Views in RCP
-		try {
-			// Open toolbar view
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(GLHistogramView.ID);
-
-			// if (alStartViews.contains(EStartViewType.REMOTE))
-			// {
-			// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-			// GLRemoteRenderingView.ID);
-			//
-			// alStartViews.remove(EStartViewType.REMOTE);
-			// }
-
-			for (EStartViewType startViewsMode : alStartViews) {
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-					startViewsMode.getRCPViewID());
-			}
-		}
-		catch (PartInitException e) {
-			e.printStackTrace();
+		for (EStartViewType startViewsMode : alStartViews) {
+			layout.addView(startViewsMode.getRCPViewID());
 		}
 	}
 
@@ -382,5 +363,34 @@ public class Application
 
 		bIsInterentConnectionOK = true;
 		return true;
+	}
+
+	@SuppressWarnings("restriction")
+	private void removeStoredWorkbenchState() {
+
+		IPath path = WorkbenchPlugin.getDefault().getDataLocation();
+		if (path == null) {
+			return;
+		}
+
+		deleteDir(path.toFile());
+	}
+
+	// Deletes all files and subdirectories under dir.
+	// Returns true if all deletions were successful.
+	// If a deletion fails, the method stops attempting to delete and returns
+	// false.
+	public static boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (String element : children) {
+				boolean success = deleteDir(new File(dir, element));
+				if (!success)
+					return false;
+			}
+		}
+
+		// The directory is now empty so delete it
+		return dir.delete();
 	}
 }

@@ -41,12 +41,12 @@ public interface IGeneralManager {
 	public static final String sDelimiter_Parser_DataType = ";";
 	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
 
-	public void init(boolean bIsStandalone);
+	public void init();
 
 	/**
 	 * Init method for external GUI embedding (e.g. RCP)
 	 */
-	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge);
+	public void init(IGUIBridge externalGUIBridge);
 
 	public IStorageManager getStorageManager();
 
@@ -92,11 +92,6 @@ public interface IGeneralManager {
 	 * preferences to/from a predefined file.
 	 */
 	public PreferenceStore getPreferenceStore();
-
-	/**
-	 * Returns whether the application runs as standalone test GUI or embedded in RCP
-	 */
-	public boolean isStandalone();
 
 	public IGUIBridge getGUIBridge();
 

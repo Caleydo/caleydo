@@ -100,6 +100,12 @@ public class ChooseProjectTypePage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				// FIXME: this should not be set when the user switches the tabs
+				// Better would be to determine the boolean's state when the user clicks "OK"
+				// and only when the user changed the selection compared to the stored mode in the
+				// preferences the old workbench state should be deleted.
+				Application.bDeleteRestoredWorkbenchState = true;
+				
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
 					useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
 

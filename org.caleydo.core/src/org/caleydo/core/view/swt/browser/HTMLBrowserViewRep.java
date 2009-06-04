@@ -48,7 +48,7 @@ public class HTMLBrowserViewRep
 	 */
 	protected Composite subContributionComposite;
 	
-	protected String url = CALEYDO_HOME;
+	protected String url = CALEYDO_HOME + "/help/user_interface.html";
 
 	protected Text textURL;
 

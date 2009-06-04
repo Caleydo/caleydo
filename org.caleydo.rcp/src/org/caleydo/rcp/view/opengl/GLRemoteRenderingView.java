@@ -11,6 +11,7 @@ import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
+import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 

@@ -37,11 +37,7 @@ public interface ISWTGUIManager {
 
 	public void setProgressBarTextFromExternalThread(final String sText);
 
-	public void setProgressBarVisible(final boolean state);
-
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel);
-
-	public void setExternalRCPStatusLineMessage(final String sMessage);
 
 	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display);
 }

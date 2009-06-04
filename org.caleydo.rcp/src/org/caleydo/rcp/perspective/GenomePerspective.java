@@ -1,5 +1,6 @@
 package org.caleydo.rcp.perspective;
 
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.view.opengl.GLHistogramView;
 import org.caleydo.rcp.view.swt.SelectionInfoView;
 import org.caleydo.rcp.view.swt.toolbar.ToolBarView;
@@ -17,6 +18,9 @@ public class GenomePerspective
 	//private static final String LOG_VIEW = "org.eclipse.pde.runtime.LogView";
 
 	public void createInitialLayout(final IPageLayout layout) {
+		
+//		Application.startCaleydoCore();
+		
 		layout.setEditorAreaVisible(false);
 		// layout.setFixed(true);
 //		layout.getViewLayout("org.caleydo.rcp.views.HTMLBrowserView").setCloseable(false);
@@ -43,12 +47,14 @@ public class GenomePerspective
 				layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
 			middleLeft.addView(SelectionInfoView.ID);			
 			
-			layout.addStandaloneViewPlaceholder(GLHistogramView.ID, IPageLayout.BOTTOM, 0.7f, "middleLeft", true);
+			layout.addStandaloneView(GLHistogramView.ID, true, IPageLayout.BOTTOM, 0.7f, "middleLeft");
 //			IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.45f, "middleLeft");
 //			bottomLeft.addPlaceholder(GLHistogramView.ID);
 
-			layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio,
+			IFolderLayout mainLayout = layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1 - fRatio,
 				IPageLayout.ID_EDITOR_AREA);
+						
+			Application.openRCPViews(mainLayout);
 
 		}
 		else {
@@ -68,13 +74,12 @@ public class GenomePerspective
 //			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio,
 //				IPageLayout.ID_EDITOR_AREA);
 			
-			layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
+			IFolderLayout mainLayout = layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
 				IPageLayout.ID_EDITOR_AREA);
+			
+			Application.openRCPViews(mainLayout);
 		}
 
 //		layout.addPlaceholder(LOG_VIEW,IPageLayout.BOTTOM, (float) 0.8, "right");
-		
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(
-			new PartListener());
 	}
 }

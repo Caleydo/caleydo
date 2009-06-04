@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
-import org.caleydo.core.bridge.gui.standalone.SWTStandaloneBridge;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
@@ -97,21 +96,14 @@ public class GeneralManager
 
 	private boolean bIsWiiMode = false;
 
-	/**
-	 * Determines whether Caleydo runs as standalone test GUI or in RCP mode.
-	 */
-	private boolean bIsStandalone = true;
-
 	@Override
-	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge) {
-		this.init(bIsStandalone);
-
+	public void init(IGUIBridge externalGUIBridge) {
+		this.init();
 		this.guiBridge = externalGUIBridge;
 	}
 
 	@Override
-	public void init(boolean bIsStandalone) {
-		this.bIsStandalone = bIsStandalone;
+	public void init() {
 
 		storageManager = new StorageManager();
 		setManager = new SetManager();
@@ -134,11 +126,6 @@ public class GeneralManager
 		initPreferences();
 
 		resourceLoader = new ResourceLoader();
-
-		// Init Standalone GUI Bridge if in standalone mode
-		if (bIsStandalone) {
-			guiBridge = new SWTStandaloneBridge();
-		}
 
 		wiiRemote = new WiiRemote();
 		if (GeneralManager.get().isWiiModeActive()) {
@@ -310,12 +297,7 @@ public class GeneralManager
 	public IDManager getIDManager() {
 		return IDManager;
 	}
-
-	@Override
-	public boolean isStandalone() {
-		return bIsStandalone;
-	}
-
+	
 	@Override
 	public IGUIBridge getGUIBridge() {
 		return guiBridge;
