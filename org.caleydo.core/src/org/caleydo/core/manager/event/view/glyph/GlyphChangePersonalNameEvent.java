@@ -6,13 +6,20 @@ public class GlyphChangePersonalNameEvent
 	extends AEvent {
 
 	private String personalName = null;
+	int iViewID;
 
-	public GlyphChangePersonalNameEvent(String personalName) {
+	public GlyphChangePersonalNameEvent(int iViewID, String personalName) {
+		super();
+		this.iViewID = iViewID;
 		this.personalName = personalName;
 	}
 
 	public String getPersonalName() {
 		return personalName;
+	}
+	
+	public int getViewID() {
+		return iViewID;
 	}
 
 	@Override

@@ -12,7 +12,8 @@ public class SetPositionModelListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof SetPositionModelEvent) {
 			SetPositionModelEvent positionModelEvent = (SetPositionModelEvent) event;
-			handler.setPositionModel(positionModelEvent.getPositionModel());
+			if (handler.getID() == positionModelEvent.getViewID())
+				handler.setPositionModel(positionModelEvent.getPositionModel());
 		}
 
 	}

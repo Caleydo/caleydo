@@ -87,7 +87,7 @@ public class ChangeViewModeSecondaryPlusModelAxisAction
 				@Override
 				public void run() {
 					GeneralManager.get().getEventPublisher().triggerEvent(
-						new GlyphUpdatePositionModelEvent(EPositionModel.DISPLAY_PLUS, axisnum, list
+						new GlyphUpdatePositionModelEvent(iViewID, EPositionModel.DISPLAY_PLUS, axisnum, list
 							.get(name)));
 				}
 			};

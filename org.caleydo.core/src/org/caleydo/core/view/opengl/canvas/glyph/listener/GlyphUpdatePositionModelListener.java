@@ -13,8 +13,9 @@ public class GlyphUpdatePositionModelListener
 		if (event instanceof GlyphUpdatePositionModelEvent) {
 			GlyphUpdatePositionModelEvent glyphUpdatePositionModelEvent =
 				(GlyphUpdatePositionModelEvent) event;
-			handler.setPositionModelAxis(glyphUpdatePositionModelEvent.getPositionModel(),
-				glyphUpdatePositionModelEvent.getAxis(), glyphUpdatePositionModelEvent.getValue());
+			if (handler.getID() == glyphUpdatePositionModelEvent.getViewID())
+				handler.setPositionModelAxis(glyphUpdatePositionModelEvent.getPositionModel(),
+					glyphUpdatePositionModelEvent.getAxis(), glyphUpdatePositionModelEvent.getValue());
 
 		}
 

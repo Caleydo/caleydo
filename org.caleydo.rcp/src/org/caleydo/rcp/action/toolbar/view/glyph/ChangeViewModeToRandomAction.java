@@ -41,6 +41,6 @@ public class ChangeViewModeToRandomAction
 		parent.getSecondaryAction().setAction(this);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
-			new SetPositionModelEvent(EPositionModel.DISPLAY_RANDOM));
+			new SetPositionModelEvent(iViewID, EPositionModel.DISPLAY_RANDOM));
 	};
 }

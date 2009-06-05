@@ -6,13 +6,20 @@ public class GlyphSelectionBrushEvent
 	extends AEvent {
 
 	private int brushSize = -1;
+	int iViewID;
 
-	public GlyphSelectionBrushEvent(int brushSize) {
+	public GlyphSelectionBrushEvent(int iViewID, int brushSize) {
+		super();
+		this.iViewID = iViewID;
 		this.brushSize = brushSize;
 	}
 	
 	public int getBrushSize() {
 		return brushSize;
+	}
+	
+	public int getViewID() {
+		return iViewID;
 	}
 
 	@Override

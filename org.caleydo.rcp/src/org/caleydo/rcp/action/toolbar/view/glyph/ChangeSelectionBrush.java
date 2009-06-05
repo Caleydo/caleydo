@@ -46,6 +46,6 @@ public class ChangeSelectionBrush
 			parent.setImageDescriptor(idIcon);
 		}
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new GlyphSelectionBrushEvent(iBrushSize));		
+		GeneralManager.get().getEventPublisher().triggerEvent(new GlyphSelectionBrushEvent(iViewID,iBrushSize));		
 	};
 }

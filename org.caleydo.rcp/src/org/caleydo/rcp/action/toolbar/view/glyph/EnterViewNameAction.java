@@ -53,7 +53,8 @@ public class EnterViewNameAction
 		String newname = dialog.open();
 
 		if (newname != null) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new GlyphChangePersonalNameEvent(newname));
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new GlyphChangePersonalNameEvent(iViewID, newname));
 
 		}
 	};

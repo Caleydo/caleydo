@@ -7,13 +7,20 @@ public class SetPositionModelEvent
 	extends AEvent {
 
 	EPositionModel positionModel;
+	int iViewID;
 
-	public SetPositionModelEvent(EPositionModel positionModel) {
+	public SetPositionModelEvent(int iViewID, EPositionModel positionModel) {
+		super();
+		this.iViewID = iViewID;
 		this.positionModel = positionModel;
 	}
 
 	public EPositionModel getPositionModel() {
 		return positionModel;
+	}
+	
+	public int getViewID() {
+		return iViewID;
 	}
 
 	@Override

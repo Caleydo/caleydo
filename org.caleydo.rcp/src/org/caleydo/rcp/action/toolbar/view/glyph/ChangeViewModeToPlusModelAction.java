@@ -41,6 +41,6 @@ public class ChangeViewModeToPlusModelAction
 		parent.getSecondaryAction().setAction(this);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
-			new SetPositionModelEvent(EPositionModel.DISPLAY_PLUS));
+			new SetPositionModelEvent(iViewID, EPositionModel.DISPLAY_PLUS));
 	};
 }

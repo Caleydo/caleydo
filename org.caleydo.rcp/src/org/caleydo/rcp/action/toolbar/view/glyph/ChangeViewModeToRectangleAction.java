@@ -40,6 +40,6 @@ public class ChangeViewModeToRectangleAction
 
 		parent.getSecondaryAction().setAction(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(
-			new SetPositionModelEvent(EPositionModel.DISPLAY_RECTANGLE));
+			new SetPositionModelEvent(iViewID, EPositionModel.DISPLAY_RECTANGLE));
 	}
 }

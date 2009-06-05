@@ -42,7 +42,7 @@ public class ChangeViewModeToScatterplotAction
 		parent.getSecondaryAction().setAction(this);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
-			new SetPositionModelEvent(EPositionModel.DISPLAY_SCATTERPLOT));
+			new SetPositionModelEvent(iViewID, EPositionModel.DISPLAY_SCATTERPLOT));
 	};
 
 }

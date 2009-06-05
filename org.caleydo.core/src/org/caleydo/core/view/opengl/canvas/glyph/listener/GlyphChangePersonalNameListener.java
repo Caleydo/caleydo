@@ -12,8 +12,9 @@ public class GlyphChangePersonalNameListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof GlyphChangePersonalNameEvent) {
 			GlyphChangePersonalNameEvent glyphChangePersonalNameEvent = (GlyphChangePersonalNameEvent) event;
-
-			handler.setPersonalName(glyphChangePersonalNameEvent.getPersonalName());
+			
+			if(handler.getID() == glyphChangePersonalNameEvent.getViewID())
+				handler.setPersonalName(glyphChangePersonalNameEvent.getPersonalName());
 		}
 	}
 }

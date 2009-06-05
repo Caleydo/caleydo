@@ -12,23 +12,29 @@ public class GlyphUpdatePositionModelEvent
 	private EPositionModel positionModel = null;
 	private int value = -1;
 	private int axis = -1;
+	int iViewID;
 
 	/**
-	 * TODO: what is value?
-	 * 
 	 * @param positionModel
 	 * @param use
 	 *            static members X_AXIS and Y_AXIS to indicate the axis
-	 * @param value
+	 * @param this is the internal column number of the selected column
 	 */
-	public GlyphUpdatePositionModelEvent(EPositionModel positionModel, int axis, int value) {
+	public GlyphUpdatePositionModelEvent(int iViewID, EPositionModel positionModel, int axis, int colnum) {
+		super();
+		this.iViewID = iViewID;
 		this.positionModel = positionModel;
-		this.value = value;
+		this.axis = axis;
+		this.value = colnum;
+	}
+	
+	public int getViewID() {
+		return iViewID;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (positionModel == null || value == -1 || (axis != 0 || axis != 1))
+		if (positionModel == null || value == -1 || (axis != 0 && axis != 1))
 			return false;
 		return true;
 	}

@@ -28,6 +28,6 @@ public class RemoveUnselectedFromViewAction
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new RemoveUnselectedGlyphsEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new RemoveUnselectedGlyphsEvent(iViewID));
 	};
 }

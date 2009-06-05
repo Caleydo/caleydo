@@ -118,7 +118,7 @@ public class GLGlyph
 
 	private float iViewScale = 0.15f;
 
-	private String sLabelPersonal = null;
+	private String sLabelPersonal = "";
 
 	private boolean bEnableSelection = false;
 	private int iSelectionBrushSize = 2;

@@ -13,7 +13,8 @@ public class GlyphSelectionBrushListener
 		if (event instanceof GlyphSelectionBrushEvent) {
 			GlyphSelectionBrushEvent glyphSelectionBrushEvent = (GlyphSelectionBrushEvent) event;
 
-			handler.setSelectionBrush(glyphSelectionBrushEvent.getBrushSize());
+			if(handler.getID() == glyphSelectionBrushEvent.getViewID())
+				handler.setSelectionBrush(glyphSelectionBrushEvent.getBrushSize());
 		}
 	}
 

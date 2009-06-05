@@ -41,6 +41,6 @@ public class ChangeViewModeToCircleAction
 		parent.getSecondaryAction().setAction(this);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
-			new SetPositionModelEvent(EPositionModel.DISPLAY_CIRCLE));
+			new SetPositionModelEvent(iViewID, EPositionModel.DISPLAY_CIRCLE));
 	};
 }

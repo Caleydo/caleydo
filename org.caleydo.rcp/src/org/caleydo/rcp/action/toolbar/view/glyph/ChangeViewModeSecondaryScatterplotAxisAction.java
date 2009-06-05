@@ -86,10 +86,10 @@ public class ChangeViewModeSecondaryScatterplotAxisAction
 			Action axisAction = new Action(name) {
 				@Override
 				public void run() {
-			
-						GeneralManager.get().getEventPublisher().triggerEvent(
-							new GlyphUpdatePositionModelEvent(EPositionModel.DISPLAY_SCATTERPLOT, axisnum,
-								list.get(name)));
+
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new GlyphUpdatePositionModelEvent(iViewID, EPositionModel.DISPLAY_SCATTERPLOT,
+							axisnum, list.get(name)));
 				}
 			};
 			addActionToMenu(menu, axisAction);

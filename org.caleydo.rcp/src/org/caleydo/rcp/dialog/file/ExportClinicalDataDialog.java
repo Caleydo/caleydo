@@ -31,7 +31,7 @@ public class ExportClinicalDataDialog
 		super.configureShell(newShell);
 		newShell.setText("Export Data");
 		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
-			"resources/general/export_data.png"));
+			"resources/icons/general/export_data.png"));
 	}
 
 	@Override
