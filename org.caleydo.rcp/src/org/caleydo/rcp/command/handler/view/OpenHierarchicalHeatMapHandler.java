@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
+import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

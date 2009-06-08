@@ -1,13 +1,13 @@
 package org.caleydo.rcp.action.toolbar.view.glyph;
 
-import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
+import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.caleydo.rcp.util.glyph.TextInputDialog;
-import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -53,8 +53,9 @@ public class EnterViewNameAction
 		String newname = dialog.open();
 
 		if (newname != null) {
-			triggerCmdExternalObjectSetter(newname, EExternalObjectSetterType.GLYPH_CHANGEPERSONALNAME);
-		}
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new GlyphChangePersonalNameEvent(iViewID, newname));
 
+		}
 	};
 }

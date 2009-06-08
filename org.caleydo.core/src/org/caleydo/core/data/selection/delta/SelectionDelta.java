@@ -22,12 +22,16 @@ public class SelectionDelta
 	private EIDType secondaryIDType = null;
 
 	public SelectionDelta(EIDType idType) {
+		if(idType == null)
+			throw new IllegalArgumentException("idType was null");
 		hashSelectionItems = new HashMap<Integer, SelectionDeltaItem>();
 		this.idType = idType;
 	}
 
 	public SelectionDelta(EIDType idType, EIDType internalIDType) {
 		this(idType);
+
+		
 		this.secondaryIDType = internalIDType;
 	}
 

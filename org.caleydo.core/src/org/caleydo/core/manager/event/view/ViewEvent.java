@@ -17,5 +17,14 @@ public abstract class ViewEvent
 	public void setViewIDs(List<Integer> viewIDs) {
 		this.viewIDs = viewIDs;
 	}
+	
+	@Override
+	public boolean checkIntegrity()
+	{
+		if(viewIDs == null)
+			return false;
+		
+		return true;
+	}
 
 }

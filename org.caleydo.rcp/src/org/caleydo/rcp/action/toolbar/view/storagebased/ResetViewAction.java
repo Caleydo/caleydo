@@ -1,9 +1,10 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased;
 
-import org.caleydo.core.command.view.rcp.EExternalActionType;
+import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
@@ -27,6 +28,6 @@ public class ResetViewAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalAction(EExternalActionType.STORAGEBASED_RESET_VIEW);
+		GeneralManager.get().getEventPublisher().triggerEvent(new ResetAllViewsEvent());
 	};
 }

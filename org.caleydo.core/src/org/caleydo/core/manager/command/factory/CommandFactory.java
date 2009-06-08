@@ -16,18 +16,11 @@ import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
-import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
-import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
-import org.caleydo.core.command.view.rcp.CmdExternalObjectSetter;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
-import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
 import org.caleydo.core.command.view.swt.CmdViewCreateHTMLBrowser;
-import org.caleydo.core.command.view.swt.CmdViewCreateImage;
-import org.caleydo.core.command.view.swt.CmdViewCreateMixer;
 import org.caleydo.core.command.view.swt.CmdViewCreatePathway;
 import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
-import org.caleydo.core.command.view.swt.CmdViewCreateUndoRedo;
 import org.caleydo.core.command.window.swt.CmdContainerCreate;
 import org.caleydo.core.command.window.swt.CmdWindowCreate;
 import org.caleydo.core.manager.ICommandManager;
@@ -101,28 +94,12 @@ public class CommandFactory
 				createdCommand = new CmdViewCreatePathway(cmdType);
 				break;
 			}
-			case CREATE_VIEW_MIXER: {
-				createdCommand = new CmdViewCreateMixer(cmdType);
-				break;
-			}
 			case CREATE_VIEW_GLYPHCONFIG: {
 				createdCommand = new CmdViewCreateGlyphConfiguration(cmdType);
 				break;
 			}
 			case CREATE_VIEW_BROWSER: {
 				createdCommand = new CmdViewCreateHTMLBrowser(cmdType);
-				break;
-			}
-			case CREATE_VIEW_IMAGE: {
-				createdCommand = new CmdViewCreateImage(cmdType);
-				break;
-			}
-			case CREATE_VIEW_UNDO_REDO: {
-				createdCommand = new CmdViewCreateUndoRedo(cmdType);
-				break;
-			}
-			case CREATE_VIEW_DATA_ENTITY_SEARCHER: {
-				createdCommand = new CmdViewCreateDataEntitySearcher(cmdType);
 				break;
 			}
 			case CREATE_GL_PATHWAY_3D: {
@@ -147,18 +124,6 @@ public class CommandFactory
 			case CREATE_GL_DENDROGRAM_VERTICAL:
 			case CREATE_GL_DENDROGRAM_HORIZONTAL: {
 				createdCommand = new CmdCreateGLEventListener(cmdType);
-				break;
-			}
-			case EXTERNAL_OBJECT_SETTER: {
-				createdCommand = new CmdExternalObjectSetter(cmdType);
-				break;
-			}
-			case EXTERNAL_FLAG_SETTER: {
-				createdCommand = new CmdExternalFlagSetter(cmdType);
-				break;
-			}
-			case EXTERNAL_ACTION_TRIGGER: {
-				createdCommand = new CmdExternalActionTrigger(cmdType);
 				break;
 			}
 			case SYSTEM_SHUT_DOWN: {

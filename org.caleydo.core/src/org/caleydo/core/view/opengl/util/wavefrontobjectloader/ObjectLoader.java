@@ -2,10 +2,10 @@ package org.caleydo.core.view.opengl.util.wavefrontobjectloader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.logging.Level;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.Status;
 
 /**
  * loads a wavefront object file model
@@ -61,20 +61,20 @@ public class ObjectLoader {
 				// handle smoothing groups
 				if (line.startsWith("s")) {
 					// TODO wavefront smoothing groups are not implemented
-					GeneralManager.get().getLogger().log(Level.INFO,
-						"Wavefront Object Loader hasn't implemented smoothing groups yet.");
+					GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+						"Wavefront Object Loader hasn't implemented smoothing groups yet."));
 				}
 				// handle merging group
 				if (line.startsWith("mg")) {
 					// TODO wavefront merging groups is not implemented
-					GeneralManager.get().getLogger().log(Level.INFO,
-						"Wavefront Object Loader hasn't implemented merging groups yet.");
+					GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+						"Wavefront Object Loader hasn't implemented merging groups yet."));
 				}
 				// handle object name
 				if (line.startsWith("o")) {
 					// TODO wavefront object name is not implemented
-					GeneralManager.get().getLogger().log(Level.INFO,
-						"Wavefront Object Loader hasn't implemented object names yet.");
+					GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+						"Wavefront Object Loader hasn't implemented object names yet."));
 				}
 
 				// handle vertex

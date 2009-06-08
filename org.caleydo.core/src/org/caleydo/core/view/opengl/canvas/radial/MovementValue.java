@@ -19,6 +19,8 @@ public class MovementValue {
 	
 	public void move(double dTimePassed) {
 		fMovementValue += (fSpeed * dTimePassed);
+		if(isTargetValueReached())
+			fMovementValue = fTargetValue;
 	}
 
 	public boolean isTargetValueReached() {
@@ -26,10 +28,6 @@ public class MovementValue {
 			return (fMovementValue >= fTargetValue);
 		}
 		return (fMovementValue <= fTargetValue);
-	}
-
-	public void setCriterionToTargetValue() {
-		fMovementValue = fTargetValue;
 	}
 
 	public float getTargetValue() {

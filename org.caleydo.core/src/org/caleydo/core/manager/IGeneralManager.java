@@ -1,16 +1,16 @@
 package org.caleydo.core.manager;
 
-import java.util.logging.Logger;
-
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDManager;
+import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.ILog;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -21,6 +21,17 @@ import org.eclipse.jface.preference.PreferenceStore;
  * @author Alexander Lex
  */
 public interface IGeneralManager {
+	
+	/**
+	 * This is the current version of Caleydo. 
+	 * The value must be the same as specified in the plugin/bundle.
+	 * We need to access the version before the workbench is started.
+	 * Therefore we have to set it hardcoded at this point.
+	 */
+	public static final String VERSION = "1.2";
+	
+	public static final String PLUGIN_ID = "org.caleydo.core";
+	
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + "/.caleydo/";
@@ -30,12 +41,12 @@ public interface IGeneralManager {
 	public static final String sDelimiter_Parser_DataType = ";";
 	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
 
-	public void init(boolean bIsStandalone);
+	public void init();
 
 	/**
 	 * Init method for external GUI embedding (e.g. RCP)
 	 */
-	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge);
+	public void init(IGUIBridge externalGUIBridge);
 
 	public IStorageManager getStorageManager();
 
@@ -66,7 +77,7 @@ public interface IGeneralManager {
 	 * 
 	 * @return logger
 	 */
-	public Logger getLogger();
+	public ILog getLogger();
 
 	/**
 	 * Resource loader that is responsible for loading images, textures and data files in the Caleydo
@@ -81,11 +92,6 @@ public interface IGeneralManager {
 	 * preferences to/from a predefined file.
 	 */
 	public PreferenceStore getPreferenceStore();
-
-	/**
-	 * Returns whether the application runs as standalone test GUI or embedded in RCP
-	 */
-	public boolean isStandalone();
 
 	public IGUIBridge getGUIBridge();
 
@@ -104,4 +110,15 @@ public interface IGeneralManager {
 	 * @param useCase
 	 */
 	public void setUseCase(IUseCase useCase);
+	
+	/**
+	 * Returns the current clinical use case.
+	 */
+	public ClinicalUseCase getClinicalUseCase();
+	
+	/**
+	 * Set a different clinical use case. The use case changes the behavior of the views and its loaded data.
+	 * @param useCase
+	 */
+	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase);
 }

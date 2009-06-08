@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +14,7 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMap;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
+import org.eclipse.core.runtime.Status;
 
 /**
  * The pathway manager is in charge of creating and handling the pathways. The class is implemented as a
@@ -71,11 +71,10 @@ public class PathwayManager
 
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
 
-		GeneralManager.get().getLogger().log(
-			Level.INFO,
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
 			"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
 				+ tmpPathwayDatabase.getXMLPath() + "] image-path:[" + tmpPathwayDatabase.getImagePath()
-				+ "] image-map-path:[" + tmpPathwayDatabase.getImageMapPath() + "]");
+				+ "] image-map-path:[" + tmpPathwayDatabase.getImageMapPath() + "]"));
 	}
 
 	@Override

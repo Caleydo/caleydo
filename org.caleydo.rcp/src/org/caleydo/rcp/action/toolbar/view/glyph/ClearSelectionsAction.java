@@ -1,6 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view.glyph;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -25,6 +26,7 @@ public class ClearSelectionsAction
 	public void run() {
 		super.run();
 
-		triggerCmdExternalFlagSetter(false, EExternalFlagSetterType.GLYPH_SELECTION);
+		
+	GeneralManager.get().getEventPublisher().triggerEvent(new ClearSelectionsEvent());
 	};
 }

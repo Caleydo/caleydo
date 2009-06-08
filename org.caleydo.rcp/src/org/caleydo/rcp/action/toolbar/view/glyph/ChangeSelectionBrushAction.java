@@ -2,7 +2,7 @@ package org.caleydo.rcp.action.toolbar.view.glyph;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;

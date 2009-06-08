@@ -8,30 +8,37 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 
+/**
+ * Cluster helper provides methodes needed in cluster algorithms such as median, arithmetic mean, etc.
+ * 
+ * @author Bernhard Schlegl
+ */
 public class ClusterHelper {
 
 	/**
 	 * Calculates the arithmetic mean for a given vector (float array)
 	 * 
 	 * @param vector
-	 * @return mean
+	 * @return arthmetic mean
 	 */
 	public static float arithmeticMean(float[] vector) {
 		float mean = 0;
-
 		float temp = 0;
+		int iCnt = 0;
 
 		for (int i = 0; i < vector.length; i++) {
 
 			if (Float.isNaN(vector[i]))
 				temp = 0;
-			else
+			else {
 				temp = vector[i];
+				iCnt++;
+			}
 
 			mean += temp;
 		}
 
-		return mean / vector.length;
+		return mean / iCnt;
 	}
 
 	/**
@@ -39,30 +46,40 @@ public class ClusterHelper {
 	 * 
 	 * @param vector
 	 * @param arithmeticMean
-	 * @return
+	 * @return standard deviation
 	 */
 	public static float standardDeviation(float[] vector, float arithmeticMean) {
 		float standardDeviation = 0;
-
 		float temp = 0;
+		int iCnt = 0;
 
 		for (int i = 0; i < vector.length; i++) {
 
 			if (Float.isNaN(vector[i]))
 				temp = 0;
-			else
-				temp = vector[i];
+			else {
+				temp = (float) Math.pow(vector[i] - arithmeticMean, 2);
+				iCnt++;
+			}
 
-			standardDeviation += Math.pow(temp - arithmeticMean, 2);
+			standardDeviation += temp;
 		}
 
-		return (float) Math.sqrt(standardDeviation / vector.length);
+		return (float) Math.sqrt(standardDeviation / iCnt);
 	}
 
+	/**
+	 * The function is responsible for calculating the hierarchy depth in each node of the tree. To handle
+	 * this an other recursive function which does the whole work is called.
+	 * 
+	 * @param tree
+	 *            the tree
+	 */
 	public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
-		int maxDepth = 0;
-		maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
+		// int maxDepth = 0;
+		// maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
 		// System.out.println("maxDepth: " + maxDepth);
+		determineHierarchyDepthRec(tree, tree.getRoot());
 	}
 
 	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
@@ -71,8 +88,9 @@ public class ClusterHelper {
 			int temp = node.getDepth();
 
 			for (ClusterNode current : tree.getChildren(node)) {
-				if (temp < determineHierarchyDepthRec(tree, current))
-					temp = determineHierarchyDepthRec(tree, current) + 1;
+				int iChildDepth = determineHierarchyDepthRec(tree, current);
+				if (temp <= iChildDepth)
+					temp = iChildDepth + 1;
 			}
 
 			node.setDepth(temp);
@@ -83,11 +101,19 @@ public class ClusterHelper {
 		return node.getDepth();
 	}
 
+	/**
+	 * The function is responsible for calculating the number of elements in each node of the tree. To handle
+	 * this an other recursive function which does the whole work is called.
+	 * 
+	 * @param tree
+	 *            the tree
+	 */
 	public static void determineNrElements(Tree<ClusterNode> tree) {
 
-		int iNrElements = 0;
-		iNrElements = determineNrElementsRec(tree, tree.getRoot());
+		// int iNrElements = 0;
+		// iNrElements = determineNrElementsRec(tree, tree.getRoot());
 		// System.out.println("iNrElements: " + iNrElements);
+		determineNrElementsRec(tree, tree.getRoot());
 	}
 
 	private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
@@ -119,11 +145,15 @@ public class ClusterHelper {
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
 
-			for (Integer iContentIndex1 : examples) {
+			for (Integer iContentIndex : examples) {
 
-				for (Integer iStorageIndex1 : storageVA) {
-					fColorSum[icontent] +=
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+				for (Integer iStorageIndex : storageVA) {
+					float temp =
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+					if (Float.isNaN(temp))
+						fColorSum[icontent] += 0;
+					else
+						fColorSum[icontent] += temp;
 				}
 				icontent++;
 			}
@@ -135,11 +165,16 @@ public class ClusterHelper {
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
 
-			for (Integer iStorageIndex1 : examples) {
+			for (Integer iStorageIndex : examples) {
 
-				for (Integer iContentIndex1 : contentVA) {
-					fColorSum[icontent] +=
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+				for (Integer iContentIndex : contentVA) {
+					float temp =
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+					if (Float.isNaN(temp))
+						fColorSum[icontent] += 0;
+					else
+						fColorSum[icontent] += temp;
+
 				}
 				icontent++;
 			}

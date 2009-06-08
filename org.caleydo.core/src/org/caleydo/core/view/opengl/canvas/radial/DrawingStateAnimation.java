@@ -37,7 +37,7 @@ public abstract class DrawingStateAnimation
 	}
 
 	@Override
-	public final void handleClick(PartialDisc pdClicked) {
+	public final void handleSelection(PartialDisc pdSelected) {
 		// do nothing
 	}
 
@@ -47,7 +47,7 @@ public abstract class DrawingStateAnimation
 	}
 
 	@Override
-	public final void handleDoubleClick(PartialDisc pdClicked) {
+	public final void handleAlternativeSelection(PartialDisc pdSelected) {
 		// do nothing
 	}
 
@@ -60,7 +60,6 @@ public abstract class DrawingStateAnimation
 		for (MovementValue movementValue : alMovementValues) {
 			if (movementValue.isTargetValueReached()) {
 				iNumTargetsReached++;
-				movementValue.setCriterionToTargetValue();
 			}
 		}
 
@@ -97,6 +96,11 @@ public abstract class DrawingStateAnimation
 
 	public void setAnimationDuration(float fAnimationDuration) {
 		this.fAnimationDuration = fAnimationDuration;
+	}
+	
+	@Override
+	public PartialDisc getSelectedElement() {
+		return null;
 	}
 
 }

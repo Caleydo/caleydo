@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Label {
 
-	private ArrayList<String> alLines;
+	private ArrayList<LabelLine> alLines;
 	private int iSegmentDepth;
 	private float fSegmentXCenter;
 	private float fSegmentYCenter;
@@ -15,7 +15,7 @@ public class Label {
 		this.fSegmentYCenter = fSegmentYCenter;
 		this.fSegmentCenterRadius = fSegmentCenterRadius;
 		this.iSegmentDepth = iSegmentDepth;
-		alLines = new ArrayList<String>();
+		alLines = new ArrayList<LabelLine>();
 	}
 
 	public float getSegmentCenterRadius() {
@@ -26,12 +26,12 @@ public class Label {
 		this.fSegmentCenterRadius = fSegmentCenterRadius;
 	}
 
-	public ArrayList<String> getLines() {
+	public ArrayList<LabelLine> getLines() {
 		return alLines;
 	}
 
-	public void addLine(String sText) {
-		alLines.add(sText);
+	public void addLine(LabelLine labelLine) {
+		alLines.add(labelLine);
 	}
 
 	public float getSegmentXCenter() {

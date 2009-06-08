@@ -258,7 +258,7 @@ public class GroupList
 
 		iAlGroup.remove(index2);
 		iAlGroup.get(index1).setNrElements(iNrElemG1 + iNrElemG2);
-		iAlGroup.get(index1).setSelectionType(ESelectionType.NORMAL);
+		iAlGroup.get(index1).setSelectionType(ESelectionType.SELECTION);
 
 		return true;
 	}

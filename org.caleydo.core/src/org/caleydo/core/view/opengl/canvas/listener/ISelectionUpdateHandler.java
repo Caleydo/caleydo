@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
  * Interface for views, mediator or manager classes that needs
@@ -9,7 +10,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
  *  
  * @author Werner Puff
  */
-public interface ISelectionUpdateHandler {
+public interface ISelectionUpdateHandler extends IListenerOwner {
 	
 	/**
 	 * Handler method to be called when a selection event is catched 

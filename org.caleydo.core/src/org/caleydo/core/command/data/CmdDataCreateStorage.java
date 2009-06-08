@@ -1,7 +1,5 @@
 package org.caleydo.core.command.data;
 
-import java.util.logging.Level;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.IStorage;
@@ -35,7 +33,8 @@ public class CmdDataCreateStorage
 
 		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
 
-		generalManager.getLogger().log(Level.INFO, "Created Storage with ID: " + createdObject.getID());
+//		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, 
+//			"Created Storage with ID: " + createdObject.getID()));
 		commandManager.runDoCommand(this);
 	}
 

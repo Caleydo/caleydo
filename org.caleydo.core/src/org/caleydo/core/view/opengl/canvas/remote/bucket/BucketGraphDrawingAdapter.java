@@ -10,6 +10,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
@@ -17,6 +18,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -48,13 +50,33 @@ public abstract class BucketGraphDrawingAdapter
 
 		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
+			
+			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointList = hashIDTypeToViewToPointLists.get(idType);
+			
+			if(hashViewToPointList == null)
+			{
+				hashViewToPointList = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
+				hashIDTypeToViewToPointLists.put(idType, hashViewToPointList);
+			}
 
 			for (int iSelectedElementID : connectedElementRepManager.getIDList(idType)) {
 				for (SelectedElementRep selectedElementRep : connectedElementRepManager
 					.getSelectedElementRepsByElementID(idType, iSelectedElementID)) {
-					remoteLevelElement =
-						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID())
-							.getRemoteLevelElement();
+					
+					if(selectedElementRep.getIDType() != idType)
+						throw new IllegalStateException("Current ID Type does not match the selected elemen rep's");
+
+					AGLEventListener glView =
+						viewGLCanvasManager.getGLEventListener(selectedElementRep.getContainingViewID());
+
+					if (glView == null)
+					{
+						// TODO: investigate! view must not be null here.
+//						GeneralManager.get().getLogger().log(Level.WARNING, "View in connection line manager is null!");
+						continue;
+					}
+					
+					remoteLevelElement = glView.getRemoteLevelElement();
 					// views that are not rendered remote
 					if (remoteLevelElement == null) {
 						continue;
@@ -76,25 +98,27 @@ public abstract class BucketGraphDrawingAdapter
 						}
 						int iKey = selectedElementRep.getContainingViewID();
 
-						alPointLists = hashViewToPointLists.get(iKey);
+				
+						
+						alPointLists = hashIDTypeToViewToPointLists.get(idType).get(iKey);
 						if (alPointLists == null) {
 							alPointLists = new ArrayList<ArrayList<Vec3f>>();
-							hashViewToPointLists.put(iKey, alPointLists);
+							hashViewToPointList.put(iKey, alPointLists);
 						}
 
 						alPointLists.add(alPointsTransformed);
 					}
 				}
 
-				if (hashViewToPointLists.size() > 1) {
-					renderLineBundling(gl, new float[] { 0, 0, 0 });
-					hashViewToPointLists.clear();
+				if (hashViewToPointList.size() > 1) {
+					renderLineBundling(gl, idType, new float[] { 0, 0, 0 });
+					hashIDTypeToViewToPointLists.clear();
 				}
 			}
 		}
 	}
 
 	@Override
-	protected abstract void renderLineBundling(GL gl, float[] arColor);
-
+	protected abstract void renderLineBundling(GL gl, EIDType idType, float[] arColor);
+	
 }

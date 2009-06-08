@@ -16,6 +16,10 @@ import weka.experiment.Stats;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Add;
 
+/**
+ * Node class used by {@link Cobweb} cluster algorithm.
+ */
+
 public class CNode
 	implements Serializable, RevisionHandler {
 

@@ -21,6 +21,8 @@ public enum EIconTextures {
 	GATE_TOP("resources/icons/view/storagebased/parcoords/gate_top.png"),
 	GATE_MENUE("resources/icons/view/storagebased/parcoords/gate_menue.png"),
 	GATE_BODY("resources/icons/view/storagebased/parcoords/gate_body.png"),
+	
+	REMOVE("resources/icons/general/remove.png"),
 
 	// POLYLINE_TO_AXIS("resources/icons/general/no_icon_available.png"),
 	// PREVENT_OCCLUSION("resources/icons/general/no_icon_available.png"),
@@ -66,7 +68,7 @@ public enum EIconTextures {
 
 	CELL_MODEL("resources/models/cell.jpg"),
 	
-	// context menue elements
+	// context menu elements
 	LOAD_DEPENDING_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
 	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png"),
 	MENU_MORE("/resources/icons/general/menu_more.png");

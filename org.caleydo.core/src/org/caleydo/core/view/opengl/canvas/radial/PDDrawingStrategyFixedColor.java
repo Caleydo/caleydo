@@ -7,7 +7,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 
 public class PDDrawingStrategyFixedColor
-	extends PDDrawingStrategy {
+	extends PDDrawingStrategyChildIndicator {
 	
 
 	private float fFillColorR;
@@ -44,6 +44,11 @@ public class PDDrawingStrategyFixedColor
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
+				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
+		}
 
 		gl.glColor4f(fFillColorR, fFillColorG, fFillColorB, fFillAlpha);
 		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
@@ -71,6 +76,10 @@ public class PDDrawingStrategyFixedColor
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
+		}
 
 		gl.glColor4f(fFillColorR, fFillColorG, fFillColorB, fFillAlpha);
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
@@ -79,7 +88,7 @@ public class PDDrawingStrategyFixedColor
 		gl.glColor4f(fBorderColorR, fBorderColorG, fBorderColorB, fBorderAlpha);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle,
 			fAngle, iNumSlicesPerFullDisc, RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
-
+		
 		gl.glPopAttrib();
 		gl.glPopName();
 

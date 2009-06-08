@@ -4,11 +4,11 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec3i;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Stores and draws a wavefront object group in a model
@@ -50,8 +50,8 @@ public class ObjectGroup {
 
 	public void draw(GL gl) {
 		if (iDisplayList < 0) {
-			GeneralManager.get().getLogger().log(Level.WARNING,
-				this.getClass().toString() + ": display list was drawn, before init!");
+			GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+				this.getClass().toString() + ": display list was drawn, before init!"));
 			init(gl);
 		}
 

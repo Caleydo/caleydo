@@ -19,7 +19,9 @@ public abstract class DrawingState {
 
 	public abstract void handleMouseOver(PartialDisc pdMouseOver);
 
-	public abstract void handleClick(PartialDisc pdClicked);
+	public abstract void handleSelection(PartialDisc pdSelected);
 	
-	public abstract void handleDoubleClick(PartialDisc pdClicked);
+	public abstract void handleAlternativeSelection(PartialDisc pdSelected);
+	
+	public abstract PartialDisc getSelectedElement();
 }

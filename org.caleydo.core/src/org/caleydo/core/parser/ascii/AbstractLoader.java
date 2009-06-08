@@ -2,11 +2,11 @@ package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Loader for raw data in text format.
@@ -188,25 +188,26 @@ public abstract class AbstractLoader
 
 		BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
-		GeneralManager.get().getLogger().log(Level.INFO, "Start loading file " + sFileName + "...");
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + sFileName + "..."));
 
 		try {
 			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
 
-		if (brFile != null) {
-			try {
+			if (brFile != null) {
 				brFile.close();
 			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+		}
+		catch (IOException ioe) {
+			return false;
+		}
+		catch (NumberFormatException nfe) {
+			return false;
 		}
 
-		GeneralManager.get().getLogger().log(Level.INFO, "File " + sFileName + " successfully loaded.");
+		GeneralManager.get().getLogger().log(
+			new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "File " + sFileName
+				+ " successfully loaded."));
 
 		setArraysToStorages();
 

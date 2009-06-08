@@ -10,6 +10,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -37,7 +38,7 @@ public class GenomeHTMLBrowserViewRep
 	private EBrowserQueryType eBrowserQueryType = EBrowserQueryType.EntrezGene;
 
 	protected ChangeQueryTypeListener changeQueryTypeListener;
-	protected SelectionUpdateListener selectionUpdateListener = null;
+	protected SelectionUpdateListener selectionUpdateListener;
 	
 	/**
 	 * Constructor.
@@ -76,9 +77,13 @@ public class GenomeHTMLBrowserViewRep
 	}
 	
 	public void handleSelectionUpdate(final ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+		if (selectionDelta.getIDType() != EIDType.EXPRESSION_INDEX)
 			return;
 
+		// Prevent handling of non genetic entities
+		if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+			return;
+		
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				if (!checkInternetConnection())
@@ -90,15 +95,23 @@ public class GenomeHTMLBrowserViewRep
 				for (SelectionDeltaItem selectionDeltaItem : selectionDelta) {
 					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
 						|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION) {
+						
+						Integer iRefSeqID = generalManager.getIDMappingManager()
+							.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+							selectionDeltaItem.getPrimaryID());
+						
 						String sRefSeqID =
 							generalManager.getIDMappingManager()
 								.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-									selectionDeltaItem.getPrimaryID());
+									iRefSeqID);
 
 						Integer iDavidID =
 							generalManager.getIDMappingManager().getID(
-								EMappingType.REFSEQ_MRNA_INT_2_DAVID, selectionDeltaItem.getPrimaryID());
-
+								EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+						
+						if (iDavidID == null)
+							continue;
+						
 						if (iItemsToLoad == 0) {
 							String sURL = urlGenerator.createURL(eBrowserQueryType, iDavidID);
 
@@ -167,6 +180,8 @@ public class GenomeHTMLBrowserViewRep
 	
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
@@ -175,7 +190,6 @@ public class GenomeHTMLBrowserViewRep
 //			eventPublisher.removeListener(ChangeQueryTypeEvent.class, changeQueryTypeListener);
 //			changeQueryTypeListener = null;
 //		}
-		super.unregisterEventListeners();
 	}
 
 	@Override

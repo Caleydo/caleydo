@@ -15,12 +15,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -32,7 +31,13 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
+import org.caleydo.core.manager.event.view.glyph.GlyphSelectionBrushEvent;
+import org.caleydo.core.manager.event.view.glyph.GlyphUpdatePositionModelEvent;
+import org.caleydo.core.manager.event.view.glyph.RemoveUnselectedGlyphsEvent;
+import org.caleydo.core.manager.event.view.glyph.SetPositionModelEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -48,16 +53,24 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelPlus;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.GlyphChangePersonalNameListener;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.GlyphSelectionBrushListener;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.GlyphUpdatePositionModelListener;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.RemoveUnselectedGlyphsListener;
+import org.caleydo.core.view.opengl.canvas.glyph.listener.SetPositionModelListener;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.Screenshot;
@@ -71,7 +84,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, ITriggerSelectionCommandHandler {
+	implements ISelectionUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private static final long serialVersionUID = -7899479912218913482L;
 
@@ -105,7 +118,7 @@ public class GLGlyph
 
 	private float iViewScale = 0.15f;
 
-	private String sLabelPersonal = null;
+	private String sLabelPersonal = "";
 
 	private boolean bEnableSelection = false;
 	private int iSelectionBrushSize = 2;
@@ -114,8 +127,15 @@ public class GLGlyph
 	private int iFrameBufferObject = -1;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
-	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
-	
+	protected SelectionCommandListener selectionCommandListener = null;
+
+	private RemoveUnselectedGlyphsListener removeUnselectedGlyphsListener;
+	private SetPositionModelListener setPositionModelListener;
+	private ClearSelectionsListener clearSelectionsListener;
+	private GlyphSelectionBrushListener glyphSelectionBrushListener;
+	private GlyphChangePersonalNameListener glyphChangePersonalNameListener;
+	private GlyphUpdatePositionModelListener glyphUpdatePositionModelListener;
+
 	// private long ticker = 0;
 
 	/**
@@ -153,7 +173,7 @@ public class GLGlyph
 	 * 
 	 * @param iconIDs
 	 */
-	public synchronized void setPositionModel(EIconIDs iconIDs) {
+	public void setPositionModel(EPositionModel iconIDs) {
 		grid_.setGlyphPositions(iconIDs);
 		forceRebuild();
 
@@ -164,10 +184,10 @@ public class GLGlyph
 	/**
 	 * Gets the used positioning model
 	 */
-	public synchronized EIconIDs getPositionModel() {
+	public EPositionModel getPositionModel() {
 		if (grid_ != null)
 			return grid_.getGlyphPositions();
-		return EIconIDs.DISPLAY_RECTANGLE;
+		return EPositionModel.DISPLAY_RECTANGLE;
 	}
 
 	/**
@@ -178,8 +198,8 @@ public class GLGlyph
 	 * @param internal
 	 *            column number
 	 */
-	public synchronized void setPositionModelAxis(EIconIDs positionmodel, int axisnumber, int value) {
-		if (positionmodel == EIconIDs.DISPLAY_SCATTERPLOT) {
+	public void setPositionModelAxis(EPositionModel positionmodel, int axisnumber, int value) {
+		if (positionmodel == EPositionModel.DISPLAY_SCATTERPLOT) {
 			GlyphGridPositionModelScatterplot model =
 				(GlyphGridPositionModelScatterplot) grid_.getGlyphPositionModel(positionmodel);
 			switch (axisnumber) {
@@ -191,7 +211,7 @@ public class GLGlyph
 					break;
 			}
 		}
-		if (positionmodel == EIconIDs.DISPLAY_PLUS) {
+		if (positionmodel == EPositionModel.DISPLAY_PLUS) {
 			GlyphGridPositionModelPlus model =
 				(GlyphGridPositionModelPlus) grid_.getGlyphPositionModel(positionmodel);
 			switch (axisnumber) {
@@ -214,7 +234,7 @@ public class GLGlyph
 	 * @param size
 	 *            of the brush
 	 */
-	public synchronized void setSelectionBrush(int size) {
+	public void setSelectionBrush(int size) {
 		if (size <= 0) {
 			bEnableSelection = false;
 			ArrayList<Integer> ids = null;
@@ -262,10 +282,16 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void init(GL gl) {
+	public void init(GL gl) {
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
-		grid_.loadData(set);
+		
+		if(generalManager.getClinicalUseCase() != null)
+			if(generalManager.getClinicalUseCase().getSet() != null)
+				set = generalManager.getClinicalUseCase().getSet();
+		
+		if(set.getSetType() == ESetType.CLINICAL_DATA)		
+			grid_.loadData(set);
 
 		// grid_.selectAll();
 
@@ -283,7 +309,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void initLocal(GL gl) {
+	public void initLocal(GL gl) {
 		bIsLocal = true;
 
 		float fInitZoom = -10f;
@@ -320,40 +346,40 @@ public class GLGlyph
 			parentGLCanvas.addKeyListener(keyListener_);
 		}
 
-		grid_.setGlyphPositions(EIconIDs.DISPLAY_RECTANGLE);
-		// grid_.setGlyphPositions(EIconIDs.DISPLAY_PLUS);
+		grid_.setGlyphPositions(EPositionModel.DISPLAY_RECTANGLE);
+		// grid_.setGlyphPositions(EPositionModel.DISPLAY_PLUS);
 
 		if (this.iViewRole == 2) {
-			grid_.setGlyphPositions(EIconIDs.DISPLAY_CIRCLE);
+			grid_.setGlyphPositions(EPositionModel.DISPLAY_CIRCLE);
 		}
 
 	}
 
 	@Override
-	public synchronized void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		
+	public void initRemote(final GL gl, final AGLEventListener glParentView,
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
+
 		bIsLocal = false;
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
-		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
+		// Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
 		// FIXXXME: YOU SHOULD NOT ADD THE KEY LISTENER TO ALL CANVAS OBJECTS!!!!!
-		for (GLCaleydoCanvas c : cc) {
-//			c.addKeyListener(keyListener_);
-		}
+		// for (GLCaleydoCanvas c : cc) {
+		// c.addKeyListener(keyListener_);
+		// }
 
 		init(gl);
 
 		grid_.setGridSize(30, 60);
-		grid_.setGlyphPositions(EIconIDs.DISPLAY_RECTANGLE);
-		// grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT);
-		// grid_.setGlyphPositions(EIconIDs.DISPLAY_PLUS);
+		grid_.setGlyphPositions(EPositionModel.DISPLAY_RECTANGLE);
+		// grid_.setGlyphPositions(EPositionModel.DISPLAY_SCATTERPLOT);
+		// grid_.setGlyphPositions(EPositionModel.DISPLAY_PLUS);
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -362,14 +388,15 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 
 		display(gl);
 		checkForHits(gl);
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
+	public void display(GL gl) {
+		processEvents();
 		if (grid_ == null) {
 			renderSymbol(gl);
 			return;
@@ -381,7 +408,9 @@ public class GLGlyph
 		}
 
 		if (grid_.getGlyphList().keySet().size() == 0) {
-			renderSymbol(gl);
+			//FIXME This should not be - it only happens, if the glyph view didn't get an clinical set
+			grid_.loadData(null);
+//			renderSymbol(gl);
 			return;
 		}
 
@@ -598,7 +627,7 @@ public class GLGlyph
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 1.3f * renderStyle.getScaling();
 		float fYButtonOrigin = 1.3f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -977,7 +1006,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized String getShortInfo() {
+	public String getShortInfo() {
 		if (sLabelPersonal != null)
 			return "Glpyh - " + sLabelPersonal;
 
@@ -985,7 +1014,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized String getDetailedInfo() {
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Type: Glyph Map");
 		sInfoText.append("GL: Showing Glyphs for clinical data");
@@ -993,8 +1022,7 @@ public class GLGlyph
 	}
 
 	@Override
-	protected synchronized void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
-		int iExternalID, Pick pick) {
+	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
 			switch (pickingMode) {
@@ -1002,14 +1030,15 @@ public class GLGlyph
 					GlyphEntry g = grid_.getGlyph(iExternalID);
 
 					if (g == null) {
-						generalManager.getLogger().log(Level.WARNING,
-							"Glyph with external ID " + iExternalID + " not found!");
+						generalManager.getLogger().log(
+							new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Glyph with external ID "
+								+ iExternalID + " not found!"));
 						return;
 					}
 
 					// nothing changed, we don't need to do anything
 					if (g == oldMouseOverGlyphEntry) {
-							return;
+						return;
 					}
 
 					selectionManager.clearSelections();
@@ -1031,9 +1060,10 @@ public class GLGlyph
 					generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear(
 						EIDType.EXPERIMENT_INDEX);
 
-					SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER);
+					SelectionCommand command =
+						new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER);
 					sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
-					
+
 					triggerSelectionUpdate();
 
 					// only the glyphs need to be redrawn
@@ -1066,12 +1096,6 @@ public class GLGlyph
 
 		forceRebuild();
 
-//		fixme the selection triggered by a glyph view should be handled view events, so this "if" should not be needed		
-//		if (eventTrigger instanceof GLGlyph)
-//			return;
-
-		// grid_.deSelectAll();
-
 		GlyphEntry actualGlyph = null;
 		for (SelectionDeltaItem item : selectionDelta) {
 			actualGlyph = grid_.getGlyph(item.getPrimaryID());
@@ -1080,11 +1104,11 @@ public class GLGlyph
 				continue;
 			}
 
-			if (item.getSelectionType() == ESelectionType.DESELECTED) {
+			if (item.getSelectionType() == ESelectionType.DESELECTED && actualGlyph.isSelected()) {
 				actualGlyph.deSelect();
 			}
 
-			if (item.getSelectionType() == ESelectionType.SELECTION) {
+			if (item.getSelectionType() == ESelectionType.SELECTION && !actualGlyph.isSelected()) {
 				actualGlyph.select();
 			}
 
@@ -1093,25 +1117,25 @@ public class GLGlyph
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
+	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
 
 	}
-	
+
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		selectionManager.executeSelectionCommands(selectionCommands);
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		selectionManager.executeSelectionCommand(selectionCommand);
 	}
 
 	/**
 	 * This method forces a rebuild of every display list in this view
 	 */
-	public synchronized void forceRebuild() {
+	public void forceRebuild() {
 		bRedrawDisplayListGrid = true;
 		bRedrawDisplayListGlyph = true;
 	}
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type) {
 
 	}
 
@@ -1153,7 +1177,7 @@ public class GLGlyph
 		}
 	}
 
-	public synchronized void removeUnselected() {
+	public void removeUnselected() {
 		grid_.loadData(null);
 		forceRebuild();
 	}
@@ -1298,7 +1322,6 @@ public class GLGlyph
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		return selectionManager.getElements(eSelectionType).size();
-		// throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 
 	@Override
@@ -1315,44 +1338,112 @@ public class GLGlyph
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
-	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
-	 * If inherited classes override this method, they should usually call it via super.    
-	 */
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
-		triggerSelectionCommandListener.setHandler(this);
-		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
+
+		removeUnselectedGlyphsListener = new RemoveUnselectedGlyphsListener();
+		removeUnselectedGlyphsListener.setHandler(this);
+		eventPublisher.addListener(RemoveUnselectedGlyphsEvent.class, removeUnselectedGlyphsListener);
+
+		setPositionModelListener = new SetPositionModelListener();
+		setPositionModelListener.setHandler(this);
+		eventPublisher.addListener(SetPositionModelEvent.class, setPositionModelListener);
+
+		clearSelectionsListener = new ClearSelectionsListener();
+		clearSelectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
+		glyphSelectionBrushListener = new GlyphSelectionBrushListener();
+		glyphSelectionBrushListener.setHandler(this);
+		eventPublisher.addListener(GlyphSelectionBrushEvent.class, glyphSelectionBrushListener);
+
+		glyphChangePersonalNameListener = new GlyphChangePersonalNameListener();
+		glyphChangePersonalNameListener.setHandler(this);
+		eventPublisher.addListener(GlyphChangePersonalNameEvent.class, glyphChangePersonalNameListener);
+
+		glyphUpdatePositionModelListener = new GlyphUpdatePositionModelListener();
+		glyphUpdatePositionModelListener.setHandler(this);
+		eventPublisher.addListener(GlyphUpdatePositionModelEvent.class, glyphUpdatePositionModelListener);
+
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
-	 * If inherited classes override this method, they should usually call it via super.    
+	 * Unregisters the listeners for this view from the event system. To release the allocated resources
+	 * unregisterEventListenrs() has to be called. If inherited classes override this method, they should
+	 * usually call it via super.
 	 */
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-		if (triggerSelectionCommandListener != null) {
-			eventPublisher.removeListener(triggerSelectionCommandListener);
-			triggerSelectionCommandListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
+
+		if (removeUnselectedGlyphsListener != null) {
+			eventPublisher.removeListener(removeUnselectedGlyphsListener);
+			removeUnselectedGlyphsListener = null;
+		}
+
+		if (setPositionModelListener != null) {
+			eventPublisher.removeListener(setPositionModelListener);
+			setPositionModelListener = null;
+		}
+
+		if (clearSelectionsListener != null) {
+			eventPublisher.removeListener(clearSelectionsListener);
+			clearSelectionsListener = null;
+		}
+
+		if (glyphSelectionBrushListener != null) {
+			eventPublisher.removeListener(glyphSelectionBrushListener);
+			glyphSelectionBrushListener = null;
+		}
+
+		if (glyphChangePersonalNameListener != null) {
+			eventPublisher.removeListener(glyphChangePersonalNameListener);
+			glyphChangePersonalNameListener = null;
+		}
+
+		if (glyphUpdatePositionModelListener != null) {
+			eventPublisher.removeListener(glyphUpdatePositionModelListener);
+			glyphUpdatePositionModelListener = null;
+		}
+	}
+
+	@Override
+	public void handleClearSelections() {
+		clearAllSelections();
+	}
+
+	@Override
+	public void handleRedrawView() {
+		forceRebuild();
+	}
+
+	@Override
+	public void handleUpdateView() {
+		forceRebuild();
+
 	}
 
 }

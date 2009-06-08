@@ -33,8 +33,8 @@ public class PathwayItemManager
 	private static final long serialVersionUID = 1L;
 
 	// TODO: replace these hash maps by GenomeIDManager
-	private HashMap<Integer, Integer> hashDavidIdToPathwayVertexGraphItemId;
-	private HashMap<Integer, Integer> hashPathwayVertexGraphItemIdToDavidId;
+	private HashMap<Integer, PathwayVertexGraphItem> hashDavidIdToPathwayVertexGraphItem;
+	private HashMap<PathwayVertexGraphItem, Integer> hashPathwayVertexGraphItemToDavidId;
 
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashIDToPathwayVertexGraphItemRep;
 
@@ -42,8 +42,8 @@ public class PathwayItemManager
 	 * Constructor.
 	 */
 	public PathwayItemManager() {
-		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
-		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
+		hashDavidIdToPathwayVertexGraphItem = new HashMap<Integer, PathwayVertexGraphItem>();
+		hashPathwayVertexGraphItemToDavidId = new HashMap<PathwayVertexGraphItem, Integer>();
 		hashIDToPathwayVertexGraphItemRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 	}
 
@@ -64,20 +64,24 @@ public class PathwayItemManager
 		final String sReactionId, final Set<Integer> iSetDavidId) {
 		
 		ArrayList<IGraphItem> alGraphItems = new ArrayList<IGraphItem>();
-		
+		IGraphItem tmpGraphItem = null;		
 		for (int iDavidId : iSetDavidId) {
 
 			// Do not create a new vertex if it is already registered
-			if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId)) {
-				alGraphItems.add(hashItems.get(hashDavidIdToPathwayVertexGraphItemId.get(iDavidId)));
+			if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId)) {
+				tmpGraphItem = hashDavidIdToPathwayVertexGraphItem.get(iDavidId);
 			}
 			else {
-				IGraphItem tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
-
-				hashDavidIdToPathwayVertexGraphItemId.put(iDavidId, tmpGraphItem.getId());
-				hashPathwayVertexGraphItemIdToDavidId.put(tmpGraphItem.getId(), iDavidId);
-				alGraphItems.add(tmpGraphItem);
+				tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
+									
+				hashDavidIdToPathwayVertexGraphItem.put(iDavidId, (PathwayVertexGraphItem)tmpGraphItem);
+				hashPathwayVertexGraphItemToDavidId.put((PathwayVertexGraphItem)tmpGraphItem, iDavidId);
 			}
+
+			if (tmpGraphItem == null)
+				throw new IllegalStateException("New pathway vertex is null");
+
+			alGraphItems.add(tmpGraphItem);
 		}
 
 		return alGraphItems;
@@ -93,7 +97,6 @@ public class PathwayItemManager
 		registerItem(pathwayVertexRep);
 
 		parentPathway.addItem(pathwayVertexRep);
-
 		pathwayVertexRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
 
 		for (IGraphItem parentVertex : alVertexGraphItem) {
@@ -208,21 +211,21 @@ public class PathwayItemManager
 
 	@Override
 	// TODO: throw exception
-	public final int getPathwayVertexGraphItemIdByDavidId(final int iDavidId) {
+	public final PathwayVertexGraphItem getPathwayVertexGraphItemByDavidId(final int iDavidId) {
 		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
 
-		if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId))
-			return hashDavidIdToPathwayVertexGraphItemId.get(iDavidId);
+		if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId))
+			return hashDavidIdToPathwayVertexGraphItem.get(iDavidId);
 
-		return -1;
+		return null;
 	}
 
 	@Override
-	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId) {
+	public int getDavidIdByPathwayVertexGraphItem(final PathwayVertexGraphItem pathwayVertexGraphItem) {
 		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
 
-		if (hashPathwayVertexGraphItemIdToDavidId.containsKey(iPathwayVertexGraphItemId))
-			return hashPathwayVertexGraphItemIdToDavidId.get(iPathwayVertexGraphItemId);
+		if (hashPathwayVertexGraphItemToDavidId.containsKey(pathwayVertexGraphItem))
+			return hashPathwayVertexGraphItemToDavidId.get(pathwayVertexGraphItem);
 
 		return -1;
 	}

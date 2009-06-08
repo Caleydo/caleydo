@@ -3,8 +3,6 @@ package org.caleydo.core.view.swt.tabular;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
@@ -22,24 +20,25 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
@@ -78,7 +77,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabularDataViewRep
 	extends ASWTView
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
 	IViewCommandHandler, IView, ISWTView {
 
 	/**
@@ -126,7 +125,7 @@ public class TabularDataViewRep
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
+	protected SelectionCommandListener selectionCommandListener = null;
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
@@ -142,10 +141,7 @@ public class TabularDataViewRep
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
-		contentSelectionManager =
-			new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).externalIDType(
-				EIDType.REFSEQ_MRNA_INT).mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		idMappingManager = generalManager.getIDMappingManager();
@@ -264,27 +260,22 @@ public class TabularDataViewRep
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 
 		for (int iCount = 0; iCount < set.depth(); iCount++) {
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
+			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA
+				&& dataFilterLevel != EDataFilterLevel.COMPLETE) {
 				// Here we get mapping data for all values
 				// FIXME: not general, only for genes
 				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
-					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");
+					// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					// "Cannot resolve gene to DAVID ID!"));
 					continue;
 				}
 
 				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 					// Here all values are contained within pathways as well
-					int iGraphItemID =
-						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
-
-					if (iGraphItemID == -1) {
-						continue;
-					}
-
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-						(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
+						generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
 
 					if (tmpPathwayVertexGraphItem == null) {
 						continue;
@@ -492,14 +483,32 @@ public class TabularDataViewRep
 		column.setText("#");
 		column.setWidth(50);
 
-		column = new TableColumn(labelTable, SWT.NONE);
-		column.setText("RefSeq ID");
-		column.setWidth(110);
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
-		column = new TableColumn(labelTable, SWT.NONE);
-		column.setText("Gene Symbol");
-		column.setWidth(110);
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("RefSeq ID");
+			column.setWidth(110);
 
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("Gene Symbol");
+			column.setWidth(110);
+		}
+		else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+			
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("ID");
+			column.setWidth(200);
+
+			column = new TableColumn(labelTable, SWT.NONE);
+			column.setText("Not specified");
+			column.setWidth(0);
+		}
+		else {
+			throw new IllegalStateException("The use case type "
+				+ GeneralManager.get().getUseCase().getUseCaseMode()
+				+ " is not implemented in the tabular data viewer.");
+		}
+		
 		for (final Integer iStorageIndex : set.getVA(iStorageVAID)) {
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText(set.get(iStorageIndex).getLabel());
@@ -520,85 +529,54 @@ public class TabularDataViewRep
 					}
 				}
 			});
-
-			// column.addListener(SWT.Move, new Listener() {
-			//
-			// @Override
-			// public void handleEvent(Event event)
-			// {
-			// if (iArCurrentColumnOrder == null)
-			// {
-			// return;
-			// }
-			//					
-			// int iLastColumnPos = 0;
-			// int iNewColumnPos = 0;
-			// int[] iArNewColumnOrder = contentTable.getColumnOrder();
-			// for (int iColumnIndex = 0; iColumnIndex <
-			// iArCurrentColumnOrder.length; iColumnIndex++)
-			// {
-			// iLastColumnPos = iArCurrentColumnOrder[iColumnIndex];
-			// iNewColumnPos = iArNewColumnOrder[iColumnIndex];
-			//						
-			// if (iLastColumnPos != iNewColumnPos)
-			// {
-			// // Move left detected
-			// if (iLastColumnPos == iArNewColumnOrder[iColumnIndex+1])
-			// {
-			// for
-			//								
-			// set.getVA(iStorageVAID).move(iLastColumnPos, iNewColumnPos);
-			// }
-			//							
-			//							
-			// IVirtualArrayDelta vaDelta = new
-			// VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
-			// vaDelta.add(VADeltaItem.move(iLastColumnPos, iNewColumnPos));
-			// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-			// new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
-			// }
-			// }
-			//					
-			// iArCurrentColumnOrder = iArNewColumnOrder;
-			// }
-			// });
 		}
 
 		// iArCurrentColumnOrder = contentTable.getColumnOrder();
 
 		IVirtualArray storageVA = set.getVA(iStorageVAID);
 
-		int iRefSeqID = 0;
-		String sGeneSymbol = "";
 		for (Integer iContentIndex : set.getVA(iContentVAID)) {
 			// line number
 			item = new TableItem(labelTable, SWT.NONE);
 			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(iContentIndex));
 
-			iRefSeqID =
-				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+				String sGeneSymbol = "";
+				int iRefSeqID = 0;
+				iRefSeqID =
+					idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
 
-			// RefSeq ID
-			item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-				iRefSeqID));
+				// RefSeq ID
+				item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+					iRefSeqID));
 
-			// Gene Symbol
-			sGeneSymbol =
-				(String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, idMappingManager.getID(
-					EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
+				// Gene Symbol
+				sGeneSymbol =
+					(String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, idMappingManager.getID(
+						EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
 
-			if (sGeneSymbol != null) {
-				item.setText(2, sGeneSymbol);
+				if (sGeneSymbol != null) {
+					item.setText(2, sGeneSymbol);
+				}
+				else {
+					item.setText(2, "Unknown");
+				}
+			}
+			else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+
+				item.setText(1, (String)idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex));
 			}
 			else {
-				item.setText(2, "Unknown");
+				throw new IllegalStateException("The use case type "
+					+ GeneralManager.get().getUseCase().getUseCaseMode()
+					+ " is not implemented in the tabular data viewer.");
 			}
 
 			item = new TableItem(contentTable, SWT.NONE);
 
 			for (Integer iStorageIndex : storageVA) {
-				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex);
 
 				item.setText(iStorageIndex, Float.toString(fValue));
 			}
@@ -673,13 +651,13 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		contentSelectionManager.executeSelectionCommands(selectionCommands);
+	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		contentSelectionManager.executeSelectionCommand(selectionCommand);
 	}
 
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		storageSelectionManager.executeSelectionCommands(selectionCommands);
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		storageSelectionManager.executeSelectionCommand(selectionCommand);
 	}
 
 	@Override
@@ -805,20 +783,23 @@ public class TabularDataViewRep
 			return;
 
 		contentSelectionManager.clearSelection(eSelectionType);
-
-		// Resolve multiple spotting on chip and add all to the
-		// selection manager.
-		Integer iRefSeqID =
-			idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
-		for (Object iExpressionIndex : idMappingManager.getMultiID(
-			EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
-			contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+		contentSelectionManager.addToType(eSelectionType, (Integer) iContentIndex);
+		
+		if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			// Resolve multiple spotting on chip and add all to the
+			// selection manager.
+			Integer iRefSeqID =
+				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+			for (Object iExpressionIndex : idMappingManager.getMultiID(
+				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+				contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+			}			
 		}
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-		sendSelectionCommandEvent(EIDType.REFSEQ_MRNA_INT, command);
+		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
@@ -945,6 +926,7 @@ public class TabularDataViewRep
 
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
@@ -953,9 +935,9 @@ public class TabularDataViewRep
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
-		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
-		triggerSelectionCommandListener.setHandler(this);
-		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -968,6 +950,7 @@ public class TabularDataViewRep
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
@@ -976,9 +959,9 @@ public class TabularDataViewRep
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
 		}
-		if (triggerSelectionCommandListener != null) {
-			eventPublisher.removeListener(triggerSelectionCommandListener);
-			triggerSelectionCommandListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);

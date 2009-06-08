@@ -4,13 +4,10 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.List;
-import java.util.logging.Level;
 
 import javax.management.InvalidAttributeValueException;
 
 import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -22,8 +19,8 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
-import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
@@ -35,14 +32,15 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -54,9 +52,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements 
-		ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ITriggerSelectionCommandHandler,
-		IViewCommandHandler { 
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
+	IViewCommandHandler {
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -107,10 +104,10 @@ public abstract class AStorageBasedView
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
+	protected SelectionCommandListener selectionCommandListener = null;
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
-	
+
 	/**
 	 * Constructor for storage based views
 	 * 
@@ -118,8 +115,7 @@ public abstract class AStorageBasedView
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel,
-		final IViewFrustum viewFrustum) {
+	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
@@ -128,7 +124,7 @@ public abstract class AStorageBasedView
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-		registerEventListeners();
+		// registerEventListeners();
 	}
 
 	/**
@@ -147,12 +143,12 @@ public abstract class AStorageBasedView
 		return bRenderOnlyContext;
 	}
 
-	public synchronized void initData() {
+	public void initData() {
 
 		super.initData();
-		
+
 		bRenderOnlyContext = bIsRenderedRemote;
-		
+
 		String sLevel =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
 		if (sLevel.equals("complete")) {
@@ -226,28 +222,22 @@ public abstract class AStorageBasedView
 				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1) {
-					generalManager.getLogger().log(Level.FINE, "Cannot resolve gene to DAVID ID!");
+					// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					// "Cannot resolve gene to DAVID ID!"));
 					continue;
 				}
 
 				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 					// Here all values are contained within pathways as well
-					int iGraphItemID =
-						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
-
-					if (iGraphItemID == -1) {
-						continue;
-					}
-
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-						(PathwayVertexGraphItem) generalManager.getPathwayItemManager().getItem(iGraphItemID);
+						generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
 
 					if (tmpPathwayVertexGraphItem == null) {
 						continue;
 					}
 				}
 			}
-			
+
 			alTempList.add(iCount);
 		}
 
@@ -352,7 +342,7 @@ public abstract class AStorageBasedView
 		// reactOnExternalSelection();
 		setDisplayListDirty();
 	}
-	
+
 	/**
 	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
 	 */
@@ -378,44 +368,44 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public synchronized void clearAllSelections() {
+	public void clearAllSelections() {
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
 
 		setDisplayListDirty();
 	}
-	
-	@Override
-	public synchronized void setSet(ISet set) {
-		super.setSet(set);
-		
-resetView();
-	}
 
-//	@Override
-//	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
-//		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-//	}
+	// @Override
+	// public void setSet(ISet set) {
+	// super.setSet(set);
+	//
+	// // resetView();
+	// }
 
-//	@Override
-//	public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
-//		EMediatorType eMediatorType) {
-//		switch (eventContainer.getEventType()) {
-//			case VIEW_COMMAND:
-//				ViewCommandEventContainer viewCommandEventContainer =
-//					(ViewCommandEventContainer) eventContainer;
-//
-//				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-//					setDisplayListDirty();
-//				}
-//				else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
-//					clearAllSelections();
-//					setDisplayListDirty();
-//				}
-//				break;
-//		}
-//	}
+	// @Override
+	// public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer) {
+	// generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	// }
+
+	// @Override
+	// public void handleExternalEvent(IMediatorSender eventTrigger, IEventContainer eventContainer,
+	// EMediatorType eMediatorType) {
+	// switch (eventContainer.getEventType()) {
+	// case VIEW_COMMAND:
+	// ViewCommandEventContainer viewCommandEventContainer =
+	// (ViewCommandEventContainer) eventContainer;
+	//
+	// if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
+	// setDisplayListDirty();
+	// }
+	// else if (viewCommandEventContainer.getViewCommand() == EViewCommand.CLEAR_SELECTIONS) {
+	// clearAllSelections();
+	// setDisplayListDirty();
+	// }
+	// break;
+	// }
+	// }
 
 	@Override
 	public void handleRedrawView() {
@@ -429,14 +419,16 @@ resetView();
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		contentSelectionManager.executeSelectionCommands(selectionCommands);
+	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		contentSelectionManager.executeSelectionCommand(selectionCommand);
+		setDisplayListDirty();
 		setDisplayListDirty();
 	}
-	
+
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		storageSelectionManager.executeSelectionCommands(selectionCommands);
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+		storageSelectionManager.executeSelectionCommand(selectionCommand);
+		setDisplayListDirty();
 		setDisplayListDirty();
 	}
 
@@ -504,8 +496,9 @@ resetView();
 			}
 		}
 		catch (InvalidAttributeValueException e) {
-			generalManager.getLogger().log(Level.WARNING,
-				"Can not handle data type of update in selectionDelta");
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Can not handle data type of update in selectionDelta", e));
 		}
 	}
 
@@ -515,7 +508,7 @@ resetView();
 	public abstract void broadcastElements();
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type) {
 		// nothing to do
 	}
 
@@ -524,7 +517,7 @@ resetView();
 	 * 
 	 * @param bUseRandomSampling
 	 */
-	public synchronized final void useRandomSampling(boolean bUseRandomSampling) {
+	public final void useRandomSampling(boolean bUseRandomSampling) {
 		if (this.bUseRandomSampling != bUseRandomSampling) {
 			this.bUseRandomSampling = bUseRandomSampling;
 		}
@@ -540,7 +533,7 @@ resetView();
 	 * @param iNumberOfRandomElements
 	 *            the number
 	 */
-	public synchronized final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
+	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
 		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling) {
 			this.iNumberOfRandomElements = iNumberOfRandomElements;
 			initData();
@@ -557,7 +550,7 @@ resetView();
 	 * @param iNumberOfSamplesPerTexture
 	 *            the number
 	 */
-	public synchronized final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
+	public final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
 		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
 	}
 
@@ -567,12 +560,20 @@ resetView();
 	 * @param iNumberOfSamplesPerHeatmap
 	 *            the number
 	 */
-	public synchronized final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
+	public final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
 		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 
 	// public abstract void resetSelections();
 
+	/**
+	 * Causes the view to change its orientation, i.e. whether a gene (content) is rendered horizontally
+	 * (default) or vertically.
+	 * 
+	 * @param bDefaultOrientation
+	 *            true for the default orientation (where the content is horizontally) false for the alternate
+	 *            orientation (where the content is vertically)
+	 */
 	public abstract void changeOrientation(boolean bDefaultOrientation);
 
 	public abstract boolean isInDefaultOrientation();
@@ -584,17 +585,18 @@ resetView();
 
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-		
+
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
-		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
-		triggerSelectionCommandListener.setHandler(this);
-		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -607,6 +609,7 @@ resetView();
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
@@ -615,9 +618,9 @@ resetView();
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
 		}
-		if (triggerSelectionCommandListener != null) {
-			eventPublisher.removeListener(triggerSelectionCommandListener);
-			triggerSelectionCommandListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
@@ -628,5 +631,5 @@ resetView();
 			clearSelectionsListener = null;
 		}
 	}
-	
+
 }

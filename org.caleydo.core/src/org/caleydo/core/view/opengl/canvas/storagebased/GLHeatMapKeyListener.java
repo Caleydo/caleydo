@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
+import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -33,6 +34,12 @@ public class GLHeatMapKeyListener
 				break;
 		}
 
+	}
+
+	@Override
+	public void handleEvent(AEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

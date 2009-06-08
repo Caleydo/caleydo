@@ -14,12 +14,12 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * 
  * @author Alexander Lex
  */
-public abstract class AContextMenuItem {
+public abstract class AContextMenuItem implements IContextMenuEntry {
 	private String text;
 	private EIconTextures iconTexture;
 	private AEvent event;
 
-	private ArrayList<AContextMenuItem> subItems;
+	private ArrayList<IContextMenuEntry> subItems;
 
 	/**
 	 * Sets the text which is shown when the item is rendered in a context menu. It is mandatory to set a text
@@ -62,7 +62,7 @@ public abstract class AContextMenuItem {
 	 */
 	public void addSubItem(AContextMenuItem subItem) {
 		if (subItems == null)
-			subItems = new ArrayList<AContextMenuItem>();
+			subItems = new ArrayList<IContextMenuEntry>();
 
 		subItems.add(subItem);
 
@@ -102,7 +102,7 @@ public abstract class AContextMenuItem {
 	 * 
 	 * @return
 	 */
-	public ArrayList<AContextMenuItem> getSubItems() {
+	public ArrayList<IContextMenuEntry> getSubItems() {
 		return subItems;
 	}
 

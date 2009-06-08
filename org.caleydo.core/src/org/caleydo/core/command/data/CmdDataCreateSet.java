@@ -2,7 +2,6 @@ package org.caleydo.core.command.data;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
@@ -12,6 +11,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Command, creates a new storage.
@@ -62,14 +62,19 @@ public class CmdDataCreateSet
 		fillSets(createdObject);
 
 		generalManager.getLogger().log(
-			Level.INFO,
-			"New Set with internal ID " + createdObject.getID() + " and external ID " + iExternalID
-				+ " created.");
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "New Set with internal ID "
+				+ createdObject.getID() + " and external ID " + iExternalID + " created."));
 
-		// Set data in current use case
-		// TODO: Check if this is always safe
-		GeneralManager.get().getUseCase().setSet(createdObject);
-		
+		if (createdObject.getSetType() == ESetType.GENE_EXPRESSION_DATA
+			|| createdObject.getSetType() == ESetType.UNSPECIFIED) {
+			GeneralManager.get().getUseCase().setSet(createdObject);
+		}
+		else if (createdObject.getSetType() == ESetType.CLINICAL_DATA) {
+			GeneralManager.get().getClinicalUseCase().setSet(createdObject);
+		}
+		else
+			throw new IllegalStateException("Cannot find use case for set type " + createdObject.getSetType() + ".");
+
 		commandManager.runDoCommand(this);
 	}
 

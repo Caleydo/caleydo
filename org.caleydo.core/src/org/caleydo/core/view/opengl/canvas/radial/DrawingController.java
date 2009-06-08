@@ -11,13 +11,14 @@ public class DrawingController {
 	public static final int DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT = 1;
 	public static final int DRAWING_STATE_DETAIL_OUTSIDE = 2;
 	public static final int DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT = 3;
+	public static final int DRAWING_STATE_ANIM_POP_OUT_DETAIL_OUTSIDE = 4;
+	public static final int DRAWING_STATE_ANIM_PULL_IN_DETAIL_OUTSIDE = 5;
 
 	private HashMap<Integer, DrawingState> drawingStates;
 	private DrawingState currentDrawingState;
 
 	public DrawingController(GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		drawingStates = new HashMap<Integer, DrawingState>();
-		// TODO: maybe use AGLEventListener instead of GLRadialHierarchy
 		currentDrawingState = new DrawingStateFullHierarchy(this, radialHierarchy, navigationHistory);
 		drawingStates.put(DRAWING_STATE_FULL_HIERARCHY, currentDrawingState);
 		drawingStates.put(DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT, new AnimationNewRootElement(this,
@@ -25,6 +26,10 @@ public class DrawingController {
 		drawingStates.put(DRAWING_STATE_DETAIL_OUTSIDE, new DrawingStateDetailOutside(this, radialHierarchy,
 			navigationHistory));
 		drawingStates.put(DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT, new AnimationParentRootElement(this,
+			radialHierarchy, navigationHistory));
+		drawingStates.put(DRAWING_STATE_ANIM_POP_OUT_DETAIL_OUTSIDE, new AnimationPopOutDetailOutside(this,
+			radialHierarchy, navigationHistory));
+		drawingStates.put(DRAWING_STATE_ANIM_PULL_IN_DETAIL_OUTSIDE, new AnimationPullInDetailOutside(this,
 			radialHierarchy, navigationHistory));
 	}
 
@@ -37,14 +42,14 @@ public class DrawingController {
 		currentDrawingState.handleMouseOver(pdMouseOver);
 	}
 
-	public void handleClick(PartialDisc pdClicked) {
+	public void handleSelection(PartialDisc pdClicked) {
 
-		currentDrawingState.handleClick(pdClicked);
+		currentDrawingState.handleSelection(pdClicked);
 	}
 
-	public void handleDoubleClick(PartialDisc pdClicked) {
+	public void handleAlternativeSelection(PartialDisc pdClicked) {
 
-		currentDrawingState.handleDoubleClick(pdClicked);
+		currentDrawingState.handleAlternativeSelection(pdClicked);
 	}
 
 	public void setDrawingState(DrawingState drawingState) {

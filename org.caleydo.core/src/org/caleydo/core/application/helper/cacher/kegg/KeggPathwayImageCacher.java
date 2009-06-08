@@ -54,7 +54,7 @@ public class KeggPathwayImageCacher
 
 		// configure an download job filter
 		DownloadJobFilter downloadFilter = new DownloadJobFilter();
-		downloadFilter.setAllowedHostNames(new String[] { "www.genome.ad.jp*" });
+		downloadFilter.setAllowedHostNames(new String[] { "www.genome.ad.jp*", "www.genome.jp*" });
 		downloadFilter.setMaxRecursionDepth(2);
 		downloadFilter.setSaveToDisk(new String[] { ".*gif" });
 
@@ -82,10 +82,8 @@ public class KeggPathwayImageCacher
 		UrlDownloadJob job = jobFactory.createDownloadJob();
 
 		try {
-			// job.setUrl(new
-			// URL("http://www.genome.ad.jp/dbget-bin/get_pathway?org_name=hsa&mapno=00500"));
 			job.setUrl(new URL(
-				"http://www.genome.ad.jp/kegg-bin/show_organism?menu_type=pathway_maps&org=hsa"));
+				"http://www.genome.jp/kegg-bin/show_organism?menu_type=pathway_maps&org=hsa"));
 		}
 		catch (MalformedURLException e) {
 			e.printStackTrace();

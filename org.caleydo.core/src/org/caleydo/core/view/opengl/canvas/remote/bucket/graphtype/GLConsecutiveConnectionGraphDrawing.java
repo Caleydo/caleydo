@@ -10,6 +10,7 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketGraphDrawingAdapter;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
@@ -43,11 +44,11 @@ public class GLConsecutiveConnectionGraphDrawing
 	}
 
 
-	protected void renderLineBundling(GL gl, float[] arColor) {
-		Set<Integer> keySet = hashViewToPointLists.keySet();
+	protected void renderLineBundling(GL gl, EIDType idType, float[] arColor) {
+		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 		for (Integer iKey : keySet) {
-			hashViewToCenterPoint.put(iKey, calculateCenter(hashViewToPointLists.get(iKey)));
+			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
 		}
 
 		vecCenter = calculateCenter(hashViewToCenterPoint.values());
@@ -55,7 +56,7 @@ public class GLConsecutiveConnectionGraphDrawing
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
 			bundlingPoints.put(iKey, vecViewBundlingPoint);
-			for (ArrayList<Vec3f> alCurrentPoints : hashViewToPointLists.get(iKey)) {
+			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
 				if (alCurrentPoints.size() > 1) {
 					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
 				}

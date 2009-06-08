@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.canvas;
 
-import java.util.logging.Level;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -13,6 +11,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -54,10 +53,9 @@ public class GLCaleydoCanvas
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		GeneralManager.get().getLogger().log(
-			Level.INFO,
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
 			"Creating canvas with ID " + iGLCanvasID + "." + "\nOpenGL capabilities:"
-				+ drawable.getChosenGLCapabilities());
+				+ drawable.getChosenGLCapabilities()));
 
 		GL gl = drawable.getGL();
 

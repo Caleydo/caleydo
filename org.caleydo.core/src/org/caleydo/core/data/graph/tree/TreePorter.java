@@ -24,6 +24,11 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
+/**
+ * Class responsible for exporting and importing (clustered) {@link Tree}
+ * 
+ * @author Bernhard Schlegl
+ */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TreePorter {
@@ -38,7 +43,16 @@ public class TreePorter {
 	@XmlElement(name = "node")
 	Set<ClusterNode> nodeSet;
 
-	public Tree<ClusterNode> importTree(String fileName) {
+	/**
+	 * Imports a tree with the aid of {@link JAXBContext}.
+	 * 
+	 * @param fileName
+	 *            name of the file where the tree is saved
+	 * @return returns the imported tree
+	 * @throws FileNotFoundException
+	 * @throws JAXBException
+	 */
+	public Tree<ClusterNode> importTree(String fileName) throws FileNotFoundException, JAXBException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		ClusterNode rootNode = null;
@@ -59,10 +73,12 @@ public class TreePorter {
 			treePorter = (TreePorter) unmarshaller.unmarshal(new FileReader(fileName));
 		}
 		catch (FileNotFoundException e) {
-			e.printStackTrace();
+			// e.printStackTrace()
+			throw new FileNotFoundException();
 		}
 		catch (JAXBException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			throw new JAXBException(e.getErrorCode());
 		}
 
 		for (ClusterNode node : treePorter.nodeSet) {
@@ -84,6 +100,17 @@ public class TreePorter {
 		return tree;
 	}
 
+	/**
+	 * Export function uses {@link JAXBContext} to export a given tree into a XML file.
+	 * 
+	 * @param fileName
+	 *            name of the file where the exported tree should be saved
+	 * @param tree
+	 *            the tree wanted to export
+	 * @return returns false in case of error and true otherwise
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
 	public boolean exportTree(String fileName, Tree<ClusterNode> tree) throws JAXBException, IOException {
 
 		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) tree.graph.edgeSet();

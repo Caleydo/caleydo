@@ -23,7 +23,7 @@ public class BucketMouseWheelListener
 
 	private GLRemoteRendering bucketGLEventListener;
 
-	private float fBuketZoomMax = 0;
+	private float fBuketZoomMax = BUCKET_ZOOM_MAX;
 
 	private final static int BUCKET_ZOOM_MAX = 400;
 
@@ -91,9 +91,9 @@ public class BucketMouseWheelListener
 				}
 			}
 
-			bucketLayoutRenderStyle.initStackLevel(false);
+			bucketLayoutRenderStyle.initStackLevel();
 			bucketLayoutRenderStyle.initFocusLevel();
-			bucketLayoutRenderStyle.initPoolLevel(false, -1);
+			bucketLayoutRenderStyle.initPoolLevel(-1);
 		}
 		else
 		// zoom to bottom of the bucket
@@ -104,17 +104,20 @@ public class BucketMouseWheelListener
 					return;
 
 				bZoomIn = true;
+				bucketLayoutRenderStyle.setZoomedIn(bZoomIn);
 			}
 			else {
 				if (iCurrentBucketZoom == 0)
 					return;
 
 				bZoomIn = false;
+				bucketLayoutRenderStyle.setZoomedIn(bZoomIn);
 			}
 
 			bZoomActionRunning = true;
-			bucketLayoutRenderStyle.initStackLevel(bZoomIn);
-			bucketLayoutRenderStyle.initPoolLevel(bZoomIn, -1);
+			bucketLayoutRenderStyle.initStackLevel();
+			bucketLayoutRenderStyle.initPoolLevel(-1);
+			bucketLayoutRenderStyle.initMemoLevel();
 
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(false);
@@ -190,8 +193,10 @@ public class BucketMouseWheelListener
 	public void triggerZoom(boolean bZoomIn) {
 		bZoomActionRunning = true;
 		this.bZoomIn = bZoomIn;
-		bucketLayoutRenderStyle.initStackLevel(bZoomIn);
-		bucketLayoutRenderStyle.initPoolLevel(bZoomIn, -1);
+		bucketLayoutRenderStyle.setZoomedIn(bZoomIn);
+		bucketLayoutRenderStyle.initStackLevel();
+		bucketLayoutRenderStyle.initPoolLevel(-1);
+		bucketLayoutRenderStyle.initMemoLevel();
 	}
 
 	@Override
@@ -210,5 +215,9 @@ public class BucketMouseWheelListener
 	private void grabFocus() {
 		// Potential performance problem
 		bucketGLEventListener.getParentGLCanvas().requestFocus();
+	}
+	
+	public boolean isZoomActionRunning() {
+		return bZoomActionRunning;
 	}
 }

@@ -3,6 +3,7 @@ package org.caleydo.rcp.splashHandlers;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -60,7 +61,7 @@ public class InteractiveSplashHandler
 		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label versionLabel = new Label(splash, SWT.NONE);
-		versionLabel.setText("Version " + Activator.sBundleVersion + " BETA");
+		versionLabel.setText("Version " + Activator.sVersion + " BETA");
 		versionLabel.setFont(new Font(splash.getDisplay(), "Arial", 9, SWT.NONE));
 		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
@@ -98,6 +99,8 @@ public class InteractiveSplashHandler
 
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
 			progressMessageLabel);
+		
+//		Application.startCaleydoCore();
 	}
 
 	private void doEventLoop() {
@@ -121,10 +124,11 @@ public class InteractiveSplashHandler
 	@Override
 	public void dispose() {
 		if (!Application.bIsWebstart && !Application.bDoExit) {
-			Application.startCaleydoCore();
+//			Application.startCaleydoCore();
 
 			// Start OpenGL rendering
 			GeneralManager.get().getViewGLCanvasManager().startAnimator();
+			
 		}
 		// super.dispose();
 	}

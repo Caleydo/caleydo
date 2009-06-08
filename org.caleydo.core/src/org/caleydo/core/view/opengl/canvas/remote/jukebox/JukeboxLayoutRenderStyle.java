@@ -61,7 +61,7 @@ public class JukeboxLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initStackLevel(boolean bIsZoomedIn) {
+	public RemoteLevel initStackLevel() {
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		float fLayerYPos = 0.6f;
@@ -91,7 +91,7 @@ public class JukeboxLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID) {
+	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID) {
 		float fSelectedScaling = 1;
 		float fYAdd = -1.4f;
 

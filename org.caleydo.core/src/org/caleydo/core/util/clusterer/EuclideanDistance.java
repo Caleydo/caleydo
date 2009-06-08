@@ -1,5 +1,10 @@
 package org.caleydo.core.util.clusterer;
 
+/**
+ * Euclidean distance measure, implements {@link IDistanceMeasure}.
+ * 
+ * @author Bernhard Schlegl
+ */
 public class EuclideanDistance
 	implements IDistanceMeasure {
 

@@ -64,13 +64,17 @@ public class GLDragAndDrop {
 		fArCurrentMousePos[1] = (float) wcoord[1];
 	}
 
-	public void renderDragThumbnailTexture(final GL gl) {
+	public void renderDragThumbnailTexture(final GL gl, boolean bIsZoomedIn) {
 		float fOffset = 0.02f;
 
+		float fZ = 6;
+		if (bIsZoomedIn == true)
+			fZ = 2;
+		
 		gl.glPushMatrix();
-		gl.glTranslatef(fArCurrentMousePos[0] + fOffset, fArCurrentMousePos[1] + fOffset, 5);
+		gl.glTranslatef(fArCurrentMousePos[0] + fOffset, fArCurrentMousePos[1] + fOffset, fZ);
 		gl.glScalef(0.05f, 0.05f, 0.05f);
-
+		
 		int iGLEventListenerID = RemoteElementManager.get().getItem(iDragObjectId).getContainedElementID();
 
 		if (iGLEventListenerID != -1) {

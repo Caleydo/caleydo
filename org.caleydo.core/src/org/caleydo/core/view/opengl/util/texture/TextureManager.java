@@ -9,30 +9,21 @@ import org.caleydo.core.manager.general.GeneralManager;
 import com.sun.opengl.util.texture.Texture;
 
 /**
- * Manager handles OpenGL icons as textures. TODO move this to manager to use it as a singleton
+ * Manager handles OpenGL icons as textures.
+ * The manager must be created for each GL view because it needs a current GL context!
  * 
  * @author Alexander Lex
  * @author Marc Streit
  */
 public class TextureManager {
 
-	EnumMap<EIconTextures, Texture> mapIconTextures;
-	private static TextureManager instance;
+	private EnumMap<EIconTextures, Texture> mapIconTextures;
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param gl
 	 */
-	private TextureManager() {
+	public TextureManager() {
 		mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
-
-	}
-
-	public static TextureManager get() {
-		if (instance == null)
-			instance = new TextureManager();
-		return instance;
 	}
 
 	public Texture getIconTexture(GL gl, final EIconTextures eIconTextures) {

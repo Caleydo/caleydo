@@ -3,7 +3,6 @@ package org.caleydo.core.manager.mapping;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.EIDType;
@@ -13,6 +12,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.collection.MultiHashMap;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Manages mapping tables.
@@ -35,7 +35,8 @@ public class IDMappingManager
 
 	@Override
 	public void createMap(EMappingType type, EMappingDataType dataType) {
-		generalManager.getLogger().log(Level.INFO, "Create lookup table for type=" + type);
+		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			"Create lookup table for type=" + type));
 
 		switch (dataType) {
 			case INT2INT:
@@ -112,7 +113,7 @@ public class IDMappingManager
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
 		EMappingType destMappingType) {
 		Map codeResolvedMap = null;
-		int iMappingErrors = 0;
+		//int iMappingErrors = 0;
 
 		EIDType originKeyType = mappingType.getTypeOrigin();
 		EIDType originValueType = mappingType.getTypeTarget();
@@ -236,8 +237,8 @@ public class IDMappingManager
 							iResolvedID = generalManager.getIDMappingManager().getID(conversionType, key);
 
 							if (iResolvedID == null) {
-								generalManager.getLogger().log(Level.WARNING,
-									iMappingErrors++ + ": No DAVID mapping for RefSeq " + key);
+//								generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+//									iMappingErrors++ + ": No DAVID mapping for RefSeq " + key));
 								continue;
 							}
 

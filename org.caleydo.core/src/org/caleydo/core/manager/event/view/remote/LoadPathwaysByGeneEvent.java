@@ -4,14 +4,14 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that pathways should be added 
- * to the bucket in which a certain gene is contained. 
+ * Event to signal that pathways should be added to the bucket in which a certain gene is contained.
+ * 
  * @author Marc Streit
  */
 public class LoadPathwaysByGeneEvent
 	extends AEvent {
-	
-	/** gene ID of the idType*/
+
+	/** gene ID of the idType */
 	private int geneID = -1;
 
 	private EIDType idType;
@@ -31,4 +31,14 @@ public class LoadPathwaysByGeneEvent
 	public void setIdType(EIDType idType) {
 		this.idType = idType;
 	}
+
+	@Override
+	public boolean checkIntegrity() {
+		if (geneID == -1)
+			throw new IllegalStateException("geneID was not set");
+		if (idType == null)
+			throw new NullPointerException("idType is null");
+		return true;
+	}
+
 }

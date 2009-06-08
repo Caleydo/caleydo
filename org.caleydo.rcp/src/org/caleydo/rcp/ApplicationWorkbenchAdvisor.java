@@ -28,8 +28,7 @@ public class ApplicationWorkbenchAdvisor
 	@Override
 	public void initialize(IWorkbenchConfigurer configurer) {
 		super.initialize(configurer);
-
-		configurer.setSaveAndRestore(false);
+		configurer.setSaveAndRestore(true);
 	}
 
 	@Override

@@ -1,8 +1,7 @@
 package org.caleydo.core.util.exception;
 
-import java.util.logging.Level;
-
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Catches exceptions and logs them, hides them when in release mode
@@ -42,7 +41,8 @@ public class ExceptionHandler {
 	 */
 	public void handleException(RuntimeException exception) {
 		if (HIDE_EXCEPTIONS) {
-			GeneralManager.get().getLogger().log(Level.SEVERE, "Caught Exception: " + exception.getMessage(), exception);
+			GeneralManager.get().getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+				"Caught Exception: " + exception.getMessage(), exception));
 			// Log here
 		}
 		else

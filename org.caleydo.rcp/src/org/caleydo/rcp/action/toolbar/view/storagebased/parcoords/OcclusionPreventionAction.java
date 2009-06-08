@@ -1,9 +1,10 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased.parcoords;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
@@ -34,6 +35,6 @@ public class OcclusionPreventionAction
 
 		bEnable = !bEnable;
 
-		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.PARCOORDS_OCCLUSION_PREVENTION);
+		GeneralManager.get().getEventPublisher().triggerEvent(new PreventOcclusionEvent(bEnable));
 	};
 }

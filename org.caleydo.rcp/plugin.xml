@@ -23,7 +23,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLHeatMapView"
+            class="org.caleydo.rcp.view.opengl.GLHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.opengl.GLHeatMapView"
             name="Heat Map">
@@ -32,7 +32,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
+            class="org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
             name="Heat Map">
@@ -41,7 +41,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLParCoordsView"
+            class="org.caleydo.rcp.view.opengl.GLParCoordsView"
             icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.opengl.GLParCoordsView"
             name="Parallel Coordinates">
@@ -49,7 +49,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView"
+            class="org.caleydo.rcp.view.opengl.ClinicalGLParCoordsView"
             icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView"
             name="Clinical Parallel Coordinates">
@@ -58,7 +58,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLPathwayView"
+            class="org.caleydo.rcp.view.opengl.GLPathwayView"
             icon="resources/icons/view/pathway.png"
             id="org.caleydo.rcp.views.opengl.GLPathwayView"
             name="Pathway">
@@ -67,7 +67,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLRemoteRenderingView"
+            class="org.caleydo.rcp.view.opengl.GLRemoteRenderingView"
             icon="resources/icons/view/remote.png"
             id="org.caleydo.rcp.views.opengl.GLRemoteRenderingView"
             name="Bucket">
@@ -77,13 +77,13 @@
             id="org.caleydo.rcp.views.swt.HTMLBrowserView"
             name="Browser"
             icon="resources/icons/view/browser.png"
-            class="org.caleydo.rcp.views.swt.HTMLBrowserView"
+            class="org.caleydo.rcp.view.swt.HTMLBrowserView"
             category="org.caleydo.rcp.views">
       </view>
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLGlyphView"
+            class="org.caleydo.rcp.view.opengl.GLGlyphView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.opengl.GLGlyphView"
             name="Glyph">
@@ -91,7 +91,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
+            class="org.caleydo.rcp.view.opengl.GLGlyphSliderView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
             name="Glyph Slider">
@@ -99,7 +99,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
+            class="org.caleydo.rcp.view.swt.SWTGlyphMappingConfigurationView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
             name="Glyph Mapping Configuration">
@@ -107,21 +107,21 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.SWTGlyphDataExportView"
+            class="org.caleydo.rcp.view.swt.SWTGlyphDataExportView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.swt.SWTGlyphDataExportView"
             name="Glyph Data Export">
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.TabularDataView"
+            class="org.caleydo.rcp.view.swt.TabularDataView"
             icon="resources/icons/view/tabular_data_viewer.png"
             id="org.caleydo.rcp.views.swt.TabularDataView"
             name="Tabular Data Viewer">
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.toolbar.ToolBarView"
+            class="org.caleydo.rcp.view.swt.toolbar.ToolBarView"
             icon="resources/icons/view/general.png"
             id="org.caleydo.rcp.views.swt.ToolBarView"
             name="Tool Bar">
@@ -129,27 +129,28 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLRadialHierarchyView"
+            class="org.caleydo.rcp.view.opengl.GLRadialHierarchyView"
+            icon="resources/icons/view/radial.png"
             id="org.caleydo.rcp.views.GLRadialHierarchyView"
             name="Radial Hierarchy">
       </view>
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLHyperbolicView"
+            class="org.caleydo.rcp.view.opengl.GLHyperbolicView"
             id="org.caleydo.rcp.views.GLHyperbolicView"
             name="Hyperbolic">
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.CollabView"
+            class="org.caleydo.rcp.view.swt.CollabView"
             id="org.caleydo.rcp.views.swt.CollabView"
             name="Testing">
       </view>
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLHistogramView"
+            class="org.caleydo.rcp.view.opengl.GLHistogramView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLHistogramView"
             name="Color Map">
@@ -157,7 +158,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.SearchView"
+            class="org.caleydo.rcp.view.swt.SearchView"
             icon="resources/icons/view/search.png"
             id="org.caleydo.rcp.views.swt.SearchView"
             name="Search">
@@ -165,7 +166,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.swt.SelectionInfoView"
+            class="org.caleydo.rcp.view.swt.SelectionInfoView"
             icon="resources/icons/view/info.png"
             id="org.caleydo.rcp.views.swt.SelectionInfoView"
             name="Info">
@@ -173,7 +174,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView"
+            class="org.caleydo.rcp.view.opengl.GLDendrogramHorizontalView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView"
             name="Dendrogram Horizontal">
@@ -181,7 +182,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLHistogramView"
+            class="org.caleydo.rcp.view.opengl.GLHistogramView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLHistogramView"
             name="Histogram">
@@ -189,7 +190,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.opengl.GLDendrogramVerticalView"
+            class="org.caleydo.rcp.view.opengl.GLDendrogramVerticalView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLDendrogramVerticalView"
             name="Dendrogram Vertical">
@@ -222,7 +223,7 @@
          </property>
          <property
                name="windowImages"
-               value="resources/icons/caleydo16.gif">
+               value="resources/icons/caleydo16.gif,resources/icons/caleydo32.gif,resources/icons/caleydo48.gif,resources/icons/caleydo64.gif,resources/icons/caleydo128.gif">
          </property>
          <property
                name="preferenceCustomization"
@@ -235,6 +236,7 @@
       </product>
    </extension>
    <extension
+         name="Caleydo"
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
             class="org.caleydo.rcp.splashHandlers.InteractiveSplashHandler"
@@ -367,6 +369,11 @@
             id="org.caleydo.rcp.command.openviews.dendrogram_vertical"
             name="Open Dendrogram Vertical">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenSearchHandler"
+            id="org.caleydo.rcp.command.openviews.search"
+            name="Open Search">
+      </command>
       		
    </extension>
    <extension
@@ -380,11 +387,13 @@
                label="File">
             <command
                   commandId="org.caleydo.rcp.command.load_data"
+                  icon="resources/icons/general/load_data.png"
                   label="Load Data"
                   style="push">
             </command>
             <command
                   commandId="org.caleydo.rcp.command.export"
+                  icon="resources/icons/general/export_data.png"
                   label="Export"
                   style="push">
             </command>
@@ -405,6 +414,17 @@
                   commandId="org.caleydo.rcp.command.exit"
                   label="Exit"
                   mnemonic="E"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="org.caleydo.search.menu"
+               label="Search"
+               tooltip="Search">
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.search"
+                  icon="resources/icons/view/search.png"
+                  label="Search Gene/Pathway"
                   style="push">
             </command>
          </menu>
@@ -440,67 +460,65 @@
                   icon="resources/icons/view/tabular_data_viewer.png"
                   label="Tabular Data Viewer"
                   style="push">
-            </command>    
-     
-	            <command
-	                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
-	                  icon="resources/icons/view/parcoords.png"
-	                  label="Clinical Parallel Coordinates"
-	                  style="push">
-	            </command>
-	            <command
-	                  commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
-	                  icon="resources/icons/view/heatmap.png"
-	                  label="Radial Hierarchy"
-	                  style="push">
-	            </command>
-	            <command
-	                  commandId="org.caleydo.rcp.command.openviews.hyperbolic"
-	                  icon="resources/icons/view/heatmap.png"
-	                  label="Hyperbolic"
-	                  style="push">
-	            </command>
-	            <menu
-	                  icon="resources/icons/view/glyph.png"
-	                  label="Glyph">
-	               <command
-	                     commandId="org.caleydo.rcp.command.openviews.glyphview"
-	                     icon="resources/icons/view/glyph.png"
-	                     label="Glyph View"
-	                     style="push">
-	               </command>
-	               <command
-	                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
-	                     icon="resources/icons/view/glyph.png"
-	                     label="Glyph Slider View"
-	                     style="push">
-	               </command>
-	               <command
-	                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
-	                     icon="resources/icons/view/glyph.png"
-	                     label="Glyph Mapping Configuration"
-	                     style="push">
-	               </command>
-	            </menu>
-             <command
-                   commandId="org.caleydo.rcp.command.openviews.histogram"
-                   icon="resources/icons/view/heatmap.png"
-                   label="Histogram"
-                   style="push">
-             </command>
-             <command
-                   commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
-                   icon="resources/icons/view/heatmap.png"
-                   label="Dendrogram Horizontal"
-                   style="push">
-             </command>
-             <command
-                   commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
-                   icon="resources/icons/view/heatmap.png"
-                   label="Dendrogram Vertical"
-                   style="push">
-             </command>
-	          
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.histogram"
+                  icon="resources/icons/view/color_mapping.png"
+                  label="Color Mapper"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
+                  icon="resources/icons/view/parcoords.png"
+                  label="Clinical Parallel Coordinates"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.radial_hierarchy"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Radial Hierarchy"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.hyperbolic"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Hyperbolic"
+                  style="push">
+            </command>
+            <menu
+                  icon="resources/icons/view/glyph.png"
+                  label="Glyph">
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph Slider View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph Mapping Configuration"
+                     style="push">
+               </command>
+            </menu>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dendrogram_horizontal"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Dendrogram Horizontal"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Dendrogram Vertical"
+                  style="push">
+            </command>
          </menu>
          <menu
                id="windowMenu"
@@ -518,15 +536,6 @@
                id="adminMenu"
                label="Admin">
             <command
-                  commandId="org.eclipse.ui.views.showView"
-                  label="Show error log"
-                  style="push">
-               <parameter
-                     name="org.eclipse.ui.views.showView.viewId"
-                     value="org.eclipse.pde.runtime.LogView">
-               </parameter>
-            </command>
-            <command
                   commandId="org.caleydo.rcp.command.open_collab"
                   label="Collaboration"
                   mnemonic="T"
@@ -541,6 +550,16 @@
                   icon="resources/icons/general/help.gif"
                   label="Help Contents"
                   style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  icon="resources/icons/general/error_log.gif"
+                  label="Error Log"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="org.eclipse.pde.runtime.LogView">
+               </parameter>
             </command>
             <command
                   commandId="org.caleydo.rcp.command.help.known_bugs"

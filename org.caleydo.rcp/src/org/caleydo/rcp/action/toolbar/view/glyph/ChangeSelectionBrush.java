@@ -1,6 +1,7 @@
 package org.caleydo.rcp.action.toolbar.view.glyph;
 
-import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
+import org.caleydo.core.manager.event.view.glyph.GlyphSelectionBrushEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -45,6 +46,6 @@ public class ChangeSelectionBrush
 			parent.setImageDescriptor(idIcon);
 		}
 
-		triggerCmdExternalObjectSetter(iBrushSize, EExternalObjectSetterType.GLYPH_SELECTIONBRUSH);
+		GeneralManager.get().getEventPublisher().triggerEvent(new GlyphSelectionBrushEvent(iViewID,iBrushSize));		
 	};
 }

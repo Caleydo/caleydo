@@ -248,6 +248,9 @@ public class KgmlSaxHandler
 		else {
 			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink, sReactionId);
 
+			if (currentVertex == null)
+				throw new IllegalStateException("New pathway vertex is null");
+			
 			alCurrentVertex.add(currentVertex);
 		}
 	}

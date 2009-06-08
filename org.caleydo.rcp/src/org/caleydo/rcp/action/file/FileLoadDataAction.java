@@ -22,7 +22,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.swt.tabular.LabelEditorDialog;
 import org.caleydo.rcp.dialog.file.LoadDataDialog;
-import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -49,7 +48,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Action responsible for importing data to current Caleydo project.
@@ -97,12 +95,7 @@ public class FileLoadDataAction
 	 * Constructor.
 	 */
 	public FileLoadDataAction(final Composite parentComposite) {
-		super("Load Data");
-		setId(ID);
-		setToolTipText("Import data from text file");
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
-
+		super("Load data");
 		this.parentComposite = parentComposite;
 
 		arSkipColumn = new ArrayList<Button>();
@@ -158,47 +151,47 @@ public class FileLoadDataAction
 			}
 		});
 
-//		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-//		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
-//
-//		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-//		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//
-//		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent event) {
-//
-//				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-//				fileDialog.setText("Open");
-//				fileDialog.setFilterPath(sFilePath);
-//				String[] filterExt = { "*.xml*" };
-//				fileDialog.setFilterExtensions(filterExt);
-//				sGeneTreeFileName = fileDialog.open();
-//
-//				txtGeneTreeFileName.setText(sGeneTreeFileName);
-//			}
-//		});
+		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
+
+		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+				fileDialog.setText("Open");
+				fileDialog.setFilterPath(sFilePath);
+				String[] filterExt = { "*.xml*" };
+				fileDialog.setFilterExtensions(filterExt);
+				sGeneTreeFileName = fileDialog.open();
+
+				txtGeneTreeFileName.setText(sGeneTreeFileName);
+			}
+		});
 		
-//		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-//		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
-//
-//		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-//		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//
-//		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent event) {
-//
-//				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-//				fileDialog.setText("Open");
-//				fileDialog.setFilterPath(sFilePath);
-//				String[] filterExt = { "*.xml*" };
-//				fileDialog.setFilterExtensions(filterExt);
-//				sExperimentsFileName = fileDialog.open();
-//
-//				txtExperimentsTreeFileName.setText(sExperimentsFileName);
-//			}
-//		});
+		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
+		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
+
+		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
+		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+				fileDialog.setText("Open");
+				fileDialog.setFilterPath(sFilePath);
+				String[] filterExt = { "*.xml*" };
+				fileDialog.setFilterExtensions(filterExt);
+				sExperimentsFileName = fileDialog.open();
+
+				txtExperimentsTreeFileName.setText(sExperimentsFileName);
+			}
+		});
 		
 		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Ignore lines in header");
@@ -660,16 +653,12 @@ public class FileLoadDataAction
 		}
 	}
 
-	public void execute() {
+	public boolean execute() {
 
-		createData();
-		
-		//TODO implement with new set policy in views (via use case)
-//		setDataInViews();
-//		clearOldData();
+		return createData();
 	}
 
-	private void createData() {
+	private boolean createData() {
 		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
 		String sStorageIDs = "";
 
@@ -718,7 +707,7 @@ public class FileLoadDataAction
 
 		if (sFileName.equals("")) {
 			MessageDialog.openError(parentComposite.getShell(), "Invalid filename", "Invalid filename");
-			return;
+			return false;
 		}
 
 		// Create SET
@@ -745,15 +734,14 @@ public class FileLoadDataAction
 			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.LOAD_DATA_FILE);
 
-		// ISWTGUIManager iSWTGUIManager =
-		// GeneralManager.get().getSWTGUIManager();
-		// iSWTGUIManager.setProgressBarVisible(true);
-
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sGeneTreeFileName, sExperimentsFileName, sInputPattern, sDelimiter,
 			iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
-
-		// iSWTGUIManager.setProgressBarVisible(false);
+		
+		if (!cmdLoadCsv.isParsingOK()) {
+			// TODO: Clear created set and storages which are empty
+			return false;
+		}
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile =
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
@@ -805,12 +793,9 @@ public class FileLoadDataAction
 		// Since the data is filled to the new set
 		// the views of the current use case can be updated.
 		useCase.updateSetInViews();
+		
+		return true;
 	}
-
-
-//	private void clearOldData() {
-//		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
-//	}
 
 	/**
 	 * For testing purposes

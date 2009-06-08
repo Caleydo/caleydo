@@ -33,4 +33,15 @@ public class VirtualArrayUpdateEvent
 	public void setInfo(String info) {
 		this.info = info;
 	}
+
+	@Override
+	public boolean checkIntegrity() {
+		if(virtualArrayDelta == null)
+		{
+			throw new IllegalStateException("Integrity check in " + this + "failed - virtualArrayDelta was null");
+		}
+		return true;
+	}
+	
+	
 }

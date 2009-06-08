@@ -9,8 +9,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -25,6 +23,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.ViewActivationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
@@ -32,12 +31,13 @@ import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
-import org.caleydo.core.manager.event.view.remote.CloseOrResetViewsEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -54,6 +54,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle.LayoutMode;
@@ -67,7 +68,6 @@ import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRender
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.JukeboxLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.list.ListLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.listener.AddPathwayListener;
-import org.caleydo.core.view.opengl.canvas.remote.listener.CloseOrResetViewsListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableConnectionLinesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.DisableNeighborhoodListener;
@@ -78,6 +78,7 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.EnableNeighborhoodLis
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleNavigationModeListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleZoomListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -98,10 +99,13 @@ import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
 import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
+
+import java.util.Timer;
 
 /**
  * Abstract class that is able to remotely rendering views. Subclasses implement the positioning of the views
@@ -115,10 +119,14 @@ public class GLRemoteRendering
 	extends AGLEventListener
 	implements ISelectionUpdateHandler, IGLCanvasRemoteRendering {
 
+
 	//switch type of connection graph you want to be drawn in remote view
 	private EGraphType graphType = EGraphType.VIEW_CENTERED;
-	Logger log = Logger.getLogger(GLRemoteRendering.class.getName());
+	private boolean ANIMATION = true;
+	private Timer animationTimer;
+	private int tempID = 0;
 
+	
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
 	private static final int SLERP_RANGE = 1000;
@@ -201,27 +209,22 @@ public class GLRemoteRendering
 	private boolean neighborhoodEnabled = false;
 
 	private ArrayList<ASerializedView> newViews;
-	
+
 	private GLInfoAreaManager infoAreaManager;
 
 	protected AddPathwayListener addPathwayListener = null;
 	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
-
 	protected EnableGeneMappingListener enableGeneMappingListener = null;
 	protected DisableGeneMappingListener disableGeneMappingListener = null;
-
 	protected EnableTexturesListener enableTexturesListener = null;
 	protected DisableTexturesListener disableTexturesListener = null;
-
 	protected EnableNeighborhoodListener enableNeighborhoodListener = null;
 	protected DisableNeighborhoodListener disableNeighborhoodListener = null;
-	
 	protected ToggleNavigationModeListener toggleNavigationModeListener = null;
-	
+	protected ToggleZoomListener toggleZoomListener = null;
 	protected EnableConnectionLinesListener enableConnectionLinesListener = null;
 	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
-
-	protected CloseOrResetViewsListener closeOrResetViewsListener = null;
+	protected ResetViewListener resetViewListener = null;
 	protected SelectionUpdateListener selectionUpdateListener = null;
 
 	/**
@@ -230,6 +233,9 @@ public class GLRemoteRendering
 	public GLRemoteRendering(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 		super(glCanvas, sLabel, viewFrustum, true);
+		
+		animationTimer = new Timer();
+		
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
@@ -265,25 +271,30 @@ public class GLRemoteRendering
 			stackLevel = ((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
 		}
 		else {
-			stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
+			stackLevel = layoutRenderStyle.initStackLevel();
 		}
 
-		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
+		poolLevel = layoutRenderStyle.initPoolLevel(-1);
 		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			switch(graphType){
-				case GLOBAL_BUNDLING:
-					glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
-					break;
-				case VIEW_CENTERED:
-					glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
-					break;
-				case CONSECUTIVE:
-					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
-					break;
+			if (ANIMATION){
+				glConnectionLineRenderer = new AnimatedGraphDrawing(focusLevel, stackLevel, poolLevel);
+			}
+			else{
+				switch(graphType){
+					case GLOBAL_BUNDLING:
+						glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+						break;
+					case VIEW_CENTERED:
+						glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+						break;
+					case CONSECUTIVE:
+						glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+						break;
+				}
 			}
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
@@ -304,8 +315,6 @@ public class GLRemoteRendering
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
-		registerEventListeners();
-
 		iPoolLevelCommonID = generalManager.getIDManager().createID(EManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
@@ -318,8 +327,8 @@ public class GLRemoteRendering
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -357,13 +366,14 @@ public class GLRemoteRendering
 		cmdCreateGLView.doCommand();
 		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
+		glSelectionHeatMap.setUseCase(useCase);
 		glSelectionHeatMap.initData();
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) {
 		// if (glMouseListener.wasRightMouseButtonPressed() &&
 		// !bucketMouseWheelListener.isZoomedIn()
 		// && !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
@@ -398,7 +408,7 @@ public class GLRemoteRendering
 		}
 
 		if (dragAndDrop.isDragActionRunning()) {
-			dragAndDrop.renderDragThumbnailTexture(gl);
+			dragAndDrop.renderDragThumbnailTexture(gl, bucketMouseWheelListener.isZoomedIn());
 		}
 
 		if (glMouseListener.wasMouseReleased() && dragAndDrop.isDragActionRunning()) {
@@ -477,19 +487,21 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) {
 		display(gl);
 	}
 
 	@Override
-	public synchronized void display(final GL gl) {
+	public void display(final GL gl) {
 		time.update();
+		processEvents();
+
 		// Update the pool transformations according to the current mouse over object
-		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
+		layoutRenderStyle.initPoolLevel(iMouseOverObjectID);
 		layoutRenderStyle.initFocusLevel();
 
 		// Just for layout testing during runtime
-		// layoutRenderStyle.initStackLevel(false);
+		// layoutRenderStyle.initStackLevel();
 		// layoutRenderStyle.initMemoLevel();
 
 		if (GeneralManager.get().isWiiModeActive()
@@ -517,38 +529,36 @@ public class GLRemoteRendering
 				(BucketLayoutRenderStyle) layoutRenderStyle, this);
 		}
 
-		// If user zooms to the bucket bottom all but the under
-		// focus layer is _not_ rendered.
-		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn()) {
-
+		if (!bucketMouseWheelListener.isZoomActionRunning()) {
 			renderPoolAndMemoLayerBackground(gl);
-
-			renderRemoteLevel(gl, transitionLevel);
-			renderRemoteLevel(gl, spawnLevel);
-			renderRemoteLevel(gl, poolLevel);
 			renderRemoteLevel(gl, externalSelectionLevel);
+			renderRemoteLevel(gl, spawnLevel);
+			renderRemoteLevel(gl, transitionLevel);
+			renderRemoteLevel(gl, poolLevel);
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			bucketMouseWheelListener.render();
 		}
 
-		// colorMappingBarMiniView.render(gl,
-		// layoutRenderStyle.getColorBarXPos(),
-		// layoutRenderStyle.getColorBarYPos(), 4);
-
 		renderHandles(gl);
 
 		// gl.glCallList(iGLDisplayList);
 
 		// comment here for connection lines
-		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
-			if (graphType.equals(EGraphType.GLOBAL_BUNDLING)){
+		if ((glConnectionLineRenderer != null) && (connectionLinesEnabled)){
+			if (ANIMATION){
+				glConnectionLineRenderer.setActiveViewID(iActiveViewID);
 				glConnectionLineRenderer.render(gl);
 			}
 			else{
-				glConnectionLineRenderer.setActiveViewID(iActiveViewID);
-				glConnectionLineRenderer.render(gl);
+				if (graphType.equals(EGraphType.GLOBAL_BUNDLING)){
+					glConnectionLineRenderer.render(gl);
+				}
+				else{
+					glConnectionLineRenderer.setActiveViewID(iActiveViewID);
+					glConnectionLineRenderer.render(gl);
+				}
 			}
 		}
 
@@ -583,7 +593,7 @@ public class GLRemoteRendering
 
 	}
 
-	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
+	public void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
 		containedViewIDs = iAlInitialContainedViewIDs;
 	}
 
@@ -660,7 +670,9 @@ public class GLRemoteRendering
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		if (glEventListener == null) {
-			generalManager.getLogger().log(Level.WARNING, "Bucket level element is null and cannot be rendered!");
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Bucket level element is null and cannot be rendered!"));
 			return;
 		}
 
@@ -713,8 +725,7 @@ public class GLRemoteRendering
 			}
 			else {
 				// Render view background frame
-				Texture tempTexture =
-					iconTextureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
+				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
 				tempTexture.enable();
 				tempTexture.bind();
 
@@ -883,21 +894,18 @@ public class GLRemoteRendering
 	}
 
 	private void renderHandles(final GL gl) {
-		float fZoomedInScalingFactor = 0.4f;
 
 		// Bucket stack top
 		RemoteLevelElement element = stackLevel.getElementByPositionIndex(0);
 		if (element.getContainedElementID() != -1) {
+
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2, 0, 4.02f);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glTranslatef(2, 0, -4.02f);
 			}
 			else {
-				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, 0, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(2 + 4 * fZoomedInScalingFactor, 0, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
@@ -907,15 +915,12 @@ public class GLRemoteRendering
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2, 0, 4.02f);
 				gl.glRotatef(180, 1, 0, 0);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, true, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, true, 2);
 				gl.glRotatef(-180, 1, 0, 0);
 				gl.glTranslatef(2, 0, -4.02f);
 			}
 			else {
-				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, -4 + 4 * fZoomedInScalingFactor, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(2 + 4 * fZoomedInScalingFactor, +4 - 4 * fZoomedInScalingFactor, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
@@ -925,15 +930,12 @@ public class GLRemoteRendering
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(-2f / fAspectRatio + 2 + 0.8f, -2, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(-90, 0, 0, 1);
 				gl.glTranslatef(2f / fAspectRatio - 2 - 0.8f, 2, -4.02f);
 			}
 			else {
-				gl.glTranslatef(2, 0, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(-2, 0, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
@@ -943,47 +945,72 @@ public class GLRemoteRendering
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				gl.glTranslatef(2f / fAspectRatio - 0.8f - 2, 2, 4.02f);
 				gl.glRotatef(-90, 0, 0, 1);
-				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
+				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 2);
 				gl.glRotatef(90, 0, 0, 1);
 				gl.glTranslatef(-2f / fAspectRatio + 0.8f + 2, -2, -4.02f);
 			}
 			else {
-				gl.glTranslatef(2, -4 + 4 * fZoomedInScalingFactor, 0.02f);
-				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f, false,
-					1 / fZoomedInScalingFactor);
-				gl.glTranslatef(-2, +4 - 4 * fZoomedInScalingFactor, -0.02f);
+				renderStackViewHandleBarZoomedIn(gl, element);
 			}
 		}
 
-		// Bucket center
+		// Bucket center (focus)
 		element = focusLevel.getElementByPositionIndex(0);
 		if (element.getContainedElementID() != -1) {
-			float fYCorrection = 0f;
 
+			Transform transform;
+			Vec3f translation;
+			Vec3f scale;
+
+			float fYCorrection = 0f;
 			if (!bucketMouseWheelListener.isZoomedIn()) {
 				fYCorrection = 0f;
 			}
 			else {
-				fYCorrection = 0.1f;
+				fYCorrection = 0.145f;
 			}
 
-			Transform transform = element.getTransform();
-			Vec3f translation = transform.getTranslation();
+			transform = element.getTransform();
+			translation = transform.getTranslation();
+			scale = transform.getScale();
 
 			gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
 				translation.z() + 0.001f);
 
-			gl.glScalef(2, 2, 2);
+			gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
 			renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
-			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
+			gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
 
 			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
 				-translation.z() - 0.001f);
 		}
 	}
 
+	private void renderStackViewHandleBarZoomedIn(final GL gl, RemoteLevelElement element) {
+		Transform transform = element.getTransform();
+		Vec3f translation = transform.getTranslation();
+		Vec3f scale = transform.getScale();
+//		float fZoomedInScalingFactor = 0.1f;
+		float fYCorrection = 0f;
+		if (!bucketMouseWheelListener.isZoomedIn()) {
+			fYCorrection = 0f;
+		}
+		else {
+			fYCorrection = 0.145f;
+		}
+
+		gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
+			translation.z() + 0.001f);
+		gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
+		renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
+		gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
+		gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
+			-translation.z() - 0.001f);
+	}
+
 	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element, float fHandleWidth,
 		float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
+
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
@@ -1036,8 +1063,9 @@ public class GLRemoteRendering
 
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(sText, 2 / fScalingFactor - (float) textRenderer.getBounds(sText).getWidth() / 2f
-			* fTextScalingFactor, 2.02f, 0f, fTextScalingFactor);
+		textRenderer.draw3D(sText, fHandleWidth / fScalingFactor
+			- (float) textRenderer.getBounds(sText).getWidth() / 2f * fTextScalingFactor, 2.02f, 0f,
+			fTextScalingFactor);
 		textRenderer.end3DRendering();
 
 		if (bUpsideDown) {
@@ -1050,7 +1078,7 @@ public class GLRemoteRendering
 		EIconTextures eIconTexture, float fWidth, float fHeight) {
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType, iRemoteLevelElementID));
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, eIconTexture);
+		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1077,6 +1105,7 @@ public class GLRemoteRendering
 			glConnectionLineRenderer.enableRendering(false);
 		}
 
+
 		RemoteLevelElement remoteLevelElement = RemoteElementManager.get().getItem(iRemoteLevelElementID);
 
 		EPickingType leftWallPickingType = null;
@@ -1101,19 +1130,19 @@ public class GLRemoteRendering
 			generalManager.getViewGLCanvasManager().getGLEventListener(
 				remoteLevelElement.getContainedElementID());
 		if (view instanceof GLHeatMap) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		}
 		else if (view instanceof GLParallelCoordinates) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
 		}
 		else if (view instanceof GLPathway) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.PATHWAY_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.PATHWAY_SYMBOL);
 		}
 		else if (view instanceof GLGlyph) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		}
 		else if (view instanceof GLCell) {
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+			textureViewSymbol = textureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		}
 		else
 			throw new IllegalStateException("Unknown view that has no symbol assigned.");
@@ -1150,10 +1179,10 @@ public class GLRemoteRendering
 				tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			}
 
-			textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-			textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-			textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-			textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+			textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+			textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 		}
 		else {
 			if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 0) // top
@@ -1180,10 +1209,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 2) // bottom
 			{
@@ -1209,10 +1238,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 1) // left
 			{
@@ -1238,10 +1267,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 3) // right
 			{
@@ -1267,10 +1296,10 @@ public class GLRemoteRendering
 						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				}
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveIn = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = textureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = textureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			// else if
 			// (underInteractionLayer.getPositionIndexByElementID(iViewID) == 0)
@@ -1535,8 +1564,7 @@ public class GLRemoteRendering
 
 		gl.glEnd();
 
-		Texture tempTexture =
-			iconTextureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1651,7 +1679,6 @@ public class GLRemoteRendering
 			if (glConnectionLineRenderer != null) {
 				glConnectionLineRenderer.enableRendering(true);
 			}
-
 			generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
 		}
 	}
@@ -1841,7 +1868,7 @@ public class GLRemoteRendering
 	 * 
 	 */
 	@Override
-	public synchronized void addInitialRemoteView(ASerializedView serView) {
+	public void addInitialRemoteView(ASerializedView serView) {
 		newViews.add(serView);
 	}
 
@@ -1850,7 +1877,7 @@ public class GLRemoteRendering
 	 * 
 	 * @param iPathwayIDToLoad
 	 */
-	public synchronized void addPathwayView(final int iPathwayID) {
+	public void addPathwayView(final int iPathwayID) {
 
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 			generalManager.getPathwayManager().getItem(iPathwayID))) {
@@ -1960,6 +1987,13 @@ public class GLRemoteRendering
 						}
 
 						iActiveViewID = iExternalID;
+						
+						
+						if (tempID != iActiveViewID){
+							tempID = iActiveViewID;
+							resetAnimation();
+							animationTimer.schedule(new AnimationTimerTask(), 1000, 1000);
+						}
 
 						setDisplayListDirty();
 
@@ -1972,7 +2006,6 @@ public class GLRemoteRendering
 						break;
 
 					case CLICKED:
-
 						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
 						// .setDataAboutView(iExternalID);
 
@@ -2188,7 +2221,7 @@ public class GLRemoteRendering
 		return sInfoText.toString();
 	}
 
-	public synchronized void toggleLayoutMode() {
+	public void toggleLayoutMode() {
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
@@ -2210,16 +2243,21 @@ public class GLRemoteRendering
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-			switch(graphType){
-				case GLOBAL_BUNDLING:
-					glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
-					break;
-				case VIEW_CENTERED:
-					glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
-					break;
-				case CONSECUTIVE:
-					glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
-					break;
+			if (ANIMATION){
+				glConnectionLineRenderer = new AnimatedGraphDrawing(focusLevel, stackLevel, poolLevel);
+			}
+			else{
+				switch(graphType){
+					case GLOBAL_BUNDLING:
+						glConnectionLineRenderer = new GLGlobalBundlingPointConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+						break;
+					case VIEW_CENTERED:
+						glConnectionLineRenderer = new GLViewCenteredConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+						break;
+					case CONSECUTIVE:
+						glConnectionLineRenderer = new GLConsecutiveConnectionGraphDrawing(focusLevel, stackLevel, poolLevel);
+						break;
+				}
 			}
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
@@ -2249,8 +2287,8 @@ public class GLRemoteRendering
 		}
 
 		focusLevel = layoutRenderStyle.initFocusLevel();
-		stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
-		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
+		stackLevel = layoutRenderStyle.initStackLevel();
+		poolLevel = layoutRenderStyle.initPoolLevel(-1);
 		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
@@ -2273,7 +2311,8 @@ public class GLRemoteRendering
 		}
 	}
 
-	public synchronized void clearAll() {
+	@Override
+	public void resetView() {
 
 		if (containedViewIDs == null)
 			return;
@@ -2304,23 +2343,26 @@ public class GLRemoteRendering
 
 		// Send out remove broadcast for views that are currently slerped
 		for (SlerpAction slerpAction : arSlerpActions) {
-			viewManager.getGLEventListener(slerpAction.getElementId()).broadcastElements(EVAOperation.REMOVE_ELEMENT);
+			viewManager.getGLEventListener(slerpAction.getElementId()).broadcastElements(
+				EVAOperation.REMOVE_ELEMENT);
 		}
 		arSlerpActions.clear();
-		
 		clearRemoteLevel(focusLevel);
 		clearRemoteLevel(stackLevel);
 		clearRemoteLevel(poolLevel);
+
 		clearRemoteLevel(transitionLevel);
-		
+
 		// Add heat map and par coords view to its initial position in the bucket
 		for (int viewID : containedViewIDs) {
 			AGLEventListener view = viewManager.getGLEventListener(viewID);
 			if (view instanceof GLParallelCoordinates) {
 				stackLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+				view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
 			}
 			else if (view instanceof GLHeatMap) {
 				focusLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+				view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
 			}
 		}
 
@@ -2369,23 +2411,42 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
 		// Update aspect ratio and reinitialize stack and focus layer
 		layoutRenderStyle.setAspectRatio(fAspectRatio);
 
 		layoutRenderStyle.initFocusLevel();
-		layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
-		layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), iMouseOverObjectID);
+		layoutRenderStyle.initStackLevel();
+		layoutRenderStyle.initPoolLevel(iMouseOverObjectID);
 		layoutRenderStyle.initMemoLevel();
 	}
 
 	protected void renderPoolAndMemoLayerBackground(final GL gl) {
-		// Pool layer background
 
-		float fWidth = 0.8f;
 		float fXCorrection = 0.07f; // Detach pool level from stack
+
+		float fZ;
+		if (bucketMouseWheelListener.isZoomedIn())
+			fZ = -0.005f;
+		else
+			fZ = 4f;
+
+		float fXScaling = 1;
+		float fYScaling = 1;
+
+		if (fAspectRatio < 1) {
+			fXScaling = 1 / fAspectRatio;
+			fYScaling = 1;
+		}
+		else {
+			fXScaling = 1;
+			fYScaling = fAspectRatio;
+		}
+
+		float fLeftSceneBorder = (-2 - fXCorrection) * fXScaling;
+		float fBottomSceneBorder = -2 * fYScaling;
 
 		if (layoutMode.equals(LayoutMode.BUCKET)) {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
@@ -2393,11 +2454,15 @@ public class GLRemoteRendering
 
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
+
 			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, -2, 4);
+			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
+				fZ);
+			gl
+				.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
+					fZ);
 			gl.glEnd();
 
 			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID) {
@@ -2410,31 +2475,38 @@ public class GLRemoteRendering
 			}
 
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, 2, 4);
-			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, -2, 4);
+			gl.glVertex3f(fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
+				fZ);
+			gl
+				.glVertex3f(fLeftSceneBorder + BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
+					fZ);
 			gl.glEnd();
 
 			gl.glPopName();
 
-			// Render memo pad background
+			// Render selection heat map list background
 			gl.glColor4fv(GeneralRenderStyle.PANEL_BACKGROUN_COLOR, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, -2, 4);
+			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
+				fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
+				fZ);
 			gl.glEnd();
 
 			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, 2, 4);
-			gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, -2, 4);
+			gl.glVertex3f(-fLeftSceneBorder, fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder, -fBottomSceneBorder, fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, -fBottomSceneBorder,
+				fZ);
+			gl.glVertex3f(-fLeftSceneBorder - BucketLayoutRenderStyle.SIDE_PANEL_WIDTH, fBottomSceneBorder,
+				fZ);
 			gl.glEnd();
 		}
 
@@ -2445,12 +2517,12 @@ public class GLRemoteRendering
 		String sTmp = "POOL AREA";
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0.6f, 0.6f, 0.6f, 1.0f);
-		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / fAspectRatio, -1.97f, 4.001f, 0.003f);
+		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / fAspectRatio, -1.97f, fZ + 0.01f, 0.003f);
 		textRenderer.end3DRendering();
 	}
 
 	@Override
-	public synchronized void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type) {
 		// do nothing
 	}
 
@@ -2460,7 +2532,7 @@ public class GLRemoteRendering
 	 * 
 	 * @param GL
 	 */
-	private synchronized void initNewView(GL gl) {
+	private void initNewView(GL gl) {
 		if (arSlerpActions.isEmpty()) {
 			if (!newViews.isEmpty()) {
 				ASerializedView serView = newViews.remove(0);
@@ -2484,9 +2556,9 @@ public class GLRemoteRendering
 	 * Triggers a toolbar update by sending an event similar to the view activation
 	 */
 	private void triggerToolBarUpdate() {
-		log.info("triggerToolBarUpdate() called");
 
 		ViewActivationEvent viewActivationEvent = new ViewActivationEvent();
+		viewActivationEvent.setSender(this);
 		List<Integer> viewIDs = this.getAllViewIDs();
 		viewActivationEvent.setViewIDs(viewIDs);
 
@@ -2532,7 +2604,9 @@ public class GLRemoteRendering
 			destination = poolLevel.getNextFree();
 		}
 		else {
-			log.log(Level.SEVERE, "No empty space left to add new pathway!");
+			GeneralManager.get().getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"No empty space left to add new pathway!"));
 			newViews.clear();
 			return false;
 		}
@@ -2566,7 +2640,6 @@ public class GLRemoteRendering
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
-		glView.registerEventListeners();
 		useCase.addView(glView);
 		glView.setUseCase(useCase);
 		glView.setRenderedRemote(true);
@@ -2582,8 +2655,8 @@ public class GLRemoteRendering
 	}
 
 	/**
-	 * initializes the configuration of a pathway to the configuraion currently stored in this
-	 * remote-renderin-view.
+	 * initializes the configuration of a pathway to the configuration currently stored in this
+	 * remote-rendering-view.
 	 * 
 	 * @param pathway
 	 *            pathway to set the configuration
@@ -2627,7 +2700,7 @@ public class GLRemoteRendering
 		canvasManager.releaseBusyMode(this);
 	}
 
-	public synchronized void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
+	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		// add new pathways to bucket
 		for (PathwayGraph pathway : newPathwayGraphs) {
@@ -2733,7 +2806,7 @@ public class GLRemoteRendering
 	 */
 	@Override
 	public void registerEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		super.registerEventListeners();
 
 		addPathwayListener = new AddPathwayListener();
 		addPathwayListener.setHandler(this);
@@ -2775,17 +2848,27 @@ public class GLRemoteRendering
 		disableConnectionLinesListener.setHandler(this);
 		eventPublisher.addListener(DisableConnectionLinesEvent.class, disableConnectionLinesListener);
 
-		closeOrResetViewsListener = new CloseOrResetViewsListener();
-		closeOrResetViewsListener.setHandler(this);
-		eventPublisher.addListener(CloseOrResetViewsEvent.class, closeOrResetViewsListener);
+		resetViewListener = new ResetViewListener();
+		resetViewListener.setHandler(this);
+		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
+
+		eventPublisher.addListener(ResetRemoteRendererEvent.class, resetViewListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-		
+
 		toggleNavigationModeListener = new ToggleNavigationModeListener();
 		toggleNavigationModeListener.setHandler(this);
 		eventPublisher.addListener(ToggleNavigationModeEvent.class, toggleNavigationModeListener);
+
+		toggleZoomListener = new ToggleZoomListener();
+		toggleZoomListener.setHandler(this);
+		eventPublisher.addListener(ToggleZoomEvent.class, toggleZoomListener);
+		
+		// resetRemoteRendererListener = new ResetRemoteRendererListener();
+		// resetRemoteRendererListener.setHandler(this);
+		// eventPublisher.addListener(ResetRemoteRendererEvent.class, resetRemoteRendererListener);
 	}
 
 	/**
@@ -2793,8 +2876,8 @@ public class GLRemoteRendering
 	 */
 	@Override
 	public void unregisterEventListeners() {
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
 
+		super.unregisterEventListeners();
 		if (addPathwayListener != null) {
 			eventPublisher.removeListener(addPathwayListener);
 			addPathwayListener = null;
@@ -2828,15 +2911,18 @@ public class GLRemoteRendering
 			eventPublisher.removeListener(disableNeighborhoodListener);
 			disableNeighborhoodListener = null;
 		}
-		if (closeOrResetViewsListener != null) {
-			eventPublisher.removeListener(closeOrResetViewsListener);
-			closeOrResetViewsListener = null;
+		if (resetViewListener != null) {
+			eventPublisher.removeListener(resetViewListener);
+			resetViewListener = null;
 		}
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-
+		if (toggleZoomListener != null) {
+			eventPublisher.removeListener(toggleZoomListener);
+			toggleZoomListener = null;
+		}
 	}
 
 	@Override
@@ -2881,8 +2967,23 @@ public class GLRemoteRendering
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
-	
+
 	public void toggleNavigationMode() {
 		this.bEnableNavigationOverlay = !bEnableNavigationOverlay;
+	}
+	
+	public void toggleZoom() {
+		bucketMouseWheelListener.triggerZoom(!bucketMouseWheelListener.isZoomedIn());
+	}
+	
+	
+	private void resetAnimation(){
+		AnimatedGraphDrawing.setFirstViewValue(-1);
+		AnimatedGraphDrawing.setSecondViewValue(-1);
+		AnimatedGraphDrawing.setThirdViewValue(-1);
+		AnimatedGraphDrawing.setForthViewValue(-1);
+		AnimatedGraphDrawing.setFifthViewValue(-1);
+		animationTimer.cancel();
+		animationTimer = new Timer();
 	}
 }

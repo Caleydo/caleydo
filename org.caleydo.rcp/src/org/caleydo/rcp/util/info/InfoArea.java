@@ -1,7 +1,6 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
@@ -15,22 +14,26 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.view.TriggerSelectionCommandEvent;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ITriggerSelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.TriggerSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
@@ -43,6 +46,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Info area that is located in the side-bar. It shows the current view and the current selection (in a tree).
@@ -51,8 +55,8 @@ import org.eclipse.swt.widgets.TreeItem;
  * @author Alexander Lex
  */
 public class InfoArea
-	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, 
-	ITriggerSelectionCommandHandler, IViewCommandHandler {
+	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
+	IViewCommandHandler {
 
 	IGeneralManager generalManager = null;
 	IEventPublisher eventPublisher = null;
@@ -61,7 +65,7 @@ public class InfoArea
 
 	private Tree selectionTree;
 
-	private TreeItem geneTree;
+	private TreeItem contentTree;
 	private TreeItem experimentTree;
 	// private TreeItem pathwayTree;
 
@@ -71,17 +75,16 @@ public class InfoArea
 	// private GlyphManager glyphManager;
 	private IIDMappingManager idMappingManager;
 
-//	private String shortInfo;
+	// private String shortInfo;
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	protected TriggerSelectionCommandListener triggerSelectionCommandListener = null;
+	protected SelectionCommandListener selectionCommandListener = null;
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
 	protected InfoAreaUpdateListener infoAreaUpdateListener = null;
-	
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -115,7 +118,7 @@ public class InfoArea
 		// gridData.heightHint = 72;
 		// } else {
 		gridData.minimumWidth = 100;
-		gridData.widthHint = 150;
+		gridData.widthHint = 100;
 		gridData.minimumHeight = 82;
 		gridData.heightHint = 82;
 		// }
@@ -132,6 +135,7 @@ public class InfoArea
 			gridData.widthHint = 145;
 			gridData.minimumWidth = 145;
 		}
+
 		// else {
 		// gridData.widthHint = 145;
 		// gridData.minimumWidth = 145;
@@ -152,14 +156,15 @@ public class InfoArea
 		// }
 		// });
 
-		geneTree = new TreeItem(selectionTree, SWT.NONE);
-		geneTree.setText("Genes");
-		geneTree.setExpanded(true);
-		geneTree.setData(-1);
+		contentTree = new TreeItem(selectionTree, SWT.NONE);
+		contentTree.setExpanded(true);
+		contentTree.setData(-1);
 		experimentTree = new TreeItem(selectionTree, SWT.NONE);
-		experimentTree.setText("Experiments");
 		experimentTree.setExpanded(true);
 		experimentTree.setData(-1);
+		experimentTree.setText("Experiments");
+		contentTree.setText(GeneralManager.get().getUseCase().getContentLabel(true, true));
+
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");
 		// pathwayTree.setExpanded(false);
@@ -183,7 +188,7 @@ public class InfoArea
 					for (SelectionDeltaItem selectionItem : selectionDelta) {
 
 						// Flush old genes from this selection type
-						for (TreeItem item : geneTree.getItems()) {
+						for (TreeItem item : contentTree.getItems()) {
 							if (item.getData("selection_type") == selectionItem.getSelectionType()
 								|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
 
@@ -219,57 +224,50 @@ public class InfoArea
 								new Color(parentComposite.getDisplay(), (int) (fArColor[0] * 255),
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
-							Integer iRefSeq =
-								idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-									selectionItem.getPrimaryID());
+							String sContentName = "";
+							if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
-							String sRefSeqID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-									iRefSeq);
+								Integer iRefSeq =
+									idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+										selectionItem.getPrimaryID());
 
-							Integer iDavidID =
-								idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
+								String sRefSeqID =
+									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+										iRefSeq);
 
-							String sGeneSymbol =
-								idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
+								Integer iDavidID =
+									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
 
-							if (sGeneSymbol == null) {
-								sGeneSymbol = "Unknown";
-							}
+								sContentName =
+									idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
-							// boolean bIsExisting = false;
-							// for (TreeItem existingItem : selectionTree.getItems()) {
-							// if (existingItem.getText().equals(sGeneSymbol)
-							// && ((Integer) existingItem.getData()).intValue() == selectionItem
-							// .getPrimaryID()) {
-							// existingItem.setBackground(color);
-							// existingItem.getItem(0).setBackground(color);
-							// existingItem.setData("selection_type", selectionItem.getSelectionType());
-							// bIsExisting = true;
-							// break;
-							// }
-							// }
-
-							// if (!bIsExisting) {
-							TreeItem item = new TreeItem(geneTree, SWT.NONE);
-
-							// FIXME horizontal toolbar style support
-							// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
-							if (Application.bIsWindowsOS) {
-								item.setText(sGeneSymbol + " - " + sRefSeqID);
+								// FIXME horizontal toolbar style support
+								// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
+								if (Application.bIsWindowsOS) {
+									sContentName = sContentName + " - " + sRefSeqID;
+								}
+								else {
+									sContentName = sContentName + "\n" + sRefSeqID;
+								}
 							}
 							else {
-								item.setText(sGeneSymbol + "\n" + sRefSeqID);
+								sContentName =
+									idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
+										selectionItem.getPrimaryID());
 							}
+
+							if (sContentName == null) {
+								sContentName = "Unknown";
+							}
+
+							TreeItem item = new TreeItem(contentTree, SWT.NONE);
+
+							item.setText(sContentName);
 							item.setBackground(color);
 							item.setData(selectionItem.getPrimaryID());
 							item.setData("selection_type", selectionItem.getSelectionType());
 
-							// TreeItem subItem = new TreeItem(item, SWT.NONE);
-							// subItem.setText(sRefSeqID);
-							// subItem.setBackground(color);
-							geneTree.setExpanded(true);
-							// }
+							contentTree.setExpanded(true);
 						}
 					}
 				}
@@ -369,7 +367,7 @@ public class InfoArea
 			parentComposite.getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					lblViewInfoContent.setText(info);
-	
+
 					// for (VADeltaItem item : delta) {
 					// if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
 					// // Flush old items that become deselected/normal
@@ -386,37 +384,35 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, final List<SelectionCommand> selectionCommands) {
+	public void handleContentTriggerSelectionCommand(EIDType type, final SelectionCommand selectionCommand) {
 		if (parentComposite.isDisposed())
 			return;
-		
+
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				ESelectionCommandType cmdType;
-				for (SelectionCommand cmd : selectionCommands) {
-					cmdType = cmd.getSelectionCommandType();
-					if (cmdType == ESelectionCommandType.RESET
-						|| cmdType == ESelectionCommandType.CLEAR_ALL) {
-						selectionTree.removeAll();
-						break;
-					}
-					else if (cmdType == ESelectionCommandType.CLEAR) {
-						// Flush old items that become
-						// deselected/normal
-						for (TreeItem tmpItem : selectionTree.getItems()) {
-							if (tmpItem.getData("selection_type") == cmd.getSelectionType()) {
-								tmpItem.dispose();
-							}
+
+				cmdType = selectionCommand.getSelectionCommandType();
+				if (cmdType == ESelectionCommandType.RESET || cmdType == ESelectionCommandType.CLEAR_ALL) {
+					selectionTree.removeAll();
+				}
+				else if (cmdType == ESelectionCommandType.CLEAR) {
+					// Flush old items that become
+					// deselected/normal
+					for (TreeItem tmpItem : selectionTree.getItems()) {
+						if (tmpItem.getData("selection_type") == selectionCommand.getSelectionType()) {
+							tmpItem.dispose();
 						}
 					}
+
 				}
 			}
 		});
 	}
-	
+
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, List<SelectionCommand> selectionCommands) {
-		
+	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+
 	}
 
 	protected AGLEventListener getUpdateTriggeringView() {
@@ -427,22 +423,23 @@ public class InfoArea
 	public void handleRedrawView() {
 		// nothing to do here
 	}
-	
+
 	@Override
 	public void handleUpdateView() {
 		// nothing to do here
 	}
 
-
 	@Override
 	public void handleClearSelections() {
-		geneTree.removeAll();
+		contentTree.removeAll();
 		experimentTree.removeAll();
 	}
 
 	/**
 	 * handling method for updates about the info text displayed in the this info-area
-	 * @param info short-info of the sender to display 
+	 * 
+	 * @param info
+	 *            short-info of the sender to display
 	 */
 	public void handleInfoAreaUpdate(final String info) {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -451,8 +448,7 @@ public class InfoArea
 			}
 		});
 	}
-	
-	
+
 	/**
 	 * Registers the listeners for this view to the event system. To release the allocated resources
 	 * unregisterEventListeners() has to be called.
@@ -466,9 +462,9 @@ public class InfoArea
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
 
-		triggerSelectionCommandListener = new TriggerSelectionCommandListener();
-		triggerSelectionCommandListener.setHandler(this);
-		eventPublisher.addListener(TriggerSelectionCommandEvent.class, triggerSelectionCommandListener);
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
@@ -477,7 +473,7 @@ public class InfoArea
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-		
+
 		infoAreaUpdateListener = new InfoAreaUpdateListener();
 		infoAreaUpdateListener.setHandler(this);
 		eventPublisher.addListener(InfoAreaUpdateEvent.class, infoAreaUpdateListener);
@@ -496,9 +492,9 @@ public class InfoArea
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
 		}
-		if (triggerSelectionCommandListener != null) {
-			eventPublisher.removeListener(triggerSelectionCommandListener);
-			triggerSelectionCommandListener = null;
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
@@ -512,5 +508,19 @@ public class InfoArea
 			eventPublisher.removeListener(infoAreaUpdateListener);
 			infoAreaUpdateListener = null;
 		}
+	}
+
+	public void dispose() {
+		unregisterEventListeners();
+	}
+
+	@Override
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+		final AEvent event) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				listener.handleEvent(event);
+			}
+		});
 	}
 }

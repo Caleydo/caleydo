@@ -2,7 +2,7 @@ package org.caleydo.rcp.action.toolbar.general;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.views.swt.SearchView;
+import org.caleydo.rcp.view.swt.SearchView;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;

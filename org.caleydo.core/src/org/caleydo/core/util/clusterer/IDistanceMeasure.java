@@ -1,5 +1,10 @@
 package org.caleydo.core.util.clusterer;
 
+/**
+ * Interface class for all self implemented distance measures.
+ * 
+ * @author Bernhard Schlegl
+ */
 public interface IDistanceMeasure {
 
 	/**

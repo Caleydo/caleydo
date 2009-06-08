@@ -1,17 +1,27 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+import gleem.linalg.Vec2f;
+
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
+import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
+import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
+import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -21,9 +31,15 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverEvent;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeMouseOverListener;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
+import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.IClusterNodeEventReceiver;
+import org.caleydo.core.view.opengl.canvas.radial.listener.ChangeColorModeListener;
+import org.caleydo.core.view.opengl.canvas.radial.listener.GoBackInHistoryListener;
+import org.caleydo.core.view.opengl.canvas.radial.listener.GoForthInHistoryListener;
+import org.caleydo.core.view.opengl.canvas.radial.listener.SetMaxDisplayedHierarchyDepthListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -38,13 +54,17 @@ import org.caleydo.core.view.serialize.SerializedDummyView;
  */
 public class GLRadialHierarchy
 	extends AGLEventListener
-	implements IClusterNodeEventReceiver {
+	implements IClusterNodeEventReceiver, IViewCommandHandler {
 
-	public static final int DISP_HIER_DEPTH_DEFAULT = 5;
+	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
 
 	private int iMaxDisplayedHierarchyDepth;
+	private int iUpwardNavigationSliderID;
+	private int iUpwardNavigationSliderButtonID;
+	private int iUpwardNavigationSliderBodyID;
 
 	private boolean bIsAnimationActive;
+	private boolean bIsNewSelection;
 
 	private Tree<PartialDisc> partialDiscTree;
 	private HashMap<Integer, PartialDisc> hashPartialDiscs;
@@ -54,11 +74,18 @@ public class GLRadialHierarchy
 	private PartialDisc pdCurrentSelectedElement;
 	private PartialDisc pdCurrentMouseOverElement;
 
-	private GLU glu;
 	private DrawingController drawingController;
 	private NavigationHistory navigationHistory;
+	private OneWaySlider upwardNavigationSlider;
 
-	private ClusterNodeMouseOverListener clusterNodeMouseOverListener;
+	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
+	private RedrawViewListener redrawViewListener;
+	private GoBackInHistoryListener goBackInHistoryListener;
+	private GoForthInHistoryListener goForthInHistoryListener;
+	private ChangeColorModeListener changeColorModeListener;
+	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
+
+	private GenericSelectionManager selectionManager;
 
 	boolean bIsInListMode = false;
 
@@ -89,19 +116,29 @@ public class GLRadialHierarchy
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
 		navigationHistory.setDrawingController(drawingController);
+		iUpwardNavigationSliderButtonID = 0;
+		iUpwardNavigationSliderID = 0;
+		iUpwardNavigationSliderBodyID = 0;
 
-		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		clusterNodeMouseOverListener = new ClusterNodeMouseOverListener();
-		clusterNodeMouseOverListener.setHandler(this);
-		eventPublisher.addListener(ClusterNodeMouseOverEvent.class, clusterNodeMouseOverListener);
+		selectionManager = new GenericSelectionManager.Builder(EIDType.CLUSTER_NUMBER).build();
 
-		glu = new GLU();
+		glKeyListener = new GLRadialHierarchyKeyListener(this);
+
 		bIsAnimationActive = false;
+		bIsNewSelection = false;
 	}
 
 	@Override
 	public void init(GL gl) {
 		initTestHierarchy();
+
+		Rectangle controlBox = new Rectangle(0, 0, 0.3f, 1.2f);
+		upwardNavigationSlider =
+			new OneWaySlider(new Vec2f(controlBox.getMinX() + 0.1f, controlBox.getMinY() + 0.1f), 0.2f, 1f,
+				pdRealRootElement.getHierarchyLevel(), 1, 0, pdRealRootElement.getHierarchyDepth() - 1);
+
+		LabelManager.get().setControlBox(controlBox);
+
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -114,13 +151,28 @@ public class GLRadialHierarchy
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+
+		// Register keyboard listener to GL canvas
+		parentGLCanvas.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
+
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
+
+		// Register keyboard listener to GL canvas
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
@@ -132,216 +184,69 @@ public class GLRadialHierarchy
 
 	}
 
-	private int buildTree(Tree<ClusterNode> tree, ClusterNode clusterNode, PartialDisc partialDisc,
-		int iChildID) {
+	private void buildTree(Tree<ClusterNode> tree, ClusterNode clusterNode, PartialDisc partialDisc) {
 
 		ArrayList<ClusterNode> alChildNodes = tree.getChildren(clusterNode);
 		ArrayList<PartialDisc> alChildDiscs = new ArrayList<PartialDisc>();
 
 		if (alChildNodes != null) {
 			for (ClusterNode cnChild : alChildNodes) {
-				iChildID++;
 				PartialDisc pdCurrentChildDisc =
-					new PartialDisc(iChildID, cnChild.getNrElements(), partialDiscTree, cnChild);
+					new PartialDisc(cnChild.getClusterNr(), cnChild.getNrElements(), partialDiscTree, cnChild);
 				try {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
-					hashPartialDiscs.put(iChildID, pdCurrentChildDisc);
-					iChildID += buildTree(tree, cnChild, pdCurrentChildDisc, iChildID);
+					hashPartialDiscs.put(cnChild.getClusterNr(), pdCurrentChildDisc);
+					selectionManager.initialAdd(cnChild.getClusterNr());
+					buildTree(tree, cnChild, pdCurrentChildDisc);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		return iChildID;
 	}
 
 	private void initTestHierarchy() {
 
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
-		int childID = 0;
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		TreePorter treePorter = new TreePorter();
 
-		tree = treePorter.importTree("data/clustering/tree.xml");
+		try {
+			tree = treePorter.importTree("data/clustering/hcc_5000.xml");
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		ClusterNode cnRoot = tree.getRoot();
-		PartialDisc pdRoot = new PartialDisc(childID, cnRoot.getNrElements(), partialDiscTree, cnRoot);
+		PartialDisc pdRoot =
+			new PartialDisc(cnRoot.getClusterNr(), cnRoot.getNrElements(), partialDiscTree, cnRoot);
 		partialDiscTree.setRootNode(pdRoot);
-		hashPartialDiscs.put(childID, pdRoot);
-		buildTree(tree, cnRoot, pdRoot, childID);
-
-		// pdRoot.calculateSizes();
+		hashPartialDiscs.put(cnRoot.getClusterNr(), pdRoot);
+		selectionManager.initialAdd(cnRoot.getClusterNr());
+		buildTree(tree, cnRoot, pdRoot);
+		pdRoot.calculateHierarchyLevels(0);
 
 		pdCurrentMouseOverElement = pdRoot;
 		pdCurrentRootElement = pdRoot;
 		pdCurrentSelectedElement = pdRoot;
 		pdRealRootElement = pdRoot;
 
-		// ClusterNode currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// pdRealRootElement =
-		// new PartialDisc(0, 100, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
-		// pdCurrentRootElement = pdRealRootElement;
-		// pdCurrentSelectedElement = pdRealRootElement;
-		// pdCurrentMouseOverElement = pdRealRootElement;
-		// hashPartialDiscs.put(0, pdRealRootElement);
-		// partialDiscTree.setRootNode(pdRealRootElement);
-		//
-		// ArrayList<PartialDisc> children = new ArrayList<PartialDisc>();
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, children.get(0));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// children.add(new PartialDisc(childID, 40, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, children.get(1));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// children.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, children.get(2));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// children.add(new PartialDisc(childID, 15, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, children.get(3));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// children.add(new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, children.get(4));
-		//
-		// partialDiscTree.addChildren(pdCurrentRootElement, children);
-		//
-		// ArrayList<PartialDisc> ch1 = new ArrayList<PartialDisc>();
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch1.add(new PartialDisc(childID, 0.01f, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch1.get(0));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch1
-		// .add(new PartialDisc(childID, 0.3f, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch1.get(1));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch1
-		// .add(new PartialDisc(childID, 0.2f, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch1.get(2));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch1.add(new PartialDisc(childID, 9.49f, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch1.get(3));
-		//
-		// partialDiscTree.addChildren(children.get(0), ch1);
-		//
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// PartialDisc pdTemp =
-		// new PartialDisc(childID, 0.01f, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
-		// partialDiscTree.addChild(ch1.get(0), pdTemp);
-		// hashPartialDiscs.put(childID, pdTemp);
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// pdTemp =
-		// new PartialDisc(childID, 0.3f, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
-		// partialDiscTree.addChild(ch1.get(1), pdTemp);
-		// hashPartialDiscs.put(childID, pdTemp);
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// pdTemp =
-		// new PartialDisc(childID, 0.2f, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
-		// partialDiscTree.addChild(ch1.get(2), pdTemp);
-		// hashPartialDiscs.put(childID, pdTemp);
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// pdTemp =
-		// new PartialDisc(childID, 9.49f, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
-		// partialDiscTree.addChild(ch1.get(3), pdTemp);
-		// hashPartialDiscs.put(childID, pdTemp);
-		//
-		// ArrayList<PartialDisc> ch2 = new ArrayList<PartialDisc>();
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch2.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch2.get(0));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch2.add(new PartialDisc(childID, 5, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch2.get(1));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch2.add(new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch2.get(2));
-		//
-		// partialDiscTree.addChildren(children.get(1), ch2);
-		//
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// PartialDisc ch =
-		// new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree, currentClusterNode);
-		// partialDiscTree.addChild(ch2.get(2), ch);
-		// hashPartialDiscs.put(childID, ch);
-		//
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// pdTemp = new PartialDisc(childID, 25, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode);
-		// partialDiscTree.addChild(ch, pdTemp);
-		// hashPartialDiscs.put(childID, pdTemp);
-		//
-		// ArrayList<PartialDisc> ch4 = new ArrayList<PartialDisc>();
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch4.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch4.get(0));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch4.add(new PartialDisc(childID, 5, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch4.get(1));
-		//
-		// partialDiscTree.addChildren(children.get(3), ch4);
-		//
-		// ArrayList<PartialDisc> ch5 = new ArrayList<PartialDisc>();
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch5.add(new PartialDisc(childID, 10, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch5.get(0));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch5.add(new PartialDisc(childID, 2, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch5.get(1));
-		// childID++;
-		// currentClusterNode = new ClusterNode("Node " + childID, childID, 0.5f, 1);
-		// ch5.add(new PartialDisc(childID, 13, iUniqueID, pickingManager, partialDiscTree,
-		// currentClusterNode));
-		// hashPartialDiscs.put(childID, ch5.get(2));
-		//
-		// partialDiscTree.addChildren(children.get(4), ch5);
-		//
-		// // TODO: This one is important:
-		//
-		navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(), pdRealRootElement,
-			pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
+		navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
+			pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
+
+		selectionManager.addToType(ESelectionType.SELECTION, pdCurrentRootElement.getElementID());
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -350,7 +255,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
@@ -368,7 +273,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 		if (bIsDisplayListDirtyRemote && !bIsAnimationActive) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
@@ -382,15 +287,23 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
-
+	public void display(GL gl) {
+		processEvents();
 		render(gl);
+
+		if (upwardNavigationSlider.handleDragging(gl, glMouseListener)) {
+			updateHierarchyAccordingToNavigationSlider();
+		}
 		// clipToFrustum(gl);
 		//
 		if (bIsAnimationActive) {
 			float fXCenter = viewFrustum.getWidth() / 2;
 			float fYCenter = viewFrustum.getHeight() / 2;
-			drawingController.draw(fXCenter, fYCenter, gl, glu);
+
+			gl.glLoadIdentity();
+			upwardNavigationSlider.draw(gl, pickingManager, textureManager, iUniqueID,
+				iUpwardNavigationSliderID, iUpwardNavigationSliderButtonID, iUpwardNavigationSliderBodyID);
+			drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 		}
 		else
 			gl.glCallList(iGLDisplayListToCall);
@@ -406,7 +319,12 @@ public class GLRadialHierarchy
 		float fXCenter = viewFrustum.getWidth() / 2;
 		float fYCenter = viewFrustum.getHeight() / 2;
 
-		drawingController.draw(fXCenter, fYCenter, gl, glu);
+		gl.glLoadIdentity();
+
+		upwardNavigationSlider.draw(gl, pickingManager, textureManager, iUniqueID, iUpwardNavigationSliderID,
+			iUpwardNavigationSliderButtonID, iUpwardNavigationSliderBodyID);
+
+		drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 
 		// TextRenderer renderer = new TextRenderer(new Font("Courier New", Font.PLAIN, 78), false);
 		//		
@@ -430,42 +348,66 @@ public class GLRadialHierarchy
 		gl.glEndList();
 	}
 
+	private void updateHierarchyAccordingToNavigationSlider() {
+		PartialDisc pdNewRootElement =
+			pdCurrentRootElement.getParentWithLevel(upwardNavigationSlider.getSelectedValue());
+		if (pdNewRootElement != null) {
+			pdCurrentRootElement = pdNewRootElement;
+			pdCurrentMouseOverElement = pdNewRootElement;
+
+			bIsNewSelection = true;
+
+			PartialDisc pdSelectedElement = drawingController.getCurrentDrawingState().getSelectedElement();
+			if (pdSelectedElement != null) {
+				pdCurrentSelectedElement = pdSelectedElement;
+			}
+			navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
+				pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
+			setDisplayListDirty();
+
+			setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement.getElementID());
+		}
+	}
+
 	private void render(GL gl) {
 
-		gl.glLoadIdentity();
-		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION, -2));
-		gl.glColor3f(1, 0, 0);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 1, 0);
-		gl.glVertex3f(1, 1, 0);
-		gl.glVertex3f(1, 0, 0);
-		gl.glVertex3f(0, 0, 0);
-		gl.glEnd();
-		gl.glPopName();
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION, -3));
-		gl.glColor3f(0, 1, 0);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(1, 1, 0);
-		gl.glVertex3f(2, 1, 0);
-		gl.glVertex3f(2, 0, 0);
-		gl.glVertex3f(1, 0, 0);
-		gl.glEnd();
-		gl.glPopName();
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION, -4));
-		gl.glColor3f(0, 0, 1);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 2, 0);
-		gl.glVertex3f(1, 2, 0);
-		gl.glVertex3f(1, 1, 0);
-		gl.glVertex3f(0, 1, 0);
-		gl.glEnd();
-		gl.glPopName();
-
-		gl.glPopAttrib();
+		// gl.glLoadIdentity();
+		// gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		//
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+		// -2));
+		// gl.glColor3f(1, 0, 0);
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0, 1, 0);
+		// gl.glVertex3f(1, 1, 0);
+		// gl.glVertex3f(1, 0, 0);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glEnd();
+		// gl.glPopName();
+		//
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+		// -3));
+		// gl.glColor3f(0, 1, 0);
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(1, 1, 0);
+		// gl.glVertex3f(2, 1, 0);
+		// gl.glVertex3f(2, 0, 0);
+		// gl.glVertex3f(1, 0, 0);
+		// gl.glEnd();
+		// gl.glPopName();
+		//
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
+		// -4));
+		// gl.glColor3f(0, 0, 1);
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0, 2, 0);
+		// gl.glVertex3f(1, 2, 0);
+		// gl.glVertex3f(1, 1, 0);
+		// gl.glVertex3f(0, 1, 0);
+		// gl.glEnd();
+		// gl.glPopName();
+		//
+		// gl.glPopAttrib();
 
 		// TextRenderer textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		//
@@ -582,16 +524,8 @@ public class GLRadialHierarchy
 
 				switch (pickingMode) {
 					case CLICKED:
-						// TODO: Remove this.
-						if (iExternalID == -2)
-							goBackInHistory();
-						if (iExternalID == -3)
-							goForthInHistory();
-						if (iExternalID == -4)
-							changeColorMode();
-
 						if (pdPickedElement != null)
-							drawingController.handleClick(pdPickedElement);
+							drawingController.handleSelection(pdPickedElement);
 						break;
 
 					case MOUSE_OVER:
@@ -601,7 +535,73 @@ public class GLRadialHierarchy
 
 					case RIGHT_CLICKED:
 						if (pdPickedElement != null)
-							drawingController.handleDoubleClick(pdPickedElement);
+							drawingController.handleAlternativeSelection(pdPickedElement);
+						break;
+
+					default:
+						return;
+				}
+				break;
+
+			case RAD_HIERARCHY_SLIDER_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						if (iExternalID == iUpwardNavigationSliderID) {
+							if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
+								updateHierarchyAccordingToNavigationSlider();
+								setDisplayListDirty();
+							}
+						}
+						break;
+
+					default:
+						return;
+				}
+				break;
+
+			case RAD_HIERARCHY_SLIDER_BUTTON_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						if (iExternalID == iUpwardNavigationSliderButtonID) {
+							if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
+								updateHierarchyAccordingToNavigationSlider();
+								setDisplayListDirty();
+							}
+						}
+						break;
+
+					default:
+						return;
+				}
+				break;
+
+			case RAD_HIERARCHY_SLIDER_BODY_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						if (iExternalID == iUpwardNavigationSliderBodyID) {
+							if (upwardNavigationSlider.handleSliderSelection(ePickingType)) {
+								updateHierarchyAccordingToNavigationSlider();
+								setDisplayListDirty();
+							}
+						}
+						// PartialDisc pdNewRootElement =
+						// pdCurrentRootElement
+						// .getParentWithLevel(upwardNavigationSlider.getSelectedValue());
+						// if (pdNewRootElement != null) {
+						// pdCurrentRootElement = pdNewRootElement;
+						// pdCurrentMouseOverElement = pdNewRootElement;
+						//
+						// bIsNewSelection = true;
+						//
+						// PartialDisc pdSelectedElement =
+						// drawingController.getCurrentDrawingState().getSelectedElement();
+						// if (pdSelectedElement != null) {
+						// pdCurrentSelectedElement = pdSelectedElement;
+						// }
+						// navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
+						// pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
+						// setDisplayListDirty();
+						// }
 						break;
 
 					default:
@@ -616,17 +616,25 @@ public class GLRadialHierarchy
 	}
 
 	public void goForthInHistory() {
+		// handleMouseOver(10);
 		navigationHistory.goForth();
 	}
 
 	public void changeColorMode() {
 
+		// ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
+		// event.setClusterNumber(1073741840);
+		// event.setSelectionType(ESelectionType.SELECTION);
+		//		
+		// eventPublisher.triggerEvent(event);
+
 		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
-		if (drawingStrategyManager.isRainbowStrategyDefault()) {
-			drawingStrategyManager.setExpressionStrategyDefault();
+		if (drawingStrategyManager.getDefaultStrategyType() == DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW) {
+			drawingStrategyManager
+				.setDefaultStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_EXPRESSION_COLOR);
 		}
 		else {
-			drawingStrategyManager.setRainbowStrategyDefault();
+			drawingStrategyManager.setDefaultStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
 		}
 		setDisplayListDirty();
 	}
@@ -645,6 +653,7 @@ public class GLRadialHierarchy
 
 	public void setCurrentRootElement(PartialDisc pdCurrentRootElement) {
 		this.pdCurrentRootElement = pdCurrentRootElement;
+		upwardNavigationSlider.setSelectedValue(pdCurrentRootElement.getHierarchyLevel());
 	}
 
 	public PartialDisc getCurrentSelectedElement() {
@@ -663,12 +672,26 @@ public class GLRadialHierarchy
 		this.pdCurrentMouseOverElement = pdCurrentMouseOverElement;
 	}
 
+//	public void setNewSelection(boolean bIsNewSelection) {
+//		this.bIsNewSelection = bIsNewSelection;
+//	}
+
+	public boolean isNewSelection() {
+		return bIsNewSelection;
+	}
+
 	public int getMaxDisplayedHierarchyDepth() {
 		return iMaxDisplayedHierarchyDepth;
 	}
 
 	public void setMaxDisplayedHierarchyDepth(int iMaxDisplayedHierarchyDepth) {
-		this.iMaxDisplayedHierarchyDepth = iMaxDisplayedHierarchyDepth;
+		if (this.iMaxDisplayedHierarchyDepth != iMaxDisplayedHierarchyDepth) {
+
+			bIsNewSelection = false;
+			this.iMaxDisplayedHierarchyDepth = iMaxDisplayedHierarchyDepth;
+			navigationHistory.setCurrentMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+			setDisplayListDirty();
+		}
 	}
 
 	public boolean isInListMode() {
@@ -677,6 +700,25 @@ public class GLRadialHierarchy
 
 	public void setAnimationActive(boolean bIsAnimationActive) {
 		this.bIsAnimationActive = bIsAnimationActive;
+	}
+	
+	public void setNewSelection(ESelectionType selectionType, int iElementID) {
+		
+		selectionManager.clearSelections();
+		selectionManager.addToType(selectionType, iElementID);
+		ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
+		event.setSender(this);
+		event.setClusterNumber(iElementID);
+		event.setSelectionType(selectionType);
+
+		eventPublisher.triggerEvent(event);
+		
+		if(selectionType == ESelectionType.SELECTION) {
+			bIsNewSelection = true;
+		}
+		else {
+			bIsNewSelection = false;
+		}
 	}
 
 	@Override
@@ -699,7 +741,7 @@ public class GLRadialHierarchy
 
 	@Override
 	public void clearAllSelections() {
-		// TODO Auto-generated method stub
+		selectionManager.clearSelections();
 
 	}
 
@@ -711,11 +753,115 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	public void handleMouseOver(String clusterNodeName) {
-		// pdCurrentSelectedElement = pdRealRootElement;
-		// pdCurrentMouseOverElement = pdRealRootElement;
-		// setDisplayListDirty();
+	public void handleClusterNodeSelection(int iClusterNumber, ESelectionType selectionType) {
+		PartialDisc pdSelected = hashPartialDiscs.get(iClusterNumber);
+		if (pdSelected != null) {
 
+			switch (selectionType) {
+
+				case MOUSE_OVER:
+					pdCurrentMouseOverElement = pdSelected;
+					setDisplayListDirty();
+					break;
+
+				case SELECTION:
+					pdCurrentMouseOverElement = pdSelected;
+					bIsNewSelection = true;
+					setDisplayListDirty();
+					break;
+			}
+
+		}
+	}
+
+	// public void setDisplayListDirty() {
+	// int x = 0;
+	// }
+
+	@Override
+	public void registerEventListeners() {
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+
+		clusterNodeMouseOverListener = new ClusterNodeSelectionListener();
+		clusterNodeMouseOverListener.setHandler(this);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeMouseOverListener);
+
+		goBackInHistoryListener = new GoBackInHistoryListener();
+		goBackInHistoryListener.setHandler(this);
+		eventPublisher.addListener(GoBackInHistoryEvent.class, goBackInHistoryListener);
+
+		goForthInHistoryListener = new GoForthInHistoryListener();
+		goForthInHistoryListener.setHandler(this);
+		eventPublisher.addListener(GoForthInHistoryEvent.class, goForthInHistoryListener);
+
+		changeColorModeListener = new ChangeColorModeListener();
+		changeColorModeListener.setHandler(this);
+		eventPublisher.addListener(ChangeColorModeEvent.class, changeColorModeListener);
+
+		setMaxDisplayedHierarchyDepthListener = new SetMaxDisplayedHierarchyDepthListener();
+		setMaxDisplayedHierarchyDepthListener.setHandler(this);
+		eventPublisher.addListener(SetMaxDisplayedHierarchyDepthEvent.class,
+			setMaxDisplayedHierarchyDepthListener);
+
+		// clearSelectionsListener = new ClearSelectionsListener();
+		// clearSelectionsListener.setHandler(this);
+		// eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+		if (clusterNodeMouseOverListener != null) {
+			eventPublisher.removeListener(clusterNodeMouseOverListener);
+			clusterNodeMouseOverListener = null;
+		}
+		if (goBackInHistoryListener != null) {
+			eventPublisher.removeListener(goBackInHistoryListener);
+			goBackInHistoryListener = null;
+		}
+		if (goForthInHistoryListener != null) {
+			eventPublisher.removeListener(goForthInHistoryListener);
+			goForthInHistoryListener = null;
+		}
+		if (changeColorModeListener != null) {
+			eventPublisher.removeListener(changeColorModeListener);
+			changeColorModeListener = null;
+		}
+		if (setMaxDisplayedHierarchyDepthListener != null) {
+			eventPublisher.removeListener(setMaxDisplayedHierarchyDepthListener);
+			setMaxDisplayedHierarchyDepthListener = null;
+		}
+		// if (clearSelectionsListener != null) {
+		// eventPublisher.removeListener(clearSelectionsListener);
+		// clearSelectionsListener = null;
+		// }
+	}
+
+	@Override
+	public void handleClearSelections() {
+		// TODO: Later on when using Selection Manager
+
+	}
+
+	@Override
+	public void handleRedrawView() {
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void handleUpdateView() {
+		setDisplayListDirty();
+	}
+
+	public void handleKeyboardAlternativeDiscSelection() {
+		if (pdCurrentMouseOverElement != null) {
+			drawingController.handleAlternativeSelection(pdCurrentMouseOverElement);
+		}
 	}
 
 }

@@ -38,6 +38,7 @@ public class PreferenceConstants {
 
 	// General
 	public static final String FIRST_START = "firstStart";
+	public static final String VERSION = "version";
 
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
 
@@ -49,4 +50,6 @@ public class PreferenceConstants {
 	public static final String PROXY_PORT = "proxyPort";
 
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
+	
+	public static final String DATA_MODE_LAST_USED = "dataModeLastUsed";
 }

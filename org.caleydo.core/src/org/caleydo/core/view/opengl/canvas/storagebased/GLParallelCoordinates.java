@@ -35,7 +35,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
@@ -59,16 +58,26 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
+import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
+import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
+import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
+import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
+import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -77,7 +86,14 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.BookmarkListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ChangeOrientationListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.PreventOcclusionListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ResetAxisSpacingListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.UseRandomSamplingListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -86,9 +102,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.jface.dialogs.MessageDialog;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -206,6 +220,15 @@ public class GLParallelCoordinates
 
 	private GLInfoAreaManager infoAreaManager;
 
+	// listeners
+	private ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener;
+	private ResetAxisSpacingListener resetAxisSpacingListener;
+	private BookmarkListener bookmarkListener;
+	private ResetViewListener resetViewListener;
+	private UseRandomSamplingListener useRandomSamplingListener;
+	private ChangeOrientationListener changeOrientationListener;
+	private PreventOcclusionListener preventOcclusionListener;
+
 	/**
 	 * Constructor.
 	 */
@@ -273,7 +296,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void initData() {
+	public void initData() {
 		super.initData();
 
 		if (glSelectionHeatMap != null)
@@ -283,12 +306,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void resetView() {
-
-	}
-
-	@Override
-	public synchronized void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) {
 
 		if (set == null)
 			return;
@@ -317,7 +335,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) {
 
 		if (set == null)
 			return;
@@ -339,8 +357,9 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void display(final GL gl) {
+	public void display(final GL gl) {
 
+		processEvents();
 		if (bShowSelectionHeatMap) {
 
 			gl.glTranslatef(viewFrustum.getRight() - glSelectionHeatMap.getViewFrustum().getWidth(), 0,
@@ -442,15 +461,24 @@ public class GLParallelCoordinates
 	 * Choose whether to render one array as a polyline and every entry across arrays is an axis or whether
 	 * the array corresponds to an axis and every entry across arrays is a polyline
 	 */
-	private synchronized void renderStorageAsPolyline(boolean bRenderStorageHorizontally) {
+	private void renderStorageAsPolyline(boolean bRenderStorageHorizontally) {
 
 		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally) {
 			if (bRenderStorageHorizontally && set.getVA(iContentVAID).size() > 100) {
-				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-				messageBox
-					.setMessage("Can not show more than 100 axis - reduce polylines to less than 100 first");
-				messageBox.open();
+
+				getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
+							"Axis Limit",
+							"Can not show more than 100 axis - reduce polylines to less than 100 first");
+						return;
+					}
+				});
+
 				return;
+
 			}
 
 			EIDType eTempType = eAxisDataType;
@@ -471,13 +499,13 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 	}
 
-	public synchronized void triggerAngularBrushing() {
+	public void triggerAngularBrushing() {
 		bAngularBrushingSelectPolyline = true;
 		setDisplayListDirty();
 	}
 
 	@Override
-	public synchronized void renderContext(boolean bRenderOnlyContext) {
+	public void renderContext(boolean bRenderOnlyContext) {
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
@@ -504,7 +532,7 @@ public class GLParallelCoordinates
 	 * 
 	 * @param bPreventOcclusion
 	 */
-	public synchronized void preventOcclusion(boolean bPreventOcclusion) {
+	public void preventOcclusion(boolean bPreventOcclusion) {
 		this.bPreventOcclusion = bPreventOcclusion;
 		setDisplayListDirty();
 	}
@@ -513,7 +541,7 @@ public class GLParallelCoordinates
 	 * Reset all selections and deselections
 	 */
 	@Override
-	public synchronized void clearAllSelections() {
+	public void clearAllSelections() {
 
 		initGates();
 		contentSelectionManager.clearSelections();
@@ -550,16 +578,24 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized void broadcastElements() {
+	public void broadcastElements() {
 
+		// FIXME - this does not what broadcast should actually do
 		// saveSelection();
 
 		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
 		if (delta.size() > 20) {
-			MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-			messageBox
-				.setMessage("Can not show more than 20 selected elements - reduce polylines to less than 20 first");
-			messageBox.open();
+			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
+						"Bookmark Limit",
+						"Can not bookmark more than 20 elements - reduce polylines to less than 20 first");
+
+					return;
+				}
+			});
 			return;
 		}
 
@@ -569,9 +605,7 @@ public class GLParallelCoordinates
 			SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 			TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
 			event.setType(EIDType.EXPRESSION_INDEX);
-			List<SelectionCommand> commands = new ArrayList<SelectionCommand>();
-			commands.add(command);
-			event.setSelectionCommands(commands);
+			event.setSelectionCommand(command);
 			eventPublisher.triggerEvent(event);
 
 			PropagationEvent propagationEvent = new PropagationEvent();
@@ -583,7 +617,7 @@ public class GLParallelCoordinates
 		}
 	}
 
-	public synchronized void saveSelection() {
+	public void saveSelection() {
 
 		// polylineSelectionManager.moveType(ESelectionType.DESELECTED,
 		// ESelectionType.REMOVE);
@@ -994,7 +1028,7 @@ public class GLParallelCoordinates
 			// NaN Button
 			float fXButtonOrigin = alAxisSpacing.get(iCount);
 
-			Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.NAN);
+			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAN);
 
 			tempTexture.enable();
 			tempTexture.bind();
@@ -1061,18 +1095,22 @@ public class GLParallelCoordinates
 				String sAxisLabel = null;
 				switch (eAxisDataType) {
 					// TODO not very generic here
-					// case EXPERIMENT:
-					// // Labels
-					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
 
-					// Please check ALEX
-					// case EXPRESSION_INDEX:
-					// sAxisLabel =
-					// Integer.toString(IDMappingHelper.get().getRefSeqFromStorageIndex(
-					// set.getVA(iContentVAID).get(iCount)));
-					// break;
+					case EXPRESSION_INDEX:
+						sAxisLabel =
+							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(
+								set.getVA(iAxisVAID).get(iCount));
+						if (sAxisLabel == null)
+							sAxisLabel = "Unknown";
+						break;
+
+					case EXPERIMENT:
 					default:
-						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
+						if (bRenderStorageHorizontally) {
+							sAxisLabel = "TODO: gene labels for axis";
+						}
+						else
+							sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
 						break;
 
 				}
@@ -1081,7 +1119,10 @@ public class GLParallelCoordinates
 					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
 				gl.glRotatef(25, 0, 0, 1);
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(sAxisLabel, 0, 0, 0, renderStyle.getSmallFontScalingFactor());
+				float fScaling = renderStyle.getSmallFontScalingFactor();
+				if (isRenderedRemote())
+					fScaling *= 1.5f;
+				textRenderer.draw3D(sAxisLabel, 0, 0, 0, fScaling);
 				textRenderer.end3DRendering();
 				gl.glRotatef(-25, 0, 0, 1);
 				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
@@ -1123,7 +1164,7 @@ public class GLParallelCoordinates
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
 				iPickingID =
 					pickingManager.getPickingID(iUniqueID, EPickingType.ADD_GATE, axisVA.get(iCount));
-				tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
 
 				tempTexture.enable();
 				tempTexture.bind();
@@ -1153,13 +1194,13 @@ public class GLParallelCoordinates
 				if (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount))) {
 					// the mouse over drop
 					if (iChangeDropOnAxisNumber == iCount) {
-						tempTexture = iconTextureManager.getIconTexture(gl, dropTexture);
+						tempTexture = textureManager.getIconTexture(gl, dropTexture);
 						if (!bWasAxisMoved) {
 							dropTexture = EIconTextures.DROP_NORMAL;
 						}
 					}
 					else {
-						tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.DROP_NORMAL);
+						tempTexture = textureManager.getIconTexture(gl, EIconTextures.DROP_NORMAL);
 					}
 					tempTexture.enable();
 					tempTexture.bind();
@@ -1216,7 +1257,7 @@ public class GLParallelCoordinates
 				}
 				else {
 					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.MOVE_AXIS, iCount);
-					tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
+					tempTexture = textureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
 					tempTexture.enable();
 					tempTexture.bind();
 
@@ -1258,7 +1299,7 @@ public class GLParallelCoordinates
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1339,7 +1380,7 @@ public class GLParallelCoordinates
 		gl.glEnd();
 		gl.glPopName();
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_TOP);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_TOP);
 		tempTexture.enable();
 		tempTexture.bind();
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
@@ -1358,7 +1399,7 @@ public class GLParallelCoordinates
 		gl.glEnd();
 		tempTexture.disable();
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1399,7 +1440,7 @@ public class GLParallelCoordinates
 		//
 		// }
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1433,7 +1474,7 @@ public class GLParallelCoordinates
 		// }
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BOTTOM_SELECTION, iGateID));
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1451,7 +1492,7 @@ public class GLParallelCoordinates
 			GATE_Z);
 		gl.glEnd();
 
-		tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
+		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
 		tempTexture.enable();
 		tempTexture.bind();
 		texCoords = tempTexture.getImageTexCoords();
@@ -1518,7 +1559,7 @@ public class GLParallelCoordinates
 		// the gate add button
 		float fYGateAddOrigin = renderStyle.getAxisHeight();
 		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.ADD_MASTER_GATE, 1);
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1564,6 +1605,9 @@ public class GLParallelCoordinates
 	private void renderBoxedYValues(GL gl, float fXOrigin, float fYOrigin, String sRawValue,
 		ESelectionType renderMode) {
 
+		float fScaling = renderStyle.getSmallFontScalingFactor();
+		if (isRenderedRemote())
+			fScaling *= 1.5f;
 		// don't render values that are below the y axis
 		if (fYOrigin < 0)
 			return;
@@ -1574,8 +1618,8 @@ public class GLParallelCoordinates
 
 		Rectangle2D tempRectangle = textRenderer.getBounds(sRawValue);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
-		float fBackPlaneWidth = (float) tempRectangle.getWidth() * renderStyle.getSmallFontScalingFactor();
-		float fBackPlaneHeight = (float) tempRectangle.getHeight() * renderStyle.getSmallFontScalingFactor();
+		float fBackPlaneWidth = (float) tempRectangle.getWidth() * fScaling;
+		float fBackPlaneHeight = (float) tempRectangle.getHeight() * fScaling;
 		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 
@@ -1600,8 +1644,11 @@ public class GLParallelCoordinates
 		// else
 		// text = getDecimalFormat().format(fRawValue);
 
-		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, renderStyle
-			.getSmallFontScalingFactor());
+		float fScaling = renderStyle.getSmallFontScalingFactor();
+		if (isRenderedRemote())
+			fScaling *= 1.5f;
+
+		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, fScaling);
 		textRenderer.end3DRendering();
 	}
 
@@ -1679,6 +1726,7 @@ public class GLParallelCoordinates
 		eventPublisher.triggerEvent(event);
 
 		if (glMouseListener.wasMouseReleased()) {
+
 			bIsDraggingActive = false;
 		}
 
@@ -1848,6 +1896,9 @@ public class GLParallelCoordinates
 			// hashDeselectedPolylines.put(iCurrent, null);
 			// }
 		}
+		if (bIsDraggingActive || bIsAngularBrushingActive) {
+			triggerSelectionUpdate();
+		}
 
 		// for (int iCurrent : hashDeselectedPolylines.keySet())
 		// {
@@ -1856,6 +1907,17 @@ public class GLParallelCoordinates
 		// polylineSelectionManager.addToType(ESelectionType.DESELECTED,
 		// iCurrent);
 		// }
+	}
+
+	private void triggerSelectionUpdate() {
+		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
+		selectionUpdateEvent.setSelectionDelta(polylineSelectionManager.getDelta());
+		selectionUpdateEvent.setSender(this);
+		eventPublisher.triggerEvent(selectionUpdateEvent);
+		// send out a major update which tells the hhm to update its textures
+		UpdateViewEvent updateView = new UpdateViewEvent();
+		updateView.setSender(this);
+		eventPublisher.triggerEvent(updateView);
 	}
 
 	@Override
@@ -1871,13 +1933,13 @@ public class GLParallelCoordinates
 				break;
 			case POLYLINE_SELECTION:
 				switch (ePickingMode) {
-					case DOUBLE_CLICKED:
-						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-						loadPathwaysByGeneEvent.setSender(this);
-						loadPathwaysByGeneEvent.setGeneID(iExternalID);
-						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-						generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-						// intentionally no break
+					// case DOUBLE_CLICKED:
+					// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+					// loadPathwaysByGeneEvent.setSender(this);
+					// loadPathwaysByGeneEvent.setGeneID(iExternalID);
+					// loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
+					// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
+					// // intentionally no break
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
@@ -1896,6 +1958,10 @@ public class GLParallelCoordinates
 
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
+
+						// Prevent handling of non genetic data in context menu
+						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+							break;
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
 							new GeneContextMenuItemContainer();
@@ -1949,12 +2015,12 @@ public class GLParallelCoordinates
 				// }
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX && !bAngularBrushingSelectPolyline) {
+					//
+					// SelectionCommand command =
+					// new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
+					// // sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
-					SelectionCommand command =
-						new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-					// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-
-					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+					ISelectionDelta selectionDelta = polylineSelectionManager.getDelta();
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
@@ -2004,6 +2070,7 @@ public class GLParallelCoordinates
 					handleConnectedElementRep(selectionDelta);
 				}
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
 				event.setSelectionDelta(selectionDelta);
 				eventPublisher.triggerEvent(event);
 
@@ -2140,6 +2207,8 @@ public class GLParallelCoordinates
 						hashGates.put(iGateID, new Pair<Float, Float>(0f, renderStyle.getAxisHeight() / 2f));
 
 						hashIsGateBlocking.put(iGateID, new ArrayList<Integer>());
+						handleUnselection();
+						triggerSelectionUpdate();
 						setDisplayListDirty();
 
 						break;
@@ -2151,6 +2220,8 @@ public class GLParallelCoordinates
 						hashMasterGates.put(++iNumberOfMasterGates, new Pair<Float, Float>(0f, renderStyle
 							.getAxisHeight() / 2f));
 						hashIsGateBlocking.put(iNumberOfMasterGates, new ArrayList<Integer>());
+						handleUnselection();
+						triggerSelectionUpdate();
 						setDisplayListDirty();
 						break;
 				}
@@ -2162,13 +2233,14 @@ public class GLParallelCoordinates
 						if (iExternalID > 999) {
 							hashGates.remove(iExternalID);
 							hashIsGateBlocking.remove(iExternalID);
-							setDisplayListDirty();
 						}
 						else {
 							hashMasterGates.remove(iExternalID);
 							hashIsGateBlocking.remove(iExternalID);
-							setDisplayListDirty();
 						}
+						handleUnselection();
+						triggerSelectionUpdate();
+						setDisplayListDirty();
 						break;
 				}
 				break;
@@ -2254,7 +2326,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public synchronized String getShortInfo() {
+	public String getShortInfo() {
 		String message;
 		int iNumLines =
 			contentSelectionManager.getNumberOfElements(ESelectionType.NORMAL)
@@ -2262,24 +2334,25 @@ public class GLParallelCoordinates
 				+ contentSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
 		if (iDisplayEveryNthPolyline == 1) {
 			message =
-				"Parallel Coordinates - " + iNumLines + " genes / " + set.getVA(iStorageVAID).size()
-					+ " experiments";
+				"Parallel Coordinates - " + iNumLines + " " + useCase.getContentLabel(false, true) + " / "
+					+ set.getVA(iStorageVAID).size() + " experiments";
 		}
 		else {
 			message =
 				"Parallel Coordinates - a sample of " + iNumLines / iDisplayEveryNthPolyline + " out of "
-					+ iNumLines + " genes / \n " + set.getVA(iStorageVAID).size() + " experiments";
+					+ iNumLines + " " + useCase.getContentLabel(false, true) + " / \n "
+					+ set.getVA(iStorageVAID).size() + " experiments";
 		}
 		return message;
 
 	}
 
 	@Override
-	public synchronized String getDetailedInfo() {
+	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
-		sInfoText.append(set.getVA(iPolylineVAID).size() + " Genes as polylines and "
-			+ set.getVA(iAxisVAID).size() + " experiments as axis.\n");
+		sInfoText.append(set.getVA(iPolylineVAID).size() + useCase.getContentLabel(false, true)
+			+ " as polylines and " + set.getVA(iAxisVAID).size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
@@ -2293,10 +2366,11 @@ public class GLParallelCoordinates
 			}
 
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all Genes in the dataset\n");
+				sInfoText.append("Showing all " + useCase.getContentLabel(false, true) + " in the dataset\n");
 			}
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all Genes that have a known DAVID ID mapping\n");
+				sInfoText.append("Showing all " + useCase.getContentLabel(false, true)
+					+ " that have a known DAVID ID mapping\n");
 			}
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 				sInfoText
@@ -2752,6 +2826,76 @@ public class GLParallelCoordinates
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		applyCurrentSelectionToVirtualArrayListener = new ApplyCurrentSelectionToVirtualArrayListener();
+		applyCurrentSelectionToVirtualArrayListener.setHandler(this);
+		eventPublisher.addListener(ApplyCurrentSelectionToVirtualArrayEvent.class,
+			applyCurrentSelectionToVirtualArrayListener);
+
+		resetAxisSpacingListener = new ResetAxisSpacingListener();
+		resetAxisSpacingListener.setHandler(this);
+		eventPublisher.addListener(ResetAxisSpacingEvent.class, resetAxisSpacingListener);
+
+		bookmarkListener = new BookmarkListener();
+		bookmarkListener.setHandler(this);
+		eventPublisher.addListener(BookmarkEvent.class, bookmarkListener);
+
+		resetViewListener = new ResetViewListener();
+		resetViewListener.setHandler(this);
+		eventPublisher.addListener(ResetAllViewsEvent.class, resetViewListener);
+		// second event for same listener
+		eventPublisher.addListener(ResetParallelCoordinatesEvent.class, resetViewListener);
+
+		useRandomSamplingListener = new UseRandomSamplingListener();
+		useRandomSamplingListener.setHandler(this);
+		eventPublisher.addListener(UseRandomSamplingEvent.class, useRandomSamplingListener);
+
+		changeOrientationListener = new ChangeOrientationListener();
+		changeOrientationListener.setHandler(this);
+		eventPublisher
+			.addListener(ChangeOrientationParallelCoordinatesEvent.class, changeOrientationListener);
+
+		preventOcclusionListener = new PreventOcclusionListener();
+		preventOcclusionListener.setHandler(this);
+		eventPublisher.addListener(PreventOcclusionEvent.class, preventOcclusionListener);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		if (applyCurrentSelectionToVirtualArrayListener != null) {
+			eventPublisher.removeListener(applyCurrentSelectionToVirtualArrayListener);
+			applyCurrentSelectionToVirtualArrayListener = null;
+		}
+
+		if (resetAxisSpacingListener != null) {
+			eventPublisher.removeListener(resetAxisSpacingListener);
+			resetAxisSpacingListener = null;
+		}
+
+		if (bookmarkListener != null) {
+			eventPublisher.removeListener(bookmarkListener);
+			bookmarkListener = null;
+		}
+		if (resetViewListener != null) {
+			eventPublisher.removeListener(resetViewListener);
+			resetViewListener = null;
+		}
+
+		if (changeOrientationListener != null) {
+			eventPublisher.removeListener(changeOrientationListener);
+			changeOrientationListener = null;
+		}
+
+		if (preventOcclusionListener != null) {
+			eventPublisher.removeListener(preventOcclusionListener);
+			preventOcclusionListener = null;
+		}
 	}
 
 }

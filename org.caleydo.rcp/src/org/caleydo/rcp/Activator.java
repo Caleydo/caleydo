@@ -17,7 +17,7 @@ public class Activator
 	// The shared instance
 	private static Activator plugin;
 
-	public static String sBundleVersion;
+	public static String sVersion;
 
 	/**
 	 * The constructor
@@ -29,7 +29,7 @@ public class Activator
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		sBundleVersion = getBundle().getHeaders().get(Constants.BUNDLE_VERSION).toString();
+		sVersion = getBundle().getHeaders().get(Constants.BUNDLE_VERSION).toString();
 	}
 
 	@Override

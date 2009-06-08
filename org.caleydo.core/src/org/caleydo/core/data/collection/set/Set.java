@@ -14,31 +14,22 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.export.SetExporter;
+import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
-import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.clusterer.AffinityClusterer;
+import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EClustererType;
-import org.caleydo.core.util.clusterer.HierarchicalClusterer;
-import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.KMeansClusterer;
-import org.caleydo.core.util.clusterer.TreeClusterer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Implementation of the ISet interface
@@ -272,11 +263,25 @@ public class Set
 			throw new IllegalStateException(
 				"Can not produce raw data on set level for inhomogenous sets. Access via storages");
 
+		double result;
+
 		if (dNormalized == 0)
-			return getMin();
+			result = getMin();
 		// if(getMin() > 0)
-		return getMin() + dNormalized * (getMax() - getMin());
+		result = getMin() + dNormalized * (getMax() - getMin());
 		// return (dNormalized) * (getMax() + getMin());
+		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
+			return result;
+		}
+		else if (externalDataRep == EExternalDataRepresentation.LOG2) {
+
+			return Math.pow(2, result);
+		}
+		else if (externalDataRep == EExternalDataRepresentation.LOG10) {
+			return Math.pow(10, result);
+		}
+		throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
+			+ externalDataRep);
 	}
 
 	public double getNormalizedForRaw(double dRaw) {
@@ -284,10 +289,32 @@ public class Set
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
 
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+				"This method is untested - test when first used"));
+
+		double result;
 		if (dRaw < getMin() || dRaw > getMax())
 			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
 
-		return (dRaw - getMin()) / (getMax() - getMin());
+		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
+			result = dRaw;
+		}
+		if (externalDataRep == EExternalDataRepresentation.LOG2) {
+			result = Math.log(dRaw) / Math.log(2);
+		}
+		else if (externalDataRep == EExternalDataRepresentation.LOG10) {
+			result = Math.log10(dRaw);
+		}
+		else {
+			throw new IllegalStateException("Conversion raw to normalized not implemented for data rep"
+				+ externalDataRep);
+		}
+
+		result = (result - getMin()) / (getMax() - getMin());
+
+		return result;
+
 	}
 
 	@Override
@@ -489,126 +516,22 @@ public class Set
 		return bIsSetHomogeneous;
 	}
 
-	public void export(String sFileName, boolean bExportBucketInternal) {
+	public void export(String sFileName, EWhichViewToExport eWichViewToExport) {
 		SetExporter exporter = new SetExporter();
-		exporter.export(this, sFileName, bExportBucketInternal);
+		exporter.export(this, sFileName, eWichViewToExport);
 	}
 
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState) {
-
-		Integer VAId = 0;
-		boolean bSkipClustering = false;
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
-			IClusterer clusterer;
-
-			Shell shell = new Shell();
-			MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
-			messageBox.setText("Start Clustering");
-			messageBox
-				.setMessage("VA contains more than 1000 elements because of this the cluster process will take a long time."
-					+ "Press OK to start clustering. " + "Press Cancel to skip clustering.");
-
-			int iNrElem = 0;
-
-			if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-				iNrElem = getVA(iVAIdContent).size();
-			else
-				iNrElem = getVA(iVAIdStorage).size();
-
-			if (iNrElem > 1000) {
-
-				if (messageBox.open() == SWT.CANCEL)
-					bSkipClustering = true;
-
-			}
-
-			if (bSkipClustering == false) {
-				switch (clusterState.getClustererAlgo()) {
-					case TREE_CLUSTERER:
-
-						if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-							clusterer = new TreeClusterer(getVA(iVAIdContent).size());
-						else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-							clusterer = new TreeClusterer(getVA(iVAIdStorage).size());
-						else {
-							System.out.println("Not implemented yet");
-							clusterer = new TreeClusterer(getVA(iVAIdContent).size());
-						}
-
-						// System.out.println("treeClustering in progress ... ");
-						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-						// System.out.println("treeClustering done");
-
-						break;
-
-					case COBWEB_CLUSTERER:
-
-						clusterer = new HierarchicalClusterer(0);
-
-						// System.out.println("Cobweb in progress ... ");
-						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-						// System.out.println("Cobweb done");
-
-						break;
-
-					case AFFINITY_PROPAGATION:
-
-						if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-							clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
-						else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-							clusterer = new AffinityClusterer(getVA(iVAIdStorage).size());
-						else {
-							System.out.println("Not implemented yet");
-							clusterer = new AffinityClusterer(getVA(iVAIdContent).size());
-						}
-
-						// System.out.println("affinityPropagation in progress ... ");
-						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-						// System.out.println("affinityPropagation done");
-
-						break;
-
-					case KMEANS_CLUSTERER:
-
-						clusterer = new KMeansClusterer(0);
-
-						// System.out.println("KMeansClusterer in progress ... ");
-						VAId = clusterer.getSortedVAId(this, iVAIdContent, iVAIdStorage, clusterState);
-						// System.out.println("KMeansClusterer done");
-
-						break;
-				}
-
-				IVirtualArray virtualArray = getVA(VAId);
-
-				if (clusterState.getClustererAlgo() == EClustererAlgo.AFFINITY_PROPAGATION
-					|| clusterState.getClustererAlgo() == EClustererAlgo.KMEANS_CLUSTERER) {
-					// || clusterState.getClustererAlgo() == EClustererAlgo.COBWEB_CLUSTERER) {
-
-					IGroupList groupList = new GroupList(virtualArray.size());
-
-					ArrayList<Integer> examples = getAlExamples();
-					int cnt = 0;
-					for (Integer iter : getAlClusterSizes()) {
-						Group temp = new Group(iter, false, examples.get(cnt), ESelectionType.NORMAL);
-						groupList.append(temp);
-						cnt++;
-					}
-					virtualArray.setGroupList(groupList);
-				}
-
-				hashSetVAs.put(virtualArray.getID(), virtualArray);
-
-				return VAId;
-			}
+			ClusterManager clusterManager = new ClusterManager(this);
+			return clusterManager.cluster(iVAIdContent, iVAIdStorage, clusterState, iProgressBarOffsetValue,
+				iProgressBarMultiplier);
+		}
+		else
 			return -1;
-		}
-		else {
-			System.out.println("Set is not numerical/homogeneous --> clustering not allowed !");
-			return null;
-		}
 	}
 
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {
@@ -710,13 +633,17 @@ public class Set
 		gm.getSetManager().unregisterItem(iUniqueID);
 		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
 		// However, to make sure.
-		for (IVirtualArray va : hashSetVAs.values()) {
-			va.destroy();
-		}
-		for (IVirtualArray va : hashStorageVAs.values()) {
-			va.destroy();
-		}
+	}
 
+	@Override
+	public void finalize() {
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Set " + this + "destroyed"));
+	}
+
+	@Override
+	public String toString() {
+		return "Set " + getLabel() + " with " + alStorages.size() + " storages.";
 	}
 
 }

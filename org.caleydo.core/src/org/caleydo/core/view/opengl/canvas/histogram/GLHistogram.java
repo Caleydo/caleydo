@@ -10,10 +10,9 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.event.view.storagebased.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -86,12 +85,12 @@ public class GLHistogram
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
+//		registerEventListeners();
 	}
 
 	@Override
 	public void init(GL gl) {
 
-		histogram = set.getHistogram();
 	}
 
 	@Override
@@ -118,7 +117,14 @@ public class GLHistogram
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void initData()
+	{
+		super.initData();
+		histogram = set.getHistogram();
+	}
+	
+	@Override
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -127,7 +133,7 @@ public class GLHistogram
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -145,7 +151,7 @@ public class GLHistogram
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
@@ -157,8 +163,8 @@ public class GLHistogram
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
-
+	public void display(GL gl) {
+		processEvents();
 		if (bUpdateColorPointPosition || bUpdateLeftSpread || bUpdateRightSpread)
 			updateColorPointPosition(gl);
 		// clipToFrustum(gl);
@@ -272,6 +278,8 @@ public class GLHistogram
 					viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
+				if (fLeftSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+				renderCaption(gl, markerPoint.getValue() - fLeftSpread);
 
 			}
 
@@ -321,6 +329,8 @@ public class GLHistogram
 					viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
+				if (fRightSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
+					renderCaption(gl, markerPoint.getValue() + fRightSpread);
 
 			}
 
@@ -344,6 +354,9 @@ public class GLHistogram
 
 	private void renderCaption(GL gl, float normalizedValue) {
 		DecimalFormat decimalFormat = new DecimalFormat("#####.##");
+		
+		if(getParentGLCanvas().getSize().getWidth() < 500)
+			return;
 
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0, 0, 0, 1);
@@ -351,9 +364,18 @@ public class GLHistogram
 
 		double correspondingValue = set.getRawForNormalized(normalizedValue);
 
+		if (Math.abs(correspondingValue) > 10000)
+			decimalFormat = new DecimalFormat("0.#E0");
+		else if (Math.abs(correspondingValue) > 100)
+			decimalFormat = new DecimalFormat("#####");
+		else if (Math.abs(correspondingValue) > 10)
+			decimalFormat = new DecimalFormat("#####.#");
+		else
+			decimalFormat = new DecimalFormat("#####.##");
+
 		String text = decimalFormat.format(correspondingValue);
 
-		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth, 0f, 0.001f,
+		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth + HistogramRenderStyle.CAPTION_SPACING, HistogramRenderStyle.CAPTION_SPACING, 0.001f,
 			GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR);
 		// textRenderer.flush();
 		textRenderer.end3DRendering();
@@ -577,13 +599,8 @@ public class GLHistogram
 	}
 
 	@Override
-	public synchronized void setSet(ISet set) {
-		super.setSet(set);
-		histogram = set.getHistogram();
-	}
-
-	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -595,6 +612,7 @@ public class GLHistogram
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -604,5 +622,4 @@ public class GLHistogram
 			clearSelectionsListener = null;
 		}
 	}
-
 }

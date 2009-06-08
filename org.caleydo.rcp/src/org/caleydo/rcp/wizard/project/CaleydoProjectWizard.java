@@ -5,13 +5,9 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.action.file.FileOpenProjectAction;
-import org.caleydo.rcp.wizard.project.NewOrExistingProjectPage.EProjectType;
+import org.caleydo.rcp.wizard.project.ChooseProjectTypePage.EProjectType;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Rectangle;
@@ -30,9 +26,9 @@ public class CaleydoProjectWizard
 	 * Constructor.
 	 */
 	public CaleydoProjectWizard(final Shell parentShell) {
-		super();
-
-		parentShell.setText("Open project file");
+	
+		this.setWindowTitle("Caleydo - Project Wizard");
+	
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
 		Rectangle rect = parentShell.getBounds();
@@ -44,14 +40,14 @@ public class CaleydoProjectWizard
 
 	@Override
 	public void addPages() {
-		addPage(new NewOrExistingProjectPage());
+		addPage(new ChooseProjectTypePage());
 	}
 
 	@Override
 	public boolean performFinish() {
-		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete()) {
-			NewOrExistingProjectPage page =
-				(NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME);
+		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).isPageComplete()) {
+			ChooseProjectTypePage page =
+				(ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME);
 
 			IUseCase useCase;
 			
@@ -59,17 +55,17 @@ public class CaleydoProjectWizard
 
 				useCase = new GeneticUseCase();
 				
-				if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-					Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
-				}
-				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
-					Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
+//				if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
+//					Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
+//				}
+				if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
+					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_RANDOM;
 				}
 				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
-					Application.applicationMode = EApplicationMode.SAMPLE_DATA_REAL;
+					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL;
 				}
 				else if (page.getProjectType() == EProjectType.NEW_PROJECT) {
-					Application.applicationMode = EApplicationMode.STANDARD;
+					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 				}
 //				else
 //					throw new IllegalStateException("Not implemented!");
@@ -77,6 +73,7 @@ public class CaleydoProjectWizard
 			else if (page.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
 				
 				useCase = new UnspecifiedUseCase();
+				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 			}
 			else
 				throw new IllegalStateException("Not implemented!");
@@ -98,7 +95,7 @@ public class CaleydoProjectWizard
 
 	@Override
 	public boolean canFinish() {
-		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).isPageComplete())
+		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).isPageComplete())
 			return true;
 
 		return false;
@@ -106,43 +103,43 @@ public class CaleydoProjectWizard
 
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-		if (page instanceof NewOrExistingProjectPage) {
-			if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME)).getProjectType() == EProjectType.NEW_PROJECT) {
+		if (page instanceof ChooseProjectTypePage) {
+			if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() == EProjectType.NEW_PROJECT) {
 				NewProjectImportDataPage nextPage =
 					(NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
 
 				nextPage.setPageComplete(true);
 				return nextPage;
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.EXISTING_PROJECT) {
-				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
-				fileOpenProjectAction.run();
+//				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
+//				fileOpenProjectAction.run();
 
 				this.performFinish();
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
 
 			}
-			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-				.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-				// Remove heatmap and par coord views
-				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
-					.getAllGLEventListeners()) {
-					if (glEventListener instanceof GLHeatMap
-						|| glEventListener instanceof GLParallelCoordinates) {
-						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-							glEventListener);
-					}
-				}
-
-				this.performFinish();
-			}
+//			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
+//				.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
+//				// Remove heatmap and par coord views
+//				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
+//					.getAllGLEventListeners()) {
+//					if (glEventListener instanceof GLHeatMap
+//						|| glEventListener instanceof GLParallelCoordinates) {
+//						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
+//							glEventListener);
+//					}
+//				}
+//
+//				this.performFinish();
+//			}
 		}
 
 		return page;

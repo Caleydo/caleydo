@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.views.opengl.GLHyperbolicView;
+import org.caleydo.rcp.view.opengl.GLHyperbolicView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

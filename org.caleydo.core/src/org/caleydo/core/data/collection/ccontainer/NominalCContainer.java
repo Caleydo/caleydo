@@ -108,6 +108,7 @@ public class NominalCContainer<T>
 	 * 
 	 * @param sAlStorage
 	 */
+	@SuppressWarnings("unchecked")
 	private void setUpMapping(ArrayList<T> tAlStorage) {
 		for (T tContent : tAlStorage) {
 			hashNominalToDiscrete.put(tContent, new Float(0));

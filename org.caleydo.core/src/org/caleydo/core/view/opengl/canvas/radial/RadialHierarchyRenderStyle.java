@@ -20,6 +20,13 @@ public class RadialHierarchyRenderStyle
 	public static final float TRIANGLE_HEIGHT_PERCENTAGE = 0.03f;
 	public static final float TRIANGLE_TOP_RADIUS_PERCENTAGE = 1.025f;
 	
+	public static final float MIN_DETAIL_SCREEN_PERCENTAGE = 0.4f;
+	public static final float MAX_DETAIL_SCREEN_PERCENTAGE = 0.6f;
+	public static final float USED_SCREEN_PERCENTAGE = 0.8f;
+	public static final int MIN_DISPLAYED_DETAIL_DEPTH = 2;
+	
+	public static final int MAX_LABELING_DEPTH = 5;
+	
 	
 
 	public RadialHierarchyRenderStyle(IViewFrustum viewFrustum) {

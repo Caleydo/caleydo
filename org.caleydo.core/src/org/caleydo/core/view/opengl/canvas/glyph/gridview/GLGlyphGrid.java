@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -26,6 +25,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.Gly
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRectangle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Glyph View Grid saves & organizes the positions in the grid
@@ -47,7 +47,7 @@ public class GLGlyphGrid {
 
 	private int GLGridList_ = -1;
 
-	private EIconIDs iPositionType = EIconIDs.DISPLAY_RECTANGLE;
+	private EPositionModel iPositionType = EPositionModel.DISPLAY_RECTANGLE;
 
 	private Vec2i worldLimit_ = null;
 
@@ -58,7 +58,7 @@ public class GLGlyphGrid {
 
 	private GlyphRenderStyle renderStyle = null;
 
-	private HashMap<EIconIDs, GlyphGridPositionModel> positionModels = null;
+	private HashMap<EPositionModel, GlyphGridPositionModel> positionModels = null;
 
 	private GLGlyphGenerator glyphGenerator;
 
@@ -73,14 +73,15 @@ public class GLGlyphGrid {
 		worldLimit_ = new Vec2i();
 		glyphCenter = new Vec2f();
 
+		glyphs_ = new HashMap<Integer, GlyphEntry>();
 		glyphMap_ = new Vector<Vector<GlyphGridPosition>>();
 
-		positionModels = new HashMap<EIconIDs, GlyphGridPositionModel>();
-		positionModels.put(EIconIDs.DISPLAY_PLUS, new GlyphGridPositionModelPlus(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_RANDOM, new GlyphGridPositionModelRandom(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_CIRCLE, new GlyphGridPositionModelCircle(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_RECTANGLE, new GlyphGridPositionModelRectangle(renderStyle));
-		positionModels.put(EIconIDs.DISPLAY_SCATTERPLOT, new GlyphGridPositionModelScatterplot(renderStyle));
+		positionModels = new HashMap<EPositionModel, GlyphGridPositionModel>();
+		positionModels.put(EPositionModel.DISPLAY_PLUS, new GlyphGridPositionModelPlus(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_RANDOM, new GlyphGridPositionModelRandom(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_CIRCLE, new GlyphGridPositionModelCircle(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_RECTANGLE, new GlyphGridPositionModelRectangle(renderStyle));
+		positionModels.put(EPositionModel.DISPLAY_SCATTERPLOT, new GlyphGridPositionModelScatterplot(renderStyle));
 
 		setGridSize(50, 100);
 
@@ -334,8 +335,8 @@ public class GLGlyphGrid {
 			}
 		}
 
-		generalManager.getLogger().log(Level.WARNING,
-			"Someone wanted a Glyph GL List on the grid position " + x + ", " + y + ", but there is nothing");
+		generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+			"Someone wanted a Glyph GL List on the grid position " + x + ", " + y + ", but there is nothing"));
 		return -1;
 	}
 
@@ -394,8 +395,8 @@ public class GLGlyphGrid {
 	public GlyphEntry getGlyph(int id) {
 
 		if (!glyphs_.containsKey(id)) {
-			generalManager.getLogger().log(Level.WARNING,
-				"Someone wanted a Glyph with the id " + id + " but it doesn't exist.");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"Someone wanted a Glyph with the id " + id + " but it doesn't exist."));
 			return null;
 		}
 		return glyphs_.get(id);
@@ -488,11 +489,11 @@ public class GLGlyphGrid {
 		gl.glEndList();
 	}
 
-	public EIconIDs getGlyphPositions() {
+	public EPositionModel getGlyphPositions() {
 		return iPositionType;
 	}
 
-	public GlyphGridPositionModel getGlyphPositionModel(EIconIDs model) {
+	public GlyphGridPositionModel getGlyphPositionModel(EPositionModel model) {
 		return positionModels.get(iPositionType);
 	}
 
@@ -500,7 +501,7 @@ public class GLGlyphGrid {
 		setGlyphPositions(iPositionType);
 	}
 
-	public void setGlyphPositions(EIconIDs iTyp) {
+	public void setGlyphPositions(EPositionModel iTyp) {
 		iPositionType = iTyp;
 
 		if (this.positionModels.containsKey(iTyp)) {

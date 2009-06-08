@@ -2,7 +2,7 @@ package org.caleydo.rcp.command.handler.help;
 
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.views.swt.HTMLBrowserView;
+import org.caleydo.rcp.view.swt.HTMLBrowserView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,7 +14,7 @@ public class HelpContentsHandler
 	extends AbstractHandler
 	implements IHandler {
 
-	private final static String URL_HELP_CONTENTS = "http://www.caleydo.org/help.html";
+	private final static String URL_HELP_CONTENTS = "http://www.caleydo.org/help/help.html";
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		

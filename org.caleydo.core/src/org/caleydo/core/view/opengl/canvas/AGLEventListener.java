@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -15,18 +17,24 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.IPollingListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
@@ -50,7 +58,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public abstract class AGLEventListener
 	extends AView
-	implements GLEventListener {
+	implements GLEventListener, IPollingListenerOwner, IResettableView {
 	public enum EBusyModeState {
 		SWITCH_OFF,
 		ON,
@@ -104,7 +112,7 @@ public abstract class AGLEventListener
 
 	protected GeneralRenderStyle renderStyle;
 
-	protected TextureManager iconTextureManager;
+	protected TextureManager textureManager;
 
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
@@ -130,18 +138,16 @@ public abstract class AGLEventListener
 	protected ContextMenu contextMenu;
 
 	/**
-	 * This set changes during rendering. On display list dirty the global newSet is assigned to the set of
-	 * AView. Therefore in the next rendering of the view the new data is applied. This guarantees that the
-	 * set does not change in the middle of the display method. The new set
+	 * The queue which holds the events
 	 */
-	private ISet newSet;
+	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
 
 	/**
 	 * Constructor.
 	 */
 	protected AGLEventListener(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final boolean bRegisterToParentCanvasNow) {
-		
+
 		// If the glCanvas object is null - then the view is rendered remote.
 		super(glCanvas != null ? glCanvas.getID() : -1, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.GL_EVENT_LISTENER));
@@ -171,9 +177,10 @@ public abstract class AGLEventListener
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 		idMappingManager = generalManager.getIDMappingManager();
-		iconTextureManager = TextureManager.get();
+		textureManager = new TextureManager();
 		contextMenu = ContextMenu.get();
-		contextMenu = ContextMenu.get();
+
+		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 	}
 
 	@Override
@@ -187,7 +194,7 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public synchronized void display(GLAutoDrawable drawable) {
+	public final void display(GLAutoDrawable drawable) {
 
 		try {
 			((GLEventListener) parentGLCanvas).display(drawable);
@@ -214,7 +221,7 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+	public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
 
 		((GLEventListener) parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
 	}
@@ -250,22 +257,33 @@ public abstract class AGLEventListener
 	}
 
 	/**
-	 * Method responsible for initialization of the data. Note: This is completely independent of init(gl)!
+	 * <p>
+	 * Method responsible for initialization of the data. It is intended to be overridden, all subclasses must
+	 * use this method to initialize their members related to {@link AView#set}.
+	 * </p>
+	 * <p>
+	 * Note: This is completely independent of {@link #init(GL)}
+	 * </p>
 	 */
-	public synchronized void initData() {
-
-		set = newSet;
+	public void initData() {
 	}
 
 	/**
-	 * Reset the view to its initial state, synchronized
+	 * Clears all selections, meaning that no element is selected or deselected after this method was called.
+	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
+	 * are therefore not reset.
 	 */
-	public synchronized void resetView() {
+	public abstract void clearAllSelections();
+
+	/**
+	 * Reset the view to its initial state by calling {@link #initData()}
+	 */
+	public void resetView() {
 		initData();
 	}
 
 	/**
-	 * Set the display list to dirty
+	 * Set the display list to dirty. May be overridden by subclasses.
 	 */
 	public void setDisplayListDirty() {
 		bIsDisplayListDirtyLocal = true;
@@ -326,8 +344,8 @@ public abstract class AGLEventListener
 	 *            TODO
 	 */
 	public abstract void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager);
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager);
 
 	/**
 	 * GL display method that has to be called in all cases
@@ -335,6 +353,18 @@ public abstract class AGLEventListener
 	 * @param gl
 	 */
 	public abstract void display(final GL gl);
+
+	/**
+	 * This method should be called every display cycle when it is save to change the state of the object. It
+	 * processes all the previously submitted events.
+	 */
+	public final void processEvents() {
+		Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
+		while (queue.peek() != null) {
+			pair = queue.poll();
+			pair.getFirst().handleEvent(pair.getSecond());
+		}
+	}
 
 	/**
 	 * Intended for internal use when no other view is managing the scene. Has to call display internally!
@@ -351,14 +381,10 @@ public abstract class AGLEventListener
 	 */
 	public abstract void displayRemote(final GL gl);
 
-	/**
-	 * Clears all selections, meaning that no element is selected or deselected after this method was called.
-	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
-	 * are therefore not reset.
-	 */
-	public abstract void clearAllSelections();
-
 	public final GLCaleydoCanvas getParentGLCanvas() {
+		if (this.isRenderedRemote())
+			return getRemoteRenderingGLCanvas().getParentGLCanvas();
+
 		return parentGLCanvas;
 	}
 
@@ -366,7 +392,7 @@ public abstract class AGLEventListener
 		return viewFrustum;
 	}
 
-	public void setFrustum(IViewFrustum viewFrustum) {
+	public final void setFrustum(IViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
 	}
 
@@ -376,7 +402,7 @@ public abstract class AGLEventListener
 	 * 
 	 * @param gl
 	 */
-	protected void checkForHits(final GL gl) {
+	protected final void checkForHits(final GL gl) {
 
 		Set<EPickingType> hitTypes = pickingManager.getHitTypes(iUniqueID);
 		if (hitTypes == null)
@@ -400,6 +426,8 @@ public abstract class AGLEventListener
 						contextMenu.handleEvents(ePickingMode, iExternalID);
 					}
 					else {
+						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
+							contextMenu.flush();
 						handleEvents(pickingType, ePickingMode, iExternalID, tempPick);
 					}
 					pickingManager.flushHits(iUniqueID, pickingType);
@@ -438,32 +466,37 @@ public abstract class AGLEventListener
 	 */
 	public abstract void broadcastElements(EVAOperation type);
 
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	/**
+	 * Set the level of detail to be displayed
+	 * 
+	 * @param detailLevel
+	 */
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		this.detailLevel = detailLevel;
 		setDisplayListDirty();
 	}
 
-	public synchronized void setRemoteLevelElement(RemoteLevelElement element) {
+	public final void setRemoteLevelElement(RemoteLevelElement element) {
 		this.remoteLevelElement = element;
 	}
 
-	public RemoteLevelElement getRemoteLevelElement() {
+	public final RemoteLevelElement getRemoteLevelElement() {
 		return remoteLevelElement;
 	}
 
-	public boolean isRenderedRemote() {
+	public final boolean isRenderedRemote() {
 		return bIsRenderedRemote;
 	}
 
-	public void setRenderedRemote(boolean bIsRenderedRemote) {
+	public final void setRenderedRemote(boolean bIsRenderedRemote) {
 		this.bIsRenderedRemote = bIsRenderedRemote;
 	}
 
-	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
+	public final IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
 		return remoteRenderingGLView;
 	}
 
-	protected synchronized void renderBusyMode(final GL gl) {
+	protected void renderBusyMode(final GL gl) {
 		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
 		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;
 
@@ -494,7 +527,7 @@ public abstract class AGLEventListener
 
 		// TODO bad hack here, frustum wrong or renderStyle null
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.LOADING);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.LOADING);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -523,7 +556,7 @@ public abstract class AGLEventListener
 		tempTexture.disable();
 
 		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-		Texture circleTexture = iconTextureManager.getIconTexture(gl, EIconTextures.LOADING_CIRCLE);
+		Texture circleTexture = textureManager.getIconTexture(gl, EIconTextures.LOADING_CIRCLE);
 		circleTexture.enable();
 		circleTexture.bind();
 		texCoords = circleTexture.getImageTexCoords();
@@ -557,6 +590,13 @@ public abstract class AGLEventListener
 		// System.out.println("Busy mode status: " +eBusyModeState);
 	}
 
+	/**
+	 * Enables the busy mode, which renders the loading dialog and disables the picking. This method may be
+	 * overridden if different behaviour is desired.
+	 * 
+	 * @param bBusyMode
+	 *            true if the busy mode should be enabled, false if it should be disabled
+	 */
 	public void enableBusyMode(final boolean bBusyMode) {
 		if (!bBusyMode && eBusyModeState == EBusyModeState.ON) {
 			eBusyModeState = EBusyModeState.SWITCH_OFF;
@@ -566,28 +606,23 @@ public abstract class AGLEventListener
 			pickingManager.enablePicking(false);
 			eBusyModeState = EBusyModeState.ON;
 		}
-
-		// System.out.println("Busy mode change: " +eBusyModeState.toString());
 	}
 
-	/**
-	 * Method return true if an element is currently selected for a given selection type.
-	 */
 	public abstract int getNumberOfSelections(ESelectionType eSelectionType);
 
-	public float getAspectRatio() {
+	public final float getAspectRatio() {
 		return fAspectRatio;
 	}
 
-	public int getContentVAID() {
+	public final int getContentVAID() {
 		return iContentVAID;
 	}
 
-	public int getStorageVAID() {
+	public final int getStorageVAID() {
 		return iStorageVAID;
 	}
 
-	public EDetailLevel getDetailLevel() {
+	public final EDetailLevel getDetailLevel() {
 		return detailLevel;
 	}
 
@@ -605,13 +640,19 @@ public abstract class AGLEventListener
 		unregisterEventListeners();
 	}
 
+	/**
+	 * Sets the set, calls {@link #initData()} and sets display lists dirty
+	 */
 	@Override
-	public synchronized void setSet(ISet set) {
+	public final void setSet(ISet set) {
 
+		this.set = set;
+		initData();
+		setDisplayListDirty();
 		// In GL views the new set is not immediately written to the set variable of AView.
 		// The new set is then assigned to the working set when the display list is dirty the next time.
-		newSet = set;
-		setDisplayListDirty();
+		// newSet = set;
+		// setDisplayListDirty();
 	}
 
 	/**
@@ -629,4 +670,24 @@ public abstract class AGLEventListener
 		}
 		return viewIDs;
 	}
+
+	// /*
+	// * *
+	// * @deprecated Use {@link #queueEvent(AEventListener,AEvent)} instead
+	// */
+	// @Override
+	// public void queueEvent(AEventListener<IListenerOwner> listener, AEvent event) {
+	// queueEvent(listener, event);
+	// }
+
+	@Override
+	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
+	}
+
+	@Override
+	public synchronized Pair<AEventListener<? extends IListenerOwner>, AEvent> getEvent() {
+		return queue.poll();
+	}
+
 }

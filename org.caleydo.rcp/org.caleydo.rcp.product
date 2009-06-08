@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
+<product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>
@@ -24,7 +24,7 @@ All Rights Reserved.
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="resources/icons/caleydo16.gif"/>
+   <windowImages i16="resources/icons/caleydo16.gif" i32="/org.caleydo.rcp/resources/icons/caleydo32.gif" i48="/org.caleydo.rcp/resources/icons/caleydo48.gif" i64="/org.caleydo.rcp/resources/icons/caleydo64.gif" i128="/org.caleydo.rcp/resources/icons/caleydo128.gif"/>
 
    <splash
       location="org.caleydo.rcp" />
@@ -32,10 +32,10 @@ All Rights Reserved.
       <linux icon="/org.caleydo.data/resources/icons/caleydo/caleydo16.xpm"/>
       <solaris/>
       <win useIco="false">
+         <ico path="/org.caleydo.rcp/resources/icons/caleydo_icon.ico"/>
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -44,7 +44,7 @@ All Rights Reserved.
    </plugins>
 
    <features>
-      <feature id="org.caleydo.rcp.feature" version="1.1.0"/>
+      <feature id="org.caleydo.rcp.feature" version="1.2.3"/>
    </features>
 
 

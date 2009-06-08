@@ -29,13 +29,13 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -43,13 +43,13 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 
@@ -161,7 +161,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -170,7 +170,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 
 		if (set == null)
 			return;
@@ -196,7 +196,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 
 		if (set == null)
 			return;
@@ -219,8 +219,8 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
-
+	public void display(GL gl) {
+		processEvents();
 		// clipToFrustum(gl);
 
 		gl.glCallList(iGLDisplayListToCall);
@@ -250,15 +250,14 @@ public class GLHeatMap
 
 					gl.glColor4f(1, 0, 0, 1);
 
-					Texture tempTexture =
-						TextureManager.get().getIconTexture(gl, EIconTextures.POOL_REMOVE_VIEW);
+					Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.REMOVE);
 					tempTexture.enable();
 					tempTexture.bind();
 					TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-					float ICON_SIZE = 0.13f;
-					float xPosition = viewFrustum.getWidth() - ICON_SIZE - 0.02f;
-					float yPosition = renderStyle.getRenderHeight() + 0.1f;
+					float ICON_SIZE = 0.08f;
+					float xPosition = viewFrustum.getWidth() - ICON_SIZE + 0.03f;
+					float yPosition = renderStyle.getRenderHeight() + 0.2f;
 
 					gl.glColor4f(1, 1, 1, 1);
 					gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -310,7 +309,7 @@ public class GLHeatMap
 	private void renderSymbol(GL gl) {
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -333,7 +332,7 @@ public class GLHeatMap
 		tempTexture.disable();
 	}
 
-	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally) {
+	public void renderHorizontally(boolean bRenderStorageHorizontally) {
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		// renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
@@ -381,8 +380,12 @@ public class GLHeatMap
 
 	@Override
 	public String getShortInfo() {
-		return "Heat Map - " + set.getVA(iContentVAID).size() + " genes / " + set.getVA(iStorageVAID).size()
-			+ " experiments";
+		// FIXME this should not be needed
+		if (iContentVAID == -1 || iStorageVAID == -1)
+			return "Heat Map - 0 " + useCase.getContentLabel(false, true) + " / 0 experiments";
+
+		return "Heat Map - " + set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(false, true)
+			+ " / " + set.getVA(iStorageVAID).size() + " experiments";
 	}
 
 	@Override
@@ -391,16 +394,17 @@ public class GLHeatMap
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
 		if (bRenderStorageHorizontally) {
-			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
-				+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(false, true)
+				+ " in columns and " + set.getVA(iStorageVAID).size() + " experiments in rows.\n");
 		}
 		else {
-			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
-				+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(true, true)
+				+ " in rows and " + set.getVA(iStorageVAID).size() + " experiments in columns.\n");
 		}
 
 		if (bRenderOnlyContext) {
-			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
+			sInfoText.append("Showing only " + " " + useCase.getContentLabel(false, true)
+				+ " which occur in one of the other views in focus\n");
 		}
 		else {
 			if (bUseRandomSampling) {
@@ -437,14 +441,14 @@ public class GLHeatMap
 			case HEAT_MAP_LINE_SELECTION:
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
-					case DOUBLE_CLICKED:
-
-						LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-						loadPathwaysByGeneEvent.setSender(this);
-						loadPathwaysByGeneEvent.setGeneID(iExternalID);
-						loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-						eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
-						// intentionally no break
+					// case DOUBLE_CLICKED:
+					//
+					// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
+					// loadPathwaysByGeneEvent.setSender(this);
+					// loadPathwaysByGeneEvent.setGeneID(iExternalID);
+					// loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
+					// eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
+					// // intentionally no break
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
@@ -467,6 +471,10 @@ public class GLHeatMap
 						break;
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
+
+						// Prevent handling of non genetic data in context menu
+						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+							break;
 
 						if (!isRenderedRemote()) {
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
@@ -510,11 +518,12 @@ public class GLHeatMap
 							return;
 						}
 
-						createStorageSelection(eSelectionType, iExternalID);
 						break;
 					default:
 						return;
 				}
+
+				createStorageSelection(eSelectionType, iExternalID);
 
 				break;
 			case LIST_HEAT_MAP_CLEAR_ALL:
@@ -523,12 +532,10 @@ public class GLHeatMap
 						contentSelectionManager.resetSelectionManager();
 						setDisplayListDirty();
 						SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-						
-						ArrayList<SelectionCommand> commands = new ArrayList<SelectionCommand>();
-						commands.add(command);
+
 						TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
 						event.setType(EIDType.EXPRESSION_INDEX);
-						event.setSelectionCommands(commands);
+						event.setSelectionCommand(command);
 						event.setSender(this);
 						eventPublisher.triggerEvent(event);
 						break;
@@ -546,6 +553,8 @@ public class GLHeatMap
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 		contentSelectionManager.clearSelection(selectionType);
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
+		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 		// TODO: Integrate multi spotting support again
 		// // Resolve multiple spotting on chip and add all to the
@@ -731,7 +740,7 @@ public class GLHeatMap
 			}
 
 			// render line captions
-			if (fFieldWidth > 0.1f) {
+			if (fFieldWidth > 0.055f) {
 				boolean bRenderRefSeq = false;
 				// if (fFieldWidth < 0.2f)
 				// {
@@ -744,17 +753,19 @@ public class GLHeatMap
 				// }
 
 				if (detailLevel == EDetailLevel.HIGH) {
-					bRenderRefSeq = true;
+					// bRenderRefSeq = true;
 					String sContent;
+					String refSeq = null;
 
 					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-						sContent = GeneticIDMappingHelper.get().getShortNameFromDavid(iContentIndex);
+						sContent =
+							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(iContentIndex);
+						refSeq = GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 
 						if (bRenderRefSeq) {
 							sContent += " | ";
 							// Render heat map element name
-							sContent +=
-								GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+							sContent += refSeq;
 						}
 					}
 					else if (set.getSetType() == ESetType.UNSPECIFIED) {
@@ -867,8 +878,19 @@ public class GLHeatMap
 					}
 					else {
 						textRenderer.setColor(0, 0, 0, 1);
-						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.1f,
-							0, fLineDegrees, fFontScaling);
+
+						if (currentType == ESelectionType.SELECTION
+							|| currentType == ESelectionType.MOUSE_OVER) {
+							renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 2.5f,
+								fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
+							if (refSeq != null)
+								renderCaption(gl, refSeq, fXPosition + fFieldWidth / 6 * 4.5f,
+									fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
+						}
+						else {
+							renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f,
+								fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
+						}
 					}
 				}
 
@@ -883,6 +905,7 @@ public class GLHeatMap
 				if (iCount == set.getVA(iContentVAID).size()) {
 					fYPosition = 0;
 					for (Integer iStorageIndex : set.getVA(iStorageVAID)) {
+						textRenderer.setColor(0, 0, 0, 1);
 						renderCaption(gl, set.get(iStorageIndex).getLabel(), fXPosition + 0.1f, fYPosition
 							+ fFieldHeight / 2, 0, fColumnDegrees, renderStyle.getSmallFontScalingFactor());
 						fYPosition += fFieldHeight;
@@ -904,7 +927,7 @@ public class GLHeatMap
 	// }
 
 	// @Override
-	// public synchronized void clear()
+	// public void clear()
 	// {
 	// contentSelectionManager.clearSelections();
 	// storageSelectionManager.clearSelections();
@@ -916,15 +939,13 @@ public class GLHeatMap
 
 		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
 
-		float fOpacity = 1;
-		// if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
-		// || contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
-		// || detailLevel.compareTo(EDetailLevel.LOW) > 0) {
-		// fOpacity = 1f;
-		// }
-		// else {
-		// fOpacity = 0.3f;
-		// }
+		float fOpacity = 0;
+		if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
+			fOpacity = 0.3f;
+		}
+		else {
+			fOpacity = 1.0f;
+		}
 
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -1200,7 +1221,8 @@ public class GLHeatMap
 	// }
 	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fZOrigin,
 		float fRotation, float fFontScaling) {
-
+		if (isRenderedRemote() && remoteRenderingGLView instanceof GLRemoteRendering)
+			fFontScaling *= 1.5;
 		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
 			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
 			sLabel = sLabel + "..";
@@ -1220,7 +1242,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public synchronized void broadcastElements() {
+	public void broadcastElements() {
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();

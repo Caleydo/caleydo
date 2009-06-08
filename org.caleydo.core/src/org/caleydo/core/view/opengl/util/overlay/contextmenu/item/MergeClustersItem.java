@@ -5,7 +5,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Merge clusters
+ * Item for merging to groups/clusters
  * 
  * @author Bernhard Schlegl
  */
@@ -21,6 +21,13 @@ public class MergeClustersItem
 		setText("Merge Clusters");
 	}
 
+	/**
+	 * Depending on which group info should be handeld a bollean has to be set. True for genes, false for
+	 * experiments
+	 * 
+	 * @param bGeneGroup
+	 *            if true gene groups will be handled, if false experiment groups
+	 */
 	public void setGeneExperimentFlag(boolean bGeneGroup) {
 
 		MergeGroupsEvent mergeGroupEvent = new MergeGroupsEvent();

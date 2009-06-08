@@ -3,15 +3,14 @@ package org.caleydo.rcp.action.file;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.dialog.file.LoadDataDialog;
-import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -25,7 +24,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Action responsible for exporting data to current Caleydo project.
@@ -42,7 +40,7 @@ public class ExportDataAction
 
 	private IWorkbenchWindow window;
 
-	private Button[] radios = new Button[2];
+	private Button[] radios = new Button[3];
 
 	private Composite composite;
 
@@ -55,14 +53,8 @@ public class ExportDataAction
 	 * Constructor.
 	 */
 	public ExportDataAction(final Composite parentComposite) {
-		super("Load Data");
-		setId(ID);
-		setToolTipText("Import data from text file");
-		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
-			IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
-
+		super("Export Data");
 		this.parentComposite = parentComposite;
-
 	}
 
 	@Override
@@ -110,14 +102,17 @@ public class ExportDataAction
 		});
 
 		boolean bDoesBucketExist = false;
-		boolean bDoesStandaloneStorageBasedExist = false;
+		boolean doesHeatMapExist = false;
+		boolean doParallelCoordinatesExist = false;
 		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			if (view instanceof GLRemoteRendering) {
 				bDoesBucketExist = true;
 			}
-			if ((view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap)
-				&& !view.isRenderedRemote()) {
-				bDoesStandaloneStorageBasedExist = true;
+			if (view instanceof GLHierarchicalHeatMap && !view.isRenderedRemote()) {
+				doesHeatMapExist = true;
+			}
+			if (view instanceof GLParallelCoordinates && !view.isRenderedRemote()) {
+				doParallelCoordinatesExist = true;
 			}
 		}
 
@@ -132,9 +127,19 @@ public class ExportDataAction
 		}
 
 		radios[1] = new Button(composite, SWT.RADIO);
-		radios[1].setText("Export All Data");
+		radios[1].setText("Export Heat Map");
 		radios[1].setBounds(10, 30, 75, 30);
-		if (!bDoesStandaloneStorageBasedExist) {
+		if (!doesHeatMapExist) {
+			radios[1].setEnabled(false);
+		}
+		else if (!bDoesBucketExist) {
+			radios[1].setSelection(true);
+		}
+
+		radios[2] = new Button(composite, SWT.RADIO);
+		radios[2].setText("Export Parallel Coordinates");
+		radios[2].setBounds(10, 30, 75, 30);
+		if (!doParallelCoordinatesExist) {
 			radios[1].setEnabled(false);
 		}
 		else if (!bDoesBucketExist) {
@@ -145,14 +150,16 @@ public class ExportDataAction
 
 	public void execute() {
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems()) {
-			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				if (radios[0].getSelection()) {
-					set.export(sFileName, true);
-				}
-				else {
-					set.export(sFileName, false);
-				}
+			if (radios[0].getSelection()) {
+				set.export(sFileName, EWhichViewToExport.BUCKET);
 			}
+			else if (radios[1].getSelection()) {
+				set.export(sFileName, EWhichViewToExport.HEAT_MAP);
+			}
+			else if (radios[2].getSelection()) {
+				set.export(sFileName, EWhichViewToExport.PARALLEL_COORDINATES);
+			}
+
 		}
 
 		// TODO: review

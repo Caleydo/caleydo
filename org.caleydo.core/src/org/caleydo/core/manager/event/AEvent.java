@@ -66,4 +66,14 @@ public abstract class AEvent {
 		Sender = sender;
 	}
 
+	/**
+	 * Abstract method that has to be implemented by every inheriting view. It is supposed to check the
+	 * integrity of the event as soon as it is actually published, thereby avoiding errors due to incorrect
+	 * initialization. When additional information can be provided an exception should be thrown inside the
+	 * method, else a return false is sufficient, which causes an exception in the {@link EventPublisher}.
+	 * 
+	 * @return true if everything is correct, else false
+	 */
+	public abstract boolean checkIntegrity();
+
 }

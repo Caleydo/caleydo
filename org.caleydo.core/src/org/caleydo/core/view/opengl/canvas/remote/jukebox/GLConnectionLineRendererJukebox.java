@@ -1,7 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.remote.jukebox;
 
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
@@ -95,29 +98,38 @@ public class GLConnectionLineRendererJukebox
 		// }
 		// int iKey = selectedElementRep.getContainingViewID();
 		//
-		// alPointLists = hashViewToPointLists.get(iKey);
+		// alPointLists = hashIDTypeToViewToPointLists.get(iKey);
 		// if (alPointLists == null)
 		// {
 		// alPointLists = new ArrayList<ArrayList<Vec3f>>();
-		// hashViewToPointLists.put(iKey, alPointLists);
+		// hashIDTypeToViewToPointLists.put(iKey, alPointLists);
 		// }
 		// alPointLists.add(alPointsTransformed);
 		//
 		// }
 		// }
 		//
-		// if (hashViewToPointLists.size() > 1)
+		// if (hashIDTypeToViewToPointLists.size() > 1)
 		// {
 		// renderLineBundling(gl);
 		// }
 		//
-		// hashViewToPointLists.clear();
+		// hashIDTypeToViewToPointLists.clear();
 		// }
 		// }
 
 	}
+	@Override
+	protected void renderLine(GL gl, Vec3f vecSrcPoint, Vec3f vecDestPoint, int numberOfLines,
+		Vec3f vecViewCenterPoint, float[] arColor) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
-	protected void renderLineBundling(GL gl, float[] arColor) {}
+	protected void renderLineBundling(GL gl, EIDType idType, float[] arColor) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

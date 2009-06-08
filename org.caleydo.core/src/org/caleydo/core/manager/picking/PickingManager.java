@@ -15,7 +15,6 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -270,12 +269,10 @@ public class PickingManager {
 		if (glMouseListener.wasMouseDoubleClicked()) {
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.DOUBLE_CLICKED;
-			ContextMenu.get().flush();
 		}
 		else if (glMouseListener.wasMouseDragged()) {
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = EPickingMode.DRAGGED;
-			ContextMenu.get().flush();
 		}
 		else if (glMouseListener.wasLeftMouseButtonPressed()) {
 			pickPoint = glMouseListener.getPickedPoint();

@@ -3,7 +3,6 @@ package org.caleydo.core.manager.parser;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
@@ -221,7 +220,8 @@ public abstract class AXmlParserManager
 				reader.setProperty(Parser.schemaProperty, htmlSchema);
 			}
 
-			generalManager.getLogger().log(Level.FINE, "Start parsing file " + sFileName);
+//			generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+//				"Start parsing file " + sFileName));
 
 			reader.parse(inputSource);
 
@@ -232,7 +232,8 @@ public abstract class AXmlParserManager
 				inputSource.getCharacterStream().close();
 			}
 
-			generalManager.getLogger().log(Level.FINE, "Finished parsing file " + sFileName);
+//			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID, 
+//				"Finished parsing file " + sFileName));
 
 		}
 		catch (SAXException saxe) {

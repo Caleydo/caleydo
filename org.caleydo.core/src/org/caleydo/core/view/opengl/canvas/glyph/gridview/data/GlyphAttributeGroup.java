@@ -2,10 +2,10 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * @author Stefan Sauer
@@ -49,15 +49,15 @@ public class GlyphAttributeGroup {
 			hmMappingNominalOrdinal.put(sValue, fValue);
 		}
 		else {
-			generalManager.getLogger().log(Level.WARNING,
-				"double nominal value (" + sValue + ") found in " + sKey);
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"double nominal value (" + sValue + ") found in " + sKey));
 		}
 		if (!hmMappingOrdinalNominal.containsKey(fValue)) {
 			hmMappingOrdinalNominal.put(fValue, sValue);
 		}
 		else {
-			generalManager.getLogger().log(Level.WARNING,
-				"double ordinal value (" + sValue + ") found in " + sKey);
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"double ordinal value (" + sValue + ") found in " + sKey));
 		}
 
 		alAttributes.add(sValue);

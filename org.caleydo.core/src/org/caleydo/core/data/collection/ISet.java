@@ -6,6 +6,7 @@ import java.util.List;
 import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.data.collection.set.SetIterator;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.GroupList;
@@ -245,12 +246,13 @@ public interface ISet
 	public IVirtualArray getVA(int iUniqueID);
 
 	/**
-	 * Export a manipulated subset of the data to the destination specifiedn in sFileName. Determine whether
+	 * Export a manipulated subset of the data to the destination specified in sFileName. Determine which view
+	 * to export by the int flag. This is only temporary.
 	 * 
 	 * @param sFileName
 	 * @param bExportBucketInternal
 	 */
-	public void export(String sFileName, boolean bExportBucketInternal);
+	public void export(String sFileName, EWhichViewToExport eWhichViewToExport);
 
 	/**
 	 * Clusters a Storage
@@ -259,9 +261,16 @@ public interface ISet
 	 * @param iVAIdStorage
 	 * @param eClustererAlgo
 	 * @param bClusterGenes
+	 * @param iProgressBarOffset
+	 *            Offset value used for overall progress bar. Used in case of bi clustering to avoid problems
+	 *            with disposed shell
+	 * @param iProgressBarMultiplier
+	 *            Multiplier used for overall progress bar. Used in case of bi clustering to avoid problems
+	 *            with disposed shell
 	 * @return Integer Id of virtual arrays holding cluster result
 	 */
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState);
+	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
+		int iProgressBarOffset, int iProgressBarMultiplier);
 
 	/**
 	 * Sets clustered Tree for genes
@@ -321,12 +330,27 @@ public interface ISet
 	 */
 	public void setAlExamples(ArrayList<Integer> alExamples);
 
+	/**
+	 * Sets imported group information
+	 * 
+	 * @param arGroupInfo
+	 */
 	public void setGroupNrInfo(int[] arGroupInfo);
 
+	/**
+	 * Sets imported representatives
+	 * 
+	 * @param arGroupRepr
+	 */
 	public void setGroupReprInfo(int[] arGroupRepr);
 
 	public GroupList getGroupList();
 
+	/**
+	 * Flag determines if cluster information was imported or not.
+	 * 
+	 * @return cluster info flag
+	 */
 	public boolean isClusterInfo();
 
 	/**

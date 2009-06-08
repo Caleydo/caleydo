@@ -17,8 +17,10 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 
@@ -28,24 +30,41 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
  * @author Alexander Lex
  */
 public class SetExporter {
-	public void export(ISet set, String sFileName, boolean bExportBucketInternal) {
+
+	public enum EWhichViewToExport {
+		BUCKET,
+		HEAT_MAP,
+		PARALLEL_COORDINATES
+	}
+
+	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport) {
 		IVirtualArray contentVA = null;
 		IVirtualArray storageVA = null;
 
 		Collection<AGLEventListener> views =
 			GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
 		for (AGLEventListener view : views) {
-			if (view instanceof GLParallelCoordinates && view.isRenderedRemote() && bExportBucketInternal) {
-				contentVA = set.getVA(view.getContentVAID());
-				storageVA = set.getVA(view.getStorageVAID());
-				break;
+			if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
+				if ((view instanceof GLParallelCoordinates || view instanceof GLHeatMap)
+					&& view.isRenderedRemote()) {
+					contentVA = set.getVA(view.getContentVAID());
+					storageVA = set.getVA(view.getStorageVAID());
+					break;
+				}
 			}
-			else if (!view.isRenderedRemote()
-				&& (view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap)
-				&& !bExportBucketInternal) {
-				contentVA = set.getVA(view.getContentVAID());
-				storageVA = set.getVA(view.getStorageVAID());
-				break;
+			else if (eWhichViewToExport == EWhichViewToExport.PARALLEL_COORDINATES) {
+				if (!view.isRenderedRemote() && view instanceof GLParallelCoordinates) {
+					contentVA = set.getVA(view.getContentVAID());
+					storageVA = set.getVA(view.getStorageVAID());
+					break;
+				}
+			}
+			else if (eWhichViewToExport == EWhichViewToExport.HEAT_MAP) {
+				if (!view.isRenderedRemote() && view instanceof GLHierarchicalHeatMap) {
+					contentVA = set.getVA(view.getContentVAID());
+					storageVA = set.getVA(view.getStorageVAID());
+					break;
+				}
 			}
 		}
 
@@ -56,7 +75,7 @@ public class SetExporter {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
 
 			// Writing storage labels
-			out.print("RefSeq ID\t");
+			out.print("Identifier \t");
 			for (Integer iStorageIndex : storageVA) {
 				out.print(set.get(iStorageIndex).getLabel());
 				out.print("\t");
@@ -71,18 +90,26 @@ public class SetExporter {
 			int cluster = 0;
 			int index = 0;
 			int offset = 0;
-
+			String identifier;
+			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
-				IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
-				Integer iRefseqMrnaInt =
-					iDMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
-				if (iRefseqMrnaInt == null) {
-					continue;
-				}
+				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
-				String sRefseqMrna =
-					iDMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefseqMrnaInt);
-				out.print(sRefseqMrna + "\t");
+					Integer iRefseqMrnaInt =
+						iDMappingManager
+							.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+					if (iRefseqMrnaInt == null) {
+						continue;
+					}
+
+					identifier =
+						iDMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefseqMrnaInt);
+				}
+				else {
+					identifier =
+						iDMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex);
+				}
+				out.print(identifier + "\t");
 				for (Integer iStorageIndex : storageVA) {
 					IStorage storage = set.get(iStorageIndex);
 					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
@@ -97,19 +124,19 @@ public class SetExporter {
 					else {
 						cnt++;
 					}
-					
-					if(cnt == 0)
+
+					if (cnt == 0)
 						out.print(cluster + "\t" + 1 + "\t");
 					else
 						out.print(cluster + "\t" + 0 + "\t");
-//					if (cluster < contentVA.getGroupList().size()) {
-//						if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
-//							out.print(cluster + "\t" + 1 + "\t");
-//						else
-//							out.print(cluster + "\t" + 0 + "\t");
-//					}
-//					else
-//						out.print(cluster + "\t" + 0 + "\t");
+					// if (cluster < contentVA.getGroupList().size()) {
+					// if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
+					// out.print(cluster + "\t" + 1 + "\t");
+					// else
+					// out.print(cluster + "\t" + 0 + "\t");
+					// }
+					// else
+					// out.print(cluster + "\t" + 0 + "\t");
 					index++;
 				}
 				out.println();
@@ -117,21 +144,21 @@ public class SetExporter {
 
 			out.close();
 
-			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-			if (tree != null) {
-				TreePorter treePorter = new TreePorter();
-				if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
-					System.out.println("Problem during gene tree export!");
-			}
-			// export experiment cluster tree to own xml file
-			tree = set.getClusteredTreeExps();
-			if (tree != null) {
-				TreePorter treePorter = new TreePorter();
-				if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
-					System.out.println("Problem during experiments tree export!");
-			}
-			
+			 // export gene cluster tree to own xml file
+			 Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+			 if (tree != null) {
+			 TreePorter treePorter = new TreePorter();
+			 if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
+			 System.out.println("Problem during gene tree export!");
+			 }
+			 // export experiment cluster tree to own xml file
+			 tree = set.getClusteredTreeExps();
+			 if (tree != null) {
+			 TreePorter treePorter = new TreePorter();
+			 if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
+			 System.out.println("Problem during experiments tree export!");
+			 }
+
 		}
 		catch (IOException e) {
 

@@ -7,16 +7,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -71,9 +72,9 @@ public class GlyphGridPositionModelScatterplot
 
 		if (xdata == null || ydata == null) {
 			generalManager.getLogger().log(
-				Level.WARNING,
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
 				"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", " + iScatterParameterY
-					+ ")");
+					+ ")"));
 			return;
 		}
 
@@ -250,8 +251,8 @@ public class GlyphGridPositionModelScatterplot
 		GlyphAttributeType ty = gman.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
 
 		if (tx == null || ty == null) {
-			generalManager.getLogger().log(Level.WARNING,
-				"setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!"));
 			return;
 		}
 

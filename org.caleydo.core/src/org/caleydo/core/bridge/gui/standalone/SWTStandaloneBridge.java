@@ -1,6 +1,7 @@
 package org.caleydo.core.bridge.gui.standalone;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
+import org.eclipse.swt.widgets.Display;
 
 // TODO: doku
 public class SWTStandaloneBridge
@@ -9,14 +10,6 @@ public class SWTStandaloneBridge
 	public void closeApplication() {
 		// TODO Auto-generated method stub
 	}
-
-	// @Override
-	// public void setActiveGLSubView(AGLEventListener parentGLEventListener,
-	// AGLEventListener subGLEventListener)
-	// {
-	// // TODO Auto-generated method stub
-	//
-	// }
 
 	@Override
 	public void setShortInfo(String sMessage) {
@@ -32,6 +25,12 @@ public class SWTStandaloneBridge
 
 	@Override
 	public String getFileNameCurrentDataSet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Display getDisplay() {
 		// TODO Auto-generated method stub
 		return null;
 	}

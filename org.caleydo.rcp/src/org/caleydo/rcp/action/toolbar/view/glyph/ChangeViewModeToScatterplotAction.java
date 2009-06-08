@@ -1,6 +1,8 @@
 package org.caleydo.rcp.action.toolbar.view.glyph;
 
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.manager.event.view.glyph.SetPositionModelEvent;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.EPositionModel;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -39,7 +41,8 @@ public class ChangeViewModeToScatterplotAction
 
 		parent.getSecondaryAction().setAction(this);
 
-		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.GLYPH_VIEWMODE_SCATTERLOT);
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new SetPositionModelEvent(iViewID, EPositionModel.DISPLAY_SCATTERPLOT));
 	};
 
 }

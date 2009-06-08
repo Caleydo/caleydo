@@ -41,10 +41,6 @@ public class AnimationParentRootElement
 
 		moveValues(dTimePassed);
 
-		if (haveMovementValuesReachedTargets()) {
-			bAnimationStarted = false;
-		}
-
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
@@ -54,6 +50,10 @@ public class AnimationParentRootElement
 		pdCurrentSelectedElement.drawHierarchyAngular(gl, glu, mvCurrentWidth.getMovementValue(),
 			iTargetDepth, mvCurrentStartAngle.getMovementValue(), mvCurrentAngle.getMovementValue(),
 			mvCurrentInnerRadius.getMovementValue());
+		
+		if (haveMovementValuesReachedTargets()) {
+			bAnimationStarted = false;
+		}
 
 		if (!bAnimationStarted) {
 			DrawingState dsNext =
@@ -65,7 +65,7 @@ public class AnimationParentRootElement
 			radialHierarchy.setCurrentRootElement(pdNewRootElement);
 			radialHierarchy.setCurrentMouseOverElement(pdNewRootElement);
 			radialHierarchy.setCurrentSelectedElement(pdNewRootElement);
-
+			
 			navigationHistory.addNewHistoryEntry(dsNext, pdNewRootElement, pdNewRootElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
 
@@ -147,7 +147,7 @@ public class AnimationParentRootElement
 
 		int iDisplayedHierarchyDepth =
 			Math.min(radialHierarchy.getMaxDisplayedHierarchyDepth(), pdNewRootElement
-				.getHierarchyDepth(radialHierarchy.getMaxDisplayedHierarchyDepth()));
+				.getHierarchyDepth());
 		
 		float fTargetWidth = Math.min(fXCenter * 0.9f, fYCenter * 0.9f) / (float)iDisplayedHierarchyDepth;
 		
@@ -187,7 +187,7 @@ public class AnimationParentRootElement
 		// TODO: if new colormode is introduced, use correct colormapping, also use target color from renderstyle
 		
 		float fArRGB[];
-		if(DrawingStrategyManager.get().isRainbowStrategyDefault()) {
+		if(DrawingStrategyManager.get().getDefaultStrategyType() == DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW) {
 			ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
 			fArRGB = cmRainbow.getColor(fCurrentMidAngle / 360);
 		}

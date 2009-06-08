@@ -1,5 +1,6 @@
 package org.caleydo.rcp.dialog.file;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.action.file.FileLoadDataAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
@@ -20,14 +21,14 @@ public class LoadDataDialog
 	 */
 	public LoadDataDialog(Shell parentShell) {
 		super(parentShell);
-		parentShell.setText("Open project file");
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Open Text Data File");
-		// newShell.setMaximized(true);
+		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
+			"resources/icons/general/load_data.png"));
 	}
 
 	@Override
@@ -40,18 +41,8 @@ public class LoadDataDialog
 
 	@Override
 	protected void okPressed() {
-		fileLoadDataAction.execute();
 
-		super.okPressed();
-	}
-
-	/**
-	 * For testing purposes
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		LoadDataDialog dialog = new LoadDataDialog(new Shell());
-		dialog.open();
+		if (fileLoadDataAction.execute())
+			super.okPressed();
 	}
 }

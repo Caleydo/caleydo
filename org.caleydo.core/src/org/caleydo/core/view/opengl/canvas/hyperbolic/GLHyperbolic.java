@@ -86,7 +86,7 @@ public class GLHyperbolic
 
 	}
 
-	public synchronized void setToListMode(boolean bSetToListMode) {
+	public void setToListMode(boolean bSetToListMode) {
 		this.bIsInListMode = bSetToListMode;
 		super.setDetailLevel(EDetailLevel.HIGH);
 		bUseDetailLevel = false;
@@ -94,7 +94,7 @@ public class GLHyperbolic
 	}
 
 	@Override
-	public synchronized void setDetailLevel(EDetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -103,7 +103,7 @@ public class GLHyperbolic
 	}
 
 	@Override
-	public synchronized void displayLocal(GL gl) {
+	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -121,7 +121,7 @@ public class GLHyperbolic
 	}
 
 	@Override
-	public synchronized void displayRemote(GL gl) {
+	public void displayRemote(GL gl) {
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
@@ -135,7 +135,8 @@ public class GLHyperbolic
 	}
 
 	@Override
-	public synchronized void display(GL gl) {
+	public void display(GL gl) {
+		processEvents();
 		GLHelperFunctions.drawAxis(gl);
 		render(gl);
 		// clipToFrustum(gl);

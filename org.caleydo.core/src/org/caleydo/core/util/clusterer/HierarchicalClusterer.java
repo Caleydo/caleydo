@@ -9,72 +9,30 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.IGraph;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
+import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.core.Instances;
 
 public class HierarchicalClusterer
+	extends AClusterer
 	implements IClusterer {
 
 	private Cobweb clusterer;
 
-	Tree<ClusterNode> tree = new Tree<ClusterNode>();
+	private Tree<ClusterNode> tree = new Tree<ClusterNode>();
 
-	private ProgressBar pbBuildInstances;
-	private ProgressBar pbClusterer;
-	private Shell shell;
-	
+	private int iVAIdContent = 0;
+	private int iVAIdStorage = 0;
+	private ISet set;
+
 	public HierarchicalClusterer(int iNrElements) {
 		clusterer = new Cobweb();
 	}
 
-	private void buildProgressBar() {
-
-		shell = new Shell();
-
-		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
-		composite.setLayout(layout);
-		composite.setFocus();
-
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Progress");
-		inputFileGroup.setLayout(new RowLayout(4));
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		gridData.horizontalSpan = 3;
-		inputFileGroup.setLayoutData(gridData);
-
-		Label label = new Label(inputFileGroup, SWT.NULL);
-		label.setText("Building instances used by weka clusterer in progress");
-		label.setAlignment(SWT.RIGHT);
-
-		pbBuildInstances = new ProgressBar(inputFileGroup, SWT.SMOOTH);
-
-		Label label2 = new Label(inputFileGroup, SWT.NULL);
-		label2.setText("KMeans clustering in progress");
-		label2.setAlignment(SWT.RIGHT);
-
-		pbClusterer = new ProgressBar(inputFileGroup, SWT.SMOOTH);
-
-		composite.pack();
-
-		shell.pack();
-		shell.open();
-	}
-	
-	public Integer cluster(ISet set, Integer iVAIdOriginal, Integer iVAIdStorage,
-		EClustererType eClustererType) {
+	private Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, EClustererType eClustererType) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -86,12 +44,13 @@ public class HierarchicalClusterer
 		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
+		int iPercentage = 1;
+
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
-			
-			int iNrElements = contentVA.size();
-			pbBuildInstances.setMinimum(0);
-			pbBuildInstances.setMaximum(iNrElements);
-			
+
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
@@ -100,54 +59,93 @@ public class HierarchicalClusterer
 
 			int icnt = 0;
 			for (Integer iContentIndex : contentVA) {
-				pbBuildInstances.setSelection(icnt);
-				for (Integer iStorageIndex : storageVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
-						+ ", ");
 
+				if (bClusteringCanceled == false) {
+
+					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, false));
+						iPercentage++;
+					}
+
+					for (Integer iStorageIndex : storageVA) {
+						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
+							+ ", ");
+
+					}
+					buffer.append("\n");
+					icnt++;
+					processEvents();
 				}
-				buffer.append("\n");
-				icnt++;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 		}
 		else {
-			
-			int iNrElements = storageVA.size();
-			pbBuildInstances.setMinimum(0);
-			pbBuildInstances.setMaximum(iNrElements);
-			
+
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+
 			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
 
 			buffer.append("@data\n");
 
-			int icnt = 0;
+			int isto = 0;
 			for (Integer iStorageIndex : storageVA) {
-				pbBuildInstances.setSelection(icnt);
-				for (Integer iContentIndex : contentVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
-						+ ", ");
+				if (bClusteringCanceled == false) {
 
+					int tempPercentage = (int) ((float) isto / storageVA.size() * 100);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, false));
+						iPercentage++;
+					}
+
+					for (Integer iContentIndex : contentVA) {
+						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.RAW, iContentIndex)
+							+ ", ");
+
+					}
+					buffer.append("\n");
+					isto++;
+					processEvents();
 				}
-				buffer.append("\n");
-				icnt++;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 		}
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
+		else
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Cobweb clustering of experiments in progress"));
 
 		Instances data = null;
+
 		try {
 			data = new Instances(new StringReader(buffer.toString()));
 		}
 		catch (IOException e1) {
-			e1.printStackTrace();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// e1.printStackTrace();
 		}
 
-		pbClusterer.setMinimum(0);
-		pbClusterer.setMaximum(5);
-		
-		pbClusterer.setSelection(1);	
-		
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(10, false));
+
 		// unsupervised learning --> no class given
 		data.setClassIndex(-1);
 
@@ -156,26 +154,41 @@ public class HierarchicalClusterer
 			clusterer.buildClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(2);
-		
+
+		processEvents();
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
+
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
 			eval.evaluateClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(3);
-		
+		processEvents();
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
+
 		double[] clusterAssignments = eval.getClusterAssignments();
 
-//		int nrclusters = eval.getNumClusters();
-//		System.out.println(nrclusters);
-//		System.out.println(data.numAttributes());
-//		System.out.println(data.numInstances());
+		// int nrclusters = eval.getNumClusters();
+		// System.out.println(nrclusters);
+		// System.out.println(data.numAttributes());
+		// System.out.println(data.numInstances());
 
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
@@ -203,36 +216,59 @@ public class HierarchicalClusterer
 				}
 			}
 		}
-		pbClusterer.setSelection(4);
-		
-		Integer clusteredVAId = set.createStorageVA(indexes);
+		processEvents();
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
+
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(indexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(indexes);
 
 		CNode node = clusterer.m_cobwebTree;
 
 		ClusterNode clusterNode = new ClusterNode("Root", 1, 0f, 0, true);
 		tree.setRootNode(clusterNode);
 
-		CNodeToTree(clusterNode, node);
+		CNodeToTree(clusterNode, node, eClustererType);
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
 
-		pbClusterer.setSelection(5);	
-		
+		processEvents();
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
+
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
 		else
 			set.setClusteredTreeExps(tree);
-		
+
 		set.setAlClusterSizes(temp);
 		set.setAlExamples(alExamples);
+
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		return clusteredVAId;
 	}
 
-	private int cnt = 0;
+	private void CNodeToTree(ClusterNode clusterNode, CNode node, EClustererType eClustererType) {
 
-	private void CNodeToTree(ClusterNode clusterNode, CNode node) {
+		// IVirtualArray virtualArray;
+		//
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// virtualArray = set.getVA(iVAIdContent);
+		// else
+		// virtualArray = set.getVA(iVAIdStorage);
 
 		if (node.getChilds() != null) {
 			int iNrChildsNode = node.getChilds().size();
@@ -240,49 +276,37 @@ public class HierarchicalClusterer
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				CNode currentNode = (CNode) node.getChilds().elementAt(i);
-				ClusterNode currentGraph =
-					new ClusterNode("Node_" + currentNode.getClusterNum(), currentNode.getClusterNum(), 0f,
-						0, false);
+
+				int clusterNr = 0;
+				clusterNr = currentNode.getClusterNum();
+
+				ClusterNode currentGraph = new ClusterNode("Node_" + clusterNr, clusterNr, 0f, 0, false);
 				currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);
 				// temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
-				CNodeToTree(currentGraph, currentNode);
+				CNodeToTree(currentGraph, currentNode, eClustererType);
 			}
 		}
 
-	}
-
-	private HierarchyGraph matchTree(IGraph graph, CNode Node) {
-		HierarchyGraph temp = new HierarchyGraph("Node" + Node.getClusterNum(), Node.getClusterNum(), 0);
-		cnt++;
-		graph = temp;
-
-		if (Node.getChilds() != null) {
-			int iNrChildsNode = Node.getChilds().size();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				CNode currentNode = (CNode) Node.getChilds().elementAt(i);
-				HierarchyGraph currentGraph = new HierarchyGraph();
-				temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
-			}
-		}
-
-		return temp;
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
-		
-		buildProgressBar();
 
-		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
+		this.set = set;
+		this.iVAIdContent = idContent;
+		this.iVAIdStorage = idStorage;
 
-		shell.close();
-		
+		this.iProgressBarMultiplier = iProgressBarMultiplier;
+		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
+
+		VAId = cluster(idContent, idStorage, clusterState.getClustererType());
+
 		return VAId;
 	}
+
 }

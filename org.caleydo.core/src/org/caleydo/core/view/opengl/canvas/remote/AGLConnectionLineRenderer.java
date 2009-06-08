@@ -7,12 +7,14 @@ import gleem.linalg.Vec3f;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -38,7 +40,7 @@ public abstract class AGLConnectionLineRenderer {
 
 	protected boolean bEnableRendering = true;
 
-	protected HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointLists;
+	protected EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>> hashIDTypeToViewToPointLists;
 
 	protected int activeViewID = -1;
 	
@@ -49,15 +51,15 @@ public abstract class AGLConnectionLineRenderer {
 	/**
 	 * Constructor.
 	 */
-	public AGLConnectionLineRenderer(final RemoteLevel underInteractionLayer, final RemoteLevel stackLayer,
+	public AGLConnectionLineRenderer(final RemoteLevel focusLevel, final RemoteLevel stackLayer,
 		final RemoteLevel poolLayer) {
-		this.focusLevel = underInteractionLayer;
+		this.focusLevel = focusLevel;
 		this.stackLevel = stackLayer;
 
 		connectedElementRepManager =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		hashViewToPointLists = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
+		hashIDTypeToViewToPointLists = new EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>>(EIDType.class);
 	}
 
 	public void enableRendering(final boolean bEnableRendering) {
@@ -81,8 +83,8 @@ public abstract class AGLConnectionLineRenderer {
 
 	protected abstract void renderConnectionLines(final GL gl);
 
-	protected abstract void renderLineBundling(final GL gl, float[] fArColor);
-	
+	protected abstract void renderLineBundling(final GL gl, EIDType idType, float[] fArColor);
+
 	protected Vec3f calculateBundlingPoint(Vec3f vecViewCenter, Vec3f vecCenter) {
 		Vec3f vecDirection = new Vec3f();
 		vecDirection = vecCenter.minus(vecViewCenter);
@@ -189,7 +191,7 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param vecViewCenterPoint
 	 * @param fArColor
 	 */
-	protected void altRenderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
+	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 
@@ -468,7 +470,7 @@ public abstract class AGLConnectionLineRenderer {
 		lineWidth = width;
 	}
 	
-	protected void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
+	protected void altRenderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, // FIXME: changed (renamed)
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
 		Vec3f[] arSplinePoints = new Vec3f[3];
 

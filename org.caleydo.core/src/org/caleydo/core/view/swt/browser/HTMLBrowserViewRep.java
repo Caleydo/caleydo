@@ -2,10 +2,7 @@ package org.caleydo.core.view.swt.browser;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
 
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -15,6 +12,7 @@ import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
@@ -33,6 +31,8 @@ import org.eclipse.swt.widgets.ToolItem;
 /**
  * Simple HTML browser.
  * 
+ * 
+ * 
  * @author Marc Streit
  */
 public class HTMLBrowserViewRep
@@ -40,9 +40,6 @@ public class HTMLBrowserViewRep
 	implements ISWTView {
 
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
-
-	protected IGeneralManager generalManager;
-	protected IEventPublisher eventPublisher;
 	
 	protected Browser browser;
 
@@ -51,7 +48,7 @@ public class HTMLBrowserViewRep
 	 */
 	protected Composite subContributionComposite;
 	
-	protected String url = CALEYDO_HOME;
+	protected String url = CALEYDO_HOME + "/help/user_interface.html";
 
 	protected Text textURL;
 
@@ -79,7 +76,6 @@ public class HTMLBrowserViewRep
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel, int iViewID) {
 		super(iParentContainerId, sLabel, iViewID);
 		init();
-		registerEventListeners();
 	}
 
 	/**
@@ -217,7 +213,7 @@ public class HTMLBrowserViewRep
 
 	@Override
 	public void drawView() {
-		generalManager.getLogger().log(Level.INFO, "Load " + url);
+		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Load " + url));
 
 		try {
 			parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -233,7 +229,8 @@ public class HTMLBrowserViewRep
 			});
 		}
 		catch (SWTException swte) {
-			generalManager.getLogger().log(Level.SEVERE, "Error while loading " + url);
+			generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+				"Error while loading " + url, swte));
 		}
 	}
 
@@ -264,6 +261,7 @@ public class HTMLBrowserViewRep
 	
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		changeURLListener = new ChangeURLListener();
 		changeURLListener.setHandler(this);
 		eventPublisher.addListener(ChangeURLEvent.class, changeURLListener);
@@ -276,6 +274,7 @@ public class HTMLBrowserViewRep
 	 */
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (changeURLListener != null) {
 			eventPublisher.removeListener(ChangeURLEvent.class, changeURLListener);
 			changeURLListener = null;

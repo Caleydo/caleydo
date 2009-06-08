@@ -10,8 +10,8 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 public class PDDrawingStrategyExpressionColor
-	extends PDDrawingStrategy {
-	
+	extends PDDrawingStrategyChildIndicator {
+
 	public PDDrawingStrategyExpressionColor(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
 	}
@@ -27,6 +27,11 @@ public class PDDrawingStrategyExpressionColor
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
+				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
+		}
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR, 0);
 		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
@@ -55,12 +60,16 @@ public class PDDrawingStrategyExpressionColor
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
+		
+		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
+		}
 
 		ColorMapping cmExpression =
 			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue);
 
-		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], 1);
+		gl.glColor3fv(fArRGB, 0);
 
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
@@ -68,7 +77,7 @@ public class PDDrawingStrategyExpressionColor
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_COLOR, 0);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle,
 			fAngle, iNumSlicesPerFullDisc, RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_WIDTH);
-
+		
 		gl.glPopAttrib();
 		gl.glPopName();
 

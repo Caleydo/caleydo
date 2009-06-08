@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.specialized.genetic;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,18 +72,50 @@ public class GeneticIDMappingHelper {
 		return david;
 	}
 
-	public String getShortNameFromDavid(int index) {
+	public String getShortNameFromExpressionIndex(int index) {
 		// Convert expression storage ID to RefSeq
 		Integer iDavidID = getDavidIDFromStorageIndex(index);
+		return getShortNameFromDavid(iDavidID);
+	}
 
+	public String getShortNameFromDavid(Integer iDavidID) {
 		if (iDavidID == null)
 			return "Unknown Gene";
 
 		String sGeneSymbol = idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
-		if (sGeneSymbol == "")
+		if (sGeneSymbol == "" || sGeneSymbol == null)
 			return "Unkonwn Gene";
 		else
 			return sGeneSymbol;
+	}
+
+	public ArrayList<Integer> getExpressionIndicesFromDavid(int davidID) {
+
+		Set<Integer> setRefSeqMRNA =
+			idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, davidID);
+
+		if (setRefSeqMRNA == null)
+			return null;
+
+		ArrayList<Integer> alExpIndex = new ArrayList<Integer>();
+
+		for (Integer refSeqMRNA : setRefSeqMRNA) {
+
+			Set<Integer> setExpIndex =
+				idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, refSeqMRNA);
+
+			if (setExpIndex == null) {
+				// No expression index available in the current dataset
+				continue;
+			}
+
+			alExpIndex.addAll(setExpIndex);
+		}
+
+		if (alExpIndex == null)
+			return null;
+
+		return alExpIndex;
 	}
 
 	/**
@@ -110,7 +143,7 @@ public class GeneticIDMappingHelper {
 		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
 
 		PathwayVertexGraphItem pathwayVertexGraphItem = convertGeneIDToPathwayVertex(idType, geneID);
-		if(pathwayVertexGraphItem == null)
+		if (pathwayVertexGraphItem == null)
 			return null;
 
 		List<IGraphItem> pathwayItems =
@@ -134,7 +167,7 @@ public class GeneticIDMappingHelper {
 	 */
 	public PathwayVertexGraphItem convertGeneIDToPathwayVertex(EIDType idType, int geneID) {
 
-		int iGraphItemID = 0;
+		//int iGraphItemID = 0;
 		Integer iDavidID = -1;
 
 		if (idType == EIDType.REFSEQ_MRNA_INT) {
@@ -149,15 +182,9 @@ public class GeneticIDMappingHelper {
 			return null;
 
 		if (iDavidID == null || iDavidID == -1)
-			throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
-
-		iGraphItemID =
-			GeneralManager.get().getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidID);
-
-		if (iGraphItemID == -1) {
 			return null;
-		}
+		// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 
-		return (PathwayVertexGraphItem) GeneralManager.get().getPathwayItemManager().getItem(iGraphItemID);
+		return GeneralManager.get().getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
 	}
 }

@@ -6,7 +6,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -17,6 +16,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
@@ -183,7 +183,11 @@ public class GenericSelectionManager {
 		this.externalToInternalMapping = builder.externalToInternalMapping;
 		this.internalToExternalMapping = builder.internalToExternalMapping;
 		this.internalIDType = builder.internalIDType;
-		this.externalIDType = builder.externalIDType;
+		if (builder.externalIDType == null)
+			this.externalIDType = builder.internalIDType;
+		else
+			this.externalIDType = builder.externalIDType;
+
 		if (builder.alSelectionTypes == null) {
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values()) {
@@ -274,7 +278,7 @@ public class GenericSelectionManager {
 		Integer[] tempAr = new Integer[elementMap.size()];
 		tempAr = elementMap.keySet().toArray(tempAr);
 		for (Integer element : tempAr) {
-			remove(element, true);
+			remove(element.intValue(), true);
 		}
 	}
 
@@ -284,8 +288,8 @@ public class GenericSelectionManager {
 	 * virtual array.
 	 * </p>
 	 * <p>
-	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with the
-	 * data of the virtual array
+	 * If you reset this virtual array at runtime the manager is completely resetted and reinitialized with
+	 * the data of the virtual array
 	 * </p>
 	 * 
 	 * @param virtualArray
@@ -298,7 +302,8 @@ public class GenericSelectionManager {
 	}
 
 	/**
-	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears the virtual array.
+	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears
+	 * the virtual array.
 	 */
 	public void resetSelectionManager() {
 		hashSelectionTypes.clear();
@@ -735,8 +740,9 @@ public class GenericSelectionManager {
 				iSelectionID = item.getPrimaryID();
 
 				if (iSelectionID == -1) {
-					GeneralManager.get().getLogger().log(Level.WARNING,
-						"No internal id for " + item.getPrimaryID());
+					GeneralManager.get().getLogger().log(
+						new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
+							+ item.getPrimaryID()));
 
 					continue;
 				}
@@ -760,8 +766,9 @@ public class GenericSelectionManager {
 
 				for (Integer iTmpSelectionID : iTmpSetID) {
 					if (iTmpSelectionID == null || iTmpSelectionID == -1) {
-						GeneralManager.get().getLogger().log(Level.WARNING,
-							"No internal id for " + item.getPrimaryID());
+						GeneralManager.get().getLogger().log(
+							new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
+								+ item.getPrimaryID()));
 
 						continue;
 					}
@@ -838,6 +845,9 @@ public class GenericSelectionManager {
 	}
 
 	private Set<Integer> convertExternalToInternal(Integer iSelectionID) {
+		if (externalToInternalMapping == null)
+			throw new IllegalStateException("Cannot convert ID's in selection manager " + this
+				+ "because no external ID mapping was set");
 		if (externalToInternalMapping.isMultiMap())
 			return GeneralManager.get().getIDMappingManager().getMultiID(externalToInternalMapping,
 				iSelectionID);
@@ -853,26 +863,24 @@ public class GenericSelectionManager {
 	 * Execeutes certain commands, as specified in a {@link SelectionCommand}. Typical examples are to clear a
 	 * particular selection.
 	 * 
-	 * @param colSelectionCommand
-	 *            a container with selection commands
+	 * @param selectionCommand
+	 *            a selection command
 	 */
-	public void executeSelectionCommands(Collection<SelectionCommand> colSelectionCommand) {
-		if (colSelectionCommand == null)
+	public void executeSelectionCommand(SelectionCommand selectionCommand) {
+		if (selectionCommand == null)
 			return;
 
-		for (SelectionCommand command : colSelectionCommand) {
-			ESelectionCommandType commandType = command.getSelectionCommandType();
-			switch (commandType) {
-				case CLEAR:
-					clearSelection(command.getSelectionType());
-					break;
-				case CLEAR_ALL:
-					clearSelections();
-					break;
-				case RESET:
-					resetSelectionManager();
-					break;
-			}
+		ESelectionCommandType commandType = selectionCommand.getSelectionCommandType();
+		switch (commandType) {
+			case CLEAR:
+				clearSelection(selectionCommand.getSelectionType());
+				break;
+			case CLEAR_ALL:
+				clearSelections();
+				break;
+			case RESET:
+				resetSelectionManager();
+				break;
 		}
 	}
 

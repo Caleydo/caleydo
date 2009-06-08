@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
+import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
+/**
+ * Affinity propagation clusterer.
+ * 
+ * @author Bernhard Schlegl
+ */
 public class AffinityClusterer
+	extends AClusterer
 	implements IClusterer {
 	private float[] s = null;
 	private int[] i = null;
@@ -31,8 +31,9 @@ public class AffinityClusterer
 
 	private int iConvIterations = 30;
 
-	// cluster genes
 	private float fClusterFactor = 1.0f;
+
+	private EDistanceMeasure eDistanceMeasure;
 
 	private int iNrSamples = 0;
 
@@ -41,30 +42,32 @@ public class AffinityClusterer
 	private int iVAIdContent = 0;
 	private int iVAIdStorage = 0;
 
-	private boolean bStart0 = true;
-	private ProgressBar pbSimilarity;
-	private ProgressBar pbAffiProp;
-	private Shell shell;
+	private ISet set;
 
 	public AffinityClusterer(int iNrSamples) {
-		this.iNrSamples = iNrSamples;
-		this.iNrSimilarities = iNrSamples * iNrSamples;
-		this.s = new float[this.iNrSimilarities];
-		this.i = new int[this.iNrSimilarities];
-		this.k = new int[this.iNrSimilarities];
-		this.iVAIdContent = 0;
-		this.iVAIdStorage = 0;
+		try {
+			this.iNrSamples = iNrSamples;
+			this.iNrSimilarities = iNrSamples * iNrSamples;
+			this.s = new float[this.iNrSimilarities];
+			this.i = new int[this.iNrSimilarities];
+			this.k = new int[this.iNrSimilarities];
+			this.iVAIdContent = 0;
+			this.iVAIdStorage = 0;
+		}
+		catch (OutOfMemoryError e) {
+			throw new OutOfMemoryError();
+		}
 	}
 
 	/**
-	 * Calculates the similarity matrix for a given set and VA´s
+	 * Calculates the similarity matrix for a given set and VAï¿½s
 	 * 
 	 * @param set
 	 * @param iVAIdContent
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	public void determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
+	private int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
 		EClustererType eClustererType) {
 
 		this.iVAIdContent = iVAIdContent;
@@ -73,17 +76,19 @@ public class AffinityClusterer
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
-		IDistanceMeasure distanceMeasure = new EuclideanDistance();
+		IDistanceMeasure distanceMeasure;
+
+		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
+			distanceMeasure = new EuclideanDistance();
+		else
+			distanceMeasure = new PearsonCorrelation();
+
+		int iPercentage = 1;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
-			if (contentVA.get(0) == 0)
-				bStart0 = true;
-			else
-				bStart0 = false;
 
-			int iNrElements = contentVA.size();
-			pbSimilarity.setMinimum(0);
-			pbSimilarity.setMaximum(iNrElements);
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
 			float[] dArInstance1 = new float[storageVA.size()];
 			float[] dArInstance2 = new float[storageVA.size()];
@@ -93,128 +98,136 @@ public class AffinityClusterer
 
 			for (Integer iContentIndex1 : contentVA) {
 
-				pbSimilarity.setSelection(icnt1);
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) icnt1 / contentVA.size() * 100);
 
-				isto = 0;
-				for (Integer iStorageIndex1 : storageVA) {
-					dArInstance1[isto] =
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
-					isto++;
-				}
-
-				icnt2 = 0;
-				for (Integer iContentIndex2 : contentVA) {
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, false));
+						iPercentage++;
+					}
 
 					isto = 0;
-					for (Integer iStorageIndex2 : storageVA) {
-						dArInstance2[isto] =
-							set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex2);
+					for (Integer iStorageIndex1 : storageVA) {
+						dArInstance1[isto] =
+							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
 						isto++;
 					}
 
-					if (icnt1 != icnt2) {
-						s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-						if (bStart0 == true) {
-							i[count] = iContentIndex1;
-							k[count] = iContentIndex2;
+					icnt2 = 0;
+					for (Integer iContentIndex2 : contentVA) {
+
+						isto = 0;
+						for (Integer iStorageIndex2 : storageVA) {
+							dArInstance2[isto] =
+								set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+									iContentIndex2);
+							isto++;
 						}
-						else {
-							i[count] = iContentIndex1 - 1;
-							k[count] = iContentIndex2 - 1;
+
+						if (icnt1 != icnt2) {
+							s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+							i[count] = contentVA.indexOf(iContentIndex1);
+							k[count] = contentVA.indexOf(iContentIndex2);
+							count++;
 						}
-						count++;
+						icnt2++;
 					}
-					icnt2++;
+					icnt1++;
+					processEvents();
 				}
-				icnt1++;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 
 			// determine median of the similarity values
 			float median = ClusterHelper.median(s);
 
-			for (Integer iContentIndex1 : contentVA) {
+			int cnt = 0;
+			for (Integer iContentIndex : contentVA) {
 				s[count] = median * fClusterFactor;
-				if (bStart0 == true) {
-					i[count] = iContentIndex1;
-					k[count] = iContentIndex1;
-				}
-				else {
-					i[count] = iContentIndex1 - 1;
-					k[count] = iContentIndex1 - 1;
-				}
+				i[count] = contentVA.indexOf(iContentIndex);
+				k[count] = contentVA.indexOf(iContentIndex);
 				count++;
+				cnt++;
 			}
 		}
 		else {
-			if (storageVA.get(0) == 0)
-				bStart0 = true;
-			else
-				bStart0 = false;
 
-			int iNrElements = storageVA.size();
-			pbSimilarity.setMinimum(0);
-			pbSimilarity.setMaximum(iNrElements);
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
 
 			float[] dArInstance1 = new float[contentVA.size()];
 			float[] dArInstance2 = new float[contentVA.size()];
 
-			int icnt1 = 0, icnt2 = 0, isto = 0;
+			int isto1 = 0, isto2 = 0, icnt = 0;
 			int count = 0;
 
 			for (Integer iStorageIndex1 : storageVA) {
 
-				pbSimilarity.setSelection(icnt1);
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) isto1 / storageVA.size() * 100);
 
-				isto = 0;
-				for (Integer iContentIndex1 : contentVA) {
-					dArInstance1[isto] =
-						set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
-					isto++;
-				}
-
-				icnt2 = 0;
-				for (Integer iStorageIndex2 : storageVA) {
-
-					isto = 0;
-					for (Integer iContentIndex2 : contentVA) {
-						dArInstance2[isto] =
-							set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED, iContentIndex2);
-						isto++;
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, false));
+						iPercentage++;
 					}
 
-					if (icnt1 != icnt2) {
-						s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
-						if (bStart0 == true) {
-							i[count] = iStorageIndex1;
-							k[count] = iStorageIndex2;
-						}
-						else {
-							i[count] = iStorageIndex1 - 1;
-							k[count] = iStorageIndex2 - 1;
-						}
-						count++;
+					icnt = 0;
+					for (Integer iContentIndex1 : contentVA) {
+						dArInstance1[icnt] =
+							set.get(iStorageIndex1).getFloat(EDataRepresentation.NORMALIZED, iContentIndex1);
+						icnt++;
 					}
-					icnt2++;
+
+					isto2 = 0;
+					for (Integer iStorageIndex2 : storageVA) {
+
+						icnt = 0;
+						for (Integer iContentIndex2 : contentVA) {
+							dArInstance2[icnt] =
+								set.get(iStorageIndex2).getFloat(EDataRepresentation.NORMALIZED,
+									iContentIndex2);
+							icnt++;
+						}
+
+						if (isto1 != isto2) {
+							s[count] = -distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+							i[count] = storageVA.indexOf(iStorageIndex1);
+							k[count] = storageVA.indexOf(iStorageIndex2);
+							count++;
+						}
+						isto2++;
+					}
+					isto1++;
+					processEvents();
 				}
-				icnt1++;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 
 			// determine median of the similarity values
 			float median = ClusterHelper.median(s);
 
-			for (Integer iStorageIndex1 : storageVA) {
+			int sto = 0;
+			for (Integer iStorageIndex : storageVA) {
 				s[count] = median * fClusterFactor;
-				if (bStart0 == true) {
-					i[count] = iStorageIndex1;
-					k[count] = iStorageIndex1;
-				}
-				else {
-					i[count] = iStorageIndex1 - 1;
-					k[count] = iStorageIndex1 - 1;
-				}
+				i[count] = storageVA.indexOf(iStorageIndex);
+				k[count] = storageVA.indexOf(iStorageIndex);
 				count++;
+				sto++;
 			}
 		}
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+		return 0;
 	}
 
 	/**
@@ -225,7 +238,7 @@ public class AffinityClusterer
 	 * @param set
 	 * @return Integer
 	 */
-	public Integer affinityPropagation(ISet set, EClustererType eClustererType) {
+	private Integer affinityPropagation(EClustererType eClustererType) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
@@ -254,13 +267,24 @@ public class AffinityClusterer
 		// (Math.random() / 2f);
 		// }
 
-		pbAffiProp.setMinimum(0);
-		pbAffiProp.setMaximum(iMaxIterations);
+		int iPercentage = 1;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Affinity propagation of genes in progress"));
+		else
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Affinity propagation of experiments in progress"));
 
 		while (bIterate) {
 			iNrIterations++;
 
-			pbAffiProp.setSelection(iNrIterations);
+			int tempPercentage = (int) ((float) iNrIterations / iMaxIterations * 100);
+			if (iPercentage == tempPercentage) {
+				GeneralManager.get().getEventPublisher().triggerEvent(
+					new ClusterProgressEvent(iPercentage, false));
+				iPercentage++;
+			}
 
 			// Compute responsibilities
 			for (j = 0; j < iNrSamples; j++) {
@@ -351,6 +375,11 @@ public class AffinityClusterer
 					bIterate = false;
 				}
 			}
+			processEvents();
+			if (bClusteringCanceled) {
+				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+				return -2;
+			}
 		}
 
 		// If clusters were identified, find the assignments
@@ -422,10 +451,16 @@ public class AffinityClusterer
 			// System.out.println("Number of identified clusters: " + iNrClusters);
 			// System.out.println("Number of iterations: " + iNrIterations);
 		}
-		else
-			throw new IllegalStateException("Did not identify any clusters!!");
-		if (bConverged == false)
-			throw new IllegalStateException("Algorithm did not converge!!");
+		else {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// throw new IllegalStateException("Did not identify any clusters!!");
+		}
+		if (bConverged == false) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -3;
+			// throw new IllegalStateException("Algorithm did not converge!!");
+		}
 
 		ArrayList<Integer> idxExamples = new ArrayList<Integer>();
 
@@ -437,94 +472,102 @@ public class AffinityClusterer
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
-		int counter = 0;
-		int idxCnt = 0;
-		for (Integer example : alExamples) {
-			for (int sampleNr = 0; sampleNr < iNrSamples; sampleNr++) {
-				if (idx[sampleNr] == example) {
-					if (bStart0 == true)
-						AlIndexes.add(sampleNr);
-					else
-						AlIndexes.add(sampleNr + 1);
-					count.set(counter, count.get(counter) + 1);
-				}
-				if (example == sampleNr) {
-					idxExamples.add(idxCnt);
-					idxCnt = 0;
-				}
-				idxCnt++;
-			}
-			counter++;
-		}
+		AlIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
 
-		Integer clusteredVAId = set.createStorageVA(AlIndexes);
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(AlIndexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(AlIndexes);
 
 		set.setAlClusterSizes(count);
 		set.setAlExamples(idxExamples);
 
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+
 		return clusteredVAId;
 	}
 
-	public int getNrClusters() {
-		return iNrClusters;
-	}
+	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples, ArrayList<Integer> count,
+		ArrayList<Integer> idxExamples, int[] idx, EClustererType eClustererType) {
 
-	public void setClusterFactor(float dClusterFactor) {
-		this.fClusterFactor = dClusterFactor;
-	}
+		ArrayList<Integer> indexes = new ArrayList<Integer>();
 
-	public float getClusterFactor() {
-		return fClusterFactor;
-	}
+		IVirtualArray contentVA = set.getVA(iVAIdContent);
+		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
-	private void buildProgressBar() {
+		int counter = 0;
+		int idxCnt = 0;
+		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+			for (Integer example : alExamples) {
+				for (Integer icontent : contentVA) {
+					if (idx[contentVA.indexOf(icontent)] == example) {
+						indexes.add(icontent);
+						count.set(counter, count.get(counter) + 1);
+					}
+					if (example == contentVA.indexOf(icontent)) {
+						idxExamples.add(idxCnt);
+						idxCnt = 0;
+					}
+					idxCnt++;
+				}
+				counter++;
+			}
+		}
+		else {
+			for (Integer example : alExamples) {
+				for (Integer icontent : storageVA) {
+					if (idx[storageVA.indexOf(icontent)] == example) {
+						indexes.add(icontent);
+						count.set(counter, count.get(counter) + 1);
+					}
+					if (example == storageVA.indexOf(icontent)) {
+						idxExamples.add(idxCnt);
+						idxCnt = 0;
+					}
+					idxCnt++;
+				}
+				counter++;
+			}
+		}
 
-		shell = new Shell();
-
-		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
-		composite.setLayout(layout);
-		composite.setFocus();
-
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Progress");
-		inputFileGroup.setLayout(new RowLayout(4));
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		gridData.horizontalSpan = 3;
-		inputFileGroup.setLayoutData(gridData);
-
-		Label label = new Label(inputFileGroup, SWT.NULL);
-		label.setText("Determine similarties in progress");
-		label.setAlignment(SWT.RIGHT);
-
-		pbSimilarity = new ProgressBar(inputFileGroup, SWT.SMOOTH);
-
-		Label label2 = new Label(inputFileGroup, SWT.NULL);
-		label2.setText("Affinity propagation in progress");
-		label2.setAlignment(SWT.RIGHT);
-
-		pbAffiProp = new ProgressBar(inputFileGroup, SWT.SMOOTH);
-
-		composite.pack();
-
-		shell.pack();
-		shell.open();
+		return indexes;
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
-		fClusterFactor = clusterState.getAffinityPropClusterFactor();
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+			fClusterFactor = clusterState.getAffinityPropClusterFactorGenes();
+		else
+			fClusterFactor = clusterState.getAffinityPropClusterFactorExperiments();
 
-		buildProgressBar();
+		eDistanceMeasure = clusterState.getDistanceMeasure();
 
-		determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
+		this.iProgressBarMultiplier = iProgressBarMultiplier;
+		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		VAId = affinityPropagation(set, clusterState.getClustererType());
+		int iReturnValue = 0;
 
-		shell.close();
+		iReturnValue = determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
+
+		if (iReturnValue == -1) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+		}
+		else if (iReturnValue == -2) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+
+		this.set = set;
+
+		VAId = affinityPropagation(clusterState.getClustererType());
 
 		return VAId;
 	}

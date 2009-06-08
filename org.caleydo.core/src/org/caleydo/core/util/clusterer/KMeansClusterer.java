@@ -7,70 +7,32 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
+import org.caleydo.core.manager.event.data.ClusterProgressEvent;
+import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
+import weka.core.DistanceFunction;
+import weka.core.EuclideanDistance;
 import weka.core.Instances;
+import weka.core.ManhattanDistance;
 
 public class KMeansClusterer
+	extends AClusterer
 	implements IClusterer {
 
 	private SimpleKMeans clusterer = null;
 
 	private int iNrCluster = 5;
 
-	private ProgressBar pbBuildInstances;
-	private ProgressBar pbClusterer;
-	private Shell shell;
+	private EDistanceMeasure eDistanceMeasure;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
 	}
 
-	private void buildProgressBar() {
-
-		shell = new Shell();
-
-		Composite composite = new Composite(shell, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
-		composite.setLayout(layout);
-		composite.setFocus();
-
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		inputFileGroup.setText("Progress");
-		inputFileGroup.setLayout(new RowLayout(4));
-		GridData gridData = new GridData(GridData.FILL_VERTICAL);
-		gridData.horizontalSpan = 3;
-		inputFileGroup.setLayoutData(gridData);
-
-		Label label = new Label(inputFileGroup, SWT.NULL);
-		label.setText("Building instances used by weka clusterer in progress");
-		label.setAlignment(SWT.RIGHT);
-
-		pbBuildInstances = new ProgressBar(inputFileGroup, SWT.SMOOTH);
-
-		Label label2 = new Label(inputFileGroup, SWT.NULL);
-		label2.setText("KMeans clustering in progress");
-		label2.setAlignment(SWT.RIGHT);
-
-		pbClusterer = new ProgressBar(inputFileGroup, SWT.SMOOTH);
-
-		composite.pack();
-
-		shell.pack();
-		shell.open();
-	}
-
-	public Integer cluster(ISet set, Integer iVAIdContent, Integer iVAIdStorage, EClustererType eClustererType) {
+	private Integer cluster(ISet set, Integer iVAIdContent, Integer iVAIdStorage, EClustererType eClustererType) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -79,12 +41,22 @@ public class KMeansClusterer
 		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 
+		DistanceFunction distFunc = null;
+		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
+			distFunc = new EuclideanDistance();
+		else if (eDistanceMeasure == EDistanceMeasure.MANHATTAHN_DISTANCE)
+			distFunc = new ManhattanDistance();
+
 		try {
 			clusterer.setNumClusters(iNrCluster);
 			clusterer.setMaxIterations(1000);
+			if (distFunc != null)
+				clusterer.setDistanceFunction(distFunc);
 		}
 		catch (Exception e2) {
-			e2.printStackTrace();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// e2.printStackTrace();
 		}
 
 		StringBuffer buffer = new StringBuffer();
@@ -94,56 +66,106 @@ public class KMeansClusterer
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
+		int iPercentage = 1;
+
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+
 			int iNrElements = contentVA.size();
-			pbBuildInstances.setMinimum(0);
-			pbBuildInstances.setMaximum(iNrElements);
+
+			if (iNrCluster >= iNrElements)
+				return -1;
 
 			for (int nr = 0; nr < storageVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
 			}
 
 			buffer.append("@data\n");
-			
+
 			int icnt = 0;
 			for (Integer iContentIndex : contentVA) {
-				pbBuildInstances.setSelection(icnt);
-				for (Integer iStorageIndex : storageVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex)
-						+ ", ");
 
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) icnt / contentVA.size() * 100);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, false));
+						iPercentage++;
+					}
+
+					for (Integer iStorageIndex : storageVA) {
+						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iContentIndex)
+							+ ", ");
+
+					}
+					buffer.append("\n");
+					icnt++;
+
+					processEvents();
 				}
-				buffer.append("\n");
-				icnt++;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 		}
 		else {
-			
-			int iNrElements = contentVA.size();
-			pbBuildInstances.setMinimum(0);
-			pbBuildInstances.setMaximum(iNrElements);
-			
-			for (int nr = 0; nr < storageVA.size(); nr++) {
+
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+
+			int iNrElements = storageVA.size();
+
+			if (iNrCluster >= iNrElements)
+				return -1;
+
+			for (int nr = 0; nr < contentVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
 			}
 
 			buffer.append("@data\n");
 
-			int icnt = 0;
+			int isto = 0;
 			for (Integer iStorageIndex : storageVA) {
-				pbBuildInstances.setSelection(icnt);
-				for (Integer iContentIndex : contentVA) {
-					buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
-						iContentIndex)
-						+ ", ");
 
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) isto / contentVA.size() * 100);
+					if (iPercentage == tempPercentage) {
+						GeneralManager.get().getEventPublisher().triggerEvent(
+							new ClusterProgressEvent(iPercentage, false));
+						iPercentage++;
+					}
+
+					for (Integer iContentIndex : contentVA) {
+						buffer.append(set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							iContentIndex)
+							+ ", ");
+
+					}
+					buffer.append("\n");
+					isto++;
+					processEvents();
 				}
-				buffer.append("\n");
-				icnt++;
+				else {
+					GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
+					return -2;
+				}
 			}
 		}
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("KMeans clustering of genes in progress"));
+		else
+			GeneralManager.get().getEventPublisher().triggerEvent(
+				new RenameProgressBarEvent("KMeans clustering of experiments in progress"));
 
 		Instances data = null;
 
@@ -153,32 +175,47 @@ public class KMeansClusterer
 			data = new Instances(new StringReader(buffer.toString()));
 		}
 		catch (IOException e1) {
-			e1.printStackTrace();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// e1.printStackTrace();
 		}
 
-		pbClusterer.setMinimum(0);
-		pbClusterer.setMaximum(5);
-		
-		pbClusterer.setSelection(0);	
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(10, false));
+
 		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(1);	
-		
+
+		processEvents();
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
+
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
 			eval.evaluateClusterer(data);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -1;
+			// e.printStackTrace();
 		}
-		pbClusterer.setSelection(2);	
-		
+		processEvents();
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
+
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
 		for (int i = 0; i < iNrCluster; i++) {
@@ -192,49 +229,70 @@ public class KMeansClusterer
 		for (int j = 0; j < iNrCluster; j++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == j) {
-					alExamples.add(i);// - 1);
+					alExamples.add(i);
 					break;
 				}
 			}
 		}
-		pbClusterer.setSelection(3);	
-		
+		processEvents();
+		if (bClusteringCanceled) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return -2;
+		}
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
+
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
+		IVirtualArray virualArray;
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			virualArray = set.getVA(iVAIdContent);
+		else
+			virualArray = set.getVA(iVAIdStorage);
+
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == cluster) {
-					indexes.add(i);
+					indexes.add(virualArray.get(i));
 					count.set(cluster, count.get(cluster) + 1);
 				}
 			}
 		}
-		pbClusterer.setSelection(4);	
-			
-		
-		Integer clusteredVAId = set.createStorageVA(indexes);
+
+		Integer clusteredVAId = 0;
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			clusteredVAId = set.createStorageVA(indexes);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			clusteredVAId = set.createSetVA(indexes);
 
 		// set cluster result in Set
 		set.setAlClusterSizes(count);
 		set.setAlExamples(alExamples);
 
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+
 		return clusteredVAId;
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState) {
+	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
-		iNrCluster = clusterState.getKMeansClusterCnt();
+		this.eDistanceMeasure = clusterState.getDistanceMeasure();
+		this.iProgressBarMultiplier = iProgressBarMultiplier;
+		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		buildProgressBar();
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+			iNrCluster = clusterState.getKMeansClusterCntGenes();
+		else
+			iNrCluster = clusterState.getKMeansClusterCntExperiments();
 
 		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
-
-		shell.close();
 
 		return VAId;
 	}

@@ -7,8 +7,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.InterchangeGro
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.MergeClustersItem;
 
 /**
- * Implementation of AItemContainer for groups/clusters. By passing a group number code all relevant context
- * menu items are constructed automatically
+ * Implementation of AItemContainer for groups/clusters. In this context menu all operations related to group
+ * handling are included.
  * 
  * @author Bernhard Schlegl
  */
@@ -22,25 +22,33 @@ public class GroupContextMenuItemContainer
 	public GroupContextMenuItemContainer() {
 		super();
 
-		if (GeneralManager.get().getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
-			throw new IllegalStateException("This context menu container is only valid for genetic data");
+//		if (GeneralManager.get().getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+//			throw new IllegalStateException("This context menu container is only valid for genetic data");
 
 	}
 
 	/**
-	 * Sets a boolean to determine which groupList has to be used. True for genes, false for experiments
+	 * Sets parameter needed for correct initialization of context menu.
 	 * 
 	 * @param bGeneGroup
 	 *            if true gene groups will be handled, if false experiment groups
+	 * @param bEnableMerge
+	 *            if true merge cluster item will be added
+	 * @param bEnableInterchange
+	 *            if true interchange cluster item will be added
 	 */
-	public void setGeneExperimentFlag(boolean bGeneGroup) {
-		MergeClustersItem mergeClusters = new MergeClustersItem();
-		mergeClusters.setGeneExperimentFlag(bGeneGroup);
-		addContextMenuItem(mergeClusters);
+	public void setContextMenuFlags(boolean bGeneGroup, boolean bEnableMerge, boolean bEnableInterchange) {
 
-		InterchangeGroupsItem interchangeGroups = new InterchangeGroupsItem();
-		interchangeGroups.setGeneExperimentFlag(bGeneGroup);
-		addContextMenuItem(interchangeGroups);
+		if (bEnableMerge) {
+			MergeClustersItem mergeClusters = new MergeClustersItem();
+			mergeClusters.setGeneExperimentFlag(bGeneGroup);
+			addContextMenuItem(mergeClusters);
+		}
 
+		if (bEnableInterchange) {
+			InterchangeGroupsItem interchangeGroups = new InterchangeGroupsItem();
+			interchangeGroups.setGeneExperimentFlag(bGeneGroup);
+			addContextMenuItem(interchangeGroups);
+		}
 	}
 }

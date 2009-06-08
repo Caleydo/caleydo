@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
 import javax.swing.JFrame;
 
@@ -29,8 +28,7 @@ import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogramHorizontal;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogramVertical;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -39,14 +37,11 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.collab.CollabViewRep;
-import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphDataExportViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
-import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
-import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
-import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 import com.sun.opengl.util.Animator;
@@ -129,30 +124,14 @@ public class ViewManager
 		switch (type) {
 			case VIEW:
 				break;
-			case VIEW_SWT_PATHWAY:
-				// return new Pathway2DViewRep(generalManager, iViewID,
-				// iParentContainerID, sLabel);
-				break;
 			case VIEW_SWT_TABULAR_DATA_VIEWER:
 				view = new TabularDataViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_MIXER:
-				view = new MixerViewRep(iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_BROWSER_GENERAL:
 				view = new HTMLBrowserViewRep(iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_BROWSER_GENOME:
 				view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_IMAGE:
-				view = new ImageViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_UNDO_REDO:
-				view = new UndoRedoViewRep(iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_DATA_ENTITY_SEARCHER:
-				view = new DataEntitySearcherViewRep(iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_GLYPH_DATAEXPORT:
 				view = new GlyphDataExportViewRep(iParentContainerID, sLabel);
@@ -195,8 +174,8 @@ public class ViewManager
 	@Override
 	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
 		final String sLabel, final IViewFrustum viewFrustum) {
-		GeneralManager.get().getLogger().log(Level.INFO,
-			"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]");
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]"));
 
 		AGLEventListener glEventListener = null;
 
@@ -270,11 +249,11 @@ public class ViewManager
 				break;
 				
 			case CREATE_GL_DENDROGRAM_HORIZONTAL:
-				glEventListener = new GLDendrogramHorizontal(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, true);
 				break;
 				
 			case CREATE_GL_DENDROGRAM_VERTICAL:
-				glEventListener = new GLDendrogramVertical(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, false);
 				break;
 
 			default:
@@ -293,8 +272,8 @@ public class ViewManager
 		int iGLCanvasID = glCanvas.getID();
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
-			generalManager.getLogger().log(Level.WARNING,
-				"GL Canvas with ID " + iGLCanvasID + " is already registered! Do nothing.");
+			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+				"GL Canvas with ID " + iGLCanvasID + " is already registered! Do nothing."));
 
 			return false;
 		}

@@ -4,14 +4,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -79,7 +73,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) {
 		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			// rebuildPathwayDisplayList(gl);
@@ -89,7 +83,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) {
 		if (bIsDisplayListDirtyRemote) {
 			// rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyRemote = false;
@@ -99,7 +93,8 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized void display(final GL gl) {
+	public void display(final GL gl) {
+		processEvents();
 		checkForHits(gl);
 		renderScene(gl);
 	}
@@ -108,7 +103,7 @@ public class GLCell
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -130,50 +125,50 @@ public class GLCell
 
 	}
 
-	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.DAVID);
-
-		int iDavidID = 0;
-
-		for (SelectionDeltaItem item : selectionDelta) {
-			if (item.getSelectionType() != ESelectionType.MOUSE_OVER
-				&& item.getSelectionType() != ESelectionType.SELECTION) {
-				continue;
-			}
-
-			iDavidID = item.getPrimaryID();
-
-			System.out.println("Cell component: "
-				+ GeneralManager.get().getIDMappingManager().getID(EMappingType.DAVID_2_CELL_COMPONENT,
-					iDavidID));
-		}
-		//
-		// iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
-		// .getPathwayVertexGraphItemIdByDavidId(iDavidID);
-		//
-		// // Ignore David IDs that do not exist in any pathway
-		// if (iPathwayVertexGraphItemID == -1)
-		// {
-		// continue;
-		// }
-		//
-		// // Convert DAVID ID to pathway graph item representation ID
-		// for (IGraphItem tmpGraphItemRep :
-		// generalManager.getPathwayItemManager().getItem(
-		// iPathwayVertexGraphItemID).getAllItemsByProp(
-		// EGraphItemProperty.ALIAS_CHILD))
-		// {
-		// if
-		// (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
-		// continue;
-		//				
-		// newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item
-		// .getSelectionType(), iDavidID);
-		// }
-		// }
-		//
-		return newSelectionDelta;
-	}
+//	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
+//		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.DAVID);
+//
+//		int iDavidID = 0;
+//
+//		for (SelectionDeltaItem item : selectionDelta) {
+//			if (item.getSelectionType() != ESelectionType.MOUSE_OVER
+//				&& item.getSelectionType() != ESelectionType.SELECTION) {
+//				continue;
+//			}
+//
+//			iDavidID = item.getPrimaryID();
+//
+//			System.out.println("Cell component: "
+//				+ GeneralManager.get().getIDMappingManager().getID(EMappingType.DAVID_2_CELL_COMPONENT,
+//					iDavidID));
+//		}
+//		//
+//		// iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
+//		// .getPathwayVertexGraphItemIdByDavidId(iDavidID);
+//		//
+//		// // Ignore David IDs that do not exist in any pathway
+//		// if (iPathwayVertexGraphItemID == -1)
+//		// {
+//		// continue;
+//		// }
+//		//
+//		// // Convert DAVID ID to pathway graph item representation ID
+//		// for (IGraphItem tmpGraphItemRep :
+//		// generalManager.getPathwayItemManager().getItem(
+//		// iPathwayVertexGraphItemID).getAllItemsByProp(
+//		// EGraphItemProperty.ALIAS_CHILD))
+//		// {
+//		// if
+//		// (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
+//		// continue;
+//		//				
+//		// newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item
+//		// .getSelectionType(), iDavidID);
+//		// }
+//		// }
+//		//
+//		return newSelectionDelta;
+//	}
 
 	@Override
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
@@ -188,7 +183,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized String getShortInfo() {
+	public String getShortInfo() {
 		// PathwayGraph pathway =
 		// (generalManager.getPathwayManager().getItem(iPathwayID));
 		//		
@@ -198,7 +193,7 @@ public class GLCell
 	}
 
 	@Override
-	public synchronized String getDetailedInfo() {
+	public String getDetailedInfo() {
 		// StringBuffer sInfoText = new StringBuffer();
 		// PathwayGraph pathway =
 		// (generalManager.getPathwayManager().getItem(iPathwayID));

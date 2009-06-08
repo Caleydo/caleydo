@@ -825,21 +825,22 @@ public final class SearchBox
 				dropDown(false);
 				text.selectAll();
 				text.setFocus();
-				break;
-			}
-			case SWT.Selection: {
-				int index = list.getSelectionIndex();
-				if (index == -1)
-					return;
-				text.setText(list.getItem(index));
-				text.selectAll();
-				list.setSelection(index);
+				
+				// Added by Marc
 				Event e = new Event();
 				e.time = event.time;
 				e.stateMask = event.stateMask;
 				e.doit = event.doit;
 				notifyListeners(SWT.Selection, e);
 				event.doit = e.doit;
+				break;
+				
+			}
+			case SWT.Selection: {
+
+				// Do nothing here - beause it would also trigger a selection when the user just 
+				// browses through the list by using the arrows.
+				// The selection is either trigger on mouse click or SWT.CR
 				break;
 			}
 
@@ -858,7 +859,20 @@ public final class SearchBox
 				}
 				if (event.character == SWT.CR) {
 					dropDown(false);
-					//				
+					
+					// Added by Marc
+					int index = list.getSelectionIndex();
+					if (index == -1)
+						return;
+					text.setText(list.getItem(index));
+					text.selectAll();
+					list.setSelection(index);
+					Event e = new Event();
+					e.time = event.time;
+					e.stateMask = event.stateMask;
+					e.doit = event.doit;
+					notifyListeners(SWT.Selection, e);
+					event.doit = e.doit;
 				}
 				if (event.keyCode == SWT.ARROW_UP && list.getSelectionIndex() == 0) {
 					// dropDown (false);

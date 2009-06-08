@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.views.swt.HTMLBrowserView;
+import org.caleydo.rcp.view.swt.HTMLBrowserView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

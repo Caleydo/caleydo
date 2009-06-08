@@ -50,8 +50,6 @@ public class SWTGUIManager
 
 	protected final Vector<ISWTWidget> widgetMap;
 
-	protected Shell loadingProgressBarWindow;
-
 	protected ProgressBar loadingProgressBar;
 
 	protected Label loadingProgressBarLabel;
@@ -67,12 +65,6 @@ public class SWTGUIManager
 		widgetMap = new Vector<ISWTWidget>();
 		windowMap = new HashMap<Integer, Shell>();
 		compositeMap = new HashMap<Integer, Composite>();
-
-		// Only create popup window with progress bar when not in RCP mode
-		if (generalManager.isStandalone()) {
-			display = new Display();
-			createLoadingProgressBar();
-		}
 	}
 
 	@Override
@@ -134,7 +126,7 @@ public class SWTGUIManager
 	}
 
 	@Override
-	public synchronized ISWTWidget createWidget(final EManagedObjectType useWidgetType,
+	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
 		final Composite externalParentComposite) {
 		ASWTWidget newSWTWidget;
 
@@ -192,12 +184,6 @@ public class SWTGUIManager
 		Iterator<Shell> shellIterator;
 		Shell currentShell;
 
-		// Close loading progress bar in standalone mode after bootstrapping is
-		// completed.
-		if (loadingProgressBarWindow != null) {
-			setProgressBarVisible(false);
-		}
-
 		shellIterator = windowMap.values().iterator();
 		while (shellIterator.hasNext()) {
 			currentShell = shellIterator.next();
@@ -214,22 +200,6 @@ public class SWTGUIManager
 				}
 			}
 		}
-	}
-
-	private void createLoadingProgressBar() {
-		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
-		loadingProgressBarWindow.setMaximized(false);
-		loadingProgressBarWindow.setText("Loading Caleydo...");
-		// loadingProgressBarWindow.setImage(new Image(display,
-		// this.getClass().getClassLoader().getResourceAsStream(
-		// "resources/icons/caleydo/caleydo16.gif")));
-
-		loadingProgressBar = new ProgressBar(loadingProgressBarWindow, SWT.SMOOTH);
-		loadingProgressBar.setBounds(10, 10, 430, 40);
-		loadingProgressBar.setSelection(10);
-
-		loadingProgressBarWindow.setBounds(500, 500, 460, 90);
-		loadingProgressBarWindow.open();
 	}
 
 	@Override
@@ -256,22 +226,12 @@ public class SWTGUIManager
 
 	@Override
 	public void setProgressBarText(String sText) {
-		if (generalManager.isStandalone()) {
-			loadingProgressBarWindow.setText(sText);
-			loadingProgressBarWindow.update();
-		}
-		else {
-			// // If in RCP mode and the splash is already gone
-			// // a new progress bar has to be created
-			// if (loadingProgressBarWindow == null)
-			// createLoadingProgressBar();
 
-			if (loadingProgressBarLabel.isDisposed())
-				return;
+		if (loadingProgressBarLabel.isDisposed())
+			return;
 
-			loadingProgressBarLabel.setText(sText);
-			loadingProgressBarLabel.update();
-		}
+		loadingProgressBarLabel.setText(sText);
+		loadingProgressBarLabel.update();
 	}
 
 	@Override
@@ -286,11 +246,6 @@ public class SWTGUIManager
 		});
 	}
 
-	public void setProgressBarVisible(final boolean state) {
-		loadingProgressBarWindow.setVisible(state);
-		loadingProgressBar.setVisible(state);
-	}
-
 	@Override
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel) {
 		this.loadingProgressBar = progressBar;
@@ -301,17 +256,5 @@ public class SWTGUIManager
 	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display) {
 		this.display = display;
 		this.externalRCPStatusLine = statusLine;
-	}
-
-	@Override
-	public void setExternalRCPStatusLineMessage(final String sMessage) {
-		if (externalRCPStatusLine == null)
-			return;
-
-		display.asyncExec(new Runnable() {
-			public void run() {
-				externalRCPStatusLine.setMessage(sMessage);
-			}
-		});
 	}
 }

@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.pathway;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -11,6 +10,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -48,7 +48,8 @@ public class GLPathwayTextureManager {
 			generalManager.getPathwayManager().getPathwayDatabaseByType(type).getImagePath()
 				+ sPathwayTexturePath;
 
-		generalManager.getLogger().log(Level.INFO, "Load pathway texture with ID: " + pathway.getID());
+		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			"Load pathway texture with ID: " + pathway.getID()));
 
 		pathwayTexture = generalManager.getResourceLoader().getTexture(sPathwayTexturePath);
 

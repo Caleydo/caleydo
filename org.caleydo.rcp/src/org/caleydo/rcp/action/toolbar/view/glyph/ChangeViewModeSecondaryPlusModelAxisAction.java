@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
+import org.caleydo.core.manager.event.view.glyph.GlyphUpdatePositionModelEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.EPositionModel;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -85,15 +86,9 @@ public class ChangeViewModeSecondaryPlusModelAxisAction
 			Action axisAction = new Action(name) {
 				@Override
 				public void run() {
-					if (axisnum == 0) {
-						triggerCmdExternalObjectSetter(list.get(name),
-							EExternalObjectSetterType.GLYPH_CHANGE_PLUSMODEL_AXIS_X);
-					}
-
-					if (axisnum == 1) {
-						triggerCmdExternalObjectSetter(list.get(name),
-							EExternalObjectSetterType.GLYPH_CHANGE_PLUSMODEL_AXIS_Y);
-					}
+					GeneralManager.get().getEventPublisher().triggerEvent(
+						new GlyphUpdatePositionModelEvent(iViewID, EPositionModel.DISPLAY_PLUS, axisnum, list
+							.get(name)));
 				}
 			};
 			addActionToMenu(menu, axisAction);

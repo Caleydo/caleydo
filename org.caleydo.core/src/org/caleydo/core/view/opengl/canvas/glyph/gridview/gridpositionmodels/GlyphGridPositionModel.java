@@ -5,7 +5,6 @@ import gleem.linalg.open.Vec2i;
 
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -14,6 +13,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
+import org.eclipse.core.runtime.Status;
 
 public class GlyphGridPositionModel {
 	protected IGeneralManager generalManager = null;
@@ -47,12 +47,14 @@ public class GlyphGridPositionModel {
 	}
 
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg) {
-		GeneralManager.get().getLogger().log(Level.INFO, "setGlyphPositions in base class called");
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			"setGlyphPositions in base class called"));
 	}
 
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_, ArrayList<GlyphEntry> gg,
 		int centerX, int centerY) {
-		GeneralManager.get().getLogger().log(Level.INFO, "setGlyphPositions in base class called");
+		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			"setGlyphPositions in base class called"));
 	}
 
 	protected boolean isFree(Vector<Vector<GlyphGridPosition>> glyphMap, int x, int y) {

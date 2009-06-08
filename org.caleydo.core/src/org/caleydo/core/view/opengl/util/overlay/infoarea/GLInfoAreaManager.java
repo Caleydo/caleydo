@@ -38,11 +38,11 @@ public class GLInfoAreaManager {
 
 	private Vec3f vecLowerLeft;
 
-	private InformationContentCreator contentCreator;
-
-	private boolean bUpdateViewInfo = true;
-
-	private boolean bEnableRendering = true;
+//	private InformationContentCreator contentCreator;
+//
+//	private boolean bUpdateViewInfo = true;
+//
+//	private boolean bEnableRendering = true;
 
 	private boolean bRenderInfoArea = false;
 	private boolean bFirstTime = false;

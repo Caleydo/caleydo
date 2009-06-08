@@ -1,6 +1,15 @@
 package org.caleydo.rcp;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.rcp.perspective.GenomePerspective;
+import org.caleydo.rcp.perspective.PartListener;
+import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -14,6 +23,7 @@ public class ApplicationWorkbenchWindowAdvisor
 	 */
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
+		Application.startCaleydoCore();
 	}
 
 	@Override
@@ -30,6 +40,14 @@ public class ApplicationWorkbenchWindowAdvisor
 		configurer.setShowStatusLine(false);
 		// configurer.setShowProgressIndicator(true);
 		configurer.setTitle("Caleydo");
+
+		configurer.getWindow().getPartService().addPartListener(new PartListener());
+
+		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
+		float fRatio = (float) rectDisplay.width / rectDisplay.height;
+		if (fRatio > 1.35) {
+			GenomePerspective.bIsWideScreen = true;
+		}
 	}
 
 	@Override
@@ -43,8 +61,34 @@ public class ApplicationWorkbenchWindowAdvisor
 			getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
 			getWindowConfigurer().getWindow().getShell().getDisplay());
 
-		if (Application.bIsWebstart && !Application.bDoExit) {
-			Application.startCaleydoCore();
+		// if (Application.bIsWebstart && !Application.bDoExit) {
+		// Application.startCaleydoCore();
+		// }
+
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+
+			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
+
+			// deletes unwanted Menuitems
+			IContributionItem[] menuItems = configurer.getMenuManager().getItems();
+			for (int i = 0; i < menuItems.length; i++) {
+				IContributionItem menuItem = menuItems[i];
+				if (menuItem.getId().equals("org.caleydo.search.menu")) {
+					configurer.getMenuManager().remove(menuItem);
+				}
+				else if (menuItem.getId().equals("viewMenu")) {
+					IContributionItem itemToRemove =
+						((MenuManager) menuItem).find("org.caleydo.rcp.command.openviews.remote");
+
+					if (itemToRemove != null)
+						itemToRemove.setVisible(false);
+				}
+			}
+		}
+
+		if (!Application.bDoExit && Application.bLoadPathwayData) {
+			// Trigger pathway loading
+			new PathwayLoadingProgressIndicatorAction().run(null);
 		}
 	}
 }

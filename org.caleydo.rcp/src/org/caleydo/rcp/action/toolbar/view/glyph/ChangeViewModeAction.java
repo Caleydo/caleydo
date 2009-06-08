@@ -2,11 +2,11 @@ package org.caleydo.rcp.action.toolbar.view.glyph;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.EPositionModel;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.views.swt.toolbar.content.IToolBarItem;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
@@ -34,7 +34,7 @@ public class ChangeViewModeAction
 		this.cvm2a = cvm2a;
 		setViewID(iViewID);
 
-		EIconIDs type = EIconIDs.DISPLAY_RECTANGLE;
+		EPositionModel type = EPositionModel.DISPLAY_RECTANGLE;
 
 		String usedText = ChangeViewModeToRectangleAction.TEXT;
 		String usedImage = ChangeViewModeToRectangleAction.ICON;
@@ -43,20 +43,20 @@ public class ChangeViewModeAction
 			type = glyphview.getPositionModel();
 		}
 
-		if (type == EIconIDs.DISPLAY_CIRCLE) {
+		if (type == EPositionModel.DISPLAY_CIRCLE) {
 			usedText = ChangeViewModeToCircleAction.TEXT;
 			usedImage = ChangeViewModeToCircleAction.ICON;
 		}
-		if (type == EIconIDs.DISPLAY_PLUS) {
+		if (type == EPositionModel.DISPLAY_PLUS) {
 			usedText = ChangeViewModeToPlusModelAction.TEXT;
 			usedImage = ChangeViewModeToPlusModelAction.ICON;
 			cvm2a.setAction(new ChangeViewModeToPlusModelAction(iViewID, this));
 		}
-		if (type == EIconIDs.DISPLAY_RANDOM) {
+		if (type == EPositionModel.DISPLAY_RANDOM) {
 			usedText = ChangeViewModeToRandomAction.TEXT;
 			usedImage = ChangeViewModeToRandomAction.ICON;
 		}
-		if (type == EIconIDs.DISPLAY_SCATTERPLOT) {
+		if (type == EPositionModel.DISPLAY_SCATTERPLOT) {
 			usedText = ChangeViewModeToScatterplotAction.TEXT;
 			usedImage = ChangeViewModeToScatterplotAction.ICON;
 			cvm2a.setAction(new ChangeViewModeToScatterplotAction(iViewID, this));

@@ -24,6 +24,7 @@ public class DataImportWizard
 	public DataImportWizard(final Shell parentShell) {
 		super();
 
+		this.setWindowTitle("Caleydo - Import Data");
 		parentShell.setText("Open project file");
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
@@ -51,9 +52,13 @@ public class DataImportWizard
 	@Override
 	public boolean performFinish() {
 		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete()) {
-			((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).getFileLoadDataAction()
-				.execute();
-			Application.applicationMode = EApplicationMode.STANDARD;
+			
+			if (!((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
+			.getFileLoadDataAction().execute()) {
+				return false;				
+			}
+			
+			Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 			return true;
 		}
 
