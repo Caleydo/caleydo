@@ -13,7 +13,6 @@ public class ChangeViewModeToRandomAction
 	public static final String TEXT = "Switch View To Random";
 	public static final String ICON = "resources/icons/view/glyph/sort_random.png";
 
-	private boolean bEnable = false;
 	private ChangeViewModeAction parent;
 
 	/**

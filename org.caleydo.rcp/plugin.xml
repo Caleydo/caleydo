@@ -105,14 +105,6 @@
             name="Glyph Mapping Configuration">
       </view>
       <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.swt.SWTGlyphDataExportView"
-            icon="resources/icons/view/glyph.png"
-            id="org.caleydo.rcp.views.swt.SWTGlyphDataExportView"
-            name="Glyph Data Export">
-      </view>
-      <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.view.swt.TabularDataView"
             icon="resources/icons/view/tabular_data_viewer.png"
@@ -293,11 +285,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphMappingConfigurationHandler"
             id="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
             name="Open Glyph Mapping Configuration View">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphDataExportHandler"
-            id="org.caleydo.rcp.command.openviews.glyphdataexportview"
-            name="Open Glyph Data Export View">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenHierarchicalHeatMapHandler"

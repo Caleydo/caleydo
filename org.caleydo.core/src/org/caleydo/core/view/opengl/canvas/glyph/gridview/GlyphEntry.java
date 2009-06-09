@@ -15,7 +15,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeTyp
 /**
  * This class represents a single glyph. It stores all its parameter.
  * 
- * @author Steve
+ * @author Sauer Stefan
  */
 public class GlyphEntry {
 
@@ -35,6 +35,12 @@ public class GlyphEntry {
 
 	private int glListSelected_ = 0;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param id
+	 *            The Glyph ID
+	 */
 	public GlyphEntry(int id) {
 		this.generalManager = GeneralManager.get();
 		gman = (GlyphManager) generalManager.getGlyphManager();
@@ -53,6 +59,9 @@ public class GlyphEntry {
 		return id_;
 	}
 
+	/**
+	 * Selected this Glyph
+	 */
 	public void select() {
 		if (selected_)
 			return;
@@ -64,6 +73,9 @@ public class GlyphEntry {
 		}
 	}
 
+	/**
+	 * Deselects this Glyph
+	 */
 	public void deSelect() {
 		if (!selected_)
 			return;
@@ -75,10 +87,22 @@ public class GlyphEntry {
 		}
 	}
 
+	/**
+	 * Is This Glyph Selected
+	 * 
+	 * @return
+	 */
 	public boolean isSelected() {
 		return selected_;
 	}
 
+	/**
+	 * Returns the gl display list
+	 * 
+	 * @param gl
+	 *            GL Context
+	 * @return the display list
+	 */
 	public int getGlList(GL gl) {
 		if (selected_)
 			return glListSelected_;
@@ -86,19 +110,36 @@ public class GlyphEntry {
 		return glList_;
 	}
 
+	/**
+	 * Adds a parameter to this glpyh
+	 * 
+	 * @param value
+	 */
 	public void addParameter(int value) {
-
 		parameter_.add(value);
 	}
 
+	/**
+	 * Adds a string parameter to this glyph. String Parameters are only displayed, not processed.
+	 * 
+	 * @param column
+	 *            column key
+	 * @param value
+	 *            column value
+	 */
 	public void addStringParameter(String column, String value) {
-
-		if (vsParameterString.containsKey(column)) {
+		if (vsParameterString.containsKey(column))
 			vsParameterString.remove(column);
-		}
 		vsParameterString.put(column, value);
 	}
 
+	/**
+	 * Returns the Parameter of this index
+	 * 
+	 * @param index
+	 *            parameter index
+	 * @return the parameter value
+	 */
 	public int getParameter(int index) {
 		if (index < 0)
 			return -1;
@@ -107,27 +148,56 @@ public class GlyphEntry {
 		return parameter_.get(index);
 	}
 
+	/**
+	 * Returns the number of Parameters
+	 * 
+	 * @return
+	 */
 	public int getNumberOfParameters() {
 		return parameter_.size();
 	}
 
+	/**
+	 * Returns the String Parameter with the given key.
+	 * 
+	 * @param colname
+	 *            The column key
+	 * @return
+	 */
 	public String getStringParameter(String colname) {
-
 		if (!vsParameterString.containsKey(colname))
 			return "";
 		return vsParameterString.get(colname);
 	}
 
+	/**
+	 * Returns a list of String Parameter Column Keys
+	 * 
+	 * @return The List of used keys
+	 */
 	public ArrayList<String> getStringParameterColumnNames() {
 		ArrayList<String> temp = new ArrayList<String>();
 		temp.addAll(vsParameterString.keySet());
 		return temp;
 	}
 
+	/**
+	 * Returns the Number of String Parameters
+	 * 
+	 * @return
+	 */
 	public int getNumberOfStringParameters() {
 		return vsParameterString.size();
 	}
 
+	/**
+	 * This generates the display List for this glyph
+	 * 
+	 * @param gl
+	 *            GL Context
+	 * @param generator
+	 *            used Glyph Generator
+	 */
 	public void generateGLLists(GL gl, GLGlyphGenerator generator) {
 
 		glListSelected_ = generator.generateGlyph(gl, this, true);

@@ -13,7 +13,6 @@ public class ChangeViewModeToRectangleAction
 	public static final String TEXT = "Switch View To Rectangle";
 	public static final String ICON = "resources/icons/view/glyph/sort_zickzack.png";
 
-	private boolean bEnable = false;
 	private ChangeViewModeAction parent;
 
 	/**

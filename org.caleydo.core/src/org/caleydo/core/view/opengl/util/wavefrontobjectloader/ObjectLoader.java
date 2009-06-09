@@ -8,7 +8,7 @@ import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.Status;
 
 /**
- * loads a wavefront object file model
+ * loads a wavefront object file model into a ObjectModel.
  * 
  * @author Stefan Sauer
  */
@@ -41,59 +41,58 @@ public class ObjectLoader {
 			do {
 				line = resourceReader.readLine();
 
-				if (line == null) {
+				if (line == null)
 					continue;
-				}
 
 				// empty line
-				if (line.length() <= 0) {
+				if (line.length() <= 0)
 					continue;
-				}
+
 				// comment line
-				if (line.startsWith("#")) {
+				if (line.startsWith("#"))
 					continue;
-				}
 
 				// handle groups
-				if (line.startsWith("g")) {
+				if (line.startsWith("g"))
 					model.handleGroupCommand(line);
-				}
+
 				// handle smoothing groups
 				if (line.startsWith("s")) {
 					// TODO wavefront smoothing groups are not implemented
-					GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-						"Wavefront Object Loader hasn't implemented smoothing groups yet."));
+					GeneralManager.get().getLogger().log(
+						new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+							"Wavefront Object Loader hasn't implemented smoothing groups yet."));
 				}
 				// handle merging group
 				if (line.startsWith("mg")) {
 					// TODO wavefront merging groups is not implemented
-					GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-						"Wavefront Object Loader hasn't implemented merging groups yet."));
+					GeneralManager.get().getLogger().log(
+						new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+							"Wavefront Object Loader hasn't implemented merging groups yet."));
 				}
 				// handle object name
 				if (line.startsWith("o")) {
 					// TODO wavefront object name is not implemented
-					GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-						"Wavefront Object Loader hasn't implemented object names yet."));
+					GeneralManager.get().getLogger().log(
+						new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+							"Wavefront Object Loader hasn't implemented object names yet."));
 				}
 
 				// handle vertex
-				if (line.startsWith("v ")) {
+				if (line.startsWith("v "))
 					model.handleVertexCommand(line);
-				}
+
 				// handle vertex normal
-				if (line.startsWith("vn")) {
+				if (line.startsWith("vn"))
 					model.handleVertexNormalCommand(line);
-				}
+
 				// handle texture coordinate
-				if (line.startsWith("vt")) {
+				if (line.startsWith("vt"))
 					model.handleVertexTextureCommand(line);
-				}
 
 				// handle faces
-				if (line.startsWith("f ")) {
+				if (line.startsWith("f "))
 					model.handleFaceCommand(line);
-				}
 
 			} while (line != null);
 

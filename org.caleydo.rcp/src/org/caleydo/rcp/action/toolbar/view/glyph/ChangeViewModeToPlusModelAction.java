@@ -13,7 +13,6 @@ public class ChangeViewModeToPlusModelAction
 	public static final String TEXT = "Switch View To Distribution Orientation";
 	public static final String ICON = "resources/icons/view/glyph/sort_age_pyramid.png";
 
-	private boolean bEnable = false;
 	private ChangeViewModeAction parent;
 
 	/**

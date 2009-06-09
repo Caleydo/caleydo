@@ -10,7 +10,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
- * Render styles for the parallel coordinates
+ * Render styles for the Glyph View
  * 
  * @author Sauer Stefan
  */
@@ -18,17 +18,20 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public class GlyphRenderStyle
 	extends GeneralRenderStyle {
 
+
+	/**
+	 * Constructor
+	 * @param viewFrustum
+	 */
 	public GlyphRenderStyle(IViewFrustum viewFrustum) {
 
 		super(viewFrustum);
 	}
 
-	@Override
-	public float getButtonWidht() {
-
-		return 1.0f;
-	}
-
+	/**
+	 * Returns the used Text Renderer
+	 * @return
+	 */
 	public TextRenderer getScatterplotTextRenderer() {
 
 		TextRenderer textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
@@ -36,6 +39,11 @@ public class GlyphRenderStyle
 		return textRenderer;
 	}
 
+	/**
+	 * Returns the color of the grid
+	 * 
+	 * @return a color (red,green,blue,alpha)
+	 */
 	public Vec4f getGridColor() {
 		return new Vec4f(0.2f, 0.2f, 0.2f, 1f);
 	}

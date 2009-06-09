@@ -13,7 +13,6 @@ public class ChangeViewModeToCircleAction
 	public static final String TEXT = "Switch View To Spiral Orientation";
 	public static final String ICON = "resources/icons/view/glyph/sort_spirale.png";
 
-	private boolean bEnable = false;
 	private ChangeViewModeAction parent;
 
 	/**

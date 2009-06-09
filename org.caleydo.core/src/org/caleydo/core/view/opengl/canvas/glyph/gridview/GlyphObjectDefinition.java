@@ -41,20 +41,37 @@ public class GlyphObjectDefinition {
 
 	private ILog logger;
 
+	/**
+	 * Constructor
+	 */
 	public GlyphObjectDefinition() {
 		parts = new HashMap<String, GlyphObjectDefinitionPart>();
 		partOrder = new ArrayList<String>();
 		logger = GeneralManager.get().getLogger();
 	}
 
+	/**
+	 * Sets the detail level of this Object (This Object IS the detail level)
+	 * 
+	 * @param detaillevel
+	 */
 	public void setDetailLevel(int detaillevel) {
 		iDetailLevel = detaillevel;
 	}
 
+	/**
+	 * Returns the detail level of this Object
+	 * @return
+	 */
 	public int getDetailLevel() {
 		return iDetailLevel;
 	}
 
+	/**
+	 * Loads the Wavefront Object file.
+	 * 
+	 * @param file
+	 */
 	public void setSourceFile(String file) {
 		sourceFile = file;
 		if (sourceFile != null) {
@@ -62,19 +79,34 @@ public class GlyphObjectDefinition {
 		}
 	}
 
+	/**
+	 * Loads the Wavefront Object file.
+	 */
 	public void loadObjectFile() {
 		ObjectLoader loader = new ObjectLoader();
 		model = loader.loadFile(sourceFile);
 	}
 
+	/**
+	 * Sets a description of this detail level.
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		sDescription = description;
 	}
 
+	/**
+	 * Returns the description of this object.
+	 * @return description text
+	 */
 	public String getDescription() {
 		return sDescription;
 	}
 
+	/**
+	 * Adds a object part to this Glyph Object.
+	 * @param name
+	 */
 	public void addGlyphPart(String name) {
 		if (!parts.containsKey(name)) {
 			partOrder.add(name);
@@ -92,8 +124,7 @@ public class GlyphObjectDefinition {
 	public String getGlyphAnchorPlace(String name, ANCHOR anchor) {
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::getAnchorPlace() - " + "part does not exist '"
-				+ name + "'"));
+				"GlyphObjectDefinition::getAnchorPlace() - " + "part does not exist '" + name + "'"));
 			return null;
 		}
 		return parts.get(name).getAnchorPlace(anchor);
@@ -112,8 +143,7 @@ public class GlyphObjectDefinition {
 	public void addGlyphPartParameter(String name, String type, String value, String description) {
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::addGlyphPartParameter() - "
-				+ "part does not exist '" + name + "'"));
+				"GlyphObjectDefinition::addGlyphPartParameter() - " + "part does not exist '" + name + "'"));
 			return;
 		}
 
@@ -133,9 +163,10 @@ public class GlyphObjectDefinition {
 
 	public GlyphObjectDefinitionPart getObjectPartDefinition(String name) {
 		if (!parts.containsKey(name)) {
-			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::getObjectPartDefinition() - "
-				+ "part does not exist '" + name + "'"));
+			logger
+				.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"GlyphObjectDefinition::getObjectPartDefinition() - " + "part does not exist '" + name
+						+ "'"));
 			return null;
 		}
 		return parts.get(name);
@@ -144,8 +175,7 @@ public class GlyphObjectDefinition {
 	public boolean canPartScale(String name, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::canPartScale() - " + "part does not exist '"
-				+ name + "'"));
+				"GlyphObjectDefinition::canPartScale() - " + "part does not exist '" + name + "'"));
 			return false;
 		}
 		return parts.get(name).canScale(dir);
@@ -155,8 +185,7 @@ public class GlyphObjectDefinition {
 
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::canPartColorChange() - "
-				+ "part does not exist '" + name + "'"));
+				"GlyphObjectDefinition::canPartColorChange() - " + "part does not exist '" + name + "'"));
 			return false;
 		}
 		GlyphObjectDefinitionPart def = parts.get(name);
@@ -179,8 +208,8 @@ public class GlyphObjectDefinition {
 	public String getPartParameterDescription(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::getPartParameterDescription() - "
-				+ "part does not exist '" + name + "'"));
+				"GlyphObjectDefinition::getPartParameterDescription() - " + "part does not exist '" + name
+					+ "'"));
 			return "";
 		}
 		GlyphObjectDefinitionPart def = parts.get(name);
@@ -196,8 +225,7 @@ public class GlyphObjectDefinition {
 	public void setPartParameterIndex(String name, EGlyphSettingIDs type, DIRECTION dir, int colNum) {
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::setPartParameterIndex() - "
-				+ "part does not exist '" + name + "'"));
+				"GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '" + name + "'"));
 			return;
 		}
 		GlyphObjectDefinitionPart def = parts.get(name);
@@ -208,8 +236,7 @@ public class GlyphObjectDefinition {
 	public int getPartParameterIndexExternal(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::setPartParameterIndex() - "
-				+ "part does not exist '" + name + "'"));
+				"GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '" + name + "'"));
 			return -1;
 		}
 		return parts.get(name).getParameterIndexExternal(type, dir);
@@ -218,8 +245,7 @@ public class GlyphObjectDefinition {
 	public int getPartParameterIndexInternal(String name, EGlyphSettingIDs type, DIRECTION dir) {
 		if (!parts.containsKey(name)) {
 			logger.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphObjectDefinition::setPartParameterIndex() - "
-				+ "part does not exist '" + name + "'"));
+				"GlyphObjectDefinition::setPartParameterIndex() - " + "part does not exist '" + name + "'"));
 			return -1;
 		}
 		return parts.get(name).getParameterIndexInternal(type, dir);

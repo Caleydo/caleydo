@@ -25,6 +25,9 @@ public class ObjectModel {
 
 	private boolean isNormalized = false;
 
+	/**
+	 * Constructor.
+	 */
 	public ObjectModel() {
 		verticesGeometric = new ArrayList<Vec3f>();
 		verticesNormal = new ArrayList<Vec3f>();
@@ -36,6 +39,13 @@ public class ObjectModel {
 
 	}
 
+	/**
+	 * Returns a ObjectGroup with the given name. NULL if group does not exist in the wavefront file.
+	 * 
+	 * @param name
+	 *            Name of the group.
+	 * @return The ObjectGoup
+	 */
 	public ObjectGroup getObjectGroup(String name) {
 		if (!groups.containsKey(name))
 			return null;
@@ -43,6 +53,13 @@ public class ObjectModel {
 		return groups.get(name);
 	}
 
+	/**
+	 * Returns the requested Vertex. Usually used only at loading the Object.
+	 * 
+	 * @param i
+	 *            Index of the Vertex
+	 * @return The Vertex
+	 */
 	public Vec3f getGeometricVertex(int i) {
 		if (i > verticesGeometric.size())
 			return null;
@@ -55,6 +72,13 @@ public class ObjectModel {
 		return verticesGeometric.get(i - 1);
 	}
 
+	/**
+	 * Returns the requested Normal Vertex. Usually used only at loading the Object.
+	 * 
+	 * @param i
+	 *            Index of the Vertex
+	 * @return The Vertex
+	 */
 	public Vec3f getNormalVertex(int i) {
 		if (i >= verticesNormal.size())
 			return null;
@@ -64,6 +88,13 @@ public class ObjectModel {
 		return verticesNormal.get(i - 1);
 	}
 
+	/**
+	 * Returns the requested Texture Vertex. Usually used only at loading the Object.
+	 * 
+	 * @param i
+	 *            Index of the Vertex
+	 * @return The Vertex
+	 */
 	public Vec3f getTextureVertex(int i) {
 		if (i >= verticesTexture.size())
 			return null;
@@ -74,9 +105,10 @@ public class ObjectModel {
 	}
 
 	/**
-	 * This handles the group command ("g").
+	 * This handles the group command ("g") at Object loading.
 	 * 
 	 * @param line
+	 *            Wavefront object file line
 	 */
 	public void handleGroupCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "g");
@@ -100,6 +132,7 @@ public class ObjectModel {
 	 * This handles the geometric vertex command ("v").
 	 * 
 	 * @param line
+	 *            Wavefront object file line
 	 */
 	public void handleVertexCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "v");
@@ -117,6 +150,7 @@ public class ObjectModel {
 	 * This handles the normal vertex command ("vn")
 	 * 
 	 * @param line
+	 *            Wavefront object file line
 	 */
 	public void handleVertexNormalCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "vn");
@@ -151,6 +185,7 @@ public class ObjectModel {
 	 * This handles the face command ("f")
 	 * 
 	 * @param line
+	 *            Wavefront object file line
 	 */
 	public void handleFaceCommand(String line) {
 		ArrayList<String> lineparts = splitAndRemoveCommand(line, "f");
@@ -186,6 +221,15 @@ public class ObjectModel {
 
 	}
 
+	/**
+	 * This splits a line in a wavefront object file and removes the command.
+	 * 
+	 * @param line
+	 *            The line from the file
+	 * @param cmd
+	 *            The already captured command
+	 * @return A list of parameters
+	 */
 	private ArrayList<String> splitAndRemoveCommand(String line, String cmd) {
 		String[] lineparts = line.split("[\\s]+");
 
@@ -194,44 +238,40 @@ public class ObjectModel {
 
 		int startat = 0;
 		if (lineparts.length > 1)
-			if (lineparts[0].equals(cmd)) {
+			if (lineparts[0].equals(cmd))
 				startat = 1;
-			}
 
 		ArrayList<String> temp = new ArrayList<String>();
 
 		for (int i = startat; i < lineparts.length; ++i)
-			if (!lineparts[i].equals("")) {
+			if (!lineparts[i].equals(""))
 				temp.add(lineparts[i]);
-			}
 
 		return temp;
 	}
 
+	/**
+	 * This Normalizes the Object into a 1x1x1 Box
+	 */
 	private void normalizeScale() {
 		if (isNormalized)
 			return;
 
 		float largest = 0;
 
-		for (Vec3f vertex : verticesGeometric) {
+		for (Vec3f vertex : verticesGeometric)
 			for (int i = 0; i < 3; ++i)
-				if (largest < vertex.get(0)) {
+				if (largest < vertex.get(0))
 					largest = vertex.get(0);
-				}
-		}
 
 		float scaleFactor = 1.0f;
 
-		if (largest != 0) {
+		if (largest != 0)
 			scaleFactor = 1.0f / largest;
-		}
 
-		for (Vec3f vertex : verticesGeometric) {
-			for (int i = 0; i < 3; ++i) {
+		for (Vec3f vertex : verticesGeometric)
+			for (int i = 0; i < 3; ++i)
 				vertex.set(i, vertex.get(i) * scaleFactor);
-			}
-		}
 
 	}
 
@@ -244,9 +284,8 @@ public class ObjectModel {
 		normalizeScale();
 
 		gl.glPushMatrix();
-		for (ObjectGroup group : groups.values()) {
+		for (ObjectGroup group : groups.values())
 			group.draw(gl);
-		}
 		gl.glPopMatrix();
 	}
 

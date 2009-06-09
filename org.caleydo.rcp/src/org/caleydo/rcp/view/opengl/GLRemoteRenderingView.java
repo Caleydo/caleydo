@@ -4,14 +4,12 @@ import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.serialize.SerializedGlyphView;
 import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 

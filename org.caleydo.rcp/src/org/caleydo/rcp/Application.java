@@ -365,7 +365,6 @@ public class Application
 		return true;
 	}
 
-	@SuppressWarnings("restriction")
 	private void removeStoredWorkbenchState() {
 
 		IPath path = WorkbenchPlugin.getDefault().getDataLocation();

@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.util.wavefrontobjectloader.ObjectGroup;
  * This class is the generator for all glyphs. Here the object file is linked with all the data parameters and
  * drawn.
  * 
- * @author Steve
+ * @author Stefan Sauer
  */
 public class GLGlyphGenerator {
 	private GlyphManager gman;
@@ -38,12 +38,24 @@ public class GLGlyphGenerator {
 		LEVEL_MAX,
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param isLocal
+	 *            is this a local (true) or remote (false) view?
+	 */
 	public GLGlyphGenerator(boolean isLocal) {
 		gman = GeneralManager.get().getGlyphManager();
 
 		bIsInit = false;
 	}
 
+	/**
+	 * This sets the Glyph Object Model for a detail level. The level is defined in the GlyphObjectDefinition.
+	 * 
+	 * @param glyphDefinition
+	 *            The full Model
+	 */
 	public static void setDetailLevelModel(GlyphObjectDefinition glyphDefinition) {
 		int level = glyphDefinition.getDetailLevel();
 		if (objectModels.containsKey(level)) {
@@ -53,6 +65,13 @@ public class GLGlyphGenerator {
 		objectModels.put(level, glyphDefinition);
 	}
 
+	/**
+	 * This returns the Glyph Object Model for a detail level.
+	 * 
+	 * @param level
+	 *            The Detail Level
+	 * @return The Model
+	 */
 	public static GlyphObjectDefinition getDetailLevelModel(int level) {
 		if (objectModels.containsKey(level))
 			return objectModels.get(level);
@@ -60,14 +79,37 @@ public class GLGlyphGenerator {
 		return null;
 	}
 
+	/**
+	 * Sets the current detail level.
+	 * 
+	 * @param detail
+	 *            The wanted detail level.
+	 */
 	public void setDetailLevel(DETAILLEVEL detail) {
 		iDetailLevel = detail;
 	}
 
+	/**
+	 * Returns the current detail level.
+	 * 
+	 * @return The current detail level
+	 */
 	public DETAILLEVEL getDetailLevel() {
 		return iDetailLevel;
 	}
 
+	/**
+	 * Generates the Display List for the given Glyph. It also initializes the Model parts of the glyph, if
+	 * they are not initialized already.
+	 * 
+	 * @param gl
+	 *            GL Context
+	 * @param glyph
+	 *            The glyph you want to render
+	 * @param selected
+	 *            Is the Glyph selected?
+	 * @return The generated Display List
+	 */
 	public int generateGlyph(GL gl, GlyphEntry glyph, boolean selected) {
 		if (!bIsInit) {
 			for (GlyphObjectDefinition modelDefinition : objectModels.values()) {
@@ -265,6 +307,12 @@ public class GLGlyphGenerator {
 		return dltemp;
 	}
 
+	/**
+	 * Initializes the "world" around the glyph.
+	 * 
+	 * @param gl
+	 *            GL Context
+	 */
 	private void initEnviroment(GL gl) {
 		// gl.glEnable(GL.GL_BLEND);
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT_AND_DIFFUSE);

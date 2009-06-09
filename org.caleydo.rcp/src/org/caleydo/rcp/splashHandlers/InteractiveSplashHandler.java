@@ -3,7 +3,6 @@ package org.caleydo.rcp.splashHandlers;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -28,8 +27,8 @@ public class InteractiveSplashHandler
 		super.init(splash);
 
 		// // TODO: remove this when webstart splash bug is solved
-		 if (Application.bIsWebstart)
-			 return;
+		if (Application.bIsWebstart)
+			return;
 
 		// Create UI
 		createUI();
@@ -99,8 +98,8 @@ public class InteractiveSplashHandler
 
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(progressBar,
 			progressMessageLabel);
-		
-//		Application.startCaleydoCore();
+
+		// Application.startCaleydoCore();
 	}
 
 	private void doEventLoop() {
@@ -124,11 +123,11 @@ public class InteractiveSplashHandler
 	@Override
 	public void dispose() {
 		if (!Application.bIsWebstart && !Application.bDoExit) {
-//			Application.startCaleydoCore();
+			// Application.startCaleydoCore();
 
 			// Start OpenGL rendering
 			GeneralManager.get().getViewGLCanvasManager().startAnimator();
-			
+
 		}
 		// super.dispose();
 	}

@@ -48,9 +48,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public class GLGlyphSliderView
 	extends AGLEventListener {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private GlyphManager gman = null;
@@ -376,8 +374,6 @@ public class GLGlyphSliderView
 
 	@Override
 	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

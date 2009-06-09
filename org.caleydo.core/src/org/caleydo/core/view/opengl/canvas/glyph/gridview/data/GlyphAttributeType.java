@@ -9,7 +9,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.core.runtime.Status;
 
 /**
- * This class defines a data type It uses GlyphAttributeGroup to combines more than one data type into one
+ * This class defines a data type. It uses GlyphAttributeGroup to combines more than one data type into one.
  * 
  * @author Stefan Sauer
  */
@@ -37,6 +37,14 @@ public class GlyphAttributeType {
 
 	private HashMap<Integer, Integer> hmSelectedDistribution;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param name
+	 *            Name of this Attribute
+	 * @param externalColumnIndex
+	 *            Index of the column in the set / csv file
+	 */
 	public GlyphAttributeType(String name, int externalColumnIndex) {
 		this.generalManager = GeneralManager.get();
 		sName = name;
@@ -78,11 +86,20 @@ public class GlyphAttributeType {
 		return iExternalColumnIndex;
 	}
 
+	/**
+	 * Adds a possible value to the attribute type. Used to define the attribute type (in the xml parser)
+	 * 
+	 * @param group
+	 *            used group
+	 * @param sValue
+	 *            string representation of the value
+	 * @param fValue
+	 *            float representation of the value
+	 */
 	public void addAttribute(int group, String sValue, float fValue) {
 
-		if (!hmGroupLookup.containsKey(group)) {
+		if (!hmGroupLookup.containsKey(group))
 			hmGroupLookup.put(group, new GlyphAttributeGroup(group, sValue));
-		}
 
 		GlyphAttributeGroup gag = hmGroupLookup.get(group);
 		gag.addAttribute(sValue, fValue);
@@ -92,29 +109,28 @@ public class GlyphAttributeType {
 			hmNominalLookup.put(sValue, gag);
 		}
 		else {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"double nominal value (" + sValue + ") found in " + sName + " (" + group + ")"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "double nominal value (" + sValue
+					+ ") found in " + sName + " (" + group + ")"));
 		}
 
 		if (!hmOrdinalLookup.containsKey(fValue)) {
 			hmOrdinalLookup.put(fValue, gag);
 		}
 		else {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"double ordinal value (" + sValue + ") found in " + sName + " (" + group + ")"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "double ordinal value (" + sValue
+					+ ") found in " + sName + " (" + group + ")"));
 		}
 
-		if (!hmDistribution.containsKey(group)) {
+		if (!hmDistribution.containsKey(group))
 			hmDistribution.put(group, 0);
-		}
 
-		if (!hmSelectedDistribution.containsKey(group)) {
+		if (!hmSelectedDistribution.containsKey(group))
 			hmSelectedDistribution.put(group, 0);
-		}
 
-		if (iMaxIndex < group) {
+		if (iMaxIndex < group)
 			iMaxIndex = group;
-		}
 
 	}
 
@@ -122,6 +138,13 @@ public class GlyphAttributeType {
 		return sName;
 	}
 
+	/**
+	 * Returns the index of the given string value.
+	 * 
+	 * @param value
+	 *            string representation of a value.
+	 * @return the index of this representation, or -1 if not defined.
+	 */
 	public int getIndex(String value) {
 
 		if (hmNominalLookup.containsKey(value))
@@ -134,6 +157,11 @@ public class GlyphAttributeType {
 		return iMaxIndex;
 	}
 
+	/**
+	 * Returns the Attribute Name
+	 * 
+	 * @return
+	 */
 	public ArrayList<String> getAttributeNames() {
 
 		ArrayList<String> names = new ArrayList<String>();
@@ -142,19 +170,29 @@ public class GlyphAttributeType {
 		java.util.Collections.sort(ks2);
 
 		names.add("NAV");
-		for (Integer i : ks2) {
+		for (Integer i : ks2)
 			names.add(hmGroupLookup.get(i).getGroupName());
-		}
 
 		return names;
 	}
 
+	/**
+	 * Returns the string representation of the given index.
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public String getParameterString(int index) {
 		if (hmGroupLookup.containsKey(index))
 			return hmGroupLookup.get(index).getGroupName();
 		return "";
 	}
 
+	/**
+	 * Increases the internal distribution calculation for the given index.
+	 * 
+	 * @param index
+	 */
 	public void incDistribution(int index) {
 
 		if (!hmDistribution.containsKey(index)) {
@@ -163,6 +201,11 @@ public class GlyphAttributeType {
 		hmDistribution.put(index, hmDistribution.get(index) + 1);
 	}
 
+	/**
+	 * Dencreases the internal distribution calculation for the given index.
+	 * 
+	 * @param index
+	 */
 	public void decDistribution(int index) {
 
 		if (!hmDistribution.containsKey(index)) {
@@ -175,6 +218,11 @@ public class GlyphAttributeType {
 		}
 	}
 
+	/**
+	 * Increases the internal selected distribution calculation for the given index.
+	 * 
+	 * @param index
+	 */
 	public void incSelectedDistribution(int index) {
 
 		if (!hmSelectedDistribution.containsKey(index)) {
@@ -183,6 +231,11 @@ public class GlyphAttributeType {
 		hmSelectedDistribution.put(index, hmSelectedDistribution.get(index) + 1);
 	}
 
+	/**
+	 * Decreases the internal selected distribution calculation for the given index.
+	 * 
+	 * @param index
+	 */
 	public void decSelectedDistribution(int index) {
 
 		if (!hmSelectedDistribution.containsKey(index)) {
@@ -195,8 +248,8 @@ public class GlyphAttributeType {
 		}
 	}
 
-	/*
-	 * delivers the distribution of this type 1st dimension: 0->overall 1->selected
+	/**
+	 * Delivers the distribution of this type 1st dimension: 0->overall 1->selected
 	 */
 	public ArrayList<ArrayList<Float>> getDistributionNormalized() {
 
@@ -233,18 +286,15 @@ public class GlyphAttributeType {
 		return distList;
 	}
 
+	/**
+	 * Prints the current distribution to the console
+	 */
 	public void printDistribution() {
 
 		ArrayList<ArrayList<Float>> dist = getDistributionNormalized();
 
-		for (int i = 0; i < dist.get(0).size(); ++i) {
+		for (int i = 0; i < dist.get(0).size(); ++i)
 			System.out.println(" -> " + i + " > " + dist.get(0).get(i) + " " + dist.get(1).get(i));
-		}
-		/*
-		 * Set<Integer> ks = hmDistribution.keySet(); for(Integer k : ks) { int v = hmDistribution.get(k); int
-		 * s = 0; if(hmSelectedDistribution.containsKey(k)) s = hmSelectedDistribution.get(k);
-		 * System.out.println( " group: " + k + " " + v + " " + s); }
-		 */
 	}
 
 }

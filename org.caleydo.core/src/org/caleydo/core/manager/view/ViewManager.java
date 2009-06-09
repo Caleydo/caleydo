@@ -27,7 +27,6 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
@@ -37,7 +36,6 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.collab.CollabViewRep;
-import org.caleydo.core.view.swt.glyph.GlyphDataExportViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
@@ -133,9 +131,6 @@ public class ViewManager
 			case VIEW_SWT_BROWSER_GENOME:
 				view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
 				break;
-			case VIEW_SWT_GLYPH_DATAEXPORT:
-				view = new GlyphDataExportViewRep(iParentContainerID, sLabel);
-				break;
 			case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
 				view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
 				break;
@@ -174,26 +169,24 @@ public class ViewManager
 	@Override
 	public AGLEventListener createGLEventListener(ECommandType type, GLCaleydoCanvas glCanvas,
 		final String sLabel, final IViewFrustum viewFrustum) {
-		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]"));
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Creating GL canvas view from type: [" + type
+				+ "] and label: [" + sLabel + "]"));
 
 		AGLEventListener glEventListener = null;
 
 		switch (type) {
 			case CREATE_GL_HEAT_MAP_3D:
 
-				glEventListener =
-					new GLHeatMap(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLHeatMap(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-				glEventListener =
-					new GLPropagationHeatMap(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLPropagationHeatMap(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-				glEventListener =
-					new GLHierarchicalHeatMap(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLHierarchicalHeatMap(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
@@ -201,8 +194,7 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_PARALLEL_COORDINATES:
-				glEventListener =
-					new GLParallelCoordinates(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLParallelCoordinates(glCanvas, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_GLYPH:
 				glEventListener = new GLGlyph(glCanvas, sLabel, viewFrustum);
@@ -228,30 +220,23 @@ public class ViewManager
 						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
 				break;
 
-			case CREATE_GL_REMOTE_GLYPH:
-				glEventListener = new GLRemoteGlyph(glCanvas, sLabel, viewFrustum);
-				break;
-
 			case CREATE_GL_RADIAL_HIERARCHY:
-				glEventListener =
-					new GLRadialHierarchy(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLRadialHierarchy(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_HYPERBOLIC:
-				glEventListener =
-					new GLHyperbolic(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLHyperbolic(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_HISTOGRAM:
 
-				glEventListener =
-					new GLHistogram(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLHistogram(glCanvas, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_DENDROGRAM_HORIZONTAL:
 				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, true);
 				break;
-				
+
 			case CREATE_GL_DENDROGRAM_VERTICAL:
 				glEventListener = new GLDendrogram(glCanvas, sLabel, viewFrustum, false);
 				break;
@@ -263,7 +248,7 @@ public class ViewManager
 		}
 
 		registerGLEventListenerByGLCanvas(glCanvas, glEventListener);
-		
+
 		return glEventListener;
 	}
 
@@ -272,8 +257,9 @@ public class ViewManager
 		int iGLCanvasID = glCanvas.getID();
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID)) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GL Canvas with ID " + iGLCanvasID + " is already registered! Do nothing."));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "GL Canvas with ID " + iGLCanvasID
+					+ " is already registered! Do nothing."));
 
 			return false;
 		}
@@ -286,10 +272,10 @@ public class ViewManager
 
 	@Override
 	public boolean unregisterGLCanvas(final GLCaleydoCanvas glCanvas) {
-		
+
 		if (glCanvas == null)
 			return false;
-		
+
 		fpsAnimator.remove(glCanvas);
 		hashGLCanvasID2GLCanvas.remove(glCanvas.getID());
 		hashGLCanvas2GLEventListeners.remove(glCanvas);
@@ -305,7 +291,7 @@ public class ViewManager
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
 			return;
-		
+
 		if (!hashGLCanvas2GLEventListeners.containsKey(glCanvas)) {
 			hashGLCanvas2GLEventListeners.put(glCanvas, new ArrayList<AGLEventListener>());
 		}

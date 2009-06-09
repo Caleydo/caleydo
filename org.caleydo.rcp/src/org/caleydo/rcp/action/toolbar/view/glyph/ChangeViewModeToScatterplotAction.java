@@ -13,7 +13,6 @@ public class ChangeViewModeToScatterplotAction
 	public static final String TEXT = "Switch View To Scatterplot";
 	public static final String ICON = "resources/icons/view/glyph/sort_scatterplot.png";
 
-	private boolean bEnable = false;
 	private ChangeViewModeAction parent;
 
 	/**
