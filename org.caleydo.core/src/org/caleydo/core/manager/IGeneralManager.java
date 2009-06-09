@@ -8,6 +8,7 @@ import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.ILog;
@@ -98,6 +99,8 @@ public interface IGeneralManager {
 	public boolean isWiiModeActive();
 
 	public WiiRemote getWiiRemote();
+	
+	public TrackDataProvider getTrackDataProvider();
 	
 	/**
 	 * Returns the current use case. The use case determines which views are showing what kind of data 

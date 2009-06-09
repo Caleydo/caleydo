@@ -68,7 +68,7 @@ public class ApplicationWorkbenchWindowAdvisor
 
 			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
 
-			// deletes unwanted Menuitems
+			// Delete unwanted menu items
 			IContributionItem[] menuItems = configurer.getMenuManager().getItems();
 			for (int i = 0; i < menuItems.length; i++) {
 				IContributionItem menuItem = menuItems[i];

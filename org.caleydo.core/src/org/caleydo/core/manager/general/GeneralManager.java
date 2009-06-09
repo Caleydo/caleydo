@@ -31,6 +31,7 @@ import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.ILog;
@@ -72,14 +73,11 @@ public class GeneralManager
 	private IIDMappingManager genomeIdManager;
 	private GlyphManager glyphManager;
 	private IDManager IDManager;
-
 	private ILog logger;
-
 	private IGUIBridge guiBridge;
-
 	private ResourceLoader resourceLoader;
-
 	private WiiRemote wiiRemote;
+	private TrackDataProvider trackDataProvider;
 
 	/**
 	 * The use case determines which kind of data is loaded in the views.
@@ -114,12 +112,10 @@ public class GeneralManager
 		eventPublisher = new EventPublisher();
 		genomeIdManager = new IDMappingManager();
 		pathwayManager = new PathwayManager();
-		// serializationInputTest();
 		pathwayItemManager = new PathwayItemManager();
 		xmlParserManager = new XmlParserManager();
 		glyphManager = new GlyphManager();
 		IDManager = new IDManager();
-
 		xmlParserManager.initHandlers();
 
 		initLogger();
@@ -131,6 +127,8 @@ public class GeneralManager
 		if (GeneralManager.get().isWiiModeActive()) {
 			wiiRemote.connect();
 		}
+		
+		trackDataProvider = new TrackDataProvider();
 	}
 
 	/**
@@ -307,10 +305,15 @@ public class GeneralManager
 	public boolean isWiiModeActive() {
 		return bIsWiiMode;
 	}
-
+	
 	@Override
 	public WiiRemote getWiiRemote() {
 		return wiiRemote;
+	}
+	
+	@Override
+	public TrackDataProvider getTrackDataProvider() {
+		return trackDataProvider;
 	}
 
 	@Override

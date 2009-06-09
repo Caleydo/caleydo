@@ -324,7 +324,7 @@
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenCollabHandler"
             id="org.caleydo.rcp.command.open_collab"
-            name="Load Data">
+            name="Open Collaboration">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenHistogramHandler"
@@ -360,6 +360,16 @@
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenSearchHandler"
             id="org.caleydo.rcp.command.openviews.search"
             name="Open Search">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.StartTrackingHandler"
+            id="org.caleydo.rcp.command.start_tracking"
+            name="Start Tracking">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.StopTrackingHandler"
+            id="org.caleydo.rcp.command.stop_tracking"
+            name="Stop Tracking">
       </command>
       		
    </extension>
@@ -526,6 +536,16 @@
                   commandId="org.caleydo.rcp.command.open_collab"
                   label="Collaboration"
                   mnemonic="T"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.start_tracking"
+                  label="Start Tracking"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.stop_tracking"
+                  label="Stop Tracking"
                   style="push">
             </command>
          </menu>

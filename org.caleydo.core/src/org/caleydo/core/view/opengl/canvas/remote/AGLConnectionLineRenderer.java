@@ -351,7 +351,7 @@ public abstract class AGLConnectionLineRenderer {
 
 		rotation.toMatrix(matSrc);
 
-		if (GeneralManager.get().isWiiModeActive()) {
+		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()) {
 			WiiRemote wiiRemote = GeneralManager.get().getWiiRemote();
 
 			float[] fArHeadPosition = wiiRemote.getCurrentSmoothHeadPosition();

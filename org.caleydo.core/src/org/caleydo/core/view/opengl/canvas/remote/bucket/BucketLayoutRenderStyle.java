@@ -400,6 +400,84 @@ public class BucketLayoutRenderStyle
 		return spawnLevel;
 	}
 
+	public RemoteLevel initFocusLevelTrack() {
+		fArHeadPosition = GeneralManager.get().getTrackDataProvider().get2DTrackData();
+		fArHeadPosition[0] = fArHeadPosition[0] / 1280f * 4 - 4;
+		fArHeadPosition[1] = fArHeadPosition[1] / 1024f * 4 - 4;
+
+		fBucketBottomLeft = -1 * fArHeadPosition[0] - BUCKET_WIDTH - 1.5f;
+		fBucketBottomRight = -1 * fArHeadPosition[0] + BUCKET_WIDTH - 1.5f;
+		fBucketBottomTop = fArHeadPosition[1] + BUCKET_HEIGHT;
+		fBucketBottomBottom = fArHeadPosition[1] - BUCKET_HEIGHT;
+
+		fHeadDist =
+			-1 * GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f
+				+ Math.abs(fBucketBottomRight - 2) / 2 + Math.abs(fBucketBottomTop - 2) / 2;
+
+		float fXScaling = (4 * 2 - Math.abs(fBucketBottomLeft - fBucketBottomRight)) / (4 * 2);
+		float fYScaling = (4 * 2 - Math.abs(fBucketBottomBottom - fBucketBottomTop)) / (4 * 2);
+
+		// float fXScaling = (4*2 - Math.abs(fBucketBottomLeft) - Math.abs(fBucketBottomRight)) / (4*2);
+		// float fYScaling = (4*2 - Math.abs(fBucketBottomBottom) - Math.abs(fBucketBottomTop)) / (4*2);
+
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(fBucketBottomLeft, fBucketBottomBottom, fHeadDist));
+		transform.setScale(new Vec3f(fXScaling, fYScaling, 1));
+		focusLevel.getElementByPositionIndex(0).setTransform(transform);
+
+		return focusLevel;
+	}
+
+	public RemoteLevel initStackLevelTrack() {
+		Transform transform;
+
+		float fAK = BUCKET_DEPTH - 1 * fHeadDist;
+		float fGK = BUCKET_HEIGHT - fBucketBottomTop;
+		float fAngle = (float) Math.atan((fGK / fAK));
+
+		// Top plane
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT, BUCKET_DEPTH));
+		transform
+			.setRotation(new Rotf(new Vec3f(1, 0, 0), (float) (Vec3f.convertGrad2Radiant(270) - fAngle)));
+		transform.setScale(new Vec3f(1, 1, 1));
+		stackLevel.getElementByPositionIndex(0).setTransform(transform);
+
+		fGK = BUCKET_WIDTH + fBucketBottomLeft;
+		fAngle = (float) Math.atan((fGK / fAK));
+
+		// Left plane
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, 0, BUCKET_DEPTH));
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), (float) (Vec3f.convertGrad2Radiant(90) - fAngle)));
+		transform.setScale(new Vec3f(1, 1, 1));
+		stackLevel.getElementByPositionIndex(1).setTransform(transform);
+
+		fGK = BUCKET_WIDTH + fBucketBottomBottom;
+		fAngle = (float) Math.atan((fGK / fAK));
+
+		// Bottom plane
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT, BUCKET_DEPTH));
+		transform
+			.setRotation(new Rotf(new Vec3f(-1, 0, 0), (float) (Vec3f.convertGrad2Radiant(90) - fAngle)));
+		transform.setScale(new Vec3f(1, 1, 1));
+		stackLevel.getElementByPositionIndex(2).setTransform(transform);
+
+		fGK = BUCKET_WIDTH - fBucketBottomRight;
+		fAngle = (float) Math.atan((fGK / fAK));
+
+		// Right plane
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(BUCKET_WIDTH, 0, BUCKET_DEPTH));
+		transform
+			.setRotation(new Rotf(new Vec3f(0, -1, 0), (float) (Vec3f.convertGrad2Radiant(270) - fAngle)));
+		transform.setScale(new Vec3f(1, 1, 1));
+		stackLevel.getElementByPositionIndex(3).setTransform(transform);
+
+		return stackLevel;
+	}
+	
 	public RemoteLevel initFocusLevelWii() {
 		fArHeadPosition = GeneralManager.get().getWiiRemote().getCurrentSmoothHeadPosition();
 		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;

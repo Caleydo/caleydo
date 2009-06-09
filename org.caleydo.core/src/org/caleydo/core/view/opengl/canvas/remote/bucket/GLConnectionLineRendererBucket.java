@@ -104,9 +104,8 @@ public class GLConnectionLineRendererBucket
 							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation, vecScale,
 								rotation, remoteLevelElement));
 						}
+						
 						int iKey = selectedElementRep.getContainingViewID();
-
-				
 						
 						alPointLists = hashIDTypeToViewToPointLists.get(idType).get(iKey);
 						if (alPointLists == null) {

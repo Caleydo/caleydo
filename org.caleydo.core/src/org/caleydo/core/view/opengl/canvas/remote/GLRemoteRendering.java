@@ -223,7 +223,7 @@ public class GLRemoteRendering
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
-		if (generalManager.isWiiModeActive()) {
+		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
 			glOffScreenRenderer = new GLOffScreenTextureRenderer();
 		}
 
@@ -250,7 +250,7 @@ public class GLRemoteRendering
 
 		focusLevel = layoutRenderStyle.initFocusLevel();
 
-		if (GeneralManager.get().isWiiModeActive()
+		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()
 			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			stackLevel = ((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
 		}
@@ -321,7 +321,7 @@ public class GLRemoteRendering
 		createSelectionHeatMap();
 		glSelectionHeatMap.initRemote(gl, this, glMouseListener, this, null);
 
-		if (generalManager.isWiiModeActive())
+		if (generalManager.getTrackDataProvider().isTrackModeActive())
 			glOffScreenRenderer.init(gl);
 	}
 
@@ -473,17 +473,17 @@ public class GLRemoteRendering
 		// layoutRenderStyle.initStackLevel();
 		// layoutRenderStyle.initMemoLevel();
 
-		if (GeneralManager.get().isWiiModeActive()
+		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()
 			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelWii();
+			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelTrack();
 
-			((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
+			((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelTrack();
 		}
 
 		doSlerpActions(gl);
 		initNewView(gl);
 
-		if (!generalManager.isWiiModeActive()) {
+		if (!generalManager.getTrackDataProvider().isTrackModeActive()) {
 			renderRemoteLevel(gl, focusLevel);
 			renderRemoteLevel(gl, stackLevel);
 		}
@@ -515,9 +515,9 @@ public class GLRemoteRendering
 		// gl.glCallList(iGLDisplayList);
 
 		// comment here for connection lines
-		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
-			glConnectionLineRenderer.render(gl);
-		}
+//		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
+//			glConnectionLineRenderer.render(gl);
+//		}
 
 		float fZTranslation = 0;
 		if (!bucketMouseWheelListener.isZoomedIn())
@@ -2699,6 +2699,10 @@ public class GLRemoteRendering
 	}
 
 	private void updateOffScreenTextures(final GL gl) {
+		
+		if (glOffScreenRenderer == null)
+			return;
+		
 		bUpdateOffScreenTextures = false;
 
 		gl.glPushMatrix();

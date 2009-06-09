@@ -31,6 +31,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,6 +98,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.listener.UseRandomSampli
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -228,6 +230,8 @@ public class GLParallelCoordinates
 	private UseRandomSamplingListener useRandomSamplingListener;
 	private ChangeOrientationListener changeOrientationListener;
 	private PreventOcclusionListener preventOcclusionListener;
+	
+	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
 	/**
 	 * Constructor.
@@ -399,7 +403,9 @@ public class GLParallelCoordinates
 				-0.002f);
 		}
 
-		// focusOnArea();
+		if (generalManager.getTrackDataProvider().isTrackModeActive())
+			handleTrackInput(gl);
+
 		// TODO another display list
 		clipToFrustum(gl);
 
@@ -2746,7 +2752,68 @@ public class GLParallelCoordinates
 
 	}
 
-	private void focusOnArea() {
+	private void handleTrackInput(final GL gl) {
+
+		// TODO: very performance intensive - better solution needed (only in reshape)!
+		getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				upperLeftScreenPos = getParentGLCanvas().getParentComposite().toDisplay(1, 1);
+			}
+		});
+
+		Rectangle screenRect = getParentGLCanvas().getBounds();
+		float[] fArTrackPos = generalManager.getTrackDataProvider().get2DTrackData();
+
+		fArTrackPos[0] -= upperLeftScreenPos.x;
+		fArTrackPos[1] -= upperLeftScreenPos.y;
+
+		GLHelperFunctions.drawPointAt(gl, new Vec3f(fArTrackPos[0] / screenRect.width * 8f,
+			(1f - fArTrackPos[1] / screenRect.height) * 8f * fAspectRatio, 0.01f));
+		
+		float fTrackX = (generalManager.getTrackDataProvider().get2DTrackData()[0]) / screenRect.width;
+
+		fTrackX *= renderStyle.getWidthOfCoordinateSystem();
+
+		int iAxisNumber = 0;
+		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++) {
+			if (alAxisSpacing.get(iCount) < fTrackX && alAxisSpacing.get(iCount + 1) > fTrackX) {
+				if (fTrackX - alAxisSpacing.get(iCount) < alAxisSpacing.get(iCount) - fTrackX) {
+					iAxisNumber = iCount;
+				}
+				else {
+					iAxisNumber = iCount + 1;
+				}
+
+				break;
+			}
+		}
+
+		int iNumberOfAxis = set.getVA(iAxisVAID).size();
+
+		float fOriginalAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
+
+		float fFocusAxisSpacing = fOriginalAxisSpacing * 2;
+
+		float fReducedSpacing =
+			(renderStyle.getWidthOfCoordinateSystem() - 2 * fFocusAxisSpacing) / (iNumberOfAxis - 3);
+
+		float fCurrentX = 0;
+		alAxisSpacing.clear();
+		for (int iCount = 0; iCount < iNumberOfAxis; iCount++) {
+			alAxisSpacing.add(fCurrentX);
+			if (iCount + 1 == iAxisNumber || iCount == iAxisNumber) {
+				fCurrentX += fFocusAxisSpacing;
+			}
+			else {
+				fCurrentX += fReducedSpacing;
+			}
+		}
+
+		setDisplayListDirty();
+	}
+
+	private void focusOnAreaWii() {
 		if (!generalManager.isWiiModeActive())
 			return;
 
