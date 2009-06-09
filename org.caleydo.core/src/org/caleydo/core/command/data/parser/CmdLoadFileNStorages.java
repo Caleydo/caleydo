@@ -34,6 +34,8 @@ public class CmdLoadFileNStorages
 	private String sTokenPattern;
 	private String sTokenSeparator = "";
 
+	private boolean bUseExperimentClusterInfo;
+
 	private int iStartParseFileAtLine = 0;
 
 	/**
@@ -83,8 +85,9 @@ public class CmdLoadFileNStorages
 			if (iArrayStartStop.length > 1) {
 
 				if (iArrayStartStop[0] > iArrayStartStop[1] && iArrayStartStop[1] != -1) {
-					generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-						"Ignore stop inde=" + iArrayStartStop[1] + " because it is maller that start index="
+					generalManager.getLogger().log(
+						new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "Ignore stop inde="
+							+ iArrayStartStop[1] + " because it is maller that start index="
 							+ iArrayStartStop[0]));
 
 					return;
@@ -96,7 +99,8 @@ public class CmdLoadFileNStorages
 
 	public void setAttributes(final ArrayList<Integer> iAlStorageId, final String sFileName,
 		final String sGeneTreeFileName, final String sExperimentsTreeFileName, final String sTokenPattern,
-		final String sTokenSeparator, final int iStartParseFileAtLine, final int iStopParseFileAtLine) {
+		final String sTokenSeparator, final int iStartParseFileAtLine, final int iStopParseFileAtLine,
+		final boolean bUseExperimentClusterInfo) {
 
 		this.iAlStorageIDs = iAlStorageId;
 		this.sFileName = sFileName;
@@ -106,17 +110,21 @@ public class CmdLoadFileNStorages
 		this.iStartParseFileAtLine = iStartParseFileAtLine;
 		this.iStopParseFileAtLine = iStopParseFileAtLine;
 		this.sTokenSeparator = sTokenSeparator;
+		this.bUseExperimentClusterInfo = bUseExperimentClusterInfo;
 	}
 
 	@Override
 	public void doCommand() {
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Loading data from file " + sFileName + " using token pattern " + sTokenPattern
-				+ ". Data is stored in Storage with ID " + iAlStorageIDs.toString()));
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading data from file " + sFileName
+				+ " using token pattern " + sTokenPattern + ". Data is stored in Storage with ID "
+				+ iAlStorageIDs.toString()));
 
 		TabularAsciiDataReader loader = new TabularAsciiDataReader(sFileName);
 		loader.setTokenPattern(sTokenPattern);
 		loader.setTargetStorages(iAlStorageIDs);
+		if (bUseExperimentClusterInfo)
+			loader.enableExperimentClusterInfo();
 		loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine, iStopParseFileAtLine);
 
 		if (!sTokenSeparator.isEmpty()) {
@@ -130,8 +138,9 @@ public class CmdLoadFileNStorages
 		// import gene tree
 		if (sGenesTreeFileName != null) {
 			if (sGenesTreeFileName.equals("") == false) {
-				generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-					"Loading gene tree from file " + sGenesTreeFileName));
+				generalManager.getLogger().log(
+					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading gene tree from file "
+						+ sGenesTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree;
@@ -152,8 +161,9 @@ public class CmdLoadFileNStorages
 		// import experiment tree
 		if (sExperimentsTreeFileName != null) {
 			if (sExperimentsTreeFileName.equals("") == false) {
-				generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-					"Loading experiments tree from file " + sExperimentsTreeFileName));
+				generalManager.getLogger().log(
+					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading experiments tree from file "
+						+ sExperimentsTreeFileName));
 
 				TreePorter treePorter = new TreePorter();
 				Tree<ClusterNode> tree;
@@ -178,7 +188,7 @@ public class CmdLoadFileNStorages
 	public void undoCommand() {
 
 	}
-	
+
 	public boolean isParsingOK() {
 		return bParsingOK;
 	}

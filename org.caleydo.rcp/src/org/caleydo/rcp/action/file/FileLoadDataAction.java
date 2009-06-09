@@ -83,14 +83,15 @@ public class FileLoadDataAction
 	private String sFilePath = "";
 	private String sInputPattern = "";// SKIP;";
 	private String sDelimiter = "";
-	private int iStartParseFileAtLine = 1;  // ID row should be ignored
+	private int iStartParseFileAtLine = 1; // ID row should be ignored
 
 	private String sMathFilterMode = "Normal";
 
-	private boolean bUseClusterInfo = false;
+	private boolean bUseGeneClusterInfo = false;
+	private boolean bUseExperimentClusterInfo = false;
 
-//	private Combo useIDTypeCombo;
-	
+	// private Combo useIDTypeCombo;
+
 	/**
 	 * Constructor.
 	 */
@@ -126,10 +127,10 @@ public class FileLoadDataAction
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.horizontalSpan = 3;
 		inputFileGroup.setLayoutData(gridData);
-		
+
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
 		buttonFileChooser.setText("Choose data file..");
-//		buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		txtFileName = new Text(inputFileGroup, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -171,7 +172,7 @@ public class FileLoadDataAction
 				txtGeneTreeFileName.setText(sGeneTreeFileName);
 			}
 		});
-		
+
 		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
 		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
 
@@ -192,7 +193,7 @@ public class FileLoadDataAction
 				txtExperimentsTreeFileName.setText(sExperimentsFileName);
 			}
 		});
-		
+
 		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Ignore lines in header");
 		startParseAtLineGroup.setLayout(new GridLayout(1, false));
@@ -204,15 +205,16 @@ public class FileLoadDataAction
 		txtStartParseAtLine.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				
-				// Add 1 because the number that the user enters is human readable and not array index (starting with 0).
+
+				// Add 1 because the number that the user enters is human readable and not array index
+				// (starting with 0).
 				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
 
 				createDataPreviewTable("\t");
 				composite.pack();
 			}
 		});
-		
+
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");
 		delimiterGroup.setLayout(new RowLayout());
@@ -399,12 +401,12 @@ public class FileLoadDataAction
 				composite.pack();
 			}
 		});
-		
+
 		Group filterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		filterGroup.setText("Apply filter");
 		filterGroup.setLayout(new RowLayout());
 		filterGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		final Combo mathFilterCombo = new Combo(filterGroup, SWT.DROP_DOWN);
 		String[] filterOptions = { "Normal", "Log10", "Log2" };
 		mathFilterCombo.setItems(filterOptions);
@@ -523,7 +525,7 @@ public class FileLoadDataAction
 			String sLine = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine-1; iIgnoreLineIndex++) {
+			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine - 1; iIgnoreLineIndex++) {
 				brFile.readLine();
 			}
 
@@ -545,7 +547,7 @@ public class FileLoadDataAction
 
 					// Check for group information
 					if (sTmpNextToken.equals("GROUP_NUMBER") || sTmpNextToken.equals("Cluster_Number")) {
-						bUseClusterInfo = true;
+						bUseGeneClusterInfo = true;
 						// If group info is detected no more columns are parsed
 						break;
 					}
@@ -586,6 +588,10 @@ public class FileLoadDataAction
 				while (tokenizer.hasMoreTokens()) {
 					sTmpNextToken = tokenizer.nextToken();
 
+					// check for experiment cluster info
+					if (sTmpNextToken.equals("Cluster_Number") || sTmpNextToken.equals("Cluster_Repr"))
+						bUseExperimentClusterInfo = true;
+
 					// Check for empty cells
 					if (sTmpNextToken.equals(sDelimiter) && !bCellFilled) {
 						item.setText(iColIndex + 1, "");
@@ -605,6 +611,17 @@ public class FileLoadDataAction
 
 				iRowCount++;
 			}
+
+			// check for experiment cluster info in the rest of the file
+			while ((sLine = brFile.readLine()) != null) {
+
+				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
+				sTmpNextToken = tokenizer.nextToken();
+
+				if (sTmpNextToken.equals("Cluster_Number") || sTmpNextToken.equals("Cluster_Repr"))
+					bUseExperimentClusterInfo = true;
+			}
+
 		}
 		catch (FileNotFoundException e) {
 			throw new IllegalStateException("File not found!");
@@ -686,6 +703,7 @@ public class FileLoadDataAction
 			INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
 
 			String labelText = previewTable.getColumn(iColIndex).getText();
+
 			storage.setLabel(labelText);
 
 			iAlStorageId.add(storage.getID());
@@ -697,7 +715,7 @@ public class FileLoadDataAction
 			sStorageIDs = sStorageIDs + storage.getID();
 		}
 
-		if (bUseClusterInfo) {
+		if (bUseGeneClusterInfo) {
 			sInputPattern += "GROUP_NUMBER;GROUP_REPRESENTATIVE;";
 		}
 
@@ -714,30 +732,31 @@ public class FileLoadDataAction
 		CmdDataCreateSet cmdCreateSet =
 			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.CREATE_SET_DATA);
-		
+
 		IUseCase useCase = GeneralManager.get().getUseCase();
-		
+
 		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-			cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);		}
+			cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
+		}
 		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
-			cmdCreateSet.setAttributes(iAlStorageId, ESetType.UNSPECIFIED);		
+			cmdCreateSet.setAttributes(iAlStorageId, ESetType.UNSPECIFIED);
 		}
 		else {
 			throw new IllegalStateException("Not implemented.");
 		}
-		
+
 		cmdCreateSet.doCommand();
-//		useCase.setSet(cmdCreateSet.getCreatedObject());
+		// useCase.setSet(cmdCreateSet.getCreatedObject());
 
 		// Trigger file loading command
 		CmdLoadFileNStorages cmdLoadCsv =
 			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.LOAD_DATA_FILE);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sGeneTreeFileName, sExperimentsFileName, sInputPattern, sDelimiter,
-			iStartParseFileAtLine, -1);
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sGeneTreeFileName, sExperimentsFileName,
+			sInputPattern, sDelimiter, iStartParseFileAtLine, -1, bUseExperimentClusterInfo);
 		cmdLoadCsv.doCommand();
-		
+
 		if (!cmdLoadCsv.isParsingOK()) {
 			// TODO: Clear created set and storages which are empty
 			return false;
@@ -749,20 +768,21 @@ public class FileLoadDataAction
 
 		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 			cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter, "REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
+				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter,
+				"REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
 		}
 		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
 			cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", sDelimiter, "");			
+				"UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", sDelimiter, "");
 		}
 		else {
 			throw new IllegalStateException("Not implemented.");
 		}
-		
+
 		cmdLoadLookupTableFile.doCommand();
 
 		ISet set = useCase.getSet();
-		
+
 		if (!txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
 			if (!Float.isNaN(fMin)) {
@@ -789,11 +809,10 @@ public class FileLoadDataAction
 		else
 			throw new IllegalStateException("Unknown data representation type");
 
-
 		// Since the data is filled to the new set
 		// the views of the current use case can be updated.
 		useCase.updateSetInViews();
-		
+
 		return true;
 	}
 

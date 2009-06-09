@@ -104,7 +104,12 @@ public class ClusteringProgressBar
 		lbProgressBarClusterer = new Label(composite, SWT.NULL);
 		lbProgressBarClusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		pbClusterer = new ProgressBar(composite, SWT.SMOOTH);
+		if (algorithmType == EClustererAlgo.COBWEB_CLUSTERER
+			|| algorithmType == EClustererAlgo.KMEANS_CLUSTERER)
+			pbClusterer = new ProgressBar(composite, SWT.SMOOTH | SWT.INDETERMINATE);
+		else
+			pbClusterer = new ProgressBar(composite, SWT.SMOOTH);
+		
 		pbClusterer.setMinimum(0);
 		pbClusterer.setMaximum(100);
 		pbClusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

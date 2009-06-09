@@ -64,6 +64,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
@@ -159,6 +160,12 @@ public class GLHierarchicalHeatMap
 	private int iGroupToSplit = 0;
 	private Point DraggingPoint = null;
 
+	// drag&drop stuff for clusters/groups
+	private boolean bDragDropExpGroup = false;
+	private boolean bDragDropGeneGroup = false;
+	private int iExpGroupToDrag = -1;
+	private int iGeneGroupToDrag = -1;
+
 	private GroupMergingActionListener groupMergingActionListener;
 	private GroupInterChangingActionListener groupInterChangingActionListener;
 	private UpdateViewListener updateViewListener;
@@ -228,8 +235,9 @@ public class GLHierarchicalHeatMap
 		iNumberOfElements = set.getVA(iContentVAID).size();
 
 		if (iNumberOfElements < MIN_SAMPLES_PER_HEATMAP) {
-			System.out.println("Number of elements not supported!! Problems with visualization may occur!");
-			// throw new IllegalStateException("Number of elements not supported!!");
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Number of elements (= "
+					+ iNumberOfElements + ") not supported! Problems with visualization may occur!"));
 		}
 
 		if (iNumberOfElements < 100) {
@@ -1098,8 +1106,8 @@ public class GLHierarchicalHeatMap
 
 		for (int i = 0; i < iNrClasses; i++) {
 
-			// gl.glPushName(pickingManager.getPickingID(iUniqueID,
-			// EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
 
 			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
 
@@ -1123,7 +1131,7 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
 			gl.glEnd();
 
-			// gl.glPopName();
+			gl.glPopName();
 
 			fxpos = fxpos + classWidth;
 		}
@@ -1833,19 +1841,33 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		if (bSplitGroupExp) {
-			handleGroupSplitExperiments(gl);
+		if (bDragDropExpGroup) {
+			handleDragDropGroupExperiments(gl);
 			if (glMouseListener.wasMouseReleased()) {
-				bSplitGroupExp = false;
+				bDragDropExpGroup = false;
 			}
 		}
 
-		if (bSplitGroupGene) {
-			handleGroupSplitGenes(gl);
+		if (bDragDropGeneGroup) {
+			handleDragDropGroupGenes(gl);
 			if (glMouseListener.wasMouseReleased()) {
-				bSplitGroupExp = false;
+				bDragDropGeneGroup = false;
 			}
 		}
+
+		// if (bSplitGroupExp) {
+		// handleGroupSplitExperiments(gl);
+		// if (glMouseListener.wasMouseReleased()) {
+		// bSplitGroupExp = false;
+		// }
+		// }
+
+		// if (bSplitGroupGene) {
+		// handleGroupSplitGenes(gl);
+		// if (glMouseListener.wasMouseReleased()) {
+		// bSplitGroupGene = false;
+		// }
+		// }
 
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -1992,7 +2014,7 @@ public class GLHierarchicalHeatMap
 		renderCursor(gl);
 
 		if (set.getVA(iStorageVAID).getGroupList() != null) {
-			renderClassAssignmentsExperimentsLevel2(gl);
+			// renderClassAssignmentsExperimentsLevel2(gl);
 			renderClassAssignmentsExperimentsLevel3(gl);
 		}
 
@@ -2115,8 +2137,10 @@ public class GLHierarchicalHeatMap
 		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		// In case of importing group info
-		if (set.isClusterInfo())
-			set.getVA(iContentVAID).setGroupList(set.getGroupList());
+		if (set.isGeneClusterInfo())
+			set.getVA(iContentVAID).setGroupList(set.getGroupListGenes());
+		if (set.isExperimentClusterInfo())
+			set.getVA(iStorageVAID).setGroupList(set.getGroupListExperiments());
 
 		// clustering triggered by StartClusteringAction
 		if (bUseClusteredVA) {
@@ -2224,8 +2248,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	public String getShortInfo() {
 		return "Hierarchical Heat Map (" + set.getVA(iContentVAID).size()
-			+ useCase.getContentLabel(false, true) + " / "
-			+ set.getVA(iStorageVAID).size() + " experiments)";
+			+ useCase.getContentLabel(false, true) + " / " + set.getVA(iStorageVAID).size() + " experiments)";
 	}
 
 	@Override
@@ -2308,6 +2331,119 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
+	 * Handles drag&drop of groups in experiment dimension
+	 * 
+	 * @param gl
+	 */
+	private void handleDragDropGroupExperiments(final GL gl) {
+
+		Point currentPoint = glMouseListener.getPickedPoint();
+		float[] fArTargetWorldCoordinates = new float[3];
+
+		int iTargetIdx = 0;
+
+		int iNrSamples = set.getVA(iStorageVAID).size();
+
+		float fleftOffset = 0.075f + // width level 1
+			GAP_LEVEL1_2 + // width gap between level 1 and 2
+			viewFrustum.getWidth() / 4f * fAnimationScale;
+
+		float fWidth = viewFrustum.getWidth() - fleftOffset;
+		float fWidthSample = fWidth / iNrSamples;
+
+		int currentElement;
+
+		fArTargetWorldCoordinates =
+			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+
+		if (glMouseListener.wasMouseReleased()) {
+
+			IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+			float fXPosRelease = fArTargetWorldCoordinates[0] - fleftOffset;
+			currentElement = (int) Math.ceil(fXPosRelease / fWidthSample);
+
+			int iElemOffset = 0;
+			int cnt = 0;
+
+			if (groupList == null) {
+				System.out.println("No group assignment available!");
+				return;
+			}
+
+			for (Group currentGroup : groupList) {
+				if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
+					iTargetIdx = cnt;
+					break;
+				}
+				cnt++;
+				iElemOffset += currentGroup.getNrElements();
+			}
+
+			if (groupList.move(set.getVA(iStorageVAID), iExpGroupToDrag, iTargetIdx) == false)
+				System.out.println("Move operation not allowed!");
+
+			bDragDropExpGroup = false;
+
+			bRedrawTextures = true;
+			setDisplayListDirty();
+		}
+	}
+
+	/**
+	 * Handles drag&drop of groups in gene dimension
+	 * 
+	 * @param gl
+	 */
+	private void handleDragDropGroupGenes(final GL gl) {
+
+		Point currentPoint = glMouseListener.getPickedPoint();
+		float[] fArTargetWorldCoordinates = new float[3];
+
+		int iTargetIdx = 0;
+
+		int iNumberSample = iNumberOfElements;
+		float fOffsety;
+		int currentElement;
+		float fHeightSample = viewFrustum.getHeight() / iNumberSample;
+
+		fArTargetWorldCoordinates =
+			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+
+		if (glMouseListener.wasMouseReleased()) {
+
+			IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+
+			fOffsety = viewFrustum.getHeight() - fArTargetWorldCoordinates[1];
+			currentElement = (int) Math.ceil(fOffsety / fHeightSample);
+
+			int iElemOffset = 0;
+			int cnt = 0;
+
+			if (groupList == null) {
+				System.out.println("No group assignment available!");
+				return;
+			}
+
+			for (Group currentGroup : groupList) {
+				if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
+					iTargetIdx = cnt;
+					break;
+				}
+				cnt++;
+				iElemOffset += currentGroup.getNrElements();
+			}
+
+			if (groupList.move(set.getVA(iContentVAID), iGeneGroupToDrag, iTargetIdx) == false)
+				System.out.println("Move operation not allowed!");
+
+			bDragDropGeneGroup = false;
+
+			bRedrawTextures = true;
+			setDisplayListDirty();
+		}
+	}
+
+	/**
 	 * Handles the dragging cursor for gene groups
 	 * 
 	 * @param gl
@@ -2319,13 +2455,6 @@ public class GLHierarchicalHeatMap
 
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
-
-		// gl.glBegin(GL.GL_QUADS);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
-		// gl.glEnd();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bSplitGroupGene = false;
@@ -2364,13 +2493,6 @@ public class GLHierarchicalHeatMap
 
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
-
-		// gl.glBegin(GL.GL_QUADS);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], 0);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1] + 0.1f, 0);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1] + 0.1f, 0);
-		// gl.glVertex3f(fArTargetWorldCoordinates[0] + 0.1f, fArTargetWorldCoordinates[1], 0);
-		// gl.glEnd();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bSplitGroupExp = false;
@@ -2524,12 +2646,20 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case DRAGGED:
-						if (bSplitGroupGene == false) {
-							bSplitGroupGene = true;
-							bSplitGroupExp = false;
-							iGroupToSplit = iExternalID;
-							DraggingPoint = pick.getPickedPoint();
+						// drag&drop for groups
+						if (bDragDropGeneGroup == false) {
+							bDragDropGeneGroup = true;
+							bDragDropExpGroup = false;
+							iGeneGroupToDrag = iExternalID;
 						}
+
+						// group splitting
+						// if (bSplitGroupGene == false) {
+						// bSplitGroupGene = true;
+						// bSplitGroupExp = false;
+						// iGroupToSplit = iExternalID;
+						// DraggingPoint = pick.getPickedPoint();
+						// }
 						setDisplayListDirty();
 						break;
 
@@ -2586,12 +2716,20 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case DRAGGED:
-						if (bSplitGroupExp == false) {
-							bSplitGroupExp = true;
-							bSplitGroupGene = false;
-							iGroupToSplit = iExternalID;
-							DraggingPoint = pick.getPickedPoint();
+						// drag&drop for groups
+						if (bDragDropExpGroup == false) {
+							bDragDropExpGroup = true;
+							bDragDropGeneGroup = false;
+							iExpGroupToDrag = iExternalID;
 						}
+
+						// group splitting
+						// if (bSplitGroupExp == false) {
+						// bSplitGroupExp = true;
+						// bSplitGroupGene = false;
+						// iGroupToSplit = iExternalID;
+						// DraggingPoint = pick.getPickedPoint();
+						// }
 						setDisplayListDirty();
 						break;
 
@@ -3031,6 +3169,7 @@ public class GLHierarchicalHeatMap
 
 		bRedrawTextures = true;
 
+		AlSelection.clear();
 		setDisplayListDirty();
 
 	}

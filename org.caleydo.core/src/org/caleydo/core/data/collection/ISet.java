@@ -334,24 +334,36 @@ public interface ISet
 	 * Sets imported group information
 	 * 
 	 * @param arGroupInfo
+	 * @param bGeneGroupInfo
+	 *            true in case of gene/entity cluster info, false in case of experiment cluster info
 	 */
-	public void setGroupNrInfo(int[] arGroupInfo);
+	public void setGroupNrInfo(int[] arGroupInfo, boolean bGeneGroupInfo);
 
 	/**
 	 * Sets imported representatives
 	 * 
 	 * @param arGroupRepr
+	 * @param bGeneGroupInfo
+	 *            true in case of gene/entity cluster info, false in case of experiment cluster info
 	 */
-	public void setGroupReprInfo(int[] arGroupRepr);
+	public void setGroupReprInfo(int[] arGroupRepr, boolean bGeneGroupInfo);
 
-	public GroupList getGroupList();
+	public GroupList getGroupListGenes();
+	public GroupList getGroupListExperiments();
 
 	/**
-	 * Flag determines if cluster information was imported or not.
+	 * Flag determines if gene cluster information was imported or not.
 	 * 
 	 * @return cluster info flag
 	 */
-	public boolean isClusterInfo();
+	public boolean isGeneClusterInfo();
+	
+	/**
+	 * Flag determines if experiment cluster information was imported or not.
+	 * 
+	 * @return cluster info flag
+	 */
+	public boolean isExperimentClusterInfo();
 
 	/**
 	 * Returns a histogram of the values of all storages in the set (not considering VAs). The number of the

@@ -66,8 +66,10 @@ public class Set
 	private ArrayList<Integer> alClusterExamples = null;
 	private Tree<ClusterNode> clusteredTreeGenes;
 	private Tree<ClusterNode> clusteredTreeExps;
-	private GroupList groupList = new GroupList(0);
-	private boolean bClusterInfo = false;
+	private GroupList groupListGenes = new GroupList(0);
+	private GroupList groupListExperiments = new GroupList(0);
+	private boolean bGeneClusterInfo = false;
+	private boolean bExperimentClusterInfo = false;
 
 	private EExternalDataRepresentation externalDataRep;
 
@@ -553,54 +555,83 @@ public class Set
 	}
 
 	@Override
-	public void setGroupNrInfo(int[] arGroupInfo) {
+	public void setGroupNrInfo(int[] arGroupInfo, boolean bGeneGroupInfo) {
 
 		int cluster = 0, cnt = 0;
 
-		groupList.clear();
+		GroupList groupListTemp = null;
+
+		if (bGeneGroupInfo) {
+			groupListTemp = groupListGenes;
+			bGeneClusterInfo = true;
+		}
+		else {
+			groupListTemp = groupListExperiments;
+			bExperimentClusterInfo = true;
+		}
+
+		groupListTemp.clear();
 
 		for (int i = 0; i < arGroupInfo.length; i++) {
 			Group group = null;
 			if (cluster != arGroupInfo[i]) {
 				group = new Group(cnt, false, 0, ESelectionType.NORMAL);
-				groupList.append(group);
+				groupListTemp.append(group);
 				cluster++;
 				cnt = 0;
 			}
 			cnt++;
 			if (i == arGroupInfo.length - 1) {
 				group = new Group(cnt, false, 0, ESelectionType.NORMAL);
-				groupList.append(group);
+				groupListTemp.append(group);
 			}
 		}
-		bClusterInfo = true;
 	}
 
 	@Override
-	public void setGroupReprInfo(int[] arGroupRepr) {
+	public void setGroupReprInfo(int[] arGroupRepr, boolean bGeneGroupInfo) {
 
 		int group = 0;
 		int repr = 0;
 		int offset = 0;
 
+		GroupList groupListTemp = null;
+
+		if (bGeneGroupInfo) {
+			groupListTemp = groupListGenes;
+		}
+		else {
+			groupListTemp = groupListExperiments;
+		}
+
 		for (int i = 0; i < arGroupRepr.length; i++) {
 			if (arGroupRepr[i] == 1) {
 				repr = i - offset;
-				groupList.get(group).setIdxExample(repr);
-				offset = offset + groupList.get(group).getNrElements();
+				groupListTemp.get(group).setIdxExample(repr);
+				offset = offset + groupListTemp.get(group).getNrElements();
 				group++;
 			}
 		}
 	}
 
 	@Override
-	public boolean isClusterInfo() {
-		return bClusterInfo;
+	public boolean isGeneClusterInfo() {
+		return bGeneClusterInfo;
 	}
 
 	@Override
-	public GroupList getGroupList() {
-		return this.groupList;
+	public boolean isExperimentClusterInfo() {
+		return bExperimentClusterInfo;
+	}
+
+	@Override
+	public GroupList getGroupListGenes() {
+		return this.groupListGenes;
+	}
+
+	@Override
+	public GroupList getGroupListExperiments() {
+		return this.groupListExperiments;
 	}
 
 	@Override

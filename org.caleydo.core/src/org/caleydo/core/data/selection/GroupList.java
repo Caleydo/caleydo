@@ -210,14 +210,14 @@ public class GroupList
 		iAlGroup.set(index2, temp);
 		iAlGroup.get(index1).setSelectionType(ESelectionType.NORMAL);
 		iAlGroup.get(index2).setSelectionType(ESelectionType.NORMAL);
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean merge(IVirtualArray virtualArray, int index1, int index2) {
 
-//		int iFirstIdxG1 = 0;
+		// int iFirstIdxG1 = 0;
 		int iLastIdxG1 = 0;
 		int iFirstIdxG2 = 0;
 		int iLastIdxG2 = 0;
@@ -234,7 +234,7 @@ public class GroupList
 				break;
 			iCnt++;
 		}
-//		iFirstIdxG1 = iLastIdxG1 - iAlGroup.get(index1).getNrElements();
+		// iFirstIdxG1 = iLastIdxG1 - iAlGroup.get(index1).getNrElements();
 
 		iCnt = 0;
 		for (Group iter : iAlGroup) {
@@ -271,13 +271,12 @@ public class GroupList
 
 		int iCnt = 0;
 
-		if(idx2 < idx1){
+		if (idx2 < idx1) {
 			int temp = idx1;
 			idx1 = idx2;
 			idx2 = temp;
 		}
-			
-		
+
 		for (Group iter : iAlGroup) {
 			iLastIdx += iter.getNrElements();
 
@@ -330,6 +329,34 @@ public class GroupList
 		iAlGroup.add(index + 1, newGroup2);
 		iAlGroup.add(index + 2, newGroup3);
 
+		return true;
+	}
+
+	@Override
+	public boolean move(IVirtualArray virtualArray, int srcIndex, int targetIndex) {
+
+		int icurrentIdx = -1;
+
+		if (srcIndex == targetIndex) {
+			// nothing to do
+			return false;
+		}
+		else if (srcIndex < targetIndex) {
+
+			icurrentIdx = srcIndex;
+			while (icurrentIdx < targetIndex) {
+				interchange(virtualArray, icurrentIdx, icurrentIdx + 1);
+				icurrentIdx++;
+			}
+		}
+		else {
+
+			icurrentIdx = srcIndex;
+			while (icurrentIdx > targetIndex) {
+				interchange(virtualArray, icurrentIdx - 1, icurrentIdx);
+				icurrentIdx--;
+			}
+		}
 		return true;
 	}
 }

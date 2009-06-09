@@ -43,6 +43,8 @@ public class TabularAsciiDataReader
 
 	private ArrayList<ArrayList<String>> alStringBuffers;
 
+	private boolean bUseExperimentClusterInfo;
+
 	/**
 	 * Constructor.
 	 */
@@ -110,6 +112,10 @@ public class TabularAsciiDataReader
 		return bAllTokensProper;
 	}
 
+	public void enableExperimentClusterInfo() {
+		bUseExperimentClusterInfo = true;
+	}
+
 	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId) {
 		for (int iStorageId : iAlTargetStorageId) {
 			alTargetStorages.add(GeneralManager.get().getStorageManager().getItem(iStorageId));
@@ -118,17 +124,26 @@ public class TabularAsciiDataReader
 
 	protected void allocateStorageBufferForTokenPattern() {
 
+		int lineCount = 0;
+
 		for (EStorageType storageType : alColumnDataTypes) {
 			switch (storageType) {
 				case GROUP_NUMBER:
 				case GROUP_REPRESENTATIVE:
-					alGroupInfo.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					if (bUseExperimentClusterInfo)
+						alGroupInfo.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1 - 2]);
+					else
+						alGroupInfo.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case INT:
 					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case FLOAT:
-					alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					if (bUseExperimentClusterInfo)
+						alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1 - 2]);
+					else
+						alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					lineCount++;
 					break;
 				case STRING:
 					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
@@ -136,6 +151,10 @@ public class TabularAsciiDataReader
 				case SKIP:
 					break;
 				case ABORT:
+					if (bUseExperimentClusterInfo) {
+						alGroupInfo.add(new int[lineCount]);
+						alGroupInfo.add(new int[lineCount]);
+					}
 					return;
 
 				default:
@@ -159,15 +178,18 @@ public class TabularAsciiDataReader
 		int iColumnIndex = 0;
 		float fProgressBarFactor = 100f / iStopParsingAtLine;
 
+		int max = iStopParsingAtLine - iStartParsingAtLine + 1;
+
 		while ((sLine = brFile.readLine()) != null && iLineInFile <= iStopParsingAtLine) {
 			// Check if line should be ignored
 			if (iLineInFile < this.iStartParsingAtLine) {
 				iLineInFile++;
 				continue;
 			}
-			
+
 			// Replace empty cells with NaN
-			sLine = sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
+			sLine =
+				sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
 
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
 
@@ -199,7 +221,19 @@ public class TabularAsciiDataReader
 									new Status(Status.ERROR, GeneralManager.PLUGIN_ID, sErrorMessage));
 								throw nfe;
 							}
-							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = fValue;
+
+							if (bUseExperimentClusterInfo) {
+								if (iLineInFile < max - 1)
+									alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
+										fValue;
+								else if (iLineInFile == max - 1)
+									alGroupInfo.get(2)[iColumnIndex] = Integer.valueOf(sTmpToken).intValue();
+								else if (iLineInFile == max)
+									alGroupInfo.get(3)[iColumnIndex] = Integer.valueOf(sTmpToken).intValue();
+							}
+							else
+								alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = fValue;
+
 							iColumnIndex++;
 							break;
 						case STRING:
@@ -278,18 +312,24 @@ public class TabularAsciiDataReader
 				case GROUP_NUMBER:
 
 					int[] iArGroupInfo = alGroupInfo.get(0);
-					set.setGroupNrInfo(iArGroupInfo);
+					set.setGroupNrInfo(iArGroupInfo, true);
 
 					iIntArrayIndex++;
 					break;
 				case GROUP_REPRESENTATIVE:
 
 					int[] iArGroupRepr = alGroupInfo.get(1);
-					set.setGroupReprInfo(iArGroupRepr);
+					set.setGroupReprInfo(iArGroupRepr, true);
 
 					iIntArrayIndex++;
 					break;
 				case ABORT:
+					if (bUseExperimentClusterInfo) {
+						iArGroupInfo = alGroupInfo.get(2);
+						set.setGroupNrInfo(iArGroupInfo, false);
+						iArGroupRepr = alGroupInfo.get(3);
+						set.setGroupReprInfo(iArGroupRepr, false);
+					}
 					return;
 
 				default:

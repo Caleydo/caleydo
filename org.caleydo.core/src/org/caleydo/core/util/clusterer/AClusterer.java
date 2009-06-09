@@ -40,7 +40,6 @@ public abstract class AClusterer
 	 */
 	public void destroy() {
 		if (clustererCanceledListener != null) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			GeneralManager.get().getEventPublisher().removeListener(clustererCanceledListener);
 			clustererCanceledListener = null;
 		}

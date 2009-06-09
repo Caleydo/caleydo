@@ -127,17 +127,20 @@ public interface IGroupList
 	// */
 	// public void moveLeft(int iIndex);
 	//
-	// /**
-	// * Moves the element at the specified src index to the target index. The element formerly at iSrcIndex
-	// is
-	// * at iTargetIndex after this operation. The rest of the elements can change the index.
-	// *
-	// * @param iSrcIndex
-	// * the src index of the element
-	// * @param iTargetIndex
-	// * the target index of the element
-	// */
-	// public void move(int iSrcIndex, int iTargetIndex);
+	/**
+	 * Moves the element at the specified src index to the target index. The element formerly at iSrcIndex is
+	 * at iTargetIndex after this operation. The rest of the elements can change the index.
+	 * 
+	 * @param virtualArray
+	 *            the virtual array for updating indexes
+	 * @param iSrcIndex
+	 *            the source index of the element
+	 * @param iTargetIndex
+	 *            the target index of the element
+	 * @return true if operation executed correctly otherwise false
+	 */
+	public boolean move(IVirtualArray virtualArray, int iSrcIndex, int iTargetIndex);
+
 	//
 	// /**
 	// * Moves the element at iIndex to the right

@@ -115,6 +115,8 @@ public class SetExporter {
 					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
 					out.print("\t");
 				}
+				
+				// export partitional cluster info for genes/entities
 				if (contentVA.getGroupList() != null) {
 					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 1) {
 						offset = offset + contentVA.getGroupList().get(cluster).getNrElements();
@@ -142,22 +144,56 @@ public class SetExporter {
 				out.println();
 			}
 
+			// export partitional cluster info for experiments
+			if (storageVA.getGroupList() != null) {
+
+				String stClusterNr = "Cluster_Number\t";
+				String stClusterRep = "Cluster_Repr\t";
+
+				cluster = 0;
+				cnt = -1;
+
+				for (Integer iStorageIndex : storageVA) {
+					if (cnt == storageVA.getGroupList().get(cluster).getNrElements() - 1) {
+						offset = offset + storageVA.getGroupList().get(cluster).getNrElements();
+						cluster++;
+						cnt = 0;
+					}
+					else {
+						cnt++;
+					}
+
+					stClusterNr += cluster + "\t";
+					if (cnt == 0)
+						stClusterRep += 1 + "\t";
+					else
+						stClusterRep += 0 + "\t";
+				}
+
+				stClusterNr += "\n";
+				stClusterRep += "\n";
+
+				out.print(stClusterNr);
+				out.print(stClusterRep);
+
+			}
+
 			out.close();
 
-			 // export gene cluster tree to own xml file
-			 Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-			 if (tree != null) {
-			 TreePorter treePorter = new TreePorter();
-			 if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
-			 System.out.println("Problem during gene tree export!");
-			 }
-			 // export experiment cluster tree to own xml file
-			 tree = set.getClusteredTreeExps();
-			 if (tree != null) {
-			 TreePorter treePorter = new TreePorter();
-			 if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
-			 System.out.println("Problem during experiments tree export!");
-			 }
+			// export gene cluster tree to own xml file
+			Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+			if (tree != null) {
+				TreePorter treePorter = new TreePorter();
+				if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
+					System.out.println("Problem during gene tree export!");
+			}
+			// export experiment cluster tree to own xml file
+			tree = set.getClusteredTreeExps();
+			if (tree != null) {
+				TreePorter treePorter = new TreePorter();
+				if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
+					System.out.println("Problem during experiments tree export!");
+			}
 
 		}
 		catch (IOException e) {
