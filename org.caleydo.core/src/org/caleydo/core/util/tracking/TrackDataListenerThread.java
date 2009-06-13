@@ -3,30 +3,34 @@ package org.caleydo.core.util.tracking;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-class TrackDataListenerThread
+public class TrackDataListenerThread
 	extends Thread {
 
 	private DatagramSocket serverSocket;
 	private byte[] receiveData;
 
-	private Queue<float[]> posInputQueue;
-	
+	private Queue<float[]> eyePosInputQueue;
+	private Queue<float[]> headPosInputQueue;
+	private Queue<Float> diameterInputQueue;
+
 	private boolean bKeepRunning = true;
 
-	public TrackDataListenerThread(Queue<float[]> posInputQueue) {
+	public TrackDataListenerThread(Queue<float[]> eyePosInputQueue, Queue<float[]> headPosInputQueue,
+		Queue<Float> diameterInputQueue) {
 
-		this.posInputQueue = posInputQueue;
+		this.eyePosInputQueue = eyePosInputQueue;
+		this.headPosInputQueue = headPosInputQueue;
+		this.diameterInputQueue = diameterInputQueue;
 	}
 
 	public void stopThread() {
 		bKeepRunning = false;
 	}
-	
+
 	public void run() {
 
 		try {
@@ -35,52 +39,80 @@ class TrackDataListenerThread
 		catch (SocketException ex) {
 			System.out.println("UDP Port 5555 is occupied.");
 		}
-		
+
 		try {
 
 			while (bKeepRunning) {
 				receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
-//				System.out.println("Waiting for datagram packet");
+				// System.out.println("Waiting for datagram packet");
 
 				serverSocket.receive(receivePacket);
 				String sentence = new String(receivePacket.getData());
 
 				if (!sentence.contains("ET_SPL"))
 					continue;
-				
+
+				// System.out.println(sentence);
+
 				StringTokenizer tokenizer = new StringTokenizer(sentence, " ");
 
 				tokenizer.nextToken();
-				tokenizer.nextToken();
+
 				int x = new Integer(tokenizer.nextToken());
+				int y = 0;
+				int diameter = 0;
 
-				 tokenizer.nextToken();
-				 int y = new Integer(tokenizer.nextToken());
+				if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.RED) {
 
-//				 String tmp = tokenizer.nextToken();
-//				 tmp = tmp.substring(0, tmp.indexOf('\n'));
-//				 int y = new Integer(tmp);
+					tokenizer.nextToken();
+					y = new Integer(tokenizer.nextToken());
+					tokenizer.nextToken();
+					diameter = new Integer(tokenizer.nextToken());
+				}
+				else if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT) {
 
-				
-				if (x == 0 || y == 0) 
-					continue;
-				
+					y = new Integer(tokenizer.nextToken());
+					// String tmp = tokenizer.nextToken();
+					// tmp = tmp.substring(0, tmp.indexOf('\n'));
+					// y = new Integer(tmp);
+				}
+				else if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.HED) {
 
-				posInputQueue.add(new float[] { x, y });
-
-				if (posInputQueue.size() > TrackDataProvider.SMOOTH_RANGE) {
-					posInputQueue.remove();
+					throw new IllegalStateException("Not implemented yet.");
 				}
 
-				InetAddress IPAddress = receivePacket.getAddress();
-				int port = receivePacket.getPort();
-				System.out.println("From: " + IPAddress + ":" + port);
-				System.out.println("Message: " + sentence);
-				System.out.println("X/Y: " + x + "/" + y);
+				if (x == 0 || y == 0)
+					continue;
+
+				if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.RED
+					|| TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT) {
+					
+					eyePosInputQueue.add(new float[] { x, y });
+					if (eyePosInputQueue.size() > TrackDataProvider.POSITON_SMOOTH_RANGE) {
+						eyePosInputQueue.remove();
+					}
+
+					diameterInputQueue.add((float) diameter);
+					if (diameterInputQueue.size() > TrackDataProvider.DEPTH_SMOOTH_RANGE) {
+						diameterInputQueue.remove();
+					}
+				}
+				else if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.HED) {
+					
+					headPosInputQueue.add(new float[] { x, y });
+					if (headPosInputQueue.size() > TrackDataProvider.POSITON_SMOOTH_RANGE) {
+						headPosInputQueue.remove();
+					}
+				}
+
+				// System.out.println("From: " + IPAddress + ":" + port);
+				// System.out.println("Message: " + sentence);
+				// System.out.println("X/Y: " + x + "/" + y);
+				// System.out.println("Diameter: " +diameter);
 			}
-			
+
 			serverSocket.disconnect();
 			serverSocket.close();
 		}

@@ -4,12 +4,18 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Rectangle;
+
+import javax.media.opengl.GL;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.eclipse.swt.graphics.Point;
 
 /**
  * Render style for bucket view.
@@ -30,8 +36,16 @@ public class BucketLayoutRenderStyle
 	private float fBucketBottomBottom = 0;
 	private float fHeadDist = 0;
 	private float[] fArHeadPosition;
-	
+
 	private boolean bIsZoomedIn = false;
+
+	private float x = 0;
+	private float y = 0;
+	private float fTargetY = 0;
+	private boolean bAnimationRunningOut = false;
+	private boolean bAnimationRunningIn = false;
+	private boolean bFocusOnTopStackLayer = false;
+	private boolean bFocusOnBottomStackLayer = false;
 
 	/**
 	 * Constructor.
@@ -86,8 +100,8 @@ public class BucketLayoutRenderStyle
 			if (fAspectRatio < 0.65f) {
 
 				if (fAspectRatio < 0.61f) {
-					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fYScaling* 0.97f,
-						fScalingFactorFocusLevel * fYScaling* 0.97f, fScalingFactorFocusLevel));
+					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fYScaling * 0.97f,
+						fScalingFactorFocusLevel * fYScaling * 0.97f, fScalingFactorFocusLevel));
 				}
 				else {
 					transform.setScale(new Vec3f(fScalingFactorFocusLevel * fYScaling * 0.9f,
@@ -389,7 +403,7 @@ public class BucketLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initSpawnLevel() {
-		
+
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(-2f, 0, 0f));
 		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
@@ -400,19 +414,93 @@ public class BucketLayoutRenderStyle
 		return spawnLevel;
 	}
 
-	public RemoteLevel initFocusLevelTrack() {
-		fArHeadPosition = GeneralManager.get().getTrackDataProvider().get2DTrackData();
-		fArHeadPosition[0] = fArHeadPosition[0] / 1280f * 4 - 4;
-		fArHeadPosition[1] = fArHeadPosition[1] / 1024f * 4 - 4;
+	public RemoteLevel initFocusLevelTrack(GL gl, Rectangle viewRectScreenCoords, Point upperLeftScreenPos) {
 
-		fBucketBottomLeft = -1 * fArHeadPosition[0] - BUCKET_WIDTH - 1.5f;
-		fBucketBottomRight = -1 * fArHeadPosition[0] + BUCKET_WIDTH - 1.5f;
-		fBucketBottomTop = fArHeadPosition[1] + BUCKET_HEIGHT;
-		fBucketBottomBottom = fArHeadPosition[1] - BUCKET_HEIGHT;
+		fArHeadPosition = GeneralManager.get().getTrackDataProvider().getEyeTrackData();
+		fArHeadPosition[0] -= upperLeftScreenPos.x;
+		fArHeadPosition[1] -= upperLeftScreenPos.y;
 
-		fHeadDist =
+		x = fArHeadPosition[0] - viewRectScreenCoords.width/2;
+		y = (fArHeadPosition[1] - viewRectScreenCoords.height/2f);
+		
+		float fRenderX = x / viewRectScreenCoords.width * 4f;
+		float fRenderY = y / viewRectScreenCoords.height * 4f * fAspectRatio;
+		
+//		GLHelperFunctions.drawPointAt(gl, new Vec3f(fArHeadPosition[0] / viewRectScreenCoords.width * 4f -2,
+//			(1f - (fArHeadPosition[1] / viewRectScreenCoords.height) * 4f + 0.5f) * fAspectRatio, 0f));
+//		
+//		x = fArHeadPosition[0];
+//
+//		if (fArHeadPosition[1] < 400 && bAnimationRunningIn == false && !bFocusOnTopStackLayer) {
+//			fTargetY = 100;
+//			bAnimationRunningIn = true;
+//			// y = fArHeadPosition[1];
+//		}
+//////		else if (fArHeadPosition[1] > 600 && bAnimationRunningIn == false && !bFocusOnBottomStackLayer) {
+//////			fTargetY = 750;
+//////			bAnimationRunningIn = true;
+//////			// y = fArHeadPosition[1];
+//////		}
+////
+//		if (fArHeadPosition[1] > 400 && fArHeadPosition[1] < 600 && (bFocusOnBottomStackLayer || bFocusOnTopStackLayer)) {
+//			fTargetY = 500;
+//			bAnimationRunningOut = true;
+//		}
+//
+//		// Top stack layer
+//		if (bAnimationRunningIn && fTargetY == 100 && !bFocusOnTopStackLayer) {
+//			if (fTargetY < y)
+//				y = y - 10;
+//
+//			if (fTargetY >= y) {
+//				bAnimationRunningIn = false;
+//				bFocusOnTopStackLayer = true;
+//			}
+//		}
+//
+//		if (bAnimationRunningOut && fTargetY == 500 && bFocusOnTopStackLayer) {
+//			if (fTargetY > y)
+//				y = y + 10;
+//
+//			if (fTargetY <= y) {
+//				bAnimationRunningOut = false;
+//				bFocusOnTopStackLayer = false;
+//			}
+//		}
+
+//		// Bottom stack layer
+//		if (bAnimationRunningOut && fTargetY == 400 && !bFocusOnBottomStackLayer) {
+//			if (fTargetY < y)
+//				y = y - 10;
+//
+//			if (fTargetY >= y) {
+//				bAnimationRunningOut = false;
+//				bFocusOnBottomStackLayer = false;
+//			}
+//		}
+//
+//		if (bAnimationRunningIn && fTargetY == 750 && bFocusOnBottomStackLayer) {
+//			if (fTargetY > y)
+//				y = y + 10;
+//
+//			if (fTargetY <= y) {
+//				bAnimationRunningIn = false;
+//				bFocusOnBottomStackLayer = true;
+//			}
+//		}
+
+//		if (!bFocusOnStackLayer && !bAnimationRunningIn && !bAnimationRunningOut) {
+//			 y = fArHeadPosition[1];
+//		}
+
+		fBucketBottomLeft = -1 * fRenderX - BUCKET_WIDTH;
+		fBucketBottomRight = -1 * fRenderX + BUCKET_WIDTH;
+		fBucketBottomTop = fRenderY * 1.4f + BUCKET_HEIGHT;
+		fBucketBottomBottom = fRenderY * 1.4f - BUCKET_HEIGHT;
+
+		fHeadDist = // GeneralManager.get().getTrackDataProvider().getDepth() / 300 * 4f;
 			-1 * GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f
-				+ Math.abs(fBucketBottomRight - 2) / 2 + Math.abs(fBucketBottomTop - 2) / 2;
+				+ Math.abs(fBucketBottomRight - 2) / 2 + Math.abs(fBucketBottomTop - 2) * 2;// / 2;
 
 		float fXScaling = (4 * 2 - Math.abs(fBucketBottomLeft - fBucketBottomRight)) / (4 * 2);
 		float fYScaling = (4 * 2 - Math.abs(fBucketBottomBottom - fBucketBottomTop)) / (4 * 2);
@@ -477,7 +565,7 @@ public class BucketLayoutRenderStyle
 
 		return stackLevel;
 	}
-	
+
 	public RemoteLevel initFocusLevelWii() {
 		fArHeadPosition = GeneralManager.get().getWiiRemote().getCurrentSmoothHeadPosition();
 		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
@@ -579,7 +667,7 @@ public class BucketLayoutRenderStyle
 	public float getHeadDistance() {
 		return fHeadDist;
 	}
-	
+
 	public void setZoomedIn(boolean bIsZoomedIn) {
 		this.bIsZoomedIn = bIsZoomedIn;
 	}

@@ -3084,7 +3084,7 @@ public class GLHierarchicalHeatMap
 		});
 
 		Rectangle screenRect = getParentGLCanvas().getBounds();
-		float[] fArTrackPos = generalManager.getTrackDataProvider().get2DTrackData();
+		float[] fArTrackPos = generalManager.getTrackDataProvider().getEyeTrackData();
 
 		fArTrackPos[0] -= upperLeftScreenPos.x;
 		fArTrackPos[1] -= upperLeftScreenPos.y;
@@ -3107,7 +3107,7 @@ public class GLHierarchicalHeatMap
 		// Manipulate selected overview chunk (level 1)
 		if (fArTrackPos[0] < 50) {
 			int iNrPixelsPerSelectionBar = (int) (screenRect.getHeight() / iNrSelBar);
-			iSelectorBar = (int) ((fArTrackPos[1] + 50) / iNrPixelsPerSelectionBar);
+			iSelectorBar = (int) ((fArTrackPos[1] + 17) / iNrPixelsPerSelectionBar * 1.1f); // TODO: play with these correction factors
 		
 			if (iSelectorBar <= 0)
 				iSelectorBar = 1;

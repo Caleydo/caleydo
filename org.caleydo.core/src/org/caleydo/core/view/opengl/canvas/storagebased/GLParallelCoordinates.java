@@ -2763,7 +2763,7 @@ public class GLParallelCoordinates
 		});
 
 		Rectangle screenRect = getParentGLCanvas().getBounds();
-		float[] fArTrackPos = generalManager.getTrackDataProvider().get2DTrackData();
+		float[] fArTrackPos = generalManager.getTrackDataProvider().getEyeTrackData();
 
 		fArTrackPos[0] -= upperLeftScreenPos.x;
 		fArTrackPos[1] -= upperLeftScreenPos.y;
@@ -2771,7 +2771,7 @@ public class GLParallelCoordinates
 		GLHelperFunctions.drawPointAt(gl, new Vec3f(fArTrackPos[0] / screenRect.width * 8f,
 			(1f - fArTrackPos[1] / screenRect.height) * 8f * fAspectRatio, 0.01f));
 		
-		float fTrackX = (generalManager.getTrackDataProvider().get2DTrackData()[0]) / screenRect.width;
+		float fTrackX = (generalManager.getTrackDataProvider().getEyeTrackData()[0]) / screenRect.width;
 
 		fTrackX *= renderStyle.getWidthOfCoordinateSystem();
 

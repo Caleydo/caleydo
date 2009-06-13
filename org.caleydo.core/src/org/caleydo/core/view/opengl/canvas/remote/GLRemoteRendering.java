@@ -82,6 +82,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLPropagationHeatMap;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -97,6 +98,7 @@ import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
 import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.graphics.Point;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -213,6 +215,8 @@ public class GLRemoteRendering
 	protected DisableConnectionLinesListener disableConnectionLinesListener = null;
 	protected ResetViewListener resetViewListener = null;
 	protected SelectionUpdateListener selectionUpdateListener = null;
+
+	private Point upperLeftScreenPos = new Point(0, 0);
 
 	/**
 	 * Constructor.
@@ -475,7 +479,17 @@ public class GLRemoteRendering
 
 		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()
 			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelTrack();
+
+			// TODO: very performance intensive - better solution needed (only in reshape)!
+			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					upperLeftScreenPos = getParentGLCanvas().getParentComposite().toDisplay(0, 0);
+				}
+			});
+
+			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelTrack(gl,
+				getParentGLCanvas().getBounds(), upperLeftScreenPos);
 
 			((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelTrack();
 		}
@@ -515,9 +529,9 @@ public class GLRemoteRendering
 		// gl.glCallList(iGLDisplayList);
 
 		// comment here for connection lines
-//		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
-//			glConnectionLineRenderer.render(gl);
-//		}
+		// if (glConnectionLineRenderer != null && connectionLinesEnabled) {
+		// glConnectionLineRenderer.render(gl);
+		// }
 
 		float fZTranslation = 0;
 		if (!bucketMouseWheelListener.isZoomedIn())
@@ -947,7 +961,7 @@ public class GLRemoteRendering
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
 		Vec3f scale = transform.getScale();
-//		float fZoomedInScalingFactor = 0.1f;
+		// float fZoomedInScalingFactor = 0.1f;
 		float fYCorrection = 0f;
 		if (!bucketMouseWheelListener.isZoomedIn()) {
 			fYCorrection = 0f;
@@ -2699,10 +2713,10 @@ public class GLRemoteRendering
 	}
 
 	private void updateOffScreenTextures(final GL gl) {
-		
+
 		if (glOffScreenRenderer == null)
 			return;
-		
+
 		bUpdateOffScreenTextures = false;
 
 		gl.glPushMatrix();
@@ -2805,7 +2819,7 @@ public class GLRemoteRendering
 		toggleZoomListener = new ToggleZoomListener();
 		toggleZoomListener.setHandler(this);
 		eventPublisher.addListener(ToggleZoomEvent.class, toggleZoomListener);
-		
+
 		// resetRemoteRendererListener = new ResetRemoteRendererListener();
 		// resetRemoteRendererListener.setHandler(this);
 		// eventPublisher.addListener(ResetRemoteRendererEvent.class, resetRemoteRendererListener);
@@ -2911,7 +2925,7 @@ public class GLRemoteRendering
 	public void toggleNavigationMode() {
 		this.bEnableNavigationOverlay = !bEnableNavigationOverlay;
 	}
-	
+
 	public void toggleZoom() {
 		bucketMouseWheelListener.triggerZoom(!bucketMouseWheelListener.isZoomedIn());
 	}
