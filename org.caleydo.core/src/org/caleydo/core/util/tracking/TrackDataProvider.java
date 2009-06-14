@@ -11,7 +11,7 @@ import java.util.Queue;
 
 public class TrackDataProvider {
 
-	public static final ETrackerMode eTrackerMode = ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT;
+	public static final ETrackerMode eTrackerMode = ETrackerMode.RED;
 	
 	public static float POSITON_SMOOTH_RANGE = 20;
 	public static float DEPTH_SMOOTH_RANGE = 30;
@@ -112,25 +112,27 @@ public class TrackDataProvider {
 
 	public float[] getEyeTrackData() {
 
-		float[] fArSmoothedPoint = new float[] { 0f, 0f };
-		float[] fArTmpPoint;
-
-		for (int i = 0; i < POSITON_SMOOTH_RANGE; i++) {
-			if (eyePosInputQueue.size() < POSITON_SMOOTH_RANGE) {
-				break;
-			}
-
-			fArTmpPoint = ((LinkedList<float[]>) eyePosInputQueue).get(i);
-			fArSmoothedPoint[0] += fArTmpPoint[0];
-			fArSmoothedPoint[1] += fArTmpPoint[1];
-		}
-
-		fArSmoothedPoint[0] /= POSITON_SMOOTH_RANGE;
-		fArSmoothedPoint[1] /= POSITON_SMOOTH_RANGE;
-
-		System.out.println("Eye position: " + fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
-
-		return fArSmoothedPoint;
+//		float[] fArSmoothedPoint = new float[] { 0f, 0f };
+//		float[] fArTmpPoint;
+//
+//		for (int i = 0; i < POSITON_SMOOTH_RANGE; i++) {
+//			if (eyePosInputQueue.size() < POSITON_SMOOTH_RANGE) {
+//				break;
+//			}
+//
+//			fArTmpPoint = ((LinkedList<float[]>) eyePosInputQueue).get(i);
+//			fArSmoothedPoint[0] += fArTmpPoint[0];
+//			fArSmoothedPoint[1] += fArTmpPoint[1];
+//		}
+//
+//		fArSmoothedPoint[0] /= POSITON_SMOOTH_RANGE;
+//		fArSmoothedPoint[1] /= POSITON_SMOOTH_RANGE;
+//
+//		System.out.println("Eye position: " + fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
+//
+//		return fArSmoothedPoint;
+		
+		return new float[]{800, 600};
 	}
 
 	public float getDepth() {

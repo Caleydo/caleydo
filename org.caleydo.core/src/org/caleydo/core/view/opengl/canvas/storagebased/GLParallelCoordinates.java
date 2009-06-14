@@ -403,8 +403,8 @@ public class GLParallelCoordinates
 				-0.002f);
 		}
 
-		if (generalManager.getTrackDataProvider().isTrackModeActive())
-			handleTrackInput(gl);
+//		if (generalManager.getTrackDataProvider().isTrackModeActive())
+//			handleTrackInput(gl);
 
 		// TODO another display list
 		clipToFrustum(gl);

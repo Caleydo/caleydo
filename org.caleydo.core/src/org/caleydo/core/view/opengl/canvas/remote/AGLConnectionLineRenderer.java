@@ -352,26 +352,40 @@ public abstract class AGLConnectionLineRenderer {
 		rotation.toMatrix(matSrc);
 
 		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()) {
-			WiiRemote wiiRemote = GeneralManager.get().getWiiRemote();
+//			WiiRemote wiiRemote = GeneralManager.get().getWiiRemote();
 
-			float[] fArHeadPosition = wiiRemote.getCurrentSmoothHeadPosition();
+			float[] fArHeadPosition = GeneralManager.get().getTrackDataProvider().getEyeTrackData();
 
-			fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
-			fArHeadPosition[1] *= 4;
+			fArHeadPosition[0] -= 183;
+			fArHeadPosition[1] -= 112;
+
+			fArHeadPosition[0] = fArHeadPosition[0] - 1730/2;
+			fArHeadPosition[1] = (fArHeadPosition[1] - 1055/2f);
+			
+			fArHeadPosition[0] = fArHeadPosition[0] / 1730 * 4f;
+			fArHeadPosition[1] = fArHeadPosition[1] / 1055 * 4f * 0.61f;
+			
+//			fArHeadPosition[0] = 0f;
+//			fArHeadPosition[1] = -1.3f;
+			
+//			fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
+//			fArHeadPosition[1] *= 4;
 
 			float fBucketWidth = 2f;
 			float fBucketHeight = 2f;
 			float fBucketDepth = 4.0f;
-			float fBucketBottomLeft = -1 * fArHeadPosition[0] - fBucketWidth - 1.5f;
-			float fBucketBottomRight = -1 * fArHeadPosition[0] + fBucketWidth - 1.5f;
-			float fBucketBottomTop = fArHeadPosition[1] + fBucketHeight;
-			float fBucketBottomBottom = fArHeadPosition[1] - fBucketHeight;
+			float fBucketBottomLeft = -1 * fArHeadPosition[0] - fBucketWidth;// - 1.5f;
+			float fBucketBottomRight = -1 * fArHeadPosition[0] + fBucketWidth;// - 1.5f;
+			float fBucketBottomTop = fArHeadPosition[1] * 1.4f + fBucketHeight;
+			float fBucketBottomBottom = fArHeadPosition[1] * 1.4f - fBucketHeight;
 
-			float fNormalizedHeadDist =
-				-1 * wiiRemote.getCurrentHeadDistance() + 7f + Math.abs(fBucketBottomRight - 2) / 2
-					+ Math.abs(fBucketBottomTop - 2) / 2;
+			float fNormalizedHeadDist =  
+				-1 * GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f
+				+ Math.abs(fBucketBottomRight - 2) / 2 + Math.abs(fBucketBottomTop - 2) * 2;// / 2;
+//				-1 * GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f + Math.abs(fBucketBottomRight - 2) / 2
+//					+ Math.abs(fBucketBottomTop - 2) / 2;
 
-			Vec3f vecWiiTransformedPoint = new Vec3f(vecOriginalPoint);
+			Vec3f vecTrackTranformPoint = new Vec3f(vecOriginalPoint);
 
 			if (stackLevel.getElementByPositionIndex(1) == remoteLevelElement) {
 				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;
@@ -385,7 +399,7 @@ public abstract class AGLConnectionLineRenderer {
 				float fXScaling = fTransformedX / fPlaneWidth;
 				fTransformedY += fArHeadPosition[1] * fXScaling;
 
-				vecWiiTransformedPoint =
+				vecTrackTranformPoint =
 					new Vec3f(fTransformedX, -fBucketHeight + fTransformedY, vecOriginalPoint.z()); // / 4f *
 				// fBucketHeight
 			}
@@ -401,7 +415,7 @@ public abstract class AGLConnectionLineRenderer {
 				float fXScaling = fTransformedX / fPlaneWidth;
 				fTransformedY += fArHeadPosition[1] * (1 - fXScaling);
 
-				vecWiiTransformedPoint =
+				vecTrackTranformPoint =
 					new Vec3f(fPlaneWidth - fTransformedX, -fBucketHeight + fTransformedY, vecOriginalPoint
 						.z()); // /
 				// 4f
@@ -420,7 +434,7 @@ public abstract class AGLConnectionLineRenderer {
 				float fYScaling = fTransformedY / fPlaneWidth;
 				// fTransformedX += fArHeadPosition[0] * fYScaling;
 
-				vecWiiTransformedPoint =
+				vecTrackTranformPoint =
 					new Vec3f((fBucketWidth + fBucketBottomLeft) * (1 - fYScaling) + fTransformedX,
 						fPlaneWidth - fTransformedY, vecOriginalPoint.z());
 			}
@@ -435,12 +449,12 @@ public abstract class AGLConnectionLineRenderer {
 				float fYScaling = fTransformedY / fPlaneWidth;
 				// fTransformedX += fArHeadPosition[1] * (1-fYScaling);
 
-				vecWiiTransformedPoint =
+				vecTrackTranformPoint =
 					new Vec3f((fBucketWidth + fBucketBottomLeft) * fYScaling + fTransformedX, fTransformedY,
 						vecOriginalPoint.z());
 			}
 
-			matSrc.xformPt(vecWiiTransformedPoint, vecTransformedPoint);
+			matSrc.xformPt(vecTrackTranformPoint, vecTransformedPoint);
 		}
 		else {
 			matSrc.xformPt(vecOriginalPoint, vecTransformedPoint);

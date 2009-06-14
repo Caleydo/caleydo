@@ -507,6 +507,7 @@ public class GLRemoteRendering
 			}
 
 			renderRemoteLevel(gl, focusLevel);
+//			renderRemoteLevel(gl, stackLevel);
 
 			glOffScreenRenderer.renderRubberBucket(gl, stackLevel,
 				(BucketLayoutRenderStyle) layoutRenderStyle, this);
@@ -529,9 +530,9 @@ public class GLRemoteRendering
 		// gl.glCallList(iGLDisplayList);
 
 		// comment here for connection lines
-		// if (glConnectionLineRenderer != null && connectionLinesEnabled) {
-		// glConnectionLineRenderer.render(gl);
-		// }
+		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
+			glConnectionLineRenderer.render(gl);
+		}
 
 		float fZTranslation = 0;
 		if (!bucketMouseWheelListener.isZoomedIn())
@@ -1641,6 +1642,8 @@ public class GLRemoteRendering
 			RemoteLevelElement destinationElement = slerpAction.getDestinationRemoteLevelElement();
 
 			updateViewDetailLevels(destinationElement);
+			
+			bUpdateOffScreenTextures = true;
 		}
 
 		// After last slerp action is done the line connections are turned on
@@ -1833,6 +1836,8 @@ public class GLRemoteRendering
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		lastSelectionDelta = selectionDelta;
+		
+		bUpdateOffScreenTextures = true;
 	}
 
 	/**
@@ -2567,7 +2572,7 @@ public class GLRemoteRendering
 
 		view.initRemote(gl, this, glMouseListener, this, infoAreaManager);
 		view.setDetailLevel(EDetailLevel.MEDIUM);
-
+		
 		return true;
 	}
 
