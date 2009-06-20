@@ -13,7 +13,7 @@ import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 public class PDDrawingStrategyRainbow
-	extends PDDrawingStrategyChildIndicator {
+	extends APDDrawingStrategyChildIndicator {
 
 	public PDDrawingStrategyRainbow(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);

@@ -10,7 +10,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 public class PDDrawingStrategyTransparent
-	extends PDDrawingStrategyChildIndicator {
+	extends APDDrawingStrategyChildIndicator {
 	
 	public PDDrawingStrategyTransparent(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);

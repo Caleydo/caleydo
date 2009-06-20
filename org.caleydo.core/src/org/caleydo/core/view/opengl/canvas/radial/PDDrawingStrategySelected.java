@@ -7,7 +7,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 
 public class PDDrawingStrategySelected
-	extends PDDrawingStrategyChildIndicator {
+	extends APDDrawingStrategyChildIndicator {
 	
 	private float[] fArBorderColor;
 	

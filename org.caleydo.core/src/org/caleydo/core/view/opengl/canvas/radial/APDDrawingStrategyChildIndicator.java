@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
-
 import gleem.linalg.Vec2f;
 
 import javax.media.opengl.GL;
@@ -8,13 +7,27 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.manager.picking.PickingManager;
 
-public abstract class PDDrawingStrategyChildIndicator
-	extends PDDrawingStrategy {
+/**
+ * APDDrawingStrategy encapsulates the functionality of drawing child indicators, which indicate, that a
+ * partial disc has children.
+ * 
+ * @author Christian Partl
+ */
+public abstract class APDDrawingStrategyChildIndicator
+	extends APDDrawingStrategy {
 	private static final float MAX_TRIANGLE_FITTING_TEST_ANGLE = 45.0f;
 
 	private float[] fArChildIndicatorColor;
 
-	public PDDrawingStrategyChildIndicator(PickingManager pickingManager, int iViewID) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param pickingManager
+	 *            The picking manager that should handle the picking of the drawn elements.
+	 * @param iViewID
+	 *            ID of the view where the elements will be displayed. Needed for picking.
+	 */
+	public APDDrawingStrategyChildIndicator(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
 		fArChildIndicatorColor = RadialHierarchyRenderStyle.CHILD_INDICATOR_COLOR;
 	}
@@ -24,8 +37,22 @@ public abstract class PDDrawingStrategyChildIndicator
 
 	@Override
 	public abstract void drawPartialDisc(GL gl, GLU glu, PartialDisc pdDiscToDraw);
-	
-	public void drawChildIndicator(GL gl, float fInnerRadius, float fWidth, float fStartAngle, float fAngle) {
+
+	/**
+	 * Draws a child indicator (triangle) according to the parameters of a partial disc.
+	 * 
+	 * @param gl
+	 *            GL object that shall be used for drawing.
+	 * @param fInnerRadius
+	 *            Inner radius of the partial disc.
+	 * @param fWidth
+	 *            Width of the partial disc.
+	 * @param fStartAngle
+	 *            Start angle of the partial disc.
+	 * @param fAngle
+	 *            Angle of the partial disc.
+	 */
+	protected void drawChildIndicator(GL gl, float fInnerRadius, float fWidth, float fStartAngle, float fAngle) {
 
 		float fMidAngle = fStartAngle + (fAngle / 2.0f);
 		float fOuterRadius = fInnerRadius + fWidth;
@@ -51,6 +78,16 @@ public abstract class PDDrawingStrategyChildIndicator
 		drawIsoscelesTriangle(gl, fTriangleHeight, fTriangleHeight, vecTriangleTop, -fMidAngle);
 	}
 
+	/**
+	 * Calculates the position of a point using the angle and radius (distance) from the center that is
+	 * assumed at (0,0).
+	 * 
+	 * @param fAngle
+	 *            Angle that determines the direction of the radius.
+	 * @param fRadius
+	 *            Distance from the center.
+	 * @return Radial Position.
+	 */
 	private Vec2f getRadialPosition(float fAngle, float fRadius) {
 		fAngle = -1 * (fAngle - 90);
 		Vec2f vecPosition = new Vec2f();
@@ -60,6 +97,20 @@ public abstract class PDDrawingStrategyChildIndicator
 		return vecPosition;
 	}
 
+	/**
+	 * Draws an isosceles triangle.
+	 * 
+	 * @param gl
+	 *            GL object that shall be used for drawing.
+	 * @param fHeight
+	 *            Height of the triangle. Distance from the baseline to the top.
+	 * @param fHalfWidth
+	 *            The half of the width of the baseline.
+	 * @param vecTriangleTop
+	 *            Position of the top of the triangle.
+	 * @param fRotationAngle
+	 *            Rotation of the triangle.
+	 */
 	private void drawIsoscelesTriangle(GL gl, float fHeight, float fHalfWidth, Vec2f vecTriangleTop,
 		float fRotationAngle) {
 
@@ -85,13 +136,24 @@ public abstract class PDDrawingStrategyChildIndicator
 		gl.glPopAttrib();
 		gl.glPopMatrix();
 	}
-	
+
+	/**
+	 * Gets the color which is used to draw the child indicator.
+	 * 
+	 * @return RGB-Color which is used to draw the child indicator.
+	 */
 	public float[] getChildIndicatorColor() {
 		return fArChildIndicatorColor;
 	}
 
+	/**
+	 * Sets the color which is used to draw the child indicator.
+	 * 
+	 * @param fArChildIndicatorColor
+	 *            RGB-Color which shall be used to draw the child indicator.
+	 */
 	public void setChildIndicatorColor(float[] fArChildIndicatorColor) {
-		if(fArChildIndicatorColor.length >= 3) {
+		if (fArChildIndicatorColor.length >= 3) {
 			this.fArChildIndicatorColor = fArChildIndicatorColor;
 		}
 	}

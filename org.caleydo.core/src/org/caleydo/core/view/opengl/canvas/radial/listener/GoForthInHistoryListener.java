@@ -5,6 +5,11 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 
+/**
+ * Listener that reacts on go forth in history events for RadialHierarchy.
+ * 
+ * @author Christian Partl
+ */
 public class GoForthInHistoryListener
 	extends AEventListener<GLRadialHierarchy> {
 

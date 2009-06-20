@@ -6,7 +6,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.manager.picking.PickingManager;
 
 public class PDDrawingStrategyInvisible
-	extends PDDrawingStrategy {
+	extends APDDrawingStrategy {
 
 	public PDDrawingStrategyInvisible(PickingManager pickingManager, int viewID) {
 		super(pickingManager, viewID);

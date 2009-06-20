@@ -61,11 +61,11 @@ public class DrawingStateDetailOutside
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
-		PDDrawingStrategy dsDefault = DrawingStrategyManager.get().getDefaultDrawingStrategy();
-		PDDrawingStrategy dsSelected =
+		APDDrawingStrategy dsDefault = DrawingStrategyManager.get().getDefaultDrawingStrategy();
+		APDDrawingStrategy dsSelected =
 			DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_SELECTED);
-		PDDrawingStrategy dsTransparent =
+		APDDrawingStrategy dsTransparent =
 			DrawingStrategyManager.get().getDrawingStrategy(
 				DrawingStrategyManager.PD_DRAWING_STRATEGY_TRANSPARENT);
 
@@ -116,8 +116,8 @@ public class DrawingStateDetailOutside
 					if (alParentPath != null) {
 						if (alParentPath.size() >= iDisplayedOverviewDepth) {
 							DrawingStrategyManager drawingStategyManager = DrawingStrategyManager.get();
-							PDDrawingStrategyChildIndicator dsDefaultHighlightedChildIndicator =
-								(PDDrawingStrategyChildIndicator) drawingStategyManager
+							APDDrawingStrategyChildIndicator dsDefaultHighlightedChildIndicator =
+								(APDDrawingStrategyChildIndicator) drawingStategyManager
 									.createDrawingStrategy(drawingStategyManager.getDefaultStrategyType());
 
 							dsDefaultHighlightedChildIndicator
@@ -138,7 +138,7 @@ public class DrawingStateDetailOutside
 		}
 
 		if (bIsMouseOverElementDisplayed) {
-			PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+			APDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
 			dsLabelDecorator.setDrawingStrategy(dsDefault);
 
 			if (bMouseOverElementInDetailOutside) {

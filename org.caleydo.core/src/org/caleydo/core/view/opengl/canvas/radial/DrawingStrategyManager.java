@@ -15,10 +15,10 @@ public final class DrawingStrategyManager {
 	public static final int PD_DRAWING_STRATEGY_INVISIBLE = 6;
 
 	private static DrawingStrategyManager instance;
-	private HashMap<Integer, PDDrawingStrategy> hashDrawingStrategies;
-	private PDDrawingStrategy dsDefault;
-	private PDDrawingStrategyChildIndicator dsRainbow;
-	private PDDrawingStrategyChildIndicator dsExpressionColor;
+	private HashMap<Integer, APDDrawingStrategy> hashDrawingStrategies;
+	private APDDrawingStrategy dsDefault;
+	private APDDrawingStrategyChildIndicator dsRainbow;
+	private APDDrawingStrategyChildIndicator dsExpressionColor;
 	private PickingManager pickingManager;
 	private int iViewID;
 	private int iDefaultStrategyType;
@@ -29,7 +29,7 @@ public final class DrawingStrategyManager {
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
 		
-		hashDrawingStrategies = new HashMap<Integer, PDDrawingStrategy>();
+		hashDrawingStrategies = new HashMap<Integer, APDDrawingStrategy>();
 		dsRainbow = new PDDrawingStrategyRainbow(pickingManager, iViewID);
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_RAINBOW, dsRainbow);
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_SELECTED, new PDDrawingStrategySelected(pickingManager, iViewID));
@@ -54,7 +54,7 @@ public final class DrawingStrategyManager {
 		return instance;
 	}
 	
-	public PDDrawingStrategy createDrawingStrategy(int iDrawingStrategyType) {
+	public APDDrawingStrategy createDrawingStrategy(int iDrawingStrategyType) {
 		switch(iDrawingStrategyType) {
 			case PD_DRAWING_STRATEGY_RAINBOW: return new PDDrawingStrategyRainbow(pickingManager, iViewID);
 			case PD_DRAWING_STRATEGY_SELECTED: return new PDDrawingStrategySelected(pickingManager, iViewID);
@@ -66,11 +66,11 @@ public final class DrawingStrategyManager {
 		}
 	}
 
-	public PDDrawingStrategy getDrawingStrategy(int iDrawingStrategyType) {
+	public APDDrawingStrategy getDrawingStrategy(int iDrawingStrategyType) {
 		return hashDrawingStrategies.get(iDrawingStrategyType);
 	}
 
-	public PDDrawingStrategy getDefaultDrawingStrategy() {
+	public APDDrawingStrategy getDefaultDrawingStrategy() {
 		return dsDefault;
 	}
 

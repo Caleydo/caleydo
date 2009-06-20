@@ -9,7 +9,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 
 public class PDDrawingStrategyLabelDecorator
-	extends PDDrawingStrategyDecorator {
+	extends APDDrawingStrategyDecorator {
 	
 	public PDDrawingStrategyLabelDecorator() {
 		super(null, 0);

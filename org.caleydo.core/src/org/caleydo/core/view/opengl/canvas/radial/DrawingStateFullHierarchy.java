@@ -68,8 +68,8 @@ public class DrawingStateFullHierarchy
 					if (alParentPath != null) {
 						if (alParentPath.size() >= iDisplayedHierarchyDepth) {
 							DrawingStrategyManager drawingStategyManager = DrawingStrategyManager.get();
-							PDDrawingStrategyChildIndicator dsDefault =
-								(PDDrawingStrategyChildIndicator) drawingStategyManager
+							APDDrawingStrategyChildIndicator dsDefault =
+								(APDDrawingStrategyChildIndicator) drawingStategyManager
 									.createDrawingStrategy(drawingStategyManager.getDefaultStrategyType());
 
 							dsDefault.setChildIndicatorColor(RadialHierarchyRenderStyle.MOUSE_OVER_COLOR);
@@ -86,7 +86,7 @@ public class DrawingStateFullHierarchy
 			}
 
 			if (bIsMouseOverElementDisplayed) {
-				PDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+				APDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
 				dsLabelDecorator.setDrawingStrategy(DrawingStrategyManager.get().getDefaultDrawingStrategy());
 				pdCurrentMouseOverElement.setPDDrawingStrategyChildren(dsLabelDecorator, Math.min(
 					RadialHierarchyRenderStyle.MAX_LABELING_DEPTH, iDisplayedHierarchyDepth));

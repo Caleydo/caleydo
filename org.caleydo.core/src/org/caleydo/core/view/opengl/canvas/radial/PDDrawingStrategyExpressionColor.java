@@ -10,7 +10,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
 public class PDDrawingStrategyExpressionColor
-	extends PDDrawingStrategyChildIndicator {
+	extends APDDrawingStrategyChildIndicator {
 
 	public PDDrawingStrategyExpressionColor(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);

@@ -127,4 +127,9 @@ public class NavigationHistory {
 		heCurrentEntry.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		
 	}
+	
+	public void reset() {
+		alHistoryEntries.clear();
+		iCurrentEntryPosition = -1;
+	}
 }

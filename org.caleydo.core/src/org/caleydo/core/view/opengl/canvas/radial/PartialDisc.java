@@ -12,7 +12,7 @@ public class PartialDisc
 	implements Comparable<PartialDisc> {
 
 	private float fSize;
-	private PDDrawingStrategy drawingStrategy;
+	private APDDrawingStrategy drawingStrategy;
 	private ClusterNode clusterNode;
 	private Tree<PartialDisc> partialDiscTree;
 
@@ -167,11 +167,11 @@ public class PartialDisc
 		this.fSize = fSize;
 	}
 
-	public void setPDDrawingStrategy(PDDrawingStrategy drawingStrategy) {
+	public void setPDDrawingStrategy(APDDrawingStrategy drawingStrategy) {
 		this.drawingStrategy = drawingStrategy;
 	}
 
-	public void setPDDrawingStrategyChildren(PDDrawingStrategy drawingStrategy, int iDepth) {
+	public void setPDDrawingStrategyChildren(APDDrawingStrategy drawingStrategy, int iDepth) {
 		this.drawingStrategy = drawingStrategy;
 		iDrawingStrategyDepth = iDepth;
 		iDepth--;
