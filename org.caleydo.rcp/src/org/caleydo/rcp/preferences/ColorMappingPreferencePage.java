@@ -140,6 +140,10 @@ public class ColorMappingPreferencePage
 			.initiFromPreferenceStore();
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		RedrawViewEvent redrawEvent = new RedrawViewEvent();
+		redrawEvent.setSender(this);
+		eventPublisher.triggerEvent(redrawEvent);	
+		
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);		 
