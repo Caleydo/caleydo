@@ -98,6 +98,7 @@ public class DefaultToolBarRenderJob
 			
 			group.setData("viewType", toolBarContent.getViewClass().getName());
 			group.setData("viewID", toolBarContent.getTargetViewData().getViewID());
+			group.setData("resource", null);
 
 			group.layout();
 			parentComposite.layout();
@@ -110,7 +111,7 @@ public class DefaultToolBarRenderJob
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 	 */
 	private void addToolBarItems(Group group, ToolBarContainer toolBarContainer) {
-		ArrayList<IToolBarManager> toolBarManagers = new ArrayList<IToolBarManager>();
+		ArrayList<ToolBarManager> toolBarManagers = new ArrayList<ToolBarManager>();
 
 		int itemIndex = 0;
 		IToolBarManager toolBarManager = null;
@@ -140,11 +141,13 @@ public class DefaultToolBarRenderJob
 			}
 			itemIndex++;
 		}
+		
+		group.setData("toolBarManagers", toolBarManagers);
 	}
 
-	private IToolBarManager createNewToolBar(Group group, List<IToolBarManager> toolBarManagers) {
+	private ToolBarManager createNewToolBar(Group group, List<ToolBarManager> toolBarManagers) {
 		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
-		IToolBarManager toolBarManager = new ToolBarManager(toolBar);
+		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
 		toolBarManagers.add(toolBarManager);
 		return toolBarManager;
 	}

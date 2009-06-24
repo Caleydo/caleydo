@@ -1,6 +1,7 @@
 package org.caleydo.rcp.view.swt.toolbar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -8,6 +9,8 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.view.opengl.GLPathwayView;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,7 +42,7 @@ public class ToolBarView
 	private Composite parentComposite;
 
 	private ArrayList<Group> viewSpecificGroups;
-
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
@@ -99,11 +102,17 @@ public class ToolBarView
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void removeAllViewSpecificToolBars() {
 		for (Group group : viewSpecificGroups) {
+			List<ToolBarManager> toolBarManagers = (List<ToolBarManager>) group.getData("toolBarManagers");
+			if (toolBarManagers != null) {
+				for (ToolBarManager toolBarManager : toolBarManagers) {
+					toolBarManager.dispose();
+				}
+			}
 			group.dispose();
 		}
-
 		viewSpecificGroups.clear();
 	}
 
