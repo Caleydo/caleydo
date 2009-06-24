@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -139,9 +140,9 @@ public class ColorMappingPreferencePage
 			.initiFromPreferenceStore();
 
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-		RedrawViewEvent event = new RedrawViewEvent();
+		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
-		eventPublisher.triggerEvent(event);
+		eventPublisher.triggerEvent(event);		 
 		
 		return bReturn;
 	}
