@@ -618,6 +618,7 @@ public class FileLoadDataAction
 				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
 				sTmpNextToken = tokenizer.nextToken();
 
+				// probably weeks performance
 				if (sTmpNextToken.equals("Cluster_Number") || sTmpNextToken.equals("Cluster_Repr"))
 					bUseExperimentClusterInfo = true;
 			}

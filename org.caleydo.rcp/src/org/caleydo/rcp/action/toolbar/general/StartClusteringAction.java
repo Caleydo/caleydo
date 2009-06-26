@@ -50,17 +50,17 @@ public class StartClusteringAction
 	private float fclusterFactorGenes = 1f;
 	private float fclusterFactorExperiments = 1f;
 
-	private String[] sArTypeOptions = {"DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Bi-Clustering"};
+	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Bi-Clustering" };
 	private String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
-	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance"};
-	
+	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };
+
 	private ClusterState clusterState = new ClusterState();
 
 	private TabItem treeClusteringTab;
 	private TabItem affinityPropagationTab;
 	private TabItem kMeansTab;
 	private TabItem cobwebTab;
-	
+
 	private Text clusterFactorGenes = null;
 	private Text clusterFactorExperiments = null;
 
@@ -75,7 +75,7 @@ public class StartClusteringAction
 			.getWorkbench().getDisplay(), ICON)));
 
 		this.parentComposite = parentComposite;
-		
+
 		// Determine content label dynamically
 		sArTypeOptions[0] = GeneralManager.get().getUseCase().getContentLabel(true, false);
 	}
@@ -185,7 +185,7 @@ public class StartClusteringAction
 				distmeasure = distMeasureCombo.getText();
 			}
 		});
-		
+
 		final Label lblClusterCntGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterCntGenes.setText("Number clusters for clustering genes");
 		lblClusterCntGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
@@ -426,7 +426,8 @@ public class StartClusteringAction
 		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
 
-		ClusteringProgressBar progressBar = new ClusteringProgressBar(clusterState.getClustererAlgo());
+		ClusteringProgressBar progressBar =
+			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());
 		progressBar.run();
 
 	}

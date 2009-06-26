@@ -674,14 +674,16 @@ public class GLDendrogram
 					tree = set.getClusteredTreeGenes();
 					currentRootNode = tree.getRoot();
 				}
+				else
+					renderSymbol(gl);
 			}
 			else {
 				if (set.getClusteredTreeExps() != null) {
 					tree = set.getClusteredTreeExps();
 				}
+				else
+					renderSymbol(gl);
 			}
-
-			renderSymbol(gl);
 
 		}
 		else {
