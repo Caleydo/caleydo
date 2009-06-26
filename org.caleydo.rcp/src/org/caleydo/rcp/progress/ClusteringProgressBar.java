@@ -8,6 +8,9 @@ import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
+import org.caleydo.rcp.view.opengl.GLDendrogramHorizontalView;
+import org.caleydo.rcp.view.opengl.GLDendrogramVerticalView;
+import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -109,7 +112,7 @@ public class ClusteringProgressBar
 			pbClusterer = new ProgressBar(composite, SWT.SMOOTH | SWT.INDETERMINATE);
 		else
 			pbClusterer = new ProgressBar(composite, SWT.SMOOTH);
-		
+
 		pbClusterer.setMinimum(0);
 		pbClusterer.setMaximum(100);
 		pbClusterer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -138,6 +141,36 @@ public class ClusteringProgressBar
 		}
 		if (!shell.isDisposed())
 			shell.close();
+
+		// AskToOpenViewsEvent event = new AskToOpenViewsEvent();
+		// generalManager.getEventPublisher().triggerEvent(event);
+		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		try {
+
+			// TODO: insert code for GUI here, these are the commands to open the views, do this depending on
+			// the algorithm.
+			// TODO: think about the location - probably this is not the best place to do this. Instead
+			// something similar could be called out of the core, after clustering has finished. On the other
+			// hand, the place here is not too bad, since it is a flow of gui dialogs...
+
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+				GLRadialHierarchyView.ID);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+				GLDendrogramHorizontalView.ID);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+				GLDendrogramVerticalView.ID);
+		}
+		catch (Exception e) {
+
+		}
+		// Shell shell = new Shell();
+		// MessageBox messageBox = new MessageBox(shell, SWT.ERROR);
+		// messageBox.setText("Error");
+		// messageBox.setMessage("A problem occured during clustering!");
+		// messageBox.open();
+		// }
+		// });
 	}
 
 	@Override
