@@ -29,7 +29,7 @@ public class ShowPathwaysByGeneItem
 	 */
 	public ShowPathwaysByGeneItem() {
 		super();
-		setIconTexture(EIconTextures.LOAD_DEPENDING_PATHWAYS);
+		setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
 		setText("Pathways");
 	}
 

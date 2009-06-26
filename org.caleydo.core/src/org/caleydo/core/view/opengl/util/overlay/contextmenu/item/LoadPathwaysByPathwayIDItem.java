@@ -24,7 +24,7 @@ public class LoadPathwaysByPathwayIDItem
 
 	private void setPathwayID(int pathwayID) {
 		setText(GeneralManager.get().getPathwayManager().getItem(pathwayID).getTitle());
-		setIconTexture(EIconTextures.LOAD_DEPENDING_PATHWAYS);
+		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
 		loadPathwayEvent.setSender(this);
 		loadPathwayEvent.setPathwayID(pathwayID);

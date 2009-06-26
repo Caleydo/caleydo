@@ -22,6 +22,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
+import de.phleisch.app.itsucks.io.Metadata;
+
 /**
  * Renders a context menu of dynamically specified items. ContextMenu is based on {@link AOverlayManager}
  * where all the location relevant information is set. Since only one context menu can be active at a time it
@@ -42,10 +44,12 @@ public class ContextMenu
 	}
 
 	// Coordinates stuff
-	private static final float ITEM_HEIGHT = 0.09f;
+	private static final float ITEM_HEIGHT = 0.11f;
 	private static final float ICON_SIZE = 0.08f;
+	private static final float TEXTURE_SIZE = 0.08f;
 	// private static final float SPACER_SIZE = 0.02f;
-	private static final float SPACING = 0.02f;
+	private static final float SIDE_SPACING = 0.05f;
+	private static final float SPACING = 0.04f;
 	private static final float FONT_SCALING = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
 
 	private static final float BASIC_Z = 0.04f;
@@ -53,9 +57,9 @@ public class ContextMenu
 	private static final float TEXT_Z = BUTTON_Z + 0.001f;
 
 	/** Overhead for width for the context menu which should be added to the maximum text width */
-	private static final float WIDHT_OVERHEAD = 3 * SPACING + 2 * ICON_SIZE;
+	private static final float WIDHT_OVERHEAD = 2 * SIDE_SPACING + SPACING + 2 * ICON_SIZE;
 	/** Overhead for height for the context menu which should be added to {@literal NrElements * ITEM_HEIGHT} */
-	private static final float HEIGHT_OVERHEAD = SPACING;
+	private static final float HEIGHT_OVERHEAD = 2 * SIDE_SPACING;
 
 	/** The list of items that should be displayed and triggered */
 	private ArrayList<IContextMenuEntry> contextMenuEntries;
@@ -331,19 +335,13 @@ public class ContextMenu
 		if (!(masterGLView instanceof GLRemoteRendering))
 			gl.glTranslatef(0, 0, 2);
 
-		gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
-		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - metaData.height, BASIC_Z);
-		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - metaData.height, BASIC_Z);
-		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin, BASIC_Z);
-		gl.glEnd();
+		drawBackground(gl, metaData);
 
-		float yPosition = metaData.yOrigin;
+		float yPosition = metaData.yOrigin - SIDE_SPACING;
 
 		for (IContextMenuEntry entry : contextMenuItems) {
 
-			float xPosition = metaData.xOrigin + SPACING;
+			float xPosition = metaData.xOrigin + SIDE_SPACING;
 			yPosition -= ITEM_HEIGHT;
 
 			if (entry instanceof AContextMenuItem) {
@@ -351,11 +349,12 @@ public class ContextMenu
 
 				Integer itemID = hashContextMenuItemToUniqueID.get(entry);
 
-				float alpha = 0f;
+				// float alpha = 0f;
 				if (itemID == mouseOverElement || isSubElementSelected(item))
-					alpha = 0.8f;
+					renderHighlighting(gl, metaData, yPosition);
+				// alpha = 0.8f;
 
-				gl.glColor4f(1, 1, 1, alpha);
+				gl.glColor4f(1, 1, 1, 0);
 
 				int iPickingID =
 					pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION,
@@ -364,10 +363,9 @@ public class ContextMenu
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(xPosition, yPosition - SPACING / 2, BUTTON_Z);
 				gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT - SPACING / 2, BUTTON_Z);
-
-				gl.glColor4f(1, 1, 1, 0.0f);
-				gl.glVertex3f(xPosition + metaData.width - 2 * SPACING,
-					yPosition + ITEM_HEIGHT - SPACING / 2, BUTTON_Z);
+				// gl.glColor4f(1, 1, 1, 0.0f);
+				gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition + ITEM_HEIGHT - SPACING,
+					BUTTON_Z);
 				gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z);
 
 				gl.glEnd();
@@ -400,17 +398,18 @@ public class ContextMenu
 				xPosition += ICON_SIZE + SPACING;
 
 				textRenderer.begin3DRendering();
-				textRenderer.setColor(0, 0, 0, 1);
+				textRenderer.setColor(1, 1, 1, 1);
 				gl.glDisable(GL.GL_DEPTH_TEST);
 
-				textRenderer.draw3D(item.getText(), xPosition, yPosition + SPACING, TEXT_Z, FONT_SCALING);
+				textRenderer.draw3D(item.getText(), xPosition, yPosition + SPACING / 2, TEXT_Z, FONT_SCALING);
 				// textRenderer.flush();
 				textRenderer.end3DRendering();
 
 				xPosition += metaData.maxTextWidth;
 				if (item.hasSubItems()) {
 
-					Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.MENU_MORE);
+					Texture tempTexture =
+						iconManager.getIconTexture(gl, EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 					tempTexture.enable();
 					tempTexture.bind();
 					TextureCoords texCoords = tempTexture.getImageTexCoords();
@@ -451,10 +450,9 @@ public class ContextMenu
 				gl.glLineStipple(2, (short) 0xAAAA);
 				gl.glEnable(GL.GL_LINE_STIPPLE);
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(xPosition, yPosition + ITEM_HEIGHT / 2, BUTTON_Z);
-				gl
-					.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition + ITEM_HEIGHT / 2,
-						BUTTON_Z);
+				gl.glVertex3f(metaData.xOrigin + 2 * SPACING, yPosition + ITEM_HEIGHT / 2, BUTTON_Z);
+				gl.glVertex3f(metaData.xOrigin + metaData.width - 2 * SPACING, yPosition + ITEM_HEIGHT / 2,
+					BUTTON_Z);
 				// gl.glVertex3f(xPosition + metaData.width - 2 * SPACING, yPosition - SPACING / 2, BUTTON_Z);
 
 				gl.glEnd();
@@ -534,4 +532,215 @@ public class ContextMenu
 		isDisplayListDirty = true;
 		masterGLView = null;
 	}
+
+	private void drawBackground(GL gl, ContextMenuMetaData metaData) {
+		// the body
+		gl.glPushName(pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, Integer.MAX_VALUE));
+		gl.glColor4f(0f, 0f, 0f, 0.9f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE, BASIC_Z);
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
+			BASIC_Z);
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - metaData.height
+			+ TEXTURE_SIZE, BASIC_Z);
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE,
+			BASIC_Z);
+		gl.glEnd();
+
+		drawCorners(gl, metaData);
+		drawEdges(gl, metaData);
+		gl.glPopName();
+
+	}
+
+	private void drawCorners(GL gl, ContextMenuMetaData metaData) {
+		Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.CM_CORNER_BLACK);
+		tempTexture.enable();
+		tempTexture.bind();
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		// top left corner
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
+		gl.glEnd();
+
+		// top right corner
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
+		gl.glEnd();
+
+		// bottom left corner
+
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - metaData.height, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - metaData.height + TEXTURE_SIZE, BUTTON_Z);
+		gl.glEnd();
+
+		// bottom right corner
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - metaData.height, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - metaData.height,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - metaData.height
+			+ TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glEnd();
+
+		tempTexture.disable();
+	}
+
+	private void drawEdges(GL gl, ContextMenuMetaData metaData) {
+		Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.CM_EDGE_BLACK);
+		tempTexture.enable();
+		tempTexture.bind();
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		// top
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
+		gl.glEnd();
+
+		// bottom
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - metaData.height,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - metaData.height
+			+ TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glEnd();
+
+		// left
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - metaData.height + TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glEnd();
+
+		// right
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width, metaData.yOrigin - metaData.height + TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - metaData.height
+			+ TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glEnd();
+
+		tempTexture.disable();
+	}
+
+	private void renderHighlighting(GL gl, ContextMenuMetaData metaData, float yPosition) {
+		Texture tempTexture = iconManager.getIconTexture(gl, EIconTextures.CM_SELECTION_SIDE_BLACK);
+		tempTexture.enable();
+		tempTexture.bind();
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		float TEXTURE_SIZE = 0.12f;
+
+		yPosition -= SPACING / 2;
+		float width = 0.06f;
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + SPACING / 2, yPosition + TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + SPACING / 2 + width, yPosition + TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + SPACING / 2 + width, yPosition, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + SPACING / 2, yPosition, BUTTON_Z);
+		gl.glEnd();
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - SPACING / 2, yPosition + TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - SPACING / 2 - width, yPosition + TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - SPACING / 2 - width, yPosition, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - SPACING / 2, yPosition, BUTTON_Z);
+		gl.glEnd();
+
+		tempTexture = iconManager.getIconTexture(gl, EIconTextures.CM_SELECTION_LINES_BLACK);
+		tempTexture.enable();
+		tempTexture.bind();
+		texCoords = tempTexture.getImageTexCoords();
+
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + SPACING / 2 + width, yPosition + TEXTURE_SIZE, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - SPACING / 2 - width, yPosition + TEXTURE_SIZE,
+			BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + metaData.width - SPACING / 2 - width, yPosition, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(metaData.xOrigin + SPACING / 2 + width, yPosition, BUTTON_Z);
+		gl.glEnd();
+
+		tempTexture.disable();
+	}
+
 }

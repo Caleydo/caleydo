@@ -26,8 +26,8 @@ public class AddToListItem
 	 */
 	public AddToListItem(int iStorageIndex) {
 		super();
-		setIconTexture(EIconTextures.SAVE_TO_LIST_HEAT_MAP);
-		setText("Save to list heat map");
+		setIconTexture(EIconTextures.CM_BOOKMARK);
+		setText("Bookmark");
 		PropagationEvent event = new PropagationEvent();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);		
 		delta.add(VADeltaItem.append(iStorageIndex));
@@ -41,7 +41,7 @@ public class AddToListItem
 	 */
 	public AddToListItem(ArrayList<Integer> alStorageIndex) {
 		super();
-		setIconTexture(EIconTextures.SAVE_TO_LIST_HEAT_MAP);
+		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Save to list heat map");
 		PropagationEvent event = new PropagationEvent();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);

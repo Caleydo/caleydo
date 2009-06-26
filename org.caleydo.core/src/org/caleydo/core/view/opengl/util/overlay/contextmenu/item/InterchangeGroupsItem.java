@@ -17,7 +17,7 @@ public class InterchangeGroupsItem
 	 */
 	public InterchangeGroupsItem() {
 		super();
-		setIconTexture(EIconTextures.LOAD_DEPENDING_PATHWAYS);
+		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
 		setText("Interchange Groups");
 	}
 

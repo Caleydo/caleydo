@@ -69,9 +69,14 @@ public enum EIconTextures {
 	CELL_MODEL("resources/models/cell.jpg"),
 	
 	// context menu elements
-	LOAD_DEPENDING_PATHWAYS("/resources/icons/view/pathway/pathway.png"),
-	SAVE_TO_LIST_HEAT_MAP("/resources/icons/view/storagebased/heatmap/heatmap.png"),
-	MENU_MORE("/resources/icons/general/menu_more.png");
+	CM_LOAD_DEPENDING_PATHWAYS("/resources/context_menu/load_depending_pathways.png"),
+	CM_DEPENDING_PATHWAYS("/resources/context_menu/depending_pathways.png"),
+	CM_BOOKMARK("/resources/context_menu/bookmark.png"),
+	CM_CORNER_BLACK("/resources/context_menu/corner_black.png"),
+	CM_EDGE_BLACK("/resources/context_menu/edge_black.png"),
+	CM_SELECTION_SIDE_BLACK("/resources/context_menu/selection_side_black.png"),
+	CM_SELECTION_RIGHT_EXTENSIBLE_BLACK("/resources/context_menu/submenue_black.png"),
+	CM_SELECTION_LINES_BLACK("/resources/context_menu/selection_lines_black.png");
 
 	private String sFileName;
 
