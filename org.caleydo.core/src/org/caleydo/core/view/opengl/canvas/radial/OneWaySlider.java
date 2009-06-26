@@ -309,5 +309,4 @@ public class OneWaySlider {
 		fSlidingElementDrawingPosition =
 			vecPosition.y() + fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
 	}
-
 }

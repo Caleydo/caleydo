@@ -13,7 +13,7 @@ public class GoForthInHistoryAction
 	implements IToolBarItem {
 
 	public static final String TEXT = "Forth";
-	public static final String ICON = "resources/icons/view/radial/radial_color_mapping.png";
+	public static final String ICON = "resources/icons/view/general/redo.png";
 
 
 	public GoForthInHistoryAction(int viewID) {

@@ -150,7 +150,8 @@ public abstract class APDDrawingStrategyChildIndicator
 	 * Sets the color which is used to draw the child indicator.
 	 * 
 	 * @param fArChildIndicatorColor
-	 *            RGB-Color which shall be used to draw the child indicator.
+	 *            RGB-Color which shall be used to draw the child indicator. Only the first three values of
+	 *            the array will be used.
 	 */
 	public void setChildIndicatorColor(float[] fArChildIndicatorColor) {
 		if (fArChildIndicatorColor.length >= 3) {

@@ -44,7 +44,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
-import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.serialize.SerializedRadialHierarchyView;
 
 /**
@@ -704,6 +703,7 @@ public class GLRadialHierarchy
 
 				case MOUSE_OVER:
 					pdCurrentMouseOverElement = pdSelected;
+					bIsNewSelection = false;
 					setDisplayListDirty();
 					break;
 

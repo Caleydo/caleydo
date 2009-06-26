@@ -9,11 +9,28 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
+/**
+ * 
+ * 
+ * @author Christian Partl
+ *
+ */
 public class PDDrawingStrategyTransparent
 	extends APDDrawingStrategyChildIndicator {
-	
+
+	private float fTransparency;
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param pickingManager
+	 *            The picking manager that should handle the picking of the drawn elements.
+	 * @param iViewID
+	 *            ID of the view where the elements will be displayed. Needed for picking.
+	 */
 	public PDDrawingStrategyTransparent(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
+		fTransparency = RadialHierarchyRenderStyle.PARTIAL_DISC_TRANSPARENCY;
 	}
 
 	@Override
@@ -26,13 +43,13 @@ public class PDDrawingStrategyTransparent
 			pdDiscToDraw.getElementID()));
 		float fRadius = pdDiscToDraw.getCurrentWidth();
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-		
+
 		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
 				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
-		gl.glColor4f(1, 1, 1, 0.5f);
+		gl.glColor4f(1, 1, 1, fTransparency);
 		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4f(1, 1, 1, 1);
@@ -58,11 +75,11 @@ public class PDDrawingStrategyTransparent
 		while (fMidAngle > 360) {
 			fMidAngle -= 360;
 		}
-		
+
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-		
+
 		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
 		}
@@ -80,9 +97,7 @@ public class PDDrawingStrategyTransparent
 
 		gl.glPushMatrix();
 
-		// gl.glTranslatef(0, 0, 0.1f);
-
-		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], 0.5f);
+		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], fTransparency);
 		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
 
@@ -93,5 +108,13 @@ public class PDDrawingStrategyTransparent
 		gl.glPopMatrix();
 		gl.glPopAttrib();
 		gl.glPopName();
+	}
+
+	public void setTransparency(float fTransparency) {
+		this.fTransparency = fTransparency;
+	}
+
+	public float getTransparency() {
+		return fTransparency;
 	}
 }

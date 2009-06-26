@@ -49,7 +49,7 @@ public class DepthSlider
 		slider = new Slider(composite, SWT.HORIZONTAL);
 		slider.setValues(iSelection, 2, 20, 1, 1, 1);
 		slider.setLayoutData(new GridData(130, 20));
-		
+
 		listener = new Listener() {
 			public void handleEvent(Event event) {
 				SetMaxDisplayedHierarchyDepthEvent setMaxDisplayedHierarchyDepthEvent =
@@ -58,14 +58,14 @@ public class DepthSlider
 				setMaxDisplayedHierarchyDepthEvent.setMaxDisplayedHierarchyDepth(slider.getSelection());
 				GeneralManager.get().getEventPublisher().triggerEvent(setMaxDisplayedHierarchyDepthEvent);
 			}
-			
+
 		};
 		iSelection = slider.getSelection();
 		slider.addListener(SWT.Selection, listener);
 
 		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
 		updateSliderPositionListener.setHandler(this);
-		//TODO: Unregister listeners, but where?
+		// TODO: Unregister listeners, but where?
 		GeneralManager.get().getEventPublisher().addListener(UpdateDepthSliderPositionEvent.class,
 			updateSliderPositionListener);
 
@@ -81,7 +81,7 @@ public class DepthSlider
 		});
 
 	}
-	
+
 	/**
 	 * Sets the slider position (selection) to a cartain value.
 	 * 
@@ -91,5 +91,14 @@ public class DepthSlider
 	public void setSliderPosition(int iPosition) {
 		iSelection = iPosition;
 		slider.setSelection(iPosition);
+	}
+
+	@Override
+	public void dispose() {
+		//Unregister event listener
+		if (updateSliderPositionListener != null) {
+			GeneralManager.get().getEventPublisher().removeListener(updateSliderPositionListener);
+			updateSliderPositionListener = null;
+		}
 	}
 }

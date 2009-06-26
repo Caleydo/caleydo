@@ -9,6 +9,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.util.clusterer.ClusterNode;
 
 public class PartialDisc
+	extends HierarchyElement<PartialDisc>
 	implements Comparable<PartialDisc> {
 
 	private float fSize;
@@ -27,6 +28,7 @@ public class PartialDisc
 
 	public PartialDisc(int iElementID, float fSize, Tree<PartialDisc> partialDiscTree, ClusterNode clusterNode) {
 
+		super(3);
 		this.iElementID = iElementID;
 		this.fSize = fSize;
 		this.partialDiscTree = partialDiscTree;
@@ -73,7 +75,9 @@ public class PartialDisc
 		fStartAngle = getValidAngle(fStartAngle);
 		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
 
-		drawingStrategy.drawPartialDisc(gl, glu, this);
+		if(fAngle >= RadialHierarchyRenderStyle.PARTIAL_DISC_MIN_DISPLAYED_ANGLE) {
+			drawingStrategy.drawPartialDisc(gl, glu, this);
+		}
 		iDepth--;
 
 		float fAnglePerSizeUnit = fAngle / fSize;
@@ -106,7 +110,7 @@ public class PartialDisc
 		fStartAngle = getValidAngle(fStartAngle);
 		setCurrentDisplayParameters(fWidth, fStartAngle, fAngle, fInnerRadius, iDepth);
 
-		if (!bSimulation) {
+		if (!bSimulation && fAngle >= RadialHierarchyRenderStyle.PARTIAL_DISC_MIN_DISPLAYED_ANGLE) {
 			drawingStrategy.drawPartialDisc(gl, glu, this);
 		}
 
@@ -329,28 +333,28 @@ public class PartialDisc
 //		return iDepth;
 //	}
 
-	public float calculateSizes() {
-		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+//	public float calculateSizes() {
+//		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+//
+//		fSize = 0;
+//		if (alChildren != null) {
+//			for (PartialDisc pdChild : alChildren) {
+//				fSize += pdChild.calculateSizes();
+//			}
+//			return fSize;
+//		}
+//		fSize = 1;
+//		return fSize;
+//	}
 
-		fSize = 0;
-		if (alChildren != null) {
-			for (PartialDisc pdChild : alChildren) {
-				fSize += pdChild.calculateSizes();
-			}
-			return fSize;
-		}
-		fSize = 1;
-		return fSize;
-	}
-
-	public PartialDisc getChild(int iChildNumber) {
-		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
-
-		if ((alChildren == null) || (iChildNumber > alChildren.size()) || (iChildNumber < 0)) {
-			return null;
-		}
-		return alChildren.get(iChildNumber);
-	}
+//	public PartialDisc getChild(int iChildNumber) {
+//		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+//
+//		if ((alChildren == null) || (iChildNumber > alChildren.size()) || (iChildNumber < 0)) {
+//			return null;
+//		}
+//		return alChildren.get(iChildNumber);
+//	}
 	
 	public void calculateHierarchyLevels(int iLevel) {
 		iHierarchyLevel = iLevel;

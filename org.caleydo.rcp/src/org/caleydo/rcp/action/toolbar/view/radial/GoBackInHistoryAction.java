@@ -13,7 +13,7 @@ public class GoBackInHistoryAction
 	implements IToolBarItem {
 	
 	public static final String TEXT = "Back";
-	public static final String ICON = "resources/icons/view/radial/radial_color_mapping.png";
+	public static final String ICON = "resources/icons/view/general/undo.png";
 
 
 	public GoBackInHistoryAction(int viewID) {

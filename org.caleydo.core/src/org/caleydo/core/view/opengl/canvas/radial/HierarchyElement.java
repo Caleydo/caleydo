@@ -1,41 +1,57 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
+import org.caleydo.core.data.graph.tree.Tree;
 
-public abstract class HierarchyElement {
+
+public abstract class HierarchyElement<Node extends Comparable<Node>>{
+	
+	protected Tree<Node> partialDiscTree;
 	
 	protected int iElementID;
 	protected int iHierarchyDepth;
-	protected Vector<HierarchyElement> vecChildren;
-	protected HierarchyElement heParent;
+	protected Vector<HierarchyElement<Node>> vecChildren;
+	protected Node parent;
 	
 	public HierarchyElement(int iID) {
 		iElementID = iID;
 		iHierarchyDepth = 1;
-		vecChildren = new Vector<HierarchyElement>();
-		heParent = null;
+		vecChildren = new Vector<HierarchyElement<Node>>();
+
 	}
 	
-	public void addChild(HierarchyElement heChild) {
+	public void addChild(HierarchyElement<Node> heChild) {
 		vecChildren.add(heChild);
-		heChild.setParent(this);
 		increaseHierarchyDepth(heChild.getHierarchyDepth());
 	}
 	
 	public int getHierarchyDepth() {
 		return iHierarchyDepth;
 	}
-	
-	private void setParent(HierarchyElement heParent) {
-		this.heParent = heParent;
-	}
+
 	
 	private void increaseHierarchyDepth(int iChildDepth) {
 		if(iHierarchyDepth <= iChildDepth) {
 			iHierarchyDepth = iChildDepth + 1;
-			if(heParent != null)
-				heParent.increaseHierarchyDepth(iHierarchyDepth);
 		}
 	}
+	
+	public Node getMyParent() {
+		return parent;
+	}
+	
+//	public void calculateHierarchyLevels(int iLevel) {
+////		iHierarchyLevel = iLevel;
+////		ArrayList<PartialDisc> alChildren = partialDiscTree.getChildren(this);
+////		
+//		if(alChildren == null) {
+//			return;
+//		}
+//		
+//		for(PartialDisc pdChild : alChildren) {
+//			pdChild.calculateHierarchyLevels(iLevel + 1);
+//		}
+//	}
 }

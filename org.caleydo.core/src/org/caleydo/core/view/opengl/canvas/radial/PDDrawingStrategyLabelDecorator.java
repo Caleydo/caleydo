@@ -7,10 +7,23 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 
-
+/**
+ * PDDrawingStrategyLabelDecorator sets up a {@link Label} for the partial disc that shall be drawn and adds
+ * it to the {@link LabelManager}.
+ * 
+ * @author Christian Partl
+ */
 public class PDDrawingStrategyLabelDecorator
 	extends APDDrawingStrategyDecorator {
-	
+
+	/**
+	 * Constructor.
+	 * 
+	 * @param pickingManager
+	 *            The picking manager that should handle the picking of the drawn elements.
+	 * @param iViewID
+	 *            ID of the view where the elements will be displayed. Needed for picking.
+	 */
 	public PDDrawingStrategyLabelDecorator() {
 		super(null, 0);
 	}
@@ -22,37 +35,39 @@ public class PDDrawingStrategyLabelDecorator
 		}
 
 		Label label = new Label(0, 0, 0, pdDiscToDraw.getDrawingStrategyDepth());
-		
+
 		float fAverageExpressionValue = pdDiscToDraw.getAverageExpressionValue();
 		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
 		ColorMapping cmExpression =
 			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-		
+
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue - fStandardDeviation);
 		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1);
-		
+
 		fArRGB = cmExpression.getColor(fAverageExpressionValue);
 		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1);
-		
+
 		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
 		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
-		
+
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
 		LabelLine expressionLine = new LabelLine();
 		expressionLine.addLabelItem(meanItem);
 		expressionLine.addLabelItem(leftRectangleItem);
 		expressionLine.addLabelItem(middleRectangleItem);
 		expressionLine.addLabelItem(rightRectangleItem);
-		
-		if(pdDiscToDraw.hasChildren()) {
-			TextItem numElementsItem = new TextItem("Elements: " + new Integer((int)pdDiscToDraw.getSize()).toString());
+
+		if (pdDiscToDraw.hasChildren()) {
+			TextItem numElementsItem =
+				new TextItem("Elements: " + new Integer((int) pdDiscToDraw.getSize()).toString());
 			LabelLine numElementsLine = new LabelLine();
 			numElementsLine.addLabelItem(numElementsItem);
-			
-			TextItem hierarchyDepthItem = new TextItem("Hierarchy Depth: " + pdDiscToDraw.getHierarchyDepth());
+
+			TextItem hierarchyDepthItem =
+				new TextItem("Hierarchy Depth: " + pdDiscToDraw.getHierarchyDepth());
 			LabelLine hierarchyDepthLine = new LabelLine();
 			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
-			
+
 			label.addLine(numElementsLine);
 			label.addLine(hierarchyDepthLine);
 		}
@@ -60,11 +75,11 @@ public class PDDrawingStrategyLabelDecorator
 			TextItem nameItem = new TextItem(pdDiscToDraw.getName());
 			LabelLine nameLine = new LabelLine();
 			nameLine.addLabelItem(nameItem);
-			
+
 			label.addLine(nameLine);
 		}
-		
-		label.addLine(expressionLine);	
+
+		label.addLine(expressionLine);
 		LabelManager.get().addLabel(label);
 	}
 
@@ -77,7 +92,7 @@ public class PDDrawingStrategyLabelDecorator
 		float fCenterRadius = pdDiscToDraw.getCurrentInnerRadius() + (pdDiscToDraw.getCurrentWidth() / 2.0f);
 		float fMidAngle = pdDiscToDraw.getCurrentStartAngle() + (pdDiscToDraw.getCurrentAngle() / 2.0f);
 
-		// This seemingly awkward angle transformation comes from the fact, that Partial Disk drawing angles
+		// This seemingly awkward angle transformation comes from the fact, that Partial Disc drawing angles
 		// start vertically at the top and move clockwise. But here the angle starts horizontally to the right
 		// and moves counter-clockwise
 		fMidAngle = -1 * (fMidAngle - 90);
@@ -92,32 +107,34 @@ public class PDDrawingStrategyLabelDecorator
 		float fStandardDeviation = pdDiscToDraw.getStandardDeviation();
 		ColorMapping cmExpression =
 			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-		
+
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue - fStandardDeviation);
 		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1);
-		
+
 		fArRGB = cmExpression.getColor(fAverageExpressionValue);
 		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1);
-		
+
 		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
 		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
-		
+
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
 		LabelLine expressionLine = new LabelLine();
 		expressionLine.addLabelItem(meanItem);
 		expressionLine.addLabelItem(leftRectangleItem);
 		expressionLine.addLabelItem(middleRectangleItem);
 		expressionLine.addLabelItem(rightRectangleItem);
-		
-		if(pdDiscToDraw.hasChildren()) {
-			TextItem numElementsItem = new TextItem("Elements: " + new Integer((int)pdDiscToDraw.getSize()).toString());
+
+		if (pdDiscToDraw.hasChildren()) {
+			TextItem numElementsItem =
+				new TextItem("Elements: " + new Integer((int) pdDiscToDraw.getSize()).toString());
 			LabelLine numElementsLine = new LabelLine();
 			numElementsLine.addLabelItem(numElementsItem);
-			
-			TextItem hierarchyDepthItem = new TextItem("Hierarchy Depth: " + pdDiscToDraw.getHierarchyDepth());
+
+			TextItem hierarchyDepthItem =
+				new TextItem("Hierarchy Depth: " + pdDiscToDraw.getHierarchyDepth());
 			LabelLine hierarchyDepthLine = new LabelLine();
 			hierarchyDepthLine.addLabelItem(hierarchyDepthItem);
-			
+
 			label.addLine(numElementsLine);
 			label.addLine(hierarchyDepthLine);
 		}
@@ -125,11 +142,11 @@ public class PDDrawingStrategyLabelDecorator
 			TextItem nameItem = new TextItem(pdDiscToDraw.getName());
 			LabelLine nameLine = new LabelLine();
 			nameLine.addLabelItem(nameItem);
-			
+
 			label.addLine(nameLine);
 		}
-		
-		label.addLine(expressionLine);	
+
+		label.addLine(expressionLine);
 		LabelManager.get().addLabel(label);
 	}
 
