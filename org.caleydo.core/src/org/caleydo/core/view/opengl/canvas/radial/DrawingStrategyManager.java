@@ -24,12 +24,22 @@ public final class DrawingStrategyManager {
 	private int iDefaultStrategyType;
 	
 
-	private DrawingStrategyManager(PickingManager pickingManager, int iViewID) {
-		
+	private DrawingStrategyManager() {
+		hashDrawingStrategies = new HashMap<Integer, APDDrawingStrategy>();
+	}
+	
+	public static void init(PickingManager pickingManager, int iViewID) {
+		if (instance == null) {
+			instance = new DrawingStrategyManager();
+		}
+		instance.initStrategies(pickingManager, iViewID);
+	}
+	
+	private void initStrategies(PickingManager pickingManager, int iViewID) {
+		hashDrawingStrategies.clear();
 		this.pickingManager = pickingManager;
 		this.iViewID = iViewID;
 		
-		hashDrawingStrategies = new HashMap<Integer, APDDrawingStrategy>();
 		dsRainbow = new PDDrawingStrategyRainbow(pickingManager, iViewID);
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_RAINBOW, dsRainbow);
 		hashDrawingStrategies.put(PD_DRAWING_STRATEGY_SELECTED, new PDDrawingStrategySelected(pickingManager, iViewID));
@@ -42,12 +52,6 @@ public final class DrawingStrategyManager {
 		
 		dsDefault = dsExpressionColor;
 		iDefaultStrategyType = PD_DRAWING_STRATEGY_EXPRESSION_COLOR;
-	}
-	
-	public static void init(PickingManager pickingManager, int iViewID) {
-		if (instance == null) {
-			instance = new DrawingStrategyManager(pickingManager, iViewID);
-		}
 	}
 
 	public static DrawingStrategyManager get() {

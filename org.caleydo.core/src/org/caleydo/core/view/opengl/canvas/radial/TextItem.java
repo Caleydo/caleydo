@@ -9,7 +9,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public class TextItem
 	extends ALabelItem {
 	
-private static final String sTextForHeightCalculation = "Text without characters below the bottom textline";
+	private static final String sTextForHeightCalculation = "Text without characters below the bottom textline";
 
 	private String sText;
 	private TextRenderer textRenderer;

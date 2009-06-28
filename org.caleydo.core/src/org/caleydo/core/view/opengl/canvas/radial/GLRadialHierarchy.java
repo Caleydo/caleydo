@@ -10,7 +10,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
@@ -92,7 +91,8 @@ public class GLRadialHierarchy
 
 	private GenericSelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
-	ISet set;
+
+	// ISet set;
 
 	/**
 	 * Constructor.
@@ -107,7 +107,6 @@ public class GLRadialHierarchy
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		DrawingStrategyManager.init(pickingManager, iUniqueID);
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		partialDiscTree = new Tree<PartialDisc>();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
@@ -128,7 +127,13 @@ public class GLRadialHierarchy
 
 	@Override
 	public void init(GL gl) {
-		initTestHierarchy();
+		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		if (tree != null) {
+			initHierarchy(tree);
+		}
+		else {
+			initTestHierarchy();
+		}
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glEnable(GL.GL_BLEND);
@@ -188,7 +193,10 @@ public class GLRadialHierarchy
 		selectionManager.resetSelectionManager();
 		partialDiscTree = new Tree<PartialDisc>();
 		navigationHistory.reset();
-
+		drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
+		LabelManager.init();
+		DrawingStrategyManager.init(pickingManager, iUniqueID);
+		
 		ClusterNode cnRoot = tree.getRoot();
 		PartialDisc pdRoot =
 			new PartialDisc(cnRoot.getClusterNr(), cnRoot.getNrElements(), partialDiscTree, cnRoot);

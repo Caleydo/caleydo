@@ -37,6 +37,21 @@ public class LabelManager {
 		textRenderer.setColor(0, 0, 0, 1);
 		iMaxSegmentDepth = 0;
 	}
+	
+	public static void init() {
+		if(instance == null) {
+			instance = new LabelManager();
+		}
+		else {
+			instance.reset();
+		}
+	}
+	
+	private void reset() {
+		textRenderer = new TextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
+		textRenderer.setColor(0, 0, 0, 1);
+		clearLabels();
+	}
 
 	public void addLabel(Label label) {
 		alLabels.add(label);
