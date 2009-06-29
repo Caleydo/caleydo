@@ -56,6 +56,7 @@ which means you can use it in any way you want provided you keep the link to the
 		<li><a href="#Startup">Startup</a></li>
 		<li><a href="#DataFormat">Data Format</a></li>
 		<li><a href="#Dataloading">Data Loading</a></li>
+		<li><a href="#Scalability">Scalability</a></li>
 	</ul>
 	</li>
 	<li><a href="user_interface.html">The user interface</a></li>
@@ -73,8 +74,10 @@ which means you can use it in any way you want provided you keep the link to the
 <p>Caleydo visualizes thousands of data points and therefore is a
 resource intensive application and requires somewhat recent hardware.
 The system requirements vary widely with the amount of data you want to
-load and visualize simultaneously. We recommend the following hardware
-and software configurations:</p>
+load and visualize simultaneously. For a detailed discussion on the
+scalability of Caleydo please refer to the <a href="#Scalability">section
+at the end of this page</a>. We recommend the following hardware and
+software configurations:</p>
 <ul>
 	<li>A graphics card with at least 64 MB RAM is recommended.</li>
 	<li>Up to date graphics card drivers</li>
@@ -105,7 +108,7 @@ version of Caleydo.</p>
 <h3>Manual Installation</h3>
 <p>To manually install Caleydo download the compressed file
 appropriate for your operating system from the <a href="downloads.html">download
-page</a>. Extract the archive, enter the created caleydo folder and click
+page</a>. Extract the archive, enter the created Caleydo folder and click
 the executable (caleydo.exe on Windows).</p>
 
 
@@ -219,6 +222,43 @@ text etc.</p>
 
 <p>Now click <b>Finish</b> and Caleydo will begin to load the data.</p>
 
+<h2><a name="Scalability"></a>Scalability</h2>
+<p>The performance of Caleydo varies with the hardware you use, the
+type of your data and the size of the data.</p>
+<p>Loading of large data files, of the mappings and the pathway
+graphs needed for genetic pathway analysis takes some time at startup.
+We have experienced long startup times on notbook <b>hard-drives</b>
+with 5400 RPM disk rotation speed.</p>
+<p>To reduce startup time uncheck the <i>Load Kegg and Biocarta
+pathway data</i> box if you don't need pathways, this should make startup
+faster by about 30%.</p>
+<p>General data analysis mode is faster on startup, because it does
+not need to load mappings for the different gene identifiers.</p>
+<p>Caleydo uses about 200MB of <b>RAM</b>. Make sure that you have
+sufficient RAM available, since paging (the use of your hard-drive as
+virtual RAM) makes the application very slow. Try to close other
+applications if this happens.</p>
+<p>Since Caleydo uses 3D graphics extensively good graphics hardware
+is essential. At least 64MB dedicated Video RAM are reccomended. We
+reccomend NVidia graphics card, since all developers use them and they
+therefore are the best-tested. ATI and Intel cards should also work, but
+are tested less frequently.</p>
+<p>A major issue is the quality of the graphics cards drivers. We
+have seen many problems solved once our users updated their graphics
+cards drivers to the latest versions.</p>
+<p>If you have a slow graphics card, you can reduce the number of
+samples you want to show in the parallel coordinates. The default value
+is set to 1000 (File &gt; Preferences &gt; General). When reducing it
+down to 200, the parallel coordinates can still provide meaningful
+results while requiring much less preformance.</p>
+<p>The quality of your CPU is mainly important for clustering, where
+good hardware can speed up the process significantly.</p>
+<p>Generally, to explore a whole genome set with about 40
+experiments, such as the sample dataset, we recommend a computer not
+build before 2006, with a hard drive with at least 7500 RPM, at least
+2GB ram and 128 MB VRAM on a NVidia Geforce 7 or a ATI Radeon R500.</p>
+<p>Smaller datasets can be explored with significantly less recent
+hardware.</p>
 <br />
 <table style="width: 100%">
 	<tr>
@@ -234,7 +274,7 @@ text etc.</p>
 website maintained by <a href="http://www.icg.tugraz.at/Members/streit"><strong>Marc
 Streit</strong></a> and <a href="http://www.icg.tugraz.at/Members/alex"><strong>Alexander
 Lex</strong></a><br />
-last updated on 2009-06-08</p>
+last updated on 2009-06-29</p>
 </div>
 
 </div>
