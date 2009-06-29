@@ -6,6 +6,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -39,7 +40,7 @@ public class ClusteringProgressBar
 
 	private boolean bOpenDendrogram = true;
 	private boolean bOpenRadialHierarchy = true;
-	
+
 	private Shell shell;
 	private Label lbProgressBarClusterer;
 
@@ -159,8 +160,6 @@ public class ClusteringProgressBar
 				public void run() {
 					try {
 
-
-
 						shell = new Shell();
 						shell.setText(algorithmType.getName());
 						shell.setImage(GeneralManager.get().getResourceLoader().getImage(shell.getDisplay(),
@@ -252,6 +251,9 @@ public class ClusteringProgressBar
 
 										}
 									}
+									UpdateViewEvent event = new UpdateViewEvent();
+									event.setSender(this);
+									GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 								}
 								catch (PartInitException e1) {

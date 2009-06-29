@@ -686,23 +686,21 @@ public class GLDendrogram
 			}
 
 		}
-		else {
 
-			if (tree != null) {
-				if (bRenderGeneTree) {
-					xmax = viewFrustum.getWidth() - 0.2f;
-					fSampleHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getNrElements();
-					fLevelWidth = (viewFrustum.getWidth() - 3f) / tree.getRoot().getDepth();
-					yPosInit = viewFrustum.getHeight() - 0.4f;
-				}
-				else {
-					ymin = 0.1f;
-					fSampleWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getNrElements();
-					fLevelHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getDepth();
-					xPosInit = 0.4f;
-				}
-				determinePositions();
+		if (tree != null) {
+			if (bRenderGeneTree) {
+				xmax = viewFrustum.getWidth() - 0.2f;
+				fSampleHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getNrElements();
+				fLevelWidth = (viewFrustum.getWidth() - 3f) / tree.getRoot().getDepth();
+				yPosInit = viewFrustum.getHeight() - 0.4f;
 			}
+			else {
+				ymin = 0.1f;
+				fSampleWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getNrElements();
+				fLevelHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getDepth();
+				xPosInit = 0.4f;
+			}
+			determinePositions();
 
 			gl.glLineWidth(0.1f);
 
@@ -1130,6 +1128,7 @@ public class GLDendrogram
 
 	@Override
 	public void handleUpdateView() {
+		tree = null;
 		setDisplayListDirty();
 	}
 }

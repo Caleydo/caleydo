@@ -21,6 +21,7 @@ import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -32,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.IClusterNodeEventReceiver;
@@ -88,6 +90,7 @@ public class GLRadialHierarchy
 	private GoForthInHistoryListener goForthInHistoryListener;
 	private ChangeColorModeListener changeColorModeListener;
 	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
+	private UpdateViewListener updateViewListener;
 
 	private GenericSelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
@@ -196,7 +199,7 @@ public class GLRadialHierarchy
 		drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
 		LabelManager.init();
 		DrawingStrategyManager.init(pickingManager, iUniqueID);
-		
+
 		ClusterNode cnRoot = tree.getRoot();
 		PartialDisc pdRoot =
 			new PartialDisc(cnRoot.getClusterNr(), cnRoot.getNrElements(), partialDiscTree, cnRoot);
@@ -756,6 +759,10 @@ public class GLRadialHierarchy
 		eventPublisher.addListener(SetMaxDisplayedHierarchyDepthEvent.class,
 			setMaxDisplayedHierarchyDepthListener);
 
+		updateViewListener = new UpdateViewListener();
+		updateViewListener.setHandler(this);
+		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
+
 		// clearSelectionsListener = new ClearSelectionsListener();
 		// clearSelectionsListener.setHandler(this);
 		// eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
@@ -787,6 +794,10 @@ public class GLRadialHierarchy
 			eventPublisher.removeListener(setMaxDisplayedHierarchyDepthListener);
 			setMaxDisplayedHierarchyDepthListener = null;
 		}
+		if (updateViewListener != null) {
+			eventPublisher.removeListener(updateViewListener);
+			updateViewListener = null;
+		}
 		// if (clearSelectionsListener != null) {
 		// eventPublisher.removeListener(clearSelectionsListener);
 		// clearSelectionsListener = null;
@@ -806,6 +817,10 @@ public class GLRadialHierarchy
 
 	@Override
 	public void handleUpdateView() {
+		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		if (tree != null) {
+			initHierarchy(tree);
+		}
 		setDisplayListDirty();
 	}
 
