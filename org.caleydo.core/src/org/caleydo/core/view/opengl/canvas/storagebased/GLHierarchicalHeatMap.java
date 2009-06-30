@@ -1830,7 +1830,7 @@ public class GLHierarchicalHeatMap
 		if (generalManager.isWiiModeActive()) {
 			handleWiiInput();
 		}
-		
+
 		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
 			handleTrackInput(gl);
 		}
@@ -2352,40 +2352,66 @@ public class GLHierarchicalHeatMap
 
 		int iNrSamples = set.getVA(iStorageVAID).size();
 
-		float fleftOffset = 0.075f + // width level 1
-			GAP_LEVEL1_2 + // width gap between level 1 and 2
-			viewFrustum.getWidth() / 4f * fAnimationScale;
+		float fgaps = 0;
+		if (bSkipLevel1)
+			fgaps = GAP_LEVEL2_3 + 0.2f;
+		else
+			fgaps = GAP_LEVEL1_2 + GAP_LEVEL2_3;
 
-		float fWidth = viewFrustum.getWidth() - fleftOffset;
-		float fWidthSample = fWidth / iNrSamples;
+		float fleftOffset = 0.075f + // width level 1
+			fgaps + viewFrustum.getWidth() / 4f * fAnimationScale;
+
+		float fWidthSample = fWidthEHM / iNrSamples;
 
 		int currentElement;
 
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
+		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+
+		int iNrElementsInGroup = groupList.get(iExpGroupToDrag).getNrElements();
+		float currentWidth = fWidthSample * iNrElementsInGroup;
+		float fHeight = viewFrustum.getHeight();
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight, 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight - 0.1f, 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0] + currentWidth, fHeight - 0.1f, 0);
+		gl.glVertex3f(fArTargetWorldCoordinates[0] + currentWidth, fHeight, 0);
+		gl.glEnd();
+
+		float fXPosRelease = fArTargetWorldCoordinates[0] - fleftOffset;
+
+		currentElement = (int) Math.ceil(fXPosRelease / fWidthSample);
+
+		int iElemOffset = 0;
+		int cnt = 0;
+
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
+		for (Group currentGroup : groupList) {
+			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
+				iTargetIdx = cnt;
+				break;
+			}
+			cnt++;
+			iElemOffset += currentGroup.getNrElements();
+		}
+
+		float fPosDropMarker = fleftOffset + fWidthSample * iElemOffset;
+
+		gl.glLineWidth(6f);
+		gl.glColor3f(1, 0, 0);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(fPosDropMarker, fHeight, 0);
+		gl.glVertex3f(fPosDropMarker, fHeight - 0.2f, 0);
+		gl.glEnd();
+
 		if (glMouseListener.wasMouseReleased()) {
-
-			IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
-			float fXPosRelease = fArTargetWorldCoordinates[0] - fleftOffset;
-			currentElement = (int) Math.ceil(fXPosRelease / fWidthSample);
-
-			int iElemOffset = 0;
-			int cnt = 0;
-
-			if (groupList == null) {
-				System.out.println("No group assignment available!");
-				return;
-			}
-
-			for (Group currentGroup : groupList) {
-				if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
-					iTargetIdx = cnt;
-					break;
-				}
-				cnt++;
-				iElemOffset += currentGroup.getNrElements();
-			}
 
 			if (groupList.move(set.getVA(iStorageVAID), iExpGroupToDrag, iTargetIdx) == false)
 				System.out.println("Move operation not allowed!");
@@ -2412,34 +2438,55 @@ public class GLHierarchicalHeatMap
 		int iNumberSample = iNumberOfElements;
 		float fOffsety;
 		int currentElement;
-		float fHeightSample = viewFrustum.getHeight() / iNumberSample;
+		float fHeight = viewFrustum.getHeight() - 0.2f;
+
+		float fHeightSample = (fHeight - 0.4f) / iNumberSample;
 
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
+		IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+
+		int iNrElementsInGroup = groupList.get(iGeneGroupToDrag).getNrElements();
+		float currentHeight = fHeightSample * iNrElementsInGroup;
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(0f, fArTargetWorldCoordinates[1], 0);
+		gl.glVertex3f(0f, fArTargetWorldCoordinates[1] + currentHeight, 0);
+		gl.glVertex3f(0.1f, fArTargetWorldCoordinates[1] + currentHeight, 0);
+		gl.glVertex3f(0.1f, fArTargetWorldCoordinates[1], 0);
+		gl.glEnd();
+
+		fOffsety = viewFrustum.getHeight() - fArTargetWorldCoordinates[1] - 0.4f;
+		currentElement = (int) Math.ceil(fOffsety / fHeightSample);
+
+		int iElemOffset = 0;
+		int cnt = 0;
+
+		if (groupList == null) {
+			System.out.println("No group assignment available!");
+			return;
+		}
+
+		for (Group currentGroup : groupList) {
+			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
+				iTargetIdx = cnt;
+				break;
+			}
+			cnt++;
+			iElemOffset += currentGroup.getNrElements();
+		}
+
+		float fPosDropMarker = fHeight - (fHeightSample * iElemOffset);
+
+		gl.glLineWidth(6f);
+		gl.glColor3f(1, 0, 0);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(0, fPosDropMarker, 0);
+		gl.glVertex3f(0.2f, fPosDropMarker, 0);
+		gl.glEnd();
+
 		if (glMouseListener.wasMouseReleased()) {
-
-			IGroupList groupList = set.getVA(iContentVAID).getGroupList();
-
-			fOffsety = viewFrustum.getHeight() - fArTargetWorldCoordinates[1];
-			currentElement = (int) Math.ceil(fOffsety / fHeightSample);
-
-			int iElemOffset = 0;
-			int cnt = 0;
-
-			if (groupList == null) {
-				System.out.println("No group assignment available!");
-				return;
-			}
-
-			for (Group currentGroup : groupList) {
-				if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
-					iTargetIdx = cnt;
-					break;
-				}
-				cnt++;
-				iElemOffset += currentGroup.getNrElements();
-			}
 
 			if (groupList.move(set.getVA(iContentVAID), iGeneGroupToDrag, iTargetIdx) == false)
 				System.out.println("Move operation not allowed!");
@@ -3107,8 +3154,11 @@ public class GLHierarchicalHeatMap
 		// Manipulate selected overview chunk (level 1)
 		if (fArTrackPos[0] < 50) {
 			int iNrPixelsPerSelectionBar = (int) (screenRect.getHeight() / iNrSelBar);
-			iSelectorBar = (int) ((fArTrackPos[1] + 17) / iNrPixelsPerSelectionBar * 1.1f); // TODO: play with these correction factors
-		
+			iSelectorBar = (int) ((fArTrackPos[1] + 17) / iNrPixelsPerSelectionBar * 1.1f); // TODO: play with
+			// these
+			// correction
+			// factors
+
 			if (iSelectorBar <= 0)
 				iSelectorBar = 1;
 			else if (iSelectorBar > iNrSelBar)

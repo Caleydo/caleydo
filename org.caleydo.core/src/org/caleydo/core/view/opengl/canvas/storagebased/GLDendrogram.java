@@ -17,6 +17,8 @@ import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.Group;
+import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
@@ -65,6 +67,9 @@ public class GLDendrogram
 
 	private ClusterNode currentRootNode;
 
+	private ArrayList<Integer> iAlCutOffClusters = new ArrayList<Integer>();
+	private GroupList groupList = null;
+
 	/**
 	 * true for gene tree, false for experiment tree
 	 */
@@ -90,6 +95,8 @@ public class GLDendrogram
 	private ColorMapping colorMapper;
 
 	private TreePorter treePorter = new TreePorter();
+
+	private boolean bRedrawDendrogram = true;
 
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
 	private UpdateViewListener updateViewListener;
@@ -263,8 +270,8 @@ public class GLDendrogram
 		else {
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(0, fPosCut, 0);
-			gl.glVertex3f(0.2f + fWidth, fPosCut, 0);
-			gl.glVertex3f(0.2f + fWidth, fPosCut + 0.1f, 0);
+			gl.glVertex3f(fWidth, fPosCut, 0);
+			gl.glVertex3f(fWidth, fPosCut + 0.1f, 0);
 			gl.glVertex3f(0.0f, fPosCut + 0.1f, 0);
 			gl.glEnd();
 		}
@@ -655,6 +662,8 @@ public class GLDendrogram
 
 		if (tree == null) {
 
+			iAlCutOffClusters.clear();
+
 			if (bRenderGeneTree == true) {
 
 				// try {
@@ -672,6 +681,7 @@ public class GLDendrogram
 
 				if (set.getClusteredTreeGenes() != null) {
 					tree = set.getClusteredTreeGenes();
+					groupList = new GroupList(1);
 					currentRootNode = tree.getRoot();
 				}
 				else
@@ -680,6 +690,7 @@ public class GLDendrogram
 			else {
 				if (set.getClusteredTreeExps() != null) {
 					tree = set.getClusteredTreeExps();
+					groupList = new GroupList(1);
 				}
 				else
 					renderSymbol(gl);
@@ -688,28 +699,29 @@ public class GLDendrogram
 		}
 
 		if (tree != null) {
-			if (bRenderGeneTree) {
-				xmax = viewFrustum.getWidth() - 0.2f;
-				fSampleHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getNrElements();
-				fLevelWidth = (viewFrustum.getWidth() - 3f) / tree.getRoot().getDepth();
-				yPosInit = viewFrustum.getHeight() - 0.4f;
+			if (bHasFrustumChanged || bRedrawDendrogram) {
+				if (bRenderGeneTree) {
+					xmax = viewFrustum.getWidth() - 0.2f;
+					fSampleHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getNrElements();
+					fLevelWidth = (viewFrustum.getWidth() - 3f) / tree.getRoot().getDepth();
+					yPosInit = viewFrustum.getHeight() - 0.4f;
+				}
+				else {
+					ymin = 0.1f;
+					fSampleWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getNrElements();
+					fLevelHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getDepth();
+					xPosInit = 0.4f;
+				}
+				determinePositions();
+				bRedrawDendrogram = false;
 			}
-			else {
-				ymin = 0.1f;
-				fSampleWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getNrElements();
-				fLevelHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getDepth();
-				xPosInit = 0.4f;
-			}
-			determinePositions();
 
 			gl.glLineWidth(0.1f);
 
 			if (bRenderGeneTree) {
 				gl.glTranslatef(0.1f, 0, 0);
-				{
-					renderDendrogramGenes(gl, currentRootNode);
-					// renderDendrogramGenes(gl, tree.getRoot());
-				}
+				renderDendrogramGenes(gl, currentRootNode);
+				// renderDendrogramGenes(gl, tree.getRoot());
 			}
 			else {
 				gl.glTranslatef(0, 0.1f, 0);
@@ -769,6 +781,55 @@ public class GLDendrogram
 	private void determineSelectedNodes() {
 
 		determineSelectedNodesRec(tree.getRoot());
+
+		iAlCutOffClusters.clear();
+		getNumberOfClustersRec(tree.getRoot());
+		buildNewGroupList();
+
+	}
+
+	/**
+	 * Function which merges the clusters determined by the cut off value to group lists used for rendering
+	 * the clusters assignments in hierarchical heat map.
+	 */
+	private void buildNewGroupList() {
+
+		groupList = new GroupList(iAlCutOffClusters.size());
+
+		int cnt = 0;
+		for (Integer iter : iAlCutOffClusters) {
+			Group temp = new Group(iter, false, 0, ESelectionType.NORMAL);
+			groupList.append(temp);
+			cnt++;
+		}
+
+		if (bRenderGeneTree)
+			set.getVA(iContentVAID).setGroupList(groupList);
+		else
+			set.getVA(iStorageVAID).setGroupList(groupList);
+
+	}
+
+	/**
+	 * Recursive function determines the sizes of clusters set by the cut off value
+	 * 
+	 * @param node
+	 *            current node
+	 */
+	private void getNumberOfClustersRec(ClusterNode node) {
+
+		if (node.getSelectionType() == ESelectionType.MOUSE_OVER) {
+			if (tree.hasChildren(node)) {
+				for (ClusterNode current : tree.getChildren(node)) {
+					if (current.getSelectionType() == ESelectionType.NORMAL) {
+						// System.out.println("nr elements: " + current.getNrElements());
+						iAlCutOffClusters.add(current.getNrElements());
+					}
+					else
+						getNumberOfClustersRec(current);
+				}
+			}
+		}
 
 	}
 
@@ -1078,8 +1139,6 @@ public class GLDendrogram
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
 
-		int i = 0;
-		i++;
 	}
 
 	@Override
@@ -1095,6 +1154,7 @@ public class GLDendrogram
 	public void resetView() {
 		super.resetView();
 		tree = null;
+		bRedrawDendrogram = true;
 	}
 
 	private void resetAllTreeSelections() {
@@ -1129,6 +1189,7 @@ public class GLDendrogram
 	@Override
 	public void handleUpdateView() {
 		tree = null;
+		bRedrawDendrogram = true;
 		setDisplayListDirty();
 	}
 }
