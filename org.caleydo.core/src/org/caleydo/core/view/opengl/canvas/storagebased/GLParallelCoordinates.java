@@ -62,6 +62,7 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
 import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
@@ -89,6 +90,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.AngularBrushingListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.BookmarkListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ChangeOrientationListener;
@@ -230,7 +232,8 @@ public class GLParallelCoordinates
 	private UseRandomSamplingListener useRandomSamplingListener;
 	private ChangeOrientationListener changeOrientationListener;
 	private PreventOcclusionListener preventOcclusionListener;
-	
+	private AngularBrushingListener angularBrushingListener;
+
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
 	/**
@@ -403,8 +406,8 @@ public class GLParallelCoordinates
 				-0.002f);
 		}
 
-//		if (generalManager.getTrackDataProvider().isTrackModeActive())
-//			handleTrackInput(gl);
+		// if (generalManager.getTrackDataProvider().isTrackModeActive())
+		// handleTrackInput(gl);
 
 		// TODO another display list
 		clipToFrustum(gl);
@@ -1031,43 +1034,46 @@ public class GLParallelCoordinates
 				gl.glPopName();
 			}
 
-			// NaN Button
-			float fXButtonOrigin = alAxisSpacing.get(iCount);
-
-			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAN);
-
-			tempTexture.enable();
-			tempTexture.bind();
-
-			TextureCoords texCoords = tempTexture.getImageTexCoords();
-			int iPickingID =
-				pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_NAN, axisVA.get(iCount));
-			// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-			gl.glColor4f(1, 1, 1, 1f);
-			gl.glPushName(iPickingID);
-
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-				ParCoordsRenderStyle.NAN_Z);
-			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-				ParCoordsRenderStyle.NAN_Z);
-			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-				ParCoordsRenderStyle.NAN_Z);
-			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-				ParCoordsRenderStyle.NAN_Z);
-			gl.glEnd();
-
-			gl.glPopName();
-
-			// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
-			// gl.glPopAttrib();
-			tempTexture.disable();
+	
 
 			if (detailLevel == EDetailLevel.HIGH) {
+				
+				// NaN Button
+				float fXButtonOrigin = alAxisSpacing.get(iCount);
+
+				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAN);
+
+				tempTexture.enable();
+				tempTexture.bind();
+
+				TextureCoords texCoords = tempTexture.getImageTexCoords();
+				int iPickingID =
+					pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_NAN, axisVA.get(iCount));
+				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				gl.glColor4f(1, 1, 1, 1f);
+				gl.glPushName(iPickingID);
+
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+					ParCoordsRenderStyle.NAN_Z);
+				gl.glEnd();
+
+				gl.glPopName();
+
+				// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
+				// gl.glPopAttrib();
+				tempTexture.disable();
+				
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
 				for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS; iInnerCount++) {
@@ -2770,7 +2776,7 @@ public class GLParallelCoordinates
 
 		GLHelperFunctions.drawPointAt(gl, new Vec3f(fArTrackPos[0] / screenRect.width * 8f,
 			(1f - fArTrackPos[1] / screenRect.height) * 8f * fAspectRatio, 0.01f));
-		
+
 		float fTrackX = (generalManager.getTrackDataProvider().getEyeTrackData()[0]) / screenRect.width;
 
 		fTrackX *= renderStyle.getWidthOfCoordinateSystem();
@@ -2930,6 +2936,10 @@ public class GLParallelCoordinates
 		preventOcclusionListener.setHandler(this);
 		eventPublisher.addListener(PreventOcclusionEvent.class, preventOcclusionListener);
 
+		angularBrushingListener = new AngularBrushingListener();
+		angularBrushingListener.setHandler(this);
+		eventPublisher.addListener(AngularBrushingEvent.class, angularBrushingListener);
+
 	}
 
 	@Override
@@ -2962,6 +2972,11 @@ public class GLParallelCoordinates
 		if (preventOcclusionListener != null) {
 			eventPublisher.removeListener(preventOcclusionListener);
 			preventOcclusionListener = null;
+		}
+
+		if (angularBrushingListener != null) {
+			eventPublisher.removeListener(angularBrushingListener);
+			angularBrushingListener = null;
 		}
 	}
 

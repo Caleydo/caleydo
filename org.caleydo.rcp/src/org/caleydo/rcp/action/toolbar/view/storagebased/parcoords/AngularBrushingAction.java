@@ -1,6 +1,6 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased.parcoords;
 
-import org.caleydo.core.manager.event.view.storagebased.ActivateAngularBrushingEvent;
+import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
@@ -29,6 +29,6 @@ public class AngularBrushingAction
 	@Override
 	public void run() {
 		super.run();
-		GeneralManager.get().getEventPublisher().triggerEvent(new ActivateAngularBrushingEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new AngularBrushingEvent());
 	};
 }

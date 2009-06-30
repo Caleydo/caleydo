@@ -7,7 +7,7 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Alexander Lex
  */
-public class ActivateAngularBrushingEvent
+public class AngularBrushingEvent
 	extends AEvent {
 
 	@Override
