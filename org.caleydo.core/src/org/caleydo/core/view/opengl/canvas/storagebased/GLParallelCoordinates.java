@@ -406,8 +406,8 @@ public class GLParallelCoordinates
 				-0.002f);
 		}
 
-		// if (generalManager.getTrackDataProvider().isTrackModeActive())
-		// handleTrackInput(gl);
+		if (generalManager.getTrackDataProvider().isTrackModeActive())
+			handleTrackInput(gl);
 
 		// TODO another display list
 		clipToFrustum(gl);
@@ -2774,8 +2774,8 @@ public class GLParallelCoordinates
 		fArTrackPos[0] -= upperLeftScreenPos.x;
 		fArTrackPos[1] -= upperLeftScreenPos.y;
 
-		GLHelperFunctions.drawPointAt(gl, new Vec3f(fArTrackPos[0] / screenRect.width * 8f,
-			(1f - fArTrackPos[1] / screenRect.height) * 8f * fAspectRatio, 0.01f));
+//		GLHelperFunctions.drawPointAt(gl, new Vec3f(fArTrackPos[0] / screenRect.width * 8f,
+//			(1f - fArTrackPos[1] / screenRect.height) * 8f * fAspectRatio, 0.01f));
 
 		float fTrackX = (generalManager.getTrackDataProvider().getEyeTrackData()[0]) / screenRect.width;
 
