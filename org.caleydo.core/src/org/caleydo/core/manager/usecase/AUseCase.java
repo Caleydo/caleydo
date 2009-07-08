@@ -285,10 +285,12 @@ public abstract class AUseCase
 
 		mapVAIDs.put(EVAType.COMPLETE_SELECTION, iNewContentVAID);
 		mapVAIDs.put(EVAType.STORAGE_SELECTION, iNewStorageVAID);
-		
+
+		// This should be done to avoid problems with group info in HHM
+		set.setGeneClusterInfoFlag(false);
+		set.setExperimentClusterInfoFlag(false);
+
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
-		
-		
 
 	}
 
@@ -326,9 +328,7 @@ public abstract class AUseCase
 
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		listener.handleEvent(event);	
+		listener.handleEvent(event);
 	}
-
-
 
 }

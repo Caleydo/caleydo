@@ -627,6 +627,29 @@ public class Set
 	}
 
 	@Override
+	public void setGroupListGenes(GroupList groupList) {
+		groupListGenes = groupList;
+		bGeneClusterInfo = true;
+	}
+
+	@Override
+	public void setGroupListExperiments(GroupList groupList) {
+		groupListExperiments = groupList;
+		bExperimentClusterInfo = true;
+
+	}
+
+	@Override
+	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo){
+		this.bGeneClusterInfo = bGeneClusterInfo;
+	}
+	
+	@Override
+	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo){
+		this.bExperimentClusterInfo = bExperimentClusterInfo;
+	}
+	
+	@Override
 	public GroupList getGroupListGenes() {
 		return this.groupListGenes;
 	}

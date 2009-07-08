@@ -348,6 +348,10 @@ public interface ISet
 	 */
 	public void setGroupReprInfo(int[] arGroupRepr, boolean bGeneGroupInfo);
 
+	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo);
+	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo);
+	public void setGroupListGenes(GroupList groupList);
+	public void setGroupListExperiments(GroupList groupList);
 	public GroupList getGroupListGenes();
 	public GroupList getGroupListExperiments();
 

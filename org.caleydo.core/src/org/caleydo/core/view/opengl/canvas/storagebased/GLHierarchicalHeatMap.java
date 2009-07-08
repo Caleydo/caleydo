@@ -198,9 +198,6 @@ public class GLHierarchicalHeatMap
 
 		fAlXDistances = new ArrayList<Float>();
 
-		// activate clustering
-		bUseClusteredVA = false;
-
 		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
 
 		createHeatMap();
@@ -2143,19 +2140,6 @@ public class GLHierarchicalHeatMap
 		if (set.isExperimentClusterInfo())
 			storageVA.setGroupList(set.getGroupListExperiments());
 
-		// clustering triggered by StartClusteringAction
-		if (bUseClusteredVA) {
-
-			try {
-				contentVA = useCase.getVA(EVAType.COMPLETE_CLUSTERED_SELECTION);
-				storageVA = useCase.getVA(EVAType.STORAGE_CLUSTERED_SELECTION);
-			}
-			catch (NullPointerException e) {
-
-			}
-			AlSelection.clear();
-		}
-
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
 
@@ -2175,6 +2159,9 @@ public class GLHierarchicalHeatMap
 			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
 		}
 
+		AlSelection.clear();
+		setDisplayListDirty();
+		
 	}
 
 	@Override
@@ -2973,40 +2960,6 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 	}
-
-	// public void startClustering(ClusterState clusterState) {
-	// useCase.cluster(clusterState);
-	// // this.clusterstate = clusterState;
-	//
-	// // int iNrElem = 0;
-	// //
-	// // if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-	// // iNrElem = contentVA.size();
-	// // else
-	// // iNrElem = storageVA.size();
-	// //
-	// // if (iNrElem > 1000) {
-	// //
-	// // GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-	// // public void run() {
-	// // Shell shell = new Shell();
-	// // MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
-	// // messageBox.setText("Start Clustering");
-	// // messageBox
-	// //
-	// .setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time.");
-	// // if (messageBox.open() == SWT.CANCEL)
-	// // bSkipClustering = true;
-	// // }
-	// // });
-	// // }
-	//
-	// bUseClusteredVA = true;
-	// initData();
-	// bUseClusteredVA = false;
-	//
-	// setDisplayListDirty();
-	// }
 
 	private void activateGroupHandling() {
 

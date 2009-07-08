@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -797,6 +798,9 @@ public class GLDendrogram
 	 */
 	private void buildNewGroupList() {
 
+		if (iAlCutOffClusters.size() < 2)
+			return;
+
 		groupList = new GroupList(iAlCutOffClusters.size());
 
 		int cnt = 0;
@@ -806,10 +810,14 @@ public class GLDendrogram
 			cnt++;
 		}
 
-		if (bRenderGeneTree)
-			contentVA.setGroupList(groupList);
-		else
-			storageVA.setGroupList(groupList);
+		if (bRenderGeneTree) {
+			useCase.getSet().setGroupListGenes(groupList);
+		}
+		else {
+			useCase.getSet().setGroupListExperiments(groupList);
+		}
+
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
 
 	}
 
@@ -1049,25 +1057,14 @@ public class GLDendrogram
 
 	@Override
 	protected void initLists() {
-		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
-		}
-		else {
-			try {
-				contentVA = useCase.getVA(EVAType.COMPLETE_CLUSTERED_SELECTION);
-			}
-			catch (NullPointerException e) {
-				contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
-			}
 
-		}
+		if (bRenderOnlyContext)
+			contentVAType = EVAType.EXTERNAL_SELECTION;
+		else
+			contentVAType = EVAType.COMPLETE_SELECTION;
 
-		try {
-			storageVA = useCase.getVA(EVAType.STORAGE_CLUSTERED_SELECTION);
-		}
-		catch (NullPointerException e) {
-			storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
-		}
+		contentVA = useCase.getVA(contentVAType);
+		storageVA = useCase.getVA(storageVAType);
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
@@ -1096,7 +1093,7 @@ public class GLDendrogram
 					contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
-					iIndex = contentVA.indexOf(iSelectedID);
+					iIndex = iSelectedID;// contentVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.MOUSE_OVER);
 				}
@@ -1128,7 +1125,8 @@ public class GLDendrogram
 				Set<Integer> setMouseOverElements =
 					storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
-					iIndex = storageVA.indexOf(iSelectedID);
+
+					iIndex = iSelectedID;// storageVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.MOUSE_OVER);
 				}

@@ -90,9 +90,6 @@ public abstract class AStorageBasedView
 
 	protected boolean bUseRandomSampling = true;
 
-	// clustering stuff
-	protected boolean bUseClusteredVA = false;
-
 	protected int iNumberOfRandomElements = 100;
 
 	protected int iNumberOfSamplesPerTexture = 100;
