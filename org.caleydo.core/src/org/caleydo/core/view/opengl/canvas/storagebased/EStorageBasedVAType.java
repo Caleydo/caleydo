@@ -25,6 +25,11 @@ public enum EStorageBasedVAType {
 	/**
 	 * All storages (initially)
 	 */
-	STORAGE_SELECTION
+	STORAGE_SELECTION,
+	
+	/**
+	 * All storages (clustered)
+	 */
+	STORAGE_CLUSTERED_SELECTION
 
 }

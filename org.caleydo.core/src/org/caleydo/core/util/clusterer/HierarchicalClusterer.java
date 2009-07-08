@@ -232,7 +232,7 @@ public class HierarchicalClusterer
 
 		CNode node = clusterer.m_cobwebTree;
 
-		ClusterNode clusterNode = new ClusterNode("Root", 1, 0f, 0, true);
+		ClusterNode clusterNode = new ClusterNode("Root", 0, 0f, 0, true);
 		tree.setRootNode(clusterNode);
 
 		CNodeToTree(clusterNode, node, eClustererType);

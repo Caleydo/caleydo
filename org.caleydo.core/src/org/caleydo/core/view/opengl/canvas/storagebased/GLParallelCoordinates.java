@@ -205,9 +205,9 @@ public class GLParallelCoordinates
 
 	private SelectedElementRep elementRep;
 
-//	private int iPolylineVAID = 0;
+	// private int iPolylineVAID = 0;
 	private IVirtualArray polylineVA;
-//	private int iAxisVAID = 0;
+	// private int iAxisVAID = 0;
 	private IVirtualArray axisVA;
 
 	private GenericSelectionManager polylineSelectionManager;
@@ -646,15 +646,34 @@ public class GLParallelCoordinates
 		// contentSelectionManager.resetSelectionManager();
 		// storageSelectionManager.resetSelectionManager();
 
+//		if (bRenderOnlyContext) {
+//			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
+//		}
+//		else {
+//		
+//			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+//		}
+//		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+		
 		if (bRenderOnlyContext) {
 			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
 		}
 		else {
-
-			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+			try {
+				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
+			}
+			catch (NullPointerException e) {
+				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+			}
 
 		}
-		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+
+		try {
+			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION);
+		}
+		catch (NullPointerException e) {
+			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+		}
 
 		initContentVariables();
 
@@ -687,7 +706,7 @@ public class GLParallelCoordinates
 	private void initContentVariables() {
 		if (bRenderStorageHorizontally) {
 
-			polylineVA =storageVA;
+			polylineVA = storageVA;
 			axisVA = contentVA;
 			polylineSelectionManager = storageSelectionManager;
 			axisSelectionManager = contentSelectionManager;
@@ -972,7 +991,7 @@ public class GLParallelCoordinates
 	 * @param iNumberAxis
 	 */
 	private void renderCoordinateSystem(GL gl) {
-		
+
 		textRenderer.setColor(0, 0, 0, 1);
 
 		int iNumberAxis = axisVA.size();
@@ -1105,8 +1124,7 @@ public class GLParallelCoordinates
 
 					case EXPRESSION_INDEX:
 						sAxisLabel =
-							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(
-								axisVA.get(iCount));
+							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(axisVA.get(iCount));
 						if (sAxisLabel == null)
 							sAxisLabel = "Unknown";
 						break;
@@ -1339,7 +1357,7 @@ public class GLParallelCoordinates
 
 		if (detailLevel != EDetailLevel.HIGH)
 			return;
-	
+
 		for (Integer iGateID : hashGates.keySet()) {
 			// Gate ID / 1000 is axis ID
 			int iAxisID = iGateID / 1000;
@@ -2302,7 +2320,7 @@ public class GLParallelCoordinates
 
 		if (bRenderStorageHorizontally && idType == EIDType.EXPRESSION_INDEX || !bRenderStorageHorizontally
 			&& idType == EIDType.EXPERIMENT_INDEX) {
-			for (int iAxisNumber :axisVA.indicesOf(iStorageIndex)) {
+			for (int iAxisNumber : axisVA.indicesOf(iStorageIndex)) {
 
 				fXValue = iAxisNumber * renderStyle.getAxisSpacing(axisVA.size());
 				fXValue = fXValue + renderStyle.getXSpacing();
@@ -2314,8 +2332,7 @@ public class GLParallelCoordinates
 
 			fXValue = renderStyle.getXSpacing() + fXTranslation;
 			// get the value on the leftmost axis
-			fYValue =
-				set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
+			fYValue = set.get(storageVA.get(0)).getFloat(EDataRepresentation.NORMALIZED, iStorageIndex);
 
 			if (Float.isNaN(fYValue)) {
 				fYValue = NAN_Y_OFFSET * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
@@ -2344,8 +2361,8 @@ public class GLParallelCoordinates
 		else {
 			message =
 				"Parallel Coordinates - a sample of " + iNumLines / iDisplayEveryNthPolyline + " out of "
-					+ iNumLines + " " + useCase.getContentLabel(false, true) + " / \n "
-					+ storageVA.size() + " experiments";
+					+ iNumLines + " " + useCase.getContentLabel(false, true) + " / \n " + storageVA.size()
+					+ " experiments";
 		}
 		return message;
 
@@ -2355,8 +2372,8 @@ public class GLParallelCoordinates
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
-		sInfoText.append(polylineVA.size() + useCase.getContentLabel(false, true)
-			+ " as polylines and " + axisVA.size() + " experiments as axis.\n");
+		sInfoText.append(polylineVA.size() + useCase.getContentLabel(false, true) + " as polylines and "
+			+ axisVA.size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext) {
 			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
@@ -2667,7 +2684,7 @@ public class GLParallelCoordinates
 	}
 
 	private void adjustAxisSpacing(GL gl) {
-	
+
 		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] fArTargetWorldCoordinates =

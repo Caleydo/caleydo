@@ -220,6 +220,8 @@ public abstract class AUseCase
 
 		iCurrentStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
+		int iNrElem = 0;
+
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
 			int iVAid = set.cluster(iCurrentContentVAID, iCurrentStorageVAID, clusterState, 0, 2);
@@ -266,8 +268,7 @@ public abstract class AUseCase
 		}
 
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION, iNewContentVAID);
+		mapVAIDs.put(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION, iNewStorageVAID);
 
-		// AlSelection.clear();
 	}
-
 }

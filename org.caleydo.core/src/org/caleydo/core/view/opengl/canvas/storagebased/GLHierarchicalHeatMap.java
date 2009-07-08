@@ -155,7 +155,6 @@ public class GLHierarchicalHeatMap
 	private float fPosCursorLastElement = 0;
 
 	// clustering/grouping stuff
-	
 
 	private boolean bSplitGroupExp = false;
 	private boolean bSplitGroupGene = false;
@@ -647,11 +646,11 @@ public class GLHierarchicalHeatMap
 						FbTemp.rewind();
 
 						TextureData texData =
-							new TextureData(GL.GL_RGBA /* internalFormat */,
-								storageVA.size() /* height */, contentVA.size()
-									/ iNrSelBar /* width */, 0 /* border */, GL.GL_RGBA /* pixelFormat */,
-								GL.GL_FLOAT /* pixelType */, false /* mipmap */,
-								false /* dataIsCompressed */, false /* mustFlipVertically */, FbTemp, null);
+							new TextureData(GL.GL_RGBA /* internalFormat */, storageVA.size() /* height */,
+								contentVA.size() / iNrSelBar /* width */, 0 /* border */,
+								GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */,
+								false /* mipmap */, false /* dataIsCompressed */, false /* mustFlipVertically */,
+								FbTemp, null);
 
 						tempTextur = TextureIO.newTexture(0);
 						tempTextur.updateImage(texData);
@@ -2134,7 +2133,7 @@ public class GLHierarchicalHeatMap
 			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
 		}
 		else {
-		
+
 			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
 		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
@@ -2147,87 +2146,16 @@ public class GLHierarchicalHeatMap
 
 		// clustering triggered by StartClusteringAction
 		if (bUseClusteredVA) {
-			
-			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
-// FIXME: Disabled clutering temporarily, move this to UseCase once the new VA stuff works
-//			int iContentVAIDtemp = 0, iStorageVAIDtemp = 0;
-//
-//			if (bRenderOnlyContext) {
-//				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
-//			}
-//			else {
-//				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-//					initCompleteList();
-//				}
-//				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-//			}
-//			iStorageVAIDtemp = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-//
-//			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
-//
-//				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
-//				if (iVAid < 0)
-//					iContentVAID = iContentVAIDtemp;
-//				else
-//					iContentVAID = iVAid;
-//
-//				iStorageVAID = iStorageVAIDtemp;
-//			}
-//			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-//
-//				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
-//				if (iVAid < 0)
-//					iStorageVAID = iStorageVAIDtemp;
-//				else
-//					iStorageVAID = iVAid;
-//
-//				iContentVAID = iContentVAIDtemp;
-//			}
-//			else {
-//
-//				boolean bSkipGeneClustering = false;
-//
-//				clusterstate.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-//				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 1);
-//				if (iVAid < 0) {
-//					iStorageVAID = iStorageVAIDtemp;
-//					iContentVAID = iContentVAIDtemp;
-//					bSkipGeneClustering = true;
-//				}
-//				else
-//					iStorageVAID = iVAid;
-//
-//				// in case of user requests abort during experiment clustering do not cluster genes
-//				if (bSkipGeneClustering == false) {
-//					clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
-//					iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate, 50, 1);
-//					if (iVAid < 0)
-//						iContentVAID = iContentVAIDtemp;
-//					else
-//						iContentVAID = iVAid;
-//				}
-//			}
 
+			try {
+				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
+				storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION);
+			}
+			catch (NullPointerException e) {
+
+			}
 			AlSelection.clear();
-
 		}
-		// // normal startup
-		// else {
-		// if (bRenderOnlyContext) {
-		// iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
-		// }
-		// else {
-		// if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-		// initCompleteList();
-		// }
-		// iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-		// }
-		// iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-		//
-		// // In case of importing group info
-		// if (set.isClusterInfo())
-		// contentVA.setGroupList(set.getGroupList());
-		// }
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
@@ -2252,8 +2180,8 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public String getShortInfo() {
-		return "Hierarchical Heat Map (" + contentVA.size()
-			+ useCase.getContentLabel(false, true) + " / " + storageVA.size() + " experiments)";
+		return "Hierarchical Heat Map (" + contentVA.size() + useCase.getContentLabel(false, true) + " / "
+			+ storageVA.size() + " experiments)";
 	}
 
 	@Override
@@ -2266,8 +2194,8 @@ public class GLHierarchicalHeatMap
 				+ " in columns and " + storageVA.size() + " experiments in rows.\n");
 		}
 		else {
-			sInfoText.append(contentVA.size() + " " + useCase.getContentLabel(true, true)
-				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
+			sInfoText.append(contentVA.size() + " " + useCase.getContentLabel(true, true) + " in rows and "
+				+ storageVA.size() + " experiments in columns.\n");
 		}
 
 		if (bRenderOnlyContext) {
@@ -3050,7 +2978,7 @@ public class GLHierarchicalHeatMap
 	public void startClustering(ClusterState clusterState) {
 
 		useCase.cluster(clusterState);
-//		this.clusterstate = clusterState;
+		// this.clusterstate = clusterState;
 
 		// int iNrElem = 0;
 		//
@@ -3286,8 +3214,7 @@ public class GLHierarchicalHeatMap
 			int iLastSelected = selGroups.size() - 1;
 
 			// merge last and the one before last
-			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups
-				.get(iLastSelected)) == false) {
+			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups.get(iLastSelected)) == false) {
 				System.out.println("Problem during merge!!!");
 				return;
 			}

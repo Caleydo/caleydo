@@ -63,7 +63,7 @@ public class GLDendrogram
 	boolean bUseDetailLevel = true;
 
 	private Tree<ClusterNode> tree;
-	DendrogramRenderStyle renderStyle;
+	private DendrogramRenderStyle renderStyle;
 
 	private ClusterNode currentRootNode;
 
@@ -107,6 +107,9 @@ public class GLDendrogram
 	 * @param glCanvas
 	 * @param sLabel
 	 * @param viewFrustum
+	 * @param bRenderGeneTree
+	 *            boolean to determine whether a gene(horizontal) or a experiment(vertical) dendrogram should
+	 *            be rendered
 	 */
 	public GLDendrogram(final GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final boolean bRenderGeneTree) {
@@ -1019,10 +1022,8 @@ public class GLDendrogram
 		else
 			fPosCut = viewFrustum.getHeight() - 0.2f;
 
-		Set<ClusterNode> nodeSet = tree.getGraph().vertexSet();
-		for (ClusterNode node : nodeSet) {
-			node.setSelectionType(ESelectionType.NORMAL);
-		}
+		resetAllTreeSelections();
+
 	}
 
 	@Override
@@ -1052,11 +1053,21 @@ public class GLDendrogram
 			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
 		}
 		else {
-			
-			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+			try {
+				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
+			}
+			catch (NullPointerException e) {
+				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+			}
 
 		}
-		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+
+		try {
+			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION);
+		}
+		catch (NullPointerException e) {
+			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+		}
 
 		contentSelectionManager.setVA(contentVA);
 		storageSelectionManager.setVA(storageVA);
