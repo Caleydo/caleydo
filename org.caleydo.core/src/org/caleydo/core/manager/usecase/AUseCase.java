@@ -6,14 +6,23 @@ import java.util.EnumMap;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.IPollingListenerOwner;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
-import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.StartClusteringListener;
 
 /**
  * Abstract use case class that implements data and view management.
@@ -22,7 +31,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
  * @author Alexander Lex
  */
 public abstract class AUseCase
-	implements IUseCase {
+	implements IUseCase, IListenerOwner {
 
 	protected ArrayList<IView> alView;
 
@@ -43,10 +52,16 @@ public abstract class AUseCase
 	/**
 	 * map selection type to unique id for virtual array
 	 */
-	protected EnumMap<EStorageBasedVAType, Integer> mapVAIDs;
+	protected EnumMap<EVAType, Integer> mapVAIDs;
+
+	private IEventPublisher eventPublisher;
+
+	private StartClusteringListener startClusteringListener;
 
 	public AUseCase() {
 		alView = new ArrayList<IView>();
+		eventPublisher = GeneralManager.get().getEventPublisher();
+		registerEventListeners();
 	}
 
 	/**
@@ -155,11 +170,11 @@ public abstract class AUseCase
 
 		// bRenderOnlyContext = bIsRenderedRemote;
 
-		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
+		mapVAIDs = new EnumMap<EVAType, Integer>(EVAType.class);
 
 		if (!mapVAIDs.isEmpty()) {
 
-			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
+			for (EVAType eSelectionType : EVAType.values()) {
 				if (mapVAIDs.containsKey(eSelectionType)) {
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 				}
@@ -176,7 +191,7 @@ public abstract class AUseCase
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 		// create VA with empty list
 		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
+		mapVAIDs.put(EVAType.EXTERNAL_SELECTION, iVAID);
 
 		alTempList = new ArrayList<Integer>();
 
@@ -185,7 +200,7 @@ public abstract class AUseCase
 		}
 
 		iVAID = set.createSetVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
+		mapVAIDs.put(EVAType.STORAGE_SELECTION, iVAID);
 
 		initFullVA();
 	}
@@ -201,24 +216,25 @@ public abstract class AUseCase
 
 		// TODO: remove possible old virtual array
 		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
+		mapVAIDs.put(EVAType.COMPLETE_SELECTION, iVAID);
 	}
 
-	public IVirtualArray getVA(EStorageBasedVAType vaType) {
+	public IVirtualArray getVA(EVAType vaType) {
 		IVirtualArray va = set.getVA(mapVAIDs.get(vaType));
 		IVirtualArray vaCopy = va.clone();
 		return vaCopy;
 	}
 
-	public void cluster(ClusterState clusterState) {
+	@Override
+	public void startClustering(ClusterState clusterState) {
 		int iCurrentContentVAID = 0;
 		int iCurrentStorageVAID = 0;
 		int iNewContentVAID = 0;
 		int iNewStorageVAID = 0;
 
-		iCurrentContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		iCurrentContentVAID = mapVAIDs.get(EVAType.COMPLETE_SELECTION);
 
-		iCurrentStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+		iCurrentStorageVAID = mapVAIDs.get(EVAType.STORAGE_SELECTION);
 
 		int iNrElem = 0;
 
@@ -267,8 +283,52 @@ public abstract class AUseCase
 			}
 		}
 
-		mapVAIDs.put(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION, iNewContentVAID);
-		mapVAIDs.put(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION, iNewStorageVAID);
+		mapVAIDs.put(EVAType.COMPLETE_SELECTION, iNewContentVAID);
+		mapVAIDs.put(EVAType.STORAGE_SELECTION, iNewStorageVAID);
+		
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
+		
+		
 
 	}
+
+	public void registerEventListeners() {
+
+		// groupMergingActionListener = new GroupMergingActionListener();
+		// groupMergingActionListener.setHandler(this);
+		// eventPublisher.addListener(MergeGroupsEvent.class, groupMergingActionListener);
+		//
+		// groupInterChangingActionListener = new GroupInterChangingActionListener();
+		// groupInterChangingActionListener.setHandler(this);
+		// eventPublisher.addListener(InterchangeGroupsEvent.class, groupInterChangingActionListener);
+
+		startClusteringListener = new StartClusteringListener();
+		startClusteringListener.setHandler(this);
+		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
+	}
+
+	public void unregisterEventListeners() {
+
+		// if (groupMergingActionListener != null) {
+		// eventPublisher.removeListener(groupMergingActionListener);
+		// groupMergingActionListener = null;
+		// }
+		// if (groupInterChangingActionListener != null) {
+		// eventPublisher.removeListener(groupInterChangingActionListener);
+		// groupInterChangingActionListener = null;
+		// }
+
+		if (startClusteringListener != null) {
+			eventPublisher.removeListener(startClusteringListener);
+			startClusteringListener = null;
+		}
+	}
+
+	@Override
+	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		listener.handleEvent(event);	
+	}
+
+
+
 }

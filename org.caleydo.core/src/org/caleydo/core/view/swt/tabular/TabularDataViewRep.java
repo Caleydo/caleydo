@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -36,7 +37,8 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
-import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.core.view.swt.ASWTView;
@@ -94,6 +96,15 @@ public class TabularDataViewRep
 	 * The virtual array that manages the storage references in the set
 	 */
 	protected IVirtualArray storageVA;
+	/**
+	 * The type of the content VA
+	 */
+	protected EVAType contentVAType = EVAType.COMPLETE_SELECTION;
+
+	/**
+	 * The type of the storage VA
+	 */
+	protected EVAType storageVAType = EVAType.STORAGE_SELECTION;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -119,6 +130,7 @@ public class TabularDataViewRep
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
+	protected ReplaceVirtualArrayListener replaceVirtualArrayListener = null;
 
 	// private int[] iArCurrentColumnOrder;
 
@@ -162,9 +174,10 @@ public class TabularDataViewRep
 			return;
 		}
 
-		contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+		useCase = GeneralManager.get().getUseCase();
+		contentVA = useCase.getVA(contentVAType);
 
-		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+		storageVA = useCase.getVA(storageVAType);
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
@@ -839,6 +852,10 @@ public class TabularDataViewRep
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+		
+		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
+		replaceVirtualArrayListener.setHandler(this);
+		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
 	}
 
 	@Override
@@ -864,6 +881,20 @@ public class TabularDataViewRep
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
+		
+		if (replaceVirtualArrayListener != null) {
+			eventPublisher.removeListener(replaceVirtualArrayListener);
+			replaceVirtualArrayListener = null;
+		}
+	}
+
+	@Override
+	public void replaceVirtualArray(EVAType vaType) {
+		if (vaType == storageVAType)
+			storageVA = useCase.getVA(vaType);
+
+		if (vaType == contentVAType)
+			contentVA = useCase.getVA(vaType);
 	}
 
 }

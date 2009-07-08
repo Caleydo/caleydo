@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.util.info.listener.InfoAreaUpdateListener;
@@ -522,5 +523,11 @@ public class InfoArea
 				listener.handleEvent(event);
 			}
 		});
+	}
+
+	@Override
+	public void replaceVirtualArray(EVAType vaType) {
+		// TODO Auto-generated method stub
+		
 	}
 }

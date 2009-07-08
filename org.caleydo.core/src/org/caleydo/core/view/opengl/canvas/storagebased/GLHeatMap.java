@@ -342,12 +342,12 @@ public class GLHeatMap
 	@Override
 	protected void initLists() {
 		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
 		}
 		else {
-			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+			contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
 		}
-		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+		storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
 
 		// contentSelectionManager.resetSelectionManager();
 		// storageSelectionManager.resetSelectionManager();
@@ -1187,10 +1187,10 @@ public class GLHeatMap
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
 		}
 		else {
-			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+			contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
 		}
 
 		contentSelectionManager.setVA(contentVA);

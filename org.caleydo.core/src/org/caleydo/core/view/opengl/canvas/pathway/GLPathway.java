@@ -28,6 +28,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
@@ -68,6 +69,8 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableGeneMappingLi
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.EmbeddedPathwayContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
@@ -129,6 +132,8 @@ public class GLPathway
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
+	
+	protected ReplaceVirtualArrayListener replaceVirtualArrayListener = null;
 
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
@@ -899,6 +904,10 @@ public class GLPathway
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
+		
+		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
+		replaceVirtualArrayListener.setHandler(this);
+		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
 	}
 
 	@Override
@@ -941,6 +950,12 @@ public class GLPathway
 			eventPublisher.removeListener(selectionCommandListener);
 			selectionCommandListener = null;
 		}
+		
+		
+		if (replaceVirtualArrayListener != null) {
+			eventPublisher.removeListener(replaceVirtualArrayListener);
+			replaceVirtualArrayListener = null;
+		}
 	}
 
 	@Override
@@ -959,6 +974,12 @@ public class GLPathway
 	@Override
 	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
 		// no storage selection manager
+	}
+
+	@Override
+	public void replaceVirtualArray(EVAType vaType) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

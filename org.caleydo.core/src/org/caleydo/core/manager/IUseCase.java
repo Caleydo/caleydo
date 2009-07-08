@@ -5,7 +5,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Use cases are the unique points of coordinations for views and its data. Genetic data is one example -
@@ -75,7 +75,13 @@ public interface IUseCase {
 	 *            the type of VA requested
 	 * @return the ID of the VirtualArray
 	 */
-	public IVirtualArray getVA(EStorageBasedVAType vaType);
-	
-	public void cluster(ClusterState clusterState);
+	public IVirtualArray getVA(EVAType vaType);
+
+	/**
+	 * Initiates clustering based on the parameters passed. Sends out an event to all affected views upon
+	 * positive completion to replace their VA.
+	 * 
+	 * @param clusterState
+	 */
+	public void startClustering(ClusterState clusterState);
 }

@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Interface for views, mediator or manager classes that needs
@@ -20,5 +21,8 @@ public interface IVirtualArrayUpdateHandler extends IListenerOwner{
 	 * @param info info about the selection (e.g. the name of triggering view to display in the info-box)
 	 */
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta selectionDelta, String info);
+	
+	
+	public void replaceVirtualArray(EVAType vaType);
 	
 }

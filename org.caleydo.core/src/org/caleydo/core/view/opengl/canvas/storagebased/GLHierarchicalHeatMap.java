@@ -170,7 +170,7 @@ public class GLHierarchicalHeatMap
 	private GroupMergingActionListener groupMergingActionListener;
 	private GroupInterChangingActionListener groupInterChangingActionListener;
 	private UpdateViewListener updateViewListener;
-	private StartClusteringListener startClusteringListener;
+	// private StartClusteringListener startClusteringListener;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
@@ -2129,14 +2129,13 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void initLists() {
 
-		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
-		}
-		else {
+		if (bRenderOnlyContext)
+			contentVAType = EVAType.EXTERNAL_SELECTION;
+		else
+			contentVAType = EVAType.COMPLETE_SELECTION;
 
-			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
-		}
-		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+		contentVA = useCase.getVA(contentVAType);
+		storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
 
 		// In case of importing group info
 		if (set.isGeneClusterInfo())
@@ -2148,8 +2147,8 @@ public class GLHierarchicalHeatMap
 		if (bUseClusteredVA) {
 
 			try {
-				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
-				storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION);
+				contentVA = useCase.getVA(EVAType.COMPLETE_CLUSTERED_SELECTION);
+				storageVA = useCase.getVA(EVAType.STORAGE_CLUSTERED_SELECTION);
 			}
 			catch (NullPointerException e) {
 
@@ -2975,39 +2974,39 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 	}
 
-	public void startClustering(ClusterState clusterState) {
-
-		useCase.cluster(clusterState);
-		// this.clusterstate = clusterState;
-
-		// int iNrElem = 0;
-		//
-		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// iNrElem = contentVA.size();
-		// else
-		// iNrElem = storageVA.size();
-		//
-		// if (iNrElem > 1000) {
-		//
-		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-		// public void run() {
-		// Shell shell = new Shell();
-		// MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
-		// messageBox.setText("Start Clustering");
-		// messageBox
-		// .setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time.");
-		// if (messageBox.open() == SWT.CANCEL)
-		// bSkipClustering = true;
-		// }
-		// });
-		// }
-
-		bUseClusteredVA = true;
-		initData();
-		bUseClusteredVA = false;
-
-		setDisplayListDirty();
-	}
+	// public void startClustering(ClusterState clusterState) {
+	// useCase.cluster(clusterState);
+	// // this.clusterstate = clusterState;
+	//
+	// // int iNrElem = 0;
+	// //
+	// // if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+	// // iNrElem = contentVA.size();
+	// // else
+	// // iNrElem = storageVA.size();
+	// //
+	// // if (iNrElem > 1000) {
+	// //
+	// // GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+	// // public void run() {
+	// // Shell shell = new Shell();
+	// // MessageBox messageBox = new MessageBox(shell, SWT.OK | SWT.CANCEL);
+	// // messageBox.setText("Start Clustering");
+	// // messageBox
+	// //
+	// .setMessage("Data set contains more than 1000 elements because of this the cluster process will take some time.");
+	// // if (messageBox.open() == SWT.CANCEL)
+	// // bSkipClustering = true;
+	// // }
+	// // });
+	// // }
+	//
+	// bUseClusteredVA = true;
+	// initData();
+	// bUseClusteredVA = false;
+	//
+	// setDisplayListDirty();
+	// }
 
 	private void activateGroupHandling() {
 
@@ -3248,9 +3247,9 @@ public class GLHierarchicalHeatMap
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
 
-		startClusteringListener = new StartClusteringListener();
-		startClusteringListener.setHandler(this);
-		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
+		// startClusteringListener = new StartClusteringListener();
+		// startClusteringListener.setHandler(this);
+		// eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
 	}
 
 	@Override
@@ -3269,10 +3268,10 @@ public class GLHierarchicalHeatMap
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
 		}
-		if (startClusteringListener != null) {
-			eventPublisher.removeListener(startClusteringListener);
-			startClusteringListener = null;
-		}
+		// if (startClusteringListener != null) {
+		// eventPublisher.removeListener(startClusteringListener);
+		// startClusteringListener = null;
+		// }
 	}
 
 	@Override

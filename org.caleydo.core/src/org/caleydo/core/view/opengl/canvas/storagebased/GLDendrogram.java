@@ -1050,23 +1050,23 @@ public class GLDendrogram
 	@Override
 	protected void initLists() {
 		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
 		}
 		else {
 			try {
-				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
+				contentVA = useCase.getVA(EVAType.COMPLETE_CLUSTERED_SELECTION);
 			}
 			catch (NullPointerException e) {
-				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+				contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
 			}
 
 		}
 
 		try {
-			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION);
+			storageVA = useCase.getVA(EVAType.STORAGE_CLUSTERED_SELECTION);
 		}
 		catch (NullPointerException e) {
-			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+			storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
 		}
 
 		contentSelectionManager.setVA(contentVA);

@@ -38,6 +38,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -124,16 +125,22 @@ public abstract class AGLEventListener
 	protected IIDMappingManager idMappingManager;
 
 	/**
-	 * The id of the virtual array that manages the contents (the indices) in the storages
+	 * The virtual array that manages the contents (the indices) in the storages
 	 */
-//	protected int iContentVAID = -1;
 	protected IVirtualArray contentVA;
+	/**
+	 * The type of the content VA
+	 */
+	protected EVAType contentVAType = EVAType.COMPLETE_SELECTION;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
 	 */
-//	protected int iStorageVAID = -1;
 	protected IVirtualArray storageVA;
+	/**
+	 * The type of the storage VA
+	 */
+	protected EVAType storageVAType = EVAType.STORAGE_SELECTION;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -693,4 +700,6 @@ public abstract class AGLEventListener
 		return queue.poll();
 	}
 
+
+	
 }

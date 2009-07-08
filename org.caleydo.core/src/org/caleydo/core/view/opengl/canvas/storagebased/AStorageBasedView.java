@@ -19,6 +19,7 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -40,6 +41,7 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -102,6 +104,7 @@ public abstract class AStorageBasedView
 	protected SelectionCommandListener selectionCommandListener = null;
 	protected RedrawViewListener redrawViewListener = null;
 	protected ClearSelectionsListener clearSelectionsListener = null;
+	protected ReplaceVirtualArrayListener replaceVirtualArrayListener = null;
 
 	/**
 	 * Constructor for storage based views
@@ -122,8 +125,8 @@ public abstract class AStorageBasedView
 
 	/**
 	 * Toggle whether to render the complete dataset (with regards to the filters though) or only contextual
-	 * data This effectively means switching between the {@link EStorageBasedVAType#COMPLETE_SELECTION} and
-	 * {@link EStorageBasedVAType#EXTERNAL_SELECTION}
+	 * data This effectively means switching between the {@link EVAType#COMPLETE_SELECTION} and
+	 * {@link EVAType#EXTERNAL_SELECTION}
 	 */
 	public abstract void renderContext(boolean bRenderContext);
 
@@ -531,6 +534,10 @@ public abstract class AStorageBasedView
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
+
+		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
+		replaceVirtualArrayListener.setHandler(this);
+		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
 	}
 
 	@Override
@@ -556,6 +563,22 @@ public abstract class AStorageBasedView
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
+
+		if (replaceVirtualArrayListener != null) {
+			eventPublisher.removeListener(replaceVirtualArrayListener);
+			replaceVirtualArrayListener = null;
+		}
+	}
+
+	@Override
+	public void replaceVirtualArray(EVAType vaType) {
+		if (vaType == storageVAType)
+			storageVA = useCase.getVA(vaType);
+
+		if (vaType == contentVAType)
+			contentVA = useCase.getVA(vaType);
+
+		initData();
 	}
 
 }

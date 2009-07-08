@@ -520,11 +520,11 @@ public class GLParallelCoordinates
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
 		}
 		else {
 
-			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+			contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -646,34 +646,41 @@ public class GLParallelCoordinates
 		// contentSelectionManager.resetSelectionManager();
 		// storageSelectionManager.resetSelectionManager();
 
-//		if (bRenderOnlyContext) {
-//			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
-//		}
-//		else {
-//		
-//			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
-//		}
-//		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
-		
-		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
-		}
-		else {
-			try {
-				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
-			}
-			catch (NullPointerException e) {
-				contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
-			}
+		// if (bRenderOnlyContext) {
+		// contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
+		// }
+		// else {
+		//		
+		// contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
+		// }
+		// storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
+		if (bRenderOnlyContext)
+			contentVAType = EVAType.EXTERNAL_SELECTION;
+		else
+			contentVAType = EVAType.COMPLETE_SELECTION;
 
-		}
+		contentVA = useCase.getVA(contentVAType);
 
-		try {
-			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_CLUSTERED_SELECTION);
-		}
-		catch (NullPointerException e) {
-			storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
-		}
+		storageVA = useCase.getVA(storageVAType);
+		// if (bRenderOnlyContext) {
+		// contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
+		// }
+		// else {
+		// try {
+		// contentVA = useCase.getVA(EVAType.COMPLETE_CLUSTERED_SELECTION);
+		// }
+		// catch (NullPointerException e) {
+		// contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
+		// }
+		//
+		// }
+		//
+		// try {
+		// storageVA = useCase.getVA(EVAType.STORAGE_CLUSTERED_SELECTION);
+		// }
+		// catch (NullPointerException e) {
+		// storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
+		// }
 
 		initContentVariables();
 
