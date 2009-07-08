@@ -192,9 +192,9 @@ public class CmdCreateGLEventListener
 		this.iParentContainerId = parentCanvasID;
 	}
 	
-	public void setSet(ISet set) {
-		this.set = set;
-	}
+//	public void setSet(ISet set) {
+//		this.set = set;
+//	}
 
 	public void setViewFrustum(ViewFrustum viewFrustum) {
 		this.viewFrustum = viewFrustum;
@@ -220,7 +220,7 @@ public class CmdCreateGLEventListener
 
 		createdObject.getViewCamera().setCameraPosition(cameraOrigin);
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
-		createdObject.setSet(set);
+//		createdObject.setSet(set);
 
 		commandManager.runDoCommand(this);
 	}

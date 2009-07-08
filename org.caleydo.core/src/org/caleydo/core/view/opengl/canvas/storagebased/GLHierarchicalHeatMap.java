@@ -155,7 +155,7 @@ public class GLHierarchicalHeatMap
 	private float fPosCursorLastElement = 0;
 
 	// clustering/grouping stuff
-	private ClusterState clusterstate = new ClusterState();
+	
 
 	private boolean bSplitGroupExp = false;
 	private boolean bSplitGroupGene = false;
@@ -236,7 +236,7 @@ public class GLHierarchicalHeatMap
 
 		// createDendrogram();
 
-		iNumberOfElements = set.getVA(iContentVAID).size();
+		iNumberOfElements = contentVA.size();
 
 		if (iNumberOfElements < MIN_SAMPLES_PER_HEATMAP) {
 			generalManager.getLogger().log(
@@ -433,9 +433,9 @@ public class GLHierarchicalHeatMap
 
 		}
 		else {
-			if (set.getVA(iContentVAID).getGroupList() != null) {
+			if (contentVA.getGroupList() != null) {
 
-				IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+				IGroupList groupList = contentVA.getGroupList();
 				iNrSelBar = groupList.size();
 
 				AlTextures.clear();
@@ -452,14 +452,14 @@ public class GLHierarchicalHeatMap
 
 			else {
 
-				iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size() / iSamplesPerTexture);
+				iNrSelBar = (int) Math.ceil(contentVA.size() / iSamplesPerTexture);
 
 				AlTextures.clear();
 				iAlNumberSamples.clear();
 
 				Texture tempTextur = null;
 
-				int iTextureHeight = set.getVA(iContentVAID).size();
+				int iTextureHeight = contentVA.size();
 
 				iNrSamplesPerTexture = (int) Math.floor(iTextureHeight / iNrSelBar);
 
@@ -487,16 +487,15 @@ public class GLHierarchicalHeatMap
 
 			Texture tempTextur;
 
-			int iTextureHeight = set.getVA(iContentVAID).size();
-			int iTextureWidth = set.getVA(iStorageVAID).size();
+			int iTextureHeight = contentVA.size();
+			int iTextureWidth = storageVA.size();
 
 			float fLookupValue = 0;
 			float fOpacity = 0;
 
 			FloatBuffer FbTemp = BufferUtil.newFloatBuffer(iTextureWidth * iTextureHeight * 4);
 
-			for (Integer iContentIndex : set.getVA(iContentVAID)) {
-				IVirtualArray storageVA = set.getVA(iStorageVAID);
+			for (Integer iContentIndex : contentVA) {
 				for (Integer iStorageIndex : storageVA) {
 					if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
 						fOpacity = 0.3f;
@@ -533,16 +532,16 @@ public class GLHierarchicalHeatMap
 		}
 		else {
 
-			if (set.getVA(iContentVAID).getGroupList() != null) {
+			if (contentVA.getGroupList() != null) {
 
-				IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+				IGroupList groupList = contentVA.getGroupList();
 
 				iNrSelBar = groupList.size();
 				AlTextures.clear();
 				iAlNumberSamples.clear();
 				Texture tempTextur;
-				// int iTextureHeight = set.getVA(iContentVAID).size();
-				int iTextureWidth = set.getVA(iStorageVAID).size();
+				// int iTextureHeight = contentVA.size();
+				int iTextureWidth = storageVA.size();
 
 				float fLookupValue = 0;
 				float fOpacity = 0;
@@ -554,9 +553,8 @@ public class GLHierarchicalHeatMap
 				FloatBuffer FbTemp =
 					BufferUtil.newFloatBuffer(groupList.get(iGroupNr).getNrElements() * iTextureWidth * 4);
 
-				for (Integer iContentIndex : set.getVA(iContentVAID)) {
+				for (Integer iContentIndex : contentVA) {
 					iCount++;
-					IVirtualArray storageVA = set.getVA(iStorageVAID);
 					for (Integer iStorageIndex : storageVA) {
 						if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
 							fOpacity = 0.3f;
@@ -580,9 +578,9 @@ public class GLHierarchicalHeatMap
 
 						TextureData texData =
 							new TextureData(GL.GL_RGBA /* internalFormat */,
-								set.getVA(iStorageVAID).size() /* height */,
+								storageVA.size() /* height */,
 								groupList.get(iGroupNr).getNrElements() /* width */,
-								// set.getVA(iContentVAID).size()/ iNrSelBar /* width */,
+								// contentVA.size()/ iNrSelBar /* width */,
 								0 /* border */, GL.GL_RGBA /* pixelFormat */, GL.GL_FLOAT /* pixelType */,
 								false /* mipmap */, false /* dataIsCompressed */, false /* mustFlipVertically */,
 								FbTemp, null);
@@ -604,15 +602,15 @@ public class GLHierarchicalHeatMap
 				}
 			}
 			else {
-				iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size() / iSamplesPerTexture);
+				iNrSelBar = (int) Math.ceil(contentVA.size() / iSamplesPerTexture);
 
 				AlTextures.clear();
 				iAlNumberSamples.clear();
 
 				Texture tempTextur;
 
-				int iTextureHeight = set.getVA(iContentVAID).size();
-				int iTextureWidth = set.getVA(iStorageVAID).size();
+				int iTextureHeight = contentVA.size();
+				int iTextureWidth = storageVA.size();
 
 				iNrSamplesPerTexture = (int) Math.floor(iTextureHeight / iNrSelBar);
 
@@ -625,9 +623,8 @@ public class GLHierarchicalHeatMap
 				int iCount = 0;
 				int iTextureCounter = 0;
 
-				for (Integer iContentIndex : set.getVA(iContentVAID)) {
+				for (Integer iContentIndex : contentVA) {
 					iCount++;
-					IVirtualArray storageVA = set.getVA(iStorageVAID);
 					for (Integer iStorageIndex : storageVA) {
 						if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
 							fOpacity = 0.3f;
@@ -651,7 +648,7 @@ public class GLHierarchicalHeatMap
 
 						TextureData texData =
 							new TextureData(GL.GL_RGBA /* internalFormat */,
-								set.getVA(iStorageVAID).size() /* height */, set.getVA(iContentVAID).size()
+								storageVA.size() /* height */, contentVA.size()
 									/ iNrSelBar /* width */, 0 /* border */, GL.GL_RGBA /* pixelFormat */,
 								GL.GL_FLOAT /* pixelType */, false /* mipmap */,
 								false /* dataIsCompressed */, false /* mustFlipVertically */, FbTemp, null);
@@ -775,7 +772,7 @@ public class GLHierarchicalHeatMap
 		Set<Integer> setMouseOverElements = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 
 		for (Integer iSelectedID : setMouseOverElements) {
-			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
+			iIndex = contentVA.indexOf(iSelectedID.intValue()) + 1;
 
 			iTemp = iIndex;
 
@@ -802,7 +799,7 @@ public class GLHierarchicalHeatMap
 		Set<Integer> setSelectionElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
 
 		for (Integer iSelectedID : setSelectionElements) {
-			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
+			iIndex = contentVA.indexOf(iSelectedID.intValue()) + 1;
 
 			iTemp = iIndex;
 
@@ -828,7 +825,7 @@ public class GLHierarchicalHeatMap
 
 		Set<Integer> setDeselctedElements = contentSelectionManager.getElements(ESelectionType.DESELECTED);
 		for (Integer iSelectedID : setDeselctedElements) {
-			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
+			iIndex = contentVA.indexOf(iSelectedID.intValue()) + 1;
 
 			iTemp = iIndex;
 
@@ -1057,7 +1054,7 @@ public class GLHierarchicalHeatMap
 		fHeight = viewFrustum.getHeight();
 		fWidth = 0.1f;
 
-		float fHeightElem = fHeight / set.getVA(iContentVAID).size();
+		float fHeightElem = fHeight / contentVA.size();
 
 		float fStep = 0;
 
@@ -1097,12 +1094,12 @@ public class GLHierarchicalHeatMap
 	private void renderClassAssignmentsExperimentsLevel3(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-		int iNrElements = set.getVA(iStorageVAID).size();
+		int iNrElements = storageVA.size();
 		float fWidthSamples = fWidthEHM / iNrElements;
 		float fxpos = fWidth + GAP_LEVEL2_3;
 		float fHeight = viewFrustum.getHeight() + 0.1f;
 
-		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+		IGroupList groupList = storageVA.getGroupList();
 
 		int iNrClasses = groupList.size();
 
@@ -1145,12 +1142,12 @@ public class GLHierarchicalHeatMap
 	private void renderClassAssignmentsExperimentsLevel2(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-		int iNrElements = set.getVA(iStorageVAID).size();
+		int iNrElements = storageVA.size();
 		float fWidthSamples = fWidth / iNrElements;
 		float fxpos = 0;
 		float fHeight = viewFrustum.getHeight() + 0.1f;
 
-		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+		IGroupList groupList = storageVA.getGroupList();
 
 		int iNrClasses = groupList.size();
 
@@ -1196,7 +1193,7 @@ public class GLHierarchicalHeatMap
 		float fHeightSamples = fHeight / iNrElements;
 		float fyPos = fHeight;
 
-		IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+		IGroupList groupList = contentVA.getGroupList();
 
 		int iNrClasses = groupList.size();
 
@@ -1243,7 +1240,7 @@ public class GLHierarchicalHeatMap
 		float fFieldWith = 0.1f;
 		Vec3f startpoint1, endpoint1, startpoint2, endpoint2;
 
-		float fHeightElem = fHeight / set.getVA(iContentVAID).size();
+		float fHeightElem = fHeight / contentVA.size();
 
 		int iStartElem = 0;
 		int iLastElem = 0;
@@ -1294,7 +1291,7 @@ public class GLHierarchicalHeatMap
 		float fHeight = viewFrustum.getHeight();
 		float fBarWidth = 0.1f;
 
-		float fHeightElem = fHeight / set.getVA(iContentVAID).size();
+		float fHeightElem = fHeight / contentVA.size();
 
 		for (HeatMapSelection selection : AlSelection) {
 			if (selection.getSelectionType() == ESelectionType.MOUSE_OVER) {
@@ -1482,7 +1479,7 @@ public class GLHierarchicalHeatMap
 		float fHeightSample = viewFrustum.getHeight() / iAlNumberSamples.get(iSelectorBar - 1);
 		// float fHeightSample = viewFrustum.getHeight() / (iNrSamplesPerTexture);// * 2);
 
-		float fExpWidth = fFieldWith / set.getVA(iStorageVAID).size();
+		float fExpWidth = fFieldWith / storageVA.size();
 
 		gl.glEnable(GL.GL_LINE_STIPPLE);
 		gl.glLineStipple(2, (short) 0xAAAA);
@@ -1490,7 +1487,7 @@ public class GLHierarchicalHeatMap
 		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 		Set<Integer> selectedSet = storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 		int iColumnIndex = 0;
-		for (int iTempLine : set.getVA(iStorageVAID)) {
+		for (int iTempLine : storageVA) {
 			for (Integer iCurrentLine : selectedSet) {
 				if (iTempLine == iCurrentLine) {
 					gl.glBegin(GL.GL_LINE_LOOP);
@@ -1507,7 +1504,7 @@ public class GLHierarchicalHeatMap
 		gl.glColor4fv(SELECTED_COLOR, 0);
 		selectedSet = storageSelectionManager.getElements(ESelectionType.SELECTION);
 		int iLineIndex = 0;
-		for (int iTempLine : set.getVA(iStorageVAID)) {
+		for (int iTempLine : storageVA) {
 			for (Integer iCurrentLine : selectedSet) {
 				if (iTempLine == iCurrentLine) {
 					gl.glBegin(GL.GL_LINE_LOOP);
@@ -1986,7 +1983,7 @@ public class GLHierarchicalHeatMap
 
 		gl.glTranslatef(0.0f, 0.4f, 0);
 
-		if (set.getVA(iContentVAID).getGroupList() != null)
+		if (contentVA.getGroupList() != null)
 			renderClassAssignmentsGenes(gl);
 
 		gl.glTranslatef(0.1f, 0.0f, 0);
@@ -2021,7 +2018,7 @@ public class GLHierarchicalHeatMap
 		renderSelectedElementsTexture(gl);
 		renderCursor(gl);
 
-		if (set.getVA(iStorageVAID).getGroupList() != null) {
+		if (storageVA.getGroupList() != null) {
 			// renderClassAssignmentsExperimentsLevel2(gl);
 			renderClassAssignmentsExperimentsLevel3(gl);
 		}
@@ -2059,7 +2056,7 @@ public class GLHierarchicalHeatMap
 		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
 
-		IVirtualArray currentVirtualArray = set.getVA(iContentVAID);
+		IVirtualArray currentVirtualArray = contentVA;
 		int iIndex = 0;
 
 		int iContentIndex = 0;
@@ -2092,7 +2089,7 @@ public class GLHierarchicalHeatMap
 		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
 
-		IVirtualArray currentVirtualArrayEx = set.getVA(iStorageVAID);
+		IVirtualArray currentVirtualArrayEx = storageVA;
 
 		for (int index = 0; index < currentVirtualArrayEx.size(); index++) {
 			iContentIndex = currentVirtualArrayEx.get(index);
@@ -2134,82 +2131,82 @@ public class GLHierarchicalHeatMap
 	protected void initLists() {
 
 		if (bRenderOnlyContext) {
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
 		}
 		else {
-			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-				initCompleteList();
-			}
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		
+			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
-		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
 
 		// In case of importing group info
 		if (set.isGeneClusterInfo())
-			set.getVA(iContentVAID).setGroupList(set.getGroupListGenes());
+			contentVA.setGroupList(set.getGroupListGenes());
 		if (set.isExperimentClusterInfo())
-			set.getVA(iStorageVAID).setGroupList(set.getGroupListExperiments());
+			storageVA.setGroupList(set.getGroupListExperiments());
 
 		// clustering triggered by StartClusteringAction
 		if (bUseClusteredVA) {
-
-			int iContentVAIDtemp = 0, iStorageVAIDtemp = 0;
-
-			if (bRenderOnlyContext) {
-				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
-			}
-			else {
-				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-					initCompleteList();
-				}
-				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-			}
-			iStorageVAIDtemp = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
-
-			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
-
-				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
-				if (iVAid < 0)
-					iContentVAID = iContentVAIDtemp;
-				else
-					iContentVAID = iVAid;
-
-				iStorageVAID = iStorageVAIDtemp;
-			}
-			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-
-				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
-				if (iVAid < 0)
-					iStorageVAID = iStorageVAIDtemp;
-				else
-					iStorageVAID = iVAid;
-
-				iContentVAID = iContentVAIDtemp;
-			}
-			else {
-
-				boolean bSkipGeneClustering = false;
-
-				clusterstate.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 1);
-				if (iVAid < 0) {
-					iStorageVAID = iStorageVAIDtemp;
-					iContentVAID = iContentVAIDtemp;
-					bSkipGeneClustering = true;
-				}
-				else
-					iStorageVAID = iVAid;
-
-				// in case of user requests abort during experiment clustering do not cluster genes
-				if (bSkipGeneClustering == false) {
-					clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
-					iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate, 50, 1);
-					if (iVAid < 0)
-						iContentVAID = iContentVAIDtemp;
-					else
-						iContentVAID = iVAid;
-				}
-			}
+			
+			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_CLUSTERED_SELECTION);
+// FIXME: Disabled clutering temporarily, move this to UseCase once the new VA stuff works
+//			int iContentVAIDtemp = 0, iStorageVAIDtemp = 0;
+//
+//			if (bRenderOnlyContext) {
+//				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+//			}
+//			else {
+//				if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
+//					initCompleteList();
+//				}
+//				iContentVAIDtemp = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+//			}
+//			iStorageVAIDtemp = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+//
+//			if (clusterstate.getClustererType() == EClustererType.GENE_CLUSTERING) {
+//
+//				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
+//				if (iVAid < 0)
+//					iContentVAID = iContentVAIDtemp;
+//				else
+//					iContentVAID = iVAid;
+//
+//				iStorageVAID = iStorageVAIDtemp;
+//			}
+//			else if (clusterstate.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
+//
+//				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 2);
+//				if (iVAid < 0)
+//					iStorageVAID = iStorageVAIDtemp;
+//				else
+//					iStorageVAID = iVAid;
+//
+//				iContentVAID = iContentVAIDtemp;
+//			}
+//			else {
+//
+//				boolean bSkipGeneClustering = false;
+//
+//				clusterstate.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
+//				int iVAid = set.cluster(iContentVAIDtemp, iStorageVAIDtemp, clusterstate, 0, 1);
+//				if (iVAid < 0) {
+//					iStorageVAID = iStorageVAIDtemp;
+//					iContentVAID = iContentVAIDtemp;
+//					bSkipGeneClustering = true;
+//				}
+//				else
+//					iStorageVAID = iVAid;
+//
+//				// in case of user requests abort during experiment clustering do not cluster genes
+//				if (bSkipGeneClustering == false) {
+//					clusterstate.setClustererType(EClustererType.GENE_CLUSTERING);
+//					iVAid = set.cluster(iContentVAIDtemp, iStorageVAID, clusterstate, 50, 1);
+//					if (iVAid < 0)
+//						iContentVAID = iContentVAIDtemp;
+//					else
+//						iContentVAID = iVAid;
+//				}
+//			}
 
 			AlSelection.clear();
 
@@ -2229,34 +2226,34 @@ public class GLHierarchicalHeatMap
 		//
 		// // In case of importing group info
 		// if (set.isClusterInfo())
-		// set.getVA(iContentVAID).setGroupList(set.getGroupList());
+		// contentVA.setGroupList(set.getGroupList());
 		// }
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
 
-		contentSelectionManager.setVA(set.getVA(iContentVAID));
-		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+		contentSelectionManager.setVA(contentVA);
+		storageSelectionManager.setVA(storageVA);
 
-		int iNumberOfColumns = set.getVA(iContentVAID).size();
-		int iNumberOfRows = set.getVA(iStorageVAID).size();
+		int iNumberOfColumns = contentVA.size();
+		int iNumberOfRows = storageVA.size();
 
 		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
+			storageSelectionManager.initialAdd(storageVA.get(iRowCount));
 
 		}
 
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
+			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
 		}
 
 	}
 
 	@Override
 	public String getShortInfo() {
-		return "Hierarchical Heat Map (" + set.getVA(iContentVAID).size()
-			+ useCase.getContentLabel(false, true) + " / " + set.getVA(iStorageVAID).size() + " experiments)";
+		return "Hierarchical Heat Map (" + contentVA.size()
+			+ useCase.getContentLabel(false, true) + " / " + storageVA.size() + " experiments)";
 	}
 
 	@Override
@@ -2265,12 +2262,12 @@ public class GLHierarchicalHeatMap
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
 		if (bRenderStorageHorizontally) {
-			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(false, true)
-				+ " in columns and " + set.getVA(iStorageVAID).size() + " experiments in rows.\n");
+			sInfoText.append(contentVA.size() + " " + useCase.getContentLabel(false, true)
+				+ " in columns and " + storageVA.size() + " experiments in rows.\n");
 		}
 		else {
-			sInfoText.append(set.getVA(iContentVAID).size() + " " + useCase.getContentLabel(true, true)
-				+ " in rows and " + set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+			sInfoText.append(contentVA.size() + " " + useCase.getContentLabel(true, true)
+				+ " in rows and " + storageVA.size() + " experiments in columns.\n");
 		}
 
 		if (bRenderOnlyContext) {
@@ -2350,7 +2347,7 @@ public class GLHierarchicalHeatMap
 
 		int iTargetIdx = 0;
 
-		int iNrSamples = set.getVA(iStorageVAID).size();
+		int iNrSamples = storageVA.size();
 
 		float fgaps = 0;
 		if (bSkipLevel1)
@@ -2368,7 +2365,7 @@ public class GLHierarchicalHeatMap
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+		IGroupList groupList = storageVA.getGroupList();
 
 		int iNrElementsInGroup = groupList.get(iExpGroupToDrag).getNrElements();
 		float currentWidth = fWidthSample * iNrElementsInGroup;
@@ -2413,7 +2410,7 @@ public class GLHierarchicalHeatMap
 
 		if (glMouseListener.wasMouseReleased()) {
 
-			if (groupList.move(set.getVA(iStorageVAID), iExpGroupToDrag, iTargetIdx) == false)
+			if (groupList.move(storageVA, iExpGroupToDrag, iTargetIdx) == false)
 				System.out.println("Move operation not allowed!");
 
 			bDragDropExpGroup = false;
@@ -2445,7 +2442,7 @@ public class GLHierarchicalHeatMap
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+		IGroupList groupList = contentVA.getGroupList();
 
 		int iNrElementsInGroup = groupList.get(iGeneGroupToDrag).getNrElements();
 		float currentHeight = fHeightSample * iNrElementsInGroup;
@@ -2488,7 +2485,7 @@ public class GLHierarchicalHeatMap
 
 		if (glMouseListener.wasMouseReleased()) {
 
-			if (groupList.move(set.getVA(iContentVAID), iGeneGroupToDrag, iTargetIdx) == false)
+			if (groupList.move(contentVA, iGeneGroupToDrag, iTargetIdx) == false)
 				System.out.println("Move operation not allowed!");
 
 			bDragDropGeneGroup = false;
@@ -2522,7 +2519,7 @@ public class GLHierarchicalHeatMap
 			float fYPosRelease = fArTargetWorldCoordinates[1] - 0.4f;
 
 			float fHeight = viewFrustum.getHeight() - 0.6f;
-			int iNrSamples = set.getVA(iContentVAID).size();
+			int iNrSamples = contentVA.size();
 			float fHeightSample = fHeight / iNrSamples;
 
 			int iFirstSample = iNrSamples - (int) Math.floor(fYPosDrag / fHeightSample);
@@ -2531,7 +2528,7 @@ public class GLHierarchicalHeatMap
 			// System.out.println("von: " + fYPosDrag + " bis: " + fYPosRelease);
 			// System.out.println("von: " + iFirstSample + " bis: " + iLastSample);
 
-			if (set.getVA(iContentVAID).getGroupList().split(iGroupToSplit, iFirstSample, iLastSample) == false)
+			if (contentVA.getGroupList().split(iGroupToSplit, iFirstSample, iLastSample) == false)
 				System.out.println("Operation not allowed!!");
 		}
 	}
@@ -2560,13 +2557,13 @@ public class GLHierarchicalHeatMap
 			float fXPosRelease = fArTargetWorldCoordinates[0] - 0.7f;
 
 			float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-			int iNrSamples = set.getVA(iStorageVAID).size();
+			int iNrSamples = storageVA.size();
 			float fWidthSample = fWidth / iNrSamples;
 
 			int iFirstSample = (int) Math.floor(fXPosDrag / fWidthSample);
 			int iLastSample = (int) Math.ceil(fXPosRelease / fWidthSample);
 
-			if (set.getVA(iStorageVAID).getGroupList().split(iGroupToSplit, iLastSample, iFirstSample) == false)
+			if (storageVA.getGroupList().split(iGroupToSplit, iLastSample, iFirstSample) == false)
 				System.out.println("Operation not allowed!!");
 		}
 	}
@@ -2696,7 +2693,7 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 
 					case CLICKED:
-						set.getVA(iContentVAID).getGroupList().get(iExternalID).toggleSelectionType();
+						contentVA.getGroupList().get(iExternalID).toggleSelectionType();
 						setDisplayListDirty();
 						break;
 
@@ -2724,7 +2721,7 @@ public class GLHierarchicalHeatMap
 						boolean bEnableMerge = false;
 						int iNrSelectedGroups = 0;
 
-						IGroupList tempGroupList = set.getVA(iContentVAID).getGroupList();
+						IGroupList tempGroupList = contentVA.getGroupList();
 
 						for (Group group : tempGroupList) {
 							if (group.getSelectionType() == ESelectionType.SELECTION)
@@ -2755,7 +2752,7 @@ public class GLHierarchicalHeatMap
 					case MOUSE_OVER:
 						// System.out.print("genes group " + iExternalID);
 						// System.out.print(" number elements in group: ");
-						// System.out.println(set.getVA(iContentVAID).getGroupList().get(iExternalID)
+						// System.out.println(contentVA.getGroupList().get(iExternalID)
 						// .getNrElements());
 						// setDisplayListDirty();
 						break;
@@ -2766,7 +2763,7 @@ public class GLHierarchicalHeatMap
 			case HIER_HEAT_MAP_EXPERIMENTS_GROUP:
 				switch (pickingMode) {
 					case CLICKED:
-						set.getVA(iStorageVAID).getGroupList().get(iExternalID).toggleSelectionType();
+						storageVA.getGroupList().get(iExternalID).toggleSelectionType();
 						setDisplayListDirty();
 						break;
 
@@ -2794,7 +2791,7 @@ public class GLHierarchicalHeatMap
 						boolean bEnableMerge = false;
 						int iNrSelectedGroups = 0;
 
-						IGroupList tempGroupList = set.getVA(iStorageVAID).getGroupList();
+						IGroupList tempGroupList = storageVA.getGroupList();
 
 						for (Group group : tempGroupList) {
 							if (group.getSelectionType() == ESelectionType.SELECTION)
@@ -2825,7 +2822,7 @@ public class GLHierarchicalHeatMap
 					case MOUSE_OVER:
 						// System.out.print("patients group " + iExternalID);
 						// System.out.print(" number elements in group: ");
-						// System.out.println(set.getVA(iStorageVAID).getGroupList().get(iExternalID)
+						// System.out.println(storageVA.getGroupList().get(iExternalID)
 						// .getNrElements());
 						// setDisplayListDirty();
 						break;
@@ -3019,15 +3016,15 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setDisplayListDirty();
 
 		// group/cluster selections
-		if (set.getVA(iStorageVAID).getGroupList() != null) {
-			IGroupList groupList = set.getVA(iStorageVAID).getGroupList();
+		if (storageVA.getGroupList() != null) {
+			IGroupList groupList = storageVA.getGroupList();
 
 			for (Group group : groupList)
 				group.setSelectionType(ESelectionType.NORMAL);
 		}
-		if (set.getVA(iContentVAID).getGroupList() != null) {
+		if (contentVA.getGroupList() != null) {
 
-			IGroupList groupList = set.getVA(iContentVAID).getGroupList();
+			IGroupList groupList = contentVA.getGroupList();
 
 			for (Group group : groupList)
 				group.setSelectionType(ESelectionType.NORMAL);
@@ -3052,14 +3049,15 @@ public class GLHierarchicalHeatMap
 
 	public void startClustering(ClusterState clusterState) {
 
-		this.clusterstate = clusterState;
+		useCase.cluster(clusterState);
+//		this.clusterstate = clusterState;
 
 		// int iNrElem = 0;
 		//
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// iNrElem = set.getVA(iContentVAID).size();
+		// iNrElem = contentVA.size();
 		// else
-		// iNrElem = set.getVA(iStorageVAID).size();
+		// iNrElem = storageVA.size();
 		//
 		// if (iNrElem > 1000) {
 		//
@@ -3085,18 +3083,18 @@ public class GLHierarchicalHeatMap
 
 	private void activateGroupHandling() {
 
-		if (set.getVA(iContentVAID).getGroupList() == null) {
+		if (contentVA.getGroupList() == null) {
 			IGroupList groupList = new GroupList(0);
-			Group group = new Group(set.getVA(iContentVAID).size(), false, 0, ESelectionType.NORMAL);
+			Group group = new Group(contentVA.size(), false, 0, ESelectionType.NORMAL);
 			groupList.append(group);
-			set.getVA(iContentVAID).setGroupList(groupList);
+			contentVA.setGroupList(groupList);
 		}
 
-		if (set.getVA(iStorageVAID).getGroupList() == null) {
+		if (storageVA.getGroupList() == null) {
 			IGroupList groupList = new GroupList(0);
-			Group group = new Group(set.getVA(iStorageVAID).size(), false, 0, ESelectionType.NORMAL);
+			Group group = new Group(storageVA.size(), false, 0, ESelectionType.NORMAL);
 			groupList.append(group);
-			set.getVA(iStorageVAID).setGroupList(groupList);
+			storageVA.setGroupList(groupList);
 		}
 
 		setDisplayListDirty();
@@ -3222,14 +3220,14 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void handleInterchangeGroups(boolean bGeneGroup) {
-		int iVAId = 0;
+		IVirtualArray va;
 
 		if (bGeneGroup)
-			iVAId = iContentVAID;
+			va = contentVA;
 		else
-			iVAId = iStorageVAID;
+			va = storageVA;
 
-		IGroupList groupList = set.getVA(iVAId).getGroupList();
+		IGroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -3248,7 +3246,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		// interchange
-		if (groupList.interchange(set.getVA(iVAId), selGroups.get(0), selGroups.get(1)) == false) {
+		if (groupList.interchange(va, selGroups.get(0), selGroups.get(1)) == false) {
 			System.out.println("Problem during interchange!!!");
 			return;
 		}
@@ -3261,14 +3259,14 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void handleMergeGroups(boolean bGeneGroup) {
-		int iVAId = 0;
+		IVirtualArray va;
 
 		if (bGeneGroup)
-			iVAId = iContentVAID;
+			va = contentVA;
 		else
-			iVAId = iStorageVAID;
+			va = storageVA;
 
-		IGroupList groupList = set.getVA(iVAId).getGroupList();
+		IGroupList groupList = va.getGroupList();
 
 		ArrayList<Integer> selGroups = new ArrayList<Integer>();
 
@@ -3288,7 +3286,7 @@ public class GLHierarchicalHeatMap
 			int iLastSelected = selGroups.size() - 1;
 
 			// merge last and the one before last
-			if (groupList.merge(set.getVA(iVAId), selGroups.get(iLastSelected - 1), selGroups
+			if (groupList.merge(va, selGroups.get(iLastSelected - 1), selGroups
 				.get(iLastSelected)) == false) {
 				System.out.println("Problem during merge!!!");
 				return;

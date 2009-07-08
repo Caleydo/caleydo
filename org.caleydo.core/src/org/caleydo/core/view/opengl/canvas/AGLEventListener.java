@@ -16,6 +16,7 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -125,12 +126,14 @@ public abstract class AGLEventListener
 	/**
 	 * The id of the virtual array that manages the contents (the indices) in the storages
 	 */
-	protected int iContentVAID = -1;
+//	protected int iContentVAID = -1;
+	protected IVirtualArray contentVA;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
 	 */
-	protected int iStorageVAID = -1;
+//	protected int iStorageVAID = -1;
+	protected IVirtualArray storageVA;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote
@@ -614,12 +617,12 @@ public abstract class AGLEventListener
 		return fAspectRatio;
 	}
 
-	public final int getContentVAID() {
-		return iContentVAID;
+	public final IVirtualArray getContentVA() {
+		return contentVA;
 	}
 
-	public final int getStorageVAID() {
-		return iStorageVAID;
+	public final IVirtualArray getStorageVA() {
+		return storageVA;
 	}
 
 	public final EDetailLevel getDetailLevel() {

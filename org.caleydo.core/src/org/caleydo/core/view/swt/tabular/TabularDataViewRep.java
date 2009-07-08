@@ -1,11 +1,8 @@
 package org.caleydo.core.view.swt.tabular;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -27,9 +24,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -81,11 +76,6 @@ public class TabularDataViewRep
 	IViewCommandHandler, IView, ISWTView {
 
 	/**
-	 * map selection type to unique id for virtual array
-	 */
-	protected EnumMap<EStorageBasedVAType, Integer> mapVAIDs;
-
-	/**
 	 * This manager is responsible for the content in the storages (the indices)
 	 */
 	protected GenericSelectionManager contentSelectionManager;
@@ -96,14 +86,14 @@ public class TabularDataViewRep
 	protected GenericSelectionManager storageSelectionManager;
 
 	/**
-	 * The id of the virtual array that manages the contents (the indices) in the storages
+	 * The virtual array that manages the contents (the indices) in the storages
 	 */
-	protected int iContentVAID = -1;
+	protected IVirtualArray contentVA;
 
 	/**
-	 * The id of the virtual array that manages the storage references in the set
+	 * The virtual array that manages the storage references in the set
 	 */
-	protected int iStorageVAID = -1;
+	protected IVirtualArray storageVA;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -139,8 +129,6 @@ public class TabularDataViewRep
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
-		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
-
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
@@ -165,131 +153,39 @@ public class TabularDataViewRep
 
 	public void initData() {
 
-		String sLevel =
-			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
-		if (sLevel.equals("complete")) {
-			dataFilterLevel = EDataFilterLevel.COMPLETE;
-		}
-		else if (sLevel.equals("only_mapping")) {
-			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		}
-		else if (sLevel.equals("only_context")) {
-			// Only apply only_context when pathways are loaded
-			if (GeneralManager.get().getPathwayManager().size() > 100) {
-				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-			}
-			else {
-				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-			}
-		}
-		else
-			throw new IllegalStateException("Unknown data filter level");
-
-		if (!mapVAIDs.isEmpty()) {
-
-			// This should be done once we get some thread safety, memory leak,
-			// and a big one
-
-			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
-				if (mapVAIDs.containsKey(eSelectionType)) {
-					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
-				}
-			}
-			iContentVAID = -1;
-			iStorageVAID = -1;
-			mapVAIDs.clear();
-		}
+		
+		
 
 		if (set == null) {
-			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
 			return;
 		}
 
-		ArrayList<Integer> alTempList = new ArrayList<Integer>();
-		// create VA with empty list
-		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
+		contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
 
-		alTempList = new ArrayList<Integer>();
-
-		for (int iCount = 0; iCount < set.size(); iCount++) {
-			alTempList.add(iCount);
-		}
-
-		iVAID = set.createSetVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
-
-		// Set<Integer> setMouseOver = storageSelectionManager
-		// .getElements(ESelectionType.MOUSE_OVER);
-
-		if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-			initCompleteList();
-		}
-		iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-
-		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
 
-		contentSelectionManager.setVA(set.getVA(iContentVAID));
-		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+		contentSelectionManager.setVA(contentVA);
+		storageSelectionManager.setVA(storageVA);
 
-		int iNumberOfColumns = set.getVA(iContentVAID).size();
-		int iNumberOfRows = set.getVA(iStorageVAID).size();
+		int iNumberOfColumns = contentVA.size();
+		int iNumberOfRows = storageVA.size();
 
 		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++) {
-			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
+			storageSelectionManager.initialAdd(storageVA.get(iRowCount));
 
 		}
 
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
-			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
+			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
 		}
 	}
 
-	/**
-	 * Initializes a virtual array with all elements, according to the data filters, as defined in
-	 * {@link EDataFilterLevel}.
-	 */
-	protected final void initCompleteList() {
-		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
-
-		for (int iCount = 0; iCount < set.depth(); iCount++) {
-			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA
-				&& dataFilterLevel != EDataFilterLevel.COMPLETE) {
-				// Here we get mapping data for all values
-				// FIXME: not general, only for genes
-				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
-
-				if (iDavidID == -1) {
-					// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					// "Cannot resolve gene to DAVID ID!"));
-					continue;
-				}
-
-				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-					// Here all values are contained within pathways as well
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-						generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
-
-					if (tmpPathwayVertexGraphItem == null) {
-						continue;
-					}
-				}
-			}
-			alTempList.add(iCount);
-		}
-
-		// TODO: remove possible old virtual array
-		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
-
-	}
 
 	private void createPreviewTable() {
 		Composite labelTableComposite = new Composite(composite, SWT.NULL);
@@ -494,7 +390,7 @@ public class TabularDataViewRep
 			column.setWidth(110);
 		}
 		else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
-			
+
 			column = new TableColumn(labelTable, SWT.NONE);
 			column.setText("ID");
 			column.setWidth(200);
@@ -508,8 +404,8 @@ public class TabularDataViewRep
 				+ GeneralManager.get().getUseCase().getUseCaseMode()
 				+ " is not implemented in the tabular data viewer.");
 		}
-		
-		for (final Integer iStorageIndex : set.getVA(iStorageVAID)) {
+
+		for (final Integer iStorageIndex : storageVA) {
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText(set.get(iStorageIndex).getLabel());
 			column.setWidth(120);
@@ -533,9 +429,7 @@ public class TabularDataViewRep
 
 		// iArCurrentColumnOrder = contentTable.getColumnOrder();
 
-		IVirtualArray storageVA = set.getVA(iStorageVAID);
-
-		for (Integer iContentIndex : set.getVA(iContentVAID)) {
+		for (Integer iContentIndex : contentVA) {
 			// line number
 			item = new TableItem(labelTable, SWT.NONE);
 			// item.setData(iContentIndex);
@@ -565,7 +459,8 @@ public class TabularDataViewRep
 			}
 			else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
 
-				item.setText(1, (String)idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex));
+				item.setText(1, (String) idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
+					iContentIndex));
 			}
 			else {
 				throw new IllegalStateException("The use case type "
@@ -597,8 +492,8 @@ public class TabularDataViewRep
 				contentTable.setSelection(iRowIndex);
 				labelTable.setSelection(iRowIndex);
 
-				int iRefSeqID = set.getVA(iContentVAID).get(iRowIndex);
-				int iStorageIndex = set.getVA(iStorageVAID).get(iColIndex);
+				int iRefSeqID = contentVA.get(iRowIndex);
+				int iStorageIndex = storageVA.get(iColIndex);
 
 				triggerStorageSelectionEvent(iStorageIndex, ESelectionType.SELECTION);
 				triggerContentSelectionEvent(iRefSeqID, ESelectionType.SELECTION);
@@ -616,12 +511,12 @@ public class TabularDataViewRep
 		data.grabExcessVerticalSpace = false;
 		storageRemoverTable.setLayoutData(data);
 
-		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++) {
+		for (int iStorageIndex = 0; iStorageIndex < storageVA.size(); iStorageIndex++) {
 			column = new TableColumn(storageRemoverTable, SWT.NONE);
 			column.setWidth(120);
 		}
 		item = new TableItem(storageRemoverTable, SWT.NONE);
-		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++) {
+		for (int iStorageIndex = 0; iStorageIndex < storageVA.size(); iStorageIndex++) {
 			item.setText(iStorageIndex, "");
 		}
 
@@ -727,7 +622,7 @@ public class TabularDataViewRep
 				Iterator<Integer> iterContentIndex =
 					contentSelectionManager.getElements(ESelectionType.SELECTION).iterator();
 				while (iterContentIndex.hasNext()) {
-					int iRowIndex = set.getVA(iContentVAID).indexOf(iterContentIndex.next());
+					int iRowIndex = contentVA.indexOf(iterContentIndex.next());
 					int iColIndex = contentTableCursor.getColumn();
 					contentTableCursor.setSelection(iRowIndex, iColIndex);
 					contentTable.select(iRowIndex);
@@ -784,7 +679,7 @@ public class TabularDataViewRep
 
 		contentSelectionManager.clearSelection(eSelectionType);
 		contentSelectionManager.addToType(eSelectionType, (Integer) iContentIndex);
-		
+
 		if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 			// Resolve multiple spotting on chip and add all to the
 			// selection manager.
@@ -793,7 +688,7 @@ public class TabularDataViewRep
 			for (Object iExpressionIndex : idMappingManager.getMultiID(
 				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
 				contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
-			}			
+			}
 		}
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
@@ -829,7 +724,7 @@ public class TabularDataViewRep
 		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
 			"resources/icons/view/tabular/remove.png"));
-		lblRemove.setData(set.getVA(iContentVAID).get(iRowIndex));
+		lblRemove.setData(contentVA.get(iRowIndex));
 
 		// Only one remove icon should be shown at a time
 		if (lastRemoveContent != null) {
@@ -847,7 +742,6 @@ public class TabularDataViewRep
 			public void mouseDown(MouseEvent e) {
 				Integer iExpressionIndex = (Integer) lblRemove.getData();
 
-				IVirtualArray contentVA = set.getVA(iContentVAID);
 				contentVA.remove(iExpressionIndex);
 
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
@@ -872,7 +766,7 @@ public class TabularDataViewRep
 		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_LIST_SELECTION));
 		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
 			"resources/icons/view/tabular/remove.png"));
-		lblRemove.setData(set.getVA(iStorageVAID).get(iStorageIndex));
+		lblRemove.setData(storageVA.get(iStorageIndex));
 
 		// Only one remove icon should be shown at a time
 		if (lastRemoveStorage != null) {
@@ -890,7 +784,6 @@ public class TabularDataViewRep
 			public void mouseDown(MouseEvent e) {
 				Integer iStorageIndex = (Integer) lblRemove.getData();
 
-				IVirtualArray storageVA = set.getVA(iStorageVAID);
 				storageVA.remove(iStorageIndex);
 
 				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);

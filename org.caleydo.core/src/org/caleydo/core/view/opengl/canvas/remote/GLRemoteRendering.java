@@ -335,11 +335,12 @@ public class GLRemoteRendering
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, null, -1);
-		cmdCreateGLView.setSet(set);
+//		cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
 		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
 		glSelectionHeatMap.setUseCase(useCase);
+		glSelectionHeatMap.setSet(set);
 		glSelectionHeatMap.initData();
 
 		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
@@ -2591,14 +2592,16 @@ public class GLRemoteRendering
 		ECommandType cmdType = serView.getCreationCommandType();
 		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) cm.createCommandByType(cmdType);
 		cmdView.setAttributesFromSerializedForm(serView);
-		cmdView.setSet(set);
+//		cmdView.setSet(set);
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
 		useCase.addView(glView);
 		glView.setUseCase(useCase);
 		glView.setRenderedRemote(true);
-		glView.initData();
+		glView.setSet(set);
+		
+		
 
 		if (glView instanceof GLPathway) {
 			initializePathwayView((GLPathway) glView);

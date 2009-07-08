@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  */
 
 public interface IGroupList
-	extends Iterable<Group> {
+	extends Iterable<Group>, Cloneable {
 
 	/**
 	 * Returns an Iterator<Group> of type GroupIterator, which allows to iterate over the group list
@@ -218,5 +218,7 @@ public interface IGroupList
 	 * @return true or false
 	 */
 	public boolean containsElement(Group element);
+
+	public IGroupList clone();
 
 }

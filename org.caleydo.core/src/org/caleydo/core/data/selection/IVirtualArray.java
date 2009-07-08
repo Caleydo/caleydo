@@ -13,7 +13,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  * @author Alexander Lex
  */
 public interface IVirtualArray
-	extends Iterable<Integer>, IUniqueObject {
+	extends Iterable<Integer>, IUniqueObject, Cloneable {
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array
 	 */
@@ -226,5 +226,12 @@ public interface IVirtualArray
 	 * @return true if operation executed correctly otherwise false
 	 */
 	public boolean setGroupList(IGroupList groupList);
+
+	/**
+	 * 
+	 * @return
+	 */
+	public IVirtualArray clone(); 
+
 
 }

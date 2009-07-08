@@ -24,7 +24,7 @@ public class VirtualArray
 	ArrayList<Integer> iAlVirtualArray;
 
 	IGroupList iGroupList = null;
-	
+
 	int iLength;
 	/**
 	 * Used to check whether elements to be removed are in descending order
@@ -270,9 +270,9 @@ public class VirtualArray
 
 	@Override
 	public IGroupList newGroupList() {
-		
+
 		this.iGroupList = new GroupList(this.size());
-		
+
 		return iGroupList;
 	}
 
@@ -280,8 +280,25 @@ public class VirtualArray
 	public boolean setGroupList(IGroupList groupList) {
 
 		this.iGroupList = groupList;
-		
+
 		return true;
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public IVirtualArray clone() {
+		VirtualArray va;
+		try {
+			va = (VirtualArray) super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
+		}
+		va.iLength = iLength;
+		va.iAlVirtualArray = (ArrayList<Integer>) iAlVirtualArray.clone();
+		if (iGroupList != null)
+			va.setGroupList(iGroupList.clone());
+		va.iLastRemovedIndex = iLastRemovedIndex;
+		return va;
+	}
 }

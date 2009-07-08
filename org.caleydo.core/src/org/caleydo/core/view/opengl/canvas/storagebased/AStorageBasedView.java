@@ -55,12 +55,7 @@ public abstract class AStorageBasedView
 	implements ISelectionUpdateHandler, IVirtualArrayUpdateHandler, ISelectionCommandHandler,
 	IViewCommandHandler {
 
-	/**
-	 * map selection type to unique id for virtual array
-	 */
-	protected EnumMap<EStorageBasedVAType, Integer> mapVAIDs;
-
-	protected ArrayList<Boolean> alUseInRandomSampling;
+	// protected ArrayList<Boolean> alUseInRandomSampling;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -118,8 +113,6 @@ public abstract class AStorageBasedView
 	protected AStorageBasedView(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
-		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
-
 		connectedElementRepresentationManager =
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
@@ -149,59 +142,13 @@ public abstract class AStorageBasedView
 
 		bRenderOnlyContext = bIsRenderedRemote;
 
-		String sLevel =
-			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
-		if (sLevel.equals("complete")) {
-			dataFilterLevel = EDataFilterLevel.COMPLETE;
-		}
-		else if (sLevel.equals("only_mapping")) {
-			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		}
-		else if (sLevel.equals("only_context")) {
-			// Only apply only_context when pathways are loaded
-			if (GeneralManager.get().getPathwayManager().size() > 100) {
-				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-			}
-			else {
-				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-			}
-		}
-		else
-			throw new IllegalStateException("Unknown data filter level");
-
-		if (!mapVAIDs.isEmpty()) {
-
-			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values()) {
-				if (mapVAIDs.containsKey(eSelectionType)) {
-					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
-				}
-			}
-			iContentVAID = -1;
-			iStorageVAID = -1;
-			mapVAIDs.clear();
-		}
-
+		// TODO: do we need this here?
 		if (set == null) {
-			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
 			connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 			return;
 		}
-
-		ArrayList<Integer> alTempList = new ArrayList<Integer>();
-		// create VA with empty list
-		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
-
-		alTempList = new ArrayList<Integer>();
-
-		for (int iCount = 0; iCount < set.size(); iCount++) {
-			alTempList.add(iCount);
-		}
-
-		iVAID = set.createSetVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
 
 		initLists();
 	}
@@ -210,62 +157,44 @@ public abstract class AStorageBasedView
 	 * Initializes a virtual array with all elements, according to the data filters, as defined in
 	 * {@link EDataFilterLevel}.
 	 */
-	protected final void initCompleteList() {
-		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
-
-		for (int iCount = 0; iCount < set.depth(); iCount++) {
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE
-				&& set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-
-				// Here we get mapping data for all values
-				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
-
-				if (iDavidID == -1) {
-					// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					// "Cannot resolve gene to DAVID ID!"));
-					continue;
-				}
-
-				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-					// Here all values are contained within pathways as well
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-						generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
-
-					if (tmpPathwayVertexGraphItem == null) {
-						continue;
-					}
-				}
-			}
-
-			alTempList.add(iCount);
-		}
-
-		if (bUseRandomSampling) {
-			alUseInRandomSampling = new ArrayList<Boolean>();
-			int iCount = 0;
-			for (; iCount < iNumberOfRandomElements; iCount++) {
-				alUseInRandomSampling.add(true);
-			}
-			for (; iCount < alTempList.size(); iCount++) {
-				alUseInRandomSampling.add(false);
-			}
-			Collections.shuffle(alUseInRandomSampling);
-			// if (alTempList.size() > iNumberOfRandomElements)
-			// {
-			// ArrayList<Integer> alNewList = new ArrayList<Integer>();
-			// alNewList.addAll(alTempList.subList(0, iNumberOfRandomElements));
-			// alTempList = alNewList;
-			// }
-
-		}
-
-		// TODO: remove possible old virtual array
-		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
-
-		setDisplayListDirty();
-	}
+	// protected final void initCompleteList() {
+	// // initialize virtual array that contains all (filtered) information
+	// ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
+	//
+	// for (int iCount = 0; iCount < set.depth(); iCount++) {
+	// if (dataFilterLevel != EDataFilterLevel.COMPLETE
+	// && set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+	//
+	// // Here we get mapping data for all values
+	// int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
+	//
+	// if (iDavidID == -1) {
+	// // generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+	// // "Cannot resolve gene to DAVID ID!"));
+	// continue;
+	// }
+	//
+	// if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
+	// // Here all values are contained within pathways as well
+	// PathwayVertexGraphItem tmpPathwayVertexGraphItem =
+	// generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
+	//
+	// if (tmpPathwayVertexGraphItem == null) {
+	// continue;
+	// }
+	// }
+	// }
+	//
+	// alTempList.add(iCount);
+	// }
+	//
+	//
+	// // TODO: remove possible old virtual array
+	// int iVAID = set.createStorageVA(alTempList);
+	// mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
+	//
+	// setDisplayListDirty();
+	// }
 
 	/**
 	 * View specific data initialization
@@ -522,7 +451,6 @@ public abstract class AStorageBasedView
 		// TODO, probably do this with initCompleteList, take care of selection
 		// manager though
 		initData();
-		initCompleteList();
 	}
 
 	/**

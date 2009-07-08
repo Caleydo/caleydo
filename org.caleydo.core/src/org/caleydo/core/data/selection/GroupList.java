@@ -359,4 +359,18 @@ public class GroupList
 		}
 		return true;
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public IGroupList clone() {
+		GroupList groupList;
+		try {
+			groupList = (GroupList) super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
+		}
+		groupList.iAlGroup = (ArrayList<Group>)iAlGroup.clone();
+		return groupList;
+	}
 }

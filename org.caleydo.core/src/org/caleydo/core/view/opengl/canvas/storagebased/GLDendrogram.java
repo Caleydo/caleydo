@@ -804,9 +804,9 @@ public class GLDendrogram
 		}
 
 		if (bRenderGeneTree)
-			set.getVA(iContentVAID).setGroupList(groupList);
+			contentVA.setGroupList(groupList);
 		else
-			set.getVA(iStorageVAID).setGroupList(groupList);
+			storageVA.setGroupList(groupList);
 
 	}
 
@@ -1049,19 +1049,17 @@ public class GLDendrogram
 	@Override
 	protected void initLists() {
 		if (bRenderOnlyContext) {
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
 		}
 		else {
-			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION)) {
-				initCompleteList();
-			}
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+			
+			contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
 
 		}
-		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+		storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
 
-		contentSelectionManager.setVA(set.getVA(iContentVAID));
-		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+		contentSelectionManager.setVA(contentVA);
+		storageSelectionManager.setVA(storageVA);
 	}
 
 	/**
@@ -1087,7 +1085,7 @@ public class GLDendrogram
 					contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
-					iIndex = set.getVA(iContentVAID).indexOf(iSelectedID);
+					iIndex = contentVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.MOUSE_OVER);
 				}
@@ -1096,7 +1094,7 @@ public class GLDendrogram
 					contentSelectionManager.getElements(ESelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 
-					iIndex = set.getVA(iContentVAID).indexOf(iSelectedID);
+					iIndex = contentVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}
@@ -1119,7 +1117,7 @@ public class GLDendrogram
 				Set<Integer> setMouseOverElements =
 					storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
-					iIndex = set.getVA(iStorageVAID).indexOf(iSelectedID);
+					iIndex = storageVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.MOUSE_OVER);
 				}
@@ -1127,7 +1125,7 @@ public class GLDendrogram
 				Set<Integer> setSelectionElements =
 					storageSelectionManager.getElements(ESelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
-					iIndex = set.getVA(iStorageVAID).indexOf(iSelectedID);
+					iIndex = storageVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}

@@ -47,22 +47,22 @@ public class SetExporter {
 			if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 				if ((view instanceof GLParallelCoordinates || view instanceof GLHeatMap)
 					&& view.isRenderedRemote()) {
-					contentVA = set.getVA(view.getContentVAID());
-					storageVA = set.getVA(view.getStorageVAID());
+					contentVA = view.getContentVA();
+					storageVA = view.getStorageVA();
 					break;
 				}
 			}
 			else if (eWhichViewToExport == EWhichViewToExport.PARALLEL_COORDINATES) {
 				if (!view.isRenderedRemote() && view instanceof GLParallelCoordinates) {
-					contentVA = set.getVA(view.getContentVAID());
-					storageVA = set.getVA(view.getStorageVAID());
+					contentVA = view.getContentVA();
+					storageVA = view.getStorageVA();
 					break;
 				}
 			}
 			else if (eWhichViewToExport == EWhichViewToExport.HEAT_MAP) {
 				if (!view.isRenderedRemote() && view instanceof GLHierarchicalHeatMap) {
-					contentVA = set.getVA(view.getContentVAID());
-					storageVA = set.getVA(view.getStorageVAID());
+					contentVA = view.getContentVA();
+					storageVA = view.getStorageVA();
 					break;
 				}
 			}
@@ -115,7 +115,7 @@ public class SetExporter {
 					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
 					out.print("\t");
 				}
-				
+
 				// export partitional cluster info for genes/entities
 				if (contentVA.getGroupList() != null) {
 					if (cnt == contentVA.getGroupList().get(cluster).getNrElements() - 1) {

@@ -56,6 +56,7 @@ public class Application
 
 	public static boolean bIsWebstart = false;
 	public static boolean bDoExit = false;
+	public static boolean isStartedFromXML = false;
 
 	// The command line arguments overrules the preference store
 	public static boolean bLoadPathwayData = true;
@@ -194,6 +195,7 @@ public class Application
 		else {
 			// Assuming that if an external XML file is provided, the genetic use case applies
 			GeneralManager.get().setUseCase(new GeneticUseCase());
+			isStartedFromXML = true;
 		}
 
 		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
@@ -238,9 +240,9 @@ public class Application
 		catch (IOException e) {
 			throw new IllegalStateException("Unable to save preference file.");
 		}
-		
+
 		GeneralManager.get().getViewGLCanvasManager().stopAnimator();
-		
+
 		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, "Bye bye!"));
 		// display.dispose();
 	}
@@ -287,6 +289,12 @@ public class Application
 				bDoExit = true;
 			}
 		}
+
+		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
+		// nicest place to do this. 
+		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
+		if (isStartedFromXML)
+			GeneralManager.get().getUseCase().updateSetInViews();
 
 		initializeColorMapping();
 

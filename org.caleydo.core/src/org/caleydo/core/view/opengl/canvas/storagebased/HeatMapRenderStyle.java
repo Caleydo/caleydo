@@ -76,10 +76,10 @@ public class HeatMapRenderStyle
 	public void updateFieldSizesnofish()
 	{
 		fSelectedFieldWidth =
-			getRenderWidth() / heatMap.getSet().getVA(heatMap.getContentVAID()).size();
+			getRenderWidth() / heatMap.getContentVA().size();
 		fNormalFieldWidth = fSelectedFieldWidth;
 		
-		fFieldHeight = getRenderHeight() / heatMap.getSet().getVA(heatMap.getStorageVAID()).size();
+		fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class HeatMapRenderStyle
 		int iNumberSelected = heatMap.contentSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
 		iNumberSelected += heatMap.contentSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
 
-		int iNumberTotal = heatMap.getSet().getVA(heatMap.getContentVAID()).size();
+		int iNumberTotal = heatMap.getContentVA().size();
 
 		float fSelecteFieldWidthPercentage = SELECTED_FIELD_WIDTH_PERCENTAGE;
 		if (iNumberSelected > 0 && SELECTED_FIELD_WIDTH_PERCENTAGE * iNumberSelected > 1) {
@@ -105,7 +105,7 @@ public class HeatMapRenderStyle
 			fNormalFieldWidth =
 				(getRenderWidth() - iNumberSelected * fSelectedFieldWidth) / (iNumberTotal - iNumberSelected);
 
-			fFieldHeight = getRenderHeight() / heatMap.getSet().getVA(heatMap.getStorageVAID()).size();
+			fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
 		}
 		else {
 			if (heatMap.listModeEnabled) {
@@ -123,7 +123,7 @@ public class HeatMapRenderStyle
 					(getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
 						/ (iNumberTotal - iNumberSelected);
 			}
-			fFieldHeight = getRenderWidth() / heatMap.getSet().getVA(heatMap.getStorageVAID()).size();
+			fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
 
 		}
 

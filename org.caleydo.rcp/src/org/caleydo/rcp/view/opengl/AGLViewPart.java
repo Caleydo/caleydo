@@ -112,6 +112,7 @@ public abstract class AGLViewPart
 		createPartControlGL();
 
 		glView.setUseCase(useCase);
+		glView.setSet(set);
 				
 		useCase.addView(glView);
 		
