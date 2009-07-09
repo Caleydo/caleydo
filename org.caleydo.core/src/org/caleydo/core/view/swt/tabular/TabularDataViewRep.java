@@ -165,9 +165,6 @@ public class TabularDataViewRep
 
 	public void initData() {
 
-		
-		
-
 		if (set == null) {
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
@@ -198,7 +195,6 @@ public class TabularDataViewRep
 			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
 		}
 	}
-
 
 	private void createPreviewTable() {
 		Composite labelTableComposite = new Composite(composite, SWT.NULL);
@@ -852,7 +848,7 @@ public class TabularDataViewRep
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-		
+
 		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
 		replaceVirtualArrayListener.setHandler(this);
 		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
@@ -881,7 +877,7 @@ public class TabularDataViewRep
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
-		
+
 		if (replaceVirtualArrayListener != null) {
 			eventPublisher.removeListener(replaceVirtualArrayListener);
 			replaceVirtualArrayListener = null;
@@ -892,9 +888,12 @@ public class TabularDataViewRep
 	public void replaceVirtualArray(EVAType vaType) {
 		if (vaType == storageVAType)
 			storageVA = useCase.getVA(vaType);
-
-		if (vaType == contentVAType)
+		else if (vaType == contentVAType)
 			contentVA = useCase.getVA(vaType);
+		else
+			return;
+		
+		initData();
 	}
 
 }

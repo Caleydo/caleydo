@@ -246,6 +246,14 @@ public interface ISet
 	public IVirtualArray getVA(int iUniqueID);
 
 	/**
+	 * Replaces the virtual array associated with the unique ID with the one provided
+	 * 
+	 * @param iUniqueID
+	 * @param virtualArray
+	 */
+	public void replaceVA(int iUniqueID, IVirtualArray virtualArray);
+
+	/**
 	 * Export a manipulated subset of the data to the destination specified in sFileName. Determine which view
 	 * to export by the int flag. This is only temporary.
 	 * 

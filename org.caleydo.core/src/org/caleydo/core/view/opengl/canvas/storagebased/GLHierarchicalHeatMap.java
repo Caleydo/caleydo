@@ -2126,10 +2126,11 @@ public class GLHierarchicalHeatMap
 			contentVAType = EVAType.EXTERNAL_SELECTION;
 		else
 			contentVAType = EVAType.COMPLETE_SELECTION;
-
+		
 		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
 
+		
 		// In case of importing group info
 		if (set.isGeneClusterInfo())
 			contentVA.setGroupList(set.getGroupListGenes());

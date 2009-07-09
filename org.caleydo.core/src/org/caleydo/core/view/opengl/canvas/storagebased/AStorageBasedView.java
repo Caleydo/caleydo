@@ -571,9 +571,10 @@ public abstract class AStorageBasedView
 	public void replaceVirtualArray(EVAType vaType) {
 		if (vaType == storageVAType)
 			storageVA = useCase.getVA(vaType);
-
-		if (vaType == contentVAType)
+		else if (vaType == contentVAType)
 			contentVA = useCase.getVA(vaType);
+		else
+			return;
 
 		initData();
 	}

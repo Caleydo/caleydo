@@ -228,10 +228,8 @@ public interface IVirtualArray
 	public boolean setGroupList(IGroupList groupList);
 
 	/**
-	 * 
 	 * @return
 	 */
-	public IVirtualArray clone(); 
-
+	public IVirtualArray clone();
 
 }

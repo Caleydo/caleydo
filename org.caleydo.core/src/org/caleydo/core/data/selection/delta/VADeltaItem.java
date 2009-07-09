@@ -288,5 +288,20 @@ public class VADeltaItem
 	public boolean equals(Object obj) {
 		return obj.hashCode() == hashCode();
 	}
+	
+	@Override
+	public String toString()
+	{
+		String message = vAOperation.toString();
+		switch (vAOperation)
+		{
+			case REMOVE:
+				message += "; Index: " + iIndex;
+				break;
+				
+		}
+		return  message;
+	}
+	
 
 }

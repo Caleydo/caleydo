@@ -57,4 +57,9 @@ public class VirtualArrayDelta
 	public int size() {
 		return ulDeltaItems.size();
 	}
+	
+	public void append(VirtualArrayDelta delta)
+	{
+		ulDeltaItems.addAll(delta.ulDeltaItems);
+	}
 }

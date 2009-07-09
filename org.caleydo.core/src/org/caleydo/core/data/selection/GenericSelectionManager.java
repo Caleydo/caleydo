@@ -250,6 +250,7 @@ public class GenericSelectionManager {
 	 *            the element to be removed
 	 */
 	public void remove(int iElementID, boolean bWriteVA) {
+
 		for (ESelectionType selectionType : alSelectionTypes) {
 			if (checkStatus(selectionType, iElementID)) {
 				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID) - 1;
@@ -257,13 +258,17 @@ public class GenericSelectionManager {
 					hashSelectionTypes.get(selectionType).remove(iElementID);
 					if (bWriteVA) {
 						virtualArray.removeByElement(iElementID);
+						// for (Integer removedIndex : removedIndices) {
+						// vaDeltaItem = VADeltaItem.remove(removedIndex);
+						// vaDelta.add(vaDeltaItem);
+						// }
 					}
 				}
 				else {
 					hashSelectionTypes.get(selectionType).put(iElementID, iNumTimesAdded);
 				}
+				// since each element should exist only once we can break the loop here
 
-				return;
 			}
 		}
 	}
@@ -272,14 +277,18 @@ public class GenericSelectionManager {
 	 * Removes all elements of a particular type from the selection manager
 	 * 
 	 * @param type
+	 *            the type of the selection which should be purged
+	 * @return a VirtualArrayDelta containing all the indices which should be removed
 	 */
 	public void removeElements(ESelectionType type) {
 		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);
 		Integer[] tempAr = new Integer[elementMap.size()];
 		tempAr = elementMap.keySet().toArray(tempAr);
+
 		for (Integer element : tempAr) {
 			remove(element.intValue(), true);
 		}
+
 	}
 
 	/**

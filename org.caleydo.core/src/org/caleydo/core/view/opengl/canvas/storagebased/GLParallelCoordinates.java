@@ -59,6 +59,8 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
@@ -632,6 +634,13 @@ public class GLParallelCoordinates
 		polylineSelectionManager.removeElements(ESelectionType.DESELECTED);
 		clearAllSelections();
 		setDisplayListDirty();
+		
+		// todo this doesn't work for turned stuff
+		ReplaceVirtualArrayInUseCaseEvent event = new ReplaceVirtualArrayInUseCaseEvent(contentVAType, polylineVA);
+//		VirtualArrayUpdateEvent event = new VirtualArrayUpdateEvent();
+//		event.setVirtualArrayDelta(vaDelta);
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 	}
 
 	/**

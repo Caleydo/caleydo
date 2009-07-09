@@ -437,6 +437,16 @@ public class Set
 			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
 	}
 
+	@Override
+	public void replaceVA(int iUniqueID, IVirtualArray virtualArray) {
+		if (hashSetVAs.containsKey(iUniqueID))
+			hashSetVAs.put(iUniqueID, virtualArray);
+		else if (hashStorageVAs.containsKey(iUniqueID))
+			hashStorageVAs.put(iUniqueID, virtualArray);
+		else
+			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
+	}
+
 	private void calculateGlobalExtrema() {
 		double dTemp = 0.0;
 		if (alStorages.get(0) instanceof INumericalStorage) {

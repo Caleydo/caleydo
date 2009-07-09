@@ -157,7 +157,7 @@ public class VirtualArray
 			}
 		}
 	}
-
+	
 	@Override
 	public Integer size() {
 		return iAlVirtualArray.size();

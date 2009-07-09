@@ -12,6 +12,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -54,6 +55,8 @@ public abstract class AUseCase
 	private IEventPublisher eventPublisher;
 
 	private StartClusteringListener startClusteringListener;
+
+	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
 
 	public AUseCase() {
 		alView = new ArrayList<IView>();
@@ -242,6 +245,45 @@ public abstract class AUseCase
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
 
 	}
+	
+//	@Override
+//	public void startClustering(ClusterState clusterState) {
+//
+//		{
+//			iNewContentVAID = iCurrentContentVAID;
+//		}
+//		else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
+//=======
+//		clusterState.setContentVaId(mapVAIDs.get(EVAType.COMPLETE_SELECTION));
+//		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE_SELECTION));
+//>>>>>>> .r2204
+//
+//		ArrayList<Integer> iAlNewVAIDs = set.cluster(clusterState);
+//
+//		if (iAlNewVAIDs != null) {
+//			mapVAIDs.put(EVAType.COMPLETE_SELECTION, iAlNewVAIDs.get(0));
+//			mapVAIDs.put(EVAType.STORAGE_SELECTION, iAlNewVAIDs.get(1));
+//		}
+//		else {
+//			throw new IllegalStateException("Unknown cluster type");
+//		}
+//
+//
+//		// This should be done to avoid problems with group info in HHM
+//		set.setGeneClusterInfoFlag(false);
+//		set.setExperimentClusterInfoFlag(false);
+//
+//		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
+//
+//
+//	}
+
+
+	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
+		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
+		
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(vaType));
+	}
 
 	public void registerEventListeners() {
 
@@ -256,6 +298,11 @@ public abstract class AUseCase
 		startClusteringListener = new StartClusteringListener();
 		startClusteringListener.setHandler(this);
 		eventPublisher.addListener(StartClusteringEvent.class, startClusteringListener);
+
+		replaceVirtualArrayInUseCaseListener = new ReplaceVirtualArrayInUseCaseListener();
+		replaceVirtualArrayInUseCaseListener.setHandler(this);
+		eventPublisher.addListener(ReplaceVirtualArrayInUseCaseEvent.class,
+			replaceVirtualArrayInUseCaseListener);
 	}
 
 	public void unregisterEventListeners() {
@@ -273,11 +320,19 @@ public abstract class AUseCase
 			eventPublisher.removeListener(startClusteringListener);
 			startClusteringListener = null;
 		}
+
+		if (replaceVirtualArrayInUseCaseListener != null) {
+			eventPublisher.removeListener(replaceVirtualArrayInUseCaseListener);
+			replaceVirtualArrayInUseCaseListener = null;
+		}
 	}
 
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+
+		// FIXME: concurrency issues?
 		listener.handleEvent(event);
+
 	}
 
 }

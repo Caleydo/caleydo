@@ -116,12 +116,12 @@ public class GLConnectionLineRendererBucket
 						alPointLists.add(alPointsTransformed);
 					}
 				}
-
+			}
 				if (hashViewToPointList.size() > 1) {
 					renderLineBundling(gl, idType, new float[] { 0, 0, 0 });
 					hashIDTypeToViewToPointLists.clear();
 				}
-			}
+//			}
 		}
 	}
 }
