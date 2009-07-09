@@ -26,13 +26,14 @@ public class KMeansClusterer
 
 	private int iNrCluster = 5;
 
-	private EDistanceMeasure eDistanceMeasure;
+	private int iVAIdContent = 0;
+	private int iVAIdStorage = 0;
 
 	public KMeansClusterer(int iNrElements) {
 		clusterer = new SimpleKMeans();
 	}
 
-	private Integer cluster(ISet set, Integer iVAIdContent, Integer iVAIdStorage, EClustererType eClustererType) {
+	private Integer cluster(ISet set, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -42,9 +43,9 @@ public class KMeansClusterer
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 
 		DistanceFunction distFunc = null;
-		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
+		if (clusterState.getDistanceMeasure() == EDistanceMeasure.EUCLIDEAN_DISTANCE)
 			distFunc = new EuclideanDistance();
-		else if (eDistanceMeasure == EDistanceMeasure.MANHATTAHN_DISTANCE)
+		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAHN_DISTANCE)
 			distFunc = new ManhattanDistance();
 
 		try {
@@ -68,7 +69,7 @@ public class KMeansClusterer
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -160,7 +161,7 @@ public class KMeansClusterer
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("KMeans clustering of genes in progress"));
 		else
@@ -243,10 +244,11 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
+		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, clusterState
+			.getClustererType());
 
 		IVirtualArray virualArray;
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			virualArray = set.getVA(iVAIdContent);
 		else
 			virualArray = set.getVA(iVAIdStorage);
@@ -262,9 +264,9 @@ public class KMeansClusterer
 
 		Integer clusteredVAId = 0;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			clusteredVAId = set.createStorageVA(indexes);
-		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 			clusteredVAId = set.createSetVA(indexes);
 
 		// set cluster result in Set
@@ -278,21 +280,22 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+		int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
-		this.eDistanceMeasure = clusterState.getDistanceMeasure();
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
+		this.iVAIdContent = clusterState.getContentVaId();
+		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			iNrCluster = clusterState.getKMeansClusterCntGenes();
 		else
 			iNrCluster = clusterState.getKMeansClusterCntExperiments();
 
-		VAId = cluster(set, idContent, idStorage, clusterState.getClustererType());
+		VAId = cluster(set, clusterState);
 
 		return VAId;
 	}

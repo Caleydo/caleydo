@@ -18,10 +18,6 @@ public interface IClusterer
 	 * 
 	 * @param set
 	 *            Set
-	 * @param iVAIdContent
-	 *            ID of the content VA
-	 * @param iVAIdStorage
-	 *            Id of the storage VA
 	 * @param clusterState
 	 *            Container for cluster info (algo, type, ...)
 	 * @param iProgressBarOffsetValue
@@ -33,8 +29,8 @@ public interface IClusterer
 	 * @return Id of the sorted VirtualArray. In case of an error(exception or algorithm do not converge) -1
 	 *         will be returned. In case use abort triggered by user -2 will be returned
 	 */
-	public Integer getSortedVAId(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
-		ClusterState clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier);
+	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+		int iProgressBarMultiplier);
 
 	public void cancel();
 

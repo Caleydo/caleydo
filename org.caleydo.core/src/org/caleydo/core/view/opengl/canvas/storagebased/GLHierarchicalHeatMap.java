@@ -31,7 +31,6 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -40,8 +39,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -57,7 +54,6 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingAct
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupMergingActionListener;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsInterChangingActionReceiver;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsMergingActionReceiver;
-import org.caleydo.core.view.opengl.canvas.storagebased.listener.StartClusteringListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
@@ -2161,7 +2157,7 @@ public class GLHierarchicalHeatMap
 
 		AlSelection.clear();
 		setDisplayListDirty();
-		
+
 	}
 
 	@Override

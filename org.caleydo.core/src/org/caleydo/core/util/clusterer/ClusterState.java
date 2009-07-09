@@ -16,6 +16,9 @@ public class ClusterState {
 	private float fAffinityPropClusterFactorGenes;
 	private float fAffinityPropClusterFactorExperiments;
 
+	private int iContentVaId = 0;
+	private int iStorageVaId = 0;
+	
 	public ClusterState() {
 
 	}
@@ -80,6 +83,22 @@ public class ClusterState {
 
 	public float getAffinityPropClusterFactorExperiments() {
 		return fAffinityPropClusterFactorExperiments;
+	}
+
+	public void setContentVaId(int iContentVaId) {
+		this.iContentVaId = iContentVaId;
+	}
+
+	public int getContentVaId() {
+		return iContentVaId;
+	}
+
+	public void setStorageVaId(int iStorageVaId) {
+		this.iStorageVaId = iStorageVaId;
+	}
+
+	public int getStorageVaId() {
+		return iStorageVaId;
 	}
 
 }

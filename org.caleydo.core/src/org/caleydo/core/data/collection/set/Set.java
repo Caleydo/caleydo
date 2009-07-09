@@ -525,17 +525,15 @@ public class Set
 	}
 
 	@Override
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public ArrayList<Integer> cluster(ClusterState clusterState) {
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 
 			ClusterManager clusterManager = new ClusterManager(this);
-			return clusterManager.cluster(iVAIdContent, iVAIdStorage, clusterState, iProgressBarOffsetValue,
-				iProgressBarMultiplier);
+			return clusterManager.cluster(clusterState);
 		}
 		else
-			return -1;
+			return null;
 	}
 
 	public void setAlClusterSizes(ArrayList<Integer> alClusterSizes) {

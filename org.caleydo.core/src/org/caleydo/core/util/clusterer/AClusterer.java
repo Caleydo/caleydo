@@ -6,7 +6,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.collection.Pair;

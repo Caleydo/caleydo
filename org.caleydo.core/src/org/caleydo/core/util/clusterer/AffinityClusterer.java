@@ -33,8 +33,6 @@ public class AffinityClusterer
 
 	private float fClusterFactor = 1.0f;
 
-	private EDistanceMeasure eDistanceMeasure;
-
 	private int iNrSamples = 0;
 
 	private int iNrSimilarities = 0;
@@ -67,25 +65,21 @@ public class AffinityClusterer
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	private int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
-		EClustererType eClustererType) {
-
-		this.iVAIdContent = iVAIdContent;
-		this.iVAIdStorage = iVAIdStorage;
+	private int determineSimilarities(ISet set, ClusterState clusterState) {
 
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		IDistanceMeasure distanceMeasure;
 
-		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
+		if (clusterState.getDistanceMeasure() == EDistanceMeasure.EUCLIDEAN_DISTANCE)
 			distanceMeasure = new EuclideanDistance();
 		else
 			distanceMeasure = new PearsonCorrelation();
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -537,8 +531,8 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+		int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
@@ -547,14 +541,14 @@ public class AffinityClusterer
 		else
 			fClusterFactor = clusterState.getAffinityPropClusterFactorExperiments();
 
-		eDistanceMeasure = clusterState.getDistanceMeasure();
-
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
+		this.iVAIdContent = clusterState.getContentVaId();
+		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		int iReturnValue = 0;
 
-		iReturnValue = determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
+		iReturnValue = determineSimilarities(set, clusterState);
 
 		if (iReturnValue == -1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));

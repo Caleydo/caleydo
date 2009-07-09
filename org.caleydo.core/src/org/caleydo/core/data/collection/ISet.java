@@ -257,20 +257,10 @@ public interface ISet
 	/**
 	 * Clusters a Storage
 	 * 
-	 * @param iVAIdContent
-	 * @param iVAIdStorage
-	 * @param eClustererAlgo
-	 * @param bClusterGenes
-	 * @param iProgressBarOffset
-	 *            Offset value used for overall progress bar. Used in case of bi clustering to avoid problems
-	 *            with disposed shell
-	 * @param iProgressBarMultiplier
-	 *            Multiplier used for overall progress bar. Used in case of bi clustering to avoid problems
-	 *            with disposed shell
-	 * @return Integer Id of virtual arrays holding cluster result
+	 * @param clusterState
+	 * @return ArrayList<Integer> Id of virtual arrays holding cluster result
 	 */
-	public Integer cluster(Integer iVAIdContent, Integer iVAIdStorage, ClusterState clusterState,
-		int iProgressBarOffset, int iProgressBarMultiplier);
+	public ArrayList<Integer> cluster(ClusterState clusterState);
 
 	/**
 	 * Sets clustered Tree for genes
@@ -349,10 +339,15 @@ public interface ISet
 	public void setGroupReprInfo(int[] arGroupRepr, boolean bGeneGroupInfo);
 
 	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo);
+
 	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo);
+
 	public void setGroupListGenes(GroupList groupList);
+
 	public void setGroupListExperiments(GroupList groupList);
+
 	public GroupList getGroupListGenes();
+
 	public GroupList getGroupListExperiments();
 
 	/**
@@ -361,7 +356,7 @@ public interface ISet
 	 * @return cluster info flag
 	 */
 	public boolean isGeneClusterInfo();
-	
+
 	/**
 	 * Flag determines if experiment cluster information was imported or not.
 	 * 

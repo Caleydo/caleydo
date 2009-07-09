@@ -31,8 +31,8 @@ public class TreeClusterer
 	}
 
 	private ISet set = null;
-	private Integer idContent = 0;
-	private Integer idStorage = 0;
+	private int iVAIdContent = 0;
+	private int iVAIdStorage = 0;
 
 	private float[][] similarities = null;
 
@@ -60,8 +60,7 @@ public class TreeClusterer
 	 * @param iVAIdStorage
 	 * @return
 	 */
-	private int determineSimilarities(ISet set, Integer iVAIdContent, Integer iVAIdStorage,
-		EClustererType eClustererType) {
+	private int determineSimilarities(ISet set, EClustererType eClustererType) {
 
 		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
@@ -399,11 +398,11 @@ public class TreeClusterer
 			float[][] fArTempValues;
 
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-				IVirtualArray storageVA = set.getVA(idStorage);
+				IVirtualArray storageVA = set.getVA(iVAIdStorage);
 				iNrElements = storageVA.size();
 			}
 			else {
-				IVirtualArray contentVA = set.getVA(idContent);
+				IVirtualArray contentVA = set.getVA(iVAIdContent);
 				iNrElements = contentVA.size();
 			}
 
@@ -431,7 +430,7 @@ public class TreeClusterer
 		else {
 
 			if (eClustererType == EClustererType.GENE_CLUSTERING) {
-				IVirtualArray storageVA = set.getVA(idStorage);
+				IVirtualArray storageVA = set.getVA(iVAIdStorage);
 				fArExpressionValues = new float[storageVA.size()];
 
 				int isto = 0;
@@ -443,7 +442,7 @@ public class TreeClusterer
 
 			}
 			else {
-				IVirtualArray contentVA = set.getVA(idContent);
+				IVirtualArray contentVA = set.getVA(iVAIdContent);
 				fArExpressionValues = new float[contentVA.size()];
 
 				int icon = 0;
@@ -628,8 +627,8 @@ public class TreeClusterer
 	private String getNodeName(EClustererType eClustererType, int index) {
 		String nodeName = null;
 
-		IVirtualArray contentVA = set.getVA(idContent);
-		IVirtualArray storageVA = set.getVA(idStorage);
+		IVirtualArray contentVA = set.getVA(iVAIdContent);
+		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
@@ -675,8 +674,8 @@ public class TreeClusterer
 
 		int nodeNr = 0;
 
-		IVirtualArray contentVA = set.getVA(idContent);
-		IVirtualArray storageVA = set.getVA(idStorage);
+		IVirtualArray contentVA = set.getVA(iVAIdContent);
+		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			nodeNr = contentVA.get(index);
@@ -741,18 +740,20 @@ public class TreeClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+		int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
+		this.iVAIdContent = clusterState.getContentVaId();
+		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		int iReturnValue = 0;
 
-		iReturnValue = determineSimilarities(set, idContent, idStorage, clusterState.getClustererType());
+		iReturnValue = determineSimilarities(set, clusterState.getClustererType());
 
 		if (iReturnValue == -1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
@@ -764,8 +765,6 @@ public class TreeClusterer
 		}
 
 		this.set = set;
-		this.idContent = idContent;
-		this.idStorage = idStorage;
 
 		// VAId = pmlcluster(clusterState.getClustererType());
 		VAId = palcluster(clusterState.getClustererType());

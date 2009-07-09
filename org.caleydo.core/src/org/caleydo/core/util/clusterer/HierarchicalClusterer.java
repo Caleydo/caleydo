@@ -26,13 +26,12 @@ public class HierarchicalClusterer
 
 	private int iVAIdContent = 0;
 	private int iVAIdStorage = 0;
-	private ISet set;
 
 	public HierarchicalClusterer(int iNrElements) {
 		clusterer = new Cobweb();
 	}
 
-	private Integer cluster(Integer iVAIdOriginal, Integer iVAIdStorage, EClustererType eClustererType) {
+	private Integer cluster(ISet set, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -41,12 +40,12 @@ public class HierarchicalClusterer
 
 		buffer.append("@relation test\n\n");
 
-		IVirtualArray contentVA = set.getVA(iVAIdOriginal);
+		IVirtualArray contentVA = set.getVA(iVAIdContent);
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		int iPercentage = 1;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING) {
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
 
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Determine Similarities for gene clustering"));
@@ -126,7 +125,7 @@ public class HierarchicalClusterer
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			GeneralManager.get().getEventPublisher().triggerEvent(
 				new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
 		else
@@ -225,9 +224,9 @@ public class HierarchicalClusterer
 
 		Integer clusteredVAId = 0;
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			clusteredVAId = set.createStorageVA(indexes);
-		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 			clusteredVAId = set.createSetVA(indexes);
 
 		CNode node = clusterer.m_cobwebTree;
@@ -235,7 +234,7 @@ public class HierarchicalClusterer
 		ClusterNode clusterNode = new ClusterNode("Root", 0, 0f, 0, true);
 		tree.setRootNode(clusterNode);
 
-		CNodeToTree(clusterNode, node, eClustererType);
+		CNodeToTree(clusterNode, node, clusterState.getClustererType());
 
 		ClusterHelper.determineNrElements(tree);
 		ClusterHelper.determineHierarchyDepth(tree);
@@ -247,7 +246,7 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
 
-		if (eClustererType == EClustererType.GENE_CLUSTERING)
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
 		else
 			set.setClusteredTreeExps(tree);
@@ -292,19 +291,18 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, Integer idContent, Integer idStorage, ClusterState clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+		int iProgressBarMultiplier) {
 
 		Integer VAId = 0;
 
-		this.set = set;
-		this.iVAIdContent = idContent;
-		this.iVAIdStorage = idStorage;
+		this.iVAIdContent = clusterState.getContentVaId();
+		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		VAId = cluster(idContent, idStorage, clusterState.getClustererType());
+		VAId = cluster(set, clusterState);
 
 		return VAId;
 	}

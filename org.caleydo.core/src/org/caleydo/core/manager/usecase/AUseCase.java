@@ -11,14 +11,11 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.IPollingListenerOwner;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.EClustererType;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
@@ -227,64 +224,16 @@ public abstract class AUseCase
 
 	@Override
 	public void startClustering(ClusterState clusterState) {
-		int iCurrentContentVAID = 0;
-		int iCurrentStorageVAID = 0;
-		int iNewContentVAID = 0;
-		int iNewStorageVAID = 0;
 
-		iCurrentContentVAID = mapVAIDs.get(EVAType.COMPLETE_SELECTION);
+		clusterState.setContentVaId(mapVAIDs.get(EVAType.COMPLETE_SELECTION));
+		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE_SELECTION));
 
-		iCurrentStorageVAID = mapVAIDs.get(EVAType.STORAGE_SELECTION);
+		ArrayList<Integer> iAlNewVAIDs = set.cluster(clusterState);
 
-		int iNrElem = 0;
-
-		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
-
-			int iVAid = set.cluster(iCurrentContentVAID, iCurrentStorageVAID, clusterState, 0, 2);
-			if (iVAid < 0)
-				iNewContentVAID = iCurrentContentVAID;
-			else
-				iNewContentVAID = iVAid;
-
-			iNewStorageVAID = iCurrentStorageVAID;
+		if (iAlNewVAIDs != null) {
+			mapVAIDs.put(EVAType.COMPLETE_SELECTION, iAlNewVAIDs.get(0));
+			mapVAIDs.put(EVAType.STORAGE_SELECTION, iAlNewVAIDs.get(1));
 		}
-		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
-
-			int iVAid = set.cluster(iCurrentContentVAID, iCurrentStorageVAID, clusterState, 0, 2);
-			if (iVAid < 0)
-				iNewStorageVAID = iCurrentStorageVAID;
-			else
-				iNewStorageVAID = iVAid;
-
-			iNewContentVAID = iCurrentContentVAID;
-		}
-		else {
-
-			boolean bSkipGeneClustering = false;
-
-			clusterState.setClustererType(EClustererType.EXPERIMENTS_CLUSTERING);
-			int iVAid = set.cluster(iCurrentContentVAID, iCurrentStorageVAID, clusterState, 0, 1);
-			if (iVAid < 0) {
-				iNewStorageVAID = iCurrentStorageVAID;
-				iNewContentVAID = iCurrentContentVAID;
-				bSkipGeneClustering = true;
-			}
-			else
-				iNewStorageVAID = iVAid;
-
-			// in case of user requests abort during experiment clustering do not cluster genes
-			if (bSkipGeneClustering == false) {
-				clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
-				iVAid = set.cluster(iCurrentContentVAID, iNewStorageVAID, clusterState, 50, 1);
-				if (iVAid < 0)
-					iNewContentVAID = iCurrentContentVAID;
-				else
-					iNewContentVAID = iVAid;
-			}
-		}
-
-		mapVAIDs.put(EVAType.COMPLETE_SELECTION, iNewContentVAID);
-		mapVAIDs.put(EVAType.STORAGE_SELECTION, iNewStorageVAID);
 
 		// This should be done to avoid problems with group info in HHM
 		set.setGeneClusterInfoFlag(false);
