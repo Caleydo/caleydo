@@ -1165,7 +1165,8 @@ public class GLDendrogram
 	}
 
 	private void resetAllTreeSelections() {
-		resetAllTreeSelectionsRec(tree.getRoot());
+		if (tree != null)
+			resetAllTreeSelectionsRec(tree.getRoot());
 	}
 
 	private void resetAllTreeSelectionsRec(ClusterNode currentNode) {

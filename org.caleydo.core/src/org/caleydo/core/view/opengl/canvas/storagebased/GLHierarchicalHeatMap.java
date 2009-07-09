@@ -1046,7 +1046,7 @@ public class GLHierarchicalHeatMap
 		fHeight = viewFrustum.getHeight();
 		fWidth = 0.1f;
 
-		float fHeightElem = fHeight / contentVA.size();
+		float fHeightElem = fHeight / iNumberOfElements;
 
 		float fStep = 0;
 
@@ -1232,7 +1232,7 @@ public class GLHierarchicalHeatMap
 		float fFieldWith = 0.1f;
 		Vec3f startpoint1, endpoint1, startpoint2, endpoint2;
 
-		float fHeightElem = fHeight / contentVA.size();
+		float fHeightElem = fHeight / iNumberOfElements;
 
 		int iStartElem = 0;
 		int iLastElem = 0;
