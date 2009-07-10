@@ -13,6 +13,7 @@ import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Interface for Sets
@@ -209,23 +210,23 @@ public interface ISet
 	 * 
 	 * @return the unique id associated with the virtual array
 	 */
-	public int createStorageVA();
+	public int createContentVA(EVAType vaType);
 
 	/**
-	 * Creates a virtual array based on the list of indices supplied for the storages in the set
+	 * Creates a virtual array based on the list of indices supplied for the storages in the set, aka content
 	 * 
 	 * @param iAlSelections
 	 *            a list of indices
 	 * @return the id of the newly created VA
 	 */
-	public int createStorageVA(List<Integer> iAlSelections);
+	public int createContentVA(EVAType vaType, List<Integer> iAlSelections);
 
 	/**
 	 * Creates a default virtual array for the set
 	 * 
 	 * @return the unique id associated with the virtual array
 	 */
-	public int createSetVA();
+	public int createStorageVA(EVAType vaType);
 
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the set
@@ -234,7 +235,7 @@ public interface ISet
 	 *            a list of indices
 	 * @return the unique id associated with the virtual array
 	 */
-	public int createSetVA(ArrayList<Integer> iAlSelections);
+	public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections);
 
 	/**
 	 * Returns the virtual array associated with the unique ID

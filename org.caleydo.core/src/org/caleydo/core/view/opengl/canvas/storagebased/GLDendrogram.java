@@ -16,7 +16,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -123,8 +123,8 @@ public class GLDendrogram
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 
@@ -817,7 +817,7 @@ public class GLDendrogram
 			useCase.getSet().setGroupListExperiments(groupList);
 		}
 
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.CONTENT));
 
 	}
 
@@ -930,7 +930,7 @@ public class GLDendrogram
 				if (bupdateSelectionManager) {
 
 					ISelectionDelta selectionDelta = null;
-					GenericSelectionManager selectionManager = null;
+					SelectionManager selectionManager = null;
 
 					selectionManager = contentSelectionManager;
 
@@ -984,7 +984,7 @@ public class GLDendrogram
 				if (bupdateSelectionManager) {
 
 					ISelectionDelta selectionDelta = null;
-					GenericSelectionManager selectionManager = null;
+					SelectionManager selectionManager = null;
 
 					selectionManager = storageSelectionManager;
 
@@ -1059,9 +1059,9 @@ public class GLDendrogram
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = EVAType.EXTERNAL_SELECTION;
+			contentVAType = EVAType.CONTENT_CONTEXT;
 		else
-			contentVAType = EVAType.COMPLETE_SELECTION;
+			contentVAType = EVAType.CONTENT;
 
 		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(storageVAType);

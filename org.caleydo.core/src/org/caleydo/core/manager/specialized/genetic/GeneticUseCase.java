@@ -39,8 +39,10 @@ public class GeneticUseCase
 	 * Initializes a virtual array with all elements, according to the data filters, as defined in
 	 * {@link EDataFilterLevel}.
 	 */
+	@Override
 	protected final void initFullVA() {
 
+		// TODO preferences seem not to be initialized here either in XML case
 		String sLevel =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
 		if (sLevel.equals("complete")) {
@@ -51,6 +53,7 @@ public class GeneticUseCase
 		}
 		else if (sLevel.equals("only_context")) {
 			// Only apply only_context when pathways are loaded
+			// TODO we need to wait for the pathways to be loaded here!
 			if (GeneralManager.get().getPathwayManager().size() > 100) {
 				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 			}
@@ -59,7 +62,6 @@ public class GeneticUseCase
 			}
 		}
 		else
-			// default
 			dataFilterLevel = EDataFilterLevel.COMPLETE;
 
 		// initialize virtual array that contains all (filtered) information
@@ -94,8 +96,8 @@ public class GeneticUseCase
 		}
 
 		// TODO: remove possible old virtual array
-		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EVAType.COMPLETE_SELECTION, iVAID);
+		int iVAID = set.createContentVA(EVAType.CONTENT, alTempList);
+		mapVAIDs.put(EVAType.CONTENT, iVAID);
 
 	}
 

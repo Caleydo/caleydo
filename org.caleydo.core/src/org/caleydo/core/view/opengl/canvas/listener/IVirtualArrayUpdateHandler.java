@@ -26,7 +26,7 @@ public interface IVirtualArrayUpdateHandler
 	 * @param info
 	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
 	 */
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta selectionDelta, String info);
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info);
 
 	/**
 	 * Handler method to be called by the {@link ReplaceVirtualArrayListener} when a

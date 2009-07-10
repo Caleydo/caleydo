@@ -19,7 +19,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IGroupList;
@@ -187,8 +187,8 @@ public class GLHierarchicalHeatMap
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
@@ -2045,7 +2045,7 @@ public class GLHierarchicalHeatMap
 		// commands.add(command);
 		// glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, command);
 		glHeatMapView.resetView();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(eFieldDataType);
+		IVirtualArrayDelta delta = new VirtualArrayDelta(contentVAType, eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
 
 		IVirtualArray currentVirtualArray = contentVA;
@@ -2078,7 +2078,7 @@ public class GLHierarchicalHeatMap
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, command);
 
-		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(eExperimentDataType);
+		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(contentVAType, eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
 
 		IVirtualArray currentVirtualArrayEx = storageVA;
@@ -2123,12 +2123,12 @@ public class GLHierarchicalHeatMap
 	protected void initLists() {
 
 		if (bRenderOnlyContext)
-			contentVAType = EVAType.EXTERNAL_SELECTION;
+			contentVAType = EVAType.CONTENT_CONTEXT;
 		else
-			contentVAType = EVAType.COMPLETE_SELECTION;
+			contentVAType = EVAType.CONTENT;
 		
 		contentVA = useCase.getVA(contentVAType);
-		storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
+		storageVA = useCase.getVA(EVAType.STORAGE);
 
 		
 		// In case of importing group info

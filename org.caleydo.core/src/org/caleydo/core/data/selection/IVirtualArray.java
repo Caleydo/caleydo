@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the virtual arrays and the static
@@ -14,6 +15,9 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  */
 public interface IVirtualArray
 	extends Iterable<Integer>, IUniqueObject, Cloneable {
+
+	public EVAType getVAType();
+
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array
 	 */

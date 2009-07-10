@@ -8,7 +8,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
@@ -80,12 +80,12 @@ public class TabularDataViewRep
 	/**
 	 * This manager is responsible for the content in the storages (the indices)
 	 */
-	protected GenericSelectionManager contentSelectionManager;
+	protected SelectionManager contentSelectionManager;
 
 	/**
 	 * This manager is responsible for the management of the storages in the set
 	 */
-	protected GenericSelectionManager storageSelectionManager;
+	protected SelectionManager storageSelectionManager;
 
 	/**
 	 * The virtual array that manages the contents (the indices) in the storages
@@ -99,12 +99,12 @@ public class TabularDataViewRep
 	/**
 	 * The type of the content VA
 	 */
-	protected EVAType contentVAType = EVAType.COMPLETE_SELECTION;
+	protected EVAType contentVAType = EVAType.CONTENT;
 
 	/**
 	 * The type of the storage VA
 	 */
-	protected EVAType storageVAType = EVAType.STORAGE_SELECTION;
+	protected EVAType storageVAType = EVAType.STORAGE;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -141,8 +141,8 @@ public class TabularDataViewRep
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 			EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
-		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		idMappingManager = generalManager.getIDMappingManager();
 	}
@@ -584,7 +584,7 @@ public class TabularDataViewRep
 
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
-		GenericSelectionManager selectionManager;
+		SelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			selectionManager = storageSelectionManager;
 
@@ -753,7 +753,7 @@ public class TabularDataViewRep
 
 				contentVA.remove(iExpressionIndex);
 
-				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
+				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EVAType.CONTENT, EIDType.EXPRESSION_INDEX);
 				vaDelta.add(VADeltaItem.remove(iExpressionIndex));
 				VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 				virtualArrayUpdateEvent.setSender(this);
@@ -795,7 +795,7 @@ public class TabularDataViewRep
 
 				storageVA.remove(iStorageIndex);
 
-				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EVAType.STORAGE, EIDType.EXPERIMENT_INDEX);
 				vaDelta.add(VADeltaItem.remove(iStorageIndex));
 				VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 				virtualArrayUpdateEvent.setSender(this);

@@ -8,6 +8,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 
@@ -234,7 +235,7 @@ public class AffinityClusterer
 	 */
 	private Integer affinityPropagation(EClustererType eClustererType) {
 		// Arraylist holding clustered indexes
-		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
+		ArrayList<Integer> alIndexes = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 		// Arraylist holding number of elements per cluster
@@ -466,14 +467,14 @@ public class AffinityClusterer
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
-		AlIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
+		alIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
 
 		Integer clusteredVAId = 0;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createStorageVA(AlIndexes);
+			clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndexes);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createSetVA(AlIndexes);
+			clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndexes);
 
 		set.setAlClusterSizes(count);
 		set.setAlExamples(idxExamples);

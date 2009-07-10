@@ -10,6 +10,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
@@ -265,9 +266,9 @@ public class KMeansClusterer
 		Integer clusteredVAId = 0;
 
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createStorageVA(indexes);
+			clusteredVAId = set.createContentVA(EVAType.CONTENT, indexes);
 		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createSetVA(indexes);
+			clusteredVAId = set.createStorageVA(EVAType.STORAGE, indexes);
 
 		// set cluster result in Set
 		set.setAlClusterSizes(count);

@@ -19,7 +19,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -65,7 +65,7 @@ public class GLPathwayContentCreator {
 
 	private ColorMapping colorMapper;
 
-	private GenericSelectionManager internalSelectionManager;
+	private SelectionManager internalSelectionManager;
 
 	private ArrayList<Integer> iArSelectedEdgeRepId;
 
@@ -90,7 +90,7 @@ public class GLPathwayContentCreator {
 		idMappingManager = generalManager.getIDMappingManager();
 	}
 
-	public void init(final GL gl, final GenericSelectionManager internalSelectionManager) {
+	public void init(final GL gl, final SelectionManager internalSelectionManager) {
 
 		buildEnzymeNodeDisplayList(gl);
 		buildCompoundNodeDisplayList(gl);

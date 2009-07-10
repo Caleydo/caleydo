@@ -12,7 +12,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
@@ -64,12 +64,12 @@ public abstract class AStorageBasedView
 	/**
 	 * This manager is responsible for the content in the storages (the indices)
 	 */
-	protected GenericSelectionManager contentSelectionManager;
+	protected SelectionManager contentSelectionManager;
 
 	/**
 	 * This manager is responsible for the management of the storages in the set
 	 */
-	protected GenericSelectionManager storageSelectionManager;
+	protected SelectionManager storageSelectionManager;
 
 	/**
 	 * flag whether one array should be a polyline or an axis
@@ -122,8 +122,8 @@ public abstract class AStorageBasedView
 
 	/**
 	 * Toggle whether to render the complete dataset (with regards to the filters though) or only contextual
-	 * data This effectively means switching between the {@link EVAType#COMPLETE_SELECTION} and
-	 * {@link EVAType#EXTERNAL_SELECTION}
+	 * data This effectively means switching between the {@link EVAType#CONTENT} and
+	 * {@link EVAType#CONTENT_CONTEXT}
 	 */
 	public abstract void renderContext(boolean bRenderContext);
 
@@ -251,7 +251,7 @@ public abstract class AStorageBasedView
 		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
-		GenericSelectionManager selectionManager;
+		SelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			selectionManager = storageSelectionManager;
 		}

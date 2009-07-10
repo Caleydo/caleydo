@@ -44,29 +44,14 @@ public class GeneralPreferencePage
 		Composite mainComp = new Composite(getFieldEditorParent(), SWT.NULL);
 		// Create the layout.
 		RowLayout layout = new RowLayout();
-		// Optionally set layout fields.
-		// layout.wrap = true;
 		mainComp.setLayout(layout);
-		// numRandomSamplesFE = new IntegerFieldEditor(
-		// PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT,
-		// "Number of Random Samples:",
-		// getFieldEditorParent());
-		// numRandomSamplesFE.loadDefault();
-		// addField(numRandomSamplesFE);
-
-		// enableXPClassicStyleMode =
-		// new BooleanFieldEditor(PreferenceConstants.XP_CLASSIC_STYLE_MODE,
-		// "Use Windows XP classic style mode",
-		// getFieldEditorParent());
-		// enableXPClassicStyleMode.loadDefault();
-		// addField(enableXPClassicStyleMode);
 
 		dataFilterLevelFE =
 			new RadioGroupFieldEditor(PreferenceConstants.DATA_FILTER_LEVEL,
 				"Filter level for gene expression data.", 1, new String[][] { { "No Filtering", "complete" },
 						{ "Use only values that have a DAVID ID Mapping", "only_mapping" },
 						{ "Use only values that occur in pathways", "only_context" } }, mainComp);
-		dataFilterLevelFE.loadDefault();
+//		dataFilterLevelFE.loadDefault();
 		addField(dataFilterLevelFE);
 
 		Label label = new Label(mainComp, SWT.NONE);

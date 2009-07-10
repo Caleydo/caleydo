@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.util.collection.UniqueList;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Implementation of {@link IVirtualArrayDelta}
@@ -17,15 +18,22 @@ public class VirtualArrayDelta
 
 	private EIDType idType;
 	private EIDType secondaryIDType;
+	private EVAType vaType;
 
-	public VirtualArrayDelta(EIDType idType) {
+	public VirtualArrayDelta(EVAType vaType, EIDType idType) {
+		this.vaType = vaType;
 		this.idType = idType;
 		ulDeltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(EIDType idType, EIDType secondaryIDType) {
-		this(idType);
+	public VirtualArrayDelta(EVAType vaType, EIDType idType, EIDType secondaryIDType) {
+		this(vaType, idType);
 		this.secondaryIDType = secondaryIDType;
+	}
+
+	@Override
+	public EVAType getVAType() {
+		return vaType;
 	}
 
 	@Override
@@ -57,9 +65,8 @@ public class VirtualArrayDelta
 	public int size() {
 		return ulDeltaItems.size();
 	}
-	
-	public void append(VirtualArrayDelta delta)
-	{
+
+	public void append(VirtualArrayDelta delta) {
 		ulDeltaItems.addAll(delta.ulDeltaItems);
 	}
 }

@@ -15,7 +15,7 @@ import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
@@ -92,7 +92,7 @@ public class GLRadialHierarchy
 	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
 	private UpdateViewListener updateViewListener;
 
-	private GenericSelectionManager selectionManager;
+	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
 
 	// ISet set;
@@ -120,7 +120,7 @@ public class GLRadialHierarchy
 		iUpwardNavigationSliderID = 0;
 		iUpwardNavigationSliderBodyID = 0;
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.CLUSTER_NUMBER).build();
+		selectionManager = new SelectionManager.Builder(EIDType.CLUSTER_NUMBER).build();
 
 		glKeyListener = new GLRadialHierarchyKeyListener(this);
 

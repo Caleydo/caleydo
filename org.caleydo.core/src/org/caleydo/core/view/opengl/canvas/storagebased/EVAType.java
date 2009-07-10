@@ -8,28 +8,34 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 public enum EVAType {
 	/**
-	 * The selection type corresponding to an external selection using SetSelections
+	 * Used for contextual views, for example in the bucket, where only a subset of the data based on for
+	 * example the pathways are used
 	 */
-	EXTERNAL_SELECTION,
+	CONTENT_CONTEXT,
 
 	/**
 	 * All elements in the storage (initially)
 	 */
-	COMPLETE_SELECTION,
+	CONTENT,
 
 	/**
 	 * All elements in the storage (clustered)
 	 */
-	COMPLETE_CLUSTERED_SELECTION,
+	// COMPLETE_CLUSTERED_SELECTION,
 
 	/**
 	 * All storages (initially)
 	 */
-	STORAGE_SELECTION,
-	
+	STORAGE,
+
 	/**
 	 * All storages (clustered)
 	 */
-	STORAGE_CLUSTERED_SELECTION
+	// STORAGE_CLUSTERED_SELECTION
+
+	/**
+	 * Content bookmark VA used for the bookmark views
+	 */
+	CONTENT_BOOKMARKS
 
 }

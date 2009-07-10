@@ -22,7 +22,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -110,8 +110,8 @@ public class GLHeatMap
 		// alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		// alSelectionTypes.add(ESelectionType.SELECTION);
 
-		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
@@ -342,12 +342,12 @@ public class GLHeatMap
 	@Override
 	protected void initLists() {
 		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EVAType.CONTENT_CONTEXT);
 		}
 		else {
-			contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
+			contentVA = useCase.getVA(EVAType.CONTENT);
 		}
-		storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
+		storageVA = useCase.getVA(EVAType.STORAGE);
 
 		// contentSelectionManager.resetSelectionManager();
 		// storageSelectionManager.resetSelectionManager();
@@ -628,7 +628,7 @@ public class GLHeatMap
 		createStorageSelection(ESelectionType.MOUSE_OVER, selectedElement);
 	}
 
-	private int cursorSelect(IVirtualArray virtualArray, GenericSelectionManager selectionManager,
+	private int cursorSelect(IVirtualArray virtualArray, SelectionManager selectionManager,
 		boolean isUp) {
 
 		Set<Integer> elements = selectionManager.getElements(ESelectionType.MOUSE_OVER);
@@ -1187,10 +1187,10 @@ public class GLHeatMap
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext) {
-			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EVAType.CONTENT_CONTEXT);
 		}
 		else {
-			contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
+			contentVA = useCase.getVA(EVAType.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);

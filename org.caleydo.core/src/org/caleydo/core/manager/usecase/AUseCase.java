@@ -3,9 +3,12 @@ package org.caleydo.core.manager.usecase;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
+import javax.naming.OperationNotSupportedException;
+
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.AEvent;
@@ -15,9 +18,12 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
+import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.StartClusteringListener;
@@ -29,7 +35,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.listener.StartClustering
  * @author Alexander Lex
  */
 public abstract class AUseCase
-	implements IUseCase, IListenerOwner {
+	implements IVirtualArrayUpdateHandler, IUseCase, IListenerOwner {
 
 	protected ArrayList<IView> alView;
 
@@ -55,8 +61,8 @@ public abstract class AUseCase
 	private IEventPublisher eventPublisher;
 
 	private StartClusteringListener startClusteringListener;
-
 	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
+	private VirtualArrayUpdateListener virtualArrayUpdateListener;
 
 	public AUseCase() {
 		alView = new ArrayList<IView>();
@@ -166,10 +172,7 @@ public abstract class AUseCase
 	}
 
 	private void initVAs() {
-		// super.initData();
-
-		// bRenderOnlyContext = bIsRenderedRemote;
-
+		
 		mapVAIDs = new EnumMap<EVAType, Integer>(EVAType.class);
 
 		if (!mapVAIDs.isEmpty()) {
@@ -190,8 +193,8 @@ public abstract class AUseCase
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 		// create VA with empty list
-		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EVAType.EXTERNAL_SELECTION, iVAID);
+		int iVAID = set.createContentVA(EVAType.CONTENT_CONTEXT, alTempList);
+		mapVAIDs.put(EVAType.CONTENT_CONTEXT, iVAID);
 
 		alTempList = new ArrayList<Integer>();
 
@@ -199,8 +202,8 @@ public abstract class AUseCase
 			alTempList.add(iCount);
 		}
 
-		iVAID = set.createSetVA(alTempList);
-		mapVAIDs.put(EVAType.STORAGE_SELECTION, iVAID);
+		iVAID = set.createStorageVA(EVAType.STORAGE, alTempList);
+		mapVAIDs.put(EVAType.STORAGE, iVAID);
 
 		initFullVA();
 	}
@@ -215,8 +218,8 @@ public abstract class AUseCase
 		}
 
 		// TODO: remove possible old virtual array
-		int iVAID = set.createStorageVA(alTempList);
-		mapVAIDs.put(EVAType.COMPLETE_SELECTION, iVAID);
+		int iVAID = set.createContentVA(EVAType.CONTENT, alTempList);
+		mapVAIDs.put(EVAType.CONTENT, iVAID);
 	}
 
 	public IVirtualArray getVA(EVAType vaType) {
@@ -228,61 +231,48 @@ public abstract class AUseCase
 	@Override
 	public void startClustering(ClusterState clusterState) {
 
-		clusterState.setContentVaId(mapVAIDs.get(EVAType.COMPLETE_SELECTION));
-		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE_SELECTION));
+		clusterState.setContentVaId(mapVAIDs.get(EVAType.CONTENT));
+		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE));
 
 		ArrayList<Integer> iAlNewVAIDs = set.cluster(clusterState);
 
 		if (iAlNewVAIDs != null) {
-			mapVAIDs.put(EVAType.COMPLETE_SELECTION, iAlNewVAIDs.get(0));
-			mapVAIDs.put(EVAType.STORAGE_SELECTION, iAlNewVAIDs.get(1));
+			mapVAIDs.put(EVAType.CONTENT, iAlNewVAIDs.get(0));
+			mapVAIDs.put(EVAType.STORAGE, iAlNewVAIDs.get(1));
 		}
 
 		// This should be done to avoid problems with group info in HHM
 		set.setGeneClusterInfoFlag(false);
 		set.setExperimentClusterInfoFlag(false);
 
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.CONTENT));
 
 	}
-	
-//	@Override
-//	public void startClustering(ClusterState clusterState) {
-//
-//		{
-//			iNewContentVAID = iCurrentContentVAID;
-//		}
-//		else if (clusterState.getClustererType() == EClustererType.BI_CLUSTERING) {
-//=======
-//		clusterState.setContentVaId(mapVAIDs.get(EVAType.COMPLETE_SELECTION));
-//		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE_SELECTION));
-//>>>>>>> .r2204
-//
-//		ArrayList<Integer> iAlNewVAIDs = set.cluster(clusterState);
-//
-//		if (iAlNewVAIDs != null) {
-//			mapVAIDs.put(EVAType.COMPLETE_SELECTION, iAlNewVAIDs.get(0));
-//			mapVAIDs.put(EVAType.STORAGE_SELECTION, iAlNewVAIDs.get(1));
-//		}
-//		else {
-//			throw new IllegalStateException("Unknown cluster type");
-//		}
-//
-//
-//		// This should be done to avoid problems with group info in HHM
-//		set.setGeneClusterInfoFlag(false);
-//		set.setExperimentClusterInfoFlag(false);
-//
-//		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.COMPLETE_SELECTION));
-//
-//
-//	}
 
+	@Override
+	/**
+	 * This is the method which is used to synchronize the views with the Virtual Array, which is initiated from this class. Therefore it should not be called any time!
+	 */
+	public void replaceVirtualArray(EVAType vaType) {
+		throw new IllegalStateException("UseCases shouldn't react to this");
+
+	}
 
 	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
-		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
 		
+		
+		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
+
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(vaType));
+	}
+
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta selectionDelta, String info) {
+
+		Integer vaID = mapVAIDs.get(selectionDelta.getVAType());
+		IVirtualArray va = set.getVA(vaID);
+		va.setDelta(selectionDelta);
+
 	}
 
 	public void registerEventListeners() {
@@ -303,8 +293,14 @@ public abstract class AUseCase
 		replaceVirtualArrayInUseCaseListener.setHandler(this);
 		eventPublisher.addListener(ReplaceVirtualArrayInUseCaseEvent.class,
 			replaceVirtualArrayInUseCaseListener);
+
+		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
+		virtualArrayUpdateListener.setHandler(this);
+		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
+
 	}
 
+	// TODO this is never called!
 	public void unregisterEventListeners() {
 
 		// if (groupMergingActionListener != null) {
@@ -324,6 +320,12 @@ public abstract class AUseCase
 		if (replaceVirtualArrayInUseCaseListener != null) {
 			eventPublisher.removeListener(replaceVirtualArrayInUseCaseListener);
 			replaceVirtualArrayInUseCaseListener = null;
+		}
+		
+		if(virtualArrayUpdateListener != null)
+		{
+			eventPublisher.removeListener(virtualArrayUpdateListener);
+			virtualArrayUpdateListener = null;
 		}
 	}
 

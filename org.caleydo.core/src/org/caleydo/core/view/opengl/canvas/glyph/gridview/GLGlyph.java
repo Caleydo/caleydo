@@ -23,7 +23,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -106,7 +106,7 @@ public class GLGlyph
 
 	private GlyphManager gman = null;
 
-	private GenericSelectionManager selectionManager = null;
+	private SelectionManager selectionManager = null;
 
 	private GlyphEntry oldMouseOverGlyphEntry = null;
 
@@ -149,7 +149,7 @@ public class GLGlyph
 
 		gman = generalManager.getGlyphManager();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		viewType = EManagedObjectType.GL_GLYPH;
 
 	}

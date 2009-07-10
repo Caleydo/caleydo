@@ -56,7 +56,7 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GenericSelectionManager {
+public class SelectionManager {
 
 	// EnumMap<Enum, V>
 	// HashMap<SelectionEnumeration, Integer> hash;
@@ -167,8 +167,8 @@ public class GenericSelectionManager {
 		 * 
 		 * @return the selection manager
 		 */
-		public GenericSelectionManager build() {
-			return new GenericSelectionManager(this);
+		public SelectionManager build() {
+			return new SelectionManager(this);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class GenericSelectionManager {
 	 * @param builder
 	 *            the builder
 	 */
-	private GenericSelectionManager(Builder builder) {
+	private SelectionManager(Builder builder) {
 		this.eNormalType = builder.normalType;
 		this.externalToInternalMapping = builder.externalToInternalMapping;
 		this.internalToExternalMapping = builder.internalToExternalMapping;
@@ -691,7 +691,7 @@ public class GenericSelectionManager {
 		if (idType == null) {
 			idType = internalIDType;
 		}
-		VirtualArrayDelta tempDelta = new VirtualArrayDelta(idType);
+		VirtualArrayDelta tempDelta = new VirtualArrayDelta(virtualArray.getVAType(), idType);
 		HashMap<Integer, Integer> tempHash;
 		for (ESelectionType selectionType : alSelectionTypes) {
 			if (selectionType == ESelectionType.DESELECTED) {

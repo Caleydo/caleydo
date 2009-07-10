@@ -16,7 +16,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -65,7 +65,7 @@ public class GLGlyphSliderView
 	private float fSliderHeight = 1.0f;
 	private int iMaxCols = 100000;
 
-	private GenericSelectionManager selectionManager = null;
+	private SelectionManager selectionManager = null;
 
 	/**
 	 * Constructor.
@@ -85,7 +85,7 @@ public class GLGlyphSliderView
 		alGlyphAttributeTypes = new ArrayList<GlyphAttributeType>();
 		alGridPosition = new ArrayList<Vec2f>();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		viewType = EManagedObjectType.GL_GLYPH_SLIDER;
 	}
 

@@ -131,7 +131,7 @@ public abstract class AGLEventListener
 	/**
 	 * The type of the content VA
 	 */
-	protected EVAType contentVAType = EVAType.COMPLETE_SELECTION;
+	protected EVAType contentVAType = EVAType.CONTENT;
 
 	/**
 	 * The id of the virtual array that manages the storage references in the set
@@ -140,7 +140,7 @@ public abstract class AGLEventListener
 	/**
 	 * The type of the storage VA
 	 */
-	protected EVAType storageVAType = EVAType.STORAGE_SELECTION;
+	protected EVAType storageVAType = EVAType.STORAGE;
 
 	/**
 	 * The context menu each view should implement. It has to be created in initLocal or is set via initRemote

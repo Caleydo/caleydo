@@ -7,6 +7,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -29,7 +30,7 @@ public class AddToListItem
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
 		PropagationEvent event = new PropagationEvent();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);		
+		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_BOOKMARKS, EIDType.EXPRESSION_INDEX);		
 		delta.add(VADeltaItem.append(iStorageIndex));
 		event.setVirtualArrayDelta(delta);
 		registerEvent(event);
@@ -44,7 +45,7 @@ public class AddToListItem
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Save to list heat map");
 		PropagationEvent event = new PropagationEvent();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
+		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_BOOKMARKS, EIDType.EXPRESSION_INDEX);
 		
 		for (Integer storageIndex : alStorageIndex)
 			delta.add(VADeltaItem.append(storageIndex));

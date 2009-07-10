@@ -12,6 +12,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.core.Instances;
@@ -34,7 +35,7 @@ public class HierarchicalClusterer
 	private Integer cluster(ISet set, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
-		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		ArrayList<Integer> indices = new ArrayList<Integer>();
 
 		StringBuffer buffer = new StringBuffer();
 
@@ -210,7 +211,7 @@ public class HierarchicalClusterer
 		for (double cluster : clusters) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (clusterAssignments[i] == cluster) {
-					indexes.add(i);
+					indices.add(i);
 					temp.set(hashClusters.get(cluster), temp.get(hashClusters.get(cluster)) + 1);
 				}
 			}
@@ -225,9 +226,9 @@ public class HierarchicalClusterer
 		Integer clusteredVAId = 0;
 
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createStorageVA(indexes);
+			clusteredVAId = set.createContentVA(EVAType.CONTENT, indices);
 		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createSetVA(indexes);
+			clusteredVAId = set.createStorageVA(EVAType.STORAGE, indices);
 
 		CNode node = clusterer.m_cobwebTree;
 

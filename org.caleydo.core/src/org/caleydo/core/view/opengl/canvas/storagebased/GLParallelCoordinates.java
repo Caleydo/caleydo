@@ -51,7 +51,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -76,6 +76,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -208,12 +209,27 @@ public class GLParallelCoordinates
 	private SelectedElementRep elementRep;
 
 	// private int iPolylineVAID = 0;
+	/**
+	 * The virtual array that is currently associated with polylines. By default this is equivalent to the
+	 * contentVA, but after the dimensions have swapped this can also be the storageVA
+	 */
 	private IVirtualArray polylineVA;
+	/**
+	 * The va type of the polylines
+	 */
+	private EVAType polylineVAType = EVAType.CONTENT;
 	// private int iAxisVAID = 0;
+	/**
+	 * Same as polylineVA, just inverse
+	 */
 	private IVirtualArray axisVA;
+	/**
+	 * The type of the VA associated with the axis, by default Storages
+	 */
+	private EVAType axisVAType = EVAType.STORAGE;
 
-	private GenericSelectionManager polylineSelectionManager;
-	private GenericSelectionManager axisSelectionManager;
+	private SelectionManager polylineSelectionManager;
+	private SelectionManager axisSelectionManager;
 
 	protected ParCoordsRenderStyle renderStyle;
 
@@ -250,8 +266,8 @@ public class GLParallelCoordinates
 		renderStyle = new ParCoordsRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
 
-		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		contentSelectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
+		storageSelectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -368,7 +384,6 @@ public class GLParallelCoordinates
 
 	@Override
 	public void display(final GL gl) {
-
 		processEvents();
 		if (bShowSelectionHeatMap) {
 
@@ -390,14 +405,6 @@ public class GLParallelCoordinates
 			gl.glVertex3f(0, glSelectionHeatMap.getViewFrustum().getHeight(), 0);
 			gl.glEnd();
 
-			// gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
-			// gl.glLineWidth(1);
-			// gl.glBegin(GL.GL_LINE_LOOP);
-			// gl.glVertex3f((2 + fXCorrection) / fAspectRatio, -2, 4);
-			// gl.glVertex3f((2 + fXCorrection) / fAspectRatio, 2, 4);
-			// gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, 2, 4);
-			// gl.glVertex3f((2 + fXCorrection) / fAspectRatio - fWidth, -2, 4);
-			// gl.glEnd();
 			int iPickingID =
 				pickingManager.getPickingID(iUniqueID, EPickingType.PCS_VIEW_SELECTION, glSelectionHeatMap
 					.getID());
@@ -419,10 +426,6 @@ public class GLParallelCoordinates
 
 		if (bIsDraggingActive) {
 			handleGateDragging(gl);
-			// if (glMouseListener.wasMouseReleased())
-			// {
-			// bIsDraggingActive = false;
-			// }
 		}
 
 		if (bWasAxisMoved) {
@@ -432,20 +435,13 @@ public class GLParallelCoordinates
 			}
 		}
 
-		// checkUnselection();
-		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 
 		if (bIsAngularBrushingActive && iSelectedLineID != -1) {
 			handleAngularBrushing(gl);
-			// if(glMouseListener.wasMouseReleased())
-			// bIsAngularBrushingActive = false;
-
 		}
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
-
-		// gl.glDisable(GL.GL_STENCIL_TEST);
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
@@ -522,11 +518,11 @@ public class GLParallelCoordinates
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
+			contentVA = useCase.getVA(EVAType.CONTENT_CONTEXT);
 		}
 		else {
 
-			contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
+			contentVA = useCase.getVA(EVAType.CONTENT);
 		}
 
 		contentSelectionManager.setVA(contentVA);
@@ -572,18 +568,6 @@ public class GLParallelCoordinates
 		if (glSelectionHeatMap != null) {
 			glSelectionHeatMap.clearAllSelections();
 		}
-
-		// triggerEvent(EMediatorType.PROPAGATION_MEDIATOR,
-		// new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
-		// new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
-		//		
-		// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-		// new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
-		// new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
-		// triggerEvent(EMediatorType.SELECTION_MEDIATOR, new
-		// SelectionCommandEventContainer(
-		// EIDType.EXPERIMENT_INDEX,
-		// new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
 
 	}
 
@@ -634,11 +618,11 @@ public class GLParallelCoordinates
 		polylineSelectionManager.removeElements(ESelectionType.DESELECTED);
 		clearAllSelections();
 		setDisplayListDirty();
-		
+
 		// todo this doesn't work for turned stuff
-		ReplaceVirtualArrayInUseCaseEvent event = new ReplaceVirtualArrayInUseCaseEvent(contentVAType, polylineVA);
-//		VirtualArrayUpdateEvent event = new VirtualArrayUpdateEvent();
-//		event.setVirtualArrayDelta(vaDelta);
+		ReplaceVirtualArrayInUseCaseEvent event =
+			new ReplaceVirtualArrayInUseCaseEvent(polylineVAType, polylineVA);
+
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
@@ -650,46 +634,15 @@ public class GLParallelCoordinates
 	@Override
 	protected void initLists() {
 
-		// TODO this needs only to be done if initLists has to be called during
-		// runtime, not while initing
-		// contentSelectionManager.resetSelectionManager();
-		// storageSelectionManager.resetSelectionManager();
-
-		// if (bRenderOnlyContext) {
-		// contentVA = useCase.getVA(EStorageBasedVAType.EXTERNAL_SELECTION);
-		// }
-		// else {
-		//		
-		// contentVA = useCase.getVA(EStorageBasedVAType.COMPLETE_SELECTION);
-		// }
-		// storageVA = useCase.getVA(EStorageBasedVAType.STORAGE_SELECTION);
 		if (bRenderOnlyContext)
-			contentVAType = EVAType.EXTERNAL_SELECTION;
+			contentVAType = EVAType.CONTENT_CONTEXT;
 		else
-			contentVAType = EVAType.COMPLETE_SELECTION;
+			contentVAType = EVAType.CONTENT;
 
 		contentVA = useCase.getVA(contentVAType);
 
 		storageVA = useCase.getVA(storageVAType);
-		// if (bRenderOnlyContext) {
-		// contentVA = useCase.getVA(EVAType.EXTERNAL_SELECTION);
-		// }
-		// else {
-		// try {
-		// contentVA = useCase.getVA(EVAType.COMPLETE_CLUSTERED_SELECTION);
-		// }
-		// catch (NullPointerException e) {
-		// contentVA = useCase.getVA(EVAType.COMPLETE_SELECTION);
-		// }
-		//
-		// }
-		//
-		// try {
-		// storageVA = useCase.getVA(EVAType.STORAGE_CLUSTERED_SELECTION);
-		// }
-		// catch (NullPointerException e) {
-		// storageVA = useCase.getVA(EVAType.STORAGE_SELECTION);
-		// }
+
 
 		initContentVariables();
 
@@ -722,14 +675,21 @@ public class GLParallelCoordinates
 	private void initContentVariables() {
 		if (bRenderStorageHorizontally) {
 
-			polylineVA = storageVA;
 			axisVA = contentVA;
+			axisVAType = contentVAType;
+			polylineVA = storageVA;
+			polylineVAType = storageVAType;
+
 			polylineSelectionManager = storageSelectionManager;
 			axisSelectionManager = contentSelectionManager;
 		}
 		else {
+			
 			polylineVA = contentVA;
+			polylineVAType = contentVAType;
 			axisVA = storageVA;
+			axisVAType = storageVAType;
+			
 			polylineSelectionManager = contentSelectionManager;
 			axisSelectionManager = storageSelectionManager;
 		}
@@ -2185,7 +2145,8 @@ public class GLParallelCoordinates
 						}
 						axisVA.remove(iExternalID);
 
-						IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+						IVirtualArrayDelta vaDelta =
+							new VirtualArrayDelta(axisVAType, EIDType.EXPERIMENT_INDEX);
 						vaDelta.add(VADeltaItem.remove(iExternalID));
 						sendVirtualArrayUpdateEvent(vaDelta);
 						setDisplayListDirty();
@@ -2217,7 +2178,8 @@ public class GLParallelCoordinates
 					case CLICKED:
 						if (iExternalID >= 0) {
 							axisVA.copy(iExternalID);
-							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+							IVirtualArrayDelta vaDelta =
+								new VirtualArrayDelta(axisVAType, EIDType.EXPERIMENT_INDEX);
 							vaDelta.add(VADeltaItem.copy(iExternalID));
 							sendVirtualArrayUpdateEvent(vaDelta);
 
@@ -2739,7 +2701,7 @@ public class GLParallelCoordinates
 			alAxisSpacing.remove(iMovedAxisPosition);
 			alAxisSpacing.add(iSwitchAxisWithThis, fWidth);
 
-			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(axisVAType, EIDType.EXPERIMENT_INDEX);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
 			sendVirtualArrayUpdateEvent(vaDelta);
 			iMovedAxisPosition = iSwitchAxisWithThis;

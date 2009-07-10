@@ -18,7 +18,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -103,7 +103,7 @@ public class GLPathway
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
-	private GenericSelectionManager selectionManager;
+	private SelectionManager selectionManager;
 
 	/**
 	 * Own texture manager is needed for each GL context, because textures cannot be bound to multiple GL
@@ -165,7 +165,7 @@ public class GLPathway
 			alSelectionType.add(selectionType);
 		}
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
+		selectionManager = new SelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 
 		// textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24),
 		// false);
@@ -750,7 +750,7 @@ public class GLPathway
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.REFSEQ_MRNA_INT);
+		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_CONTEXT, EIDType.REFSEQ_MRNA_INT);
 		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
 
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway.getAllItemsByKind(EGraphItemKind.NODE)) {

@@ -9,6 +9,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
  * Implementation of IVirtualArray
@@ -31,15 +32,17 @@ public class VirtualArray
 	 */
 	int iLastRemovedIndex = -1;
 
+	EVAType vaType;
+
 	/**
 	 * Constructor. Pass the length of the managed collection
 	 * 
 	 * @param iLength
 	 *            the length of the managed collection
 	 */
-	public VirtualArray(int iLength) {
+	public VirtualArray(EVAType vaType, int iLength) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
-
+		this.vaType = vaType;
 		this.iLength = iLength;
 		init();
 	}
@@ -51,11 +54,17 @@ public class VirtualArray
 	 * @param iLength
 	 * @param iLVirtualArray
 	 */
-	public VirtualArray(int iLength, List<Integer> iLVirtualArray) {
+	public VirtualArray(EVAType vaType, int iLength, List<Integer> iLVirtualArray) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		this.vaType = vaType;
 		this.iLength = iLength;
 		this.iAlVirtualArray = new ArrayList<Integer>();
 		iAlVirtualArray.addAll(iLVirtualArray);
+	}
+
+	@Override
+	public EVAType getVAType() {
+		return vaType;
 	}
 
 	@Override
@@ -157,7 +166,7 @@ public class VirtualArray
 			}
 		}
 	}
-	
+
 	@Override
 	public Integer size() {
 		return iAlVirtualArray.size();

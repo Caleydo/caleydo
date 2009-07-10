@@ -29,6 +29,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -376,29 +377,29 @@ public class Set
 	}
 
 	@Override
-	public int createStorageVA() {
-		VirtualArray virtualArray = new VirtualArray(depth());
+	public int createContentVA(EVAType vaType) {
+		VirtualArray virtualArray = new VirtualArray(vaType, depth());
 		return doCreateStorageVA(virtualArray);
 
 	}
 
 	@Override
-	public int createStorageVA(List<Integer> iAlSelections) {
-		IVirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
+	public int createContentVA(EVAType vaType, List<Integer> iAlSelections) {
+		IVirtualArray virtualArray = new VirtualArray(vaType, depth(), iAlSelections);
 		return doCreateStorageVA(virtualArray);
 	}
 
 	@Override
-	public int createSetVA() {
-		VirtualArray virtualArray = new VirtualArray(size());
+	public int createStorageVA(EVAType vaType) {
+		VirtualArray virtualArray = new VirtualArray(vaType, size());
 		int iUniqueID = virtualArray.getID();
 		hashSetVAs.put(iUniqueID, virtualArray);
 		return iUniqueID;
 	}
 
 	@Override
-	public int createSetVA(ArrayList<Integer> iAlSelections) {
-		VirtualArray virtualArray = new VirtualArray(size(), iAlSelections);
+	public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections) {
+		VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
 		int iUniqueID = virtualArray.getID();
 
 		hashSetVAs.put(iUniqueID, virtualArray);

@@ -12,6 +12,7 @@ import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 public class TreeClusterer
 	extends AClusterer {
@@ -254,7 +255,7 @@ public class TreeClusterer
 
 		ClosestPair pair = null;
 
-		ArrayList<Integer> AlIndexes = new ArrayList<Integer>();
+		ArrayList<Integer> alIndices = new ArrayList<Integer>();
 
 		float[][] distmatrix;
 
@@ -343,9 +344,9 @@ public class TreeClusterer
 
 		for (int i = 0; i < result.length; i++) {
 			if (result[i].getLeft() >= 0)
-				AlIndexes.add(result[i].getLeft());
+				alIndices.add(result[i].getLeft());
 			if (result[i].getRight() >= 0)
-				AlIndexes.add(result[i].getRight());
+				alIndices.add(result[i].getRight());
 		}
 
 		// set cluster result in Set
@@ -362,7 +363,7 @@ public class TreeClusterer
 
 		determineExpressionValue(eClustererType);
 
-		AlIndexes = getAl();
+		alIndices = getAl();
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
@@ -372,9 +373,9 @@ public class TreeClusterer
 		Integer clusteredVAId = 0;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createStorageVA(AlIndexes);
+			clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndices);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createSetVA(AlIndexes);
+			clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndices);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
@@ -580,9 +581,9 @@ public class TreeClusterer
 		Integer clusteredVAId = 0;
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createStorageVA(AlIndexes);
+			clusteredVAId = set.createContentVA(EVAType.CONTENT, AlIndexes);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createSetVA(AlIndexes);
+			clusteredVAId = set.createStorageVA(EVAType.STORAGE, AlIndexes);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));

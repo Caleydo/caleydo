@@ -2,13 +2,13 @@ package org.caleydo.core.manager.event.view;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
  * A SelectionCommandEvent holds a {@link SelectionCommand} which is used to signal one of the actions defined
- * in {@link ESelectionCommandType} to a {@link GenericSelectionManager}. Which particular selection manager
+ * in {@link ESelectionCommandType} to a {@link SelectionManager}. Which particular selection manager
  * the command should be applied to is specified via the additional {@link EIDType}.
  * 
  * @author Werner Puff
