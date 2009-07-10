@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -233,7 +234,7 @@ public class AffinityClusterer
 	 * @param set
 	 * @return Integer
 	 */
-	private Integer affinityPropagation(EClustererType eClustererType) {
+	private IVirtualArray affinityPropagation(EClustererType eClustererType) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> alIndexes = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
@@ -373,7 +374,7 @@ public class AffinityClusterer
 			processEvents();
 			if (bClusteringCanceled) {
 				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-				return -2;
+				return null;
 			}
 		}
 
@@ -448,12 +449,12 @@ public class AffinityClusterer
 		}
 		else {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -1;
+			return null;
 			// throw new IllegalStateException("Did not identify any clusters!!");
 		}
 		if (bConverged == false) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -3;
+			return null;
 			// throw new IllegalStateException("Algorithm did not converge!!");
 		}
 
@@ -469,20 +470,25 @@ public class AffinityClusterer
 
 		alIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
 
-		Integer clusteredVAId = 0;
+//		Integer clusteredVAId = 0;
+//		if (eClustererType == EClustererType.GENE_CLUSTERING)
+//			clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndexes);
+//		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+//			clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndexes);
 
+		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndexes);
+			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndexes);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndexes);
-
+			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndexes);
+		
 		set.setAlClusterSizes(count);
 		set.setAlExamples(idxExamples);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		return clusteredVAId;
+		return virtualArray;
 	}
 
 	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples, ArrayList<Integer> count,
@@ -532,10 +538,10 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
-		Integer VAId = 0;
+		IVirtualArray virtualArray = null;
 
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			fClusterFactor = clusterState.getAffinityPropClusterFactorGenes();
@@ -553,17 +559,17 @@ public class AffinityClusterer
 
 		if (iReturnValue == -1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -1;
+			return null;
 		}
 		else if (iReturnValue == -2) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -2;
+			return null;
 		}
 
 		this.set = set;
 
-		VAId = affinityPropagation(clusterState.getClustererType());
+		virtualArray = affinityPropagation(clusterState.getClustererType());
 
-		return VAId;
+		return virtualArray;
 	}
 }

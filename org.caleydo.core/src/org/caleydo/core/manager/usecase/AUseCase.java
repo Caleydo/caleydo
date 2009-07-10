@@ -172,7 +172,7 @@ public abstract class AUseCase
 	}
 
 	private void initVAs() {
-		
+
 		mapVAIDs = new EnumMap<EVAType, Integer>(EVAType.class);
 
 		if (!mapVAIDs.isEmpty()) {
@@ -234,12 +234,16 @@ public abstract class AUseCase
 		clusterState.setContentVaId(mapVAIDs.get(EVAType.CONTENT));
 		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE));
 
-		ArrayList<Integer> iAlNewVAIDs = set.cluster(clusterState);
+		ArrayList<IVirtualArray> iAlNewVAs = set.cluster(clusterState);
 
-		if (iAlNewVAIDs != null) {
-			mapVAIDs.put(EVAType.CONTENT, iAlNewVAIDs.get(0));
-			mapVAIDs.put(EVAType.STORAGE, iAlNewVAIDs.get(1));
+		if (iAlNewVAs != null) {
+			set.replaceVA(mapVAIDs.get(EVAType.CONTENT), iAlNewVAs.get(0));
+			set.replaceVA(mapVAIDs.get(EVAType.STORAGE), iAlNewVAs.get(1));
 		}
+		// if (iAlNewVAIDs != null) {
+		// mapVAIDs.put(EVAType.CONTENT, iAlNewVAIDs.get(0));
+		// mapVAIDs.put(EVAType.STORAGE, iAlNewVAIDs.get(1));
+		// }
 
 		// This should be done to avoid problems with group info in HHM
 		set.setGeneClusterInfoFlag(false);
@@ -250,8 +254,9 @@ public abstract class AUseCase
 	}
 
 	@Override
-	/**
-	 * This is the method which is used to synchronize the views with the Virtual Array, which is initiated from this class. Therefore it should not be called any time!
+	/*
+	 * * This is the method which is used to synchronize the views with the Virtual Array, which is initiated
+	 * from this class. Therefore it should not be called any time!
 	 */
 	public void replaceVirtualArray(EVAType vaType) {
 		throw new IllegalStateException("UseCases shouldn't react to this");
@@ -259,8 +264,7 @@ public abstract class AUseCase
 	}
 
 	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
-		
-		
+
 		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
 
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(vaType));
@@ -321,9 +325,8 @@ public abstract class AUseCase
 			eventPublisher.removeListener(replaceVirtualArrayInUseCaseListener);
 			replaceVirtualArrayInUseCaseListener = null;
 		}
-		
-		if(virtualArrayUpdateListener != null)
-		{
+
+		if (virtualArrayUpdateListener != null) {
 			eventPublisher.removeListener(virtualArrayUpdateListener);
 			virtualArrayUpdateListener = null;
 		}

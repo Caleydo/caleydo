@@ -1,6 +1,7 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
@@ -26,10 +27,9 @@ public interface IClusterer
 	 * @param iProgressBarMultiplier
 	 *            multiplier needed for overall progress bar. In case of bi clustering the value is 1. In case
 	 *            of normal clustering the value is 2.
-	 * @return Id of the sorted VirtualArray. In case of an error(exception or algorithm do not converge) -1
-	 *         will be returned. In case use abort triggered by user -2 will be returned
+	 * @return Sorted VirtualArray.
 	 */
-	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier);
 
 	public void cancel();

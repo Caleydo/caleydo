@@ -536,7 +536,7 @@ public class Set
 	}
 
 	@Override
-	public ArrayList<Integer> cluster(ClusterState clusterState) {
+	public ArrayList<IVirtualArray> cluster(ClusterState clusterState) {
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {
 

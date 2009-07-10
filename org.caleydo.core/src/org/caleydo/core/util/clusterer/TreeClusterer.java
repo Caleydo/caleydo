@@ -8,6 +8,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -240,7 +241,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	private Integer palcluster(EClustererType eClustererType) {
+	private IVirtualArray palcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -263,7 +264,7 @@ public class TreeClusterer
 			distmatrix = new float[iNrSamples][iNrSamples];
 		}
 		catch (OutOfMemoryError e) {
-			return -1;
+			return null;
 		}
 
 		distmatrix = similarities.clone();
@@ -338,7 +339,7 @@ public class TreeClusterer
 			}
 			else {
 				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-				return -2;
+				return null;
 			}
 		}
 
@@ -370,17 +371,22 @@ public class TreeClusterer
 		else
 			set.setClusteredTreeExps(tree);
 
-		Integer clusteredVAId = 0;
+		// Integer clusteredVAId = 0;
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndices);
+		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndices);
 
+		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndices);
+			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndices);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndices);
+			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndices);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		return clusteredVAId;
+		return virtualArray;
 	}
 
 	private void determineExpressionValue(EClustererType eClustererType) {
@@ -469,7 +475,7 @@ public class TreeClusterer
 	 * @param set
 	 * @return index of virtual array
 	 */
-	private Integer pmlcluster(EClustererType eClustererType) {
+	private IVirtualArray pmlcluster(EClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -491,7 +497,7 @@ public class TreeClusterer
 			distmatrix = new float[iNrSamples][iNrSamples];
 		}
 		catch (OutOfMemoryError e) {
-			return -1;
+			return null;
 		}
 
 		distmatrix = similarities.clone();
@@ -553,7 +559,7 @@ public class TreeClusterer
 			}
 			else {
 				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-				return -2;
+				return null;
 			}
 		}
 
@@ -578,17 +584,22 @@ public class TreeClusterer
 		else
 			set.setClusteredTreeExps(tree);
 
-		Integer clusteredVAId = 0;
+		// Integer clusteredVAId = 0;
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// clusteredVAId = set.createContentVA(EVAType.CONTENT, AlIndexes);
+		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, AlIndexes);
 
+		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createContentVA(EVAType.CONTENT, AlIndexes);
+			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), AlIndexes);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createStorageVA(EVAType.STORAGE, AlIndexes);
+			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), AlIndexes);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		return clusteredVAId;
+		return virtualArray;
 	}
 
 	private ArrayList<Integer> traverse(ArrayList<Integer> indexes, ClusterNode node) {
@@ -741,10 +752,10 @@ public class TreeClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
-		Integer VAId = 0;
+		IVirtualArray virtualArray = null;
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
@@ -758,18 +769,18 @@ public class TreeClusterer
 
 		if (iReturnValue == -1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -1;
+			return null;
 		}
 		else if (iReturnValue == -2) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -2;
+			return null;
 		}
 
 		this.set = set;
 
-		// VAId = pmlcluster(clusterState.getClustererType());
-		VAId = palcluster(clusterState.getClustererType());
+		// virtualArray = pmlcluster(clusterState.getClustererType());
+		virtualArray = palcluster(clusterState.getClustererType());
 
-		return VAId;
+		return virtualArray;
 	}
 }

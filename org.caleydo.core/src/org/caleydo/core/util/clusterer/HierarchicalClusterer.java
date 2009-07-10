@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -32,7 +33,7 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	private Integer cluster(ISet set, ClusterState clusterState) {
+	private IVirtualArray cluster(ISet set, ClusterState clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -81,7 +82,7 @@ public class HierarchicalClusterer
 				else {
 					GeneralManager.get().getEventPublisher()
 						.triggerEvent(new ClusterProgressEvent(100, true));
-					return -2;
+					return null;
 				}
 			}
 		}
@@ -119,7 +120,7 @@ public class HierarchicalClusterer
 				else {
 					GeneralManager.get().getEventPublisher()
 						.triggerEvent(new ClusterProgressEvent(100, true));
-					return -2;
+					return null;
 				}
 			}
 		}
@@ -140,7 +141,7 @@ public class HierarchicalClusterer
 		}
 		catch (IOException e1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -1;
+			return null;
 			// e1.printStackTrace();
 		}
 
@@ -155,14 +156,14 @@ public class HierarchicalClusterer
 		}
 		catch (Exception e) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -1;
+			return null;
 			// e.printStackTrace();
 		}
 
 		processEvents();
 		if (bClusteringCanceled) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -2;
+			return null;
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
 
@@ -173,13 +174,13 @@ public class HierarchicalClusterer
 		}
 		catch (Exception e) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -1;
+			return null;
 			// e.printStackTrace();
 		}
 		processEvents();
 		if (bClusteringCanceled) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -2;
+			return null;
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
 
@@ -219,17 +220,22 @@ public class HierarchicalClusterer
 		processEvents();
 		if (bClusteringCanceled) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -2;
+			return null;
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
-		Integer clusteredVAId = 0;
+//		Integer clusteredVAId = 0;
+//		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+//			clusteredVAId = set.createContentVA(EVAType.CONTENT, indices);
+//		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+//			clusteredVAId = set.createStorageVA(EVAType.STORAGE, indices);
 
+		IVirtualArray virtualArray = null;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			clusteredVAId = set.createContentVA(EVAType.CONTENT, indices);
+			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), indices);
 		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-			clusteredVAId = set.createStorageVA(EVAType.STORAGE, indices);
-
+			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), indices);
+		
 		CNode node = clusterer.m_cobwebTree;
 
 		ClusterNode clusterNode = new ClusterNode("Root", 0, 0f, 0, true);
@@ -243,7 +249,7 @@ public class HierarchicalClusterer
 		processEvents();
 		if (bClusteringCanceled) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return -2;
+			return null;
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
 
@@ -258,7 +264,7 @@ public class HierarchicalClusterer
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		return clusteredVAId;
+		return virtualArray;
 	}
 
 	private void CNodeToTree(ClusterNode clusterNode, CNode node, EClustererType eClustererType) {
@@ -292,20 +298,20 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public Integer getSortedVAId(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
-		Integer VAId = 0;
-
+		IVirtualArray virtualArray = null;
+		
 		this.iVAIdContent = clusterState.getContentVaId();
 		this.iVAIdStorage = clusterState.getStorageVaId();
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		VAId = cluster(set, clusterState);
+		virtualArray = cluster(set, clusterState);
 
-		return VAId;
+		return virtualArray;
 	}
 
 }

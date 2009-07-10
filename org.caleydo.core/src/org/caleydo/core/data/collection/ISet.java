@@ -267,9 +267,9 @@ public interface ISet
 	 * Clusters a Storage
 	 * 
 	 * @param clusterState
-	 * @return ArrayList<Integer> Id of virtual arrays holding cluster result
+	 * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
 	 */
-	public ArrayList<Integer> cluster(ClusterState clusterState);
+	public ArrayList<IVirtualArray> cluster(ClusterState clusterState);
 
 	/**
 	 * Sets clustered Tree for genes
