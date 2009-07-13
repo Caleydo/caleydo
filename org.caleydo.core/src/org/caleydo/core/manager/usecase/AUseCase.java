@@ -271,12 +271,11 @@ public abstract class AUseCase
 	}
 
 	@Override
-	public void handleVirtualArrayUpdate(IVirtualArrayDelta selectionDelta, String info) {
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
 
-		Integer vaID = mapVAIDs.get(selectionDelta.getVAType());
+		Integer vaID = mapVAIDs.get(vaDelta.getVAType());
 		IVirtualArray va = set.getVA(vaID);
-		va.setDelta(selectionDelta);
-
+		va.setDelta(vaDelta);
 	}
 
 	public void registerEventListeners() {

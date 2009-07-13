@@ -132,9 +132,9 @@ public class GLParallelCoordinates
 
 	// Specify the current input data type for the axis and polylines
 	// Is used for meta information, such as captions
-	private EIDType eAxisDataType = EIDType.EXPERIMENT_INDEX;
+	private EIDType eAxisDataType;
 
-	private EIDType ePolylineDataType = EIDType.EXPRESSION_INDEX;
+	private EIDType ePolylineDataType;
 
 	private boolean bIsDraggingActive = false;
 
@@ -466,48 +466,6 @@ public class GLParallelCoordinates
 		glSelectionHeatMap.initRemote(gl, this, glMouseListener, remoteRenderingGLView, null);
 	}
 
-	/**
-	 * Choose whether to render one array as a polyline and every entry across arrays is an axis or whether
-	 * the array corresponds to an axis and every entry across arrays is a polyline
-	 */
-	private void renderStorageAsPolyline(boolean bRenderStorageHorizontally) {
-
-		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally) {
-			if (bRenderStorageHorizontally && contentVA.size() > 100) {
-
-				getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
-							"Axis Limit",
-							"Can not show more than 100 axis - reduce polylines to less than 100 first");
-						return;
-					}
-				});
-
-				return;
-
-			}
-
-			EIDType eTempType = eAxisDataType;
-			eAxisDataType = ePolylineDataType;
-			ePolylineDataType = eTempType;
-		}
-
-		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-		// isEnabled = false;
-
-		fXTranslation = 0;
-		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-		initContentVariables();
-
-		resetAxisSpacing();
-		initGates();
-
-		setDisplayListDirty();
-	}
-
 	public void triggerAngularBrushing() {
 		bAngularBrushingSelectPolyline = true;
 		setDisplayListDirty();
@@ -643,7 +601,6 @@ public class GLParallelCoordinates
 
 		storageVA = useCase.getVA(storageVAType);
 
-
 		initContentVariables();
 
 		contentSelectionManager.setVA(contentVA);
@@ -675,6 +632,9 @@ public class GLParallelCoordinates
 	private void initContentVariables() {
 		if (bRenderStorageHorizontally) {
 
+			eAxisDataType = EIDType.EXPRESSION_INDEX;
+			ePolylineDataType = EIDType.EXPERIMENT_INDEX;
+				
 			axisVA = contentVA;
 			axisVAType = contentVAType;
 			polylineVA = storageVA;
@@ -684,12 +644,15 @@ public class GLParallelCoordinates
 			axisSelectionManager = contentSelectionManager;
 		}
 		else {
+
+			eAxisDataType = EIDType.EXPERIMENT_INDEX;
+			ePolylineDataType = EIDType.EXPRESSION_INDEX;
 			
 			polylineVA = contentVA;
 			polylineVAType = contentVAType;
 			axisVA = storageVA;
 			axisVAType = storageVAType;
-			
+
 			polylineSelectionManager = contentSelectionManager;
 			axisSelectionManager = storageSelectionManager;
 		}
@@ -1932,13 +1895,6 @@ public class GLParallelCoordinates
 				break;
 			case POLYLINE_SELECTION:
 				switch (ePickingMode) {
-					// case DOUBLE_CLICKED:
-					// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-					// loadPathwaysByGeneEvent.setSender(this);
-					// loadPathwaysByGeneEvent.setGeneID(iExternalID);
-					// loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-					// generalManager.getEventPublisher().triggerEvent(loadPathwaysByGeneEvent);
-					// // intentionally no break
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
@@ -2144,7 +2100,7 @@ public class GLParallelCoordinates
 							hashGates.remove(axisVA.get(iExternalID));
 						}
 						axisVA.remove(iExternalID);
-
+						axisSelectionManager.remove(iExternalID, false);
 						IVirtualArrayDelta vaDelta =
 							new VirtualArrayDelta(axisVAType, EIDType.EXPERIMENT_INDEX);
 						vaDelta.add(VADeltaItem.remove(iExternalID));
@@ -2651,9 +2607,40 @@ public class GLParallelCoordinates
 		return (float) Math.acos(fTmp);
 	}
 
+	/**
+	 * Changes the role of axes and polylines. 
+	 * @param defaultOrientation the default orientation is for content to be polylines and for storages to be the axes
+	 */
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
-		renderStorageAsPolyline(defaultOrientation);
+		if (defaultOrientation != this.bRenderStorageHorizontally) {
+			if (defaultOrientation && contentVA.size() > 100) {
+
+				getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+
+					@Override
+					public void run() {
+						MessageDialog.openError(getParentGLCanvas().getParentComposite().getShell(),
+							"Axis Limit",
+							"Can not show more than 100 axis - reduce polylines to less than 100 first");
+						return;
+					}
+				});
+
+				return;
+
+			}
+		}
+
+		this.bRenderStorageHorizontally = defaultOrientation;
+
+		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+		initContentVariables();
+
+		resetAxisSpacing();
+		initGates();
+
+		setDisplayListDirty();
 	}
 
 	@Override
