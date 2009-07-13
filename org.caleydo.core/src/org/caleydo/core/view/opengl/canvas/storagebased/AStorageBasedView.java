@@ -2,19 +2,15 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
 
 import javax.management.InvalidAttributeValueException;
 
-import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
@@ -26,9 +22,7 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -251,12 +245,18 @@ public abstract class AStorageBasedView
 		// "VA Update called by " + eventTrigger.getClass().getSimpleName()
 		// + ", received in: " + this.getClass().getSimpleName());
 
+		// check whether the delta is actually of the correct VA Type
+		if(delta.getVAType() != contentVAType && delta.getVAType() != storageVAType)
+			return;
+		
 		SelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
+			// ignore va changes of other VA types
 			selectionManager = storageSelectionManager;
 		}
 		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
 			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
+	
 			selectionManager = contentSelectionManager;
 		}
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
@@ -432,7 +432,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Broadcast all elements independent of their type.
 	 */
-	public abstract void broadcastElements();
+//	public abstract void broadcastElements();
 
 	@Override
 	public void broadcastElements(EVAOperation type) {

@@ -377,28 +377,39 @@ public class Set
 	}
 
 	@Override
-	public int createContentVA(EVAType vaType) {
-		VirtualArray virtualArray = new VirtualArray(vaType, depth());
-		return doCreateStorageVA(virtualArray);
+	public int createVA(EVAType vaType) {
+		if (vaType == EVAType.STORAGE) {
+			VirtualArray virtualArray = new VirtualArray(vaType, size());
+			return createStorageVA(virtualArray);
+		}
+		else {
+			VirtualArray virtualArray = new VirtualArray(vaType, depth());
+			return createContentVA(virtualArray);
+		}
 
 	}
 
 	@Override
-	public int createContentVA(EVAType vaType, List<Integer> iAlSelections) {
-		IVirtualArray virtualArray = new VirtualArray(vaType, depth(), iAlSelections);
-		return doCreateStorageVA(virtualArray);
+	public int createVA(EVAType vaType, List<Integer> iAlSelections) {
+		if (vaType == EVAType.STORAGE)
+		{
+			IVirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
+			return createStorageVA(virtualArray);
+		}
+		else {
+			IVirtualArray va = new VirtualArray(vaType, depth(), iAlSelections);
+			return createContentVA(va);
+		}
+
 	}
 
-	@Override
-	public int createStorageVA(EVAType vaType) {
-		VirtualArray virtualArray = new VirtualArray(vaType, size());
+	private int createStorageVA(IVirtualArray virtualArray) {
 		int iUniqueID = virtualArray.getID();
 		hashSetVAs.put(iUniqueID, virtualArray);
 		return iUniqueID;
 	}
 
-	@Override
-	public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections) {
+	private int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections) {
 		VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
 		int iUniqueID = virtualArray.getID();
 
@@ -440,6 +451,7 @@ public class Set
 
 	@Override
 	public void replaceVA(int iUniqueID, IVirtualArray virtualArray) {
+		virtualArray.setID(iUniqueID);
 		if (hashSetVAs.containsKey(iUniqueID))
 			hashSetVAs.put(iUniqueID, virtualArray);
 		else if (hashStorageVAs.containsKey(iUniqueID))
@@ -468,7 +480,7 @@ public class Set
 				+ "on nominal data");
 	}
 
-	private int doCreateStorageVA(IVirtualArray virtualArray) {
+	private int createContentVA(IVirtualArray virtualArray) {
 		int iUniqueID = virtualArray.getID();
 		hashStorageVAs.put(iUniqueID, virtualArray);
 		for (IStorage storage : alStorages) {
@@ -649,15 +661,15 @@ public class Set
 	}
 
 	@Override
-	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo){
+	public void setGeneClusterInfoFlag(boolean bGeneClusterInfo) {
 		this.bGeneClusterInfo = bGeneClusterInfo;
 	}
-	
+
 	@Override
-	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo){
+	public void setExperimentClusterInfoFlag(boolean bExperimentClusterInfo) {
 		this.bExperimentClusterInfo = bExperimentClusterInfo;
 	}
-	
+
 	@Override
 	public GroupList getGroupListGenes() {
 		return this.groupListGenes;

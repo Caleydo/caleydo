@@ -51,15 +51,14 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
@@ -76,7 +75,6 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -529,13 +527,13 @@ public class GLParallelCoordinates
 
 	}
 
-	@Override
-	public void broadcastElements() {
+	public void bookmarkElements() {
 
 		// FIXME - this does not what broadcast should actually do
 		// saveSelection();
 
 		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
+		delta.setVAType(EVAType.CONTENT_BOOKMARKS);
 		if (delta.size() > 20) {
 			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 
@@ -634,7 +632,7 @@ public class GLParallelCoordinates
 
 			eAxisDataType = EIDType.EXPRESSION_INDEX;
 			ePolylineDataType = EIDType.EXPERIMENT_INDEX;
-				
+
 			axisVA = contentVA;
 			axisVAType = contentVAType;
 			polylineVA = storageVA;
@@ -647,7 +645,7 @@ public class GLParallelCoordinates
 
 			eAxisDataType = EIDType.EXPERIMENT_INDEX;
 			ePolylineDataType = EIDType.EXPRESSION_INDEX;
-			
+
 			polylineVA = contentVA;
 			polylineVAType = contentVAType;
 			axisVA = storageVA;
@@ -2608,8 +2606,10 @@ public class GLParallelCoordinates
 	}
 
 	/**
-	 * Changes the role of axes and polylines. 
-	 * @param defaultOrientation the default orientation is for content to be polylines and for storages to be the axes
+	 * Changes the role of axes and polylines.
+	 * 
+	 * @param defaultOrientation
+	 *            the default orientation is for content to be polylines and for storages to be the axes
 	 */
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
@@ -2953,4 +2953,14 @@ public class GLParallelCoordinates
 		}
 	}
 
+	@Override
+	public String toString() {
+		int iNumElements =
+			(contentSelectionManager.getNumberOfElements() - contentSelectionManager
+				.getNumberOfElements(ESelectionType.DESELECTED));
+		if (isRenderedRemote())
+			return ("PCs, standalone, " + iNumElements + " elements");
+		else
+			return ("PCs, remote, " + iNumElements + " elements");
+	}
 }

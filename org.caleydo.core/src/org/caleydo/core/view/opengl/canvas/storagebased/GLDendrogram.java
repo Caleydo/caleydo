@@ -1041,9 +1041,9 @@ public class GLDendrogram
 		return serializedForm;
 	}
 
-	@Override
-	public void broadcastElements() {
-	}
+//	@Override
+//	public void broadcastElements() {
+//	}
 
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {

@@ -2905,10 +2905,10 @@ public class GLHierarchicalHeatMap
 		throw new IllegalStateException("Rendering only context not supported for the hierachical heat map");
 	}
 
-	@Override
-	public void broadcastElements() {
-		throw new IllegalStateException("broadcast elements of the contained heat map or all?");
-	}
+//	@Override
+//	public void broadcastElements() {
+//		throw new IllegalStateException("broadcast elements of the contained heat map or all?");
+//	}
 
 	@Override
 	public void clearAllSelections() {

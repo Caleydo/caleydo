@@ -210,7 +210,7 @@ public interface ISet
 	 * 
 	 * @return the unique id associated with the virtual array
 	 */
-	public int createContentVA(EVAType vaType);
+	public int createVA(EVAType vaType);
 
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the storages in the set, aka content
@@ -219,14 +219,14 @@ public interface ISet
 	 *            a list of indices
 	 * @return the id of the newly created VA
 	 */
-	public int createContentVA(EVAType vaType, List<Integer> iAlSelections);
+	public int createVA(EVAType vaType, List<Integer> iAlSelections);
 
 	/**
 	 * Creates a default virtual array for the set
 	 * 
 	 * @return the unique id associated with the virtual array
 	 */
-	public int createStorageVA(EVAType vaType);
+//	public int createStorageVA(EVAType vaType);
 
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the set
@@ -235,7 +235,7 @@ public interface ISet
 	 *            a list of indices
 	 * @return the unique id associated with the virtual array
 	 */
-	public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections);
+//	public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections);
 
 	/**
 	 * Returns the virtual array associated with the unique ID

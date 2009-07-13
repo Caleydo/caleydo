@@ -3,11 +3,12 @@ package org.caleydo.core.manager.usecase;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
-import javax.naming.OperationNotSupportedException;
-
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
@@ -18,11 +19,14 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
+import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
@@ -193,8 +197,11 @@ public abstract class AUseCase
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 		// create VA with empty list
-		int iVAID = set.createContentVA(EVAType.CONTENT_CONTEXT, alTempList);
+		int iVAID = set.createVA(EVAType.CONTENT_CONTEXT, alTempList);
 		mapVAIDs.put(EVAType.CONTENT_CONTEXT, iVAID);
+
+		iVAID = set.createVA(EVAType.CONTENT_BOOKMARKS, new ArrayList<Integer>());
+		mapVAIDs.put(EVAType.CONTENT_BOOKMARKS, iVAID);
 
 		alTempList = new ArrayList<Integer>();
 
@@ -202,7 +209,7 @@ public abstract class AUseCase
 			alTempList.add(iCount);
 		}
 
-		iVAID = set.createStorageVA(EVAType.STORAGE, alTempList);
+		iVAID = set.createVA(EVAType.STORAGE, alTempList);
 		mapVAIDs.put(EVAType.STORAGE, iVAID);
 
 		initFullVA();
@@ -218,7 +225,7 @@ public abstract class AUseCase
 		}
 
 		// TODO: remove possible old virtual array
-		int iVAID = set.createContentVA(EVAType.CONTENT, alTempList);
+		int iVAID = set.createVA(EVAType.CONTENT, alTempList);
 		mapVAIDs.put(EVAType.CONTENT, iVAID);
 	}
 
@@ -274,7 +281,11 @@ public abstract class AUseCase
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
 
 		Integer vaID = mapVAIDs.get(vaDelta.getVAType());
+
+		if (vaDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
+			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
 		IVirtualArray va = set.getVA(vaID);
+
 		va.setDelta(vaDelta);
 	}
 
@@ -300,7 +311,6 @@ public abstract class AUseCase
 		virtualArrayUpdateListener = new VirtualArrayUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
 		eventPublisher.addListener(VirtualArrayUpdateEvent.class, virtualArrayUpdateListener);
-
 	}
 
 	// TODO this is never called!
@@ -339,4 +349,10 @@ public abstract class AUseCase
 
 	}
 
+	@Override
+	public void resetContextVA() {
+		int iUniqueID = mapVAIDs.get(EVAType.CONTENT_CONTEXT);
+		set.replaceVA(iUniqueID, new VirtualArray(EVAType.CONTENT_CONTEXT, set.depth(), new ArrayList<Integer>()));
+
+	}
 }

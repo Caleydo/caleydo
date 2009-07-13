@@ -16,10 +16,12 @@ import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
@@ -33,39 +35,23 @@ public class SetExporter {
 
 	public enum EWhichViewToExport {
 		BUCKET,
-		HEAT_MAP,
-		PARALLEL_COORDINATES
+		WHOLE_DATA
 	}
 
 	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport) {
 		IVirtualArray contentVA = null;
 		IVirtualArray storageVA = null;
 
-		Collection<AGLEventListener> views =
-			GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
-		for (AGLEventListener view : views) {
-			if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
-				if ((view instanceof GLParallelCoordinates || view instanceof GLHeatMap)
-					&& view.isRenderedRemote()) {
-					contentVA = view.getContentVA();
-					storageVA = view.getStorageVA();
-					break;
-				}
-			}
-			else if (eWhichViewToExport == EWhichViewToExport.PARALLEL_COORDINATES) {
-				if (!view.isRenderedRemote() && view instanceof GLParallelCoordinates) {
-					contentVA = view.getContentVA();
-					storageVA = view.getStorageVA();
-					break;
-				}
-			}
-			else if (eWhichViewToExport == EWhichViewToExport.HEAT_MAP) {
-				if (!view.isRenderedRemote() && view instanceof GLHierarchicalHeatMap) {
-					contentVA = view.getContentVA();
-					storageVA = view.getStorageVA();
-					break;
-				}
-			}
+		IUseCase useCase = GeneralManager.get().getUseCase();
+
+		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
+
+			contentVA = useCase.getVA(EVAType.CONTENT_CONTEXT);
+			storageVA = useCase.getVA(EVAType.STORAGE);
+		}
+		else if (eWhichViewToExport == EWhichViewToExport.WHOLE_DATA) {
+			contentVA = useCase.getVA(EVAType.CONTENT);
+			storageVA = useCase.getVA(EVAType.STORAGE);
 		}
 
 		if (contentVA == null || storageVA == null)

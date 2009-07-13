@@ -232,8 +232,15 @@ public interface IVirtualArray
 	public boolean setGroupList(IGroupList groupList);
 
 	/**
+	 * Produces a clone of the virtual array
 	 * @return
 	 */
 	public IVirtualArray clone();
+
+	/**
+	 * Replace the internally created ID with the specified. Used when this VA replaces another VA
+	 * @param iUniqueID
+	 */
+	public void setID(int iUniqueID);
 
 }

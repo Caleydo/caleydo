@@ -37,6 +37,11 @@ public class VirtualArrayDelta
 	}
 
 	@Override
+	public void setVAType(EVAType vaType){
+		this.vaType = vaType;
+	}
+
+	@Override
 	public EIDType getIDType() {
 		return idType;
 	}

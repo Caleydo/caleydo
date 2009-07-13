@@ -2270,6 +2270,7 @@ public class GLRemoteRendering
 	@Override
 	public void resetView() {
 
+		useCase.resetContextVA();
 		if (containedViewIDs == null)
 			return;
 

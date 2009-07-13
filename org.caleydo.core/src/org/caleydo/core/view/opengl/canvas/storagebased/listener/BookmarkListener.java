@@ -16,7 +16,7 @@ public class BookmarkListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof BookmarkEvent) {
-			handler.broadcastElements();
+			handler.bookmarkElements();
 		}
 	}
 

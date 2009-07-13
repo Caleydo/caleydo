@@ -96,7 +96,7 @@ public class GeneticUseCase
 		}
 
 		// TODO: remove possible old virtual array
-		int iVAID = set.createContentVA(EVAType.CONTENT, alTempList);
+		int iVAID = set.createVA(EVAType.CONTENT, alTempList);
 		mapVAIDs.put(EVAType.CONTENT, iVAID);
 
 	}

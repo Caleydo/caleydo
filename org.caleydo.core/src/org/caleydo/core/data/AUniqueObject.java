@@ -11,7 +11,7 @@ public abstract class AUniqueObject
 	/**
 	 * Unique Id
 	 */
-	final protected int iUniqueID;
+	protected int iUniqueID;
 
 	/**
 	 * Constructor.

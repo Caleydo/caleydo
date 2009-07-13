@@ -84,4 +84,9 @@ public interface IUseCase {
 	 * @param clusterState
 	 */
 	public void startClustering(ClusterState clusterState);
+	
+	/**
+	 * Resets the context VA to it's initial state
+	 */
+	public void resetContextVA();
 }

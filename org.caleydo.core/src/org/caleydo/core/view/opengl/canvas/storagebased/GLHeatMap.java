@@ -22,10 +22,10 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
@@ -341,12 +341,15 @@ public class GLHeatMap
 
 	@Override
 	protected void initLists() {
-		if (bRenderOnlyContext) {
-			contentVA = useCase.getVA(EVAType.CONTENT_CONTEXT);
-		}
-		else {
-			contentVA = useCase.getVA(EVAType.CONTENT);
-		}
+		if (bRenderOnlyContext)
+			contentVAType = EVAType.CONTENT_CONTEXT;
+		else
+			contentVAType = EVAType.CONTENT;
+	
+		if(listModeEnabled)
+			contentVAType = EVAType.CONTENT_BOOKMARKS;
+
+		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(EVAType.STORAGE);
 
 		// contentSelectionManager.resetSelectionManager();
@@ -628,8 +631,7 @@ public class GLHeatMap
 		createStorageSelection(ESelectionType.MOUSE_OVER, selectedElement);
 	}
 
-	private int cursorSelect(IVirtualArray virtualArray, SelectionManager selectionManager,
-		boolean isUp) {
+	private int cursorSelect(IVirtualArray virtualArray, SelectionManager selectionManager, boolean isUp) {
 
 		Set<Integer> elements = selectionManager.getElements(ESelectionType.MOUSE_OVER);
 		if (elements.size() == 0) {
@@ -1115,44 +1117,45 @@ public class GLHeatMap
 	 */
 	protected void rePosition(int iElementID) {
 
-//		int iSelection;
-//		if (bRenderStorageHorizontally) {
-//			iSelection = iContentVAID;
-//		}
-//		else {
-//			iSelection = iStorageVAID;
-//			// TODO test this
-//		}
+		// int iSelection;
+		// if (bRenderStorageHorizontally) {
+		// iSelection = iContentVAID;
+		// }
+		// else {
+		// iSelection = iStorageVAID;
+		// // TODO test this
+		// }
 
-//		float fCurrentPosition =
-//			set.getVA(iSelection).indexOf(iElementID) * renderStyle.getNormalFieldWidth();// +
-//		// renderStyle.getXSpacing(
-//		// );
-//
-//		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
-//		float fLength = (set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
-//		// :
-//		// 1.5
-//		// =
-//		// correction of
-//		// lens effect in
-//		// heatmap
-//
-//		fAnimationTargetTranslation = -(fCurrentPosition - fFrustumLength / 2);
-//
-//		if (-fAnimationTargetTranslation > fLength - fFrustumLength) {
-//			fAnimationTargetTranslation = -(fLength - fFrustumLength + 2 * 0.00f);
-//		}
-//		else if (fAnimationTargetTranslation > 0) {
-//			fAnimationTargetTranslation = 0;
-//		}
-//		else if (-fAnimationTargetTranslation < -fAnimationTranslation + fFrustumLength / 2 - 0.00f
-//			&& -fAnimationTargetTranslation > -fAnimationTranslation - fFrustumLength / 2 + 0.00f) {
-//			fAnimationTargetTranslation = fAnimationTranslation;
-//			return;
-//		}
-//
-//		bIsTranslationAnimationActive = true;
+		// float fCurrentPosition =
+		// set.getVA(iSelection).indexOf(iElementID) * renderStyle.getNormalFieldWidth();// +
+		// // renderStyle.getXSpacing(
+		// // );
+		//
+		// float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
+		// float fLength = (set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; //
+		// MARC
+		// // :
+		// // 1.5
+		// // =
+		// // correction of
+		// // lens effect in
+		// // heatmap
+		//
+		// fAnimationTargetTranslation = -(fCurrentPosition - fFrustumLength / 2);
+		//
+		// if (-fAnimationTargetTranslation > fLength - fFrustumLength) {
+		// fAnimationTargetTranslation = -(fLength - fFrustumLength + 2 * 0.00f);
+		// }
+		// else if (fAnimationTargetTranslation > 0) {
+		// fAnimationTargetTranslation = 0;
+		// }
+		// else if (-fAnimationTargetTranslation < -fAnimationTranslation + fFrustumLength / 2 - 0.00f
+		// && -fAnimationTargetTranslation > -fAnimationTranslation - fFrustumLength / 2 + 0.00f) {
+		// fAnimationTargetTranslation = fAnimationTranslation;
+		// return;
+		// }
+		//
+		// bIsTranslationAnimationActive = true;
 	}
 
 	private void doTranslation() {
@@ -1233,18 +1236,18 @@ public class GLHeatMap
 		gl.glPopAttrib();
 	}
 
-	@Override
-	public void broadcastElements() {
-		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-
-		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setSender(this);
-		event.setSelectionDelta(delta);
-		event.setInfo(getShortInfo());
-		eventPublisher.triggerEvent(event);
-
-		setDisplayListDirty();
-	}
+//	@Override
+//	public void broadcastElements() {
+//		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
+//
+//		SelectionUpdateEvent event = new SelectionUpdateEvent();
+//		event.setSender(this);
+//		event.setSelectionDelta(delta);
+//		event.setInfo(getShortInfo());
+//		eventPublisher.triggerEvent(event);
+//
+//		setDisplayListDirty();
+//	}
 
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
