@@ -246,9 +246,9 @@ public abstract class AStorageBasedView
 		// + ", received in: " + this.getClass().getSimpleName());
 
 		// check whether the delta is actually of the correct VA Type
-		if(delta.getVAType() != contentVAType && delta.getVAType() != storageVAType)
+		if (delta.getVAType() != contentVAType && delta.getVAType() != storageVAType)
 			return;
-		
+
 		SelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
 			// ignore va changes of other VA types
@@ -256,7 +256,7 @@ public abstract class AStorageBasedView
 		}
 		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT) {
 			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
-	
+
 			selectionManager = contentSelectionManager;
 		}
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX) {
@@ -432,7 +432,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Broadcast all elements independent of their type.
 	 */
-//	public abstract void broadcastElements();
+	// public abstract void broadcastElements();
 
 	@Override
 	public void broadcastElements(EVAOperation type) {
@@ -468,26 +468,6 @@ public abstract class AStorageBasedView
 		// TODO, probably do this with initCompleteList, take care of selection
 		// manager though
 		this.iNumberOfRandomElements = iNumberOfRandomElements;
-	}
-
-	/**
-	 * Set the number of samples which are shown in one texture
-	 * 
-	 * @param iNumberOfSamplesPerTexture
-	 *            the number
-	 */
-	public final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
-		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
-	}
-
-	/**
-	 * Set the number of samples which are shown in one heat map
-	 * 
-	 * @param iNumberOfSamplesPerHeatmap
-	 *            the number
-	 */
-	public final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
-		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 
 	// public abstract void resetSelections();
@@ -577,6 +557,26 @@ public abstract class AStorageBasedView
 			return;
 
 		initData();
+	}
+
+	/**
+	 * Manually set the vaType if you want to override the automatic setting triggeret in
+	 * {@link #init(javax.media.opengl.GL)}
+	 * 
+	 * @param vaType
+	 */
+	public void setContentVAType(EVAType vaType) {
+		this.contentVAType = vaType;
+	}
+
+	/**
+	 * Manually set the vaType if you want to override the automatic setting triggeret in
+	 * {@link #init(javax.media.opengl.GL)}
+	 * 
+	 * @param vaType
+	 */
+	public void setStorageVAType(EVAType vaType) {
+		this.storageVAType = vaType;
 	}
 
 }

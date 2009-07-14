@@ -211,6 +211,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
+		
 		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		initTextures(gl);
@@ -681,6 +682,7 @@ public class GLHierarchicalHeatMap
 		GeneralManager.get().getUseCase().addView(glHeatMapView);
 		glHeatMapView.setUseCase(GeneralManager.get().getUseCase());
 		glHeatMapView.setRenderedRemote(true);
+	
 	}
 
 	// private void createDendrogram() {
@@ -2035,7 +2037,7 @@ public class GLHierarchicalHeatMap
 	/**
 	 * Function responsible for handling SelectionDelta for embedded heatmap
 	 */
-	private void triggerSelectionBlock() {
+	private void setEmbeddedHeatMapData() {
 		int iCount = iFirstSample;
 
 		for (int i = 0; i < iSelectorBar - 1; i++)
@@ -2045,7 +2047,7 @@ public class GLHierarchicalHeatMap
 		// commands.add(command);
 		// glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, command);
 		glHeatMapView.resetView();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(contentVAType, eFieldDataType);
+		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_EMBEDDED_HM, eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
 
 		IVirtualArray currentVirtualArray = contentVA;
@@ -2078,7 +2080,7 @@ public class GLHierarchicalHeatMap
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, command);
 
-		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(contentVAType, eExperimentDataType);
+		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(storageVAType, eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);
 
 		IVirtualArray currentVirtualArrayEx = storageVA;
@@ -2243,7 +2245,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 		setDisplayListDirty();
-		triggerSelectionBlock();
+		setEmbeddedHeatMapData();
 	}
 
 	/**
@@ -2520,7 +2522,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		triggerSelectionBlock();
+		setEmbeddedHeatMapData();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlock = false;
@@ -2582,7 +2584,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		triggerSelectionBlock();
+		setEmbeddedHeatMapData();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActive = false;
@@ -2770,13 +2772,13 @@ public class GLHierarchicalHeatMap
 							if (iExternalID == 1) {
 								iSelectorBar--;
 								initPosCursor();
-								triggerSelectionBlock();
+								setEmbeddedHeatMapData();
 								setDisplayListDirty();
 							}
 							if (iExternalID == 2) {
 								iSelectorBar++;
 								initPosCursor();
-								triggerSelectionBlock();
+								setEmbeddedHeatMapData();
 								setDisplayListDirty();
 							}
 
@@ -2843,7 +2845,7 @@ public class GLHierarchicalHeatMap
 							// iSelectorBar--;
 							// }
 							initPosCursor();
-							triggerSelectionBlock();
+							setEmbeddedHeatMapData();
 							setDisplayListDirty();
 						}
 						break;
@@ -2861,7 +2863,7 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 					case CLICKED:
 						PickingPoint = pick.getPickedPoint();
-						triggerSelectionBlock();
+						setEmbeddedHeatMapData();
 						setDisplayListDirty();
 						break;
 
@@ -2923,7 +2925,7 @@ public class GLHierarchicalHeatMap
 		initPosCursor();
 		bRedrawTextures = true;
 		setDisplayListDirty();
-		triggerSelectionBlock();
+		setEmbeddedHeatMapData();
 		glHeatMapView.setDisplayListDirty();
 
 		// group/cluster selections
@@ -3083,6 +3085,7 @@ public class GLHierarchicalHeatMap
 		initPosCursor();
 
 		glHeatMapView.setSet(set);
+	glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
 
 		bRedrawTextures = true;
@@ -3233,14 +3236,14 @@ public class GLHierarchicalHeatMap
 	public void handleArrowDownAltPressed() {
 		iSamplesPerHeatmap--;
 		initPosCursor();
-		triggerSelectionBlock();
+		setEmbeddedHeatMapData();
 		setDisplayListDirty();
 	}
 
 	public void handleArrowUpAltPressed() {
 		iSamplesPerHeatmap++;
 		initPosCursor();
-		triggerSelectionBlock();
+		setEmbeddedHeatMapData();
 		setDisplayListDirty();
 	}
 
@@ -3248,7 +3251,7 @@ public class GLHierarchicalHeatMap
 		if (iSelectorBar < iNrSelBar) {
 			iSelectorBar++;
 			initPosCursor();
-			triggerSelectionBlock();
+			setEmbeddedHeatMapData();
 			setDisplayListDirty();
 		}
 	}
@@ -3257,7 +3260,7 @@ public class GLHierarchicalHeatMap
 		if (iSelectorBar > 1) {
 			iSelectorBar--;
 			initPosCursor();
-			triggerSelectionBlock();
+			setEmbeddedHeatMapData();
 			setDisplayListDirty();
 		}
 	}
@@ -3276,6 +3279,26 @@ public class GLHierarchicalHeatMap
 
 	public void handleArrowRightPressed() {
 		// glHeatMapView.leftRightSelect(false);
+	}
+	
+	/**
+	 * Set the number of samples which are shown in one texture
+	 * 
+	 * @param iNumberOfSamplesPerTexture
+	 *            the number
+	 */
+	public final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
+		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
+	}
+
+	/**
+	 * Set the number of samples which are shown in one heat map
+	 * 
+	 * @param iNumberOfSamplesPerHeatmap
+	 *            the number
+	 */
+	public final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
+		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 
 }

@@ -14,9 +14,14 @@ public enum EVAType {
 	CONTENT_CONTEXT,
 
 	/**
-	 * All elements in the storage (initially)
+	 * All elements in the storage, subject to filters
 	 */
 	CONTENT,
+	
+	/**
+	 * Type that may not be used in event communication, only for private sub views
+	 */
+	CONTENT_EMBEDDED_HM,
 
 	/**
 	 * All elements in the storage (clustered)

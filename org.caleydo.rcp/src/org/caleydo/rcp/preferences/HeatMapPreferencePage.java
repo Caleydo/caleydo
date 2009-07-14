@@ -6,6 +6,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -90,8 +91,8 @@ public class HeatMapPreferencePage
 		Collection<AGLEventListener> eventListeners =
 			GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
 		for (AGLEventListener eventListener : eventListeners) {
-			if (eventListener instanceof GLHeatMap) {
-				GLHeatMap heatMap = (GLHeatMap) eventListener;
+			if (eventListener instanceof GLHierarchicalHeatMap) {
+				GLHierarchicalHeatMap heatMap = (GLHierarchicalHeatMap) eventListener;
 				// if(!heatMap.isRenderedRemote())
 				// {
 				heatMap.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());

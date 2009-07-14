@@ -122,7 +122,7 @@ public class GLHeatMap
 
 	@Override
 	public void init(GL gl) {
-		// nothing to do ATM
+
 	}
 
 	@Override
@@ -341,16 +341,18 @@ public class GLHeatMap
 
 	@Override
 	protected void initLists() {
-		if (bRenderOnlyContext)
-			contentVAType = EVAType.CONTENT_CONTEXT;
-		else
-			contentVAType = EVAType.CONTENT;
-	
-		if(listModeEnabled)
-			contentVAType = EVAType.CONTENT_BOOKMARKS;
+		// todo this is not nice here, we may need a more intelligent way to determine which to use
+		if (contentVAType != EVAType.CONTENT_EMBEDDED_HM) {
+			if (bRenderOnlyContext)
+				contentVAType = EVAType.CONTENT_CONTEXT;
+			else
+				contentVAType = EVAType.CONTENT;
+			if (listModeEnabled)
+				contentVAType = EVAType.CONTENT_BOOKMARKS;
+		}
 
 		contentVA = useCase.getVA(contentVAType);
-		storageVA = useCase.getVA(EVAType.STORAGE);
+		storageVA = useCase.getVA(storageVAType);
 
 		// contentSelectionManager.resetSelectionManager();
 		// storageSelectionManager.resetSelectionManager();
@@ -1236,18 +1238,18 @@ public class GLHeatMap
 		gl.glPopAttrib();
 	}
 
-//	@Override
-//	public void broadcastElements() {
-//		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-//
-//		SelectionUpdateEvent event = new SelectionUpdateEvent();
-//		event.setSender(this);
-//		event.setSelectionDelta(delta);
-//		event.setInfo(getShortInfo());
-//		eventPublisher.triggerEvent(event);
-//
-//		setDisplayListDirty();
-//	}
+	// @Override
+	// public void broadcastElements() {
+	// ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
+	//
+	// SelectionUpdateEvent event = new SelectionUpdateEvent();
+	// event.setSender(this);
+	// event.setSelectionDelta(delta);
+	// event.setInfo(getShortInfo());
+	// eventPublisher.triggerEvent(event);
+	//
+	// setDisplayListDirty();
+	// }
 
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
