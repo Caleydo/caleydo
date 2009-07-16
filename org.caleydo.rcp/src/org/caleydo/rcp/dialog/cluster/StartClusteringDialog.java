@@ -1,12 +1,12 @@
-package org.caleydo.rcp.dialog;
+package org.caleydo.rcp.dialog.cluster;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.rcp.action.toolbar.general.StartClusteringAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.caleydo.rcp.dialog.cluster.StartClusteringAction;;
 
 /**
  * File dialog for starting clustering

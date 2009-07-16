@@ -10,7 +10,9 @@ import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
+import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
+import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
@@ -61,7 +63,10 @@ public class WideScreenToolBarRenderer implements IToolBarRenderer {
 		
 		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
-		toolBarManager.add(new TakeSnapshotAction());		
+		toolBarManager.add(new TakeSnapshotAction());
+		toolBarManager.add(new StartClusteringAction());
+//		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
+//		actionList.add(startClustering);
 		
 		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 			toolBarManager2.add(new OpenSearchViewAction());

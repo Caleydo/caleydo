@@ -1,6 +1,6 @@
 package org.caleydo.rcp.wizard.project;
 
-import org.caleydo.rcp.action.file.FileLoadDataAction;
+import org.caleydo.rcp.dialog.file.FileLoadDataAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

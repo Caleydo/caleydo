@@ -1,7 +1,6 @@
 package org.caleydo.rcp.dialog.file;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.action.file.ExportClinicalDataAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

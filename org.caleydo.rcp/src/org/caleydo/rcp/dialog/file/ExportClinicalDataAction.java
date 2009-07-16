@@ -1,4 +1,4 @@
-package org.caleydo.rcp.action.file;
+package org.caleydo.rcp.dialog.file;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

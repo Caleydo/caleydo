@@ -371,6 +371,11 @@
             id="org.caleydo.rcp.command.stop_tracking"
             name="Stop Tracking">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ClusterHandler"
+            id="org.caleydo.rcp.command.cluster"
+            name="Cluster">
+      </command>
       		
    </extension>
    <extension
@@ -415,14 +420,21 @@
             </command>
          </menu>
          <menu
-               id="org.caleydo.search.menu"
-               label="Search"
-               tooltip="Search">
+               id="org.caleydo.data.menu"
+               label="Data"
+               tooltip="Data">
             <command
                   commandId="org.caleydo.rcp.command.openviews.search"
                   icon="resources/icons/view/search.png"
                   label="Search Gene/Pathway"
                   style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.cluster"
+                  icon="resources/icons/general/clustering.png"
+                  label="Cluster Data"
+                  style="push"
+                  tooltip="Open Clustering Dialog">
             </command>
          </menu>
          <menu

@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
-import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 
 /**
+ * THIS IS DEAD AT THE MOMENT
+ * 
  * ToolBarContent implementation for heatmap specific toolbar items.  
  * @author Werner Puff
  */
@@ -33,8 +34,8 @@ public class HierarchicalHeatMapToolBarContent
 
 		int targetViewID = getTargetViewData().getViewID();
 
-		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
-		actionList.add(startClustering);
+//		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
+//		actionList.add(startClustering);
 
 //		IToolBarItem mergeGroup = new MergeClasses(targetViewID);
 //		actionList.add(mergeGroup);

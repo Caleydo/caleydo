@@ -1,4 +1,4 @@
-package org.caleydo.rcp.action.file;
+package org.caleydo.rcp.dialog.file;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +8,6 @@ import org.caleydo.core.data.collection.export.SetExporter.EWhichViewToExport;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.rcp.dialog.file.LoadDataDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

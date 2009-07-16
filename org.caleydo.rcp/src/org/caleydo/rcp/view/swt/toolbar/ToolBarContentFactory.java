@@ -86,12 +86,12 @@ public class ToolBarContentFactory {
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
-		info = new ToolBarInfo();
-		info.viewClass = GLHierarchicalHeatMap.class;
-		info.contentClass = HierarchicalHeatMapToolBarContent.class;
-		info.rcpID = GLHierarchicalHeatMapView.ID;
-		info.ignored = false;
-		toolBarInfos.put(info.viewClass, info);
+//		info = new ToolBarInfo();
+//		info.viewClass = GLHierarchicalHeatMap.class;
+//		info.contentClass = HierarchicalHeatMapToolBarContent.class;
+//		info.rcpID = GLHierarchicalHeatMapView.ID;
+//		info.ignored = false;
+//		toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
 		info.viewClass = GLParallelCoordinates.class;
