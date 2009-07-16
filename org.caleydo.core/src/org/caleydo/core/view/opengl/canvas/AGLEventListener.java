@@ -77,7 +77,7 @@ public abstract class AGLEventListener
 	/**
 	 * Key listener which is created and registered in specific view.
 	 */
-	protected GLKeyListener glKeyListener;
+	protected GLKeyListener<?> glKeyListener;
 
 	protected GLMouseListener glMouseListener;
 

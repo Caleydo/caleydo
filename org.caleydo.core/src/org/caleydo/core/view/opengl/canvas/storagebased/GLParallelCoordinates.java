@@ -68,7 +68,6 @@ import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToV
 import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
 import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
-import org.caleydo.core.manager.event.view.storagebased.PropagationEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
@@ -236,7 +235,7 @@ public class GLParallelCoordinates
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
 
-	GLPropagationHeatMap glSelectionHeatMap;
+	GLBookmarkContainer glSelectionHeatMap;
 	boolean bShowSelectionHeatMap = false;
 
 	private GLInfoAreaManager infoAreaManager;
@@ -454,7 +453,7 @@ public class GLParallelCoordinates
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
 			viewFrustum.getTop(), -20, 20, null, -1);
 		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
+		glSelectionHeatMap = (GLBookmarkContainer) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
 		glSelectionHeatMap.setUseCase(useCase);
 		glSelectionHeatMap.setSet(set);
@@ -558,9 +557,10 @@ public class GLParallelCoordinates
 			event.setSelectionCommand(command);
 			eventPublisher.triggerEvent(event);
 
-			PropagationEvent propagationEvent = new PropagationEvent();
-			propagationEvent.setVirtualArrayDelta(delta);
-			eventPublisher.triggerEvent(propagationEvent);
+			VirtualArrayUpdateEvent vaEvent = new VirtualArrayUpdateEvent();
+			vaEvent.setVirtualArrayDelta(delta);
+			vaEvent.setSender(this);
+			eventPublisher.triggerEvent(vaEvent);
 
 			resetAxisSpacing();
 			setDisplayListDirty();

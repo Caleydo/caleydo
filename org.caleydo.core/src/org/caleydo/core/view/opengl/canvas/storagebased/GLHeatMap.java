@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
@@ -86,8 +87,6 @@ public class GLHeatMap
 	private SelectedElementRep elementRep;
 
 	private ArrayList<Float> fAlXDistances;
-
-	boolean listModeEnabled = false;
 
 	boolean bUseDetailLevel = true;
 
@@ -238,44 +237,13 @@ public class GLHeatMap
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		if (contentSelectionManager.getNumberOfElements() == 0 && !listModeEnabled) {
+		if (contentSelectionManager.getNumberOfElements() == 0) {
 			renderSymbol(gl);
 		}
 		else {
 
 			float fSpacing = 0;
 			if (!bRenderStorageHorizontally) {
-				if (listModeEnabled) {
-					fSpacing = HeatMapRenderStyle.LIST_SPACING * 3;
-
-					gl.glColor4f(1, 0, 0, 1);
-
-					Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.REMOVE);
-					tempTexture.enable();
-					tempTexture.bind();
-					TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-					float ICON_SIZE = 0.08f;
-					float xPosition = viewFrustum.getWidth() - ICON_SIZE + 0.03f;
-					float yPosition = renderStyle.getRenderHeight() + 0.2f;
-
-					gl.glColor4f(1, 1, 1, 1);
-					gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.LIST_HEAT_MAP_CLEAR_ALL, 0));
-					gl.glBegin(GL.GL_POLYGON);
-					gl.glTexCoord2f(texCoords.left(), texCoords.top());
-					gl.glVertex3f(xPosition, yPosition, HeatMapRenderStyle.FIELD_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.top());
-					gl.glVertex3f(xPosition + ICON_SIZE, yPosition, HeatMapRenderStyle.FIELD_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-					gl.glVertex3f(xPosition + ICON_SIZE, yPosition + ICON_SIZE, HeatMapRenderStyle.FIELD_Z);
-					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-					gl.glVertex3f(xPosition, yPosition + ICON_SIZE, HeatMapRenderStyle.FIELD_Z);
-					gl.glEnd();
-					gl.glPopName();
-					tempTexture.disable();
-
-				}
 				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight() - fSpacing, vecTranslation.z());
 				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
 			}
@@ -347,8 +315,6 @@ public class GLHeatMap
 				contentVAType = EVAType.CONTENT_CONTEXT;
 			else
 				contentVAType = EVAType.CONTENT;
-			if (listModeEnabled)
-				contentVAType = EVAType.CONTENT_BOOKMARKS;
 		}
 
 		contentVA = useCase.getVA(contentVAType);
@@ -694,34 +660,13 @@ public class GLHeatMap
 				continue;
 			}
 
-			if (listModeEnabled) {
-				fYPosition = HeatMapRenderStyle.LIST_SPACING;
-			}
-			else {
-				fYPosition = 0;
-			}
+			fYPosition = 0;
 
 			for (Integer iStorageIndex : storageVA) {
-				if (listModeEnabled) {
-					if (currentType == ESelectionType.SELECTION) {
-						if (iCurrentMouseOverElement == iContentIndex) {
-							renderElement(gl, iStorageIndex, iContentIndex, fXPosition + fFieldWidth / 3,
-								fYPosition, fFieldWidth / 2, fFieldHeight);
-						}
-						else {
-							renderElement(gl, iStorageIndex, iContentIndex, fXPosition + fFieldWidth / 2f,
-								fYPosition, fFieldWidth / 2.5f, fFieldHeight);
-						}
-					}
-					else {
-						renderElement(gl, iStorageIndex, iContentIndex, fXPosition + fFieldWidth / 2,
-							fYPosition, fFieldWidth / 2, fFieldHeight);
-					}
-				}
-				else {
-					renderElement(gl, iStorageIndex, iContentIndex, fXPosition, fYPosition, fFieldWidth,
-						fFieldHeight);
-				}
+
+				renderElement(gl, iStorageIndex, iContentIndex, fXPosition, fYPosition, fFieldWidth,
+					fFieldHeight);
+
 				fYPosition += fFieldHeight;
 
 			}
@@ -781,116 +726,18 @@ public class GLHeatMap
 					if (sContent == null)
 						sContent = "Unknown";
 
-					if (listModeEnabled) {
+					textRenderer.setColor(0, 0, 0, 1);
 
-						if (currentType == ESelectionType.SELECTION) {
-							if (iCurrentMouseOverElement == iContentIndex) {
-								iCurrentMouseOverElement = -1;
-								float fTextScalingFactor = 0.0035f;
-
-								float fTextSpacing = 0.1f;
-								float fYSelectionOrigin =
-									-2 * fTextSpacing - (float) textRenderer.getBounds(sContent).getWidth()
-										* fTextScalingFactor;
-								float fSlectionFieldHeight =
-									-fYSelectionOrigin + renderStyle.getRenderHeight();
-
-								// renderSelectionHighLight(gl, fXPosition,
-								// fYSelectionOrigin,
-								// fFieldWidth, fSlectionFieldHeight);
-
-								gl.glColor3f(0.25f, 0.25f, 0.25f);
-								gl.glBegin(GL.GL_POLYGON);
-
-								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
-								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin, 0.0005f);
-								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin
-									+ fSlectionFieldHeight, 0.0005f);
-								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin + fSlectionFieldHeight,
-									0.0005f);
-
-								gl.glEnd();
-
-								textRenderer.setColor(1, 1, 1, 1);
-								gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-								gl.glTranslatef(fXPosition + fFieldWidth / 1.5f, fYSelectionOrigin
-									+ fTextSpacing, 0);
-								gl.glRotatef(+fLineDegrees, 0, 0, 1);
-								textRenderer.begin3DRendering();
-								textRenderer.draw3D(sContent, 0, 0, 0.016f, fTextScalingFactor);
-								textRenderer.end3DRendering();
-								gl.glRotatef(-fLineDegrees, 0, 0, 1);
-								gl.glTranslatef(-fXPosition - fFieldWidth / 1.5f, -fYSelectionOrigin
-									- fTextSpacing, 0);
-								// textRenderer.begin3DRendering();
-								gl.glPopAttrib();
-							}
-							else {
-								float fYSelectionOrigin = 0;
-								float fSlectionFieldHeight =
-									-fYSelectionOrigin + renderStyle.getRenderHeight();
-
-								// renderSelectionHighLight(gl, fXPosition,
-								// fYSelectionOrigin,
-								// fFieldWidth, fSlectionFieldHeight);
-
-								gl.glColor3f(0.25f, 0.25f, 0.25f);
-								gl.glBegin(GL.GL_POLYGON);
-
-								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin, 0.0005f);
-								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin, 0.0005f);
-								gl.glVertex3f(fXPosition + fFieldWidth, fYSelectionOrigin
-									+ fSlectionFieldHeight, 0.0005f);
-								gl.glVertex3f(fXPosition + 0.03f, fYSelectionOrigin + fSlectionFieldHeight,
-									0.0005f);
-
-								gl.glEnd();
-
-								// textRenderer.setColor(1, 1, 1, 1);
-								// gl.glPushAttrib(GL.GL_CURRENT_BIT |
-								// GL.GL_LINE_BIT);
-								// gl.glTranslatef(fXPosition + fFieldWidth /
-								// 1.5f,
-								// fYSelectionOrigin + fTextSpacing, 0);
-								// gl.glRotatef(+fLineDegrees, 0, 0, 1);
-								// textRenderer.begin3DRendering();
-								// textRenderer
-								// .draw3D(sContent, 0, 0, 0.016f,
-								// fTextScalingFactor);
-								// textRenderer.end3DRendering();
-								// gl.glRotatef(-fLineDegrees, 0, 0, 1);
-								// gl.glTranslatef(-fXPosition - fFieldWidth /
-								// 1.5f,
-								// -fYSelectionOrigin - fTextSpacing, 0);
-								// // textRenderer.begin3DRendering()
-								textRenderer.setColor(1, 1, 1, 1);
-								renderCaption(gl, sContent, fXPosition + fFieldWidth / 2.2f - 0.01f,
-									0 + 0.01f + HeatMapRenderStyle.LIST_SPACING, 0.02f, fLineDegrees,
-									fFontScaling);
-								gl.glPopAttrib();
-							}
-						}
-						else {
-							textRenderer.setColor(0, 0, 0, 1);
-							renderCaption(gl, sContent, fXPosition + fFieldWidth / 2 - 0.01f,
-								0 + 0.01f + HeatMapRenderStyle.LIST_SPACING, 0, fLineDegrees, fFontScaling);
-						}
+					if (currentType == ESelectionType.SELECTION || currentType == ESelectionType.MOUSE_OVER) {
+						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 2.5f, fYPosition + 0.1f,
+							0, fLineDegrees, fFontScaling);
+						if (refSeq != null)
+							renderCaption(gl, refSeq, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.1f,
+								0, fLineDegrees, fFontScaling);
 					}
 					else {
-						textRenderer.setColor(0, 0, 0, 1);
-
-						if (currentType == ESelectionType.SELECTION
-							|| currentType == ESelectionType.MOUSE_OVER) {
-							renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 2.5f,
-								fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
-							if (refSeq != null)
-								renderCaption(gl, refSeq, fXPosition + fFieldWidth / 6 * 4.5f,
-									fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
-						}
-						else {
-							renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f,
-								fYPosition + 0.1f, 0, fLineDegrees, fFontScaling);
-						}
+						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.1f,
+							0, fLineDegrees, fFontScaling);
 					}
 				}
 
@@ -901,7 +748,7 @@ public class GLHeatMap
 			fXPosition += fFieldWidth;
 
 			// render column captions
-			if (detailLevel == EDetailLevel.HIGH && !listModeEnabled) {
+			if (detailLevel == EDetailLevel.HIGH) {
 				if (iCount == contentVA.size()) {
 					fYPosition = 0;
 					for (Integer iStorageIndex : storageVA) {
@@ -967,8 +814,6 @@ public class GLHeatMap
 	}
 
 	private void renderSelection(final GL gl, ESelectionType eSelectionType) {
-		if (listModeEnabled)
-			return;
 		// content selection
 
 		Set<Integer> selectedSet = contentSelectionManager.getElements(eSelectionType);

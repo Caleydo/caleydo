@@ -61,4 +61,9 @@ public class GLHelperFunctions {
 		
 		gl.glEnd();
 	}
+	
+	public static void drawPointAt(final GL gl, float x, float y, float z)
+	{
+		drawPointAt(gl, new Vec3f(x, y, z));
+	}
 }

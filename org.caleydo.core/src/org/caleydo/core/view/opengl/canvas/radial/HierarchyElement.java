@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import org.caleydo.core.data.graph.tree.Tree;

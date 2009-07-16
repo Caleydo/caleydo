@@ -22,8 +22,6 @@ import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
-import de.phleisch.app.itsucks.io.Metadata;
-
 /**
  * Renders a context menu of dynamically specified items. ContextMenu is based on {@link AOverlayManager}
  * where all the location relevant information is set. Since only one context menu can be active at a time it

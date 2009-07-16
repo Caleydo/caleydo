@@ -1,12 +1,13 @@
-package org.caleydo.core.view.opengl.canvas.storagebased;
+package org.caleydo.core.view.opengl.canvas.storagebased.listener;
 
 import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
 public class GLHeatMapKeyListener
-	extends GLKeyListener {
+	extends GLKeyListener<GLHeatMap> {
 
 	private GLHeatMap glHeatMap;
 
@@ -17,8 +18,6 @@ public class GLHeatMapKeyListener
 
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
-		if (glHeatMap instanceof GLPropagationHeatMap)
-			return;
 		switch (event.keyCode) {
 			case SWT.ARROW_UP:
 				glHeatMap.upDownSelect(true);

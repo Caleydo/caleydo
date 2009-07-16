@@ -2,8 +2,8 @@ package org.caleydo.core.manager.event.view;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.AEvent;
 
 /**

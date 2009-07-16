@@ -24,12 +24,6 @@ public class HeatMapRenderStyle
 	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	private float fSelectedFieldWidth = 1.0f;
 
-	private static final float LIST_SELECTED_FIELD_WIDTH = 0.3f;
-
-	public static final float LIST_SPACING = 0.05f;
-
-	public static final int NUMBER_OF_LIST_ITEMS_PER_PAGE = 30;
-
 	private float fNormalFieldWidth = 0f;
 
 	private float fFieldHeight = 0f;
@@ -72,13 +66,11 @@ public class HeatMapRenderStyle
 		}
 
 	}
-	
-	public void updateFieldSizesnofish()
-	{
-		fSelectedFieldWidth =
-			getRenderWidth() / heatMap.getContentVA().size();
+
+	public void updateFieldSizesnofish() {
+		fSelectedFieldWidth = getRenderWidth() / heatMap.getContentVA().size();
 		fNormalFieldWidth = fSelectedFieldWidth;
-		
+
 		fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
 	}
 
@@ -108,24 +100,14 @@ public class HeatMapRenderStyle
 			fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
 		}
 		else {
-			if (heatMap.listModeEnabled) {
 
-				fSelectedFieldWidth = LIST_SELECTED_FIELD_WIDTH;
-				fNormalFieldWidth =
-					(getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
-						/ (iNumberTotal - iNumberSelected);
-
-			}
-			else {
-				fSelectedFieldWidth =
-					getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE * fSelecteFieldWidthPercentage;
-				fNormalFieldWidth =
-					(getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
-						/ (iNumberTotal - iNumberSelected);
-			}
-			fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
-
+			fSelectedFieldWidth =
+				getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE * fSelecteFieldWidthPercentage;
+			fNormalFieldWidth =
+				(getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
+					/ (iNumberTotal - iNumberSelected);
 		}
+		fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
 
 		fNormalFieldWidth = fNormalFieldWidth > fSelectedFieldWidth ? fSelectedFieldWidth : fNormalFieldWidth;
 	}
@@ -170,17 +152,12 @@ public class HeatMapRenderStyle
 
 	private float getRenderWidth() {
 
-		if (heatMap.listModeEnabled)
-			return viewFrustum.getWidth() - 2 * LIST_SPACING;
-
 		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getWidth() - 2.4f * getXSpacing();
 		return viewFrustum.getWidth();
 	}
 
 	public float getRenderHeight() {
-		if (heatMap.listModeEnabled)
-			return viewFrustum.getHeight() - 5 * LIST_SPACING;
 		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getHeight() - 2 * getYSpacing();
 		return viewFrustum.getHeight();

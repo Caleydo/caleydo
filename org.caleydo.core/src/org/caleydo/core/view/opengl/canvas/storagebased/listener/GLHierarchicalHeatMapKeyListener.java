@@ -1,7 +1,8 @@
-package org.caleydo.core.view.opengl.canvas.storagebased;
+package org.caleydo.core.view.opengl.canvas.storagebased.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.view.keyboard.WrapperKeyEvent;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;

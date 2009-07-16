@@ -6,7 +6,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.AddToListItem;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadPathwaysByGeneItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ShowPathwaysByGeneItem;
 
@@ -58,7 +58,7 @@ public class GeneContextMenuItemContainer
 		if (alStorageIndex == null)
 			return;
 
-		AddToListItem addToListItem = new AddToListItem(alStorageIndex);
+		BookmarkItem addToListItem = new BookmarkItem(alStorageIndex);
 		addContextMenuItem(addToListItem);
 	}
 }

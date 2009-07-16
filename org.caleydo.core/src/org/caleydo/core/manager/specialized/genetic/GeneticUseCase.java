@@ -4,14 +4,9 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;

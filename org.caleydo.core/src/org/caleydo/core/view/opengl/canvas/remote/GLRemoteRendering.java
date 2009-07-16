@@ -77,12 +77,11 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneLis
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleNavigationModeListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleZoomListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLBookmarkContainer;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLPropagationHeatMap;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -134,7 +133,7 @@ public class GLRemoteRendering
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
-	private GLPropagationHeatMap glSelectionHeatMap;
+	private GLBookmarkContainer glBookmarkContainer;
 
 	private Time time;
 
@@ -323,7 +322,7 @@ public class GLRemoteRendering
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
 		createSelectionHeatMap();
-		glSelectionHeatMap.initRemote(gl, this, glMouseListener, this, null);
+		glBookmarkContainer.initRemote(gl, this, glMouseListener, this, null);
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive())
 			glOffScreenRenderer.init(gl);
@@ -337,13 +336,13 @@ public class GLRemoteRendering
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, null, -1);
 //		cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLPropagationHeatMap) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setRenderedRemote(true);
-		glSelectionHeatMap.setUseCase(useCase);
-		glSelectionHeatMap.setSet(set);
-		glSelectionHeatMap.initData();
+		glBookmarkContainer = (GLBookmarkContainer) cmdCreateGLView.getCreatedObject();
+		glBookmarkContainer.setRenderedRemote(true);
+		glBookmarkContainer.setUseCase(useCase);
+		glBookmarkContainer.setSet(set);
+		glBookmarkContainer.initData();
 
-		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionHeatMap.getID());
+		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glBookmarkContainer.getID());
 	}
 
 	@Override
