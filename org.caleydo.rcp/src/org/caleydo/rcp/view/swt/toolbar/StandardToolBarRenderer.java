@@ -8,6 +8,7 @@ import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
+import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
@@ -59,6 +60,8 @@ public class StandardToolBarRenderer
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
 		
+		
+		toolBarManager.add(new SaveProjectAction());
 		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());

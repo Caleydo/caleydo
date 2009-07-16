@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Shell;
  * File dialog for exporting data files.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class ExportDataDialog
 	extends Dialog {

@@ -5,8 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -161,26 +159,31 @@ public class SetExporter {
 
 			out.close();
 
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void exportTrees(ISet set, String directory) {
+		try {
 			// export gene cluster tree to own xml file
 			Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
-				if (treePorter.exportTree(sFileName + "_horizontal_gene.xml", tree) == false)
+				if (treePorter.exportTree(directory + "horizontal_gene.xml", tree) == false)
 					System.out.println("Problem during gene tree export!");
 			}
 			// export experiment cluster tree to own xml file
 			tree = set.getClusteredTreeExps();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
-				if (treePorter.exportTree(sFileName + "_vertical_experiments.xml", tree) == false)
+				if (treePorter.exportTree(directory + "vertical_experiments.xml", tree) == false)
 					System.out.println("Problem during experiments tree export!");
 			}
-
 		}
-		catch (IOException e) {
-
-		}
-		catch (JAXBException e) {
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -8,6 +8,7 @@ import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
+import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
@@ -22,11 +23,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.ToolBar;
 
 /**
- * Provides toolbar rendering specific data for widescreen toolbars (toolbars on the left side) 
- * in the default style (toolbar on the left side). 
+ * Provides toolbar rendering specific data for widescreen toolbars (toolbars on the left side) in the default
+ * style (toolbar on the left side).
+ * 
  * @author Werner Puff
  */
-public class WideScreenToolBarRenderer implements IToolBarRenderer {
+public class WideScreenToolBarRenderer
+	implements IToolBarRenderer {
 
 	@Override
 	public Runnable createRenderJob(ToolBarView toolBarView, List<AToolBarContent> toolBarContents) {
@@ -44,7 +47,7 @@ public class WideScreenToolBarRenderer implements IToolBarRenderer {
 
 	@Override
 	public void addGeneralToolBarActions(Group group) {
-		
+
 		// Needed to simulate toolbar wrapping which is not implemented for
 		// linux
 		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
@@ -60,20 +63,22 @@ public class WideScreenToolBarRenderer implements IToolBarRenderer {
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
-		
+
+		toolBarManager.add(new SaveProjectAction());
 		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
 		toolBarManager.add(new StartClusteringAction());
-//		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
-//		actionList.add(startClustering);
-		
+
+		// IToolBarItem startClustering = new StartClusteringAction(targetViewID);
+		// actionList.add(startClustering);
+
 		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 			toolBarManager2.add(new OpenSearchViewAction());
 			toolBarManager2.add(new ClearSelectionsAction());
 		}
 		else {
-			toolBarManager.add(new ClearSelectionsAction());			
+			toolBarManager.add(new ClearSelectionsAction());
 		}
 
 		toolBarManager.update(true);

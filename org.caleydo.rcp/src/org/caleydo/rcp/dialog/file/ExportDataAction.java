@@ -26,6 +26,7 @@ import org.eclipse.ui.actions.ActionFactory;
  * Action responsible for exporting data to current Caleydo project.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class ExportDataAction
 	extends Action
