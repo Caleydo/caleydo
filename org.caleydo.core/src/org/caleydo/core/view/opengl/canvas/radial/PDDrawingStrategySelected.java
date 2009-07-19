@@ -43,13 +43,13 @@ public class PDDrawingStrategySelected
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
 				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
-		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
+		GLPrimitives.renderCircle(glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(fArBorderColor, 0);
 		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
@@ -71,21 +71,16 @@ public class PDDrawingStrategySelected
 		float fInnerRadius = pdDiscToDraw.getCurrentInnerRadius();
 		float fWidth = pdDiscToDraw.getCurrentWidth();
 
-		float fMidAngle = fStartAngle + (fAngle / 2.0f);
-		while (fMidAngle > 360) {
-			fMidAngle -= 360;
-		}
-
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_PDISC_SELECTION,
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
 		}
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_MOUSE_OVER_COLOR, 0);
-		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
+		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
 		gl.glColor4fv(fArBorderColor, 0);
 		GLPrimitives.renderPartialDiscBorder(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle,
@@ -116,6 +111,11 @@ public class PDDrawingStrategySelected
 		if (fArBorderColor.length >= 3) {
 			this.fArBorderColor = fArBorderColor;
 		}
+	}
+
+	@Override
+	public EPDDrawingStrategyType getDrawingStrategyType() {
+		return EPDDrawingStrategyType.SELECTED;
 	}
 
 }

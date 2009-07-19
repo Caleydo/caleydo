@@ -48,7 +48,8 @@ import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedRadialHierarchyView;
 
 /**
- * This class is responsible for rendering the radial hierarchy.
+ * This class is responsible for rendering the radial hierarchy and receiving user events and events from
+ * other views.
  * 
  * @author Christian Partl
  */
@@ -201,13 +202,13 @@ public class GLRadialHierarchy
 		DrawingStrategyManager.init(pickingManager, iUniqueID);
 
 		ClusterNode cnRoot = tree.getRoot();
-		PartialDisc pdRoot =
-			new PartialDisc(cnRoot.getClusterNr(), cnRoot.getNrElements(), partialDiscTree, cnRoot);
+		PartialDisc pdRoot = new PartialDisc(partialDiscTree, cnRoot);
 		partialDiscTree.setRootNode(pdRoot);
 		hashPartialDiscs.put(cnRoot.getClusterNr(), pdRoot);
 		selectionManager.initialAdd(cnRoot.getClusterNr());
 		buildTree(tree, cnRoot, pdRoot);
 		pdRoot.calculateHierarchyLevels(0);
+		pdRoot.calculateLargestChildren();
 
 		pdCurrentMouseOverElement = pdRoot;
 		pdCurrentRootElement = pdRoot;
@@ -248,8 +249,7 @@ public class GLRadialHierarchy
 
 		if (alChildNodes != null) {
 			for (ClusterNode cnChild : alChildNodes) {
-				PartialDisc pdCurrentChildDisc =
-					new PartialDisc(cnChild.getClusterNr(), cnChild.getNrElements(), partialDiscTree, cnChild);
+				PartialDisc pdCurrentChildDisc = new PartialDisc(partialDiscTree, cnChild);
 				try {
 					alChildDiscs.add(pdCurrentChildDisc);
 					partialDiscTree.addChild(partialDisc, pdCurrentChildDisc);
@@ -270,8 +270,9 @@ public class GLRadialHierarchy
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		TreePorter treePorter = new TreePorter();
 
+		// "data/clustering/experiment_tree_nonbinar.xml"
 		try {
-			tree = treePorter.importTree("data/clustering/hcc_5000.xml");
+			tree = treePorter.importTree("data/clustering/gen_tree_nonbinar.xml");
 		}
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -525,12 +526,11 @@ public class GLRadialHierarchy
 		// eventPublisher.triggerEvent(event);
 
 		DrawingStrategyManager drawingStrategyManager = DrawingStrategyManager.get();
-		if (drawingStrategyManager.getDefaultStrategyType() == DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW) {
-			drawingStrategyManager
-				.setDefaultStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_EXPRESSION_COLOR);
+		if (drawingStrategyManager.getDefaultDrawingStrategy().getDrawingStrategyType() == EPDDrawingStrategyType.RAINBOW_COLOR) {
+			drawingStrategyManager.setDefaultStrategy(EPDDrawingStrategyType.EXPRESSION_COLOR);
 		}
 		else {
-			drawingStrategyManager.setDefaultStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW);
+			drawingStrategyManager.setDefaultStrategy(EPDDrawingStrategyType.RAINBOW_COLOR);
 		}
 		setDisplayListDirty();
 	}

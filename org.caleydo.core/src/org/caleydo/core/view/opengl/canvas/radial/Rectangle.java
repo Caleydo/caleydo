@@ -1,12 +1,18 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+/**
+ * Helper class that defines a rectangle using float values.
+ * 
+ * @author Christian Partl
+ *
+ */
 public class Rectangle {
 	
 	private float fMinX;
 	private float fMinY;
 	private float fMaxX;
 	private float fMaxY;
-	
+
 	public Rectangle(float fMinX, float fMinY, float fMaxX, float fMaxY) {
 		this.fMinX = fMinX;
 		this.fMinY = fMinY;

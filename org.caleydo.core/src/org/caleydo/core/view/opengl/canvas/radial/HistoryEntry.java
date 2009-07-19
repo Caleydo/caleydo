@@ -1,15 +1,34 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
+/**
+ * A history entry represents a state of the navigation in the radial hierarchy. Such a state can be
+ * reconstructed by the drawing state, the current root element, the current selected element, the start angle
+ * of the root element, the start angle of the selected element and the maximum displayed hierarchy depth.
+ * This class holds and saves all of these parameters.
+ * 
+ * @author Christian Partl
+ */
 public class HistoryEntry {
 
-	private DrawingState drawingState;
+	private ADrawingState drawingState;
 	private PartialDisc pdRootElement;
 	private PartialDisc pdSelectedElement;
 	private int iMaxDisplayedHierarchyDepth;
 	private float fRootElementStartAngle;
 	private float fSelectedElementStartAngle;
 
-	public HistoryEntry(DrawingState drawingState, PartialDisc pdRootElement, PartialDisc pdSelectedElement,
+	/**
+	 * Constructor.
+	 * @param drawingState
+	 *            Drawing state for the history entry.
+	 * @param pdCurrentRootElement
+	 *            Current root element for the history entry.
+	 * @param pdCurrentSelectedElement
+	 *            Current selected element for the history entry.
+	 * @param iMaxDisplayedHierarchyDepth
+	 *            Current maximum hierarchy depth that can be displayed.
+	 */
+	public HistoryEntry(ADrawingState drawingState, PartialDisc pdRootElement, PartialDisc pdSelectedElement,
 		int iMaxDisplayedHierarchyDepth) {
 		this.drawingState = drawingState;
 		this.pdRootElement = pdRootElement;
@@ -19,11 +38,11 @@ public class HistoryEntry {
 		fSelectedElementStartAngle = pdSelectedElement.getCurrentStartAngle();
 	}
 
-	public DrawingState getDrawingState() {
+	public ADrawingState getDrawingState() {
 		return drawingState;
 	}
 
-	public void setDrawingState(DrawingState drawingState) {
+	public void setDrawingState(ADrawingState drawingState) {
 		this.drawingState = drawingState;
 	}
 

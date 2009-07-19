@@ -60,6 +60,10 @@ public abstract class APDDrawingStrategy {
 	public abstract void drawFullCircle(GL gl, GLU glu, PartialDisc pdDiscToDraw);
 
 	/**
+	 * Gets the drawing strategy type of the current instance.
+	 */
+	public abstract EPDDrawingStrategyType getDrawingStrategyType();
+	/**
 	 * Gets the number of slices which shall be drawn to approximate a disc.
 	 * 
 	 * @return Number of slices per full disc.
@@ -72,7 +76,7 @@ public abstract class APDDrawingStrategy {
 	 * Sets the number of slices which shall be drawn to approximate a disc. Higher numbers produce a better
 	 * approximation but the performance is worse.
 	 * 
-	 * @param iNumSlicesPerFullDisc
+	 * @param iNumSlicesPerFullDisc Number of slices per full disc.
 	 */
 	public void setNumSlicesPerFullDisc(int iNumSlicesPerFullDisc) {
 		this.iNumSlicesPerFullDisc = iNumSlicesPerFullDisc;

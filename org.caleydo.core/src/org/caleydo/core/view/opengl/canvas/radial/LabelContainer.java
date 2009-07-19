@@ -6,6 +6,11 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
+/**
+ * Represents a box that can be positioned containing all label lines of one label.
+ * 
+ * @author Christian Partl
+ */
 public class LabelContainer {
 
 	private static float CONTAINER_BOUNDARY_SPACING = 0.03f;
@@ -20,6 +25,19 @@ public class LabelContainer {
 	private ArrayList<LabelLine> alLabelLines;
 	private TextRenderer textRenderer;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param fXContainerLeft
+	 *            X coordinate of the left border of the label container.
+	 * @param fYContainerCenter
+	 *            Y coordinate of the center of the label container.
+	 * @param fLabelScaling
+	 *            Scaling value for the text items in all label lines of the label container.
+	 * @param textRenderer
+	 *            TextRenderer that shall be used for drawing by the text items in all label lines of the
+	 *            label container.
+	 */
 	public LabelContainer(float fXContainerLeft, float fYContainerCenter, float fLabelScaling,
 		TextRenderer textRenderer) {
 
@@ -32,14 +50,26 @@ public class LabelContainer {
 		fHeight = 0;
 	}
 
+	/**
+	 * Adds a list of label lines to the label container.
+	 * 
+	 * @param alLines
+	 *            List of label lines that shall be added.
+	 */
 	public void addLabelLines(ArrayList<LabelLine> alLines) {
 
 		for (LabelLine currentLine : alLines) {
-			currentLine.calculateSize(textRenderer, fLabelScaling);
+			currentLine.calculateSize(textRenderer, fLabelScaling, LabelItemTypes.LABEL_ITEM_TYPE_TEXT);
 			addLine(currentLine);
 		}
 	}
 
+	/**
+	 * Adds one label line to the label container.
+	 * 
+	 * @param labelLine
+	 *            Label line that shall be added.
+	 */
 	public void addLine(LabelLine labelLine) {
 
 		float fLineHeight = labelLine.getHeight();
@@ -62,17 +92,29 @@ public class LabelContainer {
 			LabelLine lastLine = alLabelLines.get(alLabelLines.size() - 1);
 			fYLinePosition = lastLine.getPosition().y() - CONTAINER_LINE_SPACING - fLineHeight;
 		}
-		
+
 		labelLine.setPosition(fXLinePosition, fYLinePosition);
 		alLabelLines.add(labelLine);
 	}
 
+	/**
+	 * Sets the position of the label container.
+	 * 
+	 * @param fXContainerLeft
+	 *            X coordinate of the left border of the label container.
+	 * @param fYContainerCenter
+	 *            Y coordinate of the center of the label container.
+	 */
 	public void setContainerPosition(float fXContainerLeft, float fYContainerCenter) {
 		this.fXContainerLeft = fXContainerLeft;
 		this.fYContainerCenter = fYContainerCenter;
 		updateLinePositions();
 	}
 
+	/**
+	 * Updates the positions of all contained lines. This is necessary when repositioning the container or
+	 * adding new label lines.
+	 */
 	private void updateLinePositions() {
 
 		if (alLabelLines.size() == 0) {
@@ -94,6 +136,13 @@ public class LabelContainer {
 		}
 	}
 
+	/**
+	 * Checks if the current label container collides (overlaps) with the specified one.
+	 * 
+	 * @param container
+	 *            Label container that should be tested for collision with the current one.
+	 * @return True, if the containers overlap, false otherwise.
+	 */
 	public boolean doContainersCollide(LabelContainer container) {
 
 		if (getTop() < container.getBottom() || container.getTop() < getBottom()
@@ -103,13 +152,22 @@ public class LabelContainer {
 		return true;
 	}
 
+	/**
+	 * Draws all label lines contained.
+	 * 
+	 * @param gl
+	 *            GL object that shall be used for drawing.
+	 * @param bDrawLabelBackground
+	 *            Determines, whether a background rectangle with the size of the label container shall be
+	 *            drawn or not.
+	 */
 	public void draw(GL gl, boolean bDrawLabelBackground) {
 
 		gl.glLoadIdentity();
 
 		if (bDrawLabelBackground) {
 			gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
-			gl.glColor4f(1, 1, 1, 0.6f);
+			gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_BACKGROUND_COLOR, 0);
 
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(fXContainerLeft, getTop(), 0);
@@ -119,8 +177,8 @@ public class LabelContainer {
 			gl.glEnd();
 			gl.glPopAttrib();
 		}
-		
-		for(LabelLine currentLine : alLabelLines) {
+
+		for (LabelLine currentLine : alLabelLines) {
 			currentLine.draw(gl);
 		}
 	}
@@ -153,10 +211,19 @@ public class LabelContainer {
 		return fXContainerLeft + fWidth;
 	}
 
+	/**
+	 * @return Scaling value of the text items in all label lines of the label container.
+	 */
 	public float getLabelScaling() {
 		return fLabelScaling;
 	}
 
+	/**
+	 * Sets the scaling value that shall be used by the text items in all label lines of the label container.
+	 * 
+	 * @param fLabelScaling
+	 *            Scaling value for the text items in all label lines of the label container.
+	 */
 	public void setLabelScaling(float fLabelScaling) {
 		this.fLabelScaling = fLabelScaling;
 	}

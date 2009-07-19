@@ -4,7 +4,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
- * Receiver of events dealing with cluster nodes
+ * Receiver of events dealing with cluster nodes.
  * 
  * @author Christian Partl
  */

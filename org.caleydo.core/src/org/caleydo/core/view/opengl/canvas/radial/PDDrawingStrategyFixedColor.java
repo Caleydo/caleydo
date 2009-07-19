@@ -12,6 +12,7 @@ import org.caleydo.core.manager.picking.PickingManager;
  * 
  * @author Christian Partl
  */
+
 public class PDDrawingStrategyFixedColor
 	extends APDDrawingStrategyChildIndicator {
 
@@ -58,13 +59,13 @@ public class PDDrawingStrategyFixedColor
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
 				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
 		gl.glColor4f(fFillColorR, fFillColorG, fFillColorB, fFillAlpha);
-		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
+		GLPrimitives.renderCircle(glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4f(fBorderColorR, fBorderColorG, fBorderColorB, fBorderAlpha);
 		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
@@ -90,12 +91,12 @@ public class PDDrawingStrategyFixedColor
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
 		}
 
 		gl.glColor4f(fFillColorR, fFillColorG, fFillColorB, fFillAlpha);
-		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
+		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
 
 		gl.glColor4f(fBorderColorR, fBorderColorG, fBorderColorB, fBorderAlpha);
@@ -135,6 +136,11 @@ public class PDDrawingStrategyFixedColor
 		fBorderColorG = fColorG;
 		fBorderColorB = fColorB;
 		fBorderAlpha = fAlpha;
+	}
+
+	@Override
+	public EPDDrawingStrategyType getDrawingStrategyType() {
+		return EPDDrawingStrategyType.FIXED_COLOR;
 	}
 
 }

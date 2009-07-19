@@ -3,8 +3,14 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+/**
+ * This class represents the animation where a selected partial disc pops out to the detail View. When the
+ * animation is finished the follow up drawing state ({@link DrawingStateDetailOutside}) will become active.
+ * 
+ * @author Christian Partl
+ */
 public class AnimationPopOutDetailOutside
-	extends DrawingStateAnimation {
+	extends ADrawingStateAnimation {
 
 	public static final float DEFAULT_ANIMATION_DURATION = 0.3f;
 
@@ -17,6 +23,16 @@ public class AnimationPopOutDetailOutside
 	private int iDisplayedOverviewDepth;
 	private int iAnimationPart;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param drawingController
+	 *            DrawingController that holds the drawing states.
+	 * @param radialHierarchy
+	 *            GLRadialHierarchy instance that is used.
+	 * @param navigationHistory
+	 *            NavigationHistory instance that shall be used.
+	 */
 	public AnimationPopOutDetailOutside(DrawingController drawingController,
 		GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		super(drawingController, radialHierarchy, navigationHistory);
@@ -33,6 +49,7 @@ public class AnimationPopOutDetailOutside
 			initAnimationFirstPart(fXCenter, fYCenter, pdCurrentSelectedElement, pdCurrentRootElement);
 			iAnimationPart = 1;
 			bAnimationStarted = true;
+			radialHierarchy.setAnimationActive(true);
 		}
 
 		moveValues(dTimePassed);
@@ -43,8 +60,7 @@ public class AnimationPopOutDetailOutside
 		pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 			.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
 		pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-			.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_INVISIBLE),
-			iDisplayedDetailViewDepth);
+			.getDrawingStrategy(EPDDrawingStrategyType.INVISIBLE), iDisplayedDetailViewDepth);
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, mvOverviewWidth.getMovementValue(),
 			iDisplayedOverviewDepth);
@@ -62,7 +78,7 @@ public class AnimationPopOutDetailOutside
 				iDisplayedDetailViewDepth, mvDetailViewStartAngle.getMovementValue(), mvDetailViewAngle
 					.getMovementValue(), mvDetailViewInnerRadius.getMovementValue());
 		}
-		
+
 		if (haveMovementValuesReachedTargets()) {
 			iAnimationPart++;
 			if (iAnimationPart == 2) {
@@ -74,7 +90,7 @@ public class AnimationPopOutDetailOutside
 		}
 
 		if (!bAnimationStarted) {
-			DrawingState dsNext =
+			ADrawingState dsNext =
 				drawingController.getDrawingState(DrawingController.DRAWING_STATE_DETAIL_OUTSIDE);
 
 			drawingController.setDrawingState(dsNext);
@@ -83,12 +99,23 @@ public class AnimationPopOutDetailOutside
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentSelectedElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
-
-			// pdCurrentSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
-			// DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
+			radialHierarchy.setDisplayListDirty();
 		}
 	}
 
+	/**
+	 * Initializes the first part of the animation which pops out the selected element. Particularly all
+	 * movement values needed for this part are initialized.
+	 * 
+	 * @param fXCenter
+	 *            X coordinate of the hierarchy's center.
+	 * @param fYCenter
+	 *            Y coordinate of the hierarchy's center.
+	 * @param pdCurrentSelectedElement
+	 *            Currently selected partial disc.
+	 * @param pdCurrentRootElement
+	 *            Current root partial disc.
+	 */
 	private void initAnimationFirstPart(float fXCenter, float fYCenter, PartialDisc pdCurrentSelectedElement,
 		PartialDisc pdCurrentRootElement) {
 
@@ -99,11 +126,12 @@ public class AnimationPopOutDetailOutside
 		float fCurrentSelectedElementWidth = pdCurrentSelectedElement.getCurrentWidth();
 		float fCurrentSelecedElementInnderRadius = pdCurrentSelectedElement.getCurrentInnerRadius();
 		int iDepthToRoot = pdCurrentSelectedElement.getParentPathLength(pdCurrentRootElement);
-		
+
 		float fDetailViewScreenPercentage;
 
-		iDisplayedDetailViewDepth = Math.min(iMaxDisplayedHierarchyDepth - iDepthToRoot, iCurrentSelectedElementHierarchyDepth);
-		
+		iDisplayedDetailViewDepth =
+			Math.min(iMaxDisplayedHierarchyDepth - iDepthToRoot, iCurrentSelectedElementHierarchyDepth);
+
 		if (iMaxDisplayedHierarchyDepth <= RadialHierarchyRenderStyle.MIN_DISPLAYED_DETAIL_DEPTH + 1) {
 			fDetailViewScreenPercentage = RadialHierarchyRenderStyle.MIN_DETAIL_SCREEN_PERCENTAGE;
 		}
@@ -124,16 +152,18 @@ public class AnimationPopOutDetailOutside
 				/ iDisplayedDetailViewDepth;
 
 		float fOverviewScreenPercentage =
-			100.0f - (fDetailViewScreenPercentage + (100.0f - RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE));
+			1.0f - (fDetailViewScreenPercentage + (1.0f - RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE) + RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
 		iDisplayedOverviewDepth =
-			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement
-				.getHierarchyDepth());
+			Math.min(iMaxDisplayedHierarchyDepth, pdCurrentRootElement.getHierarchyDepth());
 
 		float fTotalOverviewWidth =
 			Math.min(fXCenter * fOverviewScreenPercentage, fYCenter * fOverviewScreenPercentage);
 		float fOverviewTargetWidth = fTotalOverviewWidth / iDisplayedOverviewDepth;
 
-		float fDetailViewTargetInnerRadius = fTotalOverviewWidth + Math.min(fXCenter * 0.1f, fYCenter * 0.1f);
+		float fDetailViewTargetInnerRadius =
+			fTotalOverviewWidth
+				+ Math.min(fXCenter * RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE,
+					fYCenter * RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
 
 		alMovementValues.clear();
 
@@ -145,6 +175,19 @@ public class AnimationPopOutDetailOutside
 				fAnimationDuration);
 	}
 
+	/**
+	 * Initializes the second part of the animation which surrounds the overview with the detail view.
+	 * Particularly all movement values needed for this part are initialized.
+	 * 
+	 * @param fXCenter
+	 *            X coordinate of the hierarchy's center.
+	 * @param fYCenter
+	 *            Y coordinate of the hierarchy's center.
+	 * @param pdCurrentSelectedElement
+	 *            Currently selected partial disc.
+	 * @param pdCurrentRootElement
+	 *            Current root partial disc.
+	 */
 	private void initAnimationSecondPart(float fXCenter, float fYCenter,
 		PartialDisc pdCurrentSelectedElement, PartialDisc pdCurrentRootElement) {
 

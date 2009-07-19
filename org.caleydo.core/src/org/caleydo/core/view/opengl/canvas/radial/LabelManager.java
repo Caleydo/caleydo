@@ -8,6 +8,12 @@ import javax.media.opengl.glu.GLU;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
+/**
+ * The LabelManager is responsible for positioning all labels ({@link LabelContainer}), determining the labels
+ * that can be drawn and those who can't (due to label overlapping) and finally for drawing the labels.
+ * 
+ * @author Christian Partl
+ */
 public class LabelManager {
 
 	private static final float LABEL_FONT_SCALING_FACTOR = 0.005f;
@@ -29,6 +35,9 @@ public class LabelManager {
 	private Rectangle rectControlBox;
 	private static LabelManager instance;
 
+	/**
+	 * Constructor.
+	 */
 	private LabelManager() {
 		alLabels = new ArrayList<Label>();
 		alLeftContainers = new ArrayList<LabelContainer>();
@@ -37,29 +46,56 @@ public class LabelManager {
 		textRenderer.setColor(0, 0, 0, 1);
 		iMaxSegmentDepth = 0;
 	}
-	
+
+	/**
+	 * Initializes the LabelManager.
+	 */
 	public static void init() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new LabelManager();
 		}
 		else {
 			instance.reset();
 		}
 	}
-	
+
+	/**
+	 * Resets the LabelManager.
+	 */
 	private void reset() {
 		textRenderer = new TextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
 		textRenderer.setColor(0, 0, 0, 1);
 		clearLabels();
 	}
 
+	/**
+	 * Registers a label that shall be drawn.
+	 * 
+	 * @param label
+	 *            Label that shall be drawn.
+	 */
 	public void addLabel(Label label) {
 		alLabels.add(label);
-		if (iMaxSegmentDepth < label.getSegmentDepth()) {
-			iMaxSegmentDepth = label.getSegmentDepth();
+		if (iMaxSegmentDepth < label.getSegmentLabelDepth()) {
+			iMaxSegmentDepth = label.getSegmentLabelDepth();
 		}
 	}
 
+	/**
+	 * Tries to draw all registered labels. Possibly not all labels will be drawn due to overlapping of the
+	 * labels.
+	 * 
+	 * @param gl
+	 *            GL object that shall be used for drawing.
+	 * @param glu
+	 *            GLU object that shall be used for drawing.
+	 * @param fScreenWidth
+	 *            Width of the screen.
+	 * @param fScreenHeight
+	 *            Height of the screen.
+	 * @param fHierarchyOuterRadius
+	 *            Radius of the whole radial hierarchy.
+	 */
 	public void drawAllLabels(GL gl, GLU glu, float fScreenWidth, float fScreenHeight,
 		float fHierarchyOuterRadius) {
 
@@ -97,7 +133,7 @@ public class LabelManager {
 
 			updateContainerPositionOnControlBoxCollision(labelContainer, fXCenter);
 
-			if (label.getSegmentDepth() >= iMaxSegmentDepth) {
+			if (label.getSegmentLabelDepth() >= iMaxSegmentDepth) {
 				labelContainer.setContainerPosition(fXMouseOverContainerPosition, fYCenter + fSegmentYCenter);
 				labelContainer.draw(gl, true);
 				drawSegmentMarker(gl, glu, fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter);
@@ -113,12 +149,34 @@ public class LabelManager {
 		}
 	}
 
+	/**
+	 * Draws a link from a disc segment (partial disc) to the corresponding label.
+	 * 
+	 * @param gl
+	 *            GL object that shall be used for drawing.
+	 * @param glu
+	 *            GLU object that shall be used for drawing.
+	 * @param fXCenter
+	 *            X coordinate of the radial hierarchie's center.
+	 * @param fYCenter
+	 *            Y coordinate of the radial hierarchie's center.
+	 * @param fSegmentXCenter
+	 *            X coordinate of the disc segment's center.
+	 * @param fSegmentYCenter
+	 *            Y coordinate of the disc segment's center.
+	 * @param fBendPointX
+	 *            X coordinate of the bend point of the link to the label.
+	 * @param fBendPointY
+	 *            Y coordinate of the bend point of the link to the label.
+	 * @param labelContainer
+	 *            Label container the link shall be drawn to.
+	 */
 	private void drawLink(GL gl, GLU glu, float fXCenter, float fYCenter, float fSegmentXCenter,
 		float fSegmentYCenter, float fBendPointX, float fBendPointY, LabelContainer labelContainer) {
 
 		gl.glLoadIdentity();
 
-		gl.glColor3f(0.2f, 0.2f, 0.2f);
+		gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_TEXT_COLOR, 0);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter, 0);
 		gl.glVertex3f(fXCenter + fBendPointX, fYCenter + fBendPointY, 0);
@@ -133,44 +191,64 @@ public class LabelManager {
 		drawSegmentMarker(gl, glu, fXCenter + fSegmentXCenter, fYCenter + fSegmentYCenter);
 	}
 
+	/**
+	 * Draws a marker (small circle) at the specified position.
+	 * 
+	 * @param gl
+	 *            GL object that shall be used for drawing.
+	 * @param glu
+	 *            GLU object that shall be used for drawing.
+	 * @param fXPosition
+	 *            X coordinate of the marker.
+	 * @param fYPosition
+	 *            Y coordinate of the marker.
+	 */
 	private void drawSegmentMarker(GL gl, GLU glu, float fXPosition, float fYPosition) {
-		gl.glColor3f(0.2f, 0.2f, 0.2f);
+		gl.glColor4fv(RadialHierarchyRenderStyle.LABEL_TEXT_COLOR, 0);
 		gl.glPushMatrix();
 		gl.glTranslatef(fXPosition, fYPosition, 0);
-		GLPrimitives.renderCircle(gl, glu, MARKER_RADIUS, 10);
+		GLPrimitives.renderCircle(glu, MARKER_RADIUS, 10);
 		GLPrimitives.renderCircleBorder(gl, glu, MARKER_RADIUS, 10, 2);
 		gl.glPopMatrix();
 	}
 
+	/**
+	 * Creates a label container for the specified label.
+	 * 
+	 * @param label
+	 *            Label the label container shall be created for.
+	 * @param fXContainerLeft
+	 *            X coordinate of the left border of the label container.
+	 * @param fYContainerCenter
+	 *            Y coordinate of the center of the label container.
+	 * @param fScreenHeight
+	 *            Height of the screen.
+	 * @return Label container that has been created using the specified parameters.
+	 */
 	private LabelContainer createLabelContainer(Label label, float fXContainerLeft, float fYContainerCenter,
 		float fScreenHeight) {
 
 		float fLabelScaling;
 		LabelContainer labelContainer = null;
 
-		if (iMaxSegmentDepth <= label.getSegmentDepth()) {
+		if (iMaxSegmentDepth <= label.getSegmentLabelDepth()) {
 			fLabelScaling = LABEL_FONT_SCALING_FACTOR;
 		}
 		else {
 			float fSegmentScalingFactor =
 				LABEL_FONT_SCALING_FACTOR
-					* (((float) (iMaxSegmentDepth - 1) - (float) label.getSegmentDepth()) * LABEL_SEGMENT_DEPTH_SCALING_PERCENT);
+					* (((float) (iMaxSegmentDepth - 1) - (float) label.getSegmentLabelDepth()) * LABEL_SEGMENT_DEPTH_SCALING_PERCENT);
 			fLabelScaling =
 				(fSegmentScalingFactor > LABEL_FONT_SCALING_FACTOR) ? LABEL_MIN_FONT_SCALING_FACTOR
 					: (LABEL_FONT_SCALING_FACTOR - fSegmentScalingFactor);
 		}
 
 		labelContainer = new LabelContainer(fXContainerLeft, fYContainerCenter, fLabelScaling, textRenderer);
-		if (iMaxSegmentDepth <= label.getSegmentDepth()) {
+		if (iMaxSegmentDepth <= label.getSegmentLabelDepth()) {
 			lcMouseOver = labelContainer;
 		}
 
 		labelContainer.addLabelLines(label.getLines());
-		// ArrayList<LabelLine> alLines = label.getLines();
-		//
-		// for (LabelLine currentLine : alLines) {
-		// labelContainer.addTextLine(currentLine);
-		// }
 
 		if (labelContainer.getTop() > fScreenHeight) {
 			labelContainer.setContainerPosition(labelContainer.getLeft(), fScreenHeight
@@ -183,6 +261,15 @@ public class LabelManager {
 		return labelContainer;
 	}
 
+	/**
+	 * If the specified container overlaps with the control box, the container is shifted to the side so that
+	 * it does not overlap any more.
+	 * 
+	 * @param labelContainer
+	 *            Label container to test for collision.
+	 * @param fXCenter
+	 *            X coordinate of the center of the radial hierarchy.
+	 */
 	private void updateContainerPositionOnControlBoxCollision(LabelContainer labelContainer, float fXCenter) {
 
 		if (rectControlBox != null) {
@@ -206,6 +293,24 @@ public class LabelManager {
 		}
 	}
 
+	/**
+	 * Checks if the specified label container would collide with any other containers that already have been
+	 * drawn.
+	 * 
+	 * @param containerToTest
+	 *            Container for which the collision test should be made.
+	 * @param alContainers
+	 *            List of containers the new container would be added to (left or right side of the screen).
+	 * @param fSegmentXCenter
+	 *            X coordinate of the center of the disc segment the label container corresponds to.
+	 * @param fSegmentYCenter
+	 *            Y coordinate of the center of the disc segment the label container corresponds to.
+	 * @param fXCenter
+	 *            X coordinate of the radial hierarchy's center.
+	 * @param fBendPointX
+	 *            X coordinate of the link's bend point that corresponds to the label container.
+	 * @return True, if a collision occurs, false otherwise.
+	 */
 	private boolean doesLabelCollide(LabelContainer containerToTest, ArrayList<LabelContainer> alContainers,
 		float fSegmentXCenter, float fSegmentYCenter, float fXCenter, float fBendPointX) {
 
@@ -234,6 +339,9 @@ public class LabelManager {
 		return false;
 	}
 
+	/**
+	 * Clears all registered labels.
+	 */
 	public void clearLabels() {
 		alLabels.clear();
 		alLeftContainers.clear();
@@ -241,10 +349,19 @@ public class LabelManager {
 		iMaxSegmentDepth = 0;
 	}
 
+	/**
+	 * Sets the control box the labels shall not collide with.
+	 * 
+	 * @param rectControlBox
+	 *            Control box.
+	 */
 	public void setControlBox(Rectangle rectControlBox) {
 		this.rectControlBox = rectControlBox;
 	}
 
+	/**
+	 * @return Instance of the LabelManager.
+	 */
 	public static LabelManager get() {
 		if (instance == null) {
 			instance = new LabelManager();

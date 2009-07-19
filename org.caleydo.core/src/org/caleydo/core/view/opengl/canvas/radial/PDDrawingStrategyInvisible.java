@@ -36,4 +36,9 @@ public class PDDrawingStrategyInvisible
 		// Don't draw anything
 	}
 
+	@Override
+	public EPDDrawingStrategyType getDrawingStrategyType() {
+		return EPDDrawingStrategyType.INVISIBLE;
+	}
+
 }

@@ -3,8 +3,14 @@ package org.caleydo.core.view.opengl.canvas.radial;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
+/**
+ * * This class represents the animation where the detail view is pulled in to the full hierarchy. When the
+ * animation is finished the follow up drawing state ({@link DrawingStateFullHierarchy}) will become active.
+ * 
+ * @author Christian Partl
+ */
 public class AnimationPullInDetailOutside
-	extends DrawingStateAnimation {
+	extends ADrawingStateAnimation {
 
 	public static final float DEFAULT_ANIMATION_DURATION = 0.3f;
 
@@ -17,6 +23,16 @@ public class AnimationPullInDetailOutside
 	private int iDisplayedOverviewDepth;
 	private int iAnimationPart;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param drawingController
+	 *            DrawingController that holds the drawing states.
+	 * @param radialHierarchy
+	 *            GLRadialHierarchy instance that is used.
+	 * @param navigationHistory
+	 *            NavigationHistory instance that shall be used.
+	 */
 	public AnimationPullInDetailOutside(DrawingController drawingController,
 		GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
 		super(drawingController, radialHierarchy, navigationHistory);
@@ -29,10 +45,10 @@ public class AnimationPullInDetailOutside
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 
 		if (!bAnimationStarted) {
-			initAnimationFirstPart(gl, glu, fXCenter, fYCenter, pdCurrentSelectedElement,
-				pdCurrentRootElement);
+			initAnimationFirstPart(fXCenter, fYCenter, pdCurrentSelectedElement, pdCurrentRootElement);
 			iAnimationPart = 1;
 			bAnimationStarted = true;
+			radialHierarchy.setAnimationActive(true);
 		}
 
 		moveValues(dTimePassed);
@@ -43,8 +59,7 @@ public class AnimationPullInDetailOutside
 		pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 			.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
 		pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
-			.getDrawingStrategy(DrawingStrategyManager.PD_DRAWING_STRATEGY_INVISIBLE),
-			iDisplayedDetailViewDepth);
+			.getDrawingStrategy(EPDDrawingStrategyType.INVISIBLE), iDisplayedDetailViewDepth);
 
 		pdCurrentRootElement.drawHierarchyFull(gl, glu, mvOverviewWidth.getMovementValue(),
 			iDisplayedOverviewDepth);
@@ -59,32 +74,43 @@ public class AnimationPullInDetailOutside
 		if (haveMovementValuesReachedTargets()) {
 			iAnimationPart++;
 			if (iAnimationPart == 2) {
-				initAnimationSecondPart(gl, glu, fXCenter, fYCenter, pdCurrentSelectedElement, pdCurrentRootElement);
+				initAnimationSecondPart(fXCenter, fYCenter, pdCurrentSelectedElement, pdCurrentRootElement);
 			}
 			if (iAnimationPart > 2) {
 				bAnimationStarted = false;
 			}
 		}
-		
+
 		if (!bAnimationStarted) {
-			DrawingState dsNext =
+			ADrawingState dsNext =
 				drawingController.getDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
 
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
 			radialHierarchy.setCurrentMouseOverElement(pdCurrentRootElement);
 			radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
-			
+
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentRootElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
-
-			// pdCurrentSelectedElement.setPDDrawingStrategy(DrawingStrategyManager.get().getDrawingStrategy(
-			// DrawingStrategyManager.PD_DRAWING_STRATEGY_RAINBOW));
+			radialHierarchy.setDisplayListDirty();
 		}
 	}
 
-	private void initAnimationFirstPart(GL gl, GLU glu, float fXCenter, float fYCenter,
-		PartialDisc pdCurrentSelectedElement, PartialDisc pdCurrentRootElement) {
+	/**
+	 * Initializes the first part of the animation which restores the original angles of the elements in the
+	 * detail view. Particularly all movement values needed for this part are initialized.
+	 * 
+	 * @param fXCenter
+	 *            X coordinate of the hierarchy's center.
+	 * @param fYCenter
+	 *            Y coordinate of the hierarchy's center.
+	 * @param pdCurrentSelectedElement
+	 *            Currently selected partial disc.
+	 * @param pdCurrentRootElement
+	 *            Current root partial disc.
+	 */
+	private void initAnimationFirstPart(float fXCenter, float fYCenter, PartialDisc pdCurrentSelectedElement,
+		PartialDisc pdCurrentRootElement) {
 
 		iDisplayedDetailViewDepth = pdCurrentSelectedElement.getCurrentDepth();
 		iDisplayedOverviewDepth = pdCurrentRootElement.getCurrentDepth();
@@ -96,18 +122,16 @@ public class AnimationPullInDetailOutside
 
 		float fCurrentRootWidth = pdCurrentRootElement.getCurrentWidth();
 
-		pdCurrentRootElement.simulateDrawHierarchyFull(gl, glu, pdCurrentRootElement.getCurrentWidth(),
+		pdCurrentRootElement.simulateDrawHierarchyFull(pdCurrentRootElement.getCurrentWidth(),
 			iDisplayedOverviewDepth);
 
 		float fCurrentSelectedElementTargetAngle = pdCurrentSelectedElement.getCurrentAngle();
 		float fCurrentSelectedElementTargetStartAngle = pdCurrentSelectedElement.getCurrentStartAngle();
 
-		if(fCurrentSelectedElementTargetStartAngle < fCurrentSelectedElementStartAngle) {
+		if (fCurrentSelectedElementTargetStartAngle < fCurrentSelectedElementStartAngle) {
 			fCurrentSelectedElementTargetStartAngle += 360;
 		}
-			
-			
-			
+
 		mvDetailViewAngle =
 			createNewMovementValue(fCurrentSelectedElementAngle, fCurrentSelectedElementTargetAngle,
 				fAnimationDuration);
@@ -123,7 +147,20 @@ public class AnimationPullInDetailOutside
 		mvOverviewWidth = createNewMovementValue(fCurrentRootWidth, fCurrentRootWidth, fAnimationDuration);
 	}
 
-	private void initAnimationSecondPart(GL gl, GLU glu, float fXCenter, float fYCenter,
+	/**
+	 * Initializes the second part of the animation which pulls in the elements from the detail view to the
+	 * full hierarchy. Particularly all movement values needed for this part are initialized.
+	 * 
+	 * @param fXCenter
+	 *            X coordinate of the hierarchy's center.
+	 * @param fYCenter
+	 *            Y coordinate of the hierarchy's center.
+	 * @param pdCurrentSelectedElement
+	 *            Currently selected partial disc.
+	 * @param pdCurrentRootElement
+	 *            Current root partial disc.
+	 */
+	private void initAnimationSecondPart(float fXCenter, float fYCenter,
 		PartialDisc pdCurrentSelectedElement, PartialDisc pdCurrentRootElement) {
 
 		float fCurrentRootWidth = pdCurrentRootElement.getCurrentWidth();
@@ -132,10 +169,12 @@ public class AnimationPullInDetailOutside
 		float fCurrentSelectedElementStartAngle = pdCurrentSelectedElement.getCurrentStartAngle();
 		float fCurrentSelectedElementAngle = pdCurrentSelectedElement.getCurrentAngle();
 
-		float fHierarchyOuterRadius = Math.min(fXCenter * 0.9f, fYCenter * 0.9f);
+		float fHierarchyOuterRadius =
+			Math.min(fXCenter * RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE, fYCenter
+				* RadialHierarchyRenderStyle.USED_SCREEN_PERCENTAGE);
 		float fTargetWidth = fHierarchyOuterRadius / iDisplayedOverviewDepth;
 
-		pdCurrentRootElement.simulateDrawHierarchyFull(gl, glu, fTargetWidth, iDisplayedOverviewDepth);
+		pdCurrentRootElement.simulateDrawHierarchyFull(fTargetWidth, iDisplayedOverviewDepth);
 
 		float fCurrentSelectedElementTargetInnerRadius = pdCurrentSelectedElement.getCurrentInnerRadius();
 

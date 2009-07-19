@@ -16,7 +16,7 @@ public class RadialHierarchyRenderStyle
 	public static float PARTIAL_DISC_BORDER_WIDTH = 2;
 	public static float PARTIAL_DISC_TRANSPARENCY = 0.5f;
 	public static float PARTIAL_DISC_MIN_DISPLAYED_ANGLE = 1.0f;
-	public static int NUM_SLICES_PER_FULL_DISC = 100;
+	public static int NUM_SLICES_PER_FULL_DISC = 80;
 	
 	public static float[] CHILD_INDICATOR_COLOR = {0.3f, 0.3f, 0.3f, 1.0f};
 	public static final float TRIANGLE_HEIGHT_PERCENTAGE = 0.03f;
@@ -24,10 +24,13 @@ public class RadialHierarchyRenderStyle
 	
 	public static final float MIN_DETAIL_SCREEN_PERCENTAGE = 0.4f;
 	public static final float MAX_DETAIL_SCREEN_PERCENTAGE = 0.6f;
-	public static final float USED_SCREEN_PERCENTAGE = 0.8f;
+	public static final float USED_SCREEN_PERCENTAGE = 0.9f;
+	public static final float DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE = 0.1f;
 	public static final int MIN_DISPLAYED_DETAIL_DEPTH = 2;
 	
 	public static final int MAX_LABELING_DEPTH = 5;
+	public static final float[] LABEL_TEXT_COLOR = {0.2f, 0.2f, 0.2f, 1f};
+	public static final float[] LABEL_BACKGROUND_COLOR = {1f, 1f, 1f, 0.6f};
 	
 	
 

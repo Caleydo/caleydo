@@ -56,13 +56,13 @@ public class PDDrawingStrategyRainbow
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, pdDiscToDraw.getCurrentInnerRadius(), fRadius, pdDiscToDraw
 				.getCurrentStartAngle(), pdDiscToDraw.getCurrentAngle());
 		}
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_ROOT_COLOR, 0);
-		GLPrimitives.renderCircle(gl, glu, fRadius, iNumSlicesPerFullDisc);
+		GLPrimitives.renderCircle(glu, fRadius, iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_COLOR, 0);
 		GLPrimitives.renderCircleBorder(gl, glu, fRadius, iNumSlicesPerFullDisc,
@@ -95,16 +95,16 @@ public class PDDrawingStrategyRainbow
 			pdDiscToDraw.getElementID()));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT);
 
-		if ((pdDiscToDraw.getCurrentDepth() == 1) && (pdDiscToDraw.hasChildren())) {
+		if ((!pdDiscToDraw.isAChildDrawn()) && (pdDiscToDraw.hasChildren())) {
 			drawChildIndicator(gl, fInnerRadius, fWidth, fStartAngle, fAngle);
 		}
 
 		ColorMapping cmRainbow = ColorMappingManager.get().getColorMapping(EColorMappingType.RAINBOW);
 
 		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);
-		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], 1);
+		gl.glColor4f(fArRGB[0], fArRGB[1], fArRGB[2], fTransparency);
 
-		GLPrimitives.renderPartialDisc(gl, glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
+		GLPrimitives.renderPartialDisc(glu, fInnerRadius, fInnerRadius + fWidth, fStartAngle, fAngle,
 			iNumSlicesPerFullDisc);
 
 		gl.glColor4fv(RadialHierarchyRenderStyle.PARTIAL_DISC_BORDER_COLOR, 0);
@@ -113,6 +113,11 @@ public class PDDrawingStrategyRainbow
 
 		gl.glPopAttrib();
 		gl.glPopName();
+	}
+
+	@Override
+	public EPDDrawingStrategyType getDrawingStrategyType() {
+		return EPDDrawingStrategyType.RAINBOW_COLOR;
 	}
 
 }

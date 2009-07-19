@@ -3,6 +3,12 @@ package org.caleydo.core.view.opengl.canvas.radial.event;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.manager.event.AEvent;
 
+/**
+ * Event that should be triggered when cluster nodes are selected.
+ * 
+ * @author Christian Partl
+ *
+ */
 public class ClusterNodeSelectionEvent
 	extends AEvent {
 
@@ -31,7 +37,4 @@ public class ClusterNodeSelectionEvent
 			throw new IllegalStateException("iClusterNumber was not set");
 		return true;
 	}
-
-	
-
 }

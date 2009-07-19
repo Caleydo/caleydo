@@ -3,6 +3,12 @@ package org.caleydo.core.view.opengl.canvas.radial.event;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 
+/**
+ * Listener for {@link ClusterNodeSelectionEvent}.
+ * 
+ * @author Christian Partl
+ *
+ */
 public class ClusterNodeSelectionListener
 	extends AEventListener<IClusterNodeEventReceiver> {
 

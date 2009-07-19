@@ -42,13 +42,13 @@ public class PDDrawingStrategyLabelDecorator
 			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue - fStandardDeviation);
-		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1);
+		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		fArRGB = cmExpression.getColor(fAverageExpressionValue);
-		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1);
+		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
-		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
+		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
 		LabelLine expressionLine = new LabelLine();
@@ -109,13 +109,13 @@ public class PDDrawingStrategyLabelDecorator
 			ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue - fStandardDeviation);
-		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1);
+		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		fArRGB = cmExpression.getColor(fAverageExpressionValue);
-		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1);
+		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
-		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1);
+		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");
 		LabelLine expressionLine = new LabelLine();
@@ -150,4 +150,10 @@ public class PDDrawingStrategyLabelDecorator
 		LabelManager.get().addLabel(label);
 	}
 
+	@Override
+	public EPDDrawingStrategyType getDrawingStrategyType() {
+		return EPDDrawingStrategyType.LABEL_DECORATOR;
+	}
+
+	
 }

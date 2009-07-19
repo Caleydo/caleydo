@@ -19,6 +19,12 @@ import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
+/**
+ * Represents a slider that can be dragged in one direction only. Moving the slider into the other direction
+ * can only be performed indirectly.
+ * 
+ * @author Christian Partl
+ */
 public class OneWaySlider {
 
 	private static final float SLIDING_ELEMENT_MAX_HEIGHT = 0.2f;
@@ -45,6 +51,24 @@ public class OneWaySlider {
 
 	private TextRenderer textRenderer;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param vecPosition
+	 *            Position of the slider.
+	 * @param fWidth
+	 *            Width of the slider.
+	 * @param fHeight
+	 *            Height of the slider.
+	 * @param iSelectedValue
+	 *            The value that should currently be selected by the slider.
+	 * @param iValueStep
+	 *            Number the selected value should be increased or decreased in one step.
+	 * @param iMinValue
+	 *            Minimum value the selected value can be.
+	 * @param iMaxValue
+	 *            Maximum value the selected value can be.
+	 */
 	public OneWaySlider(Vec2f vecPosition, float fWidth, float fHeight, int iSelectedValue, int iValueStep,
 		int iMinValue, int iMaxValue) {
 
@@ -71,6 +95,24 @@ public class OneWaySlider {
 			new TextRenderer(new Font(SLIDER_FONT_NAME, SLIDER_FONT_STYLE, SLIDER_FONT_SIZE), false);
 	}
 
+	/**
+	 * Draws the slider using the specified parameters.
+	 * 
+	 * @param gl
+	 *            GL object that shall be used for drawing.
+	 * @param pickingManager
+	 *            Picking manager that shall be used.
+	 * @param textureManager
+	 *            Texture manager that shall be used.
+	 * @param iViewID
+	 *            ID of the view where the slider shall be drawn.
+	 * @param iSliderID
+	 *            Picking ID for the slider (the sliding element).
+	 * @param iSliderButtonID
+	 *            Picking ID for the slider button.
+	 * @param iSliderBodyID
+	 *            Picking ID for the slider body.
+	 */
 	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager, int iViewID,
 		int iSliderID, int iSliderButtonID, int iSliderBodyID) {
 
@@ -129,7 +171,7 @@ public class OneWaySlider {
 
 		Rectangle2D bounds = textRenderer.getBounds(new Integer(iSelectedValue).toString());
 		float fFontScaling = determineFontScaling(new Integer(iSelectedValue).toString());
-		
+
 		float fTextPositionX =
 			vecPosition.x() + fWidth / 2.0f - ((float) bounds.getWidth() / 2.0f) * fFontScaling;
 		float fTextPositionY =
@@ -148,14 +190,32 @@ public class OneWaySlider {
 
 	}
 
+	/**
+	 * Determines the scaling of a specified text that is needed for this text to fit into the sliding
+	 * element.
+	 * 
+	 * @param sText
+	 *            Text the scaling shall be calculated for.
+	 * @return Scaling factor for the specified text.
+	 */
 	private float determineFontScaling(String sText) {
 		Rectangle2D bounds = textRenderer.getBounds(sText);
 		float fScalingWidth = (fWidth - 0.3f * fWidth) / (float) bounds.getWidth();
-		float fScalingHeight = (fSlidingElementHeight - 0.3f * fSlidingElementHeight) / (float) bounds.getHeight();
+		float fScalingHeight =
+			(fSlidingElementHeight - 0.3f * fSlidingElementHeight) / (float) bounds.getHeight();
 
 		return Math.min(fScalingHeight, fScalingWidth);
 	}
 
+	/**
+	 * Method that handles the dragging of the slider.
+	 * 
+	 * @param gl
+	 *            Gl object.
+	 * @param glMouseListener
+	 *            Current mouse listener, used for determining the current mouse position.
+	 * @return True, if the slider has been dragged, false otherwise.
+	 */
 	public boolean handleDragging(GL gl, GLMouseListener glMouseListener) {
 
 		if (!bIsDragging && !bIsBodySelected) {
@@ -198,9 +258,13 @@ public class OneWaySlider {
 		return true;
 	}
 
-	public void handleButtonClick() {
-	}
-
+	/**
+	 * Handles the selection of the different slider parts.
+	 * 
+	 * @param pickingType
+	 *            Type of the selected element.
+	 * @return True, if the slider button has been selected, false otherwise.
+	 */
 	public boolean handleSliderSelection(EPickingType pickingType) {
 
 		switch (pickingType) {

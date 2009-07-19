@@ -18,6 +18,10 @@ public abstract class APDDrawingStrategyChildIndicator
 	private static final float MAX_TRIANGLE_FITTING_TEST_ANGLE = 45.0f;
 
 	private float[] fArChildIndicatorColor;
+	/**
+	 * Transparency value for the partial discs
+	 */
+	protected float fTransparency;
 
 	/**
 	 * Constructor.
@@ -30,6 +34,7 @@ public abstract class APDDrawingStrategyChildIndicator
 	public APDDrawingStrategyChildIndicator(PickingManager pickingManager, int iViewID) {
 		super(pickingManager, iViewID);
 		fArChildIndicatorColor = RadialHierarchyRenderStyle.CHILD_INDICATOR_COLOR;
+		fTransparency = 1.0f;
 	}
 
 	@Override
@@ -157,6 +162,14 @@ public abstract class APDDrawingStrategyChildIndicator
 		if (fArChildIndicatorColor.length >= 3) {
 			this.fArChildIndicatorColor = fArChildIndicatorColor;
 		}
+	}
+	
+	public void setTransparency(float fTransparency) {
+		this.fTransparency = fTransparency;
+	}
+
+	public float getTransparency() {
+		return fTransparency;
 	}
 
 }
