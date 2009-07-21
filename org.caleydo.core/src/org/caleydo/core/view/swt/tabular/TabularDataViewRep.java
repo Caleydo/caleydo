@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -707,7 +708,7 @@ public class TabularDataViewRep
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setSelectionDelta(selectionDelta);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -724,7 +725,7 @@ public class TabularDataViewRep
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setSelectionDelta(selectionDelta);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -824,6 +825,11 @@ public class TabularDataViewRep
 		SerializedDummyView serializedForm = new SerializedDummyView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+		// this implementation does not initialize anything yet
 	}
 
 	@Override

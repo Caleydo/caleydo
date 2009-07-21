@@ -27,6 +27,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -262,7 +263,7 @@ public class GLGlyph
 
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setSelectionDelta(selectionDelta);
+			event.setSelectionDelta((SelectionDelta) selectionDelta);
 			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
 		}
@@ -1038,7 +1039,7 @@ public class GLGlyph
 				new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(),
 					vecGlyphPos.z());
 
-			for (Integer iConnectionID : item.getConnectionID())
+			for (Integer iConnectionID : item.getConnectionIDs())
 				connectedElementRepresentationManager.addSelection(iConnectionID, rep);
 
 		}

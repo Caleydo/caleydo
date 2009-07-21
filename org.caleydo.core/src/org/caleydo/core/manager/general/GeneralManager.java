@@ -30,6 +30,7 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ViewManager;
+import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -78,6 +79,7 @@ public class GeneralManager
 	private ResourceLoader resourceLoader;
 	private WiiRemote wiiRemote;
 	private TrackDataProvider trackDataProvider;
+	private NetworkManager networkManager;
 
 	/**
 	 * The use case determines which kind of data is loaded in the views.
@@ -107,9 +109,9 @@ public class GeneralManager
 		setManager = new SetManager();
 		// connectedElementRepManager = new SelectionManager();
 		commandManager = new CommandManager();
+		eventPublisher = new EventPublisher();
 		viewGLCanvasManager = new ViewManager();
 		sWTGUIManager = new SWTGUIManager();
-		eventPublisher = new EventPublisher();
 		genomeIdManager = new IDMappingManager();
 		pathwayManager = new PathwayManager();
 		pathwayItemManager = new PathwayItemManager();
@@ -118,6 +120,8 @@ public class GeneralManager
 		IDManager = new IDManager();
 		xmlParserManager.initHandlers();
 
+		networkManager = new NetworkManager();
+		
 		initLogger();
 		initPreferences();
 
@@ -338,5 +342,10 @@ public class GeneralManager
 	@Override
 	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase) {
 		this.clinicalUseCase = clinicalUseCase;
+	}
+
+	@Override
+	public NetworkManager getNetworkManager() {
+		return networkManager;
 	}
 }

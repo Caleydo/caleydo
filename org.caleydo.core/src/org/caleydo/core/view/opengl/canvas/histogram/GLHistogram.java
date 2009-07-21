@@ -36,7 +36,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
-import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.caleydo.core.view.serialize.SerializedHistogramView;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -69,6 +69,8 @@ public class GLHistogram
 
 	float fRenderWidth;
 
+	private ColorMappingManager colorMappingManager; 
+	
 	/**
 	 * Constructor.
 	 * 
@@ -81,7 +83,8 @@ public class GLHistogram
 
 		viewType = EManagedObjectType.GL_HISTOGRAM;
 
-		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		colorMappingManager = ColorMappingManager.get(); 
+		colorMapping = colorMappingManager.getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
@@ -137,6 +140,7 @@ public class GLHistogram
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
+			colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION); 
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -153,6 +157,7 @@ public class GLHistogram
 	@Override
 	public void displayRemote(GL gl) {
 		if (bIsDisplayListDirtyRemote) {
+			colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION); 
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -485,11 +490,11 @@ public class GLHistogram
 			markerPoint.setRightSpread(fTargetValue);
 		}
 		colorMapping.update();
+		colorMappingManager.changeColorMapping(colorMapping);
 
-		colorMapping.writeToPrefStore();
-		RedrawViewEvent event = new RedrawViewEvent();
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
+//		RedrawViewEvent event = new RedrawViewEvent();
+//		event.setSender(this);
+//		eventPublisher.triggerEvent(event);
 	}
 
 	@Override
@@ -593,8 +598,9 @@ public class GLHistogram
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedHistogramView serializedForm = new SerializedHistogramView();
 		serializedForm.setViewID(this.getID());
+		serializedForm.setViewGUIID(getViewGUIID());
 		return serializedForm;
 	}
 

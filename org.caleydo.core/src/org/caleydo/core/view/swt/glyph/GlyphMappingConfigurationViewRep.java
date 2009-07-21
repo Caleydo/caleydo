@@ -379,4 +379,8 @@ public class GlyphMappingConfigurationViewRep
 		return serializedForm; 
 	}
 
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+		// this implementation does not initialize anything yet
+	}
 }

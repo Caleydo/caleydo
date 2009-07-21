@@ -5,6 +5,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -14,7 +15,8 @@ public class OpenRadialHierarchyHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLRadialHierarchyView.ID);
+			IViewPart vp = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLRadialHierarchyView.ID);
+			System.out.println("vp="+vp);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

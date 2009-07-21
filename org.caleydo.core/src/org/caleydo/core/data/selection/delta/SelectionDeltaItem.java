@@ -3,6 +3,9 @@ package org.caleydo.core.data.selection.delta;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.selection.ESelectionType;
 
 /**
@@ -11,41 +14,52 @@ import org.caleydo.core.data.selection.ESelectionType;
  * 
  * @author Alexander
  */
+@XmlType(name = "SelectionDeltaItem")
 public class SelectionDeltaItem
 	implements IDeltaItem {
-	private int iPrimaryID = -1;
-	private ESelectionType selectionType;
-	private int iSecondaryID = -1;
-	private ArrayList<Integer> alConnectionID;
 
+	private int primaryID = -1;
+	private ESelectionType selectionType;
+	private int secondaryID = -1;
+	
+	@XmlElementWrapper
+	private ArrayList<Integer> connectionIDs;
+
+	/**
+	 * Default Constructor.
+	 */
+	public SelectionDeltaItem() {
+		
+	}
+	
 	/**
 	 * Constructor
 	 * 
-	 * @param iPrimaryID
+	 * @param primaryID
 	 *            the id of the selected element
 	 * @param selectionType
 	 *            the type of the selection
 	 */
 	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType) {
-		this.iPrimaryID = iSelectionID;
+		this.primaryID = iSelectionID;
 		this.selectionType = selectionType;
-		alConnectionID = new ArrayList<Integer>();
+		connectionIDs = new ArrayList<Integer>();
 	}
 
 	/**
 	 * Constructor. This constructor allows to specify the optional internal id in the selection
 	 * 
-	 * @param iPrimaryID
+	 * @param primaryID
 	 *            the id of the selected element
 	 * @param selectionType
 	 *            the type of the selection
-	 * @param iSecondaryID
+	 * @param secondaryID
 	 *            the internal id which maps to the selectionID
 	 */
 	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType, int iInternalID) {
 		this(iSelectionID, selectionType);
-		this.iSecondaryID = iInternalID;
-		alConnectionID = new ArrayList<Integer>();
+		this.secondaryID = iInternalID;
+		connectionIDs = new ArrayList<Integer>();
 	}
 
 	/**
@@ -54,13 +68,13 @@ public class SelectionDeltaItem
 	 * @param iConnectionID
 	 *            the new id
 	 */
-	public void setConnectionID(int iConnectionID) {
-		alConnectionID.add(iConnectionID);
+	public void addConnectionID(int iConnectionID) {
+		connectionIDs.add(iConnectionID);
 	}
 
 	@Override
 	public int getPrimaryID() {
-		return iPrimaryID;
+		return primaryID;
 	}
 
 	/**
@@ -78,7 +92,7 @@ public class SelectionDeltaItem
 	 * @return the internal id
 	 */
 	public int getSecondaryID() {
-		return iSecondaryID;
+		return secondaryID;
 	}
 
 	/**
@@ -86,8 +100,12 @@ public class SelectionDeltaItem
 	 * 
 	 * @return the connection ID
 	 */
-	public Collection<Integer> getConnectionID() {
-		return alConnectionID;
+	public Collection<Integer> getConnectionIDs() {
+		return connectionIDs;
+	}
+
+	public void setConnectionIDs(ArrayList<Integer> connectionIDs) {
+		this.connectionIDs = connectionIDs;
 	}
 
 	/**
@@ -113,11 +131,12 @@ public class SelectionDeltaItem
 
 	@Override
 	public void setPrimaryID(int iPrimaryID) {
-		this.iPrimaryID = iPrimaryID;
+		this.primaryID = iPrimaryID;
 	}
 
 	@Override
 	public void setSecondaryID(int iSecondaryID) {
-		this.iSecondaryID = iSecondaryID;
+		this.secondaryID = iSecondaryID;
 	}
+
 }

@@ -13,7 +13,6 @@ import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
-import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;

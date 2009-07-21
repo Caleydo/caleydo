@@ -1,6 +1,7 @@
 package org.caleydo.core.bridge.gui.standalone;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
+import org.caleydo.core.view.serialize.ASerializedView;
 import org.eclipse.swt.widgets.Display;
 
 // TODO: doku
@@ -34,4 +35,10 @@ public class SWTStandaloneBridge
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void createView(ASerializedView serializedView) {
+		// TODO Auto-generated method stub
+	}
+
 }

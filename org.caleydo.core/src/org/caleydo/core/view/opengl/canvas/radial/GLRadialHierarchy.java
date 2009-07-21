@@ -114,6 +114,7 @@ public class GLRadialHierarchy
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		partialDiscTree = new Tree<PartialDisc>();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
+		System.out.println("cst imax=" + this.iMaxDisplayedHierarchyDepth);
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
 		navigationHistory.setDrawingController(drawingController);
@@ -192,7 +193,9 @@ public class GLRadialHierarchy
 	 */
 	public void initHierarchy(Tree<ClusterNode> tree) {
 
-		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
+		// wpuff: default is set in constructor, possible initialization from serialized-form
+		// iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
+		
 		hashPartialDiscs.clear();
 		selectionManager.resetSelectionManager();
 		partialDiscTree = new Tree<PartialDisc>();
@@ -301,6 +304,7 @@ public class GLRadialHierarchy
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
+			System.out.println("drt imax=" + this.iMaxDisplayedHierarchyDepth);
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -633,6 +637,7 @@ public class GLRadialHierarchy
 			navigationHistory.setCurrentMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 			setDisplayListDirty();
 		}
+		System.out.println("set imax=" + this.iMaxDisplayedHierarchyDepth);
 	}
 
 	/**
@@ -702,7 +707,18 @@ public class GLRadialHierarchy
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView();
 		serializedForm.setViewID(this.getID());
 		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+		serializedForm.setViewGUIID(getViewGUIID());
 		return serializedForm;
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
+		System.out.println("bef imax=" + this.iMaxDisplayedHierarchyDepth);
+		this.iMaxDisplayedHierarchyDepth = serializedView.getMaxDisplayedHierarchyDepth();
+		System.out.println("aft imax=" + this.iMaxDisplayedHierarchyDepth);
+		// this.setMaxDisplayedHierarchyDepth(serializedView.getMaxDisplayedHierarchyDepth());
+		setDisplayListDirty();
 	}
 
 	@Override

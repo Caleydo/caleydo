@@ -14,13 +14,11 @@ import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.view.CaleydoViewPart;
 import org.caleydo.rcp.view.opengl.GLGlyphView;
 import org.caleydo.rcp.view.opengl.GLHeatMapView;
-import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.view.opengl.GLHistogramView;
 import org.caleydo.rcp.view.opengl.GLParCoordsView;
 import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
@@ -28,7 +26,6 @@ import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HeatMapToolBarContent;
-import org.caleydo.rcp.view.swt.toolbar.content.HierarchicalHeatMapToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ParCoordsToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.radial.RadialHierarchyToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
@@ -129,20 +126,12 @@ public class ToolBarContentFactory {
 		toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
-		info.viewClass = GLHistogram.class;
-		info.contentClass = null;
-		info.rcpID = GLHistogramView.ID;
-		info.ignored = true;
-		toolBarInfos.put(info.viewClass, info);		
-		
-		
-		
-		info = new ToolBarInfo();
 		info.viewClass = GLRadialHierarchy.class;
 		info.contentClass = RadialHierarchyToolBarContent.class;
 		info.rcpID = GLRadialHierarchyView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
+
 	}
 
 	/**
@@ -309,10 +298,16 @@ public class ToolBarContentFactory {
 	public boolean isIgnored(List<Integer> viewIDs) {
 		boolean ignored = false;
 		for (int viewID : viewIDs) {
-			IView view = retrieveView(viewID);
-			ToolBarInfo info = toolBarInfos.get(view.getClass());
-			if (info != null) {
-				ignored |= info.ignored;
+			ToolBarInfo info;
+			IView view;
+			try {
+				view = retrieveView(viewID);
+				info = toolBarInfos.get(view.getClass());
+				if (info != null) {
+					ignored |= info.ignored;
+				}
+			} catch (IllegalArgumentException ex) {
+				ignored = true;
 			}
 		}
 		return ignored;

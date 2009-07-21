@@ -61,4 +61,9 @@ public class EventPublisher
 			}
 		}
 	}
+
+	public ListenerMap getListenerMap() {
+		return listenerMap;
+	}
+
 }

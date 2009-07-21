@@ -8,6 +8,7 @@ import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
@@ -124,4 +125,10 @@ public interface IGeneralManager {
 	 * @param useCase
 	 */
 	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase);
+	
+	/**
+	 * Obtains the {@link NetworkManager} responsible for communication purposes with other calyedo application
+	 * @return the {@link NetworkManager} of this caleydo application  
+	 */
+	public NetworkManager getNetworkManager();
 }

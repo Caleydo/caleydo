@@ -19,6 +19,7 @@ public class OpenCollabHandler
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
+
 		return null;
 	}
 

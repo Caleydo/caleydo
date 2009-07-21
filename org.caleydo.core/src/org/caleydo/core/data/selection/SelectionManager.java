@@ -573,8 +573,8 @@ public class SelectionManager {
 	 * 
 	 * @return the SelectionDelta
 	 */
-	public ISelectionDelta getDelta() {
-		ISelectionDelta returnDelta;
+	public SelectionDelta getDelta() {
+		SelectionDelta returnDelta;
 		if (internalToExternalMapping == null) {
 			returnDelta = selectionDelta.clone();
 		}
@@ -595,8 +595,8 @@ public class SelectionManager {
 
 				SelectionDeltaItem newItem =
 					returnDelta.addSelection(iExternalID, item.getSelectionType(), item.getPrimaryID());
-				for (Integer iConnectionID : item.getConnectionID()) {
-					newItem.setConnectionID(iConnectionID);
+				for (Integer iConnectionID : item.getConnectionIDs()) {
+					newItem.addConnectionID(iConnectionID);
 				}
 			}
 		}
@@ -759,7 +759,7 @@ public class SelectionManager {
 				addToType(item.getSelectionType(), iSelectionID);
 
 				if (isConnectedType(item.getSelectionType())) {
-					for (Integer iConnectionID : item.getConnectionID()) {
+					for (Integer iConnectionID : item.getConnectionIDs()) {
 						addConnectionID(iConnectionID, iSelectionID);
 					}
 				}
@@ -785,7 +785,7 @@ public class SelectionManager {
 					addToType(item.getSelectionType(), iTmpSelectionID);
 
 					if (isConnectedType(item.getSelectionType())) {
-						for (Integer iConnectionID : item.getConnectionID()) {
+						for (Integer iConnectionID : item.getConnectionIDs()) {
 							addConnectionID(iConnectionID, iTmpSelectionID);
 						}
 					}
@@ -910,7 +910,7 @@ public class SelectionManager {
 
 		for (SelectionDeltaItem item : selectionDelta) {
 			if (item.getPrimaryID() == iSelectionID) {
-				item.setConnectionID(iConnectionID);
+				item.addConnectionID(iConnectionID);
 			}
 		}
 	}

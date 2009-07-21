@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.serialize.SerializedHistogramView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -49,6 +50,8 @@ public class GLHistogramView
 	protected ClearSelectionsListener clearSelectionsListener = null;
 	protected NewSetListener newSetListener = null;
 
+	protected Composite baseComposite;
+	
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
 	
 	/**
@@ -57,16 +60,27 @@ public class GLHistogramView
 	public GLHistogramView() {
 		super();
 	}
-
+	
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite baseComposite = new Composite(parent, SWT.NULL);
+		baseComposite = new Composite(parent, SWT.NULL);
 		GridLayout baseLayout = new GridLayout(1, false);
 		baseLayout.verticalSpacing = 2;
 		baseComposite.setLayout(baseLayout);
 
 		super.createPartControl(baseComposite);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		SerializedHistogramView serialized = new SerializedHistogramView();
+		redrawView(serialized);
+		glEventListener.setViewGUIID(ID);
+	}
+
+	/**
+	 * Redraws the view from scratch with new initialization data obtained by its serialized form
+	 * @param serialized serialized form of this view for initialization
+	 */
+	public void redrawView(SerializedHistogramView serialized) {
 
 		// Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
 		// colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -135,9 +149,8 @@ public class GLHistogramView
 
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_HISTOGRAM, glCanvas.getID(), true);
-
 	}
-
+	
 	private void updateColorLabel() {
 
 		DecimalFormat decimalFormat;
@@ -264,4 +277,5 @@ public class GLHistogramView
 		// we only react to the new set event
 		updateColorLabel();
 	}
+
 }

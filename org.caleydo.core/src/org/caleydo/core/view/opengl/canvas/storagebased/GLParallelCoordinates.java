@@ -57,6 +57,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
@@ -1871,7 +1872,7 @@ public class GLParallelCoordinates
 
 	private void triggerSelectionUpdate() {
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
-		selectionUpdateEvent.setSelectionDelta(polylineSelectionManager.getDelta());
+		selectionUpdateEvent.setSelectionDelta((SelectionDelta) polylineSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 		// send out a major update which tells the hhm to update its textures
@@ -1977,7 +1978,7 @@ public class GLParallelCoordinates
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
-					event.setSelectionDelta(selectionDelta);
+					event.setSelectionDelta((SelectionDelta) selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 				}
@@ -2024,7 +2025,7 @@ public class GLParallelCoordinates
 				}
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
-				event.setSelectionDelta(selectionDelta);
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
 				eventPublisher.triggerEvent(event);
 
 				rePosition(iExternalID);

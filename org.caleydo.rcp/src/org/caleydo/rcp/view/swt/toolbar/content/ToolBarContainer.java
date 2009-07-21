@@ -38,7 +38,7 @@ public class ToolBarContainer {
 	}
 
 	/**
-	 * FIXXXME: path to which image?
+	 * FIXME: path to which image?
 	 * @return
 	 */
 	public String getImagePath() {

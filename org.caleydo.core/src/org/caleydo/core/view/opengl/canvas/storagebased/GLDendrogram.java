@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -941,7 +942,7 @@ public class GLDendrogram
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
-					event.setSelectionDelta(selectionDelta);
+					event.setSelectionDelta((SelectionDelta) selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 
@@ -995,7 +996,7 @@ public class GLDendrogram
 					handleConnectedElementRep(selectionDelta);
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
-					event.setSelectionDelta(selectionDelta);
+					event.setSelectionDelta((SelectionDelta) selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 

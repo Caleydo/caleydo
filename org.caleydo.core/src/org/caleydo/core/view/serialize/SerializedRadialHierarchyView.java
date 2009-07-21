@@ -1,5 +1,7 @@
 package org.caleydo.core.view.serialize;
 
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -8,6 +10,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * 
  * @author Christian Partl
  */
+@XmlType
 public class SerializedRadialHierarchyView
 	extends ASerializedView {
 

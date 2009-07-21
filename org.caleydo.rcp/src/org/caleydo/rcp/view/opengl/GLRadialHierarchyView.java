@@ -23,6 +23,7 @@ public class GLRadialHierarchyView
 
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_RADIAL_HIERARCHY, glCanvas.getID(), true);
+		glEventListener.setViewGUIID(ID);
 	}
 
 	public static void createToolBarItems(int iViewID) {

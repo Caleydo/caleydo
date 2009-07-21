@@ -2,6 +2,9 @@ package org.caleydo.core.manager.event;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import org.caleydo.core.manager.IEventPublisher;
 
 /**
@@ -11,12 +14,14 @@ import org.caleydo.core.manager.IEventPublisher;
  * 
  * @author Werner Puff
  */
+@XmlRootElement(name = "AEvent")
 public abstract class AEvent {
 
 	/** timestamp of the event-creation */
 	Date creationTime;
 
 	/** sender object of the event */
+	@XmlTransient
 	Object Sender;
 
 	/**
@@ -51,6 +56,7 @@ public abstract class AEvent {
 	 * 
 	 * @return the sender or null
 	 */
+	@XmlTransient
 	public Object getSender() {
 		return Sender;
 	}

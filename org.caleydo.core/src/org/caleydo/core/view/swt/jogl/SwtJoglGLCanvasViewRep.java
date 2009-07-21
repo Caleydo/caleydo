@@ -71,4 +71,8 @@ public class SwtJoglGLCanvasViewRep
 		return serializedForm; 
 	}
 
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+		// this implementation does not initialize anything yet
+	}
 }

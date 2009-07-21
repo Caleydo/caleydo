@@ -24,6 +24,7 @@ public class CollabView
 		parentComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(testingView);
+		iViewID = testingView.getID();
 	}
 
 	@Override
@@ -34,6 +35,7 @@ public class CollabView
 	@Override
 	public void dispose() {
 		super.dispose();
+		testingView.dispose();
 	}
 
 	public CollabViewRep getTestingView() {

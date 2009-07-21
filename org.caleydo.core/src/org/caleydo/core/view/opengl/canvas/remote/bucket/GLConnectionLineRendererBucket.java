@@ -117,11 +117,11 @@ public class GLConnectionLineRendererBucket
 					}
 				}
 			}
-				if (hashViewToPointList.size() > 1) {
-					renderLineBundling(gl, idType, new float[] { 0, 0, 0 });
-					hashIDTypeToViewToPointLists.clear();
-				}
 //			}
+			if (hashViewToPointList.size() > 1) {
+				renderLineBundling(gl, idType, new float[] { 0, 0, 0 });
+				hashIDTypeToViewToPointLists.clear();
+			}
 		}
 	}
 }

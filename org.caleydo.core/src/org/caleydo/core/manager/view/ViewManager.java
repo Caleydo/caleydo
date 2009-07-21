@@ -10,7 +10,13 @@ import javax.swing.JFrame;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.AManager;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -33,6 +39,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.collab.CollabViewRep;
@@ -54,7 +61,7 @@ import com.sun.opengl.util.FPSAnimator;
  */
 public class ViewManager
 	extends AManager<IView>
-	implements IViewManager {
+	implements IViewManager, IListenerOwner {
 	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
 	protected HashMap<GLCaleydoCanvas, ArrayList<AGLEventListener>> hashGLCanvas2GLEventListeners;
@@ -75,6 +82,8 @@ public class ViewManager
 
 	private Set<Object> busyRequests;
 
+	private CreateGUIViewListener createGUIViewListener; 
+	
 	/**
 	 * Constructor.
 	 */
@@ -91,6 +100,8 @@ public class ViewManager
 		fpsAnimator = new FPSAnimator(null, 60);
 
 		busyRequests = new HashSet<Object>();
+		
+		registerEventListeners();
 	}
 
 	@Override
@@ -426,4 +437,40 @@ public class ViewManager
 			}
 		}
 	}
+
+	public void createSWTView(ASerializedView serializedView) {
+		generalManager.getGUIBridge().createView(serializedView);
+	}
+
+	@Override
+	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
+		final AEvent event) {
+//		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getDisplay().asyncExec(new Runnable() {
+//			public void run() {
+				listener.handleEvent(event);
+//			}
+//		});
+	}
+
+	private void registerEventListeners() {
+		IGeneralManager generalManager = GeneralManager.get();
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		
+		createGUIViewListener = new CreateGUIViewListener();
+		createGUIViewListener.setHandler(this);
+		eventPublisher.addListener(CreateGUIViewEvent.class, createGUIViewListener);
+		
+	}
+	
+	@SuppressWarnings("unused")
+	private void unregisterEventListeners() {
+		IGeneralManager generalManager = GeneralManager.get();
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+
+		if (createGUIViewListener != null) {
+			eventPublisher.removeListener(createGUIViewListener);
+			createGUIViewListener = null;
+		}
+	}
+	
 }

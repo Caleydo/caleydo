@@ -78,8 +78,8 @@ public class DeltaConverter {
 					GeneralManager.get().getIDMappingManager().<Integer, Integer> getMultiID(
 						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, item.getPrimaryID());
 				if (setExpressionIndices == null) {
-					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-						"No mapping found for david to expression index"));
+//					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+//						"No mapping found for david to expression index"));
 					continue;
 				}
 				for (int iExpressionIndex : setExpressionIndices) {

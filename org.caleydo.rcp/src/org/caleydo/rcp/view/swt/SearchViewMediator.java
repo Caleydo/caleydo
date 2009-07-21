@@ -72,7 +72,7 @@ public class SearchViewMediator {
 			delta.addSelection(expressionIndex, ESelectionType.SELECTION);
 		}
 		
-		selectionUpdateEvent.setSelectionDelta(delta);
+		selectionUpdateEvent.setSelectionDelta((SelectionDelta) delta);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
 }

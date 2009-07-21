@@ -3,6 +3,9 @@ package org.caleydo.core.util.mapping.color;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -14,16 +17,25 @@ import org.eclipse.jface.preference.PreferenceStore;
  * 
  * @author Alexander Lex
  */
+@XmlType
 public class ColorMapping {
 
-	ArrayList<float[]> alColorList;
-	ArrayList<ColorMarkerPoint> alMarkerPoints;
+	ArrayList<float[]> colorList;
+	ArrayList<ColorMarkerPoint> markerPoints;
 	EColorMappingType colorMappingType;
 
-	float[] fArNotANumberColor = { 0, 0, 1 };
+	float[] notANumberColor = { 0, 0, 1 };
 
-	public static int COLOR_DEPTH = 256;
+	@XmlTransient
+	public static final int COLOR_DEPTH = 256;
 
+	/**
+	 * Default no-arg constructor, especially needed for xml-serialization.
+	 */
+	public ColorMapping() {
+		
+	}
+	
 	/**
 	 * <p>
 	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first has the smallest value, and
@@ -61,14 +73,14 @@ public class ColorMapping {
 	}
 
 	private void init(ArrayList<ColorMarkerPoint> alMarkerPoints) {
-		this.alMarkerPoints = alMarkerPoints;
-		alColorList = new ArrayList<float[]>(COLOR_DEPTH);
+		this.markerPoints = alMarkerPoints;
+		colorList = new ArrayList<float[]>(COLOR_DEPTH);
 		for (int iCount = 0; iCount < COLOR_DEPTH; iCount++) {
-			alColorList.add(new float[3]);
+			colorList.add(new float[3]);
 		}
 
 		setUpMapping();
-		fArNotANumberColor =
+		notANumberColor =
 			ConversionTools.getFloatColorFromString(GeneralManager.get().getPreferenceStore().getString(
 				PreferenceConstants.NAN_COLOR));
 	}
@@ -110,7 +122,7 @@ public class ColorMapping {
 
 		PreferenceStore store = GeneralManager.get().getPreferenceStore();
 		int iCount = 1;
-		for (ColorMarkerPoint point : alMarkerPoints) {
+		for (ColorMarkerPoint point : markerPoints) {
 			store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount,
 				point.getValue());
 			store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
@@ -118,18 +130,18 @@ public class ColorMapping {
 			store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
 				+ iCount, point.getLeftSpread());
 			iCount++;
-			store.setValue(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS,	alMarkerPoints.size());
+			store.setValue(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS,	markerPoints.size());
 		}
 	}
 
 	/**
 	 * Initialize the color mapping
 	 * 
-	 * @param alMarkerPoints
+	 * @param markerPoints
 	 *            the marker points
 	 */
 	private void setUpMapping() {
-		Collections.sort(alMarkerPoints);
+		Collections.sort(markerPoints);
 		ArrayList<ColorMarkerPoint> alFinalMarkerPoints = considerSpread();
 		float fSrcValue, fDestValue;
 
@@ -150,7 +162,7 @@ public class ColorMapping {
 			int iColorRange = iDestIndex - iSrcIndex;
 
 			for (int iInnerCount = 0; iInnerCount <= iColorRange; iInnerCount++) {
-				float[] fColor = alColorList.get(iSrcIndex + iInnerCount);
+				float[] fColor = colorList.get(iSrcIndex + iInnerCount);
 				float fDivisor = (float) iColorRange / (float) iInnerCount;
 				fColor[0] = fSrcColor[0] + (fDestColor[0] - fSrcColor[0]) / fDivisor;
 				fColor[1] = fSrcColor[1] + (fDestColor[1] - fSrcColor[1]) / fDivisor;
@@ -169,12 +181,12 @@ public class ColorMapping {
 	 */
 	public float[] getColor(float fValue) {
 		if (Float.isNaN(fValue))
-			return fArNotANumberColor;
+			return notANumberColor;
 
 		if (fValue > 1 || fValue < 0)
 			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1");
 
-		return alColorList.get((int) (fValue * (COLOR_DEPTH - 1)));
+		return colorList.get((int) (fValue * (COLOR_DEPTH - 1)));
 	}
 
 	/**
@@ -183,7 +195,7 @@ public class ColorMapping {
 	 * @return the list of marker points
 	 */
 	public ArrayList<ColorMarkerPoint> getMarkerPoints() {
-		return alMarkerPoints;
+		return markerPoints;
 	}
 
 	/**
@@ -210,7 +222,7 @@ public class ColorMapping {
 	private ArrayList<ColorMarkerPoint> considerSpread() {
 		ArrayList<ColorMarkerPoint> alFinalColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
 
-		for (ColorMarkerPoint point : alMarkerPoints) {
+		for (ColorMarkerPoint point : markerPoints) {
 			if (point.hasLeftSpread()) {
 				float fLeftValue = point.getValue() - point.getLeftSpread();
 				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fLeftValue, point.getColor()));
@@ -223,6 +235,34 @@ public class ColorMapping {
 		}
 
 		return alFinalColorMarkerPoints;
+	}
+
+	public ArrayList<float[]> getColorList() {
+		return colorList;
+	}
+
+	public void setColorList(ArrayList<float[]> colorList) {
+		this.colorList = colorList;
+	}
+
+	public EColorMappingType getColorMappingType() {
+		return colorMappingType;
+	}
+
+	public void setColorMappingType(EColorMappingType colorMappingType) {
+		this.colorMappingType = colorMappingType;
+	}
+
+	public float[] getNotANumberColor() {
+		return notANumberColor;
+	}
+
+	public void setNotANumberColor(float[] notANumberColor) {
+		this.notANumberColor = notANumberColor;
+	}
+
+	public void setMarkerPoints(ArrayList<ColorMarkerPoint> markerPoints) {
+		this.markerPoints = markerPoints;
 	}
 
 }

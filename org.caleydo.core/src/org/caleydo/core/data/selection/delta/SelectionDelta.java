@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 
@@ -13,18 +15,26 @@ import org.caleydo.core.data.selection.ESelectionType;
  * 
  * @author Alexander Lex
  */
-
+@XmlType(name = "SelectionDelta")
 public class SelectionDelta
 	implements ISelectionDelta, Iterable<SelectionDeltaItem> {
-	private HashMap<Integer, SelectionDeltaItem> hashSelectionItems = null;
+
+	private HashMap<Integer, SelectionDeltaItem> selectionItems = null;
 
 	private EIDType idType;
 	private EIDType secondaryIDType = null;
 
+	/**
+	 * Default Constructor.
+	 */
+	public SelectionDelta() {
+		
+	}
+	
 	public SelectionDelta(EIDType idType) {
 		if(idType == null)
 			throw new IllegalArgumentException("idType was null");
-		hashSelectionItems = new HashMap<Integer, SelectionDeltaItem>();
+		selectionItems = new HashMap<Integer, SelectionDeltaItem>();
 		this.idType = idType;
 	}
 
@@ -37,14 +47,14 @@ public class SelectionDelta
 
 	@Override
 	public Collection<SelectionDeltaItem> getAllItems() {
-		return hashSelectionItems.values();
+		return selectionItems.values();
 	}
 
 	@Override
 	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType) {
 
 		SelectionDeltaItem item = new SelectionDeltaItem(iSelectionID, selectionType);
-		hashSelectionItems.put(iSelectionID, item);
+		selectionItems.put(iSelectionID, item);
 		return item;
 		// if (item != null)
 		// System.out.println("ID: " + iSelectionID + " Old: " +
@@ -54,39 +64,29 @@ public class SelectionDelta
 
 	@Override
 	public Iterator<SelectionDeltaItem> iterator() {
-		return hashSelectionItems.values().iterator();
+		return selectionItems.values().iterator();
 	}
 
 	@Override
 	public SelectionDeltaItem addSelection(int selectionID, ESelectionType selectionType, int iSecondaryID) {
 		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType, iSecondaryID);
-		hashSelectionItems.put(selectionID, item);
+		selectionItems.put(selectionID, item);
 		return item;
 	}
 
 	@Override
-	public EIDType getIDType() {
-		return idType;
-	}
-
-	@Override
-	public EIDType getSecondaryIDType() {
-		return secondaryIDType;
-	}
-
-	@Override
 	public int size() {
-		return hashSelectionItems.size();
+		return selectionItems.size();
 	}
 
 	@Override
-	public ISelectionDelta clone() {
-		ISelectionDelta newDelta = new SelectionDelta(idType, secondaryIDType);
-		for (SelectionDeltaItem item : hashSelectionItems.values()) {
+	public SelectionDelta clone() {
+		SelectionDelta newDelta = new SelectionDelta(idType, secondaryIDType);
+		for (SelectionDeltaItem item : selectionItems.values()) {
 			SelectionDeltaItem newItem =
 				newDelta.addSelection(item.getPrimaryID(), item.getSelectionType(), item.getSecondaryID());
-			for (Integer iConnetionID : item.getConnectionID()) {
-				newItem.setConnectionID(iConnetionID);
+			for (Integer iConnetionID : item.getConnectionIDs()) {
+				newItem.addConnectionID(iConnetionID);
 			}
 		}
 
@@ -94,16 +94,42 @@ public class SelectionDelta
 	}
 
 	public void addConnectionID(int iSelectionID, int iConnectionID) {
-		SelectionDeltaItem item = hashSelectionItems.get(iSelectionID);
+		SelectionDeltaItem item = selectionItems.get(iSelectionID);
 		if (item == null)
 			throw new IllegalStateException("Supplied selection ID is not in delta.");
 
-		item.setConnectionID(iConnectionID);
+		item.addConnectionID(iConnectionID);
 	}
 
 	@Override
 	public void add(SelectionDeltaItem deltaItem) {
-		hashSelectionItems.put(deltaItem.getPrimaryID(), deltaItem);
+		selectionItems.put(deltaItem.getPrimaryID(), deltaItem);
+	}
+
+	@Override
+	public EIDType getIDType() {
+		return idType;
+	}
+
+	public void setIDType(EIDType idType) {
+		this.idType = idType;
+	}
+
+	@Override
+	public EIDType getSecondaryIDType() {
+		return secondaryIDType;
+	}
+
+	public void setSecondaryIDType(EIDType secondaryIDType) {
+		this.secondaryIDType = secondaryIDType;
+	}
+
+	public HashMap<Integer, SelectionDeltaItem> getSelectionItems() {
+		return selectionItems;
+	}
+
+	public void setSelectionItems(HashMap<Integer, SelectionDeltaItem> selectionItems) {
+		this.selectionItems = selectionItems;
 	}
 
 }

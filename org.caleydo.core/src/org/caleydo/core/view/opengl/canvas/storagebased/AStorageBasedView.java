@@ -415,7 +415,7 @@ public abstract class AStorageBasedView
 							continue;
 						}
 
-						for (Integer iConnectionID : item.getConnectionID()) {
+						for (Integer iConnectionID : item.getConnectionIDs()) {
 							connectedElementRepresentationManager.addSelection(iConnectionID, rep);
 						}
 					}

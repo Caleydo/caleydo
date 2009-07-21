@@ -47,6 +47,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -152,6 +153,10 @@ public abstract class AGLEventListener
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
 
+	/** id of the related view in the gui (e.g. RCP) */
+	private String viewGUIID;
+	
+	
 	/**
 	 * Constructor.
 	 */
@@ -700,6 +705,17 @@ public abstract class AGLEventListener
 		return queue.poll();
 	}
 
+	public String getViewGUIID() {
+		return viewGUIID;
+	}
 
+	public void setViewGUIID(String viewGUIID) {
+		this.viewGUIID = viewGUIID;
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+		// the default implementation does not initialize anything
+	}
 	
 }

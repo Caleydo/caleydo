@@ -26,6 +26,13 @@ public class ColorMarkerPoint
 	private float fRightSpread = 0.0f;
 
 	/**
+	 * Default no-arg constructor, especially needed for xml-serialization.
+	 */
+	public ColorMarkerPoint() {
+		
+	}
+	
+	/**
 	 * Constructor. To create a new marker point pass two variables, fValue and fArColor.
 	 * <p>
 	 * fValue represents the where on the mapping range the point is situated. Values are considered to be

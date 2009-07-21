@@ -20,6 +20,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IViewManager;
@@ -2634,7 +2635,7 @@ public class GLRemoteRendering
 		if (lastSelectionDelta != null) {
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
-			event.setSelectionDelta(lastSelectionDelta);
+			event.setSelectionDelta((SelectionDelta) lastSelectionDelta);
 			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
 		}

@@ -51,9 +51,15 @@ public interface IView
 	public void setUseCase(IUseCase useCase);
 	
 	/**
-	 * Retreives a serializeable representation of the view
+	 * Retrieves a serializeable representation of the view
 	 * @return serialized representation of the view 
 	 */
 	public ASerializedView getSerializableRepresentation();
+
+	/**
+	 * Initializes the view with the values from the given {@link ASerializedView}.
+	 * @param serializedView serialized representation of the view.
+	 */
+	public void initFromSerializableRepresentation(ASerializedView serializedView);
 	
 }

@@ -1,5 +1,8 @@
 package org.caleydo.core.view.serialize;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -8,9 +11,13 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * A serialized view is used to store a view to disk or transmit it over network.  
  * @author Werner Puff
  */
+@XmlType
+@XmlSeeAlso({SerializedHistogramView.class, SerializedRadialHierarchyView.class})
 public abstract class ASerializedView {
 
 	protected int viewID;
+
+	protected String viewGUIID;
 	
 	/**
 	 * Gets the command-type for the command-factory to create that creates a according view
@@ -38,5 +45,13 @@ public abstract class ASerializedView {
 	 */
 	public void setViewID(int viewID) {
 		this.viewID = viewID;
+	}
+
+	public String getViewGUIID() {
+		return viewGUIID;
+	}
+
+	public void setViewGUIID(String viewGUIID) {
+		this.viewGUIID = viewGUIID;
 	}
 }

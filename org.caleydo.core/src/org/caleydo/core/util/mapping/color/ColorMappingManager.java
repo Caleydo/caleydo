@@ -3,8 +3,16 @@ package org.caleydo.core.util.mapping.color;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.histogram.listener.UpdateColorMappingListener;
+import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
 
 /**
  * Manage color mappings for different situations system-wide. There can only be one color mapping for each of
@@ -14,14 +22,22 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
  * @author Alexander Lex
  */
 
-public class ColorMappingManager {
+public class ColorMappingManager 
+	implements IColorMappingHandler {
+
 	private static ColorMappingManager colorMappingManager = null;
 	private EnumMap<EColorMappingType, ColorMapping> hashColorMapping = null;
 
+	
+	private IEventPublisher eventPublisher;
+	private UpdateColorMappingListener updateColorMappingListener;
+	
 	/**
 	 * Constructor, only called internally
 	 */
 	private ColorMappingManager() {
+		eventPublisher = GeneralManager.get().getEventPublisher();
+		registerEventListeners();
 		hashColorMapping = new EnumMap<EColorMappingType, ColorMapping>(EColorMappingType.class);
 	}
 
@@ -35,6 +51,27 @@ public class ColorMappingManager {
 			colorMappingManager = new ColorMappingManager();
 		}
 		return colorMappingManager;
+	}
+
+	private void registerEventListeners() {
+		
+		updateColorMappingListener = new UpdateColorMappingListener();
+		updateColorMappingListener.setHandler(this);
+		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
+		
+	}
+	
+	/**
+	 * TODO from where should this method be called? are managers released anywhere?
+	 */
+	@SuppressWarnings("unused")
+	private void unregisterEventListeners() {
+
+		if (updateColorMappingListener != null) {
+			eventPublisher.removeListener(updateColorMappingListener);
+			updateColorMappingListener = null;
+		}
+		
 	}
 
 	/**
@@ -114,6 +151,38 @@ public class ColorMappingManager {
 		}
 
 		return colorMapping;
+	}
+
+	/**
+	 * Handles changes of {@link ColorMapping}s by storing the new received ColorMapping
+	 * with the contained {@link EColorMappingType}.   
+	 * @param colorMapping changed {@link ColorMapping} to store
+	 */
+	public void distributeColorMapping(ColorMapping colorMapping) {
+		hashColorMapping.put(colorMapping.getColorMappingType(), colorMapping);
+		colorMapping.writeToPrefStore();
+
+		RedrawViewEvent redrawViewEvent = new RedrawViewEvent();
+		redrawViewEvent.setSender(this);
+		eventPublisher.triggerEvent(redrawViewEvent);
+	}
+
+	/**
+	 * 
+	 * @param colorMapping
+	 */
+	public void changeColorMapping(ColorMapping colorMapping) {
+		distributeColorMapping(colorMapping);
+		
+		UpdateColorMappingEvent updateColorMappingEvent = new UpdateColorMappingEvent();
+		updateColorMappingEvent.setSender(this);
+		updateColorMappingEvent.setColorMapping(colorMapping);
+		eventPublisher.triggerEvent(updateColorMappingEvent);
+	}
+	
+	@Override
+	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		listener.handleEvent(event);
 	}
 
 }

@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.storagebased;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 
@@ -8,6 +11,8 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Werner Puff
  */
+@XmlRootElement(name = "selectionUpdateEvent")
+@XmlType(name = "SelectionUpdateEvent")
 public class SelectionUpdateEvent
 	extends AEvent {
 

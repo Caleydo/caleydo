@@ -292,4 +292,8 @@ public class HTMLBrowserViewRep
 		return serializedForm; 
 	}
 
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+		// this implementation does not initialize anything yet
+	}
 }

@@ -792,8 +792,8 @@ public class GLPathwayContentCreator {
 				(PathwayVertexGraphItem) vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0));
 
 		if (iDavidID == -1 || iDavidID == 0) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"Invalid David Gene ID."));
+//			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+//				"Invalid David Gene ID."));
 		}
 		else {
 			Set<Integer> iSetRefSeq =

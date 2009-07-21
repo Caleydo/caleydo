@@ -19,6 +19,7 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -323,7 +324,7 @@ public class GLGlyphSliderView
 				if (selectionDelta.getAllItems().size() > 0) {
 					SelectionUpdateEvent event = new SelectionUpdateEvent();
 					event.setSender(this);
-					event.setSelectionDelta(selectionDelta);
+					event.setSelectionDelta((SelectionDelta) selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
 				}

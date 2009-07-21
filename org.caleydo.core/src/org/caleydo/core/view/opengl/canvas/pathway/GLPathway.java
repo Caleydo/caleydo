@@ -379,7 +379,7 @@ public class GLPathway
 					(iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y
 						* vecScaling.y() + vecTranslation.y(), 0);
 
-			for (Integer iConnectionID : item.getConnectionID()) {
+			for (Integer iConnectionID : item.getConnectionIDs()) {
 				connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
 			}
 		}
@@ -431,7 +431,7 @@ public class GLPathway
 				newSelectionDelta.addSelection((Integer) iExpressionIndex, item.getSelectionType(), item
 					.getPrimaryID());
 
-				for (Integer iConnectionID : item.getConnectionID()) {
+				for (Integer iConnectionID : item.getConnectionIDs()) {
 					newSelectionDelta.addConnectionID((Integer) iExpressionIndex, iConnectionID);
 				}
 			}
@@ -484,8 +484,8 @@ public class GLPathway
 				SelectionDeltaItem newItem =
 					newSelectionDelta
 						.addSelection(tmpGraphItemRep.getId(), item.getSelectionType(), iDavidID);
-				for (int iConnectionID : item.getConnectionID()) {
-					newItem.setConnectionID(iConnectionID);
+				for (int iConnectionID : item.getConnectionIDs()) {
+					newItem.addConnectionID(iConnectionID);
 				}
 			}
 		}
@@ -715,7 +715,7 @@ public class GLPathway
 				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager.getDelta());
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
-				event.setSelectionDelta(selectionDelta);
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
 				event.setInfo(getShortInfo());
 				eventPublisher.triggerEvent(event);
 
@@ -761,8 +761,8 @@ public class GLPathway
 						(PathwayVertexGraphItem) tmpPathwayVertexGraphItem);
 
 				if (iDavidID == -1 || iDavidID == 0) {
-					generalManager.getLogger().log(
-						new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Invalid David Gene ID."));
+//					generalManager.getLogger().log(
+//						new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Invalid David Gene ID."));
 					continue;
 				}
 

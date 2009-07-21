@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -14,6 +17,8 @@ import org.caleydo.core.manager.event.AEvent;
  * @author Werner Puff
  * @author Alexander Lex
  */
+@XmlRootElement(name = "selectionCommandEvent")
+@XmlType(name = "SelectionCommandEvent")
 public class SelectionCommandEvent
 	extends AEvent {
 
