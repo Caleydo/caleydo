@@ -53,4 +53,5 @@ public class ToggleConnectionLinesAction
 		this.connectionLinesEnabled = connectionLinesEnabled;
 		setChecked(connectionLinesEnabled);
 	};
+	
 }

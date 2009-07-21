@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.view.storagebased;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -17,7 +17,7 @@ public class SelectionUpdateEvent
 	extends AEvent {
 
 	/** delta between old and new selection */
-	private ISelectionDelta selectionDelta;
+	private SelectionDelta selectionDelta;
 
 	/** tells if the selection should be focused (centered, ...) by the receiver */
 	private boolean scrollToSelection = true;
@@ -25,11 +25,11 @@ public class SelectionUpdateEvent
 	/** additional information about the selection, e.g. to display in the info-box */
 	private String info;
 
-	public ISelectionDelta getSelectionDelta() {
+	public SelectionDelta getSelectionDelta() {
 		return selectionDelta;
 	}
 
-	public void setSelectionDelta(ISelectionDelta selectionDelta) {
+	public void setSelectionDelta(SelectionDelta selectionDelta) {
 		this.selectionDelta = selectionDelta;
 	}
 

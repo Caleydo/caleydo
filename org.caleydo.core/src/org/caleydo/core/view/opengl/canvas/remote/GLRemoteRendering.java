@@ -74,6 +74,7 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.EnableConnectionLines
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.EnableTexturesListener;
+import org.caleydo.core.view.opengl.canvas.remote.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleNavigationModeListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleZoomListener;
@@ -114,7 +115,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IGLCanvasRemoteRendering {
+	implements ISelectionUpdateHandler, IGLCanvasRemoteRendering, IRemoteRenderingHandler {
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
@@ -2873,6 +2874,14 @@ public class GLRemoteRendering
 		if (disableNeighborhoodListener != null) {
 			eventPublisher.removeListener(disableNeighborhoodListener);
 			disableNeighborhoodListener = null;
+		}
+		if (enableConnectionLinesListener != null) {
+			eventPublisher.removeListener(enableConnectionLinesListener);
+			enableConnectionLinesListener = null;
+		}
+		if (disableConnectionLinesListener != null) {
+			eventPublisher.removeListener(disableConnectionLinesListener);
+			disableConnectionLinesListener = null;
 		}
 		if (resetViewListener != null) {
 			eventPublisher.removeListener(resetViewListener);

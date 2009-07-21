@@ -70,6 +70,15 @@ public abstract class AToolBarContent {
 	}
 
 	/**
+	 * Called when the object is not needed anymore to release resources that 
+	 * might be obtained during initialization.
+	 * Inherited objects should override the default implementation if needed. 
+	 */
+	public void dispose() {
+		// nothing to do in this default implementation
+	}
+	
+	/**
 	 * Sets the id of the target view for the actions in this toolbar content.
 	 * The id must be set before retrieving any toolbar content.
 	 * @param viewID as used by IViewManager of the target view  

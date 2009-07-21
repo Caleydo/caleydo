@@ -28,6 +28,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -539,7 +540,7 @@ public class GLHeatMap
 		contentSelectionManager.addConnectionID(iMappingID, contentID);
 
 		if (eFieldDataType == EIDType.EXPRESSION_INDEX) {
-			ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+			SelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
 			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
 			// eSelectionType);
@@ -570,7 +571,7 @@ public class GLHeatMap
 			// eSelectionType);
 			// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
-			ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
+			SelectionDelta selectionDelta = storageSelectionManager.getDelta();
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta(selectionDelta);

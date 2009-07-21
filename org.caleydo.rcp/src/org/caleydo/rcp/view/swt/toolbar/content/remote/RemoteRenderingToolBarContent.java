@@ -29,6 +29,10 @@ public class RemoteRenderingToolBarContent
 	public static final String PATHWAY_IMAGE_PATH = "resources/icons/view/pathway/pathway.png";
 	public static final String PATHWAY_VIEW_TITLE = "Pathways";
 
+	RemoteRenderingToolBarMediator mediator;
+	
+	ToggleConnectionLinesAction toggleConnectionLinesAction;
+	
 	@Override
 	public Class<?> getViewClass() {
 		return GLRemoteRendering.class;
@@ -48,7 +52,8 @@ public class RemoteRenderingToolBarContent
 	 * @return bucket related toolbar box
 	 */
 	private ToolBarContainer createBucketContainer() {
-		RemoteRenderingToolBarMediator mediator = new RemoteRenderingToolBarMediator();
+		mediator = new RemoteRenderingToolBarMediator();
+		mediator.setToolBarContent(this);
 		SerializedRemoteRenderingView serializedView = (SerializedRemoteRenderingView) getTargetViewData();
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
@@ -61,7 +66,7 @@ public class RemoteRenderingToolBarContent
 		actionList.add(closeOrResetContainedViews);
 		// IAction toggleLayoutAction = new ToggleLayoutAction(viewID);
 		// alToolbar.add(toggleLayoutAction);
-		ToggleConnectionLinesAction toggleConnectionLinesAction = new ToggleConnectionLinesAction(mediator);
+		toggleConnectionLinesAction = new ToggleConnectionLinesAction(mediator);
 		toggleConnectionLinesAction.setConnectionLinesEnabled(serializedView.isConnectionLinesEnabled());
 		actionList.add(toggleConnectionLinesAction);
 		
@@ -94,5 +99,13 @@ public class RemoteRenderingToolBarContent
 		container.setTargetViewData((SerializedRemoteRenderingView) getTargetViewData());
 
 		return container;
+	}
+	
+	@Override
+	public void dispose() {
+		if (mediator != null) {
+			mediator.dispose();
+			mediator = null;
+		}
 	}
 }

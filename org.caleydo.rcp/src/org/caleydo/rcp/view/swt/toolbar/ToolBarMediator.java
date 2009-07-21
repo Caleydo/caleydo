@@ -30,6 +30,8 @@ public class ToolBarMediator
 	/** the related toolbar that should react to events */
 	ToolBarView toolBarView;
 
+	private List<AToolBarContent> currentToolBarContents;
+	
 	protected ViewActivationListener viewActivationListener;
 	protected RemoveViewSpecificItemsEventListener removeViewSpecificItemsEventListener;
 	protected GroupHighlightingListener groupHighlightingListener;
@@ -48,10 +50,17 @@ public class ToolBarMediator
 		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
 		boolean isIgnored = contentFactory.isIgnored(viewIDs);
 		if (!isIgnored) {
-			List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(viewIDs);
+			if (currentToolBarContents != null) {
+				for (AToolBarContent toolBarContent : currentToolBarContents) {
+					toolBarContent.dispose();
+				}
+				currentToolBarContents = null;
+			}
+			
+			currentToolBarContents = contentFactory.getToolBarContent(viewIDs);
 
 			IToolBarRenderer renderer = toolBarView.getToolBarRenderer();
-			Runnable job = renderer.createRenderJob(toolBarView, toolBarContents);
+			Runnable job = renderer.createRenderJob(toolBarView, currentToolBarContents);
 			Display display = toolBarView.getParentComposite().getDisplay();
 			display.asyncExec(job);
 		}
