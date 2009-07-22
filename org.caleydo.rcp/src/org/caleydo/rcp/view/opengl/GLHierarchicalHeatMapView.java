@@ -34,6 +34,8 @@ public class GLHierarchicalHeatMapView
 
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, glCanvas.getID(), true);
+
+		glEventListener.setViewGUIID(ID);
 	}
 
 }

@@ -1,26 +1,27 @@
-package org.caleydo.core.view.serialize;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
- * Serialized form of a parallel-coordinates-view. 
+ * Serialized form of a heatmap-view. 
  * @author Werner Puff
  */
-public class SerializedParallelCoordinatesView 
+public class SerializedHeatMapView 
 	extends ASerializedView {
 	
 	/**
 	 * Default constructor with default initialization
 	 */
-	public SerializedParallelCoordinatesView() {
+	public SerializedHeatMapView() {
 
 	}
 
 	@Override
 	public ECommandType getCreationCommandType() {
-		return ECommandType.CREATE_GL_PARALLEL_COORDINATES;
+		return ECommandType.CREATE_GL_HEAT_MAP_3D;
 	}
 
 	@Override

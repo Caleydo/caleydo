@@ -1,8 +1,9 @@
-package org.caleydo.core.view.serialize;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Serialized form of a pathway-view. 

@@ -35,6 +35,8 @@ public class GLParCoordsView
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES, glCanvas.getID(),
 			true);
+		
+		glEventListener.setViewGUIID(ID);
 	}
 
 }

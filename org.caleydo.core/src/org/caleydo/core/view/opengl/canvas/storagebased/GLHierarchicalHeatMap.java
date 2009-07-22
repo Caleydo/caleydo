@@ -3094,8 +3094,9 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView();
 		serializedForm.setViewID(this.getID());
+		serializedForm.setViewGUIID(getViewGUIID());
 		return serializedForm;
 	}
 

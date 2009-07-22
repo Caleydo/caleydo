@@ -2865,8 +2865,9 @@ public class GLParallelCoordinates
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedParallelCoordinatesView serializedForm = new SerializedParallelCoordinatesView();
 		serializedForm.setViewID(this.getID());
+		serializedForm.setViewGUIID(getViewGUIID());
 		return serializedForm;
 	}
 
