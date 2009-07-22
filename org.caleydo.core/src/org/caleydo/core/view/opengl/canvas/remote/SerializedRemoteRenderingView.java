@@ -1,7 +1,8 @@
-package org.caleydo.core.view.serialize;
+package org.caleydo.core.view.opengl.canvas.remote;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Serialized form of the remote-rendering view (bucket). 

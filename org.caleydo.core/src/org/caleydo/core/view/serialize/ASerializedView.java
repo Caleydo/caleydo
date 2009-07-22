@@ -5,6 +5,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
+import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
+import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 
 /**
  * Basic abstract class for all serialized view representations.
@@ -12,7 +15,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  * @author Werner Puff
  */
 @XmlType
-@XmlSeeAlso({SerializedHistogramView.class, SerializedRadialHierarchyView.class})
+@XmlSeeAlso({SerializedHistogramView.class, SerializedRadialHierarchyView.class, SerializedRemoteRenderingView.class})
 public abstract class ASerializedView {
 
 	protected int viewID;

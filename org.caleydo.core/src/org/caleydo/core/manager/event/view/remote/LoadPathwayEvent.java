@@ -10,8 +10,8 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Werner Puff
  */
-@XmlRootElement(name = "loadPathwayEvent")
-@XmlType(name = "LoadPathwayEvent")
+@XmlRootElement
+@XmlType
 public class LoadPathwayEvent
 	extends AEvent {
 

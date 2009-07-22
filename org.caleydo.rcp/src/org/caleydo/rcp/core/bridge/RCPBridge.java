@@ -48,20 +48,19 @@ public class RCPBridge
 	
 	@Override
 	public void createView(final ASerializedView serializedView) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					try {
-						IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-						AGLViewPart viewPart = (AGLViewPart) page.showView(serializedView.getViewGUIID());
-						AGLEventListener view = viewPart.getGLEventListener();
-						view.initFromSerializableRepresentation(serializedView);
-						// TODO re-init view with its serializedView
-						
-					} catch (PartInitException ex) {
-						throw new RuntimeException("could not create view with gui-id=" + serializedView.getViewGUIID(), ex);
-					}
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				try {
+					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					AGLViewPart viewPart = (AGLViewPart) page.showView(serializedView.getViewGUIID());
+					AGLEventListener view = viewPart.getGLEventListener();
+					view.initFromSerializableRepresentation(serializedView);
+					// TODO re-init view with its serializedView
+					
+				} catch (PartInitException ex) {
+					throw new RuntimeException("could not create view with gui-id=" + serializedView.getViewGUIID(), ex);
 				}
-			});
-		System.out.println("blubb");
+			}
+		});
 	}
 }

@@ -1,9 +1,10 @@
-package org.caleydo.core.view.serialize;
+package org.caleydo.core.view.opengl.canvas.radial;
 
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Serialized form of the radial hierarchy view.

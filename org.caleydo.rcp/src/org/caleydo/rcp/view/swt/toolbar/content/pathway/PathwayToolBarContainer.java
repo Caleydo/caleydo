@@ -3,7 +3,7 @@ package org.caleydo.rcp.view.swt.toolbar.content.pathway;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
 import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;

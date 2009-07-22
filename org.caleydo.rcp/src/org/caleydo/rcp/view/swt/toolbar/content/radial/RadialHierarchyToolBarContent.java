@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
-import org.caleydo.core.view.serialize.SerializedRadialHierarchyView;
+import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.rcp.action.toolbar.view.radial.ChangeColorModeAction;
 import org.caleydo.rcp.action.toolbar.view.radial.GoBackInHistoryAction;
 import org.caleydo.rcp.action.toolbar.view.radial.GoForthInHistoryAction;

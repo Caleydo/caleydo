@@ -69,6 +69,7 @@ public class GLRemoteRenderingView
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
 			bucket.addInitialRemoteView(parCoords);			
 		}
+		glEventListener.setViewGUIID(ID);
 	}
 
 	@Override

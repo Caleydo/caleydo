@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.toolbar.view.remote.NavigationModeAction;
 import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;

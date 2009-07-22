@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.remote;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.AEvent;
 
@@ -8,6 +11,8 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Marc Streit
  */
+@XmlRootElement
+@XmlType
 public class LoadPathwaysByGeneEvent
 	extends AEvent {
 

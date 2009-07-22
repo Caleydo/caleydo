@@ -10,7 +10,6 @@ public class AddPathwayListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof LoadPathwayEvent) {
 			LoadPathwayEvent loadEvent = (LoadPathwayEvent) event;
-			System.out.println("load pathway with id " + loadEvent.getPathwayID());
 			handler.addPathwayView(loadEvent.getPathwayID());
 		}
 	}

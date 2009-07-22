@@ -11,8 +11,8 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Werner Puff
  */
-@XmlRootElement(name = "selectionUpdateEvent")
-@XmlType(name = "SelectionUpdateEvent")
+@XmlRootElement
+@XmlType
 public class SelectionUpdateEvent
 	extends AEvent {
 

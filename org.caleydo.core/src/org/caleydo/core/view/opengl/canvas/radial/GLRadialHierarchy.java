@@ -45,7 +45,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
-import org.caleydo.core.view.serialize.SerializedRadialHierarchyView;
 
 /**
  * This class is responsible for rendering the radial hierarchy and receiving user events and events from
@@ -714,10 +713,7 @@ public class GLRadialHierarchy
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
-		System.out.println("bef imax=" + this.iMaxDisplayedHierarchyDepth);
 		this.iMaxDisplayedHierarchyDepth = serializedView.getMaxDisplayedHierarchyDepth();
-		System.out.println("aft imax=" + this.iMaxDisplayedHierarchyDepth);
-		// this.setMaxDisplayedHierarchyDepth(serializedView.getMaxDisplayedHierarchyDepth());
 		setDisplayListDirty();
 	}
 

@@ -23,6 +23,10 @@ import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
+import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.event.ConnectToServerEvent;
@@ -371,10 +375,14 @@ public class NetworkManager
 		eventTypes.add(LoadPathwayEvent.class);
 		eventTypes.add(SelectionCommandEvent.class);
 		eventTypes.add(SelectionUpdateEvent.class);
-		eventTypes.add(EnableConnectionLinesEvent.class);
-		eventTypes.add(DisableConnectionLinesEvent.class);
 		eventTypes.add(UpdateColorMappingEvent.class);
 		eventTypes.add(CreateGUIViewEvent.class);
+		eventTypes.add(EnableConnectionLinesEvent.class);
+		eventTypes.add(DisableConnectionLinesEvent.class);
+		eventTypes.add(LoadPathwaysByGeneEvent.class);
+		eventTypes.add(ResetRemoteRendererEvent.class);
+		eventTypes.add(ToggleNavigationModeEvent.class);
+		eventTypes.add(ToggleZoomEvent.class);
 
 		return eventTypes;
 	}

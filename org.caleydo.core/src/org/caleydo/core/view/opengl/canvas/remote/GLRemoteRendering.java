@@ -97,7 +97,6 @@ import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedHeatMapView;
 import org.caleydo.core.view.serialize.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.serialize.SerializedPathwayView;
-import org.caleydo.core.view.serialize.SerializedRemoteRenderingView;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Point;
 
@@ -2901,11 +2900,24 @@ public class GLRemoteRendering
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRemoteRenderingView serializedForm = new SerializedRemoteRenderingView();
 		serializedForm.setViewID(this.getID());
+		serializedForm.setViewGUIID(getViewGUIID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
 		serializedForm.setGeneMappingEnabled(geneMappingEnabled);
 		serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
 		return serializedForm;
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView ser) {
+		SerializedRemoteRenderingView serializedView = (SerializedRemoteRenderingView) ser;
+
+		pathwayTexturesEnabled = serializedView.isPathwayTexturesEnabled();
+		neighborhoodEnabled = serializedView.isNeighborhoodEnabled();
+		geneMappingEnabled = serializedView.isGeneMappingEnabled();
+		connectionLinesEnabled = serializedView.isConnectionLinesEnabled();
+
+		setDisplayListDirty();
 	}
 
 	public boolean isGeneMappingEnabled() {
