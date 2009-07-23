@@ -9,6 +9,17 @@ public abstract class ADefaultDrawableNode
 	String nodeName;
 	int iComparableValue;
 
+	float fRed = 0;
+	float fGreen = 0;
+	float fBlue = 0;
+	float fAlpha = 1;
+
+	float fXCoord = 0;
+	float fYCoord = 0;
+
+	float fHeight = 0;
+	float fWidth = 0;
+
 	public ADefaultDrawableNode(String nodeName, int iComparableValue) {
 		this.nodeName = nodeName;
 		this.iComparableValue = iComparableValue;

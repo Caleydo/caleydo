@@ -34,7 +34,7 @@ public class TestNode
 	}
 
 	@Override
-	public int setBgColor(float fRed, float fGreen, float fBlue) {
+	public int setBgColor3f(float fRed, float fGreen, float fBlue) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -24,6 +24,6 @@ public interface IDrawableNode {
 	 */
 	int drawAtPostion(GL gl, float fXCoord, float fYCoord, float fHeight, float fWidth, ENodeDetailLevelType eDetailLevel);
 
-	int setBgColor(float fRed, float fGreen, float fBlue);
+	int setBgColor3f(float fRed, float fGreen, float fBlue);
 	int setAlpha(float fAlpha); 
 }
