@@ -22,8 +22,23 @@ public interface IDrawableNode {
 	 * @param eDrawType
 	 * @return
 	 */
-	int drawAtPostion(GL gl, float fXCoord, float fYCoord, float fHeight, float fWidth, ENodeDetailLevelType eDetailLevel);
+	void drawAtPostion(GL gl, float fXCoord, float fYCoord, float fHeight, float fWidth, EDrawAbleNodeDetailLevel eDetailLevel);
 
-	int setBgColor3f(float fRed, float fGreen, float fBlue);
-	int setAlpha(float fAlpha); 
+	/**
+	 * Set the background color of the drawable node type
+	 * 
+	 * @param fRed
+	 * @param fGreen
+	 * @param fBlue
+	 * @return
+	 */
+	void setBgColor3f(float fRed, float fGreen, float fBlue);
+	
+	/**
+	 * Set the alpha value of the drawable node type
+	 * 
+	 * @param fAlpha
+	 * @return
+	 */
+	void setAlpha(float fAlpha); 
 }

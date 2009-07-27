@@ -23,10 +23,14 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.TreeTester;
 import gleem.linalg.Vec3f;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.*;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ATreeLayouter;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
 
 
 
@@ -48,7 +52,7 @@ public class GLHyperbolic
 	boolean bUseDetailLevel = true;
 	ISet set;
 	
-	TreeTester tree;
+	Tree<ADrawableNode> tree = null;
 
 	/**
 	 * Constructor.
@@ -69,10 +73,12 @@ public class GLHyperbolic
 		alSelectionTypes.add(ESelectionType.SELECTION);
 		
 		//Build the Test Tree in Constructor
-		TreeTester tester = new TreeTester();
-		tree = tester;
-		tree.runTest();
+//		TreeTester tester = new TreeTester();
+//		tree = tester;
+//		tree.runTest();
 
+		tree = new Tree<ADrawableNode>();
+		tree.setRootNode(new TestNode("first Test", 1));
 	}
 
 	@Override
@@ -187,9 +193,12 @@ public class GLHyperbolic
 
 	private void render(GL gl) {
 		
-		TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
-		layout.drawGraph(gl);
-		gl.glFlush();
+		ATreeLayouter layouter = new LinearTreeLayouter(gl, viewFrustum, tree);
+		layouter.drawLayout();
+		
+//		TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
+//		layout.drawGraph(gl);
+//		gl.glFlush();
 
 //		gl.glColor4f(1, 0, 0, 1);
 //		gl.glBegin(GL.GL_POLYGON);
