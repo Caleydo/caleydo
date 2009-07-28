@@ -18,8 +18,9 @@ public final class LinearTreeLayouter
 	@Override
 	public void drawLayout() {
 		
-		tree.getRoot().drawAtPostion(this.gl, fHigh/2f, fWidth/2f, 0.2f, 0.2f, EDrawAbleNodeDetailLevel.VeryHigh);
+		tree.getRoot().drawAtPostion(this.gl, fHigh/2f, fWidth/2f, 0.0f, 0.2f, 0.2f, EDrawAbleNodeDetailLevel.VeryHigh);
 		
+		tree.getRoot().drawAtPostion(this.gl, fHigh/4f, fWidth/4f, 0.0f, 0.2f, 0.2f, EDrawAbleNodeDetailLevel.High);
 		return;
 	}
 }

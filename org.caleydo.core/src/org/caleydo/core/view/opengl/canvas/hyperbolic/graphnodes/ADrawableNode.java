@@ -1,88 +1,83 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
-
+import gleem.linalg.Vec3f;
+import java.util.ArrayList;
+import java.util.EnumMap;
 
 import javax.media.opengl.GL;
 
+/**
+ * Abstract of draw able node type. This type defines node objects which are self drawing.
+ * 
+ * @author Georg Neubauer
+ */
+
 public abstract class ADrawableNode
-//	extends DefaultNode
 	implements IDrawableNode, Comparable<ADrawableNode> {
 	String nodeName;
 	int iComparableValue;
-
-	protected float fRed = 0;
-	protected float fGreen = 0;
-	protected float fBlue = 0;
-	protected float fAlpha = 1;
-
 	protected float fXCoord = 0;
 	protected float fYCoord = 0;
-
+	protected float fZCoord = 0;
 	protected float fHeight = 0;
 	protected float fWidth = 0;
-	
 	protected GL gl;
+	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleDetailLevelObject> mRepresantations = null;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param nodeName
+	 * @param iComparableValue
+	 */
 	public ADrawableNode(String nodeName, int iComparableValue) {
-	//	super(nodeName, iComparableValue);
 		this.nodeName = nodeName;
 		this.iComparableValue = iComparableValue;
+		mRepresantations = new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleDetailLevelObject>(EDrawAbleNodeDetailLevel.class);
 	}
 
-	public String getNodeName() {
+	/**
+	 * Returns the name of the node.
+	 * 
+	 * @return
+	 */
+	public final String getNodeName() {
 		return this.nodeName;
 	}
 
 	@Override
-	public int compareTo(ADrawableNode node) {
+	public final int compareTo(ADrawableNode node) {
 		return this.iComparableValue - node.iComparableValue;
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return this.nodeName + " " + this.iComparableValue;
 	}
 
 	// TODO: needs implementation of GLList
-	
+
 	@Override
-	public final void drawAtPostion(GL gl, float fXCoord, float fYCoord, float fHeight, float fWidth,
-		EDrawAbleNodeDetailLevel eDetailLevel) {
+	public final ArrayList<Vec3f> drawAtPostion(GL gl, float fXCoord, float fYCoord, float fZCoord, float fHeight,
+		float fWidth, EDrawAbleNodeDetailLevel eDetailLevel) {
 		this.fXCoord = fXCoord;
 		this.fYCoord = fYCoord;
+		this.fZCoord = fZCoord;
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
 		this.gl = gl;
-		
-		switch(eDetailLevel){
-			case VeryHigh: drawDetailLevelVeryHigh(); break; 
-			case High: drawDetailLevelHigh(); break;
-			case Normal: drawDetailLevelNormal(); break;
-			case Low: drawDetailLevelNormal(); break;
-			case VeryLow: drawDetailLevelVeryLow(); break;
-		}
+
+		return mRepresantations.get(eDetailLevel).drawObjectAtPosition(gl, fXCoord, fYCoord, fZCoord, fHeight,
+			fWidth);
 	}
 
-	@Override
-	public final void setAlpha(float fAlpha) {
-		this.fAlpha = fAlpha;
-	}
-
-	@Override
-	public final void setBgColor3f(float fRed, float fGreen, float fBlue) {
-		this.fRed = fRed;
-		this.fGreen = fGreen;
-		this.fBlue = fBlue;
-	}
-	
 	/**
-	 * Draw node in very high detail level.
+	 * Add a draw able object to a specific detail level.
+	 * 
+	 * @param eDetailLevel
+	 * @param iObject
 	 */
-	protected abstract void drawDetailLevelVeryHigh();
-	
-	protected abstract void drawDetailLevelHigh();
-	protected abstract void drawDetailLevelNormal();
-	protected abstract void drawDetailLevelLow();
-	protected abstract void drawDetailLevelVeryLow();
-	
+	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleDetailLevelObject iObject) {
+		mRepresantations.put(eDetailLevel, iObject);
+	}
 }

@@ -23,12 +23,13 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleObject;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.DrawAbleObjectsFactory;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.TreeTester;
 import gleem.linalg.Vec3f;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.*;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ATreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
 
@@ -78,7 +79,16 @@ public class GLHyperbolic
 //		tree.runTest();
 
 		tree = new Tree<ADrawableNode>();
-		tree.setRootNode(new TestNode("first Test", 1));
+		ADrawableNode test = new TestNode("first Test", 1);
+		ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
+		obj.setAlpha(0.8f);
+		obj.setBgColor3f(0.4f, 0.3f, 0.5f);
+		test.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh, obj);
+		obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
+		obj.setAlpha(0.2f);
+		obj.setBgColor3f(0.2f, 0.7f, 0.3f);
+		test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
+		tree.setRootNode(test);
 	}
 
 	@Override

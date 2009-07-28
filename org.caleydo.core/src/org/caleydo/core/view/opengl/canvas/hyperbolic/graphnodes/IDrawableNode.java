@@ -1,5 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
+import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 /**
@@ -9,36 +13,22 @@ import javax.media.opengl.GL;
  * @author Helmut Pichlhoefer
  */
 public interface IDrawableNode {
-	
+
 	/**
-	 * Defines the interface for drawing the node at a certain position
-	 * in a certain way.
+	 * Defines the interface for drawing the node at a certain position in a certain way.
 	 * 
 	 * @param gl
 	 * @param fXCoord
 	 * @param fYCoord
+	 * @param fZCoord
 	 * @param fHeight
 	 * @param fWidth
-	 * @param eDrawType
+	 * @param eDetailLevel
 	 * @return
 	 */
-	void drawAtPostion(GL gl, float fXCoord, float fYCoord, float fHeight, float fWidth, EDrawAbleNodeDetailLevel eDetailLevel);
 
-	/**
-	 * Set the background color of the drawable node type
-	 * 
-	 * @param fRed
-	 * @param fGreen
-	 * @param fBlue
-	 * @return
-	 */
-	void setBgColor3f(float fRed, float fGreen, float fBlue);
-	
-	/**
-	 * Set the alpha value of the drawable node type
-	 * 
-	 * @param fAlpha
-	 * @return
-	 */
-	void setAlpha(float fAlpha); 
+	ArrayList<Vec3f> drawAtPostion(GL gl, float fXCoord, float fYCoord, float fZCoord, float fHeight,
+		float fWidth, EDrawAbleNodeDetailLevel eDetailLevel);
+
+
 }
