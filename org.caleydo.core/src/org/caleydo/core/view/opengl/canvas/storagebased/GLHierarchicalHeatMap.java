@@ -62,7 +62,6 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupCont
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
-import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.eclipse.core.runtime.Status;
 
 import com.sun.opengl.util.BufferUtil;
@@ -198,6 +197,7 @@ public class GLHierarchicalHeatMap
 		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
 
 		createHeatMap();
+		// createDendrogram();
 	}
 
 	/**
@@ -212,7 +212,6 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
-		
 		// glDendrogram.initRemote(gl, this, glMouseListener, null, null);
 
 		initTextures(gl);
@@ -337,12 +336,11 @@ public class GLHierarchicalHeatMap
 	 */
 	private void initPosCursor() {
 
-		// if current textures contains little number of elements, set samples per textures to a small value
-		if (iSamplesPerHeatmap > iAlNumberSamples.get(iSelectorBar - 1) / 2)
+		iSamplesPerHeatmap = (int) Math.floor(iAlNumberSamples.get(iSelectorBar - 1));
+
+		if (iSamplesPerHeatmap >= 3 * MIN_SAMPLES_PER_HEATMAP)
 			iSamplesPerHeatmap = (int) Math.floor(iAlNumberSamples.get(iSelectorBar - 1) / 3);
-		// if previous texture contained little number of elements, set samples per textures to
-		// MIN_SAMPLES_PER_HEATMAP
-		else if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
+		else if (iSamplesPerHeatmap > MIN_SAMPLES_PER_HEATMAP)
 			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
 
 		if (AlSelection.size() > 0) {
@@ -683,7 +681,7 @@ public class GLHierarchicalHeatMap
 		GeneralManager.get().getUseCase().addView(glHeatMapView);
 		glHeatMapView.setUseCase(GeneralManager.get().getUseCase());
 		glHeatMapView.setRenderedRemote(true);
-	
+
 	}
 
 	// private void createDendrogram() {
@@ -1934,12 +1932,12 @@ public class GLHierarchicalHeatMap
 		// viewFrustum.getWidth() / 4f;
 		// }
 		// gl.glTranslatef(fleftOffset, 0, 1);
-		//				
+		//
 		// glDendrogram.getViewFrustum().setTop(ftop);
 		// glDendrogram.getViewFrustum().setRight(fright);
 		// glDendrogram.setDisplayListDirty();
 		// glDendrogram.displayRemote(gl);
-		//				
+		//
 		// gl.glTranslatef(-fleftOffset, -0, -1);
 
 		contextMenu.render(gl, this);
@@ -2129,11 +2127,10 @@ public class GLHierarchicalHeatMap
 			contentVAType = EVAType.CONTENT_CONTEXT;
 		else
 			contentVAType = EVAType.CONTENT;
-		
+
 		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(EVAType.STORAGE);
 
-		
 		// In case of importing group info
 		if (set.isGeneClusterInfo())
 			contentVA.setGroupList(set.getGroupListGenes());
@@ -2908,10 +2905,10 @@ public class GLHierarchicalHeatMap
 		throw new IllegalStateException("Rendering only context not supported for the hierachical heat map");
 	}
 
-//	@Override
-//	public void broadcastElements() {
-//		throw new IllegalStateException("broadcast elements of the contained heat map or all?");
-//	}
+	// @Override
+	// public void broadcastElements() {
+	// throw new IllegalStateException("broadcast elements of the contained heat map or all?");
+	// }
 
 	@Override
 	public void clearAllSelections() {
@@ -3086,7 +3083,7 @@ public class GLHierarchicalHeatMap
 		initPosCursor();
 
 		glHeatMapView.setSet(set);
-	glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
 
 		bRedrawTextures = true;
@@ -3282,7 +3279,7 @@ public class GLHierarchicalHeatMap
 	public void handleArrowRightPressed() {
 		// glHeatMapView.leftRightSelect(false);
 	}
-	
+
 	/**
 	 * Set the number of samples which are shown in one texture
 	 * 

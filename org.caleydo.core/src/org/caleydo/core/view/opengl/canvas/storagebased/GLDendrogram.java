@@ -82,17 +82,18 @@ public class GLDendrogram
 
 	// for gene tree
 	private float yPosInit = 0.5f;
-	private float xmax = 6;
+	private float xGlobalMax = 6;
 	private float fSampleHeight = 0;
 	private float fLevelWidth = 0;
 
 	// for experiment tree
 	private float xPosInit = 0.5f;
-	private float ymin = 0;
+	private float yGlobalMin = 0;
 	private float fSampleWidth = 0;
 	private float fLevelHeight = 0;
 
 	private int iMaxDepth = 0;
+	private boolean bEnableDepthCheck = false;
 
 	private ColorMapping colorMapper;
 
@@ -381,7 +382,7 @@ public class GLDendrogram
 		else {
 			pos.setY(yPosInit);
 			yPosInit -= fSampleHeight;
-			pos.setX(xmax);
+			pos.setX(xGlobalMax);
 			pos.setZ(0f);
 		}
 
@@ -430,7 +431,7 @@ public class GLDendrogram
 		else {
 			pos.setX(xPosInit);
 			xPosInit += fSampleWidth;
-			pos.setY(ymin);
+			pos.setY(yGlobalMin);
 			pos.setZ(0f);
 		}
 
@@ -515,23 +516,33 @@ public class GLDendrogram
 			float ymax = Float.MIN_VALUE;
 			float ymin = Float.MAX_VALUE;
 
-			Vec3f[] temp = new Vec3f[iNrChildsNode];
+			Vec3f[] tempPositions = new Vec3f[iNrChildsNode];
+			boolean[] bCutOffActive = new boolean[iNrChildsNode];
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				ClusterNode current = (ClusterNode) listGraph.get(i);
 
-				temp[i] = new Vec3f();
-				temp[i].setX(current.getPos().x());
-				temp[i].setY(current.getPos().y());
-				temp[i].setZ(current.getPos().z());
+				tempPositions[i] = new Vec3f();
+				tempPositions[i].setX(current.getPos().x());
+				tempPositions[i].setY(current.getPos().y());
+				tempPositions[i].setZ(current.getPos().z());
 
 				xmin = Math.min(xmin, current.getPos().x());
 				ymax = Math.max(ymax, current.getPos().y());
 				ymin = Math.min(ymin, current.getPos().y());
 
-				if (current.getDepth() > iMaxDepth)
+				bCutOffActive[i] = false;
+
+				if (bEnableDepthCheck) {
+					if (current.getDepth() >= iMaxDepth)
+						renderDendrogramGenes(gl, current);
+					else
+						bCutOffActive[i] = true;
+				}
+				else
 					renderDendrogramGenes(gl, current);
+
 			}
 
 			fDiff = fTemp - xmin;
@@ -539,19 +550,23 @@ public class GLDendrogram
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.DENDROGRAM_HORIZONTAL_SELECTION, currentNode.getClusterNr()));
 
+			// vertical line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(xmin - 0.1f, ymin, currentNode.getPos().z());
 			gl.glVertex3f(xmin - 0.1f, ymax, currentNode.getPos().z());
 			gl.glEnd();
 
+			// horizontal lines connecting all childs with their parent
 			for (int i = 0; i < iNrChildsNode; i++) {
-
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(xmin - 0.1f, temp[i].y(), temp[i].z());
-				gl.glVertex3f(temp[i].x() - 0.1f, temp[i].y(), temp[i].z());
+				gl.glVertex3f(xmin - 0.1f, tempPositions[i].y(), tempPositions[i].z());
+				if (bCutOffActive[i])
+					gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
+				else
+					gl.glVertex3f(tempPositions[i].x() - 0.1f, tempPositions[i].y(), tempPositions[i].z());
 				gl.glEnd();
-
 			}
+
 			gl.glPopName();
 
 		}
@@ -559,6 +574,7 @@ public class GLDendrogram
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.DENDROGRAM_HORIZONTAL_SELECTION, currentNode.getClusterNr()));
 
+			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
 			gl
@@ -600,23 +616,32 @@ public class GLDendrogram
 			float ymax = Float.MIN_VALUE;
 			float ymin = Float.MAX_VALUE;
 
-			Vec3f[] temp = new Vec3f[iNrChildsNode];
+			Vec3f[] tempPositions = new Vec3f[iNrChildsNode];
+			boolean[] bCutOffActive = new boolean[iNrChildsNode];
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				ClusterNode current = (ClusterNode) listGraph.get(i);
 
-				temp[i] = new Vec3f();
-				temp[i].setX(current.getPos().x());
-				temp[i].setY(current.getPos().y());
-				temp[i].setZ(current.getPos().z());
+				tempPositions[i] = new Vec3f();
+				tempPositions[i].setX(current.getPos().x());
+				tempPositions[i].setY(current.getPos().y());
+				tempPositions[i].setZ(current.getPos().z());
 
 				xmax = Math.max(xmax, current.getPos().x());
 				xmin = Math.min(xmin, current.getPos().x());
 				ymax = Math.max(ymax, current.getPos().y());
 				ymin = Math.min(ymin, current.getPos().y());
 
-				if (current.getDepth() > iMaxDepth)
+				bCutOffActive[i] = false;
+
+				if (bEnableDepthCheck) {
+					if (current.getDepth() >= iMaxDepth)
+						renderDendrogramExperiments(gl, current);
+					else
+						bCutOffActive[i] = true;
+				}
+				else
 					renderDendrogramExperiments(gl, current);
 			}
 
@@ -633,8 +658,11 @@ public class GLDendrogram
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(temp[i].x(), ymax + 0.0f, temp[i].z());
-				gl.glVertex3f(temp[i].x(), temp[i].y() + 0.0f, temp[i].z());
+				gl.glVertex3f(tempPositions[i].x(), ymax + 0.0f, tempPositions[i].z());
+				if (bCutOffActive[i])
+					gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
+				else
+					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y() + 0.0f, tempPositions[i].z());
 				gl.glEnd();
 
 			}
@@ -676,11 +704,9 @@ public class GLDendrogram
 				// currentRootNode = tree.getRoot();
 				// }
 				// catch (FileNotFoundException e) {
-				// // TODO Auto-generated catch block
 				// e.printStackTrace();
 				// }
 				// catch (JAXBException e) {
-				// // TODO Auto-generated catch block
 				// e.printStackTrace();
 				// }
 
@@ -706,19 +732,20 @@ public class GLDendrogram
 		if (tree != null) {
 			if (bHasFrustumChanged || bRedrawDendrogram) {
 				if (bRenderGeneTree) {
-					xmax = viewFrustum.getWidth() - 0.2f;
+					xGlobalMax = viewFrustum.getWidth() - 0.2f;
 					fSampleHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getNrElements();
 					fLevelWidth = (viewFrustum.getWidth() - 3f) / tree.getRoot().getDepth();
 					yPosInit = viewFrustum.getHeight() - 0.4f;
 				}
 				else {
-					ymin = 0.1f;
+					yGlobalMin = 0.1f;
 					fSampleWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getNrElements();
-					fLevelHeight = (viewFrustum.getHeight() - 0.7f) / tree.getRoot().getDepth();
+					fLevelHeight = (viewFrustum.getHeight() - 2f) / tree.getRoot().getDepth();
 					xPosInit = 0.4f;
 				}
 				determinePositions();
 				bRedrawDendrogram = false;
+				bHasFrustumChanged = false;
 			}
 
 			gl.glLineWidth(0.1f);
@@ -785,6 +812,7 @@ public class GLDendrogram
 	 */
 	private void determineSelectedNodes() {
 
+		iMaxDepth = Integer.MAX_VALUE;
 		determineSelectedNodesRec(tree.getRoot());
 
 		iAlCutOffClusters.clear();
@@ -799,10 +827,28 @@ public class GLDendrogram
 	 */
 	private void buildNewGroupList() {
 
-		if (iAlCutOffClusters.size() < 2)
+		if (iAlCutOffClusters.size() < 2) {
+
+			groupList = null;
+			if (bRenderGeneTree) {
+				useCase.getSet().setGroupListGenes(groupList);
+			}
+			else {
+				useCase.getSet().setGroupListExperiments(groupList);
+			}
+
+			eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.CONTENT));
+
+			bRedrawDendrogram = true;
+			bEnableDepthCheck = false;
+			setDisplayListDirty();
+
 			return;
+		}
 
 		groupList = new GroupList(iAlCutOffClusters.size());
+
+		bEnableDepthCheck = true;
 
 		int cnt = 0;
 		for (Integer iter : iAlCutOffClusters) {
@@ -855,16 +901,32 @@ public class GLDendrogram
 
 		if (bRenderGeneTree) {
 
-			if (node.getPos().x() < fPosCut)
+			if (node.getPos().x() < fPosCut) {
 				node.setSelectionType(ESelectionType.MOUSE_OVER);
-			else
+				if (node.getDepth() < iMaxDepth) {
+					iMaxDepth = node.getDepth();
+				}
+			}
+			else {
 				node.setSelectionType(ESelectionType.NORMAL);
+				// remove eventually selections of nodes
+				resetAllTreeSelectionsRec(node);
+				return;
+			}
 		}
 		else {
-			if (node.getPos().y() > fPosCut)
+			if (node.getPos().y() > fPosCut) {
 				node.setSelectionType(ESelectionType.MOUSE_OVER);
-			else
+				if (node.getDepth() < iMaxDepth) {
+					iMaxDepth = node.getDepth();
+				}
+			}
+			else {
 				node.setSelectionType(ESelectionType.NORMAL);
+				// remove eventually selections of nodes
+				resetAllTreeSelectionsRec(node);
+				return;
+			}
 		}
 
 		if (tree.hasChildren(node)) {
@@ -1001,15 +1063,6 @@ public class GLDendrogram
 					eventPublisher.triggerEvent(event);
 
 				}
-				// cluster mouse over events only used for gene trees
-				// if (bTriggerClusterNodeEvent) {
-				// if (tree.getNodeByNumber(iExternalID) != null) {
-				// ClusterNodeMouseOverEvent event = new ClusterNodeMouseOverEvent();
-				// event.setClusterNumber(iExternalID);
-				// event.setSelectionType(eSelectionType);
-				// eventPublisher.triggerEvent(event);
-				// }
-				// }
 				break;
 		}
 	}
@@ -1042,9 +1095,9 @@ public class GLDendrogram
 		return serializedForm;
 	}
 
-//	@Override
-//	public void broadcastElements() {
-//	}
+	// @Override
+	// public void broadcastElements() {
+	// }
 
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
