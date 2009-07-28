@@ -1,6 +1,9 @@
 package org.caleydo.core.manager.event.data;
 
-import org.caleydo.core.data.selection.IVirtualArray;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
@@ -9,13 +12,22 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * 
  * @author Alexander Lex
  */
+@XmlRootElement
+@XmlType
 public class ReplaceVirtualArrayEvent
 	extends AEvent {
 
 	EVAType vaType = null;
-	IVirtualArray virtualArray;
+	VirtualArray virtualArray;
 	boolean usesVADirectly = false;
 
+	/**
+	 * default no-arg constructor.
+	 */
+	public ReplaceVirtualArrayEvent() {
+		// nothing to initialize here
+	}
+	
 	/**
 	 * Constructor signaling which type of virtual array has to be updated
 	 * 
@@ -25,7 +37,7 @@ public class ReplaceVirtualArrayEvent
 		this.vaType = vaType;
 	}
 
-	public ReplaceVirtualArrayEvent(EVAType vaType, IVirtualArray virtualArray) {
+	public ReplaceVirtualArrayEvent(EVAType vaType, VirtualArray virtualArray) {
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
 		usesVADirectly = true;
@@ -40,7 +52,7 @@ public class ReplaceVirtualArrayEvent
 		return vaType;
 	}
 
-	public IVirtualArray getVirtualArray() {
+	public VirtualArray getVirtualArray() {
 		return virtualArray;
 	}
 
@@ -62,6 +74,22 @@ public class ReplaceVirtualArrayEvent
 				return false;
 
 		return true;
+	}
+
+	public boolean isUsesVADirectly() {
+		return usesVADirectly;
+	}
+
+	public void setUsesVADirectly(boolean usesVADirectly) {
+		this.usesVADirectly = usesVADirectly;
+	}
+
+	public void setVaType(EVAType vaType) {
+		this.vaType = vaType;
+	}
+
+	public void setVirtualArray(VirtualArray virtualArray) {
+		this.virtualArray = virtualArray;
 	}
 
 }

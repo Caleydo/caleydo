@@ -8,7 +8,6 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
  * 
  * @author Bernhard Schlegl
  */
-
 public interface IGroupList
 	extends Iterable<Group>, Cloneable {
 

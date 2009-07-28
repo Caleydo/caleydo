@@ -55,6 +55,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -105,7 +106,6 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneConte
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
-import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import com.sun.opengl.util.texture.Texture;
@@ -559,7 +559,7 @@ public class GLParallelCoordinates
 			eventPublisher.triggerEvent(event);
 
 			VirtualArrayUpdateEvent vaEvent = new VirtualArrayUpdateEvent();
-			vaEvent.setVirtualArrayDelta(delta);
+			vaEvent.setVirtualArrayDelta((VirtualArrayDelta) delta);
 			vaEvent.setSender(this);
 			eventPublisher.triggerEvent(vaEvent);
 
@@ -578,7 +578,7 @@ public class GLParallelCoordinates
 
 		// todo this doesn't work for turned stuff
 		ReplaceVirtualArrayInUseCaseEvent event =
-			new ReplaceVirtualArrayInUseCaseEvent(polylineVAType, polylineVA);
+			new ReplaceVirtualArrayInUseCaseEvent(polylineVAType, (VirtualArray) polylineVA);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
@@ -2237,7 +2237,7 @@ public class GLParallelCoordinates
 	private void sendVirtualArrayUpdateEvent(IVirtualArrayDelta delta) {
 		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
+		virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}

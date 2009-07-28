@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.util.clusterer.ClusterState;
 
@@ -9,11 +12,20 @@ import org.caleydo.core.util.clusterer.ClusterState;
  * 
  * @author Alexander Lex
  */
+@XmlRootElement
+@XmlType
 public class StartClusteringEvent
 	extends AEvent {
 
 	private ClusterState ClusterState;
 
+	/**
+	 * default no-arg constructor
+	 */
+	public StartClusteringEvent() {
+		// nothing to initialize here
+	}
+	
 	public StartClusteringEvent(ClusterState state) {
 		this.ClusterState = state;
 	}

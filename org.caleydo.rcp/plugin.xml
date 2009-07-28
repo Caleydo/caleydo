@@ -600,6 +600,14 @@
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+            locationURI="menu:org.caleydo.rcp.views.opengl.GLRemoteRenderingView">
+         <command
+               commandId="org.caleydo.rcp.command.cluster"
+               label="brabbel"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.actionSets">

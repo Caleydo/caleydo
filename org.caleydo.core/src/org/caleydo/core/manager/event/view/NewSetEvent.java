@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.event.view;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -12,7 +12,7 @@ import org.caleydo.core.manager.event.AEvent;
 public class NewSetEvent
 	extends AEvent {
 
-	ISet set = null;
+	Set set = null;
 
 	/**
 	 * Sets the new set for the event
@@ -20,7 +20,7 @@ public class NewSetEvent
 	 * @param set
 	 *            the set to replace the old one
 	 */
-	public void setSet(ISet set) {
+	public void setSet(Set set) {
 		this.set = set;
 	}
 
@@ -29,7 +29,7 @@ public class NewSetEvent
 	 * 
 	 * @return the set to replace the old one
 	 */
-	public ISet getSet() {
+	public Set getSet() {
 		return set;
 	}
 

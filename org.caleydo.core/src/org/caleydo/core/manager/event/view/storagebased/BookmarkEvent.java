@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.storagebased;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -7,6 +10,9 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Alexander Lex
  */
+@XmlRootElement
+@XmlType
+
 public class BookmarkEvent
 	extends AEvent {
 

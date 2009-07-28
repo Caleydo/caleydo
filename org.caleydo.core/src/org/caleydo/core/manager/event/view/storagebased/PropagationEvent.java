@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.storagebased;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
  * Event to signal the propagation of virtual array delta
@@ -12,6 +15,8 @@ package org.caleydo.core.manager.event.view.storagebased;
  * Migration from EEventType.VA_UPDATE 
  * @author Werner Puff
  */
+@XmlRootElement
+@XmlType
 public class PropagationEvent
 	extends VirtualArrayUpdateEvent {
 	

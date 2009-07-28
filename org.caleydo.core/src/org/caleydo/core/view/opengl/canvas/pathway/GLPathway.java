@@ -70,13 +70,13 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodL
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.EmbeddedPathwayContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
-import org.caleydo.core.view.serialize.SerializedDummyView;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -785,7 +785,7 @@ public class GLPathway
 
 		VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
+		virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) delta);
 		virtualArrayUpdateEvent.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
@@ -960,8 +960,10 @@ public class GLPathway
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedPathwayView serializedForm = new SerializedPathwayView();
 		serializedForm.setViewID(this.getID());
+		serializedForm.setViewGUIID(this.getViewGUIID());
+		serializedForm.setPathwayID(pathway.getID());
 		return serializedForm;
 	}
 

@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.radial;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -7,6 +10,8 @@ import org.caleydo.core.manager.event.AEvent;
  * 
  * @author Christian Partl
  */
+@XmlRootElement
+@XmlType
 public class GoForthInHistoryEvent
 	extends AEvent {
 

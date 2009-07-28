@@ -2267,8 +2267,7 @@ public class GLRemoteRendering
 		}
 	}
 
-	@Override
-	public void resetView() {
+	public void resetView(boolean reinitialize) {
 
 		useCase.resetContextVA();
 		if (containedViewIDs == null)
@@ -2277,24 +2276,32 @@ public class GLRemoteRendering
 		enableBusyMode(false);
 		pickingManager.enablePicking(true);
 
-		ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>();
-		for (ASerializedView view : newViews) {
-			if (!(view instanceof SerializedParallelCoordinatesView || view instanceof SerializedHeatMapView)) {
-				removeNewViews.add(view);
+		if (reinitialize) {
+			ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>();
+			for (ASerializedView view : newViews) {
+				if (!(view instanceof SerializedParallelCoordinatesView || view instanceof SerializedHeatMapView)) {
+					removeNewViews.add(view);
+				}
 			}
+			newViews.removeAll(removeNewViews);
+		} else {
+			newViews.clear();
 		}
-		newViews.removeAll(removeNewViews);
 
-		ArrayList<Integer> removeViewIDs = new ArrayList<Integer>();
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		for (int viewID : containedViewIDs) {
-			AGLEventListener view = viewManager.getGLEventListener(viewID);
-			if (!(view instanceof GLParallelCoordinates || view instanceof GLHeatMap)) {
-				removeViewIDs.add(viewID);
+		if (reinitialize) {
+			ArrayList<Integer> removeViewIDs = new ArrayList<Integer>();
+			for (int viewID : containedViewIDs) {
+				AGLEventListener view = viewManager.getGLEventListener(viewID);
+				if (!(view instanceof GLParallelCoordinates || view instanceof GLHeatMap)) {
+					removeViewIDs.add(viewID);
+				}
 			}
+			containedViewIDs.removeAll(removeViewIDs);
+		} else {
+			containedViewIDs.clear();
 		}
-		containedViewIDs.removeAll(removeViewIDs);
 
 		generalManager.getPathwayManager().resetPathwayVisiblityState();
 
@@ -2310,20 +2317,26 @@ public class GLRemoteRendering
 		clearRemoteLevel(poolLevel);
 		clearRemoteLevel(transitionLevel);
 
-		// Add heat map and par coords view to its initial position in the bucket
-		for (int viewID : containedViewIDs) {
-			AGLEventListener view = viewManager.getGLEventListener(viewID);
-			if (view instanceof GLParallelCoordinates) {
-				stackLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
-				view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
-			}
-			else if (view instanceof GLHeatMap) {
-				focusLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
-				view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
+		if (reinitialize) {
+			// Move heat map and par coords view to its initial position in the bucket
+			for (int viewID : containedViewIDs) {
+				AGLEventListener view = viewManager.getGLEventListener(viewID);
+				if (view instanceof GLParallelCoordinates) {
+					stackLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+					view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
+				}
+				else if (view instanceof GLHeatMap) {
+					focusLevel.getElementByPositionIndex(0).setContainedElementID(viewID);
+					view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
+				}
 			}
 		}
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
+	}
+	
+	public void resetView() {
+		resetView(true);
 	}
 
 	private void clearRemoteLevel(RemoteLevel remoteLevel) {
@@ -2601,8 +2614,6 @@ public class GLRemoteRendering
 		glView.setUseCase(useCase);
 		glView.setRenderedRemote(true);
 		glView.setSet(set);
-		
-		
 
 		if (glView instanceof GLPathway) {
 			initializePathwayView((GLPathway) glView);
@@ -2905,11 +2916,34 @@ public class GLRemoteRendering
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
 		serializedForm.setGeneMappingEnabled(geneMappingEnabled);
 		serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
+		
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
+
+		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
+		for (RemoteLevelElement rle : focusLevel.getAllElements()) {
+			if (rle.getContainedElementID() != -1) {
+				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+				remoteViews.add(remoteView.getSerializableRepresentation());
+			}
+		}
+		serializedForm.setFocusViews(remoteViews);
+
+		remoteViews = new ArrayList<ASerializedView>(stackLevel.getAllElements().size());
+		for (RemoteLevelElement rle : stackLevel.getAllElements()) {
+			if (rle.getContainedElementID() != -1) {
+				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
+				remoteViews.add(remoteView.getSerializableRepresentation());
+			}
+		}
+		serializedForm.setStackViews(remoteViews);
+		
 		return serializedForm;
 	}
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
+		resetView(false);
+		
 		SerializedRemoteRenderingView serializedView = (SerializedRemoteRenderingView) ser;
 
 		pathwayTexturesEnabled = serializedView.isPathwayTexturesEnabled();
@@ -2917,6 +2951,13 @@ public class GLRemoteRendering
 		geneMappingEnabled = serializedView.isGeneMappingEnabled();
 		connectionLinesEnabled = serializedView.isConnectionLinesEnabled();
 
+		for (ASerializedView remoteSerializedView : serializedView.getFocusViews()) {
+			newViews.add(remoteSerializedView);
+		}
+		for (ASerializedView remoteSerializedView : serializedView.getStackViews()) {
+			newViews.add(remoteSerializedView);
+		}
+		
 		setDisplayListDirty();
 	}
 
@@ -2958,5 +2999,9 @@ public class GLRemoteRendering
 
 	public void toggleZoom() {
 		bucketMouseWheelListener.triggerZoom(!bucketMouseWheelListener.isZoomedIn());
+	}
+
+	public RemoteLevel getStackLevel() {
+		return stackLevel;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.Set;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.eclipse.core.runtime.Status;
 
 /**
  * <p>

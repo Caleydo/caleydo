@@ -14,7 +14,7 @@ public class OpenRemoteHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLRemoteRenderingView.ID);
+				HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLRemoteRenderingView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

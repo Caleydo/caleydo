@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.group;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -9,6 +12,8 @@ import org.caleydo.core.manager.event.AEvent;
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
+@XmlRootElement
+@XmlType
 public class MergeGroupsEvent
 	extends AEvent {
 

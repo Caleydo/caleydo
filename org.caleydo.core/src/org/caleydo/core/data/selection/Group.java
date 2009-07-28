@@ -2,11 +2,15 @@ package org.caleydo.core.data.selection;
 
 public class Group {
 
-	private int iNrElements;
-	private boolean bCollapsed;
-	private int iIdxExample;
-	private ESelectionType eSelectionType;
+	private int nrElements;
+	private boolean collapsed;
+	private int idxExample;
+	private ESelectionType selectionType;
 
+	public Group() {
+		
+	}
+	
 	public Group(int iNrElements) {
 		this.setNrElements(iNrElements);
 		this.setCollapsed(false);
@@ -22,38 +26,38 @@ public class Group {
 	}
 
 	public void setNrElements(int iNrElements) {
-		this.iNrElements = iNrElements;
+		this.nrElements = iNrElements;
 	}
 
 	public int getNrElements() {
-		return iNrElements;
+		return nrElements;
 	}
 
 	public void setCollapsed(boolean bCollapsed) {
-		this.bCollapsed = bCollapsed;
+		this.collapsed = bCollapsed;
 	}
 
 	public boolean isCollapsed() {
-		return bCollapsed;
+		return collapsed;
 	}
 
 	public void setIdxExample(int iIdxExample) {
-		this.iIdxExample = iIdxExample;
+		this.idxExample = iIdxExample;
 	}
 
 	public int getIdxExample() {
-		return iIdxExample;
+		return idxExample;
 	}
 
 	public void setSelectionType(ESelectionType eSelectionType) {
-		this.eSelectionType = eSelectionType;
+		this.selectionType = eSelectionType;
 	}
 
 	public ESelectionType getSelectionType() {
-		return eSelectionType;
+		return selectionType;
 	}
 	
 	public void toggleSelectionType(){
-		this.eSelectionType = (eSelectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+		this.selectionType = (selectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
 	}
 }

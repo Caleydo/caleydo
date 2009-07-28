@@ -5,6 +5,7 @@ import java.util.EnumMap;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
@@ -112,7 +113,7 @@ public abstract class AUseCase
 
 		initVAs();
 		NewSetEvent newSetEvent = new NewSetEvent();
-		newSetEvent.setSet(set);
+		newSetEvent.setSet((Set) set);
 		GeneralManager.get().getEventPublisher().triggerEvent(newSetEvent);
 
 		// GLRemoteRendering glRemoteRenderingView = null;

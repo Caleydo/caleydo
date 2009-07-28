@@ -156,7 +156,6 @@ public class PartListener
 		sendViewActivationEvent(viewPart);
 	}
 
-		
 	private void sendViewActivationEvent(CaleydoViewPart viewPart) { 
 		ViewEvent viewActivationEvent;
 		viewActivationEvent = new ViewActivationEvent();

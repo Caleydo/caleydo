@@ -1,6 +1,9 @@
 package org.caleydo.core.manager.event.data;
 
-import org.caleydo.core.data.selection.IVirtualArray;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
@@ -16,10 +19,16 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * 
  * @author Alexander Lex
  */
+@XmlRootElement
+@XmlType
 public class ReplaceVirtualArrayInUseCaseEvent
 	extends ReplaceVirtualArrayEvent {
 
-	public ReplaceVirtualArrayInUseCaseEvent(EVAType vaType, IVirtualArray virtualArray) {
+	public ReplaceVirtualArrayInUseCaseEvent() {
+		// nothing to initialize here
+	}
+	
+	public ReplaceVirtualArrayInUseCaseEvent(EVAType vaType, VirtualArray virtualArray) {
 		super(vaType, virtualArray);
 		
 	}	

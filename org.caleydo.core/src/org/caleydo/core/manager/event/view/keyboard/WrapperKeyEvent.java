@@ -10,6 +10,7 @@ import org.eclipse.swt.events.KeyEvent;
  */
 public class WrapperKeyEvent
 	extends AEvent {
+
 	KeyEvent event;
 
 	public WrapperKeyEvent(KeyEvent event) {

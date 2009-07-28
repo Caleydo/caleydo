@@ -3,27 +3,37 @@ package org.caleydo.core.data.selection;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 
+@XmlType
 public class GroupList
 	implements IGroupList {
 
-	private ArrayList<Group> iAlGroup;
+	private ArrayList<Group> groups;
 
+	/**
+	 * default no-arg constructor to create an group list with no contained groups
+	 */
+	public GroupList() {
+		this.groups = new ArrayList<Group>();
+	}
+		
 	public GroupList(int iNrElements) {
 		// Group initialGroup = new Group(iNrElements);
-		this.iAlGroup = new ArrayList<Group>();
+		this.groups = new ArrayList<Group>();
 		// iAlGroup.add(initialGroup);
 	}
 
 	@Override
 	public void add(int index, Group newElement) {
-		iAlGroup.add(index, newElement);
+		groups.add(index, newElement);
 	}
 
 	@Override
 	public void append(Group newElement) {
-		iAlGroup.add(newElement);
+		groups.add(newElement);
 	}
 
 	@Override
@@ -37,13 +47,13 @@ public class GroupList
 
 	@Override
 	public void clear() {
-		iAlGroup.clear();
+		groups.clear();
 
 	}
 
 	@Override
 	public boolean containsElement(Group element) {
-		for (Group compareElement : iAlGroup) {
+		for (Group compareElement : groups) {
 			if (compareElement == element) {
 				return true;
 			}
@@ -53,18 +63,18 @@ public class GroupList
 
 	@Override
 	public void copy(int index) {
-		iAlGroup.add(index + 1, iAlGroup.get(index));
+		groups.add(index + 1, groups.get(index));
 
 	}
 
 	@Override
 	public Group get(int index) {
-		return iAlGroup.get(index);
+		return groups.get(index);
 	}
 
 	@Override
 	public int indexOf(Group element) {
-		return iAlGroup.indexOf(element);
+		return groups.indexOf(element);
 	}
 
 	@Override
@@ -104,12 +114,12 @@ public class GroupList
 
 	@Override
 	public Group remove(int index) {
-		return iAlGroup.remove(index);
+		return groups.remove(index);
 	}
 
 	@Override
 	public void removeByElement(Group element) {
-		Iterator<Group> iter = iAlGroup.iterator();
+		Iterator<Group> iter = groups.iterator();
 		while (iter.hasNext()) {
 			if (iter.next() == element) {
 				iter.remove();
@@ -123,8 +133,8 @@ public class GroupList
 	private void init() {
 		// Group initialGroup = new Group(iAlVirtualArray.size());
 		Group initialGroup = new Group(0);
-		this.iAlGroup = new ArrayList<Group>();
-		iAlGroup.add(initialGroup);
+		this.groups = new ArrayList<Group>();
+		groups.add(initialGroup);
 	}
 
 	@Override
@@ -134,7 +144,7 @@ public class GroupList
 
 	@Override
 	public void set(int index, Group newElement) {
-		iAlGroup.set(index, newElement);
+		groups.set(index, newElement);
 	}
 
 	@Override
@@ -149,7 +159,7 @@ public class GroupList
 
 	@Override
 	public Integer size() {
-		return iAlGroup.size();
+		return groups.size();
 	}
 
 	@Override
@@ -159,31 +169,31 @@ public class GroupList
 		int iLastIdxG1 = 0;
 		int iFirstIdxG2 = 0;
 		int iLastIdxG2 = 0;
-		int iNrElemG1 = iAlGroup.get(index1).getNrElements();
-		int iNrElemG2 = iAlGroup.get(index2).getNrElements();
+		int iNrElemG1 = groups.get(index1).getNrElements();
+		int iNrElemG2 = groups.get(index2).getNrElements();
 
 		ArrayList<Integer> altemp1 = new ArrayList<Integer>();
 		ArrayList<Integer> altemp2 = new ArrayList<Integer>();
 
 		int iCnt = 0;
-		for (Group iter : iAlGroup) {
+		for (Group iter : groups) {
 			iLastIdxG1 += iter.getNrElements();
 
 			if (iCnt == index1)
 				break;
 			iCnt++;
 		}
-		iFirstIdxG1 = iLastIdxG1 - iAlGroup.get(index1).getNrElements();
+		iFirstIdxG1 = iLastIdxG1 - groups.get(index1).getNrElements();
 
 		iCnt = 0;
-		for (Group iter : iAlGroup) {
+		for (Group iter : groups) {
 			iLastIdxG2 += iter.getNrElements();
 
 			if (iCnt == index2)
 				break;
 			iCnt++;
 		}
-		iFirstIdxG2 = iLastIdxG2 - iAlGroup.get(index2).getNrElements();
+		iFirstIdxG2 = iLastIdxG2 - groups.get(index2).getNrElements();
 
 		for (int i = 0; i < iNrElemG2; i++) {
 
@@ -205,11 +215,11 @@ public class GroupList
 			virtualArray.add(iFirstIdxG2 - iNrElemG1 + iNrElemG2 + i, altemp1.get(i));
 		}
 
-		Group temp = iAlGroup.get(index1);
-		iAlGroup.set(index1, iAlGroup.get(index2));
-		iAlGroup.set(index2, temp);
-		iAlGroup.get(index1).setSelectionType(ESelectionType.NORMAL);
-		iAlGroup.get(index2).setSelectionType(ESelectionType.NORMAL);
+		Group temp = groups.get(index1);
+		groups.set(index1, groups.get(index2));
+		groups.set(index2, temp);
+		groups.get(index1).setSelectionType(ESelectionType.NORMAL);
+		groups.get(index2).setSelectionType(ESelectionType.NORMAL);
 
 		return true;
 	}
@@ -221,13 +231,13 @@ public class GroupList
 		int iLastIdxG1 = 0;
 		int iFirstIdxG2 = 0;
 		int iLastIdxG2 = 0;
-		int iNrElemG1 = iAlGroup.get(index1).getNrElements();
-		int iNrElemG2 = iAlGroup.get(index2).getNrElements();
+		int iNrElemG1 = groups.get(index1).getNrElements();
+		int iNrElemG2 = groups.get(index2).getNrElements();
 
 		ArrayList<Integer> altemp = new ArrayList<Integer>();
 
 		int iCnt = 0;
-		for (Group iter : iAlGroup) {
+		for (Group iter : groups) {
 			iLastIdxG1 += iter.getNrElements();
 
 			if (iCnt == index1)
@@ -237,14 +247,14 @@ public class GroupList
 		// iFirstIdxG1 = iLastIdxG1 - iAlGroup.get(index1).getNrElements();
 
 		iCnt = 0;
-		for (Group iter : iAlGroup) {
+		for (Group iter : groups) {
 			iLastIdxG2 += iter.getNrElements();
 
 			if (iCnt == index2)
 				break;
 			iCnt++;
 		}
-		iFirstIdxG2 = iLastIdxG2 - iAlGroup.get(index2).getNrElements();
+		iFirstIdxG2 = iLastIdxG2 - groups.get(index2).getNrElements();
 
 		for (int i = 0; i < iNrElemG2; i++) {
 
@@ -256,9 +266,9 @@ public class GroupList
 			virtualArray.add(iLastIdxG1 + i, altemp.get(i));
 		}
 
-		iAlGroup.remove(index2);
-		iAlGroup.get(index1).setNrElements(iNrElemG1 + iNrElemG2);
-		iAlGroup.get(index1).setSelectionType(ESelectionType.SELECTION);
+		groups.remove(index2);
+		groups.get(index1).setNrElements(iNrElemG1 + iNrElemG2);
+		groups.get(index1).setSelectionType(ESelectionType.SELECTION);
 
 		return true;
 	}
@@ -277,7 +287,7 @@ public class GroupList
 			idx2 = temp;
 		}
 
-		for (Group iter : iAlGroup) {
+		for (Group iter : groups) {
 			iLastIdx += iter.getNrElements();
 
 			if (iCnt == index)
@@ -285,7 +295,7 @@ public class GroupList
 			iCnt++;
 		}
 
-		iFirstIdx = iLastIdx - iAlGroup.get(index).getNrElements();
+		iFirstIdx = iLastIdx - groups.get(index).getNrElements();
 
 		if (idx1 < iFirstIdx || idx2 > iLastIdx)
 			return false;
@@ -296,10 +306,10 @@ public class GroupList
 			int iNrElements = idx2 - idx1;
 			Group newGroup = new Group(iNrElements);
 
-			iAlGroup.get(index).setCollapsed(false);
-			iAlGroup.get(index).setSelectionType(ESelectionType.NORMAL);
-			iAlGroup.get(index).setNrElements(iAlGroup.get(index).getNrElements() - iNrElements);
-			iAlGroup.add(index, newGroup);
+			groups.get(index).setCollapsed(false);
+			groups.get(index).setSelectionType(ESelectionType.NORMAL);
+			groups.get(index).setNrElements(groups.get(index).getNrElements() - iNrElements);
+			groups.add(index, newGroup);
 
 			return true;
 		}
@@ -309,10 +319,10 @@ public class GroupList
 			int iNrElements = idx2 - idx1;
 			Group newGroup = new Group(iNrElements);
 
-			iAlGroup.get(index).setCollapsed(false);
-			iAlGroup.get(index).setSelectionType(ESelectionType.NORMAL);
-			iAlGroup.get(index).setNrElements(iAlGroup.get(index).getNrElements() - iNrElements);
-			iAlGroup.add(index + 1, newGroup);
+			groups.get(index).setCollapsed(false);
+			groups.get(index).setSelectionType(ESelectionType.NORMAL);
+			groups.get(index).setNrElements(groups.get(index).getNrElements() - iNrElements);
+			groups.add(index + 1, newGroup);
 
 			return true;
 		}
@@ -323,11 +333,11 @@ public class GroupList
 		int iNrElements3 = iLastIdx - idx2;
 		Group newGroup3 = new Group(iNrElements3);
 
-		iAlGroup.get(index).setCollapsed(false);
-		iAlGroup.get(index).setSelectionType(ESelectionType.NORMAL);
-		iAlGroup.get(index).setNrElements(idx1 - iFirstIdx);
-		iAlGroup.add(index + 1, newGroup2);
-		iAlGroup.add(index + 2, newGroup3);
+		groups.get(index).setCollapsed(false);
+		groups.get(index).setSelectionType(ESelectionType.NORMAL);
+		groups.get(index).setNrElements(idx1 - iFirstIdx);
+		groups.add(index + 1, newGroup2);
+		groups.add(index + 2, newGroup3);
 
 		return true;
 	}
@@ -370,7 +380,15 @@ public class GroupList
 		catch (CloneNotSupportedException e) {
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
-		groupList.iAlGroup = (ArrayList<Group>)iAlGroup.clone();
+		groupList.groups = (ArrayList<Group>)groups.clone();
 		return groupList;
+	}
+
+	public ArrayList<Group> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(ArrayList<Group> groups) {
+		this.groups = groups;
 	}
 }

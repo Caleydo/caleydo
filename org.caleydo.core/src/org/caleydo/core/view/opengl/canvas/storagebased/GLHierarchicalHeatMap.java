@@ -2958,17 +2958,18 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 	}
 
+	@SuppressWarnings("unused")
 	private void activateGroupHandling() {
 
 		if (contentVA.getGroupList() == null) {
-			IGroupList groupList = new GroupList(0);
+			GroupList groupList = new GroupList(0);
 			Group group = new Group(contentVA.size(), false, 0, ESelectionType.NORMAL);
 			groupList.append(group);
 			contentVA.setGroupList(groupList);
 		}
 
 		if (storageVA.getGroupList() == null) {
-			IGroupList groupList = new GroupList(0);
+			GroupList groupList = new GroupList(0);
 			Group group = new Group(storageVA.size(), false, 0, ESelectionType.NORMAL);
 			groupList.append(group);
 			storageVA.setGroupList(groupList);

@@ -1,5 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.serialize.ASerializedView;
@@ -11,13 +15,23 @@ import org.caleydo.core.view.serialize.ASerializedView;
 public class SerializedRemoteRenderingView 
 	extends ASerializedView {
 
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.pathwayTexturesEnabled} */
 	private boolean pathwayTexturesEnabled;
 	
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.geneMappingEnabled} */
 	private boolean geneMappingEnabled;
 	
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.neighborhoodEnabled} */
 	private boolean neighborhoodEnabled;
 	
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.connectionLinesEnabled} */
 	private boolean connectionLinesEnabled;
+
+	/** list of view-ids contained in the focus-level */
+	private List<ASerializedView> focusViews;
+	
+	/** list of view-ids contained in the stack-level */
+	private List<ASerializedView> stackViews;
 	
 	@Override
 	public ECommandType getCreationCommandType() {
@@ -60,4 +74,23 @@ public class SerializedRemoteRenderingView
 	public void setConnectionLinesEnabled(boolean connectionLinesEnabled) {
 		this.connectionLinesEnabled = connectionLinesEnabled;
 	}
+
+	@XmlElementWrapper
+	public List<ASerializedView> getFocusViews() {
+		return focusViews;
+	}
+
+	public void setFocusViews(List<ASerializedView> focusViews) {
+		this.focusViews = focusViews;
+	}
+
+	@XmlElementWrapper
+	public List<ASerializedView> getStackViews() {
+		return stackViews;
+	}
+
+	public void setStackViews(List<ASerializedView> stackViews) {
+		this.stackViews = stackViews;
+	}
+
 }

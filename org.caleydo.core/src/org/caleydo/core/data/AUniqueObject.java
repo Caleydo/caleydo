@@ -8,11 +8,17 @@ package org.caleydo.core.data;
  */
 public abstract class AUniqueObject
 	implements IUniqueObject {
-	/**
-	 * Unique Id
-	 */
+
+	/** Unique Id */
 	protected int iUniqueID;
 
+	/**
+	 * default no-arg constructor
+	 */
+	public AUniqueObject() {
+		// nothing to initialize here
+	}
+	
 	/**
 	 * Constructor.
 	 * 
@@ -50,5 +56,13 @@ public abstract class AUniqueObject
 		} else {
 			return false;
 		}
+	}
+
+	public int getIUniqueID() {
+		return iUniqueID;
+	}
+
+	public void setIUniqueID(int uniqueID) {
+		iUniqueID = uniqueID;
 	}
 }

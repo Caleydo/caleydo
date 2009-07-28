@@ -7,8 +7,11 @@ package org.caleydo.core.manager.event;
  */
 public abstract class AFlagSetterEvent extends AEvent {
 
+	private boolean flag;
 
-	private boolean flag = false;
+	public AFlagSetterEvent() {
+		flag = false;
+	}
 	
 	public AFlagSetterEvent(boolean flag) {
 		this.flag = flag;
@@ -23,5 +26,9 @@ public abstract class AFlagSetterEvent extends AEvent {
 	public boolean checkIntegrity() {
 		// nothing to do
 		return true;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}	
 }

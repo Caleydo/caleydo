@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
@@ -16,24 +18,26 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * 
  * @author Alexander Lex
  */
-
+@XmlType
 public class VirtualArray
 	extends AUniqueObject
-	implements IVirtualArray
+	implements IVirtualArray {
 
-{
-	ArrayList<Integer> iAlVirtualArray;
+	ArrayList<Integer> virtualArray;
 
-	IGroupList iGroupList = null;
+	GroupList groupList = null;
 
-	int iLength;
-	/**
-	 * Used to check whether elements to be removed are in descending order
-	 */
-	int iLastRemovedIndex = -1;
+	int length;
+
+	/** Used to check whether elements to be removed are in descending order */
+	int lastRemovedIndex = -1;
 
 	EVAType vaType;
 
+	public VirtualArray() {
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+	}
+	
 	/**
 	 * Constructor. Pass the length of the managed collection
 	 * 
@@ -43,7 +47,7 @@ public class VirtualArray
 	public VirtualArray(EVAType vaType, int iLength) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
-		this.iLength = iLength;
+		this.length = iLength;
 		init();
 	}
 
@@ -57,9 +61,9 @@ public class VirtualArray
 	public VirtualArray(EVAType vaType, int iLength, List<Integer> iLVirtualArray) {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
-		this.iLength = iLength;
-		this.iAlVirtualArray = new ArrayList<Integer>();
-		iAlVirtualArray.addAll(iLVirtualArray);
+		this.length = iLength;
+		this.virtualArray = new ArrayList<Integer>();
+		virtualArray.addAll(iLVirtualArray);
 	}
 
 	@Override
@@ -74,13 +78,13 @@ public class VirtualArray
 
 	@Override
 	public Integer get(int iIndex) {
-		return iAlVirtualArray.get(iIndex);
+		return virtualArray.get(iIndex);
 	}
 
 	@Override
 	public void append(Integer iNewElement) {
-		if (iNewElement < iLength) {
-			iAlVirtualArray.add(iNewElement);
+		if (iNewElement < length) {
+			virtualArray.add(iNewElement);
 		}
 		else
 			throw new IllegalArgumentException(
@@ -101,8 +105,8 @@ public class VirtualArray
 
 	@Override
 	public void add(int iIndex, Integer iNewElement) {
-		if (iNewElement < iLength) {
-			iAlVirtualArray.add(iIndex, iNewElement);
+		if (iNewElement < length) {
+			virtualArray.add(iIndex, iNewElement);
 		}
 		else
 			throw new IllegalArgumentException(
@@ -113,8 +117,8 @@ public class VirtualArray
 
 	@Override
 	public void set(int iIndex, Integer iNewElement) {
-		if (iNewElement < iLength) {
-			iAlVirtualArray.set(iIndex, iNewElement);
+		if (iNewElement < length) {
+			virtualArray.set(iIndex, iNewElement);
 		}
 		else
 			throw new IllegalArgumentException(
@@ -125,41 +129,41 @@ public class VirtualArray
 
 	@Override
 	public void copy(int iIndex) {
-		iAlVirtualArray.add(iIndex + 1, iAlVirtualArray.get(iIndex));
+		virtualArray.add(iIndex + 1, virtualArray.get(iIndex));
 	}
 
 	@Override
 	public void move(int iSrcIndex, int iTargetIndex) {
-		Integer iElement = iAlVirtualArray.remove(iSrcIndex);
-		iAlVirtualArray.add(iTargetIndex, iElement);
+		Integer iElement = virtualArray.remove(iSrcIndex);
+		virtualArray.add(iTargetIndex, iElement);
 	}
 
 	@Override
 	public void moveLeft(int iIndex) {
 		if (iIndex == 0)
 			return;
-		int iTemp = iAlVirtualArray.get(iIndex - 1);
-		iAlVirtualArray.set(iIndex - 1, iAlVirtualArray.get(iIndex));
-		iAlVirtualArray.set(iIndex, iTemp);
+		int iTemp = virtualArray.get(iIndex - 1);
+		virtualArray.set(iIndex - 1, virtualArray.get(iIndex));
+		virtualArray.set(iIndex, iTemp);
 	}
 
 	@Override
 	public void moveRight(int iIndex) {
 		if (iIndex == size() - 1)
 			return;
-		int iTemp = iAlVirtualArray.get(iIndex + 1);
-		iAlVirtualArray.set(iIndex + 1, iAlVirtualArray.get(iIndex));
-		iAlVirtualArray.set(iIndex, iTemp);
+		int iTemp = virtualArray.get(iIndex + 1);
+		virtualArray.set(iIndex + 1, virtualArray.get(iIndex));
+		virtualArray.set(iIndex, iTemp);
 	}
 
 	@Override
 	public Integer remove(int iIndex) {
-		return iAlVirtualArray.remove(iIndex);
+		return virtualArray.remove(iIndex);
 	}
 
 	@Override
 	public void removeByElement(int iElement) {
-		Iterator<Integer> iter = iAlVirtualArray.iterator();
+		Iterator<Integer> iter = virtualArray.iterator();
 		while (iter.hasNext()) {
 			if (iter.next() == iElement) {
 				iter.remove();
@@ -169,7 +173,7 @@ public class VirtualArray
 
 	@Override
 	public Integer size() {
-		return iAlVirtualArray.size();
+		return virtualArray.size();
 	}
 
 	@Override
@@ -179,20 +183,20 @@ public class VirtualArray
 
 	@Override
 	public void clear() {
-		iAlVirtualArray.clear();
+		virtualArray.clear();
 	}
 
 	@Override
 	public int indexOf(int iElement) {
 		// System.out.println("Costly indexof operation on a va of size: " + size());
-		return iAlVirtualArray.indexOf(iElement);
+		return virtualArray.indexOf(iElement);
 	}
 
 	@Override
 	public ArrayList<Integer> indicesOf(int iElement) {
 		ArrayList<Integer> alIndices = new ArrayList<Integer>();
 		int iCount = 0;
-		for (Integer iCompareElement : iAlVirtualArray) {
+		for (Integer iCompareElement : virtualArray) {
 			if (iCompareElement == iElement) {
 				alIndices.add(iCount);
 			}
@@ -204,7 +208,7 @@ public class VirtualArray
 
 	@Override
 	public ArrayList<Integer> getIndexList() {
-		return iAlVirtualArray;
+		return virtualArray;
 	}
 
 	@Override
@@ -222,10 +226,10 @@ public class VirtualArray
 					break;
 				case REMOVE:
 					int iIndex = item.getIndex();
-					if (iIndex < iLastRemovedIndex)
+					if (iIndex < lastRemovedIndex)
 						throw new IllegalStateException(
 							"Index of remove operation was smaller than previously used index. This is likely not intentional. Take care to remove indices from back to front.");
-					iLastRemovedIndex = iIndex;
+					lastRemovedIndex = iIndex;
 					remove(item.getIndex());
 					break;
 				case REMOVE_ELEMENT:
@@ -247,13 +251,13 @@ public class VirtualArray
 					throw new IllegalStateException("Unhandled EVAOperation: " + item.getType());
 			}
 		}
-		iLastRemovedIndex = -1;
+		lastRemovedIndex = -1;
 	}
 
 	@Override
 	public int containsElement(int iElement) {
 		int iCount = 0;
-		for (Integer iCompareElement : iAlVirtualArray) {
+		for (Integer iCompareElement : virtualArray) {
 			if (iCompareElement == iElement) {
 				iCount++;
 			}
@@ -265,30 +269,30 @@ public class VirtualArray
 	 * Initialize Virtual Array
 	 */
 	private void init() {
-		iAlVirtualArray = new ArrayList<Integer>(iLength);
+		virtualArray = new ArrayList<Integer>(length);
 
-		for (int iCount = 0; iCount < iLength; iCount++) {
-			iAlVirtualArray.add(iCount);
+		for (int iCount = 0; iCount < length; iCount++) {
+			virtualArray.add(iCount);
 		}
 	}
 
 	@Override
-	public IGroupList getGroupList() {
-		return iGroupList;
+	public GroupList getGroupList() {
+		return groupList;
 	}
 
 	@Override
-	public IGroupList newGroupList() {
+	public GroupList newGroupList() {
 
-		this.iGroupList = new GroupList(this.size());
+		this.groupList = new GroupList(this.size());
 
-		return iGroupList;
+		return groupList;
 	}
 
 	@Override
-	public boolean setGroupList(IGroupList groupList) {
+	public boolean setGroupList(GroupList groupList) {
 
-		this.iGroupList = groupList;
+		this.groupList = groupList;
 
 		return true;
 	}
@@ -304,16 +308,48 @@ public class VirtualArray
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
 		va.iUniqueID = (GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
-		va.iLength = iLength;
-		va.iAlVirtualArray = (ArrayList<Integer>) iAlVirtualArray.clone();
-		if (iGroupList != null)
-			va.setGroupList(iGroupList.clone());
-		va.iLastRemovedIndex = iLastRemovedIndex;
+		va.length = length;
+		va.virtualArray = (ArrayList<Integer>) virtualArray.clone();
+		if (groupList != null)
+			va.setGroupList((GroupList) groupList.clone());
+		va.lastRemovedIndex = lastRemovedIndex;
 		return va;
 	}
 
 	@Override
 	public void setID(int iUniqueID) {
 		this.iUniqueID = iUniqueID;		
+	}
+
+	public ArrayList<Integer> getVirtualArray() {
+		return virtualArray;
+	}
+
+	public void setVirtualArray(ArrayList<Integer> virtualArray) {
+		this.virtualArray = virtualArray;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public int getLastRemovedIndex() {
+		return lastRemovedIndex;
+	}
+
+	public void setLastRemovedIndex(int lastRemovedIndex) {
+		this.lastRemovedIndex = lastRemovedIndex;
+	}
+
+	public EVAType getVaType() {
+		return vaType;
+	}
+
+	public void setVaType(EVAType vaType) {
+		this.vaType = vaType;
 	}
 }

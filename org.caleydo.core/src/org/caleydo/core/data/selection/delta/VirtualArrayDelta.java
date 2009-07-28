@@ -3,6 +3,9 @@ package org.caleydo.core.data.selection.delta;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
@@ -12,18 +15,30 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * 
  * @author Alexander Lex
  */
+@XmlType
 public class VirtualArrayDelta
 	implements IVirtualArrayDelta {
-	private UniqueList<VADeltaItem> ulDeltaItems;
 
+	@XmlElement
+	private UniqueList<VADeltaItem> deltaItems;
+
+	@XmlElement
 	private EIDType idType;
+
+	@XmlElement
 	private EIDType secondaryIDType;
+
+	@XmlElement
 	private EVAType vaType;
 
+	public VirtualArrayDelta() {
+		deltaItems = new UniqueList<VADeltaItem>();
+	}
+	
 	public VirtualArrayDelta(EVAType vaType, EIDType idType) {
 		this.vaType = vaType;
 		this.idType = idType;
-		ulDeltaItems = new UniqueList<VADeltaItem>();
+		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
 	public VirtualArrayDelta(EVAType vaType, EIDType idType, EIDType secondaryIDType) {
@@ -53,25 +68,25 @@ public class VirtualArrayDelta
 
 	@Override
 	public void add(VADeltaItem item) {
-		ulDeltaItems.add(item);
+		deltaItems.add(item);
 	}
 
 	@Override
 	public Iterator<VADeltaItem> iterator() {
-		return ulDeltaItems.iterator();
+		return deltaItems.iterator();
 	}
 
 	@Override
 	public Collection<VADeltaItem> getAllItems() {
-		return ulDeltaItems;
+		return deltaItems;
 	}
 
 	@Override
 	public int size() {
-		return ulDeltaItems.size();
+		return deltaItems.size();
 	}
 
 	public void append(VirtualArrayDelta delta) {
-		ulDeltaItems.addAll(delta.ulDeltaItems);
+		deltaItems.addAll(delta.deltaItems);
 	}
 }

@@ -220,7 +220,7 @@ public interface IVirtualArray
 	 * @param
 	 * @return the group list
 	 */
-	public IGroupList getGroupList();
+	public GroupList getGroupList();
 
 	/**
 	 * Sets group list in VA, used especially by affinity clusterer.
@@ -229,7 +229,7 @@ public interface IVirtualArray
 	 *            new group list
 	 * @return true if operation executed correctly otherwise false
 	 */
-	public boolean setGroupList(IGroupList groupList);
+	public boolean setGroupList(GroupList groupList);
 
 	/**
 	 * Produces a clone of the virtual array

@@ -6,7 +6,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
-import org.caleydo.core.data.selection.IGroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.SWT;
@@ -289,7 +288,7 @@ public class ClusterManager {
 	 */
 	private void setGroupList(IVirtualArray virtualArray) {
 
-		IGroupList groupList = new GroupList(virtualArray.size());
+		GroupList groupList = new GroupList(virtualArray.size());
 
 		ArrayList<Integer> examples = set.getAlExamples();
 		int cnt = 0;

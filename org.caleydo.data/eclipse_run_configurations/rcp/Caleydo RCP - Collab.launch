@@ -6,7 +6,7 @@
 <booleanAttribute key="automaticValidate" value="false"/>
 <stringAttribute key="bootstrap" value=""/>
 <booleanAttribute key="clearConfig" value="false"/>
-<booleanAttribute key="clearws" value="true"/>
+<booleanAttribute key="clearws" value="false"/>
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP - Collab"/>
 <booleanAttribute key="default" value="false"/>
@@ -16,7 +16,7 @@
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml browser remote"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml remote"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties -Xss16384k"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
@@ -24,7 +24,7 @@
 <stringAttribute key="product" value="org.caleydo.rcp.product"/>
 <stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
 <booleanAttribute key="restart" value="false"/>
-<stringAttribute key="selected_target_plugins" value="org.eclipse.core.runtime,org.eclipse.core.contenttype,org.eclipse.ui.views.log,org.eclipse.jface,org.eclipse.jface.databinding,org.eclipse.rcp,org.eclipse.core.runtime.compatibility.registry,org.eclipse.equinox.preferences,org.eclipse.swt,org.eclipse.osgi,org.eclipse.swt.win32.win32.x86,org.eclipse.core.databinding,org.eclipse.core.jobs,org.eclipse.equinox.app,org.eclipse.ui.workbench,org.eclipse.core.expressions,org.eclipse.help,com.ibm.icu,org.eclipse.equinox.common,org.eclipse.ui,org.eclipse.core.commands,org.eclipse.equinox.registry"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.core.databinding,org.eclipse.equinox.app,org.eclipse.equinox.common,org.eclipse.ui.views.log,org.eclipse.equinox.preferences,org.eclipse.ui.workbench,org.eclipse.core.runtime,org.eclipse.core.runtime.compatibility.registry,org.eclipse.osgi,org.eclipse.rcp,org.eclipse.ui,org.eclipse.core.contenttype,org.eclipse.core.commands,org.eclipse.help,org.eclipse.core.jobs,org.eclipse.equinox.registry,org.eclipse.core.expressions,com.ibm.icu,org.eclipse.swt,org.eclipse.swt.win32.win32.x86,org.eclipse.jface.databinding,org.eclipse.jface"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>

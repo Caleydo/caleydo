@@ -1,6 +1,9 @@
 package org.caleydo.core.manager.event.view.storagebased;
 
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -9,20 +12,22 @@ import org.caleydo.core.manager.event.AEvent;
  * Migration from EEventType.VA_UPDATE 
  * @author Werner Puff
  */
+@XmlRootElement
+@XmlType
 public class VirtualArrayUpdateEvent
 	extends AEvent {
 	
 	/** delta between old and new selection */
-	private IVirtualArrayDelta virtualArrayDelta;
+	private VirtualArrayDelta virtualArrayDelta;
 
 	/**	additional information about the selection, e.g. to display in the info-box */
 	private String info;
 
-	public IVirtualArrayDelta getVirtualArrayDelta() {
+	public VirtualArrayDelta getVirtualArrayDelta() {
 		return virtualArrayDelta;
 	}
 
-	public void setVirtualArrayDelta(IVirtualArrayDelta virtualArrayDelta) {
+	public void setVirtualArrayDelta(VirtualArrayDelta virtualArrayDelta) {
 		this.virtualArrayDelta = virtualArrayDelta;
 	}
 

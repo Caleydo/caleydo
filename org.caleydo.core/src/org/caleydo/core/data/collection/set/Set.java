@@ -409,6 +409,7 @@ public class Set
 		return iUniqueID;
 	}
 
+	@SuppressWarnings("unused")
 	private int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections) {
 		VirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
 		int iUniqueID = virtualArray.getID();

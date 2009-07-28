@@ -31,7 +31,7 @@ public class BookmarkItem
 		VirtualArrayUpdateEvent event = new VirtualArrayUpdateEvent();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_BOOKMARKS, EIDType.EXPRESSION_INDEX);
 		delta.add(VADeltaItem.append(iStorageIndex));
-		event.setVirtualArrayDelta(delta);
+		event.setVirtualArrayDelta((VirtualArrayDelta) delta);
 		registerEvent(event);
 	}
 
@@ -50,7 +50,7 @@ public class BookmarkItem
 		for (Integer storageIndex : alStorageIndex)
 			delta.add(VADeltaItem.append(storageIndex));
 
-		event.setVirtualArrayDelta(delta);
+		event.setVirtualArrayDelta((VirtualArrayDelta) delta);
 		registerEvent(event);
 	}
 

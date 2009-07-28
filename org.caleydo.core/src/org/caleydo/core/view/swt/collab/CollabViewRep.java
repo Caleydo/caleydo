@@ -221,7 +221,7 @@ public class CollabViewRep
 
 		button = new Button(testControls, SWT.CENTER);
 		button.setText("add pathway");
-		AddPathwayListener pathwayListener = new AddPathwayListener();
+		TestButtonListener pathwayListener = new TestButtonListener();
 		pathwayListener.setRequester(this);
 		button.addListener(SWT.Selection, pathwayListener);
 		label = new Label(testControls, SWT.LEFT);

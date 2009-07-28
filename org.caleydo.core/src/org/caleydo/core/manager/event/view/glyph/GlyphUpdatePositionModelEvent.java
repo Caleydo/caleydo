@@ -1,8 +1,13 @@
 package org.caleydo.core.manager.event.view.glyph;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.EPositionModel;
 
+@XmlRootElement
+@XmlType
 public class GlyphUpdatePositionModelEvent
 	extends AEvent {
 
@@ -12,8 +17,15 @@ public class GlyphUpdatePositionModelEvent
 	private EPositionModel positionModel = null;
 	private int value = -1;
 	private int axis = -1;
-	int iViewID;
+	int viewID;
 
+	/**
+	 * default no-arg constructor
+	 */
+	public GlyphUpdatePositionModelEvent() {
+		// nothing to initialize here
+	}
+	
 	/**
 	 * @param positionModel
 	 * @param use
@@ -22,14 +34,14 @@ public class GlyphUpdatePositionModelEvent
 	 */
 	public GlyphUpdatePositionModelEvent(int iViewID, EPositionModel positionModel, int axis, int colnum) {
 		super();
-		this.iViewID = iViewID;
+		this.viewID = iViewID;
 		this.positionModel = positionModel;
 		this.axis = axis;
 		this.value = colnum;
 	}
 	
 	public int getViewID() {
-		return iViewID;
+		return viewID;
 	}
 
 	@Override
@@ -49,6 +61,22 @@ public class GlyphUpdatePositionModelEvent
 
 	public int getAxis() {
 		return axis;
+	}
+
+	public void setPositionModel(EPositionModel positionModel) {
+		this.positionModel = positionModel;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public void setAxis(int axis) {
+		this.axis = axis;
+	}
+
+	public void setViewID(int viewID) {
+		this.viewID = viewID;
 	}
 
 }

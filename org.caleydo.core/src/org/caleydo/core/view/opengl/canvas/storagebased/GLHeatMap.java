@@ -53,7 +53,6 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneConte
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.serialize.ASerializedView;
-import org.caleydo.core.view.serialize.SerializedDummyView;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -1114,7 +1113,7 @@ public class GLHeatMap
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedHeatMapView serializedForm = new SerializedHeatMapView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

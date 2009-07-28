@@ -1,24 +1,37 @@
 package org.caleydo.core.manager.event.data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 
+@XmlRootElement
+@XmlType
 public class RenameProgressBarEvent
 	extends AEvent {
 
-	private String stProgressbarTitle = null;
+	private String progressbarTitle = null;
 
+	public RenameProgressBarEvent() {
+		// nothing to initialize here
+	}
+	
 	public RenameProgressBarEvent(String stProgressBarTitle) {
-		this.stProgressbarTitle = stProgressBarTitle;
+		this.progressbarTitle = stProgressBarTitle;
 	}
 
 	public String getProgressbarTitle() {
-		return stProgressbarTitle;
+		return progressbarTitle;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (stProgressbarTitle == null)
+		if (progressbarTitle == null)
 			return false;
 		return true;
+	}
+
+	public void setProgressbarTitle(String progressbarTitle) {
+		this.progressbarTitle = progressbarTitle;
 	}
 }

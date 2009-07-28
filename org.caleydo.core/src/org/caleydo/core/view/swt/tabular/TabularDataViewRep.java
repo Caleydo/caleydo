@@ -758,7 +758,7 @@ public class TabularDataViewRep
 				vaDelta.add(VADeltaItem.remove(iExpressionIndex));
 				VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 				virtualArrayUpdateEvent.setSender(this);
-				virtualArrayUpdateEvent.setVirtualArrayDelta(vaDelta);
+				virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) vaDelta);
 				virtualArrayUpdateEvent.setInfo(null);
 				eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 
@@ -800,7 +800,7 @@ public class TabularDataViewRep
 				vaDelta.add(VADeltaItem.remove(iStorageIndex));
 				VirtualArrayUpdateEvent virtualArrayUpdateEvent = new VirtualArrayUpdateEvent();
 				virtualArrayUpdateEvent.setSender(this);
-				virtualArrayUpdateEvent.setVirtualArrayDelta(vaDelta);
+				virtualArrayUpdateEvent.setVirtualArrayDelta((VirtualArrayDelta) vaDelta);
 				virtualArrayUpdateEvent.setInfo(null);
 				eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 

@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.browser;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.swt.browser.EBrowserQueryType;
 
@@ -8,6 +11,8 @@ import org.caleydo.core.view.swt.browser.EBrowserQueryType;
  * 
  * @author Werner Puff
  */
+@XmlRootElement
+@XmlType
 public class ChangeQueryTypeEvent
 	extends AEvent {
 

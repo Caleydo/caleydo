@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.event.view.storagebased;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 
@@ -10,6 +13,8 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
  * 
  * @author Alexander Lex
  */
+@XmlRootElement
+@XmlType
 public class UpdateViewEvent
 	extends AEvent {
 	

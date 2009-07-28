@@ -1,23 +1,26 @@
 package org.caleydo.core.util.clusterer;
 
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * Stores the cluster state which is determined in the {@link StartClusteringAction}. Depending on the
  * selected algorithm different variables (cluster factor, cluster number) are needed.
  * 
  * @author Bernhard Schlegl
  */
+@XmlType
 public class ClusterState {
 
-	private EClustererAlgo eClustererAlgo;
-	private EClustererType eClustererType;
-	private EDistanceMeasure eDistanceMeasure;
-	private int iKMeansClusterCntGenes;
-	private int iKMeansClusterCntExperiments;
-	private float fAffinityPropClusterFactorGenes;
-	private float fAffinityPropClusterFactorExperiments;
+	private EClustererAlgo clustererAlgo;
+	private EClustererType clustererType;
+	private EDistanceMeasure distanceMeasure;
+	private int kMeansClusterCntGenes;
+	private int kMeansClusterCntExperiments;
+	private float affinityPropClusterFactorGenes;
+	private float affinityPropClusterFactorExperiments;
 
-	private int iContentVaId = 0;
-	private int iStorageVaId = 0;
+	private int contentVaId = 0;
+	private int storageVaId = 0;
 	
 	public ClusterState() {
 
@@ -30,75 +33,75 @@ public class ClusterState {
 	}
 
 	public void setClustererAlgo(EClustererAlgo eClustererAlgo) {
-		this.eClustererAlgo = eClustererAlgo;
+		this.clustererAlgo = eClustererAlgo;
 	}
 
 	public EClustererAlgo getClustererAlgo() {
-		return eClustererAlgo;
+		return clustererAlgo;
 	}
 
 	public void setClustererType(EClustererType eClustererType) {
-		this.eClustererType = eClustererType;
+		this.clustererType = eClustererType;
 	}
 
 	public EClustererType getClustererType() {
-		return eClustererType;
+		return clustererType;
 	}
 
 	public void setDistanceMeasure(EDistanceMeasure eDistanceMeasure) {
-		this.eDistanceMeasure = eDistanceMeasure;
+		this.distanceMeasure = eDistanceMeasure;
 	}
 
 	public EDistanceMeasure getDistanceMeasure() {
-		return eDistanceMeasure;
+		return distanceMeasure;
 	}
 
 	public void setKMeansClusterCntGenes(int iKMeansClusterCntGenes) {
-		this.iKMeansClusterCntGenes = iKMeansClusterCntGenes;
+		this.kMeansClusterCntGenes = iKMeansClusterCntGenes;
 	}
 
 	public int getKMeansClusterCntGenes() {
-		return iKMeansClusterCntGenes;
+		return kMeansClusterCntGenes;
 	}
 
 	public void setKMeansClusterCntExperiments(int iKMeansClusterCntExperiments) {
-		this.iKMeansClusterCntExperiments = iKMeansClusterCntExperiments;
+		this.kMeansClusterCntExperiments = iKMeansClusterCntExperiments;
 	}
 
 	public int getKMeansClusterCntExperiments() {
-		return iKMeansClusterCntExperiments;
+		return kMeansClusterCntExperiments;
 	}
 
 	public void setAffinityPropClusterFactorGenes(float fAffinityPropClusterFactorGenes) {
-		this.fAffinityPropClusterFactorGenes = fAffinityPropClusterFactorGenes;
+		this.affinityPropClusterFactorGenes = fAffinityPropClusterFactorGenes;
 	}
 
 	public float getAffinityPropClusterFactorGenes() {
-		return fAffinityPropClusterFactorGenes;
+		return affinityPropClusterFactorGenes;
 	}
 
 	public void setAffinityPropClusterFactorExperiments(float fAffinityPropClusterFactorExperiments) {
-		this.fAffinityPropClusterFactorExperiments = fAffinityPropClusterFactorExperiments;
+		this.affinityPropClusterFactorExperiments = fAffinityPropClusterFactorExperiments;
 	}
 
 	public float getAffinityPropClusterFactorExperiments() {
-		return fAffinityPropClusterFactorExperiments;
+		return affinityPropClusterFactorExperiments;
 	}
 
 	public void setContentVaId(int iContentVaId) {
-		this.iContentVaId = iContentVaId;
+		this.contentVaId = iContentVaId;
 	}
 
 	public int getContentVaId() {
-		return iContentVaId;
+		return contentVaId;
 	}
 
 	public void setStorageVaId(int iStorageVaId) {
-		this.iStorageVaId = iStorageVaId;
+		this.storageVaId = iStorageVaId;
 	}
 
 	public int getStorageVaId() {
-		return iStorageVaId;
+		return storageVaId;
 	}
 
 }
