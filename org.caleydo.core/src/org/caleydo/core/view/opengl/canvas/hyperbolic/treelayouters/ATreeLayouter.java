@@ -4,7 +4,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawableNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 
 public abstract class ATreeLayouter
@@ -15,6 +15,7 @@ public abstract class ATreeLayouter
 	protected int iComparableValue;
 	protected float fHigh;
 	protected float fWidth;
+	protected IViewFrustum frustum;
 
 	/*
 	 * TODO: replace with standard tree someday!
@@ -26,7 +27,8 @@ public abstract class ATreeLayouter
 		this.fHigh = frustum.getHeight();
 		this.fHigh = this.fHigh - this.fHigh / 100f * fYBoarderSpacePercentage;
 		this.fWidth = frustum.getWidth();
-		this.fWidth = this.fWidth -this.fWidth / 100f * fXBoarderSpacePercentage;
+		this.fWidth = this.fWidth - this.fWidth / 100f * fXBoarderSpacePercentage;
+		this.frustum = frustum;
 	}
 
 	@Override
@@ -40,11 +42,18 @@ public abstract class ATreeLayouter
 	}
 
 	@Override
-	public abstract void drawLayout(GL gl);
+	public abstract void renderTreeLayout(GL gl);
 
 	@Override
 	public final void setBoarderSpaces(float fXBoarderSpacePercentage, float fYBoarderSpacePercentage) {
 		this.fXBoarderSpacePercentage = fXBoarderSpacePercentage;
 		this.fYBoarderSpacePercentage = fYBoarderSpacePercentage;
 	}
+
+/*	protected final void updateFrustumInformation() {
+		this.fHigh = frustum.getHeight();
+		this.fHigh = this.fHigh - this.fHigh / 100f * fYBoarderSpacePercentage;
+		this.fWidth = frustum.getWidth();
+		this.fWidth = this.fWidth - this.fWidth / 100f * fXBoarderSpacePercentage;
+	}*/
 }

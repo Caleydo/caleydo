@@ -16,7 +16,7 @@ public final class HTLayouter
 	}
 
 	@Override
-	public void drawLayout(GL gl) {
+	public void renderTreeLayout(GL gl) {
 		// TODO Auto-generated method stub
 
 	}

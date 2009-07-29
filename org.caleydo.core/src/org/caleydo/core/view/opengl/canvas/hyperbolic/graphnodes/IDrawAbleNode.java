@@ -12,7 +12,7 @@ import javax.media.opengl.GL;
  * @author Georg Neubauer
  * @author Helmut Pichlhoefer
  */
-public interface IDrawableNode {
+public interface IDrawAbleNode {
 
 	/**
 	 * Defines the interface for drawing the node at a certain position in a certain way.

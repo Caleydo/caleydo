@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
+package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
 import gleem.linalg.Vec3f;
 
@@ -12,7 +12,7 @@ import javax.media.opengl.GL;
  * 
  * @author Georg Neubauer
  */
-public interface IDrawAbleDetailLevelObject {
+public interface IDrawAbleObject {
 	/**
 	 * Draw the object at a certain position.
 	 * 

@@ -13,6 +13,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -23,11 +24,11 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.core.view.serialize.SerializedDummyView;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleObject;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.ADrawAbleObject;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 import gleem.linalg.Vec3f;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ATreeLayouter;
@@ -56,6 +57,10 @@ public class GLHyperbolic
 	Tree<ADrawableNode> tree = null;
 	
 	ATreeLayouter layouter = null;
+	
+	HyperbolicRenderStyle renderStyle = null;
+	
+	private ColorMappingManager colorMappingManager;
 
 	/**
 	 * Constructor.
@@ -69,6 +74,9 @@ public class GLHyperbolic
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = EManagedObjectType.GL_HYPERBOLIC;
+		colorMappingManager = ColorMappingManager.get();
+		renderStyle = new HyperbolicRenderStyle(viewFrustum);
+		
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
 		alSelectionTypes.add(ESelectionType.NORMAL);
@@ -103,16 +111,10 @@ public class GLHyperbolic
 
 	@Override
 	public void initLocal(GL gl) {
-
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-		
-
-		
-
-	
-	}
+		}
 	
 
 	@Override
@@ -205,7 +207,8 @@ public class GLHyperbolic
 	}
 
 	private void render(GL gl) {
-		layouter.drawLayout(gl);
+		layouter.renderTreeLayout(gl);
+		
 		
 //		TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
 //		layout.drawGraph(gl);

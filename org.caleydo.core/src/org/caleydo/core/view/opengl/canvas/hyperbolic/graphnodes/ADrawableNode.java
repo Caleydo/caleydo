@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 
 /**
  * Abstract of draw able node type. This type defines node objects which are self drawing.
@@ -15,7 +16,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
  */
 
 public abstract class ADrawableNode
-	implements IDrawableNode, Comparable<ADrawableNode> {
+	implements IDrawAbleNode, Comparable<ADrawableNode> {
 	String nodeName;
 	int iComparableValue;
 	protected float fXCoord = 0;
@@ -23,7 +24,7 @@ public abstract class ADrawableNode
 	protected float fZCoord = 0;
 	protected float fHeight = 0;
 	protected float fWidth = 0;
-	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleDetailLevelObject> mRepresantations = null;
+	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
 	protected int iLayer;
 
 	/**
@@ -35,7 +36,7 @@ public abstract class ADrawableNode
 	public ADrawableNode(String nodeName, int iComparableValue) {
 		this.nodeName = nodeName;
 		this.iComparableValue = iComparableValue;
-		mRepresantations = new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleDetailLevelObject>(EDrawAbleNodeDetailLevel.class);
+		mRepresantations = new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
 	}
 
 	/**
@@ -78,7 +79,7 @@ public abstract class ADrawableNode
 	 * @param eDetailLevel
 	 * @param iObject
 	 */
-	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleDetailLevelObject iObject) {
+	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleObject iObject) {
 		mRepresantations.put(eDetailLevel, iObject);
 	}
 	

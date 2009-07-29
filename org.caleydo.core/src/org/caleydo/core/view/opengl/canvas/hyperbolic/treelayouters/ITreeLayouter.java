@@ -30,7 +30,7 @@ public interface ITreeLayouter {
 	 * TODO: specify params and maybe naming (espacially GLLists and Animation)
 	 * @return
 	 */
-	public void drawLayout(GL gl);  
+	public void renderTreeLayout(GL gl);  
 	
 	/**
 	 * Set the boarder space in percent.

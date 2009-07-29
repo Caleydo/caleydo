@@ -1,10 +1,11 @@
-package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
+package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
+
 /**
  * Abstract of draw able node type. This type defines objects which are self drawing,
  * which are held by nodes.
@@ -12,7 +13,7 @@ import javax.media.opengl.GL;
  * @author Georg Neubauer
  */
 public abstract class ADrawAbleObject
-	implements IDrawAbleDetailLevelObject {
+	implements IDrawAbleObject {
 	
 	protected float fRed = 0;
 	protected float fGreen = 0;

@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
+
 /**
  * Implementation of a draw able TestNode, just to show how our nodes would work.
  * 
