@@ -190,7 +190,7 @@ public class NetworkManager
 		createGlobalPublisher();
 		createJAXBContext();
 		registerEventListeners();
-		createTestClientConnection();
+		// createTestClientConnection();
 		
 		status = STATUS_STARTED;
 		RedrawCollabViewEvent event = new RedrawCollabViewEvent();

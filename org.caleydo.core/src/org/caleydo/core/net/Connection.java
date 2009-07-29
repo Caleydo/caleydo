@@ -123,7 +123,7 @@ public class Connection {
 			NetworkUtils networkUtils = networkManager.getNetworkUtils();
 
 			ClientHandshake clientHandshake = new ClientHandshake();
-			clientHandshake.setClientNetworkName("Client");
+			clientHandshake.setClientNetworkName(networkManager.getNetworkName());
 			clientHandshake.setVersion(NetworkManager.VERSION);
 			clientHandshake.setRequestType(ClientHandshake.REQUEST_CONNECT);
 			networkUtils.writeHandshake(clientHandshake, outputStream);
@@ -135,8 +135,9 @@ public class Connection {
 				// TODO connection error handling
 				throw new Exception("connection error: " + serverHandshake.getError());
 			} else {
+				networkManager.setNetworkName(serverHandshake.getClientNetworkName());
 				clientHandshake = new ClientHandshake();
-				clientHandshake.setClientNetworkName(serverHandshake.getClientNetworkName());
+				clientHandshake.setClientNetworkName(networkManager.getNetworkName());
 				clientHandshake.setVersion(NetworkManager.VERSION);
 				clientHandshake.setRequestType(ClientHandshake.REQUEST_CONNECTION_ESTABLISHED);
 				networkUtils.writeHandshake(clientHandshake, outputStream);

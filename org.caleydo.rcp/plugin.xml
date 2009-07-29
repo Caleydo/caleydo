@@ -267,6 +267,11 @@
             name="Open Bucket">
       </command>
       <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.SendRemoteHandler"
+            id="org.caleydo.rcp.command.sendviews.remote"
+            name="Send Bucket">
+      </command>
+      <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenBrowserHandler"
             id="org.caleydo.rcp.command.openviews.browser"
             name="Open Web Browser">
@@ -603,8 +608,8 @@
       <menuContribution
             locationURI="menu:org.caleydo.rcp.views.opengl.GLRemoteRenderingView">
          <command
-               commandId="org.caleydo.rcp.command.cluster"
-               label="brabbel"
+               commandId="org.caleydo.rcp.command.sendviews.remote"
+               label="Send View to ..."
                style="push">
          </command>
       </menuContribution>

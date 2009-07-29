@@ -25,8 +25,13 @@ public class CreateGUIViewEvent
 	
 	@Override
 	public boolean checkIntegrity() {
-		if (serializedView == null)
+		if (serializedView == null) {
 			throw new IllegalStateException("the serialized-view has not been set");
+		}
+		if (targetApplicationID == null) {
+			throw new IllegalStateException("the targetApplicationID has not been set");
+		}
+		
 		return true;
 	}
 
@@ -38,12 +43,12 @@ public class CreateGUIViewEvent
 		this.serializedView = serializedView;
 	}
 
-	public String getTargetApplicationName() {
-		return targetApplicationID;
-	}
-
 	public void setTargetApplicationID(String targetApplicationID) {
 		this.targetApplicationID = targetApplicationID;
+	}
+
+	public String getTargetApplicationID() {
+		return targetApplicationID;
 	}
 
 }
