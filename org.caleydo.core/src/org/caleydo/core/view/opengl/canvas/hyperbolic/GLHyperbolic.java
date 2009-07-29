@@ -54,6 +54,8 @@ public class GLHyperbolic
 	ISet set;
 	
 	Tree<ADrawableNode> tree = null;
+	
+	ATreeLayouter layouter = null;
 
 	/**
 	 * Constructor.
@@ -80,15 +82,16 @@ public class GLHyperbolic
 
 		tree = new Tree<ADrawableNode>();
 		ADrawableNode test = new TestNode("first Test", 1);
-		ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
-		obj.setAlpha(0.8f);
-		obj.setBgColor3f(0.4f, 0.3f, 0.5f);
-		test.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh, obj);
-		obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
-		obj.setAlpha(0.2f);
-		obj.setBgColor3f(0.2f, 0.7f, 0.3f);
-		test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
+		//ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
+		//obj.setAlpha(0.8f);
+		//obj.setBgColor3f(0.4f, 0.3f, 0.5f);
+		//test.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh, obj);
+		//obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
+		//obj.setAlpha(0.2f);
+		//obj.setBgColor3f(0.2f, 0.7f, 0.3f);
+		//test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
 		tree.setRootNode(test);
+		layouter = new LinearTreeLayouter(/*gl,*/ viewFrustum, tree);
 	}
 
 	@Override
@@ -202,8 +205,7 @@ public class GLHyperbolic
 	}
 
 	private void render(GL gl) {
-		
-		ATreeLayouter layouter = new LinearTreeLayouter(gl, viewFrustum, tree);
+		layouter.setGL(gl);
 		layouter.drawLayout();
 		
 //		TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
