@@ -342,8 +342,7 @@ public class NetworkManager
 	}
 	
 	/**
-	 * Creates the event related stack to dispatch events to and retrieve events from
-	 * a connected Caleydo application.
+	 * Connects an existing {@link Connection} to the event system of the local caleydo application.
 	 * @param connection the initialized {@link Connection} to the remote caleydo application
 	 */
 	private void createEventSystem(Connection connection) {
@@ -357,6 +356,20 @@ public class NetworkManager
 			incomingClientPublisher.addListener(eventClass, incomingClientBridge);
 			globalOutgoingPublisher.addListener(eventClass, outgoingClientBridge);
 		}
+	}
+	
+	/**
+	 * Disconnects an {@link Connection} from the event system of the local caleydo application. 
+	 * @param connection a {@link Connection} that needs to shutdown
+	 */
+	private void disposeEventSystem(Connection connection) {
+		EventFilterBridge outgoingClientBridge = connection.getOutgoingBridge();
+
+		EventFilterBridge incomingClientBridge = connection.getIncomingBridge();
+		NetworkEventReceiver incomingClientPublisher = connection.getIncomingPublisher();
+
+		incomingClientPublisher.removeListener(incomingClientBridge);
+		globalOutgoingPublisher.removeListener(outgoingClientBridge);
 	}
 
 	/**
@@ -382,6 +395,21 @@ public class NetworkManager
 
 	}
 
+	/**
+	 * disconnects the given {@link Connection} from the remote caleydo-application
+	 * and frees all obtained resources for that {@link Connection}.
+	 * @param connection existing {@link Connection} to disconnect and dispose. 
+	 */
+	public void disposeConnection(Connection connection) {
+		if (!connections.remove(connection)) {
+			throw new RuntimeException("The specified connection is not managed by this NetworkManager");
+		}
+		disposeEventSystem(connection);
+		connection.dispose();
+		
+		
+	}
+	
 	/**
 	 * Retrieves the global event-bridge configuration. This list contains all events that should be
 	 * transmitted to connected caleydo applications by default.

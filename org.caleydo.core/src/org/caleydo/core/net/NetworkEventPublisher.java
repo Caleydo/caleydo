@@ -37,11 +37,17 @@ public class NetworkEventPublisher
 	/** {@link NetworkManager} this instance is bound to */
 	private NetworkManager networkManager = null;
 
+	/** Related {@link Connection} for this {@link NetworkEventReceiver} */
+	private Connection connection;
+
 	/** {@link OutputStream} to write the serialized events to */ 
 	private OutputStream outputStream;
 
 	/** name of the connected client */
 	private String name;
+
+	/** flag for stopping the execution of sending events to the connected caleydo application */
+	private boolean stop = false;
 	
 	/**
 	 * Default Constructor
@@ -96,7 +102,7 @@ public class NetworkEventPublisher
 	}
 
 	/**
-	 * Sends the queued events to the related client.
+	 * Sends the queued events to the connected caleydo application.
 	 */
 	@Override
 	public void run() {
@@ -109,7 +115,6 @@ public class NetworkEventPublisher
 			throw new RuntimeException("could not create xml marshaller", ex);
 		}
 
-		boolean stop = false;
 		while (!stop) {
 			try {
 				IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
@@ -127,7 +132,8 @@ public class NetworkEventPublisher
 						outputStream.flush();
 					} catch (IOException ex) {
 						ex.printStackTrace();
-						// TODO exception handling
+						networkManager.disposeConnection(connection);
+						stop();
 					}
 
 					TestSerializationEvent testSerializationEvent = new TestSerializationEvent();
@@ -139,11 +145,19 @@ public class NetworkEventPublisher
 				}
 			}
 			catch (InterruptedException ex) {
-				stop = true;
+				// ex.printStackTrace();
+				// nothing to do, probably the thread needs to stop its execution
 			}
 		}
 	}
 
+	/**
+	 * Sets the signal to stop the execution to true which causes a running thread to stop.
+	 */
+	public void stop() {
+		stop = true;
+	}
+	
 	public NetworkManager getNetworkManager() {
 		return networkManager;
 	}
@@ -166,6 +180,14 @@ public class NetworkEventPublisher
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
 	}
 
 }

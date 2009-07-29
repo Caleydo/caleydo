@@ -3,6 +3,7 @@ package org.caleydo.core.net;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.SocketException;
+import java.nio.channels.ClosedByInterruptException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -34,16 +35,20 @@ public class NetworkEventReceiver
 	/** Related {@link NetworkManager} for this {@link NetworkEventReceiver} */
 	private NetworkManager networkManager;
 
+	/** Related {@link Connection} for this {@link NetworkEventReceiver} */
+	private Connection connection;
+	
 	/** input stream of the connection to read events from */
 	private InputStream inputStream;
 	
 	/** name of the connected client */
 	private String name;
 
+	/** flag for stopping the execution of receiving events from the connected caleydo application */
+	private boolean stop = false;
+	
 	@Override
 	public void run() {
-		boolean stop = false;
-
 		StringBuffer buffer = new StringBuffer();;
 		while (!stop) {
 			try {
@@ -60,12 +65,15 @@ public class NetworkEventReceiver
 					delimiterIndex = buffer.indexOf("\r\n\r\n");
 				}
 			} catch (SocketException ex) {
+				// ex.printStackTrace();
+				networkManager.disposeConnection(connection);
+				stop();
+			} catch (ClosedByInterruptException ex) {
 				ex.printStackTrace();
-				// TODO shut down this connection
-				stop = true;
+				// nothing to do, probably the thread needs to stop its execution
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				// TODO exception handling
+				// continue execution when unexpected exceptions occure
 			}
 		}
 	}
@@ -91,6 +99,13 @@ public class NetworkEventReceiver
 		}
 	}
 
+	/**
+	 * Sets the signal to stop the execution to true which causes a running thread to stop.
+	 */
+	public void stop() {
+		stop = true;
+	}
+
 	public NetworkManager getNetworkManager() {
 		return networkManager;
 	}
@@ -113,6 +128,14 @@ public class NetworkEventReceiver
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
 	}
 
 }

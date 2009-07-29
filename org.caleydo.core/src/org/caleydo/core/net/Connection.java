@@ -88,6 +88,7 @@ public class Connection {
 		incomingPublisher = new NetworkEventReceiver();
 		incomingPublisher.setName("networkReceiver");
 		incomingPublisher.setNetworkManager(networkManager);
+		incomingPublisher.setConnection(this);
 		
 		incomingBridge = new EventFilterBridge();
 		incomingBridge.setName("incomingClientBridge");
@@ -97,6 +98,7 @@ public class Connection {
 		outgoingPublisher = new NetworkEventPublisher();
 		outgoingPublisher.setName("networkPublisher");
 		outgoingPublisher.setNetworkManager(networkManager);
+		outgoingPublisher.setConnection(this);
 
 		outgoingBridge = new EventFilterBridge();
 		outgoingBridge.setName("outgoingClientBridge");
@@ -104,7 +106,6 @@ public class Connection {
 		outgoingBridge.setBridgeRemoteEvents(true);
 		outgoingBridge.setTargetEventPublisher(outgoingPublisher);
 		outgoingBridge.addBlockedSender(incomingPublisher);
-		
 	}
 
 	/**
@@ -246,6 +247,49 @@ public class Connection {
 
 		senderThread.start();
 		receiverThread.start();
+	}
+
+	/**
+	 * Disposes this connection by stopping the sender and receiver thread
+	 * and closing the socket-connections.
+	 */
+	public void dispose() {
+		if (senderThread != null && senderThread.isAlive()) {
+			outgoingPublisher.stop();
+			senderThread.interrupt();
+			outgoingPublisher.setConnection(null);
+			outgoingPublisher.setOutputStream(null);
+		}
+
+		if (receiverThread != null && receiverThread.isAlive()) {
+			incomingPublisher.stop();
+			receiverThread.interrupt();
+			incomingPublisher.setConnection(null);
+			incomingPublisher.setInputStream(null);
+		}
+
+		if (socket != null || socket.isConnected()) {
+			try {
+				socket.close();
+			} catch (IOException ex) {
+				// nothing to do here, we are closing the socket anyways
+			}
+		}
+		
+		socket = null;
+		inputStream = null;
+		outputStream = null;
+		
+		outgoingBridge = null;
+		outgoingPublisher = null;
+		senderThread = null;
+
+		incomingBridge = null;
+		incomingPublisher = null;
+		receiverThread = null;
+		
+		networkManager = null;
+		remoteNetworkName = null;
 	}
 	
 	public EventFilterBridge getOutgoingBridge() {
