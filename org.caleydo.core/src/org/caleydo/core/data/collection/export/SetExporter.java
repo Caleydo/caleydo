@@ -172,14 +172,14 @@ public class SetExporter {
 			Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
-				if (treePorter.exportTree(directory + "horizontal_gene.xml", tree) == false)
+				if (treePorter.exportTree(directory + "/horizontal_gene.xml", tree) == false)
 					System.out.println("Problem during gene tree export!");
 			}
 			// export experiment cluster tree to own xml file
 			tree = set.getClusteredTreeExps();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
-				if (treePorter.exportTree(directory + "vertical_experiments.xml", tree) == false)
+				if (treePorter.exportTree(directory + "/vertical_experiments.xml", tree) == false)
 					System.out.println("Problem during experiments tree export!");
 			}
 		}

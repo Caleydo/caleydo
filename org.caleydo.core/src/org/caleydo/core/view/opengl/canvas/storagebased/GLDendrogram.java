@@ -1240,8 +1240,10 @@ public class GLDendrogram
 		if (tree != null && bRenderGeneTree) {
 			resetAllTreeSelections();
 			if (tree.getNodeByNumber(clusterNr) != null) {
-				// currentRootNode = tree.getNodeByNumber(clusterNr);
 				tree.getNodeByNumber(clusterNr).setSelectionType(selectionType);
+				
+				if(bIsRenderedRemote)
+					 currentRootNode = tree.getNodeByNumber(clusterNr);
 			}
 
 			setDisplayListDirty();
