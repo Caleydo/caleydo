@@ -30,7 +30,7 @@ public interface ITreeLayouter {
 	 * TODO: specify params and maybe naming (espacially GLLists and Animation)
 	 * @return
 	 */
-	public void drawLayout();  
+	public void drawLayout(GL gl);  
 	
 	/**
 	 * Set the boarder space in percent.
@@ -39,5 +39,4 @@ public interface ITreeLayouter {
 	 * @param fYBoarderSpacePercentage
 	 */
 	public void setBoarderSpaces(float fXBoarderSpacePercentage, float fYBoarderSpacePercentage);
-
 }

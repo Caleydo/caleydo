@@ -6,6 +6,8 @@ import java.util.EnumMap;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.selection.SelectedElementRep;
+
 /**
  * Abstract of draw able node type. This type defines node objects which are self drawing.
  * 
@@ -21,7 +23,6 @@ public abstract class ADrawableNode
 	protected float fZCoord = 0;
 	protected float fHeight = 0;
 	protected float fWidth = 0;
-	protected GL gl;
 	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleDetailLevelObject> mRepresantations = null;
 	protected int iLayer;
 
@@ -66,8 +67,7 @@ public abstract class ADrawableNode
 		this.fZCoord = fZCoord;
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
-		this.gl = gl;
-
+		
 		return mRepresantations.get(eDetailLevel).drawObjectAtPosition(gl, fXCoord, fYCoord, fZCoord, fHeight,
 			fWidth);
 	}

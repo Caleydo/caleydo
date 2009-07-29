@@ -8,13 +8,15 @@ import java.util.Map;
 import javax.media.opengl.GL;
 
 /**
- * Factory to auto-generate draw able objects. 
+ * Factory to auto-generate draw able objects.
  * 
  * @author Georg Neubauer
  */
 public final class DrawAbleObjectsFactory {
 	public static ADrawAbleObject getDrawAbleObject(String str) {
-		if (str == "Polygon")
+		if (str == "Fallback")
+			return new DrawAbleObjectFallback();
+		else if (str == "Square")
 			return new DrawAbleObjectSquare();
 		return null;
 	}

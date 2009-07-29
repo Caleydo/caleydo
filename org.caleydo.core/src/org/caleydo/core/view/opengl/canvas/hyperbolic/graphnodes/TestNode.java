@@ -10,7 +10,8 @@ public final class TestNode
 	extends ADrawableNode {
 	public TestNode(String nodeName, int iComparableValue) {
 		super(nodeName, iComparableValue);
-		// TODO Auto-generated constructor stub
+		this.mRepresantations.put(EDrawAbleNodeDetailLevel.VeryHigh, DrawAbleObjectsFactory.getDrawAbleObject("Square"));
+		this.mRepresantations.put(EDrawAbleNodeDetailLevel.High, DrawAbleObjectsFactory.getDrawAbleObject("Fallback"));
 	}
 }
 /*

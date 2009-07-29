@@ -20,15 +20,13 @@ public abstract class ATreeLayouter
 	 * TODO: replace with standard tree someday!
 	 */
 	Tree<ADrawableNode> tree = null;
-	protected GL gl;
 
-	public ATreeLayouter(/*GL gl,*/ IViewFrustum frustum, Tree<ADrawableNode> tree) {
+	public ATreeLayouter(IViewFrustum frustum, Tree<ADrawableNode> tree) {
 		this.tree = tree;
 		this.fHigh = frustum.getHeight();
 		this.fHigh = this.fHigh - this.fHigh / 100f * fYBoarderSpacePercentage;
 		this.fWidth = frustum.getWidth();
 		this.fWidth = this.fWidth -this.fWidth / 100f * fXBoarderSpacePercentage;
-		//this.gl = gl;
 	}
 
 	@Override
@@ -42,17 +40,11 @@ public abstract class ATreeLayouter
 	}
 
 	@Override
-	public abstract void drawLayout();
+	public abstract void drawLayout(GL gl);
 
 	@Override
 	public final void setBoarderSpaces(float fXBoarderSpacePercentage, float fYBoarderSpacePercentage) {
 		this.fXBoarderSpacePercentage = fXBoarderSpacePercentage;
 		this.fYBoarderSpacePercentage = fYBoarderSpacePercentage;
 	}
-	
-	public void setGL(GL gl)
-	{
-		this.gl = gl;
-	}
-
 }

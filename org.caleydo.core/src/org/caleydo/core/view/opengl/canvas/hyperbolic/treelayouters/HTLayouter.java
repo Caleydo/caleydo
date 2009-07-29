@@ -11,12 +11,12 @@ public final class HTLayouter
 	implements ITreeLayouter {
 
 	public HTLayouter(/*GL gl,*/ IViewFrustum frustum, Tree<ADrawableNode> tree) {
-		super(/*gl,*/ frustum, tree);
+		super(frustum, tree);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void drawLayout() {
+	public void drawLayout(GL gl) {
 		// TODO Auto-generated method stub
 
 	}

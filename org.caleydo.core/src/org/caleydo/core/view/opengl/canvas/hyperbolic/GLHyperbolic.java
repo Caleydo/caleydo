@@ -205,8 +205,7 @@ public class GLHyperbolic
 	}
 
 	private void render(GL gl) {
-		layouter.setGL(gl);
-		layouter.drawLayout();
+		layouter.drawLayout(gl);
 		
 //		TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
 //		layout.drawGraph(gl);
