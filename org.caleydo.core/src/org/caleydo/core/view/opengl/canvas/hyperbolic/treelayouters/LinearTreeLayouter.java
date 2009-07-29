@@ -10,8 +10,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 public final class LinearTreeLayouter
 	extends ATreeLayouter {
 
-	public LinearTreeLayouter(GL gl, IViewFrustum frustum, Tree<ADrawableNode> tree) {
-		super(gl, frustum, tree);
+	public LinearTreeLayouter(/*GL gl,*/ IViewFrustum frustum, Tree<ADrawableNode> tree) {
+		super(/*gl,*/ frustum, tree);
 		// TODO Auto-generated constructor stub
 	}
 

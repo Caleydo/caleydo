@@ -43,6 +43,7 @@ public class TestLayout
 
 		recursiveTreeBuilder(gl, root, 0, fStep, iDeph);
 
+		
 		// ArrayList<DefaultNode> childs = testTree.getChildren(root);
 		// //int numberOfRootChilds = testTree.getNumberOfChildren(root);
 		//		

@@ -10,8 +10,8 @@ public final class HTLayouter
 	extends ATreeLayouter
 	implements ITreeLayouter {
 
-	public HTLayouter(GL gl, IViewFrustum frustum, Tree<ADrawableNode> tree) {
-		super(gl, frustum, tree);
+	public HTLayouter(/*GL gl,*/ IViewFrustum frustum, Tree<ADrawableNode> tree) {
+		super(/*gl,*/ frustum, tree);
 		// TODO Auto-generated constructor stub
 	}
 

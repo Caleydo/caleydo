@@ -23,6 +23,7 @@ public abstract class ADrawableNode
 	protected float fWidth = 0;
 	protected GL gl;
 	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleDetailLevelObject> mRepresantations = null;
+	protected int iLayer;
 
 	/**
 	 * Constructor
@@ -79,5 +80,25 @@ public abstract class ADrawableNode
 	 */
 	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleDetailLevelObject iObject) {
 		mRepresantations.put(eDetailLevel, iObject);
+	}
+	
+	/**
+	 * Set the Tree-Layer of the Node
+	 * 
+	 * @param iLayer
+	 */
+	public final void setLayer(int iLayer)
+	{
+		this.iLayer = iLayer;
+	}
+	
+	/**
+	 * Get the Tree-Layer of the node
+	 *  
+	 * @return iLayer
+	 */
+	public final int getLayer()
+	{
+		return this.iLayer;
 	}
 }

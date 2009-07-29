@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.DefaultNode;
+
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -29,6 +30,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	int iDeph;
 	//List<Integer> dephList;
 	ArrayList<NodeType> folios;
+	HashMap<Integer, ArrayList<DefaultNode>> layerMap;
 
 	public Tree() {
 
@@ -226,6 +228,23 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	{
 		iDeph = getDephOfTree();
 		return iDeph;
+	}
+	public void setNodeInLayerMap(int layer, DefaultNode node)
+	{
+		ArrayList<DefaultNode> tmp = null;
+		//node.
+		
+		if(layerMap.containsKey(layer))
+		{
+			tmp = layerMap.get(layer);
+		}
+
+		tmp.add(node);
+		layerMap.put(layer, tmp);
+	}
+	public int getNumberOfNodesInLayer(int layer)
+	{
+		return layerMap.get(layer).size();
 	}
 
 }
