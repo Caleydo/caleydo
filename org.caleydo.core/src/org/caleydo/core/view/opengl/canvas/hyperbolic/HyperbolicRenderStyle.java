@@ -20,9 +20,9 @@ public class HyperbolicRenderStyle
 
 	/**
 	 * Specify how many contact points a DA object should return.
-	 * value must be a multiple of 4 (4, 8, 16,...)
+	 * value must be a multiple of 4 (4, 8, 12, 16,...)
 	 */
-	public static final int DA_OBJ_NUM_CONTACT_POINTS = 12;
+	public static final int DA_OBJ_NUM_CONTACT_POINTS = 16;
 	public HyperbolicRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);
 		// TODO Auto-generated constructor stub
