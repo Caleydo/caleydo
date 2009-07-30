@@ -23,7 +23,6 @@ import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.view.CaleydoViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -49,11 +48,6 @@ public abstract class AGLViewPart
 	protected ASerializedView initSerializedView;
 	
 	/**
-	 * Contains view IDs for initially contained remote rendered views
-	 */
-	protected ArrayList<Integer> iAlContainedViewIDs;
-
-	/**
 	 * Constructor.
 	 */
 	public AGLViewPart() {
@@ -78,12 +72,11 @@ public abstract class AGLViewPart
 	 *            The type of view. See {@link ECommandType}
 	 * @param iParentCanvasID
 	 *            the id of canvas where you want to render
-	 * @param bRegisterToOverallMediator
-	 *            true if you want this to listen and send to main mediator
 	 * @return the ID of the view
 	 */
-	protected AGLEventListener createGLEventListener(ECommandType glViewType, int iParentCanvasID,
-		boolean bRegisterToOverallMediator) {
+	protected AGLEventListener createGLEventListener(ASerializedView serializedView, int iParentCanvasID) {
+
+		ECommandType glViewType = serializedView.getCreationCommandType();
 		IGeneralManager generalManager = GeneralManager.get();
 
 		CmdCreateGLEventListener cmdView =
@@ -120,10 +113,6 @@ public abstract class AGLViewPart
 
 		AGLEventListener glView = cmdView.getCreatedObject();
 
-		if (iAlContainedViewIDs != null && glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
-			((GLRemoteRendering) glView).setInitialContainedViews(iAlContainedViewIDs);
-		}
-
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
@@ -131,14 +120,11 @@ public abstract class AGLViewPart
 		glView.setSet(set);
 				
 		useCase.addView(glView);
+
+		glView.setViewGUIID(getViewGUIID());
+		glView.initFromSerializableRepresentation(serializedView);
 		
 		return glView;
-	}
-
-	protected AGLEventListener createGLRemoteEventListener(ECommandType glViewType, int iParentCanvasID,
-		boolean bRegisterToOverallMediator, ArrayList<Integer> iAlContainedViewIDs) {
-		this.iAlContainedViewIDs = iAlContainedViewIDs;
-		return createGLEventListener(glViewType, iParentCanvasID, bRegisterToOverallMediator);
 	}
 
 	@Override
@@ -150,7 +136,12 @@ public abstract class AGLViewPart
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
+		
+		String viewXml = null;
 		if (memento != null) {
+			viewXml = memento.getString("serialized");
+		}
+		if (viewXml != null) { // init view from memento
 			SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 			JAXBContext jaxbContext = serializationManager.getViewContext();
 			Unmarshaller unmarshaller;
@@ -160,12 +151,14 @@ public abstract class AGLViewPart
 				throw new RuntimeException("could not create xml unmarshaller", ex);
 			}
 			
-			StringReader xmlInputReader = new StringReader(memento.getString("serialized"));
+			StringReader xmlInputReader = new StringReader(viewXml);
 			try {
 				initSerializedView = (ASerializedView) unmarshaller.unmarshal(xmlInputReader);
 			} catch (JAXBException ex) {
 				ex.printStackTrace();
 			}
+		} else { // init view from default form
+			initSerializedView = createDefaultSerializedView();
 		}
 	}
 
@@ -240,4 +233,16 @@ public abstract class AGLViewPart
 	public GLCaleydoCanvas getGLCanvas() {
 		return glCanvas;
 	}
+
+	/**
+	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
+	 * @return serialized form of the gl-view with default initialization
+	 */
+	public abstract ASerializedView createDefaultSerializedView();
+
+	/**
+	 * Returns the rcp-ID of the view
+	 * @return rcp-ID of the view
+	 */
+	public abstract String getViewGUIID();
 }

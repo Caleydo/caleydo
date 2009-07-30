@@ -2,10 +2,11 @@ package org.caleydo.rcp.view.opengl;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
 import org.caleydo.rcp.Application;
@@ -34,50 +35,53 @@ public class GLRemoteRenderingView
 		super.createPartControl(parent);
 
 		createGLCanvas();
-
-		GLRemoteRendering bucket = (GLRemoteRendering) createGLRemoteEventListener(
-			ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true, iAlContainedViewIDs);
-
-		if (initSerializedView == null) {
-		
-			// Only create parcoords and heatmap if the application is NOT in
-			// pathway viewer mode
-			if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
-	
-				// iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL,
-				// -1, true));
-	
-				// FIXME: This is just a temporary solution to check if glyph view
-				// should be added to bucket.
-				try {
-					GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-	
-					SerializedGlyphView glyph1 = new SerializedGlyphView();
-					bucket.addInitialRemoteView(glyph1);			
-	
-					SerializedGlyphView glyph2 = new SerializedGlyphView();
-					bucket.addInitialRemoteView(glyph2);			
-				}
-				catch (IllegalArgumentException e) {
-					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-						"Cannot add glyph to bucket! No glyph data loaded!"));
-				}
-			}
-	
-			// Only add parallel coordinates and heat map to bucket when not in pathway viewer mode.
-			if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
-				SerializedHeatMapView heatMap = new SerializedHeatMapView();
-				bucket.addInitialRemoteView(heatMap);
-				SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
-				bucket.addInitialRemoteView(parCoords);			
-			}
-		} else {
-			glEventListener.initFromSerializableRepresentation(initSerializedView);
-		}
-
-		glEventListener.setViewGUIID(ID);
+		createGLEventListener(initSerializedView, glCanvas.getID());
 	}
 
+	@Override
+	public ASerializedView createDefaultSerializedView() {
+		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView();
+		serializedView.setViewGUIID(getViewGUIID());
+		
+		serializedView.setPathwayTexturesEnabled(true);
+		serializedView.setNeighborhoodEnabled(true);
+		serializedView.setGeneMappingEnabled(true);
+		serializedView.setConnectionLinesEnabled(true);
+		
+		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
+
+		if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
+
+			// FIXME: This is just a temporary solution to check if glyph view
+			// should be added to bucket.
+			try {
+				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
+				SerializedGlyphView glyph1 = new SerializedGlyphView();
+				remoteViews.add(glyph1);			
+				SerializedGlyphView glyph2 = new SerializedGlyphView();
+				remoteViews.add(glyph2);			
+			}
+			catch (IllegalArgumentException e) {
+				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Cannot add glyph to bucket! No glyph data loaded!"));
+			}
+
+			SerializedHeatMapView heatMap = new SerializedHeatMapView();
+			remoteViews.add(heatMap);
+			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
+			remoteViews.add(parCoords);			
+		}
+		
+		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
+		if (remoteViews.size() > 0) {
+			focusLevel.add(remoteViews.remove(0));
+		}
+		serializedView.setFocusViews(focusLevel);
+		serializedView.setStackViews(remoteViews);
+		
+		return serializedView;
+	}
+	
 	@Override
 	public void dispose() {
 		GLRemoteRendering glRemoteView =
@@ -98,5 +102,10 @@ public class GLRemoteRenderingView
 		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
 
 		// TODO: cleanup data entity searcher view
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return ID;
 	}
 }

@@ -2,7 +2,8 @@ package org.caleydo.rcp.view.opengl;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.canvas.glyph.sliderview.SerializedGlyphSliderView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,7 +23,7 @@ public class GLGlyphSliderView
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_GLYPH_SLIDER, glCanvas.getID(), true);
+		createGLEventListener(initSerializedView, glCanvas.getID());
 	}
 
 	public static void createToolBarItems(int iViewID) {
@@ -30,4 +31,17 @@ public class GLGlyphSliderView
 		return;
 
 	}
+
+	@Override
+	public ASerializedView createDefaultSerializedView() {
+		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView();
+		serializedView.setViewGUIID(getViewGUIID());
+		return serializedView;
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return ID;
+	}
+
 }

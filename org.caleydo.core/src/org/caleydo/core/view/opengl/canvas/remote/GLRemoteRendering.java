@@ -223,7 +223,9 @@ public class GLRemoteRendering
 	 */
 	public GLRemoteRendering(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum,
 		final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
+
 		super(glCanvas, sLabel, viewFrustum, true);
+
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
@@ -281,7 +283,7 @@ public class GLRemoteRendering
 
 		arSlerpActions = new ArrayList<SlerpAction>();
 
-		// iAlUninitializedPathwayIDs = new ArrayList<Integer>();
+		containedViewIDs = new ArrayList<Integer>();
 		newViews = new ArrayList<ASerializedView>();
 
 		dragAndDrop = new GLDragAndDrop();

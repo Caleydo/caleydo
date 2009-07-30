@@ -1,6 +1,7 @@
 package org.caleydo.rcp.view.opengl;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.eclipse.swt.SWT;
@@ -33,7 +34,21 @@ public class GLHeatMapView
 		}
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID(), true);
+		createGLEventListener(initSerializedView, glCanvas.getID());
+	}
+
+	@Override
+	public ASerializedView createDefaultSerializedView() {
+		SerializedHeatMapView serializedView = new SerializedHeatMapView();
+
+		serializedView.setViewGUIID(getViewGUIID());
+
+		return serializedView;
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return ID;
 	}
 
 }

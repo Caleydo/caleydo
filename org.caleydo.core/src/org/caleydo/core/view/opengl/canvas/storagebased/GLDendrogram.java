@@ -31,7 +31,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -1090,7 +1089,14 @@ public class GLDendrogram
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		ASerializedView serializedForm;
+		if (bRenderGeneTree) {
+			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView();
+			serializedForm = horizontal;
+		} else {
+			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView ();
+			serializedForm = vertical;
+		}
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

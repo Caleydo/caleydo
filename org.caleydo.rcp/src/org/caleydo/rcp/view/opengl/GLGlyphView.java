@@ -1,6 +1,7 @@
 package org.caleydo.rcp.view.opengl;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.SerializedGlyphView;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLGlyphView
@@ -22,6 +23,19 @@ public class GLGlyphView
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID(), true);
+		createGLEventListener(initSerializedView, glCanvas.getID());
 	}
+
+	@Override
+	public ASerializedView createDefaultSerializedView() {
+		SerializedGlyphView serializedView = new SerializedGlyphView();
+		serializedView.setViewGUIID(getViewGUIID());
+		return serializedView;
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return ID;
+	}
+
 }

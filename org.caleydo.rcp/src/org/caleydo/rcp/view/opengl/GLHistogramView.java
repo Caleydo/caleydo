@@ -3,7 +3,6 @@ package org.caleydo.rcp.view.opengl;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -12,6 +11,7 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
@@ -148,7 +148,7 @@ public class GLHistogramView
 		updateColorLabel();
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_HISTOGRAM, glCanvas.getID(), true);
+		createGLEventListener(initSerializedView, glCanvas.getID());
 	}
 	
 	private void updateColorLabel() {
@@ -276,6 +276,18 @@ public class GLHistogramView
 		// We no not need a private set here (it is taken from the use case)
 		// we only react to the new set event
 		updateColorLabel();
+	}
+
+	@Override
+	public ASerializedView createDefaultSerializedView() {
+		SerializedHistogramView serializedView = new SerializedHistogramView();
+		serializedView.setViewGUIID(getViewGUIID());
+		return serializedView;
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return ID;
 	}
 
 }

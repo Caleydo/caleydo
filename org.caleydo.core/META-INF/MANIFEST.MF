@@ -323,6 +323,7 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.caleydo.core.view.opengl.canvas,
    org.caleydo.core.manager.picking,
    org.caleydo.core.data.selection",
+ org.caleydo.core.view.opengl.canvas.hyperbolic,
  org.caleydo.core.view.opengl.canvas.listener;
   uses:="org.caleydo.core.data.mapping,
    org.caleydo.core.data.collection,

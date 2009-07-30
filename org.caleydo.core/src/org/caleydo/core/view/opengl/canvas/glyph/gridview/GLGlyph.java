@@ -46,7 +46,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -1163,7 +1162,7 @@ public class GLGlyph
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedGlyphView serializedForm = new SerializedGlyphView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

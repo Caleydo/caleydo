@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
-import static org.caleydo.core.view.opengl.canvas.histogram.HistogramRenderStyle.SIDE_SPACING;
+import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
@@ -14,25 +14,19 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.ADrawAbleObject;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
-import gleem.linalg.Vec3f;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ATreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 
 
@@ -344,7 +338,7 @@ public class GLHyperbolic
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedHyperbolicView serializedForm = new SerializedHyperbolicView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm; 
 	}

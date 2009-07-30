@@ -113,7 +113,6 @@ public class GLRadialHierarchy
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		partialDiscTree = new Tree<PartialDisc>();
 		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
-		System.out.println("cst imax=" + this.iMaxDisplayedHierarchyDepth);
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
 		navigationHistory.setDrawingController(drawingController);
@@ -303,7 +302,6 @@ public class GLRadialHierarchy
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
-			System.out.println("drt imax=" + this.iMaxDisplayedHierarchyDepth);
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -636,7 +634,6 @@ public class GLRadialHierarchy
 			navigationHistory.setCurrentMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 			setDisplayListDirty();
 		}
-		System.out.println("set imax=" + this.iMaxDisplayedHierarchyDepth);
 	}
 
 	/**

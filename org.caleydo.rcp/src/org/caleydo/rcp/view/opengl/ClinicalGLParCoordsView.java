@@ -1,6 +1,7 @@
 package org.caleydo.rcp.view.opengl;
 
-import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
 import org.eclipse.swt.widgets.Composite;
 
 public class ClinicalGLParCoordsView
@@ -19,7 +20,21 @@ public class ClinicalGLParCoordsView
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES, glCanvas.getID(), true);
+		createGLEventListener(initSerializedView, glCanvas.getID());
+	}
+
+	@Override
+	public ASerializedView createDefaultSerializedView() {
+		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView();
+
+		serializedView.setViewGUIID(getViewGUIID());
+
+		return serializedView;
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return ID;
 	}
 
 }

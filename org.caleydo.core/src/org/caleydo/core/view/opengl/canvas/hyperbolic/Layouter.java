@@ -1,31 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
-import static org.caleydo.core.view.opengl.canvas.histogram.HistogramRenderStyle.SIDE_SPACING;
-
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.picking.EPickingMode;
-import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.DefaultNode;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 
 /**
