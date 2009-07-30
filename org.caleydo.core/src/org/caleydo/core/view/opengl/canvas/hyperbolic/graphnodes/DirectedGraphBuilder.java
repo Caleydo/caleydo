@@ -12,45 +12,45 @@ import org.jgrapht.graph.DefaultEdge;
 
 public final class DirectedGraphBuilder
 	implements IDirectedGraphBuilder {
-	
+
 	DirectedGraph<ADrawableNode, DefaultEdge> graph;
 
 	private ADrawableNode rootNode;
-	
+
 	private HashMap<Integer, ADrawableNode> hashNodes;
-	
+
 	int iDeph = 0;
-	
+
 	int iNumberOfNodes = 0;
-	
-	//ArrayList<NodeType> folios;
+
+	// ArrayList<NodeType> folios;
 	private HashMap<Integer, ArrayList<DefaultNode>> layerMap;
-	
+
 	/**
 	 * Constructor
 	 */
-	
-	public DirectedGraphBuilder()
-	{
+
+	public DirectedGraphBuilder() {
 		graph = new DefaultDirectedGraph<ADrawableNode, DefaultEdge>(DefaultEdge.class);
 		hashNodes = new HashMap<Integer, ADrawableNode>();
 	}
-//	@Override
-//	public ADrawableNode getChildren(ADrawableNode parent) {
-//		Set<DefaultEdge> setEdges = graph.outgoingEdgesOf(parent);
-//
-//		ArrayList<ADrawableNode> alNodes = new ArrayList<ADrawableNode>();
-//		for (DefaultEdge tempEdge : setEdges) {
-//			alNodes.add(graph.getEdgeTarget(tempEdge));
-//		}
-//
-//		Collections.sort(alNodes);
-//
-//		if (alNodes.isEmpty())
-//			return null;
-//		else
-//			return alNodes;
-//	}
+
+	// @Override
+	// public ADrawableNode getChildren(ADrawableNode parent) {
+	// Set<DefaultEdge> setEdges = graph.outgoingEdgesOf(parent);
+	//
+	// ArrayList<ADrawableNode> alNodes = new ArrayList<ADrawableNode>();
+	// for (DefaultEdge tempEdge : setEdges) {
+	// alNodes.add(graph.getEdgeTarget(tempEdge));
+	// }
+	//
+	// Collections.sort(alNodes);
+	//
+	// if (alNodes.isEmpty())
+	// return null;
+	// else
+	// return alNodes;
+	// }
 
 	@Override
 	public int getDephOfDirectedGraph() {
@@ -97,6 +97,7 @@ public final class DirectedGraphBuilder
 		increaseNumberOfNodes();
 
 	}
+
 	@Override
 	public void setLayerOfNode(int layer) {
 		// TODO Auto-generated method stub
@@ -115,13 +116,12 @@ public final class DirectedGraphBuilder
 		graph.addVertex(rootNode);
 		iDeph = 1;
 	}
-	
-	public int getNumberOfNodesInLayer(int layer)
-	{
+
+	public int getNumberOfNodesInLayer(int layer) {
 		return layerMap.get(layer).size();
 	}
-	private void increaseNumberOfNodes()
-	{
+
+	private void increaseNumberOfNodes() {
 		iNumberOfNodes++;
 	}
 

@@ -1,76 +1,21 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
+import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 
 /**
  * Implementation of a draw able TestNode, just to show how our nodes would work.
  * 
  * @author Georg Neubauer
- *
  */
 public final class TestNode
 	extends ADrawableNode {
+
 	public TestNode(String nodeName, int iComparableValue) {
 		super(nodeName, iComparableValue);
-		this.mRepresantations.put(EDrawAbleNodeDetailLevel.VeryHigh, DrawAbleObjectsFactory.getDrawAbleObject("Square"));
-		this.mRepresantations.put(EDrawAbleNodeDetailLevel.High, DrawAbleObjectsFactory.getDrawAbleObject("Fallback"));
+		for (EDrawAbleNodeDetailLevel e : EDrawAbleNodeDetailLevel.values())
+			mRepresantations.put(e,
+				DrawAbleObjectsFactory.getDrawAbleObject(HyperbolicRenderStyle.DA_TEST_NODE_DL_OBJ.valueOf(
+					e.toString()).toString()));
 	}
 }
-/*
-//	@Override
-//	public void drawAtPostion(GL gl, float fXCoord, float fYCoord, float fHeight, float fWidth, EDrawAbleNodeDetailLevel eDetailLevel) {
-//		
-//		this.fXCoord = fXCoord;
-//		this.fYCoord = fYCoord;
-//		this.fHeight = fHeight;
-//		this.fWidth = fWidth;
-//		this.gl = gl;
-//		
-//		switch(eDetailLevel){
-//			case VeryHigh: 
-//			case High:
-//			case Normal:
-//			case Low:
-//			case VeryLow:
-//		}
-//		
-//		
-//		return 0;
-//	}
-
-//	@Override
-//	protected void drawDetailLevelHigh() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	protected void drawDetailLevelLow() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	protected void drawDetailLevelNormal() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	protected void drawDetailLevelVeryHigh() {
-//		// Just a little example, draws polygon
-//		gl.glColor4f(1, 0, 0, 0.5f);
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(fXCoord + fWidth, fYCoord + fHeight, 0.0f);
-//		gl.glVertex3f(fXCoord + fWidth, fYCoord - fHeight, 0.0f);
-//		gl.glVertex3f(fXCoord - fWidth, fYCoord - fHeight, 0.0f);
-//		gl.glVertex3f(fXCoord - fWidth, fYCoord + fHeight, 0.0f);
-//		gl.glEnd();
-//		gl.glFlush();
-//	}
-//
-//	@Override
-//	protected void drawDetailLevelVeryLow() {
-//		// TODO Auto-generated method stub
-//		
-//	}*/

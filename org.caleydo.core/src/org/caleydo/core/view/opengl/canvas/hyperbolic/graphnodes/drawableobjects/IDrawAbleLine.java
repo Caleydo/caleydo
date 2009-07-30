@@ -1,14 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
 import gleem.linalg.Vec3f;
-
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 
-
 public interface IDrawAbleLine {
-	
+
 	/**
 	 * Draw the object at a certain position.
 	 * 
@@ -19,6 +15,7 @@ public interface IDrawAbleLine {
 	 * @return
 	 */
 	public void drawLineFromStartToEnd(GL gl, Vec3f pStartPoint, Vec3f pEndPoint, float fThickness);
+
 	/**
 	 * Set the background color of the draw able object type
 	 * 
@@ -37,5 +34,3 @@ public interface IDrawAbleLine {
 	 */
 	void setLineAlpha(float fAlpha);
 }
-
-

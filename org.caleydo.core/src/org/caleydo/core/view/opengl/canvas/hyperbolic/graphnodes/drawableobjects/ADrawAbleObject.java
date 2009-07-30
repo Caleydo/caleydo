@@ -19,7 +19,7 @@ public abstract class ADrawAbleObject
 	protected float fGreen = 0;
 	protected float fBlue = 0;
 	protected float fAlpha = 1;
-	
+
 	@Override
 	public abstract ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
 		float fHeight, float fWidth);

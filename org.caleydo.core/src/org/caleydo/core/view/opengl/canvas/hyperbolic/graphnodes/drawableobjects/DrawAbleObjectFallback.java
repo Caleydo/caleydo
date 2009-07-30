@@ -18,9 +18,9 @@ public class DrawAbleObjectFallback
 	extends ADrawAbleObject {
 
 	public DrawAbleObjectFallback() {
-		this.fRed = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSHEME[0];
-		this.fGreen = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSHEME[1];
-		this.fBlue = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSHEME[2];
+		this.fRed = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[0];
+		this.fGreen = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[1];
+		this.fBlue = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[2];
 		this.fAlpha = HyperbolicRenderStyle.DA_OBJ_FALLBACK_ALPHA;
 	}
 
@@ -33,17 +33,20 @@ public class DrawAbleObjectFallback
 		radius = Math.min(fHeight / 2f, fWidth / 2f);
 		gl.glBegin(GL.GL_POLYGON);
 		for (int i = 0; i < 180; i++) {
-			angle = (float) (i*2*Math.PI / 180f);
-			gl.glVertex3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math.sin(angle) * radius), 0.0f);
+			angle = (float) (i * 2 * Math.PI / 180f);
+			gl.glVertex3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math.sin(angle)
+				* radius), 0.0f);
 		}
 		gl.glEnd();
 		gl.glFlush();
-		
+
 		ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
-		
-		for(int i = 0; i < HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS; i++){
-			angle = (float) (i*2*Math.PI / HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS);
-			alPoints.add(new Vec3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math.sin(angle) * radius), fZCoord));
+
+		for (int i = 0; i < HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS; i++) {
+			angle = (float) (i * 2 * Math.PI / HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS);
+			alPoints.add(new Vec3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math
+				.sin(angle)
+				* radius), fZCoord));
 		}
 		return alPoints;
 	}

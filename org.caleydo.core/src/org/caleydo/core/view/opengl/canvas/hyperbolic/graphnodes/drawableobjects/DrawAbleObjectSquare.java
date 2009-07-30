@@ -17,11 +17,17 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 public class DrawAbleObjectSquare
 	extends ADrawAbleObject {
 
+	public DrawAbleObjectSquare() {
+		this.fRed = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[0];
+		this.fGreen = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[1];
+		this.fBlue = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[2];
+		this.fAlpha = HyperbolicRenderStyle.DA_OBJ_SQUARE_ALPHA;
+	}
+	
 	@Override
 	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
 		float fHeight, float fWidth) {
-		// Just a little example, draws polygon
-		float fDrawWidth = fWidth/2f;
+		float fDrawWidth = fWidth / 2f;
 		float fDrawHeight = fHeight / 2f;
 		gl.glColor4f(this.fRed, this.fGreen, this.fBlue, this.fAlpha);
 		gl.glBegin(GL.GL_POLYGON);
@@ -44,14 +50,18 @@ public class DrawAbleObjectSquare
 
 		// up, down
 		for (int i = 1; i < iSegPerLine; i++) {
-			alPoints.add(new Vec3f(fXCoord + fDrawWidth - fWidth / iSegPerLine * i , fYCoord + fDrawHeight, fZCoord));
-			alPoints.add(new Vec3f(fXCoord + fDrawWidth - fWidth / iSegPerLine * i, fYCoord - fDrawHeight, fZCoord));
+			alPoints.add(new Vec3f(fXCoord + fDrawWidth - fWidth / iSegPerLine * i, fYCoord + fDrawHeight,
+				fZCoord));
+			alPoints.add(new Vec3f(fXCoord + fDrawWidth - fWidth / iSegPerLine * i, fYCoord - fDrawHeight,
+				fZCoord));
 		}
-		
+
 		// left, right
 		for (int i = 1; i < iSegPerLine; i++) {
-			alPoints.add(new Vec3f(fXCoord + fDrawWidth, fYCoord + fDrawHeight - fHeight / iSegPerLine * i, fZCoord));
-			alPoints.add(new Vec3f(fXCoord - fDrawWidth, fYCoord + fDrawHeight - fHeight / iSegPerLine * i, fZCoord));
+			alPoints.add(new Vec3f(fXCoord + fDrawWidth, fYCoord + fDrawHeight - fHeight / iSegPerLine * i,
+				fZCoord));
+			alPoints.add(new Vec3f(fXCoord - fDrawWidth, fYCoord + fDrawHeight - fHeight / iSegPerLine * i,
+				fZCoord));
 		}
 		return alPoints;
 	}

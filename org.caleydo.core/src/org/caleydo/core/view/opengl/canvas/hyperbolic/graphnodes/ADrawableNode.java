@@ -6,7 +6,6 @@ import java.util.EnumMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 
 /**
@@ -19,11 +18,6 @@ public abstract class ADrawableNode
 	implements IDrawAbleNode, Comparable<ADrawableNode> {
 	String nodeName;
 	int iComparableValue;
-	protected float fXCoord = 0;
-	protected float fYCoord = 0;
-	protected float fZCoord = 0;
-	protected float fHeight = 0;
-	protected float fWidth = 0;
 	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
 	protected int iLayer;
 
@@ -36,7 +30,8 @@ public abstract class ADrawableNode
 	public ADrawableNode(String nodeName, int iComparableValue) {
 		this.nodeName = nodeName;
 		this.iComparableValue = iComparableValue;
-		mRepresantations = new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
+		mRepresantations =
+			new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
 	}
 
 	/**
@@ -61,16 +56,10 @@ public abstract class ADrawableNode
 	// TODO: needs implementation of GLList
 
 	@Override
-	public final ArrayList<Vec3f> drawAtPostion(GL gl, float fXCoord, float fYCoord, float fZCoord, float fHeight,
-		float fWidth, EDrawAbleNodeDetailLevel eDetailLevel) {
-		this.fXCoord = fXCoord;
-		this.fYCoord = fYCoord;
-		this.fZCoord = fZCoord;
-		this.fHeight = fHeight;
-		this.fWidth = fWidth;
-		
-		return mRepresantations.get(eDetailLevel).drawObjectAtPosition(gl, fXCoord, fYCoord, fZCoord, fHeight,
-			fWidth);
+	public final ArrayList<Vec3f> drawAtPostion(GL gl, float fXCoord, float fYCoord, float fZCoord,
+		float fHeight, float fWidth, EDrawAbleNodeDetailLevel eDetailLevel) {
+		return mRepresantations.get(eDetailLevel).drawObjectAtPosition(gl, fXCoord, fYCoord, fZCoord,
+			fHeight, fWidth);
 	}
 
 	/**
@@ -82,24 +71,22 @@ public abstract class ADrawableNode
 	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleObject iObject) {
 		mRepresantations.put(eDetailLevel, iObject);
 	}
-	
+
 	/**
 	 * Set the Tree-Layer of the Node
 	 * 
 	 * @param iLayer
 	 */
-	public final void setLayer(int iLayer)
-	{
+	public final void setLayer(int iLayer) {
 		this.iLayer = iLayer;
 	}
-	
+
 	/**
 	 * Get the Tree-Layer of the node
-	 *  
+	 * 
 	 * @return iLayer
 	 */
-	public final int getLayer()
-	{
+	public final int getLayer() {
 		return this.iLayer;
 	}
 }

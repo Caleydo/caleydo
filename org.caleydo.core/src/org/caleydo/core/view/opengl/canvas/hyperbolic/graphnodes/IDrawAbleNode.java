@@ -26,9 +26,6 @@ public interface IDrawAbleNode {
 	 * @param eDetailLevel
 	 * @return
 	 */
-
 	ArrayList<Vec3f> drawAtPostion(GL gl, float fXCoord, float fYCoord, float fZCoord, float fHeight,
 		float fWidth, EDrawAbleNodeDetailLevel eDetailLevel);
-
-
 }

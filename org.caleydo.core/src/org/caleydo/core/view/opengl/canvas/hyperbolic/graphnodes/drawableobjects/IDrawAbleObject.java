@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 /**
- * Defines the interface to draw able objects, held by draw able nodes with reference to
- * a specific detail level.
+ * Defines the interface to draw able objects, held by draw able nodes with reference to a specific detail
+ * level.
  * 
  * @author Georg Neubauer
  */
@@ -24,7 +24,9 @@ public interface IDrawAbleObject {
 	 * @param fWidth
 	 * @return
 	 */
-	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth);
+	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
+		float fHeight, float fWidth);
+
 	/**
 	 * Set the background color of the draw able object type
 	 * 

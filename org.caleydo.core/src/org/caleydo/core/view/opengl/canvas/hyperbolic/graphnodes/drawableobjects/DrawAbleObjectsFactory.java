@@ -14,7 +14,7 @@ import javax.media.opengl.GL;
  * @author Georg Neubauer
  */
 public final class DrawAbleObjectsFactory {
-	public static ADrawAbleObject getDrawAbleObject(String str) {
+	public static IDrawAbleObject getDrawAbleObject(String str) {
 		if (str == "Fallback")
 			return new DrawAbleObjectFallback();
 		else if (str == "Square")
