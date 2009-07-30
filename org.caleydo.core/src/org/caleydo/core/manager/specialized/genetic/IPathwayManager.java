@@ -38,4 +38,10 @@ public interface IPathwayManager
 	public void notifyPathwayLoadingFinished(boolean bIsPathwayLoadingFinisched);
 
 	public void waitUntilPathwayLoadingIsFinished();
+	
+	/**
+	 * Obtains the pathway loading state, <code>true</code> means that pathway-loading is finished.
+	 * @return state of pathway loading
+	 */
+	public boolean isPathwayLoadingFinished();
 }

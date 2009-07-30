@@ -45,6 +45,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -96,7 +97,6 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
-import org.caleydo.core.view.serialize.ASerializedView;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Point;
 
@@ -2303,7 +2303,9 @@ public class GLRemoteRendering
 			containedViewIDs.clear();
 		}
 
-		generalManager.getPathwayManager().resetPathwayVisiblityState();
+		if (reinitialize) {
+			generalManager.getPathwayManager().resetPathwayVisiblityState();
+		}
 
 		// Send out remove broadcast for views that are currently slerped
 		for (SlerpAction slerpAction : arSlerpActions) {
@@ -2503,7 +2505,8 @@ public class GLRemoteRendering
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
-		if (arSlerpActions.isEmpty()) {
+		if (GeneralManager.get().getPathwayManager().isPathwayLoadingFinished() &&
+			arSlerpActions.isEmpty()) {
 			if (!newViews.isEmpty()) {
 				ASerializedView serView = newViews.remove(0);
 				AGLEventListener view = createView(gl, serView);

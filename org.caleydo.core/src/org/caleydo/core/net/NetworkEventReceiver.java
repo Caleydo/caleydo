@@ -87,7 +87,7 @@ public class NetworkEventReceiver
 	public void handleNetworkEvent(String eventString) {
 		// log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "NetworkEventReceiver.handleNetworkEvent(): received event=" + eventString));
 		StringReader xmlInputReader = new StringReader(eventString);
-		JAXBContext jc = GeneralManager.get().getNetworkManager().getJaxbContext();
+		JAXBContext jc = GeneralManager.get().getSerializationManager().getEventContext();
 		try {
 			Unmarshaller unmarshaller = jc.createUnmarshaller();
 			AEvent event = (AEvent) unmarshaller.unmarshal(xmlInputReader);

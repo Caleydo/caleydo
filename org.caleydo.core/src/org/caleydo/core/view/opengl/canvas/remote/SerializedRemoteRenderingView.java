@@ -3,15 +3,19 @@ package org.caleydo.core.view.opengl.canvas.remote;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Serialized form of the remote-rendering view (bucket). 
  * @author Werner Puff
  */
+@XmlRootElement
+@XmlType
 public class SerializedRemoteRenderingView 
 	extends ASerializedView {
 

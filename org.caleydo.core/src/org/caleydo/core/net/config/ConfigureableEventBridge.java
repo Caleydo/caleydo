@@ -10,7 +10,7 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.ListenerMap;
 import org.caleydo.core.net.EventFilterBridge;
-import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.serialize.SerializationManager;
 
 public class ConfigureableEventBridge
 	implements IConfigureableEventList {
@@ -26,7 +26,7 @@ public class ConfigureableEventBridge
 
 	@Override
 	public Collection<Class<? extends AEvent>> getAllEventTypes() {
-		return NetworkManager.getAllEventTypes();
+		return SerializationManager.getSerializeableEventTypes();
 	}
 
 	@Override

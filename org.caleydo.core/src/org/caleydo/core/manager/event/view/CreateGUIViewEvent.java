@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedView;
 
 /**
  * Event to create SWT-views from its serialized form. 

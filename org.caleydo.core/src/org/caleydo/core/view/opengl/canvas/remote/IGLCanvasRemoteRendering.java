@@ -1,10 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
-import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Interface for accessing views that remotely render other views.

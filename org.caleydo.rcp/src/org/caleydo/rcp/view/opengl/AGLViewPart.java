@@ -1,8 +1,15 @@
 package org.caleydo.rcp.view.opengl;
 
 import java.awt.Frame;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
@@ -11,6 +18,8 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -19,6 +28,9 @@ import org.caleydo.rcp.view.CaleydoViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.PartInitException;
 
 /**
  * Shared object for all Caleydo RCP OpenGL views.
@@ -28,10 +40,14 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class AGLViewPart
 	extends CaleydoViewPart {
+
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected AGLEventListener glEventListener;
 
+	/** serialized representation of the view to initialize the view itself */
+	protected ASerializedView initSerializedView;
+	
 	/**
 	 * Contains view IDs for initially contained remote rendered views
 	 */
@@ -129,6 +145,51 @@ public abstract class AGLViewPart
 	public void createPartControl(Composite parent) {
 		parentComposite = new Composite(parent, SWT.EMBEDDED);
 		// fillToolBar();
+	}
+
+	@Override
+	public void init(IViewSite site, IMemento memento) throws PartInitException {
+		super.init(site, memento);
+		if (memento != null) {
+			SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+			JAXBContext jaxbContext = serializationManager.getViewContext();
+			Unmarshaller unmarshaller;
+			try {
+				unmarshaller = jaxbContext.createUnmarshaller();
+			} catch (JAXBException ex) {
+				throw new RuntimeException("could not create xml unmarshaller", ex);
+			}
+			
+			StringReader xmlInputReader = new StringReader(memento.getString("serialized"));
+			try {
+				initSerializedView = (ASerializedView) unmarshaller.unmarshal(xmlInputReader);
+			} catch (JAXBException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+
+		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		JAXBContext jaxbContext = serializationManager.getViewContext();
+		Marshaller marshaller = null;
+		try {
+			marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("could not create xml marshaller", ex);
+		}
+
+		StringWriter xmlOutputWriter = new StringWriter();
+		try {
+			marshaller.marshal(glEventListener.getSerializableRepresentation(), xmlOutputWriter);
+			String xmlOutput = xmlOutputWriter.getBuffer().toString();
+			memento.putString("serialized", xmlOutput);
+		} catch (JAXBException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public void setGLData(final GLCaleydoCanvas glCanvas, final AGLEventListener glEventListener) {

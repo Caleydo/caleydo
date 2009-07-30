@@ -1,4 +1,4 @@
-package org.caleydo.core.view.serialize;
+package org.caleydo.core.serialize;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;

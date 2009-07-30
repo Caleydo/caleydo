@@ -8,73 +8,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.data.ClusterProgressEvent;
-import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
-import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
-import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
-import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
-import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
-import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
-import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
-import org.caleydo.core.manager.event.view.ViewActivationEvent;
-import org.caleydo.core.manager.event.view.browser.ChangeQueryTypeEvent;
-import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.event.view.glyph.GlyphChangePersonalNameEvent;
-import org.caleydo.core.manager.event.view.glyph.GlyphSelectionBrushEvent;
-import org.caleydo.core.manager.event.view.glyph.GlyphUpdatePositionModelEvent;
-import org.caleydo.core.manager.event.view.glyph.RemoveUnselectedGlyphsEvent;
-import org.caleydo.core.manager.event.view.glyph.SetPositionModelEvent;
-import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
-import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
-import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
-import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.pathway.DisableNeighborhoodEvent;
-import org.caleydo.core.manager.event.view.pathway.DisableTexturesEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
-import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
-import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
-import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
-import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
-import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
-import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
-import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
-import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
-import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
-import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
-import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
-import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
-import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
-import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
-import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
-import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
-import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.event.ConnectToServerEvent;
 import org.caleydo.core.net.event.ConnectToServerListener;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.swt.collab.RedrawCollabViewEvent;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
@@ -134,9 +77,6 @@ public class NetworkManager
 	/** list of connected caleydo applications */
 	private List<Connection> connections;
 
-	/** central JAXBContext for serializing events and views for network transmission */
-	private JAXBContext jaxbContext = null;
-
 	/** {@link IGeneralManager} of this caleydo application */
 	private IGeneralManager generalManager;
 
@@ -186,9 +126,9 @@ public class NetworkManager
 		// TODO check if already started
 
 		networkUtils = new NetworkUtils();
-		
+
 		createGlobalPublisher();
-		createJAXBContext();
+
 		registerEventListeners();
 		// createTestClientConnection();
 		
@@ -269,25 +209,6 @@ public class NetworkManager
 		status = STATUS_STOPPED;
 		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 		centralEventPublisher.triggerEvent(event);
-	}
-
-	/**
-	 * Creates the {@link JAXBContext} to serialize the network traffic.
-	 * @return JAXBContext for network related serialization
-	 */
-	private JAXBContext createJAXBContext() {
-
-		Collection<Class<? extends AEvent>>eventTypes = NetworkManager.getAllEventTypes();
-		Class<?>[] classes = new Class<?>[eventTypes.size()];
-		classes = eventTypes.toArray(classes);
-
-		try {
-			jaxbContext = JAXBContext.newInstance(classes);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create jaxb context.", ex);
-		}
-
-		return jaxbContext;
 	}
 
 	/**
@@ -417,7 +338,7 @@ public class NetworkManager
 	 * @return event-classes to transmit over the network
 	 */
 	public Collection<Class<? extends AEvent>> getEventBridgeConfiguration() {
-		return NetworkManager.getAllEventTypes();
+		return SerializationManager.getSerializeableEventTypes();
 	}
 
 	/**
@@ -434,87 +355,6 @@ public class NetworkManager
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		listener.handleEvent(event);
-	}
-
-	/**
-	 * Generates and retruns a Collection of all known events.
-	 * 
-	 * @return event-classes to transmit over the network
-	 */
-	public static Collection<Class<? extends AEvent>> getAllEventTypes() {
-		Collection<Class<? extends AEvent>> eventTypes = new ArrayList<Class<? extends AEvent>>();
-
-		eventTypes.add(LoadPathwayEvent.class);
-		eventTypes.add(SelectionCommandEvent.class);
-		eventTypes.add(SelectionUpdateEvent.class);
-		eventTypes.add(UpdateColorMappingEvent.class);
-		eventTypes.add(CreateGUIViewEvent.class);
-		eventTypes.add(EnableConnectionLinesEvent.class);
-		eventTypes.add(DisableConnectionLinesEvent.class);
-		eventTypes.add(LoadPathwaysByGeneEvent.class);
-		eventTypes.add(ResetRemoteRendererEvent.class);
-		eventTypes.add(ToggleNavigationModeEvent.class);
-		eventTypes.add(ToggleZoomEvent.class);
-		eventTypes.add(ChangeOrientationParallelCoordinatesEvent.class);
-		eventTypes.add(PreventOcclusionEvent.class);
-		eventTypes.add(UseRandomSamplingEvent.class);
-		eventTypes.add(AngularBrushingEvent.class);
-		eventTypes.add(ApplyCurrentSelectionToVirtualArrayEvent.class);
-		eventTypes.add(BookmarkEvent.class);
-		eventTypes.add(ChangeColorModeEvent.class);
-		eventTypes.add(GoBackInHistoryEvent.class);
-		eventTypes.add(GoForthInHistoryEvent.class);
-		eventTypes.add(SetMaxDisplayedHierarchyDepthEvent.class);
-		eventTypes.add(UpdateDepthSliderPositionEvent.class);
-		eventTypes.add(RedrawViewEvent.class);
-		eventTypes.add(ResetAxisSpacingEvent.class);
-		eventTypes.add(ResetParallelCoordinatesEvent.class);
-		eventTypes.add(UpdateViewEvent.class);
-		eventTypes.add(VirtualArrayUpdateEvent.class);
-		eventTypes.add(ClearSelectionsEvent.class);
-		eventTypes.add(RemoveViewSpecificItemsEvent.class);
-		eventTypes.add(ResetAllViewsEvent.class);
-		eventTypes.add(ViewActivationEvent.class);
-		eventTypes.add(TriggerPropagationCommandEvent.class);
-		eventTypes.add(DisableGeneMappingEvent.class);
-		eventTypes.add(DisableNeighborhoodEvent.class);
-		eventTypes.add(DisableTexturesEvent.class);
-		eventTypes.add(EnableGeneMappingEvent.class);
-		eventTypes.add(EnableNeighborhoodEvent.class);
-		eventTypes.add(EnableTexturesEvent.class);
-		eventTypes.add(InfoAreaUpdateEvent.class);
-		eventTypes.add(InterchangeGroupsEvent.class);
-		eventTypes.add(MergeGroupsEvent.class);
-		eventTypes.add(GlyphChangePersonalNameEvent.class);
-		eventTypes.add(GlyphSelectionBrushEvent.class);
-		eventTypes.add(GlyphUpdatePositionModelEvent.class);
-		eventTypes.add(RemoveUnselectedGlyphsEvent.class);
-		eventTypes.add(SetPositionModelEvent.class);
-		eventTypes.add(ChangeQueryTypeEvent.class);
-		eventTypes.add(ChangeURLEvent.class);
-		eventTypes.add(ClustererCanceledEvent.class);
-		eventTypes.add(ClusterProgressEvent.class);
-		eventTypes.add(RenameProgressBarEvent.class);
-		eventTypes.add(ReplaceVirtualArrayEvent.class);
-		eventTypes.add(ReplaceVirtualArrayInUseCaseEvent.class);
-		eventTypes.add(StartClusteringEvent.class);
-		eventTypes.add(ClusterNodeSelectionEvent.class);
-
-//		eventTypes.add(NewSetEvent.class);
-
-		//		eventTypes.add();
-
-		return eventTypes;
-	}
-
-	/**
-	 * Returns the JAXBContext for serialization of objects that have to be transmitted over the network.
-	 * Usually this are events and views.
-	 * 
-	 * @return JAXBContext for network related serialization
-	 */
-	public JAXBContext getJaxbContext() {
-		return jaxbContext;
 	}
 
 	public EventFilterBridge getOutgoingEventBridge() {

@@ -3,7 +3,7 @@ package org.caleydo.rcp.view.swt.toolbar.content;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedView;
 
 /**
  * Abstract super class for toolbar content classes to provide lists of toolbar-actions.

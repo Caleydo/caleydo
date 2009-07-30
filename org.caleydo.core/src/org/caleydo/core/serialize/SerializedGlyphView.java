@@ -1,4 +1,4 @@
-package org.caleydo.core.view.serialize;
+package org.caleydo.core.serialize;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;

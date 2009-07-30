@@ -1,16 +1,18 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.serialize.ASerializedView;
 
 /**
  * Serialized form of a parallel-coordinates-view. 
  * @author Werner Puff
  */
+@XmlRootElement
 @XmlType
 public class SerializedParallelCoordinatesView 
 	extends ASerializedView {

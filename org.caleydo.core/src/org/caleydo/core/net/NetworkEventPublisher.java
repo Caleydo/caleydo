@@ -108,7 +108,7 @@ public class NetworkEventPublisher
 	public void run() {
 		Marshaller marshaller = null;
 		try {
-			JAXBContext jaxbContext = networkManager.getJaxbContext();
+			JAXBContext jaxbContext = GeneralManager.get().getSerializationManager().getEventContext();
 			marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 		} catch (JAXBException ex) {

@@ -9,6 +9,7 @@ import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
@@ -131,4 +132,11 @@ public interface IGeneralManager {
 	 * @return the {@link NetworkManager} of this caleydo application  
 	 */
 	public NetworkManager getNetworkManager();
+
+	/**
+	 * Obtains the {@link SerializationManager} responsible for xml-serialization related tasks 
+	 * @return the {@link SerializationManager} of this caleydo application
+	 */
+	public SerializationManager getSerializationManager();
+
 }

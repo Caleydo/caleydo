@@ -1,8 +1,8 @@
 package org.caleydo.rcp.core.bridge;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.serialize.ASerializedView;
 import org.caleydo.rcp.command.handler.ExitHandler;
 import org.caleydo.rcp.view.opengl.AGLViewPart;
 import org.eclipse.core.commands.ExecutionException;

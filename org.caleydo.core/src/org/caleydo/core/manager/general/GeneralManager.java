@@ -31,6 +31,7 @@ import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -80,6 +81,7 @@ public class GeneralManager
 	private WiiRemote wiiRemote;
 	private TrackDataProvider trackDataProvider;
 	private NetworkManager networkManager;
+	private SerializationManager serializationManager;
 
 	/**
 	 * The use case determines which kind of data is loaded in the views.
@@ -104,6 +106,7 @@ public class GeneralManager
 
 	@Override
 	public void init() {
+		initLogger();
 
 		storageManager = new StorageManager();
 		setManager = new SetManager();
@@ -121,8 +124,8 @@ public class GeneralManager
 		xmlParserManager.initHandlers();
 
 		networkManager = new NetworkManager();
+		serializationManager = new SerializationManager();
 		
-		initLogger();
 		initPreferences();
 
 		resourceLoader = new ResourceLoader();
@@ -347,5 +350,10 @@ public class GeneralManager
 	@Override
 	public NetworkManager getNetworkManager() {
 		return networkManager;
+	}
+
+	@Override
+	public SerializationManager getSerializationManager() {
+		return serializationManager;
 	}
 }

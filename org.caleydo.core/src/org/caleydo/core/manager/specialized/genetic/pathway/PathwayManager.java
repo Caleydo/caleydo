@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.Status;
 public class PathwayManager
 	extends AManager<PathwayGraph>
 	implements IPathwayManager, Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<PathwayGraph, Boolean> hashPathwayToVisibilityState;
@@ -47,7 +48,7 @@ public class PathwayManager
 
 	private PathwayGraph currentPathwayGraph;
 
-	private boolean bIsPathwayLoadingFinished;
+	private boolean pathwayLoadingFinished;
 
 	/**
 	 * Constructor.
@@ -181,12 +182,12 @@ public class PathwayManager
 		return currentPathwayImageMap;
 	}
 
-	public void notifyPathwayLoadingFinished(boolean bIsPathwayLoadingFinisched) {
-		this.bIsPathwayLoadingFinished = bIsPathwayLoadingFinisched;
+	public void notifyPathwayLoadingFinished(boolean pathwayLoadingFinished) {
+		this.pathwayLoadingFinished = pathwayLoadingFinished;
 	}
 
 	public void waitUntilPathwayLoadingIsFinished() {
-		while (!bIsPathwayLoadingFinished) {
+		while (!pathwayLoadingFinished) {
 			try {
 				Thread.sleep(1000);
 			}
@@ -194,5 +195,10 @@ public class PathwayManager
 				throw new IllegalThreadStateException("Pathway loader thread has been interrupted!");
 			}
 		}
+	}
+
+	@Override
+	public boolean isPathwayLoadingFinished() {
+		return pathwayLoadingFinished;
 	}
 }
