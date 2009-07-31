@@ -18,7 +18,7 @@ public class SerializedHierarchicalHeatMapView
 	
 	@Override
 	public ECommandType getCreationCommandType() {
-		return ECommandType.CMD_ID;
+		return ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D;
 	}
 
 	@Override
