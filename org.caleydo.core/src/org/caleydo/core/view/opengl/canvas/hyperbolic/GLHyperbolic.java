@@ -19,17 +19,14 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ATreeLayouter;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
-
-
-
 
 /**
  * Rendering the hyperbolic view.
@@ -39,21 +36,21 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  */
 public class GLHyperbolic
 	extends AGLEventListener {
-	
-	//private Tree<DefaultNode> tree;
+
+	// private Tree<DefaultNode> tree;
 	public Vec3f[] vec;
-	
+
 	boolean bIsInListMode = false;
 
 	boolean bUseDetailLevel = true;
 	ISet set;
-	
-	Tree<ADrawableNode> tree = null;
-	
-	ATreeLayouter layouter = null;
-	
+
+	Tree<ADrawAbleNode> tree = null;
+
+	ITreeLayouter layouter = null;
+
 	HyperbolicRenderStyle renderStyle = null;
-	
+
 	private ColorMappingManager colorMappingManager;
 
 	/**
@@ -63,37 +60,35 @@ public class GLHyperbolic
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHyperbolic(GLCaleydoCanvas glCanvas, final String sLabel,
-		final IViewFrustum viewFrustum) {
+	public GLHyperbolic(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = EManagedObjectType.GL_HYPERBOLIC;
 		colorMappingManager = ColorMappingManager.get();
 		renderStyle = new HyperbolicRenderStyle(viewFrustum);
-		
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
 		alSelectionTypes.add(ESelectionType.NORMAL);
 		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
 		alSelectionTypes.add(ESelectionType.SELECTION);
-		
-		//Build the Test Tree in Constructor
-//		TreeTester tester = new TreeTester();
-//		tree = tester;
-//		tree.runTest();
 
-		tree = new Tree<ADrawableNode>();
-		ADrawableNode test = new TestNode("first Test", 1);
-		//ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
-		//obj.setAlpha(0.8f);
-		//obj.setBgColor3f(0.4f, 0.3f, 0.5f);
-		//test.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh, obj);
-		//obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
-		//obj.setAlpha(0.2f);
-		//obj.setBgColor3f(0.2f, 0.7f, 0.3f);
-		//test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
+		// Build the Test Tree in Constructor
+		// TreeTester tester = new TreeTester();
+		// tree = tester;
+		// tree.runTest();
+
+		tree = new Tree<ADrawAbleNode>();
+		ADrawAbleNode test = new TestNode("first Test", 1);
+		// ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
+		// obj.setAlpha(0.8f);
+		// obj.setBgColor3f(0.4f, 0.3f, 0.5f);
+		// test.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh, obj);
+		// obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
+		// obj.setAlpha(0.2f);
+		// obj.setBgColor3f(0.2f, 0.7f, 0.3f);
+		// test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
 		tree.setRootNode(test);
-		layouter = new LinearTreeLayouter(/*gl,*/ viewFrustum, tree);
+		layouter = new LinearTreeLayouter(viewFrustum);
 	}
 
 	@Override
@@ -108,13 +103,12 @@ public class GLHyperbolic
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-		}
-	
+	}
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener,
-		final IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
@@ -177,106 +171,105 @@ public class GLHyperbolic
 	@Override
 	public void display(GL gl) {
 		processEvents();
-		//GLHelperFunctions.drawAxis(gl);
-		render(gl);
+		gl.glCallList(iGLDisplayListToCall);
+		// GLHelperFunctions.drawAxis(gl);
+		// render(gl);
 		// clipToFrustum(gl);
 		//
 		// gl.glCallList(iGLDisplayListToCall);
 
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-		
-//		if (iPathwayID != -1)
-//		{
-//			PathwayGraph pathwayGraph = generalManager.getPathwayManager().getItem(iPathwayID);
-//			for (IGraphItem node : pathwayGraph.getAllItemsByKind(EGraphItemKind.NODE))
-//			{
-//				System.out.println("Node:" + node);
-//			}
-//		}
-		
+
+		// if (iPathwayID != -1)
+		// {
+		// PathwayGraph pathwayGraph = generalManager.getPathwayManager().getItem(iPathwayID);
+		// for (IGraphItem node : pathwayGraph.getAllItemsByKind(EGraphItemKind.NODE))
+		// {
+		// System.out.println("Node:" + node);
+		// }
+		// }
+
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		layouter.renderTreeLayout(gl, tree);
+		// renderHistogram(gl);
+		// renderColorBars(gl);
+		gl.glEndList();
 	}
 
 	private void render(GL gl) {
-		layouter.renderTreeLayout(gl);
-		
-		
-//		TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
-//		layout.drawGraph(gl);
-//		gl.glFlush();
+		// layouter.renderTreeLayout(gl);
 
-//		gl.glColor4f(1, 0, 0, 1);
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(0, 0, 0);
-//		gl.glVertex3f(0, 1, 0);
-//		gl.glVertex3f(1, 1, 0);
-//		gl.glVertex3f(1, 0, 0);
-//		gl.glEnd();
-	
-//		gl.glColor4f(1, 1, 0, 1);
+		// TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
+		// layout.drawGraph(gl);
+		// gl.glFlush();
 
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex2f(0.0f, 0.0f);
-//		gl.glVertex2f(0.0f, 3.0f);
-//		gl.glVertex2f(1.0f, 0.0f);
-//		gl.glVertex2f(1.0f, 3.0f);
-//		gl.glVertex2f(0.0f, 1.5f);
-//		gl.glVertex2f(1.0f, 1.5f);
-//		gl.glVertex2f(2.0f, 0.0f);
-//		gl.glVertex2f(2.0f, 3.0f);
-//		gl.glVertex2f(2.0f, 1.5f);
-//		gl.glVertex2f(3.0f, 1.5f);
-//		gl.glVertex2f(2.0f, 3.0f);
-//		gl.glVertex2f(0.0f, 5.0f);
-////		 glVertex2f(4.0, 3.0);
-////		 glVertex2f(6.0, 1.5);
-////		 glVertex2f(4.0, 0.0);
-//		gl.glEnd();
-		
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(0.0f, 10.0f, 0.0f); // origin of the line
-//		gl.glVertex3f(200.0f, 14.0f, 0.0f); // ending point of the line
-//		gl.glEnd( );
-		
-//		gl.glColor4f(1, 1, 0, 1);
-//		
-//		gl.glBegin(GL.GL_LINE);
-//
-//		gl.glVertex2f(0.0f, 0.0f);
-//		gl.glVertex2f(5.0f, 3.0f);
-////		gl.glVertex3f(20F, 1F, 0F);
-////		gl.glVertex3f(30F, 2F, 0F);
-////		gl.glVertex3f(40F, 3F, 0F);
-//		gl.glEnd();
-		
-//		gl.glPointSize(5.0f);
-//		gl.glColor4f(0,0,1,1);
-//		gl.glBegin(GL.GL_POINTS);
-//		
-//		gl.glVertex3f(5.0f, 3.0f, 0.0f);
-//		
-//		gl.glEnd();
-//		gl.glFlush();
-		
-		
-//		vec[0] = new Vec3f();
-//		vec[1] = new Vec3f();
-//		vec[2] = new Vec3f();
-//		
-//		vec[0].set(3.0f, 3.0f, 0);
-//		vec[1].set(2.0f, 2.0f, 0);
-//		vec[2].set(1.0f, 1.0f, 0);
+		// gl.glColor4f(1, 0, 0, 1);
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(0, 1, 0);
+		// gl.glVertex3f(1, 1, 0);
+		// gl.glVertex3f(1, 0, 0);
+		// gl.glEnd();
 
+		// gl.glColor4f(1, 1, 0, 1);
 
-		
-//		Spline3D spline = new Spline3D(vec, 1.0F, 1.0F);
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex2f(0.0f, 0.0f);
+		// gl.glVertex2f(0.0f, 3.0f);
+		// gl.glVertex2f(1.0f, 0.0f);
+		// gl.glVertex2f(1.0f, 3.0f);
+		// gl.glVertex2f(0.0f, 1.5f);
+		// gl.glVertex2f(1.0f, 1.5f);
+		// gl.glVertex2f(2.0f, 0.0f);
+		// gl.glVertex2f(2.0f, 3.0f);
+		// gl.glVertex2f(2.0f, 1.5f);
+		// gl.glVertex2f(3.0f, 1.5f);
+		// gl.glVertex2f(2.0f, 3.0f);
+		// gl.glVertex2f(0.0f, 5.0f);
+		// // glVertex2f(4.0, 3.0);
+		// // glVertex2f(6.0, 1.5);
+		// // glVertex2f(4.0, 0.0);
+		// gl.glEnd();
+
+		// gl.glBegin(GL.GL_LINES);
+		// gl.glVertex3f(0.0f, 10.0f, 0.0f); // origin of the line
+		// gl.glVertex3f(200.0f, 14.0f, 0.0f); // ending point of the line
+		// gl.glEnd( );
+
+		// gl.glColor4f(1, 1, 0, 1);
+		//		
+		// gl.glBegin(GL.GL_LINE);
+		//
+		// gl.glVertex2f(0.0f, 0.0f);
+		// gl.glVertex2f(5.0f, 3.0f);
+		// // gl.glVertex3f(20F, 1F, 0F);
+		// // gl.glVertex3f(30F, 2F, 0F);
+		// // gl.glVertex3f(40F, 3F, 0F);
+		// gl.glEnd();
+
+		// gl.glPointSize(5.0f);
+		// gl.glColor4f(0,0,1,1);
+		// gl.glBegin(GL.GL_POINTS);
+		//		
+		// gl.glVertex3f(5.0f, 3.0f, 0.0f);
+		//		
+		// gl.glEnd();
+		// gl.glFlush();
+
+		// vec[0] = new Vec3f();
+		// vec[1] = new Vec3f();
+		// vec[2] = new Vec3f();
+		//		
+		// vec[0].set(3.0f, 3.0f, 0);
+		// vec[1].set(2.0f, 2.0f, 0);
+		// vec[2].set(1.0f, 1.0f, 0);
+
+		// Spline3D spline = new Spline3D(vec, 1.0F, 1.0F);
 
 	}
-	
-
 
 	@Override
 	public String getDetailedInfo() {
@@ -340,7 +333,7 @@ public class GLHyperbolic
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHyperbolicView serializedForm = new SerializedHyperbolicView();
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 }

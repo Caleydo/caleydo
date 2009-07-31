@@ -14,8 +14,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects
  * @author Georg Neubauer
  */
 
-public abstract class ADrawableNode
-	implements IDrawAbleNode, Comparable<ADrawableNode> {
+public abstract class ADrawAbleNode
+	implements IDrawAbleNode, Comparable<ADrawAbleNode> {
 	String nodeName;
 	int iComparableValue;
 	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
@@ -27,7 +27,7 @@ public abstract class ADrawableNode
 	 * @param nodeName
 	 * @param iComparableValue
 	 */
-	public ADrawableNode(String nodeName, int iComparableValue) {
+	public ADrawAbleNode(String nodeName, int iComparableValue) {
 		this.nodeName = nodeName;
 		this.iComparableValue = iComparableValue;
 		mRepresantations =
@@ -44,7 +44,7 @@ public abstract class ADrawableNode
 	}
 
 	@Override
-	public final int compareTo(ADrawableNode node) {
+	public final int compareTo(ADrawAbleNode node) {
 		return this.iComparableValue - node.iComparableValue;
 	}
 

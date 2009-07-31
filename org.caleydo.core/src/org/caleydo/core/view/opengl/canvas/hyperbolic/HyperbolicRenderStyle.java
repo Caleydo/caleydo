@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -11,8 +11,8 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 public class HyperbolicRenderStyle
 	extends GeneralRenderStyle {
 
-	public static final float X_BORDER_SPACING = 0.7f;
-	public static final float Y_BORDER_SPACING = 0.7f;
+	public static final float X_BORDER_SPACING = 0.02f;
+	public static final float Y_BORDER_SPACING = 0.02f;
 
 	public static final float SIDE_SPACING = 0.1f;
 
@@ -21,6 +21,8 @@ public class HyperbolicRenderStyle
 
 	public static final float[] DA_OBJ_SQUARE_COLORSCHEME = { 0.5f, 0.5f, 0.5f };
 	public static final float DA_OBJ_SQUARE_ALPHA = 1;
+	
+	public static final float LIN_TREE_X_SCALING_PER_LAYER = 0.9f;
 	
 	// Define detail level objects for the Test Node implementation
 	public static enum DA_TEST_NODE_DL_OBJ {
@@ -44,7 +46,7 @@ public class HyperbolicRenderStyle
 	 * Specify how many contact points a DA object should return. value must be a multiple of 4 (4, 8, 12,
 	 * 16,...)
 	 */
-	public static final int DA_OBJ_NUM_CONTACT_POINTS = 16;
+	public static final int DA_OBJ_NUM_CONTACT_POINTS = 48;
 
 	public HyperbolicRenderStyle(IViewFrustum viewFrustum) {
 		super(viewFrustum);

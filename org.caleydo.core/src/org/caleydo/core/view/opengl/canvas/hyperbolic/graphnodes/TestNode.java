@@ -9,7 +9,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects
  * @author Georg Neubauer
  */
 public final class TestNode
-	extends ADrawableNode {
+	extends ADrawAbleNode {
 
 	public TestNode(String nodeName, int iComparableValue) {
 		super(nodeName, iComparableValue);

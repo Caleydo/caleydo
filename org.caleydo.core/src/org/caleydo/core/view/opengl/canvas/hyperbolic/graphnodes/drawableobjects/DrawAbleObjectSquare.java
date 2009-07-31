@@ -27,14 +27,13 @@ public class DrawAbleObjectSquare
 	@Override
 	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
 		float fHeight, float fWidth) {
-		float fDrawWidth = fWidth / 2f;
-		float fDrawHeight = fHeight / 2f;
+		float fSideL = Math.min(fWidth, fHeight) / 2f;
 		gl.glColor4f(this.fRed, this.fGreen, this.fBlue, this.fAlpha);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXCoord + fDrawWidth, fYCoord + fDrawHeight, fZCoord);
-		gl.glVertex3f(fXCoord + fDrawWidth, fYCoord - fDrawHeight, fZCoord);
-		gl.glVertex3f(fXCoord - fDrawWidth, fYCoord - fDrawHeight, fZCoord);
-		gl.glVertex3f(fXCoord - fDrawWidth, fYCoord + fDrawHeight, fZCoord);
+		gl.glVertex3f(fXCoord + fSideL, fYCoord + fSideL, fZCoord);
+		gl.glVertex3f(fXCoord + fSideL, fYCoord - fSideL, fZCoord);
+		gl.glVertex3f(fXCoord - fSideL, fYCoord - fSideL, fZCoord);
+		gl.glVertex3f(fXCoord - fSideL, fYCoord + fSideL, fZCoord);
 		gl.glEnd();
 		gl.glFlush();
 
@@ -43,24 +42,24 @@ public class DrawAbleObjectSquare
 		int iSegPerLine = HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS / 4;
 
 		// first add corners
-		alPoints.add(new Vec3f(fXCoord + fDrawWidth, fYCoord + fDrawHeight, fZCoord));
-		alPoints.add(new Vec3f(fXCoord + fDrawWidth, fYCoord - fDrawHeight, fZCoord));
-		alPoints.add(new Vec3f(fXCoord - fDrawWidth, fYCoord + fDrawHeight, fZCoord));
-		alPoints.add(new Vec3f(fXCoord - fDrawWidth, fYCoord - fDrawHeight, fZCoord));
+		alPoints.add(new Vec3f(fXCoord + fSideL, fYCoord + fSideL, fZCoord));
+		alPoints.add(new Vec3f(fXCoord + fSideL, fYCoord - fSideL, fZCoord));
+		alPoints.add(new Vec3f(fXCoord - fSideL, fYCoord + fSideL, fZCoord));
+		alPoints.add(new Vec3f(fXCoord - fSideL, fYCoord - fSideL, fZCoord));
 
 		// up, down
 		for (int i = 1; i < iSegPerLine; i++) {
-			alPoints.add(new Vec3f(fXCoord + fDrawWidth - fWidth / iSegPerLine * i, fYCoord + fDrawHeight,
+			alPoints.add(new Vec3f(fXCoord + fSideL - fWidth / iSegPerLine * i, fYCoord + fSideL,
 				fZCoord));
-			alPoints.add(new Vec3f(fXCoord + fDrawWidth - fWidth / iSegPerLine * i, fYCoord - fDrawHeight,
+			alPoints.add(new Vec3f(fXCoord + fSideL - fWidth / iSegPerLine * i, fYCoord - fSideL,
 				fZCoord));
 		}
 
 		// left, right
 		for (int i = 1; i < iSegPerLine; i++) {
-			alPoints.add(new Vec3f(fXCoord + fDrawWidth, fYCoord + fDrawHeight - fHeight / iSegPerLine * i,
+			alPoints.add(new Vec3f(fXCoord + fSideL, fYCoord + fSideL - fHeight / iSegPerLine * i,
 				fZCoord));
-			alPoints.add(new Vec3f(fXCoord - fDrawWidth, fYCoord + fDrawHeight - fHeight / iSegPerLine * i,
+			alPoints.add(new Vec3f(fXCoord - fSideL, fYCoord + fSideL - fHeight / iSegPerLine * i,
 				fZCoord));
 		}
 		return alPoints;

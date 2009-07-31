@@ -5,7 +5,8 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
  */
 import javax.media.opengl.GL;
 
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 
 /**
@@ -22,7 +23,7 @@ public interface ITreeLayouter {
 	 * @param tree
 	 * @return
 	 */
-	public void setTree(Tree<ADrawableNode> tree);
+//	public void setTree(Tree<IDrawableNode> tree);
 	
 	/**
 	 * Draw the tree layout.
@@ -30,7 +31,7 @@ public interface ITreeLayouter {
 	 * TODO: specify params and maybe naming (espacially GLLists and Animation)
 	 * @return
 	 */
-	public void renderTreeLayout(GL gl);  
+//	public void renderTreeLayout(GL gl);  
 	
 	/**
 	 * Set the boarder space in percent.
@@ -39,4 +40,6 @@ public interface ITreeLayouter {
 	 * @param fYBoarderSpacePercentage
 	 */
 	public void setBoarderSpaces(float fXBoarderSpacePercentage, float fYBoarderSpacePercentage);
+
+	void renderTreeLayout(GL gl, Tree<ADrawAbleNode> tree);
 }

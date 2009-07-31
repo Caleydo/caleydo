@@ -13,11 +13,11 @@ import org.jgrapht.graph.DefaultEdge;
 public final class DirectedGraphBuilder
 	implements IDirectedGraphBuilder {
 
-	DirectedGraph<ADrawableNode, DefaultEdge> graph;
+	DirectedGraph<ADrawAbleNode, DefaultEdge> graph;
 
-	private ADrawableNode rootNode;
+	private ADrawAbleNode rootNode;
 
-	private HashMap<Integer, ADrawableNode> hashNodes;
+	private HashMap<Integer, ADrawAbleNode> hashNodes;
 
 	int iDeph = 0;
 
@@ -31,8 +31,8 @@ public final class DirectedGraphBuilder
 	 */
 
 	public DirectedGraphBuilder() {
-		graph = new DefaultDirectedGraph<ADrawableNode, DefaultEdge>(DefaultEdge.class);
-		hashNodes = new HashMap<Integer, ADrawableNode>();
+		graph = new DefaultDirectedGraph<ADrawAbleNode, DefaultEdge>(DefaultEdge.class);
+		hashNodes = new HashMap<Integer, ADrawAbleNode>();
 	}
 
 	// @Override
@@ -58,7 +58,7 @@ public final class DirectedGraphBuilder
 	}
 
 	@Override
-	public int getLayerOfNode(ADrawableNode node) {
+	public int getLayerOfNode(ADrawAbleNode node) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -69,7 +69,7 @@ public final class DirectedGraphBuilder
 	}
 
 	@Override
-	public ADrawableNode getPartentNode(ADrawableNode child) {
+	public ADrawAbleNode getPartentNode(ADrawAbleNode child) {
 		Set<DefaultEdge> setEdges = graph.incomingEdgesOf(child);
 		DefaultEdge edge = null;
 
@@ -81,17 +81,17 @@ public final class DirectedGraphBuilder
 			return null;
 		}
 
-		ADrawableNode parent = graph.getEdgeSource(edge);
+		ADrawAbleNode parent = graph.getEdgeSource(edge);
 		return parent;
 	}
 
 	@Override
-	public ADrawableNode getRootNode() {
+	public ADrawAbleNode getRootNode() {
 		return rootNode;
 	}
 
 	@Override
-	public void addChild(ADrawableNode child, ADrawableNode parent) {
+	public void addChild(ADrawAbleNode child, ADrawAbleNode parent) {
 		graph.addVertex(child);
 		graph.addEdge(parent, child);
 		increaseNumberOfNodes();
@@ -105,13 +105,13 @@ public final class DirectedGraphBuilder
 	}
 
 	@Override
-	public void setParentNode(ADrawableNode parent) {
+	public void setParentNode(ADrawAbleNode parent) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setRootNode(ADrawableNode rootNode) {
+	public void setRootNode(ADrawAbleNode rootNode) {
 		this.rootNode = rootNode;
 		graph.addVertex(rootNode);
 		iDeph = 1;

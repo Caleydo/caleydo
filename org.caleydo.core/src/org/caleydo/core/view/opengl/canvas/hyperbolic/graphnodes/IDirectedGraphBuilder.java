@@ -1,18 +1,18 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawableNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 
 public interface IDirectedGraphBuilder {
 
-	public void setRootNode(ADrawableNode rootNode);
+	public void setRootNode(ADrawAbleNode rootNode);
 
-	public ADrawableNode getRootNode();
+	public ADrawAbleNode getRootNode();
 
-	public void setParentNode(ADrawableNode parent);
+	public void setParentNode(ADrawAbleNode parent);
 
-	public ADrawableNode getPartentNode(ADrawableNode child);
+	public ADrawAbleNode getPartentNode(ADrawAbleNode child);
 
-	public void addChild(ADrawableNode child, ADrawableNode parent);
+	public void addChild(ADrawAbleNode child, ADrawAbleNode parent);
 
 	// public ADrawableNode getChildren(ADrawableNode parent);
 
@@ -22,6 +22,6 @@ public interface IDirectedGraphBuilder {
 
 	public void setLayerOfNode(int layer);
 
-	public int getLayerOfNode(ADrawableNode node);
+	public int getLayerOfNode(ADrawAbleNode node);
 
 }
