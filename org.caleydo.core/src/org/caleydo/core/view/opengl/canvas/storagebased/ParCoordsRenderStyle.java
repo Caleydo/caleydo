@@ -150,11 +150,18 @@ public class ParCoordsRenderStyle
 	}
 
 	public float getWidthOfCoordinateSystem() {
+		
+		// this checks whether we render a global brush or not
+		float numberOfSpacings = 2;
+		if(pcs.getSet().isSetHomogeneous())
+			numberOfSpacings = 2.5f;
+		
 		if (pcs.bShowSelectionHeatMap)
-			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling()
+			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings * getScaling()
 				- pcs.glSelectionHeatMap.getViewFrustum().getWidth();
+	
 		else
-			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling();
+			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings * getScaling();
 	}
 
 	public float getXAxisStart() {
@@ -171,7 +178,7 @@ public class ParCoordsRenderStyle
 
 	public float getXSpacing() {
 
-		return COORDINATE_SIDE_SPACING * getScaling();
+		return 1.5f * COORDINATE_SIDE_SPACING * getScaling();
 	}
 
 	public float getBottomSpacing() {

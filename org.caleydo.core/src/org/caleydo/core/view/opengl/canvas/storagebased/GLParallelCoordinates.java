@@ -692,6 +692,10 @@ public class GLParallelCoordinates
 		}
 		else {
 
+			if (set.isSetHomogeneous()) {
+				renderGlobalBrush(gl);
+			}
+			
 			renderCoordinateSystem(gl);
 
 			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
@@ -710,9 +714,7 @@ public class GLParallelCoordinates
 
 			renderGates(gl);
 
-			if (set.isSetHomogeneous()) {
-				renderGlobalBrush(gl);
-			}
+	
 
 			// if (bShowSelectionHeatMap) {
 			//
@@ -1313,24 +1315,10 @@ public class GLParallelCoordinates
 
 	private void renderSingleGate(GL gl, Pair<Float, Float> gate, int iAxisID, int iGateID,
 		float fCurrentPosition) {
-		// final float fGateWidth = renderStyle.;
-		// final float fGateTipHeight = renderStyle.GATE_TIP_HEIGHT;
 
 		Float fBottom = gate.getFirst();
 		Float fTop = gate.getSecond();
 
-		// if ((bIsGateMouseOver || bIsDraggingActive) && iGateID ==
-		// iDraggedGateNumber
-		// && draggedObject == EPickingType.GATE_TIP_SELECTION)
-		// {
-		//		
-		// bIsGateMouseOver = false;
-		// }
-		// else
-		// {
-		// fArGateColor = GATE_TIP_COLOR;
-		// }
-		// invisible part for picking the remove button
 		gl.glColor4f(1, 1, 1, 0f);
 		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_GATE, iGateID);
 		gl.glPushName(iPickingID);
@@ -1386,8 +1374,6 @@ public class GLParallelCoordinates
 		gl.glPopAttrib();
 		gl.glPopName();
 
-		// if (detailLevel == EDetailLevel.HIGH)
-		// {
 		// if (set.isSetHomogeneous())
 		// {
 		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
@@ -1398,8 +1384,6 @@ public class GLParallelCoordinates
 		// else
 		// {
 		// // TODO storage based acces
-		// }
-		//
 		// }
 
 		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
@@ -1422,18 +1406,6 @@ public class GLParallelCoordinates
 		gl.glEnd();
 		gl.glPopName();
 		tempTexture.disable();
-
-		// if ((bIsGateMouseOver || bIsDraggingActive) && iGateID ==
-		// iDraggedGateNumber
-		// && draggedObject == EPickingType.GATE_BOTTOM_SELECTION)
-		// {
-		// fArGateColor = POLYLINE_SELECTED_COLOR;
-		// bIsGateMouseOver = false;
-		// }
-		// else
-		// {
-		// fArGateColor = GATE_TIP_COLOR;
-		// }
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BOTTOM_SELECTION, iGateID));
 		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
@@ -1479,8 +1451,6 @@ public class GLParallelCoordinates
 
 		gl.glPopName();
 
-		// if (detailLevel == EDetailLevel.HIGH)
-		// {
 		// if (set.isSetHomogeneous())
 		// {
 		// // float fValue = (float) set.getRawForNormalized(fBottom
@@ -1494,7 +1464,6 @@ public class GLParallelCoordinates
 		// {
 		// // TODO storage based access
 		// }
-		// }
 	}
 
 	private void renderGlobalBrush(GL gl) {
@@ -1505,7 +1474,7 @@ public class GLParallelCoordinates
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 		// gl.glPushName(iPickingID);
 
-		float fXOrigin = -0.2f;
+		float fXOrigin = -0.25f;
 
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(fXOrigin, 0, AXIS_Z);
@@ -1550,6 +1519,17 @@ public class GLParallelCoordinates
 
 		for (Integer iGateID : hashMasterGates.keySet()) {
 			Pair<Float, Float> gate = hashMasterGates.get(iGateID);
+			Float fBottom = gate.getFirst();
+			Float fTop = gate.getSecond();
+
+			gl.glColor4fv(ParCoordsRenderStyle.GATE_BODY_COLOR, 0);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(fXOrigin, fBottom, 0);
+			gl.glVertex3f(viewFrustum.getWidth(), fBottom, 0);
+			gl.glVertex3f(viewFrustum.getWidth(), fTop, 0);
+			gl.glVertex3f(fXOrigin - 0.05f, fTop, 0);
+			gl.glEnd();
+
 			renderSingleGate(gl, gate, -1, iGateID, fXOrigin);
 		}
 
