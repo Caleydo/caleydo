@@ -24,8 +24,10 @@ public class TestLayout
 		testTree = tree;
 	}
 
+	//TODO: DELETE AS SOON AS POSSIBLE!!!
+	
 	public void drawGraph(GL gl) {
-		int iDeph = testTree.getDeph();
+		int iDeph = 1;//testTree.getDeph();
 		DefaultNode root = testTree.getRoot();
 		// float xRootPixel = this.fWidth/2.0f;
 		// float yRootPixel = this.fHight - (this.fHight/100*fBorderSpace);

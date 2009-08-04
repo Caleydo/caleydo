@@ -15,6 +15,7 @@ public class TreeTester {
 //		TreeTester tester = new TreeTester();
 //		tester.runTest();
 //	}
+	//TODO: DELETE AS SOON AS POSSIBLE!!!
 	
 	public void runTest()
 	{
@@ -72,7 +73,7 @@ public class TreeTester {
 //		printChildren(tempNode);
 
 
-		System.out.println(tree.getDephOfTree());
+	//	System.out.println(tree.getDephOfTree());
 		
 		
 	}
