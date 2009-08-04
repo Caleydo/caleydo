@@ -22,7 +22,7 @@ public class HyperbolicRenderStyle
 	public static final float[] DA_OBJ_SQUARE_COLORSCHEME = { 0.5f, 0.5f, 0.5f };
 	public static final float DA_OBJ_SQUARE_ALPHA = 1;
 	
-	public static final float LIN_TREE_X_SCALING_PER_LAYER = 0.9f;
+	public static final float LIN_TREE_Y_SCALING_PER_LAYER = 0.9f;
 	
 	// Define detail level objects for the Test Node implementation
 	public static enum DA_TEST_NODE_DL_OBJ {

@@ -228,7 +228,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 		if (isDepthFlagDirty()) {
 			resetDepthFlag();
-			return determineDepth(rootNode);
+			iDepth = determineDepth(rootNode);
 		}
 		return iDepth;
 	}
@@ -236,24 +236,17 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	private int determineDepth(NodeType node) {
 
 		NodeInfo info = mNodeMap.get(node);
-		// int tmpDepth;
 		if (hasChildren(node)) {
-			int tmpDepth = info.getLayer();
-
+			int tmpDepth = 0;
 			for (NodeType currentNode : getChildren(node)) {
 				int iChildDepth = determineDepth(currentNode);
 				if (tmpDepth <= iChildDepth)
 					tmpDepth = iChildDepth;
 			}
-
-			iDepth = tmpDepth;
-			// info.setLayer(tempDeth);
+			return tmpDepth;
 		}
-		// else{
-		// return iDepth;
-		// }//info.setLayer(1);
-		return info.getLayer();
-
+		else
+			return info.getLayer();
 	}
 
 	public int getNumberOfNodes() {

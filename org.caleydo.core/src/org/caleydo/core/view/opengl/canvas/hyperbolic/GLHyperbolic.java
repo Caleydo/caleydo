@@ -78,7 +78,14 @@ public class GLHyperbolic
 		// tree.runTest();
 
 		tree = new Tree<ADrawAbleNode>();
-		ADrawAbleNode test = new TestNode("first Test", 1);
+		ADrawAbleNode test = new TestNode("first Test", 0);
+		tree.setRootNode(test);
+		for(int i = 1; i<=21; ++i)
+		{
+			ADrawAbleNode test2 = new TestNode("childs", i);
+			tree.addChild(test, test2);
+			test = test2;
+		}
 		// ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
 		// obj.setAlpha(0.8f);
 		// obj.setBgColor3f(0.4f, 0.3f, 0.5f);
@@ -87,7 +94,8 @@ public class GLHyperbolic
 		// obj.setAlpha(0.2f);
 		// obj.setBgColor3f(0.2f, 0.7f, 0.3f);
 		// test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
-		tree.setRootNode(test);
+		
+		//tree.addChild(test, test2);
 		layouter = new LinearTreeLayouter(viewFrustum);
 	}
 

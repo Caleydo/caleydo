@@ -28,13 +28,13 @@ public final class LinearTreeLayouter
 		if (tree == null)
 			return;
 
-		int deph = 30;// tree.getDeph();
-		int iNumNodesInLayer = 1;
+		int deph = tree.getDepth();
+		//int iNumNodesInLayer = 1;
 		IDrawAbleNode rootNode = tree.getRoot();
 
 		float f = 0;
-		for (int i = 0; i <= deph; i++)
-			f = f + (float) Math.pow((double) HyperbolicRenderStyle.LIN_TREE_X_SCALING_PER_LAYER, i);
+		for (int i = 0; i < deph; i++)
+			f = f + (float) Math.pow((double) HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER, i);
 		float fLayerSpacing = fViewSpaceYAbs / f;
 		// float fNodeSpacing = fViewSpaceXAbs / (iNumNodesInLayer + 1);
 		float fYOff = fViewSpaceY[1] - fLayerSpacing;
@@ -46,12 +46,12 @@ public final class LinearTreeLayouter
 				float fXCoord = fViewSpaceX[0] + j * fNodeSpacing;
 				float fZCoord = 0;
 				rootNode.drawAtPostion(gl, fXCoord, fYCoord, fZCoord, fLayerSpacing * 0.8f, fNodeSpacing,
-					EDrawAbleNodeDetailLevel.VeryHigh);
+					EDrawAbleNodeDetailLevel.Low);
 				// positionAndDrawNode(gl, rootNode, i, fLayerSpacing, j,
 				// fNodeSpacing,EDrawAbleNodeDetailLevel.VeryHigh);
 
 			}
-			fLayerSpacing = fLayerSpacing * (float)Math.pow((double)HyperbolicRenderStyle.LIN_TREE_X_SCALING_PER_LAYER, i);
+			fLayerSpacing = fLayerSpacing * HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER;
 			fYOff = fYOff - fLayerSpacing;
 		}
 
