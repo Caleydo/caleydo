@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.NodeInfo;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -25,20 +26,37 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 	private HashMap<Integer, NodeType> hashNodes;
 
+	private int iDepth;
+
+	private boolean bDepthFlag;
+
+	private HashMap<NodeType, NodeInfo> mNodeMap;
+
+	private HashMap<Integer, Integer> mLayerMap;
+
 	public Tree() {
 
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
 		hashNodes = new HashMap<Integer, NodeType>();
+		mNodeMap = new HashMap<NodeType, NodeInfo>();
+		mLayerMap = new HashMap<Integer, Integer>();
 
 	}
 
-	public void setHashMap(HashMap<Integer, NodeType> hashNodes){
+	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
 		this.hashNodes = hashNodes;
 	}
-	
+
 	public void setRootNode(NodeType rootNode) {
 		this.rootNode = rootNode;
 		graph.addVertex(rootNode);
+
+		NodeInfo info = new NodeInfo("root", true, 1);
+		mNodeMap.put(this.rootNode, info);
+
+		increaseNumberOfElementsInLayer(1);
+		setDepthFlag();
+
 		// TODO: this should be removed later on, only for testing purposes
 		if (rootNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
@@ -65,6 +83,21 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public void addChild(NodeType parentNode, NodeType childNode) {
 		graph.addVertex(childNode);
 		graph.addEdge(parentNode, childNode);
+
+		NodeInfo parentInfo = mNodeMap.get(parentNode);
+		int currentLayer = parentInfo.getLayer() + 1;
+		increaseNumberOfElementsInLayer(currentLayer);
+
+		NodeInfo info = new NodeInfo("child", false, currentLayer);
+
+		mNodeMap.put(childNode, info);
+		parentInfo.increaseNumberOfKids();
+
+		for (NodeType tmpChild : getChildren(parentNode)) {
+			NodeInfo tmpInfo = mNodeMap.get(tmpChild);
+			tmpInfo.increaseNumberOfSiblings();
+		}
+		setDepthFlag();
 
 		// TODO: this should be removed later on, only for testing purposes
 		if (childNode instanceof ClusterNode)
@@ -166,4 +199,92 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public NodeType getNodeByNumber(int iClusterNr) {
 		return hashNodes.get(iClusterNr);
 	}
+
+	/**
+	 * Each key in the mLayerMap holds the number of the elements in 
+	 * the particular layer. This function increases the elements - number 
+	 * of the given layer.
+	 * 
+	 * @param layer
+	 *            Its is the key of the layerMap, representing the layer
+	 */
+	public void increaseNumberOfElementsInLayer(int layer) {
+		if (mLayerMap.containsKey(layer))
+			mLayerMap.put(layer, mLayerMap.get(layer) + 1);
+		else
+			mLayerMap.put(layer, 1);
+	}
+
+	/**
+	 * Returns the number of elements in the given layer
+	 * 
+	 * @param layer 
+	 * 			The value of this key gets returned 
+	 * @return the number of elements
+	 */
+	public int getNumberOfElementsInLayer(int layer) {
+
+		return mLayerMap.get(layer);
+
+	}
+
+	/**
+	 * Returns the depth of the tree, using a recursive function, starting
+	 * at the root node
+	 * 
+	 * @return the depth of the tree
+	 */
+	public int getDepth() {
+
+		if (isDepthFlagDirty()) {
+			resetDepthFlag();
+
+			iDepth = determineDepth(rootNode);
+
+		}
+		return iDepth;
+	}
+
+	private int determineDepth(NodeType node) {
+
+		NodeInfo info = mNodeMap.get(node);
+		if (hasChildren(node)) {
+			int tmpDepth = 0;
+			for (NodeType currentNode : getChildren(node)) {
+				int iChildDepth = determineDepth(currentNode);
+				if (tmpDepth <= iChildDepth)
+					tmpDepth = iChildDepth;
+			}
+			return tmpDepth;
+		}
+		else
+			return info.getLayer();
+	}
+
+	/**
+	 * Returns the number of all nodes in the tree
+	 * 
+	 * @return number of nodes
+	 */
+	public int getNumberOfNodes() {
+		return mNodeMap.size();
+	}
+
+	/**
+	 * The depth flag is a performance tool to avoid the
+	 * recursive calculating of the getDepth() function when
+	 * depth is unmodified
+	 */
+	public void setDepthFlag() {
+		this.bDepthFlag = true;
+	}
+
+	public void resetDepthFlag() {
+		this.bDepthFlag = false;
+	}
+
+	public boolean isDepthFlagDirty() {
+		return bDepthFlag;
+	}
+
 }
