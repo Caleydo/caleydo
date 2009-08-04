@@ -51,7 +51,7 @@ import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
-import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
+import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
 import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -120,7 +120,7 @@ public class SerializationManager {
 		eventTypes.add(UseRandomSamplingEvent.class);
 		eventTypes.add(AngularBrushingEvent.class);
 		eventTypes.add(ApplyCurrentSelectionToVirtualArrayEvent.class);
-		eventTypes.add(BookmarkEvent.class);
+		eventTypes.add(BookmarkButtonEvent.class);
 		eventTypes.add(ChangeColorModeEvent.class);
 		eventTypes.add(GoBackInHistoryEvent.class);
 		eventTypes.add(GoForthInHistoryEvent.class);

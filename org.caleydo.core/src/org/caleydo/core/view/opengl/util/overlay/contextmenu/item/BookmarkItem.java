@@ -6,6 +6,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
@@ -44,13 +45,11 @@ public class BookmarkItem
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
-		VirtualArrayUpdateEvent event = new VirtualArrayUpdateEvent();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_BOOKMARKS, EIDType.EXPRESSION_INDEX);
-
+		BookmarkEvent<Integer>event = new BookmarkEvent<Integer>(EIDType.EXPRESSION_INDEX);
+	
 		for (Integer storageIndex : alStorageIndex)
-			delta.add(VADeltaItem.append(storageIndex));
+			event.addBookmark(storageIndex);
 
-		event.setVirtualArrayDelta((VirtualArrayDelta) delta);
 		registerEvent(event);
 	}
 

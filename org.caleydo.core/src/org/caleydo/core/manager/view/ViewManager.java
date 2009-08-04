@@ -25,6 +25,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
@@ -34,7 +35,6 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLBookmarkContainer;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
@@ -193,7 +193,7 @@ public class ViewManager
 				break;
 
 			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
-				glEventListener = new GLBookmarkContainer(glCanvas, sLabel, viewFrustum);
+				glEventListener = new GLBookmarkManager(glCanvas, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:

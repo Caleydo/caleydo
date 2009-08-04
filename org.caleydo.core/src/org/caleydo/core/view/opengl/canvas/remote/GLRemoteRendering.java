@@ -53,6 +53,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -80,7 +81,6 @@ import org.caleydo.core.view.opengl.canvas.remote.listener.LoadPathwaysByGeneLis
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleNavigationModeListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.ToggleZoomListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.GLBookmarkContainer;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
@@ -134,7 +134,7 @@ public class GLRemoteRendering
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
-	private GLBookmarkContainer glBookmarkContainer;
+	private GLBookmarkManager glBookmarkContainer;
 
 	private Time time;
 
@@ -339,7 +339,7 @@ public class GLRemoteRendering
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, null, -1);
 //		cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
-		glBookmarkContainer = (GLBookmarkContainer) cmdCreateGLView.getCreatedObject();
+		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarkContainer.setRenderedRemote(true);
 		glBookmarkContainer.setUseCase(useCase);
 		glBookmarkContainer.setSet(set);

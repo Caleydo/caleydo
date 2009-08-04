@@ -1,6 +1,6 @@
 package org.caleydo.rcp.action.toolbar.view.storagebased;
 
-import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
+import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
@@ -30,6 +30,6 @@ public class PropagateSelectionsAction
 	public void run() {
 		super.run();
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new BookmarkEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new BookmarkButtonEvent());
 	};
 }

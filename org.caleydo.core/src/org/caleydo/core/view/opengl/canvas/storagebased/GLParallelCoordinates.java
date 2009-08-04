@@ -67,7 +67,7 @@ import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
-import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
+import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
 import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
@@ -91,11 +91,12 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.AngularBrushingListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.listener.BookmarkListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.BookmarkButtonListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ChangeOrientationListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.PreventOcclusionListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ResetAxisSpacingListener;
@@ -236,7 +237,7 @@ public class GLParallelCoordinates
 	EIconTextures dropTexture = EIconTextures.DROP_NORMAL;
 	int iChangeDropOnAxisNumber = -1;
 
-	GLBookmarkContainer glSelectionHeatMap;
+	GLBookmarkManager glSelectionHeatMap;
 	boolean bShowSelectionHeatMap = false;
 
 	private GLInfoAreaManager infoAreaManager;
@@ -244,7 +245,7 @@ public class GLParallelCoordinates
 	// listeners
 	private ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener;
 	private ResetAxisSpacingListener resetAxisSpacingListener;
-	private BookmarkListener bookmarkListener;
+	private BookmarkButtonListener bookmarkListener;
 	private ResetViewListener resetViewListener;
 	private UseRandomSamplingListener useRandomSamplingListener;
 	private ChangeOrientationListener changeOrientationListener;
@@ -454,7 +455,7 @@ public class GLParallelCoordinates
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
 			viewFrustum.getTop(), -20, 20, null, -1);
 		cmdCreateGLView.doCommand();
-		glSelectionHeatMap = (GLBookmarkContainer) cmdCreateGLView.getCreatedObject();
+		glSelectionHeatMap = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRenderedRemote(true);
 		glSelectionHeatMap.setUseCase(useCase);
 		glSelectionHeatMap.setSet(set);
@@ -2868,9 +2869,9 @@ public class GLParallelCoordinates
 		resetAxisSpacingListener.setHandler(this);
 		eventPublisher.addListener(ResetAxisSpacingEvent.class, resetAxisSpacingListener);
 
-		bookmarkListener = new BookmarkListener();
+		bookmarkListener = new BookmarkButtonListener();
 		bookmarkListener.setHandler(this);
-		eventPublisher.addListener(BookmarkEvent.class, bookmarkListener);
+		eventPublisher.addListener(BookmarkButtonEvent.class, bookmarkListener);
 
 		resetViewListener = new ResetViewListener();
 		resetViewListener.setHandler(this);

@@ -65,17 +65,17 @@ public abstract class AUseCase
 	private StartClusteringListener startClusteringListener;
 	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
+	
+	/**
+	 * The set which is currently loaded and used inside the views for this use case.
+	 */
+	protected ISet set;
 
 	public AUseCase() {
 		alView = new ArrayList<IView>();
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
-
-	/**
-	 * The set which is currently loaded and used inside the views for this use case.
-	 */
-	protected ISet set;
 
 	@Override
 	public EUseCaseMode getUseCaseMode() {

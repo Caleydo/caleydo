@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.storagebased;
+package org.caleydo.core.view.opengl.canvas.bookmarking;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;

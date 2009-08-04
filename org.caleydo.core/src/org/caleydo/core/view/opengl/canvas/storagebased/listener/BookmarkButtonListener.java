@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.storagebased.listener;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.storagebased.BookmarkEvent;
+import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 
 /**
@@ -10,12 +10,12 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
  * 
  * @author Alexander Lex
  */
-public class BookmarkListener
+public class BookmarkButtonListener
 	extends AEventListener<GLParallelCoordinates> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof BookmarkEvent) {
+		if (event instanceof BookmarkButtonEvent) {
 			handler.bookmarkElements();
 		}
 	}

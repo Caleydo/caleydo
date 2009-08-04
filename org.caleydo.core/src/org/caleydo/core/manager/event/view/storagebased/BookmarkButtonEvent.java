@@ -13,7 +13,7 @@ import org.caleydo.core.manager.event.AEvent;
 @XmlRootElement
 @XmlType
 
-public class BookmarkEvent
+public class BookmarkButtonEvent
 	extends AEvent {
 
 	@Override
