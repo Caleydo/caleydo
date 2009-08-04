@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.DefaultNode;
+
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -19,46 +19,33 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Alexander Lex
  * @param <NodeType>
  */
-public class Tree<NodeType extends Comparable<NodeType>> {
+public class oldTree<NodeType extends Comparable<NodeType>> {
 
 	private NodeType rootNode;
 
 	DirectedGraph<NodeType, DefaultEdge> graph;
 
 	private HashMap<Integer, NodeType> hashNodes;
+	
+	int iDeph;
+	//List<Integer> dephList;
+	ArrayList<NodeType> folios;
+	HashMap<Integer, ArrayList<DefaultNode>> layerMap;
 
-	private int iDepth;
-
-	private boolean bDepthFlag;
-
-	private HashMap<NodeType, NodeInfo> mNodeMap;
-
-	private HashMap<Integer, Integer> mLayerMap;
-
-
-	public Tree() {
+	public oldTree() {
 
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
 		hashNodes = new HashMap<Integer, NodeType>();
-		mNodeMap = new HashMap<NodeType, NodeInfo>();
-		mLayerMap = new HashMap<Integer, Integer>();
 
 	}
 
-	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
+	public void setHashMap(HashMap<Integer, NodeType> hashNodes){
 		this.hashNodes = hashNodes;
 	}
-
+	
 	public void setRootNode(NodeType rootNode) {
 		this.rootNode = rootNode;
 		graph.addVertex(rootNode);
-
-		NodeInfo info = new NodeInfo("root", true, 1);
-		mNodeMap.put(rootNode, info);
-
-		increaseNumberOfElementsInLayer(1);
-		setDepthFlag();
-
 		// TODO: this should be removed later on, only for testing purposes
 		if (rootNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
@@ -85,21 +72,6 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public void addChild(NodeType parentNode, NodeType childNode) {
 		graph.addVertex(childNode);
 		graph.addEdge(parentNode, childNode);
-
-		NodeInfo parentInfo = mNodeMap.get(parentNode);
-		int currentLayer = parentInfo.getLayer() + 1;
-		increaseNumberOfElementsInLayer(currentLayer);
-		
-		NodeInfo info = new NodeInfo("child", false, currentLayer);
-
-		mNodeMap.put(childNode, info);
-		parentInfo.increaseNumberOfKids();
-
-		for (NodeType tmpChild : getChildren(parentNode)) {
-			NodeInfo tmpInfo = mNodeMap.get(tmpChild);
-			tmpInfo.increaseiNumberOfSiblings();
-		}
-		setDepthFlag();
 
 		// TODO: this should be removed later on, only for testing purposes
 		if (childNode instanceof ClusterNode)
@@ -201,77 +173,78 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public NodeType getNodeByNumber(int iClusterNr) {
 		return hashNodes.get(iClusterNr);
 	}
-
-	/**
-	 * Sets an entry in the layerMap. The node gets attached on the ArrayList of the key. If no ArrayList
-	 * exists, it creates a new one.
-	 * 
-	 * @param node
-	 *            The attached Node for the Layer
-	 * @param layer
-	 *            Its is the Key of the layerMap, representing the layer
-	 */
-
-	public void increaseNumberOfElementsInLayer(int layer) {
-		int iNumberOfElements = mLayerMap.get(layer);
-		iNumberOfElements++;
-		mLayerMap.put(layer, iNumberOfElements);
-
+	
+	public int getNumberOfChildren (DefaultNode node)
+	{
+		return hashNodes.size();
 	}
-
-	public int getNumberOfNodesInLayer(int layer) {
-
-		return mLayerMap.get(layer);
-
-	}
-
-	public int getDepth() {
-
-		if (isDepthFlagDirty()) {
-			resetDepthFlag();
-			return determineDepth(rootNode);
-		}
-		return iDepth;
-	}
-
-	private int determineDepth(NodeType node) {
-
-		NodeInfo info = mNodeMap.get(node);
-		//int tmpDepth;
-		if (hasChildren(node)) {
-			int tmpDepth = info.getLayer();
-
-			for (NodeType currentNode : getChildren(node)) {
-				int iChildDepth = determineDepth(currentNode);
-				if (tmpDepth <= iChildDepth)
-					tmpDepth = iChildDepth;
+	public int getDephOfTree()//NodeType parentNode)
+	{
+		//List<Integer> dephList = new ArrayList<Integer>();
+		iDeph = getDephOfTreeWorker(getRoot(), 0);//, dephList);
+		//deph = Collections.max(dephList);
+		return iDeph;
+		//return Collections.max(dephList.toArray());
+		/*	
+	 * ArrayList<NodeType> childs = getChildren(parentNode);
+		for (NodeType tmpNode : childs)
+		{
+			if (hasChildren(tmpNode))
+			{
+				deph++;
+				getDephOfTree(tmpNode);
 			}
-
-			iDepth = tmpDepth;
-			//info.setLayer(tempDeth);
+			else
+			{
+				dephList.add(deph);
+				folios.add(tmpNode);
+			}
 		}
-//		else{
-//			return iDepth;
-//		}//info.setLayer(1);
-		return info.getLayer();
-
+		
+		Collections.sort(dephList);
+		
+		return dephList.indexOf(0);
+	*/}
+	private int getDephOfTreeWorker(NodeType parentNode, int d)//, List<Integer> dephList)
+	{
+		List<Integer> li = new ArrayList<Integer>();;// = new List();
+		
+		if(hasChildren(parentNode))
+		{
+			ArrayList<NodeType> childs = getChildren(parentNode);
+			for (NodeType tmpNode : childs)
+				li.add(getDephOfTreeWorker(tmpNode, d+1));
+		}
+		else
+			return d;
+		return Collections.max(li);
 	}
-
-	public int getNumberOfNodes() {
-		return mNodeMap.size();
+	
+	public int getNumberOfFolios()
+	{
+		return folios.size();
 	}
-
-	public void setDepthFlag() {
-		this.bDepthFlag = true;
+	public int getDeph()
+	{
+		iDeph = getDephOfTree();
+		return iDeph;
 	}
+	public void setNodeInLayerMap(int layer, DefaultNode node)
+	{
+		ArrayList<DefaultNode> tmp = null;
+		//node.
+		
+		if(layerMap.containsKey(layer))
+		{
+			tmp = layerMap.get(layer);
+		}
 
-	public void resetDepthFlag() {
-		this.bDepthFlag = false;
+		tmp.add(node);
+		layerMap.put(layer, tmp);
 	}
-
-	public boolean isDepthFlagDirty() {
-		return bDepthFlag;
+	public int getNumberOfNodesInLayer(int layer)
+	{
+		return layerMap.get(layer).size();
 	}
-
 
 }
