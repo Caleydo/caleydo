@@ -26,12 +26,12 @@ mount_webdav()
 
 copy_to_web()
 {
-  sudo cp $export_path $download_folder -R
+  sudo cp $export_path $download_folder -R -v
 }
 
 copy_webstart()
 {
-  sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder
+  sudo cp $webstart_export_path"/plugins/org.caleydo."* $webstart_plugins_folder -v
 }
 
 make_archive()
