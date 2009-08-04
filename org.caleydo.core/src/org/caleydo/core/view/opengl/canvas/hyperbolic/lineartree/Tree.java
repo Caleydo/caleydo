@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.util.clusterer.ClusterNode;
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.DefaultNode;
+import org.caleydo.core.util.clusterer.ClusterNode; // import
+// org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
+// import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.DefaultNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -34,7 +34,6 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	private HashMap<NodeType, NodeInfo> mNodeMap;
 
 	private HashMap<Integer, Integer> mLayerMap;
-
 
 	public Tree() {
 
@@ -89,7 +88,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		NodeInfo parentInfo = mNodeMap.get(parentNode);
 		int currentLayer = parentInfo.getLayer() + 1;
 		increaseNumberOfElementsInLayer(currentLayer);
-		
+
 		NodeInfo info = new NodeInfo("child", false, currentLayer);
 
 		mNodeMap.put(childNode, info);
@@ -213,10 +212,10 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	 */
 
 	public void increaseNumberOfElementsInLayer(int layer) {
-		int iNumberOfElements = mLayerMap.get(layer);
-		iNumberOfElements++;
-		mLayerMap.put(layer, iNumberOfElements);
-
+		if (mLayerMap.containsKey(layer))
+			mLayerMap.put(layer, mLayerMap.get(layer) + 1);
+		else
+			mLayerMap.put(layer, 1);
 	}
 
 	public int getNumberOfNodesInLayer(int layer) {
@@ -237,7 +236,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	private int determineDepth(NodeType node) {
 
 		NodeInfo info = mNodeMap.get(node);
-		//int tmpDepth;
+		// int tmpDepth;
 		if (hasChildren(node)) {
 			int tmpDepth = info.getLayer();
 
@@ -248,11 +247,11 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 			}
 
 			iDepth = tmpDepth;
-			//info.setLayer(tempDeth);
+			// info.setLayer(tempDeth);
 		}
-//		else{
-//			return iDepth;
-//		}//info.setLayer(1);
+		// else{
+		// return iDepth;
+		// }//info.setLayer(1);
 		return info.getLayer();
 
 	}
@@ -272,6 +271,5 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	public boolean isDepthFlagDirty() {
 		return bDepthFlag;
 	}
-
 
 }
