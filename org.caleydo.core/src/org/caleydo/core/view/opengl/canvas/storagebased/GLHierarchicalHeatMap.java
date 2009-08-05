@@ -1120,12 +1120,15 @@ public class GLHierarchicalHeatMap
 				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 					gl.glColor4f(0f, 1f, 0f, 0.5f);
 
+				gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
+					iIdxCluster));
 				gl.glBegin(GL.GL_QUADS);
 				gl.glVertex3f(-0.1f, fHeight, 0);
 				gl.glVertex3f(0, fHeight, 0);
 				gl.glVertex3f(0, fHeight - fHeightSamples * iCnt, 0);
 				gl.glVertex3f(-0.1f, fHeight - fHeightSamples * iCnt, 0);
 				gl.glEnd();
+				gl.glPopName();
 
 				gl.glColor4f(0f, 0f, 1f, 1);
 				gl.glLineWidth(1f);
@@ -1149,12 +1152,15 @@ public class GLHierarchicalHeatMap
 		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 			gl.glColor4f(0f, 1f, 0f, 0.5f);
 
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
+			iIdxCluster));
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(-0.1f, fHeight, 0);
 		gl.glVertex3f(0, fHeight, 0);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(-0.1f, 0, 0);
 		gl.glEnd();
+		gl.glPopName();
 
 	}
 
@@ -1190,12 +1196,15 @@ public class GLHierarchicalHeatMap
 				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 					gl.glColor4f(0f, 1f, 0f, 0.5f);
 
+				gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
+					iIdxCluster));
 				gl.glBegin(GL.GL_QUADS);
 				gl.glVertex3f(fOffsetX - 0.1f, fHeight, 0);
 				gl.glVertex3f(fOffsetX, fHeight, 0);
 				gl.glVertex3f(fOffsetX, fHeight - fHeightSamples * iCnt, 0);
 				gl.glVertex3f(fOffsetX - 0.1f, fHeight - fHeightSamples * iCnt, 0);
 				gl.glEnd();
+				gl.glPopName();
 
 				gl.glColor4f(0f, 0f, 1f, 1);
 				gl.glLineWidth(1f);
@@ -1219,12 +1228,15 @@ public class GLHierarchicalHeatMap
 		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 			gl.glColor4f(0f, 1f, 0f, 0.5f);
 
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
+			iIdxCluster));
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(fOffsetX - 0.1f, fHeight, 0);
 		gl.glVertex3f(fOffsetX, fHeight, 0);
 		gl.glVertex3f(fOffsetX, 0, 0);
 		gl.glVertex3f(fOffsetX - 0.1f, 0, 0);
 		gl.glEnd();
+		gl.glPopName();
 
 	}
 

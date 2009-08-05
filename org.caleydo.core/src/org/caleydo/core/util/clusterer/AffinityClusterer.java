@@ -257,10 +257,8 @@ public class AffinityClusterer
 		float[] dArAvailabilities = new float[iNrSimilarities];
 
 		// add noise to similarities
-		// for (int m = 0; m < s.length; m++)
-		// {
-		// s[m] = s[m] + (1E-16 * s[j] + Double.MIN_VALUE * 100) *
-		// (Math.random() / 2f);
+		// for (int m = 0; m < s.length; m++) {
+		// s[m] = (float) (s[m] + (1E-16 * s[j] + Float.MIN_VALUE * 100) * ((float)Math.random() / 2f));
 		// }
 
 		int iPercentage = 1;
@@ -470,18 +468,18 @@ public class AffinityClusterer
 
 		alIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
 
-//		Integer clusteredVAId = 0;
-//		if (eClustererType == EClustererType.GENE_CLUSTERING)
-//			clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndexes);
-//		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-//			clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndexes);
+		// Integer clusteredVAId = 0;
+		// if (eClustererType == EClustererType.GENE_CLUSTERING)
+		// clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndexes);
+		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndexes);
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndexes);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndexes);
-		
+
 		set.setAlClusterSizes(count);
 		set.setAlExamples(idxExamples);
 
@@ -504,12 +502,12 @@ public class AffinityClusterer
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			for (Integer example : alExamples) {
 				for (Integer icontent : contentVA) {
-					if (idx[contentVA.indexOf(icontent)] == example) {
+					if (idx[contentVA.get(icontent)] == example) {
 						indexes.add(icontent);
 						count.set(counter, count.get(counter) + 1);
 					}
-					if (example == contentVA.indexOf(icontent)) {
-						idxExamples.add(idxCnt);
+					if (example == contentVA.get(icontent)) {
+						idxExamples.add(contentVA.get(example));
 						idxCnt = 0;
 					}
 					idxCnt++;
@@ -520,12 +518,12 @@ public class AffinityClusterer
 		else {
 			for (Integer example : alExamples) {
 				for (Integer icontent : storageVA) {
-					if (idx[storageVA.indexOf(icontent)] == example) {
+					if (idx[storageVA.get(icontent)] == example) {
 						indexes.add(icontent);
 						count.set(counter, count.get(counter) + 1);
 					}
-					if (example == storageVA.indexOf(icontent)) {
-						idxExamples.add(idxCnt);
+					if (example == storageVA.get(icontent)) {
+						idxExamples.add(storageVA.get(example));
 						idxCnt = 0;
 					}
 					idxCnt++;

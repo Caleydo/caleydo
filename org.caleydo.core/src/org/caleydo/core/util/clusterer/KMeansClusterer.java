@@ -229,10 +229,16 @@ public class KMeansClusterer
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		for (int j = 0; j < iNrCluster; j++) {
+		IVirtualArray currentVA = null;
+		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+			currentVA = set.getVA(iVAIdContent);
+		else
+			currentVA = set.getVA(iVAIdStorage);
+
+		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
-				if (ClusterAssignments[i] == j) {
-					alExamples.add(i);
+				if (ClusterAssignments[i] == cluster) {
+					alExamples.add(currentVA.get(i));
 					break;
 				}
 			}
@@ -246,8 +252,8 @@ public class KMeansClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, clusterState
-			.getClustererType());
+		// ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, clusterState
+		// .getClustererType());
 
 		IVirtualArray virualArray;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
@@ -264,18 +270,18 @@ public class KMeansClusterer
 			}
 		}
 
-//		Integer clusteredVAId = 0;
-//		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-//			clusteredVAId = set.createContentVA(EVAType.CONTENT, indexes);
-//		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-//			clusteredVAId = set.createStorageVA(EVAType.STORAGE, indexes);
+		// Integer clusteredVAId = 0;
+		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		// clusteredVAId = set.createContentVA(EVAType.CONTENT, indexes);
+		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
+		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, indexes);
 
 		IVirtualArray virtualArray = null;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), indexes);
 		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), indexes);
-		
+
 		// set cluster result in Set
 		set.setAlClusterSizes(count);
 		set.setAlExamples(alExamples);
@@ -290,7 +296,7 @@ public class KMeansClusterer
 	public IVirtualArray getSortedVA(ISet set, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
-		IVirtualArray virtualArray =null;
+		IVirtualArray virtualArray = null;
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
