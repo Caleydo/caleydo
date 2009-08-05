@@ -20,7 +20,7 @@ public final class DrawAbleLinearConnection
 
 	// TODO: maybe define thickness in renderstyle
 	@Override
-	public void drawLineFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness) {
+	public void drawConnectionFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness) {
 		gl.glColor4f(this.fRed, this.fGreen, this.fBlue, this.fAlpha);
 		gl.glLineWidth(fThickness);
 		

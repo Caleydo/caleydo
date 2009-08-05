@@ -15,16 +15,16 @@ public abstract class ADrawAbleConnection
 	protected float fAlpha = 1;
 
 	@Override
-	public abstract void drawLineFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness);
+	public abstract void drawConnectionFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness);
 
 	@Override
-	public final void setLineAlpha(float fAlpha) {
+	public final void setConnectionAlpha(float fAlpha) {
 		this.fAlpha = fAlpha;
 
 	}
 
 	@Override
-	public final void setLineColor3f(float fRed, float fGreen, float fBlue) {
+	public final void setConnectionColor3f(float fRed, float fGreen, float fBlue) {
 		this.fRed = fRed;
 		this.fGreen = fGreen;
 		this.fBlue = fBlue;

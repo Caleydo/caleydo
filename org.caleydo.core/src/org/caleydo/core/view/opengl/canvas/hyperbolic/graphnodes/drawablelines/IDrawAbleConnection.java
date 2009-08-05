@@ -26,7 +26,7 @@ public interface IDrawAbleConnection {
 	 * @param fThickness
 	 * @return
 	 */
-	public void drawLineFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness);
+	public void drawConnectionFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness);
 
 	/**
 	 * Set the background color of the draw able object type
@@ -36,7 +36,7 @@ public interface IDrawAbleConnection {
 	 * @param fBlue
 	 * @return
 	 */
-	void setLineColor3f(float fRed, float fGreen, float fBlue);
+	public void setConnectionColor3f(float fRed, float fGreen, float fBlue);
 
 	/**
 	 * Set the alpha value of the draw able object type
@@ -44,5 +44,5 @@ public interface IDrawAbleConnection {
 	 * @param fAlpha
 	 * @return
 	 */
-	void setLineAlpha(float fAlpha);
+	public void setConnectionAlpha(float fAlpha);
 }

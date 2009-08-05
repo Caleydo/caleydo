@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -24,6 +25,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -35,7 +38,8 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  * @author Marc Streit
  */
 public class GLHyperbolic
-	extends AGLEventListener {
+	extends AGLEventListener
+	implements IViewCommandHandler {
 
 	// private Tree<DefaultNode> tree;
 	public Vec3f[] vec;
@@ -52,6 +56,8 @@ public class GLHyperbolic
 	HyperbolicRenderStyle renderStyle = null;
 
 	private ColorMappingManager colorMappingManager;
+
+	private RedrawViewListener redrawViewListener = null;
 
 	/**
 	 * Constructor.
@@ -80,8 +86,7 @@ public class GLHyperbolic
 		tree = new Tree<ADrawAbleNode>();
 		ADrawAbleNode test = new TestNode("first Test", 0);
 		tree.setRootNode(test);
-		for(int i = 1; i<=21; ++i)
-		{
+		for (int i = 1; i <= 21; ++i) {
 			ADrawAbleNode test2 = new TestNode("childs", i);
 			tree.addChild(test, test2);
 			test = test2;
@@ -94,8 +99,8 @@ public class GLHyperbolic
 		// obj.setAlpha(0.2f);
 		// obj.setBgColor3f(0.2f, 0.7f, 0.3f);
 		// test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
-		
-		//tree.addChild(test, test2);
+
+		// tree.addChild(test, test2);
 		layouter = new LinearTreeLayouter(viewFrustum);
 	}
 
@@ -342,6 +347,40 @@ public class GLHyperbolic
 		SerializedHyperbolicView serializedForm = new SerializedHyperbolicView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		redrawViewListener = new RedrawViewListener();
+		redrawViewListener.setHandler(this);
+		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		if (redrawViewListener != null) {
+			eventPublisher.removeListener(redrawViewListener);
+			redrawViewListener = null;
+		}
+	}
+
+	@Override
+	public void handleClearSelections() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void handleRedrawView() {
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void handleUpdateView() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
