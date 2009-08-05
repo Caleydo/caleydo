@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 

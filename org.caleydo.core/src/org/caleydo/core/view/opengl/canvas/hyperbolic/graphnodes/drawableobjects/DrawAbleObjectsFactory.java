@@ -1,11 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
-import gleem.linalg.Vec3f;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-import javax.media.opengl.GL;
 
 
 /**

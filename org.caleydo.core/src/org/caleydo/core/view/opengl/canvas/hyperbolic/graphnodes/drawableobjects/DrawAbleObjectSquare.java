@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
-import javax.swing.text.Segment;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 

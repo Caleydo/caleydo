@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.DefaultNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.Layouter;
-import org.jgrapht.graph.DefaultEdge;
 
 public class TestLayout
 	extends Layouter {

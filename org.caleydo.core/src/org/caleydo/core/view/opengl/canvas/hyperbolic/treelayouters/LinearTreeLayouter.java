@@ -11,7 +11,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleLinearLine;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 
 public final class LinearTreeLayouter

@@ -4,7 +4,6 @@ import java.awt.Font;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;

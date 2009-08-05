@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**

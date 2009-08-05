@@ -2,12 +2,10 @@ package org.caleydo.core.view.opengl.canvas.bookmarking;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 
 public class GeneBookmarkContainer
 	extends ABookmarkContainer {

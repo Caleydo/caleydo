@@ -1,40 +1,24 @@
 package org.caleydo.core.view.opengl.canvas.bookmarking;
 
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.FIELD_Z;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionManager;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 /**
