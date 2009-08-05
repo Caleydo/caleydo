@@ -2,6 +2,8 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Abstract base class for all drawing states. Each concrete drawing state displays the radial hierarchy and
@@ -9,6 +11,8 @@ import javax.media.opengl.glu.GLU;
  * 
  * @author Christian Partl
  */
+@XmlType
+@XmlSeeAlso({DrawingStateDetailOutside.class, DrawingStateFullHierarchy.class, ADrawingStateAnimation.class})
 public abstract class ADrawingState {
 
 	/**
@@ -83,4 +87,9 @@ public abstract class ADrawingState {
 	 * @return Element that is considered to be the selected element of the concrete drawing state.
 	 */
 	public abstract PartialDisc getSelectedElement();
+	
+	/**
+	 * Gets the drawing state type of the current instance.
+	 */
+	public abstract EDrawingStateType getType();
 }

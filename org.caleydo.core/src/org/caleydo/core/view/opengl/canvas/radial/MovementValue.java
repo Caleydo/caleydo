@@ -50,9 +50,11 @@ public class MovementValue {
 	 *            Time difference since the last call of move, i.e. the last frame.
 	 */
 	public void move(double dTimePassed) {
-		fMovementValue += (fSpeed * dTimePassed);
+		if(!isTargetValueReached())
+			fMovementValue += (fSpeed * dTimePassed);
 		if (isTargetValueReached())
 			fMovementValue = fTargetValue;
+			
 	}
 
 	/**
@@ -60,9 +62,9 @@ public class MovementValue {
 	 */
 	public boolean isTargetValueReached() {
 		if (iCreterionType == CRITERION_GREATER_OR_EQUAL) {
-			return (fMovementValue >= fTargetValue);
+			return (fMovementValue >= (fTargetValue - 0.0001));
 		}
-		return (fMovementValue <= fTargetValue);
+		return (fMovementValue <= (fTargetValue + 0.0001));
 	}
 
 	/**

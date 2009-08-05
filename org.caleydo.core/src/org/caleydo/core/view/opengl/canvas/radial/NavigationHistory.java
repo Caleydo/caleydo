@@ -199,4 +199,8 @@ public class NavigationHistory {
 		alHistoryEntries.clear();
 		iCurrentEntryPosition = -1;
 	}
+	
+	public HistoryEntry getCurrentHistoryEntry() {
+		return alHistoryEntries.get(iCurrentEntryPosition);
+	}
 }

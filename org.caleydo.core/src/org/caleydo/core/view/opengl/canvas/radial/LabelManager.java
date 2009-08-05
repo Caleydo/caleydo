@@ -42,30 +42,7 @@ public class LabelManager {
 		alLabels = new ArrayList<Label>();
 		alLeftContainers = new ArrayList<LabelContainer>();
 		alRightContainers = new ArrayList<LabelContainer>();
-		textRenderer = new TextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
-		textRenderer.setColor(0, 0, 0, 1);
 		iMaxSegmentDepth = 0;
-	}
-
-	/**
-	 * Initializes the LabelManager.
-	 */
-	public static void init() {
-		if (instance == null) {
-			instance = new LabelManager();
-		}
-		else {
-			instance.reset();
-		}
-	}
-
-	/**
-	 * Resets the LabelManager.
-	 */
-	private void reset() {
-		textRenderer = new TextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
-		textRenderer.setColor(0, 0, 0, 1);
-		clearLabels();
 	}
 
 	/**
@@ -98,6 +75,9 @@ public class LabelManager {
 	 */
 	public void drawAllLabels(GL gl, GLU glu, float fScreenWidth, float fScreenHeight,
 		float fHierarchyOuterRadius) {
+		
+		textRenderer = new TextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
+		textRenderer.setColor(0, 0, 0, 1);
 
 		float fXCenter = fScreenWidth / 2.0f;
 		float fYCenter = fScreenHeight / 2.0f;

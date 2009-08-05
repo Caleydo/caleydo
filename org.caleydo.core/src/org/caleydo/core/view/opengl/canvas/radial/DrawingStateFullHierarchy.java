@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.ESelectionType;
 
@@ -13,6 +14,7 @@ import org.caleydo.core.data.selection.ESelectionType;
  * 
  * @author Christian Partl
  */
+@XmlType
 public class DrawingStateFullHierarchy
 	extends ADrawingState {
 
@@ -161,13 +163,13 @@ public class DrawingStateFullHierarchy
 			}
 			if (pdSelected == pdCurrentRootElement) {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
-				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT);
+				drawingController.setDrawingState(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT);
 				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getParent()
 					.getElementID());
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
-				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
+				drawingController.setDrawingState(EDrawingStateType.ANIMATION_NEW_ROOT_ELEMENT);
 				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
 			}
 			radialHierarchy.setDisplayListDirty();
@@ -209,7 +211,7 @@ public class DrawingStateFullHierarchy
 
 			radialHierarchy.setCurrentSelectedElement(pdSelected);
 			radialHierarchy.setCurrentMouseOverElement(pdSelected);
-			drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_POP_OUT_DETAIL_OUTSIDE);
+			drawingController.setDrawingState(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE);
 			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
 			radialHierarchy.setDisplayListDirty();
 		}
@@ -218,6 +220,11 @@ public class DrawingStateFullHierarchy
 	@Override
 	public PartialDisc getSelectedElement() {
 		return radialHierarchy.getCurrentRootElement();
+	}
+
+	@Override
+	public EDrawingStateType getType() {
+		return EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY;
 	}
 
 }

@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * This class represents the animation where a selected partial disc pops out to the detail View. When the
@@ -9,6 +10,7 @@ import javax.media.opengl.glu.GLU;
  * 
  * @author Christian Partl
  */
+@XmlType
 public class AnimationPopOutDetailOutside
 	extends ADrawingStateAnimation {
 
@@ -91,7 +93,7 @@ public class AnimationPopOutDetailOutside
 
 		if (!bAnimationStarted) {
 			ADrawingState dsNext =
-				drawingController.getDrawingState(DrawingController.DRAWING_STATE_DETAIL_OUTSIDE);
+				drawingController.getDrawingState(EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE);
 
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
@@ -209,5 +211,10 @@ public class AnimationPopOutDetailOutside
 		mvDetailViewStartAngle =
 			createNewMovementValue(fCurrentSelectedElementStartAngle,
 				fCurrentSelectedElementTargetStartAngle, fAnimationDuration);
+	}
+
+	@Override
+	public EDrawingStateType getType() {
+		return EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE;
 	}
 }

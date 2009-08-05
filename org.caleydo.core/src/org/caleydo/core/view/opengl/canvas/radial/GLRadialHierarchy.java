@@ -112,7 +112,7 @@ public class GLRadialHierarchy
 
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		partialDiscTree = new Tree<PartialDisc>();
-		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
+		// iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
 		navigationHistory.setDrawingController(drawingController);
@@ -125,17 +125,17 @@ public class GLRadialHierarchy
 		glKeyListener = new GLRadialHierarchyKeyListener(this);
 
 		bIsAnimationActive = false;
-		bIsNewSelection = false;
+		// bIsNewSelection = false;
 	}
 
 	@Override
 	public void init(GL gl) {
 		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
-			initHierarchy(tree);
+			// initHierarchy(tree);
 		}
 		else {
-			initTestHierarchy();
+			// initTestHierarchy();
 		}
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -192,14 +192,13 @@ public class GLRadialHierarchy
 	public void initHierarchy(Tree<ClusterNode> tree) {
 
 		// wpuff: default is set in constructor, possible initialization from serialized-form
-		// iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
-		
+
 		hashPartialDiscs.clear();
 		selectionManager.resetSelectionManager();
 		partialDiscTree = new Tree<PartialDisc>();
 		navigationHistory.reset();
-		drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
-		LabelManager.init();
+		drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
+		LabelManager.get().clearLabels();
 		DrawingStrategyManager.init(pickingManager, iUniqueID);
 
 		ClusterNode cnRoot = tree.getRoot();
@@ -210,6 +209,7 @@ public class GLRadialHierarchy
 		buildTree(tree, cnRoot, pdRoot);
 		pdRoot.calculateHierarchyLevels(0);
 		pdRoot.calculateLargestChildren();
+		iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 
 		pdCurrentMouseOverElement = pdRoot;
 		pdCurrentRootElement = pdRoot;
@@ -334,7 +334,7 @@ public class GLRadialHierarchy
 	public void display(GL gl) {
 		processEvents();
 
-		if (pdRealRootElement != null) {
+		if (pdRealRootElement != null && pdCurrentRootElement != null) {
 
 			if (upwardNavigationSlider.handleDragging(gl, glMouseListener)) {
 				updateHierarchyAccordingToNavigationSlider();
@@ -354,8 +354,6 @@ public class GLRadialHierarchy
 			else
 				gl.glCallList(iGLDisplayListToCall);
 		}
-
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 
 	}
 
@@ -702,15 +700,60 @@ public class GLRadialHierarchy
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView();
 		serializedForm.setViewID(this.getID());
-		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		serializedForm.setViewGUIID(getViewGUIID());
+		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+		serializedForm.setNewSelection(bIsNewSelection);
+
+		ADrawingState currentDrawingState = drawingController.getCurrentDrawingState();
+
+		if (pdCurrentRootElement != null) {
+			if ((currentDrawingState.getType() == EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE)
+				|| (currentDrawingState.getType() == EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY)) {
+				
+				serializedForm.setDrawingStateType(currentDrawingState.getType());
+				serializedForm.setRootElementID(pdCurrentRootElement.getElementID());
+				serializedForm.setSelectedElementID(pdCurrentSelectedElement.getElementID());
+				serializedForm.setMouseOverElementID(pdCurrentMouseOverElement.getElementID());
+				serializedForm.setRootElementStartAngle(pdCurrentRootElement.getCurrentStartAngle());
+				serializedForm.setSelectedElementStartAngle(pdCurrentSelectedElement.getCurrentStartAngle());
+			}
+			else {
+				HistoryEntry historyEntry = navigationHistory.getCurrentHistoryEntry();
+				serializedForm.setDrawingStateType(historyEntry.getDrawingState().getType());
+				serializedForm.setRootElementID(historyEntry.getRootElement().getElementID());
+				serializedForm.setSelectedElementID(historyEntry.getSelectedElement().getElementID());
+				serializedForm.setMouseOverElementID(historyEntry.getSelectedElement().getElementID());
+				serializedForm.setRootElementStartAngle(historyEntry.getRootElementStartAngle());
+				serializedForm.setSelectedElementStartAngle(historyEntry.getSelectedElementStartAngle());
+			}
+		}
+
 		return serializedForm;
 	}
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
+
+		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		if (tree != null) {
+			initHierarchy(tree);
+		}
+
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
 		this.iMaxDisplayedHierarchyDepth = serializedView.getMaxDisplayedHierarchyDepth();
+		bIsNewSelection = serializedView.isNewSelection();
+		PartialDisc pdTemp = hashPartialDiscs.get(serializedView.getRootElementID());
+		drawingController.setDrawingState(serializedView.getDrawingStateType());
+		
+		if (pdTemp != null) {
+			pdCurrentRootElement = pdTemp;
+			pdCurrentSelectedElement = hashPartialDiscs.get(serializedView.getSelectedElementID());
+			pdCurrentMouseOverElement = hashPartialDiscs.get(serializedView.getMouseOverElementID());
+			pdCurrentRootElement.setCurrentStartAngle(serializedView.getRootElementStartAngle());
+			if (pdCurrentSelectedElement != null) {
+				pdCurrentSelectedElement.setCurrentStartAngle(serializedView.getSelectedElementStartAngle());
+			}
+		}
 		setDisplayListDirty();
 	}
 

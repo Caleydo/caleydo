@@ -14,14 +14,7 @@ import javax.media.opengl.glu.GLU;
  */
 public class DrawingController {
 
-	public static final int DRAWING_STATE_FULL_HIERARCHY = 0;
-	public static final int DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT = 1;
-	public static final int DRAWING_STATE_DETAIL_OUTSIDE = 2;
-	public static final int DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT = 3;
-	public static final int DRAWING_STATE_ANIM_POP_OUT_DETAIL_OUTSIDE = 4;
-	public static final int DRAWING_STATE_ANIM_PULL_IN_DETAIL_OUTSIDE = 5;
-
-	private HashMap<Integer, ADrawingState> drawingStates;
+	private HashMap<EDrawingStateType, ADrawingState> drawingStates;
 	private ADrawingState currentDrawingState;
 
 	/**
@@ -33,18 +26,18 @@ public class DrawingController {
 	 *            Navigation history that shall be used by the states.
 	 */
 	public DrawingController(GLRadialHierarchy radialHierarchy, NavigationHistory navigationHistory) {
-		drawingStates = new HashMap<Integer, ADrawingState>();
+		drawingStates = new HashMap<EDrawingStateType, ADrawingState>();
 		currentDrawingState = new DrawingStateFullHierarchy(this, radialHierarchy, navigationHistory);
-		drawingStates.put(DRAWING_STATE_FULL_HIERARCHY, currentDrawingState);
-		drawingStates.put(DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT, new AnimationNewRootElement(this,
+		drawingStates.put(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY, currentDrawingState);
+		drawingStates.put(EDrawingStateType.ANIMATION_NEW_ROOT_ELEMENT, new AnimationNewRootElement(this,
 			radialHierarchy, navigationHistory));
-		drawingStates.put(DRAWING_STATE_DETAIL_OUTSIDE, new DrawingStateDetailOutside(this, radialHierarchy,
+		drawingStates.put(EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE, new DrawingStateDetailOutside(this, radialHierarchy,
 			navigationHistory));
-		drawingStates.put(DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT, new AnimationParentRootElement(this,
+		drawingStates.put(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT, new AnimationParentRootElement(this,
 			radialHierarchy, navigationHistory));
-		drawingStates.put(DRAWING_STATE_ANIM_POP_OUT_DETAIL_OUTSIDE, new AnimationPopOutDetailOutside(this,
+		drawingStates.put(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE, new AnimationPopOutDetailOutside(this,
 			radialHierarchy, navigationHistory));
-		drawingStates.put(DRAWING_STATE_ANIM_PULL_IN_DETAIL_OUTSIDE, new AnimationPullInDetailOutside(this,
+		drawingStates.put(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE, new AnimationPullInDetailOutside(this,
 			radialHierarchy, navigationHistory));
 	}
 
@@ -117,8 +110,8 @@ public class DrawingController {
 	 * @param iDrawingState
 	 *            Type of drawing state that should become active.
 	 */
-	public void setDrawingState(int iDrawingState) {
-		ADrawingState dsNext = drawingStates.get(iDrawingState);
+	public void setDrawingState(EDrawingStateType drawingStateType) {
+		ADrawingState dsNext = drawingStates.get(drawingStateType);
 
 		if (dsNext != null)
 			currentDrawingState = dsNext;
@@ -131,8 +124,8 @@ public class DrawingController {
 	 *            Type of drawing state.
 	 * @return Drawing state with the specified type that is held by the drawing controller.
 	 */
-	public ADrawingState getDrawingState(int iStateType) {
-		return drawingStates.get(iStateType);
+	public ADrawingState getDrawingState(EDrawingStateType drawingStateType) {
+		return drawingStates.get(drawingStateType);
 	}
 
 	/**

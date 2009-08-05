@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.ESelectionType;
 
@@ -15,6 +16,7 @@ import org.caleydo.core.data.selection.ESelectionType;
  * 
  * @author Christian Partl
  */
+@XmlType
 public class DrawingStateDetailOutside
 	extends ADrawingState {
 
@@ -57,7 +59,7 @@ public class DrawingStateDetailOutside
 			radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
 			radialHierarchy.setCurrentRootElement(pdCurrentRootElement);
 			radialHierarchy.setCurrentMouseOverElement(pdCurrentRootElement);
-			drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
+			drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 			radialHierarchy.setDisplayListDirty();
 
 			navigationHistory.replaceCurrentHistoryEntry(drawingController.getCurrentDrawingState(),
@@ -109,7 +111,7 @@ public class DrawingStateDetailOutside
 					}
 					radialHierarchy.setCurrentRootElement(pdCurrentRootElement);
 					radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
-					drawingController.setDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
+					drawingController.setDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 
 					navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
 						pdCurrentRootElement, pdCurrentRootElement, radialHierarchy
@@ -313,7 +315,7 @@ public class DrawingStateDetailOutside
 			}
 			if (pdSelected == pdCurrentRootElement) {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
-				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_PARENT_ROOT_ELEMENT);
+				drawingController.setDrawingState(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT);
 				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getParent()
 					.getElementID());
 			}
@@ -326,7 +328,7 @@ public class DrawingStateDetailOutside
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				radialHierarchy.setCurrentRootElement(pdSelected);
 				radialHierarchy.setCurrentMouseOverElement(pdSelected);
-				drawingController.setDrawingState(DrawingController.DRAWING_STATE_ANIM_NEW_ROOT_ELEMENT);
+				drawingController.setDrawingState(EDrawingStateType.ANIMATION_NEW_ROOT_ELEMENT);
 
 				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
 			}
@@ -375,7 +377,7 @@ public class DrawingStateDetailOutside
 
 				ADrawingState dsNext =
 					drawingController
-						.getDrawingState(DrawingController.DRAWING_STATE_ANIM_PULL_IN_DETAIL_OUTSIDE);
+						.getDrawingState(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE);
 				drawingController.setDrawingState(dsNext);
 
 				radialHierarchy
@@ -387,7 +389,7 @@ public class DrawingStateDetailOutside
 
 				ADrawingState dsNext =
 					drawingController
-						.getDrawingState(DrawingController.DRAWING_STATE_ANIM_POP_OUT_DETAIL_OUTSIDE);
+						.getDrawingState(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE);
 				drawingController.setDrawingState(dsNext);
 
 				radialHierarchy
@@ -402,5 +404,10 @@ public class DrawingStateDetailOutside
 	@Override
 	public PartialDisc getSelectedElement() {
 		return radialHierarchy.getCurrentSelectedElement();
+	}
+
+	@Override
+	public EDrawingStateType getType() {
+		return EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE;
 	}
 }

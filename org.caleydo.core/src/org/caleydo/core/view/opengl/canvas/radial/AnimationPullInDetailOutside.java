@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * * This class represents the animation where the detail view is pulled in to the full hierarchy. When the
@@ -9,6 +10,7 @@ import javax.media.opengl.glu.GLU;
  * 
  * @author Christian Partl
  */
+@XmlType
 public class AnimationPullInDetailOutside
 	extends ADrawingStateAnimation {
 
@@ -83,7 +85,7 @@ public class AnimationPullInDetailOutside
 
 		if (!bAnimationStarted) {
 			ADrawingState dsNext =
-				drawingController.getDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
+				drawingController.getDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
@@ -192,6 +194,11 @@ public class AnimationPullInDetailOutside
 		mvDetailViewStartAngle =
 			createNewMovementValue(fCurrentSelectedElementStartAngle, fCurrentSelectedElementStartAngle,
 				fAnimationDuration);
+	}
+
+	@Override
+	public EDrawingStateType getType() {
+		return EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE;
 	}
 
 }

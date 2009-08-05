@@ -5,6 +5,8 @@ import java.util.GregorianCalendar;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * ADrawingStateAnimation is the base class for all animations considering the radial hierarchy. It stops the
@@ -14,6 +16,9 @@ import javax.media.opengl.glu.GLU;
  * 
  * @author Christian Partl
  */
+@XmlType
+@XmlSeeAlso({AnimationNewRootElement.class, AnimationParentRootElement.class, 
+	AnimationPopOutDetailOutside.class, AnimationPullInDetailOutside.class})
 public abstract class ADrawingStateAnimation
 	extends ADrawingState {
 
@@ -107,7 +112,6 @@ public abstract class ADrawingStateAnimation
 				iNumTargetsReached++;
 			}
 		}
-
 		return (iNumTargetsReached == alMovementValues.size());
 	}
 

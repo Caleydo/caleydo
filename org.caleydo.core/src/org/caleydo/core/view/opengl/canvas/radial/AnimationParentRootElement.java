@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -14,6 +15,7 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
  * 
  * @author Christian Partl
  */
+@XmlType
 public class AnimationParentRootElement
 	extends ADrawingStateAnimation {
 
@@ -75,7 +77,7 @@ public class AnimationParentRootElement
 
 		if (!bAnimationStarted) {
 			ADrawingState dsNext =
-				drawingController.getDrawingState(DrawingController.DRAWING_STATE_FULL_HIERARCHY);
+				drawingController.getDrawingState(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
@@ -183,5 +185,10 @@ public class AnimationParentRootElement
 				EPDDrawingStrategyType.FIXED_COLOR);
 
 		pdCurrentSelectedElement.setPDDrawingStrategy(dsFixedColor);
+	}
+
+	@Override
+	public EDrawingStateType getType() {
+		return EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT;
 	}
 }

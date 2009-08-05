@@ -95,7 +95,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 		for (NodeType tmpChild : getChildren(parentNode)) {
 			NodeInfo tmpInfo = mNodeMap.get(tmpChild);
-			tmpInfo.increaseNumberOfSiblings();
+			 tmpInfo.increaseiNumberOfSiblings();
 		}
 		setDepthFlag();
 
