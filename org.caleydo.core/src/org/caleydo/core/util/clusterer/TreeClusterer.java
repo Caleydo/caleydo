@@ -353,9 +353,7 @@ public class TreeClusterer
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
 
-		int random = (int) ((Math.random() * Integer.MAX_VALUE) + 1);
-
-		ClusterNode node = new ClusterNode("Root", random, 0f, 0, true);
+		ClusterNode node = new ClusterNode("Root", getNodeCounter(), 0f, 0, true);
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
