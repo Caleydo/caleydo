@@ -505,6 +505,8 @@ public class ContextMenu
 	 *            the id which has to match one of the ids specified in {@link #display}
 	 */
 	public void handleEvents(EPickingMode ePickingMode, int iExternalID) {
+		if(iExternalID == Integer.MAX_VALUE)
+			return;
 		switch (ePickingMode) {
 			case MOUSE_OVER:
 				mouseOverElement = iExternalID;
@@ -533,7 +535,8 @@ public class ContextMenu
 
 	private void drawBackground(GL gl, ContextMenuMetaData metaData) {
 		// the body
-		gl.glPushName(pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION, Integer.MAX_VALUE));
+		gl.glPushName(pickingManager.getPickingID(masterGLView.getID(), EPickingType.CONTEXT_MENU_SELECTION,
+			Integer.MAX_VALUE));
 		gl.glColor4f(0f, 0f, 0f, 0.9f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(metaData.xOrigin + TEXTURE_SIZE, metaData.yOrigin - TEXTURE_SIZE, BASIC_Z);
