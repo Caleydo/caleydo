@@ -11,6 +11,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.net.Connection;
+import org.caleydo.core.net.ENetworkStatus;
 import org.caleydo.core.net.EventFilterBridge;
 import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.net.config.ConfigureableEventBridge;
@@ -165,7 +166,7 @@ public class CollabViewRep
 		button.setText("create network");
 		CreateNetworkListener createNetworkListener = new CreateNetworkListener();
 		button.addListener(SWT.Selection, createNetworkListener);
-		if (networkManager.getStatus() == NetworkManager.STATUS_STOPPED) {
+		if (networkManager.getStatus() == ENetworkStatus.STATUS_STOPPED) {
 			label = new Label(testControls, SWT.LEFT);
 			label.setText("");
 		} else {
@@ -178,21 +179,30 @@ public class CollabViewRep
 		button.setText("start server");
 		StartServerListener startServerListener = new StartServerListener();
 		button.addListener(SWT.Selection, startServerListener);
-		if (networkManager.getStatus() == NetworkManager.STATUS_STOPPED) {
-			button.setEnabled(false);
-			label = new Label(testControls, SWT.LEFT);
-			label.setText("Create network services first");
-		} else if (networkManager.getStatus() == NetworkManager.STATUS_STARTED) {
-			label = new Label(testControls, SWT.LEFT);
-			label.setText("Use this caledyo application as a server");
-		} else if (networkManager.getStatus() == NetworkManager.STATUS_SERVER) {
-			button.setEnabled(false);
-			label = new Label(testControls, SWT.LEFT);
-			label.setText("Server started");
-		} else if (networkManager.getStatus() == NetworkManager.STATUS_CLIENT) {
-			button.setEnabled(false);
-			label = new Label(testControls, SWT.LEFT);
-			label.setText("Already connected as a client");
+		switch (networkManager.getStatus()) {
+			case STATUS_STOPPED:
+				button.setEnabled(false);
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("Create network services first");
+				break;
+			case STATUS_STARTED:
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("Use this caledyo application as a server");
+				break;
+			case STATUS_SERVER:
+				button.setEnabled(false);
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("Server started");
+				break;
+			case STATUS_CLIENT:
+				button.setEnabled(false);
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("Already connected as a client");
+				break;
+			default:
+				button.setEnabled(false);
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("unknown network status");
 		}
 
 		text = new Text(testControls, SWT.LEFT);
@@ -202,7 +212,7 @@ public class CollabViewRep
 		ConnectToServerListener connectToServerListener = new ConnectToServerListener();
 		connectToServerListener.setAddressField(text);
 		button.addListener(SWT.Selection, connectToServerListener);
-		if (networkManager.getStatus() != NetworkManager.STATUS_STARTED) {
+		if (networkManager.getStatus() != ENetworkStatus.STATUS_STARTED) {
 			button.setEnabled(false);
 			text.setEnabled(false);
 		}

@@ -35,18 +35,6 @@ public class NetworkManager
 	/** Default given network name */ 
 	public static final String DEFAULT_NETWORK_NAME = "CaleydoApp";
 
-	/** status that indicates that no network-services have been created */
-	public static final int STATUS_STOPPED = 1;
-	
-	/** status that indicates that network services are started, but no client or server is running */
-	public static final int STATUS_STARTED= 2;
-	
-	/** status that indicates that network services are started and a server is running */
-	public static final int STATUS_SERVER = 3;
-	
-	/** status that indicates that network-services are started and this application is connected to a server */
-	public static final int STATUS_CLIENT = 4;
-	
 	/** 
 	 * version-id to validate connections of 2 caleydo applications
 	 * TODO version should be read from a global variable, maybe general manager? 
@@ -84,7 +72,7 @@ public class NetworkManager
 	private IEventPublisher centralEventPublisher;
 
 	/** status information indicator */
-	private int status;
+	private ENetworkStatus status;
 	
 	/** caleydo's network server */
 	private Server server;
@@ -115,7 +103,7 @@ public class NetworkManager
 		connectingTimeout = 5000;
 		connectionCounter = 0;
 		
-		status = STATUS_STOPPED;
+		status = ENetworkStatus.STATUS_STOPPED;
 	}
 
 	/**
@@ -132,7 +120,7 @@ public class NetworkManager
 		registerEventListeners();
 		// createTestClientConnection();
 		
-		status = STATUS_STARTED;
+		status = ENetworkStatus.STATUS_STARTED;
 		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 		centralEventPublisher.triggerEvent(event);
 	}
@@ -142,7 +130,7 @@ public class NetworkManager
 	 */
 	public void stopNetworkService() {
 		unregisterEventListeners();
-		status = STATUS_STOPPED;
+		status = ENetworkStatus.STATUS_STOPPED;
 	}
 	
 	/**
@@ -172,7 +160,7 @@ public class NetworkManager
 		server = new Server(this, listenPort);
 		serverThread = new Thread(server, "Server");
 		serverThread.start();
-		status = STATUS_SERVER;
+		status = ENetworkStatus.STATUS_SERVER;
 		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 		centralEventPublisher.triggerEvent(event);
 	}
@@ -206,7 +194,7 @@ public class NetworkManager
 	 */
 	public void stopServices() {
 		// TODO implementation
-		status = STATUS_STOPPED;
+		status = ENetworkStatus.STATUS_STOPPED;
 		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 		centralEventPublisher.triggerEvent(event);
 	}
@@ -254,7 +242,7 @@ public class NetworkManager
 			connection.connect(inetAddress, listenPort);
 			connections.add(connection);
 			createEventSystem(connection);
-			status = STATUS_CLIENT;
+			status = ENetworkStatus.STATUS_CLIENT;
 			RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 			centralEventPublisher.triggerEvent(event);
 		} catch (ConnectException ex) {
@@ -453,11 +441,11 @@ public class NetworkManager
 		this.serverThread = serverThread;
 	}
 
-	public int getStatus() {
+	public ENetworkStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(ENetworkStatus status) {
 		this.status = status;
 	}
 
