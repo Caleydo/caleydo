@@ -134,9 +134,9 @@ public class GLDendrogram
 		this.bRenderGeneTree = bRenderGeneTree;
 
 		if (bRenderGeneTree)
-			fPosCut = 0.1f;
+			fPosCut = 0f;
 		else
-			fPosCut = 2f;
+			fPosCut = 0f;
 	}
 
 	@Override
@@ -440,6 +440,7 @@ public class GLDendrogram
 	}
 
 	private void renderSelections(final GL gl, ClusterNode currentNode) {
+
 		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
 			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 
@@ -759,8 +760,10 @@ public class GLDendrogram
 				renderDendrogramExperiments(gl, tree.getRoot());
 			}
 
-			renderSelections(gl, tree.getRoot());
-			renderCut(gl);
+			if (bIsRenderedRemote == false) {
+				renderSelections(gl, tree.getRoot());
+				renderCut(gl);
+			}
 
 			if (bRenderGeneTree)
 				gl.glTranslatef(-0.1f, 0, 0);
@@ -943,6 +946,10 @@ public class GLDendrogram
 			return;
 		}
 
+		// FIXME
+		if (bIsRenderedRemote)
+			return;
+
 		boolean bupdateSelectionManager = false;
 		boolean bTriggerClusterNodeEvent = false;
 		ESelectionType eSelectionType = ESelectionType.NORMAL;
@@ -1078,13 +1085,15 @@ public class GLDendrogram
 
 	@Override
 	public void clearAllSelections() {
-		if (bRenderGeneTree)
-			fPosCut = 0.1f;
-		else
-			fPosCut = viewFrustum.getHeight() - 0.2f;
 
+		fPosCut = 0;
+		iMaxDepth = Integer.MAX_VALUE;
+		iAlCutOffClusters.clear();
+		buildNewGroupList();
 		resetAllTreeSelections();
-
+		tree = null;
+		bRedrawDendrogram = true;
+		bEnableDepthCheck = false;
 	}
 
 	@Override
@@ -1093,8 +1102,9 @@ public class GLDendrogram
 		if (bRenderGeneTree) {
 			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView();
 			serializedForm = horizontal;
-		} else {
-			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView ();
+		}
+		else {
+			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView();
 			serializedForm = vertical;
 		}
 		serializedForm.setViewID(this.getID());
@@ -1220,8 +1230,6 @@ public class GLDendrogram
 	@Override
 	public void resetView() {
 		super.resetView();
-		tree = null;
-		bRedrawDendrogram = true;
 	}
 
 	private void resetAllTreeSelections() {
@@ -1247,9 +1255,9 @@ public class GLDendrogram
 			resetAllTreeSelections();
 			if (tree.getNodeByNumber(clusterNr) != null) {
 				tree.getNodeByNumber(clusterNr).setSelectionType(selectionType);
-				
-				if(bIsRenderedRemote)
-					 currentRootNode = tree.getNodeByNumber(clusterNr);
+
+				if (bIsRenderedRemote)
+					currentRootNode = tree.getNodeByNumber(clusterNr);
 			}
 
 			setDisplayListDirty();
