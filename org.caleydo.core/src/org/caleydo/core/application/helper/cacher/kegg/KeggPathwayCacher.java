@@ -36,7 +36,7 @@ public class KeggPathwayCacher
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
 
-		iExpectedDownloads = 213;
+		iExpectedDownloads = 264;
 	}
 
 	@Override

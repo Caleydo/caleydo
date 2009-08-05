@@ -68,7 +68,7 @@ public class PathwayListGenerator {
 				sImagePath =
 					sInputImagePath
 						+ tmpFile.toString().substring(tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
-							tmpFile.toString().length() - 4) + ".gif";
+							tmpFile.toString().length() - 4) + ".png";
 			}
 			// find out image path of biocarta pathway - necessary because xml
 			// path != image path

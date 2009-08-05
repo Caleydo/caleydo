@@ -163,10 +163,11 @@ public class KgmlSaxHandler
 			sTitle = "unknown title";
 		}
 
-		// Find out pathway texture width and height
-		// TODO: Find faster solution for extracting width and height
 		String sPathwayTexturePath =
 			sImageLink.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
+		
+		// FIX inconsistency between XML data which state the pathway images as GIFs - but we have them as PNGs
+		sPathwayTexturePath = sPathwayTexturePath.replace(".gif", ".png");
 
 		currentPathway =
 			pathwayManager.createPathway(EPathwayDatabaseType.KEGG, sName, sTitle, sPathwayTexturePath,

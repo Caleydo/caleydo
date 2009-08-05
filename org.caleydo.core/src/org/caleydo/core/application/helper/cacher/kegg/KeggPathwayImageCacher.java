@@ -38,7 +38,7 @@ public class KeggPathwayImageCacher
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
 
-		iExpectedDownloads = 610;
+		iExpectedDownloads = 612;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class KeggPathwayImageCacher
 		DownloadJobFilter downloadFilter = new DownloadJobFilter();
 		downloadFilter.setAllowedHostNames(new String[] { "www.genome.ad.jp*", "www.genome.jp*" });
 		downloadFilter.setMaxRecursionDepth(2);
-		downloadFilter.setSaveToDisk(new String[] { ".*gif" });
+		downloadFilter.setSaveToDisk(new String[] { ".*png" });
 
 		// add the filter to the dispatcher
 		dispatcher.addJobFilter(downloadFilter);
@@ -65,7 +65,7 @@ public class KeggPathwayImageCacher
 		RegExpFilterRule regExpFilterRule =
 			new RegExpJobFilter.RegExpFilterRule(
 				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*html"
-					+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*compound.*|.*hsa\\+.*|.*Fig.*|.*glycan.*|.*up\\+.*|.*misc.*|.*document.*|javascrip.*");
+					+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*compound.*|.*hsa\\+.*|.*Fig.*|.*glycan.*|.*up\\+.*|.*misc.*|.*hsa:.*|.*www_bget\\?G.*|.*www_bget\\?C.*|.*document.*|javascrip.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
