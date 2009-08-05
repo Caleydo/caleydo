@@ -4,22 +4,23 @@ package org.caleydo.core.data.graph.tree;
  * The info object of the corresponding node
  * 
  * @author Helmut Pichlhoefer
- *
  */
 
 class NodeInfo {
-	
+
 	private String sNodeName;
 
 	private boolean bIsRootNode;
-	
+
 	private int iNumberOfKids;
-	
+
 	private int iNumberOfSiblings;
-	
+
 	private int iLayer;
-	
-	public NodeInfo(String sNodename, boolean bIsRootNode, int iLayer ){ 
+
+	private int iDepth;
+
+	public NodeInfo(String sNodename, boolean bIsRootNode, int iLayer) {
 		this.sNodeName = sNodename;
 		this.bIsRootNode = bIsRootNode;
 		this.iLayer = iLayer;
@@ -64,6 +65,14 @@ class NodeInfo {
 
 	public int getLayer() {
 		return iLayer;
+	}
+
+	public void setDepth(int iDepth) {
+		this.iDepth = iDepth;
+	}
+	
+	public int getDepth() {
+		return iDepth;
 	}
 
 }

@@ -5,7 +5,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
+import org.caleydo.core.data.graph.tree.Tree;
 
 public abstract class ATreeLayouter
 	implements ITreeLayouter, Comparable<ATreeLayouter> {

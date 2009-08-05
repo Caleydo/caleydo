@@ -95,7 +95,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 
 		for (NodeType tmpChild : getChildren(parentNode)) {
 			NodeInfo tmpInfo = mNodeMap.get(tmpChild);
-			 tmpInfo.increaseNumberOfSiblings();
+			tmpInfo.increaseNumberOfSiblings();
 		}
 		setDepthFlag();
 
@@ -201,9 +201,8 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	}
 
 	/**
-	 * Each key in the mLayerMap holds the number of the elements in 
-	 * the particular layer. This function increases the elements - number 
-	 * of the given layer.
+	 * Each key in the mLayerMap holds the number of the elements in the particular layer. This function
+	 * increases the elements - number of the given layer.
 	 * 
 	 * @param layer
 	 *            Its is the key of the layerMap, representing the layer
@@ -218,47 +217,68 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	/**
 	 * Returns the number of elements in the given layer
 	 * 
-	 * @param layer 
-	 * 			The value of this key gets returned 
+	 * @param layer
+	 *            The value of this key gets returned
 	 * @return the number of elements
 	 */
 	public int getNumberOfElementsInLayer(int layer) {
-
-		return mLayerMap.get(layer);
+		if (mLayerMap.containsKey(layer))
+			return mLayerMap.get(layer);
+		else
+			return 0;
 
 	}
 
 	/**
-	 * Returns the depth of the tree, using a recursive function, starting
-	 * at the root node
+	 * Returns the depth of the tree
 	 * 
 	 * @return the depth of the tree
 	 */
 	public int getDepth() {
-
+		// Update iDepth if tree has changed
 		if (isDepthFlagDirty()) {
 			resetDepthFlag();
-
 			iDepth = determineDepth(rootNode);
-
 		}
 		return iDepth;
 	}
 
+	/**
+	 * Walks through all children of a node and determines depth from node downwards.
+	 * 
+	 * @param node
+	 * @return
+	 */
 	private int determineDepth(NodeType node) {
-
 		NodeInfo info = mNodeMap.get(node);
+		int iDepth = 1;
 		if (hasChildren(node)) {
-			int tmpDepth = 0;
+			// Get Depth of all childs and update our depth to max. depth of childs + 1
 			for (NodeType currentNode : getChildren(node)) {
 				int iChildDepth = determineDepth(currentNode);
-				if (tmpDepth <= iChildDepth)
-					tmpDepth = iChildDepth;
+				if (iDepth <= iChildDepth)
+					iDepth = iChildDepth + 1;
 			}
-			return tmpDepth;
 		}
-		else
-			return info.getLayer();
+		// store our Depth and return it, leaves would have depth = 1
+		info.setDepth(iDepth);
+		return iDepth;
+	}
+
+	/**
+	 * Determine depth of a specific node.
+	 * 
+	 * @param node
+	 * @return
+	 */
+	public int getDepth(NodeType node) {
+		// update whole tree depth informations if they are dirty
+		if (isDepthFlagDirty()) {
+			resetDepthFlag();
+			iDepth = determineDepth(rootNode);
+		}
+		// return current depth
+		return mNodeMap.get(node).getDepth();
 	}
 
 	/**
@@ -271,8 +291,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 	}
 
 	/**
-	 * The depth flag is a performance tool to avoid the
-	 * recursive calculating of the getDepth() function when
+	 * The depth flag is a performance tool to avoid the recursive calculating of the getDepth() function when
 	 * depth is unmodified
 	 */
 	public void setDepthFlag() {

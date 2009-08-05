@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
@@ -22,7 +23,6 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.Tree;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -86,11 +86,26 @@ public class GLHyperbolic
 		tree = new Tree<ADrawAbleNode>();
 		ADrawAbleNode test = new TestNode("first Test", 0);
 		tree.setRootNode(test);
-		for (int i = 1; i <= 21; ++i) {
+		for (int i = 1; i <= 6; ++i) {
 			ADrawAbleNode test2 = new TestNode("childs", i);
 			tree.addChild(test, test2);
 			test = test2;
 		}
+		
+		test = tree.getRoot();
+		ADrawAbleNode test2 = new TestNode("childs", 500);
+		tree.addChild(test, test2);
+//		blabla(test);
+//		int lala = tree.getDepth();
+//		lala = tree.getDepth(test);
+//		for(ADrawAbleNode node : tree.getChildren(test))
+//			lala = tree.getDepth(node);
+//		ADrawAbleNode test2 = new TestNode("childs", 500);
+//		tree.addChild(test, test2);
+//		lala = tree.getDepth(test2);
+//		lala = tree.getDepth(test);
+//		lala = tree.getDepth();
+		
 		// ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
 		// obj.setAlpha(0.8f);
 		// obj.setBgColor3f(0.4f, 0.3f, 0.5f);

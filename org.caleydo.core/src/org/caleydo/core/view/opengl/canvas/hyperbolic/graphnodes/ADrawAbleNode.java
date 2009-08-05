@@ -19,7 +19,6 @@ public abstract class ADrawAbleNode
 	String nodeName;
 	int iComparableValue;
 	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
-	protected int iLayer;
 
 	/**
 	 * Constructor
@@ -70,23 +69,5 @@ public abstract class ADrawAbleNode
 	 */
 	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleObject iObject) {
 		mRepresantations.put(eDetailLevel, iObject);
-	}
-
-	/**
-	 * Set the Tree-Layer of the Node
-	 * 
-	 * @param iLayer
-	 */
-	public final void setLayer(int iLayer) {
-		this.iLayer = iLayer;
-	}
-
-	/**
-	 * Get the Tree-Layer of the node
-	 * 
-	 * @return iLayer
-	 */
-	public final int getLayer() {
-		return this.iLayer;
 	}
 }
