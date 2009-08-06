@@ -776,8 +776,8 @@ public class TreeClusterer
 
 		this.set = set;
 
-		// virtualArray = pmlcluster(clusterState.getClustererType());
-		virtualArray = palcluster(clusterState.getClustererType());
+		 virtualArray = pmlcluster(clusterState.getClustererType());
+//		virtualArray = palcluster(clusterState.getClustererType());
 
 		return virtualArray;
 	}

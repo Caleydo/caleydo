@@ -38,6 +38,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -2928,6 +2929,7 @@ public class GLHierarchicalHeatMap
 			bIsDraggingWholeBlockLevel1 = false;
 			bDisableCursorDraggingLevel1 = false;
 
+			initPosCursorLevel2();
 		}
 	}
 
@@ -3034,6 +3036,8 @@ public class GLHierarchicalHeatMap
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel1 = false;
 			bDisableBlockDraggingLevel1 = false;
+
+			initPosCursorLevel2();
 		}
 	}
 
@@ -3112,6 +3116,11 @@ public class GLHierarchicalHeatMap
 
 					case CLICKED:
 						contentVA.getGroupList().get(iExternalID).toggleSelectionType();
+
+						// System.out.println(contentVA.getGroupList().get(iExternalID).getIdxExample());
+						// System.out.println(GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(
+						// contentVA.getGroupList().get(iExternalID).getIdxExample()));
+
 						setDisplayListDirty();
 						break;
 
@@ -3182,6 +3191,11 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 					case CLICKED:
 						storageVA.getGroupList().get(iExternalID).toggleSelectionType();
+
+						// System.out.println(storageVA.getGroupList().get(iExternalID).getIdxExample());
+						// System.out.println(set.get(storageVA.getGroupList().get(iExternalID).getIdxExample())
+						// .getLabel());
+
 						setDisplayListDirty();
 						break;
 

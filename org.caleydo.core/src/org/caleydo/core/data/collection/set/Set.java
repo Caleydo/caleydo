@@ -391,8 +391,7 @@ public class Set
 
 	@Override
 	public int createVA(EVAType vaType, List<Integer> iAlSelections) {
-		if (vaType == EVAType.STORAGE)
-		{
+		if (vaType == EVAType.STORAGE) {
 			IVirtualArray virtualArray = new VirtualArray(vaType, size(), iAlSelections);
 			return createStorageVA(virtualArray);
 		}
@@ -616,8 +615,6 @@ public class Set
 	public void setGroupReprInfo(int[] arGroupRepr, boolean bGeneGroupInfo) {
 
 		int group = 0;
-		int repr = 0;
-		int offset = 0;
 
 		GroupList groupListTemp = null;
 
@@ -628,11 +625,12 @@ public class Set
 			groupListTemp = groupListExperiments;
 		}
 
-		for (int i = 0; i < arGroupRepr.length; i++) {
-			if (arGroupRepr[i] == 1) {
-				repr = i - offset;
-				groupListTemp.get(group).setIdxExample(repr);
-				offset = offset + groupListTemp.get(group).getNrElements();
+		groupListTemp.get(group).setIdxExample(0);
+		group++;
+
+		for (int i = 1; i < arGroupRepr.length; i++) {
+			if (arGroupRepr[i] != arGroupRepr[i - 1]) {
+				groupListTemp.get(group).setIdxExample(i);
 				group++;
 			}
 		}

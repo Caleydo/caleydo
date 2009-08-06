@@ -18,6 +18,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
@@ -262,22 +263,39 @@ public class GLDendrogram
 		float fHeight = viewFrustum.getHeight();
 		float fWidth = viewFrustum.getWidth();
 
-		gl.glColor4f(1f, 0f, 0f, 0.4f);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 		if (bRenderGeneTree) {
+			gl.glColor4f(1f, 0f, 0f, 0.4f);
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(fPosCut, 0.0f, 0);
 			gl.glVertex3f(fPosCut, fHeight, 0);
 			gl.glVertex3f(fPosCut + 0.1f, fHeight, 0);
 			gl.glVertex3f(fPosCut + 0.1f, 0.0f, 0);
 			gl.glEnd();
+
+			gl.glColor4f(1f, 0f, 0f, 1f);
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(fPosCut - 0.3f, 0.1f, 0);
+			gl.glVertex3f(fPosCut + 0.05f, 0.2f, 0);
+			gl.glVertex3f(fPosCut + 0.4f, 0.1f, 0);
+			gl.glVertex3f(fPosCut + 0.05f, 0.0f, 0);
+			gl.glEnd();
 		}
 		else {
+			gl.glColor4f(1f, 0f, 0f, 0.4f);
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(0, fPosCut, 0);
 			gl.glVertex3f(fWidth, fPosCut, 0);
 			gl.glVertex3f(fWidth, fPosCut + 0.1f, 0);
 			gl.glVertex3f(0.0f, fPosCut + 0.1f, 0);
+			gl.glEnd();
+
+			gl.glColor4f(1f, 0f, 0f, 1f);
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(0.0f, fPosCut + 0.05f, 0);
+			gl.glVertex3f(0.1f, fPosCut + 0.4f, 0);
+			gl.glVertex3f(0.2f, fPosCut + 0.05f, 0);
+			gl.glVertex3f(0.1f, fPosCut - 0.3f, 0);
 			gl.glEnd();
 		}
 		gl.glPopName();
@@ -853,10 +871,22 @@ public class GLDendrogram
 		bEnableDepthCheck = true;
 
 		int cnt = 0;
+		int iExample = 0;
+
+		IVirtualArray currentVA = null;
+
+		if (bRenderGeneTree) {
+			currentVA = contentVA;
+		}
+		else {
+			currentVA = storageVA;
+		}
+
 		for (Integer iter : iAlCutOffClusters) {
-			Group temp = new Group(iter, false, 0, ESelectionType.NORMAL);
+			Group temp = new Group(iter, false, currentVA.get(iExample), ESelectionType.NORMAL);
 			groupList.append(temp);
 			cnt++;
+			iExample += iter;
 		}
 
 		if (bRenderGeneTree) {

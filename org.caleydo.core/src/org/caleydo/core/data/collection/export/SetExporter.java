@@ -67,6 +67,7 @@ public class SetExporter {
 
 			int cnt = -1;
 			int cluster = 0;
+			int iExample = 0;
 			int index = 0;
 			int offset = 0;
 			String identifier;
@@ -106,18 +107,10 @@ public class SetExporter {
 						cnt++;
 					}
 
-					if (cnt == 0)
-						out.print(cluster + "\t" + 1 + "\t");
-					else
-						out.print(cluster + "\t" + 0 + "\t");
-					// if (cluster < contentVA.getGroupList().size()) {
-					// if (index == offset + contentVA.getGroupList().get(cluster).getIdxExample())
-					// out.print(cluster + "\t" + 1 + "\t");
-					// else
-					// out.print(cluster + "\t" + 0 + "\t");
-					// }
-					// else
-					// out.print(cluster + "\t" + 0 + "\t");
+					iExample = contentVA.getGroupList().get(cluster).getIdxExample();
+
+					out.print(cluster + "\t" + iExample + "\t");
+
 					index++;
 				}
 				out.println();
@@ -142,11 +135,10 @@ public class SetExporter {
 						cnt++;
 					}
 
+					iExample = storageVA.getGroupList().get(cluster).getIdxExample();
+
 					stClusterNr += cluster + "\t";
-					if (cnt == 0)
-						stClusterRep += 1 + "\t";
-					else
-						stClusterRep += 0 + "\t";
+					stClusterRep += iExample + "\t";
 				}
 
 				stClusterNr += "\n";
