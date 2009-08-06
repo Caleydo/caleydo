@@ -424,17 +424,6 @@ public class GLHeatMap
 
 						eSelectionType = ESelectionType.MOUSE_OVER;
 
-						// Check if mouse over element is already selected ->
-						// ignore
-						// if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
-						// contentSelectionManager.clearSelection(eSelectionType);
-						// SelectionCommand command =
-						// new SelectionCommand(ESelectionCommandType.CLEAR, eSelectionType);
-						// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
-						// setDisplayListDirty();
-						// return;
-						// }
-
 						break;
 					case RIGHT_CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
@@ -474,16 +463,16 @@ public class GLHeatMap
 
 						// Check if mouse over element is already selected ->
 						// ignore
-						if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
-							storageSelectionManager.clearSelection(eSelectionType);
+						// if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
+						// storageSelectionManager.clearSelection(eSelectionType);
 
-							// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
-							// eSelectionType);
-							// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
+						// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
+						// eSelectionType);
+						// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
 
-							setDisplayListDirty();
-							return;
-						}
+						// setDisplayListDirty();
+						// return;
+						// }
 
 						break;
 					default:
@@ -517,8 +506,16 @@ public class GLHeatMap
 		if (contentSelectionManager.checkStatus(selectionType, contentID))
 			return;
 
+		// check if the mouse-overed element is already selected, and if it is, whether mouse over is clear.
+		// If that all is true we don't need to do anything
+		if (selectionType == ESelectionType.MOUSE_OVER
+			&& contentSelectionManager.checkStatus(ESelectionType.SELECTION, contentID)
+			&& contentSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
+			return;
+
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
+	
 		contentSelectionManager.clearSelection(selectionType);
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
@@ -557,9 +554,15 @@ public class GLHeatMap
 	}
 
 	private void createStorageSelection(ESelectionType selectionType, int storageID) {
-		if (storageSelectionManager.checkStatus(selectionType, storageID)) {
+		if (storageSelectionManager.checkStatus(selectionType, storageID))
 			return;
-		}
+
+		// check if the mouse-overed element is already selected, and if it is, whether mouse over is clear.
+		// If that all is true we don't need to do anything
+		if (selectionType == ESelectionType.MOUSE_OVER
+			&& storageSelectionManager.checkStatus(ESelectionType.SELECTION, storageID)
+			&& storageSelectionManager.getElements(ESelectionType.MOUSE_OVER).size() == 0)
+			return;
 
 		storageSelectionManager.clearSelection(selectionType);
 		storageSelectionManager.addToType(selectionType, storageID);
