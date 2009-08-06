@@ -336,6 +336,10 @@ public class DrawingStateDetailOutside
 			bInitialDraw = true;
 			radialHierarchy.setDisplayListDirty();
 		}
+		else {
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
+			radialHierarchy.setDisplayListDirty();
+		}
 
 	}
 
@@ -350,10 +354,9 @@ public class DrawingStateDetailOutside
 			}
 
 			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
+			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver.getElementID());
 			radialHierarchy.setDisplayListDirty();
 		}
-
-		radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver.getElementID());
 	}
 
 	@Override
