@@ -1175,38 +1175,43 @@ public class GLHierarchicalHeatMap
 
 		float fHeightElem = fHeight / iNumberOfElements;
 
-		int iStartElem = 0;
-		int iLastElem = 0;
-
-		boolean colorToggle = true;
-
-		gl.glLineWidth(2f);
-
 		if (bIsDraggingActiveLevel1 == false && bIsDraggingWholeBlockLevel1 == false) {
 			fPosCursorFirstElementLevel1 = viewFrustum.getHeight() - iFirstSampleLevel1 * fHeightElem;
 			fPosCursorLastElementLevel1 = viewFrustum.getHeight() - (iLastSampleLevel1 + 1) * fHeightElem;
 		}
 
-		for (int currentGroup = 0; currentGroup < iNrTextures; currentGroup++) {
-
-			iStartElem = iLastElem;
-			iLastElem += iAlNumberSamples.get(currentGroup);
-
-			if (colorToggle)
-				gl.glColor4f(0f, 0f, 0f, 1f);
-			else
-				gl.glColor4f(1f, 1f, 1f, 1f);
-
-			colorToggle = (colorToggle == true) ? false : true;
-
-			// TODO: find a better way to render cluster assignments (--> +0.01f is not a fine way)
-			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(0, fHeight - fHeightElem * iStartElem, 0);
-			gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iStartElem, 0);
-			gl.glVertex3f(fFieldWith, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
-			gl.glVertex3f(0, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
-			gl.glEnd();
-		}
+		// int iStartElem = 0;
+		// int iLastElem = 0;
+		//
+		// boolean colorToggle = true;
+		//
+		// gl.glLineWidth(2f);
+		// for (int currentTextureIdx = 0; currentTextureIdx < iNrTextures; currentTextureIdx++) {
+		//
+		// iStartElem = iLastElem;
+		// iLastElem += iAlNumberSamples.get(currentTextureIdx);
+		//
+		// if (colorToggle)
+		// gl.glColor4f(0f, 0f, 0f, 1f);
+		// else
+		// gl.glColor4f(1f, 1f, 1f, 1f);
+		//
+		// colorToggle = (colorToggle == true) ? false : true;
+		//
+		// gl.glBegin(GL.GL_LINE_LOOP);
+		// gl.glVertex3f(0, fHeight - fHeightElem * iStartElem, 0);
+		// gl.glVertex3f(fFieldWith, fHeight - fHeightElem * iStartElem, 0);
+		// // Different handling for last texture. To avoid problems with visualization.
+		// if (currentTextureIdx == iNrTextures - 1) {
+		// gl.glVertex3f(fFieldWith, (fHeight - fHeightElem * iLastElem), 0);
+		// gl.glVertex3f(0, (fHeight - fHeightElem * iLastElem), 0);
+		// }
+		// else {
+		// gl.glVertex3f(fFieldWith, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
+		// gl.glVertex3f(0, (fHeight - fHeightElem * iLastElem) + 0.01f, 0);
+		// }
+		// gl.glEnd();
+		// }
 
 		// selected domain level 1
 		startpoint1 = new Vec3f(fFieldWith, fPosCursorFirstElementLevel1, 0);
@@ -2491,7 +2496,7 @@ public class GLHierarchicalHeatMap
 
 		int iNumberSample = iNumberOfElements;
 		float fOffsety;
-		float fHeightSample = (viewFrustum.getHeight() - 0.4f) / iNumberSample;
+		float fHeightSample = viewFrustum.getHeight() / iNumberSample;
 		float[] fArPickingCoords = new float[3];
 
 		if (pickingPointLevel1 != null) {
@@ -3715,6 +3720,7 @@ public class GLHierarchicalHeatMap
 			iFirstSampleLevel2++;
 			setEmbeddedHeatMapData();
 			setDisplayListDirty();
+			glHeatMapView.upDownSelect(false);
 		}
 	}
 
@@ -3724,6 +3730,7 @@ public class GLHierarchicalHeatMap
 			iLastSampleLevel2--;
 			setEmbeddedHeatMapData();
 			setDisplayListDirty();
+			glHeatMapView.upDownSelect(true);
 		}
 	}
 
@@ -3732,6 +3739,7 @@ public class GLHierarchicalHeatMap
 			iFirstSampleLevel1++;
 			iLastSampleLevel1++;
 			setDisplayListDirty();
+			glHeatMapView.upDownSelect(false);
 		}
 	}
 
@@ -3740,6 +3748,7 @@ public class GLHierarchicalHeatMap
 			iFirstSampleLevel1--;
 			iLastSampleLevel1--;
 			setDisplayListDirty();
+			glHeatMapView.upDownSelect(true);
 		}
 	}
 
