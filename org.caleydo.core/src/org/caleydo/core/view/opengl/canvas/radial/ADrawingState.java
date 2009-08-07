@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
  * @author Christian Partl
  */
 @XmlType
-@XmlSeeAlso({DrawingStateDetailOutside.class, DrawingStateFullHierarchy.class, ADrawingStateAnimation.class})
+@XmlSeeAlso( { DrawingStateDetailOutside.class, DrawingStateFullHierarchy.class, ADrawingStateAnimation.class })
 public abstract class ADrawingState {
 
 	/**
@@ -64,30 +64,36 @@ public abstract class ADrawingState {
 	 * 
 	 * @param pdMouseOver
 	 *            Partial disc where the mouse over event occurred.
+	 * @param broadcastSelection
+	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public abstract void handleMouseOver(PartialDisc pdMouseOver);
+	public abstract void handleMouseOver(PartialDisc pdMouseOver, boolean broadcastSelection);
 
 	/**
 	 * Method for handling selection events.
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected.
+	 * @param broadcastSelection
+	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public abstract void handleSelection(PartialDisc pdSelected);
+	public abstract void handleSelection(PartialDisc pdSelected, boolean broadcastSelection);
 
 	/**
 	 * Method for handling alternative selection events.
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected alternatively.
+	 * @param broadcastSelection
+	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public abstract void handleAlternativeSelection(PartialDisc pdSelected);
+	public abstract void handleAlternativeSelection(PartialDisc pdSelected, boolean broadcastSelection);
 
 	/**
 	 * @return Element that is considered to be the selected element of the concrete drawing state.
 	 */
 	public abstract PartialDisc getSelectedElement();
-	
+
 	/**
 	 * Gets the drawing state type of the current instance.
 	 */

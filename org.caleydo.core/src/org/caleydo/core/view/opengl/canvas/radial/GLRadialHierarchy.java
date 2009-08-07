@@ -115,6 +115,7 @@ public class GLRadialHierarchy
 		// iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
+		DrawingStrategyManager.init(pickingManager, iUniqueID);
 		navigationHistory.setDrawingController(drawingController);
 		iUpwardNavigationSliderButtonID = 0;
 		iUpwardNavigationSliderID = 0;
@@ -406,7 +407,7 @@ public class GLRadialHierarchy
 				pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
 			setDisplayListDirty();
 
-			setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement.getElementID());
+			setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement, pdCurrentRootElement);
 		}
 	}
 
@@ -430,17 +431,17 @@ public class GLRadialHierarchy
 				switch (pickingMode) {
 					case CLICKED:
 						if (pdPickedElement != null)
-							drawingController.handleSelection(pdPickedElement);
+							drawingController.handleSelection(pdPickedElement, true);
 						break;
 
 					case MOUSE_OVER:
 						if (pdPickedElement != null)
-							drawingController.handleMouseOver(pdPickedElement);
+							drawingController.handleMouseOver(pdPickedElement, true);
 						break;
 
 					case RIGHT_CLICKED:
 						if (pdPickedElement != null)
-							drawingController.handleAlternativeSelection(pdPickedElement);
+							drawingController.handleAlternativeSelection(pdPickedElement, true);
 						break;
 
 					default:
@@ -652,17 +653,27 @@ public class GLRadialHierarchy
 	 *            Type of selection.
 	 * @param iElementID
 	 *            ID of the selected element.
+	 * @param broadcastSelection
+	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public void setNewSelection(ESelectionType selectionType, int iElementID) {
+	public void setNewSelection(ESelectionType selectionType, PartialDisc pdSelected, PartialDisc pdRoot) {
 
 		selectionManager.clearSelections();
-		selectionManager.addToType(selectionType, iElementID);
+		selectionManager.addToType(selectionType, pdSelected.getElementID());
 		ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 		event.setSender(this);
-		event.setClusterNumber(iElementID);
+		event.setClusterNumber(pdSelected.getElementID());
 		event.setSelectionType(selectionType);
-
-		eventPublisher.triggerEvent(event);
+		// Specific elements for other RadialHierarchy Views
+		event.setSelectedElementID(pdSelected.getElementID());
+		event.setSelectedElementStartAngle(pdSelected.getCurrentStartAngle());
+		event.setRootElementID(pdRoot.getElementID());
+		event.setRootElementStartAngle(pdRoot.getCurrentStartAngle());
+		event.setDrawingStateType(drawingController.getCurrentDrawingState().getType());
+		event.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
+		event.setDefaultDrawingStrategyType(DrawingStrategyManager.get().getDefaultDrawingStrategy()
+			.getDrawingStrategyType());
+		event.setSenderRadialHierarchy(true);
 
 		if (selectionType == ESelectionType.SELECTION) {
 			bIsNewSelection = true;
@@ -670,6 +681,9 @@ public class GLRadialHierarchy
 		else {
 			bIsNewSelection = false;
 		}
+
+		event.setNewSelection(bIsNewSelection);
+		eventPublisher.triggerEvent(event);
 	}
 
 	@Override
@@ -703,13 +717,15 @@ public class GLRadialHierarchy
 		serializedForm.setViewGUIID(getViewGUIID());
 		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		serializedForm.setNewSelection(bIsNewSelection);
+		serializedForm.setDefaultDrawingStrategyType(DrawingStrategyManager.get().getDefaultDrawingStrategy()
+			.getDrawingStrategyType());
 
 		ADrawingState currentDrawingState = drawingController.getCurrentDrawingState();
 
 		if (pdCurrentRootElement != null) {
 			if ((currentDrawingState.getType() == EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE)
 				|| (currentDrawingState.getType() == EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY)) {
-				
+
 				serializedForm.setDrawingStateType(currentDrawingState.getType());
 				serializedForm.setRootElementID(pdCurrentRootElement.getElementID());
 				serializedForm.setSelectedElementID(pdCurrentSelectedElement.getElementID());
@@ -740,26 +756,67 @@ public class GLRadialHierarchy
 		}
 
 		SerializedRadialHierarchyView serializedView = (SerializedRadialHierarchyView) ser;
-		this.iMaxDisplayedHierarchyDepth = serializedView.getMaxDisplayedHierarchyDepth();
-		bIsNewSelection = serializedView.isNewSelection();
-		PartialDisc pdTemp = hashPartialDiscs.get(serializedView.getRootElementID());
-		drawingController.setDrawingState(serializedView.getDrawingStateType());
-		
+		setupDisplay(serializedView.getDrawingStateType(), serializedView.getDefaultDrawingStrategyType(),
+			serializedView.isNewSelection(), serializedView.getRootElementID(), serializedView
+				.getSelectedElementID(), serializedView.getMouseOverElementID(), serializedView
+				.getRootElementStartAngle(), serializedView.getSelectedElementStartAngle(), serializedView
+				.getMaxDisplayedHierarchyDepth());
+	}
+
+	/**
+	 * Sets up the current display of the RadialHierarchy view according to the specified parameters.
+	 * 
+	 * @param drawingStateType
+	 *            DrawingState that shall be used.
+	 * @param drawingStrategyType
+	 *            Default drawing strategy that shall be used.
+	 * @param isNewSelection
+	 *            Determines if the selected element has been newly selected.
+	 * @param rootElementID
+	 *            ID of current root element.
+	 * @param selectedElementID
+	 *            ID of selected element.
+	 * @param mouseOverID
+	 *            ID of mouse over element.
+	 * @param rootElementStartAngle
+	 *            Start angle of the root element.
+	 * @param selectedElementStartAngle
+	 *            Start angle of the selected element.
+	 * @param maxDisplayedHierarchyDepth
+	 *            Maximum hierarchy depth that shall be displayed.
+	 */
+	private void setupDisplay(EDrawingStateType drawingStateType, EPDDrawingStrategyType drawingStrategyType,
+		boolean isNewSelection, int rootElementID, int selectedElementID, int mouseOverID,
+		float rootElementStartAngle, float selectedElementStartAngle, int maxDisplayedHierarchyDepth) {
+
+		this.iMaxDisplayedHierarchyDepth = maxDisplayedHierarchyDepth;
+		bIsNewSelection = isNewSelection;
+		PartialDisc pdTemp = hashPartialDiscs.get(rootElementID);
+		drawingController.setDrawingState(drawingStateType);
+		if (drawingStateType == EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE) {
+			DrawingStateDetailOutside ds =
+				(DrawingStateDetailOutside) drawingController.getCurrentDrawingState();
+			ds.setInitialDraw(true);
+		}
+		DrawingStrategyManager.get().setDefaultStrategy(drawingStrategyType);
+
 		if (pdTemp != null) {
-			pdCurrentRootElement = pdTemp;
-			pdCurrentSelectedElement = hashPartialDiscs.get(serializedView.getSelectedElementID());
-			pdCurrentMouseOverElement = hashPartialDiscs.get(serializedView.getMouseOverElementID());
-			pdCurrentRootElement.setCurrentStartAngle(serializedView.getRootElementStartAngle());
+			setCurrentRootElement(pdTemp);
+			pdCurrentSelectedElement = hashPartialDiscs.get(selectedElementID);
+			pdCurrentMouseOverElement = hashPartialDiscs.get(mouseOverID);
+			pdCurrentRootElement.setCurrentStartAngle(rootElementStartAngle);
 			if (pdCurrentSelectedElement != null) {
-				pdCurrentSelectedElement.setCurrentStartAngle(serializedView.getSelectedElementStartAngle());
+				pdCurrentSelectedElement.setCurrentStartAngle(selectedElementStartAngle);
 			}
 		}
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void handleClusterNodeSelection(int iClusterNumber, ESelectionType selectionType) {
-		PartialDisc pdSelected = hashPartialDiscs.get(iClusterNumber);
+	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
+		PartialDisc pdSelected = hashPartialDiscs.get(event.getClusterNumber());
+		ESelectionType selectionType = event.getSelectionType();
+
 		if (pdSelected != null) {
 
 			switch (selectionType) {
@@ -771,9 +828,22 @@ public class GLRadialHierarchy
 					break;
 
 				case SELECTION:
-					pdCurrentMouseOverElement = pdSelected;
-					bIsNewSelection = true;
-					setDisplayListDirty();
+					if (event.isSenderRadialHierarchy()) {
+
+						setupDisplay(event.getDrawingStateType(), event.getDefaultDrawingStrategyType(),
+							event.isNewSelection(), event.getRootElementID(), event
+								.getSelectedElementID(), event.getSelectedElementID(), event
+								.getRootElementStartAngle(), event.getSelectedElementStartAngle(), event
+								.getMaxDisplayedHierarchyDepth());
+
+						navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
+							pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
+					}
+					else {
+						pdCurrentMouseOverElement = pdSelected;
+						bIsNewSelection = true;
+						setDisplayListDirty();
+					}
 					break;
 			}
 
@@ -881,7 +951,7 @@ public class GLRadialHierarchy
 	 */
 	public void handleKeyboardAlternativeDiscSelection() {
 		if (pdCurrentMouseOverElement != null) {
-			drawingController.handleAlternativeSelection(pdCurrentMouseOverElement);
+			drawingController.handleAlternativeSelection(pdCurrentMouseOverElement, true);
 		}
 	}
 

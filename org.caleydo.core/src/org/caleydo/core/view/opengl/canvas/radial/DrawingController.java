@@ -31,14 +31,14 @@ public class DrawingController {
 		drawingStates.put(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY, currentDrawingState);
 		drawingStates.put(EDrawingStateType.ANIMATION_NEW_ROOT_ELEMENT, new AnimationNewRootElement(this,
 			radialHierarchy, navigationHistory));
-		drawingStates.put(EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE, new DrawingStateDetailOutside(this, radialHierarchy,
-			navigationHistory));
-		drawingStates.put(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT, new AnimationParentRootElement(this,
+		drawingStates.put(EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE, new DrawingStateDetailOutside(this,
 			radialHierarchy, navigationHistory));
-		drawingStates.put(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE, new AnimationPopOutDetailOutside(this,
-			radialHierarchy, navigationHistory));
-		drawingStates.put(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE, new AnimationPullInDetailOutside(this,
-			radialHierarchy, navigationHistory));
+		drawingStates.put(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT, new AnimationParentRootElement(
+			this, radialHierarchy, navigationHistory));
+		drawingStates.put(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE,
+			new AnimationPopOutDetailOutside(this, radialHierarchy, navigationHistory));
+		drawingStates.put(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE,
+			new AnimationPullInDetailOutside(this, radialHierarchy, navigationHistory));
 	}
 
 	/**
@@ -63,10 +63,12 @@ public class DrawingController {
 	 * 
 	 * @param pdMouseOver
 	 *            Partial disc where the mouse over event occurred.
+	 * @param broadcastSelection
+	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public void handleMouseOver(PartialDisc pdMouseOver) {
+	public void handleMouseOver(PartialDisc pdMouseOver, boolean broadcastSelection) {
 
-		currentDrawingState.handleMouseOver(pdMouseOver);
+		currentDrawingState.handleMouseOver(pdMouseOver, broadcastSelection);
 	}
 
 	/**
@@ -75,10 +77,12 @@ public class DrawingController {
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected.
+	 * @param broadcastSelection
+	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public void handleSelection(PartialDisc pdClicked) {
+	public void handleSelection(PartialDisc pdClicked, boolean broadcastSelection) {
 
-		currentDrawingState.handleSelection(pdClicked);
+		currentDrawingState.handleSelection(pdClicked, broadcastSelection);
 	}
 
 	/**
@@ -87,10 +91,12 @@ public class DrawingController {
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected alternatively.
+	 * @param broadcastSelection
+	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public void handleAlternativeSelection(PartialDisc pdClicked) {
+	public void handleAlternativeSelection(PartialDisc pdClicked, boolean broadcastSelection) {
 
-		currentDrawingState.handleAlternativeSelection(pdClicked);
+		currentDrawingState.handleAlternativeSelection(pdClicked, broadcastSelection);
 	}
 
 	/**

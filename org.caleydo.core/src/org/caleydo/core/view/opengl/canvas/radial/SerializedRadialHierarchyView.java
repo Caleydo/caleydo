@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedRadialHierarchyView
 	extends ASerializedView {
 
-	EDrawingStateType drawingStateType;
+	private EDrawingStateType drawingStateType;
 	private int maxDisplayedHierarchyDepth;
 	private int rootElementID;
 	private int selectedElementID;
@@ -25,6 +25,7 @@ public class SerializedRadialHierarchyView
 	private float rootElementStartAngle;
 	private float selectedElementStartAngle;
 	private boolean isNewSelection;
+	private EPDDrawingStrategyType defaultDrawingStrategyType;
 	
 
 	@Override
@@ -99,5 +100,13 @@ public class SerializedRadialHierarchyView
 
 	public void setDrawingStateType(EDrawingStateType drawingStateType) {
 		this.drawingStateType = drawingStateType;
+	}
+
+	public EPDDrawingStrategyType getDefaultDrawingStrategyType() {
+		return defaultDrawingStrategyType;
+	}
+
+	public void setDefaultDrawingStrategyType(EPDDrawingStrategyType defaultDrawingStrategyType) {
+		this.defaultDrawingStrategyType = defaultDrawingStrategyType;
 	}
 }

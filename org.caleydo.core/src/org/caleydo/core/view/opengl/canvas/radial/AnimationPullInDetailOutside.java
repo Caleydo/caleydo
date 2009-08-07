@@ -4,6 +4,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.selection.ESelectionType;
+
 /**
  * * This class represents the animation where the detail view is pulled in to the full hierarchy. When the
  * animation is finished the follow up drawing state ({@link DrawingStateFullHierarchy}) will become active.
@@ -94,6 +96,8 @@ public class AnimationPullInDetailOutside
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentRootElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement,
+				pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 	}

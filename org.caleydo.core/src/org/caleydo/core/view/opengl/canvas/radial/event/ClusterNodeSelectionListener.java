@@ -17,8 +17,7 @@ public class ClusterNodeSelectionListener
 
 		if (event instanceof ClusterNodeSelectionEvent) {
 			ClusterNodeSelectionEvent selectionEvent = (ClusterNodeSelectionEvent) event;
-			handler.handleClusterNodeSelection(selectionEvent.getClusterNumber(), selectionEvent
-				.getSelectionType());
+			handler.handleClusterNodeSelection(selectionEvent);
 		}
 	}
 

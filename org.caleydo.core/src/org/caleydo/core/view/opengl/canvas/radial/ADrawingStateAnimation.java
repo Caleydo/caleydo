@@ -70,17 +70,17 @@ public abstract class ADrawingStateAnimation
 	}
 
 	@Override
-	public final void handleSelection(PartialDisc pdSelected) {
+	public final void handleSelection(PartialDisc pdSelected, boolean broadcastSelection) {
 		// do nothing
 	}
 
 	@Override
-	public final void handleMouseOver(PartialDisc pdMouseOver) {
+	public final void handleMouseOver(PartialDisc pdMouseOver, boolean broadcastSelection) {
 		// do nothing
 	}
 
 	@Override
-	public final void handleAlternativeSelection(PartialDisc pdSelected) {
+	public final void handleAlternativeSelection(PartialDisc pdSelected, boolean broadcastSelection) {
 		// do nothing
 	}
 

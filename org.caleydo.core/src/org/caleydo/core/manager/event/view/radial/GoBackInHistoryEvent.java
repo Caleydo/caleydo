@@ -14,7 +14,7 @@ import org.caleydo.core.manager.event.AEvent;
 @XmlType
 public class GoBackInHistoryEvent
 	extends AEvent {
-
+	
 	@Override
 	public boolean checkIntegrity() {
 		return true;

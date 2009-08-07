@@ -4,6 +4,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -88,6 +89,7 @@ public class AnimationParentRootElement
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdNewRootElement, pdNewRootElement, radialHierarchy
 				.getMaxDisplayedHierarchyDepth());
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdNewRootElement, pdNewRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 

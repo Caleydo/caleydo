@@ -115,7 +115,7 @@ public class NavigationHistory {
 
 		radialHierarchy.setDisplayListDirty();
 
-		radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelectedElement.getElementID());
+		radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelectedElement, pdRootElement);
 	}
 
 	/**

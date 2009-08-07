@@ -68,7 +68,7 @@ public class DrawingStateDetailOutside
 
 			bInitialDraw = true;
 
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getElementID());
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement, pdCurrentRootElement);
 
 			return;
 		}
@@ -121,8 +121,7 @@ public class DrawingStateDetailOutside
 
 					bInitialDraw = true;
 
-					radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement
-						.getElementID());
+					radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement, pdCurrentRootElement);
 
 					return;
 				}
@@ -300,7 +299,7 @@ public class DrawingStateDetailOutside
 	}
 
 	@Override
-	public void handleSelection(PartialDisc pdSelected) {
+	public void handleSelection(PartialDisc pdSelected, boolean broadcastSelection) {
 
 		PartialDisc pdRealRootElement = radialHierarchy.getRealRootElement();
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
@@ -316,8 +315,8 @@ public class DrawingStateDetailOutside
 			if (pdSelected == pdCurrentRootElement) {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				drawingController.setDrawingState(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT);
-				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getParent()
-					.getElementID());
+//				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getParent()
+//					.getElementID(), true, false, broadcastSelection);
 			}
 			else {
 				pdCurrentSelectedElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
@@ -330,21 +329,22 @@ public class DrawingStateDetailOutside
 				radialHierarchy.setCurrentMouseOverElement(pdSelected);
 				drawingController.setDrawingState(EDrawingStateType.ANIMATION_NEW_ROOT_ELEMENT);
 
-				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
+//				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID(), true,
+//					false, broadcastSelection);
 			}
 
 			bInitialDraw = true;
 			radialHierarchy.setDisplayListDirty();
 		}
 		else {
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected, pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 
 	}
 
 	@Override
-	public void handleMouseOver(PartialDisc pdMouseOver) {
+	public void handleMouseOver(PartialDisc pdMouseOver, boolean broadcastSelection) {
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
 		if (pdMouseOver != pdCurrentMouseOverElement) {
@@ -354,13 +354,13 @@ public class DrawingStateDetailOutside
 			}
 
 			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
-			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver.getElementID());
+			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver, radialHierarchy.getCurrentRootElement());
 			radialHierarchy.setDisplayListDirty();
 		}
 	}
 
 	@Override
-	public void handleAlternativeSelection(PartialDisc pdSelected) {
+	public void handleAlternativeSelection(PartialDisc pdSelected, boolean broadcastSelection) {
 
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
@@ -379,24 +379,22 @@ public class DrawingStateDetailOutside
 					iDisplayedDetailViewDepth, fDetailViewStartAngle, 360, fDetailViewInnerRadius);
 
 				ADrawingState dsNext =
-					drawingController
-						.getDrawingState(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE);
+					drawingController.getDrawingState(EDrawingStateType.ANIMATION_PULL_IN_DETAIL_OUTSIDE);
 				drawingController.setDrawingState(dsNext);
 
-				radialHierarchy
-					.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getElementID());
+//				radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+//					pdCurrentRootElement.getElementID(), true, false, broadcastSelection);
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				radialHierarchy.setCurrentMouseOverElement(pdSelected);
 
 				ADrawingState dsNext =
-					drawingController
-						.getDrawingState(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE);
+					drawingController.getDrawingState(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE);
 				drawingController.setDrawingState(dsNext);
 
-				radialHierarchy
-					.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getElementID());
+//				radialHierarchy.setNewSelection(ESelectionType.SELECTION,
+//					pdCurrentRootElement.getElementID(), false, true, broadcastSelection);
 			}
 
 			bInitialDraw = true;
@@ -412,5 +410,9 @@ public class DrawingStateDetailOutside
 	@Override
 	public EDrawingStateType getType() {
 		return EDrawingStateType.DRAWING_STATE_DETAIL_OUTSIDE;
+	}
+
+	public void setInitialDraw(boolean initialDraw) {
+		this.bInitialDraw = initialDraw;
 	}
 }

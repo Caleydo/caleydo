@@ -28,7 +28,6 @@ public class GoBackInHistoryAction
 	@Override
 	public void run() {
 		super.run();
-
 		GeneralManager.get().getEventPublisher().triggerEvent(new GoBackInHistoryEvent());
 		setChecked(false);
 	};

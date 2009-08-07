@@ -4,6 +4,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.selection.ESelectionType;
+
 /**
  * This class represents the animation where a selected partial disc pops out to the detail View. When the
  * animation is finished the follow up drawing state ({@link DrawingStateDetailOutside}) will become active.
@@ -101,6 +103,8 @@ public class AnimationPopOutDetailOutside
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentSelectedElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentSelectedElement,
+				pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 	}

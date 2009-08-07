@@ -28,7 +28,6 @@ public class GoForthInHistoryAction
 	@Override
 	public void run() {
 		super.run();
-
 		GeneralManager.get().getEventPublisher().triggerEvent(new GoForthInHistoryEvent());
 		setChecked(false);
 	};

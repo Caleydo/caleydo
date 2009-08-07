@@ -1279,8 +1279,11 @@ public class GLDendrogram
 	}
 
 	@Override
-	public void handleClusterNodeSelection(int clusterNr, ESelectionType selectionType) {
+	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
 		// cluster mouse over events only used for gene trees
+		int clusterNr = event.getClusterNumber();
+		ESelectionType selectionType = event.getSelectionType();
+		
 		if (tree != null && bRenderGeneTree) {
 			resetAllTreeSelections();
 			if (tree.getNodeByNumber(clusterNr) != null) {

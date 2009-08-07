@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.radial.event;
 
-import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
@@ -11,5 +10,5 @@ import org.caleydo.core.manager.event.IListenerOwner;
 
 public interface IClusterNodeEventReceiver extends IListenerOwner{
 
-	public void handleClusterNodeSelection(int iClusterNumber, ESelectionType selectionType);
+	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event);
 }

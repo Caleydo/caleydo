@@ -148,7 +148,7 @@ public class DrawingStateFullHierarchy
 	}
 
 	@Override
-	public void handleSelection(PartialDisc pdSelected) {
+	public void handleSelection(PartialDisc pdSelected, boolean broadcastSelection) {
 
 		PartialDisc pdRealRootElement = radialHierarchy.getRealRootElement();
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
@@ -164,25 +164,26 @@ public class DrawingStateFullHierarchy
 			if (pdSelected == pdCurrentRootElement) {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				drawingController.setDrawingState(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT);
-				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getParent()
-					.getElementID());
+//				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdCurrentRootElement.getParent()
+//					.getElementID(), true, false, broadcastSelection);
 			}
 			else {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				drawingController.setDrawingState(EDrawingStateType.ANIMATION_NEW_ROOT_ELEMENT);
-				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
+//				radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID(), true,
+//					false, broadcastSelection);
 			}
 			radialHierarchy.setDisplayListDirty();
 		}
 		else {
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
+			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected, pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
 
 	}
 
 	@Override
-	public void handleMouseOver(PartialDisc pdMouseOver) {
+	public void handleMouseOver(PartialDisc pdMouseOver, boolean broadcastSelection) {
 
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 
@@ -194,13 +195,13 @@ public class DrawingStateFullHierarchy
 			}
 
 			radialHierarchy.setCurrentMouseOverElement(pdMouseOver);
-			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver.getElementID());
+			radialHierarchy.setNewSelection(ESelectionType.MOUSE_OVER, pdMouseOver, radialHierarchy.getCurrentRootElement());
 			radialHierarchy.setDisplayListDirty();
 		}
 	}
 
 	@Override
-	public void handleAlternativeSelection(PartialDisc pdSelected) {
+	public void handleAlternativeSelection(PartialDisc pdSelected, boolean broadcastSelection) {
 
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
@@ -216,7 +217,8 @@ public class DrawingStateFullHierarchy
 			radialHierarchy.setCurrentSelectedElement(pdSelected);
 			radialHierarchy.setCurrentMouseOverElement(pdSelected);
 			drawingController.setDrawingState(EDrawingStateType.ANIMATION_POP_OUT_DETAIL_OUTSIDE);
-			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID());
+//			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdSelected.getElementID(), false, true,
+//				broadcastSelection);
 			radialHierarchy.setDisplayListDirty();
 		}
 	}

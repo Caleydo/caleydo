@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.view.opengl.canvas.radial.EDrawingStateType;
+import org.caleydo.core.view.opengl.canvas.radial.EPDDrawingStrategyType;
 
 /**
  * Event that should be triggered when cluster nodes are selected.
@@ -19,6 +21,16 @@ public class ClusterNodeSelectionEvent
 
 	private int iClusterNumber = -1;
 	private ESelectionType selectionType;
+	
+	private EDrawingStateType drawingStateType;
+	private EPDDrawingStrategyType defaultDrawingStrategyType;
+	private int maxDisplayedHierarchyDepth;
+	private int rootElementID;
+	private int selectedElementID;
+	private float rootElementStartAngle;
+	private float selectedElementStartAngle;
+	private boolean isNewSelection;
+	private boolean isSenderRadialHierarchy;
 
 	public int getClusterNumber() {
 		return iClusterNumber;
@@ -42,4 +54,77 @@ public class ClusterNodeSelectionEvent
 			throw new IllegalStateException("iClusterNumber was not set");
 		return true;
 	}
+
+	public EDrawingStateType getDrawingStateType() {
+		return drawingStateType;
+	}
+
+	public void setDrawingStateType(EDrawingStateType drawingStateType) {
+		this.drawingStateType = drawingStateType;
+	}
+
+	public int getMaxDisplayedHierarchyDepth() {
+		return maxDisplayedHierarchyDepth;
+	}
+
+	public void setMaxDisplayedHierarchyDepth(int maxDisplayedHierarchyDepth) {
+		this.maxDisplayedHierarchyDepth = maxDisplayedHierarchyDepth;
+	}
+
+	public int getRootElementID() {
+		return rootElementID;
+	}
+
+	public void setRootElementID(int rootElementID) {
+		this.rootElementID = rootElementID;
+	}
+
+	public int getSelectedElementID() {
+		return selectedElementID;
+	}
+
+	public void setSelectedElementID(int selectedElementID) {
+		this.selectedElementID = selectedElementID;
+	}
+
+	public float getRootElementStartAngle() {
+		return rootElementStartAngle;
+	}
+
+	public void setRootElementStartAngle(float rootElementStartAngle) {
+		this.rootElementStartAngle = rootElementStartAngle;
+	}
+
+	public float getSelectedElementStartAngle() {
+		return selectedElementStartAngle;
+	}
+
+	public void setSelectedElementStartAngle(float selectedElementStartAngle) {
+		this.selectedElementStartAngle = selectedElementStartAngle;
+	}
+
+	public boolean isNewSelection() {
+		return isNewSelection;
+	}
+
+	public void setNewSelection(boolean isNewSelection) {
+		this.isNewSelection = isNewSelection;
+	}
+
+	public EPDDrawingStrategyType getDefaultDrawingStrategyType() {
+		return defaultDrawingStrategyType;
+	}
+
+	public void setDefaultDrawingStrategyType(EPDDrawingStrategyType defaultDrawingStrategyType) {
+		this.defaultDrawingStrategyType = defaultDrawingStrategyType;
+	}
+
+	public boolean isSenderRadialHierarchy() {
+		return isSenderRadialHierarchy;
+	}
+
+	public void setSenderRadialHierarchy(boolean isSenderRadialHierarchy) {
+		this.isSenderRadialHierarchy = isSenderRadialHierarchy;
+	}
+
 }

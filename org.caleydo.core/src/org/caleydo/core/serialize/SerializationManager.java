@@ -131,8 +131,8 @@ public class SerializationManager {
 		eventTypes.add(ApplyCurrentSelectionToVirtualArrayEvent.class);
 		eventTypes.add(BookmarkButtonEvent.class);
 		eventTypes.add(ChangeColorModeEvent.class);
-		eventTypes.add(GoBackInHistoryEvent.class);
-		eventTypes.add(GoForthInHistoryEvent.class);
+//		eventTypes.add(GoBackInHistoryEvent.class);
+//		eventTypes.add(GoForthInHistoryEvent.class);
 		eventTypes.add(SetMaxDisplayedHierarchyDepthEvent.class);
 		eventTypes.add(UpdateDepthSliderPositionEvent.class);
 		eventTypes.add(RedrawViewEvent.class);
