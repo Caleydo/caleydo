@@ -10,7 +10,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
  * <p>
- * Sends all events received by one {@link EventPublisher) to another {@link EventPublisher}.
+ * Sends all events received by one {@link IEventPublisher) to another {@link EventPublisher}.
  * <p>
  * <p>
  * Therefore instances of this class are registered to an {@link EventPublisher} as listener while the target-

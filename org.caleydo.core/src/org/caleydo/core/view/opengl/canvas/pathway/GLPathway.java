@@ -71,7 +71,6 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodL
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.EmbeddedPathwayContextMenuItemContainer;

@@ -6,12 +6,12 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
+import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedPathwayView;
 
 /**
  * Basic abstract class for all serialized view representations.

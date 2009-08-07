@@ -22,6 +22,12 @@ public class ProjectLoader {
 	/** full path to directory to temporarily store the projects file before zipping */
 	public static final String TEMP_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "tempLoad" + File.separator;
 
+
+	/** 
+	 * Loads the project from a specified zip-archive.
+	 * @param fileName name of the file to load the project from
+	 * @return initialization data for the application from which it can restore itself
+	 */
 	public ApplicationInitData load(String fileName) {
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_DIR_NAME);
@@ -29,10 +35,19 @@ public class ProjectLoader {
 		return initData;
 	}
 	
+	/** 
+	 * Loads the project from the recent-project saved automatically on exit
+	 * @return initialization data for the application from which it can restore itself
+	 */
 	public ApplicationInitData loadRecent() {
 		return loadDirectory(ProjectSaver.RECENT_PROJECT_DIR_NAME);
 	}
 
+	/** 
+	 * Loads the project from a directory
+	 * @param dirName name of the directory to load the project from
+	 * @return initialization data for the application from which it can restore itself
+	 */
 	public ApplicationInitData loadDirectory(String dirName) {
 		ApplicationInitData initData;
 

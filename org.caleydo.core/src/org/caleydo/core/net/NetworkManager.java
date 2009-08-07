@@ -24,12 +24,13 @@ import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Manages incoming and outgoing connections and the transmission configurations.
+ * Manages incoming and outgoing connections and the message-transmission configurations.
  * 
  * @author Werner Puff
  */
 public class NetworkManager 
 	implements IListenerOwner {
+
 
 	ILog log;
 	
@@ -154,7 +155,7 @@ public class NetworkManager
 	}
 	
 	/**
-	 * 
+	 * Starts the network server listening for incoming connections.
 	 */
 	public void startServer() {
 		networkName = "CaleydoServer" + "-" + connectionCounter;
@@ -222,7 +223,8 @@ public class NetworkManager
 	}
 
 	/**
-	 * TODO docs
+	 * Connects a client to a server running at the given address.
+	 * @param address {@link String}-representation of the internet-address of the caleydo-server-application
 	 */
 	public ApplicationInitData createConnection(String address) {
 		InetAddress inetAddress; 
@@ -235,7 +237,8 @@ public class NetworkManager
 	}
 
 	/**
-	 * TODO docs
+	 * Connects a client to a server running at the given address.
+	 * @param address {@link InetAddress} of the caleydo-server-application
 	 */
 	public ApplicationInitData createConnection(InetAddress inetAddress) {
 		Connection connection = new Connection(this);
@@ -311,7 +314,7 @@ public class NetworkManager
 	}
 
 	/**
-	 * disconnects the given {@link Connection} from the remote caleydo-application
+	 * Disconnects the given {@link Connection} from the remote caleydo-application
 	 * and frees all obtained resources for that {@link Connection}.
 	 * @param connection existing {@link Connection} to disconnect and dispose. 
 	 */
@@ -326,7 +329,7 @@ public class NetworkManager
 	/**
 	 * Retrieves the global event-bridge configuration. This list contains all events that should be
 	 * transmitted to connected caleydo applications by default.
-	 * 
+	 * TODO read events from configuration file.  
 	 * @return event-classes to transmit over the network
 	 */
 	public Collection<Class<? extends AEvent>> getEventBridgeConfiguration() {
@@ -334,10 +337,9 @@ public class NetworkManager
 	}
 
 	/**
+	 * Retrieves client specific event-bridge configuration.
 	 * TODO client specific event-type configuration
-	 * 
-	 * @param connection
-	 *            the {@link Connection} object to get the event-type configuration for.
+	 * @param connection the {@link Connection} object to get the event-type configuration for.
 	 * @return event-classes to transmit over the network
 	 */
 	public Collection <Class<? extends AEvent>> getEventBridgeConfiguration(Connection connection) {
@@ -349,106 +351,209 @@ public class NetworkManager
 		listener.handleEvent(event);
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#outgoingEventBridge}
+	 * @return {@link NetworkManager#outgoingEventBridge}
+	 */
 	public EventFilterBridge getOutgoingEventBridge() {
 		return outgoingEventBridge;
 	}
 
-	public void setOutgoingEventBridge(EventFilterBridge globalEventBridge) {
-		this.outgoingEventBridge = globalEventBridge;
+	/**
+	 * Setter for {@link NetworkManager#outgoingEventBridge}
+	 * @param {@link NetworkManager#outgoingEventBridge}
+	 */
+	public void setOutgoingEventBridge(EventFilterBridge outgoingEventBridge) {
+		this.outgoingEventBridge = outgoingEventBridge;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#globalOutgoingPublisher}
+	 * @return {@link NetworkManager#globalOutgoingPublisher}
+	 */
 	public EventPublisher getGlobalOutgoingPublisher() {
 		return globalOutgoingPublisher;
 	}
 
-	public void setGlobalOutgoingPublisher(EventPublisher globalNetworkEventPublisher) {
-		this.globalOutgoingPublisher = globalNetworkEventPublisher;
+	/**
+	 * Setter for {@link NetworkManager#globalOutgoingPublisher}
+	 * @param {@link NetworkManager#globalOutgoingPublisher}
+	 */
+	public void setGlobalOutgoingPublisher(EventPublisher globalOutgoingPublisher) {
+		this.globalOutgoingPublisher = globalOutgoingPublisher;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#centralEventPublisher}
+	 * @return {@link NetworkManager#centralEventPublisher}
+	 */
 	public IEventPublisher getCentralEventPublisher() {
 		return centralEventPublisher;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#centralEventPublisher}
+	 * @param {@link NetworkManager#centralEventPublisher}
+	 */
 	public void setCentralEventPublisher(IEventPublisher centralEventPublisher) {
 		this.centralEventPublisher = centralEventPublisher;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#connections}
+	 * @return {@link NetworkManager#connections}
+	 */
 	public List<Connection> getConnections() {
 		return connections;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#connections}
+	 * @param {@link NetworkManager#connections}
+	 */
 	public void setConnections(List<Connection> connections) {
 		this.connections = connections;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#incomingEventBridge}
+	 * @return {@link NetworkManager#incomingEventBridge}
+	 */
 	public EventFilterBridge getIncomingEventBridge() {
 		return incomingEventBridge;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#incomingEventBridge}
+	 * @param {@link NetworkManager#incomingEventBridge}
+	 */
 	public void setIncomingEventBridge(EventFilterBridge incomingEventBridge) {
 		this.incomingEventBridge = incomingEventBridge;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#globalIncomingPublisher}
+	 * @return {@link NetworkManager#globalIncomingPublisher}
+	 */
 	public EventPublisher getGlobalIncomingPublisher() {
 		return globalIncomingPublisher;
 	}
 
-	public void setGlobalIncomingPublisher(EventPublisher incomingNetworkEventPublisher) {
-		this.globalIncomingPublisher = incomingNetworkEventPublisher;
+	/**
+	 * Setter for {@link NetworkManager#globalIncomingPublisher}
+	 * @param {@link NetworkManager#globalIncomingPublisher}
+	 */
+	public void setGlobalIncomingPublisher(EventPublisher globalIncomingPublisher) {
+		this.globalIncomingPublisher = globalIncomingPublisher;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#networkName}
+	 * @return {@link NetworkManager#networkName}
+	 */
 	public String getNetworkName() {
 		return networkName;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#networkName}
+	 * @param {@link NetworkManager#networkName}
+	 */
 	public void setNetworkName(String networkName) {
 		this.networkName = networkName;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#connectionCounter}
+	 * @return {@link NetworkManager#connectionCounter}
+	 */
 	public int getConnectionCounter() {
 		return connectionCounter;
 	}
 
+	/**
+	 * Increases the connection counter by one to provide unique client-IDs
+	 */
 	public int increaseConnectionCounter() {
 		return ++connectionCounter;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#networkUtils}
+	 * @return {@link NetworkManager#networkUtils}
+	 */
 	public NetworkUtils getNetworkUtils() {
 		return networkUtils;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#networkUtils}
+	 * @param {@link NetworkManager#networkUtils}
+	 */
 	public void setNetworkUtils(NetworkUtils networkUtils) {
 		this.networkUtils = networkUtils;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#connectingTimeout}
+	 * @return {@link NetworkManager#connectingTimeout}
+	 */
 	public int getConnectingTimeout() {
 		return connectingTimeout;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#connectingTimeout}
+	 * @param {@link NetworkManager#connectingTimeout}
+	 */
 	public void setConnectingTimeout(int connectingTimeout) {
 		this.connectingTimeout = connectingTimeout;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#server}
+	 * @return {@link NetworkManager#server}
+	 */
 	public Server getServer() {
 		return server;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#server}
+	 * @param {@link NetworkManager#server}
+	 */
 	public void setServer(Server server) {
 		this.server = server;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#serverThread}
+	 * @return {@link NetworkManager#serverThread}
+	 */
 	public Thread getServerThread() {
 		return serverThread;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#serverThread}
+	 * @param {@link NetworkManager#serverThread}
+	 */
 	public void setServerThread(Thread serverThread) {
 		this.serverThread = serverThread;
 	}
 
+	/**
+	 * Getter for {@link NetworkManager#status}
+	 * @return {@link NetworkManager#status}
+	 */
 	public ENetworkStatus getStatus() {
 		return status;
 	}
 
+	/**
+	 * Setter for {@link NetworkManager#status}
+	 * @param {@link NetworkManager#status}
+	 */
 	public void setStatus(ENetworkStatus status) {
 		this.status = status;
 	}

@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.Status;
  */
 public class Connection {
 
+	/** utility object for logging */
 	ILog log = GeneralManager.get().getLogger(); 
 	
 	/** {@link NetworkManager} for managing this connection. */
@@ -210,6 +211,14 @@ public class Connection {
 		}
 	}
 
+	/**
+	 * Reads a incoming handshake message from the client. 
+	 * @param is Socket based stream to read the message from  
+	 * @return message send from the client
+	 * @throws SocketTimeoutException If the client does not respond in time
+	 * @throws IOException If a general error during the read operation occurs
+	 * @throws JAXBException If a XML-serialization error occurs
+	 */
 	private ClientHandshake readClientHandshake(InputStream is) throws SocketTimeoutException, IOException,
 		JAXBException {
 
@@ -219,6 +228,13 @@ public class Connection {
 		return clientHandshake;
 	}
 
+	/**
+	 * Sends a {@link ServerHandshake} message to a client
+	 * @param serverHandshake message to send
+	 * @param outputStream Socket based stream to write the message to
+	 * @throws IOException If a general error during the read operation occurs
+	 * @throws JAXBException If a XML-serialization error occurs
+	 */
 	private void sendServerHandshake(ServerHandshake serverHandshake, OutputStream outputStream)
 	throws JAXBException, IOException {
 		NetworkUtils utils = networkManager.getNetworkUtils();
@@ -247,7 +263,13 @@ public class Connection {
 		NetworkUtils utils = networkManager.getNetworkUtils();
 		utils.writeHandshake(initData, outputStream);
 	}
-	
+
+	/**
+	 * Checks if the handshake message received from the client is valid and
+	 * creates a {@link ServerHandshake} message for sending to the client.
+	 * @param clientHandshake received handshake message from the client
+	 * @return new {@link ServerHandshake} message to send to the client
+	 */
 	private ServerHandshake validate(ClientHandshake clientHandshake) {
 		ServerHandshake serverHandshake = new ServerHandshake();
 
@@ -328,42 +350,82 @@ public class Connection {
 		remoteNetworkName = null;
 	}
 	
+	/**
+	 * Getter for {@link Connection#outgoingBridge}
+	 * @return {@link Connection#outgoingBridge}
+	 */
 	public EventFilterBridge getOutgoingBridge() {
 		return outgoingBridge;
 	}
 
+	/**
+	 * Setter for {@link Connection#outgoingBridge}
+	 * @param {@link Connection#outgoingBridge}
+	 */
 	public void setOutgoingBridge(EventFilterBridge outgoingBridge) {
 		this.outgoingBridge = outgoingBridge;
 	}
 
+	/**
+	 * Getter for {@link Connection#outgoingPublisher}
+	 * @return {@link Connection#outgoingPublisher}
+	 */
 	public NetworkEventPublisher getOutgoingPublisher() {
 		return outgoingPublisher;
 	}
 
+	/**
+	 * Setter for {@link Connection#outgoingPublisher}
+	 * @param {@link Connection#outgoingPublisher}
+	 */
 	public void setOutgoingPublisher(NetworkEventPublisher publisher) {
 		this.outgoingPublisher = publisher;
 	}
 
+	/**
+	 * Getter for {@link Connection#incomingPublisher}
+	 * @return {@link Connection#incomingPublisher}
+	 */
 	public NetworkEventReceiver getIncomingPublisher() {
 		return incomingPublisher;
 	}
 
+	/**
+	 * Setter for {@link Connection#incomingPublisher}
+	 * @param {@link Connection#incomingPublisher}
+	 */
 	public void setIncomingPublisher(NetworkEventReceiver incomingPublisher) {
 		this.incomingPublisher = incomingPublisher;
 	}
 
+	/**
+	 * Getter for {@link Connection#incomingBridge}
+	 * @return {@link Connection#incomingBridge}
+	 */
 	public EventFilterBridge getIncomingBridge() {
 		return incomingBridge;
 	}
 
+	/**
+	 * Setter for {@link Connection#outgoingBridge}
+	 * @param {@link Connection#outgoingBridge}
+	 */
 	public void setIncomingBridge(EventFilterBridge bridge) {
 		this.outgoingBridge = bridge;
 	}
 
+	/**
+	 * Getter for {@link Connection#remoteNetworkName}
+	 * @return {@link Connection#remoteNetworkName}
+	 */
 	public String getRemoteNetworkName() {
 		return remoteNetworkName;
 	}
 
+	/**
+	 * Setter for {@link Connection#remoteNetworkName}
+	 * @param {@link Connection#remoteNetworkName}
+	 */
 	public void setRemoteNetworkName(String remoteNetworkName) {
 		this.remoteNetworkName = remoteNetworkName;
 	}

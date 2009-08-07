@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.storagebased;
+package org.caleydo.core.view.opengl.canvas.pathway;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;

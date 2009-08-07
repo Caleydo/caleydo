@@ -38,8 +38,6 @@ import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableNeighborhoodEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableTexturesEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
-import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
-import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.core.manager.event.view.radial.UpdateDepthSliderPositionEvent;
 import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;

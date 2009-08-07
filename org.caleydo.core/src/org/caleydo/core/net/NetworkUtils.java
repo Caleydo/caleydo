@@ -12,11 +12,19 @@ import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.serialize.ApplicationInitData;
 
+/**
+ * Utility class for reading and writing handshake messages between client and server applications.
+ * The messages are serialized and de-serialized using JAXB.
+ * @author Werner Puff
+ */
 public class NetworkUtils {
 
-	/** {@link JAXBContext} to marshall/unmarshal the handshake messages */
+	/** {@link JAXBContext} to marshal/unmarshal the handshake messages */
 	JAXBContext handshakeJAXBContext;
-	
+
+	/**
+	 * Creates and initializes a new {@link NetworkUtils} instance.
+	 */
 	public NetworkUtils() {
 		try {
 			handshakeJAXBContext = JAXBContext.newInstance(ClientHandshake.class, ServerHandshake.class, 
@@ -71,11 +79,19 @@ public class NetworkUtils {
 			throw new RuntimeException("error while writing handshake message: " + handshake, ex);
 		}
 	}
-	
+
+	/**
+	 * Getter for {@link NetworkUtils#handshakeJAXBContext}
+	 * @return {@link NetworkUtils#handshakeJAXBContext}
+	 */
 	public JAXBContext getHandshakeJAXBContext() {
 		return handshakeJAXBContext;
 	}
 
+	/**
+	 * Setter for {@link NetworkUtils#handshakeJAXBContext}
+	 * @param {@link NetworkUtils#handshakeJAXBContext}
+	 */
 	public void setHandshakeJAXBContext(JAXBContext handshakeJAXBContext) {
 		this.handshakeJAXBContext = handshakeJAXBContext;
 	}

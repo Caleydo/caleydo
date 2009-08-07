@@ -1,7 +1,7 @@
 package org.caleydo.rcp.view.opengl;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedPathwayView;
+import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 
 
 public class GLPathwayView

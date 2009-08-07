@@ -25,6 +25,10 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 
+/**
+ * Utility class that features loading and saving set-files and set-creation and storage-creation.
+ * @author Werner Puff
+ */
 public class SetUtils {
 
 	/** prefix for temporary set-files */
