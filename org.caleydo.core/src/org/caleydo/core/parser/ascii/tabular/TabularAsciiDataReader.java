@@ -348,4 +348,8 @@ public class TabularAsciiDataReader
 
 		iLineInFile = 0;
 	}
+
+	public ArrayList<EStorageType> getColumnDataTypes() {
+		return alColumnDataTypes;
+	}
 }

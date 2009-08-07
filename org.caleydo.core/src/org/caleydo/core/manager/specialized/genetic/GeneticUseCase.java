@@ -2,6 +2,9 @@ package org.caleydo.core.manager.specialized.genetic;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -16,18 +19,24 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * 
  * @author Marc Streit
  */
+@XmlType
+@XmlRootElement
 public class GeneticUseCase
 	extends AUseCase {
 
+	/** <code>TRUE</code>if only pathways can be displayed (no gene-expression data), <code>FALSE</code>otherwise */
+	private boolean pathwayViewerMode;
+	
 	/**
 	 * Constructor.
 	 */
 	public GeneticUseCase() {
 
 		super();
-		eUseCaseMode = EUseCaseMode.GENETIC_DATA;
-		sContentLabelSingular = "gene";
-		sContentLabelPlural = "genes";
+		pathwayViewerMode = false;
+		useCaseMode = EUseCaseMode.GENETIC_DATA;
+		contentLabelSingular = "gene";
+		contentLabelPlural = "genes";
 	}
 
 	/**
@@ -94,6 +103,14 @@ public class GeneticUseCase
 		int iVAID = set.createVA(EVAType.CONTENT, alTempList);
 		mapVAIDs.put(EVAType.CONTENT, iVAID);
 
+	}
+
+	public boolean isPathwayViewerMode() {
+		return pathwayViewerMode;
+	}
+
+	public void setPathwayViewerMode(boolean pathwayViewerMode) {
+		this.pathwayViewerMode = pathwayViewerMode;
 	}
 
 

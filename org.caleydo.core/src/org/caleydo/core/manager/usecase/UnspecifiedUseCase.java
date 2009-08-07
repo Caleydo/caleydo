@@ -1,11 +1,16 @@
 package org.caleydo.core.manager.usecase;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 
 /**
  * Use case for arbitrary data which is not further specified.
  * 
  * @author Marc Streit
  */
+@XmlType
+@XmlRootElement
 public class UnspecifiedUseCase
 	extends AUseCase {
 
@@ -15,8 +20,8 @@ public class UnspecifiedUseCase
 	public UnspecifiedUseCase() {
 
 		super();
-		eUseCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
-		sContentLabelSingular = "entity";
-		sContentLabelPlural = "entities";
+		useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
+		contentLabelSingular = "entity";
+		contentLabelPlural = "entities";
 	}
 }

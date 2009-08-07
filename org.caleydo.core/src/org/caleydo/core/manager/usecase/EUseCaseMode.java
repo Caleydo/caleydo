@@ -12,5 +12,7 @@ package org.caleydo.core.manager.usecase;
 public enum EUseCaseMode {
 	GENETIC_DATA,
 	CLINICAL_DATA,
-	UNSPECIFIED_DATA
+	UNSPECIFIED_DATA,
+	COLLABORATION_CLIENT,
+	LOAD_PROJECT
 }

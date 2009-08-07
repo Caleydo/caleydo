@@ -7,11 +7,17 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
 
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.serialize.ApplicationInitData;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Status;
 
@@ -114,8 +120,9 @@ public class Connection {
 	 * @param clientSocket {@link Socket} to connect through
 	 * @throws ConnectException if a error during handshaking occurs
 	 */
-	public void connect(InetAddress address, int port) throws ConnectException {
+	public ApplicationInitData connect(InetAddress address, int port) throws ConnectException {
 		log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "connect(): address=" + address));
+		ApplicationInitData initData;
 		try { 
 			socket = new Socket(address, port);
 			inputStream = socket.getInputStream();
@@ -135,18 +142,23 @@ public class Connection {
 			if (serverHandshake.getError() != null) {
 				// TODO connection error handling
 				throw new Exception("connection error: " + serverHandshake.getError());
-			} else {
-				networkManager.setNetworkName(serverHandshake.getClientNetworkName());
-				clientHandshake = new ClientHandshake();
-				clientHandshake.setClientNetworkName(networkManager.getNetworkName());
-				clientHandshake.setVersion(NetworkManager.VERSION);
-				clientHandshake.setRequestType(ClientHandshake.REQUEST_CONNECTION_ESTABLISHED);
-				networkUtils.writeHandshake(clientHandshake, outputStream);
 			}
+			
+			networkManager.setNetworkName(serverHandshake.getClientNetworkName());
+			clientHandshake = new ClientHandshake();
+			clientHandshake.setClientNetworkName(networkManager.getNetworkName());
+			clientHandshake.setVersion(NetworkManager.VERSION);
+			clientHandshake.setRequestType(ClientHandshake.REQUEST_CONNECTION_ESTABLISHED);
+			networkUtils.writeHandshake(clientHandshake, outputStream);
+
+			initData = (ApplicationInitData) networkUtils.readHandshake(inputStream);
+			
 			start(serverHandshake.getServerNetworkName());
 		} catch (Exception e) {
 			throw new ConnectException(e);
 		}
+
+		return initData;
 	}
 
 	/**
@@ -178,6 +190,7 @@ public class Connection {
 			if (!clientHandshake.getRequestType().equals(ClientHandshake.REQUEST_CONNECTION_ESTABLISHED)) {
 				throw new ConnectException("Client refused connection.");
 			}
+			sendServerInitializationData(outputStream);
 			socket.setSoTimeout(0);
 			start(clientHandshake.getClientNetworkName());
 		} catch (SocketTimeoutException stEx) {
@@ -212,6 +225,29 @@ public class Connection {
 		utils.writeHandshake(serverHandshake, outputStream);
 	}
 
+	/**
+	 * Collects the data to initialize a new connected client and sends it to the client
+	 * @param outputStream {@link OutputStream} of the socket for sending to client 
+	 */
+	private void sendServerInitializationData(OutputStream outputStream) {
+		ApplicationInitData initData = new ApplicationInitData();
+
+		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase();
+		
+		initData.setUseCase((AUseCase) GeneralManager.get().getUseCase());
+		initData.setSetFileContent(SetUtils.loadSetFile(useCase.getLoadDataParameters()));
+		
+		HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>(); 
+		virtualArrayMap.put(EVAType.CONTENT, (VirtualArray) useCase.getVA(EVAType.CONTENT));
+		virtualArrayMap.put(EVAType.CONTENT_CONTEXT, (VirtualArray) useCase.getVA(EVAType.CONTENT_CONTEXT));
+		virtualArrayMap.put(EVAType.CONTENT_EMBEDDED_HM, (VirtualArray) useCase.getVA(EVAType.CONTENT_EMBEDDED_HM));
+		virtualArrayMap.put(EVAType.STORAGE, (VirtualArray) useCase.getVA(EVAType.STORAGE));
+		initData.setVirtualArrayMap(virtualArrayMap);
+
+		NetworkUtils utils = networkManager.getNetworkUtils();
+		utils.writeHandshake(initData, outputStream);
+	}
+	
 	private ServerHandshake validate(ClientHandshake clientHandshake) {
 		ServerHandshake serverHandshake = new ServerHandshake();
 

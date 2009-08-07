@@ -1,10 +1,10 @@
 package org.caleydo.core.manager;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
@@ -36,20 +36,6 @@ public interface IUseCase {
 	 *            The new set which replaced the currenlty loaded one.
 	 */
 	public void setSet(ISet set);
-
-	/**
-	 * Add a view that is part of the use case.
-	 * 
-	 * @param view
-	 */
-	public void addView(IView view);
-
-	/**
-	 * Remove a view that is part of the use case.
-	 * 
-	 * @param view
-	 */
-	public void removeView(IView view);
 
 	/**
 	 * Update the data set in the view of this use case.
@@ -89,4 +75,22 @@ public interface IUseCase {
 	 * Resets the context VA to it's initial state
 	 */
 	public void resetContextVA();
+
+	/**
+	 * Gets the parameters for loading the data-{@link Set} contained in this use case
+	 * @return parameters for loading the data-{@link Set} of this use case 
+	 */
+	public LoadDataParameters getLoadDataParameters(); 
+
+	/**
+	 * Sets the parameters for loading the data-{@link Set} contained in this use case
+	 * @param loadDataParameters parameters for loading the data-{@link Set} of this use case 
+	 */
+	public void setLoadDataParameters(LoadDataParameters loadDataParameters); 
+
+	/** Sets the name of the boots-trap xml-file this useCase was or should be loaded */
+	public String getBootsTrapFileName();
+
+	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
+	public void setBootsTrapFileName(String bootsTrapFileName);
 }

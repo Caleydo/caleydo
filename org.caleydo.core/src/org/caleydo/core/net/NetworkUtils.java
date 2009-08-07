@@ -1,14 +1,16 @@
 package org.caleydo.core.net;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import org.caleydo.core.serialize.ApplicationInitData;
 
 public class NetworkUtils {
 
@@ -17,7 +19,8 @@ public class NetworkUtils {
 	
 	public NetworkUtils() {
 		try {
-			handshakeJAXBContext = JAXBContext.newInstance(ClientHandshake.class, ServerHandshake.class);
+			handshakeJAXBContext = JAXBContext.newInstance(ClientHandshake.class, ServerHandshake.class, 
+				ApplicationInitData.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext for client/server handshake messages");
 		}
@@ -30,22 +33,22 @@ public class NetworkUtils {
 	 * @throws IOException if any read error occurs during the read operation
 	 */
 	public Object readHandshake(InputStream inputStream) throws IOException, JAXBException {
-		boolean stop = false;
-		int totalRead = 0;
-		byte[] buffer = new byte[1000];
-		while (!stop) {
-			int lastRead = inputStream.read(buffer, totalRead, 1000 - totalRead);
-			totalRead += lastRead;
-			if (totalRead > 4) {
-				String checkEnd = new String(buffer, totalRead - 4, 4);
-				if (checkEnd.equals("\r\n\r\n")) {
-					stop = true;
-				}
-			}
+		int delimiterIndex = -1;
+		StringBuffer buffer = new StringBuffer();
+
+		while (delimiterIndex == -1) {
+			byte[] bytes = new byte[10000];
+			int charsRead = inputStream.read(bytes);
+			String chunk = new String(bytes, 0, charsRead);
+			buffer.append(chunk);
+			delimiterIndex = buffer.indexOf("\r\n\r\n"); 
 		}
 
 		Unmarshaller unmarshaller = handshakeJAXBContext.createUnmarshaller();
-		Object handshake = unmarshaller.unmarshal(new ByteArrayInputStream(buffer, 0, totalRead));
+		StringReader reader = new StringReader (buffer.toString());
+		Object handshake = unmarshaller.unmarshal(reader);
+
+		// System.out.println("incoming serverHandshake message:\n" + buffer);
 		
 		return handshake;
 	}
@@ -59,6 +62,7 @@ public class NetworkUtils {
 		try {
 			Marshaller marshaller = handshakeJAXBContext.createMarshaller();
 			marshaller.marshal(handshake, outputStream);
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			byte[] out = "\r\n\r\n".getBytes();
 			outputStream.write(out);
 		} catch (JAXBException ex) {

@@ -69,11 +69,14 @@ import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEven
  */
 public class SerializationManager {
 
-	/** {@link JAXBContext for view (de-)serialization */
+	/** {@link JAXBContext} for view (de-)serialization */
 	private JAXBContext viewContext;
 	
-	/** {@link JAXBContext for event (de-)serialization */
+	/** {@link JAXBContext} for event (de-)serialization */
 	private JAXBContext eventContext;
+	
+	/** {link JAXBContext} for project (de-)serialization */
+	private JAXBContext projectContext;
 	
 	public SerializationManager() {
 		try {
@@ -83,6 +86,8 @@ public class SerializationManager {
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
+			
+			projectContext = JAXBContext.newInstance(ApplicationInitData.class, ASerializedView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
@@ -94,6 +99,10 @@ public class SerializationManager {
 
 	public JAXBContext getEventContext() {
 		return eventContext;
+	}
+
+	public JAXBContext getProjectContext() {
+		return projectContext;
 	}
 
 	/**

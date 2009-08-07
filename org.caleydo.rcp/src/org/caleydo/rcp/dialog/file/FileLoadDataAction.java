@@ -6,20 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.data.CmdDataCreateSet;
-import org.caleydo.core.command.data.CmdDataCreateStorage;
-import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
-import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
-import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.INumericalStorage;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.swt.tabular.LabelEditorDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -59,10 +49,10 @@ public class FileLoadDataAction
 
 	public final static String ID = "org.caleydo.rcp.FileLoadDataAction";
 
+	private static int MAX_PREVIEW_TABLE_ROWS = 50;
+
 	private Composite parentComposite;
 	private Composite composite;
-
-	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 
 	private Text txtFileName;
 	private Text txtGeneTreeFileName;
@@ -75,29 +65,27 @@ public class FileLoadDataAction
 
 	private ArrayList<Button> arSkipColumn;
 
-	private String sInputFile = "";
-	private String sFileName = "";
-	private String sGeneTreeFileName = "";
-	private String sExperimentsFileName = "";
-	private String sFilePath = "";
-	private String sInputPattern = "";// SKIP;";
-	private String sDelimiter = "";
-	private int iStartParseFileAtLine = 1; // ID row should be ignored
+	private String inputFile = "";
+	private String filePath = "";
 
-	private String sMathFilterMode = "Normal";
+	private LoadDataParameters loadDataParameters;
 
-	private boolean bUseGeneClusterInfo = false;
-	private boolean bUseExperimentClusterInfo = false;
+	private String mathFilterMode = "Normal";
 
-	// private Combo useIDTypeCombo;
+	private boolean useGeneClusterInfo = false;
+	private boolean useExperimentClusterInfo = false;
 
+	public FileLoadDataAction() {
+		
+	}
+	
 	/**
 	 * Constructor.
 	 */
 	public FileLoadDataAction(final Composite parentComposite) {
 		super("Load data");
 		this.parentComposite = parentComposite;
-
+		loadDataParameters = new LoadDataParameters();
 		arSkipColumn = new ArrayList<Button>();
 	}
 
@@ -106,7 +94,7 @@ public class FileLoadDataAction
 	 */
 	public FileLoadDataAction(final Composite parentComposite, String sInputFile) {
 		this(parentComposite);
-		this.sInputFile = sInputFile;
+		this.inputFile = sInputFile;
 	}
 
 	@Override
@@ -140,12 +128,12 @@ public class FileLoadDataAction
 
 				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
 				fileDialog.setText("Open");
-				fileDialog.setFilterPath(sFilePath);
+				fileDialog.setFilterPath(filePath);
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
-				sFileName = fileDialog.open();
+				loadDataParameters.setFileName(fileDialog.open());
 
-				txtFileName.setText(sFileName);
+				txtFileName.setText(loadDataParameters.getFileName());
 
 				createDataPreviewTable("\t");
 			}
@@ -163,12 +151,12 @@ public class FileLoadDataAction
 
 				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
 				fileDialog.setText("Open");
-				fileDialog.setFilterPath(sFilePath);
+				fileDialog.setFilterPath(filePath);
 				String[] filterExt = { "*.xml*" };
 				fileDialog.setFilterExtensions(filterExt);
-				sGeneTreeFileName = fileDialog.open();
+				loadDataParameters.setGeneTreeFileName(fileDialog.open());
 
-				txtGeneTreeFileName.setText(sGeneTreeFileName);
+				txtGeneTreeFileName.setText(loadDataParameters.getGeneTreeFileName());
 			}
 		});
 
@@ -184,12 +172,12 @@ public class FileLoadDataAction
 
 				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
 				fileDialog.setText("Open");
-				fileDialog.setFilterPath(sFilePath);
+				fileDialog.setFilterPath(filePath);
 				String[] filterExt = { "*.xml*" };
 				fileDialog.setFilterExtensions(filterExt);
-				sExperimentsFileName = fileDialog.open();
+				loadDataParameters.setExperimentsFileName(fileDialog.open());
 
-				txtExperimentsTreeFileName.setText(sExperimentsFileName);
+				txtExperimentsTreeFileName.setText(loadDataParameters.getExperimentsFileName());
 			}
 		});
 
@@ -207,7 +195,7 @@ public class FileLoadDataAction
 
 				// Add 1 because the number that the user enters is human readable and not array index
 				// (starting with 0).
-				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
+				loadDataParameters.setStartParseFileAtLine(Integer.valueOf(txtStartParseAtLine.getText()).intValue());
 
 				createDataPreviewTable("\t");
 				composite.pack();
@@ -267,12 +255,12 @@ public class FileLoadDataAction
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable("\t");
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable("\t");
@@ -291,12 +279,12 @@ public class FileLoadDataAction
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(";");
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(";");
@@ -315,12 +303,12 @@ public class FileLoadDataAction
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(",");
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(",");
@@ -339,12 +327,12 @@ public class FileLoadDataAction
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(".");
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(".");
@@ -363,12 +351,12 @@ public class FileLoadDataAction
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(" ");
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(" ");
@@ -387,12 +375,12 @@ public class FileLoadDataAction
 				buttonDelimiter[4].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(true);
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(" ");
 
-				if (sFileName.isEmpty())
+				if (loadDataParameters.getFileName().isEmpty())
 					return;
 
 				createDataPreviewTable(" ");
@@ -414,7 +402,7 @@ public class FileLoadDataAction
 		mathFilterCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				sMathFilterMode = mathFilterCombo.getText();
+				mathFilterMode = mathFilterCombo.getText();
 
 			}
 		});
@@ -490,10 +478,10 @@ public class FileLoadDataAction
 		previewTable.setLayoutData(gridData);
 
 		// Check if an external file name is given to the action
-		if (!sInputFile.isEmpty()) {
-			txtFileName.setText(sInputFile);
-			sFileName = sInputFile;
-			sMathFilterMode = "Log10";
+		if (!inputFile.isEmpty()) {
+			txtFileName.setText(inputFile);
+			loadDataParameters.setFileName(inputFile);
+			mathFilterMode = "Log10";
 			mathFilterCombo.select(1);
 
 			createDataPreviewTable("\t");
@@ -501,7 +489,7 @@ public class FileLoadDataAction
 	}
 
 	private void createDataPreviewTable(final String sDelimiter) {
-		this.sDelimiter = sDelimiter;
+		this.loadDataParameters.setDelimiter(sDelimiter);
 
 		// boolean clusterInfo = false;
 
@@ -519,12 +507,12 @@ public class FileLoadDataAction
 		// Read preview table
 		BufferedReader brFile;
 		try {
-			brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
+			brFile = GeneralManager.get().getResourceLoader().getResource(loadDataParameters.getFileName());
 
 			String sLine = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine - 1; iIgnoreLineIndex++) {
+			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < loadDataParameters.getStartParseFileAtLine() - 1; iIgnoreLineIndex++) {
 				brFile.readLine();
 			}
 
@@ -546,7 +534,7 @@ public class FileLoadDataAction
 
 					// Check for group information
 					if (sTmpNextToken.equals("GROUP_NUMBER") || sTmpNextToken.equals("Cluster_Number")) {
-						bUseGeneClusterInfo = true;
+						useGeneClusterInfo = true;
 						// If group info is detected no more columns are parsed
 						break;
 					}
@@ -589,7 +577,7 @@ public class FileLoadDataAction
 
 					// check for experiment cluster info
 					if (sTmpNextToken.equals("Cluster_Number") || sTmpNextToken.equals("Cluster_Repr"))
-						bUseExperimentClusterInfo = true;
+						useExperimentClusterInfo = true;
 
 					// Check for empty cells
 					if (sTmpNextToken.equals(sDelimiter) && !bCellFilled) {
@@ -619,7 +607,7 @@ public class FileLoadDataAction
 
 				// probably weeks performance
 				if (sTmpNextToken.equals("Cluster_Number") || sTmpNextToken.equals("Cluster_Repr"))
-					bUseExperimentClusterInfo = true;
+					useExperimentClusterInfo = true;
 			}
 
 		}
@@ -671,147 +659,79 @@ public class FileLoadDataAction
 	}
 
 	public boolean execute() {
+		boolean success = readStorageDefinition();
+		if (success) {
+			success = SetUtils.createStorages(loadDataParameters);
+		}
+		readParameters();
 
-		return createData();
+		IUseCase useCase = GeneralManager.get().getUseCase();
+		useCase.setLoadDataParameters(loadDataParameters);
+
+		if (success) {
+			success = SetUtils.createData(GeneralManager.get().getUseCase());
+		}
+		return success;
 	}
 
-	private boolean createData() {
-		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
-		String sStorageIDs = "";
+	/**
+	 * Reads the min and max values (if set) from the dialog
+	 */
+	private void readParameters() {
+		if (txtMin.getEnabled() && !txtMin.getText().isEmpty()) {
+			float fMin = Float.parseFloat(txtMin.getText());
+			if (!Float.isNaN(fMin)) {
+				loadDataParameters.setMinDefined(true);
+				loadDataParameters.setMin(fMin);
+			}
+		}
+		if (txtMax.getEnabled() && !txtMax.getText().isEmpty()) {
+			float fMax = Float.parseFloat(txtMax.getText());
+			if (!Float.isNaN(fMax)) {
+				loadDataParameters.setMaxDefined(true);
+				loadDataParameters.setMax(fMax);
+			}
+		}
+		
+		loadDataParameters.setMathFilterMode(mathFilterMode);
+	}
+	
+	/**
+	 * prepares the storage creation definition from the preview table. The storage creation definition
+	 * consists of the definition which columns in the data-CSV-file should be read, which should be skipped and
+	 * the storage-labels. 
+	 * @return <code>true</code>if the preparation was successful, <code>false</code> otherwise 
+	 */
+	private boolean readStorageDefinition() {
+		ArrayList<String> storageLabels = new ArrayList<String>();
 
-		sInputPattern = "SKIP" + ";";
+		StringBuffer inputPattern = new StringBuffer("SKIP" + ";");
 
 		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
 
 			if (!arSkipColumn.get(iColIndex - 2).getSelection()) {
-				sInputPattern = sInputPattern + "SKIP" + ";";
-				continue;
+				inputPattern.append("SKIP;");
+			} else {
+				inputPattern.append("FLOAT;");
+				String labelText = previewTable.getColumn(iColIndex).getText();
+				storageLabels.add(labelText);
 			}
-			else {
-				sInputPattern = sInputPattern + "FLOAT" + ";";
-			}
-
-			// Currently we only allow parsing float data
-			// Create data storage
-			CmdDataCreateStorage cmdCreateStorage =
-				(CmdDataCreateStorage) GeneralManager.get().getCommandManager().createCommandByType(
-					ECommandType.CREATE_STORAGE);
-
-			cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
-			cmdCreateStorage.doCommand();
-
-			INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
-
-			String labelText = previewTable.getColumn(iColIndex).getText();
-
-			storage.setLabel(labelText);
-
-			iAlStorageId.add(storage.getID());
-
-			if (!sStorageIDs.equals("")) {
-				sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
-			}
-
-			sStorageIDs = sStorageIDs + storage.getID();
 		}
 
-		if (bUseGeneClusterInfo) {
-			sInputPattern += "GROUP_NUMBER;GROUP_REPRESENTATIVE;";
+		if (useGeneClusterInfo) {
+			inputPattern.append("GROUP_NUMBER;GROUP_REPRESENTATIVE;");
 		}
+		inputPattern.append("ABORT;");
 
-		sInputPattern += "ABORT;";
+		loadDataParameters.setInputPattern(inputPattern.toString());
+		loadDataParameters.setFileName(txtFileName.getText());
+		loadDataParameters.setStorageLabels(storageLabels);
+		loadDataParameters.setUseExperimentClusterInfo(useExperimentClusterInfo);
 
-		sFileName = txtFileName.getText();
-
-		if (sFileName.equals("")) {
+		if (loadDataParameters.getFileName().equals("")) {
 			MessageDialog.openError(parentComposite.getShell(), "Invalid filename", "Invalid filename");
 			return false;
 		}
-
-		// Create SET
-		CmdDataCreateSet cmdCreateSet =
-			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.CREATE_SET_DATA);
-
-		IUseCase useCase = GeneralManager.get().getUseCase();
-
-		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-			cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
-		}
-		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
-			cmdCreateSet.setAttributes(iAlStorageId, ESetType.UNSPECIFIED);
-		}
-		else {
-			throw new IllegalStateException("Not implemented.");
-		}
-
-		cmdCreateSet.doCommand();
-		// useCase.setSet(cmdCreateSet.getCreatedObject());
-
-		// Trigger file loading command
-		CmdLoadFileNStorages cmdLoadCsv =
-			(CmdLoadFileNStorages) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.LOAD_DATA_FILE);
-
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sGeneTreeFileName, sExperimentsFileName,
-			sInputPattern, sDelimiter, iStartParseFileAtLine, -1, bUseExperimentClusterInfo);
-		cmdLoadCsv.doCommand();
-
-		if (!cmdLoadCsv.isParsingOK()) {
-			// TODO: Clear created set and storages which are empty
-			return false;
-		}
-
-		CmdLoadFileLookupTable cmdLoadLookupTableFile =
-			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
-				ECommandType.LOAD_LOOKUP_TABLE_FILE);
-
-		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-			cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter,
-				"REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
-		}
-		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
-			cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", sDelimiter, "");
-		}
-		else {
-			throw new IllegalStateException("Not implemented.");
-		}
-
-		cmdLoadLookupTableFile.doCommand();
-
-		ISet set = useCase.getSet();
-
-		if (!txtMin.getText().isEmpty()) {
-			float fMin = Float.parseFloat(txtMin.getText());
-			if (!Float.isNaN(fMin)) {
-				set.setMin(fMin);
-			}
-		}
-
-		if (!txtMax.getText().isEmpty()) {
-			float fMax = Float.parseFloat(txtMax.getText());
-			if (!Float.isNaN(fMax)) {
-				set.setMax(fMax);
-			}
-		}
-
-		if (sMathFilterMode.equals("Normal")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
-		}
-		else if (sMathFilterMode.equals("Log10")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);
-		}
-		else if (sMathFilterMode.equals("Log2")) {
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
-		}
-		else
-			throw new IllegalStateException("Unknown data representation type");
-
-		// Since the data is filled to the new set
-		// the views of the current use case can be updated.
-		useCase.updateSetInViews();
 
 		return true;
 	}
@@ -830,5 +750,13 @@ public class FileLoadDataAction
 
 	@Override
 	public void dispose() {
+	}
+
+	public LoadDataParameters getLoadDataParameters() {
+		return loadDataParameters;
+	}
+
+	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
+		this.loadDataParameters = loadDataParameters;
 	}
 }

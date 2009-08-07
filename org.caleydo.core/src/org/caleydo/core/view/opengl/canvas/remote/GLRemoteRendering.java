@@ -2264,7 +2264,6 @@ public class GLRemoteRendering
 	public void removeView(AGLEventListener glEventListener) {
 		if (glEventListener != null) {
 
-			useCase.removeView(glEventListener);
 			glEventListener.destroy();
 		}
 	}
@@ -2615,7 +2614,6 @@ public class GLRemoteRendering
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
-		useCase.addView(glView);
 		glView.setUseCase(useCase);
 		glView.setRenderedRemote(true);
 		glView.setSet(set);

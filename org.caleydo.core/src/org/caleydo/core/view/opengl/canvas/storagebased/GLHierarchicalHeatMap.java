@@ -589,7 +589,6 @@ public class GLHierarchicalHeatMap
 		cmdView.doCommand();
 
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
-		GeneralManager.get().getUseCase().addView(glHeatMapView);
 		glHeatMapView.setUseCase(GeneralManager.get().getUseCase());
 		glHeatMapView.setRenderedRemote(true);
 
@@ -609,7 +608,6 @@ public class GLHierarchicalHeatMap
 		cmdView.doCommand();
 
 		glDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
-		GeneralManager.get().getUseCase().addView(glDendrogramView);
 		glDendrogramView.setUseCase(GeneralManager.get().getUseCase());
 		glDendrogramView.setRenderedRemote(true);
 	}

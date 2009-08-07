@@ -17,6 +17,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.event.ConnectToServerEvent;
 import org.caleydo.core.net.event.ConnectToServerListener;
+import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.swt.collab.RedrawCollabViewEvent;
 import org.eclipse.core.runtime.ILog;
@@ -223,31 +224,36 @@ public class NetworkManager
 	/**
 	 * TODO docs
 	 */
-	public void createConnection(String address) {
+	public ApplicationInitData createConnection(String address) {
 		InetAddress inetAddress; 
 		try {
 			inetAddress = InetAddress.getByName(address);
 		} catch (UnknownHostException ex) {
 			throw new RuntimeException("Could not resolve host '" + address + "'.");
 		}
-		createConnection(inetAddress);
+		return createConnection(inetAddress);
 	}
 
 	/**
 	 * TODO docs
 	 */
-	public void createConnection(InetAddress inetAddress) {
+	public ApplicationInitData createConnection(InetAddress inetAddress) {
 		Connection connection = new Connection(this);
+		ApplicationInitData initData;
 		try {
-			connection.connect(inetAddress, listenPort);
+			initData = connection.connect(inetAddress, listenPort);
+
 			connections.add(connection);
 			createEventSystem(connection);
 			status = ENetworkStatus.STATUS_CLIENT;
+
 			RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 			centralEventPublisher.triggerEvent(event);
 		} catch (ConnectException ex) {
 			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Could not connect to server", ex));
+			throw new RuntimeException("Could not connect to server", ex);
 		}
+		return initData;
 	}
 	
 	/**
@@ -315,8 +321,6 @@ public class NetworkManager
 		}
 		disposeEventSystem(connection);
 		connection.dispose();
-		
-		
 	}
 	
 	/**

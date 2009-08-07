@@ -4,15 +4,25 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
+import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.serialize.ApplicationInitData;
+import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
@@ -40,10 +50,14 @@ import org.eclipse.ui.internal.WorkbenchPlugin;
 @SuppressWarnings("restriction")
 public class Application
 	implements IApplication {
+
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
+
 	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE =
 		"data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
+	
+	@SuppressWarnings("unused")
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
@@ -65,12 +79,16 @@ public class Application
 	public static boolean bIsInterentConnectionOK = false;
 	public static boolean bDeleteRestoredWorkbenchState = false;
 
+	/** startup information of the application */
 	public static EApplicationMode applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 
 	public static String sCaleydoXMLfile = "";
 
 	public static ArrayList<EStartViewType> alStartViews;
 
+	/** initialization data received from a caleydo-server-application during startup */ 
+	public static ApplicationInitData initData = null;
+	
 	public RCPBridge rcpGuiBridge;
 
 	@Override
@@ -162,8 +180,6 @@ public class Application
 		// If no file is provided as command line argument a XML file open
 		// dialog is opened
 		if (sCaleydoXMLfile.equals("")) {
-			// shell.setActive();
-			// shell.setFocus();
 
 			WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
 
@@ -172,29 +188,39 @@ public class Application
 			}
 
 			if (sCaleydoXMLfile.equals("")) {
+				IUseCase useCase = GeneralManager.get().getUseCase();
 				switch (applicationMode) {
-					case GENE_EXPRESSION_PATHWAY_VIEWER:
-						sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
-						break;
+//					case GENE_EXPRESSION_PATHWAY_VIEWER:
+//						sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
+//						break;
 					case GENE_EXPRESSION_SAMPLE_DATA_RANDOM:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
+						useCase.setBootsTrapFileName(sCaleydoXMLfile);
 						break;
 					case GENE_EXPRESSION_SAMPLE_DATA_REAL:
 					case GENE_EXPRESSION_NEW_DATA:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+						useCase.setBootsTrapFileName(sCaleydoXMLfile);
 						break;
 					case UNSPECIFIED_NEW_DATA:
 						// not necessary to load any mapping or XML files
 						sCaleydoXMLfile = "";
+						useCase.setBootsTrapFileName(sCaleydoXMLfile);
 						break;
+					case LOAD_PROJECT:
+					case COLLABORATION_CLIENT:
+						sCaleydoXMLfile = GeneralManager.get().getUseCase().getBootsTrapFileName();
+						break;
+						
 					default:
 						throw new IllegalStateException("Unknown application mode " + applicationMode);
 				}
 			}
-		}
-		else {
+		} else {
 			// Assuming that if an external XML file is provided, the genetic use case applies
-			GeneralManager.get().setUseCase(new GeneticUseCase());
+			IUseCase useCase = new GeneticUseCase();
+			useCase.setBootsTrapFileName(sCaleydoXMLfile);
+			GeneralManager.get().setUseCase(useCase);
 			isStartedFromXML = true;
 		}
 
@@ -232,6 +258,8 @@ public class Application
 
 	private void shutDown() {
 		// Save preferences before shutdown
+		ProjectSaver saver = new ProjectSaver();
+		saver.saveRecentProject();
 		try {
 			GeneralManager.get().getLogger().log(
 				new Status(Status.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));
@@ -271,7 +299,36 @@ public class Application
 
 		Shell shell = new Shell();
 
-		if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL) {
+		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT) {
+			AUseCase useCase = (AUseCase) initData.getUseCase();
+			SetUtils.saveSetFile(useCase.getLoadDataParameters(), initData.getSetFileContent());
+			GeneralManager.get().setUseCase(useCase);
+
+			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
+			SetUtils.createStorages(loadDataParameters);
+			SetUtils.createData(useCase);
+			
+			HashMap<EVAType, VirtualArray> virtualArrayMap = initData.getVirtualArrayMap();
+			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
+				useCase.setVirtualArray(entry.getKey(), entry.getValue());
+			}
+			Application.initData = null;
+			// TODO remove temporary set file on shutdown
+		} else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
+			System.out.println("Load Project");
+			AUseCase useCase = (AUseCase) initData.getUseCase();
+			GeneralManager.get().setUseCase(useCase);
+
+			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
+			SetUtils.createStorages(loadDataParameters);
+			SetUtils.createData(useCase);
+
+			HashMap<EVAType, VirtualArray> virtualArrayMap = initData.getVirtualArrayMap();
+			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
+				useCase.setVirtualArray(entry.getKey(), entry.getValue());
+			}
+			Application.initData = null;
+		} else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL) {
 
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
@@ -279,8 +336,7 @@ public class Application
 			if (Window.CANCEL == dataImportWizard.open()) {
 				bDoExit = true;
 			}
-		}
-		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
+		} else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
@@ -323,11 +379,12 @@ public class Application
 		RCPViewManager.get();
 
 		// Create view list dynamically when not specified via the command line
+		IUseCase usecase = GeneralManager.get().getUseCase();
 		if (alStartViews.isEmpty()) {
 
 			alStartViews.add(EStartViewType.BROWSER);
 
-			if (applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
+			if (usecase instanceof GeneticUseCase && !((GeneticUseCase) usecase).isPathwayViewerMode()) {
 				// alStartViews.add(EStartViewType.TABULAR);
 				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
 				alStartViews.add(EStartViewType.HEATMAP);
@@ -339,7 +396,7 @@ public class Application
 			}
 		}
 		else {
-			if (applicationMode == EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
+			if (usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 				// Filter all views except remote and browser in case of pathway
 				// viewer mode
 				Iterator<EStartViewType> iterStartViewsType = alStartViews.iterator();

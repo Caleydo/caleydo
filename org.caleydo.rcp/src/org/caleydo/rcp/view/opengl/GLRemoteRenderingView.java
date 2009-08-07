@@ -2,15 +2,15 @@ package org.caleydo.rcp.view.opengl;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
-import org.caleydo.rcp.Application;
-import org.caleydo.rcp.EApplicationMode;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -50,7 +50,8 @@ public class GLRemoteRenderingView
 		
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		if (Application.applicationMode != EApplicationMode.GENE_EXPRESSION_PATHWAY_VIEWER) {
+		IUseCase usecase = GeneralManager.get().getUseCase();
+		if (usecase instanceof GeneticUseCase && !((GeneticUseCase) usecase).isPathwayViewerMode()) {
 
 			// FIXME: This is just a temporary solution to check if glyph view
 			// should be added to bucket.

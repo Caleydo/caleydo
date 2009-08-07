@@ -60,7 +60,7 @@ public class NetworkEventReceiver
 				while(delimiterIndex > -1) {
 					String message = buffer.substring(0, delimiterIndex);
 					buffer.delete(0, delimiterIndex + 4);
-					System.out.println("incoming messageX: " + message);
+					System.out.println("incoming message: " + message);
 					handleNetworkEvent(message);
 					delimiterIndex = buffer.indexOf("\r\n\r\n");
 				}

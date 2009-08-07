@@ -27,8 +27,6 @@ public class TabularDataView
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
 		
-		useCase.addView(tabularDataView);
-
 		parentComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
@@ -43,7 +41,6 @@ public class TabularDataView
 	@Override
 	public void dispose() {
 		super.dispose();
-		GeneralManager.get().getUseCase().removeView(tabularDataView);
 	}
 
 	public TabularDataViewRep getTabularDataView() {

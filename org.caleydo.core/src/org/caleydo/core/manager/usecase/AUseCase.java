@@ -3,8 +3,14 @@ package org.caleydo.core.manager.usecase;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.IVirtualArray;
@@ -22,8 +28,9 @@ import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
@@ -36,15 +43,16 @@ import org.caleydo.core.view.opengl.canvas.storagebased.listener.StartClustering
  * @author Marc Streit
  * @author Alexander Lex
  */
+@XmlType
+@XmlRootElement
+@XmlSeeAlso({GeneticUseCase.class, ClinicalUseCase.class, UnspecifiedUseCase.class})
 public abstract class AUseCase
 	implements IVirtualArrayUpdateHandler, IUseCase, IListenerOwner {
 
-	protected ArrayList<IView> alView;
-
 	private ISet oldSet;
 
-	protected String sContentLabelSingular = "<not specified>";
-	protected String sContentLabelPlural = "<not specified>";
+	protected String contentLabelSingular = "<not specified>";
+	protected String contentLabelPlural = "<not specified>";
 
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
@@ -53,35 +61,43 @@ public abstract class AUseCase
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
 	 * expression features are not available.
 	 */
-	protected EUseCaseMode eUseCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
+	protected EUseCaseMode useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
 
-	/**
-	 * map selection type to unique id for virtual array
-	 */
+	/** map selection type to unique id for virtual array */
 	protected EnumMap<EVAType, Integer> mapVAIDs;
 
+	/** The set which is currently loaded and used inside the views for this use case. */
+	protected ISet set;
+
+	/** parameters for loading the the data-{@link set} */
+	protected LoadDataParameters loadDataParameters;
+	
+	/** bootstrap filename this application was started with */
+	protected String bootsTrapFileName;
+
+	/** central {@link IEventPublisher} to receive and send events */
 	private IEventPublisher eventPublisher;
 
 	private StartClusteringListener startClusteringListener;
 	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
 	
-	/**
-	 * The set which is currently loaded and used inside the views for this use case.
-	 */
-	protected ISet set;
-
 	public AUseCase() {
-		alView = new ArrayList<IView>();
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
 
 	@Override
 	public EUseCaseMode getUseCaseMode() {
-		return eUseCaseMode;
+		return useCaseMode;
 	}
 
+
+	public void setUseCaseMode(EUseCaseMode useCaseMode) {
+		this.useCaseMode = useCaseMode;
+	}
+
+	@XmlTransient
 	@Override
 	public ISet getSet() {
 		return set;
@@ -90,9 +106,9 @@ public abstract class AUseCase
 	@Override
 	public void setSet(ISet set) {
 
-		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && eUseCaseMode == EUseCaseMode.GENETIC_DATA)
-			|| (set.getSetType() == ESetType.CLINICAL_DATA && eUseCaseMode == EUseCaseMode.CLINICAL_DATA)
-			|| (set.getSetType() == ESetType.UNSPECIFIED && eUseCaseMode == EUseCaseMode.UNSPECIFIED_DATA)) {
+		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EUseCaseMode.GENETIC_DATA)
+			|| (set.getSetType() == ESetType.CLINICAL_DATA && useCaseMode == EUseCaseMode.CLINICAL_DATA)
+			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EUseCaseMode.UNSPECIFIED_DATA)) {
 
 			oldSet = this.set;
 			this.set = set;
@@ -138,29 +154,14 @@ public abstract class AUseCase
 	}
 
 	@Override
-	public void addView(IView view) {
-
-		if (alView.contains(view))
-			return;
-
-		alView.add(view);
-	}
-
-	@Override
-	public void removeView(IView view) {
-
-		alView.remove(view);
-	}
-
-	@Override
 	public String getContentLabel(boolean bCapitalized, boolean bPlural) {
 
 		String sContentLabel = "";
 
 		if (bPlural)
-			sContentLabel = sContentLabelPlural;
+			sContentLabel = contentLabelPlural;
 		else
-			sContentLabel = sContentLabelSingular;
+			sContentLabel = contentLabelSingular;
 
 		if (bCapitalized) {
 
@@ -280,6 +281,11 @@ public abstract class AUseCase
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(vaType));
 	}
 
+	public void setVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
+		set.replaceVA(mapVAIDs.get(vaType), virtualArray);
+		mapVAIDs.put(vaType, virtualArray.getID());
+	}
+	
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
 
@@ -358,4 +364,47 @@ public abstract class AUseCase
 		set.replaceVA(iUniqueID, new VirtualArray(EVAType.CONTENT_CONTEXT, set.depth(), new ArrayList<Integer>()));
 
 	}
+
+	public String getContentLabelSingular() {
+		return contentLabelSingular;
+	}
+
+	public void setContentLabelSingular(String contentLabelSingular) {
+		this.contentLabelSingular = contentLabelSingular;
+	}
+
+	public String getContentLabelPlural() {
+		return contentLabelPlural;
+	}
+
+	public void setContentLabelPlural(String contentLabelPlural) {
+		this.contentLabelPlural = contentLabelPlural;
+	}
+
+	public EDataFilterLevel getDataFilterLevel() {
+		return dataFilterLevel;
+	}
+
+	public void setDataFilterLevel(EDataFilterLevel dataFilterLevel) {
+		this.dataFilterLevel = dataFilterLevel;
+	}
+
+	@Override
+	public LoadDataParameters getLoadDataParameters() {
+		return loadDataParameters;
+	}
+
+	@Override
+	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
+		this.loadDataParameters = loadDataParameters;
+	}
+
+	public String getBootsTrapFileName() {
+		return bootsTrapFileName;
+	}
+
+	public void setBootsTrapFileName(String bootsTrapFileName) {
+		this.bootsTrapFileName = bootsTrapFileName;
+	}
+
 }

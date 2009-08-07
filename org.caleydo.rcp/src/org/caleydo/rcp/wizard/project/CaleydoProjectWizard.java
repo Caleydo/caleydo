@@ -5,6 +5,8 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
+import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.wizard.project.ChooseProjectTypePage.EProjectType;
@@ -69,14 +71,31 @@ public class CaleydoProjectWizard
 				}
 //				else
 //					throw new IllegalStateException("Not implemented!");
-			}
-			else if (page.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
-				
+			} else if (page.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
 				useCase = new UnspecifiedUseCase();
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
-			}
-			else
+			} else if (page.getUseCaseMode() == EUseCaseMode.LOAD_PROJECT) {
+				System.out.println("Load Project");
+				ProjectLoader loader = new ProjectLoader();
+				if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.RECENT) {
+					Application.initData = loader.loadRecent();
+				} else if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.SPECIFIED) {
+					Application.initData = loader.load(page.getProjectFileName());
+				} else {
+					throw new IllegalArgumentException("encoutnered unknown project-load-type");
+				}
+				useCase = Application.initData.getUseCase();
+				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
+			} else if (page.getUseCaseMode() == EUseCaseMode.COLLABORATION_CLIENT) {
+				NetworkManager nm = GeneralManager.get().getNetworkManager();
+				nm.startNetworkService();
+				nm.setNetworkName(page.getNetworkName());
+				Application.initData = nm.createConnection(page.getNetworkAddress());
+				useCase = Application.initData.getUseCase();
+				Application.applicationMode = EApplicationMode.COLLABORATION_CLIENT;
+			} else { 
 				throw new IllegalStateException("Not implemented!");
+			}
 
 			GeneralManager.get().setUseCase(useCase);
 			
@@ -111,14 +130,14 @@ public class CaleydoProjectWizard
 				nextPage.setPageComplete(true);
 				return nextPage;
 			}
-			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
+/*			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.EXISTING_PROJECT) {
 //				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
 //				fileOpenProjectAction.run();
 
 				this.performFinish();
 			}
-			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
+*/			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
 				.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
 
 			}

@@ -17,9 +17,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * 1st wizard page: The user has to choose the type of project, if she wants to create a new project or load
@@ -35,6 +39,12 @@ public class ChooseProjectTypePage
 
 	public static final String GENE_DATA_MODE = "gene";
 	public static final String GENERAL_DATA_MODE = "general";
+	
+	/** preference store constant related to the collaboration mode  */
+	public static final String COLLABORATION_DATA_MODE = "collaboration";
+
+	/** preference store constant related to the load existing project mode */
+	public static final String LOAD_PROJECT_MODE = "load_project";
 
 	private static final String HCC_SAMPLE_DATASET_PAPER_LINK = "http://www.ncbi.nlm.nih.gov/pubmed/17241883";
 
@@ -42,7 +52,6 @@ public class ChooseProjectTypePage
 
 	public enum EProjectType {
 		NEW_PROJECT,
-		EXISTING_PROJECT,
 		// PATHWAY_VIEWER_MODE,
 		SAMPLE_DATA_RANDOM,
 		SAMPLE_DATA_REAL
@@ -53,8 +62,32 @@ public class ChooseProjectTypePage
 	private EProjectType projectType = EProjectType.SAMPLE_DATA_REAL;
 
 	private TabItem generalDataUseCaseTab;
+
 	private TabItem geneticDataUseCaseTab;
 
+	/** tab-page for connecting a client to a running server */
+	private TabItem collaborationClientTab;
+
+	/** tab-page for loading a project from file system */
+	private TabItem loadProjectTab;
+	
+	/** text field to enter the network name by the user */
+	Text networkNameText;
+	
+	/** text field to enter the network address by the user */
+	Text networkAddressText;
+
+	public enum EProjectLoadType {
+		RECENT,
+		SPECIFIED
+	}
+
+	/** type how a existing project should be loaded */ 
+	private EProjectLoadType projectLoadType = EProjectLoadType.RECENT;
+
+	/** text field to enter the file-name to load a project from */
+	Text projectFileName;
+	
 	/**
 	 * Constructor.
 	 */
@@ -81,6 +114,8 @@ public class ChooseProjectTypePage
 
 		createGeneticUseCaseTab(tabFolder);
 		createGeneralDataUseCaseTab(tabFolder);
+		createLoadProjectTab(tabFolder);
+		createCollaborationClientTab(tabFolder);
 		String dataModeLastUsed =
 			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_MODE_LAST_USED);
 
@@ -88,13 +123,18 @@ public class ChooseProjectTypePage
 			tabFolder.setSelection(0);
 			useCaseMode = EUseCaseMode.GENETIC_DATA;
 			Application.bLoadPathwayData = true;
-		}
-		else if (dataModeLastUsed.equals(GENERAL_DATA_MODE)) {
+		} else if (dataModeLastUsed.equals(GENERAL_DATA_MODE)) {
 			tabFolder.setSelection(1);
 			useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
 			Application.bLoadPathwayData = false;
+		} else if (dataModeLastUsed.equals(LOAD_PROJECT_MODE)) {
+			useCaseMode = EUseCaseMode.LOAD_PROJECT;
+			tabFolder.setSelection(2);
+		} else if (dataModeLastUsed.equals(COLLABORATION_DATA_MODE)) {
+			useCaseMode = EUseCaseMode.COLLABORATION_CLIENT;
+			tabFolder.setSelection(3);
 		}
-
+		
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -114,13 +154,23 @@ public class ChooseProjectTypePage
 
 					GeneralManager.get().getPreferenceStore().setValue(
 						PreferenceConstants.DATA_MODE_LAST_USED, GENERAL_DATA_MODE);
-				}
-				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
+				} else if (((TabItem) e.item) == geneticDataUseCaseTab) {
 					useCaseMode = EUseCaseMode.GENETIC_DATA;
 					Application.bLoadPathwayData = true;
 
 					GeneralManager.get().getPreferenceStore().setValue(
 						PreferenceConstants.DATA_MODE_LAST_USED, GENE_DATA_MODE);
+				} else if (((TabItem) e.item) == loadProjectTab) {
+					useCaseMode = EUseCaseMode.LOAD_PROJECT;
+
+					GeneralManager.get().getPreferenceStore().setValue(
+						PreferenceConstants.DATA_MODE_LAST_USED, LOAD_PROJECT_MODE);
+				} else if (((TabItem) e.item) == collaborationClientTab) {
+					useCaseMode = EUseCaseMode.COLLABORATION_CLIENT;
+//					Application.bLoadPathwayData = true;
+
+					GeneralManager.get().getPreferenceStore().setValue(
+						PreferenceConstants.DATA_MODE_LAST_USED, COLLABORATION_DATA_MODE);
 				}
 				else
 					throw new IllegalStateException("Not implemented!");
@@ -203,11 +253,6 @@ public class ChooseProjectTypePage
 		// buttonPathwayViewerMode.setText("Pathway viewer mode");
 		// buttonPathwayViewerMode.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		Button buttonExistingProject = new Button(composite, SWT.RADIO);
-		buttonExistingProject.setText("Open existing project");
-		buttonExistingProject.setEnabled(false);
-		buttonExistingProject.setLayoutData(new GridData(GridData.FILL_BOTH));
-
 		final Button btnLoadPathwayData = new Button(composite, SWT.CHECK);
 		btnLoadPathwayData.setText("Load KEGG and BioCarta pathway data");
 		btnLoadPathwayData.setSelection(true);
@@ -255,14 +300,6 @@ public class ChooseProjectTypePage
 			}
 		});
 
-		buttonExistingProject.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				projectType = EProjectType.EXISTING_PROJECT;
-				setPageComplete(true);
-			}
-		});
-
 		// buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter() {
 		// @Override
 		// public void widgetSelected(SelectionEvent e) {
@@ -305,11 +342,6 @@ public class ChooseProjectTypePage
 
 		setPageComplete(true);
 
-		Button buttonExistingProject = new Button(composite, SWT.RADIO);
-		buttonExistingProject.setText("Open existing project");
-		buttonExistingProject.setEnabled(false);
-		buttonExistingProject.setLayoutData(new GridData(GridData.FILL_BOTH));
-
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -318,15 +350,112 @@ public class ChooseProjectTypePage
 			}
 		});
 
-		buttonExistingProject.addSelectionListener(new SelectionAdapter() {
+	}
+
+	private void createLoadProjectTab(TabFolder tabFolder) {
+		loadProjectTab = new TabItem(tabFolder, SWT.NONE);
+		loadProjectTab.setText("Load Project");
+
+		Composite composite = new Composite(tabFolder, SWT.NONE);
+		loadProjectTab.setControl(composite);
+		composite.setLayout(new GridLayout(2, false));
+
+		Button recentProject = new Button(composite, SWT.RADIO);
+		recentProject.setText("Open project from last session");
+		recentProject.setSelection(true);
+		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		gd.horizontalSpan = 2;
+		recentProject.setLayoutData(gd);
+
+		Button loadProject = new Button(composite, SWT.RADIO);
+		loadProject.setText("Specify project-file to load");
+		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+		gd.horizontalSpan = 2;
+		loadProject.setLayoutData(gd);
+		
+		final Button chooseProjectFile = new Button(composite, SWT.CENTER);
+		chooseProjectFile.setEnabled(false);
+		chooseProjectFile.setText("Choose File");
+
+		projectFileName = new Text(composite, SWT.BORDER);
+		projectFileName.setEnabled(false);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		projectFileName.setLayoutData(gd);
+		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
+
+		recentProject.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				projectType = EProjectType.EXISTING_PROJECT;
+				projectLoadType = EProjectLoadType.RECENT;
+				chooseProjectFile.setEnabled(false);
+				projectFileName.setEnabled(false);
 				setPageComplete(true);
+			}
+		});
+
+		loadProject.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				projectLoadType = EProjectLoadType.SPECIFIED;
+				projectFileName.setEnabled(true);
+				chooseProjectFile.setEnabled(true);
+				if (projectFileName.getText() != null && !projectFileName.getText().isEmpty()) {
+					setPageComplete(true);
+				} else {
+					setPageComplete(false);
+				}
+			}
+		});
+
+		chooseProjectFile.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fileDialog = new FileDialog(new Shell(), SWT.OPEN);
+				fileDialog.setText("Load Project");
+				String[] filterExt = { "*.cal" };
+				fileDialog.setFilterExtensions(filterExt);
+
+				String fileName = fileDialog.open();
+				if (fileName != null) {
+					projectFileName.setText(fileName);
+					setPageComplete(true);
+				}
 			}
 		});
 	}
 
+	/**
+	 * Creates the tab for connecting a client to a already running caleydo-server-application
+	 * to get the use case and basic data from.
+	 * @param tabFolder tab-widget to create the new tab-item in
+	 */
+	private void createCollaborationClientTab(TabFolder tabFolder) {
+		collaborationClientTab = new TabItem(tabFolder, SWT.NONE);
+		collaborationClientTab.setText("Connect to Server");
+
+		Composite composite = new Composite(tabFolder, SWT.NONE);
+		collaborationClientTab.setControl(composite);
+		composite.setLayout(new GridLayout(2, false));
+
+		Label networkNameLabel = new Label(composite, SWT.LEFT);
+		networkNameLabel.setText("Network Name:");
+		networkNameText = new Text(composite, SWT.BORDER);
+		networkNameText.setText("client");
+		GridData gd = new GridData();
+		gd.widthHint = 200;
+		networkNameText.setLayoutData(gd);
+
+		Label networkAddressLabel = new Label(composite, SWT.LEFT);
+		networkAddressLabel.setText("Server Address:");
+		networkAddressText = new Text(composite, SWT.BORDER);
+		networkAddressText.setText("127.0.0.1");
+		gd = new GridData();
+		gd.widthHint = 200;
+		networkAddressText.setLayoutData(gd);
+		
+		setPageComplete(true);
+	}
+	
 	public EProjectType getProjectType() {
 		return projectType;
 	}
@@ -334,4 +463,33 @@ public class ChooseProjectTypePage
 	public EUseCaseMode getUseCaseMode() {
 		return useCaseMode;
 	}
+
+	/**
+	 * Returns the network-name entered by the user in the network-name text-field
+	 * @return network-name to use
+	 */
+	public String getNetworkName() {
+		return networkNameText.getText();
+	}
+
+	/**
+	 * Returns the network-address entered by the user in the network-address text-field
+	 * @return network-address to connect to
+	 */
+	public String getNetworkAddress() {
+		return networkAddressText.getText();
+	}
+
+	/**
+	 * Returns the project file-name for open existing projects
+	 * @return
+	 */
+	public String  getProjectFileName() {
+		return projectFileName.getText();
+	}
+
+	public EProjectLoadType getProjectLoadType() {
+		return projectLoadType;
+	}
+
 }

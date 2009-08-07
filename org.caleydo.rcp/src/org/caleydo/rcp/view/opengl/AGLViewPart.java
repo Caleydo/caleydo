@@ -119,8 +119,6 @@ public abstract class AGLViewPart
 		glView.setUseCase(useCase);
 		glView.setSet(set);
 				
-		useCase.addView(glView);
-
 		glView.setViewGUIID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
 		
@@ -211,7 +209,6 @@ public abstract class AGLViewPart
 	public void dispose() {
 		super.dispose();
 
-		GeneralManager.get().getUseCase().removeView(glEventListener);
 		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID).destroy();
 	}
 

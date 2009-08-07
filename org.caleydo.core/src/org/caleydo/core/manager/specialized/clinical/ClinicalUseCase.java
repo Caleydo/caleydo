@@ -1,5 +1,8 @@
 package org.caleydo.core.manager.specialized.clinical;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
@@ -9,6 +12,8 @@ import org.caleydo.core.manager.usecase.EUseCaseMode;
  * 
  * @author Marc Streit
  */
+@XmlType
+@XmlRootElement
 public class ClinicalUseCase
 	extends AUseCase {
 
@@ -17,7 +22,7 @@ public class ClinicalUseCase
 	 */
 	public ClinicalUseCase() {
 
-		eUseCaseMode = EUseCaseMode.CLINICAL_DATA;
+		useCaseMode = EUseCaseMode.CLINICAL_DATA;
 	}
 	
 	@Override

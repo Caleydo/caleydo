@@ -3,7 +3,7 @@ package org.caleydo.rcp.action.toolbar.general;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.caleydo.core.util.save.ProjectSaver;
+import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;

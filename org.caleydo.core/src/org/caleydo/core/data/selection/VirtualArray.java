@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
@@ -19,6 +21,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * @author Alexander Lex
  */
 @XmlType
+@XmlRootElement
 public class VirtualArray
 	extends AUniqueObject
 	implements IVirtualArray {
@@ -321,6 +324,7 @@ public class VirtualArray
 		this.iUniqueID = iUniqueID;		
 	}
 
+	@XmlElementWrapper
 	public ArrayList<Integer> getVirtualArray() {
 		return virtualArray;
 	}

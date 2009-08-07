@@ -1,5 +1,7 @@
 package org.caleydo.core.manager;
 
+import java.io.File;
+
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
@@ -37,7 +39,7 @@ public interface IGeneralManager {
 	
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME = "user.home";
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + "/.caleydo/";
+	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + File.separator + ".caleydo" + File.separator;
 
 	public static final String sDelimiter_Paser_DataItemBlock = "@";
 	public static final String sDelimiter_Parser_DataItems = " ";
