@@ -18,6 +18,11 @@ public class GLHeatMapKeyListener
 
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
+
+		// if ctrl, alt, or shift is pressed do nothing --> HHM handles this events
+		if (event.stateMask == SWT.CTRL || event.stateMask == SWT.ALT || event.stateMask == SWT.SHIFT)
+			return;
+
 		switch (event.keyCode) {
 			case SWT.ARROW_UP:
 				glHeatMap.upDownSelect(true);
@@ -38,7 +43,7 @@ public class GLHeatMapKeyListener
 	@Override
 	public void handleEvent(AEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -63,13 +63,15 @@ public class GLHierarchicalHeatMapKeyListener
 				break;
 			case SWT.ARROW_LEFT:
 
-				glHierarchicalHeatMap.handleArrowLeftPressed();
-
+				if (keyEvent.stateMask == SWT.SHIFT) {
+					glHierarchicalHeatMap.handleArrowLeftShiftPressed();
+				}
 				break;
 			case SWT.ARROW_RIGHT:
 
-				glHierarchicalHeatMap.handleArrowRightPressed();
-
+				if (keyEvent.stateMask == SWT.SHIFT) {
+					glHierarchicalHeatMap.handleArrowRightShiftPressed();
+				}
 				break;
 		}
 	}
