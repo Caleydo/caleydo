@@ -313,32 +313,6 @@ public class GLHierarchicalHeatMap
 
 	}
 
-	/**
-	 * If no selected elements are in the current texture, the function switches the texture
-	 */
-	private void setTexture() {
-		boolean bSetCurrentTexture = true;
-
-		// if (AlSelection.size() > 0) {
-		// for (HeatMapSelection selection : AlSelection) {
-		//
-		// if (selection.getTexture() == iSelectorBar && selection.getPos() >= iFirstSampleLevel2
-		// && selection.getPos() <= iLastSampleLevel2 || selection.getTexture() == iSelectorBar - 1
-		// && selection.getPos() >= iFirstSampleLevel2 && selection.getPos() <= iLastSampleLevel2) {
-		// bSetCurrentTexture = false;
-		// break;
-		// }
-		// }
-		// if (bSetCurrentTexture) {
-		// iSelectorBar = AlSelection.get(0).getTexture() + 1;
-		// if (iSelectorBar == iNrSelBar) {
-		// iSelectorBar--;
-		// }
-		// initPosCursorLevel2();
-		// }
-		// }
-	}
-
 	private void initPosCursorLevel1() {
 
 		int iNumberSample = iNumberOfElements;
@@ -663,8 +637,67 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
-		if (scrollToSelection && bSkipLevel1 == false && bSkipLevel2 == false) {
-			setTexture();
+		if (scrollToSelection && bSkipLevel2 == false) {
+			Set<Integer> setMouseOverElements =
+				contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+			// Set<Integer> setSelectedElements =
+			// contentSelectionManager.getElements(ESelectionType.SELECTION);
+
+			for (Integer mouseOverElement : setMouseOverElements) {
+
+				int index = contentVA.indexOf(mouseOverElement.intValue());
+
+				// selected element is in level 3
+				if (index >= (iFirstSampleLevel1 + iFirstSampleLevel2)
+					&& index <= (iFirstSampleLevel1 + iLastSampleLevel2 + 1)) {
+					// System.out.println("in range of level 3 --> do nothing");
+					return;
+				}
+				// selected element is in level 2
+				else if (index >= iFirstSampleLevel1 && index < iLastSampleLevel1) {
+					// System.out.println("in range of level 2 --> move level 3");
+					iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+					iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1 - 1;
+					if (iFirstSampleLevel2 < 0) {
+						iFirstSampleLevel2 = 0;
+						iLastSampleLevel2 = iSamplesPerHeatmap - 1;
+					}
+					if (iLastSampleLevel2 > iSamplesLevel2) {
+						iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
+						iLastSampleLevel2 = iSamplesLevel2 - 1;
+					}
+				}
+				else {
+					// System.out.println("in range of level 1 --> move level 2 and 3");
+					iFirstSampleLevel1 = index - iSamplesLevel2 / 2;
+					iLastSampleLevel1 = index + iSamplesLevel2 / 2;
+
+					if (iFirstSampleLevel1 <= 0) {
+						iFirstSampleLevel1 = 0;
+						iLastSampleLevel1 = iSamplesLevel2;
+						iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2;
+						iLastSampleLevel2 = index + iSamplesPerHeatmap / 2;
+						if (iFirstSampleLevel2 < 0) {
+							iFirstSampleLevel2 = 0;
+							iLastSampleLevel2 = iSamplesPerHeatmap;
+						}
+					}
+					else if (iLastSampleLevel1 > iNumberOfElements) {
+						iFirstSampleLevel1 = iNumberOfElements - iSamplesLevel2;
+						iLastSampleLevel1 = iNumberOfElements;
+						iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+						iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+						if (iLastSampleLevel2 > iSamplesLevel2) {
+							iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
+							iLastSampleLevel2 = iSamplesLevel2;
+						}
+					}
+					else {
+						iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+						iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+					}
+				}
+			}
 		}
 	}
 
@@ -1256,11 +1289,11 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void renderSelectedElementsOverviewBar(GL gl) {
-		float fHeight = viewFrustum.getHeight();
-		float fBarWidth = 0.1f;
-
-		float fHeightElem = fHeight / contentVA.size();
-
+		// float fHeight = viewFrustum.getHeight();
+		// float fBarWidth = 0.1f;
+		//
+		// float fHeightElem = fHeight / contentVA.size();
+		//
 		// for (HeatMapSelection selection : AlSelection) {
 		// if (selection.getSelectionType() == ESelectionType.MOUSE_OVER) {
 		// gl.glColor4fv(MOUSE_OVER_COLOR, 0);
@@ -1803,8 +1836,8 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void renderCursorLevel2(final GL gl) {
-		float fHeight = viewFrustum.getHeight();
-		float fWidth = viewFrustum.getWidth() / 4.0f;
+//		float fHeight = viewFrustum.getHeight();
+//		float fWidth = viewFrustum.getWidth() / 4.0f;
 
 		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_SIDE);
 		tempTexture.enable();
@@ -2305,6 +2338,12 @@ public class GLHierarchicalHeatMap
 	private void setEmbeddedHeatMapData() {
 		int iCount = iFirstSampleLevel1 + iFirstSampleLevel2;
 
+		if (iCount < 0) {
+			System.out.println("iFirstSampleLevel1: " + iFirstSampleLevel1);
+			System.out.println("iFirstSampleLevel2: " + iFirstSampleLevel2);
+			throw new IllegalStateException();
+		}
+
 		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 		// commands.add(command);
 		// glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, command);
@@ -2556,7 +2595,7 @@ public class GLHierarchicalHeatMap
 			}
 			else {
 				iFirstSampleLevel2 = iPickedSampleLevel2 - (int) Math.ceil(iSamplesPerHeatmap / 2);
-				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor(iSamplesPerHeatmap / 2);
+				iLastSampleLevel2 = iPickedSampleLevel2 + (int) Math.floor(iSamplesPerHeatmap / 2) - 1;
 			}
 
 			if (iPickedSampleLevel2 < iSamplesPerHeatmap / 2) {
@@ -3398,8 +3437,9 @@ public class GLHierarchicalHeatMap
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
 
-		iPickedSampleLevel1 = 0;
-		initPosCursorLevel1();
+		// iPickedSampleLevel1 = 0;
+		if (bSkipLevel1 == false)
+			initPosCursorLevel1();
 		bRedrawTextures = true;
 		setDisplayListDirty();
 		setEmbeddedHeatMapData();
@@ -3563,11 +3603,11 @@ public class GLHierarchicalHeatMap
 		// storageVA.setGroupList(null);
 
 		initHierarchy();
+		calculateTextures();
 
 		initPosCursorLevel1();
 
 		if (bSkipLevel2 == false) {
-			calculateTextures();
 			initPosCursorLevel2();
 		}
 
