@@ -85,7 +85,9 @@ public class CaleydoProjectWizard
 					throw new IllegalArgumentException("encoutnered unknown project-load-type");
 				}
 				useCase = Application.initData.getUseCase();
+				Application.startViews = Application.initData.getViews();
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
+				Application.bDeleteRestoredWorkbenchState = true;
 			} else if (page.getUseCaseMode() == EUseCaseMode.COLLABORATION_CLIENT) {
 				NetworkManager nm = GeneralManager.get().getNetworkManager();
 				nm.startNetworkService();

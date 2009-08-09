@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedRadialHierarchyView
 	extends ASerializedView {
 
+	public static final String GUI_ID = "org.caleydo.rcp.views.GLRadialHierarchyView";
+	
 	private EDrawingStateType drawingStateType;
 	private int maxDisplayedHierarchyDepth;
 	private int rootElementID;
@@ -108,5 +110,10 @@ public class SerializedRadialHierarchyView
 
 	public void setDefaultDrawingStrategyType(EPDDrawingStrategyType defaultDrawingStrategyType) {
 		this.defaultDrawingStrategyType = defaultDrawingStrategyType;
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
 	}
 }

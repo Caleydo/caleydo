@@ -85,24 +85,51 @@ public class SerializationManager {
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
 			
-			projectContext = JAXBContext.newInstance(ApplicationInitData.class, ASerializedView.class);
+			projectContext = JAXBContext.newInstance(ApplicationInitData.class, ViewList.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
-	
+
+	/**
+	 * Gets the {@link JAXBContext} used to serialize views.
+	 * @return view-serialization {@link JAXBContext}.
+	 */
 	public JAXBContext getViewContext() {
 		return viewContext;
 	}
 
+	/**
+	 * Gets the {@link JAXBContext} used to serialize events.
+	 * @return events-serialization {@link JAXBContext}.
+	 */
 	public JAXBContext getEventContext() {
 		return eventContext;
 	}
 
+	/**
+	 * Gets the {@link JAXBContext} used during load/save caleydo projects.
+	 * @return caleydo-project serialization {@link JAXBContext}.
+	 */
 	public JAXBContext getProjectContext() {
 		return projectContext;
 	}
 
+	/**
+	 * Generates and returns a {@link Collection} of all views that may be serialized.
+	 * This list can e.g. be used to get the list of views to save in a caledyo-project file.
+	 * 
+	 * @return {@link Collection} of serialized-view-classes that may be serialized.
+	 */
+	public Collection<Class<? extends ASerializedView>> getSerializeableViewTypes() {
+		Collection<Class<? extends ASerializedView>> viewTypes = new ArrayList<Class<? extends ASerializedView>>();
+
+		// the list of views is maintained in the {@link ASerilializedView}'s {@link XmlSeeAlso} annotation.
+		viewTypes.add(ASerializedView.class);
+		
+		return viewTypes;
+	}
+	
 	/**
 	 * Generates and returns a {@link Collection} of all events to serialize
 	 * 

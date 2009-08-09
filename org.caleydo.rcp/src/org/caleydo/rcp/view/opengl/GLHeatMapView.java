@@ -12,7 +12,8 @@ import org.eclipse.swt.widgets.Shell;
 
 public class GLHeatMapView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLHeatMapView";
+
+	public static final String ID = SerializedHeatMapView.GUI_ID;
 
 	/**
 	 * Constructor.
@@ -42,9 +43,6 @@ public class GLHeatMapView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedHeatMapView serializedView = new SerializedHeatMapView();
-
-		serializedView.setViewGUIID(getViewGUIID());
-
 		return serializedView;
 	}
 

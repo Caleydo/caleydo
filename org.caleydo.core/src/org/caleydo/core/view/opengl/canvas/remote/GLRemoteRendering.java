@@ -2914,7 +2914,6 @@ public class GLRemoteRendering
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRemoteRenderingView serializedForm = new SerializedRemoteRenderingView();
 		serializedForm.setViewID(this.getID());
-		serializedForm.setViewGUIID(getViewGUIID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
 		serializedForm.setGeneMappingEnabled(geneMappingEnabled);

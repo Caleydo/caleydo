@@ -599,7 +599,6 @@ public class GLHistogram
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHistogramView serializedForm = new SerializedHistogramView();
 		serializedForm.setViewID(this.getID());
-		serializedForm.setViewGUIID(getViewGUIID());
 		return serializedForm;
 	}
 

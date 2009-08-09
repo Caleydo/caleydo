@@ -15,7 +15,8 @@ import org.eclipse.ui.PartInitException;
 
 public class GLParCoordsView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLParCoordsView";
+
+	public static final String ID = SerializedParallelCoordinatesView.GUI_ID;
 
 	/**
 	 * Constructor.

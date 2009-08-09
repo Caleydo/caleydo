@@ -50,17 +50,16 @@ public class ProjectLoader {
 	 */
 	public ApplicationInitData loadDirectory(String dirName) {
 		ApplicationInitData initData;
-
 		
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
 		
 		try {
 			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
-			File useCaseFile = new File(dirName + "usecase.xml");
+			File useCaseFile = new File(dirName + ProjectSaver.USECASE_FILE_NAME);
 			AUseCase useCase = (AUseCase) unmarshaller.unmarshal(useCaseFile);
 
-			String setFileName = dirName + "data.csv";
+			String setFileName = dirName + ProjectSaver.SET_DATA_FILE_NAME;
 			useCase.getLoadDataParameters().setFileName(setFileName);
 			
 			HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>();
@@ -69,9 +68,13 @@ public class ProjectLoader {
 			virtualArrayMap.put(EVAType.CONTENT_EMBEDDED_HM, loadVirtualArray(unmarshaller, dirName, EVAType.CONTENT_EMBEDDED_HM));
 			virtualArrayMap.put(EVAType.STORAGE, loadVirtualArray(unmarshaller, dirName, EVAType.STORAGE));
 			
+			File viewFile = new File(dirName + ProjectSaver.VIEWS_FILE_NAME);
+			ViewList loadViews = (ViewList) unmarshaller.unmarshal(viewFile);
+
 			initData = new ApplicationInitData();
 			initData.setUseCase(useCase);
 			initData.setVirtualArrayMap(virtualArrayMap);
+			initData.setViews(loadViews.getViews());
 
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Error while loading project", ex);

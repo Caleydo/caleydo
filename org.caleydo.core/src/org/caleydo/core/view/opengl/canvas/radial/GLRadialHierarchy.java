@@ -714,7 +714,6 @@ public class GLRadialHierarchy
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView();
 		serializedForm.setViewID(this.getID());
-		serializedForm.setViewGUIID(getViewGUIID());
 		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		serializedForm.setNewSelection(bIsNewSelection);
 		serializedForm.setDefaultDrawingStrategyType(DrawingStrategyManager.get().getDefaultDrawingStrategy()

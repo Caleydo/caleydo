@@ -9,7 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLDendrogramVerticalView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLDendrogramVerticalView";
+
+	public static final String ID = SerializedDendogramVerticalView.GUI_ID;
 
 	/**
 	 * Constructor.
@@ -33,7 +34,6 @@ public class GLDendrogramVerticalView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedDendogramVerticalView serializedView = new SerializedDendogramVerticalView();
-		serializedView.setViewGUIID(getViewGUIID());
 		return serializedView;
 	}
 

@@ -19,6 +19,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedRemoteRenderingView 
 	extends ASerializedView {
 
+	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLRemoteRenderingView";
+
 	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.pathwayTexturesEnabled} */
 	private boolean pathwayTexturesEnabled;
 	
@@ -97,4 +99,8 @@ public class SerializedRemoteRenderingView
 		this.stackViews = stackViews;
 	}
 
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
+	}
 }

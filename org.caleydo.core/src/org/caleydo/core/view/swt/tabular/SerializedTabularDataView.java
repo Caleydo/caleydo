@@ -1,19 +1,21 @@
-package org.caleydo.core.serialize;
+package org.caleydo.core.view.swt.tabular;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * This class is a serialized form reduced to hold only the view-id.
- * It should only be used until all views have their own serialized form class.   
+ * Serialized form of a tabular-browser view. 
  * @author Werner Puff
  */
-public class SerializedDummyView 
+public class SerializedTabularDataView 
 	extends ASerializedView {
+
+	public static final String GUI_ID = "org.caleydo.rcp.views.swt.TabularDataView";
 	
 	@Override
 	public ECommandType getCreationCommandType() {
-		return ECommandType.CMD_ID;
+		return null;
 	}
 
 	@Override
@@ -23,7 +25,7 @@ public class SerializedDummyView
 
 	@Override
 	public String getViewGUIID() {
-		return null;
+		return GUI_ID;
 	}
-
+	
 }

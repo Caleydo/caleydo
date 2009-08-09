@@ -3,12 +3,14 @@ package org.caleydo.rcp.view.swt;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
+import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 import org.caleydo.rcp.view.CaleydoViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class HTMLBrowserView
 	extends CaleydoViewPart {
-	public static final String ID = "org.caleydo.rcp.views.swt.HTMLBrowserView";
+
+	public static final String ID = SerializedHTMLBrowserView.GUI_ID;
 
 	private HTMLBrowserViewRep browserView;
 

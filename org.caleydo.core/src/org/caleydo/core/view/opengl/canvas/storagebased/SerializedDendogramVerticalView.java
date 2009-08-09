@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedDendogramVerticalView 
 	extends ASerializedView {
 	
+	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLDendrogramVerticalView";
+
 	/**
 	 * Default constructor with default initialization
 	 */
@@ -33,6 +35,11 @@ public class SerializedDendogramVerticalView
 	public ViewFrustum getViewFrustum() {
 		ViewFrustum viewFrustum = new ViewFrustum(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20);
 		return viewFrustum;
+	}
+
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
 	}
 
 }

@@ -961,7 +961,6 @@ public class GLPathway
 	public ASerializedView getSerializableRepresentation() {
 		SerializedPathwayView serializedForm = new SerializedPathwayView();
 		serializedForm.setViewID(this.getID());
-		serializedForm.setViewGUIID(this.getViewGUIID());
 		serializedForm.setPathwayID(pathway.getID());
 		return serializedForm;
 	}

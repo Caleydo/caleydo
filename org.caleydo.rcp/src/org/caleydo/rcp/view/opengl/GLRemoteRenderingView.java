@@ -6,7 +6,7 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedGlyphView;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 public class GLRemoteRenderingView
 	extends AGLViewPart {
 
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLRemoteRenderingView";
+	public static final String ID = SerializedRemoteRenderingView.GUI_ID;
 
 	private ArrayList<Integer> iAlContainedViewIDs;
 
@@ -41,7 +41,6 @@ public class GLRemoteRenderingView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView();
-		serializedView.setViewGUIID(getViewGUIID());
 		
 		serializedView.setPathwayTexturesEnabled(true);
 		serializedView.setNeighborhoodEnabled(true);

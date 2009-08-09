@@ -16,6 +16,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 @XmlType
 public class SerializedHyperbolicView 
 	extends ASerializedView {
+
+	public static final String GUI_ID = "org.caleydo.rcp.views.GLHyperbolicView";
 	
 	/**
 	 * Default constructor with default initialization
@@ -35,4 +37,8 @@ public class SerializedHyperbolicView
 		return viewFrustum;
 	}
 
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
+	}
 }

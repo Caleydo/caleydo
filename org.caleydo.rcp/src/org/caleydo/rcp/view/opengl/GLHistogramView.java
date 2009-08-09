@@ -40,7 +40,7 @@ public class GLHistogramView
 	extends AGLViewPart
 	implements IViewCommandHandler, IListenerOwner, INewSetHandler {
 
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
+	public static final String ID = SerializedHistogramView.GUI_ID;
 
 	private CLabel colorMappingPreviewLabel;
 
@@ -281,7 +281,6 @@ public class GLHistogramView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedHistogramView serializedView = new SerializedHistogramView();
-		serializedView.setViewGUIID(getViewGUIID());
 		return serializedView;
 	}
 

@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedParallelCoordinatesView 
 	extends ASerializedView {
 	
+	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLParCoordsView";
+
 	/**
 	 * Default constructor with default initialization
 	 */
@@ -35,4 +37,8 @@ public class SerializedParallelCoordinatesView
 		return viewFrustum;
 	}
 
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
+	}
 }

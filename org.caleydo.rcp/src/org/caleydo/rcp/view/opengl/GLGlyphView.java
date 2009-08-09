@@ -1,12 +1,13 @@
 package org.caleydo.rcp.view.opengl;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedGlyphView;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLGlyphView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLGlyphView";
+
+	public static final String ID = SerializedGlyphView.GUI_ID;
 
 	public static int viewCount = 0;
 
@@ -29,7 +30,6 @@ public class GLGlyphView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedGlyphView serializedView = new SerializedGlyphView();
-		serializedView.setViewGUIID(getViewGUIID());
 		return serializedView;
 	}
 

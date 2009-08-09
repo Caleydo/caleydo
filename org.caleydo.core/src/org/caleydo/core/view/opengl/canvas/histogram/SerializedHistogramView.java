@@ -16,6 +16,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedHistogramView 
 	extends ASerializedView {
 
+	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
+	
 	@Override
 	public ECommandType getCreationCommandType() {
 		return ECommandType.CREATE_GL_HISTOGRAM;
@@ -26,4 +28,9 @@ public class SerializedHistogramView
 		return null;
 	}
 
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
+	}
+	
 }

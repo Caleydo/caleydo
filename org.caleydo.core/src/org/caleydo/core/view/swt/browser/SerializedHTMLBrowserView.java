@@ -1,8 +1,8 @@
-package org.caleydo.core.serialize;
+package org.caleydo.core.view.swt.browser;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.swt.browser.EBrowserQueryType;
 
 /**
  * Serialized form of a html-browser view. 
@@ -11,6 +11,8 @@ import org.caleydo.core.view.swt.browser.EBrowserQueryType;
 public class SerializedHTMLBrowserView 
 	extends ASerializedView {
 
+	public static final String GUI_ID = "org.caleydo.rcp.views.swt.HTMLBrowserView";
+	
 	/** current url of the browser */
 	private String url;
 
@@ -43,4 +45,9 @@ public class SerializedHTMLBrowserView
 		this.url = url;
 	}
 
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
+	}
+	
 }

@@ -3,13 +3,15 @@ package org.caleydo.rcp.view.swt;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.caleydo.rcp.view.CaleydoViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 public class TabularDataView
 	extends CaleydoViewPart {
-	public static final String ID = "org.caleydo.rcp.views.swt.TabularDataView";
+
+	public static final String ID = SerializedTabularDataView.GUI_ID;
 
 	private TabularDataViewRep tabularDataView;
 

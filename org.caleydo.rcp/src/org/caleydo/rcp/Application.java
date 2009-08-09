@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,12 +17,23 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.ApplicationInitData;
-import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
+import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
+import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
+import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
+import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
@@ -84,7 +95,7 @@ public class Application
 
 	public static String sCaleydoXMLfile = "";
 
-	public static ArrayList<EStartViewType> alStartViews;
+	public static List<ASerializedView> startViews;
 
 	/** initialization data received from a caleydo-server-application during startup */ 
 	public static ApplicationInitData initData = null;
@@ -101,65 +112,10 @@ public class Application
 			bIsWindowsOS = true;
 		}
 
-		alStartViews = new ArrayList<EStartViewType>();
+		startViews = new ArrayList<ASerializedView>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
-
-		if (map.size() > 0) {
-			String[] sArParam = (String[]) map.get("application.args");
-
-			if (sArParam != null) {
-				for (String element : sArParam) {
-					if (element.equals("webstart")) {
-						bIsWebstart = true;
-					}
-					else if (element.equals("no_pathways")) {
-						bLoadPathwayData = false;
-						bOverrulePrefStoreLoadPathwayData = true;
-					}
-					else if (element.equals("load_pathways")) {
-						bLoadPathwayData = true;
-						bOverrulePrefStoreLoadPathwayData = true;
-					}
-					else if (element.equals(EStartViewType.PARALLEL_COORDINATES.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
-					}
-					else if (element.equals(EStartViewType.HEATMAP.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.HEATMAP);
-					}
-					else if (element.equals(EStartViewType.GLYPHVIEW.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.GLYPHVIEW);
-					}
-					else if (element.equals(EStartViewType.BROWSER.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.BROWSER);
-					}
-					else if (element.equals(EStartViewType.REMOTE.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.REMOTE);
-					}
-					else if (element.equals(EStartViewType.TABULAR.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.TABULAR);
-					}
-					else if (element.equals(EStartViewType.RADIAL_HIERARCHY.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.RADIAL_HIERARCHY);
-					}
-					else if (element.equals(EStartViewType.HYPERBOLIC.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.HYPERBOLIC);
-					}
-					else if (element.equals(EStartViewType.HISTOGRAM.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.HISTOGRAM);
-					}
-					else if (element.equals(EStartViewType.DENDROGRAM_HORIZONTAL.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.DENDROGRAM_HORIZONTAL);
-					}
-					else if (element.equals(EStartViewType.DENDROGRAM_VERTICAL.getCommandLineArgument())) {
-						alStartViews.add(EStartViewType.DENDROGRAM_VERTICAL);
-					}
-					else {
-						sCaleydoXMLfile = element;
-					}
-				}
-			}
-		}
+		parseApplicationArguments(map);
 
 		rcpGuiBridge = new RCPBridge();
 
@@ -234,8 +190,9 @@ public class Application
 			firstStartWizard.open();
 		}
 
-		if (bDeleteRestoredWorkbenchState)
+		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
+		}
 
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
@@ -244,22 +201,76 @@ public class Application
 
 			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
 
-			if (returnCode == PlatformUI.RETURN_RESTART)
+			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
-			else
+			} else {
 				return IApplication.EXIT_OK;
-		}
-		finally {
+			}
+		} finally {
 			if (!bDoExit) {
 				shutDown();
 			}
 		}
 	}
 
+	private void parseApplicationArguments(Map<String, Object> map) {
+		String[] sArParam = (String[]) map.get("application.args");
+
+		if (sArParam != null) {
+			for (String element : sArParam) {
+				if (element.equals("webstart")) {
+					bIsWebstart = true;
+				}
+				else if (element.equals("no_pathways")) {
+					bLoadPathwayData = false;
+					bOverrulePrefStoreLoadPathwayData = true;
+				}
+				else if (element.equals("load_pathways")) {
+					bLoadPathwayData = true;
+					bOverrulePrefStoreLoadPathwayData = true;
+				}
+				else if (element.equals(EStartViewType.PARALLEL_COORDINATES.getCommandLineArgument())) {
+					startViews.add(new SerializedParallelCoordinatesView());
+				}
+				else if (element.equals(EStartViewType.HEATMAP.getCommandLineArgument())) {
+					startViews.add(new SerializedHeatMapView());
+				}
+				else if (element.equals(EStartViewType.GLYPHVIEW.getCommandLineArgument())) {
+					startViews.add(new SerializedGlyphView());
+				}
+				else if (element.equals(EStartViewType.BROWSER.getCommandLineArgument())) {
+					startViews.add(new SerializedHTMLBrowserView());
+				}
+				else if (element.equals(EStartViewType.REMOTE.getCommandLineArgument())) {
+					startViews.add(new SerializedRemoteRenderingView());
+				}
+				else if (element.equals(EStartViewType.TABULAR.getCommandLineArgument())) {
+					startViews.add(new SerializedTabularDataView());
+				}
+				else if (element.equals(EStartViewType.RADIAL_HIERARCHY.getCommandLineArgument())) {
+					startViews.add(new SerializedRadialHierarchyView());
+				}
+				else if (element.equals(EStartViewType.HYPERBOLIC.getCommandLineArgument())) {
+					startViews.add(new SerializedHyperbolicView());
+				}
+				else if (element.equals(EStartViewType.HISTOGRAM.getCommandLineArgument())) {
+					startViews.add(new SerializedHistogramView());
+				}
+				else if (element.equals(EStartViewType.DENDROGRAM_HORIZONTAL.getCommandLineArgument())) {
+					startViews.add(new SerializedDendogramHorizontalView());
+				}
+				else if (element.equals(EStartViewType.DENDROGRAM_VERTICAL.getCommandLineArgument())) {
+					startViews.add(new SerializedDendogramVerticalView());
+				}
+				else {
+					sCaleydoXMLfile = element;
+				}
+			}
+		}
+	}
+	
 	private void shutDown() {
 		// Save preferences before shutdown
-		ProjectSaver saver = new ProjectSaver();
-		saver.saveRecentProject();
 		try {
 			GeneralManager.get().getLogger().log(
 				new Status(Status.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));
@@ -354,8 +365,6 @@ public class Application
 
 		initializeColorMapping();
 
-		// openRCPViews();
-
 		// if (GeneralManager.get().isStandalone()) {
 		// // Start OpenGL rendering
 		// GeneralManager.get().getViewGLCanvasManager().startAnimator();
@@ -380,41 +389,51 @@ public class Application
 
 		// Create view list dynamically when not specified via the command line
 		IUseCase usecase = GeneralManager.get().getUseCase();
-		if (alStartViews.isEmpty()) {
-
-			alStartViews.add(EStartViewType.BROWSER);
-
-			if (usecase instanceof GeneticUseCase && !((GeneticUseCase) usecase).isPathwayViewerMode()) {
-				// alStartViews.add(EStartViewType.TABULAR);
-				alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
-				alStartViews.add(EStartViewType.HEATMAP);
-			}
-
-			// Only show bucket when pathway data is loaded
-			if (bLoadPathwayData) {
-				alStartViews.add(EStartViewType.REMOTE);
-			}
-		}
-		else {
+		if (startViews.isEmpty()) {
+			addDefaultStartViews(usecase);
+		} else {
 			if (usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
-				// Filter all views except remote and browser in case of pathway
-				// viewer mode
-				Iterator<EStartViewType> iterStartViewsType = alStartViews.iterator();
-				EStartViewType type;
-				while (iterStartViewsType.hasNext()) {
-					type = iterStartViewsType.next();
-					if (type != EStartViewType.REMOTE && type != EStartViewType.BROWSER) {
-						iterStartViewsType.remove();
-					}
-				}
+				applyPathwayViewerViewFilter();
 			}
 		}
 
-		for (EStartViewType startViewsMode : alStartViews) {
-			layout.addView(startViewsMode.getRCPViewID());
+		for (ASerializedView startView : startViews) {
+			layout.addView(startView.getViewGUIID());
 		}
 	}
 
+	/**
+	 * Adds the default start views. Used when no start views are defined with command line arguments.
+	 * @param useCase {@link IUseCase} to determine the correct default start views.
+	 */
+	private static void addDefaultStartViews(IUseCase useCase) {
+		startViews.add(new SerializedHTMLBrowserView());
+		
+		if (useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode()) {
+			// alStartViews.add(EStartViewType.TABULAR);
+			startViews.add(new SerializedParallelCoordinatesView());
+			startViews.add(new SerializedHeatMapView());
+		}
+		
+		// Only show bucket when pathway data is loaded
+		if (bLoadPathwayData) {
+			startViews.add(new SerializedRemoteRenderingView());
+		}
+	}
+	
+	/**
+	 * Filter all views except remote and browser in case of pathway viewer mode
+	 */
+	private static void applyPathwayViewerViewFilter() { 
+		ArrayList<ASerializedView> newStartViews = new ArrayList<ASerializedView>();
+		for (ASerializedView view : startViews) {
+			if (view instanceof SerializedRemoteRenderingView || view instanceof SerializedHTMLBrowserView) {
+				newStartViews.add(view);
+			}
+		}
+		startViews = newStartViews;
+	}
+	
 	public static boolean isInternetConnectionOK() {
 
 		// Check internet connection

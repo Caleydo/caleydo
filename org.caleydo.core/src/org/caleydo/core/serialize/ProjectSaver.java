@@ -1,6 +1,8 @@
 package org.caleydo.core.serialize;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -10,8 +12,11 @@ import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
@@ -28,6 +33,15 @@ public class ProjectSaver {
 	/** full path to directory of the recently open project */
 	public static final String RECENT_PROJECT_DIR_NAME = GeneralManager.CALEYDO_HOME_PATH + "recent_project" + File.separator;
 
+	/** file name of the set-data-file in project-folders */
+	public static final String SET_DATA_FILE_NAME = "data.csv";
+	
+	/** file name of the usecase-file in project-folders */
+	public static final String USECASE_FILE_NAME = "usecase.xml";
+
+	/** file name of the view-file in project-folders */
+	public static final String VIEWS_FILE_NAME = "views.xml";
+	
 	/** 
 	 * Saves the project into a specified zip-archive.
 	 * @param fileName name of the file to save the project in.
@@ -66,7 +80,7 @@ public class ProjectSaver {
 		LoadDataParameters parameters = useCase.getLoadDataParameters(); 
 		byte[] data = SetUtils.loadSetFile(parameters);
 		
-		String setFileName = dirName + "data.csv";
+		String setFileName = dirName + SET_DATA_FILE_NAME;
 		File setFile = new File(setFileName);
 		SetUtils.saveSetFile(parameters, data, setFile);
 		
@@ -75,16 +89,53 @@ public class ProjectSaver {
 		
 		try {
 			Marshaller marshaller = projectContext.createMarshaller();
-			File useCaseFile = new File(dirName + "usecase.xml");
+			File useCaseFile = new File(dirName + USECASE_FILE_NAME);
 			marshaller.marshal(useCase, useCaseFile);
 
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT);
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT_CONTEXT);
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT_EMBEDDED_HM);
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.STORAGE);
+			
+			ViewList storeViews = createStoreViewList();
+			File viewFile = new File(dirName + VIEWS_FILE_NAME);
+			marshaller.marshal(storeViews, viewFile);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);
 		}
+	}
+
+	/**
+	 * Creates a {@link ViewList} of all views registered in the central {@link IViewManager}.
+	 * @return {@link ViewList} to storing the view's state. 
+	 */
+	private ViewList createStoreViewList() {
+		ArrayList<ASerializedView> storeViews = new ArrayList<ASerializedView>();
+
+		IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
+
+		Collection<AGLEventListener> glViews = viewManager.getAllGLEventListeners();
+		for (AGLEventListener glView : glViews) {
+			if (!glView.isRenderedRemote()) {
+				ASerializedView serView = glView.getSerializableRepresentation();
+				if (!(serView instanceof SerializedDummyView)) {
+					storeViews.add(serView);
+				}
+			}
+		}
+		
+		Collection<IView> swtViews = viewManager.getAllItems();
+		for (IView swtView : swtViews) {
+			ASerializedView serView = swtView.getSerializableRepresentation();
+			if (!(serView instanceof SerializedDummyView)) {
+				storeViews.add(serView);
+			}
+		}
+		
+		ViewList viewList = new ViewList();
+		viewList.setViews(storeViews);
+
+		return viewList;
 	}
 	
 	/**

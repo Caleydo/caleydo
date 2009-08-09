@@ -1,6 +1,7 @@
 package org.caleydo.core.serialize;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -25,6 +26,8 @@ public class ApplicationInitData {
 	
 	private HashMap<EVAType, VirtualArray> virtualArrayMap;
 	
+	private List<ASerializedView> views;
+	
 	public AUseCase getUseCase() {
 		return useCase;
 	}
@@ -47,6 +50,14 @@ public class ApplicationInitData {
 
 	public void setVirtualArrayMap(HashMap<EVAType, VirtualArray> virtualArrayMap) {
 		this.virtualArrayMap = virtualArrayMap;
+	}
+
+	public List<ASerializedView> getViews() {
+		return views;
+	}
+
+	public void setViews(List<ASerializedView> views) {
+		this.views = views;
 	}
 
 }

@@ -6,7 +6,8 @@ import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 
 public class GLPathwayView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLPathwayView";
+
+	public static final String ID = SerializedPathwayView.GUI_ID;
 
 	/**
 	 * Constructor.
@@ -18,9 +19,6 @@ public class GLPathwayView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedPathwayView serializedView = new SerializedPathwayView();
-
-		serializedView.setViewGUIID(getViewGUIID());
-
 		return serializedView;
 	}
 

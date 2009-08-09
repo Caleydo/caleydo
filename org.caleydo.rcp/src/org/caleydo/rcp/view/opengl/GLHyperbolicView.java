@@ -9,7 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLHyperbolicView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.GLHyperbolicView";
+
+	public static final String ID = SerializedHyperbolicView.GUI_ID;
 
 	/**
 	 * Constructor.
@@ -34,9 +35,6 @@ public class GLHyperbolicView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedHyperbolicView serializedView = new SerializedHyperbolicView();
-
-		serializedView.setViewGUIID(getViewGUIID());
-
 		return serializedView;
 	}
 

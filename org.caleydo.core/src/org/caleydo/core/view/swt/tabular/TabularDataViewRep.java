@@ -28,7 +28,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -822,7 +821,7 @@ public class TabularDataViewRep
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedTabularDataView serializedForm = new SerializedTabularDataView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

@@ -12,7 +12,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLRadialHierarchyView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.GLRadialHierarchyView";
+
+	public static final String ID = SerializedRadialHierarchyView.GUI_ID;
 
 	/**
 	 * Constructor.
@@ -37,7 +38,6 @@ public class GLRadialHierarchyView
 	public ASerializedView createDefaultSerializedView() {
 		SerializedRadialHierarchyView serializedView = new SerializedRadialHierarchyView();
 
-		serializedView.setViewGUIID(getViewGUIID());
 		serializedView.setMaxDisplayedHierarchyDepth(GLRadialHierarchy.DISP_HIER_DEPTH_DEFAULT);
 		serializedView.setDrawingStateType(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 		serializedView.setDefaultDrawingStrategyType(EPDDrawingStrategyType.EXPRESSION_COLOR);

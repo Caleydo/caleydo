@@ -5,13 +5,19 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
+import org.caleydo.core.view.opengl.canvas.glyph.sliderview.SerializedGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 
 /**
  * Basic abstract class for all serialized view representations.
@@ -22,7 +28,10 @@ import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordi
 @XmlSeeAlso({SerializedHistogramView.class, SerializedRadialHierarchyView.class, 
 	SerializedRemoteRenderingView.class, SerializedHierarchicalHeatMapView.class,
 	SerializedParallelCoordinatesView.class, SerializedHeatMapView.class,
-	SerializedPathwayView.class })
+	SerializedPathwayView.class, SerializedHyperbolicView.class,
+	SerializedGlyphView.class, SerializedGlyphSliderView.class,
+	SerializedDendogramVerticalView.class, SerializedDendogramHorizontalView.class,
+	SerializedHTMLBrowserView.class })
 public abstract class ASerializedView {
 
 	protected int viewID;
@@ -57,11 +66,9 @@ public abstract class ASerializedView {
 		this.viewID = viewID;
 	}
 
-	public String getViewGUIID() {
-		return viewGUIID;
-	}
-
-	public void setViewGUIID(String viewGUIID) {
-		this.viewGUIID = viewGUIID;
-	}
+	/**
+	 * Retrieves the id of the view as used within the GUI-framework.
+	 * @return GUI-related view-id.
+	 */
+	public abstract String getViewGUIID();
 }

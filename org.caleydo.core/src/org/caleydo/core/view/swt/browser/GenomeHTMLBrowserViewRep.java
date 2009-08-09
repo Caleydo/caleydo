@@ -12,7 +12,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.serialize.SerializedHTMLBrowserView;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.eclipse.swt.SWT;

@@ -9,7 +9,8 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLGlyphSliderView
 	extends AGLViewPart {
-	public static final String ID = "org.caleydo.rcp.views.opengl.GLGlyphSliderView";
+
+	public static final String ID = SerializedGlyphSliderView.GUI_ID;
 
 	/**
 	 * Constructor.
@@ -35,7 +36,6 @@ public class GLGlyphSliderView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView();
-		serializedView.setViewGUIID(getViewGUIID());
 		return serializedView;
 	}
 

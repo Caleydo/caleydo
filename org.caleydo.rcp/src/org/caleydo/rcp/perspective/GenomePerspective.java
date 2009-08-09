@@ -17,15 +17,10 @@ public class GenomePerspective
 	
 	//private static final String LOG_VIEW = "org.eclipse.pde.runtime.LogView";
 
+	@Override
 	public void createInitialLayout(final IPageLayout layout) {
 		
-//		Application.startCaleydoCore();
-		
 		layout.setEditorAreaVisible(false);
-		// layout.setFixed(true);
-//		layout.getViewLayout("org.caleydo.rcp.views.HTMLBrowserView").setCloseable(false);
-//		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setCloseable(false);
-//		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setMoveable(false);
 
 		Rectangle rectDisplay = Display.getCurrent().getMonitors()[0].getBounds();
 		float fRatio = (float) rectDisplay.width / rectDisplay.height;
@@ -71,8 +66,7 @@ public class GenomePerspective
 					
 //			IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);		
 			
-//			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio,
-//				IPageLayout.ID_EDITOR_AREA);
+//			layout.addStandaloneView(ToolBarView.ID, false, IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);
 			
 			IFolderLayout mainLayout = layout.createFolder("folderLayoutRight", IPageLayout.BOTTOM, 1 - fRatio,
 				IPageLayout.ID_EDITOR_AREA);
@@ -80,6 +74,6 @@ public class GenomePerspective
 			Application.openRCPViews(mainLayout);
 		}
 
-//		layout.addPlaceholder(LOG_VIEW,IPageLayout.BOTTOM, (float) 0.8, "right");
+//		layout.addPlaceholder(LOG_VIEW, IPageLayout.BOTTOM, (float) 0.8, "right");
 	}
 }

@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 public class SerializedPathwayView 
 	extends ASerializedView {
 	
+	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLPathwayView";
+	
 	/** id of the pathway in caleydo's pathway library, -1 for unknown pathway */
 	private int pathwayID;
 
@@ -54,4 +56,8 @@ public class SerializedPathwayView
 		return viewFrustum;
 	}
 
+	@Override
+	public String getViewGUIID() {
+		return GUI_ID;
+	}
 }

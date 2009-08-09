@@ -1,5 +1,6 @@
 package org.caleydo.rcp;
 
+import org.caleydo.core.serialize.ProjectSaver;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
@@ -41,17 +42,34 @@ public class ApplicationWorkbenchAdvisor
 			return;
 		}
 
-		// Filter preference pages
+		filterPreferencePages();
+		initializeViews();
+	}
+
+	private void filterPreferencePages() {
 		PreferenceManager preferenceManager =
 			this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
 		preferenceManager.remove("org.eclipse.ui.preferencePages.Workbench");
 		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
 		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");
 	}
-
+	
+	/**
+	 * Sets the views init-parameters. In case of a loaded project, the views are
+	 * initialized from their restored serialized-representation.
+	 */
+	private void initializeViews() {
+		if (Application.applicationMode == EApplicationMode.LOAD_PROJECT) {
+			
+		}
+	}
+	
 	@Override
 	public boolean preShutdown() {
 		super.preShutdown();
+
+		ProjectSaver saver = new ProjectSaver();
+		saver.saveRecentProject();
 
 		return true;
 	}

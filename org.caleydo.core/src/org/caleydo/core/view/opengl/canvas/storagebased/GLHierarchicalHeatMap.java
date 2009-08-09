@@ -3627,7 +3627,6 @@ public class GLHierarchicalHeatMap
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView();
 		serializedForm.setViewID(this.getID());
-		serializedForm.setViewGUIID(getViewGUIID());
 		return serializedForm;
 	}
 
