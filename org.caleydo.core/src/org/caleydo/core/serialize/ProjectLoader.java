@@ -75,6 +75,15 @@ public class ProjectLoader {
 			initData.setUseCase(useCase);
 			initData.setVirtualArrayMap(virtualArrayMap);
 			initData.setViews(loadViews.getViews());
+			
+			File geneClusterFile = new File(dirName + ProjectSaver.GENE_TREE_FILE_NAME);
+			if (geneClusterFile.exists()) {
+				useCase.getLoadDataParameters().setGeneTreeFileName(geneClusterFile.getAbsolutePath());
+			}
+			File expClusterFile = new File(dirName + ProjectSaver.EXP_TREE_FILE_NAME);
+			if (expClusterFile.exists()) {
+				useCase.getLoadDataParameters().setGeneTreeFileName(expClusterFile.getAbsolutePath());
+			}
 
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Error while loading project", ex);

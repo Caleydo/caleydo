@@ -1,6 +1,7 @@
 package org.caleydo.core.serialize;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -10,11 +11,14 @@ import javax.xml.bind.Marshaller;
 
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
@@ -41,6 +45,12 @@ public class ProjectSaver {
 
 	/** file name of the view-file in project-folders */
 	public static final String VIEWS_FILE_NAME = "views.xml";
+
+	/** file name of the gene-cluster-file in project-folders */
+	public static final String GENE_TREE_FILE_NAME = "gene_cluster.xml";
+	
+	/** file name of the experiment-cluster-file in project-folders */
+	public static final String EXP_TREE_FILE_NAME = "experiment_cluster.xml";
 	
 	/** 
 	 * Saves the project into a specified zip-archive.
@@ -89,8 +99,6 @@ public class ProjectSaver {
 		
 		try {
 			Marshaller marshaller = projectContext.createMarshaller();
-			File useCaseFile = new File(dirName + USECASE_FILE_NAME);
-			marshaller.marshal(useCase, useCaseFile);
 
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT);
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT_CONTEXT);
@@ -100,8 +108,28 @@ public class ProjectSaver {
 			ViewList storeViews = createStoreViewList();
 			File viewFile = new File(dirName + VIEWS_FILE_NAME);
 			marshaller.marshal(storeViews, viewFile);
+
+			TreePorter treePorter = new TreePorter();
+			Tree<ClusterNode> geneTree = useCase.getSet().getClusteredTreeGenes();
+			if (geneTree != null) {
+				if (treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree) == false) {
+					throw new RuntimeException("Error saving gene-cluster-information");
+				}
+			}
+
+			Tree<ClusterNode> expTree = useCase.getSet().getClusteredTreeExps();
+			if (expTree != null) {
+				if (treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree) == false) {
+					throw new RuntimeException("Error saving exp-cluster-information");
+				}
+			}
+
+			File useCaseFile = new File(dirName + USECASE_FILE_NAME);
+			marshaller.marshal(useCase, useCaseFile);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);
+		} catch (IOException ex) {
+			throw new RuntimeException("Error saving project files (file access)", ex);
 		}
 	}
 
