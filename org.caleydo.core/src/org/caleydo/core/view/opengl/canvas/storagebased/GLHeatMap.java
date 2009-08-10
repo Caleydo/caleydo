@@ -31,6 +31,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -129,7 +130,11 @@ public class GLHeatMap
 		bRenderStorageHorizontally = false;
 
 		// Register keyboard listener to GL canvas
-		parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+//		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+//			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+//			}
+//		});
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -515,7 +520,6 @@ public class GLHeatMap
 
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
-	
 		contentSelectionManager.clearSelection(selectionType);
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
 		sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
