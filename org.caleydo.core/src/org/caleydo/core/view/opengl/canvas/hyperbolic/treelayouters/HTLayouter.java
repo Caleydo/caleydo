@@ -37,8 +37,8 @@ public final class HTLayouter
 			return;
 		
 		//TODO: put it into abstract class
-		fCenterX = fViewSpaceXAbs / 2;	//it brings in constructor strange results????
-		fCenterY = fViewSpaceYAbs / 2;
+		setFCenterX(fViewSpaceXAbs / 2);	//it brings in constructor strange results????
+		setFCenterY(fViewSpaceYAbs / 2);
 
 
 		IDrawAbleNode rootNode = tree.getRoot();
@@ -48,15 +48,27 @@ public final class HTLayouter
 		float fDepth = 10.0f;		//tree.getDepth();
 		float fNumberOfNodesInLayer = 5.0f;	//tree.getNumberOfElementsInLayer(layer)
 		float fNodeSize = 0.2f;
-		for (float fCurrentRadius = 1; fCurrentRadius < fDepth; fCurrentRadius++) {
+//		for (float fCurrentRadius = 1; fCurrentRadius < fDepth; fCurrentRadius++) {
+//			
+//			//for testing the tree will add the radius number to the nodes number 
+//			for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer+fCurrentRadius; fCurrentNode++) {
+//				calculateCircle((fCurrentRadius / 3.5f), fCurrentNode, fNumberOfNodesInLayer+fCurrentRadius);
+//				rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
+//			}
+//			fNodeSize = fNodeSize * HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER;//TODO: generate own scaling
+//		}
+		
+		//for (float fCurrentRadius = 1; fCurrentRadius < fDepth; fCurrentRadius++) {
 			
 			//for testing the tree will add the radius number to the nodes number 
-			for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer+fCurrentRadius; fCurrentNode++) {
-				calculateCircle((fCurrentRadius / 3.5f), fCurrentNode, fNumberOfNodesInLayer+fCurrentRadius);
+			for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
+				calculateCircle((0.5f), fCurrentNode, fNumberOfNodesInLayer);
 				rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
+//				TransformationTest test = new TransformationTest(getFCenterX(),getFCenterY(),getFXCoord(),getFYCoord());
+//				test.generateNewView();
 			}
 			fNodeSize = fNodeSize * HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER;//TODO: generate own scaling
-		}
+		//}
 		// for (int k = 1 ; k <= 10; k++)
 		// {
 		// circle(1.0f, k, 10);
@@ -112,6 +124,30 @@ public final class HTLayouter
 	// fNodeSpacing - fNodeSpacing * 0.1f, eDetailLevel);
 	//
 	// }
+
+	public float getFCenterX() {
+		return fCenterX;
+	}
+
+
+
+	public void setFCenterX(float centerX) {
+		fCenterX = centerX;
+	}
+
+
+
+	public float getFCenterY() {
+		return fCenterY;
+	}
+
+
+
+	public void setFCenterY(float centerY) {
+		fCenterY = centerY;
+	}
+
+
 
 	public float getFXCoord() {
 		return fXCoord;
