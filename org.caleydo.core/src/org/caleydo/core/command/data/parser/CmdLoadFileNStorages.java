@@ -107,7 +107,7 @@ public class CmdLoadFileNStorages
 			loader.enableExperimentClusterInfo();
 		loader.setStartParsingStopParsingAtLine(loadDataParameters.getStartParseFileAtLine(), loadDataParameters.getStopParseFileAtLine());
 
-		if (loadDataParameters.getDelimiter() != null && loadDataParameters.getDelimiter().isEmpty()) {
+		if (loadDataParameters.getDelimiter() != null && !loadDataParameters.getDelimiter().isEmpty()) {
 			loader.setTokenSeperator(loadDataParameters.getDelimiter());
 		}
 
@@ -163,6 +163,7 @@ public class CmdLoadFileNStorages
 			}
 		}
 
+		GeneralManager.get().getUseCase().setLoadDataParameters(loadDataParameters);
 		commandManager.runDoCommand(this);
 	}
 
