@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -7,8 +8,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Serialized form of the remote-rendering view (bucket). 
@@ -38,6 +46,48 @@ public class SerializedRemoteRenderingView
 	
 	/** list of view-ids contained in the stack-level */
 	private List<ASerializedView> stackViews;
+
+	/**
+	 * No-Arg Constructor to create a serialized bucket-view with default parameters.
+	 */
+	public SerializedRemoteRenderingView() {
+		setPathwayTexturesEnabled(true);
+		setNeighborhoodEnabled(true);
+		setGeneMappingEnabled(true);
+		setConnectionLinesEnabled(true);
+		
+		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
+
+		IUseCase usecase = GeneralManager.get().getUseCase();
+		if (usecase instanceof GeneticUseCase && !((GeneticUseCase) usecase).isPathwayViewerMode()) {
+
+			// FIXME: This is just a temporary solution to check if glyph view
+			// should be added to bucket.
+			try {
+				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
+				SerializedGlyphView glyph1 = new SerializedGlyphView();
+				remoteViews.add(glyph1);			
+				SerializedGlyphView glyph2 = new SerializedGlyphView();
+				remoteViews.add(glyph2);			
+			}
+			catch (IllegalArgumentException e) {
+				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"Cannot add glyph to bucket! No glyph data loaded!"));
+			}
+
+			SerializedHeatMapView heatMap = new SerializedHeatMapView();
+			remoteViews.add(heatMap);
+			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
+			remoteViews.add(parCoords);			
+		}
+		
+		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
+		if (remoteViews.size() > 0) {
+			focusLevel.add(remoteViews.remove(0));
+		}
+		setFocusViews(focusLevel);
+		setStackViews(remoteViews);
+	}
 	
 	@Override
 	public ECommandType getCreationCommandType() {

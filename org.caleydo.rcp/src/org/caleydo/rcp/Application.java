@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
@@ -412,7 +413,7 @@ public class Application
 		if (useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode()) {
 			// alStartViews.add(EStartViewType.TABULAR);
 			startViews.add(new SerializedParallelCoordinatesView());
-			startViews.add(new SerializedHeatMapView());
+			startViews.add(new SerializedHierarchicalHeatMapView());
 		}
 		
 		// Only show bucket when pathway data is loaded

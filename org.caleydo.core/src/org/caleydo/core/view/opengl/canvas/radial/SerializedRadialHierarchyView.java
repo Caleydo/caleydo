@@ -29,7 +29,21 @@ public class SerializedRadialHierarchyView
 	private boolean isNewSelection;
 	private EPDDrawingStrategyType defaultDrawingStrategyType;
 	
-
+	/**
+	 * No-Arg Constructor to create a serialized radial-view with default parameters.
+	 */
+	public SerializedRadialHierarchyView() {
+		setMaxDisplayedHierarchyDepth(GLRadialHierarchy.DISP_HIER_DEPTH_DEFAULT);
+		setDrawingStateType(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
+		setDefaultDrawingStrategyType(EPDDrawingStrategyType.EXPRESSION_COLOR);
+		setRootElementID(-1);
+		setSelectedElementID(-1);
+		setMouseOverElementID(-1);
+		setRootElementStartAngle(0);
+		setSelectedElementStartAngle(0);
+		setNewSelection(true);
+	}
+	
 	@Override
 	public ECommandType getCreationCommandType() {
 		return ECommandType.CREATE_GL_RADIAL_HIERARCHY;

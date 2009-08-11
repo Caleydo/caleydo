@@ -2,16 +2,10 @@ package org.caleydo.rcp.view.opengl;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLRemoteRenderingView
@@ -41,44 +35,6 @@ public class GLRemoteRenderingView
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView();
-		
-		serializedView.setPathwayTexturesEnabled(true);
-		serializedView.setNeighborhoodEnabled(true);
-		serializedView.setGeneMappingEnabled(true);
-		serializedView.setConnectionLinesEnabled(true);
-		
-		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
-
-		IUseCase usecase = GeneralManager.get().getUseCase();
-		if (usecase instanceof GeneticUseCase && !((GeneticUseCase) usecase).isPathwayViewerMode()) {
-
-			// FIXME: This is just a temporary solution to check if glyph view
-			// should be added to bucket.
-			try {
-				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-				SerializedGlyphView glyph1 = new SerializedGlyphView();
-				remoteViews.add(glyph1);			
-				SerializedGlyphView glyph2 = new SerializedGlyphView();
-				remoteViews.add(glyph2);			
-			}
-			catch (IllegalArgumentException e) {
-				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"Cannot add glyph to bucket! No glyph data loaded!"));
-			}
-
-			SerializedHeatMapView heatMap = new SerializedHeatMapView();
-			remoteViews.add(heatMap);
-			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
-			remoteViews.add(parCoords);			
-		}
-		
-		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
-		if (remoteViews.size() > 0) {
-			focusLevel.add(remoteViews.remove(0));
-		}
-		serializedView.setFocusViews(focusLevel);
-		serializedView.setStackViews(remoteViews);
-		
 		return serializedView;
 	}
 	

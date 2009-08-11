@@ -23,6 +23,7 @@ import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.view.CaleydoViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -153,10 +154,22 @@ public abstract class AGLViewPart
 			try {
 				initSerializedView = (ASerializedView) unmarshaller.unmarshal(xmlInputReader);
 			} catch (JAXBException ex) {
-				ex.printStackTrace();
+				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
-		} else { // init view from default form
+		} else {
 			initSerializedView = createDefaultSerializedView();
+			
+			// check if the view is within the list of stored views
+			ASerializedView storedView = null;
+			for (ASerializedView initView : Application.startViews) {
+				if (initSerializedView.getClass().equals(initView.getClass())) {
+					storedView = initView;
+				}
+			}
+			if (storedView != null) {
+				Application.startViews.remove(storedView);
+				initSerializedView = storedView;
+			}
 		}
 	}
 
