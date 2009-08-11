@@ -44,6 +44,12 @@ public class TreeClusterer
 
 	private EDistanceMeasure eDistanceMeasure;
 
+	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
+
+	// Hash maps needed for determine cluster names. The name of a cluster has to be unique.
+	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
+	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
+
 	public TreeClusterer(int iNrSamples) {
 		try {
 			this.iNrSamples = iNrSamples;
@@ -189,8 +195,11 @@ public class TreeClusterer
 		return 0;
 	}
 
-	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
-
+	/**
+	 * Helper function providing unique node numbers for knots in the tree.
+	 * 
+	 * @return number of current node
+	 */
 	private int getNodeCounter() {
 		return iNodeCounter++;
 	}
@@ -213,6 +222,15 @@ public class TreeClusterer
 
 	}
 
+	/**
+	 * Function looks for the next closest pair in the distance matrix.
+	 * 
+	 * @param n
+	 *            current size of the similarity matrix
+	 * @param distmatrix
+	 *            the similarity matrix
+	 * @return closest pair
+	 */
 	private ClosestPair find_closest_pair(int n, float[][] distmatrix) {
 
 		ClosestPair pair = new ClosestPair();
@@ -362,7 +380,7 @@ public class TreeClusterer
 
 		determineExpressionValue(eClustererType);
 
-		alIndices = getAl();
+		alIndices = ClusterHelper.getAl(tree);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
@@ -573,7 +591,8 @@ public class TreeClusterer
 
 		determineExpressionValue(eClustererType);
 
-		AlIndexes = getAl();
+		// AlIndexes = getAl();
+		AlIndexes = ClusterHelper.getAl(tree);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
@@ -597,31 +616,6 @@ public class TreeClusterer
 
 		return virtualArray;
 	}
-
-	private ArrayList<Integer> traverse(ArrayList<Integer> indexes, ClusterNode node) {
-
-		if (tree.hasChildren(node) == false) {
-			indexes.add(node.getClusterNr());
-		}
-		else {
-			for (ClusterNode current : tree.getChildren(node)) {
-				traverse(indexes, current);
-			}
-		}
-
-		return indexes;
-	}
-
-	private ArrayList<Integer> getAl() {
-
-		ArrayList<Integer> indexes = new ArrayList<Integer>();
-		traverse(indexes, tree.getRoot());
-
-		return indexes;
-	}
-
-	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
-	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
 
 	/**
 	 * Returns name of the node. Therefore we need an index of the gene/experiment
@@ -678,6 +672,15 @@ public class TreeClusterer
 		return nodeName;
 	}
 
+	/**
+	 * Returns number of the node. Therefore we need an index of the gene/experiment
+	 * 
+	 * @param eClustererType
+	 *            either gene or expression clustering
+	 * @param index
+	 *            index of the current node in the VA
+	 * @return number of the current node
+	 */
 	private int getNodeNr(EClustererType eClustererType, int index) {
 
 		int nodeNr = 0;
@@ -695,6 +698,16 @@ public class TreeClusterer
 		return nodeNr;
 	}
 
+	/**
+	 * Recursive function responsible for mapping tree structure to a tree
+	 * 
+	 * @param node
+	 *            current node
+	 * @param treeStructure
+	 * @param index
+	 *            current index
+	 * @param eClustererType
+	 */
 	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index,
 		EClustererType eClustererType) {
 
@@ -774,8 +787,8 @@ public class TreeClusterer
 
 		this.set = set;
 
-		 virtualArray = pmlcluster(clusterState.getClustererType());
-//		virtualArray = palcluster(clusterState.getClustererType());
+		virtualArray = pmlcluster(clusterState.getClustererType());
+		// virtualArray = palcluster(clusterState.getClustererType());
 
 		return virtualArray;
 	}

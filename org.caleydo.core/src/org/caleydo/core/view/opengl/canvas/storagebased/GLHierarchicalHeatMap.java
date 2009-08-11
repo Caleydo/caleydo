@@ -15,6 +15,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -25,6 +26,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -39,6 +41,9 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.clusterer.ClusterHelper;
+import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -1439,7 +1444,7 @@ public class GLHierarchicalHeatMap
 			}
 			else if (iNrTexturesInUse == 2) {
 
-				float fScalingLastTexture = (float) iLastElementLastTexture / iSamplesPerTexture;
+				float fScalingLastTexture = (float) iLastElementLastTexture / iSamplesLevel2;
 
 				float fRatioFirstTexture =
 					(float) (iAlNumberSamples.get(iFirstTexture) - iFirstElementFirstTexture)
@@ -1496,14 +1501,14 @@ public class GLHierarchicalHeatMap
 			else if (iNrTexturesInUse == 3) {
 
 				float fScalingFirstTexture =
-					(iSamplesPerTexture - iFirstElementFirstTexture + 0.001f) / iSamplesLevel2;
-				float fScalingLastTexture = (iLastElementLastTexture + 0.001f) / iSamplesLevel2;
+					(float) (iSamplesPerTexture - iFirstElementFirstTexture) / iSamplesLevel2;
+				float fScalingLastTexture = (float) iLastElementLastTexture / iSamplesLevel2;
 
 				float fRatioFirstTexture =
-					(iAlNumberSamples.get(iLastTexture) - iFirstElementFirstTexture + 0.001f)
+					(float) (iAlNumberSamples.get(iLastTexture) - iFirstElementFirstTexture)
 						/ iAlNumberSamples.get(iFirstTexture);
 				float fRatioLastTexture =
-					(iLastElementLastTexture + 0.001f) / iAlNumberSamples.get(iLastTexture);
+					(float) iLastElementLastTexture / iAlNumberSamples.get(iLastTexture);
 
 				Texture TexTemp1 = AlTextures.get(iFirstTexture);
 				TexTemp1.enable();
@@ -3634,11 +3639,16 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void handleInterchangeGroups(boolean bGeneGroup) {
 		IVirtualArray va;
+		Tree<ClusterNode> tree = null;
 
-		if (bGeneGroup)
+		if (bGeneGroup) {
 			va = contentVA;
-		else
+			tree = set.getClusteredTreeGenes();
+		}
+		else {
 			va = storageVA;
+			tree = set.getClusteredTreeExps();
+		}
 
 		IGroupList groupList = va.getGroupList();
 
@@ -3653,9 +3663,40 @@ public class GLHierarchicalHeatMap
 			if (iter.getSelectionType() == ESelectionType.SELECTION)
 				selGroups.add(groupList.indexOf(iter));
 		}
+
 		if (selGroups.size() != 2) {
 			System.out.println("Number of selected elements has to be 2!!!");
 			return;
+		}
+
+		// restructure tree
+		if (groupList.get(selGroups.get(0)).getClusterNode() != null) {
+
+			ClusterNode tempParent0 = tree.getParent(groupList.get(selGroups.get(0)).getClusterNode());
+			ClusterNode tempParent1 = tree.getParent(groupList.get(selGroups.get(1)).getClusterNode());
+
+			tree.getGraph().removeEdge(tempParent0, groupList.get(selGroups.get(0)).getClusterNode());
+			tree.getGraph().removeEdge(tempParent1, groupList.get(selGroups.get(1)).getClusterNode());
+			tree.addChild(tempParent0, groupList.get(selGroups.get(1)).getClusterNode());
+			tree.addChild(tempParent1, groupList.get(selGroups.get(0)).getClusterNode());
+
+			ClusterHelper.determineHierarchyDepth(tree);
+			ClusterHelper.determineNrElements(tree);
+
+			generalManager.getEventPublisher().triggerEvent(new UpdateViewEvent());
+
+			ArrayList<Integer> newArraylist = ClusterHelper.getAl(tree);
+
+			IVirtualArray virtualArray = null;
+			if (bGeneGroup) {
+				virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), newArraylist);
+				useCase.replaceVirtualArray(EVAType.CONTENT, virtualArray);
+			}
+			else {
+				virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), newArraylist);
+				useCase.replaceVirtualArray(EVAType.STORAGE, virtualArray);
+			}
+
 		}
 
 		// interchange
@@ -3673,11 +3714,16 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void handleMergeGroups(boolean bGeneGroup) {
 		IVirtualArray va;
+		Tree<ClusterNode> tree = null;
 
-		if (bGeneGroup)
+		if (bGeneGroup) {
 			va = contentVA;
-		else
+			tree = set.getClusteredTreeGenes();
+		}
+		else {
 			va = storageVA;
+			tree = set.getClusteredTreeExps();
+		}
 
 		IGroupList groupList = va.getGroupList();
 
@@ -3691,6 +3737,35 @@ public class GLHierarchicalHeatMap
 		for (Group iter : groupList) {
 			if (iter.getSelectionType() == ESelectionType.SELECTION)
 				selGroups.add(groupList.indexOf(iter));
+		}
+
+		if (selGroups.size() == 2) {
+			// restructure tree
+			if (groupList.get(selGroups.get(0)).getClusterNode() != null) {
+
+				ClusterNode tempParent1 = tree.getParent(groupList.get(selGroups.get(1)).getClusterNode());
+
+				tree.getGraph().removeEdge(tempParent1, groupList.get(selGroups.get(1)).getClusterNode());
+				tree.addChild(groupList.get(selGroups.get(0)).getClusterNode(), groupList.get(
+					selGroups.get(1)).getClusterNode());
+
+				ClusterHelper.determineHierarchyDepth(tree);
+				ClusterHelper.determineNrElements(tree);
+
+				generalManager.getEventPublisher().triggerEvent(new UpdateViewEvent());
+
+				ArrayList<Integer> newArraylist = ClusterHelper.getAl(tree);
+
+				IVirtualArray virtualArray = null;
+				if (bGeneGroup) {
+					virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), newArraylist);
+					useCase.replaceVirtualArray(EVAType.CONTENT, virtualArray);
+				}
+				else {
+					virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), newArraylist);
+					useCase.replaceVirtualArray(EVAType.STORAGE, virtualArray);
+				}
+			}
 		}
 
 		// merge

@@ -69,6 +69,7 @@ public class GLDendrogram
 	private ClusterNode currentRootNode;
 
 	private ArrayList<Integer> iAlCutOffClusters = new ArrayList<Integer>();
+	private ArrayList<ClusterNode> iAlClusterNodes = new ArrayList<ClusterNode>();
 	private GroupList groupList = null;
 
 	/**
@@ -741,6 +742,7 @@ public class GLDendrogram
 		if (tree == null) {
 
 			iAlCutOffClusters.clear();
+			iAlClusterNodes.clear();
 
 			if (bRenderGeneTree == true) {
 				if (set.getClusteredTreeGenes() != null) {
@@ -851,6 +853,7 @@ public class GLDendrogram
 		determineSelectedNodesRec(tree.getRoot());
 
 		iAlCutOffClusters.clear();
+		iAlClusterNodes.clear();
 		getNumberOfClustersRec(tree.getRoot());
 		buildNewGroupList();
 
@@ -898,7 +901,7 @@ public class GLDendrogram
 		}
 
 		for (Integer iter : iAlCutOffClusters) {
-			Group temp = new Group(iter, false, currentVA.get(iExample), ESelectionType.NORMAL);
+			Group temp = new Group(iter, false, currentVA.get(iExample), ESelectionType.NORMAL, iAlClusterNodes.get(cnt));
 			groupList.append(temp);
 			cnt++;
 			iExample += iter;
@@ -928,6 +931,7 @@ public class GLDendrogram
 					if (current.getSelectionType() == ESelectionType.DESELECTED) {
 						// System.out.println("nr elements: " + current.getNrElements());
 						iAlCutOffClusters.add(current.getNrElements());
+						iAlClusterNodes.add(current);
 					}
 					else
 						getNumberOfClustersRec(current);
@@ -1130,6 +1134,7 @@ public class GLDendrogram
 		fPosCut = 0;
 		iMaxDepth = Integer.MAX_VALUE;
 		iAlCutOffClusters.clear();
+		iAlClusterNodes.clear();
 		buildNewGroupList();
 		resetAllTreeSelections();
 		tree = null;
@@ -1311,6 +1316,8 @@ public class GLDendrogram
 	@Override
 	public void handleUpdateView() {
 		tree = null;
+		fPosCut = 0f;
+		resetAllTreeSelections();
 		bRedrawDendrogram = true;
 		setDisplayListDirty();
 	}

@@ -69,6 +69,33 @@ public class ClusterHelper {
 	}
 
 	/**
+	 * Returns an array list with the indexes of the elements (gene/experiment).
+	 * 
+	 * @return
+	 */
+	public static ArrayList<Integer> getAl(Tree<ClusterNode> tree) {
+
+		ArrayList<Integer> indexes = new ArrayList<Integer>();
+		traverse(tree, indexes, tree.getRoot());
+
+		return indexes;
+	}
+
+	private static ArrayList<Integer> traverse(Tree<ClusterNode> tree, ArrayList<Integer> indexes, ClusterNode node) {
+
+		if (tree.hasChildren(node) == false) {
+			indexes.add(node.getClusterNr());
+		}
+		else {
+			for (ClusterNode current : tree.getChildren(node)) {
+				traverse(tree, indexes, current);
+			}
+		}
+
+		return indexes;
+	}
+
+	/**
 	 * The function is responsible for calculating the hierarchy depth in each node of the tree. To handle
 	 * this an other recursive function which does the whole work is called.
 	 * 

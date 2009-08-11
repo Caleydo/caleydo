@@ -1,12 +1,15 @@
 package org.caleydo.core.data.selection;
 
+import org.caleydo.core.util.clusterer.ClusterNode;
+
 public class Group {
 
 	private int nrElements;
 	private boolean collapsed;
 	private int idxExample;
 	private ESelectionType selectionType;
-
+	private ClusterNode clusterNode;
+	
 	public Group() {
 		
 	}
@@ -23,6 +26,14 @@ public class Group {
 		this.setCollapsed(bCollapsed);
 		this.setIdxExample(iIdxExample);
 		this.setSelectionType(eSelectionType);
+	}
+	
+	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, ESelectionType eSelectionType, ClusterNode clusterNode) {
+		this.setNrElements(iNrElements);
+		this.setCollapsed(bCollapsed);
+		this.setIdxExample(iIdxExample);
+		this.setSelectionType(eSelectionType);
+		this.setClusterNode(clusterNode);
 	}
 
 	public void setNrElements(int iNrElements) {
@@ -59,5 +70,13 @@ public class Group {
 	
 	public void toggleSelectionType(){
 		this.selectionType = (selectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+	}
+
+	public void setClusterNode(ClusterNode clusterNode) {
+		this.clusterNode = clusterNode;
+	}
+
+	public ClusterNode getClusterNode() {
+		return clusterNode;
 	}
 }
