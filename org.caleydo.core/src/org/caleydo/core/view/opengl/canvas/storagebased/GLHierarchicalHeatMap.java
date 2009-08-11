@@ -1042,6 +1042,9 @@ public class GLHierarchicalHeatMap
 				gl.glEnd();
 
 				fHeight -= fHeightSamples * iCnt;
+				// FIXME
+				if (iIdxCluster == contentVA.getGroupList().size() - 1)
+					break;
 				iIdxCluster++;
 				iCounter = 0;
 				iCnt = 0;
@@ -1118,6 +1121,9 @@ public class GLHierarchicalHeatMap
 				gl.glEnd();
 
 				fHeight -= fHeightSamples * iCnt;
+				// FIXME
+				if (iIdxCluster == contentVA.getGroupList().size() - 1)
+					break;
 				iIdxCluster++;
 				iCounter = 0;
 				iCnt = 0;
@@ -1251,6 +1257,8 @@ public class GLHierarchicalHeatMap
 		endpoint2 = new Vec3f(GAP_LEVEL1_2, 0, 0);
 		renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
 
+		gl.glLineWidth(2f);
+
 		gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, fPosCursorFirstElementLevel1, 0);
@@ -1289,40 +1297,41 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void renderSelectedElementsOverviewBar(GL gl) {
-		// float fHeight = viewFrustum.getHeight();
-		// float fBarWidth = 0.1f;
-		//
-		// float fHeightElem = fHeight / contentVA.size();
-		//
-		// for (HeatMapSelection selection : AlSelection) {
-		// if (selection.getSelectionType() == ESelectionType.MOUSE_OVER) {
-		// gl.glColor4fv(MOUSE_OVER_COLOR, 0);
-		// }
-		// else if (selection.getSelectionType() == ESelectionType.SELECTION) {
-		// gl.glColor4fv(SELECTED_COLOR, 0);
-		// }
-		// // else if (selection.getSelectionType() == ESelectionType.DESELECTED) {
-		// // gl.glColor4f(1, 1, 1, 0.5f);
-		// // }
-		// else
-		// continue;
-		//
-		// float fStartElem = 0;
-		//
-		// for (int i = 0; i < selection.getTexture(); i++)
-		// fStartElem += iAlNumberSamples.get(i);
-		//
-		// // elements in overview bar
-		// gl.glBegin(GL.GL_QUADS);
-		// gl.glVertex3f(fBarWidth, fHeight - fHeightElem * fStartElem, 0.001f);
-		// gl.glVertex3f(fBarWidth + 0.1f, fHeight - fHeightElem * fStartElem, 0.001f);
-		// gl.glVertex3f(fBarWidth + 0.1f, fHeight - fHeightElem
-		// * (fStartElem + iAlNumberSamples.get(selection.getTexture())), 0.001f);
-		// gl.glVertex3f(fBarWidth, fHeight - fHeightElem
-		// * (fStartElem + iAlNumberSamples.get(selection.getTexture())), 0.001f);
-		// gl.glEnd();
-		// }
-		// gl.glColor4f(1f, 1f, 0f, 1f);
+		float fHeight = viewFrustum.getHeight();
+		float fBarWidth = 0.1f;
+
+		float fHeightElem = fHeight / iNumberOfElements;
+
+		Set<Integer> setMouseOverElements = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+		Set<Integer> setSelectedElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
+
+		gl.glLineWidth(2f);
+
+		for (Integer mouseOverElement : setMouseOverElements) {
+
+			int index = contentVA.indexOf(mouseOverElement.intValue());
+
+			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
+				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(fBarWidth, fHeight - fHeightElem * index, 0.001f);
+				gl.glVertex3f(fBarWidth + 0.1f, fHeight - fHeightElem * index, 0.001f);
+				gl.glEnd();
+			}
+		}
+
+		for (Integer selectedElement : setSelectedElements) {
+
+			int index = contentVA.indexOf(selectedElement.intValue());
+
+			if ((index >= iFirstSampleLevel1 && index <= iLastSampleLevel1) == false) {
+				gl.glColor4fv(SELECTED_COLOR, 0);
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(fBarWidth, fHeight - fHeightElem * index, 0.001f);
+				gl.glVertex3f(fBarWidth + 0.1f, fHeight - fHeightElem * index, 0.001f);
+				gl.glEnd();
+			}
+		}
 	}
 
 	/**
@@ -1401,8 +1410,10 @@ public class GLHierarchicalHeatMap
 
 			if (iNrTexturesInUse == 1) {
 
-				double dScalingFirstElement = (iFirstElementFirstTexture + 0.001) / iSamplesLevel2;
-				double dScalingLastElement = (iLastElementLastTexture + 0.001) / iSamplesLevel2;
+				float fScalingFirstElement =
+					(float) iFirstElementFirstTexture / iAlNumberSamples.get(iFirstTexture);
+				float fScalingLastElement =
+					(float) iLastElementLastTexture / iAlNumberSamples.get(iFirstTexture);
 
 				// System.out.println("dScalingFirstElement: " + dScalingFirstElement);
 				// System.out.println("dScalingLastElement: " + dScalingLastElement);
@@ -1413,13 +1424,13 @@ public class GLHierarchicalHeatMap
 				TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
 
 				gl.glBegin(GL.GL_QUADS);
-				gl.glTexCoord2d(texCoords1.left(), texCoords1.top() * dScalingLastElement);
+				gl.glTexCoord2d(texCoords1.left(), texCoords1.top() * fScalingLastElement);
 				gl.glVertex3f(0, 0, 0);
-				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom() * dScalingFirstElement);
+				gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom() + fScalingFirstElement);
 				gl.glVertex3f(0, fHeight, 0);
-				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom() * dScalingFirstElement);
+				gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom() + fScalingFirstElement);
 				gl.glVertex3f(fWidth, fHeight, 0);
-				gl.glTexCoord2d(texCoords1.right(), texCoords1.top() * dScalingLastElement);
+				gl.glTexCoord2d(texCoords1.right(), texCoords1.top() * fScalingLastElement);
 				gl.glVertex3f(fWidth, 0, 0);
 				gl.glEnd();
 
@@ -1428,19 +1439,13 @@ public class GLHierarchicalHeatMap
 			}
 			else if (iNrTexturesInUse == 2) {
 
-				// float fScalingFirstTexture =
-				// (iSamplesPerTexture - iFirstElementFirstTexture + 0.001f) / iSamplesLevel2;
-				float fScalingLastTexture = (iLastElementLastTexture + 0.001f) / iSamplesLevel2;
-
-				// float fRatioFirstTexture =
-				// (iSamplesPerTexture - iFirstElementFirstTexture + 0.001f) / iSamplesPerTexture;
-				// float fRatioLastTexture = (iLastElementLastTexture + 0.001f) / iSamplesPerTexture;
+				float fScalingLastTexture = (float) iLastElementLastTexture / iSamplesPerTexture;
 
 				float fRatioFirstTexture =
-					(iSamplesPerTexture - iFirstElementFirstTexture + 0.001f)
+					(float) (iAlNumberSamples.get(iFirstTexture) - iFirstElementFirstTexture)
 						/ iAlNumberSamples.get(iFirstTexture);
 				float fRatioLastTexture =
-					(iLastElementLastTexture + 0.001f) / iAlNumberSamples.get(iLastTexture);
+					(float) iLastElementLastTexture / iAlNumberSamples.get(iLastTexture);
 
 				// System.out.println("dScalingFirstElement: " + dScalingFirstElement);
 				// System.out.println("dScalingLastElement: " + dScalingLastElement);
@@ -1494,12 +1499,8 @@ public class GLHierarchicalHeatMap
 					(iSamplesPerTexture - iFirstElementFirstTexture + 0.001f) / iSamplesLevel2;
 				float fScalingLastTexture = (iLastElementLastTexture + 0.001f) / iSamplesLevel2;
 
-				// float fRatioFirstTexture =
-				// (iSamplesPerTexture - iFirstElementFirstTexture + 0.001f) / iSamplesPerTexture;
-				// float fRatioLastTexture = (iLastElementLastTexture + 0.001f) / iSamplesPerTexture;
-
 				float fRatioFirstTexture =
-					(iSamplesPerTexture - iFirstElementFirstTexture + 0.001f)
+					(iAlNumberSamples.get(iLastTexture) - iFirstElementFirstTexture + 0.001f)
 						/ iAlNumberSamples.get(iFirstTexture);
 				float fRatioLastTexture =
 					(iLastElementLastTexture + 0.001f) / iAlNumberSamples.get(iLastTexture);
@@ -1836,8 +1837,8 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void renderCursorLevel2(final GL gl) {
-//		float fHeight = viewFrustum.getHeight();
-//		float fWidth = viewFrustum.getWidth() / 4.0f;
+		// float fHeight = viewFrustum.getHeight();
+		// float fWidth = viewFrustum.getWidth() / 4.0f;
 
 		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_SIDE);
 		tempTexture.enable();
@@ -2274,7 +2275,7 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel1 == false) {
 			renderOverviewBar(gl);
 			renderMarkerOverviewBar(gl);
-			// renderSelectedElementsOverviewBar(gl);
+			renderSelectedElementsOverviewBar(gl);
 			renderCursorLevel1(gl);
 
 			gl.glTranslatef(GAP_LEVEL2_3, 0, 0);

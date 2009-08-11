@@ -70,7 +70,7 @@ public interface IUseCase {
 	 * @param clusterState
 	 */
 	public void startClustering(ClusterState clusterState);
-	
+
 	/**
 	 * Resets the context VA to it's initial state
 	 */
@@ -78,15 +78,20 @@ public interface IUseCase {
 
 	/**
 	 * Gets the parameters for loading the data-{@link Set} contained in this use case
-	 * @return parameters for loading the data-{@link Set} of this use case 
+	 * 
+	 * @return parameters for loading the data-{@link Set} of this use case
 	 */
-	public LoadDataParameters getLoadDataParameters(); 
+	public LoadDataParameters getLoadDataParameters();
+
+	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray);
 
 	/**
 	 * Sets the parameters for loading the data-{@link Set} contained in this use case
-	 * @param loadDataParameters parameters for loading the data-{@link Set} of this use case 
+	 * 
+	 * @param loadDataParameters
+	 *            parameters for loading the data-{@link Set} of this use case
 	 */
-	public void setLoadDataParameters(LoadDataParameters loadDataParameters); 
+	public void setLoadDataParameters(LoadDataParameters loadDataParameters);
 
 	/** Sets the name of the boots-trap xml-file this useCase was or should be loaded */
 	public String getBootsTrapFileName();

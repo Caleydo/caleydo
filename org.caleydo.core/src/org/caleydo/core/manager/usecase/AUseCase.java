@@ -45,7 +45,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.listener.StartClustering
  */
 @XmlType
 @XmlRootElement
-@XmlSeeAlso({GeneticUseCase.class, ClinicalUseCase.class, UnspecifiedUseCase.class})
+@XmlSeeAlso( { GeneticUseCase.class, ClinicalUseCase.class, UnspecifiedUseCase.class })
 public abstract class AUseCase
 	implements IVirtualArrayUpdateHandler, IUseCase, IListenerOwner {
 
@@ -71,7 +71,7 @@ public abstract class AUseCase
 
 	/** parameters for loading the the data-{@link set} */
 	protected LoadDataParameters loadDataParameters;
-	
+
 	/** bootstrap filename this application was started with */
 	protected String bootsTrapFileName;
 
@@ -81,7 +81,7 @@ public abstract class AUseCase
 	private StartClusteringListener startClusteringListener;
 	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
-	
+
 	public AUseCase() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
@@ -91,7 +91,6 @@ public abstract class AUseCase
 	public EUseCaseMode getUseCaseMode() {
 		return useCaseMode;
 	}
-
 
 	public void setUseCaseMode(EUseCaseMode useCaseMode) {
 		this.useCaseMode = useCaseMode;
@@ -194,19 +193,18 @@ public abstract class AUseCase
 			return;
 		}
 
-	
 		// create VA with empty list
-		int iVAID = set.createVA(EVAType.CONTENT_CONTEXT,  new ArrayList<Integer>());
+		int iVAID = set.createVA(EVAType.CONTENT_CONTEXT, new ArrayList<Integer>());
 		mapVAIDs.put(EVAType.CONTENT_CONTEXT, iVAID);
 
 		iVAID = set.createVA(EVAType.CONTENT_EMBEDDED_HM, new ArrayList<Integer>());
 		mapVAIDs.put(EVAType.CONTENT_EMBEDDED_HM, iVAID);
-		
+
 		iVAID = set.createVA(EVAType.CONTENT_BOOKMARKS, new ArrayList<Integer>());
 		mapVAIDs.put(EVAType.CONTENT_BOOKMARKS, iVAID);
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
-		
+
 		alTempList = new ArrayList<Integer>();
 
 		for (int iCount = 0; iCount < set.size(); iCount++) {
@@ -251,10 +249,6 @@ public abstract class AUseCase
 			set.replaceVA(mapVAIDs.get(EVAType.CONTENT), iAlNewVAs.get(0));
 			set.replaceVA(mapVAIDs.get(EVAType.STORAGE), iAlNewVAs.get(1));
 		}
-		// if (iAlNewVAIDs != null) {
-		// mapVAIDs.put(EVAType.CONTENT, iAlNewVAIDs.get(0));
-		// mapVAIDs.put(EVAType.STORAGE, iAlNewVAIDs.get(1));
-		// }
 
 		// This should be done to avoid problems with group info in HHM
 		set.setGeneClusterInfoFlag(false);
@@ -274,6 +268,7 @@ public abstract class AUseCase
 
 	}
 
+	@Override
 	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
 
 		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
@@ -285,7 +280,7 @@ public abstract class AUseCase
 		set.replaceVA(mapVAIDs.get(vaType), virtualArray);
 		mapVAIDs.put(vaType, virtualArray.getID());
 	}
-	
+
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
 
@@ -361,7 +356,8 @@ public abstract class AUseCase
 	@Override
 	public void resetContextVA() {
 		int iUniqueID = mapVAIDs.get(EVAType.CONTENT_CONTEXT);
-		set.replaceVA(iUniqueID, new VirtualArray(EVAType.CONTENT_CONTEXT, set.depth(), new ArrayList<Integer>()));
+		set.replaceVA(iUniqueID, new VirtualArray(EVAType.CONTENT_CONTEXT, set.depth(),
+			new ArrayList<Integer>()));
 
 	}
 
