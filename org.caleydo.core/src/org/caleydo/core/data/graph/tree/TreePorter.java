@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,14 +46,35 @@ public class TreePorter {
 
 	/**
 	 * Imports a tree with the aid of {@link JAXBContext}.
-	 * 
-	 * @param fileName
-	 *            name of the file where the tree is saved
+	 * @param fileName name of the file where the tree is saved
 	 * @return returns the imported tree
 	 * @throws FileNotFoundException
 	 * @throws JAXBException
 	 */
 	public Tree<ClusterNode> importTree(String fileName) throws FileNotFoundException, JAXBException {
+		FileReader reader = new FileReader(fileName);
+		Tree <ClusterNode> tree = null;
+		try {
+			tree = importTree(reader);
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException ex) {
+					// nothing to do here, assuming reader is already closed
+				}
+			}
+		}
+		return tree;
+	}
+
+	/**
+	 * Imports a tree with the aid of {@link JAXBContext}.
+	 * @param reader Reader to read the tree-XML-document from
+	 * @return the imported tree
+	 * @throws JAXBException in case of a XML-serialization error
+	 */
+	public Tree<ClusterNode> importTree(Reader reader) throws JAXBException {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
 		ClusterNode rootNode = null;
@@ -67,19 +89,9 @@ public class TreePorter {
 		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>();
 		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>();
 
-		try {
-			jaxbContext = JAXBContext.newInstance(TreePorter.class);
-			unmarshaller = jaxbContext.createUnmarshaller();
-			treePorter = (TreePorter) unmarshaller.unmarshal(new FileReader(fileName));
-		}
-		catch (FileNotFoundException e) {
-			// e.printStackTrace()
-			throw new FileNotFoundException();
-		}
-		catch (JAXBException e) {
-			// e.printStackTrace();
-			throw new JAXBException(e.getErrorCode());
-		}
+		jaxbContext = JAXBContext.newInstance(TreePorter.class);
+		unmarshaller = jaxbContext.createUnmarshaller();
+		treePorter = (TreePorter) unmarshaller.unmarshal(reader);
 
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
@@ -101,17 +113,38 @@ public class TreePorter {
 	}
 
 	/**
-	 * Export function uses {@link JAXBContext} to export a given tree into a XML file.
-	 * 
-	 * @param fileName
-	 *            name of the file where the exported tree should be saved
-	 * @param tree
-	 *            the tree wanted to export
-	 * @return returns false in case of error and true otherwise
-	 * @throws JAXBException
-	 * @throws IOException
+	 * Export function uses {@link JAXBContext} to export a given tree into an XML file.
+	 * @param fileName name of the file where the exported tree should be saved
+	 * @param tree the tree wanted to export
+	 * @throws JAXBException in case of a XML-serialization error
+	 * @throws IOException in case of an error while writing to the stream
 	 */
-	public boolean exportTree(String fileName, Tree<ClusterNode> tree) throws JAXBException, IOException {
+	public void exportTree(String fileName, Tree<ClusterNode> tree) throws JAXBException, IOException {
+		FileWriter writer = new FileWriter(fileName);
+		try {
+			exportTree(writer, tree);
+			writer.close();
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException ex) {
+					// nothing to do here, assuming the writer is closed
+				}
+				writer = null;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Export function uses {@link JAXBContext} to export a given tree to a {@link Writer}
+	 * @param writer {@link Writer} to write the serialized tree to.
+	 * @param tree the tree wanted to export
+	 * @throws JAXBException in case of a XML-serialization error
+	 * @throws IOException in case of an error while writing to the stream
+	 */
+	public void exportTree(Writer writer, Tree<ClusterNode> tree) throws JAXBException, IOException {
 
 		Set<DefaultEdge> edgeSet = (Set<DefaultEdge>) tree.graph.edgeSet();
 
@@ -127,19 +160,6 @@ public class TreePorter {
 		JAXBContext jaxbContext = JAXBContext.newInstance(TreePorter.class, DefaultEdge.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();
 
-		Writer w = null;
-		try {
-			w = new FileWriter(fileName);
-			marshaller.marshal(this, w);
-		}
-		finally {
-			try {
-				w.close();
-			}
-			catch (Exception e) {
-				return false;
-			}
-		}
-		return true;
+		marshaller.marshal(this, writer);
 	}
 }

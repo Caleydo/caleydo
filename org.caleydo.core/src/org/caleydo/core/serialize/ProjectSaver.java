@@ -119,27 +119,20 @@ public class ProjectSaver {
 			TreePorter treePorter = new TreePorter();
 			Tree<ClusterNode> geneTree = useCase.getSet().getClusteredTreeGenes();
 			if (geneTree != null) {
-				if (treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree) == false) {
-					throw new RuntimeException("Error saving gene-cluster-information");
-				}
+				treePorter.exportTree(dirName + GENE_TREE_FILE_NAME, geneTree);
 			}
 
 			treePorter = new TreePorter();
-
 			Tree<ClusterNode> expTree = useCase.getSet().getClusteredTreeExps();
 			if (expTree != null) {
-				if (treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree) == false) {
-					throw new RuntimeException("Error saving exp-cluster-information");
-				}
+				treePorter.exportTree(dirName + EXP_TREE_FILE_NAME, expTree);
 			}
 
 			File useCaseFile = new File(dirName + USECASE_FILE_NAME);
 			marshaller.marshal(useCase, useCaseFile);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException("Error saving project files (file access)", ex);
 		}
 	}
