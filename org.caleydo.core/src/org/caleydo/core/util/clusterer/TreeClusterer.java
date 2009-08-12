@@ -7,12 +7,12 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 public class TreeClusterer
@@ -634,11 +634,19 @@ public class TreeClusterer
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				nodeName = GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(contentVA.get(index));
+				nodeName =
+					GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+						EIDType.GENE_SYMBOL, contentVA.get(index));
+				if (nodeName == null || nodeName.equals(""))
+					nodeName = "Unkonwn Gene";
+				// nodeName =
+				// GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(contentVA.get(index));
 
 				nodeName += " | ";
 				nodeName +=
-					GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(contentVA.get(index));// +
+					GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+						EIDType.REFSEQ_MRNA, contentVA.get(index));
+				// GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(contentVA.get(index));// +
 				// 1);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {

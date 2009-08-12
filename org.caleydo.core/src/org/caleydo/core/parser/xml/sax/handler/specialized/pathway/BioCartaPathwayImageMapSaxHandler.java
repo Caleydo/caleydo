@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
@@ -178,16 +178,14 @@ public class BioCartaPathwayImageMapSaxHandler
 		// Convert BioCarta ID to DAVID ID
 		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
-		Set<Integer> iSetDavidID =
-			(Set<Integer>) genomeIdManager.<String, Integer> getMultiID(
-				EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);
+		Set<Integer> iSetDavidID = genomeIdManager.getID(EIDType.BIOCARTA_GENE_ID, EIDType.DAVID, sName);
 
 		if (iSetDavidID == null)
 			return;
 
 		ArrayList<IGraphItem> alVertex =
-			pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX
-				+ sExternalLink, "", iSetDavidID);
+			pathwayItemManager.createVertexGene(sName, "gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink,
+				"", iSetDavidID);
 
 		generalManager.getPathwayItemManager().createVertexRep(currentPathway, alVertex, sName, sShape,
 			sCoords);

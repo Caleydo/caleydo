@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
@@ -74,20 +74,25 @@ public class SetExporter {
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
 				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+					identifier =
+						iDMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, iContentIndex);
 
-					Integer iRefseqMrnaInt =
-						iDMappingManager
-							.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
-					if (iRefseqMrnaInt == null) {
+					if (identifier == null) {
 						continue;
 					}
-
-					identifier =
-						iDMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefseqMrnaInt);
+					// Integer iRefseqMrnaInt =
+					// iDMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT,
+					// iContentIndex);
+					// if (iRefseqMrnaInt == null) {
+					// continue;
+					// }
+					//
+					// identifier =
+					// iDMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.REFSEQ_MRNA, iRefseqMrnaInt);
 				}
 				else {
 					identifier =
-						iDMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex);
+						iDMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, iContentIndex);
 				}
 				out.print(identifier + "\t");
 				for (Integer iStorageIndex : storageVA) {

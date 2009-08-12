@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
@@ -217,7 +217,7 @@ public class GlyphEntry {
 		String value;
 
 		sInfoText.append("ID "
-			+ GeneralManager.get().getIDMappingManager().getID(EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT,
+			+ GeneralManager.get().getIDMappingManager().getID(EIDType.EXPERIMENT_INDEX, EIDType.EXPERIMENT,
 				id_) + seperator);
 
 		for (int iAttributeIndex = 1; iAttributeIndex < gman.getGlyphAttributes().size(); ++iAttributeIndex) {

@@ -585,7 +585,8 @@ public class SelectionManager {
 			// Here we have a problem when
 			for (SelectionDeltaItem item : selectionDelta) {
 				Integer iExternalID =
-					GeneralManager.get().getIDMappingManager().getID(internalToExternalMapping,
+					GeneralManager.get().getIDMappingManager().getID(
+						internalToExternalMapping.getTypeOrigin(), internalToExternalMapping.getTypeTarget(),
 						item.getPrimaryID());
 				if (iExternalID == null || iExternalID == -1) {
 					// GeneralManager.get().getLogger().log(Level.WARNING,
@@ -655,7 +656,9 @@ public class SelectionManager {
 				Integer iSelectionID = -1;
 				if (externalToInternalMapping != null) {
 					iSelectionID =
-						GeneralManager.get().getIDMappingManager().getID(internalToExternalMapping, iElement);
+						GeneralManager.get().getIDMappingManager().getID(
+							internalToExternalMapping.getTypeOrigin(),
+							internalToExternalMapping.getTypeTarget(), iElement);
 					if (iSelectionID == null || iSelectionID == -1) {
 						// GeneralManager.get().getLogger().log(Level.WARNING,
 						// "No external ID for " + iElement);
@@ -702,7 +705,9 @@ public class SelectionManager {
 				Integer iSelectionID = -1;
 				if (externalToInternalMapping != null) {
 					iSelectionID =
-						GeneralManager.get().getIDMappingManager().getID(internalToExternalMapping, iElement);
+						GeneralManager.get().getIDMappingManager().getID(
+							internalToExternalMapping.getTypeOrigin(),
+							internalToExternalMapping.getTypeTarget(), iElement);
 					if (iSelectionID == null || iSelectionID == -1) {
 						// GeneralManager.get().getLogger().log(Level.WARNING,
 						// "No external ID for " + iElement);
@@ -858,11 +863,13 @@ public class SelectionManager {
 			throw new IllegalStateException("Cannot convert ID's in selection manager " + this
 				+ "because no external ID mapping was set");
 		if (externalToInternalMapping.isMultiMap())
-			return GeneralManager.get().getIDMappingManager().getMultiID(externalToInternalMapping,
+			return GeneralManager.get().getIDMappingManager().<Integer, Set<Integer>> getID(
+				externalToInternalMapping.getTypeOrigin(), externalToInternalMapping.getTypeTarget(),
 				iSelectionID);
 
 		Set<Integer> iSetID = new HashSet<Integer>();
-		iSetID.add((Integer) GeneralManager.get().getIDMappingManager().getID(externalToInternalMapping,
+		iSetID.add((Integer) GeneralManager.get().getIDMappingManager().getID(
+			externalToInternalMapping.getTypeOrigin(), externalToInternalMapping.getTypeTarget(),
 			iSelectionID));
 		return iSetID;
 

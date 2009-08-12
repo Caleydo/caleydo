@@ -10,15 +10,17 @@ public class URLGenerator {
 
 		if (!eBrowserQueryType.getMappingType().isMultiMap()) {
 			sURL +=
-				GeneralManager.get().getIDMappingManager()
-					.getID(eBrowserQueryType.getMappingType(), iDavidID);
+				GeneralManager.get().getIDMappingManager().getID(
+					eBrowserQueryType.getMappingType().getTypeOrigin(),
+					eBrowserQueryType.getMappingType().getTypeTarget(), iDavidID);
 		}
 		else {
 			// TODO: only the first is handled in the case of multiple
 			// how should we handle this here?
 			sURL +=
-				(String) ((Set<Object>) GeneralManager.get().getIDMappingManager().getMultiID(
-					eBrowserQueryType.getMappingType(), iDavidID)).toArray()[0];
+				(String) (GeneralManager.get().getIDMappingManager().<Integer, Set<Object>>getID(
+					eBrowserQueryType.getMappingType().getTypeOrigin(),
+					eBrowserQueryType.getMappingType().getTypeTarget(), iDavidID)).toArray()[0];
 		}
 
 		return sURL;

@@ -1118,8 +1118,8 @@ public class GLGlyph
 				if (GeneralManager.get().getIDMappingManager().hasMapping(
 					EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT)) {
 					String id =
-						GeneralManager.get().getIDMappingManager().getID(
-							EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, ge.getID());
+						GeneralManager.get().getIDMappingManager().getID(EIDType.EXPERIMENT_INDEX,
+							EIDType.EXPERIMENT, ge.getID());
 
 					out.print(id);
 				}

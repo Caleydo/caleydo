@@ -3,7 +3,6 @@ package org.caleydo.core.data.selection.delta;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
 
 /**
@@ -40,7 +39,9 @@ public class DeltaConverter {
 			newDelta = (T) new SelectionDelta(targetType, delta.getIDType());
 		}
 		else if (delta instanceof VirtualArrayDelta) {
-			newDelta = (T) new VirtualArrayDelta(((VirtualArrayDelta) delta).getVAType(), targetType, delta.getIDType());
+			newDelta =
+				(T) new VirtualArrayDelta(((VirtualArrayDelta) delta).getVAType(), targetType, delta
+					.getIDType());
 		}
 		else
 			throw new IllegalStateException(
@@ -74,11 +75,12 @@ public class DeltaConverter {
 			for (Object tempItem : delta) {
 				IDeltaItem item = (IDeltaItem) tempItem;
 				Set<Integer> setExpressionIndices =
-					GeneralManager.get().getIDMappingManager().<Integer, Integer> getMultiID(
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, item.getPrimaryID());
+					GeneralManager.get().getIDMappingManager().getID(EIDType.REFSEQ_MRNA_INT,
+						EIDType.EXPRESSION_INDEX, item.getPrimaryID());
 				if (setExpressionIndices == null) {
-//					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-//						"No mapping found for david to expression index"));
+					// GeneralManager.get().getLogger().log(new Status(Status.WARNING,
+					// GeneralManager.PLUGIN_ID,
+					// "No mapping found for david to expression index"));
 					continue;
 				}
 				for (int iExpressionIndex : setExpressionIndices) {

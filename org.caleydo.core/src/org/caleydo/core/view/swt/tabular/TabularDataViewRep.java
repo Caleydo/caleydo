@@ -1,10 +1,10 @@
 package org.caleydo.core.view.swt.tabular;
 
 import java.util.Iterator;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -446,18 +446,24 @@ public class TabularDataViewRep
 
 			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 				String sGeneSymbol = "";
-				int iRefSeqID = 0;
-				iRefSeqID =
-					idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
-
-				// RefSeq ID
-				item.setText(1, (String) idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-					iRefSeqID));
-
-				// Gene Symbol
+				item.setText(1, (String) idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
+					iContentIndex));
+				
 				sGeneSymbol =
-					(String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, idMappingManager.getID(
-						EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
+					(String) idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iContentIndex);
+				
+//				int iRefSeqID = 0;
+//				iRefSeqID =
+//					idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
+//
+//				// RefSeq ID
+//				item.setText(1, (String) idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.REFSEQ_MRNA,
+//					iRefSeqID));
+//
+//				// Gene Symbol
+//				sGeneSymbol =
+//					(String) idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, idMappingManager
+//						.getID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID, iRefSeqID));
 
 				if (sGeneSymbol != null) {
 					item.setText(2, sGeneSymbol);
@@ -468,8 +474,8 @@ public class TabularDataViewRep
 			}
 			else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
 
-				item.setText(1, (String) idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
-					iContentIndex));
+				item.setText(1, (String) idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+					EIDType.UNSPECIFIED, iContentIndex));
 			}
 			else {
 				throw new IllegalStateException("The use case type "
@@ -693,9 +699,9 @@ public class TabularDataViewRep
 			// Resolve multiple spotting on chip and add all to the
 			// selection manager.
 			Integer iRefSeqID =
-				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
-			for (Object iExpressionIndex : idMappingManager.getMultiID(
-				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID)) {
+				idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
+			for (Object iExpressionIndex : idMappingManager.<Integer, Set<Object>> getID(
+				EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, iRefSeqID)) {
 				contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
 			}
 		}
@@ -897,7 +903,7 @@ public class TabularDataViewRep
 			contentVA = useCase.getVA(vaType);
 		else
 			return;
-		
+
 		initData();
 	}
 

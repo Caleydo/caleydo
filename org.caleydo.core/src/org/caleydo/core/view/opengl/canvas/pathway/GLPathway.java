@@ -14,7 +14,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -131,7 +130,7 @@ public class GLPathway
 
 	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected VirtualArrayUpdateListener virtualArrayUpdateListener = null;
-	
+
 	protected ReplaceVirtualArrayListener replaceVirtualArrayListener = null;
 
 	protected RedrawViewListener redrawViewListener = null;
@@ -400,7 +399,7 @@ public class GLPathway
 			}
 
 			Set<Integer> iSetRefSeq =
-				idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+				idMappingManager.getID(EIDType.DAVID, EIDType.REFSEQ_MRNA_INT, iDavidID);
 
 			if (iSetRefSeq == null) {
 				generalManager.getLogger().log(
@@ -412,7 +411,7 @@ public class GLPathway
 			for (Integer iRefSeqID : iSetRefSeq) {
 
 				Set<Integer> iSetExpressionIndex =
-					idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID);
+					idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, iRefSeqID);
 				if (iSetExpressionIndex == null)
 					continue;
 				alExpressionIndex.addAll(iSetExpressionIndex);
@@ -450,15 +449,16 @@ public class GLPathway
 		for (SelectionDeltaItem item : selectionDelta) {
 
 			int iExpressionIndex = item.getPrimaryID();
-			Integer iRefSeqID =
-				idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExpressionIndex);
+			// Integer iRefSeqID =
+			// idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iExpressionIndex);
+			//
+			// if (iRefSeqID == null) {
+			// continue;
+			// // throw new IllegalStateException("Cannot resolve Expression Index to RefSeq ID.");
+			// }
 
-			if (iRefSeqID == null) {
-				continue;
-				// throw new IllegalStateException("Cannot resolve Expression Index to RefSeq ID.");
-			}
-
-			Integer iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+			Integer iDavidID =
+				idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.DAVID, iExpressionIndex);
 
 			if (iDavidID == null) {
 				continue;
@@ -664,11 +664,12 @@ public class GLPathway
 						eSelectionType = ESelectionType.SELECTION;
 
 						if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
-							
-							EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer = 
+
+							EmbeddedPathwayContextMenuItemContainer pathwayContextMenuItemContainer =
 								new EmbeddedPathwayContextMenuItemContainer();
-							pathwayContextMenuItemContainer.setPathway(generalManager.getPathwayManager().searchPathwayByName(
-									tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG));
+							pathwayContextMenuItemContainer.setPathway(generalManager.getPathwayManager()
+								.searchPathwayByName(tmpVertexGraphItemRep.getName(),
+									EPathwayDatabaseType.KEGG));
 							contextMenu.addItemContanier(pathwayContextMenuItemContainer);
 						}
 						else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
@@ -760,13 +761,13 @@ public class GLPathway
 						(PathwayVertexGraphItem) tmpPathwayVertexGraphItem);
 
 				if (iDavidID == -1 || iDavidID == 0) {
-//					generalManager.getLogger().log(
-//						new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Invalid David Gene ID."));
+					// generalManager.getLogger().log(
+					// new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Invalid David Gene ID."));
 					continue;
 				}
 
 				Set<Integer> iSetRefSeq =
-					idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+					idMappingManager.getID(EIDType.DAVID, EIDType.REFSEQ_MRNA_INT, iDavidID);
 
 				if (iSetRefSeq == null) {
 
@@ -903,7 +904,7 @@ public class GLPathway
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
-		
+
 		replaceVirtualArrayListener = new ReplaceVirtualArrayListener();
 		replaceVirtualArrayListener.setHandler(this);
 		eventPublisher.addListener(ReplaceVirtualArrayEvent.class, replaceVirtualArrayListener);
@@ -949,8 +950,7 @@ public class GLPathway
 			eventPublisher.removeListener(selectionCommandListener);
 			selectionCommandListener = null;
 		}
-		
-		
+
 		if (replaceVirtualArrayListener != null) {
 			eventPublisher.removeListener(replaceVirtualArrayListener);
 			replaceVirtualArrayListener = null;
@@ -979,7 +979,7 @@ public class GLPathway
 	@Override
 	public void replaceVirtualArray(EVAType vaType) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

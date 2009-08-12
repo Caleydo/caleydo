@@ -11,6 +11,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -158,8 +159,8 @@ public class GlyphDataLoader {
 			// Extract glyph ID from mapping
 			try {
 				iExperimentID =
-					IdMappingManager.getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, alsStoreString.get(0)
-						.getRaw(i));
+					IdMappingManager.getID(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX, alsStoreString
+						.get(0).getRaw(i));
 			}
 			catch (Exception NullPointerException) {
 				iExperimentID = counter;

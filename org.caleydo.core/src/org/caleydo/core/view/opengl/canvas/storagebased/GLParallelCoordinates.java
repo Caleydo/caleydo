@@ -76,11 +76,11 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
@@ -1065,9 +1065,10 @@ public class GLParallelCoordinates
 
 					case EXPRESSION_INDEX:
 						sAxisLabel =
-							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(axisVA.get(iCount));
+							GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+								EIDType.GENE_SYMBOL, axisVA.get(iCount));
 						if (sAxisLabel == null)
-							sAxisLabel = "Unknown";
+							sAxisLabel = "Unknown Gene";
 						break;
 
 					case EXPERIMENT:

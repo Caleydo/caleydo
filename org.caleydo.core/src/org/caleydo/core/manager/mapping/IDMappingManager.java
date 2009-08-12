@@ -1,18 +1,22 @@
 package org.caleydo.core.manager.mapping;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.collection.MultiHashMap;
-import org.eclipse.core.runtime.Status;
+import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 /**
  * Manages mapping tables.
@@ -23,6 +27,7 @@ import org.eclipse.core.runtime.Status;
 public class IDMappingManager
 	implements IIDMappingManager {
 	protected HashMap<EMappingType, Map<?, ?>> hashType2Mapping;
+	private DefaultDirectedWeightedGraph<EIDType, MappingEdge> mappingGraph;
 
 	private IGeneralManager generalManager = GeneralManager.get();
 
@@ -31,38 +36,29 @@ public class IDMappingManager
 	 */
 	public IDMappingManager() {
 		hashType2Mapping = new HashMap<EMappingType, Map<?, ?>>();
+		mappingGraph = new DefaultDirectedWeightedGraph<EIDType, MappingEdge>(MappingEdge.class);
 	}
 
 	@Override
-	public void createMap(EMappingType type, EMappingDataType dataType) {
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Create lookup table for type=" + type));
+	public <K, V> void createMap(EMappingType mappingType) {
 
-		switch (dataType) {
-			case INT2INT:
-				hashType2Mapping.put(type, new HashMap<Integer, Integer>());
-				break;
-			case INT2STRING:
-				hashType2Mapping.put(type, new HashMap<Integer, String>());
-				break;
-			case STRING2INT:
-				hashType2Mapping.put(type, new HashMap<String, Integer>());
-				break;
-			case STRING2STRING:
-				hashType2Mapping.put(type, new HashMap<String, String>());
-				break;
-			case MULTI_STRING2STRING:
-				hashType2Mapping.put(type, new MultiHashMap<String, String>());
-				break;
-			case MULTI_INT2STRING:
-				hashType2Mapping.put(type, new MultiHashMap<Integer, String>());
-				break;
-			case MULTI_STRING2INT:
-				hashType2Mapping.put(type, new MultiHashMap<String, Integer>());
-				break;
-			case MULTI_INT2INT:
-				hashType2Mapping.put(type, new MultiHashMap<Integer, Integer>());
-				break;
+		EIDType fromIDType = mappingType.getTypeOrigin();
+		EIDType toIDType = mappingType.getTypeTarget();
+
+		if (!mappingGraph.containsVertex(fromIDType))
+			mappingGraph.addVertex(fromIDType);
+		if (!mappingGraph.containsVertex(toIDType))
+			mappingGraph.addVertex(toIDType);
+
+		MappingEdge edge = new MappingEdge(mappingType);
+		mappingGraph.addEdge(fromIDType, toIDType, edge);
+		if (mappingType.isMultiMap()) {
+			hashType2Mapping.put(mappingType, new MultiHashMap<K, V>());
+			mappingGraph.setEdgeWeight(edge, Double.MAX_VALUE);
+		}
+		else {
+			hashType2Mapping.put(mappingType, new HashMap<K, V>());
+			mappingGraph.setEdgeWeight(edge, 1);
 		}
 	}
 
@@ -102,6 +98,15 @@ public class IDMappingManager
 				reverseMap.put(sourceMap.get(key), key);
 			}
 		}
+		
+		MappingEdge edge = new MappingEdge(reverseType);
+		mappingGraph.addEdge(reverseType.getTypeOrigin(), reverseType.getTypeTarget(), edge);
+		if (reverseType.isMultiMap()) {
+			mappingGraph.setEdgeWeight(edge, Double.MAX_VALUE);
+		}
+		else {
+			mappingGraph.setEdgeWeight(edge, 1);
+		}
 	}
 
 	/**
@@ -113,7 +118,7 @@ public class IDMappingManager
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
 		EMappingType destMappingType) {
 		Map codeResolvedMap = null;
-		//int iMappingErrors = 0;
+		// int iMappingErrors = 0;
 
 		EIDType originKeyType = mappingType.getTypeOrigin();
 		EIDType originValueType = mappingType.getTypeTarget();
@@ -125,6 +130,7 @@ public class IDMappingManager
 		if (mappingType != EMappingType.REFSEQ_MRNA_2_DAVID) {
 			// Remove old unresolved map
 			hashType2Mapping.remove(mappingType);
+			mappingGraph.removeEdge(mappingType.getTypeOrigin(), mappingType.getTypeTarget());
 		}
 
 		if (originKeyType == destKeyType) {
@@ -140,7 +146,8 @@ public class IDMappingManager
 
 						for (KeyType key : srcMap.keySet()) {
 							codeResolvedMap.put(key, generalManager.getIDMappingManager().getID(
-								conversionType, srcMap.get(key)));
+								conversionType.getTypeOrigin(), conversionType.getTypeTarget(),
+								srcMap.get(key)));
 						}
 					}
 					else {
@@ -150,7 +157,9 @@ public class IDMappingManager
 
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
-								iID = generalManager.getIDMappingManager().getID(conversionType, sID);
+								iID =
+									generalManager.getIDMappingManager().getID(
+										conversionType.getTypeOrigin(), conversionType.getTypeTarget(), sID);
 
 								if (iID == null || iID == -1) {
 									continue;
@@ -186,7 +195,8 @@ public class IDMappingManager
 
 						for (KeyType key : srcMap.keySet()) {
 							codeResolvedMap.put(key, generalManager.getIDMappingManager().getID(
-								conversionType, srcMap.get(key)));
+								conversionType.getTypeOrigin(), conversionType.getTypeTarget(),
+								srcMap.get(key)));
 						}
 					}
 					else {
@@ -196,7 +206,9 @@ public class IDMappingManager
 
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
-								iID = generalManager.getIDMappingManager().getID(conversionType, sID);
+								iID =
+									generalManager.getIDMappingManager().getID(
+										conversionType.getTypeOrigin(), conversionType.getTypeTarget(), sID);
 
 								if (iID == null || iID == -1) {
 									continue;
@@ -224,8 +236,9 @@ public class IDMappingManager
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
 						for (KeyType key : srcMap.keySet()) {
-							codeResolvedMap.put(generalManager.getIDMappingManager().getID(conversionType,
-								key), srcMap.get(key));
+							codeResolvedMap.put(generalManager.getIDMappingManager().getID(
+								conversionType.getTypeOrigin(), conversionType.getTypeTarget(), key), srcMap
+								.get(key));
 						}
 					}
 					else {
@@ -234,11 +247,14 @@ public class IDMappingManager
 						Integer iResolvedID = 0;
 
 						for (KeyType key : srcMap.keySet()) {
-							iResolvedID = generalManager.getIDMappingManager().getID(conversionType, key);
+							iResolvedID =
+								generalManager.getIDMappingManager().getID(conversionType.getTypeOrigin(),
+									conversionType.getTypeTarget(), key);
 
 							if (iResolvedID == null) {
-//								generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-//									iMappingErrors++ + ": No DAVID mapping for RefSeq " + key));
+								// generalManager.getLogger().log(new Status(Status.WARNING,
+								// GeneralManager.PLUGIN_ID,
+								// iMappingErrors++ + ": No DAVID mapping for RefSeq " + key));
 								continue;
 							}
 
@@ -259,8 +275,9 @@ public class IDMappingManager
 					EMappingType conversionType = EMappingType.valueOf(originKeyType + "_2_" + destKeyType);
 
 					for (KeyType key : srcMap.keySet()) {
-						codeResolvedMap.put(generalManager.getIDMappingManager().getID(conversionType, key),
-							srcMap.get(key));
+						codeResolvedMap.put(generalManager.getIDMappingManager().getID(
+							conversionType.getTypeOrigin(), conversionType.getTypeTarget(), key), srcMap
+							.get(key));
 					}
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING
@@ -280,6 +297,15 @@ public class IDMappingManager
 
 		// Add new code resolved map
 		hashType2Mapping.put(destMappingType, codeResolvedMap);
+		
+		MappingEdge edge = new MappingEdge(destMappingType);
+		mappingGraph.addEdge(destMappingType.getTypeOrigin(), destMappingType.getTypeTarget(), edge);
+		if (destMappingType.isMultiMap()) {
+			mappingGraph.setEdgeWeight(edge, Double.MAX_VALUE);
+		}
+		else {
+			mappingGraph.setEdgeWeight(edge, 1);
+		}
 	}
 
 	@Override
@@ -295,16 +321,58 @@ public class IDMappingManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key) {
-		Map<KeyType, ValueType> tmpMap;
-		tmpMap = (HashMap<KeyType, ValueType>) hashType2Mapping.get(type);
-		return tmpMap.get(key);
-	}
+	public <K, V> V getID(EIDType source, EIDType destination, K sourceID) {
 
-	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key) {
-		MultiHashMap<KeyType, ValueType> tmpMap;
-		tmpMap = (MultiHashMap<KeyType, ValueType>) hashType2Mapping.get(type);
-		return tmpMap.getAll(key);
+		List<MappingEdge> path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
+		Object currentID = sourceID;
+
+		if (path == null)
+			return null;
+
+		Set<Object> keys = null;
+		Collection<Object> values = new ArrayList<Object>();
+
+		for (MappingEdge edge : path) {
+			Map<?, ?> currentMap = hashType2Mapping.get(edge.getMappingType());
+
+			if (keys != null) {
+				for (Object key : keys) {
+					if (edge.getMappingType().isMultiMap()) {
+						Set<Object> temp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(key);
+						if (temp != null)
+							values.addAll(temp);
+					}
+					else {
+						Object value = currentMap.get(key);
+						if (value != null)
+							values.add(value);
+					}
+				}
+				if (values.isEmpty())
+					return null;
+
+				keys = new HashSet<Object>();
+				for (Object value : values) {
+					keys.add(value);
+				}
+				values.clear();
+			}
+			else {
+				if (edge.getMappingType().isMultiMap()) {
+					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
+					if ((keys == null) || (keys.isEmpty()))
+						return null;
+				}
+				else {
+					currentID = currentMap.get(currentID);
+					if (currentID == null)
+						return null;
+				}
+
+			}
+		}
+		if (keys != null)
+			return (V) keys;
+		return (V) currentID;
 	}
 }

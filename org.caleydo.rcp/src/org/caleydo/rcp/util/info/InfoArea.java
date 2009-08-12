@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -228,19 +227,28 @@ public class InfoArea
 							String sContentName = "";
 							if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
-								Integer iRefSeq =
-									idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-										selectionItem.getPrimaryID());
+//								Integer iRefSeq =
+//								idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT,
+//									selectionItem.getPrimaryID());
+//							String sRefSeqID =
+//								idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.REFSEQ_MRNA,
+//									iExpressionIndex);
+//
+//							Integer iDavidID =
+//								idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID, iExpressionIndex);
+//
+//							sContentName =
+//								idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
 
-								String sRefSeqID =
-									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-										iRefSeq);
+							int iExpressionIndex = selectionItem.getPrimaryID();
+							
+							String sRefSeqID =
+								idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
+									iExpressionIndex);
 
-								Integer iDavidID =
-									idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeq);
+							sContentName =
+								idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iExpressionIndex);
 
-								sContentName =
-									idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
 								// FIXME horizontal toolbar style support
 								// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
@@ -253,7 +261,7 @@ public class InfoArea
 							}
 							else {
 								sContentName =
-									idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
+									idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED,
 										selectionItem.getPrimaryID());
 							}
 

@@ -1,6 +1,7 @@
 package org.caleydo.rcp.view.swt;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -13,7 +14,6 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.rcp.Activator;
 import org.eclipse.core.runtime.Status;
 
@@ -48,30 +48,43 @@ public class SearchViewMediator {
 	}
 	
 	public void selectGeneSystemWide(int davidID) {
-		
+
 		// First the current selections need to be cleared
 		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
 		clearSelectionsEvent.setSender(this);
 		eventPublisher.triggerEvent(clearSelectionsEvent);
-		
+
 		// Create new selection with the selected david ID
 		SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 		selectionUpdateEvent.setSender(this);
-		
+
 		ISelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+
+		Set<Integer> setExpIndex =
+			GeneralManager.get().getIDMappingManager()
+				.getID(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
+
+		ArrayList<Integer> alExpressionIndex = null;
 		
-		ArrayList<Integer> alExpressionIndex = GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
-		
-		if (alExpressionIndex == null) {
-			GeneralManager.get().getLogger().log(new Status(Status.WARNING, Activator.PLUGIN_ID,
-				"Cannot load gene in heat map because no gene expression is associated."));
-			return;			
+		if (setExpIndex != null) {
+			alExpressionIndex = new ArrayList<Integer>();
+			alExpressionIndex.addAll(setExpIndex);
 		}
-		
+
+//		ArrayList<Integer> alExpressionIndex =
+//			GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
+
+		if (alExpressionIndex == null) {
+			GeneralManager.get().getLogger().log(
+				new Status(Status.WARNING, Activator.PLUGIN_ID,
+					"Cannot load gene in heat map because no gene expression is associated."));
+			return;
+		}
+
 		for (Integer expressionIndex : alExpressionIndex) {
 			delta.addSelection(expressionIndex, ESelectionType.SELECTION);
 		}
-		
+
 		selectionUpdateEvent.setSelectionDelta((SelectionDelta) delta);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}

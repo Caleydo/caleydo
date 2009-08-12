@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -150,20 +149,19 @@ public class CmdLoadFileLookupTable
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
 
 		EMappingType mappingType = EMappingType.valueOf(sLookupTableType);
-		EMappingDataType dataType;
-		dataType = mappingType.getDataMapppingType();
+
 
 		int iIndex = 0;
 		if (sFileName.equals("generate")) {
 			genomeIdManager
-				.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT, EMappingDataType.INT2STRING);
+				.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
 			Map hashTmp = genomeIdManager.getMapping(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
 			for (Object sRefSeqID : genomeIdManager.getMapping(EMappingType.DAVID_2_REFSEQ_MRNA).values()) {
 				hashTmp.put(sRefSeqID, iIndex++);
 			}
 		}
 		else if (!sFileName.equals("already_loaded")) {
-			loader = new LookupTableLoader(sFileName, mappingType, dataType);
+			loader = new LookupTableLoader(sFileName, mappingType);
 			loader.setTokenSeperator(sLookupTableDelimiter);
 			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
 			loader.loadData();
@@ -182,11 +180,13 @@ public class CmdLoadFileLookupTable
 
 			// Concatenate genome id type target and origin type in swapped
 			// order to determine reverse genome mapping type.
-			EMappingType reverseMappingType =
-				EMappingType.valueOf(mappingType.getTypeTarget().toString() + "_2_"
-					+ mappingType.getTypeOrigin().toString());
-
-			genomeIdManager.createReverseMap(mappingType, reverseMappingType);
+			//if(sCodeResolvingLUTMappingType == null) { //TODO: remove again
+				EMappingType reverseMappingType =
+					EMappingType.valueOf(mappingType.getTypeTarget().toString() + "_2_"
+						+ mappingType.getTypeOrigin().toString());
+	
+				genomeIdManager.createReverseMap(mappingType, reverseMappingType);
+			//}
 		}
 
 		commandManager.runDoCommand(this);

@@ -1,9 +1,8 @@
 package org.caleydo.core.manager;
 
 import java.util.Map;
-import java.util.Set;
 
-import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 
 /**
@@ -14,7 +13,8 @@ import org.caleydo.core.data.mapping.EMappingType;
  * @TODO documentation
  */
 public interface IIDMappingManager {
-	public void createMap(EMappingType type, EMappingDataType dataType);
+
+	public <K, V> void createMap(EMappingType mappingType);
 
 	public <SrcType, DestType> void createReverseMap(EMappingType sourceType, EMappingType reverseType);
 
@@ -26,19 +26,23 @@ public interface IIDMappingManager {
 	public boolean hasMapping(EMappingType type);
 
 	/**
-	 * Returns the mapped ID of type ValueType or null if no such mapping exists.
+	 * Tries to find the mapping from the source IDType to the destination IDType of the specified sourceID
+	 * along a path of IDTypes where mappings exist. If no such path is found, null is returned. If the path
+	 * includes multimappings, a Set of values is returned. Note that there will always be chosen a path that
+	 * does not include multimappings over paths that include multimappings if more than one path exists.
 	 * 
-	 * @param <KeyType>
-	 *            the type of the key used in the mapping
-	 * @param <ValueType>
-	 *            the type of the value used in the mapping
-	 * @param type
-	 *            the mapping type, specifying the actual relationship between key and value
-	 * @param key
-	 *            the key for which the mapping is requested
-	 * @return the value, or null if no such mapping exists
+	 * @param <K>
+	 *            Type of the sourceID
+	 * @param <V>
+	 *            Type of the expected result of the mapping
+	 * @param source
+	 *            IDType of the source data
+	 * @param destination
+	 *            IDType of the destination data
+	 * @param sourceID
+	 *            ID for which the mapping shall be found
+	 * @return If no mapping is found, null, otherwise the corresponding ID, or Set of IDs. 
 	 */
-	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key);
+	public <K, V> V getID(EIDType source, EIDType destination, K sourceID);
 
-	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key);
 }

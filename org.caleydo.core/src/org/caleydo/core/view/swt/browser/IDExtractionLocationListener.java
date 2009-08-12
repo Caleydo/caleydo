@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -54,7 +55,7 @@ public class IDExtractionLocationListener
 			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId.length());
 
 			Integer iDavidId =
-				generalManager.getIDMappingManager().getID(EMappingType.ENTREZ_GENE_ID_2_DAVID,
+				generalManager.getIDMappingManager().getID(EIDType.ENTREZ_GENE_ID, EIDType.DAVID,
 					Integer.valueOf(sExtractedID));
 
 			if (iDavidId == null || iDavidId == -1)

@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
@@ -76,9 +77,12 @@ public class GeneticUseCase
 				&& set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 
 				// Here we get mapping data for all values
-				int iDavidID = GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
+				Integer iDavidID =
+					GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
+						iCount);
+				// GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
-				if (iDavidID == -1) {
+				if (iDavidID == null) {
 					// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
 					// "Cannot resolve gene to DAVID ID!"));
 					continue;

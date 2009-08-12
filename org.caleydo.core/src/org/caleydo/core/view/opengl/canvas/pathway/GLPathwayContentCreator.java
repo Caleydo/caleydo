@@ -17,6 +17,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -431,8 +432,8 @@ public class GLPathwayContentCreator {
 		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0) {
 			generalManager.getLogger().log(
 				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"Cannot create pathway vertex. Pathway node representation " + vertexRep.getName()
-					+ " has not parent in graph!"));
+					"Cannot create pathway vertex. Pathway node representation " + vertexRep.getName()
+						+ " has not parent in graph!"));
 			return;
 		}
 
@@ -792,16 +793,16 @@ public class GLPathwayContentCreator {
 				(PathwayVertexGraphItem) vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0));
 
 		if (iDavidID == -1 || iDavidID == 0) {
-//			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-//				"Invalid David Gene ID."));
+			// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+			// "Invalid David Gene ID."));
 		}
 		else {
 			Set<Integer> iSetRefSeq =
-				idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+				idMappingManager.getID(EIDType.DAVID, EIDType.REFSEQ_MRNA_INT, iDavidID);
 
 			if (iSetRefSeq == null) {
-//				generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-//					"No RefSeq IDs found for David: " + iDavidID));
+				// generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+				// "No RefSeq IDs found for David: " + iDavidID));
 			}
 			else {
 				// Check for multiple mapping
@@ -810,17 +811,17 @@ public class GLPathwayContentCreator {
 
 				for (Object iRefSeqID : iSetRefSeq) {
 
-					if (idMappingManager.getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX,
+					if (idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX,
 						((Integer) iRefSeqID)) == null) {
 						break;
 					}
 
-					for (Object iExpressionIndex : idMappingManager.getMultiID(
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, ((Integer) iRefSeqID))) {
+					for (Object iExpressionIndex : idMappingManager.<Integer, Set<Object>> getID(
+						EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, ((Integer) iRefSeqID))) {
 
-						return colorMapper
-							.getColor(glPathwayView.getSet().get(glPathwayView.iCurrentStorageIndex).getFloat(
-								EDataRepresentation.NORMALIZED, ((Integer) iExpressionIndex).intValue()));
+						return colorMapper.getColor(glPathwayView.getSet().get(
+							glPathwayView.iCurrentStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							((Integer) iExpressionIndex).intValue()));
 					}
 				}
 			}

@@ -10,21 +10,22 @@ package org.caleydo.core.data.collection;
 public enum EStorageType {
 	// Needed by the parser
 	// FIXME: control seqeunces are not a storage type
-	ABORT(false),
-	SKIP(false),
+	ABORT(false, null),
+	SKIP(false, null),
 	// FIXME: neither a control sequence nor a data type
-	GROUP_NUMBER(false),
-	GROUP_REPRESENTATIVE(false),
+	GROUP_NUMBER(false, null),
+	GROUP_REPRESENTATIVE(false, null),
 
-	INT(true),
-	FLOAT(true),
-	STRING(true),
+	INT(true, Integer.class),
+	FLOAT(true, Float.class),
+	STRING(true, String.class),
 	// FIXME??
-	NONE(false);
+	NONE(false, null);
 
 	private boolean bIsControlSequence;
+	private Class<?> storageClass; 
 
-	private EStorageType(final boolean bIsControlSequence) {
+	private <T> EStorageType(final boolean bIsControlSequence, Class<T> storageClass) {
 
 		this.bIsControlSequence = bIsControlSequence;
 	}

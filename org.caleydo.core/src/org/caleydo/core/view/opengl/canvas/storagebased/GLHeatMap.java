@@ -19,7 +19,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.IVirtualArray;
@@ -36,7 +35,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -710,9 +708,14 @@ public class GLHeatMap
 					String refSeq = null;
 
 					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-						sContent =
-							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(iContentIndex);
-						refSeq = GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+//						sContent =
+//							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(iContentIndex);
+						sContent = idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iContentIndex);
+						if (sContent == null || sContent.equals(""))
+							sContent = "Unkonwn Gene";
+						
+						refSeq = idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, iContentIndex);
+							//GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 
 						if (bRenderRefSeq) {
 							sContent += " | ";
@@ -722,8 +725,8 @@ public class GLHeatMap
 					}
 					else if (set.getSetType() == ESetType.UNSPECIFIED) {
 						sContent =
-							generalManager.getIDMappingManager().getID(
-								EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED, iContentIndex);
+							generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+								EIDType.UNSPECIFIED, iContentIndex);
 					}
 					else {
 						throw new IllegalStateException("Label extraction for " + set.getSetType()

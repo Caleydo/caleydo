@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
@@ -32,11 +32,11 @@ public class KgmlSaxHandler
 
 	private String sAttributeName = "";
 
-//	private HashMap<Integer, IGraphItem> hashKgmlEntryIdToVertexRepId;
-//
-//	private HashMap<String, IGraphItem> hashKgmlNameToVertexRepId;
-//
-//	private HashMap<String, IGraphItem> hashKgmlReactionIdToVertexRepId;
+	// private HashMap<Integer, IGraphItem> hashKgmlEntryIdToVertexRepId;
+	//
+	// private HashMap<String, IGraphItem> hashKgmlNameToVertexRepId;
+	//
+	// private HashMap<String, IGraphItem> hashKgmlReactionIdToVertexRepId;
 
 	private IGraph currentPathway;
 
@@ -44,11 +44,11 @@ public class KgmlSaxHandler
 
 	private ArrayList<IGraphItem> alCurrentVertex;
 
-//	private IGraphItem currentReactionSubstrateEdgeRep;
-//
-//	private IGraphItem currentReactionProductEdgeRep;
-//
-//	private int iCurrentEntryId;
+	// private IGraphItem currentReactionSubstrateEdgeRep;
+	//
+	// private IGraphItem currentReactionProductEdgeRep;
+	//
+	// private int iCurrentEntryId;
 
 	/**
 	 * Constructor.
@@ -56,9 +56,9 @@ public class KgmlSaxHandler
 	public KgmlSaxHandler() {
 		super();
 
-//		hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
-//		hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();
-//		hashKgmlReactionIdToVertexRepId = new HashMap<String, IGraphItem>();
+		// hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
+		// hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();
+		// hashKgmlReactionIdToVertexRepId = new HashMap<String, IGraphItem>();
 
 		pathwayItemManager = generalManager.getPathwayItemManager();
 		pathwayManager = generalManager.getPathwayManager();
@@ -89,18 +89,18 @@ public class KgmlSaxHandler
 			else if (sElementName.equals("graphics")) {
 				handleGraphicsTag();
 			}
-//			else if (sElementName.equals("relation")) {
-//				handleRelationTag();
-//			}
-//			else if (sElementName.equals("reaction")) {
-//				handleReactionTag();
-//			}
-//			else if (sElementName.equals("product")) {
-//				handleReactionProductTag();
-//			}
-//			else if (sElementName.equals("substrate")) {
-//				handleReactionSubstrateTag();
-//			}
+			// else if (sElementName.equals("relation")) {
+			// handleRelationTag();
+			// }
+			// else if (sElementName.equals("reaction")) {
+			// handleReactionTag();
+			// }
+			// else if (sElementName.equals("product")) {
+			// handleReactionProductTag();
+			// }
+			// else if (sElementName.equals("substrate")) {
+			// handleReactionSubstrateTag();
+			// }
 		}
 	}
 
@@ -165,8 +165,9 @@ public class KgmlSaxHandler
 
 		String sPathwayTexturePath =
 			sImageLink.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
-		
-		// FIX inconsistency between XML data which state the pathway images as GIFs - but we have them as PNGs
+
+		// FIX inconsistency between XML data which state the pathway images as GIFs - but we have them as
+		// PNGs
 		sPathwayTexturePath = sPathwayTexturePath.replace(".gif", ".png");
 
 		currentPathway =
@@ -180,7 +181,7 @@ public class KgmlSaxHandler
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
 	 */
 	protected void handleEntryTag() {
-//		int iEntryId = 0;
+		// int iEntryId = 0;
 		String sName = "";
 		String sType = "";
 		String sExternalLink = "";
@@ -194,7 +195,7 @@ public class KgmlSaxHandler
 			}
 
 			if (sAttributeName.equals("id")) {
-//				iEntryId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+				// iEntryId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 			}
 			else if (sAttributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
@@ -210,7 +211,7 @@ public class KgmlSaxHandler
 			}
 		}
 
-//		iCurrentEntryId = iEntryId;
+		// iCurrentEntryId = iEntryId;
 		alCurrentVertex.clear();
 
 		if (sType.equals("gene")) {
@@ -218,7 +219,7 @@ public class KgmlSaxHandler
 			Integer iDavidId = -1;
 			String sTmpVertexName = "";
 			Set<Integer> iSetDavidID = new HashSet<Integer>();
-			
+
 			while (sTokenText.hasMoreTokens()) {
 				sTmpVertexName = sTokenText.nextToken();
 
@@ -227,7 +228,7 @@ public class KgmlSaxHandler
 				}
 
 				iDavidId =
-					generalManager.getIDMappingManager().getID(EMappingType.ENTREZ_GENE_ID_2_DAVID,
+					generalManager.getIDMappingManager().getID(EIDType.ENTREZ_GENE_ID, EIDType.DAVID,
 						Integer.valueOf(sTmpVertexName.substring(4)));
 
 				if (iDavidId == null) {
@@ -239,19 +240,19 @@ public class KgmlSaxHandler
 
 					continue;
 				}
-				
+
 				iSetDavidID.add(iDavidId);
 			}
-		
-			alCurrentVertex.addAll(pathwayItemManager.createVertexGene(sTmpVertexName, sType, sExternalLink, sReactionId,
-				iSetDavidID));
+
+			alCurrentVertex.addAll(pathwayItemManager.createVertexGene(sTmpVertexName, sType, sExternalLink,
+				sReactionId, iSetDavidID));
 		}
 		else {
 			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink, sReactionId);
 
 			if (currentVertex == null)
 				throw new IllegalStateException("New pathway vertex is null");
-			
+
 			alCurrentVertex.add(currentVertex);
 		}
 	}
@@ -301,14 +302,14 @@ public class KgmlSaxHandler
 			// TODO: investigate!
 			return;
 
-//		IGraphItem vertexRep =
-			pathwayItemManager.createVertexRep(currentPathway, alCurrentVertex, sName, sShapeType,
-				shXPosition, shYPosition, shWidth, shHeight);
+		// IGraphItem vertexRep =
+		pathwayItemManager.createVertexRep(currentPathway, alCurrentVertex, sName, sShapeType, shXPosition,
+			shYPosition, shWidth, shHeight);
 
-//		hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
-//		hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getName(), vertexRep);
-//		hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getReactionId(),
-//			vertexRep);
+		// hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
+		// hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getName(), vertexRep);
+		// hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getReactionId(),
+		// vertexRep);
 	}
 
 	/**
@@ -317,45 +318,45 @@ public class KgmlSaxHandler
 	 */
 	protected void handleRelationTag() {
 
-//		int iSourceVertexId = 0;
-//		int iTargetVertexId = 0;
-//		String sType = "";
-//
-//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-//			sAttributeName = attributes.getLocalName(iAttributeIndex);
-//
-//			if ("".equals(sAttributeName)) {
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//
-//			if (sAttributeName.equals("type")) {
-//				sType = attributes.getValue(iAttributeIndex);
-//			}
-//			else if (sAttributeName.equals("entry1")) {
-//				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-//			}
-//			else if (sAttributeName.equals("entry2")) {
-//				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-//			}
-//
-//			// System.out.println("Attribute name: " +sAttributeName);
-//			// System.out.println("Attribute value: "
-//			// +attributes.getValue(iAttributeIndex));
-//		}
-//
-//		IGraphItem graphItemIn = hashKgmlEntryIdToVertexRepId.get(iSourceVertexId);
-//		IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
-//
-//		// Create edge (data)
-//		IGraphItem relationEdge =
-//			pathwayItemManager
-//				.createRelationEdge(((PathwayVertexGraphItemRep) graphItemIn)
-//					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
-//					((PathwayVertexGraphItemRep) graphItemOut)
-//						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
-//
-//		// Create edge representation
-//		pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge, graphItemIn, graphItemOut);
+		// int iSourceVertexId = 0;
+		// int iTargetVertexId = 0;
+		// String sType = "";
+		//
+		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// sAttributeName = attributes.getLocalName(iAttributeIndex);
+		//
+		// if ("".equals(sAttributeName)) {
+		// sAttributeName = attributes.getQName(iAttributeIndex);
+		// }
+		//
+		// if (sAttributeName.equals("type")) {
+		// sType = attributes.getValue(iAttributeIndex);
+		// }
+		// else if (sAttributeName.equals("entry1")) {
+		// iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+		// }
+		// else if (sAttributeName.equals("entry2")) {
+		// iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+		// }
+		//
+		// // System.out.println("Attribute name: " +sAttributeName);
+		// // System.out.println("Attribute value: "
+		// // +attributes.getValue(iAttributeIndex));
+		// }
+		//
+		// IGraphItem graphItemIn = hashKgmlEntryIdToVertexRepId.get(iSourceVertexId);
+		// IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
+		//
+		// // Create edge (data)
+		// IGraphItem relationEdge =
+		// pathwayItemManager
+		// .createRelationEdge(((PathwayVertexGraphItemRep) graphItemIn)
+		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
+		// ((PathwayVertexGraphItemRep) graphItemOut)
+		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
+		//
+		// // Create edge representation
+		// pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge, graphItemIn, graphItemOut);
 
 	}
 
@@ -410,29 +411,29 @@ public class KgmlSaxHandler
 	 */
 	protected void handleReactionTag() {
 
-//		String sReactionName = "";
-//		String sReactionType = "";
-//
-//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-//			sAttributeName = attributes.getLocalName(iAttributeIndex);
-//
-//			if ("".equals(sAttributeName)) {
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//
-//			if (sAttributeName.equals("type")) {
-//				sReactionType = attributes.getValue(iAttributeIndex);
-//			}
-//			else if (sAttributeName.equals("name")) {
-//				sReactionName = attributes.getValue(iAttributeIndex);
-//			}
-//		}
-//
-//		currentReactionSubstrateEdgeRep =
-//			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
-//
-//		currentReactionProductEdgeRep =
-//			pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
+		// String sReactionName = "";
+		// String sReactionType = "";
+		//
+		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// sAttributeName = attributes.getLocalName(iAttributeIndex);
+		//
+		// if ("".equals(sAttributeName)) {
+		// sAttributeName = attributes.getQName(iAttributeIndex);
+		// }
+		//
+		// if (sAttributeName.equals("type")) {
+		// sReactionType = attributes.getValue(iAttributeIndex);
+		// }
+		// else if (sAttributeName.equals("name")) {
+		// sReactionName = attributes.getValue(iAttributeIndex);
+		// }
+		// }
+		//
+		// currentReactionSubstrateEdgeRep =
+		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
+		//
+		// currentReactionProductEdgeRep =
+		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName, sReactionType);
 
 	}
 
@@ -442,52 +443,52 @@ public class KgmlSaxHandler
 	 */
 	protected void handleReactionSubstrateTag() {
 
-//		String sReactionSubstrateName = "";
-//
-//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-//			sAttributeName = attributes.getLocalName(iAttributeIndex);
-//
-//			if ("".equals(sAttributeName)) {
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//
-//			if (sAttributeName.equals("name")) {
-//				sReactionSubstrateName = attributes.getValue(iAttributeIndex);
-//			}
-//		}
-//
-//		IGraphItem graphItemIn = hashKgmlNameToVertexRepId.get(sReactionSubstrateName);
-//
-//		IGraphItem graphItemOut =
-//			hashKgmlReactionIdToVertexRepId
-//				.get(((PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep.getAllItemsByProp(
-//					EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
-//
-//		if (graphItemIn == null || graphItemOut == null)
-//			return;
-//
-//		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
-//
-//		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
-//
-//		IGraphItem tmpReactionEdge =
-//			(PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep.getAllItemsByProp(
-//				EGraphItemProperty.ALIAS_PARENT).get(0);
-//
-//		if (tmpReactionEdge == null)
-//			return;
-//
-//		if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
-//			return;
-//
-//		tmpReactionEdge.addItemDoubleLinked(graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)
-//			.get(0), EGraphItemProperty.INCOMING);
-//
-//		if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
-//			return;
-//
-//		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-//			EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
+		// String sReactionSubstrateName = "";
+		//
+		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// sAttributeName = attributes.getLocalName(iAttributeIndex);
+		//
+		// if ("".equals(sAttributeName)) {
+		// sAttributeName = attributes.getQName(iAttributeIndex);
+		// }
+		//
+		// if (sAttributeName.equals("name")) {
+		// sReactionSubstrateName = attributes.getValue(iAttributeIndex);
+		// }
+		// }
+		//
+		// IGraphItem graphItemIn = hashKgmlNameToVertexRepId.get(sReactionSubstrateName);
+		//
+		// IGraphItem graphItemOut =
+		// hashKgmlReactionIdToVertexRepId
+		// .get(((PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
+		//
+		// if (graphItemIn == null || graphItemOut == null)
+		// return;
+		//
+		// currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
+		//
+		// currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+		//
+		// IGraphItem tmpReactionEdge =
+		// (PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0);
+		//
+		// if (tmpReactionEdge == null)
+		// return;
+		//
+		// if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// return;
+		//
+		// tmpReactionEdge.addItemDoubleLinked(graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)
+		// .get(0), EGraphItemProperty.INCOMING);
+		//
+		// if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// return;
+		//
+		// tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}
 
 	/**
@@ -496,53 +497,53 @@ public class KgmlSaxHandler
 	 */
 	protected void handleReactionProductTag() {
 
-//		String sReactionProductName = "";
-//
-//		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-//			sAttributeName = attributes.getLocalName(iAttributeIndex);
-//
-//			if ("".equals(sAttributeName)) {
-//				sAttributeName = attributes.getQName(iAttributeIndex);
-//			}
-//
-//			if (sAttributeName.equals("name")) {
-//				sReactionProductName = attributes.getValue(iAttributeIndex);
-//			}
-//		}
-//
-//		// Compound
-//		IGraphItem graphItemOut = hashKgmlNameToVertexRepId.get(sReactionProductName);
-//
-//		// Enzyme
-//		IGraphItem graphItemIn =
-//			hashKgmlReactionIdToVertexRepId.get(((PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
-//				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
-//
-//		if (graphItemIn == null || graphItemOut == null)
-//			return;
-//
-//		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
-//
-//		currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
-//
-//		IGraphItem tmpReactionEdge =
-//			(PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep.getAllItemsByProp(
-//				EGraphItemProperty.ALIAS_PARENT).get(0);
-//
-//		if (tmpReactionEdge == null)
-//			return;
-//
-//		if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
-//			return;
-//
-//		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemIn.getAllItemsByProp(
-//			EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
-//
-//		if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
-//			return;
-//
-//		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-//			EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
+		// String sReactionProductName = "";
+		//
+		// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+		// sAttributeName = attributes.getLocalName(iAttributeIndex);
+		//
+		// if ("".equals(sAttributeName)) {
+		// sAttributeName = attributes.getQName(iAttributeIndex);
+		// }
+		//
+		// if (sAttributeName.equals("name")) {
+		// sReactionProductName = attributes.getValue(iAttributeIndex);
+		// }
+		// }
+		//
+		// // Compound
+		// IGraphItem graphItemOut = hashKgmlNameToVertexRepId.get(sReactionProductName);
+		//
+		// // Enzyme
+		// IGraphItem graphItemIn =
+		// hashKgmlReactionIdToVertexRepId.get(((PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
+		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
+		//
+		// if (graphItemIn == null || graphItemOut == null)
+		// return;
+		//
+		// currentReactionProductEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
+		//
+		// currentReactionProductEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+		//
+		// IGraphItem tmpReactionEdge =
+		// (PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0);
+		//
+		// if (tmpReactionEdge == null)
+		// return;
+		//
+		// if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// return;
+		//
+		// tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemIn.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
+		//
+		// if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		// return;
+		//
+		// tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
+		// EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}
 
 	/**
@@ -554,8 +555,8 @@ public class KgmlSaxHandler
 
 		super.destroyHandler();
 
-//		hashKgmlEntryIdToVertexRepId.clear();
-//		hashKgmlNameToVertexRepId.clear();
-//		hashKgmlReactionIdToVertexRepId.clear();
+		// hashKgmlEntryIdToVertexRepId.clear();
+		// hashKgmlNameToVertexRepId.clear();
+		// hashKgmlReactionIdToVertexRepId.clear();
 	}
 }

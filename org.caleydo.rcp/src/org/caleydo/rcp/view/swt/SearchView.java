@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.view.opengl.GLParCoordsView;
 import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
@@ -397,8 +397,8 @@ public class SearchView
 		pathwayTable.getColumn(1).pack();
 	}
 
-	private void searchForGene(final String sSearchQuery) {
-
+private void searchForGene(final String sSearchQuery) {
+		
 		// Flush old pathway results
 		for (TableItem item : geneTable.getItems())
 			item.dispose();
@@ -411,8 +411,8 @@ public class SearchView
 			for (Object sGeneSymbol : idMappingManager.getMapping(EMappingType.GENE_SYMBOL_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(
-						EMappingType.GENE_SYMBOL_2_DAVID, sGeneSymbol));
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.GENE_SYMBOL,
+						EIDType.DAVID, sGeneSymbol));
 			}
 		}
 
@@ -421,8 +421,8 @@ public class SearchView
 				.keySet()) {
 				regexMatcher = pattern.matcher(iEntrezGeneID.toString());
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(
-						EMappingType.ENTREZ_GENE_ID_2_DAVID, iEntrezGeneID));
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.ENTREZ_GENE_ID,
+						EIDType.DAVID, iEntrezGeneID));
 			}
 		}
 
@@ -430,8 +430,8 @@ public class SearchView
 			for (Object sGeneSymbol : idMappingManager.getMapping(EMappingType.REFSEQ_MRNA_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
-					iArDavidGeneResults.add((Integer) idMappingManager.getID(
-						EMappingType.REFSEQ_MRNA_2_DAVID, sGeneSymbol));
+					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.REFSEQ_MRNA,
+						EIDType.DAVID, sGeneSymbol));
 			}
 		}
 
@@ -440,7 +440,7 @@ public class SearchView
 				regexMatcher = pattern.matcher((String) sGeneName);
 				if (regexMatcher.find())
 					iArDavidGeneResults.add((Integer) generalManager.getIDMappingManager().getID(
-						EMappingType.GENE_NAME_2_DAVID, sGeneName));
+						EIDType.GENE_NAME, EIDType.DAVID, sGeneName));
 			}
 		}
 
@@ -455,10 +455,9 @@ public class SearchView
 			String sRefSeqIDs = "";
 
 			try {
-				for (Object iRefSeqID : idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT,
-					iDavidID)) {
-					sRefSeqIDs +=
-						idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID) + " ";
+				for (Object sRefSeqID : idMappingManager.<Integer, Set<Object>> getID(EIDType.DAVID,
+					EIDType.REFSEQ_MRNA, iDavidID)) {
+					sRefSeqIDs += sRefSeqID + " ";
 				}
 			}
 			catch (NullPointerException npe) {
@@ -466,26 +465,28 @@ public class SearchView
 			}
 
 			String sEntrezGeneID = "";
-			Integer iEntrezGeneID = idMappingManager.getID(EMappingType.DAVID_2_ENTREZ_GENE_ID, iDavidID);
+			Integer iEntrezGeneID = idMappingManager.getID(EIDType.DAVID, EIDType.ENTREZ_GENE_ID, iDavidID);
 			if (iEntrezGeneID == null)
 				sEntrezGeneID = "<No Mapping>";
 			else
 				sEntrezGeneID = iEntrezGeneID.toString();
 
-			String sGeneSymbol = idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
+			String sGeneSymbol = idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
 			if (sGeneSymbol == null)
 				sGeneSymbol = "<Unknown>";
 
-			String sGeneName = idMappingManager.getID(EMappingType.DAVID_2_GENE_NAME, iDavidID);
+			String sGeneName = idMappingManager.getID(EIDType.DAVID, EIDType.GENE_NAME, iDavidID);
 			if (sGeneName == null)
 				sGeneName = "<Unknown>";
 
 			// Determine whether the gene has a valid expression value in the current data set
 			String sExpressionValueInCurrentDataSet = "NOT FOUND";
-			ArrayList<Integer> alExpIndex =
-				GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(iDavidID);
+			
+			Set<Integer> setExpIndex =
+				idMappingManager.getID(EIDType.DAVID, EIDType.EXPRESSION_INDEX, iDavidID);
+			//	h.getExpressionIndicesFromDavid(iDavidID);
 
-			if (alExpIndex != null && alExpIndex.size() > 0)
+			if (setExpIndex != null && setExpIndex.size() > 0)
 				sExpressionValueInCurrentDataSet = "FOUND";
 
 			TableItem item = new TableItem(geneTable, SWT.NULL);

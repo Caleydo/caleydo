@@ -1,7 +1,9 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
 import java.util.ArrayList;
+import java.util.Set;
 
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
@@ -31,9 +33,12 @@ public class GeneContextMenuItemContainer
 	}
 
 	public void setStorageIndex(int iStorageIndex) {
-		GeneticIDMappingHelper mappingHelper = GeneticIDMappingHelper.get();
-
-		int davidID = mappingHelper.getDavidIDFromStorageIndex(iStorageIndex);
+		Integer davidID =
+			GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
+				iStorageIndex);
+		if(davidID == null)
+			davidID = -1;
+		// mappingHelper.getDavidIDFromStorageIndex(iStorageIndex);
 		createMenuContent(davidID);
 	}
 
@@ -42,7 +47,11 @@ public class GeneContextMenuItemContainer
 	}
 
 	private void createMenuContent(int davidID) {
-		addHeading(GeneticIDMappingHelper.get().getShortNameFromDavid(davidID));
+		String sGeneSymbol =
+			GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.GENE_SYMBOL, davidID);
+		if (sGeneSymbol == "" || sGeneSymbol == null)
+			sGeneSymbol = "Unkonwn Gene";
+		addHeading(sGeneSymbol);
 
 		LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
 		loadPathwaysByGeneItem.setDavid(davidID);
@@ -52,11 +61,18 @@ public class GeneContextMenuItemContainer
 		showPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(showPathwaysByGeneItem);
 
-		ArrayList<Integer> alStorageIndex =
-			GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
-
-		if (alStorageIndex == null)
+		Set<Integer> setExpIndex =
+			GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
+		
+		if (setExpIndex == null)
 			return;
+		
+		ArrayList<Integer> alStorageIndex = new ArrayList<Integer>();
+		alStorageIndex.addAll(setExpIndex);
+//			GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
+//
+//		if (alStorageIndex == null)
+//			return;
 
 		BookmarkItem addToListItem = new BookmarkItem(alStorageIndex);
 		addContextMenuItem(addToListItem);
