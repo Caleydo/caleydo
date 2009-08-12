@@ -1,13 +1,17 @@
 package org.caleydo.core.view.opengl.canvas.bookmarking;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -16,10 +20,15 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * The list heat map that shows elements on the right of a view that have been selected. It is registered to
@@ -29,21 +38,22 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  * @author Alexander Lex
  */
 public class GLBookmarkManager
-	extends AGLEventListener {
+	extends AGLEventListener
+	implements ISelectionUpdateHandler {
 
-	private enum EBookmarkTypes
-	{
-		GENE
-	}
-	private EnumMap<EBookmarkTypes, ABookmarkContainer> bookmarkItemContainerMap;
-	
 	private ColorMapping colorMapper;
 
 	protected BookmarkRenderStyle renderStyle;
-	private ArrayList<ABookmarkContainer> bookmarkItemContainers;
-	
-	
-	BookmarkListener bookmarkListener;
+
+	/** A hash map that associated the Category with the container */
+	private EnumMap<EIDCategory, ABookmarkContainer> hashCategoryToBookmarkContainer;
+	/** A list of bookmark containers, to preserve the ordering */
+	private ArrayList<ABookmarkContainer> bookmarkContainers;
+
+	private BookmarkListener bookmarkListener;
+	private SelectionUpdateListener selectionUpdateListener;
+
+	private TextRenderer textRenderer;
 
 	/**
 	 * Constructor.
@@ -54,25 +64,31 @@ public class GLBookmarkManager
 	 */
 	public GLBookmarkManager(GLCaleydoCanvas glCanvas, String label, IViewFrustum viewFrustum) {
 		super(glCanvas, label, viewFrustum, false);
-	
+
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
-		bookmarkItemContainers = new ArrayList<ABookmarkContainer>();
-		bookmarkItemContainerMap = new EnumMap<EBookmarkTypes, ABookmarkContainer>(EBookmarkTypes.class);
-		
-		GeneBookmarkContainer geneContainer = new GeneBookmarkContainer();
-		bookmarkItemContainerMap.put(EBookmarkTypes.GENE, geneContainer);
-		bookmarkItemContainers.add(geneContainer);
+		bookmarkContainers = new ArrayList<ABookmarkContainer>();
+		hashCategoryToBookmarkContainer = new EnumMap<EIDCategory, ABookmarkContainer>(EIDCategory.class);
+
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
+
+		GeneBookmarkContainer geneContainer = new GeneBookmarkContainer(textRenderer);
+		hashCategoryToBookmarkContainer.put(EIDCategory.GENE, geneContainer);
+		bookmarkContainers.add(geneContainer);
 
 	}
 
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		
+
 		bookmarkListener = new BookmarkListener();
 		bookmarkListener.setHandler(this);
 		eventPublisher.addListener(BookmarkEvent.class, bookmarkListener);
+
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 	}
 
@@ -80,26 +96,29 @@ public class GLBookmarkManager
 	public void unregisterEventListeners() {
 
 		super.unregisterEventListeners();
-		
-		if(bookmarkListener != null)
-		{
+
+		if (bookmarkListener != null) {
 			eventPublisher.removeListener(bookmarkListener);
 			bookmarkListener = null;
 		}
+
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
 	}
-
-	
-
 
 	@Override
 	public void display(GL gl) {
 
 		processEvents();
 
-		float currentHeight = 0.02f;
-		for (ABookmarkContainer container : bookmarkItemContainers) {
-			container.getDimensions().setOrigins(0.1f, currentHeight);
-			currentHeight += container.getDimensions().getHeight();
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
+		float currentHeight = viewFrustum.getHeight() - BookmarkRenderStyle.TOP_SPACING;
+		for (ABookmarkContainer container : bookmarkContainers) {
+			container.getDimensions().setOrigins(0.0f, currentHeight);
+			currentHeight -= container.getDimensions().getHeight();
 			container.render(gl);
 
 		}
@@ -361,15 +380,14 @@ public class GLBookmarkManager
 		// TODO Auto-generated method stub
 
 	}
-	
-	public <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event)
-	{
-		switch (event.getIDType())
-		{
-			case EXPRESSION_INDEX:
-			case DAVID:
-			case REFSEQ_MRNA_INT:
-				bookmarkItemContainerMap.get(EBookmarkTypes.GENE).handleNewBookmarkEvent(event);
+
+	public <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
+		switch (event.getIDType().getCategory()) {
+			case GENE:
+				hashCategoryToBookmarkContainer.get(EIDCategory.GENE).handleNewBookmarkEvent(event);
+				break;
+			default:
+				throw new IllegalStateException("Can not handle the id type " + event.getIDType() + " at the moment for bookmarks");
 		}
 	}
 
@@ -392,7 +410,6 @@ public class GLBookmarkManager
 
 	}
 
-
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		// TODO Auto-generated method stub
@@ -402,19 +419,28 @@ public class GLBookmarkManager
 	@Override
 	public void broadcastElements(EVAOperation type) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void clearAllSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		// EIDCategory category = ;
+		ABookmarkContainer container =
+			hashCategoryToBookmarkContainer.get(selectionDelta.getIDType().getCategory());
+		if (container != null)
+			container.handleSelectionUpdate(selectionDelta);
 	}
 
 }

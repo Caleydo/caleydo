@@ -2,22 +2,46 @@ package org.caleydo.core.view.opengl.canvas.bookmarking;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
-public class GeneBookmark
+import com.sun.opengl.util.j2d.TextRenderer;
+
+/**
+ * A bookmark for a gene. The id used here is DAVID
+ * 
+ * @author Alexander Lex
+ *
+ */
+class GeneBookmark
 	extends ABookmark {
 
-	Integer id;
-	public GeneBookmark(Integer id) {
-		this.id = id;
+	
+	/**
+	 * Constructor taking a textRenderer
+	 * 
+	 * @param textRenderer
+	 * @param davidID
+	 */
+	public GeneBookmark(TextRenderer textRenderer, Integer davidID) {
+		super(textRenderer);
+		this.id = davidID;
 		dimensions.setHeight(0.1f);
 	}
 
 	@Override
 	public void render(GL gl) {
+		String sContent = GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.GENE_SYMBOL, id);
 		
-		renderCaption(gl, id.toString(), dimensions.getXOrigin(), dimensions.getYOrigin(),
+		
+		renderCaption(gl, sContent, dimensions.getXOrigin(), dimensions.getYOrigin() ,
 			GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		
+		
+//		renderCaption(gl, davidID.toString(), dimensions.getXOrigin(), dimensions.getYOrigin() ,
+//			GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
 

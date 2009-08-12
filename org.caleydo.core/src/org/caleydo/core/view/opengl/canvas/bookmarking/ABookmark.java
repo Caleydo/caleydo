@@ -1,28 +1,42 @@
 package org.caleydo.core.view.opengl.canvas.bookmarking;
 
-import java.awt.Font;
-
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
+/**
+ * Abstract base class for a single bookmark
+ * 
+ * @author Alexander Lex
+ */
 public abstract class ABookmark {
 
 	protected Dimensions dimensions;
+	
+	protected int id;
 
-	protected TextRenderer textRenderer;
+	TextRenderer textRenderer;
 
-	public ABookmark() {
+	/**
+	 * The constructor takes a TextRenderer which is used to render all text 
+	 * @param textRenderer
+	 */
+	public ABookmark(TextRenderer textRenderer) {
+		this.textRenderer = textRenderer;
 		dimensions = new Dimensions();
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 	}
 
 	public abstract void render(GL gl);
 
 	public Dimensions getDimensions() {
 		return dimensions;
+	}
+	
+	public int getID()
+	{
+		return id;
 	}
 
 	protected void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fFontScaling) {
@@ -38,6 +52,5 @@ public abstract class ABookmark {
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
 	}
-
 
 }

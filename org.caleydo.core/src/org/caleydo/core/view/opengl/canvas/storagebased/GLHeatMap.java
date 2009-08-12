@@ -411,15 +411,7 @@ public class GLHeatMap
 			case HEAT_MAP_LINE_SELECTION:
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
-					// case DOUBLE_CLICKED:
-					//
-					// LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
-					// loadPathwaysByGeneEvent.setSender(this);
-					// loadPathwaysByGeneEvent.setGeneID(iExternalID);
-					// loadPathwaysByGeneEvent.setIdType(EIDType.EXPRESSION_INDEX);
-					// eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
-					// // intentionally no break
-
+		
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 						break;
@@ -461,22 +453,7 @@ public class GLHeatMap
 						eSelectionType = ESelectionType.SELECTION;
 						break;
 					case MOUSE_OVER:
-
 						eSelectionType = ESelectionType.MOUSE_OVER;
-
-						// Check if mouse over element is already selected ->
-						// ignore
-						// if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID)) {
-						// storageSelectionManager.clearSelection(eSelectionType);
-
-						// SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
-						// eSelectionType);
-						// sendSelectionCommandEvent(EIDType.EXPERIMENT_INDEX, command);
-
-						// setDisplayListDirty();
-						// return;
-						// }
-
 						break;
 					default:
 						return;

@@ -26,8 +26,8 @@ public class LoadDataDialog
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 		newShell.setText("Open Text Data File");
-		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
-			"resources/icons/general/load_data.png"));
+//		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
+//			"resources/icons/general/load_data.png"));
 	}
 
 	@Override

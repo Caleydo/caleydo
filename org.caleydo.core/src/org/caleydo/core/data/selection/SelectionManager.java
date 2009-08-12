@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -35,22 +35,13 @@ import org.eclipse.core.runtime.Status;
  * Consequently it can also merge external deltas into its own selection.
  * </p>
  * <p>
- * The manager can also produce a {@link SelectionDelta} object which contains different ID types, by mapping
- * them. You therefore have to specify two {@link EMappingType}, one for internal to external and vice versa.
- * </p>
- * <p>
  * The manager can operate on a subset of the possible types in {@link ESelectionType}, by specifying a list
  * of allowed types in the {@link Builder}. When a selection delta is merged into the manager that contains
  * values that are not specified in the list of allowed values, the selections are ignored
  * </p>
  * <p>
  * When using the manager on data that is also managed by a {@link IVirtualArray} set the currently active
- * virtual array so that it can be updated according to external as well as internal selection modifications.
- * The operations where a virtual array is updated are external and internal remove operations and external
- * add operations.
- * </p>
- * <p>
- * Do not forget to update the virtual array once another instance is active
+ * virtual array so that the tow are kept synchronous.
  * </p>
  * 
  * @author Alexander Lex
@@ -58,18 +49,13 @@ import org.eclipse.core.runtime.Status;
  */
 public class SelectionManager {
 
-	// EnumMap<Enum, V>
-	// HashMap<SelectionEnumeration, Integer> hash;
 	private EnumMap<ESelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
 
 	private HashMap<Integer, ArrayList<Integer>> hashConnectionToElementID;
 
 	private ESelectionType eNormalType;
 
-	private EIDType internalIDType;
-	private EIDType externalIDType;
-
-	// private int iNumberOfElements = 0;
+	private EIDType iDType;
 
 	private ArrayList<ESelectionType> alSelectionTypes;
 
@@ -77,57 +63,33 @@ public class SelectionManager {
 
 	private boolean bIsDeltaWritingEnabled = true;
 
-	private EMappingType internalToExternalMapping;
-	private EMappingType externalToInternalMapping;
-
 	private IVirtualArray virtualArray;
 
 	/**
 	 * Static Builder for GenericSelectionManager. Allows to handle various parameter configurations. Call new
-	 * GenericSelectionManager.Builder(EIDType internalIDType).setOneVariabe().setOther().build()
+	 * GenericSelectionManager.Builder(EIDType iDType).setOneVariabe().setOther().build()
 	 * 
 	 * @author Alexander Lex
 	 */
 	public static class Builder {
-		private EMappingType internalToExternalMapping = null;
-		private EMappingType externalToInternalMapping = null;
 		private ArrayList<ESelectionType> alSelectionTypes = null;
 		private ESelectionType normalType = ESelectionType.NORMAL;
-		private EIDType internalIDType = null;
-		private EIDType externalIDType = null;
+		private EIDType iDType = null;
 
 		/**
-		 * Constructor for Builder. Pass the internal ID type, of the type {@link EIDType}. The internal ID
-		 * type is the type of ID the view is working with internally, which can be of a different to a type
-		 * that is used for external communication
+		 * Constructor for Builder. Pass the ID type, of the type {@link EIDType}. The ID type is the type of
+		 * ID the view is working with
 		 * 
-		 * @param internalIDType
-		 *            the internal ID type
+		 * @param iDType
+		 *            the ID type
 		 */
-		public Builder(EIDType internalIDType) {
-			this.internalIDType = internalIDType;
+		public Builder(EIDType iDType) {
+			this.iDType = iDType;
 		}
 
 		/**
-		 * Set the mapping type for the selection manager When (view) internal IDs differ from those that are
-		 * recognized by the rest of the system it is possible to set up a mapping for the creation of the
-		 * SelectionDelta here
-		 * 
-		 * @param iToEMapping
-		 *            internal to external mapping
-		 * @param eToIMapping
-		 *            external to internal mapping
-		 * @return the Builder, call another setter or build() when you're done
-		 */
-		public Builder mappingType(EMappingType iToEMapping, EMappingType eToIMapping) {
-			internalToExternalMapping = iToEMapping;
-			externalToInternalMapping = eToIMapping;
-			return this;
-		}
-
-		/**
-		 * Set a normal type if it should differ from EViewInternalSelectionTypPancreatic cancer
-		 * (KEGG)e.NORMAL, which is the default
+		 * Set a normal type. This is only necessary if it should differ from {@link ESelectionType#NORMAL},
+		 * which is the default
 		 * 
 		 * @param normalType
 		 *            the normal type
@@ -135,18 +97,6 @@ public class SelectionManager {
 		 */
 		public Builder normalType(ESelectionType normalType) {
 			this.normalType = normalType;
-			return this;
-		}
-
-		/**
-		 * Pass the external ID type, of the type {@link EIDType}. The external ID type is the type of ID the
-		 * view is using for external communication
-		 * 
-		 * @param externalIDType
-		 *            the type of the external ID
-		 */
-		public Builder externalIDType(EIDType externalIDType) {
-			this.externalIDType = externalIDType;
 			return this;
 		}
 
@@ -180,14 +130,7 @@ public class SelectionManager {
 	 */
 	private SelectionManager(Builder builder) {
 		this.eNormalType = builder.normalType;
-		this.externalToInternalMapping = builder.externalToInternalMapping;
-		this.internalToExternalMapping = builder.internalToExternalMapping;
-		this.internalIDType = builder.internalIDType;
-		if (builder.externalIDType == null)
-			this.externalIDType = builder.internalIDType;
-		else
-			this.externalIDType = builder.externalIDType;
-
+		this.iDType = builder.iDType;
 		if (builder.alSelectionTypes == null) {
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values()) {
@@ -198,7 +141,7 @@ public class SelectionManager {
 		hashSelectionTypes = new EnumMap<ESelectionType, HashMap<Integer, Integer>>(ESelectionType.class);
 		hashConnectionToElementID = new HashMap<Integer, ArrayList<Integer>>();
 
-		selectionDelta = new SelectionDelta(internalIDType);
+		selectionDelta = new SelectionDelta(iDType);
 
 		for (ESelectionType eType : alSelectionTypes) {
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
@@ -323,7 +266,7 @@ public class SelectionManager {
 			// null here?
 			virtualArray.clear();
 		}
-		selectionDelta = new SelectionDelta(internalIDType);
+		selectionDelta = new SelectionDelta(iDType);
 	}
 
 	/**
@@ -338,7 +281,7 @@ public class SelectionManager {
 			clearSelection(eType);
 		}
 		bIsDeltaWritingEnabled = true;
-		selectionDelta = new SelectionDelta(internalIDType);
+		selectionDelta = new SelectionDelta(iDType);
 	}
 
 	/**
@@ -574,72 +517,13 @@ public class SelectionManager {
 	 * @return the SelectionDelta
 	 */
 	public SelectionDelta getDelta() {
-		SelectionDelta returnDelta;
-		if (internalToExternalMapping == null) {
-			returnDelta = selectionDelta.clone();
-		}
-		else {
+		SelectionDelta returnDelta = selectionDelta;
 
-			returnDelta = new SelectionDelta(externalIDType, internalIDType);
+		selectionDelta = new SelectionDelta(iDType);
 
-			// Here we have a problem when
-			for (SelectionDeltaItem item : selectionDelta) {
-				Integer iExternalID =
-					GeneralManager.get().getIDMappingManager().getID(
-						internalToExternalMapping.getTypeOrigin(), internalToExternalMapping.getTypeTarget(),
-						item.getPrimaryID());
-				if (iExternalID == null || iExternalID == -1) {
-					// GeneralManager.get().getLogger().log(Level.WARNING,
-					// "No external ID for " + item.getPrimaryID());
-					continue;
-				}
-
-				SelectionDeltaItem newItem =
-					returnDelta.addSelection(iExternalID, item.getSelectionType(), item.getPrimaryID());
-				for (Integer iConnectionID : item.getConnectionIDs()) {
-					newItem.addConnectionID(iConnectionID);
-				}
-			}
-		}
-
-		selectionDelta = new SelectionDelta(internalIDType);
-
-		// int iCount = 0;
-		// for (SelectionDeltaItem item : returnDelta)
-		// {
-		// System.out.println("Number: " + iCount++ + " ID: " +
-		// item.getSelectionID()
-		// + " Type: " + item.getSelectionType() + " HashCode: " +
-		// item.hashCode());
-		// }
 		return returnDelta;
 	}
 
-	/**
-	 * Creates a delta, based on the original delta, which contains an addition ADD for every changed element
-	 * which is not removed.
-	 * 
-	 * @return the selection delta with ADD for all not REMOVE types
-	 */
-	// public ISelectionDelta getBroadcastDelta()
-	// {
-	// ISelectionDelta originalDelta = getDelta();
-	// ISelectionDelta newDelta = new SelectionDelta(originalDelta.getIDType());
-	//
-	// for (SelectionDeltaItem item : originalDelta)
-	// {
-	//
-	// if (item.getSelectionType() == ESelectionType.REMOVE)
-	// newDelta.addSelection(item.getSelectionID(), ESelectionType.REMOVE);
-	// else
-	// {
-	// newDelta.addSelection(item.getSelectionID(), ESelectionType.ADD);
-	// newDelta.addSelection(item.getSelectionID(), item.getSelectionType());
-	// }
-	// }
-	//
-	// return newDelta;
-	// }
 	/**
 	 * Provides a selection delta that contains all elements in the view, with the appropriate external and
 	 * internal selection IDs. Clears the selection delta
@@ -648,26 +532,15 @@ public class SelectionManager {
 	 */
 	@Deprecated
 	public SelectionDelta getCompleteDelta() {
-		SelectionDelta tempDelta = new SelectionDelta(externalIDType, internalIDType);
+		SelectionDelta tempDelta = new SelectionDelta(iDType);
 		HashMap<Integer, Integer> tempHash;
 		for (ESelectionType selectionType : alSelectionTypes) {
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet()) {
 				Integer iSelectionID = -1;
-				if (externalToInternalMapping != null) {
-					iSelectionID =
-						GeneralManager.get().getIDMappingManager().getID(
-							internalToExternalMapping.getTypeOrigin(),
-							internalToExternalMapping.getTypeTarget(), iElement);
-					if (iSelectionID == null || iSelectionID == -1) {
-						// GeneralManager.get().getLogger().log(Level.WARNING,
-						// "No external ID for " + iElement);
-						continue;
-					}
-				}
-				else {
-					iSelectionID = iElement;
-				}
+
+				iSelectionID = iElement;
+
 				tempDelta.addSelection(iSelectionID, selectionType, iElement);
 				// connection ids
 				if (isConnectedType(selectionType)) {
@@ -679,7 +552,7 @@ public class SelectionManager {
 			}
 		}
 
-		selectionDelta = new SelectionDelta(internalIDType);
+		selectionDelta = new SelectionDelta(iDType);
 		return tempDelta;
 	}
 
@@ -690,9 +563,9 @@ public class SelectionManager {
 	 * @return the delta containing all elements
 	 */
 	public VirtualArrayDelta getBroadcastVADelta() {
-		EIDType idType = externalIDType;
+		EIDType idType = iDType;
 		if (idType == null) {
-			idType = internalIDType;
+			idType = iDType;
 		}
 		VirtualArrayDelta tempDelta = new VirtualArrayDelta(virtualArray.getVAType(), idType);
 		HashMap<Integer, Integer> tempHash;
@@ -703,20 +576,8 @@ public class SelectionManager {
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet()) {
 				Integer iSelectionID = -1;
-				if (externalToInternalMapping != null) {
-					iSelectionID =
-						GeneralManager.get().getIDMappingManager().getID(
-							internalToExternalMapping.getTypeOrigin(),
-							internalToExternalMapping.getTypeTarget(), iElement);
-					if (iSelectionID == null || iSelectionID == -1) {
-						// GeneralManager.get().getLogger().log(Level.WARNING,
-						// "No external ID for " + iElement);
-						continue;
-					}
-				}
-				else {
-					iSelectionID = iElement;
-				}
+
+				iSelectionID = iElement;
 				tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
 
 			}
@@ -747,57 +608,29 @@ public class SelectionManager {
 	 */
 	public void setDelta(ISelectionDelta selectionDelta) {
 		bIsDeltaWritingEnabled = false;
+		if (selectionDelta.getIDType() != iDType)
+			selectionDelta = DeltaConverter.convertDelta(iDType, selectionDelta);
 		for (SelectionDeltaItem item : selectionDelta) {
 
-			if (selectionDelta.getIDType() == internalIDType) {
-				int iSelectionID = 0;
-				iSelectionID = item.getPrimaryID();
+			// if (selectionDelta.getIDType() == internalIDType) {
+			int iSelectionID = 0;
+			iSelectionID = item.getPrimaryID();
 
-				if (iSelectionID == -1) {
-					GeneralManager.get().getLogger().log(
-						new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
-							+ item.getPrimaryID()));
+			if (iSelectionID == -1) {
+				GeneralManager.get().getLogger().log(
+					new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
+						+ item.getPrimaryID()));
 
-					continue;
-				}
-
-				addToType(item.getSelectionType(), iSelectionID);
-
-				if (isConnectedType(item.getSelectionType())) {
-					for (Integer iConnectionID : item.getConnectionIDs()) {
-						addConnectionID(iConnectionID, iSelectionID);
-					}
-				}
-			}
-			else {
-				// TODO check whether external id type is ok
-
-				Set<Integer> iTmpSetID = convertExternalToInternal(item.getPrimaryID());
-
-				if (iTmpSetID == null) {
-					continue;
-				}
-
-				for (Integer iTmpSelectionID : iTmpSetID) {
-					if (iTmpSelectionID == null || iTmpSelectionID == -1) {
-						GeneralManager.get().getLogger().log(
-							new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "No internal id for "
-								+ item.getPrimaryID()));
-
-						continue;
-					}
-
-					addToType(item.getSelectionType(), iTmpSelectionID);
-
-					if (isConnectedType(item.getSelectionType())) {
-						for (Integer iConnectionID : item.getConnectionIDs()) {
-							addConnectionID(iConnectionID, iTmpSelectionID);
-						}
-					}
-
-				}
+				continue;
 			}
 
+			addToType(item.getSelectionType(), iSelectionID);
+
+			if (isConnectedType(item.getSelectionType())) {
+				for (Integer iConnectionID : item.getConnectionIDs()) {
+					addConnectionID(iConnectionID, iSelectionID);
+				}
+			}
 		}
 
 		bIsDeltaWritingEnabled = true;
@@ -815,7 +648,7 @@ public class SelectionManager {
 	public void setVADelta(IVirtualArrayDelta delta) {
 		if (virtualArray == null)
 			return;
-		if (delta.getIDType() == internalIDType) {
+		if (delta.getIDType() == iDType) {
 
 			for (VADeltaItem item : delta) {
 				// TODO mapping stuff
@@ -837,9 +670,7 @@ public class SelectionManager {
 				}
 			}
 			virtualArray.setDelta(delta);
-
 		}
-
 	}
 
 	private boolean isStorableType(ESelectionType selectionType) {
@@ -856,23 +687,6 @@ public class SelectionManager {
 			return true;
 
 		return false;
-	}
-
-	private Set<Integer> convertExternalToInternal(Integer iSelectionID) {
-		if (externalToInternalMapping == null)
-			throw new IllegalStateException("Cannot convert ID's in selection manager " + this
-				+ "because no external ID mapping was set");
-		if (externalToInternalMapping.isMultiMap())
-			return GeneralManager.get().getIDMappingManager().<Integer, Set<Integer>> getID(
-				externalToInternalMapping.getTypeOrigin(), externalToInternalMapping.getTypeTarget(),
-				iSelectionID);
-
-		Set<Integer> iSetID = new HashSet<Integer>();
-		iSetID.add((Integer) GeneralManager.get().getIDMappingManager().getID(
-			externalToInternalMapping.getTypeOrigin(), externalToInternalMapping.getTypeTarget(),
-			iSelectionID));
-		return iSetID;
-
 	}
 
 	/**
