@@ -11,21 +11,30 @@ import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
- * Message with initialization data sent from the server to the client after
- * a successful handshake. 
- * 
+ * Simple bean that holds the initialization data for new started caleydo application.
+ * Used to store and restore project or to sync remote clients. 
  * @author Werner Puff
  */
 @XmlType
 @XmlRootElement
 public class ApplicationInitData {
 
+	/** defines the type of usage of the application */
 	private AUseCase useCase;
 	
+	/** content of the set file the application is based on, only used to sync remote clients */
 	private byte[] setFileContent;
 	
+	/** gene cluster information, only used to sync remote clients */
+	private String geneClusterTree;
+	
+	/** experiment cluster information, only used to sync remote clients */
+	private String experimentClusterTree;
+	
+	/** virtual arrays of this application stored in relation with their their-key */
 	private HashMap<EVAType, VirtualArray> virtualArrayMap;
 	
+	/** list of views in use, not used to sync remote clients */ 
 	private List<ASerializedView> views;
 	
 	public AUseCase getUseCase() {
@@ -58,6 +67,22 @@ public class ApplicationInitData {
 
 	public void setViews(List<ASerializedView> views) {
 		this.views = views;
+	}
+
+	public String getGeneClusterTree() {
+		return geneClusterTree;
+	}
+
+	public void setGeneClusterTree(String geneClusterTree) {
+		this.geneClusterTree = geneClusterTree;
+	}
+
+	public String getExperimentClusterTree() {
+		return experimentClusterTree;
+	}
+
+	public void setExperimentClusterTree(String experimentClusterTree) {
+		this.experimentClusterTree = experimentClusterTree;
 	}
 
 }

@@ -37,6 +37,7 @@ import org.eclipse.ui.PartInitException;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Werner Puff
  */
 public abstract class AGLViewPart
 	extends CaleydoViewPart {
@@ -161,13 +162,13 @@ public abstract class AGLViewPart
 			
 			// check if the view is within the list of stored views
 			ASerializedView storedView = null;
-			for (ASerializedView initView : Application.startViews) {
+			for (ASerializedView initView : Application.initializedStartViews) {
 				if (initSerializedView.getClass().equals(initView.getClass())) {
 					storedView = initView;
 				}
 			}
 			if (storedView != null) {
-				Application.startViews.remove(storedView);
+				Application.initializedStartViews.remove(storedView);
 				initSerializedView = storedView;
 			}
 		}

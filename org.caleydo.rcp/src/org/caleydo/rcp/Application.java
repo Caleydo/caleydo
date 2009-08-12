@@ -22,19 +22,11 @@ import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
-import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
-import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
-import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
@@ -96,7 +88,11 @@ public class Application
 
 	public static String sCaleydoXMLfile = "";
 
-	public static List<ASerializedView> startViews;
+	/** list of serialized-view class to create during startup */
+	public static List<Class<? extends ASerializedView>> startViews;
+	
+	/** list of initialized {@link ASerializedView} instances */
+	public static List<ASerializedView> initializedStartViews;
 
 	/** initialization data received from a caleydo-server-application during startup */ 
 	public static ApplicationInitData initData = null;
@@ -113,7 +109,7 @@ public class Application
 			bIsWindowsOS = true;
 		}
 
-		startViews = new ArrayList<ASerializedView>();
+		startViews = new ArrayList<Class<? extends ASerializedView>>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
 		parseApplicationArguments(map);
@@ -221,50 +217,22 @@ public class Application
 			for (String element : sArParam) {
 				if (element.equals("webstart")) {
 					bIsWebstart = true;
-				}
-				else if (element.equals("no_pathways")) {
+				} else if (element.equals("no_pathways")) {
 					bLoadPathwayData = false;
 					bOverrulePrefStoreLoadPathwayData = true;
-				}
-				else if (element.equals("load_pathways")) {
+				} else if (element.equals("load_pathways")) {
 					bLoadPathwayData = true;
 					bOverrulePrefStoreLoadPathwayData = true;
-				}
-				else if (element.equals(EStartViewType.PARALLEL_COORDINATES.getCommandLineArgument())) {
-					startViews.add(new SerializedParallelCoordinatesView());
-				}
-				else if (element.equals(EStartViewType.HEATMAP.getCommandLineArgument())) {
-					startViews.add(new SerializedHeatMapView());
-				}
-				else if (element.equals(EStartViewType.GLYPHVIEW.getCommandLineArgument())) {
-					startViews.add(new SerializedGlyphView());
-				}
-				else if (element.equals(EStartViewType.BROWSER.getCommandLineArgument())) {
-					startViews.add(new SerializedHTMLBrowserView());
-				}
-				else if (element.equals(EStartViewType.REMOTE.getCommandLineArgument())) {
-					startViews.add(new SerializedRemoteRenderingView());
-				}
-				else if (element.equals(EStartViewType.TABULAR.getCommandLineArgument())) {
-					startViews.add(new SerializedTabularDataView());
-				}
-				else if (element.equals(EStartViewType.RADIAL_HIERARCHY.getCommandLineArgument())) {
-					startViews.add(new SerializedRadialHierarchyView());
-				}
-				else if (element.equals(EStartViewType.HYPERBOLIC.getCommandLineArgument())) {
-					startViews.add(new SerializedHyperbolicView());
-				}
-				else if (element.equals(EStartViewType.HISTOGRAM.getCommandLineArgument())) {
-					startViews.add(new SerializedHistogramView());
-				}
-				else if (element.equals(EStartViewType.DENDROGRAM_HORIZONTAL.getCommandLineArgument())) {
-					startViews.add(new SerializedDendogramHorizontalView());
-				}
-				else if (element.equals(EStartViewType.DENDROGRAM_VERTICAL.getCommandLineArgument())) {
-					startViews.add(new SerializedDendogramVerticalView());
-				}
-				else {
-					sCaleydoXMLfile = element;
+				} else {
+					EStartViewType viewType = null;
+					try {
+						viewType = EStartViewType.valueOf(element);
+						startViews.add(viewType.getSerializedViewClass());
+					} catch (IllegalArgumentException ex) {
+						// command line parameter was not a related to a view type, so it must be the bootstrap file
+						sCaleydoXMLfile = element;
+					}
+						
 				}
 			}
 		}
@@ -313,10 +281,14 @@ public class Application
 
 		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT) {
 			AUseCase useCase = (AUseCase) initData.getUseCase();
-			SetUtils.saveSetFile(useCase.getLoadDataParameters(), initData.getSetFileContent());
+			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
+			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
+			SetUtils.saveGeneTreeFile(loadDataParameters, initData.getGeneClusterTree());
+			SetUtils.saveExperimentsTreeFile(loadDataParameters, initData.getGeneClusterTree());
+			// TODO remove temporary files (after storage creation or on shutdown)
+			
 			GeneralManager.get().setUseCase(useCase);
 
-			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
 			SetUtils.createData(useCase);
 			
@@ -325,7 +297,6 @@ public class Application
 				useCase.setVirtualArray(entry.getKey(), entry.getValue());
 			}
 			Application.initData = null;
-			// TODO remove temporary set file on shutdown
 		} else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
 			System.out.println("Load Project");
 			AUseCase useCase = (AUseCase) initData.getUseCase();
@@ -365,6 +336,9 @@ public class Application
 			GeneralManager.get().getUseCase().updateSetInViews();
 
 		initializeColorMapping();
+		if (initializedStartViews == null) {
+			initializeDefaultStartViews();
+		}
 
 		// if (GeneralManager.get().isStandalone()) {
 		// // Start OpenGL rendering
@@ -383,11 +357,11 @@ public class Application
 		ColorMappingManager.get().initiFromPreferenceStore(EColorMappingType.GENE_EXPRESSION);
 	}
 
-	public static void openRCPViews(IFolderLayout layout) {
-
-		// Create RCP view manager
-		RCPViewManager.get();
-
+	/**
+	 * parses throw the list of start-views to initialize them by creating
+	 * default serialized representations of them.
+	 */
+	public static void initializeDefaultStartViews() {
 		// Create view list dynamically when not specified via the command line
 		IUseCase usecase = GeneralManager.get().getUseCase();
 		if (startViews.isEmpty()) {
@@ -398,7 +372,26 @@ public class Application
 			}
 		}
 
-		for (ASerializedView startView : startViews) {
+		initializedStartViews = new ArrayList<ASerializedView>();
+		for (Class<? extends ASerializedView> viewType : startViews) {
+			try {
+				initializedStartViews.add(viewType.newInstance());
+			} catch (IllegalAccessException ex) {
+				ex.printStackTrace();
+				// nothing we can do when the views no-arg constructor not public 
+			} catch (InstantiationException ex) {
+				throw new RuntimeException("Error while instantiating a view of type '" + viewType + "'", ex);
+			}
+		}
+		startViews = null;
+	}
+	
+	public static void openRCPViews(IFolderLayout layout) {
+
+		// Create RCP view manager
+		RCPViewManager.get();
+
+		for (ASerializedView startView : initializedStartViews) {
 			layout.addView(startView.getViewGUIID());
 		}
 	}
@@ -408,17 +401,17 @@ public class Application
 	 * @param useCase {@link IUseCase} to determine the correct default start views.
 	 */
 	private static void addDefaultStartViews(IUseCase useCase) {
-		startViews.add(new SerializedHTMLBrowserView());
+		startViews.add(SerializedHTMLBrowserView.class);
 		
 		if (useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode()) {
 			// alStartViews.add(EStartViewType.TABULAR);
-			startViews.add(new SerializedParallelCoordinatesView());
-			startViews.add(new SerializedHierarchicalHeatMapView());
+			startViews.add(SerializedParallelCoordinatesView.class);
+			startViews.add(SerializedHierarchicalHeatMapView.class);
 		}
 		
 		// Only show bucket when pathway data is loaded
 		if (bLoadPathwayData) {
-			startViews.add(new SerializedRemoteRenderingView());
+			startViews.add(SerializedRemoteRenderingView.class);
 		}
 	}
 	
@@ -426,9 +419,9 @@ public class Application
 	 * Filter all views except remote and browser in case of pathway viewer mode
 	 */
 	private static void applyPathwayViewerViewFilter() { 
-		ArrayList<ASerializedView> newStartViews = new ArrayList<ASerializedView>();
-		for (ASerializedView view : startViews) {
-			if (view instanceof SerializedRemoteRenderingView || view instanceof SerializedHTMLBrowserView) {
+		ArrayList<Class <? extends ASerializedView>> newStartViews = new ArrayList<Class <? extends ASerializedView>>();
+		for (Class<? extends ASerializedView> view : startViews) {
+			if (view.equals(SerializedRemoteRenderingView.class) || view.equals(SerializedHTMLBrowserView.class)) {
 				newStartViews.add(view);
 			}
 		}

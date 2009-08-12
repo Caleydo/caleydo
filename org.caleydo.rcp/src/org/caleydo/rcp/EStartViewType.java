@@ -1,48 +1,51 @@
 package org.caleydo.rcp;
 
-import org.caleydo.rcp.view.opengl.GLDendrogramHorizontalView;
-import org.caleydo.rcp.view.opengl.GLDendrogramVerticalView;
-import org.caleydo.rcp.view.opengl.GLGlyphView;
-import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
-import org.caleydo.rcp.view.opengl.GLHistogramView;
-import org.caleydo.rcp.view.opengl.GLHyperbolicView;
-import org.caleydo.rcp.view.opengl.GLParCoordsView;
-import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
-import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
-import org.caleydo.rcp.view.swt.HTMLBrowserView;
-import org.caleydo.rcp.view.swt.TabularDataView;
+import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
+import org.caleydo.core.view.opengl.canvas.histogram.SerializedHistogramView;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
+import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
+import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHorizontalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
+import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
 
 /**
  * Enum for triggering view loading in RCP over the command line.
  * 
  * @author Marc Streit
+ * @author Werner Puff
  */
 public enum EStartViewType {
 
-	GLYPHVIEW("glyphview", GLGlyphView.ID), PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID), HEATMAP(
-		"heatmap", GLHierarchicalHeatMapView.ID), REMOTE("remote", GLRemoteRenderingView.ID), BROWSER("browser",
-		HTMLBrowserView.ID), TABULAR("tabular", TabularDataView.ID), RADIAL_HIERARCHY("radial", GLRadialHierarchyView.ID), 
-		HYPERBOLIC("hyperbolic", GLHyperbolicView.ID), HISTOGRAM("histogram", GLHistogramView.ID), 
-		DENDROGRAM_HORIZONTAL("dendrogram_horizontal", GLDendrogramHorizontalView.ID), DENDROGRAM_VERTICAL("dendrogram_vertical", GLDendrogramVerticalView.ID);;
+	glyphview(SerializedGlyphView.class), 
+	parcoords(SerializedParallelCoordinatesView.class), 
+	heatmap(SerializedHeatMapView.class), 
+	remote(SerializedRemoteRenderingView.class), 
+	browser(SerializedHTMLBrowserView.class), 
+	tabular(SerializedTabularDataView.class), 
+	radial(SerializedRadialHierarchyView.class), 
+	hyperbolic(SerializedHyperbolicView.class), 
+	histogram(SerializedHistogramView.class), 
+	dendrogram_horizontal(SerializedDendogramHorizontalView.class), 
+	dendrogram_vertical(SerializedDendogramVerticalView.class);
 
-	private String sCommandLineArgument;
-	private String sRCPViewID;
+	private Class<? extends ASerializedView> serializedViewClass;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param sTriggerCommand
+	 * @param serializedViewClass class related to the command-line argument 
 	 */
-	private EStartViewType(String sTriggerCommand, String sRCPViewID) {
-		this.sCommandLineArgument = sTriggerCommand;
-		this.sRCPViewID = sRCPViewID;
+	private EStartViewType(Class<? extends ASerializedView> serializedViewClass) {
+		this.serializedViewClass = serializedViewClass;
 	}
 
-	public String getCommandLineArgument() {
-		return sCommandLineArgument;
-	}
 
-	public String getRCPViewID() {
-		return sRCPViewID;
+	public Class<? extends ASerializedView> getSerializedViewClass() {
+		return serializedViewClass;
 	}
 }

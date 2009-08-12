@@ -99,7 +99,7 @@ public class ProjectSaver {
 
 		String setFileName = dirName + SET_DATA_FILE_NAME;
 		File setFile = new File(setFileName);
-		SetUtils.saveSetFile(parameters, data, setFile);
+		SetUtils.saveFile(data, setFile);
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();

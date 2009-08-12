@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
  * Wizard that appears after Caleydo startup.
  * 
  * @author Marc Streit
+ * @author Werner Puff
  */
 public class CaleydoProjectWizard
 	extends Wizard {
@@ -85,7 +86,8 @@ public class CaleydoProjectWizard
 					throw new IllegalArgumentException("encoutnered unknown project-load-type");
 				}
 				useCase = Application.initData.getUseCase();
-				Application.startViews = Application.initData.getViews();
+				Application.startViews.clear();
+				Application.initializedStartViews = Application.initData.getViews();
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
 			} else if (page.getUseCaseMode() == EUseCaseMode.COLLABORATION_CLIENT) {

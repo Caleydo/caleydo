@@ -5,8 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
@@ -18,12 +21,15 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
+import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * Utility class that features loading and saving set-files and set-creation and storage-creation.
@@ -31,9 +37,15 @@ import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
  */
 public class SetUtils {
 
-	/** prefix for temporary set-files */
-	public static final String DATA_FILE_PREFIX = "setfile"; 
+	/** prefix for temporary set-file */
+	public static final String DATA_FILE_PREFIX = "setfile";
 	
+	/** prefix for temporary gene-tree--file */
+	public static final String GENE_FILE_PREFIX = "genetree";
+	
+	/** prefix for temporary experiment-tree-file */
+	public static final String EXPERIMENT_FILE_PREFIX = "exptree";
+
 	/**
 	 * Loads the set-file as specified in the {@link IUseCase}'s {@link LoadDataParameters} and
 	 * stores the raw-data in the useCase
@@ -76,15 +88,15 @@ public class SetUtils {
 		catch (IOException ex) {
 			throw new RuntimeException("Could not create temporary file to store the set file", ex);
 		}
-		saveSetFile(parameters, data, setFile);
+		saveFile(data, setFile);
 	}
 		
 	/**
-	 * Saves the set-data contained in the useCase in the given file.
-	 * The {@link LoadDataParameters} of the useCase are set according to the created set-file  
-	 * @param useCase useCase to get the set-data from 
+	 * Saves the given data in the given file.
+	 * @param data data to save.
+	 * @param target file to store the data.
 	 */
-	public static void saveSetFile(LoadDataParameters parameters, byte[] data, File setFile) {
+	public static void saveFile(byte[] data, File setFile) {
 		FileOutputStream os = null;
 		try {
 			os = new FileOutputStream(setFile);
@@ -238,4 +250,99 @@ public class SetUtils {
 		return true;
 	}
 
+	/**
+	 * Creates the gene-cluster information of the given {@link ISet} as xml-String
+	 * @param set {@link ISet} to create the gene-cluster information of
+	 * @return xml-document representing the gene-cluster information 
+	 */
+	public static String getGeneClusterXml(ISet set) {
+		String xml = null;
+
+		try {
+			xml = getTreeClusterXml(set.getClusteredTreeGenes());
+		} catch (IOException ex) {
+			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("error while creating experiment-cluster-XML", ex);
+		}
+
+		return xml;
+	}
+	
+	/**
+	 * Creates the experiment-cluster information of the given {@link ISet} as XML-String
+	 * @param set {@link ISet} to create the experiment-cluster information of
+	 * @return XML-document representing the experiment-cluster information 
+	 */
+	public static String getExperimentClusterXml(ISet set) {
+		String xml = null;
+
+		try {
+			xml = getTreeClusterXml(set.getClusteredTreeExps());
+		} catch (IOException ex) {
+			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("error while creating experiment-cluster-XML", ex);
+		}
+
+		return xml;
+	}
+
+	/**
+	 * Creates the tree-cluster information of the given {@link Tree} as XML-String
+	 * @param tree {@link Tree} to create the XML-String of
+	 * @return XML-String of the given {@link Tree}
+	 * @throws IOException if a error occurs while writing the XML-String
+	 * @throws JAXBException if a XML-serialization error occurs
+	 */
+	public static String getTreeClusterXml(Tree<ClusterNode> tree) 
+	throws IOException, JAXBException {
+		String xml = null;
+
+		if (tree != null) { 
+			StringWriter writer = new StringWriter();
+			TreePorter treePorter = new TreePorter();
+			treePorter.exportTree(writer, tree);
+			xml = writer.getBuffer().toString();
+		}
+
+		return xml;
+	}
+
+	/**
+	 * Saves the gene-tree-xml in a new created temp-file.
+	 * @param parameters set-load parameters to store the filename;
+	 * @param data set-data to save
+	 */
+	public static void saveGeneTreeFile(LoadDataParameters parameters, String data) {
+		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
+		File geneFile;
+		try {
+			geneFile = File.createTempFile(GENE_FILE_PREFIX, "xml", homeDir);
+			parameters.setGeneTreeFileName(geneFile.getCanonicalPath());
+		}
+		catch (IOException ex) {
+			throw new RuntimeException("Could not create temporary file to store the set file", ex);
+		}
+		saveFile(data.getBytes(), geneFile);
+	}
+
+	/**
+	 * Saves the experiments-tree-xml in a new created temp-file.
+	 * @param parameters set-load parameters to store the filename;
+	 * @param data set-data to save
+	 */
+	public static void saveExperimentsTreeFile(LoadDataParameters parameters, String data) {
+		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
+		File expFile;
+		try {
+			expFile = File.createTempFile(EXPERIMENT_FILE_PREFIX, "xml", homeDir);
+			parameters.setExperimentsFileName(expFile.getCanonicalPath());
+		}
+		catch (IOException ex) {
+			throw new RuntimeException("Could not create temporary file to store the set file", ex);
+		}
+		saveFile(data.getBytes(), expFile);
+	}
+	
 }

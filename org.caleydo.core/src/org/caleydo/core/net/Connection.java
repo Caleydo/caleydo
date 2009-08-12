@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -249,9 +250,12 @@ public class Connection {
 		ApplicationInitData initData = new ApplicationInitData();
 
 		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase();
+		ISet set = useCase.getSet();
 		
 		initData.setUseCase((AUseCase) GeneralManager.get().getUseCase());
 		initData.setSetFileContent(SetUtils.loadSetFile(useCase.getLoadDataParameters()));
+		initData.setGeneClusterTree(SetUtils.getGeneClusterXml(set));
+		initData.setExperimentClusterTree(SetUtils.getExperimentClusterXml(set));
 		
 		HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>(); 
 		virtualArrayMap.put(EVAType.CONTENT, (VirtualArray) useCase.getVA(EVAType.CONTENT));
