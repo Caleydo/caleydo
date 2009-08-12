@@ -739,6 +739,13 @@ public class GLDendrogram
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
+		// gl.glBegin(GL.GL_LINE_LOOP);
+		// gl.glVertex3f(viewFrustum.getLeft() + 0.1f, viewFrustum.getBottom() + 0.1f, 0);
+		// gl.glVertex3f(viewFrustum.getLeft() + 0.1f, viewFrustum.getTop() - 0.1f, 0);
+		// gl.glVertex3f(viewFrustum.getRight() - 0.1f, viewFrustum.getTop() - 0.1f, 0);
+		// gl.glVertex3f(viewFrustum.getRight() - 0.1f, viewFrustum.getBottom() + 0.1f, 0);
+		// gl.glEnd();
+
 		if (tree == null) {
 
 			iAlCutOffClusters.clear();
@@ -769,13 +776,13 @@ public class GLDendrogram
 				if (bRenderGeneTree) {
 					xGlobalMax = viewFrustum.getWidth() - 0.2f;
 					fSampleHeight = (viewFrustum.getHeight() - 1f) / tree.getRoot().getNrElements();
-					fLevelWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getDepth();
+					fLevelWidth = (viewFrustum.getWidth() - 2f) / tree.getRoot().getDepth();
 					yPosInit = viewFrustum.getHeight() - 0.4f;
 				}
 				else {
 					yGlobalMin = 0.1f;
 					fSampleWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getNrElements();
-					fLevelHeight = (viewFrustum.getHeight() - 1f) / tree.getRoot().getDepth();
+					fLevelHeight = (viewFrustum.getHeight() - 2f) / tree.getRoot().getDepth();
 					xPosInit = 0.4f;
 				}
 				determinePositions();
@@ -901,7 +908,9 @@ public class GLDendrogram
 		}
 
 		for (Integer iter : iAlCutOffClusters) {
-			Group temp = new Group(iter, false, currentVA.get(iExample), ESelectionType.NORMAL, iAlClusterNodes.get(cnt));
+			Group temp =
+				new Group(iter, false, currentVA.get(iExample), ESelectionType.NORMAL, iAlClusterNodes
+					.get(cnt));
 			groupList.append(temp);
 			cnt++;
 			iExample += iter;

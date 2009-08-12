@@ -111,6 +111,10 @@ public class ClusterNode
 		return eSelectionType;
 	}
 
+	public void toggleSelectionType(){
+		this.eSelectionType = (eSelectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+	}
+	
 	public boolean isRootNode() {
 		return bIsRootNode;
 	}

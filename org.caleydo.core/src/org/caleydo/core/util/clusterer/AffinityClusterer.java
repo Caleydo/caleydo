@@ -18,6 +18,9 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * 
  * @author Bernhard Schlegl
  */
+/**
+ * @author test
+ */
 public class AffinityClusterer
 	extends AClusterer
 	implements IClusterer {
@@ -240,7 +243,7 @@ public class AffinityClusterer
 		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 		// Arraylist holding number of elements per cluster
-		ArrayList<Integer> count = new ArrayList<Integer>();
+		ArrayList<Integer> alClusterSizes = new ArrayList<Integer>();
 
 		int iNrIterations = 0, decit = iConvIterations;
 		boolean bIterate = true;
@@ -258,7 +261,7 @@ public class AffinityClusterer
 
 		// add noise to similarities
 		// for (int m = 0; m < s.length; m++) {
-		// s[m] = (float) (s[m] + (1E-16 * s[j] + Float.MIN_VALUE * 100) * ((float)Math.random() / 2f));
+		// s[m] = (float) (s[m] + (1E-16 * s[j] + Float.MIN_VALUE * 100) * ((float) Math.random() / 2f));
 		// }
 
 		int iPercentage = 1;
@@ -459,14 +462,14 @@ public class AffinityClusterer
 		ArrayList<Integer> idxExamples = new ArrayList<Integer>();
 
 		for (int i = 0; i < alExamples.size(); i++) {
-			count.add(0);
+			alClusterSizes.add(0);
 		}
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, eClustererType);
 
-		alIndexes = getAl(alExamples, count, idxExamples, idx, eClustererType);
+		alIndexes = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
 
 		// Integer clusteredVAId = 0;
 		// if (eClustererType == EClustererType.GENE_CLUSTERING)
@@ -480,7 +483,7 @@ public class AffinityClusterer
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndexes);
 
-		set.setAlClusterSizes(count);
+		set.setAlClusterSizes(alClusterSizes);
 		set.setAlExamples(idxExamples);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
@@ -489,7 +492,24 @@ public class AffinityClusterer
 		return virtualArray;
 	}
 
-	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples, ArrayList<Integer> count,
+	/**
+	 * Function returns an array list with ordered indexes out of the VA after clustering. Additionally the
+	 * indexes of the examples (cluster representatives) will be determined.
+	 * 
+	 * @param alExamples
+	 *            array list containing the indexes of the examples (cluster representatives) determined by
+	 *            the cluster algorithm
+	 * @param alClusterSizes
+	 *            array list which will be filled with the sizes of each cluster
+	 * @param idxExamples
+	 *            array list containing indexes of examples in the VA
+	 * @param idx
+	 *            cluster result determined by affinity propagation
+	 * @param eClustererType
+	 *            the cluster type
+	 * @return An array list with indexes in the VA
+	 */
+	private ArrayList<Integer> getAl(ArrayList<Integer> alExamples, ArrayList<Integer> alClusterSizes,
 		ArrayList<Integer> idxExamples, int[] idx, EClustererType eClustererType) {
 
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -499,14 +519,18 @@ public class AffinityClusterer
 
 		int counter = 0;
 		int idxCnt = 0;
+
+		ArrayList<Integer> alIndexListContent = contentVA.getIndexList();
+		ArrayList<Integer> alIndexListStorage = storageVA.getIndexList();
+
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			for (Integer example : alExamples) {
-				for (Integer icontent : contentVA) {
-					if (idx[contentVA.get(icontent)] == example) {
-						indexes.add(icontent);
-						count.set(counter, count.get(counter) + 1);
+				for (int index = 0; index < alIndexListContent.size(); index++) {
+					if (idx[index] == example) {
+						indexes.add(alIndexListContent.get(index));
+						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
 					}
-					if (example == contentVA.get(icontent)) {
+					if (example == index) {
 						idxExamples.add(contentVA.get(example));
 						idxCnt = 0;
 					}
@@ -517,12 +541,12 @@ public class AffinityClusterer
 		}
 		else {
 			for (Integer example : alExamples) {
-				for (Integer icontent : storageVA) {
-					if (idx[storageVA.get(icontent)] == example) {
-						indexes.add(icontent);
-						count.set(counter, count.get(counter) + 1);
+				for (int index = 0; index < alIndexListStorage.size(); index++) {
+					if (idx[index] == example) {
+						indexes.add(alIndexListStorage.get(index));
+						alClusterSizes.set(counter, alClusterSizes.get(counter) + 1);
 					}
-					if (example == storageVA.get(icontent)) {
+					if (example == index) {
 						idxExamples.add(storageVA.get(example));
 						idxCnt = 0;
 					}

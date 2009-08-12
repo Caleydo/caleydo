@@ -43,7 +43,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -89,10 +88,10 @@ public class GLHierarchicalHeatMap
 	// private final static float MAX_NUM_SAMPLES = 8f;
 
 	private final static int MIN_SAMPLES_PER_TEXTURE = 200;
-	private final static int MAX_SAMPLES_PER_TEXTURE = 400;
+	private final static int MAX_SAMPLES_PER_TEXTURE = 500;
 
 	private final static int MIN_SAMPLES_PER_HEATMAP = 14;
-	private final static int MAX_SAMPLES_PER_HEATMAP = 100;
+	private final static int MAX_SAMPLES_PER_HEATMAP = 50;
 
 	private final static int MIN_SAMPLES_SKIP_LEVEL_1 = 200;
 	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 40;
@@ -152,6 +151,7 @@ public class GLHierarchicalHeatMap
 	private int iDraggedCursorLevel2 = 0;
 	private float fPosCursorFirstElementLevel2 = 0;
 	private float fPosCursorLastElementLevel2 = 0;
+	private boolean bActivateDraggingLevel2 = false;
 
 	// dragging stuff level 1
 	private boolean bIsDraggingActiveLevel1 = false;
@@ -161,6 +161,7 @@ public class GLHierarchicalHeatMap
 	private int iDraggedCursorLevel1 = 0;
 	private float fPosCursorFirstElementLevel1 = 0;
 	private float fPosCursorLastElementLevel1 = 0;
+	private boolean bActivateDraggingLevel1 = false;
 
 	// clustering/grouping stuff
 	private boolean bSplitGroupExp = false;
@@ -173,6 +174,8 @@ public class GLHierarchicalHeatMap
 	private boolean bDragDropGeneGroup = false;
 	private int iExpGroupToDrag = -1;
 	private int iGeneGroupToDrag = -1;
+	private boolean bActivateDraggingGenes = false;
+	private boolean bActivateDraggingExperiments = false;
 
 	private GroupMergingActionListener groupMergingActionListener;
 	private GroupInterChangingActionListener groupInterChangingActionListener;
@@ -262,16 +265,16 @@ public class GLHierarchicalHeatMap
 
 			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 5);
 
-			if (iSamplesPerTexture > 250)
-				iSamplesPerTexture = 250;
+			if (iSamplesPerTexture > MAX_SAMPLES_PER_TEXTURE)
+				iSamplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
 
-			iSamplesLevel2 = iSamplesPerTexture;
+			iSamplesLevel2 = 200;
 
-			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
+			iSamplesPerHeatmap = (int) Math.floor(iSamplesLevel2 / 3);
 		}
 
 		if (iSamplesPerHeatmap > MAX_SAMPLES_PER_HEATMAP)
-			iSamplesPerTexture = 100;
+			iSamplesPerHeatmap = MAX_SAMPLES_PER_HEATMAP;
 
 		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
 			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
@@ -877,15 +880,15 @@ public class GLHierarchicalHeatMap
 			if (groupList.get(i).getSelectionType() == ESelectionType.SELECTION)
 				gl.glColor4f(0f, 1f, 0f, 0.5f);
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+			// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+			// EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(fxpos, fHeight, 0);
 			gl.glVertex3f(fxpos, fHeight + 0.1f, 0);
 			gl.glVertex3f(fxpos + classWidth, fHeight + 0.1f, 0);
 			gl.glVertex3f(fxpos + classWidth, fHeight, 0);
 			gl.glEnd();
-			gl.glPopName();
+			// gl.glPopName();
 
 			if (i == iNrClasses - 1)
 				return;
@@ -1029,15 +1032,17 @@ public class GLHierarchicalHeatMap
 				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 					gl.glColor4f(0f, 1f, 0f, 0.5f);
 
-				gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
-					iIdxCluster));
+				if (bSkipLevel1)
+					gl.glPushName(pickingManager.getPickingID(iUniqueID,
+						EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
 				gl.glBegin(GL.GL_QUADS);
 				gl.glVertex3f(-0.1f, fHeight, 0);
 				gl.glVertex3f(0, fHeight, 0);
 				gl.glVertex3f(0, fHeight - fHeightSamples * iCnt, 0);
 				gl.glVertex3f(-0.1f, fHeight - fHeightSamples * iCnt, 0);
 				gl.glEnd();
-				gl.glPopName();
+				if (bSkipLevel1)
+					gl.glPopName();
 
 				gl.glColor4f(0f, 0f, 1f, 1);
 				gl.glLineWidth(1f);
@@ -1064,15 +1069,17 @@ public class GLHierarchicalHeatMap
 		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 			gl.glColor4f(0f, 1f, 0f, 0.5f);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
-			iIdxCluster));
+		if (bSkipLevel1)
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
+				iIdxCluster));
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(-0.1f, fHeight, 0);
 		gl.glVertex3f(0, fHeight, 0);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(-0.1f, 0, 0);
 		gl.glEnd();
-		gl.glPopName();
+		if (bSkipLevel1)
+			gl.glPopName();
 
 	}
 
@@ -1108,15 +1115,17 @@ public class GLHierarchicalHeatMap
 				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 					gl.glColor4f(0f, 1f, 0f, 0.5f);
 
-				gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
-					iIdxCluster));
+				if (bSkipLevel2)
+					gl.glPushName(pickingManager.getPickingID(iUniqueID,
+						EPickingType.HIER_HEAT_MAP_GENES_GROUP, iIdxCluster));
 				gl.glBegin(GL.GL_QUADS);
 				gl.glVertex3f(fOffsetX - 0.1f, fHeight, 0);
 				gl.glVertex3f(fOffsetX, fHeight, 0);
 				gl.glVertex3f(fOffsetX, fHeight - fHeightSamples * iCnt, 0);
 				gl.glVertex3f(fOffsetX - 0.1f, fHeight - fHeightSamples * iCnt, 0);
 				gl.glEnd();
-				gl.glPopName();
+				if (bSkipLevel2)
+					gl.glPopName();
 
 				gl.glColor4f(0f, 0f, 1f, 1);
 				gl.glLineWidth(1f);
@@ -1143,15 +1152,17 @@ public class GLHierarchicalHeatMap
 		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
 			gl.glColor4f(0f, 1f, 0f, 0.5f);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
-			iIdxCluster));
+		if (bSkipLevel2)
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
+				iIdxCluster));
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(fOffsetX - 0.1f, fHeight, 0);
 		gl.glVertex3f(fOffsetX, fHeight, 0);
 		gl.glVertex3f(fOffsetX, 0, 0);
 		gl.glVertex3f(fOffsetX - 0.1f, 0, 0);
 		gl.glEnd();
-		gl.glPopName();
+		if (bSkipLevel2)
+			gl.glPopName();
 
 	}
 
@@ -1418,7 +1429,7 @@ public class GLHierarchicalHeatMap
 				float fScalingFirstElement =
 					(float) iFirstElementFirstTexture / iAlNumberSamples.get(iFirstTexture);
 				float fScalingLastElement =
-					(float) iLastElementLastTexture / iAlNumberSamples.get(iFirstTexture);
+					(float) (iLastElementLastTexture + 1) / iAlNumberSamples.get(iFirstTexture);
 
 				// System.out.println("dScalingFirstElement: " + dScalingFirstElement);
 				// System.out.println("dScalingLastElement: " + dScalingLastElement);
@@ -1444,13 +1455,13 @@ public class GLHierarchicalHeatMap
 			}
 			else if (iNrTexturesInUse == 2) {
 
-				float fScalingLastTexture = (float) iLastElementLastTexture / iSamplesLevel2;
+				float fScalingLastTexture = (float) (iLastElementLastTexture + 1) / iSamplesLevel2;
 
 				float fRatioFirstTexture =
 					(float) (iAlNumberSamples.get(iFirstTexture) - iFirstElementFirstTexture)
 						/ iAlNumberSamples.get(iFirstTexture);
 				float fRatioLastTexture =
-					(float) iLastElementLastTexture / iAlNumberSamples.get(iLastTexture);
+					(float) (iLastElementLastTexture + 1) / iAlNumberSamples.get(iLastTexture);
 
 				// System.out.println("dScalingFirstElement: " + dScalingFirstElement);
 				// System.out.println("dScalingLastElement: " + dScalingLastElement);
@@ -1502,13 +1513,13 @@ public class GLHierarchicalHeatMap
 
 				float fScalingFirstTexture =
 					(float) (iSamplesPerTexture - iFirstElementFirstTexture) / iSamplesLevel2;
-				float fScalingLastTexture = (float) iLastElementLastTexture / iSamplesLevel2;
+				float fScalingLastTexture = (float) (iLastElementLastTexture + 1) / iSamplesLevel2;
 
 				float fRatioFirstTexture =
 					(float) (iAlNumberSamples.get(iLastTexture) - iFirstElementFirstTexture)
 						/ iAlNumberSamples.get(iFirstTexture);
 				float fRatioLastTexture =
-					(float) iLastElementLastTexture / iAlNumberSamples.get(iLastTexture);
+					(float) (iLastElementLastTexture + 1) / iAlNumberSamples.get(iLastTexture);
 
 				Texture TexTemp1 = AlTextures.get(iFirstTexture);
 				TexTemp1.enable();
@@ -2655,12 +2666,15 @@ public class GLHierarchicalHeatMap
 		float currentWidth = fWidthSample * iNrElementsInGroup;
 		float fHeight = viewFrustum.getHeight();
 
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight, 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight - 0.1f, 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0] + currentWidth, fHeight - 0.1f, 0);
-		gl.glVertex3f(fArTargetWorldCoordinates[0] + currentWidth, fHeight, 0);
-		gl.glEnd();
+		if (fArTargetWorldCoordinates[0] > fleftOffset
+			&& fArTargetWorldCoordinates[0] < fleftOffset + fWidthEHM) {
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight, 0);
+			gl.glVertex3f(fArTargetWorldCoordinates[0], fHeight - 0.1f, 0);
+			gl.glVertex3f(fArTargetWorldCoordinates[0] + currentWidth, fHeight - 0.1f, 0);
+			gl.glVertex3f(fArTargetWorldCoordinates[0] + currentWidth, fHeight, 0);
+			gl.glEnd();
+		}
 
 		float fXPosRelease = fArTargetWorldCoordinates[0] - fleftOffset;
 
@@ -2698,6 +2712,7 @@ public class GLHierarchicalHeatMap
 				System.out.println("Move operation not allowed!");
 
 			bDragDropExpGroup = false;
+			bActivateDraggingExperiments = false;
 
 			bRedrawTextures = true;
 			setDisplayListDirty();
@@ -2773,6 +2788,7 @@ public class GLHierarchicalHeatMap
 				System.out.println("Move operation not allowed!");
 
 			bDragDropGeneGroup = false;
+			bActivateDraggingGenes = false;
 
 			bRedrawTextures = true;
 			setDisplayListDirty();
@@ -2896,7 +2912,7 @@ public class GLHierarchicalHeatMap
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel1 = false;
 			bDisableCursorDraggingLevel1 = false;
-
+			bActivateDraggingLevel1 = false;
 			// initPosCursorLevel2();
 		}
 	}
@@ -2945,6 +2961,7 @@ public class GLHierarchicalHeatMap
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel2 = false;
 			bDisableCursorDraggingLevel2 = false;
+			bActivateDraggingLevel2 = false;
 		}
 	}
 
@@ -3004,7 +3021,7 @@ public class GLHierarchicalHeatMap
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel1 = false;
 			bDisableBlockDraggingLevel1 = false;
-
+			bActivateDraggingLevel1 = false;
 			// initPosCursorLevel2();
 		}
 	}
@@ -3066,7 +3083,15 @@ public class GLHierarchicalHeatMap
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel2 = false;
 			bDisableBlockDraggingLevel2 = false;
+			bActivateDraggingLevel2 = false;
 		}
+	}
+
+	private void deactivateAllDraggingCursor() {
+		bActivateDraggingExperiments = false;
+		bActivateDraggingGenes = false;
+		bActivateDraggingLevel1 = false;
+		bActivateDraggingLevel2 = false;
 	}
 
 	@Override
@@ -3085,14 +3110,23 @@ public class GLHierarchicalHeatMap
 					case CLICKED:
 						contentVA.getGroupList().get(iExternalID).toggleSelectionType();
 
+						bActivateDraggingGenes = true;
+
+						// set node in tree selected
+						// if (contentVA.getGroupList().get(iExternalID).getClusterNode() != null) {
+						// contentVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
+						// }
+
 						// System.out.println(contentVA.getGroupList().get(iExternalID).getIdxExample());
-						// System.out.println(GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(
-						// contentVA.getGroupList().get(iExternalID).getIdxExample()));
+						// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+						// EIDType.GENE_SYMBOL, contentVA.getGroupList().get(iExternalID).getIdxExample()));
 
 						setDisplayListDirty();
 						break;
 
 					case DRAGGED:
+						if (bActivateDraggingGenes == false)
+							return;
 						// drag&drop for groups
 						if (bDragDropGeneGroup == false) {
 							bDragDropGeneGroup = true;
@@ -3159,6 +3193,13 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 					case CLICKED:
 						storageVA.getGroupList().get(iExternalID).toggleSelectionType();
+						deactivateAllDraggingCursor();
+						bActivateDraggingExperiments = true;
+
+						// set node in tree selected
+						// if (storageVA.getGroupList().get(iExternalID).getClusterNode() != null) {
+						// storageVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
+						// }
 
 						// System.out.println(storageVA.getGroupList().get(iExternalID).getIdxExample());
 						// System.out.println(set.get(storageVA.getGroupList().get(iExternalID).getIdxExample())
@@ -3168,6 +3209,8 @@ public class GLHierarchicalHeatMap
 						break;
 
 					case DRAGGED:
+						if (bActivateDraggingExperiments == false)
+							return;
 						// drag&drop for groups
 						if (bDragDropExpGroup == false) {
 							bDragDropExpGroup = true;
@@ -3285,10 +3328,14 @@ public class GLHierarchicalHeatMap
 			case HIER_HEAT_MAP_CURSOR_LEVEL1:
 				switch (pickingMode) {
 					case CLICKED:
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel1 = true;
 						break;
 
 					case DRAGGED:
 						if (bDisableCursorDraggingLevel1)
+							return;
+						if (bActivateDraggingLevel1 == false)
 							return;
 						bIsDraggingActiveLevel1 = true;
 						bDisableBlockDraggingLevel1 = true;
@@ -3305,10 +3352,14 @@ public class GLHierarchicalHeatMap
 			case HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1:
 				switch (pickingMode) {
 					case CLICKED:
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel1 = true;
 						break;
 
 					case DRAGGED:
 						if (bDisableBlockDraggingLevel1)
+							return;
+						if (bActivateDraggingLevel1 == false)
 							return;
 						bIsDraggingWholeBlockLevel1 = true;
 						bDisableCursorDraggingLevel1 = true;
@@ -3325,10 +3376,14 @@ public class GLHierarchicalHeatMap
 			case HIER_HEAT_MAP_CURSOR_LEVEL2:
 				switch (pickingMode) {
 					case CLICKED:
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel2 = true;
 						break;
 
 					case DRAGGED:
 						if (bDisableCursorDraggingLevel2)
+							return;
+						if (bActivateDraggingLevel2 == false)
 							return;
 						bIsDraggingActiveLevel2 = true;
 						bDisableBlockDraggingLevel2 = true;
@@ -3345,10 +3400,14 @@ public class GLHierarchicalHeatMap
 			case HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2:
 				switch (pickingMode) {
 					case CLICKED:
+						deactivateAllDraggingCursor();
+						bActivateDraggingLevel2 = true;
 						break;
 
 					case DRAGGED:
 						if (bDisableBlockDraggingLevel2)
+							return;
+						if (bActivateDraggingLevel2 == false)
 							return;
 						bIsDraggingWholeBlockLevel2 = true;
 						bDisableCursorDraggingLevel2 = true;

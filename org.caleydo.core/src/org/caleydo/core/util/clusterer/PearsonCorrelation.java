@@ -41,6 +41,7 @@ public class PearsonCorrelation
 		float cov_x_y = sum_coproduct / vector1.length;
 		correlation = cov_x_y / (pop_sd_x * pop_sd_y);
 
-		return correlation;
+		// Return absolute value. Negative values cause problems in cluster algorithms.
+		return Math.abs(correlation);
 	}
 }
