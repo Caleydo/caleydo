@@ -5,12 +5,11 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.mapping.IDMappingManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager.PickingIDManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -19,9 +18,8 @@ public class GeneBookmarkContainer
 
 	protected ColorMapping colorMapping;
 
-
-	public GeneBookmarkContainer(TextRenderer textRenderer) {
-		super(textRenderer);
+	public GeneBookmarkContainer(PickingIDManager pickingIDManager, TextRenderer textRenderer) {
+		super(EIDCategory.GENE, pickingIDManager, textRenderer);
 		bookmarkItems = new UniqueList<ABookmark>();
 
 		for (ABookmark item : bookmarkItems) {
@@ -31,7 +29,7 @@ public class GeneBookmarkContainer
 		}
 
 		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
-		
+
 		selectionManager = new SelectionManager.Builder(EIDType.DAVID).build();
 
 	}
@@ -42,14 +40,15 @@ public class GeneBookmarkContainer
 		int davidID;
 
 		for (IDDataType id : event.getBookmarks()) {
-			
+
 			if (event.getIDType().getCategory() == EIDCategory.GENE) {
-				davidID = GeneralManager.get().getIDMappingManager().getID(event.getIDType(), EIDType.DAVID, id);
-			}			
+				davidID =
+					GeneralManager.get().getIDMappingManager().getID(event.getIDType(), EIDType.DAVID, id);
+			}
 			else
 				throw new IllegalStateException("ID type unhandled");
-
-			bookmarkItems.add(new GeneBookmark(textRenderer, davidID));
+			GeneBookmark bookmark = new GeneBookmark(textRenderer, davidID);
+			bookmarkItems.add(bookmark);
 			selectionManager.add(davidID);
 		}
 

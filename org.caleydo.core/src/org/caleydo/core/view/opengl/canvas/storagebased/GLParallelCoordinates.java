@@ -555,7 +555,7 @@ public class GLParallelCoordinates
 
 			SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
 			TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
-			event.setType(EIDType.EXPRESSION_INDEX);
+			event.setCategory(ePolylineDataType.getCategory());
 			event.setSelectionCommand(command);
 			eventPublisher.triggerEvent(event);
 

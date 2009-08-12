@@ -13,6 +13,7 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -352,33 +353,33 @@ public class GLPathway
 				}
 			}
 		}
-		else if (selectionDelta.getIDType() != EIDType.EXPRESSION_INDEX)
-			return;
+		else if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE) {
 
-		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
-		selectionManager.setDelta(resolvedDelta);
+			ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
+			selectionManager.setDelta(resolvedDelta);
 
-		setDisplayListDirty();
+			setDisplayListDirty();
 
-		int iPathwayHeight = pathway.getHeight();
-		for (SelectionDeltaItem item : resolvedDelta) {
-			if (item.getSelectionType() != ESelectionType.MOUSE_OVER
-				&& item.getSelectionType() != ESelectionType.SELECTION) {
-				continue;
-			}
+			int iPathwayHeight = pathway.getHeight();
+			for (SelectionDeltaItem item : resolvedDelta) {
+				if (item.getSelectionType() != ESelectionType.MOUSE_OVER
+					&& item.getSelectionType() != ESelectionType.SELECTION) {
+					continue;
+				}
 
-			PathwayVertexGraphItemRep vertexRep =
-				(PathwayVertexGraphItemRep) generalManager.getPathwayItemManager().getItem(
-					item.getPrimaryID());
+				PathwayVertexGraphItemRep vertexRep =
+					(PathwayVertexGraphItemRep) generalManager.getPathwayItemManager().getItem(
+						item.getPrimaryID());
 
-			SelectedElementRep elementRep =
-				new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vertexRep.getXOrigin()
-					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
-					(iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y
-						* vecScaling.y() + vecTranslation.y(), 0);
+				SelectedElementRep elementRep =
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vertexRep.getXOrigin()
+						* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),
+						(iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y
+							* vecScaling.y() + vecTranslation.y(), 0);
 
-			for (Integer iConnectionID : item.getConnectionIDs()) {
-				connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
+				for (Integer iConnectionID : item.getConnectionIDs()) {
+					connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
+				}
 			}
 		}
 	}
@@ -439,8 +440,8 @@ public class GLPathway
 	}
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
-		ISelectionDelta newSelectionDelta =
-			new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.EXPRESSION_INDEX);
+
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.DAVID);
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 
@@ -448,17 +449,8 @@ public class GLPathway
 
 		for (SelectionDeltaItem item : selectionDelta) {
 
-			int iExpressionIndex = item.getPrimaryID();
-			// Integer iRefSeqID =
-			// idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iExpressionIndex);
-			//
-			// if (iRefSeqID == null) {
-			// continue;
-			// // throw new IllegalStateException("Cannot resolve Expression Index to RefSeq ID.");
-			// }
-
 			Integer iDavidID =
-				idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.DAVID, iExpressionIndex);
+				idMappingManager.getID(selectionDelta.getIDType(), EIDType.DAVID, item.getPrimaryID());
 
 			if (iDavidID == null) {
 				continue;
@@ -966,13 +958,13 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		selectionManager.executeSelectionCommand(selectionCommand);
 
 	}
 
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		// no storage selection manager
 	}
 

@@ -14,13 +14,14 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public abstract class ABookmark {
 
 	protected Dimensions dimensions;
-	
+
 	protected int id;
 
 	TextRenderer textRenderer;
 
 	/**
-	 * The constructor takes a TextRenderer which is used to render all text 
+	 * The constructor takes a TextRenderer which is used to render all text
+	 * 
 	 * @param textRenderer
 	 */
 	public ABookmark(TextRenderer textRenderer) {
@@ -33,9 +34,8 @@ public abstract class ABookmark {
 	public Dimensions getDimensions() {
 		return dimensions;
 	}
-	
-	public int getID()
-	{
+
+	public int getID() {
 		return id;
 	}
 
@@ -51,6 +51,25 @@ public abstract class ABookmark {
 		textRenderer.draw3D(sLabel, fXOrigin, fYOrigin, 0, fFontScaling);
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
+	}
+
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj.hashCode() == hashCode())
+			return true;
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return id;
+	}
+	
+	@Override
+	public String toString() {
+		return Integer.toString(id); 
 	}
 
 }

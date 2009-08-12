@@ -3,6 +3,7 @@ package org.caleydo.rcp.util.info;
 import java.util.Collection;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -393,7 +394,7 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, final SelectionCommand selectionCommand) {
+	public void handleContentTriggerSelectionCommand(EIDCategory category, final SelectionCommand selectionCommand) {
 		if (parentComposite.isDisposed())
 			return;
 
@@ -420,7 +421,7 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 
 	}
 

@@ -5,16 +5,24 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.collection.UniqueList;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager.PickingIDManager;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -25,12 +33,15 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public abstract class ABookmarkContainer {
 
 	protected Dimensions dimensions;
+	protected EIDCategory category;
 
 	/**
 	 * The list of bookmarks - each bookmark is unique, the ordering is relevant
 	 */
 	protected UniqueList<ABookmark> bookmarkItems;
 	protected TextRenderer textRenderer;
+
+	protected PickingIDManager pickingIDManager;
 
 	/**
 	 * The selection manager, that manages whether a particular element is selected in the bookmark list. It
@@ -43,7 +54,10 @@ public abstract class ABookmarkContainer {
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue;
 
-	public ABookmarkContainer(TextRenderer textRenderer) {
+	public ABookmarkContainer(EIDCategory category, PickingIDManager pickingIDManager,
+		TextRenderer textRenderer) {
+		this.category = category;
+		this.pickingIDManager = pickingIDManager;
 		this.textRenderer = textRenderer;
 		dimensions = new Dimensions();
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
@@ -51,6 +65,10 @@ public abstract class ABookmarkContainer {
 
 	public Dimensions getDimensions() {
 		return dimensions;
+	}
+
+	public EIDCategory getCategory() {
+		return category;
 	}
 
 	public void render(GL gl) {
@@ -65,45 +83,53 @@ public abstract class ABookmarkContainer {
 			if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, item.getID()))
 				GLHelperFunctions.drawPointAt(gl, item.getDimensions().getXOrigin(), item.getDimensions()
 					.getYOrigin(), 0);
-
+			int pickingID = pickingIDManager.getPickingID(this, item.getID());
+			gl.glPushName(pickingID);
 			item.render(gl);
+			gl.glPopName();
 		}
 	}
 
+	public void handleEvents(EPickingMode pickingMode, Integer privateID) {
+		ESelectionType selectionType;
+		switch (pickingMode) {
+			case CLICKED:
+				selectionType = ESelectionType.SELECTION;
+				break;
+			case MOUSE_OVER:
+				selectionType = ESelectionType.MOUSE_OVER;
+				break;
+			default:
+				return;
+		}
+		selectionManager.clearSelection(selectionType);
+		selectionManager.addToType(selectionType, privateID);
+		
+		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
+		SelectionCommandEvent commandEvent = new SelectionCommandEvent();
+		commandEvent.setSender(this);
+		commandEvent.setCategory(category);
+		commandEvent.setSelectionCommand(command);
+		GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
+
+		ISelectionDelta selectionDelta = selectionManager.getDelta();
+		SelectionUpdateEvent event = new SelectionUpdateEvent();
+		event.setSender(this);
+		event.setSelectionDelta((SelectionDelta) selectionDelta);
+		event.setInfo("waaa");
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+	}
+
 	public abstract <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event);
-
-	/**
-	 * This method should be called every display cycle when it is save to change the state of the object. It
-	 * processes all the previously submitted events.
-	 */
-	// public final void processEvents() {
-	// Pair<AEventListener<? extends IListenerOwner>, AEvent> pair;
-	// while (queue.peek() != null) {
-	// pair = queue.poll();
-	// pair.getFirst().handleEvent(pair.getSecond());
-	// }
-	// }
-
-	// @Override
-	// public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
-	// @Override
-	// public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
-	// // TODO Auto-generated method stub
-	//
-	// }
-	//
+	
 
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta) {
 		selectionManager.setDelta(selectionDelta);
 	}
-	//
-	// @Override
-	// public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
-	// queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
-	// }
-
+	
+	public void handleSelectionCommand(SelectionCommand selectionCommand)
+	{
+		selectionManager.executeSelectionCommand(selectionCommand);
+	}
 }

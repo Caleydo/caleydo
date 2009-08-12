@@ -6,9 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.util.clusterer.ClusterNode; // import
-// org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
-// import org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree.DefaultNode;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;

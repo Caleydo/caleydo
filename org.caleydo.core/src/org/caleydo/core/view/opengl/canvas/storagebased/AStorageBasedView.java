@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.management.InvalidAttributeValueException;
 
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -216,8 +217,7 @@ public abstract class AStorageBasedView
 		// + ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
-		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
-			|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+		if (selectionDelta.getIDType().getCategory() == EIDCategory.GENE) {
 			contentSelectionManager.setDelta(selectionDelta);
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
@@ -348,13 +348,13 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		contentSelectionManager.executeSelectionCommand(selectionCommand);
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		storageSelectionManager.executeSelectionCommand(selectionCommand);
 		setDisplayListDirty();
 	}

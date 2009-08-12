@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
 public interface IDrawAbleLine {

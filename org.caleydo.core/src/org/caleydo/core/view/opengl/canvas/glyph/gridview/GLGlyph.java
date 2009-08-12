@@ -18,6 +18,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
 
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -986,12 +987,12 @@ public class GLGlyph
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 
 	}
 
 	@Override
-	public void handleStorageTriggerSelectionCommand(EIDType type, SelectionCommand selectionCommand) {
+	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
 		selectionManager.executeSelectionCommand(selectionCommand);
 	}
 

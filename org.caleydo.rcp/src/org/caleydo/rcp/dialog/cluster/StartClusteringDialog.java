@@ -6,7 +6,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-import org.caleydo.rcp.dialog.cluster.StartClusteringAction;;
 
 /**
  * File dialog for starting clustering

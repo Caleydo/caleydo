@@ -3,24 +3,30 @@ package org.caleydo.core.view.opengl.canvas.bookmarking;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
@@ -39,7 +45,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public class GLBookmarkManager
 	extends AGLEventListener
-	implements ISelectionUpdateHandler {
+	implements ISelectionUpdateHandler, ISelectionCommandHandler {
 
 	private ColorMapping colorMapper;
 
@@ -52,8 +58,41 @@ public class GLBookmarkManager
 
 	private BookmarkListener bookmarkListener;
 	private SelectionUpdateListener selectionUpdateListener;
+	private SelectionCommandListener selectionCommandListener;
 
 	private TextRenderer textRenderer;
+
+	private PickingIDManager pickingIDManager;
+
+	class PickingIDManager {
+		/**
+		 * A hash map that hashes the picking ID of an element to the BookmarkContainer and the id internal to
+		 * the bookmark container
+		 */
+		private HashMap<Integer, Pair<EIDCategory, Integer>> pickingIDToBookmarkContainer;
+		private int idCount = 0;
+
+		private PickingIDManager() {
+			pickingIDToBookmarkContainer = new HashMap<Integer, Pair<EIDCategory, Integer>>();
+		}
+
+		public int getPickingID(ABookmarkContainer container, int privateID) {
+
+			int pickingID = pickingManager.getPickingID(iUniqueID, EPickingType.BOOKMARK_ELEMENT, idCount);
+			pickingIDToBookmarkContainer.put(idCount++, new Pair<EIDCategory, Integer>(container
+				.getCategory(), privateID));
+			return pickingID;
+		}
+
+		private Pair<EIDCategory, Integer> getPrivateID(int iExternalID) {
+			return pickingIDToBookmarkContainer.get(iExternalID);
+		}
+
+		private void reset() {
+			idCount = 0;
+			pickingIDToBookmarkContainer = new HashMap<Integer, Pair<EIDCategory, Integer>>();
+		}
+	}
 
 	/**
 	 * Constructor.
@@ -63,6 +102,7 @@ public class GLBookmarkManager
 	 * @param viewFrustum
 	 */
 	public GLBookmarkManager(GLCaleydoCanvas glCanvas, String label, IViewFrustum viewFrustum) {
+
 		super(glCanvas, label, viewFrustum, false);
 
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
@@ -72,7 +112,9 @@ public class GLBookmarkManager
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
-		GeneBookmarkContainer geneContainer = new GeneBookmarkContainer(textRenderer);
+		pickingIDManager = new PickingIDManager();
+
+		GeneBookmarkContainer geneContainer = new GeneBookmarkContainer(pickingIDManager, textRenderer);
 		hashCategoryToBookmarkContainer.put(EIDCategory.GENE, geneContainer);
 		bookmarkContainers.add(geneContainer);
 
@@ -90,6 +132,10 @@ public class GLBookmarkManager
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
+		selectionCommandListener = new SelectionCommandListener();
+		selectionCommandListener.setHandler(this);
+		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
+
 	}
 
 	@Override
@@ -105,6 +151,11 @@ public class GLBookmarkManager
 		if (selectionUpdateListener != null) {
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
+		}
+
+		if (selectionCommandListener != null) {
+			eventPublisher.removeListener(selectionCommandListener);
+			selectionCommandListener = null;
 		}
 	}
 
@@ -352,14 +403,17 @@ public class GLBookmarkManager
 
 	@Override
 	protected void displayLocal(GL gl) {
-		// TODO Auto-generated method stub
-
+		pickingManager.handlePicking(this, gl);
+		display(gl);
+		checkForHits(gl);
+		pickingIDManager.reset();
 	}
 
 	@Override
 	public void displayRemote(GL gl) {
-		// TODO Auto-generated method stub
 		display(gl);
+		checkForHits(gl);
+		pickingIDManager.reset();
 	}
 
 	@Override
@@ -377,8 +431,12 @@ public class GLBookmarkManager
 	@Override
 	protected void handleEvents(EPickingType ePickingType, EPickingMode ePickingMode, int iExternalID,
 		Pick pick) {
-		// TODO Auto-generated method stub
-
+		switch (ePickingType) {
+			case BOOKMARK_ELEMENT:
+				Pair<EIDCategory, Integer> pair = pickingIDManager.getPrivateID(iExternalID);
+				hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(ePickingMode,
+					pair.getSecond());
+		}
 	}
 
 	public <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
@@ -387,7 +445,8 @@ public class GLBookmarkManager
 				hashCategoryToBookmarkContainer.get(EIDCategory.GENE).handleNewBookmarkEvent(event);
 				break;
 			default:
-				throw new IllegalStateException("Can not handle the id type " + event.getIDType() + " at the moment for bookmarks");
+				throw new IllegalStateException("Can not handle the id type " + event.getIDType()
+					+ " at the moment for bookmarks");
 		}
 	}
 
@@ -441,6 +500,17 @@ public class GLBookmarkManager
 			hashCategoryToBookmarkContainer.get(selectionDelta.getIDType().getCategory());
 		if (container != null)
 			container.handleSelectionUpdate(selectionDelta);
+	}
+
+	@Override
+	public void handleContentTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		hashCategoryToBookmarkContainer.get(category).handleSelectionCommand(selectionCommand);
+	}
+
+	@Override
+	public void handleStorageTriggerSelectionCommand(EIDCategory category, SelectionCommand selectionCommand) {
+		hashCategoryToBookmarkContainer.get(category).handleSelectionCommand(selectionCommand);
+
 	}
 
 }

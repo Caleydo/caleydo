@@ -1,5 +1,6 @@
 package org.caleydo.core.view.swt.collab;
 
+import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.NetworkManager;
 import org.eclipse.core.runtime.ILog;

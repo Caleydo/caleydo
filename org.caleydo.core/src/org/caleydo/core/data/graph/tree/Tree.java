@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.data.graph.tree.NodeInfo;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;

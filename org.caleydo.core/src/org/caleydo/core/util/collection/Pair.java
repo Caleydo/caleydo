@@ -63,4 +63,9 @@ public class Pair<T, E> {
 	//		
 	// return -1;
 	// }
+	
+	@Override
+	public String toString() {
+		return "<" + first.toString() + ", " + second.toString() + ">";
+	}
 }

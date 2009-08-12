@@ -4,7 +4,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticIDMappingHelper;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -38,11 +37,7 @@ class GeneBookmark
 		
 		renderCaption(gl, sContent, dimensions.getXOrigin(), dimensions.getYOrigin() ,
 			GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
-		
-		
-//		renderCaption(gl, davidID.toString(), dimensions.getXOrigin(), dimensions.getYOrigin() ,
-//			GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
-
+	
 }

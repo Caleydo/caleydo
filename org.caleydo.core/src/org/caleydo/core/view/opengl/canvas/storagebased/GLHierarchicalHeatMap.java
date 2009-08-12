@@ -2413,7 +2413,7 @@ public class GLHierarchicalHeatMap
 		// selected experiments
 
 		SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType, command);
+		glHeatMapView.handleStorageTriggerSelectionCommand(eExperimentDataType.getCategory(), command);
 
 		IVirtualArrayDelta deltaExp = new VirtualArrayDelta(storageVAType, eExperimentDataType);
 		ISelectionDelta selectionDeltaEx = new SelectionDelta(eExperimentDataType);

@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 
 public interface IDirectedGraphBuilder {
 

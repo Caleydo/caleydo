@@ -28,7 +28,6 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -462,22 +461,22 @@ public class GLHeatMap
 				createStorageSelection(eSelectionType, iExternalID);
 
 				break;
-			case LIST_HEAT_MAP_CLEAR_ALL:
-				switch (pickingMode) {
-					case CLICKED:
-						contentSelectionManager.resetSelectionManager();
-						setDisplayListDirty();
-						SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-
-						TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
-						event.setType(EIDType.EXPRESSION_INDEX);
-						event.setSelectionCommand(command);
-						event.setSender(this);
-						eventPublisher.triggerEvent(event);
-						break;
-
-				}
-				break;
+//			case LIST_HEAT_MAP_CLEAR_ALL:
+//				switch (pickingMode) {
+//					case CLICKED:
+//						contentSelectionManager.resetSelectionManager();
+//						setDisplayListDirty();
+//						SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+//
+//						TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
+//						event.setType(EIDType.EXPRESSION_INDEX);
+//						event.setSelectionCommand(command);
+//						event.setSender(this);
+//						eventPublisher.triggerEvent(event);
+//						break;
+//
+//				}
+//				break;
 		}
 	}
 

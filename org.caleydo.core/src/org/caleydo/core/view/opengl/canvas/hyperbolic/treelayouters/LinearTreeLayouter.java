@@ -6,12 +6,12 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-import org.caleydo.core.data.graph.tree.Tree;
 
 public final class LinearTreeLayouter
 	extends ATreeLayouter {
