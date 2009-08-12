@@ -18,7 +18,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -102,7 +101,8 @@ public class GLPathwayContentCreator {
 
 		// hashElementId2MappingColorArray.clear();
 
-		if (!generalManager.getIDMappingManager().hasMapping(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX)) {
+		if (!generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA_INT,
+			EIDType.EXPRESSION_INDEX)) {
 			bEnableGeneMapping = false;
 		}
 	}

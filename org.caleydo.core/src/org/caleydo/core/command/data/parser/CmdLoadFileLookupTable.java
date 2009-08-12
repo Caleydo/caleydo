@@ -155,8 +155,8 @@ public class CmdLoadFileLookupTable
 		if (sFileName.equals("generate")) {
 			genomeIdManager
 				.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
-			Map hashTmp = genomeIdManager.getMapping(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
-			for (Object sRefSeqID : genomeIdManager.getMapping(EMappingType.DAVID_2_REFSEQ_MRNA).values()) {
+			Map hashTmp = genomeIdManager.getMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
+			for (Object sRefSeqID : genomeIdManager.getMap(EMappingType.DAVID_2_REFSEQ_MRNA).values()) {
 				hashTmp.put(sRefSeqID, iIndex++);
 			}
 		}

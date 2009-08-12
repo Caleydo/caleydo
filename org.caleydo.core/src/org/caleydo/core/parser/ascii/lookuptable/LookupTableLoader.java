@@ -90,11 +90,11 @@ public class LookupTableLoader
 								sLine = sLine.substring(0, sLine.indexOf("."));
 							}
 
-							genomeIdManager.getMapping(mappingType).put(sLine,
+							genomeIdManager.getMap(mappingType).put(sLine,
 								iLineInFile - iStartParsingAtLine);
 						}
 						else {
-							genomeIdManager.getMapping(mappingType).put(sLine, strTokenText.nextToken());
+							genomeIdManager.getMap(mappingType).put(sLine, strTokenText.nextToken());
 						}
 					}
 					else {
@@ -130,7 +130,7 @@ public class LookupTableLoader
 								catch (NumberFormatException e) {
 									// System.out.println(buffer + " " +
 									// (iLineInFile - iStartParsingAtLine));
-									genomeIdManager.getMapping(mappingType).put(buffer,
+									genomeIdManager.getMap(mappingType).put(buffer,
 										iLineInFile - iStartParsingAtLine);
 								}
 
@@ -139,11 +139,11 @@ public class LookupTableLoader
 							else {
 								if (mappingType.getTypeOrigin().getStorageType() == EStorageType.INT) {
 									if (mappingType.getTypeTarget().getStorageType() == EStorageType.INT) {
-										genomeIdManager.getMapping(mappingType).put(Integer.valueOf(buffer),
+										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											Integer.valueOf(strTokenText.nextToken()));
 									}
 									else if (mappingType.getTypeTarget().getStorageType() == EStorageType.STRING) {
-										genomeIdManager.getMapping(mappingType).put(Integer.valueOf(buffer),
+										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											strTokenText.nextToken());
 									}
 									else
@@ -151,11 +151,11 @@ public class LookupTableLoader
 								}
 								else if (mappingType.getTypeOrigin().getStorageType() == EStorageType.STRING) {
 									if (mappingType.getTypeTarget().getStorageType() == EStorageType.INT) {
-										genomeIdManager.getMapping(mappingType).put(buffer,
+										genomeIdManager.getMap(mappingType).put(buffer,
 											Integer.valueOf(strTokenText.nextToken()));
 									}
 									else if (mappingType.getTypeTarget().getStorageType() == EStorageType.STRING) {
-										genomeIdManager.getMapping(mappingType).put(buffer,
+										genomeIdManager.getMap(mappingType).put(buffer,
 											strTokenText.nextToken());
 									}
 									else

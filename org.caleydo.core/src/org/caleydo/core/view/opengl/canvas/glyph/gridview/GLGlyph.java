@@ -19,7 +19,6 @@ import javax.media.opengl.GLException;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -1115,8 +1114,8 @@ public class GLGlyph
 					continue;
 				}
 
-				if (GeneralManager.get().getIDMappingManager().hasMapping(
-					EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT)) {
+				if (GeneralManager.get().getIDMappingManager().hasMapping(EIDType.EXPERIMENT_INDEX,
+					EIDType.EXPERIMENT)) {
 					String id =
 						GeneralManager.get().getIDMappingManager().getID(EIDType.EXPERIMENT_INDEX,
 							EIDType.EXPERIMENT, ge.getID());

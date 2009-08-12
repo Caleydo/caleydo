@@ -140,35 +140,35 @@ public class SearchView
 
 		useGeneSymbol = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneSymbol.setText("Gene symbol");
-		if (generalManager.getIDMappingManager().hasMapping(EMappingType.GENE_SYMBOL_2_DAVID))
+		if (generalManager.getIDMappingManager().hasMapping(EIDType.GENE_SYMBOL, EIDType.DAVID))
 			useGeneSymbol.setSelection(true);
 		else
 			useGeneSymbol.setEnabled(false);
 
 		useGeneName = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneName.setText("Gene name (full)");
-		if (idMappingManager.hasMapping(EMappingType.GENE_NAME_2_DAVID))
+		if (idMappingManager.hasMapping(EIDType.GENE_NAME, EIDType.DAVID))
 			useGeneName.setSelection(true);
 		else
 			useGeneName.setEnabled(false);
 
 		useGeneRefSeqID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneRefSeqID.setText("RefSeq ID");
-		if (generalManager.getIDMappingManager().hasMapping(EMappingType.REFSEQ_MRNA_2_DAVID))
+		if (generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA, EIDType.DAVID))
 			useGeneRefSeqID.setSelection(true);
 		else
 			useGeneRefSeqID.setEnabled(false);
 
 		useGeneEntrezGeneID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneEntrezGeneID.setText("Entrez Gene ID");
-		if (generalManager.getIDMappingManager().hasMapping(EMappingType.ENTREZ_GENE_ID_2_DAVID))
+		if (generalManager.getIDMappingManager().hasMapping(EIDType.ENTREZ_GENE_ID, EIDType.DAVID))
 			useGeneEntrezGeneID.setSelection(true);
 		else
 			useGeneEntrezGeneID.setEnabled(false);
 
 		useGeneDavidID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneDavidID.setText("David ID");
-		if (generalManager.getIDMappingManager().hasMapping(EMappingType.DAVID_2_REFSEQ_MRNA_INT))
+		if (generalManager.getIDMappingManager().hasMapping(EIDType.DAVID, EIDType.REFSEQ_MRNA_INT))
 			useGeneDavidID.setSelection(true);
 		else
 			useGeneDavidID.setEnabled(false);
@@ -408,7 +408,7 @@ private void searchForGene(final String sSearchQuery) {
 		ArrayList<Integer> iArDavidGeneResults = new ArrayList<Integer>();
 
 		if (useGeneSymbol.getSelection()) {
-			for (Object sGeneSymbol : idMappingManager.getMapping(EMappingType.GENE_SYMBOL_2_DAVID).keySet()) {
+			for (Object sGeneSymbol : idMappingManager.getMap(EMappingType.GENE_SYMBOL_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
 					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.GENE_SYMBOL,
@@ -417,7 +417,7 @@ private void searchForGene(final String sSearchQuery) {
 		}
 
 		if (useGeneEntrezGeneID.getSelection()) {
-			for (Object iEntrezGeneID : idMappingManager.getMapping(EMappingType.ENTREZ_GENE_ID_2_DAVID)
+			for (Object iEntrezGeneID : idMappingManager.getMap(EMappingType.ENTREZ_GENE_ID_2_DAVID)
 				.keySet()) {
 				regexMatcher = pattern.matcher(iEntrezGeneID.toString());
 				if (regexMatcher.find())
@@ -427,7 +427,7 @@ private void searchForGene(final String sSearchQuery) {
 		}
 
 		if (useGeneRefSeqID.getSelection()) {
-			for (Object sGeneSymbol : idMappingManager.getMapping(EMappingType.REFSEQ_MRNA_2_DAVID).keySet()) {
+			for (Object sGeneSymbol : idMappingManager.getMap(EMappingType.REFSEQ_MRNA_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneSymbol);
 				if (regexMatcher.find())
 					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.REFSEQ_MRNA,
@@ -436,7 +436,7 @@ private void searchForGene(final String sSearchQuery) {
 		}
 
 		if (useGeneName.getSelection()) {
-			for (Object sGeneName : idMappingManager.getMapping(EMappingType.GENE_NAME_2_DAVID).keySet()) {
+			for (Object sGeneName : idMappingManager.getMap(EMappingType.GENE_NAME_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher((String) sGeneName);
 				if (regexMatcher.find())
 					iArDavidGeneResults.add((Integer) generalManager.getIDMappingManager().getID(

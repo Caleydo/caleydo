@@ -19,14 +19,22 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
 /**
- * Manages mapping tables.
+ * Provides methods for mapping different IDTypes using a graph of Maps.
  * 
  * @author Marc Streit
  * @author Alexander Lex
+ * @author Christian Partl
  */
 public class IDMappingManager
 	implements IIDMappingManager {
+	/**
+	 * HashMap that contains all mappings identified by their MappingType.
+	 */
 	protected HashMap<EMappingType, Map<?, ?>> hashType2Mapping;
+	/**
+	 * Graph of mappings. IDTypes are the vertices of the graph, edges represent a mapping from one IDType to
+	 * another that is backed up by a corresponding map in hashType2Mapping.
+	 */
 	private DefaultDirectedWeightedGraph<EIDType, MappingEdge> mappingGraph;
 
 	private IGeneralManager generalManager = GeneralManager.get();
@@ -98,7 +106,7 @@ public class IDMappingManager
 				reverseMap.put(sourceMap.get(key), key);
 			}
 		}
-		
+
 		MappingEdge edge = new MappingEdge(reverseType);
 		mappingGraph.addEdge(reverseType.getTypeOrigin(), reverseType.getTypeTarget(), edge);
 		if (reverseType.isMultiMap()) {
@@ -109,10 +117,6 @@ public class IDMappingManager
 		}
 	}
 
-	/**
-	 * Method takes a map that contains identifier codes and creates a new resolved codes. Resolving means
-	 * mapping from code to internal ID.
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
@@ -297,7 +301,7 @@ public class IDMappingManager
 
 		// Add new code resolved map
 		hashType2Mapping.put(destMappingType, codeResolvedMap);
-		
+
 		MappingEdge edge = new MappingEdge(destMappingType);
 		mappingGraph.addEdge(destMappingType.getTypeOrigin(), destMappingType.getTypeTarget(), edge);
 		if (destMappingType.isMultiMap()) {
@@ -310,18 +314,24 @@ public class IDMappingManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> Map<KeyType, ValueType> getMapping(EMappingType type) {
+	public <KeyType, ValueType> Map<KeyType, ValueType> getMap(EMappingType type) {
 		return (Map<KeyType, ValueType>) hashType2Mapping.get(type);
 	}
 
 	@Override
-	public final boolean hasMapping(EMappingType type) {
-		return hashType2Mapping.containsKey(type);
+	public final boolean hasMapping(EIDType source, EIDType destination) {
+
+		if (source.equals(destination))
+			return true;
+		return (DijkstraShortestPath.findPathBetween(mappingGraph, source, destination) != null);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public <K, V> V getID(EIDType source, EIDType destination, K sourceID) {
+
+		if (source.equals(destination))
+			return (V) sourceID;
 
 		List<MappingEdge> path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		Object currentID = sourceID;
@@ -374,5 +384,72 @@ public class IDMappingManager
 		if (keys != null)
 			return (V) keys;
 		return (V) currentID;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <K, V> Set<V> getIDAsSet(EIDType source, EIDType destination, K sourceID) {
+
+		Set<V> setResult = new HashSet<V>();
+
+		if (source.equals(destination)) {
+			setResult.add((V) sourceID);
+			return setResult;
+		}
+
+		List<MappingEdge> path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
+		Object currentID = sourceID;
+
+		if (path == null)
+			return null;
+
+		Set<Object> keys = null;
+		Collection<Object> values = new ArrayList<Object>();
+
+		for (MappingEdge edge : path) {
+			Map<?, ?> currentMap = hashType2Mapping.get(edge.getMappingType());
+
+			if (keys != null) {
+				for (Object key : keys) {
+					if (edge.getMappingType().isMultiMap()) {
+						Set<Object> temp = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(key);
+						if (temp != null)
+							values.addAll(temp);
+					}
+					else {
+						Object value = currentMap.get(key);
+						if (value != null)
+							values.add(value);
+					}
+				}
+				if (values.isEmpty())
+					return null;
+
+				keys = new HashSet<Object>();
+				for (Object value : values) {
+					keys.add(value);
+				}
+				values.clear();
+			}
+			else {
+				if (edge.getMappingType().isMultiMap()) {
+					keys = (Set<Object>) ((MultiHashMap<?, ?>) (currentMap)).getAll(currentID);
+					if ((keys == null) || (keys.isEmpty()))
+						return null;
+				}
+				else {
+					currentID = currentMap.get(currentID);
+					if (currentID == null)
+						return null;
+				}
+
+			}
+		}
+		if (keys != null)
+			return (Set<V>) keys;
+
+		setResult.add((V) currentID);
+
+		return setResult;
 	}
 }

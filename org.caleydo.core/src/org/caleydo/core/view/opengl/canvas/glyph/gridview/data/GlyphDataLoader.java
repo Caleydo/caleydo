@@ -12,7 +12,6 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -147,7 +146,7 @@ public class GlyphDataLoader {
 		IIDMappingManager IdMappingManager = generalManager.getIDMappingManager();
 		// now convert the storages to real glyphs
 
-		if (!IdMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)) {
+		if (!IdMappingManager.hasMapping(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX)) {
 			this.generalManager.getLogger().log(
 				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
 					"GlyphDataLoader: No ID Mapping found - using internal ids"));
