@@ -19,6 +19,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.vislink.VisLink;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp. planes) between views in the
@@ -174,26 +175,27 @@ public abstract class AGLConnectionLineRenderer {
 	 */
 	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
 		final int iNumberOfLines, float[] fArColor) {
-		// Line shadow
-		// gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
-		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
-		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
-		gl.glEnd();
-
-		// gl.glColor4fv(fArColor, 0);
-
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
-		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
-		gl.glEnd();
+//		// Line shadow
+//		// gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
+//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
+//		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
+//		gl.glBegin(GL.GL_LINES);
+//		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
+//		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
+//		gl.glEnd();
+//
+//		// gl.glColor4fv(fArColor, 0);
+//
+//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+//		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+//
+//		gl.glBegin(GL.GL_LINES);
+//		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
+//		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
+//		gl.glEnd();
+		VisLink.renderLine(gl, vecSrcPoint, vecDestPoint, true);
 	}
 
 	/**
@@ -208,54 +210,64 @@ public abstract class AGLConnectionLineRenderer {
 	 */
 	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
 		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
-		Vec3f[] arSplinePoints = new Vec3f[3];
-
-		arSplinePoints[0] = vecSrcPoint.copy();
-		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint);
-		arSplinePoints[2] = vecDestPoint.copy();
-
-		FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
-		// float[] fArPoints =
-		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
-		float[] fArPoints =
-			{ arSplinePoints[0].x(), arSplinePoints[0].y(), arSplinePoints[0].z(), arSplinePoints[1].x(),
-					arSplinePoints[1].y(), arSplinePoints[1].z(), arSplinePoints[2].x(),
-					arSplinePoints[2].y(), arSplinePoints[2].z() };
-		splinePoints.put(fArPoints);
-		splinePoints.rewind();
-
-		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
-
-		// Line shadow
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
-		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
-
-		// gl.glColor4fv(fArColor, 0);
-		// Point to mask artefacts
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
-
-		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
-		gl.glBegin(GL.GL_POINTS);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
-
-		// The spline
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-
-		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
-		}
-		gl.glEnd();
+//		Vec3f[] arSplinePoints = new Vec3f[3];
+//
+//		arSplinePoints[0] = vecSrcPoint.copy();
+//		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint);
+//		arSplinePoints[2] = vecDestPoint.copy();
+//
+//		FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
+//		// float[] fArPoints =
+//		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
+//		float[] fArPoints =
+//			{ arSplinePoints[0].x(), arSplinePoints[0].y(), arSplinePoints[0].z(), arSplinePoints[1].x(),
+//					arSplinePoints[1].y(), arSplinePoints[1].z(), arSplinePoints[2].x(),
+//					arSplinePoints[2].y(), arSplinePoints[2].z() };
+//		splinePoints.put(fArPoints);
+//		splinePoints.rewind();
+//
+//		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
+//
+//		// Line shadow
+//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
+//		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
+//		gl.glBegin(GL.GL_LINE_STRIP);
+//		for (int i = 0; i <= 10; i++) {
+//			gl.glEvalCoord1f((float) i / 10);
+//		}
+//		gl.glEnd();
+//
+//		// gl.glColor4fv(fArColor, 0);
+//		// Point to mask artefacts
+//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+//		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+//
+//		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
+//		gl.glBegin(GL.GL_POINTS);
+//		for (int i = 0; i <= 10; i++) {
+//			gl.glEvalCoord1f((float) i / 10);
+//		}
+//		gl.glEnd();
+//
+//		// The spline
+//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+//
+//		gl.glBegin(GL.GL_LINE_STRIP);
+//		for (int i = 0; i <= 10; i++) {
+//			gl.glEvalCoord1f((float) i / 10);
+//		}
+//		gl.glEnd();
+		
+		// this block should be used instead of testing method below
+		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
+		controlPoints.add(vecSrcPoint);
+		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
+		controlPoints.add(vecDestPoint);
+		VisLink.renderLine(gl, controlPoints, 10, true);
+		
+//		// FIXME: testing only, use above block instead
+//		VisLink.polygonLine(gl, vecSrcPoint, calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint), vecDestPoint, 10, false);
 	}
 
 	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
