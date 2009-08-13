@@ -246,7 +246,7 @@ public class VisLink {
 		return new Vec3f(v1v2.cross(v1v3));
 	}
 	
-	/** only for testing */
+	/** only for testing. do not use! */
 	protected static ArrayList<Vec3f> generatePolygonVertices(final GL gl, ArrayList<Vec3f> curvePoints, Vec3f srcPoint, Vec3f bundlingPoint, Vec3f destPoint)
 	throws IllegalArgumentException
 	{
@@ -270,7 +270,7 @@ public class VisLink {
 	}
 	
 	
-	/** only for testing */
+	/** only for testing. do not use! */
 	protected static Vec3f project(final GL gl, Vec3f coord) {
 		Vec3f result = new Vec3f();
 		GLU glu = new GLU();
@@ -301,6 +301,43 @@ public class VisLink {
 		result.setY( (float) wcoord[1]);
 		result.setZ( (float) wcoord[2]);		
 		return result;
+	}
+	
+	/** only for testing. do not use! */
+	public static void polygonLine2(final GL gl, final Vec3f srcPoint, final Vec3f bundlingPoint, final Vec3f destPoint, final int numberOfSegments, boolean shadow) {
+		
+		Vec3f src1 = new Vec3f(srcPoint);
+		Vec3f bundling1 = new Vec3f(bundlingPoint);
+		Vec3f dest1 = new Vec3f(destPoint);
+		
+		Vec3f src2 = new Vec3f(srcPoint);
+		Vec3f bundling2 = new Vec3f(bundlingPoint);
+		Vec3f dest2 = new Vec3f(destPoint);
+		
+		src1.setY(src1.y() + 0.02f);
+		src2.setY(src2.y() - 0.02f);
+		dest1.setY(dest1.y() + 0.02f);
+		dest2.setY(dest2.y() - 0.02f);
+		bundling1.setY(bundling1.y() + 0.02f);
+		bundling2.setY(bundling2.y() - 0.02f);
+		
+		NURBSCurve curve1 = new NURBSCurve(src1, bundling1, dest1, 10);
+		NURBSCurve curve2 = new NURBSCurve(src2, bundling2, dest2, 10);
+		
+		ArrayList<Vec3f> cp1 = new ArrayList<Vec3f>(curve1.getCurvePoints());
+		ArrayList<Vec3f> cp2 = new ArrayList<Vec3f>(curve2.getCurvePoints());
+		
+		// The spline attributes
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+		
+		// the spline
+		gl.glPointSize(4f);
+		gl.glBegin(GL.GL_TRIANGLE_STRIP);
+		for(int i = 0; i < cp1.size(); i++) {
+			gl.glVertex3f(cp1.get(i).x(), cp1.get(i).y(), cp1.get(i).z());
+			gl.glVertex3f(cp2.get(i).x(), cp2.get(i).y(), cp2.get(i).z());
+		}
+		gl.glEnd();
 	}
 	
 }
