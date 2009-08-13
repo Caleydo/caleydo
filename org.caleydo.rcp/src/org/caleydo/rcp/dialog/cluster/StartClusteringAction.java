@@ -16,6 +16,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -48,10 +49,12 @@ public class StartClusteringAction
 	private int iClusterCntExperiments = 5;
 	private float fclusterFactorGenes = 1f;
 	private float fclusterFactorExperiments = 1f;
+	private boolean bUseMaximumLinkage = true;
 
 	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Bi-Clustering" };
 	private String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
 	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };
+	private String[] sArTreeClusterer = { "Maximum Linkage", "Average Linkage" };
 
 	private ClusterState clusterState = new ClusterState();
 
@@ -318,7 +321,10 @@ public class StartClusteringAction
 		treeClusteringTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		final Combo clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN);
+		Composite clusterComposite = new Composite(composite, SWT.NONE);
+		clusterComposite.setLayout(new RowLayout());
+		
+		final Combo clusterTypeCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.select(0);
 		clusterType = sArTypeOptions[0];
@@ -326,6 +332,20 @@ public class StartClusteringAction
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				clusterType = clusterTypeCombo.getText();
+			}
+		});
+		
+		final Combo treeClustererCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
+		treeClustererCombo.setItems(sArTreeClusterer);
+		treeClustererCombo.select(0);
+		bUseMaximumLinkage = true;
+		treeClustererCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(treeClustererCombo.getText() == sArTreeClusterer[0])
+					bUseMaximumLinkage = true;
+				else
+					bUseMaximumLinkage = false;
 			}
 		});
 
@@ -424,6 +444,7 @@ public class StartClusteringAction
 		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
 		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
+		clusterState.setUseMaximumLinkage(bUseMaximumLinkage);
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

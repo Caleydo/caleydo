@@ -12,6 +12,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
@@ -386,12 +387,6 @@ public class TreeClusterer
 			set.setClusteredTreeGenes(tree);
 		else
 			set.setClusteredTreeExps(tree);
-
-		// Integer clusteredVAId = 0;
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndices);
-		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndices);
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
@@ -795,8 +790,10 @@ public class TreeClusterer
 
 		this.set = set;
 
-		virtualArray = pmlcluster(clusterState.getClustererType());
-		// virtualArray = palcluster(clusterState.getClustererType());
+		if (clusterState.isUseMaximumLinkage())
+			virtualArray = pmlcluster(clusterState.getClustererType());
+		else
+			virtualArray = palcluster(clusterState.getClustererType());
 
 		return virtualArray;
 	}

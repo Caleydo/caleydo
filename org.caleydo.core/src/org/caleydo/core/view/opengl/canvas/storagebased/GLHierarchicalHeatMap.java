@@ -46,7 +46,6 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -85,10 +84,11 @@ public class GLHierarchicalHeatMap
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.6f;
 
-	// private final static float MAX_NUM_SAMPLES = 8f;
-
 	private final static int MIN_SAMPLES_PER_TEXTURE = 200;
-	private final static int MAX_SAMPLES_PER_TEXTURE = 500;
+	private final static int MAX_SAMPLES_PER_TEXTURE = 1000;
+
+	private final static int MIN_SAMPLES_LEVEL_2 = 200;
+	private final static int MAX_SAMPLES_LEVEL_2 = 500;
 
 	private final static int MIN_SAMPLES_PER_HEATMAP = 14;
 	private final static int MAX_SAMPLES_PER_HEATMAP = 50;
@@ -267,6 +267,9 @@ public class GLHierarchicalHeatMap
 
 			if (iSamplesPerTexture > MAX_SAMPLES_PER_TEXTURE)
 				iSamplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
+
+			if (iSamplesPerTexture < MIN_SAMPLES_PER_TEXTURE && iNumberOfElements > MIN_SAMPLES_PER_TEXTURE)
+				iSamplesPerTexture = MIN_SAMPLES_PER_TEXTURE;
 
 			iSamplesLevel2 = 200;
 
@@ -646,11 +649,68 @@ public class GLHierarchicalHeatMap
 	protected void reactOnExternalSelection(boolean scrollToSelection) {
 
 		if (scrollToSelection && bSkipLevel2 == false) {
-			Set<Integer> setMouseOverElements =
-				contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 			// Set<Integer> setSelectedElements =
 			// contentSelectionManager.getElements(ESelectionType.SELECTION);
+			//
+			// for (Integer selectedElement : setSelectedElements) {
+			//
+			// int index = contentVA.indexOf(selectedElement.intValue());
+			//
+			// // selected element is in level 3
+			// if (index >= (iFirstSampleLevel1 + iFirstSampleLevel2)
+			// && index <= (iFirstSampleLevel1 + iLastSampleLevel2 + 1)) {
+			// // System.out.println("in range of level 3 --> do nothing");
+			// return;
+			// }
+			// // selected element is in level 2
+			// else if (index >= iFirstSampleLevel1 && index < iLastSampleLevel1) {
+			// // System.out.println("in range of level 2 --> move level 3");
+			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1 - 1;
+			// if (iFirstSampleLevel2 < 0) {
+			// iFirstSampleLevel2 = 0;
+			// iLastSampleLevel2 = iSamplesPerHeatmap - 1;
+			// }
+			// if (iLastSampleLevel2 > iSamplesLevel2) {
+			// iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
+			// iLastSampleLevel2 = iSamplesLevel2 - 1;
+			// }
+			// }
+			// else {
+			// // System.out.println("in range of level 1 --> move level 2 and 3");
+			// iFirstSampleLevel1 = index - iSamplesLevel2 / 2;
+			// iLastSampleLevel1 = index + iSamplesLevel2 / 2;
+			//
+			// if (iFirstSampleLevel1 <= 0) {
+			// iFirstSampleLevel1 = 0;
+			// iLastSampleLevel1 = iSamplesLevel2;
+			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2;
+			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2;
+			// if (iFirstSampleLevel2 < 0) {
+			// iFirstSampleLevel2 = 0;
+			// iLastSampleLevel2 = iSamplesPerHeatmap;
+			// }
+			// }
+			// else if (iLastSampleLevel1 > iNumberOfElements) {
+			// iFirstSampleLevel1 = iNumberOfElements - iSamplesLevel2;
+			// iLastSampleLevel1 = iNumberOfElements;
+			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+			// if (iLastSampleLevel2 > iSamplesLevel2) {
+			// iFirstSampleLevel2 = iSamplesLevel2 - iSamplesPerHeatmap;
+			// iLastSampleLevel2 = iSamplesLevel2;
+			// }
+			// }
+			// else {
+			// iFirstSampleLevel2 = index - iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+			// iLastSampleLevel2 = index + iSamplesPerHeatmap / 2 - iFirstSampleLevel1;
+			// }
+			// }
+			// return;
+			// }
 
+			Set<Integer> setMouseOverElements =
+				contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 			for (Integer mouseOverElement : setMouseOverElements) {
 
 				int index = contentVA.indexOf(mouseOverElement.intValue());
@@ -2691,6 +2751,8 @@ public class GLHierarchicalHeatMap
 		for (Group currentGroup : groupList) {
 			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
 				iTargetIdx = cnt;
+				if(iExpGroupToDrag < iTargetIdx)
+					iElemOffset+=currentGroup.getNrElements();
 				break;
 			}
 			cnt++;
@@ -2767,6 +2829,8 @@ public class GLHierarchicalHeatMap
 		for (Group currentGroup : groupList) {
 			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
 				iTargetIdx = cnt;
+				if(iGeneGroupToDrag < iTargetIdx)
+					iElemOffset+=currentGroup.getNrElements();
 				break;
 			}
 			cnt++;
@@ -2984,7 +3048,7 @@ public class GLHierarchicalHeatMap
 			if (fYPosMouse > fPosCursorLastElementLevel1 && fYPosMouse <= viewFrustum.getHeight() - 0.6f) {
 				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iLastSampleLevel1 - iselElement + 1;
-				if (iNrSamples >= MIN_SAMPLES_PER_TEXTURE && iNrSamples < MAX_SAMPLES_PER_TEXTURE) {
+				if (iNrSamples >= MIN_SAMPLES_LEVEL_2 && iNrSamples < MAX_SAMPLES_LEVEL_2) {
 					fPosCursorFirstElementLevel1 = fYPosMouse;
 					iFirstSampleLevel1 = iselElement;
 					iSamplesLevel2 = iLastSampleLevel1 - iFirstSampleLevel1 + 1;
@@ -3000,7 +3064,7 @@ public class GLHierarchicalHeatMap
 			if (fYPosMouse < fPosCursorFirstElementLevel1 && fYPosMouse >= 0.0f) {
 				iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) / fStep);
 				iNrSamples = iselElement - iFirstSampleLevel1 + 1;
-				if (iNrSamples >= MIN_SAMPLES_PER_TEXTURE && iNrSamples < MAX_SAMPLES_PER_TEXTURE) {
+				if (iNrSamples >= MIN_SAMPLES_LEVEL_2 && iNrSamples < MAX_SAMPLES_LEVEL_2) {
 					fPosCursorLastElementLevel1 = fYPosMouse;
 					iLastSampleLevel1 = iselElement;
 					iSamplesLevel2 = iLastSampleLevel1 - iFirstSampleLevel1 + 1;
@@ -3055,8 +3119,8 @@ public class GLHierarchicalHeatMap
 					iSamplesPerHeatmap = iLastSampleLevel2 - iFirstSampleLevel2 + 1;
 
 					// update Preference store
-					generalManager.getPreferenceStore().setValue(
-						PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
+					// generalManager.getPreferenceStore().setValue(
+					// PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
 				}
 			}
 		}
@@ -3071,8 +3135,8 @@ public class GLHierarchicalHeatMap
 					iSamplesPerHeatmap = iLastSampleLevel2 - iFirstSampleLevel2 + 1;
 
 					// update Preference store
-					generalManager.getPreferenceStore().setValue(
-						PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
+					// generalManager.getPreferenceStore().setValue(
+					// PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
 				}
 			}
 		}
@@ -3109,7 +3173,7 @@ public class GLHierarchicalHeatMap
 
 					case CLICKED:
 						contentVA.getGroupList().get(iExternalID).toggleSelectionType();
-
+						deactivateAllDraggingCursor();
 						bActivateDraggingGenes = true;
 
 						// set node in tree selected

@@ -18,10 +18,14 @@ public class ClusterState {
 	private int kMeansClusterCntExperiments;
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
+	/**
+	 * if true maximum linkage will be used, if false average linkage
+	 */
+	private boolean bUseMaximumLinkage;
 
 	private int contentVaId = 0;
 	private int storageVaId = 0;
-	
+
 	public ClusterState() {
 
 	}
@@ -102,6 +106,14 @@ public class ClusterState {
 
 	public int getStorageVaId() {
 		return storageVaId;
+	}
+
+	public void setUseMaximumLinkage(boolean bUseMaximumLinkage) {
+		this.bUseMaximumLinkage = bUseMaximumLinkage;
+	}
+
+	public boolean isUseMaximumLinkage() {
+		return bUseMaximumLinkage;
 	}
 
 }
