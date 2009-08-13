@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.util.vislink;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
 
 import gleem.linalg.Vec3f;
 
@@ -187,10 +186,19 @@ public class VisLink {
 		
 		// The spline attributes
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+		//gl.glColor4f(0.9f, 0.5f, 0.3f, 1);
+		
+//		gl.glEnable( GL.GL_BLEND );
+//		gl.glEnable( GL.GL_POLYGON_SMOOTH );
+//		gl.glEnable( GL.GL_ALPHA_TEST );
+	
+//		gl.glDisable( GL.GL_DEPTH_TEST );
+//		gl.glHint( GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST );		
+//		gl.glPolygonOffset( 0.0f, .15f );
 		
 		// the spline
 		gl.glPointSize(4f);
-		gl.glBegin(GL.GL_TRIANGLE_STRIP);
+		gl.glBegin(GL.GL_QUAD_STRIP);
 		for(int i = 0; i < polygonPoints.size(); i++)
 			gl.glVertex3f(polygonPoints.get(i).x(), polygonPoints.get(i).y(), polygonPoints.get(i).z());
 		gl.glEnd();
@@ -246,98 +254,56 @@ public class VisLink {
 		return new Vec3f(v1v2.cross(v1v3));
 	}
 	
+	
+	protected static Vec3f directionVec(Vec3f prevPoint, Vec3f point, Vec3f nextPoint) {
+		Vec3f straight = nextPoint.minus(prevPoint);
+		Vec3f eyepoint = new Vec3f(0.0f, 0.0f, 6.0f);
+		Vec3f epVec = eyepoint.minus(point);
+		return new Vec3f(straight.cross(epVec));
+	}
+	
+	protected static Vec3f invDirectionVec(Vec3f prevPoint, Vec3f point, Vec3f nextPoint) {
+		Vec3f straight = nextPoint.minus(prevPoint);
+		Vec3f eyepoint = new Vec3f(0.0f, 0.0f, 6.0f);
+		Vec3f epVec = eyepoint.minus(point);
+		return new Vec3f(epVec.cross(straight));
+	}
+	
 	/** only for testing. do not use! */
 	protected static ArrayList<Vec3f> generatePolygonVertices(final GL gl, ArrayList<Vec3f> curvePoints, Vec3f srcPoint, Vec3f bundlingPoint, Vec3f destPoint)
 	throws IllegalArgumentException
 	{
 		if(curvePoints.size() <= 0)
 			throw new IllegalArgumentException( "given set of curve points is empty ()" );
-		
-		// calculating the normals
-		Vec3f normal = calculateNormal(srcPoint, bundlingPoint, destPoint);
-		Vec3f invNormal = calculateInvNormal(srcPoint, bundlingPoint, destPoint);
-		normal = normalizeVector(normal);
-		invNormal = normalizeVector(invNormal);
+			
 		
 		ArrayList<Vec3f> polygonPoints = new ArrayList<Vec3f>();
-		float width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH / 2.0f;
+		float width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH / 2f;
 		
-		for ( int i = 0; i < curvePoints.size() - 1; i++) {		
-			polygonPoints.add(curvePoints.get(i).addScaled(width, normal)); // FIXME: only testing purpose
-			polygonPoints.add(curvePoints.get(i).addScaled(width, invNormal));
+		Vec3f dirVec = new Vec3f();
+		Vec3f invDirVec = new Vec3f();
+		
+		for ( int i = 0; i < curvePoints.size(); i++) {	
+			if(i == 0) {
+				dirVec = directionVec(curvePoints.get(i), curvePoints.get(i), curvePoints.get(i+1));
+				invDirVec = invDirectionVec(curvePoints.get(i), curvePoints.get(i), curvePoints.get(i+1));
+			}
+			else if (i == (curvePoints.size() - 1) ) {
+				dirVec = directionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i));
+				invDirVec = invDirectionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i));
+			}
+			else {
+				dirVec = directionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i+1));
+				invDirVec = invDirectionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i+1));
+			}
+			
+			dirVec = normalizeVector(dirVec);
+			invDirVec = normalizeVector(invDirVec);
+			
+			polygonPoints.add(curvePoints.get(i).addScaled(width, dirVec)); // FIXME: only testing purpose
+			polygonPoints.add(curvePoints.get(i).addScaled(width, invDirVec));
 		}		
 		return polygonPoints;
-	}
-	
-	
-	/** only for testing. do not use! */
-	protected static Vec3f project(final GL gl, Vec3f coord) {
-		Vec3f result = new Vec3f();
-		GLU glu = new GLU();
-		
-		
-
-		// arrays to hold matrix information
-
-		double[] model_view = new double[16];
-		gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, model_view, 0);
-
-		double[] projection = new double[16];
-		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, projection, 0);
-
-		int[] viewport = new int[4];
-		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-		
-		double[] wcoord = new double[3];
-			
-		// get 3D coordinates based on window coordinates
-
-		glu.gluProject(coord.x(), coord.y(), coord.z(), model_view, 0, projection, 0, viewport, 0, wcoord, 0);
-		
-		System.out.println(wcoord[0] + " " + wcoord[1] + " " + wcoord[2]);
-		System.out.println("---------------");
-		
-		result.setX( (float) wcoord[0]);
-		result.setY( (float) wcoord[1]);
-		result.setZ( (float) wcoord[2]);		
-		return result;
-	}
-	
-	/** only for testing. do not use! */
-	public static void polygonLine2(final GL gl, final Vec3f srcPoint, final Vec3f bundlingPoint, final Vec3f destPoint, final int numberOfSegments, boolean shadow) {
-		
-		Vec3f src1 = new Vec3f(srcPoint);
-		Vec3f bundling1 = new Vec3f(bundlingPoint);
-		Vec3f dest1 = new Vec3f(destPoint);
-		
-		Vec3f src2 = new Vec3f(srcPoint);
-		Vec3f bundling2 = new Vec3f(bundlingPoint);
-		Vec3f dest2 = new Vec3f(destPoint);
-		
-		src1.setY(src1.y() + 0.02f);
-		src2.setY(src2.y() - 0.02f);
-		dest1.setY(dest1.y() + 0.02f);
-		dest2.setY(dest2.y() - 0.02f);
-		bundling1.setY(bundling1.y() + 0.02f);
-		bundling2.setY(bundling2.y() - 0.02f);
-		
-		NURBSCurve curve1 = new NURBSCurve(src1, bundling1, dest1, 10);
-		NURBSCurve curve2 = new NURBSCurve(src2, bundling2, dest2, 10);
-		
-		ArrayList<Vec3f> cp1 = new ArrayList<Vec3f>(curve1.getCurvePoints());
-		ArrayList<Vec3f> cp2 = new ArrayList<Vec3f>(curve2.getCurvePoints());
-		
-		// The spline attributes
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-		
-		// the spline
-		gl.glPointSize(4f);
-		gl.glBegin(GL.GL_TRIANGLE_STRIP);
-		for(int i = 0; i < cp1.size(); i++) {
-			gl.glVertex3f(cp1.get(i).x(), cp1.get(i).y(), cp1.get(i).z());
-			gl.glVertex3f(cp2.get(i).x(), cp2.get(i).y(), cp2.get(i).z());
-		}
-		gl.glEnd();
 	}
 	
 }
