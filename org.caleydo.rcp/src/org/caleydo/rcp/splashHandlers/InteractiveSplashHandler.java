@@ -52,7 +52,7 @@ public class InteractiveSplashHandler
 		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
 
 		Label progressMessageLabel = new Label(splash, SWT.NONE);
-		progressMessageLabel.setText("Loading...");
+		progressMessageLabel.setText(" Loading...");
 		// label.setForeground(splash.getDisplay().getSystemColor
 		// (SWT.COLOR_BLACK));
 		progressMessageLabel.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
@@ -60,38 +60,38 @@ public class InteractiveSplashHandler
 		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label versionLabel = new Label(splash, SWT.NONE);
-		versionLabel.setText("Version " + Activator.sVersion + " BETA");
+		versionLabel.setText(" Version " + Activator.sVersion + " BETA");
 		versionLabel.setFont(new Font(splash.getDisplay(), "Arial", 9, SWT.NONE));
 		versionLabel.setBounds(336, 185, 150, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelTUGCaption = new Label(splash, SWT.NONE);
-		brandingLabelTUGCaption.setText("Graz University of Technology");
+		brandingLabelTUGCaption.setText(" Graz University of Technology");
 		brandingLabelTUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-		brandingLabelTUGCaption.setBounds(20, 268, 500, 15);
+		brandingLabelTUGCaption.setBounds(20, 253, 500, 15);
 		brandingLabelTUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelTUGNames = new Label(splash, SWT.NONE);
 		brandingLabelTUGNames
-			.setText("Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, Werner Puff, Dieter Schmalstieg");
+			.setText(" Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, \n Werner Puff, Christian Partl, Dieter Schmalstieg");
 		brandingLabelTUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
-		brandingLabelTUGNames.setBounds(20, 282, 500, 15);
+		brandingLabelTUGNames.setBounds(20, 270, 500, 30);
 		brandingLabelTUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelMUGCaption = new Label(splash, SWT.NONE);
-		brandingLabelMUGCaption.setText("Medical University of Graz");
+		brandingLabelMUGCaption.setText(" Medical University of Graz");
 		brandingLabelMUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		brandingLabelMUGCaption.setBounds(20, 298, 500, 15);
 		brandingLabelMUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label brandingLabelMUGNames = new Label(splash, SWT.NONE);
-		brandingLabelMUGNames.setText("Heimo Mueller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
+		brandingLabelMUGNames.setText(" Heimo Mueller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
 		brandingLabelMUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
 		brandingLabelMUGNames.setBounds(20, 312, 300, 15);
 		brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label copyrightLabel = new Label(splash, SWT.NONE);
-		copyrightLabel.setText("(c) 2005 - 2009  www.caleydo.org");
+		copyrightLabel.setText(" (c) 2005 - 2009  www.caleydo.org");
 		copyrightLabel.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		copyrightLabel.setBounds(385, 312, 180, 16);
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));

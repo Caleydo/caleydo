@@ -203,7 +203,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.caleydo.rcp.application"
+            application="org.eclipse.ant.core.antRunner"
             name="Caleydo">
          <property
                name="appName"
