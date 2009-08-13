@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.media.opengl.GL;
 
@@ -23,6 +24,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -34,8 +36,8 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 /**
  * Rendering the hyperbolic view.
  * 
- * @author Alexander Lex
- * @author Marc Streit
+ * @author Helmut Pichlhoefer
+ * @author Georg Neubauer
  */
 public class GLHyperbolic
 	extends AGLEventListener
@@ -83,29 +85,29 @@ public class GLHyperbolic
 		// tree = tester;
 		// tree.runTest();
 
-		tree = new Tree<ADrawAbleNode>();
-		ADrawAbleNode test = new TestNode("first Test", 0);
-		tree.setRootNode(test);
-		for (int i = 1; i <= 6; ++i) {
-			ADrawAbleNode test2 = new TestNode("childs", i);
-			tree.addChild(test, test2);
-			test = test2;
-		}
-		
-		test = tree.getRoot();
-		ADrawAbleNode test2 = new TestNode("childs", 500);
-		tree.addChild(test, test2);
-//		blabla(test);
-//		int lala = tree.getDepth();
-//		lala = tree.getDepth(test);
-//		for(ADrawAbleNode node : tree.getChildren(test))
-//			lala = tree.getDepth(node);
+//		tree = new Tree<ADrawAbleNode>();
+//		ADrawAbleNode test = new TestNode("first Test", 0);
+//		tree.setRootNode(test);
+//		for (int i = 1; i <= 6; ++i) {
+//			ADrawAbleNode test2 = new TestNode("childs", i);
+//			tree.addChild(test, test2);
+//			test = test2;
+//		}
+//
+//		test = tree.getRoot();
 //		ADrawAbleNode test2 = new TestNode("childs", 500);
 //		tree.addChild(test, test2);
-//		lala = tree.getDepth(test2);
-//		lala = tree.getDepth(test);
-//		lala = tree.getDepth();
-		
+		// blabla(test);
+		// int lala = tree.getDepth();
+		// lala = tree.getDepth(test);
+		// for(ADrawAbleNode node : tree.getChildren(test))
+		// lala = tree.getDepth(node);
+		// ADrawAbleNode test2 = new TestNode("childs", 500);
+		// tree.addChild(test, test2);
+		// lala = tree.getDepth(test2);
+		// lala = tree.getDepth(test);
+		// lala = tree.getDepth();
+
 		// ADrawAbleObject obj = DrawAbleObjectsFactory.getDrawAbleObject("Polygon");
 		// obj.setAlpha(0.8f);
 		// obj.setBgColor3f(0.4f, 0.3f, 0.5f);
@@ -116,7 +118,11 @@ public class GLHyperbolic
 		// test.setDetailLevel(EDrawAbleNodeDetailLevel.High, obj);
 
 		// tree.addChild(test, test2);
-		layouter = new LinearTreeLayouter(viewFrustum);
+		// layouter = new LinearTreeLayouter(viewFrustum);
+		
+		tree = buildTestTree(3, 5);
+		System.out.println(tree.getGraph().toString());
+		layouter = new HTLayouter(viewFrustum);
 	}
 
 	@Override
@@ -398,4 +404,37 @@ public class GLHyperbolic
 
 	}
 
+	private Tree<ADrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {
+		int iComp = 1;
+		Tree<ADrawAbleNode> tree = new Tree<ADrawAbleNode>();
+		ADrawAbleNode root = new TestNode("root node: " + iComp + " Layer: " + 1, iComp);
+		tree.setRootNode(root);
+		for (int j = 0; j <= iMaxNodesOnLayer; ++j) {
+			++iComp;
+			tree.addChild(root, new TestNode("child node: " + iComp + " Layer: " + 2, iComp));
+		}
+		ArrayList<ADrawAbleNode> nodesOnLayer = tree.getChildren(root);
+		for (int i = 2; i <= iDepth; ++i) {
+
+			ArrayList<ADrawAbleNode> nodes = new ArrayList<ADrawAbleNode>();
+			for (int j = 0; j < iMaxNodesOnLayer; ++j) {
+				++iComp;
+				nodes.add(new TestNode("child node: " + iComp + " Layer: " + i, iComp));
+			}
+			ArrayList<ADrawAbleNode> nStore = new ArrayList<ADrawAbleNode>(nodes);
+			while (!nodes.isEmpty())
+				for (ADrawAbleNode node : nodesOnLayer) {
+					if (nodes.isEmpty())
+						continue;
+					int s = Math.min(nodes.size(), (int)(Math.random() * (double)iMaxNodesOnLayer) / 4);
+					for (int j = 0; j < s; ++j) {
+						tree.addChild(node, nodes.get(0));
+						nodes.remove(0);
+					}
+				}
+			nodesOnLayer = nStore;
+		}
+
+		return tree;
+	}
 }
