@@ -32,9 +32,19 @@ public class GeneContextMenuItemContainer
 	}
 
 	public void setStorageIndex(int iStorageIndex) {
-		Integer davidID =
-			GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
+		// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+		// values, depending on the IDType that has been specified when loading expression data.
+		// Possibly a different handling of the Set is required.
+		Set<Integer> setDavidIDs =
+			GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
 				iStorageIndex);
+		
+		Integer davidID = null;
+		
+		if((setDavidIDs != null && !setDavidIDs.isEmpty())) {
+			davidID = (Integer)setDavidIDs.toArray()[0];
+		}
+		
 		if(davidID == null)
 			davidID = -1;
 		// mappingHelper.getDavidIDFromStorageIndex(iStorageIndex);
@@ -61,7 +71,7 @@ public class GeneContextMenuItemContainer
 		addContextMenuItem(showPathwaysByGeneItem);
 
 		Set<Integer> setExpIndex =
-			GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
+			GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
 		
 		if (setExpIndex == null)
 			return;

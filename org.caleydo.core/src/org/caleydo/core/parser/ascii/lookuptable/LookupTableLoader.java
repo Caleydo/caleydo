@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
@@ -74,10 +75,7 @@ public class LookupTableLoader
 					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
 						// Special case for creating indexing of storages
 						// TODO review sLine should be integer?
-						if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
-							|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
-							|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)
-							|| mappingType.equals(EMappingType.UNSPECIFIED_2_EXPRESSION_INDEX)) {
+						if(mappingType.getTypeTarget().equals(EIDType.EXPRESSION_INDEX)) {
 							
 							// Remove multiple RefSeqs because all point to the
 							// same gene DAVID ID
@@ -90,8 +88,19 @@ public class LookupTableLoader
 								sLine = sLine.substring(0, sLine.indexOf("."));
 							}
 
-							genomeIdManager.getMap(mappingType).put(sLine,
-								iLineInFile - iStartParsingAtLine);
+							if(mappingType.getTypeOrigin().getStorageType() == EStorageType.INT) {
+								try {
+									Integer id = Integer.parseInt(sLine);
+									genomeIdManager.getMap(mappingType).put(id,
+										iLineInFile - iStartParsingAtLine);
+								}catch (NumberFormatException e) {
+								}
+							} else if(mappingType.getTypeOrigin().getStorageType() == EStorageType.STRING) {
+								genomeIdManager.getMap(mappingType).put(sLine,
+									iLineInFile - iStartParsingAtLine);
+							}
+							else
+								throw new IllegalStateException("Unsupported data type!");
 						}
 						else {
 							genomeIdManager.getMap(mappingType).put(sLine, strTokenText.nextToken());
@@ -103,10 +112,7 @@ public class LookupTableLoader
 							String buffer = strTokenText.nextToken();
 
 							// Special case for creating indexing of storages
-							if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
-								|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
-								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX)
-								|| mappingType.equals(EMappingType.UNSPECIFIED_2_EXPRESSION_INDEX)) {
+							if(mappingType.getTypeTarget().equals(EIDType.EXPRESSION_INDEX)){
 								
 								if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)) {
 									// Remove multiple RefSeqs because all point to
@@ -126,6 +132,14 @@ public class LookupTableLoader
 								// cell is empty
 								try {
 									Float.valueOf(buffer);
+									if(mappingType.getTypeOrigin().getStorageType() == EStorageType.INT) {
+										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
+											iLineInFile - iStartParsingAtLine);
+									}
+									else if(mappingType.getTypeOrigin() == EIDType.UNSPECIFIED) {
+										genomeIdManager.getMap(mappingType).put(buffer,
+											iLineInFile - iStartParsingAtLine);
+									}
 								}
 								catch (NumberFormatException e) {
 									// System.out.println(buffer + " " +

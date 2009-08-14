@@ -5,8 +5,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.mapping.EIDType;
+
 /**
  * Parameters to load the initial data-{@link Set}.
+ * 
  * @author Werner Puff
  */
 @XmlType
@@ -14,22 +17,25 @@ public class LoadDataParameters {
 
 	/** TODO doc */
 	ArrayList<Integer> storageIds;
-	
+
+	/** Specifies the IDType that is used in the main data file */
+	private EIDType fileIDType;
+
 	/** path to main data file */
 	private String fileName;
-	
+
 	/** path to gene-cluster-tree file */
 	private String geneTreeFileName;
 
 	/** path to experiment-cluster-tree file */
 	private String experimentsFileName;
-	
+
 	/** TODO doc */
 	private String inputPattern;
 
 	/** labels of the storages (similar to experiments) */
 	private List<String> storageLabels;
-	
+
 	/** csv-delimiter between to values */
 	private String delimiter;
 
@@ -41,22 +47,22 @@ public class LoadDataParameters {
 
 	/** <code>true</code> if a min-value was set, false otherwise */
 	private boolean minDefined = false;
-	
+
 	/** TODO doc */
 	private float min = Float.MIN_VALUE;
-	
+
 	/** <code>true</code> if a max-value was set, false otherwise */
 	private boolean maxDefined = false;
-	
+
 	/** TODO doc */
 	private float max = Float.MAX_VALUE;
-	
+
 	/** TODO doc */
 	private String mathFilterMode;
-	
+
 	/** TODO doc */
 	private boolean useExperimentClusterInfo;
-	
+
 	public LoadDataParameters() {
 		this.fileName = null;
 		this.geneTreeFileName = null;
@@ -186,6 +192,14 @@ public class LoadDataParameters {
 
 	public void setUseExperimentClusterInfo(boolean useExperimentClusterInfo) {
 		this.useExperimentClusterInfo = useExperimentClusterInfo;
+	}
+
+	public void setFileIDType(EIDType fileIDType) {
+		this.fileIDType = fileIDType;
+	}
+
+	public EIDType getFileIDType() {
+		return fileIDType;
 	}
 
 }

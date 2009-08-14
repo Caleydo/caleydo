@@ -811,12 +811,14 @@ public class GLPathwayContentCreator {
 
 				for (Object iRefSeqID : iSetRefSeq) {
 
-					if (idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX,
+					if (idMappingManager.getIDAsSet(EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX,
 						((Integer) iRefSeqID)) == null) {
 						break;
 					}
-
-					for (Object iExpressionIndex : idMappingManager.<Integer, Set<Object>> getID(
+					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+					// values, depending on the IDType that has been specified when loading expression data.
+					// Possibly a different handling of the Set is required.
+					for (Object iExpressionIndex : idMappingManager.<Integer, Object> getIDAsSet(
 						EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, ((Integer) iRefSeqID))) {
 
 						return colorMapper.getColor(glPathwayView.getSet().get(

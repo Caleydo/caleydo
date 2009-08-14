@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
@@ -451,5 +452,34 @@ public class IDMappingManager
 		setResult.add((V) currentID);
 
 		return setResult;
+	}
+
+	@Override
+	public List<EIDType> getIDTypes(EIDCategory category) {
+		ArrayList<EIDType> idTypes = new ArrayList<EIDType>();
+		
+		for(EIDType idType : mappingGraph.vertexSet()) {
+			if(idType.getCategory().equals(category))
+				idTypes.add(idType);
+		}
+		return idTypes;
+	}
+	
+//	public void printGraph() {
+//		System.out.println(mappingGraph.toString());
+//	}
+	
+	@Override
+	public <T> boolean doesElementExist(EIDType idType, T element) {
+		Set<MappingEdge> edges = mappingGraph.edgesOf(idType);
+		
+		for(MappingEdge edge : edges) {
+			Map<?, ?> currentMap = hashType2Mapping.get(edge.getMappingType());
+			if(currentMap != null) {
+				if(currentMap.containsKey(element))
+					return true;
+			}
+		}
+		return false;
 	}
 }

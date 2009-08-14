@@ -1,6 +1,7 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -96,19 +97,35 @@ public class GenomeHTMLBrowserViewRep
 					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
 						|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION) {
 
-//						Integer iRefSeqID =
-//							generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
-//								EIDType.REFSEQ_MRNA_INT, selectionDeltaItem.getPrimaryID());
-						
+						// Integer iRefSeqID =
+						// generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+						// EIDType.REFSEQ_MRNA_INT, selectionDeltaItem.getPrimaryID());
+
 						int expressionIndex = selectionDeltaItem.getPrimaryID();
 
-						String sRefSeqID =
-							generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+						// values, depending on the IDType that has been specified when loading expression data.
+						// Possibly a different handling of the Set is required.
+						Set<String> setRefSeqIDs =
+							generalManager.getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
 								EIDType.REFSEQ_MRNA, expressionIndex);
 
-						Integer iDavidID =
-							generalManager.getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+						String sRefSeqID = null;
+						if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+							sRefSeqID = (String) setRefSeqIDs.toArray()[0];
+						}
+						
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+						// values, depending on the IDType that has been specified when loading expression data.
+						// Possibly a different handling of the Set is required.
+						Set<Integer> setDavidIDs =
+							generalManager.getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
 								EIDType.DAVID, expressionIndex);
+
+						Integer iDavidID = null;
+						if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
+							iDavidID = (Integer) setDavidIDs.toArray()[0];
+						}
 
 						if (iDavidID == null)
 							continue;

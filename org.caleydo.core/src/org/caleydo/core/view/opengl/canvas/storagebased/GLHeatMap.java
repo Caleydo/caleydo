@@ -410,7 +410,7 @@ public class GLHeatMap
 			case HEAT_MAP_LINE_SELECTION:
 				iCurrentMouseOverElement = iExternalID;
 				switch (pickingMode) {
-		
+
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 						break;
@@ -461,22 +461,22 @@ public class GLHeatMap
 				createStorageSelection(eSelectionType, iExternalID);
 
 				break;
-//			case LIST_HEAT_MAP_CLEAR_ALL:
-//				switch (pickingMode) {
-//					case CLICKED:
-//						contentSelectionManager.resetSelectionManager();
-//						setDisplayListDirty();
-//						SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-//
-//						TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
-//						event.setType(EIDType.EXPRESSION_INDEX);
-//						event.setSelectionCommand(command);
-//						event.setSender(this);
-//						eventPublisher.triggerEvent(event);
-//						break;
-//
-//				}
-//				break;
+			// case LIST_HEAT_MAP_CLEAR_ALL:
+			// switch (pickingMode) {
+			// case CLICKED:
+			// contentSelectionManager.resetSelectionManager();
+			// setDisplayListDirty();
+			// SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
+			//
+			// TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
+			// event.setType(EIDType.EXPRESSION_INDEX);
+			// event.setSelectionCommand(command);
+			// event.setSender(this);
+			// eventPublisher.triggerEvent(event);
+			// break;
+			//
+			// }
+			// break;
 		}
 	}
 
@@ -680,18 +680,35 @@ public class GLHeatMap
 
 				if (detailLevel == EDetailLevel.HIGH) {
 					// bRenderRefSeq = true;
-					String sContent;
+					String sContent = null;
 					String refSeq = null;
 
 					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-//						sContent =
-//							GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(iContentIndex);
-						sContent = idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iContentIndex);
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+						// values, depending on the IDType that has been specified when loading expression data.
+						// Possibly a different handling of the Set is required.
+						Set<String> setGeneSymbols =
+							idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
+								iContentIndex);
+
+						if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+							sContent = (String) setGeneSymbols.toArray()[0];
+						}
+
 						if (sContent == null || sContent.equals(""))
 							sContent = "Unkonwn Gene";
-						
-						refSeq = idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, iContentIndex);
-							//GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
+
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+						// values, depending on the IDType that has been specified when loading expression data.
+						// Possibly a different handling of the Set is required.
+						Set<String> setRefSeqIDs =
+							idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
+								iContentIndex);
+
+						if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+							refSeq = (String) setRefSeqIDs.toArray()[0];
+						}
+						// GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 
 						if (bRenderRefSeq) {
 							sContent += " | ";

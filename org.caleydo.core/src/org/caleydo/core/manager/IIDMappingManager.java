@@ -1,8 +1,10 @@
 package org.caleydo.core.manager;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 
@@ -11,7 +13,6 @@ import org.caleydo.core.data.mapping.EMappingType;
  * 
  * @author Marc Streit
  * @author Alexander Lex
- * @TODO documentation
  */
 public interface IIDMappingManager {
 
@@ -115,4 +116,24 @@ public interface IIDMappingManager {
 	 * @return If no mapping is found, null, otherwise the Set containing the corresponding ID(s).
 	 */
 	public <K, V> Set<V> getIDAsSet(EIDType source, EIDType destination, K sourceID);
+
+	/**
+	 * @return Set of all IDTypes supported.
+	 */
+	public List<EIDType> getIDTypes(EIDCategory category);
+
+	/**
+	 * Determines whether the IIDMappingManager holds a map that contains the specified element of the
+	 * specified type.
+	 * 
+	 * @param <T>
+	 * @param idType
+	 *            IDType of the element.
+	 * @param element
+	 *            Element to be found.
+	 * @return True, if such an element is fund, fals otherwise.
+	 */
+	public <T> boolean doesElementExist(EIDType idType, T element);
+
+	// public void printGraph();
 }

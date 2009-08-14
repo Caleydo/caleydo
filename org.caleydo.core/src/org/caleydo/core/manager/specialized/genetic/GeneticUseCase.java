@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.specialized.genetic;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -25,9 +26,12 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 public class GeneticUseCase
 	extends AUseCase {
 
-	/** <code>TRUE</code>if only pathways can be displayed (no gene-expression data), <code>FALSE</code>otherwise */
+	/**
+	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression data), <code>FALSE</code>
+	 * otherwise
+	 */
 	private boolean pathwayViewerMode;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -76,10 +80,18 @@ public class GeneticUseCase
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE
 				&& set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
 
+				Integer iDavidID = null;
 				// Here we get mapping data for all values
-				Integer iDavidID =
-					GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
-						iCount);
+				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+				// values, depending on the IDType that has been specified when loading expression data.
+				// Possibly a different handling of the Set is required.
+				Set<Integer> setDavidIDs =
+					GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
+						EIDType.DAVID, iCount);
+
+				if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
+					iDavidID = (Integer) setDavidIDs.toArray()[0];
+				}
 				// GeneticIDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == null) {
@@ -116,6 +128,5 @@ public class GeneticUseCase
 	public void setPathwayViewerMode(boolean pathwayViewerMode) {
 		this.pathwayViewerMode = pathwayViewerMode;
 	}
-
 
 }

@@ -76,7 +76,6 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -1064,9 +1063,16 @@ public class GLParallelCoordinates
 					// TODO not very generic here
 
 					case EXPRESSION_INDEX:
-						sAxisLabel =
-							GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
-								EIDType.GENE_SYMBOL, axisVA.get(iCount));
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+						// values, depending on the IDType that has been specified when loading expression data.
+						// Possibly a different handling of the Set is required.
+						Set<String> setGeneSymbols =
+							idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
+								axisVA.get(iCount));
+
+						if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+							sAxisLabel = (String) setGeneSymbols.toArray()[0];
+						}
 						if (sAxisLabel == null)
 							sAxisLabel = "Unknown Gene";
 						break;

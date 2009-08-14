@@ -446,25 +446,44 @@ public class TabularDataViewRep
 			item.setText(0, Integer.toString(iContentIndex));
 
 			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-				String sGeneSymbol = "";
-				item.setText(1, (String) idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
-					iContentIndex));
-				
-				sGeneSymbol =
-					(String) idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iContentIndex);
-				
-//				int iRefSeqID = 0;
-//				iRefSeqID =
-//					idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
-//
-//				// RefSeq ID
-//				item.setText(1, (String) idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.REFSEQ_MRNA,
-//					iRefSeqID));
-//
-//				// Gene Symbol
-//				sGeneSymbol =
-//					(String) idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, idMappingManager
-//						.getID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID, iRefSeqID));
+				String sGeneSymbol = null;
+				String srefSeqID = null;
+
+				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+				// values, depending on the IDType that has been specified when loading expression data.
+				// Possibly a different handling of the Set is required.
+				Set<String> setRefSeqIDs =
+					idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, iContentIndex);
+
+				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+					srefSeqID = (String) setRefSeqIDs.toArray()[0];
+				}
+
+				item.setText(1, srefSeqID);
+
+				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+				// values, depending on the IDType that has been specified when loading expression data.
+				// Possibly a different handling of the Set is required.
+				Set<String> setGeneSymbols =
+					idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iContentIndex);
+
+				if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+					sGeneSymbol = (String) setGeneSymbols.toArray()[0];
+				}
+
+				// int iRefSeqID = 0;
+				// iRefSeqID =
+				// idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
+				//
+				// // RefSeq ID
+				// item.setText(1, (String) idMappingManager.getID(EIDType.REFSEQ_MRNA_INT,
+				// EIDType.REFSEQ_MRNA,
+				// iRefSeqID));
+				//
+				// // Gene Symbol
+				// sGeneSymbol =
+				// (String) idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, idMappingManager
+				// .getID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID, iRefSeqID));
 
 				if (sGeneSymbol != null) {
 					item.setText(2, sGeneSymbol);
@@ -699,11 +718,21 @@ public class TabularDataViewRep
 		if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 			// Resolve multiple spotting on chip and add all to the
 			// selection manager.
-			Integer iRefSeqID =
-				idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
-			for (Object iExpressionIndex : idMappingManager.<Integer, Set<Object>> getID(
-				EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, iRefSeqID)) {
-				contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+			Integer iRefSeqID = null;
+			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+			// values, depending on the IDType that has been specified when loading expression data.
+			// Possibly a different handling of the Set is required.
+			Set<Integer> setRefSeqIDs =
+				idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, iContentIndex);
+
+			if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+				iRefSeqID = (Integer) setRefSeqIDs.toArray()[0];
+			}
+			if (iRefSeqID != null) {
+				for (Object iExpressionIndex : idMappingManager.<Integer, Object> getIDAsSet(
+					EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, iRefSeqID)) {
+					contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
+				}
 			}
 		}
 

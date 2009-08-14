@@ -33,6 +33,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 
 /**
  * Utility class that features loading and saving set-files and set-creation and storage-creation.
+ * 
  * @author Werner Puff
  */
 public class SetUtils {
@@ -47,8 +48,9 @@ public class SetUtils {
 	public static final String EXPERIMENT_FILE_PREFIX = "exptree";
 
 	/**
-	 * Loads the set-file as specified in the {@link IUseCase}'s {@link LoadDataParameters} and
-	 * stores the raw-data in the useCase
+	 * Loads the set-file as specified in the {@link IUseCase}'s {@link LoadDataParameters} and stores the
+	 * raw-data in the useCase
+	 * 
 	 * @param useCase
 	 */
 	public static byte[] loadSetFile(LoadDataParameters parameters) {
@@ -56,7 +58,7 @@ public class SetUtils {
 		if (setFileName == null) {
 			throw new RuntimeException("No set-file name specified in use case");
 		}
-		
+
 		File setFile = new File(setFileName);
 		byte[] buffer;
 		try {
@@ -66,17 +68,21 @@ public class SetUtils {
 			}
 			buffer = new byte[(int) setFile.length()];
 			is.read(buffer, 0, buffer.length);
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new RuntimeException("Could not read from specified set-file '" + setFileName + "'", ex);
 		}
 		return buffer;
 	}
 
 	/**
-	 * Saves the set-data contained in the useCase in a new created temp-file.
-	 * The {@link LoadDataParameters} of the useCase are set according to the created set-file  
-	 * @param parameters set-load parameters to store the filename;
-	 * @param data set-data to save
+	 * Saves the set-data contained in the useCase in a new created temp-file. The {@link LoadDataParameters}
+	 * of the useCase are set according to the created set-file
+	 * 
+	 * @param parameters
+	 *            set-load parameters to store the filename;
+	 * @param data
+	 *            set-data to save
 	 */
 	public static void saveSetFile(LoadDataParameters parameters, byte[] data) {
 		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
@@ -90,11 +96,19 @@ public class SetUtils {
 		}
 		saveFile(data, setFile);
 	}
-		
+
 	/**
+<<<<<<< .mine
+	 * Saves the set-data contained in the useCase in the given file. The {@link LoadDataParameters} of the
+	 * useCase are set according to the created set-file
+	 * 
+	 * @param useCase
+	 *            useCase to get the set-data from
+=======
 	 * Saves the given data in the given file.
 	 * @param data data to save.
 	 * @param target file to store the data.
+>>>>>>> .r2323
 	 */
 	public static void saveFile(byte[] data, File setFile) {
 		FileOutputStream os = null;
@@ -104,13 +118,16 @@ public class SetUtils {
 		}
 		catch (FileNotFoundException ex) {
 			throw new RuntimeException("Could not create temporary file to store the set file", ex);
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new RuntimeException("Could not write to temportary set file", ex);
-		} finally {
+		}
+		finally {
 			if (os != null) {
 				try {
 					os.close();
-				} catch (IOException ex) {
+				}
+				catch (IOException ex) {
 					// nothing to do here, assuming output stream is already closed
 				}
 			}
@@ -119,16 +136,18 @@ public class SetUtils {
 
 	/**
 	 * Creates the storages from a previously prepared storage defintion.
-	 * @param loadDataParameters definition how to create the storages
-	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise 
+	 * 
+	 * @param loadDataParameters
+	 *            definition how to create the storages
+	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise
 	 */
 	public static boolean createStorages(LoadDataParameters loadDataParameters) {
 		ArrayList<Integer> storageIds = new ArrayList<Integer>();
-		
+
 		TabularAsciiDataReader reader = new TabularAsciiDataReader(null);
 		reader.setTokenPattern(loadDataParameters.getInputPattern());
 		ArrayList<EStorageType> dataTypes = reader.getColumnDataTypes();
-		
+
 		boolean abort = false;
 		Iterator<String> storageLabelIterator = loadDataParameters.getStorageLabels().iterator();
 		for (EStorageType dataType : dataTypes) {
@@ -151,7 +170,7 @@ public class SetUtils {
 				case ABORT:
 					abort = true;
 					break;
-				default: 
+				default:
 					// nothing to do
 					break;
 			}
@@ -161,13 +180,15 @@ public class SetUtils {
 		}
 
 		loadDataParameters.setStorageIds(storageIds);
-		
+
 		return true;
 	}
 
 	/**
 	 * Creates the set from a previously prepared storage defintion.
-	 * @param loadDataParameters definition how to load the set
+	 * 
+	 * @param loadDataParameters
+	 *            definition how to load the set
 	 */
 	public static boolean createData(IUseCase useCase) {
 		LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
@@ -208,13 +229,16 @@ public class SetUtils {
 				ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters.getStartParseFileAtLine(), -1,
-				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", loadDataParameters.getDelimiter(),
-				"REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
+			String lookupTableInfo =
+				loadDataParameters.getFileIDType().toString() + "_2_EXPRESSION_INDEX REVERSE";
+
+			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
+				.getStartParseFileAtLine(), -1, lookupTableInfo, loadDataParameters.getDelimiter(), "");
 		}
 		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
-			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters.getStartParseFileAtLine(), -1,
-				"UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", loadDataParameters.getDelimiter(), "");
+			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
+				.getStartParseFileAtLine(), -1, "UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", loadDataParameters
+				.getDelimiter(), "");
 		}
 		else {
 			throw new IllegalStateException("Not implemented.");

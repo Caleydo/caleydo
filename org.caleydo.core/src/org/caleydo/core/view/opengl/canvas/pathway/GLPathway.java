@@ -412,7 +412,7 @@ public class GLPathway
 			for (Integer iRefSeqID : iSetRefSeq) {
 
 				Set<Integer> iSetExpressionIndex =
-					idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, iRefSeqID);
+					idMappingManager.getIDAsSet(EIDType.REFSEQ_MRNA_INT, EIDType.EXPRESSION_INDEX, iRefSeqID);
 				if (iSetExpressionIndex == null)
 					continue;
 				alExpressionIndex.addAll(iSetExpressionIndex);
@@ -449,13 +449,18 @@ public class GLPathway
 
 		for (SelectionDeltaItem item : selectionDelta) {
 
-			Integer iDavidID =
-				idMappingManager.getID(selectionDelta.getIDType(), EIDType.DAVID, item.getPrimaryID());
+			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+			// values, depending on the IDType that has been specified when loading expression data.
+			// Possibly a different handling of the Set is required.
+			Set<Integer> setIDs =
+				idMappingManager.getIDAsSet(selectionDelta.getIDType(), EIDType.DAVID, item.getPrimaryID());
 
-			if (iDavidID == null) {
+			if (setIDs == null || setIDs.isEmpty()) {
 				continue;
 				// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 			}
+			Integer iDavidID = (Integer)setIDs.toArray()[0];
+			
 
 			pathwayVertexGraphItem =
 				generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);

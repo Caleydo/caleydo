@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
@@ -74,10 +75,18 @@ public class SetExporter {
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
 				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-					identifier =
-						iDMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA, iContentIndex);
+					
+					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+					// values, depending on the IDType that has been specified when loading expression data.
+					// Possibly a different handling of the Set is required.
+					Set<String> setRefSeqIDs =
+						iDMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
+							iContentIndex);
 
-					if (identifier == null) {
+					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+						identifier = (String) setRefSeqIDs.toArray()[0];
+					}
+					else {
 						continue;
 					}
 					// Integer iRefseqMrnaInt =

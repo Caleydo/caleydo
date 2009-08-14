@@ -2,6 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -659,16 +660,33 @@ public class TreeClusterer
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING) {
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-				nodeName =
-					GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
+
+				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+				// values, depending on the IDType that has been specified when loading expression data.
+				// Possibly a different handling of the Set is required.
+				Set<String> setGeneSymbols =
+					GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
 						EIDType.GENE_SYMBOL, contentVA.get(index));
+
+				if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+					nodeName = (String) setGeneSymbols.toArray()[0];
+				}
 				if (nodeName == null || nodeName.equals(""))
 					nodeName = "Unkonwn Gene";
+				String refSeq = null;
+				// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+				// values, depending on the IDType that has been specified when loading expression data.
+				// Possibly a different handling of the Set is required.
+				Set<String> setRefSeqIDs =
+					GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
+						EIDType.REFSEQ_MRNA, contentVA.get(index));
+
+				if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+					refSeq = (String) setRefSeqIDs.toArray()[0];
+				}
 
 				nodeName += " | ";
-				nodeName +=
-					GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
-						EIDType.REFSEQ_MRNA, contentVA.get(index));
+				nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {
 				nodeName = "generalManager.getIDMappingManager().getID(" + contentVA.get(index) + " )";

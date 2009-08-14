@@ -180,13 +180,11 @@ public class CmdLoadFileLookupTable
 
 			// Concatenate genome id type target and origin type in swapped
 			// order to determine reverse genome mapping type.
-			//if(sCodeResolvingLUTMappingType == null) { //TODO: remove again
 				EMappingType reverseMappingType =
 					EMappingType.valueOf(mappingType.getTypeTarget().toString() + "_2_"
 						+ mappingType.getTypeOrigin().toString());
 	
 				genomeIdManager.createReverseMap(mappingType, reverseMappingType);
-			//}
 		}
 
 		commandManager.runDoCommand(this);
