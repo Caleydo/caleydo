@@ -23,6 +23,7 @@ public abstract class AClusterer
 
 	protected boolean bClusteringCanceled = false;
 
+	// variables needed for correct visualization of cluster progress bar
 	protected int iProgressBarMultiplier;
 	protected int iProgressBarOffsetValue;
 

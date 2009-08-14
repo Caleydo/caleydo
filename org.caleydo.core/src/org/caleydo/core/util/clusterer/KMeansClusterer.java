@@ -20,6 +20,11 @@ import weka.core.EuclideanDistance;
 import weka.core.Instances;
 import weka.core.ManhattanDistance;
 
+/**
+ * KMeans clusterer using Weka
+ * 
+ * @author Bernhard Schlegl
+ */
 public class KMeansClusterer
 	extends AClusterer
 	implements IClusterer {

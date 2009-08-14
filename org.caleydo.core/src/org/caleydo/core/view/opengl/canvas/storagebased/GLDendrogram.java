@@ -66,8 +66,12 @@ public class GLDendrogram
 	private Tree<ClusterNode> tree;
 	private DendrogramRenderStyle renderStyle;
 
+	/**
+	 * Used in case of we want to render only a sub-tree instead of the whole tree.
+	 */
 	private ClusterNode currentRootNode;
 
+	// variables used to build a group list
 	private ArrayList<Integer> iAlCutOffClusters = new ArrayList<Integer>();
 	private ArrayList<ClusterNode> iAlClusterNodes = new ArrayList<ClusterNode>();
 	private GroupList groupList = null;
@@ -80,13 +84,13 @@ public class GLDendrogram
 	private boolean bIsDraggingActive = false;
 	private float fPosCut = 0.0f;
 
-	// for gene tree
+	// variables needed for gene tree dendrogram
 	private float yPosInit = 0.5f;
 	private float xGlobalMax = 6;
 	private float fSampleHeight = 0;
 	private float fLevelWidth = 0;
 
-	// for experiment tree
+	// variables needed for experiment tree dendrogram
 	private float xPosInit = 0.5f;
 	private float yGlobalMin = 0;
 	private float fSampleWidth = 0;
@@ -96,8 +100,6 @@ public class GLDendrogram
 	private boolean bEnableDepthCheck = false;
 
 	private ColorMapping colorMapper;
-
-	// private TreePorter treePorter = new TreePorter();
 
 	private boolean bRedrawDendrogram = true;
 
@@ -325,7 +327,7 @@ public class GLDendrogram
 	}
 
 	/**
-	 * Render the symbol of the view instead of the view
+	 * In case of no tree is available render the symbol of the view instead of the view
 	 * 
 	 * @param gl
 	 */
@@ -363,7 +365,7 @@ public class GLDendrogram
 
 	/**
 	 * This function calls a recursive function which is responsible for the calculation of the position
-	 * inside the view frustum of the nodes in the dendrogram
+	 * inside the viewfrustum of the nodes in the dendrogram
 	 */
 	private void determinePositions() {
 
@@ -376,8 +378,8 @@ public class GLDendrogram
 	}
 
 	/**
-	 * Function calculates for each node in the dendrogram recursive the corresponding position inside the
-	 * view frustum
+	 * Function calculates for each node (gene or entity) in the dendrogram recursive the corresponding
+	 * position inside the view frustum
 	 * 
 	 * @param currentNode
 	 *            current node for calculation
@@ -430,6 +432,14 @@ public class GLDendrogram
 		return pos;
 	}
 
+	/**
+	 * Function calculates for each node (experiment) in the dendrogram recursive the corresponding position
+	 * inside the view frustum
+	 * 
+	 * @param currentNode
+	 *            current node for calculation
+	 * @return Vec3f position of the current node
+	 */
 	private Vec3f determinePosRecExperiments(ClusterNode currentNode) {
 
 		Vec3f pos = new Vec3f();
@@ -479,6 +489,12 @@ public class GLDendrogram
 		return pos;
 	}
 
+	/**
+	 * Recursive function which renders selection markers for all nodes in the tree.
+	 * 
+	 * @param gl
+	 * @param currentNode
+	 */
 	private void renderSelections(final GL gl, ClusterNode currentNode) {
 
 		if (currentNode.getSelectionType() == ESelectionType.MOUSE_OVER) {
@@ -529,16 +545,17 @@ public class GLDendrogram
 	}
 
 	/**
-	 * Render a node of the dendrogram (recursive)
+	 * Render a node (gene or entity) of the dendrogram (recursive)
 	 * 
 	 * @param gl
 	 * @param currentNode
+	 * @param fOpacity
+	 *            Opacity value of the current node. In case of determine clusters with the cut of value.
 	 */
 	private void renderDendrogramGenes(final GL gl, ClusterNode currentNode, float fOpacity) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		// float fOpacity = 1;
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		float fDiff = 0;
@@ -600,7 +617,7 @@ public class GLDendrogram
 			gl.glVertex3f(xmin - 0.1f, ymax, currentNode.getPos().z());
 			gl.glEnd();
 
-			// horizontal lines connecting all childs with their parent
+			// horizontal lines connecting all children with their parent
 			for (int i = 0; i < iNrChildsNode; i++) {
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(xmin - 0.1f, tempPositions[i].y(), tempPositions[i].z());
@@ -637,11 +654,18 @@ public class GLDendrogram
 
 	}
 
+	/**
+	 * Render a node (experiment) of the dendrogram (recursive)
+	 * 
+	 * @param gl
+	 * @param currentNode
+	 * @param fOpacity
+	 *            Opacity value of the current node. In case of determine clusters with the cut of value.
+	 */
 	private void renderDendrogramExperiments(final GL gl, ClusterNode currentNode, float fOpacity) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		// float fOpacity = 1;
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		float fDiff = 0;
@@ -698,13 +722,15 @@ public class GLDendrogram
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_VERTICAL_SELECTION,
 				currentNode.getClusterNr()));
 
+			// horizontal line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(xmin, ymax - 0.0f, currentNode.getPos().z());
-			gl.glVertex3f(xmax, ymax - 0.0f, currentNode.getPos().z());
+			gl.glVertex3f(xmin, ymax, currentNode.getPos().z());
+			gl.glVertex3f(xmax, ymax, currentNode.getPos().z());
 			gl.glEnd();
 
 			for (int i = 0; i < iNrChildsNode; i++) {
 
+				// vertical lines connecting all children with their parent
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(tempPositions[i].x(), ymax + 0.0f, tempPositions[i].z());
 				// if (bCutOffActive[i])
@@ -721,6 +747,7 @@ public class GLDendrogram
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_VERTICAL_SELECTION,
 				currentNode.getClusterNr()));
 
+			// vertical line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
 			gl.glVertex3f(currentNode.getPos().x(), yGlobalMin, currentNode.getPos().z());
@@ -768,7 +795,6 @@ public class GLDendrogram
 				else
 					renderSymbol(gl);
 			}
-
 		}
 
 		if (tree != null) {
@@ -852,7 +878,7 @@ public class GLDendrogram
 
 	/**
 	 * This function calls a recursive function which is responsible for setting nodes in the dendrogram
-	 * selected/mouseOver depending on the current position of the "cut"
+	 * deselected depending on the current position of the "cut of value"
 	 */
 	private void determineSelectedNodes() {
 
@@ -868,7 +894,7 @@ public class GLDendrogram
 
 	/**
 	 * Function which merges the clusters determined by the cut off value to group lists used for rendering
-	 * the clusters assignments in hierarchical heat map.
+	 * the clusters assignments in {@link GLHierarchicalHeatMap}.
 	 */
 	private void buildNewGroupList() {
 
@@ -958,7 +984,6 @@ public class GLDendrogram
 	private void determineSelectedNodesRec(ClusterNode node) {
 
 		if (bRenderGeneTree) {
-
 			if (node.getPos().x() < fPosCut) {
 				node.setSelectionType(ESelectionType.NORMAL);
 				if (node.getDepth() < iMaxDepth) {
@@ -967,7 +992,6 @@ public class GLDendrogram
 			}
 			else {
 				node.setSelectionType(ESelectionType.DESELECTED);
-				// remove eventually selections of nodes
 			}
 		}
 		else {
@@ -979,7 +1003,6 @@ public class GLDendrogram
 			}
 			else {
 				node.setSelectionType(ESelectionType.DESELECTED);
-				// remove eventually selections of nodes
 			}
 		}
 
@@ -988,7 +1011,6 @@ public class GLDendrogram
 				determineSelectedNodesRec(current);
 			}
 		}
-
 	}
 
 	@Override
@@ -998,7 +1020,7 @@ public class GLDendrogram
 			return;
 		}
 
-		// FIXME
+		// FIXME: is this needfully
 		if (bIsRenderedRemote)
 			return;
 
@@ -1043,8 +1065,6 @@ public class GLDendrogram
 						// if (storageSelectionManager.checkStatus(iExternalID))
 						// bupdateSelectionManager = true;
 
-						// if (tree.getNodeByNumber(iExternalID) != null)
-						// System.out.println(tree.getNodeByNumber(iExternalID).getNodeName());
 						break;
 				}
 
@@ -1097,8 +1117,6 @@ public class GLDendrogram
 						// if (storageSelectionManager.checkStatus(iExternalID))
 						// bupdateSelectionManager = true;
 
-						// if (tree.getNodeByNumber(iExternalID) != null)
-						// System.out.println(tree.getNodeByNumber(iExternalID).getNodeName());
 						break;
 				}
 
@@ -1165,10 +1183,6 @@ public class GLDendrogram
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
-
-	// @Override
-	// public void broadcastElements() {
-	// }
 
 	@Override
 	public void changeOrientation(boolean defaultOrientation) {
@@ -1287,11 +1301,21 @@ public class GLDendrogram
 		super.resetView();
 	}
 
+	/**
+	 * This function calls a recursive function which is responsible for setting all nodes in the dendrogram
+	 * to {@link EselectionType.NORMAL}
+	 */
 	private void resetAllTreeSelections() {
 		if (tree != null)
 			resetAllTreeSelectionsRec(tree.getRoot());
 	}
 
+	/**
+	 * Recursive function resets all selections in the tree
+	 * 
+	 * @param node
+	 *            current node
+	 */
 	private void resetAllTreeSelectionsRec(ClusterNode currentNode) {
 
 		currentNode.setSelectionType(ESelectionType.NORMAL);
@@ -1305,10 +1329,11 @@ public class GLDendrogram
 
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
-		// cluster mouse over events only used for gene trees
+		
 		int clusterNr = event.getClusterNumber();
 		ESelectionType selectionType = event.getSelectionType();
 
+		// cluster mouse over events only used for gene trees
 		if (tree != null && bRenderGeneTree) {
 			resetAllTreeSelections();
 			if (tree.getNodeByNumber(clusterNr) != null) {

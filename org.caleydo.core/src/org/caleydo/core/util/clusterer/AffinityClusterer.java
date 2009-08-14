@@ -18,14 +18,21 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * 
  * @author Bernhard Schlegl
  */
-/**
- * @author test
- */
 public class AffinityClusterer
 	extends AClusterer
 	implements IClusterer {
+
+	/**
+	 * array of similarities
+	 */
 	private float[] s = null;
+	/**
+	 * array with indexes
+	 */
 	private int[] i = null;
+	/**
+	 * array with indexes
+	 */
 	private int[] k = null;
 
 	private float dLambda = 0.5f;
@@ -36,6 +43,9 @@ public class AffinityClusterer
 
 	private int iConvIterations = 30;
 
+	/**
+	 * Factor influences cluster result. The higher the factor the less clusters will be formed.
+	 */
 	private float fClusterFactor = 1.0f;
 
 	private int iNrSamples = 0;
@@ -63,12 +73,11 @@ public class AffinityClusterer
 	}
 
 	/**
-	 * Calculates the similarity matrix for a given set and VA�s
+	 * Calculates the similarity vector for a given set and given VAs
 	 * 
 	 * @param set
-	 * @param iVAIdContent
-	 * @param iVAIdStorage
-	 * @return
+	 * @param clusterState
+	 * @return in case of error a negative value will be returned.
 	 */
 	private int determineSimilarities(ISet set, ClusterState clusterState) {
 
@@ -234,8 +243,8 @@ public class AffinityClusterer
 	 * 315, 972-976, Feb 16, 2007, for a description of the algorithm. Copyright 2007, BJ Frey and Delbert
 	 * Dueck. This software may be freely used and distributed for non-commercial purposes.
 	 * 
-	 * @param set
-	 * @return Integer
+	 * @param eClustererType
+	 * @return virtual array with ordered indexes
 	 */
 	private IVirtualArray affinityPropagation(EClustererType eClustererType) {
 		// Arraylist holding clustered indexes
@@ -471,12 +480,6 @@ public class AffinityClusterer
 
 		alIndexes = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
 
-		// Integer clusteredVAId = 0;
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// clusteredVAId = set.createContentVA(EVAType.CONTENT, alIndexes);
-		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, alIndexes);
-
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndexes);
@@ -579,11 +582,7 @@ public class AffinityClusterer
 
 		iReturnValue = determineSimilarities(set, clusterState);
 
-		if (iReturnValue == -1) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
-		}
-		else if (iReturnValue == -2) {
+		if (iReturnValue < 0) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}

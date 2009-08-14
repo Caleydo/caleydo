@@ -31,11 +31,12 @@ public class ClusterManager {
 	}
 
 	/**
-	 * Depending on the clusterstate the corresponding clusterer will be called. In case of an error -1 will
-	 * be returned and a message box will be triggered.
+	 * Depending on the cluster state the corresponding clusterer will be called. Virtual arrays for content
+	 * and storage will be returned.
 	 * 
 	 * @param clusterState
-	 * @return
+	 *            All information needed ba cluster algorithm
+	 * @return array list of {@link IVirtualArray}s including VAs for content and storage.
 	 */
 	public ArrayList<IVirtualArray> cluster(ClusterState clusterState) {
 

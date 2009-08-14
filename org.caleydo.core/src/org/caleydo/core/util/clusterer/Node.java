@@ -1,8 +1,8 @@
 package org.caleydo.core.util.clusterer;
 
 /**
- * Helper class used in tree clusterer. Stores indices of the corresponding nodes and the similarity
- * (correlation) of two nodes.
+ * Helper class used in @link {@link TreeClusterer}. Stores indices of the corresponding nodes and the
+ * similarity (correlation) of two nodes.
  * 
  * @author Bernhard Schlegl
  */

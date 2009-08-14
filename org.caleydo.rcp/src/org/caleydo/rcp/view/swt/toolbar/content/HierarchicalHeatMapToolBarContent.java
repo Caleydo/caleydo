@@ -6,9 +6,8 @@ import java.util.List;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 
 /**
- * THIS IS DEAD AT THE MOMENT
+ * THIS IS DEAD AT THE MOMENT ToolBarContent implementation for heatmap specific toolbar items.
  * 
- * ToolBarContent implementation for heatmap specific toolbar items.  
  * @author Werner Puff
  */
 public class HierarchicalHeatMapToolBarContent
@@ -22,7 +21,7 @@ public class HierarchicalHeatMapToolBarContent
 	public Class<?> getViewClass() {
 		return GLHierarchicalHeatMap.class;
 	}
-	
+
 	@Override
 	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
@@ -32,18 +31,18 @@ public class HierarchicalHeatMapToolBarContent
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		int targetViewID = getTargetViewData().getViewID();
+		// int targetViewID = getTargetViewData().getViewID();
 
-//		IToolBarItem startClustering = new StartClusteringAction(targetViewID);
-//		actionList.add(startClustering);
+		// IToolBarItem startClustering = new StartClusteringAction(targetViewID);
+		// actionList.add(startClustering);
 
-//		IToolBarItem mergeGroup = new MergeClasses(targetViewID);
-//		actionList.add(mergeGroup);
-		
+		// IToolBarItem mergeGroup = new MergeClasses(targetViewID);
+		// actionList.add(mergeGroup);
+
 		// after release 1.2 this should be enabled by default
-//		IToolBarItem activateGroup = new ActivateGroupHandling(targetViewID);
-//		actionList.add(activateGroup);
-		
+		// IToolBarItem activateGroup = new ActivateGroupHandling(targetViewID);
+		// actionList.add(activateGroup);
+
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
 

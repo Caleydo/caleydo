@@ -12,13 +12,22 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
+/**
+ * Tree clusterer
+ * 
+ * @author Bernhard Schlegl
+ */
 public class TreeClusterer
 	extends AClusterer {
 
+	/**
+	 * Helper class needed in tree cluster algorithm.
+	 * 
+	 * @author Bernhard Schlegl
+	 */
 	private class ClosestPair {
 		private float correlation;
 		private int x;
@@ -45,6 +54,9 @@ public class TreeClusterer
 
 	private EDistanceMeasure eDistanceMeasure;
 
+	/**
+	 * Each node in the tree needs an unique number. Because of this we need a node counter
+	 */
 	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
 
 	// Hash maps needed for determine cluster names. The name of a cluster has to be unique.
@@ -62,12 +74,11 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Calculates the similarity matrix for a given set and VAs
+	 * Calculates the similarity matrix for a given set and given VAs
 	 * 
 	 * @param set
-	 * @param iVAIdContent
-	 * @param iVAIdStorage
-	 * @return
+	 * @param eClustererType
+	 * @return in case of error a negative value will be returned.
 	 */
 	private int determineSimilarities(ISet set, EClustererType eClustererType) {
 
@@ -197,7 +208,7 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Helper function providing unique node numbers for knots in the tree.
+	 * Helper function providing unique node numbers for all nodes in the tree.
 	 * 
 	 * @return number of current node
 	 */
@@ -205,6 +216,9 @@ public class TreeClusterer
 		return iNodeCounter++;
 	}
 
+	/**
+	 * Function normalizes similarities between 0 and 1
+	 */
 	private void normalizeSimilarities() {
 
 		float max = Float.MIN_VALUE;
@@ -230,7 +244,7 @@ public class TreeClusterer
 	 *            current size of the similarity matrix
 	 * @param distmatrix
 	 *            the similarity matrix
-	 * @return closest pair
+	 * @return the closest pair
 	 */
 	private ClosestPair find_closest_pair(int n, float[][] distmatrix) {
 
@@ -257,8 +271,8 @@ public class TreeClusterer
 	/**
 	 * The palcluster routine performs clustering using pairwise average linking on the given distance matrix.
 	 * 
-	 * @param set
-	 * @return index of virtual array
+	 * @param eClustererType
+	 * @return virtual array with ordered indexes
 	 */
 	private IVirtualArray palcluster(EClustererType eClustererType) {
 
@@ -400,11 +414,25 @@ public class TreeClusterer
 		return virtualArray;
 	}
 
+	/**
+	 * The function is responsible for calculating the expression value in each node of the tree. To handle
+	 * this an other recursive function which does the whole work is called.
+	 * 
+	 * @param eClustererType
+	 */
 	private void determineExpressionValue(EClustererType eClustererType) {
 
 		determineExpressionValueRec(tree.getRoot(), eClustererType);
 	}
 
+	/**
+	 * Recursive function which determines the expression value in each node of the tree.
+	 * 
+	 * @param tree
+	 * @param node
+	 *            current node
+	 * @return depth of the current node
+	 */
 	private float[] determineExpressionValueRec(ClusterNode node, EClustererType eClustererType) {
 
 		float[] fArExpressionValues;
@@ -483,8 +511,8 @@ public class TreeClusterer
 	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given
 	 * distance matrix.
 	 * 
-	 * @param set
-	 * @return index of virtual array
+	 * @param eClustererType
+	 * @return virtual array with ordered indexes
 	 */
 	private IVirtualArray pmlcluster(EClustererType eClustererType) {
 
@@ -613,7 +641,9 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Returns name of the node. Therefore we need an index of the gene/experiment
+	 * Function returns the name of the current node. Therefore we need an index of the gene/experiment in the
+	 * VA. To avoid problems with the tree all nodes in the tree must have unique names. Therefore we need to
+	 * take care of two hash maps holding the currently used names and their frequency of occurrence.
 	 * 
 	 * @param eClustererType
 	 *            either gene or expression clustering
@@ -634,20 +664,14 @@ public class TreeClusterer
 						EIDType.GENE_SYMBOL, contentVA.get(index));
 				if (nodeName == null || nodeName.equals(""))
 					nodeName = "Unkonwn Gene";
-				// nodeName =
-				// GeneticIDMappingHelper.get().getShortNameFromExpressionIndex(contentVA.get(index));
 
 				nodeName += " | ";
 				nodeName +=
 					GeneralManager.get().getIDMappingManager().getID(EIDType.EXPRESSION_INDEX,
 						EIDType.REFSEQ_MRNA, contentVA.get(index));
-				// GeneticIDMappingHelper.get().getRefSeqStringFromStorageIndex(contentVA.get(index));// +
-				// 1);
 			}
 			else if (set.getSetType() == ESetType.UNSPECIFIED) {
 				nodeName = "generalManager.getIDMappingManager().getID(" + contentVA.get(index) + " )";
-				// generalManager.getIDMappingManager().getID(EMappingType.EXPRESSION_INDEX_2_UNSPECIFIED,
-				// treeStructure[index].getLeft() + 1);
 			}
 			else {
 				throw new IllegalStateException("Label extraction for " + set.getSetType()
@@ -658,6 +682,7 @@ public class TreeClusterer
 			nodeName = set.get(storageVA.get(index)).getLabel();
 		}
 
+		// check if current node name was already used. If yes we add signs to make it unique.
 		if (hashedNodeNames.containsKey(nodeName)) {
 			int iNr = 1;
 			if (duplicatedNodes.containsKey(nodeName)) {
@@ -676,7 +701,8 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Returns number of the node. Therefore we need an index of the gene/experiment
+	 * Function returns the number of the current node. Therefore we need an index of the gene/experiment in
+	 * the VA.
 	 * 
 	 * @param eClustererType
 	 *            either gene or expression clustering
@@ -708,7 +734,7 @@ public class TreeClusterer
 	 *            current node
 	 * @param treeStructure
 	 * @param index
-	 *            current index
+	 *            current index in the tree structure
 	 * @param eClustererType
 	 */
 	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index,
@@ -779,11 +805,7 @@ public class TreeClusterer
 
 		iReturnValue = determineSimilarities(set, clusterState.getClustererType());
 
-		if (iReturnValue == -1) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
-		}
-		else if (iReturnValue == -2) {
+		if (iReturnValue < 0) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}

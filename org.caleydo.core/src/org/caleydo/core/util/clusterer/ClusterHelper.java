@@ -9,7 +9,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.IVirtualArray;
 
 /**
- * Cluster helper provides methodes needed in cluster algorithms such as median, arithmetic mean, etc.
+ * Cluster helper provides methods needed in cluster algorithms such as median, arithmetic mean, etc.
  * 
  * @author Bernhard Schlegl
  */
@@ -19,7 +19,7 @@ public class ClusterHelper {
 	 * Calculates the arithmetic mean for a given vector (float array)
 	 * 
 	 * @param vector
-	 * @return arthmetic mean
+	 * @return arithmetic mean
 	 */
 	public static float arithmeticMean(float[] vector) {
 		float mean = 0;
@@ -69,9 +69,10 @@ public class ClusterHelper {
 	}
 
 	/**
-	 * Returns an array list with the indexes of the elements (gene/experiment).
+	 * Returns an array list with the indexes of the elements (gene/experiment) in the tree.
 	 * 
-	 * @return
+	 * @param tree
+	 * @return array list with ordered indexes of the clustered elements in the tree.
 	 */
 	public static ArrayList<Integer> getAl(Tree<ClusterNode> tree) {
 
@@ -81,7 +82,17 @@ public class ClusterHelper {
 		return indexes;
 	}
 
-	private static ArrayList<Integer> traverse(Tree<ClusterNode> tree, ArrayList<Integer> indexes, ClusterNode node) {
+	/**
+	 * Function traverses tree and returns an array list with indexes of the leaf nodes in correct order.
+	 * 
+	 * @param tree
+	 * @param indexes
+	 * @param node
+	 *            current node
+	 * @return
+	 */
+	private static ArrayList<Integer> traverse(Tree<ClusterNode> tree, ArrayList<Integer> indexes,
+		ClusterNode node) {
 
 		if (tree.hasChildren(node) == false) {
 			indexes.add(node.getClusterNr());
@@ -109,6 +120,14 @@ public class ClusterHelper {
 		determineHierarchyDepthRec(tree, tree.getRoot());
 	}
 
+	/**
+	 * Recursive function which determines the hierarchy depth in each node of the tree.
+	 * 
+	 * @param tree
+	 * @param node
+	 *            current node
+	 * @return depth of the current node
+	 */
 	private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
 
 		if (tree.hasChildren(node)) {
@@ -143,6 +162,14 @@ public class ClusterHelper {
 		determineNrElementsRec(tree, tree.getRoot());
 	}
 
+	/**
+	 * Recursive function which determines the number of elements in each node of the tree.
+	 * 
+	 * @param tree
+	 * @param node
+	 *            current node
+	 * @return number of elements in the current node
+	 */
 	private static int determineNrElementsRec(Tree<ClusterNode> tree, ClusterNode node) {
 
 		if (tree.hasChildren(node)) {
@@ -159,6 +186,15 @@ public class ClusterHelper {
 
 	}
 
+	/**
+	 * Function sorts clusters depending on their average value (in case of genes: expression value).
+	 * 
+	 * @param set
+	 * @param iVAIdContent
+	 * @param iVAIdStorage
+	 * @param examples
+	 * @param eClustererType
+	 */
 	public static void sortClusters(ISet set, int iVAIdContent, int iVAIdStorage,
 		ArrayList<Integer> examples, EClustererType eClustererType) {
 

@@ -6,6 +6,8 @@ public enum EDistanceMeasure {
 	EUCLIDEAN_DISTANCE,
 	PEARSON_CORRELATION,
 
-	// distance measure included in weka, only usable with kMeans
+	/**
+	 * Distance measure included in weka, only usable with {@link KMeansClusterer}
+	 */
 	MANHATTAHN_DISTANCE;
 }

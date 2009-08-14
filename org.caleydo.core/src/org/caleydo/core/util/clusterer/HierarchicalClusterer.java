@@ -13,7 +13,9 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 
 import weka.clusterers.ClusterEvaluation;
 import weka.core.Instances;
@@ -224,18 +226,12 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
-//		Integer clusteredVAId = 0;
-//		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-//			clusteredVAId = set.createContentVA(EVAType.CONTENT, indices);
-//		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-//			clusteredVAId = set.createStorageVA(EVAType.STORAGE, indices);
-
 		IVirtualArray virtualArray = null;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), indices);
 		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), indices);
-		
+
 		CNode node = clusterer.m_cobwebTree;
 
 		ClusterNode clusterNode = new ClusterNode("Root", 0, 0f, 0, true);
@@ -267,14 +263,15 @@ public class HierarchicalClusterer
 		return virtualArray;
 	}
 
+	/**
+	 * Function converts tree used by {@link Cobweb} into tree used in {@link GLRadialHierarchy} and
+	 * {@link GLDendrogram}
+	 * 
+	 * @param clusterNode
+	 * @param node
+	 * @param eClustererType
+	 */
 	private void CNodeToTree(ClusterNode clusterNode, CNode node, EClustererType eClustererType) {
-
-		// IVirtualArray virtualArray;
-		//
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = set.getVA(iVAIdContent);
-		// else
-		// virtualArray = set.getVA(iVAIdStorage);
 
 		if (node.getChilds() != null) {
 			int iNrChildsNode = node.getChilds().size();
@@ -290,11 +287,9 @@ public class HierarchicalClusterer
 				currentGraph.setNrElements(1);
 
 				tree.addChild(clusterNode, currentGraph);
-				// temp.addGraph(matchTree(currentGraph, currentNode), EGraphItemHierarchy.GRAPH_CHILDREN);
 				CNodeToTree(currentGraph, currentNode, eClustererType);
 			}
 		}
-
 	}
 
 	@Override
@@ -302,7 +297,7 @@ public class HierarchicalClusterer
 		int iProgressBarMultiplier) {
 
 		IVirtualArray virtualArray = null;
-		
+
 		this.iVAIdContent = clusterState.getContentVaId();
 		this.iVAIdStorage = clusterState.getStorageVaId();
 

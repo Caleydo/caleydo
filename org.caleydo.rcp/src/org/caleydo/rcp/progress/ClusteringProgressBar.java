@@ -29,6 +29,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * Progress bar visualizing the progress during a cluster process.
+ * 
+ * @author
+ */
 public class ClusteringProgressBar
 	implements IListenerOwner {
 
@@ -61,12 +66,25 @@ public class ClusteringProgressBar
 
 	}
 
+	/**
+	 * Sets the label of the second progress bar
+	 * 
+	 * @param stProgressBarLable
+	 */
 	public void setProgressBarLabel(String stProgressBarLable) {
 		if (lbProgressBarClusterer.isDisposed())
 			return;
 		lbProgressBarClusterer.setText(stProgressBarLable);
 	}
 
+	/**
+	 * Sets the progress bar. Depending on forSimilaritiesBar the overall or the second progress bar will be
+	 * updated.
+	 * 
+	 * @param forSimilaritiesBar
+	 *            If true overall progress bar will be updated. If false second progress bar
+	 * @param progress
+	 */
 	public void setProgress(boolean forSimilaritiesBar, int progress) {
 
 		if (pbOverall.isDisposed())
@@ -151,11 +169,10 @@ public class ClusteringProgressBar
 		if (!shell.isDisposed())
 			shell.close();
 
+		// in case of hierarchical clustering a new shell should be opened
 		if (algorithmType == EClustererAlgo.TREE_CLUSTERER
 			|| algorithmType == EClustererAlgo.COBWEB_CLUSTERER) {
 
-			// AskToOpenViewsEvent event = new AskToOpenViewsEvent();
-			// generalManager.getEventPublisher().triggerEvent(event);
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					try {

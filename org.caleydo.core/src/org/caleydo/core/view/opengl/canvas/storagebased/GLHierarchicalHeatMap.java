@@ -84,24 +84,26 @@ public class GLHierarchicalHeatMap
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.6f;
 
+	private int iSamplesPerTexture = 0;
 	private final static int MIN_SAMPLES_PER_TEXTURE = 200;
 	private final static int MAX_SAMPLES_PER_TEXTURE = 1000;
 
+	private int iSamplesLevel2;
 	private final static int MIN_SAMPLES_LEVEL_2 = 200;
 	private final static int MAX_SAMPLES_LEVEL_2 = 500;
 
+	private int iSamplesPerHeatmap = 0;
 	private final static int MIN_SAMPLES_PER_HEATMAP = 14;
 	private final static int MAX_SAMPLES_PER_HEATMAP = 50;
 
-	private final static int MIN_SAMPLES_SKIP_LEVEL_1 = 200;
-	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 40;
-
 	private int iNumberOfElements = 0;
-
-	private int iSamplesPerTexture = 0;
-
-	private int iSamplesLevel2;
-	private int iSamplesPerHeatmap = 0;
+	// if only a small number of genes is in the data set, level_1 (overViewBar) will not be
+	// rendered
+	private boolean bSkipLevel1 = false;
+	private final static int MIN_SAMPLES_SKIP_LEVEL_1 = 200;
+	// if only a small number of genes is in the data set, level_2 (textures) will not be rendered
+	private boolean bSkipLevel2 = false;
+	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 40;
 
 	private ColorMapping colorMapper;
 
@@ -123,7 +125,7 @@ public class GLHierarchicalHeatMap
 	private int iFirstSampleLevel1 = 0;
 	private int iLastSampleLevel1 = 0;
 
-	private boolean bRenderCaption;
+	private boolean bRenderCaption = false;
 
 	private float fAnimationScale = 1.0f;
 
@@ -136,12 +138,6 @@ public class GLHierarchicalHeatMap
 	private GLDendrogram glDendrogramView;
 
 	private boolean bRedrawTextures = false;
-
-	// if only a small number (< 100) of genes is in the data set, level_1 (overViewBar) should not be
-	// rendered
-	private boolean bSkipLevel1 = false;
-	// if only a small number (< 30) of genes is in the data set, level_2 (textures) should not be rendered
-	private boolean bSkipLevel2 = false;
 
 	// dragging stuff level 2
 	private boolean bIsDraggingActiveLevel2 = false;
@@ -171,11 +167,11 @@ public class GLHierarchicalHeatMap
 
 	// drag&drop stuff for clusters/groups
 	private boolean bDragDropExpGroup = false;
-	private boolean bDragDropGeneGroup = false;
 	private int iExpGroupToDrag = -1;
+	private boolean bActivateDraggingExperiments = false;
+	private boolean bDragDropGeneGroup = false;
 	private int iGeneGroupToDrag = -1;
 	private boolean bActivateDraggingGenes = false;
-	private boolean bActivateDraggingExperiments = false;
 
 	private GroupMergingActionListener groupMergingActionListener;
 	private GroupInterChangingActionListener groupInterChangingActionListener;
@@ -211,15 +207,6 @@ public class GLHierarchicalHeatMap
 		createDendrogram();
 	}
 
-	/**
-	 * Function used in keyListener to forward upDownselection to EHM
-	 * 
-	 * @return embedded heat map
-	 */
-	public GLHeatMap getEmbeddedHeatMap() {
-		return glHeatMapView;
-	}
-
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
@@ -231,7 +218,7 @@ public class GLHierarchicalHeatMap
 
 	/**
 	 * Function responsible for initialization of hierarchy levels. Depending on the amount of samples in the
-	 * data set 2 or 3 levels are used.
+	 * data set 1, 2, or 3 levels are used.
 	 */
 	private void initHierarchy() {
 
@@ -324,6 +311,11 @@ public class GLHierarchicalHeatMap
 
 	}
 
+	/**
+	 * Init (reset) the positions of cursors used for highlighting selected elements in stage 1 (overviewBar)
+	 * 
+	 * @param
+	 */
 	private void initPosCursorLevel1() {
 
 		int iNumberSample = iNumberOfElements;
@@ -384,10 +376,14 @@ public class GLHierarchicalHeatMap
 		iLastSampleLevel2 = iSamplesPerHeatmap - 1;
 	}
 
+	/**
+	 * Function calculates number of textures and fills array lists to avoid NPEs after initialization.
+	 * 
+	 * @param
+	 */
 	private void calculateTextures() {
 
-		// less than 100 elements in VA, level 1 (overview bar) will not be rendered
-		if (bSkipLevel1) {
+		if (bSkipLevel1 || bSkipLevel2) {
 
 			iNrTextures = 1;
 
@@ -418,9 +414,9 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Init textures, build array of textures used for holding the whole examples from contentSelectionManager
+	 * Init textures, build array of textures used for holding the whole examples
 	 * 
-	 * @param
+	 * @param gl
 	 */
 	private void initTextures(final GL gl) {
 
@@ -428,6 +424,8 @@ public class GLHierarchicalHeatMap
 			return;
 
 		if (bSkipLevel1) {
+
+			// only one texture is needed
 
 			AlTextures.clear();
 			iAlNumberSamples.clear();
@@ -579,6 +577,11 @@ public class GLHierarchicalHeatMap
 
 	}
 
+	/**
+	 * Create embedded dendrogram
+	 * 
+	 * @param
+	 */
 	private void createDendrogram() {
 		CmdCreateGLEventListener cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
@@ -917,6 +920,11 @@ public class GLHierarchicalHeatMap
 		gl.glPopAttrib();
 	}
 
+	/**
+	 * Renders class assignments for experiments in level 2 (textures)
+	 * 
+	 * @param gl
+	 */
 	private void renderClassAssignmentsExperimentsLevel2(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
@@ -966,6 +974,11 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	/**
+	 * Renders class assignments for experiments in level 3 (embedded heat map)
+	 * 
+	 * @param gl
+	 */
 	private void renderClassAssignmentsExperimentsLevel3(final GL gl) {
 
 		float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
@@ -1020,6 +1033,11 @@ public class GLHierarchicalHeatMap
 
 	}
 
+	/**
+	 * Renders class assignments for genes in level 1 (overview bar)
+	 * 
+	 * @param gl
+	 */
 	private void renderClassAssignmentsGenesLevel1(final GL gl) {
 
 		float fHeight = viewFrustum.getHeight();
@@ -1064,6 +1082,11 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	/**
+	 * Renders class assignments for genes in level 2 (textures)
+	 * 
+	 * @param gl
+	 */
 	private void renderClassAssignmentsGenesLevel2(final GL gl) {
 
 		float fHeight = viewFrustum.getHeight();
@@ -1143,6 +1166,11 @@ public class GLHierarchicalHeatMap
 
 	}
 
+	/**
+	 * Renders class assignments for genes in level 3 (embedded heat map)
+	 * 
+	 * @param gl
+	 */
 	private void renderClassAssignmentsGenesLevel3(final GL gl) {
 
 		float fHeight = viewFrustum.getHeight();
@@ -1663,11 +1691,8 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void renderMarkerTexture(final GL gl) {
+
 		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-
-		// float fHeightSampleLevel2 = viewFrustum.getHeight() / (iAlNumberSamples.get(iSelectorBar - 1));// *
-		// 2);
-
 		float fHeightSampleLevel2 = viewFrustum.getHeight() / iSamplesLevel2;
 
 		Vec3f startpoint1, endpoint1, startpoint2, endpoint2;
@@ -1742,7 +1767,6 @@ public class GLHierarchicalHeatMap
 		if (bRenderCaption == true) {
 			renderCaption(gl, "Number Samples:" + iSamplesPerHeatmap, 0.0f, viewFrustum.getHeight()
 				- iPickedSampleLevel2 * fHeightSampleLevel2, 0.005f);
-			bRenderCaption = false;
 		}
 	}
 
@@ -1752,10 +1776,9 @@ public class GLHierarchicalHeatMap
 	 * @param gl
 	 */
 	private void renderSelectedElementsTexture(GL gl) {
+
 		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-
 		float fHeightSample = viewFrustum.getHeight() / iSamplesLevel2;
-
 		float fExpWidth = fFieldWith / storageVA.size();
 
 		gl.glEnable(GL.GL_LINE_STIPPLE);
@@ -1907,7 +1930,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Render cursor used for controlling hierarchical heatmap (e.g. next Texture, previous Texture, set
+	 * Render cursor used for controlling hierarchical heat map (e.g. next Texture, previous Texture, set
 	 * heatmap in focus)
 	 * 
 	 * @param gl
@@ -2421,9 +2444,6 @@ public class GLHierarchicalHeatMap
 			throw new IllegalStateException();
 		}
 
-		// SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-		// commands.add(command);
-		// glHeatMapView.handleContentTriggerSelectionCommand(eFieldDataType, command);
 		glHeatMapView.resetView();
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_EMBEDDED_HM, eFieldDataType);
 		ISelectionDelta selectionDelta = new SelectionDelta(eFieldDataType);
@@ -2751,8 +2771,8 @@ public class GLHierarchicalHeatMap
 		for (Group currentGroup : groupList) {
 			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
 				iTargetIdx = cnt;
-				if(iExpGroupToDrag < iTargetIdx)
-					iElemOffset+=currentGroup.getNrElements();
+				if (iExpGroupToDrag < iTargetIdx)
+					iElemOffset += currentGroup.getNrElements();
 				break;
 			}
 			cnt++;
@@ -2829,8 +2849,8 @@ public class GLHierarchicalHeatMap
 		for (Group currentGroup : groupList) {
 			if (currentElement < (iElemOffset + currentGroup.getNrElements())) {
 				iTargetIdx = cnt;
-				if(iGeneGroupToDrag < iTargetIdx)
-					iElemOffset+=currentGroup.getNrElements();
+				if (iGeneGroupToDrag < iTargetIdx)
+					iElemOffset += currentGroup.getNrElements();
 				break;
 			}
 			cnt++;
@@ -2864,6 +2884,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
+	@SuppressWarnings("unused")
 	private void handleGroupSplitGenes(final GL gl) {
 		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
@@ -2902,6 +2923,7 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
+	@SuppressWarnings("unused")
 	private void handleGroupSplitExperiments(final GL gl) {
 		Point currentPoint = glMouseListener.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
@@ -2932,6 +2954,12 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	/**
+	 * Function used for updating position of block (block of elements rendered in level 2) in case of
+	 * dragging
+	 * 
+	 * @param gl
+	 */
 	private void handleBlockDraggingLevel1(final GL gl) {
 
 		Point currentPoint = glMouseListener.getPickedPoint();
@@ -2982,7 +3010,8 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Function used for updating position of block (block of elements rendered in EHM) in case of dragging
+	 * Function used for updating position of block (block of elements rendered in level 3) in case of
+	 * dragging
 	 * 
 	 * @param gl
 	 */
@@ -3029,6 +3058,11 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	/**
+	 * Function used for updating cursor position of level 1 in case of dragging
+	 * 
+	 * @param gl
+	 */
 	private void handleCursorDraggingLevel1(final GL gl) {
 
 		Point currentPoint = glMouseListener.getPickedPoint();
@@ -3091,7 +3125,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	/**
-	 * Function used for updating cursor position in case of dragging
+	 * Function used for updating cursor position of level 2 in case of dragging
 	 * 
 	 * @param gl
 	 */
@@ -3600,12 +3634,6 @@ public class GLHierarchicalHeatMap
 		return bRenderStorageHorizontally;
 	}
 
-	public void changeFocus(boolean bInFocus) {
-		bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
-
-		setDisplayListDirty();
-	}
-
 	@SuppressWarnings("unused")
 	private void activateGroupHandling() {
 
@@ -3625,10 +3653,6 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 
-	}
-
-	public boolean isInFocus() {
-		return bIsHeatmapInFocus;
 	}
 
 	private void handleWiiInput() {
@@ -3727,7 +3751,7 @@ public class GLHierarchicalHeatMap
 
 		super.initData();
 
-		// FIXME
+		// FIXME: in case of loading a new data file the old cluster assignment must be deleted
 		// contentVA.setGroupList(null);
 		// storageVA.setGroupList(null);
 

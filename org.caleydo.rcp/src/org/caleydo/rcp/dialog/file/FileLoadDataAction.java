@@ -55,8 +55,6 @@ public class FileLoadDataAction
 	private Composite composite;
 
 	private Text txtFileName;
-	private Text txtGeneTreeFileName;
-	private Text txtExperimentsTreeFileName;
 	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;
@@ -136,48 +134,6 @@ public class FileLoadDataAction
 				txtFileName.setText(loadDataParameters.getFileName());
 
 				createDataPreviewTable("\t");
-			}
-		});
-
-		Button buttonTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonTreeChooser.setText("Choose gene tree file.. (optional)");
-
-		txtGeneTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-		txtGeneTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		buttonTreeChooser.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-				fileDialog.setText("Open");
-				fileDialog.setFilterPath(filePath);
-				String[] filterExt = { "*.xml*" };
-				fileDialog.setFilterExtensions(filterExt);
-				loadDataParameters.setGeneTreeFileName(fileDialog.open());
-
-				txtGeneTreeFileName.setText(loadDataParameters.getGeneTreeFileName());
-			}
-		});
-
-		Button buttonExperimentsTreeChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonExperimentsTreeChooser.setText("Choose experiments tree file.. (optional)");
-
-		txtExperimentsTreeFileName = new Text(inputFileGroup, SWT.BORDER);
-		txtExperimentsTreeFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		buttonExperimentsTreeChooser.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				FileDialog fileDialog = new FileDialog(parentComposite.getShell());
-				fileDialog.setText("Open");
-				fileDialog.setFilterPath(filePath);
-				String[] filterExt = { "*.xml*" };
-				fileDialog.setFilterExtensions(filterExt);
-				loadDataParameters.setExperimentsFileName(fileDialog.open());
-
-				txtExperimentsTreeFileName.setText(loadDataParameters.getExperimentsFileName());
 			}
 		});
 
