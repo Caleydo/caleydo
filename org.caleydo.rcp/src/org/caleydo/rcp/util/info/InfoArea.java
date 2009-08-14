@@ -1,6 +1,7 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.Collection;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDCategory;
@@ -228,28 +229,43 @@ public class InfoArea
 							String sContentName = "";
 							if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
-//								Integer iRefSeq =
-//								idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT,
-//									selectionItem.getPrimaryID());
-//							String sRefSeqID =
-//								idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.REFSEQ_MRNA,
-//									iExpressionIndex);
-//
-//							Integer iDavidID =
-//								idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID, iExpressionIndex);
-//
-//							sContentName =
-//								idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
+								// Integer iRefSeq =
+								// idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT,
+								// selectionItem.getPrimaryID());
+								// String sRefSeqID =
+								// idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.REFSEQ_MRNA,
+								// iExpressionIndex);
+								//
+								// Integer iDavidID =
+								// idMappingManager.getID(EIDType.REFSEQ_MRNA_INT, EIDType.DAVID,
+								// iExpressionIndex);
+								//
+								// sContentName =
+								// idMappingManager.getID(EIDType.DAVID, EIDType.GENE_SYMBOL, iDavidID);
 
-							int iExpressionIndex = selectionItem.getPrimaryID();
-							
-							String sRefSeqID =
-								idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
-									iExpressionIndex);
+								int iExpressionIndex = selectionItem.getPrimaryID();
 
-							sContentName =
-								idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, iExpressionIndex);
+								// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+								// values, depending on the IDType that has been specified when loading expression data.
+								// Possibly a different handling of the Set is required.
+								Set<String> setRefSeqIDs =
+									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
+										EIDType.REFSEQ_MRNA, iExpressionIndex);
+								String sRefSeqID = null;
+								if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+									sRefSeqID = (String) setRefSeqIDs.toArray()[0];
+								}
 
+								// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+								// values, depending on the IDType that has been specified when loading expression data.
+								// Possibly a different handling of the Set is required.
+								Set<String> setGeneSymbols =
+									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
+										iExpressionIndex);
+
+								if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+									sContentName = (String) setGeneSymbols.toArray()[0];
+								}
 
 								// FIXME horizontal toolbar style support
 								// if (ToolBarView.bHorizontal || Application.bIsWindowsOS) {
@@ -394,7 +410,8 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleContentTriggerSelectionCommand(EIDCategory category, final SelectionCommand selectionCommand) {
+	public void handleContentTriggerSelectionCommand(EIDCategory category,
+		final SelectionCommand selectionCommand) {
 		if (parentComposite.isDisposed())
 			return;
 
@@ -537,6 +554,6 @@ public class InfoArea
 	@Override
 	public void replaceVirtualArray(EVAType vaType) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

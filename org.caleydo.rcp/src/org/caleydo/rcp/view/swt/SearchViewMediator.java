@@ -62,7 +62,7 @@ public class SearchViewMediator {
 
 		Set<Integer> setExpIndex =
 			GeneralManager.get().getIDMappingManager()
-				.getID(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
+				.getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
 
 		ArrayList<Integer> alExpressionIndex = null;
 		

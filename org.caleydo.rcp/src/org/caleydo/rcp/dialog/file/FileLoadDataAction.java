@@ -6,10 +6,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
+import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.swt.tabular.LabelEditorDialog;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -50,6 +55,7 @@ public class FileLoadDataAction
 	public final static String ID = "org.caleydo.rcp.FileLoadDataAction";
 
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
+	private static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
 
 	private Composite parentComposite;
 	private Composite composite;
@@ -63,6 +69,10 @@ public class FileLoadDataAction
 
 	private ArrayList<Button> arSkipColumn;
 
+	private Combo idCombo;
+
+	private ArrayList<EIDType> alIDTypes;
+
 	private String inputFile = "";
 	private String filePath = "";
 
@@ -74,9 +84,9 @@ public class FileLoadDataAction
 	private boolean useExperimentClusterInfo = false;
 
 	public FileLoadDataAction() {
-		
+
 	}
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -102,15 +112,18 @@ public class FileLoadDataAction
 	}
 
 	private void createGUI() {
+
+		int numGridCols =
+			(GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) ? (4) : (3);
 		composite = new Composite(parentComposite, SWT.NONE);
-		GridLayout layout = new GridLayout(3, false);
+		GridLayout layout = new GridLayout(numGridCols, false);
 		composite.setLayout(layout);
 
 		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		inputFileGroup.setText("Input file");
 		inputFileGroup.setLayout(new GridLayout(2, false));
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = numGridCols;
 		inputFileGroup.setLayoutData(gridData);
 
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
@@ -134,6 +147,10 @@ public class FileLoadDataAction
 				txtFileName.setText(loadDataParameters.getFileName());
 
 				createDataPreviewTable("\t");
+
+				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+					determineFileIDType();
+				}
 			}
 		});
 
@@ -151,12 +168,39 @@ public class FileLoadDataAction
 
 				// Add 1 because the number that the user enters is human readable and not array index
 				// (starting with 0).
-				loadDataParameters.setStartParseFileAtLine(Integer.valueOf(txtStartParseAtLine.getText()).intValue());
+				loadDataParameters.setStartParseFileAtLine(Integer.valueOf(txtStartParseAtLine.getText())
+					.intValue());
 
 				createDataPreviewTable("\t");
 				composite.pack();
 			}
 		});
+
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+
+			Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+			idTypeGroup.setText("ID type");
+			idTypeGroup.setLayout(new RowLayout());
+
+			idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+			alIDTypes =
+				(ArrayList<EIDType>) GeneralManager.get().getIDMappingManager().getIDTypes(EIDCategory.GENE);
+			String[] idTypes = new String[alIDTypes.size()];
+			int index = 0;
+			for (EIDType idType : alIDTypes) {
+				idTypes[index] = idType.getName();
+				index++;
+			}
+			idCombo.setItems(idTypes);
+			idCombo.setEnabled(true);
+			idCombo.select(0);
+			idCombo.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+				}
+			});
+		}
 
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");
@@ -428,7 +472,7 @@ public class FileLoadDataAction
 		previewTable.setLinesVisible(true);
 		previewTable.setHeaderVisible(true);
 		gridData = new GridData(GridData.FILL_BOTH);
-		gridData.horizontalSpan = 3;
+		gridData.horizontalSpan = numGridCols;
 		gridData.heightHint = 400;
 		gridData.widthHint = 1000;
 		previewTable.setLayoutData(gridData);
@@ -441,6 +485,9 @@ public class FileLoadDataAction
 			mathFilterCombo.select(1);
 
 			createDataPreviewTable("\t");
+
+			if (GeneralManager.get().getUseCase().getUseCaseMode().equals(EUseCaseMode.GENETIC_DATA))
+				determineFileIDType();
 		}
 	}
 
@@ -648,15 +695,20 @@ public class FileLoadDataAction
 				loadDataParameters.setMax(fMax);
 			}
 		}
-		
+
+		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			loadDataParameters.setFileIDType(alIDTypes.get(idCombo.getSelectionIndex()));
+		}
+
 		loadDataParameters.setMathFilterMode(mathFilterMode);
 	}
-	
+
 	/**
 	 * prepares the storage creation definition from the preview table. The storage creation definition
-	 * consists of the definition which columns in the data-CSV-file should be read, which should be skipped and
-	 * the storage-labels. 
-	 * @return <code>true</code>if the preparation was successful, <code>false</code> otherwise 
+	 * consists of the definition which columns in the data-CSV-file should be read, which should be skipped
+	 * and the storage-labels.
+	 * 
+	 * @return <code>true</code>if the preparation was successful, <code>false</code> otherwise
 	 */
 	private boolean readStorageDefinition() {
 		ArrayList<String> storageLabels = new ArrayList<String>();
@@ -667,7 +719,8 @@ public class FileLoadDataAction
 
 			if (!arSkipColumn.get(iColIndex - 2).getSelection()) {
 				inputPattern.append("SKIP;");
-			} else {
+			}
+			else {
 				inputPattern.append("FLOAT;");
 				String labelText = previewTable.getColumn(iColIndex).getText();
 				storageLabels.add(labelText);
@@ -714,5 +767,59 @@ public class FileLoadDataAction
 
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
 		this.loadDataParameters = loadDataParameters;
+	}
+
+	private void determineFileIDType() {
+
+		IIDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
+
+		TableItem[] items = previewTable.getItems();
+		ArrayList<String> idList = new ArrayList<String>();
+		int rowIndex = 1;
+		while (rowIndex < items.length && rowIndex <= MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION) {
+			idList.add(items[rowIndex].getText(1));
+			rowIndex++;
+		}
+		if (alIDTypes == null) {
+			alIDTypes = (ArrayList<EIDType>) idMappingManager.getIDTypes(EIDCategory.GENE);
+		}
+
+		int maxCorrectElements = 0;
+		EIDType mostProbableIDType = EIDType.REFSEQ_MRNA;
+
+		for (EIDType idType : alIDTypes) {
+
+			int currentCorrectElements = 0;
+
+			for (String currentID : idList) {
+
+				if (idType.getStorageType().equals(EStorageType.INT)) {
+					try {
+						Integer idInt = Integer.valueOf(currentID);
+						if (idMappingManager.doesElementExist(idType, idInt)) {
+							currentCorrectElements++;
+						}
+					}
+					catch (NumberFormatException e) {
+					}
+				}
+				else if (idType.getStorageType().equals(EStorageType.STRING)) {
+					if (idMappingManager.doesElementExist(idType, currentID)) {
+						currentCorrectElements++;
+					}
+				}
+			}
+
+			if (currentCorrectElements >= idList.size()) {
+				idCombo.select(alIDTypes.indexOf(idType));
+				return;
+			}
+			if (currentCorrectElements >= maxCorrectElements) {
+				maxCorrectElements = currentCorrectElements;
+				mostProbableIDType = idType;
+			}
+		}
+
+		idCombo.select(alIDTypes.indexOf(mostProbableIDType));
 	}
 }

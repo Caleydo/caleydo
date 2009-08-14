@@ -483,7 +483,7 @@ private void searchForGene(final String sSearchQuery) {
 			String sExpressionValueInCurrentDataSet = "NOT FOUND";
 			
 			Set<Integer> setExpIndex =
-				idMappingManager.getID(EIDType.DAVID, EIDType.EXPRESSION_INDEX, iDavidID);
+				idMappingManager.getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, iDavidID);
 			//	h.getExpressionIndicesFromDavid(iDavidID);
 
 			if (setExpIndex != null && setExpIndex.size() > 0)
