@@ -200,9 +200,6 @@ public abstract class AUseCase
 		iVAID = set.createVA(EVAType.CONTENT_EMBEDDED_HM, new ArrayList<Integer>());
 		mapVAIDs.put(EVAType.CONTENT_EMBEDDED_HM, iVAID);
 
-		iVAID = set.createVA(EVAType.CONTENT_BOOKMARKS, new ArrayList<Integer>());
-		mapVAIDs.put(EVAType.CONTENT_BOOKMARKS, iVAID);
-
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 
 		alTempList = new ArrayList<Integer>();

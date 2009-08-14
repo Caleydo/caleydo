@@ -13,8 +13,18 @@ package org.caleydo.core.data.mapping;
  * @author Alexander Lex
  */
 public enum EIDCategory {
-	GENE,
-	EXPERIMENT,
-	PATHWAY,
-	OTHER
+	GENE("Genes"),
+	EXPERIMENT("Experiments"),
+	PATHWAY("Pathways"),
+	OTHER("Unspecified");
+
+	private String name;
+
+	private EIDCategory(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
 }

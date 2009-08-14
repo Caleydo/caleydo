@@ -61,6 +61,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.TriggerPropagationCommandEvent;
@@ -103,6 +104,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.listener.UseRandomSampli
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -527,13 +529,13 @@ public class GLParallelCoordinates
 
 	}
 
+	/**
+	 * Sends a bookmark event containing all elements which are currently visible in the pcs, if the number of
+	 * elements is less than 20. If it's more than 20 an error message is displayed.
+	 */
 	public void bookmarkElements() {
 
-		// FIXME - this does not what broadcast should actually do
-		// saveSelection();
-
 		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
-		delta.setVAType(EVAType.CONTENT_BOOKMARKS);
 		if (delta.size() > 20) {
 			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 
@@ -551,18 +553,11 @@ public class GLParallelCoordinates
 
 		if (!isRenderedRemote()) {
 			bShowSelectionHeatMap = true;
-
-			SelectionCommand command = new SelectionCommand(ESelectionCommandType.RESET);
-			TriggerPropagationCommandEvent event = new TriggerPropagationCommandEvent();
-			event.setCategory(ePolylineDataType.getCategory());
-			event.setSelectionCommand(command);
-			eventPublisher.triggerEvent(event);
-
-			VirtualArrayUpdateEvent vaEvent = new VirtualArrayUpdateEvent();
-			vaEvent.setVirtualArrayDelta((VirtualArrayDelta) delta);
-			vaEvent.setSender(this);
-			eventPublisher.triggerEvent(vaEvent);
-
+			BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(EIDType.EXPRESSION_INDEX);
+			for (VADeltaItem item : delta.getAllItems()) {
+				bookmarkEvent.addBookmark(item.getPrimaryID());
+			}
+			eventPublisher.triggerEvent(bookmarkEvent);
 			resetAxisSpacing();
 			setDisplayListDirty();
 		}
@@ -695,7 +690,7 @@ public class GLParallelCoordinates
 			if (set.isSetHomogeneous()) {
 				renderGlobalBrush(gl);
 			}
-			
+
 			renderCoordinateSystem(gl);
 
 			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
@@ -713,8 +708,6 @@ public class GLParallelCoordinates
 			}
 
 			renderGates(gl);
-
-	
 
 			// if (bShowSelectionHeatMap) {
 			//
@@ -1907,7 +1900,7 @@ public class GLParallelCoordinates
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
 							new GeneContextMenuItemContainer();
-						geneContextMenuItemContainer.setStorageIndex(iExternalID);
+						geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 
 						if (!isRenderedRemote()) {
@@ -1986,6 +1979,17 @@ public class GLParallelCoordinates
 					case MOUSE_OVER:
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
+					case RIGHT_CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+						}
+						ExperimentContextMenuItemContainer experimentContextMenuItemContainer =
+							new ExperimentContextMenuItemContainer();
+						experimentContextMenuItemContainer.setID(iExternalID);
+						contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 					default:
 						return;

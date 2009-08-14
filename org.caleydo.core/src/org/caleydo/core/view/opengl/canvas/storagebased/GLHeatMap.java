@@ -48,6 +48,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -434,7 +435,7 @@ public class GLHeatMap
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
 							new GeneContextMenuItemContainer();
-						geneContextMenuItemContainer.setStorageIndex(iExternalID);
+						geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
 						contextMenu.addItemContanier(geneContextMenuItemContainer);
 					default:
 						return;
@@ -454,6 +455,16 @@ public class GLHeatMap
 					case MOUSE_OVER:
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
+					case RIGHT_CLICKED:
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+						}
+						ExperimentContextMenuItemContainer experimentContextMenuItemContainer =
+							new ExperimentContextMenuItemContainer();
+						experimentContextMenuItemContainer.setID(iExternalID);
+						contextMenu.addItemContanier(experimentContextMenuItemContainer);
 					default:
 						return;
 				}
@@ -684,8 +695,11 @@ public class GLHeatMap
 					String refSeq = null;
 
 					if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-						// values, depending on the IDType that has been specified when loading expression data.
+
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a
+						// Set of
+						// values, depending on the IDType that has been specified when loading expression
+						// data.
 						// Possibly a different handling of the Set is required.
 						Set<String> setGeneSymbols =
 							idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
@@ -698,8 +712,10 @@ public class GLHeatMap
 						if (sContent == null || sContent.equals(""))
 							sContent = "Unkonwn Gene";
 
-						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-						// values, depending on the IDType that has been specified when loading expression data.
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a
+						// Set of
+						// values, depending on the IDType that has been specified when loading expression
+						// data.
 						// Possibly a different handling of the Set is required.
 						Set<String> setRefSeqIDs =
 							idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
@@ -890,7 +906,7 @@ public class GLHeatMap
 
 	@Override
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta) {
-		// FIXME: should not be necessary here, incorrect init.
+		// FIXME: should not be necessary here, incor init.
 		if (renderStyle == null)
 			return;
 
@@ -987,7 +1003,7 @@ public class GLHeatMap
 		// // :
 		// // 1.5
 		// // =
-		// // correction of
+		// // corion of
 		// // lens effect in
 		// // heatmap
 		//

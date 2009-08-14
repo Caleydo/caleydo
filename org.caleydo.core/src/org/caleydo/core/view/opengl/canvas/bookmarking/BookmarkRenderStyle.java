@@ -12,6 +12,7 @@ class BookmarkRenderStyle
 
 	public static final float SIDE_SPACING = 0.05f;
 	public static final float TOP_SPACING = 0.1f;
+	public static final float CONTAINER_HEADING_SIZE = 0.08f;
 	
 	public static final int NUMBER_OF_LIST_ITEMS_PER_PAGE = 30;
 

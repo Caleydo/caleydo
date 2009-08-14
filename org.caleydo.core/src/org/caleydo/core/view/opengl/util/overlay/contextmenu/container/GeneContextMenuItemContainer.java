@@ -31,27 +31,10 @@ public class GeneContextMenuItemContainer
 
 	}
 
-	public void setStorageIndex(int iStorageIndex) {
-		// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-		// values, depending on the IDType that has been specified when loading expression data.
-		// Possibly a different handling of the Set is required.
-		Set<Integer> setDavidIDs =
-			GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.DAVID,
-				iStorageIndex);
-		
-		Integer davidID = null;
-		
-		if((setDavidIDs != null && !setDavidIDs.isEmpty())) {
-			davidID = (Integer)setDavidIDs.toArray()[0];
-		}
-		
-		if(davidID == null)
-			davidID = -1;
-		// mappingHelper.getDavidIDFromStorageIndex(iStorageIndex);
-		createMenuContent(davidID);
-	}
-
-	public void setDavid(int davidID) {
+	public void setID(EIDType idType, int id) {
+		Integer davidID = GeneralManager.get().getIDMappingManager().getID(idType, EIDType.DAVID, id);
+		if (davidID == null)
+			return;
 		createMenuContent(davidID);
 	}
 
@@ -70,20 +53,9 @@ public class GeneContextMenuItemContainer
 		showPathwaysByGeneItem.setDavid(davidID);
 		addContextMenuItem(showPathwaysByGeneItem);
 
-		Set<Integer> setExpIndex =
-			GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
-		
-		if (setExpIndex == null)
-			return;
-		
-		ArrayList<Integer> alStorageIndex = new ArrayList<Integer>();
-		alStorageIndex.addAll(setExpIndex);
-//			GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
-//
-//		if (alStorageIndex == null)
-//			return;
 
-		BookmarkItem addToListItem = new BookmarkItem(alStorageIndex);
+		BookmarkItem addToListItem = new BookmarkItem(EIDType.DAVID, davidID);
+
 		addContextMenuItem(addToListItem);
 	}
 }

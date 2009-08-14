@@ -25,14 +25,13 @@ public class BookmarkItem
 	 * 
 	 * @param iStorageIndex
 	 */
-	public BookmarkItem(int iStorageIndex) {
+	public BookmarkItem(EIDType idType, int id) {
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
-		VirtualArrayUpdateEvent event = new VirtualArrayUpdateEvent();
-		IVirtualArrayDelta delta = new VirtualArrayDelta(EVAType.CONTENT_BOOKMARKS, EIDType.EXPRESSION_INDEX);
-		delta.add(VADeltaItem.append(iStorageIndex));
-		event.setVirtualArrayDelta((VirtualArrayDelta) delta);
+		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
+		event.addBookmark(id);
+		event.setSender(this);
 		registerEvent(event);
 	}
 
@@ -41,15 +40,14 @@ public class BookmarkItem
 	 * 
 	 * @param alStorageIndex
 	 */
-	public BookmarkItem(ArrayList<Integer> alStorageIndex) {
+	public BookmarkItem(EIDType idType, ArrayList<Integer> ids) {
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
-		BookmarkEvent<Integer>event = new BookmarkEvent<Integer>(EIDType.EXPRESSION_INDEX);
+		BookmarkEvent<Integer>event = new BookmarkEvent<Integer>(idType);
 	
-		for (Integer storageIndex : alStorageIndex)
-			event.addBookmark(storageIndex);
-
+		for (Integer id : ids)
+			event.addBookmark(id);
 		registerEvent(event);
 	}
 

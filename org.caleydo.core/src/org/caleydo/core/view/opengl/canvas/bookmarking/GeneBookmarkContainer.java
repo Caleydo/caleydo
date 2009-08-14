@@ -13,20 +13,20 @@ import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager.Picking
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-public class GeneBookmarkContainer
+/**
+ * A concrete implementation of ABookmarkContainer for the category {@link EIDCategory#GENE}
+ * 
+ * @author Alexander Lex
+ */
+class GeneBookmarkContainer
 	extends ABookmarkContainer {
 
-	protected ColorMapping colorMapping;
+	ColorMapping colorMapping;
 
-	public GeneBookmarkContainer(PickingIDManager pickingIDManager, TextRenderer textRenderer) {
+	GeneBookmarkContainer(PickingIDManager pickingIDManager, TextRenderer textRenderer) {
 		super(EIDCategory.GENE, pickingIDManager, textRenderer);
 		bookmarkItems = new UniqueList<ABookmark>();
 
-		for (ABookmark item : bookmarkItems) {
-			dimensions.setHeight(dimensions.getHeight() + item.getDimensions().getHeight());
-			if (item.getDimensions().getWidth() > dimensions.getWidth())
-				dimensions.setWidth(item.getDimensions().getWidth());
-		}
 
 		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
@@ -35,15 +35,17 @@ public class GeneBookmarkContainer
 	}
 
 	@Override
-	public <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
+	<IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event) {
 		// ArrayList<Integer> ids;
-		int davidID;
+		Integer davidID;
 
 		for (IDDataType id : event.getBookmarks()) {
 
 			if (event.getIDType().getCategory() == EIDCategory.GENE) {
 				davidID =
 					GeneralManager.get().getIDMappingManager().getID(event.getIDType(), EIDType.DAVID, id);
+				if(davidID == null)
+					continue;
 			}
 			else
 				throw new IllegalStateException("ID type unhandled");

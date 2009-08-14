@@ -17,30 +17,15 @@ public enum EVAType {
 	 * All elements in the storage, subject to filters
 	 */
 	CONTENT,
-	
+
 	/**
 	 * Type that may not be used in event communication, only for private sub views
 	 */
 	CONTENT_EMBEDDED_HM,
 
 	/**
-	 * All elements in the storage (clustered)
-	 */
-	// COMPLETE_CLUSTERED_SELECTION,
-
-	/**
 	 * All storages (initially)
 	 */
 	STORAGE,
-
-	/**
-	 * All storages (clustered)
-	 */
-	// STORAGE_CLUSTERED_SELECTION
-
-	/**
-	 * Content bookmark VA used for the bookmark views
-	 */
-	CONTENT_BOOKMARKS
 
 }

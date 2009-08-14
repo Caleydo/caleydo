@@ -67,4 +67,8 @@ public class Dimensions {
 		this.height = height;
 	}
 
+	public void increaseHeight(float delta) {
+		this.height += delta;
+	}
+
 }

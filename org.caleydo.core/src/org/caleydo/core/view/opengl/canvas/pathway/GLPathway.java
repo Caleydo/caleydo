@@ -675,7 +675,7 @@ public class GLPathway
 
 								GeneContextMenuItemContainer geneContextMenuItemContainer =
 									new GeneContextMenuItemContainer();
-								geneContextMenuItemContainer.setDavid(generalManager.getPathwayItemManager()
+								geneContextMenuItemContainer.setID(EIDType.DAVID, generalManager.getPathwayItemManager()
 									.getDavidIdByPathwayVertexGraphItem(
 										(PathwayVertexGraphItem) pathwayVertexGraphItem));
 								contextMenu.addItemContanier(geneContextMenuItemContainer);
