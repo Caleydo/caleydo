@@ -202,8 +202,8 @@
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
-      <product
-            application="org.eclipse.ant.core.antRunner"
+          <product
+            application="org.caleydo.rcp.application"
             name="Caleydo">
          <property
                name="appName"
