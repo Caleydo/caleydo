@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Caleydo" id="org.caleydo.rcp.product" application="org.eclipse.ant.core.antRunner" useFeatures="true" includeLaunchers="true">
+<product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>
