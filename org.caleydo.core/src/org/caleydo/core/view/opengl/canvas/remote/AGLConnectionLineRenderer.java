@@ -195,7 +195,14 @@ public abstract class AGLConnectionLineRenderer {
 //		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
 //		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
 //		gl.glEnd();
-		VisLink.renderLine(gl, vecSrcPoint, vecDestPoint, true);
+		
+		
+//		VisLink.renderLine(gl, vecSrcPoint, vecDestPoint, true);
+		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
+		controlPoints.add(vecSrcPoint);
+		controlPoints.add(vecDestPoint);
+//		VisLink.renderLine(gl, controlPoints, 0, 10, true);
+		VisLink.polygonLine(gl, controlPoints, 0, 10, false); // FIXME: testing, use 1 line above instead
 	}
 
 	/**
@@ -259,15 +266,12 @@ public abstract class AGLConnectionLineRenderer {
 //		}
 //		gl.glEnd();
 		
-		// this block should be used instead of testing method below
 		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
 		controlPoints.add(vecSrcPoint);
 		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
 		controlPoints.add(vecDestPoint);
-		VisLink.renderLine(gl, controlPoints, 10, true);
-		
-//		// FIXME: testing only, use above block instead
-//		VisLink.polygonLine(gl, vecSrcPoint, calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint), vecDestPoint, 10, false);
+//		VisLink.renderLine(gl, controlPoints, 0, 10, true);
+		VisLink.polygonLine(gl, controlPoints, 0, 10, false); // FIXME: testing, use 1 line above instead
 	}
 
 	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
