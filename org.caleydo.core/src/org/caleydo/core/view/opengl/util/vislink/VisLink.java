@@ -39,15 +39,14 @@ public class VisLink {
 	 * 
 	 * @throws IllegalArgumentException if there are < 2 control points
 	 */	
-	public static void renderLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int numberOfSegments, boolean shadow)
+	public static void renderLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow)
 		throws IllegalArgumentException
 	{
-		if(controlPoints.size() == 2)
+		if(controlPoints.size() == (offset + 2))
 			line(gl, controlPoints.get(0), controlPoints.get(1), shadow);
-		else if(controlPoints.size() > 2)
+		else if(controlPoints.size() > (offset + 2))
 		{
-			spline(gl, controlPoints, numberOfSegments, shadow);
-			//polygonLine(gl, controlPoints, numberOfSegments, shadow);
+			spline(gl, controlPoints, offset, numberOfSegments, shadow);
 		}
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
@@ -63,17 +62,19 @@ public class VisLink {
 	 * 
 	 * @param controlPoints the control points for the NURBS spline
 	 * 
+	 * @param offset the offset of control points
+	 * 
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 * 
 	 * @throws IllegalArgumentException if there are < 2 control points
 	 */	
-	public static void renderLine(final GL gl, final ArrayList<Vec3f> controlPoints, boolean shadow)
+	public static void renderLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow)
 		throws IllegalArgumentException
 	{
-		if(controlPoints.size() == 2)
-			line(gl, controlPoints.get(0), controlPoints.get(1), shadow);
-		else if(controlPoints.size() > 2)
-			spline(gl, controlPoints, 10, shadow); // NOTE: generates a NURBS spline with 10 subsegments.	
+		if(controlPoints.size() == (offset + 2))
+			line(gl, controlPoints.get(offset), controlPoints.get(offset + 1), shadow);
+		else if(controlPoints.size() > (offset + 2))
+			spline(gl, controlPoints, offset, 10, shadow); // NOTE: generates a NURBS spline with 10 subsegments.	
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
 	}
@@ -104,12 +105,14 @@ public class VisLink {
 	 * 
 	 * @param controlPoints the control points for the NURBS spline
 	 * 
+	 * @param offset the offset of control points
+	 * 
 	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
 	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
 	 * 
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */
-	protected static void spline(final GL gl, final ArrayList<Vec3f> controlPoints, final int numberOfSegments, boolean shadow) {
+	protected static void spline(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow) {
 		NURBSCurve curve = new NURBSCurve(controlPoints, 10);
 		
 		if(shadow == true) {
@@ -117,7 +120,7 @@ public class VisLink {
 			gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 			gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2.0f);
 			gl.glBegin(GL.GL_LINE_STRIP);
-			for(int i = 0; i < curve.getNumberOfCurvePoints(); i++)
+			for(int i = offset; i < curve.getNumberOfCurvePoints(); i++)
 				gl.glVertex3f(curve.getCurvePoint(i).x(), curve.getCurvePoint(i).y(), curve.getCurvePoint(i).z());
 			gl.glEnd();
 		}
@@ -129,7 +132,7 @@ public class VisLink {
 		
 		// the spline
 		gl.glBegin(GL.GL_LINE_STRIP);
-		for(int i = 0; i < curve.getNumberOfCurvePoints(); i++)
+		for(int i = offset; i < curve.getNumberOfCurvePoints(); i++)
 			gl.glVertex3f(curve.getCurvePoint(i).x(), curve.getCurvePoint(i).y(), curve.getCurvePoint(i).z());
 		gl.glEnd();
 	}
@@ -180,9 +183,16 @@ public class VisLink {
 	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */
-	public static void polygonLine(final GL gl, final Vec3f srcPoint, final Vec3f bundlingPoint, final Vec3f destPoint, final int numberOfSegments, boolean shadow) {
-		NURBSCurve curve = new NURBSCurve(srcPoint, bundlingPoint, destPoint, 10);
-		ArrayList<Vec3f> polygonPoints = new ArrayList<Vec3f>(generatePolygonVertices(gl, curve.getCurvePoints(), srcPoint, bundlingPoint, destPoint));
+	public static void polygonLine(final GL gl, final ArrayList<Vec3f> points, final int offset, final int numberOfSegments, boolean shadow) {
+		ArrayList<Vec3f> polygonPoints = new ArrayList<Vec3f>();
+		if(points.size() == (offset + 2))
+			polygonPoints = generatePolygonVertices(gl, points);
+		else if(points.size() > (offset + 2)) {
+			NURBSCurve curve = new NURBSCurve(points, 10);
+			polygonPoints = generatePolygonVertices(gl, curve.getCurvePoints());
+		}
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" );
 		
 		// The spline attributes
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
@@ -205,78 +215,22 @@ public class VisLink {
 	}
 	
 	
-	/**
-	 * 		Normalizes a vector to length 0.1
-	 * 	
-	 * @param vec vector to be normalized
-	 * @return normalized vector
-	 */
-	protected static Vec3f normalizeVector(Vec3f vec) {
-		Vec3f result = new Vec3f();
-		
-		result.setX((vec.x() / java.lang.Math.abs(vec.x())) * 0.01f);
-		result.setY((vec.y() / java.lang.Math.abs(vec.y())) * 0.01f);
-		result.setZ((vec.z() / java.lang.Math.abs(vec.z())) * 0.01f);
-		
-		return result; 
-	}
-	
-	
-	/**
-	 * 		generates a normal vector from 3 given points in space
+	/** 
+	 * 		Generates vertices for a polygon line from a given set of curve points.
 	 * 
-	 * @param v1 point 1
-	 * @param v2 point 2
-	 * @param v3 point 3
-	 * 
-	 * @return a normal vector
-	 */
-	protected static Vec3f calculateNormal(Vec3f v1, Vec3f v2, Vec3f v3) {
-		Vec3f v1v3 = new Vec3f(v3.minus(v1));
-		Vec3f v1v2 = new Vec3f(v2.minus(v1));		
-		return new Vec3f(v1v3.cross(v1v2));
-	}
-	
-	
-	/**
-	 * 		generates a normal vector from 3 given points in space.
-	 * 		This is the inverse normal to the one created by calculateNormal
-	 * 
-	 * @param v1 point 1
-	 * @param v2 point 2
-	 * @param v3 point 3
-	 * 
-	 * @return a normal vector (inverse to the normal created by calculateNormal)
-	 */
-	protected static Vec3f calculateInvNormal(Vec3f v1, Vec3f v2, Vec3f v3) {
-		Vec3f v1v3 = new Vec3f(v3.minus(v1));
-		Vec3f v1v2 = new Vec3f(v2.minus(v1));		
-		return new Vec3f(v1v2.cross(v1v3));
-	}
-	
-	
-	protected static Vec3f directionVec(Vec3f prevPoint, Vec3f point, Vec3f nextPoint) {
-		Vec3f straight = nextPoint.minus(prevPoint);
-		Vec3f eyepoint = new Vec3f(0.0f, 0.0f, 6.0f);
-		Vec3f epVec = eyepoint.minus(point);
-		return new Vec3f(straight.cross(epVec));
-	}
-	
-	protected static Vec3f invDirectionVec(Vec3f prevPoint, Vec3f point, Vec3f nextPoint) {
-		Vec3f straight = nextPoint.minus(prevPoint);
-		Vec3f eyepoint = new Vec3f(0.0f, 0.0f, 6.0f);
-		Vec3f epVec = eyepoint.minus(point);
-		return new Vec3f(epVec.cross(straight));
-	}
-	
-	/** only for testing. do not use! */
-	protected static ArrayList<Vec3f> generatePolygonVertices(final GL gl, ArrayList<Vec3f> curvePoints, Vec3f srcPoint, Vec3f bundlingPoint, Vec3f destPoint)
+	 *@param gl the GL Object
+	 *@param curvePoints set of curve points
+	 *
+	 *@return a list of vertices
+	*/
+	protected static ArrayList<Vec3f> generatePolygonVertices(final GL gl, ArrayList<Vec3f> curvePoints)
 	throws IllegalArgumentException
 	{
 		if(curvePoints.size() <= 0)
-			throw new IllegalArgumentException( "given set of curve points is empty ()" );
-			
-		
+			throw new IllegalArgumentException( "given set of curve points is empty" );
+		if(curvePoints.size() == 1)
+			throw new IllegalArgumentException( "at least two points are needed for rendering a line" );
+					
 		ArrayList<Vec3f> polygonPoints = new ArrayList<Vec3f>();
 		float width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH / 2f;
 		
@@ -300,10 +254,147 @@ public class VisLink {
 			dirVec = normalizeVector(dirVec);
 			invDirVec = normalizeVector(invDirVec);
 			
-			polygonPoints.add(curvePoints.get(i).addScaled(width, dirVec)); // FIXME: only testing purpose
+			polygonPoints.add(curvePoints.get(i).addScaled(width, dirVec));
 			polygonPoints.add(curvePoints.get(i).addScaled(width, invDirVec));
 		}		
 		return polygonPoints;
+	}
+	
+	
+	/**
+	 * 		Normalizes a vector to length 0.1
+	 * 	
+	 * @param vec vector to be normalized
+	 * @return normalized vector
+	 */
+	protected static Vec3f normalizeVector(Vec3f vec) {
+		Vec3f result = new Vec3f();
+		
+		result.setX((vec.x() / java.lang.Math.abs(vec.x())) * 0.01f);
+		result.setY((vec.y() / java.lang.Math.abs(vec.y())) * 0.01f);
+		result.setZ((vec.z() / java.lang.Math.abs(vec.z())) * 0.01f);
+		
+		return result; 
+	}
+	
+	
+	/**
+	 * 		Generates a vector which is from the viewpoint normal on the line.
+	 * 
+	 * @param v1 point k-1
+	 * @param v2 point k
+	 * @param v3 point k+1
+	 * 
+	 * @return a direction vector
+	 */
+	protected static Vec3f directionVec(Vec3f prevPoint, Vec3f point, Vec3f nextPoint) {
+		Vec3f straight = nextPoint.minus(prevPoint);
+		Vec3f eyepoint = new Vec3f(0.0f, 0.0f, 6.0f);
+		Vec3f epVec = eyepoint.minus(point);
+		return new Vec3f(straight.cross(epVec));
+	}
+	
+	
+	/**
+	 * 		Generates a vector which is from the viewpoint normal on the line.
+	 * 		This direction vector is inverse to the one returned by directionVec(...)
+	 * 
+	 * @param v1 point k-1
+	 * @param v2 point k
+	 * @param v3 point k+1
+	 * 
+	 * @return a direction vector inverse to the one returned by directionVec(...)
+	 */
+	protected static Vec3f invDirectionVec(Vec3f prevPoint, Vec3f point, Vec3f nextPoint) {
+		Vec3f straight = nextPoint.minus(prevPoint);
+		Vec3f eyepoint = new Vec3f(0.0f, 0.0f, 6.0f);
+		Vec3f epVec = eyepoint.minus(point);
+		return new Vec3f(epVec.cross(straight));
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * 		Creates a polygon visual link. Static method.
+	 * When the number of control points is 2, this method renders a straight line.
+	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
+	 *
+	 * @param gl the GL object
+	 * 
+	 * @param controlPoints the control points for the NURBS spline
+	 * 
+	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
+	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
+	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
+	 * 
+	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */	
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow)
+		throws IllegalArgumentException
+	{
+//		if(controlPoints.size() == (offset + 2))
+//			line(gl, controlPoints.get(0), controlPoints.get(1), shadow);
+//		else if(controlPoints.size() > (offset + 2))
+//		{
+//			spline(gl, controlPoints, offset, numberOfSegments, shadow);
+//		}
+		if(controlPoints.size() >= (offset + 2))
+			polygonLine(gl, controlPoints, offset, numberOfSegments, shadow);
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
+	}
+	
+	
+	/**
+	 * 		Creates a polygon visual link. Static method.
+	 * When the number of control points is 2, this method renders a straight line.
+	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
+	 *
+	 * @param gl the GL object
+	 * 
+	 * @param controlPoints the control points for the NURBS spline
+	 * 
+	 * @param offset the offset of control points
+	 * 
+	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */	
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow)
+		throws IllegalArgumentException
+	{
+//		if(controlPoints.size() == (offset + 2))
+//			line(gl, controlPoints.get(offset), controlPoints.get(offset + 1), shadow);
+//		else if(controlPoints.size() > (offset + 2))
+//			spline(gl, controlPoints, offset, 10, shadow); // NOTE: generates a NURBS spline with 10 subsegments.	
+		if(controlPoints.size() >= (offset + 2))
+			polygonLine(gl, controlPoints, offset, 10, shadow);
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
+	}
+	
+	
+	/**
+	 * 		Creates a polygon visual link. Static method.
+	 *
+	 * @param gl the GL object
+	 * 
+	 * @param srcPoint the lines point of origin
+	 * 
+	 * @param destPoint the lines end point
+	 * 
+	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 */	
+	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow) {
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		points.add(srcPoint);
+		points.add(destPoint);
+		polygonLine(gl, points, 0, 0, shadow);		
 	}
 	
 }
