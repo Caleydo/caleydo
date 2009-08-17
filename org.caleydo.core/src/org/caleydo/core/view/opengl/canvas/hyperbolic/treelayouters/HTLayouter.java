@@ -21,6 +21,7 @@ public final class HTLayouter
 	float fYCoord;
 	float fCenterX;
 	float fCenterY;
+	float childAngle;
 
 	public HTLayouter(IViewFrustum frustum) {
 		super(frustum);
@@ -62,8 +63,20 @@ public final class HTLayouter
 			
 			//for testing the tree will add the radius number to the nodes number 
 			for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
-				calculateCircle((0.5f), fCurrentNode, fNumberOfNodesInLayer);
+				
+				float childRadius = 1.0f;
+				float alpha = calculateCircle((0.5f), fCurrentNode, fNumberOfNodesInLayer);
+				float space = calculateChildSpace(childRadius, fNumberOfNodesInLayer);
 				rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
+				childAngle = 0.0f;
+				for(float numChilds = 1; numChilds < 5; numChilds++){
+					
+					
+					childAngle = calculateChildAngle(alpha*fCurrentNode, space/5, childRadius)*numChilds +(alpha/2);
+					calcualteChildPosition(childRadius, childAngle, numChilds);
+					rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
+				}
+				
 //				TransformationTest test = new TransformationTest(getFCenterX(),getFCenterY(),getFXCoord(),getFYCoord());
 //				test.generateNewView();
 			}
@@ -165,12 +178,34 @@ public final class HTLayouter
 		fYCoord = coord;
 	}
 
-	private void calculateCircle(float radius, float current_step, float numberOfElements) {
-		float phix = (float) ((float) 2 * Math.PI / numberOfElements);
-		float phiy = (float) ((float) 2 * Math.PI / numberOfElements);
+	private float calculateCircle(float radius, float current_step, float numberOfElements) {
+		float phi = (float) ((float) 2 * Math.PI / numberOfElements);
 		// float phi = 1;
-		setFXCoord((float) (fCenterX + radius * Math.cos(phix * current_step)));
-		setFYCoord( (float) (fCenterY + radius * Math.sin(phiy * current_step)));
+		setFXCoord((float) (fCenterX + radius * Math.cos(phi * current_step)));
+		setFYCoord( (float) (fCenterY + radius * Math.sin(phi * current_step)));
+		return phi;
+	}
+	
+	private float calculateChildSpace(float radius, float numberOfNodesInLayer){
+		
+		float amount = (float)(2 * Math.PI) * radius;
+		float b = amount/numberOfNodesInLayer;
+		
+		return b;
+	}
+	
+	private float calculateChildAngle(float parentAngle, float space, float radius){
+		
+		float angle = parentAngle - space/radius;
+		
+		return angle;
+	}
+	private void calcualteChildPosition(float radius, float phi, float currentStep){
+//		setFXCoord((float) (fCenterX + radius * Math.cos(phi * currentStep)));
+//		setFYCoord( (float) (fCenterY + radius * Math.sin(phi * currentStep)));
+		setFXCoord((float) (fCenterX + radius * Math.cos(phi)));
+		setFYCoord( (float) (fCenterY + radius * Math.sin(phi)));
+		
 	}
 
 
