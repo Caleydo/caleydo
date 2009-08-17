@@ -5,9 +5,6 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
-import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager.PickingIDManager;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * A concrete implementation of ABookmarkContainer for the category {@link EIDCategory#GENE}
@@ -17,11 +14,11 @@ import com.sun.opengl.util.j2d.TextRenderer;
 class ExperimentBookmarkContainer
 	extends ABookmarkContainer {
 
-	ExperimentBookmarkContainer(PickingIDManager pickingIDManager, TextRenderer textRenderer) {
-		super(EIDCategory.EXPERIMENT, pickingIDManager, textRenderer);
+	ExperimentBookmarkContainer(GLBookmarkManager manager) {
+		super(manager, EIDCategory.EXPERIMENT, EIDType.EXPERIMENT_INDEX);
 		bookmarkItems = new UniqueList<ABookmark>();
 
-		selectionManager = new SelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		selectionManager = new SelectionManager.Builder(internalIDType).build();
 
 	}
 

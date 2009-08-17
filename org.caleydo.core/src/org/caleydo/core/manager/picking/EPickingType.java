@@ -54,7 +54,7 @@ public enum EPickingType {
 	HEAT_MAP_STORAGE_SELECTION,
 	
 	// bookmark
-	LIST_HEAT_MAP_CLEAR_ALL,
+	BOOKMARK_CONTAINER_HEADING,
 	BOOKMARK_ELEMENT,
 
 	// hierarchical heat map

@@ -13,6 +13,7 @@ import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -32,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -63,6 +65,8 @@ public class GLBookmarkManager
 	private TextRenderer textRenderer;
 
 	private PickingIDManager pickingIDManager;
+
+	private RemoveBookmarkListener removeBookmarkListener;
 
 	class PickingIDManager {
 		/**
@@ -114,12 +118,11 @@ public class GLBookmarkManager
 
 		pickingIDManager = new PickingIDManager();
 
-		GeneBookmarkContainer geneContainer = new GeneBookmarkContainer(pickingIDManager, textRenderer);
+		GeneBookmarkContainer geneContainer = new GeneBookmarkContainer(this);
 		hashCategoryToBookmarkContainer.put(EIDCategory.GENE, geneContainer);
 		bookmarkContainers.add(geneContainer);
 
-		ExperimentBookmarkContainer experimentContainer =
-			new ExperimentBookmarkContainer(pickingIDManager, textRenderer);
+		ExperimentBookmarkContainer experimentContainer = new ExperimentBookmarkContainer(this);
 		hashCategoryToBookmarkContainer.put(EIDCategory.EXPERIMENT, experimentContainer);
 		bookmarkContainers.add(experimentContainer);
 
@@ -132,6 +135,10 @@ public class GLBookmarkManager
 		bookmarkListener = new BookmarkListener();
 		bookmarkListener.setHandler(this);
 		eventPublisher.addListener(BookmarkEvent.class, bookmarkListener);
+		
+		removeBookmarkListener = new RemoveBookmarkListener();
+		removeBookmarkListener.setHandler(this);
+		eventPublisher.addListener(RemoveBookmarkEvent.class, removeBookmarkListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -151,6 +158,12 @@ public class GLBookmarkManager
 		if (bookmarkListener != null) {
 			eventPublisher.removeListener(bookmarkListener);
 			bookmarkListener = null;
+		}
+		
+		if(removeBookmarkListener != null)
+		{
+			eventPublisher.removeListener(removeBookmarkListener);
+			removeBookmarkListener = null;
 		}
 
 		if (selectionUpdateListener != null) {
@@ -213,8 +226,8 @@ public class GLBookmarkManager
 		switch (ePickingType) {
 			case BOOKMARK_ELEMENT:
 				Pair<EIDCategory, Integer> pair = pickingIDManager.getPrivateID(iExternalID);
-				hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(ePickingMode,
-					pair.getSecond());
+				hashCategoryToBookmarkContainer.get(pair.getFirst()).handleEvents(ePickingType, ePickingMode,
+					pair.getSecond(), pick);
 		}
 	}
 
@@ -232,6 +245,15 @@ public class GLBookmarkManager
 		container.handleNewBookmarkEvent(event);
 	}
 
+	public <IDDataType> void handleRemoveBookmarkEvent(RemoveBookmarkEvent<IDDataType> event) {
+		ABookmarkContainer container = hashCategoryToBookmarkContainer.get(event.getIDType().getCategory());
+		if (container == null)
+			throw new IllegalStateException("Can not handle bookmarks of type "
+				+ event.getIDType().getCategory());
+
+		container.handleRemoveBookmarkEvent(event);
+	}
+
 	@Override
 	public void init(GL gl) {
 		// TODO Auto-generated method stub
@@ -240,14 +262,15 @@ public class GLBookmarkManager
 
 	@Override
 	protected void initLocal(GL gl) {
-		// TODO Auto-generated method stub
+		init(gl);
 
 	}
 
 	@Override
 	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
 		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		// TODO Auto-generated method stub
+		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		init(gl);
 
 	}
 
@@ -297,4 +320,15 @@ public class GLBookmarkManager
 		handleContentTriggerSelectionCommand(category, selectionCommand);
 	}
 
+	ContextMenu getContextMenu() {
+		return contextMenu;
+	}
+
+	TextRenderer getTextRenderer() {
+		return textRenderer;
+	}
+
+	PickingIDManager getPickingIDManager() {
+		return pickingIDManager;
+	}
 }

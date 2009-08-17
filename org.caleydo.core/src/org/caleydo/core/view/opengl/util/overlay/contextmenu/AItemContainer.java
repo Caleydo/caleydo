@@ -31,6 +31,14 @@ public abstract class AItemContainer
 	public void addContextMenuItem(AContextMenuItem contextMenuItem) {
 		contextMenuEntries.add(contextMenuItem);
 	}
+	
+	public void addItemContainer(AItemContainer container)
+	{
+		for(IContextMenuEntry item : container)
+		{
+			contextMenuEntries.add(item);
+		}
+	}
 
 	/**
 	 * Adds a separator to the context menu

@@ -1,8 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.bookmarking;
 
+import java.util.Iterator;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDCategory;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -10,14 +13,20 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.manager.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager.PickingIDManager;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.BookmarkContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -49,7 +58,9 @@ abstract class ABookmarkContainer {
 
 	/** The category of the container */
 	EIDCategory category;
-	/** The dimensions (height, widht, position, etc.) of the whole container */
+	/** The type the container uses to internally store the data */
+	EIDType internalIDType;
+	/** The dimensions (height, width, position, etc.) of the whole container */
 	Dimensions dimensions;
 	/** The name displayed as the heading in the sidebar */
 	String categoryName;
@@ -67,22 +78,30 @@ abstract class ABookmarkContainer {
 	SelectionManager selectionManager;
 
 	/**
+	 * The creating and managing instance of this class. We need access to it here, because it provides all
+	 * the view-specific facilities such as context menu etc.
+	 */
+	GLBookmarkManager manager;
+
+	/**
 	 * Constructor
 	 * 
+	 * @param manager
+	 *            The gl view managing the container.
 	 * @param category
 	 *            Every cateogry in {@link EIDCategory} can have one bookmark container, therefore you need to
 	 *            specify the concrete category. The category should be specified by the concrete subclass and
 	 *            therefore not be part of its constructor.
-	 * @param pickingIDManager
-	 *            The pickingIDManager that handles the picking IDs for all the bookmarkContainers uniquely.
-	 * @param textRenderer
-	 *            A shared textrenderer.
+	 * @param internalIDType
+	 *            the id type the container uses to internally store the bookmars
 	 */
-	ABookmarkContainer(EIDCategory category, PickingIDManager pickingIDManager, TextRenderer textRenderer) {
+	ABookmarkContainer(GLBookmarkManager manager, EIDCategory category, EIDType internalIDType) {
+		this.internalIDType = internalIDType;
+		this.manager = manager;
 		this.category = category;
 		this.categoryName = category.getName();
-		this.pickingIDManager = pickingIDManager;
-		this.textRenderer = textRenderer;
+		this.pickingIDManager = manager.getPickingIDManager();
+		this.textRenderer = manager.getTextRenderer();
 		dimensions = new Dimensions();
 	}
 
@@ -116,7 +135,7 @@ abstract class ABookmarkContainer {
 
 		dimensions.increaseHeight(BookmarkRenderStyle.CONTAINER_HEADING_SIZE);
 		yOrigin -= BookmarkRenderStyle.CONTAINER_HEADING_SIZE;
-		
+
 		RenderingHelpers.renderText(gl, textRenderer, categoryName, dimensions.getXOrigin()
 			+ BookmarkRenderStyle.SIDE_SPACING, yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
@@ -124,7 +143,7 @@ abstract class ABookmarkContainer {
 
 			item.getDimensions().setOrigins(0, yOrigin);
 			yOrigin -= item.getDimensions().getHeight();
-		
+
 			if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, item.getID()))
 				GLHelperFunctions.drawPointAt(gl, item.getDimensions().getXOrigin(), yOrigin, 0);
 			int pickingID = pickingIDManager.getPickingID(this, item.getID());
@@ -140,37 +159,63 @@ abstract class ABookmarkContainer {
 	 * 
 	 * @param pickingMode
 	 *            for example mouse-over or clicked
-	 * @param privateID
+	 * @param iExternalID
 	 *            the id specified when calling {@link PickingIDManager#getPickingID(ABookmarkContainer, int)}
 	 *            Internal to the specific BookmarkContainer
 	 */
-	void handleEvents(EPickingMode pickingMode, Integer privateID) {
+	void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, Integer iExternalID, Pick pick) {
 		ESelectionType selectionType;
-		switch (pickingMode) {
-			case CLICKED:
-				selectionType = ESelectionType.SELECTION;
+		switch (ePickingType) {
+
+			case BOOKMARK_ELEMENT:
+
+				switch (pickingMode) {
+					case CLICKED:
+						selectionType = ESelectionType.SELECTION;
+						break;
+					case MOUSE_OVER:
+						selectionType = ESelectionType.MOUSE_OVER;
+						break;
+					case RIGHT_CLICKED:
+						selectionType = ESelectionType.SELECTION;
+
+						BookmarkContextMenuItemContainer bookmarkContextMenuItemContainer =
+							new BookmarkContextMenuItemContainer();
+						bookmarkContextMenuItemContainer.setID(internalIDType, iExternalID);
+						ContextMenu contextMenu = manager.getContextMenu();
+						contextMenu.addItemContanier(bookmarkContextMenuItemContainer);
+
+						if (manager.isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), manager.getParentGLCanvas()
+								.getWidth(), manager.getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(manager);
+						}
+						break;
+
+					default:
+						return;
+				}
+				selectionManager.clearSelection(selectionType);
+				selectionManager.addToType(selectionType, iExternalID);
+
+				SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
+				SelectionCommandEvent commandEvent = new SelectionCommandEvent();
+				commandEvent.setSender(this);
+				commandEvent.setCategory(category);
+				commandEvent.setSelectionCommand(command);
+				GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
+
+				ISelectionDelta selectionDelta = selectionManager.getDelta();
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setSender(this);
+				event.setSelectionDelta((SelectionDelta) selectionDelta);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
 				break;
-			case MOUSE_OVER:
-				selectionType = ESelectionType.MOUSE_OVER;
+
+			case BOOKMARK_CONTAINER_HEADING:
+				
 				break;
-			default:
-				return;
 		}
-		selectionManager.clearSelection(selectionType);
-		selectionManager.addToType(selectionType, privateID);
-
-		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR, selectionType);
-		SelectionCommandEvent commandEvent = new SelectionCommandEvent();
-		commandEvent.setSender(this);
-		commandEvent.setCategory(category);
-		commandEvent.setSelectionCommand(command);
-		GeneralManager.get().getEventPublisher().triggerEvent(commandEvent);
-
-		ISelectionDelta selectionDelta = selectionManager.getDelta();
-		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setSender(this);
-		event.setSelectionDelta((SelectionDelta) selectionDelta);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 	}
 
@@ -183,6 +228,35 @@ abstract class ABookmarkContainer {
 	 *            The event containing the information about the new bookmark to be added.
 	 */
 	abstract <IDDataType> void handleNewBookmarkEvent(BookmarkEvent<IDDataType> event);
+
+	/**
+	 * Handles the removal of bookmarks by using the informatinon in the event.
+	 * 
+	 * @param <IDDataType>
+	 *            The data type of the id, typically Integer or String
+	 * @param event
+	 *            The event containing the information about the bookmark to be removed.
+	 */
+	<IDDataType> void handleRemoveBookmarkEvent(RemoveBookmarkEvent<IDDataType> event) {
+		Integer id = null;
+		for (IDDataType tempID : event.getBookmarks()) {
+			if (tempID instanceof Integer) {
+				id = (Integer) tempID;
+			}
+			else
+				throw new IllegalStateException("Can not handle strings for experiments");
+
+			Iterator<ABookmark> iterator = bookmarkItems.iterator();
+
+			while (iterator.hasNext()) {
+				if (iterator.next().getID() == id) {
+					iterator.remove();
+					selectionManager.remove(id, false);
+				}
+			}
+
+		}
+	}
 
 	/**
 	 * Handles updates to the selections coming from external sources

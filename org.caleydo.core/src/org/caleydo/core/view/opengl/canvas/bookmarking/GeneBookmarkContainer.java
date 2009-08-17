@@ -9,9 +9,6 @@ import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager.PickingIDManager;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * A concrete implementation of ABookmarkContainer for the category {@link EIDCategory#GENE}
@@ -23,8 +20,8 @@ class GeneBookmarkContainer
 
 	ColorMapping colorMapping;
 
-	GeneBookmarkContainer(PickingIDManager pickingIDManager, TextRenderer textRenderer) {
-		super(EIDCategory.GENE, pickingIDManager, textRenderer);
+	GeneBookmarkContainer(GLBookmarkManager manager) {
+		super(manager, EIDCategory.GENE, EIDType.DAVID);
 		bookmarkItems = new UniqueList<ABookmark>();
 
 
