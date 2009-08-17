@@ -183,8 +183,16 @@ public class FileLoadDataAction
 			idTypeGroup.setLayout(new RowLayout());
 
 			idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-			alIDTypes =
+			alIDTypes = new ArrayList<EIDType>();
+			
+			ArrayList<EIDType> alIDTypesTemp =
 				(ArrayList<EIDType>) GeneralManager.get().getIDMappingManager().getIDTypes(EIDCategory.GENE);
+			
+			for (EIDType idType : alIDTypesTemp) {
+				if (!idType.equals(EIDType.REFSEQ_MRNA_INT))
+					alIDTypes.add(idType);
+			}
+			
 			String[] idTypes = new String[alIDTypes.size()];
 			int index = 0;
 			for (EIDType idType : alIDTypes) {
@@ -197,7 +205,8 @@ public class FileLoadDataAction
 			idCombo.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-
+					TableColumn idColumn = previewTable.getColumn(1);
+					idColumn.setText(idCombo.getText());
 				}
 			});
 		}
@@ -781,7 +790,13 @@ public class FileLoadDataAction
 			rowIndex++;
 		}
 		if (alIDTypes == null) {
-			alIDTypes = (ArrayList<EIDType>) idMappingManager.getIDTypes(EIDCategory.GENE);
+			alIDTypes = new ArrayList<EIDType>();
+			ArrayList<EIDType> alIDTypesTemp =
+				(ArrayList<EIDType>) GeneralManager.get().getIDMappingManager().getIDTypes(EIDCategory.GENE);
+			for (EIDType idType : alIDTypesTemp) {
+				if (!idType.equals(EIDType.REFSEQ_MRNA_INT))
+					alIDTypes.add(idType);
+			}
 		}
 
 		int maxCorrectElements = 0;
@@ -807,11 +822,21 @@ public class FileLoadDataAction
 					if (idMappingManager.doesElementExist(idType, currentID)) {
 						currentCorrectElements++;
 					}
+					else if (idType.equals(EIDType.REFSEQ_MRNA)) {
+						if (currentID.contains(".")) {
+							if (idMappingManager.doesElementExist(idType, currentID.substring(0, currentID
+								.indexOf(".")))) {
+								currentCorrectElements++;
+							}
+						}
+					}
 				}
 			}
 
 			if (currentCorrectElements >= idList.size()) {
 				idCombo.select(alIDTypes.indexOf(idType));
+				TableColumn idColumn = previewTable.getColumn(1);
+				idColumn.setText(idType.getName());
 				return;
 			}
 			if (currentCorrectElements >= maxCorrectElements) {
@@ -821,5 +846,8 @@ public class FileLoadDataAction
 		}
 
 		idCombo.select(alIDTypes.indexOf(mostProbableIDType));
+		TableColumn idColumn = previewTable.getColumn(1);
+		idColumn.setText(mostProbableIDType.getName());
+		
 	}
 }

@@ -16,11 +16,15 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
+import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -32,8 +36,11 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
+import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionListener;
@@ -54,7 +61,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  */
 public class GLRadialHierarchy
 	extends AGLEventListener
-	implements IClusterNodeEventReceiver, IViewCommandHandler {
+	implements IClusterNodeEventReceiver, IViewCommandHandler, ISelectionUpdateHandler {
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
 
@@ -91,6 +98,7 @@ public class GLRadialHierarchy
 	private ChangeColorModeListener changeColorModeListener;
 	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
 	private UpdateViewListener updateViewListener;
+	private SelectionUpdateListener selectionUpdateListener;
 
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
@@ -121,7 +129,7 @@ public class GLRadialHierarchy
 		iUpwardNavigationSliderID = 0;
 		iUpwardNavigationSliderBodyID = 0;
 
-		selectionManager = new SelectionManager.Builder(EIDType.CLUSTER_NUMBER).build();
+		selectionManager = new SelectionManager.Builder(EIDType.EXPRESSION_INDEX).build();
 
 		glKeyListener = new GLRadialHierarchyKeyListener(this);
 
@@ -136,7 +144,7 @@ public class GLRadialHierarchy
 			// initHierarchy(tree);
 		}
 		else {
-			// initTestHierarchy();
+			//initTestHierarchy();
 		}
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -619,6 +627,10 @@ public class GLRadialHierarchy
 	public int getMaxDisplayedHierarchyDepth() {
 		return iMaxDisplayedHierarchyDepth;
 	}
+	
+	public SelectionManager getSelectionManager() {
+		return selectionManager;
+	}
 
 	/**
 	 * Sets the maximum displayed hierarchy depth.
@@ -658,8 +670,20 @@ public class GLRadialHierarchy
 	 */
 	public void setNewSelection(ESelectionType selectionType, PartialDisc pdSelected, PartialDisc pdRoot) {
 
-		selectionManager.clearSelections();
-		selectionManager.addToType(selectionType, pdSelected.getElementID());
+//		selectionManager.clearSelections();
+//		selectionManager.addToType(selectionType, pdSelected.getElementID());
+//
+//		if (!pdSelected.hasChildren()) {
+//			ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
+//			clearSelectionsEvent.setSender(this);
+//			eventPublisher.triggerEvent(clearSelectionsEvent);
+//			SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
+//			selectionUpdateEvent.setSender(this);
+//			selectionUpdateEvent.setSelectionDelta((SelectionDelta) selectionManager.getDelta());
+//			selectionUpdateEvent.setInfo(getShortInfo());
+//			eventPublisher.triggerEvent(selectionUpdateEvent);
+//		}
+
 		ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
 		event.setSender(this);
 		event.setClusterNumber(pdSelected.getElementID());
@@ -830,10 +854,9 @@ public class GLRadialHierarchy
 					if (event.isSenderRadialHierarchy()) {
 
 						setupDisplay(event.getDrawingStateType(), event.getDefaultDrawingStrategyType(),
-							event.isNewSelection(), event.getRootElementID(), event
-								.getSelectedElementID(), event.getSelectedElementID(), event
-								.getRootElementStartAngle(), event.getSelectedElementStartAngle(), event
-								.getMaxDisplayedHierarchyDepth());
+							event.isNewSelection(), event.getRootElementID(), event.getSelectedElementID(),
+							event.getSelectedElementID(), event.getRootElementStartAngle(), event
+								.getSelectedElementStartAngle(), event.getMaxDisplayedHierarchyDepth());
 
 						navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
 							pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
@@ -883,6 +906,10 @@ public class GLRadialHierarchy
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
+		
+		selectionUpdateListener = new SelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		// clearSelectionsListener = new ClearSelectionsListener();
 		// clearSelectionsListener.setHandler(this);
@@ -919,6 +946,10 @@ public class GLRadialHierarchy
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
 		}
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
 		// if (clearSelectionsListener != null) {
 		// eventPublisher.removeListener(clearSelectionsListener);
 		// clearSelectionsListener = null;
@@ -928,7 +959,7 @@ public class GLRadialHierarchy
 	@Override
 	public void handleClearSelections() {
 		// TODO: Later on when using Selection Manager
-
+		selectionManager.clearSelections();
 	}
 
 	@Override
@@ -954,4 +985,22 @@ public class GLRadialHierarchy
 		}
 	}
 
+	
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		if(selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX) {
+			selectionManager.clearSelections();
+			selectionManager.setDelta(selectionDelta);
+		try  {
+		pdCurrentMouseOverElement =
+			hashPartialDiscs.get(selectionManager.getElements(ESelectionType.MOUSE_OVER).toArray()[0]);
+		setDisplayListDirty();
+		}
+		catch(ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+		}
+	}
+
+	
 }

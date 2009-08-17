@@ -1,12 +1,13 @@
 package org.caleydo.core.view.opengl.canvas.radial;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.SelectionManager;
 
 /**
  * In this drawing state the radial hierarchy is drawn at the center of the screen. Other drawing states can
@@ -14,7 +15,7 @@ import org.caleydo.core.data.selection.ESelectionType;
  * 
  * @author Christian Partl
  */
-@XmlType
+
 public class DrawingStateFullHierarchy
 	extends ADrawingState {
 
@@ -38,7 +39,14 @@ public class DrawingStateFullHierarchy
 
 	@Override
 	public void draw(float fXCenter, float fYCenter, GL gl, GLU glu) {
+		
+		
+		SelectionManager selectionManager = radialHierarchy.getSelectionManager();
+		Set<Integer> setSelection = selectionManager.getElements(ESelectionType.SELECTION);
+		Set<Integer> setMouseOver = selectionManager.getElements(ESelectionType.MOUSE_OVER);
 
+		
+		
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 		PartialDisc pdCurrentMouseOverElement = radialHierarchy.getCurrentMouseOverElement();
 		int iMaxDisplayedHierarchyDepth = radialHierarchy.getMaxDisplayedHierarchyDepth();
@@ -58,6 +66,8 @@ public class DrawingStateFullHierarchy
 
 		pdCurrentRootElement.setPDDrawingStrategyChildren(dsDefault, iDisplayedHierarchyDepth);
 
+		
+		
 		if (pdCurrentMouseOverElement != null) {
 
 			if (pdCurrentMouseOverElement != pdCurrentRootElement) {
