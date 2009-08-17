@@ -105,6 +105,8 @@ public class GLDendrogram
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
 	private UpdateViewListener updateViewListener;
 
+	private int iGLDisplayListCutOffValue = 0;
+
 	/**
 	 * Constructor.
 	 * 
@@ -178,6 +180,7 @@ public class GLDendrogram
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		iGLDisplayListCutOffValue = gl.glGenLists(1);
 		init(gl);
 	}
 
@@ -192,6 +195,7 @@ public class GLDendrogram
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		iGLDisplayListCutOffValue = gl.glGenLists(1);
 		init(gl);
 
 	}
@@ -252,6 +256,9 @@ public class GLDendrogram
 		}
 
 		gl.glCallList(iGLDisplayListToCall);
+
+		// display list for cut off value
+		gl.glCallList(iGLDisplayListCutOffValue);
 	}
 
 	/**
@@ -362,18 +369,66 @@ public class GLDendrogram
 		tempTexture.disable();
 	}
 
+	public void setFromTo(int from, int to) {
+
+		if (tree == null)
+			return;
+
+		resetAllTreeSelections();
+		renderNodesFromToRec(currentRootNode, from, to, false);
+		setDisplayListDirty();
+	}
+
 	/**
 	 * This function calls a recursive function which is responsible for the calculation of the position
-	 * inside the viewfrustum of the nodes in the dendrogram
+	 * inside the view frustum of the nodes in the dendrogram
 	 */
 	private void determinePositions() {
 
-		if (bRenderGeneTree)
+		if (bRenderGeneTree) {
 			determinePosRecGenes(currentRootNode);
-		// determinePosRecGenes(tree.getRoot());
+			// determinePosRecGenes(tree.getRoot());
+		}
 		else
 			determinePosRecExperiments(tree.getRoot());
 
+	}
+
+	private boolean renderNodesFromToRec(ClusterNode currentNode, int from, int to, boolean inBlock) {
+
+		boolean boolVar = inBlock;
+
+		if (tree.hasChildren(currentNode)) {
+
+			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
+
+			int iNrChildsNode = alChilds.size();
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				ClusterNode node = (ClusterNode) alChilds.get(i);
+				if (renderNodesFromToRec(node, from, to, boolVar)) {
+					node.setSelectionType(ESelectionType.SELECTION);
+					boolVar = true;
+				}
+				else {
+					node.setSelectionType(ESelectionType.NORMAL);
+					boolVar = false;
+				}
+			}
+		}
+		else {
+			if (currentNode.getClusterNr() == from) {
+				currentNode.setSelectionType(ESelectionType.SELECTION);
+				return true;
+			}
+			if (currentNode.getClusterNr() == to) {
+				currentNode.setSelectionType(ESelectionType.NORMAL);
+				return false;
+			}
+		}
+
+		return boolVar;
 	}
 
 	/**
@@ -828,15 +883,25 @@ public class GLDendrogram
 
 			if (bIsRenderedRemote == false) {
 				renderSelections(gl, tree.getRoot());
-				renderCut(gl);
+				// renderCut(gl);
 			}
 
 			if (bRenderGeneTree)
+
 				gl.glTranslatef(-0.1f, 0, 0);
 			else
 				gl.glTranslatef(0, -0.1f, 0);
 		}
 		gl.glEndList();
+
+		// display list for cut off value
+		gl.glNewList(iGLDisplayListCutOffValue, GL.GL_COMPILE);
+
+		if (tree != null)
+			renderCut(gl);
+
+		gl.glEndList();
+
 	}
 
 	/**
@@ -1237,7 +1302,7 @@ public class GLDendrogram
 					contentSelectionManager.getElements(ESelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 
-					iIndex = contentVA.indexOf(iSelectedID);
+					iIndex = iSelectedID;// contentVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}
@@ -1269,7 +1334,7 @@ public class GLDendrogram
 				Set<Integer> setSelectionElements =
 					storageSelectionManager.getElements(ESelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
-					iIndex = storageVA.indexOf(iSelectedID);
+					iIndex = iSelectedID;// storageVA.indexOf(iSelectedID);
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}

@@ -2458,6 +2458,9 @@ public class GLHierarchicalHeatMap
 		Set<Integer> setSelectedElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
 		Set<Integer> setDeselectedElements = contentSelectionManager.getElements(ESelectionType.DESELECTED);
 
+//		glDendrogramView.setFromTo(currentVirtualArray.get(iFirstSampleLevel2), currentVirtualArray
+//			.get(iLastSampleLevel2));// + 1));
+
 		for (int index = 0; index < iSamplesPerHeatmap; index++) {
 			iIndex = iCount + index;
 			if (iIndex < currentVirtualArray.size()) {
@@ -3210,6 +3213,10 @@ public class GLHierarchicalHeatMap
 						deactivateAllDraggingCursor();
 						bActivateDraggingGenes = true;
 
+						// ArrayList<Float> representatives =
+						// contentVA.getGroupList().determineRepresentativeElement(set, contentVA,
+						// storageVA, iExternalID, true);
+
 						// set node in tree selected
 						// if (contentVA.getGroupList().get(iExternalID).getClusterNode() != null) {
 						// contentVA.getGroupList().get(iExternalID).getClusterNode().toggleSelectionType();
@@ -3293,6 +3300,10 @@ public class GLHierarchicalHeatMap
 						storageVA.getGroupList().get(iExternalID).toggleSelectionType();
 						deactivateAllDraggingCursor();
 						bActivateDraggingExperiments = true;
+
+						// ArrayList<Float> representatives =
+						// contentVA.getGroupList().determineRepresentativeElement(set, contentVA,
+						// storageVA, iExternalID, false);
 
 						// set node in tree selected
 						// if (storageVA.getGroupList().get(iExternalID).getClusterNode() != null) {
@@ -3975,40 +3986,78 @@ public class GLHierarchicalHeatMap
 	}
 
 	public void handleArrowDownAltPressed() {
-		if (iLastSampleLevel2 < iSamplesLevel2 - 1) {
+
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iSamplesLevel2));
+
+		if (iLastSampleLevel2 < iSamplesLevel2 - 1 - iNrElementsToShift) {
+			iLastSampleLevel2 += iNrElementsToShift;
+			iFirstSampleLevel2 += iNrElementsToShift;
+			setEmbeddedHeatMapData();
+			setDisplayListDirty();
+			// glHeatMapView.upDownSelect(false);
+		}
+		else if (iLastSampleLevel2 < iSamplesLevel2 - 1) {
 			iLastSampleLevel2++;
 			iFirstSampleLevel2++;
 			setEmbeddedHeatMapData();
 			setDisplayListDirty();
-			glHeatMapView.upDownSelect(false);
+			// glHeatMapView.upDownSelect(false);
 		}
 	}
 
 	public void handleArrowUpAltPressed() {
-		if (iFirstSampleLevel2 > 0) {
-			iFirstSampleLevel2--;
-			iLastSampleLevel2--;
+
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iSamplesLevel2));
+
+		if (iFirstSampleLevel2 > iNrElementsToShift + 1) {
+			iLastSampleLevel2 -= iNrElementsToShift;
+			iFirstSampleLevel2 -= iNrElementsToShift;
 			setEmbeddedHeatMapData();
 			setDisplayListDirty();
-			glHeatMapView.upDownSelect(true);
+			// glHeatMapView.upDownSelect(true);
+		}
+		else if (iFirstSampleLevel2 > 0) {
+			iLastSampleLevel2--;
+			iFirstSampleLevel2--;
+			setEmbeddedHeatMapData();
+			setDisplayListDirty();
+			// glHeatMapView.upDownSelect(true);
 		}
 	}
 
 	public void handleArrowDownCtrlPressed() {
-		if (iLastSampleLevel1 < iNumberOfElements - 1) {
+
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iNumberOfElements));
+
+		if (iLastSampleLevel1 < iNumberOfElements - 1 - iNrElementsToShift) {
+			iFirstSampleLevel1 += iNrElementsToShift;
+			iLastSampleLevel1 += iNrElementsToShift;
+			setDisplayListDirty();
+			// glHeatMapView.upDownSelect(false);
+		}
+		else if (iLastSampleLevel1 < iNumberOfElements - 1) {
 			iFirstSampleLevel1++;
 			iLastSampleLevel1++;
 			setDisplayListDirty();
-			glHeatMapView.upDownSelect(false);
+			// glHeatMapView.upDownSelect(false);
 		}
 	}
 
 	public void handleArrowUpCtrlPressed() {
-		if (iFirstSampleLevel1 > 0) {
+
+		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iNumberOfElements));
+
+		if (iFirstSampleLevel1 > iNrElementsToShift + 1) {
+			iFirstSampleLevel1 -= iNrElementsToShift;
+			iLastSampleLevel1 -= iNrElementsToShift;
+			setDisplayListDirty();
+			// glHeatMapView.upDownSelect(true);
+		}
+		else if (iFirstSampleLevel1 > 0) {
 			iFirstSampleLevel1--;
 			iLastSampleLevel1--;
 			setDisplayListDirty();
-			glHeatMapView.upDownSelect(true);
+			// glHeatMapView.upDownSelect(true);
 		}
 	}
 

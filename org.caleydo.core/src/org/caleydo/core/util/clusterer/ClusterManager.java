@@ -7,6 +7,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.Group;
 import org.caleydo.core.data.selection.GroupList;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -149,6 +150,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(0, tempVA);
 							setGroupList(tempVA, clusterState);
+							set.setClusteredTreeGenes(null);
 						}
 
 					}
@@ -160,6 +162,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(1, tempVA);
 							setGroupList(tempVA, clusterState);
+							set.setClusteredTreeExps(null);
 						}
 
 					}
@@ -173,6 +176,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(1, tempVA);
 							setGroupList(tempVA, clusterState);
+							set.setClusteredTreeExps(null);
 
 							clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 							clusterer =
@@ -183,6 +187,7 @@ public class ClusterManager {
 							if (tempVA != null) {
 								iAlVAs.set(0, tempVA);
 								setGroupList(tempVA, clusterState);
+								set.setClusteredTreeGenes(null);
 							}
 						}
 					}
@@ -204,6 +209,7 @@ public class ClusterManager {
 					if (tempVA != null) {
 						iAlVAs.set(0, tempVA);
 						setGroupList(tempVA, clusterState);
+						set.setClusteredTreeGenes(null);
 					}
 				}
 				else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
@@ -213,6 +219,7 @@ public class ClusterManager {
 					if (tempVA != null) {
 						iAlVAs.set(1, tempVA);
 						setGroupList(tempVA, clusterState);
+						set.setClusteredTreeExps(null);
 					}
 
 				}
@@ -224,6 +231,7 @@ public class ClusterManager {
 					if (tempVA != null) {
 						iAlVAs.set(1, tempVA);
 						setGroupList(tempVA, clusterState);
+						set.setClusteredTreeExps(null);
 
 						clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 						tempVA = clusterer.getSortedVA(set, clusterState, 50, 1);
@@ -231,6 +239,7 @@ public class ClusterManager {
 						if (tempVA != null) {
 							iAlVAs.set(0, tempVA);
 							setGroupList(tempVA, clusterState);
+							set.setClusteredTreeGenes(null);
 						}
 					}
 				}
@@ -239,6 +248,8 @@ public class ClusterManager {
 
 		clusterer.destroy();
 
+		GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
+		
 		if (tempVA == null) {
 
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {

@@ -5,7 +5,11 @@ import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.clusterer.ClusterHelper;
 
 @XmlType
 public class GroupList
@@ -390,5 +394,44 @@ public class GroupList
 
 	public void setGroups(ArrayList<Group> groups) {
 		this.groups = groups;
+	}
+
+	public ArrayList<Float> determineRepresentativeElement(ISet set, IVirtualArray contentVA, IVirtualArray storageVA,
+		int iGroupNr, boolean bGeneGroup) {
+
+		ArrayList<Float> representative = new ArrayList<Float>();
+
+		int iNrElementsInGroup = groups.get(iGroupNr).getNrElements();
+		int iOffset = 0;
+		for (int index = 0; index < iGroupNr; index++) {
+			iOffset += groups.get(index).getNrElements();
+		}
+
+		float[] fArExpressionValues = null;
+
+		if (bGeneGroup) {
+			for (Integer iStorageIndex : storageVA) {
+				fArExpressionValues = new float[iNrElementsInGroup];
+				for (int index = 0; index < iNrElementsInGroup; index++) {
+					fArExpressionValues[index] +=
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							contentVA.get(iOffset + index));
+				}
+				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
+			}
+		}
+		else {
+			for (Integer iContentIndex : contentVA) {
+				fArExpressionValues = new float[iNrElementsInGroup];
+				for (int index = 0; index < iNrElementsInGroup; index++) {
+					fArExpressionValues[index] +=
+						set.get(storageVA.get(iOffset + index)).getFloat(EDataRepresentation.NORMALIZED,
+							iContentIndex);
+				}
+				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
+			}
+		}
+
+		return representative;
 	}
 }
