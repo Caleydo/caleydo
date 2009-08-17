@@ -148,7 +148,7 @@ public class ClusterManager {
 
 						if (tempVA != null) {
 							iAlVAs.set(0, tempVA);
-							setGroupList(tempVA);
+							setGroupList(tempVA, clusterState);
 						}
 
 					}
@@ -159,7 +159,7 @@ public class ClusterManager {
 
 						if (tempVA != null) {
 							iAlVAs.set(1, tempVA);
-							setGroupList(tempVA);
+							setGroupList(tempVA, clusterState);
 						}
 
 					}
@@ -172,7 +172,7 @@ public class ClusterManager {
 
 						if (tempVA != null) {
 							iAlVAs.set(1, tempVA);
-							setGroupList(tempVA);
+							setGroupList(tempVA, clusterState);
 
 							clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 							clusterer =
@@ -182,7 +182,7 @@ public class ClusterManager {
 
 							if (tempVA != null) {
 								iAlVAs.set(0, tempVA);
-								setGroupList(tempVA);
+								setGroupList(tempVA, clusterState);
 							}
 						}
 					}
@@ -203,7 +203,7 @@ public class ClusterManager {
 
 					if (tempVA != null) {
 						iAlVAs.set(0, tempVA);
-						setGroupList(tempVA);
+						setGroupList(tempVA, clusterState);
 					}
 				}
 				else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING) {
@@ -212,7 +212,7 @@ public class ClusterManager {
 
 					if (tempVA != null) {
 						iAlVAs.set(1, tempVA);
-						setGroupList(tempVA);
+						setGroupList(tempVA, clusterState);
 					}
 
 				}
@@ -223,14 +223,14 @@ public class ClusterManager {
 
 					if (tempVA != null) {
 						iAlVAs.set(1, tempVA);
-						setGroupList(tempVA);
+						setGroupList(tempVA, clusterState);
 
 						clusterState.setClustererType(EClustererType.GENE_CLUSTERING);
 						tempVA = clusterer.getSortedVA(set, clusterState, 50, 1);
 
 						if (tempVA != null) {
 							iAlVAs.set(0, tempVA);
-							setGroupList(tempVA);
+							setGroupList(tempVA, clusterState);
 						}
 					}
 				}
@@ -287,18 +287,67 @@ public class ClusterManager {
 	 * @param VAId
 	 *            Id of virtual array
 	 */
-	private void setGroupList(IVirtualArray virtualArray) {
+	private void setGroupList(IVirtualArray virtualArray, ClusterState clusterState) {
 
 		GroupList groupList = new GroupList(virtualArray.size());
 
 		ArrayList<Integer> examples = set.getAlExamples();
 		int cnt = 0;
+		int iOffset = 0;
+		// float[] representative = null;
+
 		for (Integer iter : set.getAlClusterSizes()) {
+
+			// determine representative element
+			// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING) {
+			//
+			// IVirtualArray storageVA = set.getVA(clusterState.getStorageVaId());
+			// representative = new float[storageVA.size()];
+			//
+			// float[] fArExpressionValues = null;
+			// int counter = 0;
+			//
+			// for (Integer iStorageIndex : storageVA) {
+			// fArExpressionValues = new float[iter];
+			// for (int index = 0; index < iter; index++) {
+			//
+			// fArExpressionValues[index] +=
+			// set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+			// virtualArray.get(iOffset + index));
+			// }
+			// representative[counter] = ClusterHelper.arithmeticMean(fArExpressionValues);
+			// counter++;
+			// }
+			//
+			// }
+			// else {
+			//
+			// IVirtualArray contentVA = set.getVA(clusterState.getContentVaId());
+			// representative = new float[contentVA.size()];
+			//
+			// float[] fArExpressionValues = null;
+			// int counter = 0;
+			//
+			// for (Integer iContentIndex : contentVA) {
+			// fArExpressionValues = new float[iter];
+			// for (int index = 0; index < iter; index++) {
+			//
+			// fArExpressionValues[index] +=
+			// set.get(virtualArray.get(iOffset + index)).getFloat(
+			// EDataRepresentation.NORMALIZED, iContentIndex);
+			// }
+			// representative[counter] = ClusterHelper.arithmeticMean(fArExpressionValues);
+			// counter++;
+			// }
+			//
+			// }
+
+			// Group temp = new Group(iter, false, examples.get(cnt), representative, ESelectionType.NORMAL);
 			Group temp = new Group(iter, false, examples.get(cnt), ESelectionType.NORMAL);
 			groupList.append(temp);
 			cnt++;
+			iOffset += iter;
 		}
 		virtualArray.setGroupList(groupList);
 	}
-
 }

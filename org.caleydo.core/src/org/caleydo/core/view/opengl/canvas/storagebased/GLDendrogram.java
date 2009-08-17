@@ -72,7 +72,6 @@ public class GLDendrogram
 	private ClusterNode currentRootNode;
 
 	// variables used to build a group list
-	private ArrayList<Integer> iAlCutOffClusters = new ArrayList<Integer>();
 	private ArrayList<ClusterNode> iAlClusterNodes = new ArrayList<ClusterNode>();
 	private GroupList groupList = null;
 
@@ -775,7 +774,6 @@ public class GLDendrogram
 
 		if (tree == null) {
 
-			iAlCutOffClusters.clear();
 			iAlClusterNodes.clear();
 
 			if (bRenderGeneTree == true) {
@@ -885,7 +883,6 @@ public class GLDendrogram
 		iMaxDepth = Integer.MAX_VALUE;
 		determineSelectedNodesRec(tree.getRoot());
 
-		iAlCutOffClusters.clear();
 		iAlClusterNodes.clear();
 		getNumberOfClustersRec(tree.getRoot());
 		buildNewGroupList();
@@ -898,7 +895,7 @@ public class GLDendrogram
 	 */
 	private void buildNewGroupList() {
 
-		if (iAlCutOffClusters.size() < 2) {
+		if (iAlClusterNodes.size() < 2) {
 
 			groupList = null;
 			if (bRenderGeneTree) {
@@ -917,7 +914,7 @@ public class GLDendrogram
 			return;
 		}
 
-		groupList = new GroupList(iAlCutOffClusters.size());
+		groupList = new GroupList(iAlClusterNodes.size());
 
 		bEnableDepthCheck = true;
 
@@ -933,13 +930,14 @@ public class GLDendrogram
 			currentVA = storageVA;
 		}
 
-		for (Integer iter : iAlCutOffClusters) {
+		for (ClusterNode iter : iAlClusterNodes) {
+			// Group temp = new Group(iter.getNrElements(), false, currentVA.get(iExample),
+			// iter.getRepresentativeElement(), ESelectionType.NORMAL, iter);
 			Group temp =
-				new Group(iter, false, currentVA.get(iExample), ESelectionType.NORMAL, iAlClusterNodes
-					.get(cnt));
+				new Group(iter.getNrElements(), false, currentVA.get(iExample), ESelectionType.NORMAL, iter);
 			groupList.append(temp);
 			cnt++;
-			iExample += iter;
+			iExample += iter.getNrElements();
 		}
 
 		if (bRenderGeneTree) {
@@ -965,7 +963,6 @@ public class GLDendrogram
 				for (ClusterNode current : tree.getChildren(node)) {
 					if (current.getSelectionType() == ESelectionType.DESELECTED) {
 						// System.out.println("nr elements: " + current.getNrElements());
-						iAlCutOffClusters.add(current.getNrElements());
 						iAlClusterNodes.add(current);
 					}
 					else
@@ -1160,7 +1157,6 @@ public class GLDendrogram
 
 		fPosCut = 0;
 		iMaxDepth = Integer.MAX_VALUE;
-		iAlCutOffClusters.clear();
 		iAlClusterNodes.clear();
 		buildNewGroupList();
 		resetAllTreeSelections();
@@ -1329,7 +1325,7 @@ public class GLDendrogram
 
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
-		
+
 		int clusterNr = event.getClusterNumber();
 		ESelectionType selectionType = event.getSelectionType();
 

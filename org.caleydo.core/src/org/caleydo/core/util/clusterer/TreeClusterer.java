@@ -503,6 +503,9 @@ public class TreeClusterer
 		float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
 		float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
 		node.setAverageExpressionValue(averageExpressionvalue);
+		// Setting an float array for the representative element in each node causes a very big xml-file when
+		// exporting the tree
+		// node.setRepresentativeElement(fArExpressionValues);
 		node.setStandardDeviation(deviation);
 
 		return fArExpressionValues;

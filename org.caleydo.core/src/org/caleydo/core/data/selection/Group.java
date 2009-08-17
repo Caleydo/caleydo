@@ -4,34 +4,102 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 
 public class Group {
 
+	/**
+	 * number of elements in the group/cluster
+	 */
 	private int nrElements;
+
 	private boolean collapsed;
+
+	/**
+	 * index of the representative element in the VA
+	 */
 	private int idxExample;
+
 	private ESelectionType selectionType;
+
+	/**
+	 * In case of groups determined in dendrogram view the corresponding node in the tree must be stored for
+	 * use in HHM
+	 */
 	private ClusterNode clusterNode;
-	
+
+	/**
+	 * array with mean expression values --> representative element
+	 */
+	private float[] fArRepresentativeElement;
+
 	public Group() {
-		
-	}
-	
-	public Group(int iNrElements) {
-		this.setNrElements(iNrElements);
-		this.setCollapsed(false);
-		this.setIdxExample(0);
-		this.setSelectionType(ESelectionType.NORMAL);
 	}
 
+	/**
+	 * Constructor
+	 * 
+	 * @param iNrElements
+	 * @param bCollapsed
+	 * @param iIdxExample
+	 * @param eSelectionType
+	 */
 	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, ESelectionType eSelectionType) {
 		this.setNrElements(iNrElements);
 		this.setCollapsed(bCollapsed);
 		this.setIdxExample(iIdxExample);
+		this.setRepresentativeElement(fArRepresentativeElement);
 		this.setSelectionType(eSelectionType);
 	}
-	
-	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, ESelectionType eSelectionType, ClusterNode clusterNode) {
+
+	/**
+	 * Constructor with cluster node included
+	 * 
+	 * @param iNrElements
+	 * @param bCollapsed
+	 * @param iIdxExample
+	 * @param eSelectionType
+	 * @param clusterNode
+	 */
+	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, ESelectionType eSelectionType,
+		ClusterNode clusterNode) {
 		this.setNrElements(iNrElements);
 		this.setCollapsed(bCollapsed);
 		this.setIdxExample(iIdxExample);
+		this.setSelectionType(eSelectionType);
+		this.setClusterNode(clusterNode);
+	}
+
+	/**
+	 * Constructor with representative element included
+	 * 
+	 * @param iNrElements
+	 * @param bCollapsed
+	 * @param iIdxExample
+	 * @param fArRepresentativeElement
+	 * @param eSelectionType
+	 */
+	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
+		ESelectionType eSelectionType) {
+		this.setNrElements(iNrElements);
+		this.setCollapsed(bCollapsed);
+		this.setIdxExample(iIdxExample);
+		this.setRepresentativeElement(fArRepresentativeElement);
+		this.setSelectionType(eSelectionType);
+	}
+
+	/**
+	 * Constructor with representative element and cluster node included
+	 * 
+	 * @param iNrElements
+	 * @param bCollapsed
+	 * @param iIdxExample
+	 * @param fArRepresentativeElement
+	 * @param eSelectionType
+	 * @param clusterNode
+	 */
+	public Group(int iNrElements, boolean bCollapsed, int iIdxExample, float[] fArRepresentativeElement,
+		ESelectionType eSelectionType, ClusterNode clusterNode) {
+		this.setNrElements(iNrElements);
+		this.setCollapsed(bCollapsed);
+		this.setIdxExample(iIdxExample);
+		this.setRepresentativeElement(fArRepresentativeElement);
 		this.setSelectionType(eSelectionType);
 		this.setClusterNode(clusterNode);
 	}
@@ -67,9 +135,10 @@ public class Group {
 	public ESelectionType getSelectionType() {
 		return selectionType;
 	}
-	
-	public void toggleSelectionType(){
-		this.selectionType = (selectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+
+	public void toggleSelectionType() {
+		this.selectionType =
+			(selectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
 	}
 
 	public void setClusterNode(ClusterNode clusterNode) {
@@ -78,5 +147,13 @@ public class Group {
 
 	public ClusterNode getClusterNode() {
 		return clusterNode;
+	}
+
+	public void setRepresentativeElement(float[] fArRepresentativeElement) {
+		this.fArRepresentativeElement = fArRepresentativeElement;
+	}
+
+	public float[] getRepresentativeElement() {
+		return fArRepresentativeElement;
 	}
 }

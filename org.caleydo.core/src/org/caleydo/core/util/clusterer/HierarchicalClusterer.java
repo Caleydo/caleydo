@@ -254,8 +254,8 @@ public class HierarchicalClusterer
 		else
 			set.setClusteredTreeExps(tree);
 
-		set.setAlClusterSizes(temp);
-		set.setAlExamples(alExamples);
+		// set.setAlClusterSizes(temp);
+		// set.setAlExamples(alExamples);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));

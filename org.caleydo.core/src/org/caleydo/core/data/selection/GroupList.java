@@ -19,7 +19,7 @@ public class GroupList
 	public GroupList() {
 		this.groups = new ArrayList<Group>();
 	}
-		
+
 	public GroupList(int iNrElements) {
 		// Group initialGroup = new Group(iNrElements);
 		this.groups = new ArrayList<Group>();
@@ -132,7 +132,7 @@ public class GroupList
 	 */
 	private void init() {
 		// Group initialGroup = new Group(iAlVirtualArray.size());
-		Group initialGroup = new Group(0);
+		Group initialGroup = new Group(0, false, 0, ESelectionType.NORMAL);
 		this.groups = new ArrayList<Group>();
 		groups.add(initialGroup);
 	}
@@ -304,7 +304,7 @@ public class GroupList
 		if (idx1 == iFirstIdx) {
 
 			int iNrElements = idx2 - idx1;
-			Group newGroup = new Group(iNrElements);
+			Group newGroup = new Group(iNrElements, false, 0, ESelectionType.NORMAL);
 
 			groups.get(index).setCollapsed(false);
 			groups.get(index).setSelectionType(ESelectionType.NORMAL);
@@ -317,7 +317,7 @@ public class GroupList
 		// 1 new group
 		if (idx2 == iLastIdx) {
 			int iNrElements = idx2 - idx1;
-			Group newGroup = new Group(iNrElements);
+			Group newGroup = new Group(iNrElements, false, 0, ESelectionType.NORMAL);
 
 			groups.get(index).setCollapsed(false);
 			groups.get(index).setSelectionType(ESelectionType.NORMAL);
@@ -329,9 +329,9 @@ public class GroupList
 
 		// 2 new groups
 		int iNrElements2 = idx2 - idx1;
-		Group newGroup2 = new Group(iNrElements2);
+		Group newGroup2 = new Group(iNrElements2, false, 0, ESelectionType.NORMAL);
 		int iNrElements3 = iLastIdx - idx2;
-		Group newGroup3 = new Group(iNrElements3);
+		Group newGroup3 = new Group(iNrElements3, false, 0, ESelectionType.NORMAL);
 
 		groups.get(index).setCollapsed(false);
 		groups.get(index).setSelectionType(ESelectionType.NORMAL);
@@ -369,7 +369,7 @@ public class GroupList
 		}
 		return true;
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public IGroupList clone() {
@@ -380,7 +380,7 @@ public class GroupList
 		catch (CloneNotSupportedException e) {
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
-		groupList.groups = (ArrayList<Group>)groups.clone();
+		groupList.groups = (ArrayList<Group>) groups.clone();
 		return groupList;
 	}
 

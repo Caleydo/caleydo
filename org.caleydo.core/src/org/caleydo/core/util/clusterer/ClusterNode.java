@@ -42,6 +42,9 @@ public class ClusterNode
 	@XmlElement
 	private float fStandardDeviation;
 
+	// @XmlElement
+	// private float[] fArRepresentativeElement;
+
 	public ClusterNode() {
 
 	}
@@ -111,10 +114,11 @@ public class ClusterNode
 		return eSelectionType;
 	}
 
-	public void toggleSelectionType(){
-		this.eSelectionType = (eSelectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
+	public void toggleSelectionType() {
+		this.eSelectionType =
+			(eSelectionType == ESelectionType.SELECTION) ? ESelectionType.NORMAL : ESelectionType.SELECTION;
 	}
-	
+
 	public boolean isRootNode() {
 		return bIsRootNode;
 	}
@@ -134,4 +138,12 @@ public class ClusterNode
 	public float getStandardDeviation() {
 		return fStandardDeviation;
 	}
+
+	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
+	// this.fArRepresentativeElement = fArRepresentativeElement;
+	// }
+	//
+	// public float[] getRepresentativeElement() {
+	// return fArRepresentativeElement;
+	// }
 }
