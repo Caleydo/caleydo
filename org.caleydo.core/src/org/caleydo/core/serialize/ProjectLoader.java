@@ -76,12 +76,17 @@ public class ProjectLoader {
 			virtualArrayMap.put(EVAType.STORAGE, loadVirtualArray(unmarshaller, dirName, EVAType.STORAGE));
 
 			File viewFile = new File(dirName + ProjectSaver.VIEWS_FILE_NAME);
-			ViewList loadViews = (ViewList) unmarshaller.unmarshal(viewFile);
+			ViewList loadViews = null;
+			if (viewFile.exists()) {
+				loadViews = (ViewList) unmarshaller.unmarshal(viewFile);
+			}
 
 			initData = new ApplicationInitData();
 			initData.setUseCase(useCase);
 			initData.setVirtualArrayMap(virtualArrayMap);
-			initData.setViews(loadViews.getViews());
+			if (loadViews != null) {
+				initData.setViews(loadViews.getViews());
+			}
 
 			File geneClusterFile = new File(dirName + ProjectSaver.GENE_TREE_FILE_NAME);
 			if (geneClusterFile.exists()) {

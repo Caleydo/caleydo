@@ -62,7 +62,8 @@ public class ProjectSaver {
 	 */
 	public void save(String fileName) {
 		ZipUtils zipUtils = new ZipUtils();
-		saveToDirectory(TEMP_PROJECT_DIR_NAME);
+		saveProjectData(TEMP_PROJECT_DIR_NAME);
+		saveViewData(TEMP_PROJECT_DIR_NAME);
 		zipUtils.zipDirectory(TEMP_PROJECT_DIR_NAME, fileName);
 		zipUtils.deleteDirectory(TEMP_PROJECT_DIR_NAME);
 	}
@@ -76,7 +77,7 @@ public class ProjectSaver {
 			RECENT_PROJECT_DIR_NAME)) {
 			zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
 		}
-		saveToDirectory(RECENT_PROJECT_DIR_NAME);
+		saveProjectData(RECENT_PROJECT_DIR_NAME);
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class ProjectSaver {
 	 * @param dirName
 	 *            directory to save the project-files into
 	 */
-	private void saveToDirectory(String dirName) {
+	private void saveProjectData(String dirName) {
 		if (dirName.charAt(dirName.length() - 1) != File.separatorChar) {
 			dirName += File.separator;
 		}
@@ -112,10 +113,6 @@ public class ProjectSaver {
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.CONTENT_EMBEDDED_HM);
 			saveVirtualArray(marshaller, dirName, useCase, EVAType.STORAGE);
 
-			ViewList storeViews = createStoreViewList();
-			File viewFile = new File(dirName + VIEWS_FILE_NAME);
-			marshaller.marshal(storeViews, viewFile);
-
 			TreePorter treePorter = new TreePorter();
 			Tree<ClusterNode> geneTree = useCase.getSet().getClusteredTreeGenes();
 			if (geneTree != null) {
@@ -137,6 +134,24 @@ public class ProjectSaver {
 		}
 	}
 
+	/**
+	 * Saves all the view's serialized forms to the given directory. The directory must exist.
+	 * @param dirName name of the directory to save the views to. 
+	 */
+	private void saveViewData(String dirName) {
+		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		JAXBContext projectContext = serializationManager.getProjectContext();
+
+		try {
+			Marshaller marshaller = projectContext.createMarshaller();
+			ViewList storeViews = createStoreViewList();
+			File viewFile = new File(dirName + VIEWS_FILE_NAME);
+			marshaller.marshal(storeViews, viewFile);
+		} catch (JAXBException ex) {
+			throw new RuntimeException("Error saving view files (xml serialization)", ex);
+		}
+	}
+	
 	/**
 	 * Creates a {@link ViewList} of all views registered in the central {@link IViewManager}.
 	 * 
