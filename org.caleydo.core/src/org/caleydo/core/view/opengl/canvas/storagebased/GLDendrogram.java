@@ -474,7 +474,7 @@ public class GLDendrogram
 		else {
 			pos.setY(yPosInit);
 			yPosInit -= fSampleHeight;
-			pos.setX(xGlobalMax);// - currentNode.getCoefficient());
+			pos.setX(xGlobalMax - fLevelWidth);// - currentNode.getCoefficient());
 			pos.setZ(0f);
 		}
 
@@ -664,18 +664,18 @@ public class GLDendrogram
 
 			// vertical line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(xmin - 0.1f, ymin, currentNode.getPos().z());
-			gl.glVertex3f(xmin - 0.1f, ymax, currentNode.getPos().z());
+			gl.glVertex3f(xmin, ymin, currentNode.getPos().z());
+			gl.glVertex3f(xmin, ymax, currentNode.getPos().z());
 			gl.glEnd();
 
 			// horizontal lines connecting all children with their parent
 			for (int i = 0; i < iNrChildsNode; i++) {
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(xmin - 0.1f, tempPositions[i].y(), tempPositions[i].z());
+				gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
 				// if (bCutOffActive[i])
 				// gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
 				// else
-				gl.glVertex3f(tempPositions[i].x() - 0.1f, tempPositions[i].y(), tempPositions[i].z());
+				gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
 				gl.glEnd();
 			}
 
@@ -688,9 +688,7 @@ public class GLDendrogram
 
 			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
-			gl
-				.glVertex3f(currentNode.getPos().x() - 0.1f, currentNode.getPos().y(), currentNode.getPos()
-					.z());
+			gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
 			gl.glVertex3f(xGlobalMax, currentNode.getPos().y(), currentNode.getPos().z());
 			gl.glEnd();
 
@@ -698,9 +696,8 @@ public class GLDendrogram
 		}
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(currentNode.getPos().x() - fDiff - 0.1f, currentNode.getPos().y(), currentNode.getPos()
-			.z());
-		gl.glVertex3f(currentNode.getPos().x() - 0.1f, currentNode.getPos().y(), currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x() - fDiff, currentNode.getPos().y(), currentNode.getPos().z());
+		gl.glVertex3f(currentNode.getPos().x(), currentNode.getPos().y(), currentNode.getPos().z());
 		gl.glEnd();
 
 	}
@@ -783,11 +780,11 @@ public class GLDendrogram
 
 				// vertical lines connecting all children with their parent
 				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(tempPositions[i].x(), ymax + 0.0f, tempPositions[i].z());
+				gl.glVertex3f(tempPositions[i].x(), ymax, tempPositions[i].z());
 				// if (bCutOffActive[i])
 				// gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
 				// else
-				gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y() + 0.0f, tempPositions[i].z());
+				gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
 				gl.glEnd();
 
 			}
@@ -1247,10 +1244,10 @@ public class GLDendrogram
 	@Override
 	protected void initLists() {
 
-		if (bRenderOnlyContext)
-			contentVAType = EVAType.CONTENT_CONTEXT;
-		else
-			contentVAType = EVAType.CONTENT;
+		// if (bRenderOnlyContext)
+		// contentVAType = EVAType.CONTENT_CONTEXT;
+		// else
+		contentVAType = EVAType.CONTENT;
 
 		contentVA = useCase.getVA(contentVAType);
 		storageVA = useCase.getVA(storageVAType);

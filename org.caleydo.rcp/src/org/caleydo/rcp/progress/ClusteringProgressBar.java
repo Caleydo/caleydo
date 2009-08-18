@@ -6,27 +6,21 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
-import org.caleydo.rcp.view.opengl.GLDendrogramHorizontalView;
-import org.caleydo.rcp.view.opengl.GLDendrogramVerticalView;
-import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -170,138 +164,138 @@ public class ClusteringProgressBar
 			shell.close();
 
 		// in case of hierarchical clustering a new shell should be opened
-		if (algorithmType == EClustererAlgo.TREE_CLUSTERER
-			|| algorithmType == EClustererAlgo.COBWEB_CLUSTERER) {
-
-			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					try {
-
-						shell = new Shell();
-						shell.setText(algorithmType.getName());
-						shell.setImage(GeneralManager.get().getResourceLoader().getImage(shell.getDisplay(),
-							"resources/icons/view/storagebased/clustering.png"));
-
-						// Center shell on screen
-						Monitor primary = shell.getDisplay().getPrimaryMonitor();
-						Rectangle bounds = primary.getBounds();
-						Rectangle rect = shell.getBounds();
-						int x = bounds.x + (bounds.width - rect.width) / 2;
-						int y = bounds.y + (bounds.height - rect.height) / 2;
-						shell.setLocation(x, y);
-
-						Composite composite = new Composite(shell, SWT.NONE);
-						composite.setLayout(new GridLayout(1, false));
-
-						Label label = new Label(composite, SWT.NULL);
-						label.setText("Do you want to explore the hierarchy?");
-						GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-						gridData.widthHint = 310;
-						label.setLayoutData(gridData);
-
-						Composite viewComposite = new Composite(composite, SWT.SHADOW_ETCHED_IN);
-						viewComposite.setLayout(new RowLayout());
-
-						Composite selectedViewsComposite = new Composite(viewComposite, SWT.SHADOW_ETCHED_IN);
-						selectedViewsComposite.setLayout(new GridLayout());
-
-						final Button[] buttonViews = new Button[2];
-
-						buttonViews[0] = new Button(selectedViewsComposite, SWT.CHECK);
-						buttonViews[0].setSelection(true);
-						buttonViews[0].setText("Open Dendrogram");
-						buttonViews[0].setBounds(10, 5, 75, 30);
-
-						buttonViews[1] = new Button(selectedViewsComposite, SWT.CHECK);
-						buttonViews[1].setSelection(true);
-						buttonViews[1].setText("Open Radial Hierarchy");
-						buttonViews[1].setBounds(10, 5, 75, 30);
-
-						buttonViews[0].addSelectionListener(new SelectionAdapter() {
-							@Override
-							public void widgetSelected(SelectionEvent e) {
-
-								bOpenDendrogram = (bOpenDendrogram == true) ? false : true;
-							}
-						});
-
-						buttonViews[1].addSelectionListener(new SelectionAdapter() {
-							@Override
-							public void widgetSelected(SelectionEvent e) {
-
-								bOpenRadialHierarchy = (bOpenRadialHierarchy == true) ? false : true;
-							}
-						});
-
-						Composite buttonComposite = new Composite(viewComposite, SWT.SHADOW_ETCHED_IN);
-						buttonComposite.setLayout(new RowLayout());
-
-						Button okButton = new Button(buttonComposite, SWT.PUSH);
-						okButton.setText("Yes");
-						okButton.addSelectionListener(new SelectionAdapter() {
-
-							@Override
-							public void widgetSelected(SelectionEvent e) {
-								try {
-									if (clusterType == EClustererType.GENE_CLUSTERING) {
-										if (bOpenRadialHierarchy)
-											PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-												.getActivePage().showView(GLRadialHierarchyView.ID);
-										if (bOpenDendrogram)
-											PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-												.getActivePage().showView(GLDendrogramHorizontalView.ID);
-									}
-									else if (clusterType == EClustererType.EXPERIMENTS_CLUSTERING) {
-										if (bOpenDendrogram)
-											PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-												.getActivePage().showView(GLDendrogramVerticalView.ID);
-									}
-									else if (clusterType == EClustererType.BI_CLUSTERING) {
-										if (bOpenRadialHierarchy)
-											PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-												.getActivePage().showView(GLRadialHierarchyView.ID);
-										if (bOpenDendrogram) {
-											PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-												.getActivePage().showView(GLDendrogramHorizontalView.ID);
-											PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-												.getActivePage().showView(GLDendrogramVerticalView.ID);
-
-										}
-									}
-									UpdateViewEvent event = new UpdateViewEvent();
-									event.setSender(this);
-									GeneralManager.get().getEventPublisher().triggerEvent(event);
-
-								}
-								catch (PartInitException e1) {
-									e1.printStackTrace();
-								}
-								shell.close();
-
-							}
-						});
-
-						Button cancelButton = new Button(buttonComposite, SWT.PUSH);
-						cancelButton.setText("No");
-						cancelButton.addSelectionListener(new SelectionAdapter() {
-
-							@Override
-							public void widgetSelected(SelectionEvent e) {
-								shell.close();
-							}
-						});
-
-						composite.pack();
-						shell.pack();
-						shell.open();
-
-					}
-					catch (Exception e) {
-
-					}
-				}
-			});
-		}
+		// if (algorithmType == EClustererAlgo.TREE_CLUSTERER
+		// || algorithmType == EClustererAlgo.COBWEB_CLUSTERER) {
+		//
+		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		// try {
+		//
+		// shell = new Shell();
+		// shell.setText(algorithmType.getName());
+		// shell.setImage(GeneralManager.get().getResourceLoader().getImage(shell.getDisplay(),
+		// "resources/icons/view/storagebased/clustering.png"));
+		//
+		// // Center shell on screen
+		// Monitor primary = shell.getDisplay().getPrimaryMonitor();
+		// Rectangle bounds = primary.getBounds();
+		// Rectangle rect = shell.getBounds();
+		// int x = bounds.x + (bounds.width - rect.width) / 2;
+		// int y = bounds.y + (bounds.height - rect.height) / 2;
+		// shell.setLocation(x, y);
+		//
+		// Composite composite = new Composite(shell, SWT.NONE);
+		// composite.setLayout(new GridLayout(1, false));
+		//
+		// Label label = new Label(composite, SWT.NULL);
+		// label.setText("Do you want to explore the hierarchy?");
+		// GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		// gridData.widthHint = 310;
+		// label.setLayoutData(gridData);
+		//
+		// Composite viewComposite = new Composite(composite, SWT.SHADOW_ETCHED_IN);
+		// viewComposite.setLayout(new RowLayout());
+		//
+		// Composite selectedViewsComposite = new Composite(viewComposite, SWT.SHADOW_ETCHED_IN);
+		// selectedViewsComposite.setLayout(new GridLayout());
+		//
+		// final Button[] buttonViews = new Button[2];
+		//
+		// buttonViews[0] = new Button(selectedViewsComposite, SWT.CHECK);
+		// buttonViews[0].setSelection(true);
+		// buttonViews[0].setText("Open Dendrogram");
+		// buttonViews[0].setBounds(10, 5, 75, 30);
+		//
+		// buttonViews[1] = new Button(selectedViewsComposite, SWT.CHECK);
+		// buttonViews[1].setSelection(true);
+		// buttonViews[1].setText("Open Radial Hierarchy");
+		// buttonViews[1].setBounds(10, 5, 75, 30);
+		//
+		// buttonViews[0].addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		//
+		// bOpenDendrogram = (bOpenDendrogram == true) ? false : true;
+		// }
+		// });
+		//
+		// buttonViews[1].addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		//
+		// bOpenRadialHierarchy = (bOpenRadialHierarchy == true) ? false : true;
+		// }
+		// });
+		//
+		// Composite buttonComposite = new Composite(viewComposite, SWT.SHADOW_ETCHED_IN);
+		// buttonComposite.setLayout(new RowLayout());
+		//
+		// Button okButton = new Button(buttonComposite, SWT.PUSH);
+		// okButton.setText("Yes");
+		// okButton.addSelectionListener(new SelectionAdapter() {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// try {
+		// if (clusterType == EClustererType.GENE_CLUSTERING) {
+		// if (bOpenRadialHierarchy)
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		// .getActivePage().showView(GLRadialHierarchyView.ID);
+		// if (bOpenDendrogram)
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		// .getActivePage().showView(GLDendrogramHorizontalView.ID);
+		// }
+		// else if (clusterType == EClustererType.EXPERIMENTS_CLUSTERING) {
+		// if (bOpenDendrogram)
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		// .getActivePage().showView(GLDendrogramVerticalView.ID);
+		// }
+		// else if (clusterType == EClustererType.BI_CLUSTERING) {
+		// if (bOpenRadialHierarchy)
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		// .getActivePage().showView(GLRadialHierarchyView.ID);
+		// if (bOpenDendrogram) {
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		// .getActivePage().showView(GLDendrogramHorizontalView.ID);
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		// .getActivePage().showView(GLDendrogramVerticalView.ID);
+		//
+		// }
+		// }
+		// UpdateViewEvent event = new UpdateViewEvent();
+		// event.setSender(this);
+		// GeneralManager.get().getEventPublisher().triggerEvent(event);
+		//
+		// }
+		// catch (PartInitException e1) {
+		// e1.printStackTrace();
+		// }
+		// shell.close();
+		//
+		// }
+		// });
+		//
+		// Button cancelButton = new Button(buttonComposite, SWT.PUSH);
+		// cancelButton.setText("No");
+		// cancelButton.addSelectionListener(new SelectionAdapter() {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// shell.close();
+		// }
+		// });
+		//
+		// composite.pack();
+		// shell.pack();
+		// shell.open();
+		//
+		// }
+		// catch (Exception e) {
+		//
+		// }
+		// }
+		// });
+		// }
 	}
 
 	@Override

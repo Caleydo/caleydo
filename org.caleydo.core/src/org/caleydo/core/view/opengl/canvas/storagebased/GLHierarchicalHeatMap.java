@@ -135,10 +135,10 @@ public class GLHierarchicalHeatMap
 	private float fWidthEHM = 0;
 
 	// embedded dendrogram
-	private GLDendrogram glHorizontalDendrogramView;
-	private boolean bHorizontalDendrogramActive = false;
-	private GLDendrogram glVerticalDendrogramView;
-	private boolean bVerticalDendrogramActive = false;
+	private GLDendrogram glGeneDendrogramView;
+	private boolean bGeneDendrogramActive = false;
+	private GLDendrogram glExperimentDendrogramView;
+	private boolean bExperimentDendrogramActive = false;
 
 	private boolean bRedrawTextures = false;
 
@@ -213,8 +213,8 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void init(GL gl) {
 		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
-		glHorizontalDendrogramView.initRemote(gl, this, glMouseListener, null, null);
-		glVerticalDendrogramView.initRemote(gl, this, glMouseListener, null, null);
+		glGeneDendrogramView.initRemote(gl, this, glMouseListener, null, null);
+		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null, null);
 		initTextures(gl);
 		// activateGroupHandling();
 	}
@@ -598,9 +598,9 @@ public class GLHierarchicalHeatMap
 
 		cmdView.doCommand();
 
-		glHorizontalDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
-		glHorizontalDendrogramView.setUseCase(GeneralManager.get().getUseCase());
-		glHorizontalDendrogramView.setRenderedRemote(true);
+		glGeneDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
+		glGeneDendrogramView.setUseCase(GeneralManager.get().getUseCase());
+		glGeneDendrogramView.setRenderedRemote(true);
 
 		cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
@@ -611,9 +611,9 @@ public class GLHierarchicalHeatMap
 
 		cmdView.doCommand();
 
-		glVerticalDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
-		glVerticalDendrogramView.setUseCase(GeneralManager.get().getUseCase());
-		glVerticalDendrogramView.setRenderedRemote(true);
+		glExperimentDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
+		glExperimentDendrogramView.setUseCase(GeneralManager.get().getUseCase());
+		glExperimentDendrogramView.setRenderedRemote(true);
 	}
 
 	@Override
@@ -1005,7 +1005,12 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel2 == false)
 			fxpos = fWidth + GAP_LEVEL2_3;
 
-		float fHeight = viewFrustum.getHeight();
+		float fHeight = 0;
+
+		if (bExperimentDendrogramActive)
+			fHeight = viewFrustum.getHeight() - 1.45f;
+		else
+			fHeight = viewFrustum.getHeight();
 
 		IGroupList groupList = storageVA.getGroupList();
 
@@ -1189,7 +1194,13 @@ public class GLHierarchicalHeatMap
 	 */
 	private void renderClassAssignmentsGenesLevel3(final GL gl) {
 
-		float fHeight = viewFrustum.getHeight();
+		float fHeight = 0;
+
+		if (bExperimentDendrogramActive)
+			fHeight = viewFrustum.getHeight() - 1.45f;
+		else
+			fHeight = viewFrustum.getHeight();
+
 		float fHeightSamples = fHeight / iSamplesPerHeatmap;
 
 		float fOffsetX = 0;
@@ -1709,7 +1720,7 @@ public class GLHierarchicalHeatMap
 	private void renderMarkerTexture(final GL gl) {
 
 		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-		float fHeight = viewFrustum.getHeight();
+		// float fHeight = viewFrustum.getHeight();
 		float fHeightSampleLevel2 = viewFrustum.getHeight() / iSamplesLevel2;
 
 		Vec3f startpoint1, endpoint1, startpoint2, endpoint2;
@@ -1775,33 +1786,70 @@ public class GLHierarchicalHeatMap
 		}
 		gl.glPopName();
 
-		if (set.getClusteredTreeExps() != null) {
+		tempTexture.disable();
 
+		if (bRenderCaption == true) {
+			renderCaption(gl, "Number Samples:" + iSamplesPerHeatmap, 0.0f, viewFrustum.getHeight()
+				- iPickedSampleLevel2 * fHeightSampleLevel2, 0.005f);
+		}
+	}
+
+	/**
+	 * Renders button for activating/deactivating embedded dendrogram views
+	 * 
+	 * @param gl
+	 */
+	private void renderDendrogramButton(GL gl) {
+
+		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
+		float fHeight = viewFrustum.getHeight();
+
+		float fLeftOffset = GAP_LEVEL1_2 + fWidthEHM + fFieldWith;
+
+		if (bSkipLevel1 == false)
+			fLeftOffset += 0.58f;
+
+		if (bSkipLevel2)
+			fLeftOffset = fWidthEHM;
+
+		gl.glColor4f(1, 1, 1, 1);
+
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		if (set.getClusteredTreeExps() != null) {
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_ACTIVATE_VERTICAL_DENDROGRAM, 1));
-
-			if (bVerticalDendrogramActive) {
+			if (bExperimentDendrogramActive) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith - 0.0f, fHeight - 0.0f, 0.1f);
+				gl.glVertex3f(fLeftOffset, fHeight, 0.1f);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith - 0.0f, fHeight + 0.1f, 0.1f);
+				gl.glVertex3f(fLeftOffset, fHeight + 0.1f, 0.1f);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith + 0.4f, fHeight + 0.1f, 0.1f);
+				gl.glVertex3f(fLeftOffset + 0.4f, fHeight + 0.1f, 0.1f);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith + 0.4f, fHeight - 0.0f, 0.1f);
+				gl.glVertex3f(fLeftOffset + 0.4f, fHeight, 0.1f);
 				gl.glEnd();
 			}
 			else {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith - 0.0f, fHeight - 0.0f, 0.1f);
+				gl.glVertex3f(fLeftOffset, fHeight, 0.1f);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith - 0.0f, fHeight + 0.1f, 0.1f);
+				gl.glVertex3f(fLeftOffset, fHeight + 0.1f, 0.1f);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith + 0.4f, fHeight + 0.1f, 0.1f);
+				gl.glVertex3f(fLeftOffset + 0.4f, fHeight + 0.1f, 0.1f);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith + 0.4f, fHeight - 0.0f, 0.1f);
+				gl.glVertex3f(fLeftOffset + 0.4f, fHeight, 0.1f);
 				gl.glEnd();
 			}
 
@@ -1810,10 +1858,9 @@ public class GLHierarchicalHeatMap
 		}
 
 		if (set.getClusteredTreeGenes() != null) {
-
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM, 1));
-			if (bHorizontalDendrogramActive) {
+			if (bGeneDendrogramActive) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(0.0f, -0.4f, 0.1f);
@@ -1839,13 +1886,7 @@ public class GLHierarchicalHeatMap
 			}
 			gl.glPopName();
 		}
-
 		tempTexture.disable();
-
-		if (bRenderCaption == true) {
-			renderCaption(gl, "Number Samples:" + iSamplesPerHeatmap, 0.0f, viewFrustum.getHeight()
-				- iPickedSampleLevel2 * fHeightSampleLevel2, 0.005f);
-		}
 	}
 
 	/**
@@ -2367,12 +2408,19 @@ public class GLHierarchicalHeatMap
 		}
 		else {
 			ftop = viewFrustum.getTop();
-			fright = viewFrustum.getWidth();
-			gl.glTranslatef(0.1f, -0.2f, 0);
+			if (bGeneDendrogramActive) {
+				fright = viewFrustum.getWidth() - 1.4f;
+				gl.glTranslatef(1.7f, -0.2f, 0);
+			}
+			else {
+
+				fright = viewFrustum.getWidth();
+				gl.glTranslatef(0.1f, -0.2f, 0);
+			}
 		}
 
 		// render embedded heat map
-		if (bVerticalDendrogramActive) {
+		if (bExperimentDendrogramActive) {
 			glHeatMapView.getViewFrustum().setTop(ftop - 1.45f);
 		}
 		else {
@@ -2385,29 +2433,13 @@ public class GLHierarchicalHeatMap
 		gl.glPopName();
 		fWidthEHM = glHeatMapView.getViewFrustum().getWidth() - 0.95f;
 
-		// render embedded dendrogram
-		if (bHorizontalDendrogramActive) {
-			if (bSkipLevel1 == false)
-				gl.glTranslatef(-fleftOffset - GAP_LEVEL1_2, 0.6f, 0f);
-			else
-				gl.glTranslatef(-fleftOffset, 0.6f, 0f);
-
-			glHorizontalDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
-			glHorizontalDendrogramView.getViewFrustum().setRight(1.7f);
-			glHorizontalDendrogramView.setDisplayListDirty();
-			glHorizontalDendrogramView.displayRemote(gl);
-			if (bSkipLevel1 == false)
-				gl.glTranslatef(+fleftOffset + GAP_LEVEL1_2, -0.6f, 0f);
-			else
-				gl.glTranslatef(fleftOffset, -0.6f, 0f);
-		}
-
-		if (bVerticalDendrogramActive) {
+		// render embedded experiment dendrogram
+		if (bExperimentDendrogramActive) {
 			gl.glTranslatef(0f, 3.6f, 0f);
-			glVerticalDendrogramView.getViewFrustum().setTop(ftop - 3.6f);
-			glVerticalDendrogramView.getViewFrustum().setRight(fWidthEHM);
-			glVerticalDendrogramView.setDisplayListDirty();
-			glVerticalDendrogramView.displayRemote(gl);
+			glExperimentDendrogramView.getViewFrustum().setTop(ftop - 3.6f);
+			glExperimentDendrogramView.getViewFrustum().setRight(fWidthEHM);
+			glExperimentDendrogramView.setDisplayListDirty();
+			glExperimentDendrogramView.displayRemote(gl);
 			gl.glTranslatef(0f, -3.6f, 0f);
 		}
 
@@ -2419,11 +2451,28 @@ public class GLHierarchicalHeatMap
 				gl.glTranslatef(-fleftOffset, +0.2f, 0);
 			}
 		}
-		else
-			gl.glTranslatef(-0.1f, 0.2f, 0);
+		else {
+			if (bGeneDendrogramActive) {
+				gl.glTranslatef(-1.7f, +0.2f, 0);
+			}
+			else {
+
+				gl.glTranslatef(-0.1f, +0.2f, 0);
+			}
+		}
 
 		if (bSkipLevel1 == false) {
 			gl.glTranslatef(-GAP_LEVEL2_3, 0, 0);
+		}
+
+		// render embedded gene dendrogram
+		if (bGeneDendrogramActive) {
+			gl.glTranslatef(0f, 0.4f, 0f);
+			glGeneDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
+			glGeneDendrogramView.getViewFrustum().setRight(1.7f);
+			glGeneDendrogramView.setDisplayListDirty();
+			glGeneDendrogramView.displayRemote(gl);
+			gl.glTranslatef(0f, -0.4f, 0f);
 		}
 
 		contextMenu.render(gl, this);
@@ -2439,8 +2488,8 @@ public class GLHierarchicalHeatMap
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
-			glHorizontalDendrogramView.setDisplayListDirty();
-			glVerticalDendrogramView.setDisplayListDirty();
+			glGeneDendrogramView.setDisplayListDirty();
+			glExperimentDendrogramView.setDisplayListDirty();
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -2460,37 +2509,32 @@ public class GLHierarchicalHeatMap
 		// padding along borders
 		viewFrustum.setTop(viewFrustum.getTop() - 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
-
-		if (bHorizontalDendrogramActive)
-			gl.glTranslatef(1.6f, 0, 0);
-
 		gl.glTranslatef(0.1f, 0.4f, 0);
+
+		if (bGeneDendrogramActive)
+			gl.glTranslatef(1.58f, 0, 0);
+
+		renderDendrogramButton(gl);
 
 		if (contentVA.getGroupList() != null && bSkipLevel1 == false)
 			renderClassAssignmentsGenesLevel1(gl);
 
-		if (bSkipLevel1 == false) {
-			handleTexturePickingLevel1(gl);
-		}
-
-		if (bSkipLevel2 == false) {
-			handleTexturePickingLevel2(gl);
-		}
-
 		// all stuff for rendering level 1 (overview bar)
 		if (bSkipLevel1 == false) {
+			handleTexturePickingLevel1(gl);
 			renderOverviewBar(gl);
 			renderMarkerOverviewBar(gl);
 			renderSelectedElementsOverviewBar(gl);
 			renderCursorLevel1(gl);
 
-			gl.glTranslatef(GAP_LEVEL2_3, 0, 0);
+			gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
+			gl.glColor4f(1f, 1f, 1f, 1f);
 		}
 		else {
-			gl.glColor4f(1f, 1f, 0f, 1f);
+			gl.glColor4f(1f, 1f, 1f, 1f);
 		}
 
-		if (bIsHeatmapInFocus || bHorizontalDendrogramActive) {
+		if (bIsHeatmapInFocus || bGeneDendrogramActive) {
 			fAnimationScale = 0.2f;
 		}
 		else {
@@ -2499,7 +2543,8 @@ public class GLHierarchicalHeatMap
 
 		// all stuff for rendering level 2 (textures)
 		if (bSkipLevel2 == false) {
-			gl.glColor4f(1f, 1f, 1f, 1f);
+			// gl.glColor4f(1f, 1f, 1f, 1f);
+			handleTexturePickingLevel2(gl);
 			renderTextureHeatMap(gl);
 			renderMarkerTexture(gl);
 			renderSelectedElementsTexture(gl);
@@ -2508,10 +2553,8 @@ public class GLHierarchicalHeatMap
 			if (storageVA.getGroupList() != null)
 				renderClassAssignmentsExperimentsLevel2(gl);
 		}
-		else {
-			initHierarchy();
-			setEmbeddedHeatMapData();
-		}
+
+		setEmbeddedHeatMapData();
 
 		if (bSkipLevel2 == false) {
 			gl.glTranslatef(viewFrustum.getWidth() / 4.0f * fAnimationScale, 0, 0);
@@ -2524,20 +2567,20 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel2 == false)
 			gl.glTranslatef(-(viewFrustum.getWidth() / 4.0f * fAnimationScale), 0, 0);
 
-		if (storageVA.getGroupList() != null && bVerticalDendrogramActive == false) {
+		if (storageVA.getGroupList() != null) {
 			renderClassAssignmentsExperimentsLevel3(gl);
 		}
-
-		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
-		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
-		gl.glTranslatef(-0.1f, -0.4f, 0);
 
 		if (bSkipLevel1 == false) {
 			gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
 		}
 
-		if (bHorizontalDendrogramActive)
-			gl.glTranslatef(-1.6f, 0, 0);
+		if (bGeneDendrogramActive)
+			gl.glTranslatef(-1.58f, 0, 0);
+
+		gl.glTranslatef(-0.1f, -0.4f, 0);
+		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
+		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
 
 		gl.glEndList();
 	}
@@ -3498,9 +3541,9 @@ public class GLHierarchicalHeatMap
 					case CLICKED:
 
 						bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
-						bHorizontalDendrogramActive = false;
+						bGeneDendrogramActive = false;
 						glHeatMapView.setDisplayListDirty();
-						glVerticalDendrogramView.setDisplayListDirty();
+						glExperimentDendrogramView.setDisplayListDirty();
 						setDisplayListDirty();
 
 						break;
@@ -3519,9 +3562,9 @@ public class GLHierarchicalHeatMap
 
 					case CLICKED:
 
-						bVerticalDendrogramActive = bVerticalDendrogramActive == true ? false : true;
+						bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false : true;
 						glHeatMapView.setDisplayListDirty();
-						glHorizontalDendrogramView.setDisplayListDirty();
+						glGeneDendrogramView.setDisplayListDirty();
 						setDisplayListDirty();
 
 						break;
@@ -3540,7 +3583,7 @@ public class GLHierarchicalHeatMap
 
 					case CLICKED:
 
-						bHorizontalDendrogramActive = bHorizontalDendrogramActive == true ? false : true;
+						bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
 						bIsHeatmapInFocus = false;
 						glHeatMapView.setDisplayListDirty();
 						setDisplayListDirty();
@@ -3772,8 +3815,8 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 		setEmbeddedHeatMapData();
 		glHeatMapView.setDisplayListDirty();
-		glHorizontalDendrogramView.setDisplayListDirty();
-		glVerticalDendrogramView.setDisplayListDirty();
+		glGeneDendrogramView.setDisplayListDirty();
+		glExperimentDendrogramView.setDisplayListDirty();
 
 		// group/cluster selections
 		if (storageVA.getGroupList() != null) {
@@ -3921,6 +3964,10 @@ public class GLHierarchicalHeatMap
 		// contentVA.setGroupList(null);
 		// storageVA.setGroupList(null);
 
+		// FIXME: in case of loading a new data file the old dendrogram views should not be active
+		// bGeneDendrogramActive = false;
+		// bExperimentDendrogramActive = false;
+
 		initHierarchy();
 		calculateTextures();
 
@@ -3934,13 +3981,13 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
 		glHeatMapView.initData();
 
-		glHorizontalDendrogramView.setSet(set);
-		glHorizontalDendrogramView.setContentVAType(EVAType.CONTENT);
-		glHorizontalDendrogramView.initData();
+		glGeneDendrogramView.setSet(set);
+		glGeneDendrogramView.setContentVAType(EVAType.CONTENT);
+		glGeneDendrogramView.initData();
 
-		glVerticalDendrogramView.setSet(set);
-		glVerticalDendrogramView.setContentVAType(EVAType.STORAGE);
-		glVerticalDendrogramView.initData();
+		glExperimentDendrogramView.setSet(set);
+		glExperimentDendrogramView.setContentVAType(EVAType.STORAGE);
+		glExperimentDendrogramView.initData();
 
 		if (bSkipLevel2 == false)
 			bRedrawTextures = true;
