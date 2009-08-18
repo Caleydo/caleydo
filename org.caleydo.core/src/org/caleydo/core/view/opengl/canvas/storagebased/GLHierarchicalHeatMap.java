@@ -1775,9 +1775,11 @@ public class GLHierarchicalHeatMap
 		}
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-			EPickingType.HIER_HEAT_MAP_ACTIVATE_VERTICAL_DENDROGRAM, 1));
 		if (set.getClusteredTreeExps() != null) {
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_ACTIVATE_VERTICAL_DENDROGRAM, 1));
+
 			if (bVerticalDendrogramActive) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -1802,8 +1804,42 @@ public class GLHierarchicalHeatMap
 				gl.glVertex3f(GAP_LEVEL2_3 + fWidthEHM + fFieldWith + 0.4f, fHeight - 0.0f, 0.1f);
 				gl.glEnd();
 			}
+
+			gl.glPopName();
+
 		}
-		gl.glPopName();
+
+		if (set.getClusteredTreeGenes() != null) {
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM, 1));
+			if (bHorizontalDendrogramActive) {
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(0.0f, -0.4f, 0.1f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(0.0f, +0.0f, 0.1f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(0.1f, +0.0f, 0.1f);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(0.1f, -0.4f, 0.1f);
+				gl.glEnd();
+			}
+			else {
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(0.0f, -0.4f, 0.1f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(0.0f, +0.0f, 0.1f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(0.1f, +0.0f, 0.1f);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(0.1f, -0.4f, 0.1f);
+				gl.glEnd();
+			}
+			gl.glPopName();
+		}
+
 		tempTexture.disable();
 
 		if (bRenderCaption == true) {
@@ -1966,9 +2002,9 @@ public class GLHierarchicalHeatMap
 		gl.glPopName();
 
 		gl.glPopAttrib();
-		tempTexture.disable();
 
 		gl.glTranslatef(-0.1f, 0, 0);
+		tempTexture.disable();
 	}
 
 	/**
@@ -2350,10 +2386,21 @@ public class GLHierarchicalHeatMap
 		fWidthEHM = glHeatMapView.getViewFrustum().getWidth() - 0.95f;
 
 		// render embedded dendrogram
-		glHorizontalDendrogramView.getViewFrustum().setTop(ftop);
-		glHorizontalDendrogramView.getViewFrustum().setRight(fright);
-		glHorizontalDendrogramView.setDisplayListDirty();
-		// glDendrogramView.displayRemote(gl);
+		if (bHorizontalDendrogramActive) {
+			if (bSkipLevel1 == false)
+				gl.glTranslatef(-fleftOffset - GAP_LEVEL1_2, 0.6f, 0f);
+			else
+				gl.glTranslatef(-fleftOffset, 0.6f, 0f);
+
+			glHorizontalDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
+			glHorizontalDendrogramView.getViewFrustum().setRight(1.7f);
+			glHorizontalDendrogramView.setDisplayListDirty();
+			glHorizontalDendrogramView.displayRemote(gl);
+			if (bSkipLevel1 == false)
+				gl.glTranslatef(+fleftOffset + GAP_LEVEL1_2, -0.6f, 0f);
+			else
+				gl.glTranslatef(fleftOffset, -0.6f, 0f);
+		}
 
 		if (bVerticalDendrogramActive) {
 			gl.glTranslatef(0f, 3.6f, 0f);
@@ -2414,6 +2461,9 @@ public class GLHierarchicalHeatMap
 		viewFrustum.setTop(viewFrustum.getTop() - 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
 
+		if (bHorizontalDendrogramActive)
+			gl.glTranslatef(1.6f, 0, 0);
+
 		gl.glTranslatef(0.1f, 0.4f, 0);
 
 		if (contentVA.getGroupList() != null && bSkipLevel1 == false)
@@ -2440,7 +2490,7 @@ public class GLHierarchicalHeatMap
 			gl.glColor4f(1f, 1f, 0f, 1f);
 		}
 
-		if (bIsHeatmapInFocus) {
+		if (bIsHeatmapInFocus || bHorizontalDendrogramActive) {
 			fAnimationScale = 0.2f;
 		}
 		else {
@@ -2485,6 +2535,9 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel1 == false) {
 			gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
 		}
+
+		if (bHorizontalDendrogramActive)
+			gl.glTranslatef(-1.6f, 0, 0);
 
 		gl.glEndList();
 	}
@@ -3445,7 +3498,9 @@ public class GLHierarchicalHeatMap
 					case CLICKED:
 
 						bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
+						bHorizontalDendrogramActive = false;
 						glHeatMapView.setDisplayListDirty();
+						glVerticalDendrogramView.setDisplayListDirty();
 						setDisplayListDirty();
 
 						break;
@@ -3466,6 +3521,7 @@ public class GLHierarchicalHeatMap
 
 						bVerticalDendrogramActive = bVerticalDendrogramActive == true ? false : true;
 						glHeatMapView.setDisplayListDirty();
+						glHorizontalDendrogramView.setDisplayListDirty();
 						setDisplayListDirty();
 
 						break;
@@ -3485,6 +3541,7 @@ public class GLHierarchicalHeatMap
 					case CLICKED:
 
 						bHorizontalDendrogramActive = bHorizontalDendrogramActive == true ? false : true;
+						bIsHeatmapInFocus = false;
 						glHeatMapView.setDisplayListDirty();
 						setDisplayListDirty();
 
@@ -3878,11 +3935,11 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.initData();
 
 		glHorizontalDendrogramView.setSet(set);
-		glHorizontalDendrogramView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+		glHorizontalDendrogramView.setContentVAType(EVAType.CONTENT);
 		glHorizontalDendrogramView.initData();
 
 		glVerticalDendrogramView.setSet(set);
-		glVerticalDendrogramView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+		glVerticalDendrogramView.setContentVAType(EVAType.STORAGE);
 		glVerticalDendrogramView.initData();
 
 		if (bSkipLevel2 == false)

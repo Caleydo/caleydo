@@ -84,13 +84,13 @@ public class GLDendrogram
 	private float fPosCut = 0.0f;
 
 	// variables needed for gene tree dendrogram
-	private float yPosInit = 0.5f;
-	private float xGlobalMax = 6;
+	private float yPosInit = 0;
+	private float xGlobalMax = 0;
 	private float fSampleHeight = 0;
 	private float fLevelWidth = 0;
 
 	// variables needed for experiment tree dendrogram
-	private float xPosInit = 0.5f;
+	private float xPosInit = 0;
 	private float yGlobalMin = 0;
 	private float fSampleWidth = 0;
 	private float fLevelHeight = 0;
@@ -137,10 +137,7 @@ public class GLDendrogram
 
 		this.bRenderGeneTree = bRenderGeneTree;
 
-		if (bRenderGeneTree)
-			fPosCut = 0f;
-		else
-			fPosCut = 0f;
+		fPosCut = 0f;
 	}
 
 	@Override
@@ -277,28 +274,28 @@ public class GLDendrogram
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(fPosCut, 0.0f, 0);
 			gl.glVertex3f(fPosCut, fHeight, 0);
-			gl.glVertex3f(fPosCut + 0.1f, fHeight, 0);
-			gl.glVertex3f(fPosCut + 0.1f, 0.0f, 0);
+			gl.glVertex3f(fPosCut + 0.05f, fHeight, 0);
+			gl.glVertex3f(fPosCut + 0.05f, 0.0f, 0);
 			gl.glEnd();
 
 			gl.glColor4f(0f, 0f, 1f, 1f);
 			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(fPosCut - 0.3f, 0.1f, 0);
-			gl.glVertex3f(fPosCut + 0.0f, 0.0f, 0);
-			gl.glVertex3f(fPosCut + 0.0f, 0.2f, 0);
-			gl.glVertex3f(fPosCut + 0.1f, 0.0f, 0);
-			gl.glVertex3f(fPosCut + 0.1f, 0.2f, 0);
-			gl.glVertex3f(fPosCut + 0.4f, 0.1f, 0);
+			gl.glVertex3f(fPosCut - 0.2f, -0.1f, 0);
+			gl.glVertex3f(fPosCut + 0.0f, -0.0f, 0);
+			gl.glVertex3f(fPosCut + 0.0f, -0.2f, 0);
+			gl.glVertex3f(fPosCut + 0.05f, -0.0f, 0);
+			gl.glVertex3f(fPosCut + 0.05f, -0.2f, 0);
+			gl.glVertex3f(fPosCut + 0.25f, -0.1f, 0);
 			gl.glEnd();
 
-			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(fPosCut - 0.3f, fHeight - 0.1f, 0);
-			gl.glVertex3f(fPosCut + 0.0f, fHeight - 0.0f, 0);
-			gl.glVertex3f(fPosCut + 0.0f, fHeight - 0.2f, 0);
-			gl.glVertex3f(fPosCut + 0.1f, fHeight - 0.0f, 0);
-			gl.glVertex3f(fPosCut + 0.1f, fHeight - 0.2f, 0);
-			gl.glVertex3f(fPosCut + 0.4f, fHeight - 0.1f, 0);
-			gl.glEnd();
+			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
+			// gl.glVertex3f(fPosCut - 0.2f, fHeight + 0.1f, 0);
+			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.0f, 0);
+			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.2f, 0);
+			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.0f, 0);
+			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.2f, 0);
+			// gl.glVertex3f(fPosCut + 0.25f, fHeight + 0.1f, 0);
+			// gl.glEnd();
 		}
 		else {
 			gl.glColor4f(0f, 0f, 1f, 0.4f);
@@ -319,14 +316,14 @@ public class GLDendrogram
 			gl.glVertex3f(-0.1f, fPosCut + 0.25f, 0);
 			gl.glEnd();
 
-			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(fWidth + 0.1f, fPosCut - 0.2f, 0);
-			gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.05f, 0);
-			gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.05f, 0);
-			gl.glVertex3f(fWidth + 0.1f, fPosCut + 0.25f, 0);
-			gl.glEnd();
+			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
+			// gl.glVertex3f(fWidth + 0.1f, fPosCut - 0.2f, 0);
+			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.0f, 0);
+			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.0f, 0);
+			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.05f, 0);
+			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.05f, 0);
+			// gl.glVertex3f(fWidth + 0.1f, fPosCut + 0.25f, 0);
+			// gl.glEnd();
 		}
 		gl.glPopName();
 
@@ -467,9 +464,9 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			float fCoeff = currentNode.getCoefficient();
+			// float fCoeff = currentNode.getCoefficient();
 
-			pos.setX(fXmin - fLevelWidth * (1 + fCoeff));
+			pos.setX(fXmin - fLevelWidth);// * (1 + fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
 			pos.setZ(0f);
 
@@ -477,7 +474,7 @@ public class GLDendrogram
 		else {
 			pos.setY(yPosInit);
 			yPosInit -= fSampleHeight;
-			pos.setX(xGlobalMax - currentNode.getCoefficient());
+			pos.setX(xGlobalMax);// - currentNode.getCoefficient());
 			pos.setZ(0f);
 		}
 
@@ -821,10 +818,10 @@ public class GLDendrogram
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		// gl.glBegin(GL.GL_LINE_LOOP);
-		// gl.glVertex3f(viewFrustum.getLeft() + 0.0f, viewFrustum.getBottom() + 0.0f, 0);
-		// gl.glVertex3f(viewFrustum.getLeft() + 0.0f, viewFrustum.getTop() - 0.0f, 0);
-		// gl.glVertex3f(viewFrustum.getRight() - 0.0f, viewFrustum.getTop() - 0.0f, 0);
-		// gl.glVertex3f(viewFrustum.getRight() - 0.0f, viewFrustum.getBottom() + 0.0f, 0);
+		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), 0);
+		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), 0);
+		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0);
 		// gl.glEnd();
 
 		if (tree == null) {
@@ -851,20 +848,21 @@ public class GLDendrogram
 		}
 
 		if (tree != null) {
-			if (bHasFrustumChanged || bRedrawDendrogram) {
+			if (bIsDisplayListDirtyRemote || bHasFrustumChanged || bRedrawDendrogram) {
 				if (bRenderGeneTree) {
-					xGlobalMax = viewFrustum.getWidth() - 0.2f;
-					fSampleHeight = (viewFrustum.getHeight() - 1f) / tree.getRoot().getNrElements();
-					fLevelWidth = (viewFrustum.getWidth() - 2f) / tree.getRoot().getDepth();
-					yPosInit = viewFrustum.getHeight() - 0.4f;
+					xGlobalMax = viewFrustum.getWidth();
+					fSampleHeight = viewFrustum.getHeight() / tree.getRoot().getNrElements();
+					fLevelWidth = (viewFrustum.getWidth() - 0.1f) / tree.getRoot().getDepth();
+					yPosInit = viewFrustum.getHeight();
 				}
 				else {
 					yGlobalMin = 0.0f;
 					fSampleWidth = viewFrustum.getWidth() / tree.getRoot().getNrElements();
-					fLevelHeight = viewFrustum.getHeight() / tree.getRoot().getDepth();
+					fLevelHeight = (viewFrustum.getHeight() - 0.1f) / tree.getRoot().getDepth();
 					xPosInit = 0.0f;
 				}
 				determinePositions();
+				bIsDisplayListDirtyRemote = false;
 				bRedrawDendrogram = false;
 				bHasFrustumChanged = false;
 			}
@@ -872,7 +870,7 @@ public class GLDendrogram
 			gl.glLineWidth(0.1f);
 
 			if (bRenderGeneTree) {
-				gl.glTranslatef(0.1f, 0, 0);
+				gl.glTranslatef(0, -fSampleHeight / 2, 0);
 				renderDendrogramGenes(gl, currentRootNode, 1);
 				// renderDendrogramGenes(gl, tree.getRoot());
 			}
@@ -885,7 +883,7 @@ public class GLDendrogram
 
 			if (bRenderGeneTree)
 
-				gl.glTranslatef(-0.1f, 0, 0);
+				gl.glTranslatef(0, +fSampleHeight / 2, 0);
 			else
 				gl.glTranslatef(-fSampleWidth / 2, 0, 0);
 		}
@@ -914,17 +912,15 @@ public class GLDendrogram
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
 		float fWidth = viewFrustum.getWidth() - 0.3f;
-		float fHeight = viewFrustum.getHeight() - 0.3f;
+		float fHeight = viewFrustum.getHeight();
 
 		if (bRenderGeneTree) {
-			if ((fArTargetWorldCoordinates[0] - 0.1f) > 0.0f
-				&& (fArTargetWorldCoordinates[0] - 0.1f) < fWidth)
-				fPosCut = fArTargetWorldCoordinates[0] - 0.1f;
+			if (fArTargetWorldCoordinates[0] > -0.1f && fArTargetWorldCoordinates[0] < fWidth)
+				fPosCut = fArTargetWorldCoordinates[0];
 		}
 		else {
-			if ((fArTargetWorldCoordinates[1] - 0.1f) > 0.0f
-				&& (fArTargetWorldCoordinates[1] - 0.1f) < fHeight)
-				fPosCut = fArTargetWorldCoordinates[1] - 0.1f;
+			if (fArTargetWorldCoordinates[1] > -0.1f && fArTargetWorldCoordinates[1] < fHeight)
+				fPosCut = fArTargetWorldCoordinates[1];
 		}
 		setDisplayListDirty();
 
@@ -1277,11 +1273,6 @@ public class GLDendrogram
 
 				resetAllTreeSelections();
 
-				Set<ClusterNode> nodeSet = tree.getGraph().vertexSet();
-				for (ClusterNode node : nodeSet) {
-					node.setSelectionType(ESelectionType.NORMAL);
-				}
-
 				Set<Integer> setMouseOverElements =
 					contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
@@ -1309,11 +1300,6 @@ public class GLDendrogram
 				int iIndex;
 
 				resetAllTreeSelections();
-
-				Set<ClusterNode> nodeSet = tree.getGraph().vertexSet();
-				for (ClusterNode node : nodeSet) {
-					node.setSelectionType(ESelectionType.NORMAL);
-				}
 
 				Set<Integer> setMouseOverElements =
 					storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
@@ -1393,8 +1379,8 @@ public class GLDendrogram
 			if (tree.getNodeByNumber(clusterNr) != null) {
 				tree.getNodeByNumber(clusterNr).setSelectionType(selectionType);
 
-				if (bIsRenderedRemote)
-					currentRootNode = tree.getNodeByNumber(clusterNr);
+				// if (bIsRenderedRemote)
+				// currentRootNode = tree.getNodeByNumber(clusterNr);
 			}
 
 			setDisplayListDirty();
