@@ -54,9 +54,9 @@ public class NetworkUtils {
 
 		Unmarshaller unmarshaller = handshakeJAXBContext.createUnmarshaller();
 		StringReader reader = new StringReader (buffer.toString());
-		Object handshake = unmarshaller.unmarshal(reader);
 
 		// System.out.println("incoming serverHandshake message:\n" + buffer);
+		Object handshake = unmarshaller.unmarshal(reader);
 		
 		return handshake;
 	}

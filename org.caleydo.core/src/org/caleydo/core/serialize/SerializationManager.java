@@ -59,6 +59,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.net.event.ClientListEvent;
 import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
 
 /**
@@ -193,6 +194,7 @@ public class SerializationManager {
 		eventTypes.add(ReplaceVirtualArrayInUseCaseEvent.class);
 		eventTypes.add(StartClusteringEvent.class);
 		eventTypes.add(ClusterNodeSelectionEvent.class);
+		eventTypes.add(ClientListEvent.class);
 
 //		eventTypes.add(NewSetEvent.class);
 

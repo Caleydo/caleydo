@@ -15,6 +15,8 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.net.event.ClientListEvent;
+import org.caleydo.core.net.event.ClientListListener;
 import org.caleydo.core.net.event.ConnectToServerEvent;
 import org.caleydo.core.net.event.ConnectToServerListener;
 import org.caleydo.core.serialize.ApplicationInitData;
@@ -31,8 +33,8 @@ import org.eclipse.core.runtime.Status;
 public class NetworkManager 
 	implements IListenerOwner {
 
-
-	ILog log;
+	/** utility object for logging, initialized during constructor */
+	private ILog log;
 	
 	/** Default given network name */ 
 	public static final String DEFAULT_NETWORK_NAME = "CaleydoApp";
@@ -86,7 +88,13 @@ public class NetworkManager
 	private int connectionCounter;
 
 	/** {@link AEventListener} to listen for {@link ConnectToServerEvent}s */
-	ConnectToServerListener connectToServerListener;
+	private ConnectToServerListener connectToServerListener;
+	
+	/** {@link AEventListener} to listen for {@link ClientListEvent}s if in client mode */
+	private ClientListListener clientListListener;
+	
+	/** list of names of all clients connected to the same server as this application*/
+	private List<String> clientNames;
 	
 	/** timeout in ms for a client to send his {@link ClientHandshake} after connecting to this server */
 	private int connectingTimeout;
@@ -106,6 +114,8 @@ public class NetworkManager
 		connectionCounter = 0;
 		
 		status = ENetworkStatus.STATUS_STOPPED;
+		
+		clientNames = null;
 	}
 
 	/**
@@ -128,13 +138,21 @@ public class NetworkManager
 	}
 
 	/**
-	 * Releases all obtained network related resources.
+	 * Stops all network threads and frees all obtained resources
 	 */
 	public void stopNetworkService() {
-		unregisterEventListeners();
 		status = ENetworkStatus.STATUS_STOPPED;
+
+		unregisterEventListeners();
+		for (Connection connection : connections) {
+			connection.dispose();
+		}
+		connections.clear();
+
+		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
+		centralEventPublisher.triggerEvent(event);
 	}
-	
+
 	/**
 	 * Registers the event listeners to the central event publishing system.
 	 */
@@ -151,6 +169,10 @@ public class NetworkManager
 		if (connectToServerListener != null) {
 			centralEventPublisher.removeListener(connectToServerListener);
 			connectToServerListener = null;
+		}
+		if (clientListListener != null) {
+			centralEventPublisher.removeListener(clientListListener);
+			clientListListener = null;
 		}
 	}
 	
@@ -192,16 +214,6 @@ public class NetworkManager
 	}
 
 	/**
-	 * Stops all network threads and frees all obtained resources
-	 */
-	public void stopServices() {
-		// TODO implementation
-		status = ENetworkStatus.STATUS_STOPPED;
-		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
-		centralEventPublisher.triggerEvent(event);
-	}
-
-	/**
 	 * Creates connection for a client that tries to connect to this caleydo server.
 	 * @param socket valid {@link Socket} to the client 
 	 */
@@ -211,8 +223,11 @@ public class NetworkManager
 			connection.connect(socket);
 			connections.add(connection);
 			createEventSystem(connection);
+
 			RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 			centralEventPublisher.triggerEvent(event);
+			
+			publishClientList();
 		} catch (ConnectException ex) {
 			try {
 				socket.close();
@@ -220,6 +235,21 @@ public class NetworkManager
 				// socket seems dead, nothing to do about it
 			}
 		}
+	}
+
+	/**
+	 * Sends the client list to all connected clients. Should be used
+	 * on a caleydo server application whenever a client connects or disconnects.
+	 */
+	private void publishClientList() {
+		ClientListEvent clientListEvent = new ClientListEvent();
+		ArrayList<String> clientNames = new ArrayList<String>();
+		clientNames.add(networkName);
+		for (Connection con : connections) {
+			clientNames.add(con.getRemoteNetworkName()); 
+		}
+		clientListEvent.setClientNames(clientNames);
+		globalOutgoingPublisher.triggerEvent(clientListEvent);
 	}
 
 	/**
@@ -244,16 +274,25 @@ public class NetworkManager
 		Connection connection = new Connection(this);
 		ApplicationInitData initData;
 		try {
+			clientListListener = new ClientListListener();
+			clientListListener.setHandler(this);
+			centralEventPublisher.addListener(ClientListEvent.class, clientListListener);
+
 			initData = connection.connect(inetAddress, listenPort);
 
 			connections.add(connection);
 			createEventSystem(connection);
+
 			status = ENetworkStatus.STATUS_CLIENT;
 
 			RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 			centralEventPublisher.triggerEvent(event);
 		} catch (ConnectException ex) {
 			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Could not connect to server", ex));
+			if (clientListListener != null) {
+				centralEventPublisher.removeListener(clientListListener);
+				clientListListener = null;
+			}
 			throw new RuntimeException("Could not connect to server", ex);
 		}
 		return initData;
@@ -322,8 +361,12 @@ public class NetworkManager
 		if (!connections.remove(connection)) {
 			throw new RuntimeException("The specified connection is not managed by this NetworkManager");
 		}
+		if (status == ENetworkStatus.STATUS_SERVER) {
+			publishClientList();
+		}
 		disposeEventSystem(connection);
 		connection.dispose();
+		
 	}
 	
 	/**
@@ -556,6 +599,23 @@ public class NetworkManager
 	 */
 	public void setStatus(ENetworkStatus status) {
 		this.status = status;
+	}
+
+	/**
+	 * Getter for {@link NetworkManager#clientNames}
+	 * @return {@link NetworkManager#clientNames}
+	 */
+	public List<String> getClientNames() {
+		return clientNames;
+	}
+
+	/**
+	 * Setter for {@link NetworkManager#clientNames}
+	 * @param {@link NetworkManager#clientNames}
+	 */
+	public void setClientNames(List<String> clientNames) {
+		this.clientNames = clientNames;
+		System.out.println("clientNames=" + clientNames);
 	}
 
 }

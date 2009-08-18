@@ -1,5 +1,7 @@
 package org.caleydo.rcp.dialog.sendview;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -27,7 +29,7 @@ public class SendViewDialog
 	private int viewID;
 
 	/** connections to remote applications in the moment of the dialog creation */
-	private Connection[] connections;
+	private String[] clientNames;
 	
 	/** List to let the user choose the connections to send the view to */
 	private List clientList;
@@ -48,7 +50,7 @@ public class SendViewDialog
 		networkManager = GeneralManager.get().getNetworkManager();
 
 		clientList = null;
-		connections = null;
+		clientNames = null;
 	}
 
 	@Override
@@ -66,8 +68,8 @@ public class SendViewDialog
 		Composite parent = new Composite(p, SWT.NONE);
 		parent.setLayout(new GridLayout(1, false));
 
-		java.util.List<Connection> connectionList = networkManager.getConnections();
-		if (connectionList.size() == 0) {
+		clientNames = createClientNames();
+		if (clientNames.length == 0) {
 			Label label = new Label(parent, SWT.CENTER);
 			label.setText("No Clients connected");
 		} else {
@@ -75,26 +77,52 @@ public class SendViewDialog
 			label.setText("Choose client(s) to send the view to:");
 
 			clientList = new List(parent, SWT.BORDER | SWT.MULTI);
-			connections = connectionList.toArray(new Connection[connectionList.size()]); 
-			for (Connection connection : connections) {
-				clientList.add(connection.getRemoteNetworkName());
+			for (String clientName : clientNames) {
+				clientList.add(clientName);
 			}
 		}
 		
 		return parent;
 	}
 
+	/**
+	 * Retrieves the list of all client-names except this one.
+	 * @return list of remote client-names
+	 */
+	private String[] createClientNames() {
+		String[] names;
+		switch (networkManager.getStatus()) {
+			case STATUS_CLIENT:
+				ArrayList<String> clientNameList = new ArrayList<String>(networkManager.getClientNames());
+				clientNameList.remove(networkManager.getNetworkName());
+				names = clientNameList.toArray(new String[clientNameList.size()]);
+			break;
+			case STATUS_SERVER:
+				java.util.List<Connection> connections = networkManager.getConnections();
+				names = new String[connections.size()];
+				int i = 0;
+				for (Connection connection : connections) {
+					names[i++] = connection.getRemoteNetworkName(); 
+				}
+			break;
+			default:
+				names = new String[0];
+				
+		}
+		return names;
+	}
+	
 	@Override
 	protected void okPressed() {
 		if (clientList != null) {
 			int[] selections = clientList.getSelectionIndices();
 			for (int selection : selections) {
-				System.out.println("sending view " + viewID + " to " + connections[selection].getRemoteNetworkName());
+				System.out.println("sending view " + viewID + " to " + clientNames[selection]);
 
 				CreateGUIViewEvent event = new CreateGUIViewEvent();
 				AGLEventListener view = viewManager.getGLEventListener(viewID);
 				event.setSerializedView(view.getSerializableRepresentation());
-				event.setTargetApplicationID(connections[selection].getRemoteNetworkName());
+				event.setTargetApplicationID(clientNames[selection]);
 				event.setSender(this);
 				
 				networkManager.getGlobalOutgoingPublisher().triggerEvent(event);

@@ -154,7 +154,10 @@ public class Connection {
 			networkUtils.writeHandshake(clientHandshake, outputStream);
 
 			initData = (ApplicationInitData) networkUtils.readHandshake(inputStream);
-			
+
+			clientHandshake.setRequestType(ClientHandshake.CLIENT_SYNCHRONIZED);
+			networkUtils.writeHandshake(clientHandshake, outputStream);
+
 			start(serverHandshake.getServerNetworkName());
 		} catch (Exception e) {
 			throw new ConnectException(e);
@@ -193,6 +196,7 @@ public class Connection {
 				throw new ConnectException("Client refused connection.");
 			}
 			sendServerInitializationData(outputStream);
+			clientHandshake = readClientHandshake(inputStream);
 			socket.setSoTimeout(0);
 			start(clientHandshake.getClientNetworkName());
 		} catch (SocketTimeoutException stEx) {

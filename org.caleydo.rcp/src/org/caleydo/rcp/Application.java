@@ -283,8 +283,12 @@ public class Application
 			AUseCase useCase = (AUseCase) initData.getUseCase();
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
-			SetUtils.saveGeneTreeFile(loadDataParameters, initData.getGeneClusterTree());
-			SetUtils.saveExperimentsTreeFile(loadDataParameters, initData.getGeneClusterTree());
+			if (initData.getGeneClusterTree() != null) {
+				SetUtils.saveGeneTreeFile(loadDataParameters, initData.getGeneClusterTree());
+			}
+			if (initData.getGeneClusterTree() != null) {
+				SetUtils.saveExperimentsTreeFile(loadDataParameters, initData.getGeneClusterTree());
+			}
 			// TODO remove temporary files (after storage creation or on shutdown)
 			
 			GeneralManager.get().setUseCase(useCase);

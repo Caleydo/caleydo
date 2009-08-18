@@ -14,7 +14,6 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.swt.collab.TestSerializationEvent;
 
 /**
  * <p>
@@ -117,15 +116,14 @@ public class NetworkEventPublisher
 
 		while (!stop) {
 			try {
-				IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 				AEvent event = eventQueue.take();
-				System.out.println("NetworkEventPublisher.run(): received event=" + event);
+				// System.out.println("NetworkEventPublisher.run(): received event=" + event);
 
 				StringWriter xmlOutputWriter = new StringWriter();
 				try {
 					marshaller.marshal(event, xmlOutputWriter);
 					String xmlOutput = xmlOutputWriter.getBuffer().toString();
-					System.out.println("NetworkEventPublisher.run(): transmitting xml event=" + xmlOutput);
+					// System.out.println("NetworkEventPublisher.run(): transmitting xml event=" + xmlOutput);
 					try {
 						outputStream.write(xmlOutput.getBytes());
 						outputStream.write("\r\n\r\n".getBytes());
@@ -136,9 +134,9 @@ public class NetworkEventPublisher
 						stop();
 					}
 
-					TestSerializationEvent testSerializationEvent = new TestSerializationEvent();
-					testSerializationEvent.setSerializedText(xmlOutput);
-					eventPublisher.triggerEvent(testSerializationEvent);
+//					TestSerializationEvent testSerializationEvent = new TestSerializationEvent();
+//					testSerializationEvent.setSerializedText(xmlOutput);
+//					eventPublisher.triggerEvent(testSerializationEvent);
 
 				} catch (JAXBException ex) {
 					ex.printStackTrace();

@@ -17,10 +17,13 @@ public class ClientHandshake {
 	/** request-type to signal that the server that this client wants to connect */
 	public static final String REQUEST_CONNECT = "connect";
 	
-	/** request-type to signal that the server that the connection is established */ 
+	/** request-type to signal that the connection is established */ 
 	public static final String REQUEST_CONNECTION_ESTABLISHED = "connection_established";
 	
-	/** the network name the client choose for himself */
+	/** request-type to signal client is successfully synchronized with the server data */ 
+	public static final String CLIENT_SYNCHRONIZED = "client_synchronized";
+	
+	/** the network name the client chooses for itself */
 	private String clientNetworkName;
 
 	/** caleydo version of the client */
