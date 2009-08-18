@@ -14,6 +14,8 @@ import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
+import com.sun.opengl.util.GLUT;
+
 /**
  * Class implements a GL canvas. The canvas is registered in the ViewGLCanvasManager and automatically
  * rendered in the animator loop.
@@ -53,9 +55,9 @@ public class GLCaleydoCanvas
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Creating canvas with ID " + iGLCanvasID + "." + "\nOpenGL capabilities:"
-				+ drawable.getChosenGLCapabilities()));
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Creating canvas with ID " + iGLCanvasID + "."
+				+ "\nOpenGL capabilities:" + drawable.getChosenGLCapabilities()));
 
 		GL gl = drawable.getGL();
 
@@ -77,12 +79,14 @@ public class GLCaleydoCanvas
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-		// gl.glEnable(GL.GL_POINT_SMOOTH);
-		// gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL.GL_POINT_SMOOTH);
+		gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
-		// gl.glEnable(GL.GL_POLYGON_SMOOTH);
-		// gl.glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL.GL_POLYGON_SMOOTH);
+		gl.glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);
+		
+		gl.glEnable(GL.GL_MULTISAMPLE);
 
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
@@ -141,22 +145,25 @@ public class GLCaleydoCanvas
 
 	/**
 	 * Returns the internal unique-id as hashcode
+	 * 
 	 * @return internal unique-id as hashcode
 	 */
 	@Override
 	public int hashCode() {
 		return getID();
 	}
-	
+
 	/**
 	 * Checks if the given object is equals to this one by comparing the internal unique-id
+	 * 
 	 * @return <code>true</code> if the 2 objects are equal, <code>false</code> otherwise
 	 */
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof IUniqueObject) {
 			return this.getID() == ((IUniqueObject) other).getID();
-		} else {
+		}
+		else {
 			return false;
 		}
 	}

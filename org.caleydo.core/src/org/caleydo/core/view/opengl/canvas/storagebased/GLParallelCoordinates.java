@@ -383,6 +383,9 @@ public class GLParallelCoordinates
 
 	@Override
 	public void display(final GL gl) {
+		
+		gl.glDisable(GL.GL_MULTISAMPLE);
+		
 		processEvents();
 		if (bShowSelectionHeatMap) {
 
@@ -444,7 +447,8 @@ public class GLParallelCoordinates
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
-
+		
+		gl.glEnable(GL.GL_MULTISAMPLE);
 	}
 
 	private void createSelectionHeatMap(GL gl) {

@@ -31,7 +31,9 @@ public class CmdViewCreateRcpGLCanvas
 	public void doCommand() {
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
-
+		glCapabilities.setSampleBuffers(true);
+		glCapabilities.setNumSamples(2);
+	    
 		createdObject = new GLCaleydoCanvas(glCapabilities);
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
