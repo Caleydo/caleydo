@@ -14,6 +14,7 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayInUseCaseEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
+import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.event.view.RemoveViewSpecificItemsEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
@@ -60,7 +61,6 @@ import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.net.event.ClientListEvent;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
 
 /**
  * Central access point for xml-serialization related tasks.

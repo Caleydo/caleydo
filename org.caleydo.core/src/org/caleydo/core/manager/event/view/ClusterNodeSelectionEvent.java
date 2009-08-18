@@ -1,9 +1,9 @@
-package org.caleydo.core.view.opengl.canvas.radial.event;
+package org.caleydo.core.manager.event.view;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.view.opengl.canvas.radial.EDrawingStateType;
 import org.caleydo.core.view.opengl.canvas.radial.EPDDrawingStrategyType;
@@ -19,8 +19,7 @@ import org.caleydo.core.view.opengl.canvas.radial.EPDDrawingStrategyType;
 public class ClusterNodeSelectionEvent
 	extends AEvent {
 
-	private int iClusterNumber = -1;
-	private ESelectionType selectionType;
+	private SelectionDelta selectionDelta;
 	
 	private EDrawingStateType drawingStateType;
 	private EPDDrawingStrategyType defaultDrawingStrategyType;
@@ -32,26 +31,11 @@ public class ClusterNodeSelectionEvent
 	private boolean isNewSelection;
 	private boolean isSenderRadialHierarchy;
 
-	public int getClusterNumber() {
-		return iClusterNumber;
-	}
-
-	public void setClusterNumber(int iClusterNumber) {
-		this.iClusterNumber = iClusterNumber;
-	}
-	
-	public void setSelectionType(ESelectionType selectionType) {
-		this.selectionType = selectionType;
-	}
-
-	public ESelectionType getSelectionType() {
-		return selectionType;
-	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (iClusterNumber == -1)
-			throw new IllegalStateException("iClusterNumber was not set");
+		if (selectionDelta == null)
+			throw new IllegalStateException("selectionDelta was not set");
 		return true;
 	}
 
@@ -125,6 +109,14 @@ public class ClusterNodeSelectionEvent
 
 	public void setSenderRadialHierarchy(boolean isSenderRadialHierarchy) {
 		this.isSenderRadialHierarchy = isSenderRadialHierarchy;
+	}
+
+	public SelectionDelta getSelectionDelta() {
+		return selectionDelta;
+	}
+
+	public void setSelectionDelta(SelectionDelta selectionDelta) {
+		this.selectionDelta = selectionDelta;
 	}
 
 }

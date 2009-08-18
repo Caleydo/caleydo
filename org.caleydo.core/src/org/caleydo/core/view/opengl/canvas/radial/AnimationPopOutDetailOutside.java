@@ -99,7 +99,6 @@ public class AnimationPopOutDetailOutside
 
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
-			radialHierarchy.setCurrentMouseOverElement(pdCurrentSelectedElement);
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentSelectedElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());

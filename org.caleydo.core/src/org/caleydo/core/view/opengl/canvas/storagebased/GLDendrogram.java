@@ -6,6 +6,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,9 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
+import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -39,10 +42,9 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
+import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionEvent;
-import org.caleydo.core.view.opengl.canvas.radial.event.ClusterNodeSelectionListener;
-import org.caleydo.core.view.opengl.canvas.radial.event.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -1138,8 +1140,9 @@ public class GLDendrogram
 
 				if (tree.getNodeByNumber(iExternalID) != null) {
 					ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
-					event.setClusterNumber(iExternalID);
-					event.setSelectionType(eSelectionType);
+					SelectionDelta selectionDelta = new SelectionDelta(EIDType.CLUSTER_NUMBER);
+					selectionDelta.addSelection(iExternalID, eSelectionType);
+					event.setSelectionDelta(selectionDelta);
 					eventPublisher.triggerEvent(event);
 				}
 				break;
@@ -1211,7 +1214,6 @@ public class GLDendrogram
 		iAlClusterNodes.clear();
 		buildNewGroupList();
 		resetAllTreeSelections();
-		tree = null;
 		bRedrawDendrogram = true;
 		bEnableDepthCheck = false;
 	}
@@ -1366,21 +1368,28 @@ public class GLDendrogram
 
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
+		
+		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		int clusterNr = event.getClusterNumber();
-		ESelectionType selectionType = event.getSelectionType();
-
-		// cluster mouse over events only used for gene trees
-		if (tree != null && bRenderGeneTree) {
-			resetAllTreeSelections();
-			if (tree.getNodeByNumber(clusterNr) != null) {
-				tree.getNodeByNumber(clusterNr).setSelectionType(selectionType);
-
-				// if (bIsRenderedRemote)
-				// currentRootNode = tree.getNodeByNumber(clusterNr);
+		if(selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+			// cluster mouse over events only used for gene trees
+			if (tree != null && bRenderGeneTree) {
+				resetAllTreeSelections();
+				
+				Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
+				
+				for(SelectionDeltaItem item : deltaItems) {
+					int clusterNr = item.getPrimaryID();
+					if (tree.getNodeByNumber(clusterNr) != null) {
+						tree.getNodeByNumber(clusterNr).setSelectionType(item.getSelectionType());
+		
+//						if (bIsRenderedRemote)
+//							currentRootNode = tree.getNodeByNumber(clusterNr);
+					}
+				}
+	
+				setDisplayListDirty();
 			}
-
-			setDisplayListDirty();
 		}
 	}
 

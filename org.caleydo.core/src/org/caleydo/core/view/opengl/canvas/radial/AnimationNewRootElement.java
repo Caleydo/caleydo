@@ -87,7 +87,6 @@ public class AnimationNewRootElement
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
 			radialHierarchy.setCurrentRootElement(pdCurrentSelectedElement);
-			radialHierarchy.setCurrentMouseOverElement(pdCurrentSelectedElement);
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentSelectedElement, pdCurrentSelectedElement,
 				radialHierarchy.getMaxDisplayedHierarchyDepth());

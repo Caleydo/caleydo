@@ -99,7 +99,7 @@ public class PDDrawingStrategyExpressionColor
 
 	@Override
 	public EPDDrawingStrategyType getDrawingStrategyType() {
-		return EPDDrawingStrategyType.EXPRESSION_COLOR;	
+		return EPDDrawingStrategyType.EXPRESSION_COLOR;
 	}
 
 }

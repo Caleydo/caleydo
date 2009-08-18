@@ -66,7 +66,7 @@ public final class DrawingStrategyManager {
 			new PDDrawingStrategyLabelDecorator());
 		hashDrawingStrategies.put(EPDDrawingStrategyType.INVISIBLE, new PDDrawingStrategyInvisible(
 			pickingManager, iViewID));
-
+	
 		dsDefault = new PDDrawingStrategyExpressionColor(pickingManager, iViewID);
 		hashDrawingStrategies.put(EPDDrawingStrategyType.EXPRESSION_COLOR, dsDefault);
 

@@ -155,5 +155,12 @@ public class PDDrawingStrategyLabelDecorator
 		return EPDDrawingStrategyType.LABEL_DECORATOR;
 	}
 
+	@Override
+	public APDDrawingStrategyDecorator clone() {
+		PDDrawingStrategyLabelDecorator clone = new PDDrawingStrategyLabelDecorator();
+		clone.setDrawingStrategy(drawingStrategy);
+		return clone;
+	}
+
 	
 }

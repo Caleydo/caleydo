@@ -54,5 +54,7 @@ public abstract class APDDrawingStrategyDecorator
 	public void setDrawingStrategy(APDDrawingStrategy drawingStrategy) {
 		this.drawingStrategy = drawingStrategy;
 	}
+	
+	public abstract APDDrawingStrategyDecorator clone();
 
 }

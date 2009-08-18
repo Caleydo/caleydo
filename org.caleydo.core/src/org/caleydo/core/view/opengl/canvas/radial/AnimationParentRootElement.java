@@ -84,7 +84,6 @@ public class AnimationParentRootElement
 			radialHierarchy.setAnimationActive(false);
 			PartialDisc pdNewRootElement = pdCurrentSelectedElement.getParent();
 			radialHierarchy.setCurrentRootElement(pdNewRootElement);
-			radialHierarchy.setCurrentMouseOverElement(pdNewRootElement);
 			radialHierarchy.setCurrentSelectedElement(pdNewRootElement);
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdNewRootElement, pdNewRootElement, radialHierarchy

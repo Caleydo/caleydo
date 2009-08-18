@@ -63,6 +63,8 @@ public abstract class APDDrawingStrategy {
 	 * Gets the drawing strategy type of the current instance.
 	 */
 	public abstract EPDDrawingStrategyType getDrawingStrategyType();
+	
+	
 	/**
 	 * Gets the number of slices which shall be drawn to approximate a disc.
 	 * 

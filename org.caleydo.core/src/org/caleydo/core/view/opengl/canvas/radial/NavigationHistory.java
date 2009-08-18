@@ -103,7 +103,6 @@ public class NavigationHistory {
 		radialHierarchy.setCurrentRootElement(pdRootElement);
 		radialHierarchy.setCurrentSelectedElement(pdSelectedElement);
 
-		radialHierarchy.setCurrentMouseOverElement(pdSelectedElement);
 		radialHierarchy.setMaxDisplayedHierarchyDepth(heCurrentEntry.getMaxDisplayedHierarchyDepth());
 
 		UpdateDepthSliderPositionEvent updateDepthSliderPositionEvent = new UpdateDepthSliderPositionEvent();

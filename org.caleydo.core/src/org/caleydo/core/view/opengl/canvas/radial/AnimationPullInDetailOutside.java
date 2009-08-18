@@ -91,7 +91,6 @@ public class AnimationPullInDetailOutside
 
 			drawingController.setDrawingState(dsNext);
 			radialHierarchy.setAnimationActive(false);
-			radialHierarchy.setCurrentMouseOverElement(pdCurrentRootElement);
 			radialHierarchy.setCurrentSelectedElement(pdCurrentRootElement);
 
 			navigationHistory.addNewHistoryEntry(dsNext, pdCurrentRootElement, pdCurrentRootElement,

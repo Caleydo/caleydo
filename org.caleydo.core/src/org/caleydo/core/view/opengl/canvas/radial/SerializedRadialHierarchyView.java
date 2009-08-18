@@ -23,7 +23,6 @@ public class SerializedRadialHierarchyView
 	private int maxDisplayedHierarchyDepth;
 	private int rootElementID;
 	private int selectedElementID;
-	private int mouseOverElementID;
 	private float rootElementStartAngle;
 	private float selectedElementStartAngle;
 	private boolean isNewSelection;
@@ -38,7 +37,6 @@ public class SerializedRadialHierarchyView
 		setDefaultDrawingStrategyType(EPDDrawingStrategyType.EXPRESSION_COLOR);
 		setRootElementID(-1);
 		setSelectedElementID(-1);
-		setMouseOverElementID(-1);
 		setRootElementStartAngle(0);
 		setSelectedElementStartAngle(0);
 		setNewSelection(true);
@@ -100,14 +98,6 @@ public class SerializedRadialHierarchyView
 
 	public void setNewSelection(boolean isNewSelection) {
 		this.isNewSelection = isNewSelection;
-	}
-
-	public int getMouseOverElementID() {
-		return mouseOverElementID;
-	}
-
-	public void setMouseOverElementID(int mouseOverElementID) {
-		this.mouseOverElementID = mouseOverElementID;
 	}
 
 	public EDrawingStateType getDrawingStateType() {

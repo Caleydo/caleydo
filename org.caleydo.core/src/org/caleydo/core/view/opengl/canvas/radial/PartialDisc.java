@@ -396,6 +396,31 @@ public class PartialDisc
 			}
 		}
 	}
+	
+	/**
+	 * Recursively decorates the drawing strategy of the current partial disc and the
+	 * elements of its sub-tree with copies of the specified decorator.
+	 * 
+	 * @param drawingStrategy
+	 *            Drawing strategy which shall be used for drawing the partial discs.
+	 * @param iDepth
+	 *            Depth of the sub-tree.
+	 */
+	public void decoratePDDrawingStrategyChildren(APDDrawingStrategyDecorator decorator, int iDepth) {
+		APDDrawingStrategyDecorator myDecorator = decorator.clone();
+		myDecorator.setDrawingStrategy(drawingStrategy);
+		drawingStrategy = myDecorator;
+		iDrawingStrategyDepth = iDepth;
+		iDepth--;
+		ArrayList<PartialDisc> alChildren = tree.getChildren(this);
+
+		if (iDepth > 0 && alChildren != null) {
+			for (int i = 0; i < alChildren.size(); i++) {
+				PartialDisc pdCurrentChild = (PartialDisc) alChildren.get(i);
+				pdCurrentChild.decoratePDDrawingStrategyChildren(decorator, iDepth);
+			}
+		}
+	}
 
 	/**
 	 * @return Angle that has been used for drawing the partial disc.
@@ -485,10 +510,58 @@ public class PartialDisc
 	public PartialDisc getLargestChild() {
 		return pdLargestChild;
 	}
+	
+	public APDDrawingStrategy getDrawingStrategy() {
+		return drawingStrategy;
+	}
 
 	@Override
 	public int compareTo(PartialDisc disc) {
 		return clusterNode.getClusterNr() - disc.clusterNode.getClusterNr();
+	}
+
+	/**
+	 * Determines whether the partial disc is displayed given the specified parameters.
+	 * 
+	 * @param pdCurrentRootElement
+	 *            Currently displayed root element.
+	 * @param iDisplayedHierarchyDepth
+	 *            Currently displayed hierarchy depth.
+	 * @return True, if the partial disc is displayed, false otherwise.
+	 */
+	public boolean isCurrentlyDisplayed(PartialDisc pdCurrentRootElement, int iDisplayedHierarchyDepth) {
+		if(pdCurrentRootElement == this)
+			return true;
+		int iParentPathLength = getParentPathLength(pdCurrentRootElement);
+		if ((iParentPathLength >= iDisplayedHierarchyDepth) || (iParentPathLength == -1)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Gets the first element that is visible on the path from the current partial disc along its parents to
+	 * the specified root element.
+	 * 
+	 * @param pdCurrentRootElement
+	 *            Current root element and destination of the path.
+	 * @param iDisplayedHierarchyDepth
+	 *            Currently displayed hierarchy depth.
+	 * @return First visible element on the path from the current partial disc to the root element, null if no
+	 *         such path exists.
+	 */
+	public PartialDisc getFirstVisibleElementOnParentPathToRoot(PartialDisc pdCurrentRootElement,
+		int iDisplayedHierarchyDepth) {
+		
+		if(pdCurrentRootElement == this)
+			return this;
+
+		ArrayList<PartialDisc> alParentPath = getParentPath(pdCurrentRootElement);
+		if (alParentPath == null)
+			return null;
+		if (alParentPath.size() >= iDisplayedHierarchyDepth)
+			return alParentPath.get(alParentPath.size() - iDisplayedHierarchyDepth);
+		return this;
 	}
 
 }

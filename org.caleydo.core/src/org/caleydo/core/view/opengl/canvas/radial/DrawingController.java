@@ -63,12 +63,10 @@ public class DrawingController {
 	 * 
 	 * @param pdMouseOver
 	 *            Partial disc where the mouse over event occurred.
-	 * @param broadcastSelection
-	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public void handleMouseOver(PartialDisc pdMouseOver, boolean broadcastSelection) {
+	public void handleMouseOver(PartialDisc pdMouseOver) {
 
-		currentDrawingState.handleMouseOver(pdMouseOver, broadcastSelection);
+		currentDrawingState.handleMouseOver(pdMouseOver);
 	}
 
 	/**
@@ -77,12 +75,10 @@ public class DrawingController {
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected.
-	 * @param broadcastSelection
-	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public void handleSelection(PartialDisc pdClicked, boolean broadcastSelection) {
+	public void handleSelection(PartialDisc pdClicked) {
 
-		currentDrawingState.handleSelection(pdClicked, broadcastSelection);
+		currentDrawingState.handleSelection(pdClicked);
 	}
 
 	/**
@@ -91,12 +87,10 @@ public class DrawingController {
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected alternatively.
-	 * @param broadcastSelection
-	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public void handleAlternativeSelection(PartialDisc pdClicked, boolean broadcastSelection) {
+	public void handleAlternativeSelection(PartialDisc pdClicked) {
 
-		currentDrawingState.handleAlternativeSelection(pdClicked, broadcastSelection);
+		currentDrawingState.handleAlternativeSelection(pdClicked);
 	}
 
 	/**

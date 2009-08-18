@@ -64,30 +64,24 @@ public abstract class ADrawingState {
 	 * 
 	 * @param pdMouseOver
 	 *            Partial disc where the mouse over event occurred.
-	 * @param broadcastSelection
-	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public abstract void handleMouseOver(PartialDisc pdMouseOver, boolean broadcastSelection);
+	public abstract void handleMouseOver(PartialDisc pdMouseOver);
 
 	/**
 	 * Method for handling selection events.
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected.
-	 * @param broadcastSelection
-	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public abstract void handleSelection(PartialDisc pdSelected, boolean broadcastSelection);
+	public abstract void handleSelection(PartialDisc pdSelected);
 
 	/**
 	 * Method for handling alternative selection events.
 	 * 
 	 * @param pdSelected
 	 *            Partial disc that has been selected alternatively.
-	 * @param broadcastSelection
-	 *            Determines if the selected element shall be broadcasted via event system.
 	 */
-	public abstract void handleAlternativeSelection(PartialDisc pdSelected, boolean broadcastSelection);
+	public abstract void handleAlternativeSelection(PartialDisc pdSelected);
 
 	/**
 	 * @return Element that is considered to be the selected element of the concrete drawing state.
