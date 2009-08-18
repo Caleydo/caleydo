@@ -305,27 +305,27 @@ public class GLDendrogram
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(0, fPosCut, 0);
 			gl.glVertex3f(fWidth, fPosCut, 0);
-			gl.glVertex3f(fWidth, fPosCut + 0.1f, 0);
-			gl.glVertex3f(0.0f, fPosCut + 0.1f, 0);
+			gl.glVertex3f(fWidth, fPosCut + 0.05f, 0);
+			gl.glVertex3f(0.0f, fPosCut + 0.05f, 0);
 			gl.glEnd();
 
 			gl.glColor4f(0f, 0f, 1f, 1f);
 			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(0.1f, fPosCut - 0.3f, 0);
-			gl.glVertex3f(0.0f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(0.2f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(0.0f, fPosCut + 0.1f, 0);
-			gl.glVertex3f(0.2f, fPosCut + 0.1f, 0);
-			gl.glVertex3f(0.1f, fPosCut + 0.4f, 0);
+			gl.glVertex3f(-0.1f, fPosCut - 0.2f, 0);
+			gl.glVertex3f(-0.2f, fPosCut + 0.0f, 0);
+			gl.glVertex3f(-0.0f, fPosCut + 0.0f, 0);
+			gl.glVertex3f(-0.2f, fPosCut + 0.05f, 0);
+			gl.glVertex3f(-0.0f, fPosCut + 0.05f, 0);
+			gl.glVertex3f(-0.1f, fPosCut + 0.25f, 0);
 			gl.glEnd();
 
 			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(fWidth - 0.1f, fPosCut - 0.3f, 0);
+			gl.glVertex3f(fWidth + 0.1f, fPosCut - 0.2f, 0);
+			gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.0f, 0);
 			gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(fWidth - 0.2f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.1f, 0);
-			gl.glVertex3f(fWidth - 0.2f, fPosCut + 0.1f, 0);
-			gl.glVertex3f(fWidth - 0.1f, fPosCut + 0.4f, 0);
+			gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.05f, 0);
+			gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.05f, 0);
+			gl.glVertex3f(fWidth + 0.1f, fPosCut + 0.25f, 0);
 			gl.glEnd();
 		}
 		gl.glPopName();
@@ -524,17 +524,17 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			float fCoeff = currentNode.getCoefficient();
+			// float fCoeff = currentNode.getCoefficient();
 
 			pos.setX(fXmin + (fXmax - fXmin) / 2);
-			pos.setY(fYmax + fLevelHeight * (1 + fCoeff));
+			pos.setY(fYmax + fLevelHeight);// * (1 + fCoeff));
 			pos.setZ(0f);
 
 		}
 		else {
 			pos.setX(xPosInit);
 			xPosInit += fSampleWidth;
-			pos.setY(yGlobalMin + currentNode.getCoefficient());
+			pos.setY(yGlobalMin + fLevelHeight);// currentNode.getCoefficient());
 			pos.setZ(0f);
 		}
 
@@ -555,13 +555,13 @@ public class GLDendrogram
 			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, currentNode
 				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, currentNode
 				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, currentNode
 				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, currentNode
 				.getPos().z());
 			gl.glEnd();
 
@@ -570,13 +570,13 @@ public class GLDendrogram
 			gl.glColor4fv(SELECTED_COLOR, 0);
 
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, currentNode
 				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() - 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, currentNode
 				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, currentNode
 				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() - 0.05f, currentNode.getPos().y() + 0.05f, currentNode
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, currentNode
 				.getPos().z());
 			gl.glEnd();
 
@@ -821,10 +821,10 @@ public class GLDendrogram
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		// gl.glBegin(GL.GL_LINE_LOOP);
-		// gl.glVertex3f(viewFrustum.getLeft() + 0.1f, viewFrustum.getBottom() + 0.1f, 0);
-		// gl.glVertex3f(viewFrustum.getLeft() + 0.1f, viewFrustum.getTop() - 0.1f, 0);
-		// gl.glVertex3f(viewFrustum.getRight() - 0.1f, viewFrustum.getTop() - 0.1f, 0);
-		// gl.glVertex3f(viewFrustum.getRight() - 0.1f, viewFrustum.getBottom() + 0.1f, 0);
+		// gl.glVertex3f(viewFrustum.getLeft() + 0.0f, viewFrustum.getBottom() + 0.0f, 0);
+		// gl.glVertex3f(viewFrustum.getLeft() + 0.0f, viewFrustum.getTop() - 0.0f, 0);
+		// gl.glVertex3f(viewFrustum.getRight() - 0.0f, viewFrustum.getTop() - 0.0f, 0);
+		// gl.glVertex3f(viewFrustum.getRight() - 0.0f, viewFrustum.getBottom() + 0.0f, 0);
 		// gl.glEnd();
 
 		if (tree == null) {
@@ -859,10 +859,10 @@ public class GLDendrogram
 					yPosInit = viewFrustum.getHeight() - 0.4f;
 				}
 				else {
-					yGlobalMin = 0.1f;
-					fSampleWidth = (viewFrustum.getWidth() - 1f) / tree.getRoot().getNrElements();
-					fLevelHeight = (viewFrustum.getHeight() - 2f) / tree.getRoot().getDepth();
-					xPosInit = 0.4f;
+					yGlobalMin = 0.0f;
+					fSampleWidth = viewFrustum.getWidth() / tree.getRoot().getNrElements();
+					fLevelHeight = viewFrustum.getHeight() / tree.getRoot().getDepth();
+					xPosInit = 0.0f;
 				}
 				determinePositions();
 				bRedrawDendrogram = false;
@@ -877,20 +877,17 @@ public class GLDendrogram
 				// renderDendrogramGenes(gl, tree.getRoot());
 			}
 			else {
-				gl.glTranslatef(0, 0.1f, 0);
+				gl.glTranslatef(fSampleWidth / 2, 0, 0);
 				renderDendrogramExperiments(gl, tree.getRoot(), 1);
 			}
 
-			if (bIsRenderedRemote == false) {
-				renderSelections(gl, tree.getRoot());
-				// renderCut(gl);
-			}
+			renderSelections(gl, tree.getRoot());
 
 			if (bRenderGeneTree)
 
 				gl.glTranslatef(-0.1f, 0, 0);
 			else
-				gl.glTranslatef(0, -0.1f, 0);
+				gl.glTranslatef(-fSampleWidth / 2, 0, 0);
 		}
 		gl.glEndList();
 
@@ -1081,10 +1078,6 @@ public class GLDendrogram
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
-
-		// FIXME: is this needfully
-		if (bIsRenderedRemote)
-			return;
 
 		boolean bupdateSelectionManager = false;
 		ESelectionType eSelectionType = ESelectionType.NORMAL;
