@@ -37,7 +37,6 @@ public class DrawAbleObjectFallback
 				* radius), 0.0f);
 		}
 		gl.glEnd();
-		gl.glFlush();
 
 		ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
 

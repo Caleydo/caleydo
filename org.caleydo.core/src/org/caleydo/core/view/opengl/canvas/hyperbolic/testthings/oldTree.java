@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree;
+package org.caleydo.core.view.opengl.canvas.hyperbolic.testthings;
 
 import java.util.ArrayList;
 import java.util.Collections;

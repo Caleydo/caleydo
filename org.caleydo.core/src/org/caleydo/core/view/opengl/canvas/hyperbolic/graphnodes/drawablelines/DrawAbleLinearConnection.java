@@ -31,7 +31,6 @@ public final class DrawAbleLinearConnection
 			gl.glVertex3f(lPoints.get(i+1).x(), lPoints.get(i+1).y(), lPoints.get(i+1).z());
 			gl.glEnd();
 		}
-		gl.glFlush();
 	}
 
 }

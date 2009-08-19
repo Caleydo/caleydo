@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree;
+package org.caleydo.core.view.opengl.canvas.hyperbolic.testthings;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

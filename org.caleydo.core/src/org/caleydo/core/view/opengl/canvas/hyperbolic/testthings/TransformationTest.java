@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
+package org.caleydo.core.view.opengl.canvas.hyperbolic.testthings;
 
 import gleem.linalg.Vec3f;
 

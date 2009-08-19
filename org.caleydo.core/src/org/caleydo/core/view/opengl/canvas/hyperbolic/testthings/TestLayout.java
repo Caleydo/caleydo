@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.hyperbolic.lineartree;
+package org.caleydo.core.view.opengl.canvas.hyperbolic.testthings;
 
 import java.util.ArrayList;
 
@@ -70,7 +70,6 @@ public class TestLayout
 		gl.glVertex3f(node.getXCoord(), node.getYCoord(), 0.0f);
 
 		gl.glEnd();
-		gl.glFlush();
 	}
 
 	private void drawLine(GL gl, DefaultNode node, DefaultNode parentNode) {
@@ -83,7 +82,6 @@ public class TestLayout
 		gl.glVertex3f(parentNode.getXCoord(), parentNode.getYCoord(), 0.0f);
 
 		gl.glEnd();
-		gl.glFlush();
 	}
 
 	private void recursiveTreeBuilder(GL gl, DefaultNode node, int iLayer, float fStep, int iDeph) {

@@ -72,8 +72,7 @@ public final class LinearTreeLayouter
 		// gl.glVertex3f(fXCoord + fDrawWidth, fYCoord - fDrawHeight, fZCoord);
 		// gl.glVertex3f(fXCoord - fDrawWidth, fYCoord - fDrawHeight, fZCoord);
 		// gl.glVertex3f(fXCoord - fDrawWidth, fYCoord + fDrawHeight, fZCoord);
-		gl.glEnd();
-		gl.glFlush();
+		//gl.glEnd();
 
 		// LinearLineFactory lLFactory = new LinearLineFactory(a,b);
 		// DrawAbleLinearLine line1 = new DrawAbleLinearLine();

@@ -34,7 +34,6 @@ public class DrawAbleObjectSquare
 		gl.glVertex3f(fXCoord - fSideL, fYCoord - fSideL, fZCoord);
 		gl.glVertex3f(fXCoord - fSideL, fYCoord + fSideL, fZCoord);
 		gl.glEnd();
-		gl.glFlush();
 
 		ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
 
