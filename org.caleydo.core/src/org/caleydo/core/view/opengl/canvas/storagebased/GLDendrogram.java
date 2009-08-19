@@ -416,14 +416,16 @@ public class GLDendrogram
 		iMaxDepthSubTree = 0;
 		yPosInitSubTree = fHeight;
 		xGlobalMaxSubTree = fWidth;
-		determinePosRecSubTree(currentRootNode);
 
-		// System.out.println("iMaxDepthOfSubTree: " + iMaxDepthOfSubTree);
+		determineMaxDepthSubTree(currentRootNode);
 
 		fLevelWidthSubTree = fWidth / (iMaxDepthSubTree + 1);
 		fSampleHeightSubTree = fHeight / iNrLeafs;
 
+		determinePosRecSubTree(currentRootNode);
+
 		gl.glTranslatef(0, -fSampleHeightSubTree / 2, 0);
+		gl.glLineWidth(1f);
 		renderSubTreeRec(gl, currentRootNode);
 		gl.glTranslatef(0, +fSampleHeightSubTree / 2, 0);
 	}
@@ -507,6 +509,30 @@ public class GLDendrogram
 	}
 
 	/**
+	 * Helper function which determines the maximum hierarchy depth of the sub denrogram.
+	 * 
+	 * @param currentNode
+	 */
+	private void determineMaxDepthSubTree(ClusterNode currentNode) {
+
+		int temp = 0;
+		if (currentNode.isPartOfSubTree() == true) {
+			temp = currentNode.getDepth();
+			iMaxDepthSubTree = Math.max(iMaxDepthSubTree, temp);
+		}
+
+		if (tree.hasChildren(currentNode)) {
+			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
+			int iNrChildsNode = alChilds.size();
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+				ClusterNode node = (ClusterNode) alChilds.get(i);
+				determineMaxDepthSubTree(node);
+			}
+		}
+	}
+
+	/**
 	 * Function calculates for each node (gene or entity) in the sub dendrogram recursive the corresponding
 	 * position inside the view frustum
 	 * 
@@ -516,12 +542,6 @@ public class GLDendrogram
 	private Vec3f determinePosRecSubTree(ClusterNode currentNode) {
 
 		Vec3f pos = new Vec3f();
-
-		int temp = 0;
-		if (currentNode.isPartOfSubTree() == true) {
-			temp = currentNode.getDepth();
-			iMaxDepthSubTree = Math.max(iMaxDepthSubTree, temp);
-		}
 
 		if (tree.hasChildren(currentNode)) {
 			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);

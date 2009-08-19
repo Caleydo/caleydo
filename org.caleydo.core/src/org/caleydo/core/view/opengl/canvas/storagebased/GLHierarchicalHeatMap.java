@@ -2530,20 +2530,18 @@ public class GLHierarchicalHeatMap
 			gl.glTranslatef(GAP_LEVEL1_2 / 2, 0, 0);
 
 			// render sub tree for level 2
+			float fHeightSubTree = viewFrustum.getHeight();
 
-			// float fHeightSubTree = 0;
-			// fHeightSubTree = viewFrustum.getHeight();
-			//
-			// int lastIndexOfSubTree = 0;
-			// try {
-			// lastIndexOfSubTree = contentVA.get(iLastSampleLevel1 + 1);
-			// }
-			// catch (IndexOutOfBoundsException e) {
-			// lastIndexOfSubTree = contentVA.get(iLastSampleLevel1);
-			// }
-			//
-			// glGeneDendrogramView.renderSubTreeFromIndexToIndex(gl, contentVA.get(iFirstSampleLevel1),
-			// lastIndexOfSubTree, iSamplesLevel2, GAP_LEVEL1_2 / 2, fHeightSubTree);
+			int lastIndexOfSubTree = 0;
+			try {
+				lastIndexOfSubTree = contentVA.get(iLastSampleLevel1 + 1);
+			}
+			catch (IndexOutOfBoundsException e) {
+				lastIndexOfSubTree = contentVA.get(iLastSampleLevel1);
+			}
+
+			glGeneDendrogramView.renderSubTreeFromIndexToIndex(gl, contentVA.get(iFirstSampleLevel1),
+				lastIndexOfSubTree, iSamplesLevel2, GAP_LEVEL1_2 / 2, fHeightSubTree);
 			gl.glTranslatef(GAP_LEVEL1_2 / 2, 0, 0);
 
 			gl.glColor4f(1f, 1f, 1f, 1f);
@@ -2575,7 +2573,7 @@ public class GLHierarchicalHeatMap
 
 			float fHeightSubTree = 0;
 			if (bExperimentDendrogramActive)
-				fHeightSubTree = viewFrustum.getHeight() - 1.4f;
+				fHeightSubTree = viewFrustum.getHeight() - 1.45f;
 			else
 				fHeightSubTree = viewFrustum.getHeight();
 
