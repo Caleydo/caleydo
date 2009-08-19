@@ -85,6 +85,13 @@ public class GLDendrogram
 	private boolean bIsDraggingActive = false;
 	private float fPosCut = 0.0f;
 
+	// sub tree stuff
+	private float yPosInitSubTree = 0;
+	private float xGlobalMaxSubTree = 0;
+	private float fSampleHeightSubTree = 0;
+	private float fLevelWidthSubTree = 0;
+	private int iMaxDepthSubTree = 0;
+
 	// variables needed for gene tree dendrogram
 	private float yPosInit = 0;
 	private float xGlobalMax = 0;
@@ -368,16 +375,6 @@ public class GLDendrogram
 		tempTexture.disable();
 	}
 
-	public void setFromTo(int from, int to) {
-
-		if (tree == null)
-			return;
-
-		resetAllTreeSelections();
-		renderNodesFromToRec(currentRootNode, from, to, false);
-		setDisplayListDirty();
-	}
-
 	/**
 	 * This function calls a recursive function which is responsible for the calculation of the position
 	 * inside the view frustum of the nodes in the dendrogram
@@ -393,7 +390,57 @@ public class GLDendrogram
 
 	}
 
-	private boolean renderNodesFromToRec(ClusterNode currentNode, int from, int to, boolean inBlock) {
+	/**
+	 * Functions renders a sub part of the dendrogram determined by two indexes (first and last element).
+	 * 
+	 * @param gl
+	 * @param fromIndex
+	 *            index of the first element in sub dendrogram
+	 * @param toIndex
+	 *            index (+1) of the last element in sub dendrogram
+	 * @param iNrLeafs
+	 *            number of leaf nodes in sub dendrogram
+	 * @param fWidth
+	 *            width of area for sub dendrogram
+	 * @param fHeight
+	 *            height of area for sub dendrogram
+	 */
+	public void renderSubTreeFromIndexToIndex(GL gl, int fromIndex, int toIndex, int iNrLeafs, float fWidth,
+		float fHeight) {
+
+		if (tree == null)
+			return;
+
+		determineNodesToRender(currentRootNode, fromIndex, toIndex, false);
+		removeWronglySelectedNodes(currentRootNode);
+		iMaxDepthSubTree = 0;
+		yPosInitSubTree = fHeight;
+		xGlobalMaxSubTree = fWidth;
+		determinePosRecSubTree(currentRootNode);
+
+		// System.out.println("iMaxDepthOfSubTree: " + iMaxDepthOfSubTree);
+
+		fLevelWidthSubTree = fWidth / (iMaxDepthSubTree + 1);
+		fSampleHeightSubTree = fHeight / iNrLeafs;
+
+		gl.glTranslatef(0, -fSampleHeightSubTree / 2, 0);
+		renderSubTreeRec(gl, currentRootNode);
+		gl.glTranslatef(0, +fSampleHeightSubTree / 2, 0);
+	}
+
+	/**
+	 * Recursive function responsible for determine sub dendrogram.
+	 * 
+	 * @param currentNode
+	 * @param from
+	 *            index of the first element in sub dendrogram
+	 * @param to
+	 *            index (+1) of the last element in sub dendrogram
+	 * @param inBlock
+	 *            boolean which identifies nodes in sub dendrogram
+	 * @return true if node is part of sub dendrogram, false otherwise
+	 */
+	private boolean determineNodesToRender(ClusterNode currentNode, int from, int to, boolean inBlock) {
 
 		boolean boolVar = inBlock;
 
@@ -406,28 +453,199 @@ public class GLDendrogram
 			for (int i = 0; i < iNrChildsNode; i++) {
 
 				ClusterNode node = (ClusterNode) alChilds.get(i);
-				if (renderNodesFromToRec(node, from, to, boolVar)) {
-					node.setSelectionType(ESelectionType.SELECTION);
+				if (determineNodesToRender(node, from, to, boolVar)) {
+					node.setIsPartOfSubTree(true);
 					boolVar = true;
 				}
 				else {
-					node.setSelectionType(ESelectionType.NORMAL);
+					node.setIsPartOfSubTree(false);
 					boolVar = false;
 				}
 			}
 		}
 		else {
-			if (currentNode.getClusterNr() == from) {
-				currentNode.setSelectionType(ESelectionType.SELECTION);
+			if (currentNode.getClusterNr() == from)
 				return true;
-			}
-			if (currentNode.getClusterNr() == to) {
-				currentNode.setSelectionType(ESelectionType.NORMAL);
+
+			if (currentNode.getClusterNr() == to)
 				return false;
+		}
+		return boolVar;
+	}
+
+	/**
+	 * Helper function which removes wrongly added nodes from sub dendrogram. Only useful in combination with
+	 * determineNodesToRender()
+	 * 
+	 * @param currentNode
+	 */
+	private void removeWronglySelectedNodes(ClusterNode currentNode) {
+
+		if (tree.hasChildren(currentNode)) {
+			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
+
+			int iNrChildsNode = alChilds.size();
+
+			boolean bAllChildsPartOfSubTree = true;
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+				ClusterNode node = (ClusterNode) alChilds.get(i);
+				removeWronglySelectedNodes(node);
+
+			}
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+				ClusterNode node = (ClusterNode) alChilds.get(i);
+
+				if (node.isPartOfSubTree() == false) {
+					bAllChildsPartOfSubTree = false;
+				}
+			}
+			if (bAllChildsPartOfSubTree == false)
+				currentNode.setIsPartOfSubTree(false);
+		}
+	}
+
+	/**
+	 * Function calculates for each node (gene or entity) in the sub dendrogram recursive the corresponding
+	 * position inside the view frustum
+	 * 
+	 * @param currentNode
+	 * @return position of node in sub dendrogram
+	 */
+	private Vec3f determinePosRecSubTree(ClusterNode currentNode) {
+
+		Vec3f pos = new Vec3f();
+
+		int temp = 0;
+		if (currentNode.isPartOfSubTree() == true) {
+			temp = currentNode.getDepth();
+			iMaxDepthSubTree = Math.max(iMaxDepthSubTree, temp);
+		}
+
+		if (tree.hasChildren(currentNode)) {
+			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
+			int iNrChildsNode = alChilds.size();
+
+			Vec3f[] positions = new Vec3f[iNrChildsNode];
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+				ClusterNode node = (ClusterNode) alChilds.get(i);
+				positions[i] = determinePosRecSubTree(node);
+			}
+
+			float fXmin = Float.MAX_VALUE;
+			float fYmax = Float.MIN_VALUE;
+			float fYmin = Float.MAX_VALUE;
+
+			for (Vec3f vec : positions) {
+				fXmin = Math.min(fXmin, vec.x());
+				fYmax = Math.max(fYmax, vec.y());
+				fYmin = Math.min(fYmin, vec.y());
+			}
+
+			pos.setX(fXmin - fLevelWidthSubTree);
+			pos.setY(fYmin + (fYmax - fYmin) / 2);
+			pos.setZ(0f);
+
+		}
+		else {
+			if (currentNode.isPartOfSubTree()) {
+				pos.setY(yPosInitSubTree);
+				yPosInitSubTree -= fSampleHeightSubTree;
+				pos.setX(xGlobalMaxSubTree - fLevelWidthSubTree);
+				pos.setZ(0f);
 			}
 		}
 
-		return boolVar;
+		currentNode.setPosSubTree(pos);
+
+		return pos;
+	}
+
+	/**
+	 * Renders the sub dendrogram recursive
+	 * 
+	 * @param gl
+	 * @param currentNode
+	 */
+	private void renderSubTreeRec(GL gl, ClusterNode currentNode) {
+
+		float fLookupValue = currentNode.getAverageExpressionValue();
+		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], 1);
+
+		if (currentNode.isPartOfSubTree())
+			currentNode.getPosSubTree().x();
+
+		List<ClusterNode> listGraph = null;
+
+		if (tree.hasChildren(currentNode)) {
+
+			listGraph = tree.getChildren(currentNode);
+
+			int iNrChildsNode = listGraph.size();
+
+			float xmin = Float.MAX_VALUE;
+			float ymax = Float.MIN_VALUE;
+			float ymin = Float.MAX_VALUE;
+
+			Vec3f[] tempPositions = new Vec3f[iNrChildsNode];
+
+			for (int i = 0; i < iNrChildsNode; i++) {
+
+				ClusterNode current = (ClusterNode) listGraph.get(i);
+
+				tempPositions[i] = new Vec3f();
+				tempPositions[i].setX(current.getPosSubTree().x());
+				tempPositions[i].setY(current.getPosSubTree().y());
+				tempPositions[i].setZ(current.getPosSubTree().z());
+
+				xmin = Math.min(xmin, current.getPosSubTree().x());
+				ymax = Math.max(ymax, current.getPosSubTree().y());
+				ymin = Math.min(ymin, current.getPosSubTree().y());
+
+				renderSubTreeRec(gl, current);
+			}
+
+			if (currentNode.isPartOfSubTree()) {
+
+				// vertical line connecting all child nodes
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(xmin, ymin, currentNode.getPosSubTree().z());
+				gl.glVertex3f(xmin, ymax, currentNode.getPosSubTree().z());
+				gl.glEnd();
+
+				// horizontal lines connecting all children with their parent
+				for (int i = 0; i < iNrChildsNode; i++) {
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
+					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
+					gl.glEnd();
+				}
+			}
+
+		}
+		else {
+			// horizontal line visualizing leaf nodes
+			if (currentNode.isPartOfSubTree()) {
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode.getPosSubTree().y(), currentNode
+					.getPosSubTree().z());
+				gl.glVertex3f(xGlobalMaxSubTree, currentNode.getPosSubTree().y(), currentNode.getPosSubTree()
+					.z());
+				gl.glEnd();
+			}
+		}
+
+		if (currentNode.isPartOfSubTree()) {
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(currentNode.getPosSubTree().x() + fLevelWidthSubTree, currentNode.getPosSubTree()
+				.y(), currentNode.getPosSubTree().z());
+			gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode.getPosSubTree().y(), currentNode
+				.getPosSubTree().z());
+			gl.glEnd();
+		}
 	}
 
 	/**
@@ -580,6 +798,20 @@ public class GLDendrogram
 			gl.glEnd();
 
 		}
+		// if (currentNode.isPartOfSubTree()) {
+		// gl.glColor4fv(SELECTED_COLOR, 0);
+		//
+		// gl.glBegin(GL.GL_QUADS);
+		// gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, currentNode
+		// .getPos().z());
+		// gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, currentNode
+		// .getPos().z());
+		// gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, currentNode
+		// .getPos().z());
+		// gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, currentNode
+		// .getPos().z());
+		// gl.glEnd();
+		// }
 
 		List<ClusterNode> listGraph = null;
 
@@ -847,7 +1079,7 @@ public class GLDendrogram
 		}
 
 		if (tree != null) {
-			if (bIsDisplayListDirtyRemote || bHasFrustumChanged || bRedrawDendrogram) {
+			if (bHasFrustumChanged || bRedrawDendrogram) {
 				if (bRenderGeneTree) {
 					xGlobalMax = viewFrustum.getWidth();
 					fSampleHeight = viewFrustum.getHeight() / tree.getRoot().getNrElements();
@@ -861,7 +1093,7 @@ public class GLDendrogram
 					xPosInit = 0.0f;
 				}
 				determinePositions();
-				bIsDisplayListDirtyRemote = false;
+				// bIsDisplayListDirtyRemote = false;
 				bRedrawDendrogram = false;
 				bHasFrustumChanged = false;
 			}
@@ -1368,26 +1600,26 @@ public class GLDendrogram
 
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
-		
+
 		SelectionDelta selectionDelta = event.getSelectionDelta();
 
-		if(selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
+		if (selectionDelta.getIDType() == EIDType.CLUSTER_NUMBER) {
 			// cluster mouse over events only used for gene trees
 			if (tree != null && bRenderGeneTree) {
 				resetAllTreeSelections();
-				
+
 				Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-				
-				for(SelectionDeltaItem item : deltaItems) {
+
+				for (SelectionDeltaItem item : deltaItems) {
 					int clusterNr = item.getPrimaryID();
 					if (tree.getNodeByNumber(clusterNr) != null) {
 						tree.getNodeByNumber(clusterNr).setSelectionType(item.getSelectionType());
-		
-//						if (bIsRenderedRemote)
-//							currentRootNode = tree.getNodeByNumber(clusterNr);
+
+						// if (bIsRenderedRemote)
+						// currentRootNode = tree.getNodeByNumber(clusterNr);
 					}
 				}
-	
+
 				setDisplayListDirty();
 			}
 		}

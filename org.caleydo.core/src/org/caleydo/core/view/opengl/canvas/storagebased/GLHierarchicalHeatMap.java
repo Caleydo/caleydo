@@ -1763,25 +1763,25 @@ public class GLHierarchicalHeatMap
 		if (bIsHeatmapInFocus) {
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(fFieldWith + 0.3f, fYCoord - 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.2f, fYCoord - 0.3f, 0.1f);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(fFieldWith + 0.3f, fYCoord + 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.2f, fYCoord + 0.3f, 0.1f);
 			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fFieldWith + 0.4f, fYCoord + 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.3f, fYCoord + 0.3f, 0.1f);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(fFieldWith + 0.4f, fYCoord - 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.3f, fYCoord - 0.3f, 0.1f);
 			gl.glEnd();
 		}
 		else {
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(fFieldWith + 0.3f, fYCoord - 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.2f, fYCoord - 0.3f, 0.1f);
 			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fFieldWith + 0.3f, fYCoord + 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.2f, fYCoord + 0.3f, 0.1f);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(fFieldWith + 0.4f, fYCoord + 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.3f, fYCoord + 0.3f, 0.1f);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(fFieldWith + 0.4f, fYCoord - 0.3f, 0.1f);
+			gl.glVertex3f(fFieldWith + 0.3f, fYCoord - 0.3f, 0.1f);
 			gl.glEnd();
 		}
 		gl.glPopName();
@@ -2527,7 +2527,25 @@ public class GLHierarchicalHeatMap
 			renderSelectedElementsOverviewBar(gl);
 			renderCursorLevel1(gl);
 
-			gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
+			gl.glTranslatef(GAP_LEVEL1_2 / 2, 0, 0);
+
+			// render sub tree for level 2
+
+			// float fHeightSubTree = 0;
+			// fHeightSubTree = viewFrustum.getHeight();
+			//
+			// int lastIndexOfSubTree = 0;
+			// try {
+			// lastIndexOfSubTree = contentVA.get(iLastSampleLevel1 + 1);
+			// }
+			// catch (IndexOutOfBoundsException e) {
+			// lastIndexOfSubTree = contentVA.get(iLastSampleLevel1);
+			// }
+			//
+			// glGeneDendrogramView.renderSubTreeFromIndexToIndex(gl, contentVA.get(iFirstSampleLevel1),
+			// lastIndexOfSubTree, iSamplesLevel2, GAP_LEVEL1_2 / 2, fHeightSubTree);
+			gl.glTranslatef(GAP_LEVEL1_2 / 2, 0, 0);
+
 			gl.glColor4f(1f, 1f, 1f, 1f);
 		}
 		else {
@@ -2543,7 +2561,6 @@ public class GLHierarchicalHeatMap
 
 		// all stuff for rendering level 2 (textures)
 		if (bSkipLevel2 == false) {
-			// gl.glColor4f(1f, 1f, 1f, 1f);
 			handleTexturePickingLevel2(gl);
 			renderTextureHeatMap(gl);
 			renderMarkerTexture(gl);
@@ -2552,6 +2569,29 @@ public class GLHierarchicalHeatMap
 				renderClassAssignmentsGenesLevel2(gl);
 			if (storageVA.getGroupList() != null)
 				renderClassAssignmentsExperimentsLevel2(gl);
+
+			// render sub tree for level 3
+			gl.glTranslatef(viewFrustum.getWidth() / 4.0f * fAnimationScale + GAP_LEVEL2_3 / 2, 0, 0);
+
+			float fHeightSubTree = 0;
+			if (bExperimentDendrogramActive)
+				fHeightSubTree = viewFrustum.getHeight() - 1.4f;
+			else
+				fHeightSubTree = viewFrustum.getHeight();
+
+			int lastIndexOfSubTree = 0;
+			try {
+				lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1 + iLastSampleLevel2 + 1);
+			}
+			catch (IndexOutOfBoundsException e) {
+				lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1 + iLastSampleLevel2);
+			}
+
+			glGeneDendrogramView.renderSubTreeFromIndexToIndex(gl, contentVA.get(iFirstSampleLevel1
+				+ iFirstSampleLevel2), lastIndexOfSubTree, iSamplesPerHeatmap, GAP_LEVEL2_3 / 2,
+				fHeightSubTree);
+			gl.glTranslatef(-(viewFrustum.getWidth() / 4.0f * fAnimationScale + GAP_LEVEL2_3 / 2), 0, 0);
+
 		}
 
 		setEmbeddedHeatMapData();
@@ -2610,9 +2650,6 @@ public class GLHierarchicalHeatMap
 		Set<Integer> setMouseOverElements = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 		Set<Integer> setSelectedElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
 		Set<Integer> setDeselectedElements = contentSelectionManager.getElements(ESelectionType.DESELECTED);
-
-		// glDendrogramView.setFromTo(currentVirtualArray.get(iFirstSampleLevel2), currentVirtualArray
-		// .get(iLastSampleLevel2));// + 1));
 
 		for (int index = 0; index < iSamplesPerHeatmap; index++) {
 			iIndex = iCount + index;

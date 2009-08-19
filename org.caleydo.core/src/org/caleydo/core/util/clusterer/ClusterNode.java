@@ -42,6 +42,9 @@ public class ClusterNode
 	@XmlElement
 	private float fStandardDeviation;
 
+	private boolean bIsPartOfSubTree = false;
+	private Vec3f vPosSubTree;
+
 	// @XmlElement
 	// private float[] fArRepresentativeElement;
 
@@ -137,6 +140,22 @@ public class ClusterNode
 
 	public float getStandardDeviation() {
 		return fStandardDeviation;
+	}
+
+	public void setIsPartOfSubTree(boolean bIsPartOfSubTree) {
+		this.bIsPartOfSubTree = bIsPartOfSubTree;
+	}
+
+	public boolean isPartOfSubTree() {
+		return bIsPartOfSubTree;
+	}
+
+	public void setPosSubTree(Vec3f vPosSubTree) {
+		this.vPosSubTree = vPosSubTree;
+	}
+
+	public Vec3f getPosSubTree() {
+		return vPosSubTree;
 	}
 
 	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
