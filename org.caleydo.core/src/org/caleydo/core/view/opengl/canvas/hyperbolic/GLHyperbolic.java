@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.media.opengl.GL;
@@ -24,6 +25,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleSplineConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
@@ -44,7 +46,7 @@ public class GLHyperbolic
 	implements IViewCommandHandler {
 
 	// private Tree<DefaultNode> tree;
-	public Vec3f[] vec;
+	public List<Vec3f> vec;
 
 	boolean bIsInListMode = false;
 
@@ -292,16 +294,13 @@ public class GLHyperbolic
 		//		
 		// gl.glEnd();
 		// gl.glFlush();
+				
+		vec.add(new Vec3f(3.0f, 3.0f, 0));
+		vec.add(new Vec3f(2.0f, 2.0f, 0));
+		vec.add(new Vec3f(1.0f, 1.0f, 0));
 
-		// vec[0] = new Vec3f();
-		// vec[1] = new Vec3f();
-		// vec[2] = new Vec3f();
-		//		
-		// vec[0].set(3.0f, 3.0f, 0);
-		// vec[1].set(2.0f, 2.0f, 0);
-		// vec[2].set(1.0f, 1.0f, 0);
-
-		// Spline3D spline = new Spline3D(vec, 1.0F, 1.0F);
+		DrawAbleSplineConnection spline = new DrawAbleSplineConnection();
+		spline.drawConnectionFromStartToEnd(gl, vec, 0.4f);
 
 	}
 

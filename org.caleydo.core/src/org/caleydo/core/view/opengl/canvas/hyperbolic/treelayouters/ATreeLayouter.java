@@ -63,4 +63,6 @@ public abstract class ATreeLayouter
 		fViewSpaceY[1] = fHeight - fHeight * HyperbolicRenderStyle.Y_BORDER_SPACING;
 		fViewSpaceYAbs = Math.abs(fViewSpaceY[0] - fViewSpaceY[1]);
 	}
+	
+
 }

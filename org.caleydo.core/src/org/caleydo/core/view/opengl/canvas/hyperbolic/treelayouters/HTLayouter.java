@@ -4,6 +4,11 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
 //import java.util.ArrayList;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
@@ -12,6 +17,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleSplineConnection;
+import org.caleydo.core.view.opengl.util.spline.Spline3D;
 
 public final class HTLayouter
 	extends ATreeLayouter
@@ -22,6 +29,8 @@ public final class HTLayouter
 	float fCenterX;
 	float fCenterY;
 	float childAngle;
+	
+	ArrayList<Vec3f> vec = new ArrayList();
 
 	public HTLayouter(IViewFrustum frustum) {
 		super(frustum);
@@ -49,6 +58,8 @@ public final class HTLayouter
 		float fDepth = 10.0f;		//tree.getDepth();
 		float fNumberOfNodesInLayer = 5.0f;	//tree.getNumberOfElementsInLayer(layer)
 		float fNodeSize = 0.2f;
+		
+		//TEST RADIAL LAYOUT
 //		for (float fCurrentRadius = 1; fCurrentRadius < fDepth; fCurrentRadius++) {
 //			
 //			//for testing the tree will add the radius number to the nodes number 
@@ -59,28 +70,48 @@ public final class HTLayouter
 //			fNodeSize = fNodeSize * HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER;//TODO: generate own scaling
 //		}
 		
-		//for (float fCurrentRadius = 1; fCurrentRadius < fDepth; fCurrentRadius++) {
+
+		//TEST FIRST AND SECOND LAYER
+//			for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
+//				
+//				float childRadius = 1.0f;
+//				float alpha = calculateCircle((0.5f), fCurrentNode, fNumberOfNodesInLayer);
+//				float space = calculateChildSpace(childRadius, fNumberOfNodesInLayer);
+//				rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
+//				childAngle = 0.0f;
+//				for(float numChilds = 1; numChilds < 5; numChilds++){
+//					
+//					
+//					childAngle = calculateChildAngle(alpha*fCurrentNode, space/5, childRadius)*numChilds +(alpha/2);
+//					calcualteChildPosition(childRadius, childAngle, numChilds);
+//					rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
+//				}
+//
+//			}
+//			fNodeSize = fNodeSize * HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER;//TODO: generate own scaling
+//			gl.glFlush();
 			
-			//for testing the tree will add the radius number to the nodes number 
-			for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
-				
-				float childRadius = 1.0f;
-				float alpha = calculateCircle((0.5f), fCurrentNode, fNumberOfNodesInLayer);
-				float space = calculateChildSpace(childRadius, fNumberOfNodesInLayer);
-				rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
-				childAngle = 0.0f;
-				for(float numChilds = 1; numChilds < 5; numChilds++){
-					
-					
-					childAngle = calculateChildAngle(alpha*fCurrentNode, space/5, childRadius)*numChilds +(alpha/2);
-					calcualteChildPosition(childRadius, childAngle, numChilds);
-					rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f, EDrawAbleNodeDetailLevel.Low);
-				}
-				
-//				TransformationTest test = new TransformationTest(getFCenterX(),getFCenterY(),getFXCoord(),getFYCoord());
-//				test.generateNewView();
-			}
-			fNodeSize = fNodeSize * HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER;//TODO: generate own scaling
+			
+			//TEST SPLINE
+			
+		//gl.glVertex3f(3.0f, 3.0f, 0);
+
+
+		Vec3f p1 = new Vec3f(3.0f, 3.0f, 0);
+		Vec3f p2 = new Vec3f(1.1f, 2.8f, 0);
+		Vec3f p3 = new Vec3f(1.0f, 1.0f, 0);
+		
+		
+			vec.add(p1);
+			vec.add(p2);
+			vec.add(p3);
+
+			//spline = new Spline3D((Vec3f[])vec, 0.5f, 0.5f);
+			DrawAbleSplineConnection spline = new DrawAbleSplineConnection();
+			spline.drawConnectionFromStartToEnd(gl, vec, 0.4f);
+			
+			
+			
 		//}
 		// for (int k = 1 ; k <= 10; k++)
 		// {
@@ -121,8 +152,7 @@ public final class HTLayouter
 		// radius = radius + 0.1f;
 		// }
 
-		gl.glEnd();
-		gl.glFlush();
+		//gl.glEnd();
 
 		return;
 	}
