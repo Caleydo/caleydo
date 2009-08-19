@@ -24,6 +24,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.radial.ChangeColorModeEvent;
+import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
 import org.caleydo.core.manager.event.view.radial.GoBackInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
@@ -34,6 +35,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -49,11 +51,14 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.ChangeColorModeListener;
+import org.caleydo.core.view.opengl.canvas.radial.listener.DetailOutsideListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.GoBackInHistoryListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.GoForthInHistoryListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.SetMaxDisplayedHierarchyDepthListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -103,6 +108,7 @@ public class GLRadialHierarchy
 	private GoForthInHistoryListener goForthInHistoryListener;
 	private ChangeColorModeListener changeColorModeListener;
 	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
+	private DetailOutsideListener detailOutsideListener;
 	private UpdateViewListener updateViewListener;
 	private SelectionUpdateListener selectionUpdateListener;
 	private ClearSelectionsListener clearSelectionsListener;
@@ -370,6 +376,9 @@ public class GLRadialHierarchy
 			}
 			else
 				gl.glCallList(iGLDisplayListToCall);
+			
+			if (!isRenderedRemote())
+				contextMenu.render(gl, this);
 		}
 		else {
 			renderSymbol(gl);
@@ -493,7 +502,28 @@ public class GLRadialHierarchy
 						break;
 
 					case RIGHT_CLICKED:
-						if (pdPickedElement != null)
+						if (pdPickedElement != null) {
+	                        // Prevent handling of non genetic data in context menu
+	                        if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+	                            break;
+	                        if(!pdPickedElement.hasChildren()) {
+		                        GeneContextMenuItemContainer geneContextMenuItemContainer =
+		                            new GeneContextMenuItemContainer();
+		                        geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
+		                        contextMenu.addItemContanier(geneContextMenuItemContainer);
+	                        }
+	                        else {
+	                        	DetailOutsideItem detailOutsideItem = new DetailOutsideItem(iExternalID);
+	                        	contextMenu.addContextMenueItem(detailOutsideItem);
+	                        }
+
+	                        if (!isRenderedRemote()) {
+	                            contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+	                                getParentGLCanvas().getHeight());
+	                            contextMenu.setMasterGLView(this);
+	                        }
+	                        break; 
+						}
 							drawingController.handleAlternativeSelection(pdPickedElement);
 						break;
 
@@ -913,6 +943,10 @@ public class GLRadialHierarchy
 		setMaxDisplayedHierarchyDepthListener.setHandler(this);
 		eventPublisher.addListener(SetMaxDisplayedHierarchyDepthEvent.class,
 			setMaxDisplayedHierarchyDepthListener);
+		
+		detailOutsideListener = new DetailOutsideListener();
+		detailOutsideListener.setHandler(this);
+		eventPublisher.addListener(DetailOutsideEvent.class, detailOutsideListener);
 
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
@@ -952,6 +986,10 @@ public class GLRadialHierarchy
 		if (setMaxDisplayedHierarchyDepthListener != null) {
 			eventPublisher.removeListener(setMaxDisplayedHierarchyDepthListener);
 			setMaxDisplayedHierarchyDepthListener = null;
+		}
+		if (detailOutsideListener != null) {
+			eventPublisher.removeListener(detailOutsideListener);
+			detailOutsideListener = null;
 		}
 		if (updateViewListener != null) {
 			eventPublisher.removeListener(updateViewListener);
@@ -1014,7 +1052,7 @@ public class GLRadialHierarchy
 			}
 		}
 
-		Set<Integer> setMouseOver = selectionManager.getElements(ESelectionType.SELECTION);
+		Set<Integer> setMouseOver = selectionManager.getElements(ESelectionType.MOUSE_OVER);
 		if ((setMouseOver != null)) {
 			for (Integer elementID : setMouseOver) {
 				pdCurrentMouseOverElement = hashPartialDiscs.get(elementID);
@@ -1024,6 +1062,13 @@ public class GLRadialHierarchy
 					return;
 				}
 			}
+		}
+	}
+	
+	public void handleAlternativeSelection(int elementID) {
+		PartialDisc pdSelected = hashPartialDiscs.get(elementID);
+		if(pdSelected != null) {
+			drawingController.handleAlternativeSelection(pdSelected);
 		}
 	}
 
