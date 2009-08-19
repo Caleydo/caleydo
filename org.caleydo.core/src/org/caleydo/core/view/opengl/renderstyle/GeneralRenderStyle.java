@@ -2,7 +2,11 @@ package org.caleydo.core.view.opengl.renderstyle;
 
 import java.text.DecimalFormat;
 
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.SetMinViewSizeEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
@@ -66,10 +70,15 @@ public class GeneralRenderStyle {
 
 	private static DecimalFormat decimalFormat;
 
+	protected int minViewWidth;
+	protected int minViewHeight;
+
 	/**
 	 * Default constructor.
 	 */
 	private GeneralRenderStyle() {
+		minViewWidth = 0;
+		minViewHeight = 0;
 	}
 
 	/**
@@ -79,6 +88,8 @@ public class GeneralRenderStyle {
 		this();
 		decimalFormat = new DecimalFormat("#####.#");
 		this.viewFrustum = viewFrustum;
+		minViewWidth = 0;
+		minViewHeight = 0;
 		// fFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		// fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 		// scaling is set to the smaller of the two
@@ -132,6 +143,41 @@ public class GeneralRenderStyle {
 
 	public float[] getBackgroundColor() {
 		return BACKGROUND_COLOR;
+	}
+
+	public int getMinViewWidth() {
+		return minViewWidth;
+	}
+
+	public void setMinViewWidth(int minViewWidth, AGLEventListener view) {
+		this.minViewWidth = minViewWidth;
+
+		sendSetMinSizeEvent(view);
+	}
+
+	public int getMinViewHeight() {
+		return minViewHeight;
+	}
+
+	public void setMinViewHeight(int minViewHeight, AGLEventListener view) {
+		this.minViewHeight = minViewHeight;
+
+		sendSetMinSizeEvent(view);
+	}
+
+	public void setMinViewDimensions(int minViewWidth, int minViewHeight, AGLEventListener view) {
+		this.minViewHeight = minViewHeight;
+		this.minViewWidth = minViewWidth;
+
+		sendSetMinSizeEvent(view);
+	}
+	
+	private void sendSetMinSizeEvent(AGLEventListener view) {
+		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+		SetMinViewSizeEvent event = new SetMinViewSizeEvent();
+		event.setMinViewSize(minViewWidth, minViewHeight);
+		event.setView(view);
+		eventPublisher.triggerEvent(event);
 	}
 
 }

@@ -76,6 +76,7 @@ public class GLRadialHierarchy
 	implements IClusterNodeEventReceiver, IViewCommandHandler, ISelectionUpdateHandler {
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
+	private static final int MIN_PIXELS_PER_DISPLAYED_LEVEL = 20;
 
 	private int iMaxDisplayedHierarchyDepth;
 	private int iUpwardNavigationSliderID;
@@ -132,6 +133,8 @@ public class GLRadialHierarchy
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
 		renderStyle = new RadialHierarchyRenderStyle(viewFrustum);
+		renderStyle.setMinViewDimensions((MIN_PIXELS_PER_DISPLAYED_LEVEL * DISP_HIER_DEPTH_DEFAULT) + 30,
+			MIN_PIXELS_PER_DISPLAYED_LEVEL * DISP_HIER_DEPTH_DEFAULT, this);
 
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		partialDiscTree = new Tree<PartialDisc>();
@@ -376,7 +379,7 @@ public class GLRadialHierarchy
 			}
 			else
 				gl.glCallList(iGLDisplayListToCall);
-			
+
 			if (!isRenderedRemote())
 				contextMenu.render(gl, this);
 		}
@@ -503,28 +506,28 @@ public class GLRadialHierarchy
 
 					case RIGHT_CLICKED:
 						if (pdPickedElement != null) {
-	                        // Prevent handling of non genetic data in context menu
-	                        if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
-	                            break;
-	                        if(!pdPickedElement.hasChildren()) {
-		                        GeneContextMenuItemContainer geneContextMenuItemContainer =
-		                            new GeneContextMenuItemContainer();
-		                        geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
-		                        contextMenu.addItemContanier(geneContextMenuItemContainer);
-	                        }
-	                        else {
-	                        	DetailOutsideItem detailOutsideItem = new DetailOutsideItem(iExternalID);
-	                        	contextMenu.addContextMenueItem(detailOutsideItem);
-	                        }
+							// Prevent handling of non genetic data in context menu
+							if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+								break;
+							if (!pdPickedElement.hasChildren()) {
+								GeneContextMenuItemContainer geneContextMenuItemContainer =
+									new GeneContextMenuItemContainer();
+								geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
+								contextMenu.addItemContanier(geneContextMenuItemContainer);
+							}
+							else {
+								DetailOutsideItem detailOutsideItem = new DetailOutsideItem(iExternalID);
+								contextMenu.addContextMenueItem(detailOutsideItem);
+							}
 
-	                        if (!isRenderedRemote()) {
-	                            contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-	                                getParentGLCanvas().getHeight());
-	                            contextMenu.setMasterGLView(this);
-	                        }
-	                        break; 
+							if (!isRenderedRemote()) {
+								contextMenu.setLocation(pick.getPickedPoint(),
+									getParentGLCanvas().getWidth(), getParentGLCanvas().getHeight());
+								contextMenu.setMasterGLView(this);
+							}
+							break;
 						}
-							drawingController.handleAlternativeSelection(pdPickedElement);
+						drawingController.handleAlternativeSelection(pdPickedElement);
 						break;
 
 					default:
@@ -695,6 +698,10 @@ public class GLRadialHierarchy
 	 */
 	public void setMaxDisplayedHierarchyDepth(int iMaxDisplayedHierarchyDepth) {
 		if (this.iMaxDisplayedHierarchyDepth != iMaxDisplayedHierarchyDepth) {
+
+			renderStyle.setMinViewDimensions(
+				(MIN_PIXELS_PER_DISPLAYED_LEVEL * iMaxDisplayedHierarchyDepth) + 20,
+				MIN_PIXELS_PER_DISPLAYED_LEVEL * iMaxDisplayedHierarchyDepth, this);
 
 			bIsNewSelection = false;
 			this.iMaxDisplayedHierarchyDepth = iMaxDisplayedHierarchyDepth;
@@ -943,7 +950,7 @@ public class GLRadialHierarchy
 		setMaxDisplayedHierarchyDepthListener.setHandler(this);
 		eventPublisher.addListener(SetMaxDisplayedHierarchyDepthEvent.class,
 			setMaxDisplayedHierarchyDepthListener);
-		
+
 		detailOutsideListener = new DetailOutsideListener();
 		detailOutsideListener.setHandler(this);
 		eventPublisher.addListener(DetailOutsideEvent.class, detailOutsideListener);
@@ -1064,10 +1071,10 @@ public class GLRadialHierarchy
 			}
 		}
 	}
-	
+
 	public void handleAlternativeSelection(int elementID) {
 		PartialDisc pdSelected = hashPartialDiscs.get(elementID);
-		if(pdSelected != null) {
+		if (pdSelected != null) {
 			drawingController.handleAlternativeSelection(pdSelected);
 		}
 	}

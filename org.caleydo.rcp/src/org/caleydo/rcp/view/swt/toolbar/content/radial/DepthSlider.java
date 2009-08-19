@@ -65,7 +65,6 @@ public class DepthSlider
 
 		updateSliderPositionListener = new UpdateDepthSliderPositionListener();
 		updateSliderPositionListener.setHandler(this);
-		// TODO: Unregister listeners, but where?
 		GeneralManager.get().getEventPublisher().addListener(UpdateDepthSliderPositionEvent.class,
 			updateSliderPositionListener);
 

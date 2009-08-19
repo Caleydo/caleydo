@@ -243,10 +243,12 @@ public abstract class AGLEventListener
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+
 		if (remoteRenderingGLView != null || this instanceof GLRemoteRendering || this instanceof GLGlyph) {
 			viewFrustum.considerAspectRatio(true);
 		}
 		else {
+		
 			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
 			viewFrustum.setLeft(0);
@@ -259,9 +261,9 @@ public abstract class AGLEventListener
 			bIsDisplayListDirtyRemote = true;
 			bHasFrustumChanged = true;
 		}
-
+		
 		GL gl = drawable.getGL();
-
+		
 		fAspectRatio = (float) height / (float) width;
 
 		gl.glViewport(x, y, width, height);

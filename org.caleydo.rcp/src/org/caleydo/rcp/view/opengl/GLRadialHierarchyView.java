@@ -3,6 +3,7 @@ package org.caleydo.rcp.view.opengl;
 import java.util.ArrayList;
 
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
@@ -24,7 +25,8 @@ public class GLRadialHierarchyView
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		createGLEventListener(initSerializedView, glCanvas.getID());
+		AGLEventListener view = createGLEventListener(initSerializedView, glCanvas.getID());
+		minSizeComposite.setView(view);
 	}
 
 	public static void createToolBarItems(int iViewID) {

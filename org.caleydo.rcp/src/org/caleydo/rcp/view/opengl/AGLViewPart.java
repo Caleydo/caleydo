@@ -45,6 +45,7 @@ public abstract class AGLViewPart
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
 	protected AGLEventListener glEventListener;
+	protected MinimumSizeComposite minSizeComposite;
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView initSerializedView;
@@ -129,8 +130,13 @@ public abstract class AGLViewPart
 
 	@Override
 	public void createPartControl(Composite parent) {
-		parentComposite = new Composite(parent, SWT.EMBEDDED);
+		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		// fillToolBar();
+		parentComposite = new Composite(minSizeComposite, SWT.EMBEDDED);
+		minSizeComposite.setContent(parentComposite);
+		minSizeComposite.setMinSize(0, 0);
+		minSizeComposite.setExpandHorizontal(true);
+		minSizeComposite.setExpandVertical(true);
 	}
 
 	@Override
