@@ -65,15 +65,14 @@ public class StandardToolBarRenderer
 		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
-		toolBarManager.add(new StartClusteringAction());
-		
+				
 		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-			toolBarManager2.add(new OpenSearchViewAction());
-			toolBarManager2.add(new ClearSelectionsAction());
+			
+			toolBarManager2.add(new StartClusteringAction());
 		}
-		else {
-			toolBarManager.add(new ClearSelectionsAction());			
-		}
+		
+		toolBarManager2.add(new OpenSearchViewAction());
+		toolBarManager2.add(new ClearSelectionsAction());
 		
 		toolBarManager.update(true);
 

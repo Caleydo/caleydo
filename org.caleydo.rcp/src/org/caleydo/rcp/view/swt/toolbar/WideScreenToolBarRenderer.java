@@ -67,18 +67,16 @@ public class WideScreenToolBarRenderer
 		toolBarManager.add(new LoadDataAction());
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
-		toolBarManager.add(new StartClusteringAction());
 
 		// IToolBarItem startClustering = new StartClusteringAction(targetViewID);
 		// actionList.add(startClustering);
 
 		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 			toolBarManager2.add(new OpenSearchViewAction());
-			toolBarManager2.add(new ClearSelectionsAction());
 		}
-		else {
-			toolBarManager.add(new ClearSelectionsAction());
-		}
+		
+		toolBarManager2.add(new ClearSelectionsAction());
+		toolBarManager2.add(new StartClusteringAction());
 
 		toolBarManager.update(true);
 
