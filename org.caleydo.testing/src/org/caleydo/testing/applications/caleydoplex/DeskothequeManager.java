@@ -4,6 +4,7 @@ import DKT.GroupwareClientAppIPrx;
 import DKT.GroupwareClientAppIPrxHelper;
 import DKT.GroupwareInformation;
 import DKT.MasterApplicationIPrx;
+import DKT.ResourceManagerIPrx;
 import DKT.ServerApplicationIPrx;
 import DKT.ServerApplicationIPrxHelper;
 import Ice.Communicator;
@@ -36,10 +37,38 @@ public class DeskothequeManager {
 		ServerApplicationIPrx serverPrx = ServerApplicationIPrxHelper.checkedCast(proxy); 
 		
 		masterPrx = serverPrx.getMasterProxy(); 
-		GroupwareInformation info = masterPrx.registerGroupwareClient(groupwareClientPrx, "Caleydo", serverPrx, 1300, 0, 100, 100);
+		
+		// testing communication 
+		
+		// registration at master proxy 
+		// FIXME: real window extents required! 
+		GroupwareInformation info = masterPrx.registerGroupwareClient(groupwareClientPrx, "Caleydo", serverPrx, 0, 0, 100, 100);
 		
 		System.out.println("Groupware information: displayID: " + info.displayID
 				+ ", is private: " + info.isPrivate + ", deskoXID: " + info.deskoXID);
+		
+		// obtaining resource manager proxy 
+		ResourceManagerIPrx resourceManagerPrx = masterPrx.getResourceManagerProxy(); 
+		
+		// getting available target locations 
+		String[] targetClients = resourceManagerPrx.getAvailableGroupwareClients(info.deskoXID); 
+		if(targetClients.length == 0){
+			System.out.println("No target clients found"); 
+		}
+		for(int i = 0; i < targetClients.length; i++){
+			System.out.println("Target client [" + i + "]: " + targetClients); 
+		}
+		
+		// get home of groupware client 
+		String homeClient = resourceManagerPrx.getHomeGroupwareClient(info.deskoXID); 
+		System.out.println("Home client: " + homeClient);
+		
+		// get public groupware client 
+		String publicClient = resourceManagerPrx.getPublicGroupwareClient(info.deskoXID); 
+		System.out.println("Public client: " + publicClient); 
+		
+		// unregister groupware client 
+		resourceManagerPrx.unregisterGroupwareClient(info.deskoXID); 
 		
 		//System.out.println("Master hostname: " + masterPrx.getLocalHostName()); 
 	}
