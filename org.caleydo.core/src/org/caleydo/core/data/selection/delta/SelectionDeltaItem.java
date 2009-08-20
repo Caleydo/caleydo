@@ -100,7 +100,7 @@ public class SelectionDeltaItem
 	 * 
 	 * @return the connection ID
 	 */
-	public Collection<Integer> getConnectionIDs() {
+	public ArrayList<Integer> getConnectionIDs() {
 		return connectionIDs;
 	}
 
