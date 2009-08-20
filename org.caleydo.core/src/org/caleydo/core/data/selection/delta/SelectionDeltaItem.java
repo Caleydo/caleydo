@@ -22,7 +22,6 @@ public class SelectionDeltaItem
 	private ESelectionType selectionType;
 	private int secondaryID = -1;
 	
-	@XmlElementWrapper
 	private ArrayList<Integer> connectionIDs;
 
 	/**
@@ -100,6 +99,7 @@ public class SelectionDeltaItem
 	 * 
 	 * @return the connection ID
 	 */
+	@XmlElementWrapper
 	public ArrayList<Integer> getConnectionIDs() {
 		return connectionIDs;
 	}
