@@ -4,6 +4,8 @@ import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.util.text.CaleydoTextRenderer;
+
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -20,7 +22,7 @@ public class TextItem
 		"Text without characters below the bottom textline";
 
 	private String sText;
-	private TextRenderer textRenderer;
+	private CaleydoTextRenderer textRenderer;
 	private float fTextScaling;
 
 	/**
@@ -37,11 +39,9 @@ public class TextItem
 	public void draw(GL gl) {
 		float[] text_color = RadialHierarchyRenderStyle.LABEL_TEXT_COLOR;
 		textRenderer.setColor(text_color[0], text_color[1], text_color[2], text_color[3]);
-		textRenderer.begin3DRendering();
 
-		textRenderer.draw3D(sText, vecPosition.x(), vecPosition.y(), 0, fTextScaling);
-
-		textRenderer.end3DRendering();
+		textRenderer.renderText(gl, sText, vecPosition.x(), vecPosition.y(), 0, fTextScaling,
+			RadialHierarchyRenderStyle.LABEL_TEXT_MIN_SIZE);
 		textRenderer.flush();
 	}
 
@@ -53,14 +53,18 @@ public class TextItem
 	 * @param fTextScaling
 	 *            Scaling factor of the text.
 	 */
-	public void setRenderingProperties(TextRenderer textRenderer, float fTextScaling) {
+	public void setRenderingProperties(GL gl, CaleydoTextRenderer textRenderer, float fTextScaling) {
 		this.textRenderer = textRenderer;
 		this.fTextScaling = fTextScaling;
 
-		Rectangle2D bounds = textRenderer.getBounds(sTextForHeightCalculation);
-		fHeight = (float) bounds.getHeight() * fTextScaling;
-		bounds = textRenderer.getBounds(sText);
-		fWidth = (float) bounds.getWidth() * fTextScaling;
+		Rectangle2D bounds =
+			textRenderer.getScaledBounds(gl, sTextForHeightCalculation, fTextScaling,
+				RadialHierarchyRenderStyle.LABEL_TEXT_MIN_SIZE);
+		fHeight = (float) bounds.getHeight();
+		bounds =
+			textRenderer.getScaledBounds(gl, sText, fTextScaling,
+				RadialHierarchyRenderStyle.LABEL_TEXT_MIN_SIZE);
+		fWidth = (float) bounds.getWidth();
 	}
 
 	@Override

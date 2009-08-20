@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import org.caleydo.core.util.text.CaleydoTextRenderer;
 
 /**
  * The LabelManager is responsible for positioning all labels ({@link LabelContainer}), determining the labels
@@ -29,7 +29,7 @@ public class LabelManager {
 	private ArrayList<Label> alLabels;
 	private ArrayList<LabelContainer> alLeftContainers;
 	private ArrayList<LabelContainer> alRightContainers;
-	private TextRenderer textRenderer;
+	private CaleydoTextRenderer textRenderer;
 	private int iMaxSegmentDepth;
 	private LabelContainer lcMouseOver;
 	private Rectangle rectControlBox;
@@ -76,7 +76,7 @@ public class LabelManager {
 	public void drawAllLabels(GL gl, GLU glu, float fScreenWidth, float fScreenHeight,
 		float fHierarchyOuterRadius) {
 		
-		textRenderer = new TextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
+		textRenderer = new CaleydoTextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
 		textRenderer.setColor(0, 0, 0, 1);
 
 		float fXCenter = fScreenWidth / 2.0f;
@@ -99,7 +99,7 @@ public class LabelManager {
 				fBendPointY = fUnitVectorY * fHierarchyOuterRadius * 1.05f;
 			}
 			LabelContainer labelContainer =
-				createLabelContainer(label, LEFT_CONTAINER_SPACING, fYCenter + fBendPointY, fScreenHeight);
+				createLabelContainer(gl, label, LEFT_CONTAINER_SPACING, fYCenter + fBendPointY, fScreenHeight);
 			ArrayList<LabelContainer> alContainers = alLeftContainers;
 
 			float fXMouseOverContainerPosition = fXCenter + fSegmentXCenter + MARKER_RADIUS;
@@ -122,7 +122,7 @@ public class LabelManager {
 				+ fSegmentYCenter, fXCenter, fBendPointX)) {
 				alContainers.add(labelContainer);
 
-				labelContainer.draw(gl, false);
+				labelContainer.draw(gl, true);
 				drawLink(gl, glu, fXCenter, fYCenter, fSegmentXCenter, fSegmentYCenter, fBendPointX,
 					fBendPointY, labelContainer);
 			}
@@ -205,7 +205,7 @@ public class LabelManager {
 	 *            Height of the screen.
 	 * @return Label container that has been created using the specified parameters.
 	 */
-	private LabelContainer createLabelContainer(Label label, float fXContainerLeft, float fYContainerCenter,
+	private LabelContainer createLabelContainer(GL gl, Label label, float fXContainerLeft, float fYContainerCenter,
 		float fScreenHeight) {
 
 		float fLabelScaling;
@@ -228,7 +228,7 @@ public class LabelManager {
 			lcMouseOver = labelContainer;
 		}
 
-		labelContainer.addLabelLines(label.getLines());
+		labelContainer.addLabelLines(gl, label.getLines());
 
 		if (labelContainer.getTop() > fScreenHeight) {
 			labelContainer.setContainerPosition(labelContainer.getLeft(), fScreenHeight

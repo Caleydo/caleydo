@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas;
 import gleem.linalg.Vec3f;
 
 import java.awt.Rectangle;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +50,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
+import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -252,10 +254,11 @@ public abstract class AGLEventListener
 			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
 			viewFrustum.setLeft(0);
-			viewFrustum.setRight(8);// frame.width / 100);
+//			viewFrustum.setRight(8);// frame.width / 100);
 			viewFrustum.setBottom(0);
 			float value = (float) frame.height / (float) frame.width * 8.0f;
 			viewFrustum.setTop(value);
+			viewFrustum.setRight(8);
 
 			bIsDisplayListDirtyLocal = true;
 			bIsDisplayListDirtyRemote = true;
@@ -269,7 +272,7 @@ public abstract class AGLEventListener
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
-
+			
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 	}
 

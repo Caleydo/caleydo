@@ -2,7 +2,10 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import gleem.linalg.Vec2f;
 
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
 import java.io.FileNotFoundException;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +41,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -62,6 +66,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideI
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
+import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -78,6 +84,11 @@ public class GLRadialHierarchy
 	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
 	private static final int MIN_PIXELS_PER_DISPLAYED_LEVEL = 20;
 
+	//Todo: remove
+	CaleydoTextRenderer textRenderer;
+	
+	
+	
 	private int iMaxDisplayedHierarchyDepth;
 	private int iUpwardNavigationSliderID;
 	private int iUpwardNavigationSliderButtonID;
@@ -449,6 +460,25 @@ public class GLRadialHierarchy
 		gl.glEnd();
 		gl.glPopAttrib();
 		tempTexture.disable();
+
+//		if(textRenderer == null)
+//			textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
+//		
+//		textRenderer.setColor(0, 0, 0, 0.5f);
+//		
+//		textRenderer.renderText(gl, "Hallo!", 0, 0, 0, 0.02f, 10);
+//		
+//		IntBuffer buffer = BufferUtil.newIntBuffer(4);
+//		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+//		
+//		textRenderer.beginRendering(buffer.get(2), buffer.get(3));
+//		
+//		
+//		textRenderer.draw3D("Halloá!", 300, 300, 0, 1.5f);
+//		textRenderer.flush();
+//		
+//		textRenderer.endRendering();
+		
 	}
 
 	/**

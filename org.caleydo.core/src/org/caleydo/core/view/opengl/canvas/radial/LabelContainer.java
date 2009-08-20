@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import com.sun.opengl.util.j2d.TextRenderer;
+import org.caleydo.core.util.text.CaleydoTextRenderer;
 
 /**
  * Represents a box that can be positioned containing all label lines of one label.
@@ -23,7 +23,7 @@ public class LabelContainer {
 	private float fLabelScaling;
 
 	private ArrayList<LabelLine> alLabelLines;
-	private TextRenderer textRenderer;
+	private CaleydoTextRenderer textRenderer;
 
 	/**
 	 * Constructor.
@@ -39,7 +39,7 @@ public class LabelContainer {
 	 *            label container.
 	 */
 	public LabelContainer(float fXContainerLeft, float fYContainerCenter, float fLabelScaling,
-		TextRenderer textRenderer) {
+		CaleydoTextRenderer textRenderer) {
 
 		this.fXContainerLeft = fXContainerLeft;
 		this.fYContainerCenter = fYContainerCenter;
@@ -56,10 +56,10 @@ public class LabelContainer {
 	 * @param alLines
 	 *            List of label lines that shall be added.
 	 */
-	public void addLabelLines(ArrayList<LabelLine> alLines) {
+	public void addLabelLines(GL gl, ArrayList<LabelLine> alLines) {
 
 		for (LabelLine currentLine : alLines) {
-			currentLine.calculateSize(textRenderer, fLabelScaling, LabelItemTypes.LABEL_ITEM_TYPE_TEXT);
+			currentLine.calculateSize(gl, textRenderer, fLabelScaling, LabelItemTypes.LABEL_ITEM_TYPE_TEXT);
 			addLine(currentLine);
 		}
 	}
