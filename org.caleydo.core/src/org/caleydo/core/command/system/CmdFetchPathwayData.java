@@ -12,6 +12,7 @@ import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayImageCacher;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.dialogs.DialogPage;
@@ -27,10 +28,9 @@ import org.eclipse.swt.widgets.ProgressBar;
  */
 public class CmdFetchPathwayData
 	extends ACmdExternalAttributes {
+	
 	private Display display = null;
-	// private ProgressBar progressBarKeggPathwayCacher = null;
-	// private ProgressBar progressBarKeggPathwayImageCacher = null;
-	// private ProgressBar progressBarBioCartaPathwayCacher = null;
+
 	private DialogPage parentPage = null;
 
 	private boolean isKeggCacherFinished = false;
@@ -77,20 +77,15 @@ public class CmdFetchPathwayData
 
 	public void setAttributes(final Display display, final ProgressBar progressBarKeggPathwayCacher,
 		final ProgressBar progressBarKeggPathwayImageCacher,
-		final ProgressBar progressBarBioCartaPathwayCacher, final DialogPage parentPage) {
+		final ProgressBar progressBarBioCartaPathwayCacher, final DialogPage parentPage,
+		final EOrganism eOrganism) {
+		
 		this.display = display;
-		// this.progressBarKeggPathwayCacher = progressBarKeggPathwayCacher;
-		// this.progressBarKeggPathwayImageCacher =
-		// progressBarKeggPathwayImageCacher;
-		// this.progressBarBioCartaPathwayCacher =
-		// progressBarBioCartaPathwayCacher;
 		this.parentPage = parentPage;
 
-		bioCartaPathwayCacher = new BioCartaPathwayCacher(display, progressBarBioCartaPathwayCacher, this);
-
-		keggPathwayCacher = new KeggPathwayCacher(display, progressBarKeggPathwayCacher, this);
-
-		keggPathwayImageCacher = new KeggPathwayImageCacher(display, progressBarKeggPathwayImageCacher, this);
+		bioCartaPathwayCacher = new BioCartaPathwayCacher(display, progressBarBioCartaPathwayCacher, this, eOrganism);
+		keggPathwayCacher = new KeggPathwayCacher(display, progressBarKeggPathwayCacher, this, eOrganism);
+		keggPathwayImageCacher = new KeggPathwayImageCacher(display, progressBarKeggPathwayImageCacher, this, eOrganism);
 	}
 
 	public void setProxySettings(String sProxyServer, int iProxyPort) {

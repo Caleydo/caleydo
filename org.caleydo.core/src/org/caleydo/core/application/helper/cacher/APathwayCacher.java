@@ -1,6 +1,7 @@
 package org.caleydo.core.application.helper.cacher;
 
 import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 
@@ -18,6 +19,7 @@ import de.phleisch.app.itsucks.job.event.JobChangedEvent;
  */
 public abstract class APathwayCacher
 	extends Thread {
+	
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -27,6 +29,10 @@ public abstract class APathwayCacher
 
 	protected CmdFetchPathwayData triggeringCommand;
 
+	protected EOrganism eOrganism;
+	
+	protected String sFetchURL;
+	
 	protected int iDownloadCount = 0;
 
 	protected boolean bEnableProxy = false;

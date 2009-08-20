@@ -17,7 +17,7 @@ import org.caleydo.core.manager.IGeneralManager;
  */
 public class PathwaySequentializer {
 	public final static String INPUT_FOLDER_PATH_KEGG = "www.genome.jp/kegg/KGML/KGML_v0.6.1/hsa/";
-	public final static String INPUT_IMAGE_PATH_KEGG = "www.genome.ad.jp/kegg/pathway/hsa/";
+	public final static String INPUT_IMAGE_PATH_KEGG = "www.genome.ad.jp/kegg/ pathway/";
 	public final static String OUTPUT_FILE_NAME_KEGG = "pathway_sources_KEGG.txt";
 	public final static String INPUT_FOLDER_PATH_BIOCARTA = "cgap.nci.nih.gov/Pathways/BioCarta/";
 	public final static String INPUT_IMAGE_PATH_BIOCARTA = "cgap.nci.nih.gov/BIOCARTA/Pathways/";

@@ -8,21 +8,28 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
+ * Helper tool to generate organism specific mapping files.
+ * Original david files are filtered by using a gene whitelist specific to an organism.
+ * 
  * @author Marc Streit
  */
 public class DAVIDWhiteListFilter {
 
 	protected PrintWriter writer;
 
+	// private static final String ORGANISM = "HOMO_SAPIENS";
+	private static final String ORGANISM = "MUS_MUSCULUS";
+	
 	// private static final String FILE_NAME = "DAVID2ENTREZ_GENE_ID.txt";
 	// private static final String FILE_NAME = "DAVID2REFSEQ_MRNA.txt";
 	// private static final String FILE_NAME = "DAVID2GENE_NAME.txt";
+	// private static final String FILE_NAME = "DAVID2GENE_SYMBOL.txt";	
 	private static final String FILE_NAME = "DAVID2GOTERM_CC_ALL.txt";
 
 	public DAVIDWhiteListFilter()
 		throws IOException {
 
-		writer = new PrintWriter("data/genome/mapping/david/HOMO_SAPIENS_" + FILE_NAME);
+		writer = new PrintWriter("data/genome/mapping/david/"+ORGANISM+"_" + FILE_NAME);
 	}
 
 	protected void convertData() throws IOException {
@@ -34,7 +41,7 @@ public class DAVIDWhiteListFilter {
 		String sFilter = "";
 
 		BufferedReader whitelist =
-			new BufferedReader(new FileReader("data/genome/mapping/david/DAVID_HOMO_SAPIENS.txt"));
+			new BufferedReader(new FileReader("data/genome/mapping/david/DAVID_"+ORGANISM+".txt"));
 
 		ArrayList<Integer> alFilter = new ArrayList<Integer>();
 

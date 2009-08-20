@@ -3,6 +3,7 @@ package org.caleydo.rcp.wizard.firststart;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.dialogs.DialogPage;
@@ -100,7 +101,7 @@ public final class FetchPathwayDataPage
 						ECommandType.FETCH_PATHWAY_DATA);
 
 				cmdPathwayFetch.setAttributes(composite.getDisplay(), progressBarKeggPathwayCacher,
-					progressBarKeggImagePathwayCacher, progressBarBioCartaPathwayCacher, parentPage);
+					progressBarKeggImagePathwayCacher, progressBarBioCartaPathwayCacher, parentPage, EOrganism.HOMO_SAPIENS);
 
 				PreferenceStore prefStore = Application.caleydoCore.getGeneralManager().getPreferenceStore();
 

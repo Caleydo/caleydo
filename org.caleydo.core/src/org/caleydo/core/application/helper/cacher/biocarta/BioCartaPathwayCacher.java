@@ -8,6 +8,7 @@ import java.net.URL;
 import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -28,16 +29,30 @@ import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
  */
 public class BioCartaPathwayCacher
 	extends APathwayCacher {
+
+	private static final String FETCH_URL = "http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways";
+
 	/**
 	 * Constructor.
 	 */
 	public BioCartaPathwayCacher(final Display display, final ProgressBar progressBar,
-		final CmdFetchPathwayData triggeringCommand) {
+		final CmdFetchPathwayData triggeringCommand, final EOrganism eOrganism) {
+
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
+		this.eOrganism = eOrganism;
 
-		iExpectedDownloads = 870;// 888;
+		sFetchURL = FETCH_URL;
+
+		if (eOrganism == EOrganism.HOMO_SAPIENS) {
+			iExpectedDownloads = 870;
+		}
+		else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+			iExpectedDownloads = 830;
+		}
+		else
+			throw new IllegalStateException("Cannot fetch pathways from organism " + eOrganism);
 	}
 
 	@Override
@@ -55,14 +70,30 @@ public class BioCartaPathwayCacher
 		DownloadJobFilter downloadFilter = new DownloadJobFilter();
 		downloadFilter.setAllowedHostNames(new String[] { "cgap.*" });
 		downloadFilter.setMaxRecursionDepth(2);
-		downloadFilter.setSaveToDisk(new String[] { ".*BioCarta/h_.*", ".*h_.*gif" });
+
+		String sOrganismIdentifier = "";
+		String sOrganismFilter = "";
+		if (eOrganism == EOrganism.HOMO_SAPIENS) {
+			sOrganismIdentifier = "h";
+			sOrganismFilter = "m";
+		}
+		else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+			sOrganismIdentifier = "m";
+			sOrganismFilter = "h";
+		}
+		else
+			throw new IllegalStateException("Cannot fetch pathways from organism " + eOrganism);
+
+		downloadFilter.setSaveToDisk(new String[] { ".*BioCarta/" + sOrganismIdentifier + "_.*",
+				".*" + sOrganismIdentifier + "_.*gif" });
 
 		// add the filter to the dispatcher
 		dispatcher.addJobFilter(downloadFilter);
 
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
 		RegExpFilterRule regExpFilterRule =
-			new RegExpJobFilter.RegExpFilterRule(".*Gene.*|.*m_.*|.*Kegg.*,.*Tissues.*|.*SAGE.*");
+			new RegExpJobFilter.RegExpFilterRule(".*Gene.*|.*" + sOrganismFilter
+				+ "_.*|.*Kegg.*,.*Tissues.*|.*SAGE.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
@@ -83,7 +114,7 @@ public class BioCartaPathwayCacher
 		UrlDownloadJob job = jobFactory.createDownloadJob();
 
 		try {
-			job.setUrl(new URL("http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways"));
+			job.setUrl(new URL(sFetchURL));
 		}
 		catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -99,6 +130,7 @@ public class BioCartaPathwayCacher
 		triggerPathwayListGeneration();
 
 		if (triggeringCommand != null) {
+			progressBar.setSelection(100);
 			triggeringCommand.setFinishedBioCartaCacher();
 		}
 	}
@@ -109,9 +141,18 @@ public class BioCartaPathwayCacher
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
 		try {
-			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA,
-				PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
-				PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
+
+			if (eOrganism == EOrganism.HOMO_SAPIENS)
+				pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA,
+					PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
+					PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS);
+			else if (eOrganism == EOrganism.MUS_MUSCULUS)
+				pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA,
+					PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
+					PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS);
+			else
+				throw new IllegalStateException("Cannot fetch pathways from organism " + eOrganism);
+
 		}
 		catch (FileNotFoundException fnfe) {
 			throw new RuntimeException("Cannot generate BioCarta pathway list.");

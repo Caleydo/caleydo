@@ -46,7 +46,7 @@ public class BioCartaGeneCacher
 
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
 		RegExpFilterRule regExpFilterRule =
-			new RegExpJobFilter.RegExpFilterRule(".*m_.*|.*Kegg.*,.*Tissues.*|.*SAGE.*");
+			new RegExpJobFilter.RegExpFilterRule(".*h_.*|.*Kegg.*,.*Tissues.*|.*SAGE.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);

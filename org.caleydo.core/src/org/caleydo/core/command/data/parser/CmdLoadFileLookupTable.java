@@ -8,6 +8,9 @@ import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -101,12 +104,12 @@ public class CmdLoadFileLookupTable
 		final int iStopParseFileAtLine, final String sLookupTableInfo, final String sLookupTableDelimiter,
 		final String sCodeResolvingLUTTypes) {
 
-		this.sFileName = sFileName;
 		this.iStartPareseFileAtLine = iStartParseFileAtLine;
 		this.iStopParseFileAtLine = iStopParseFileAtLine;
 		this.sLookupTableInfo = sLookupTableInfo;
 		this.sLookupTableDelimiter = sLookupTableDelimiter;
 		this.sCodeResolvingLUTTypes = sCodeResolvingLUTTypes;
+		this.sFileName = sFileName;
 
 		extractParameters();
 	}
@@ -143,6 +146,11 @@ public class CmdLoadFileLookupTable
 	public void doCommand() {
 		LookupTableLoader loader = null;
 
+		if (sFileName.contains("ORGANISM")) {
+			EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase()).getOrganism();
+			this.sFileName = sFileName.replace("ORGANISM", eOrganism.toString());
+		}
+
 		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		// Remove old lookuptable if it already exists
@@ -150,11 +158,9 @@ public class CmdLoadFileLookupTable
 
 		EMappingType mappingType = EMappingType.valueOf(sLookupTableType);
 
-
 		int iIndex = 0;
 		if (sFileName.equals("generate")) {
-			genomeIdManager
-				.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
+			genomeIdManager.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
 			Map hashTmp = genomeIdManager.getMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
 			for (Object sRefSeqID : genomeIdManager.getMap(EMappingType.DAVID_2_REFSEQ_MRNA).values()) {
 				hashTmp.put(sRefSeqID, iIndex++);
@@ -180,11 +186,11 @@ public class CmdLoadFileLookupTable
 
 			// Concatenate genome id type target and origin type in swapped
 			// order to determine reverse genome mapping type.
-				EMappingType reverseMappingType =
-					EMappingType.valueOf(mappingType.getTypeTarget().toString() + "_2_"
-						+ mappingType.getTypeOrigin().toString());
-	
-				genomeIdManager.createReverseMap(mappingType, reverseMappingType);
+			EMappingType reverseMappingType =
+				EMappingType.valueOf(mappingType.getTypeTarget().toString() + "_2_"
+					+ mappingType.getTypeOrigin().toString());
+
+			genomeIdManager.createReverseMap(mappingType, reverseMappingType);
 		}
 
 		commandManager.runDoCommand(this);

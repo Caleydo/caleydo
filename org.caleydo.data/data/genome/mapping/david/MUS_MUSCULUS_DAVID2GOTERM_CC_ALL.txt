@@ -1,0 +1,2452 @@
+9328	GO:0005615~extracellular space	EG,NF
+146860	GO:0043229~intracellular organelle	EG,NF,UP
+28196	GO:0005886~plasma membrane	EG
+25110	GO:0005605~basal lamina	EG
+32007	GO:0044464~cell part	EG,NF,UP
+3271	GO:0044424~intracellular part	EG,NF,UP
+6823	GO:0030529~ribonucleoprotein complex	EG,NF
+6833	GO:0044464~cell part	EG,NF,UP
+6850	GO:0005623~cell	EG,NF
+30288	GO:0030135~coated vesicle	EG,NF
+32834	GO:0044421~extracellular region part	EG,NF
+6696	GO:0005684~U2-dependent spliceosome	EG
+27969	GO:0005886~plasma membrane	EG,NF
+147021	GO:0044446~intracellular organelle part	EG
+149473	GO:0043228~non-membrane-bound organelle	EG,NF
+35264	GO:0044459~plasma membrane part	EG,NF,UP
+9129	GO:0005623~cell	EG,NF,UP
+144170	GO:0044424~intracellular part	EG,NF
+53827	GO:0044444~cytoplasmic part	EG
+13735	GO:0005634~nucleus	EG,NF
+29458	GO:0005615~extracellular space	EG,UP
+23826	GO:0005623~cell	EG,NF,UP
+6158	GO:0000323~lytic vacuole	EG
+32594	GO:0005794~Golgi apparatus	EG
+6698	GO:0031967~organelle envelope	EG,NF
+8972	GO:0044444~cytoplasmic part	EG
+13002	GO:0031226~intrinsic to plasma membrane	EG
+147130	GO:0005623~cell	EG,NF
+45057	GO:0031012~extracellular matrix	EG,NF,UP
+19637	GO:0043226~organelle	NF
+30200	GO:0043231~intracellular membrane-bound organelle	EG,NF
+15052	GO:0044425~membrane part	EG,UP
+22125	GO:0044464~cell part	EG,NF
+145313	GO:0016021~integral to membrane	NF
+38161	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+26980	GO:0005623~cell	EG
+9230	GO:0044425~membrane part	EG
+12899	GO:0005623~cell	EG
+92157	GO:0044459~plasma membrane part	EG
+27501	GO:0043226~organelle	EG
+37944	GO:0005930~axoneme	NF
+29259	GO:0005623~cell	EG,UP
+31988	GO:0044446~intracellular organelle part	EG
+60922	GO:0005634~nucleus	EG,NF,UP
+148697	GO:0005905~coated pit	EG
+21928	GO:0044446~intracellular organelle part	EG,NF,UP
+15827	GO:0043231~intracellular membrane-bound organelle	NF,UP
+15117	GO:0005654~nucleoplasm	EG,UP
+27381	GO:0033267~axon part	EG,NF,UP
+33613	GO:0042613~MHC class II protein complex	NF,UP
+10494	GO:0005615~extracellular space	EG,UP
+30312	GO:0005634~nucleus	EG,NF,UP
+13683	GO:0005623~cell	EG,NF
+26581	GO:0016021~integral to membrane	EG,NF,UP
+64555	GO:0005886~plasma membrane	EG
+12880	GO:0016020~membrane	EG,UP
+27267	GO:0032991~macromolecular complex	NF
+4701	GO:0043226~organelle	EG,NF
+26431	GO:0005886~plasma membrane	EG
+11751	GO:0043226~organelle	EG
+24668	GO:0044464~cell part	EG
+146748	GO:0043231~intracellular membrane-bound organelle	EG,NF
+27845	GO:0043227~membrane-bound organelle	EG,NF
+3860	GO:0043229~intracellular organelle	EG,NF,UP
+18869	GO:0044424~intracellular part	EG,NF
+7693	GO:0031224~intrinsic to membrane	EG,NF
+18978	GO:0016021~integral to membrane	EG,NF,UP
+97973	GO:0031981~nuclear lumen	EG
+26782	GO:0044453~nuclear membrane part	EG,NF
+147100	GO:0043231~intracellular membrane-bound organelle	EG
+29295	GO:0000242~pericentriolar material	EG,NF
+27806	GO:0031982~vesicle	NF,UP
+37474	GO:0045240~alpha-ketoglutarate dehydrogenase complex	UP
+37774	GO:0016021~integral to membrane	EG,NF,UP
+24096	GO:0044464~cell part	EG,UP
+9320	GO:0044425~membrane part	EG,NF,UP
+19513	GO:0005840~ribosome	EG,NF,UP
+39307	GO:0043231~intracellular membrane-bound organelle	EG,NF
+15619	GO:0044424~intracellular part	EG
+19966	GO:0043231~intracellular membrane-bound organelle	EG,NF
+27318	GO:0031982~vesicle	UP
+29878	GO:0044424~intracellular part	EG,NF,UP
+20335	GO:0015630~microtubule cytoskeleton	EG,NF
+9344	GO:0044424~intracellular part	EG,NF,UP
+108193	GO:0044425~membrane part	EG
+14786	GO:0044464~cell part	EG,UP
+143961	GO:0005737~cytoplasm	EG
+21520	GO:0043229~intracellular organelle	EG,NF,UP
+17614	GO:0005739~mitochondrion	EG,NF
+16925	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+144595	GO:0031224~intrinsic to membrane	EG,NF,UP
+13188	GO:0005634~nucleus	EG,NF
+27939	GO:0044424~intracellular part	EG,NF,UP
+145959	GO:0044464~cell part	EG,UP
+14561	GO:0005623~cell	EG
+7164	GO:0044464~cell part	EG,NF,UP
+33677	GO:0019897~extrinsic to plasma membrane	UP
+146922	GO:0031224~intrinsic to membrane	EG,NF,UP
+12639	GO:0005623~cell	EG,NF
+73880	GO:0043234~protein complex	EG,UP
+23028	GO:0044464~cell part	EG,NF
+144473	GO:0044428~nuclear part	EG,NF
+144895	GO:0043226~organelle	NF,UP
+30253	GO:0005634~nucleus	EG,NF,UP
+26875	GO:0005634~nucleus	EG,NF
+9592	GO:0005622~intracellular	EG,NF,UP
+145387	GO:0044464~cell part	EG,NF,UP
+27257	GO:0043229~intracellular organelle	NF
+8585	GO:0031974~membrane-enclosed lumen	EG,NF
+149943	GO:0005667~transcription factor complex	EG,NF
+144105	GO:0005622~intracellular	EG,NF
+148763	GO:0030055~cell-matrix junction	EG,NF,UP
+143791	GO:0031526~brush border membrane	EG
+145655	GO:0005886~plasma membrane	EG
+35998	GO:0005737~cytoplasm	EG,NF,UP
+144152	GO:0030133~transport vesicle	NF,UP
+36885	GO:0005623~cell	EG,NF,UP
+51051	GO:0044444~cytoplasmic part	EG
+148212	GO:0030118~clathrin coat	EG,NF
+14439	GO:0044428~nuclear part	EG,NF,UP
+4404	GO:0043025~cell soma	EG,NF
+14655	GO:0005623~cell	UP
+12654	GO:0043226~organelle	UP
+19512	GO:0016020~membrane	EG,NF,UP
+143941	GO:0044464~cell part	EG,NF,UP
+5365	GO:0044428~nuclear part	EG,NF
+148982	GO:0043226~organelle	EG,NF
+16862	GO:0005634~nucleus	EG
+143827	GO:0043226~organelle	EG,NF,UP
+5032	GO:0043226~organelle	EG,NF,UP
+8700	GO:0005623~cell	EG,NF
+28329	GO:0016020~membrane	EG,NF,UP
+149313	GO:0000786~nucleosome	EG,NF
+12568	GO:0005624~membrane fraction	EG,NF,UP
+23799	GO:0044421~extracellular region part	EG,NF,UP
+4594	GO:0043232~intracellular non-membrane-bound organelle	NF,UP
+146537	GO:0044444~cytoplasmic part	EG,NF
+15318	GO:0005634~nucleus	EG,NF
+148676	GO:0043229~intracellular organelle	EG,NF
+146609	GO:0032991~macromolecular complex	EG,NF
+145061	GO:0005622~intracellular	EG,NF,UP
+36979	GO:0005623~cell	EG,NF
+19059	GO:0031224~intrinsic to membrane	EG,NF,UP
+16671	GO:0005623~cell	NF,UP
+147034	GO:0005634~nucleus	EG,NF
+24520	GO:0005622~intracellular	EG,NF
+19492	GO:0044449~contractile fiber part	EG
+15352	GO:0031224~intrinsic to membrane	EG,NF,UP
+147058	GO:0005622~intracellular	EG
+37522	GO:0044464~cell part	EG,NF,UP
+14491	GO:0043227~membrane-bound organelle	EG,NF,UP
+31149	GO:0044446~intracellular organelle part	EG,NF
+25418	GO:0043227~membrane-bound organelle	EG,NF
+27567	GO:0005743~mitochondrial inner membrane	EG,NF,UP
+148406	GO:0044464~cell part	EG
+4312	GO:0005667~transcription factor complex	EG,UP
+37763	GO:0005623~cell	EG
+37584	GO:0043227~membrane-bound organelle	EG
+15321	GO:0043229~intracellular organelle	EG
+23031	GO:0044444~cytoplasmic part	EG,NF
+33544	GO:0044444~cytoplasmic part	EG
+22075	GO:0045211~postsynaptic membrane	EG,NF
+18709	GO:0005886~plasma membrane	EG,NF
+14478	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+19776	GO:0044464~cell part	EG,NF
+4120	GO:0031224~intrinsic to membrane	EG,NF,UP
+3294	GO:0005887~integral to plasma membrane	EG,NF,UP
+27640	GO:0044464~cell part	EG
+8216	GO:0030141~secretory granule	EG,NF,UP
+13185	GO:0000786~nucleosome	EG
+32101	GO:0005622~intracellular	EG,NF,UP
+5079	GO:0005886~plasma membrane	EG,NF
+53200	GO:0043232~intracellular non-membrane-bound organelle	EG
+22367	GO:0044421~extracellular region part	EG,NF,UP
+12791	GO:0042611~MHC protein complex	EG,NF
+37857	GO:0005623~cell	NF,UP
+35501	GO:0044425~membrane part	EG,UP
+17707	GO:0030054~cell junction	EG
+4931	GO:0044451~nucleoplasm part	EG
+27473	GO:0005622~intracellular	EG,NF,UP
+30206	GO:0031226~intrinsic to plasma membrane	EG,NF,UP
+144272	GO:0044464~cell part	UP
+11255	GO:0044424~intracellular part	EG
+27006	GO:0019867~outer membrane	NF
+37830	GO:0031224~intrinsic to membrane	NF
+16480	GO:0016020~membrane	EG,NF,UP
+28241	GO:0005783~endoplasmic reticulum	EG
+14828	GO:0005576~extracellular region	EG,NF,UP
+27265	GO:0016020~membrane	NF
+5218	GO:0044464~cell part	EG,NF
+20280	GO:0044425~membrane part	EG,NF
+33624	GO:0005576~extracellular region	EG,NF
+23264	GO:0043227~membrane-bound organelle	EG,NF,UP
+147278	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+12603	GO:0044464~cell part	EG,NF,UP
+27568	GO:0044459~plasma membrane part	EG,UP
+34406	GO:0031224~intrinsic to membrane	EG,NF
+147957	GO:0005622~intracellular	UP
+148931	GO:0044464~cell part	EG,NF,UP
+144228	GO:0043234~protein complex	EG,NF,UP
+3688	GO:0043227~membrane-bound organelle	NF,UP
+24456	GO:0044464~cell part	EG,NF
+144219	GO:0005768~endosome	EG,UP
+27292	GO:0005886~plasma membrane	EG,UP
+7365	GO:0044459~plasma membrane part	NF,UP
+16322	GO:0016021~integral to membrane	EG,NF,UP
+37361	GO:0043226~organelle	UP
+147042	GO:0016020~membrane	EG,NF,UP
+3328	GO:0043232~intracellular non-membrane-bound organelle	EG
+146497	GO:0043231~intracellular membrane-bound organelle	EG,NF
+4701	GO:0000323~lytic vacuole	EG,NF
+26576	GO:0005623~cell	EG,NF,UP
+54691	GO:0016020~membrane	EG
+50936	GO:0044428~nuclear part	EG
+4403	GO:0043227~membrane-bound organelle	EG
+35216	GO:0044444~cytoplasmic part	EG,NF,UP
+6753	GO:0048786~presynaptic active zone	EG,NF
+60149	GO:0016021~integral to membrane	EG,NF,UP
+7189	GO:0044464~cell part	EG,UP
+37681	GO:0016021~integral to membrane	EG,NF
+27835	GO:0032991~macromolecular complex	EG,NF,UP
+25438	GO:0005623~cell	EG,NF
+29089	GO:0016021~integral to membrane	EG,NF,UP
+4912	GO:0016020~membrane	EG
+144541	GO:0005623~cell	EG,NF,UP
+27815	GO:0005886~plasma membrane	EG,UP
+26833	GO:0043227~membrane-bound organelle	EG,NF
+148764	GO:0031982~vesicle	EG,NF
+4672	GO:0044429~mitochondrial part	EG,NF,UP
+8596	GO:0043229~intracellular organelle	EG
+19267	GO:0044424~intracellular part	EG,NF,UP
+26354	GO:0044422~organelle part	EG,UP
+7008	GO:0005615~extracellular space	NF,UP
+7324	GO:0005623~cell	EG
+12071	GO:0016021~integral to membrane	EG
+144127	GO:0005737~cytoplasm	EG
+15804	GO:0031224~intrinsic to membrane	EG
+148247	GO:0016012~sarcoglycan complex	EG,NF,UP
+23119	GO:0031224~intrinsic to membrane	EG,NF,UP
+11807	GO:0031224~intrinsic to membrane	EG,UP
+8259	GO:0005576~extracellular region	EG,NF
+145772	GO:0044424~intracellular part	EG
+35213	GO:0043229~intracellular organelle	EG,NF,UP
+18661	GO:0044464~cell part	EG,NF,UP
+35234	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+28399	GO:0005634~nucleus	EG,NF
+147595	GO:0043231~intracellular membrane-bound organelle	NF,UP
+15295	GO:0005623~cell	EG,UP
+34965	GO:0044425~membrane part	EG,NF
+27454	GO:0005623~cell	NF,UP
+6613	GO:0005783~endoplasmic reticulum	EG,NF,UP
+149181	GO:0043227~membrane-bound organelle	EG
+64499	GO:0044459~plasma membrane part	EG
+15145	GO:0005622~intracellular	EG,NF
+19039	GO:0044464~cell part	EG
+26527	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+144554	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+148214	GO:0005737~cytoplasm	EG
+24686	GO:0043229~intracellular organelle	EG,NF
+144462	GO:0031981~nuclear lumen	EG
+8711	GO:0044421~extracellular region part	EG,NF,UP
+146974	GO:0016020~membrane	EG,NF,UP
+148770	GO:0043226~organelle	EG
+18545	GO:0044425~membrane part	EG,NF,UP
+26363	GO:0044422~organelle part	EG,NF
+149262	GO:0044464~cell part	EG,NF,UP
+6704	GO:0005652~nuclear lamina	EG,NF,UP
+143756	GO:0005887~integral to plasma membrane	EG,NF,UP
+8979	GO:0008076~voltage-gated potassium channel complex	EG,NF
+145611	GO:0044444~cytoplasmic part	EG,NF
+36824	GO:0044421~extracellular region part	EG,UP
+7226	GO:0044459~plasma membrane part	EG,NF,UP
+19176	GO:0016020~membrane	EG,NF,UP
+148751	GO:0012505~endomembrane system	UP
+17137	GO:0043229~intracellular organelle	EG
+148618	GO:0044444~cytoplasmic part	EG,NF,UP
+148102	GO:0044425~membrane part	EG,UP
+149534	GO:0005634~nucleus	EG,NF,UP
+144889	GO:0005737~cytoplasm	EG,NF
+9291	GO:0044425~membrane part	EG
+27548	GO:0005623~cell	EG,NF,UP
+14429	GO:0005737~cytoplasm	EG
+16115	GO:0016020~membrane	NF,UP
+26366	GO:0005783~endoplasmic reticulum	EG,NF
+58664	GO:0016020~membrane	EG
+4103	GO:0044464~cell part	EG,NF,UP
+8216	GO:0043227~membrane-bound organelle	EG,NF,UP
+27024	GO:0005622~intracellular	EG
+32821	GO:0031224~intrinsic to membrane	EG,UP
+17021	GO:0044464~cell part	EG,UP
+37657	GO:0044420~extracellular matrix part	EG,NF
+53190	GO:0044424~intracellular part	EG
+18746	GO:0016021~integral to membrane	EG,NF,UP
+15235	GO:0005622~intracellular	EG,NF
+37310	GO:0044464~cell part	EG,NF,UP
+36244	GO:0044459~plasma membrane part	UP
+16991	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+9413	GO:0005622~intracellular	NF,UP
+13000	GO:0005694~chromosome	EG,NF
+10526	GO:0044421~extracellular region part	EG
+28332	GO:0005623~cell	EG,NF,UP
+9570	GO:0005667~transcription factor complex	EG,NF
+146644	GO:0005829~cytosol	EG,NF,UP
+40765	GO:0005623~cell	EG,NF
+12687	GO:0032991~macromolecular complex	UP
+18635	GO:0044425~membrane part	EG
+19296	GO:0005615~extracellular space	EG,NF
+144080	GO:0005737~cytoplasm	EG,NF
+3617	GO:0005634~nucleus	EG,NF,UP
+38133	GO:0043229~intracellular organelle	UP
+147130	GO:0043226~organelle	EG
+6646	GO:0044464~cell part	EG,NF,UP
+13696	GO:0044464~cell part	EG,NF
+7667	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+26959	GO:0043229~intracellular organelle	EG,NF
+21071	GO:0005761~mitochondrial ribosome	EG,NF,UP
+15283	GO:0005634~nucleus	EG,NF,UP
+18881	GO:0044422~organelle part	EG,NF,UP
+144919	GO:0043231~intracellular membrane-bound organelle	EG
+25412	GO:0043232~intracellular non-membrane-bound organelle	EG
+149473	GO:0043227~membrane-bound organelle	EG,NF
+19492	GO:0030017~sarcomere	EG
+148164	GO:0009897~external side of plasma membrane	EG,NF,UP
+144869	GO:0044464~cell part	EG
+4005	GO:0045211~postsynaptic membrane	EG,UP
+19394	GO:0044444~cytoplasmic part	EG,UP
+145800	GO:0030427~site of polarized growth	NF
+26844	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+5083	GO:0044425~membrane part	EG,NF
+16913	GO:0044421~extracellular region part	EG,NF,UP
+16267	GO:0005623~cell	EG,NF,UP
+13197	GO:0044459~plasma membrane part	EG,NF,UP
+24668	GO:0031224~intrinsic to membrane	EG
+16280	GO:0031090~organelle membrane	EG,NF
+27314	GO:0043226~organelle	EG,NF,UP
+26422	GO:0016020~membrane	EG,NF
+37430	GO:0043231~intracellular membrane-bound organelle	EG,NF
+23763	GO:0016020~membrane	NF,UP
+24121	GO:0043228~non-membrane-bound organelle	EG
+40345	GO:0000785~chromatin	EG,NF
+34548	GO:0016020~membrane	EG
+28241	GO:0032991~macromolecular complex	EG
+10928	GO:0005623~cell	EG,NF,UP
+26931	GO:0044444~cytoplasmic part	EG
+18706	GO:0016020~membrane	EG,NF,UP
+12628	GO:0044464~cell part	EG,NF,UP
+15129	GO:0005623~cell	EG,UP
+58276	GO:0005622~intracellular	EG
+9636	GO:0042995~cell projection	EG,NF,UP
+18283	GO:0005623~cell	EG,NF,UP
+28002	GO:0031974~membrane-enclosed lumen	EG
+26757	GO:0044424~intracellular part	EG,NF,UP
+148690	GO:0031224~intrinsic to membrane	EG
+18032	GO:0005886~plasma membrane	UP
+33608	GO:0019866~organelle inner membrane	EG,NF,UP
+7889	GO:0044425~membrane part	UP
+37721	GO:0043226~organelle	EG,NF
+17429	GO:0016020~membrane	EG,NF,UP
+38213	GO:0044464~cell part	EG,NF
+10171	GO:0032991~macromolecular complex	EG
+147122	GO:0044424~intracellular part	NF
+148605	GO:0043226~organelle	EG,NF,UP
+21349	GO:0005874~microtubule	EG
+13083	GO:0016020~membrane	EG,NF
+64307	GO:0016021~integral to membrane	EG
+146609	GO:0016020~membrane	EG,NF,UP
+6906	GO:0044424~intracellular part	EG,UP
+64499	GO:0005887~integral to plasma membrane	EG
+17145	GO:0005623~cell	EG,NF,UP
+147827	GO:0030529~ribonucleoprotein complex	NF
+89896	GO:0031224~intrinsic to membrane	EG,NF,UP
+10678	GO:0031975~envelope	NF,UP
+23039	GO:0044459~plasma membrane part	EG,UP
+6880	GO:0005622~intracellular	EG
+10610	GO:0044464~cell part	EG
+10022	GO:0016020~membrane	EG,NF,UP
+18417	GO:0043234~protein complex	EG
+14599	GO:0044464~cell part	EG,NF,UP
+146447	GO:0044422~organelle part	UP
+8877	GO:0005622~intracellular	NF
+144128	GO:0044428~nuclear part	EG,NF,UP
+7272	GO:0044459~plasma membrane part	EG,NF,UP
+19975	GO:0043226~organelle	UP
+13314	GO:0005737~cytoplasm	EG,NF
+145181	GO:0005623~cell	EG,NF,UP
+149642	GO:0005737~cytoplasm	EG
+16007	GO:0005623~cell	EG
+37029	GO:0043229~intracellular organelle	EG,NF,UP
+28331	GO:0044464~cell part	EG,NF,UP
+143866	GO:0046540~U4/U6 x U5 tri-snRNP complex	EG
+22095	GO:0043227~membrane-bound organelle	EG,NF,UP
+7979	GO:0044425~membrane part	EG,NF,UP
+14960	GO:0005623~cell	EG,UP
+5189	GO:0044446~intracellular organelle part	EG,NF,UP
+19161	GO:0005623~cell	EG,NF,UP
+13216	GO:0043229~intracellular organelle	UP
+64492	GO:0016021~integral to membrane	EG
+28217	GO:0043226~organelle	EG,NF
+18792	GO:0016021~integral to membrane	EG,NF,UP
+9196	GO:0005623~cell	EG,NF,UP
+146477	GO:0005578~proteinaceous extracellular matrix	EG,NF
+149941	GO:0005667~transcription factor complex	EG,NF
+40813	GO:0044422~organelle part	EG,NF
+7235	GO:0016020~membrane	EG,NF,UP
+6970	GO:0005622~intracellular	EG
+12581	GO:0044464~cell part	EG,NF,UP
+3143	GO:0031975~envelope	NF
+13822	GO:0005623~cell	EG,NF
+149859	GO:0044464~cell part	EG,NF
+18023	GO:0005623~cell	NF
+26303	GO:0031975~envelope	EG,NF
+8967	GO:0005622~intracellular	NF,UP
+149883	GO:0016020~membrane	EG,NF
+3857	GO:0005623~cell	EG,NF,UP
+37422	GO:0043227~membrane-bound organelle	EG,NF,UP
+5417	GO:0043226~organelle	EG,NF,UP
+6829	GO:0043232~intracellular non-membrane-bound organelle	EG,NF,UP
+18584	GO:0031224~intrinsic to membrane	EG,NF,UP
+148795	GO:0043226~organelle	EG,NF
+26900	GO:0043229~intracellular organelle	EG,NF,UP
+20331	GO:0043226~organelle	NF
+13001	GO:0044446~intracellular organelle part	UP
+12991	GO:0005615~extracellular space	EG,NF
+3299	GO:0016020~membrane	EG,NF,UP
+31114	GO:0016020~membrane	NF,UP
+5863	GO:0043229~intracellular organelle	EG,NF,UP
+3637	GO:0031012~extracellular matrix	EG
+144137	GO:0005623~cell	EG
+8258	GO:0005856~cytoskeleton	EG,UP
+24671	GO:0005622~intracellular	EG,UP
+149050	GO:0044464~cell part	EG,NF,UP
+45363	GO:0044424~intracellular part	UP
+38052	GO:0043226~organelle	EG
+12950	GO:0015630~microtubule cytoskeleton	EG
+3409	GO:0043229~intracellular organelle	EG,NF
+19372	GO:0005737~cytoplasm	EG,UP
+13001	GO:0043231~intracellular membrane-bound organelle	UP
+9504	GO:0043226~organelle	EG,NF
+17019	GO:0043227~membrane-bound organelle	EG,NF
+149929	GO:0016021~integral to membrane	EG,NF
+37951	GO:0005634~nucleus	EG
+39604	GO:0005856~cytoskeleton	EG,NF
+148792	GO:0044424~intracellular part	EG,NF
+37559	GO:0044425~membrane part	EG,NF
+36930	GO:0005623~cell	EG,NF
+53564	GO:0005623~cell	EG
+37809	GO:0044446~intracellular organelle part	NF
+149827	GO:0005623~cell	EG,NF
+144857	GO:0044430~cytoskeletal part	EG,NF,UP
+16136	GO:0043229~intracellular organelle	EG,NF
+144647	GO:0019866~organelle inner membrane	EG,NF,UP
+29234	GO:0044464~cell part	EG,NF,UP
+146153	GO:0005623~cell	EG,NF,UP
+19142	GO:0044425~membrane part	EG,NF,UP
+145542	GO:0044424~intracellular part	EG
+18393	GO:0044444~cytoplasmic part	EG
+8997	GO:0005737~cytoplasm	EG
+144869	GO:0044444~cytoplasmic part	EG
+4735	GO:0005623~cell	EG,NF,UP
+13190	GO:0016021~integral to membrane	EG,NF,UP
+14566	GO:0043229~intracellular organelle	EG
+28170	GO:0043226~organelle	EG
+28147	GO:0030529~ribonucleoprotein complex	EG,NF,UP
+17134	GO:0005615~extracellular space	EG,NF
+3672	GO:0005856~cytoskeleton	EG,NF
+13984	GO:0030017~sarcomere	EG
+27191	GO:0005768~endosome	EG,NF,UP
+20287	GO:0043234~protein complex	NF
+146222	GO:0044431~Golgi apparatus part	EG,NF
+17140	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+18653	GO:0016021~integral to membrane	EG,NF,UP
+6434	GO:0044464~cell part	EG
+149597	GO:0044432~endoplasmic reticulum part	EG
+9320	GO:0030054~cell junction	EG,NF,UP
+144117	GO:0000151~ubiquitin ligase complex	EG,NF,UP
+19352	GO:0044464~cell part	EG,NF,UP
+5370	GO:0043226~organelle	EG
+148109	GO:0043231~intracellular membrane-bound organelle	EG
+34635	GO:0044451~nucleoplasm part	EG,NF
+26672	GO:0016020~membrane	EG,NF,UP
+144657	GO:0044464~cell part	NF,UP
+6751	GO:0005623~cell	NF
+19238	GO:0043226~organelle	EG,NF,UP
+144677	GO:0005578~proteinaceous extracellular matrix	EG
+34386	GO:0044430~cytoskeletal part	EG,NF,UP
+7929	GO:0005737~cytoplasm	EG,NF
+12798	GO:0032991~macromolecular complex	EG
+27102	GO:0043226~organelle	EG,NF,UP
+3956	GO:0030125~clathrin vesicle coat	NF
+4375	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+5947	GO:0005911~intercellular junction	EG,NF,UP
+15880	GO:0043233~organelle lumen	EG,NF,UP
+145020	GO:0043231~intracellular membrane-bound organelle	EG,NF
+147031	GO:0005623~cell	EG,NF
+9183	GO:0005764~lysosome	EG
+37860	GO:0044464~cell part	NF,UP
+26881	GO:0005623~cell	EG,NF,UP
+13624	GO:0005634~nucleus	EG
+27471	GO:0031981~nuclear lumen	EG,NF,UP
+9994	GO:0005681~spliceosome	EG,NF,UP
+26443	GO:0043229~intracellular organelle	EG,NF
+32774	GO:0044424~intracellular part	EG,NF,UP
+4658	GO:0031967~organelle envelope	NF
+37944	GO:0043232~intracellular non-membrane-bound organelle	NF
+4302	GO:0043226~organelle	UP
+144561	GO:0043235~receptor complex	EG
+147680	GO:0043226~organelle	EG,NF
+14186	GO:0005654~nucleoplasm	EG,UP
+37045	GO:0005576~extracellular region	EG,NF,UP
+19396	GO:0044424~intracellular part	EG
+8815	GO:0005634~nucleus	EG,NF,UP
+144955	GO:0044451~nucleoplasm part	EG,NF,UP
+42112	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+25743	GO:0005623~cell	EG,UP
+22074	GO:0044422~organelle part	EG,NF,UP
+145172	GO:0016020~membrane	EG,NF,UP
+27465	GO:0000267~cell fraction	EG,NF,UP
+37902	GO:0005623~cell	EG,NF
+38175	GO:0005886~plasma membrane	EG,NF,UP
+43494	GO:0043226~organelle	EG,NF,UP
+13066	GO:0043234~protein complex	EG,NF,UP
+10210	GO:0005730~nucleolus	EG,NF,UP
+30201	GO:0005634~nucleus	EG
+119317	GO:0043229~intracellular organelle	EG,UP
+14959	GO:0044464~cell part	EG,UP
+3818	GO:0043227~membrane-bound organelle	EG,NF
+15011	GO:0031224~intrinsic to membrane	EG,NF,UP
+13051	GO:0016021~integral to membrane	EG,NF
+28352	GO:0032991~macromolecular complex	EG,NF
+33628	GO:0005737~cytoplasm	EG,NF,UP
+149241	GO:0044422~organelle part	EG
+15636	GO:0044421~extracellular region part	EG,NF,UP
+27691	GO:0043231~intracellular membrane-bound organelle	EG
+26335	GO:0005634~nucleus	EG,NF
+28356	GO:0044464~cell part	EG,NF,UP
+37849	GO:0043227~membrane-bound organelle	EG,NF,UP
+90679	GO:0030136~clathrin-coated vesicle	EG,NF
+14387	GO:0044464~cell part	EG,NF,UP
+144589	GO:0005740~mitochondrial envelope	EG,UP
+16829	GO:0044424~intracellular part	EG,NF,UP
+16731	GO:0005622~intracellular	EG
+18514	GO:0016021~integral to membrane	EG,NF,UP
+37310	GO:0016021~integral to membrane	EG,NF,UP
+147104	GO:0044464~cell part	UP
+11178	GO:0016021~integral to membrane	EG,NF
+147219	GO:0045202~synapse	EG,NF
+144243	GO:0009897~external side of plasma membrane	UP
+16312	GO:0031974~membrane-enclosed lumen	EG,NF,UP
+14987	GO:0005576~extracellular region	NF,UP
+147082	GO:0044446~intracellular organelle part	EG,NF
+19594	GO:0005622~intracellular	NF,UP
+146040	GO:0043226~organelle	EG,NF
+5556	GO:0044464~cell part	NF,UP
+6778	GO:0044428~nuclear part	EG
+26910	GO:0044464~cell part	EG,NF,UP
+27838	GO:0044424~intracellular part	EG,NF,UP
+26527	GO:0044424~intracellular part	EG,NF,UP
+8608	GO:0005622~intracellular	EG,NF
+12941	GO:0044464~cell part	NF
+6280	GO:0005634~nucleus	EG,UP
+7304	GO:0044424~intracellular part	EG,UP
+17982	GO:0043226~organelle	EG
+7679	GO:0043229~intracellular organelle	EG,NF,UP
+26621	GO:0005623~cell	EG
+18474	GO:0044464~cell part	EG
+27557	GO:0044422~organelle part	EG,NF,UP
+144458	GO:0016327~apicolateral plasma membrane	EG,NF,UP
+4492	GO:0043226~organelle	NF
+121788	GO:0005634~nucleus	EG,NF
+29363	GO:0043229~intracellular organelle	NF,UP
+50914	GO:0044424~intracellular part	EG
+3732	GO:0044459~plasma membrane part	EG
+143779	GO:0044464~cell part	EG
+12827	GO:0043226~organelle	EG,NF,UP
+13319	GO:0044464~cell part	EG
+148203	GO:0044424~intracellular part	EG,NF,UP
+18583	GO:0016020~membrane	EG,NF,UP
+15694	GO:0005623~cell	EG
+24664	GO:0009986~cell surface	EG,NF,UP
+38847	GO:0044424~intracellular part	EG
+146844	GO:0030672~synaptic vesicle membrane	EG,NF,UP
+148596	GO:0043227~membrane-bound organelle	EG,NF,UP
+38191	GO:0044464~cell part	EG,NF
+37022	GO:0043234~protein complex	EG,NF,UP
+31568	GO:0005856~cytoskeleton	EG,UP
+148583	GO:0043226~organelle	EG,NF,UP
+42117	GO:0005623~cell	EG,NF,UP
+12863	GO:0016020~membrane	EG,NF
+145126	GO:0031090~organelle membrane	EG,NF,UP
+26309	GO:0005622~intracellular	EG
+6701	GO:0005622~intracellular	EG,NF
+146950	GO:0005667~transcription factor complex	EG,UP
+18452	GO:0005739~mitochondrion	EG,NF
+11292	GO:0043229~intracellular organelle	EG
+9628	GO:0031982~vesicle	EG
+14556	GO:0005623~cell	EG,NF,UP
+149311	GO:0043227~membrane-bound organelle	EG,NF
+149241	GO:0005622~intracellular	EG,NF
+16342	GO:0043226~organelle	EG,UP
+18786	GO:0044425~membrane part	EG,NF,UP
+29259	GO:0044464~cell part	EG,UP
+3544	GO:0031012~extracellular matrix	EG,NF,UP
+9020	GO:0043227~membrane-bound organelle	EG,NF,UP
+13418	GO:0005623~cell	EG,NF,UP
+31192	GO:0030133~transport vesicle	EG,NF,UP
+37123	GO:0044464~cell part	EG,UP
+148936	GO:0044446~intracellular organelle part	EG,NF,UP
+36063	GO:0044424~intracellular part	EG,NF
+19694	GO:0031224~intrinsic to membrane	EG,NF,UP
+8666	GO:0044425~membrane part	EG,NF,UP
+148007	GO:0044464~cell part	EG,NF,UP
+10040	GO:0043227~membrane-bound organelle	EG,NF
+27802	GO:0044425~membrane part	NF,UP
+19392	GO:0009317~acetyl-CoA carboxylase complex	EG,NF,UP
+7806	GO:0043228~non-membrane-bound organelle	EG,NF
+39675	GO:0016020~membrane	EG
+7276	GO:0005657~replication fork	NF,UP
+27813	GO:0044464~cell part	EG,NF
+27265	GO:0005622~intracellular	EG
+11039	GO:0016021~integral to membrane	EG
+9411	GO:0031981~nuclear lumen	EG,UP
+17133	GO:0031224~intrinsic to membrane	NF,UP
+37378	GO:0043229~intracellular organelle	EG,NF
+24649	GO:0005737~cytoplasm	NF,UP
+37664	GO:0005623~cell	EG,NF
+12224	GO:0005737~cytoplasm	EG,NF,UP
+28082	GO:0005886~plasma membrane	EG,NF
+19377	GO:0044464~cell part	EG,NF,UP
+36009	GO:0005792~microsome	EG
+145240	GO:0016021~integral to membrane	EG,NF
+15208	GO:0031974~membrane-enclosed lumen	EG
+5395	GO:0043226~organelle	EG,NF
+11897	GO:0005622~intracellular	EG,UP
+15434	GO:0005623~cell	EG,NF,UP
+27241	GO:0044464~cell part	EG,NF,UP
+13272	GO:0044464~cell part	EG
+4765	GO:0016514~SWI/SNF complex	EG,NF,UP
+7663	GO:0044424~intracellular part	EG,NF,UP
+26367	GO:0044425~membrane part	EG,NF,UP
+3266	GO:0005740~mitochondrial envelope	NF
+145033	GO:0005622~intracellular	EG
+5027	GO:0042579~microbody	EG,NF
+60160	GO:0005740~mitochondrial envelope	EG,NF,UP
+147223	GO:0005624~membrane fraction	NF,UP
+40171	GO:0043232~intracellular non-membrane-bound organelle	EG,NF,UP
+18560	GO:0016021~integral to membrane	EG,NF,UP
+148562	GO:0044424~intracellular part	EG,NF
+147251	GO:0044424~intracellular part	EG,NF,UP
+4413	GO:0044424~intracellular part	EG,NF
+87659	GO:0043226~organelle	EG,NF,UP
+14767	GO:0005737~cytoplasm	EG,UP
+39680	GO:0005623~cell	EG,UP
+16836	GO:0016020~membrane	EG,NF
+144958	GO:0005576~extracellular region	EG,NF
+144791	GO:0031224~intrinsic to membrane	EG,NF,UP
+37758	GO:0005623~cell	EG,NF,UP
+147644	GO:0031975~envelope	NF
+7782	GO:0043229~intracellular organelle	EG,NF,UP
+10597	GO:0005576~extracellular region	EG,NF
+149735	GO:0043232~intracellular non-membrane-bound organelle	NF
+18309	GO:0044464~cell part	EG
+146623	GO:0044424~intracellular part	EG,NF
+14195	GO:0005737~cytoplasm	EG,NF
+9290	GO:0044421~extracellular region part	EG,NF,UP
+9312	GO:0043227~membrane-bound organelle	EG,NF
+38123	GO:0005654~nucleoplasm	EG
+145842	GO:0005622~intracellular	EG,NF
+17187	GO:0031975~envelope	NF
+91387	GO:0005887~integral to plasma membrane	EG
+8006	GO:0044422~organelle part	EG,UP
+37534	GO:0043226~organelle	EG
+10305	GO:0044446~intracellular organelle part	EG,NF,UP
+33287	GO:0031224~intrinsic to membrane	EG,NF,UP
+38026	GO:0044464~cell part	EG
+16312	GO:0005623~cell	EG,NF,UP
+6984	GO:0044464~cell part	EG,NF,UP
+3758	GO:0043229~intracellular organelle	EG,NF
+148418	GO:0043226~organelle	EG,NF
+144739	GO:0016020~membrane	EG,NF,UP
+5364	GO:0005737~cytoplasm	EG
+6035	GO:0043227~membrane-bound organelle	EG,NF,UP
+32769	GO:0044446~intracellular organelle part	EG
+10175	GO:0043227~membrane-bound organelle	EG,NF,UP
+3498	GO:0005739~mitochondrion	NF
+24787	GO:0043227~membrane-bound organelle	EG,NF
+144579	GO:0016021~integral to membrane	EG,NF,UP
+12464	GO:0000775~chromosome, pericentric region	EG,UP
+7677	GO:0016021~integral to membrane	EG,NF
+13127	GO:0005737~cytoplasm	EG,NF,UP
+6298	GO:0043226~organelle	EG,NF,UP
+21535	GO:0044424~intracellular part	EG,NF
+20224	GO:0044424~intracellular part	EG
+5209	GO:0005623~cell	EG
+6928	GO:0043232~intracellular non-membrane-bound organelle	EG
+3983	GO:0016020~membrane	EG,NF,UP
+26537	GO:0044451~nucleoplasm part	EG,NF
+21066	GO:0016021~integral to membrane	EG,NF,UP
+27488	GO:0043231~intracellular membrane-bound organelle	EG,UP
+17118	GO:0016023~cytoplasmic membrane-bound vesicle	EG,NF,UP
+12785	GO:0044429~mitochondrial part	EG,NF,UP
+10134	GO:0012505~endomembrane system	NF
+8363	GO:0005623~cell	EG,NF,UP
+22968	GO:0044425~membrane part	NF,UP
+26400	GO:0005886~plasma membrane	EG
+7159	GO:0015629~actin cytoskeleton	EG,NF,UP
+14213	GO:0043231~intracellular membrane-bound organelle	EG
+12966	GO:0044464~cell part	EG,NF
+9291	GO:0030054~cell junction	EG
+147781	GO:0005634~nucleus	NF,UP
+42167	GO:0005634~nucleus	EG,NF,UP
+146484	GO:0005839~proteasome core complex (sensu Eukaryota)	EG,NF,UP
+148795	GO:0005622~intracellular	EG,NF
+18834	GO:0044464~cell part	EG,NF,UP
+10846	GO:0044429~mitochondrial part	NF
+144442	GO:0005623~cell	EG,NF,UP
+23809	GO:0044444~cytoplasmic part	EG,NF
+147293	GO:0005634~nucleus	EG,UP
+144113	GO:0044422~organelle part	EG,NF,UP
+8217	GO:0044425~membrane part	EG,NF
+10688	GO:0031224~intrinsic to membrane	EG,NF,UP
+21208	GO:0044464~cell part	EG,NF
+18262	GO:0044464~cell part	EG,NF,UP
+27960	GO:0005576~extracellular region	EG,NF,UP
+143567	GO:0044464~cell part	EG,NF
+45318	GO:0043227~membrane-bound organelle	EG,NF,UP
+19122	GO:0016020~membrane	EG
+37293	GO:0043231~intracellular membrane-bound organelle	EG
+10624	GO:0043227~membrane-bound organelle	EG,NF
+149435	GO:0044464~cell part	EG,NF
+27248	GO:0016020~membrane	EG
+19325	GO:0005622~intracellular	EG,NF
+148302	GO:0016020~membrane	EG,NF,UP
+27732	GO:0045211~postsynaptic membrane	EG,NF
+146982	GO:0044424~intracellular part	EG,NF,UP
+15196	GO:0005623~cell	EG,UP
+145289	GO:0031974~membrane-enclosed lumen	EG
+13402	GO:0016020~membrane	NF,UP
+14668	GO:0032991~macromolecular complex	EG
+35344	GO:0016021~integral to membrane	EG,NF
+7887	GO:0044464~cell part	EG
+148539	GO:0045259~proton-transporting ATP synthase complex	NF
+28200	GO:0043229~intracellular organelle	EG,UP
+28236	GO:0044424~intracellular part	EG,NF,UP
+7319	GO:0005623~cell	EG,NF,UP
+14692	GO:0000793~condensed chromosome	NF,UP
+45473	GO:0044421~extracellular region part	EG,NF,UP
+16702	GO:0043226~organelle	EG,NF,UP
+15175	GO:0031226~intrinsic to plasma membrane	EG
+15339	GO:0005578~proteinaceous extracellular matrix	EG,NF,UP
+147025	GO:0016020~membrane	EG
+4874	GO:0043234~protein complex	EG,NF
+148887	GO:0043228~non-membrane-bound organelle	NF
+11870	GO:0043231~intracellular membrane-bound organelle	UP
+26630	GO:0043229~intracellular organelle	EG,NF,UP
+144366	GO:0016020~membrane	EG,NF,UP
+3212	GO:0043226~organelle	EG,NF,UP
+10885	GO:0044424~intracellular part	EG
+145320	GO:0005623~cell	NF
+148876	GO:0016021~integral to membrane	EG
+10723	GO:0016021~integral to membrane	EG,NF,UP
+18335	GO:0044459~plasma membrane part	EG
+14938	GO:0044422~organelle part	EG,NF
+19504	GO:0044444~cytoplasmic part	NF,UP
+26459	GO:0030529~ribonucleoprotein complex	EG,UP
+147584	GO:0043227~membrane-bound organelle	NF,UP
+27449	GO:0005623~cell	EG,NF
+24764	GO:0043231~intracellular membrane-bound organelle	EG,NF
+38147	GO:0005615~extracellular space	EG,NF,UP
+144080	GO:0044430~cytoskeletal part	EG,NF,UP
+6819	GO:0044464~cell part	EG,UP
+13869	GO:0044464~cell part	EG,UP
+15117	GO:0005622~intracellular	EG,NF,UP
+9335	GO:0005623~cell	UP
+15219	GO:0043229~intracellular organelle	EG
+27672	GO:0044446~intracellular organelle part	EG,NF
+11276	GO:0005886~plasma membrane	EG,NF,UP
+148912	GO:0005737~cytoplasm	EG,NF
+5755	GO:0043226~organelle	EG,NF,UP
+7293	GO:0043227~membrane-bound organelle	EG,NF
+7212	GO:0044422~organelle part	EG,UP
+28233	GO:0005623~cell	EG,NF
+6247	GO:0044464~cell part	EG,NF
+13297	GO:0044464~cell part	EG,NF,UP
+27601	GO:0044464~cell part	EG,NF
+9338	GO:0016020~membrane	EG,NF,UP
+15012	GO:0044444~cytoplasmic part	EG,NF,UP
+33586	GO:0044464~cell part	EG,NF,UP
+3484	GO:0005912~adherens junction	EG,NF,UP
+21161	GO:0044464~cell part	EG,NF
+19165	GO:0044464~cell part	EG,NF,UP
+143978	GO:0043226~organelle	EG
+4818	GO:0044425~membrane part	EG,NF
+33580	GO:0032991~macromolecular complex	EG,NF
+15085	GO:0044425~membrane part	EG
+9263	GO:0044425~membrane part	EG,NF,UP
+10759	GO:0043227~membrane-bound organelle	UP
+145022	GO:0043227~membrane-bound organelle	EG,NF
+17880	GO:0032991~macromolecular complex	EG,UP
+1009059	GO:0044464~cell part	NF
+4801	GO:0044464~cell part	EG,NF,UP
+18090	GO:0005623~cell	EG,NF,UP
+10637	GO:0044459~plasma membrane part	EG,NF
+145167	GO:0015629~actin cytoskeleton	EG,NF,UP
+35241	GO:0043227~membrane-bound organelle	EG,NF,UP
+5213	GO:0045211~postsynaptic membrane	EG,NF,UP
+149274	GO:0043226~organelle	EG
+53189	GO:0043226~organelle	EG
+16756	GO:0044444~cytoplasmic part	EG,NF
+16792	GO:0005622~intracellular	EG,NF,UP
+18897	GO:0044424~intracellular part	EG,NF,UP
+143942	GO:0045202~synapse	EG
+28327	GO:0005623~cell	EG,NF,UP
+29550	GO:0043229~intracellular organelle	EG,NF
+14716	GO:0016020~membrane	EG,UP
+12229	GO:0044464~cell part	EG,NF
+9270	GO:0043226~organelle	EG,NF,UP
+146094	GO:0005576~extracellular region	EG
+149852	GO:0005634~nucleus	EG,NF
+148557	GO:0044464~cell part	EG,NF
+32518	GO:0044464~cell part	NF
+147665	GO:0044444~cytoplasmic part	EG,NF,UP
+19159	GO:0016020~membrane	EG,NF,UP
+16958	GO:0044424~intracellular part	EG,NF
+10829	GO:0005623~cell	EG,NF
+31454	GO:0043226~organelle	EG,NF,UP
+58158	GO:0005622~intracellular	EG
+9372	GO:0044424~intracellular part	EG,NF
+149030	GO:0044425~membrane part	EG
+144048	GO:0005622~intracellular	EG
+13983	GO:0005623~cell	EG,NF
+13439	GO:0016020~membrane	UP
+13948	GO:0044421~extracellular region part	EG,NF,UP
+133662	GO:0044425~membrane part	EG
+27967	GO:0044424~intracellular part	EG,NF
+26656	GO:0044424~intracellular part	EG
+27967	GO:0044446~intracellular organelle part	EG,NF
+7783	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+16882	GO:0005622~intracellular	EG,NF
+22636	GO:0044464~cell part	UP
+149894	GO:0005623~cell	EG,NF
+149714	GO:0005886~plasma membrane	EG
+3818	GO:0044421~extracellular region part	EG,NF
+148434	GO:0043227~membrane-bound organelle	UP
+12584	GO:0005622~intracellular	EG,NF
+27773	GO:0044425~membrane part	EG
+12845	GO:0005623~cell	EG
+31984	GO:0030529~ribonucleoprotein complex	EG,NF,UP
+147021	GO:0044424~intracellular part	EG,UP
+6762	GO:0005622~intracellular	EG,NF
+30327	GO:0005576~extracellular region	EG,NF,UP
+17046	GO:0005623~cell	EG,UP
+23946	GO:0044421~extracellular region part	EG,NF
+16033	GO:0005886~plasma membrane	EG
+8831	GO:0032991~macromolecular complex	EG,NF
+7402	GO:0043231~intracellular membrane-bound organelle	NF
+145082	GO:0005623~cell	EG,NF
+21600	GO:0005622~intracellular	NF
+5864	GO:0044425~membrane part	EG,NF
+30263	GO:0005623~cell	EG,NF,UP
+144138	GO:0005622~intracellular	EG,NF
+149811	GO:0044446~intracellular organelle part	EG,NF
+12464	GO:0044427~chromosomal part	EG,UP
+19365	GO:0044422~organelle part	EG,NF,UP
+144306	GO:0043232~intracellular non-membrane-bound organelle	EG
+14861	GO:0005623~cell	EG,NF,UP
+16972	GO:0005622~intracellular	EG,NF,UP
+144509	GO:0005819~spindle	EG,NF,UP
+19062	GO:0005623~cell	EG,NF,UP
+143927	GO:0044464~cell part	EG,NF
+45487	GO:0005761~mitochondrial ribosome	EG,NF
+33632	GO:0044421~extracellular region part	EG,NF,UP
+4896	GO:0005623~cell	EG,NF,UP
+133399	GO:0043227~membrane-bound organelle	EG
+146874	GO:0044422~organelle part	EG,NF
+37403	GO:0043229~intracellular organelle	EG,NF,UP
+18354	GO:0043232~intracellular non-membrane-bound organelle	EG,NF
+16653	GO:0005730~nucleolus	NF,UP
+8818	GO:0031224~intrinsic to membrane	EG,NF,UP
+92307	GO:0005623~cell	EG
+38192	GO:0005829~cytosol	EG,NF,UP
+16311	GO:0016020~membrane	EG
+3923	GO:0044464~cell part	EG,NF
+5018	GO:0043226~organelle	EG,NF
+30185	GO:0016020~membrane	EG
+15357	GO:0044451~nucleoplasm part	EG,NF,UP
+145176	GO:0005623~cell	EG,NF
+13723	GO:0005623~cell	EG,NF
+3809	GO:0043226~organelle	EG,NF
+4524	GO:0031012~extracellular matrix	EG,NF
+3758	GO:0005623~cell	EG,NF
+149392	GO:0005622~intracellular	EG
+144228	GO:0005622~intracellular	EG,NF,UP
+19489	GO:0043229~intracellular organelle	NF
+34385	GO:0009986~cell surface	NF
+149717	GO:0031224~intrinsic to membrane	EG,NF
+9684	GO:0043232~intracellular non-membrane-bound organelle	EG
+37508	GO:0044464~cell part	EG
+11981	GO:0016021~integral to membrane	EG,NF
+27555	GO:0005887~integral to plasma membrane	EG
+31141	GO:0005623~cell	EG,NF,UP
+146950	GO:0043226~organelle	EG,NF,UP
+11114	GO:0044464~cell part	EG,NF,UP
+20611	GO:0016021~integral to membrane	EG,NF,UP
+28223	GO:0044459~plasma membrane part	EG,NF
+144038	GO:0005623~cell	EG,NF,UP
+20052	GO:0031974~membrane-enclosed lumen	EG
+15157	GO:0044459~plasma membrane part	EG,NF,UP
+9391	GO:0043228~non-membrane-bound organelle	EG,NF,UP
+31176	GO:0031090~organelle membrane	EG,NF
+12629	GO:0044444~cytoplasmic part	EG
+12732	GO:0043227~membrane-bound organelle	NF
+64480	GO:0031224~intrinsic to membrane	EG
+98185	GO:0043226~organelle	EG,NF,UP
+144278	GO:0005737~cytoplasm	EG,NF,UP
+3870	GO:0005615~extracellular space	EG,UP
+28089	GO:0005623~cell	EG
+7792	GO:0044424~intracellular part	EG,NF,UP
+12661	GO:0031224~intrinsic to membrane	EG
+16762	GO:0019897~extrinsic to plasma membrane	EG,NF,UP
+27438	GO:0005730~nucleolus	NF,UP
+15111	GO:0044446~intracellular organelle part	EG,NF
+148211	GO:0032991~macromolecular complex	EG,NF,UP
+69746	GO:0043231~intracellular membrane-bound organelle	EG
+12609	GO:0005737~cytoplasm	EG,NF
+146029	GO:0043231~intracellular membrane-bound organelle	EG
+15315	GO:0009986~cell surface	EG,NF,UP
+36831	GO:0005623~cell	EG,NF,UP
+19024	GO:0044425~membrane part	EG,NF,UP
+37346	GO:0031988~membrane-bound vesicle	NF
+146589	GO:0044444~cytoplasmic part	EG,NF
+26702	GO:0005819~spindle	EG,NF,UP
+146054	GO:0005623~cell	EG,NF,UP
+14601	GO:0005623~cell	EG,NF,UP
+148783	GO:0016021~integral to membrane	EG,NF,UP
+15914	GO:0031967~organelle envelope	EG,NF,UP
+16672	GO:0043229~intracellular organelle	EG,NF,UP
+14820	GO:0044456~synapse part	EG,NF,UP
+21521	GO:0044464~cell part	EG,NF
+11383	GO:0005634~nucleus	EG
+7445	GO:0016021~integral to membrane	EG,NF,UP
+146752	GO:0044424~intracellular part	EG
+29967	GO:0043228~non-membrane-bound organelle	EG,NF
+4636	GO:0005623~cell	EG
+53869	GO:0005840~ribosome	EG
+12593	GO:0043226~organelle	EG
+149704	GO:0044463~cell projection part	EG
+15104	GO:0016021~integral to membrane	EG,NF
+3653	GO:0005911~intercellular junction	EG
+18902	GO:0016020~membrane	EG,NF,UP
+27054	GO:0044464~cell part	EG
+13085	GO:0044464~cell part	EG,NF,UP
+7790	GO:0005623~cell	EG
+24912	GO:0005886~plasma membrane	EG,NF,UP
+4559	GO:0016020~membrane	EG,NF,UP
+37188	GO:0044446~intracellular organelle part	NF
+12829	GO:0044427~chromosomal part	EG,NF
+144813	GO:0044424~intracellular part	EG,NF
+7621	GO:0044446~intracellular organelle part	EG,NF,UP
+36925	GO:0005623~cell	EG,NF
+148070	GO:0005623~cell	EG
+147432	GO:0016021~integral to membrane	EG,NF,UP
+19114	GO:0044425~membrane part	EG,NF,UP
+145993	GO:0005622~intracellular	EG,NF
+146805	GO:0016020~membrane	EG,NF,UP
+17172	GO:0044464~cell part	EG,NF,UP
+37461	GO:0044464~cell part	EG,NF
+1009082	GO:0044446~intracellular organelle part	NF
+42184	GO:0005623~cell	EG,NF,UP
+144829	GO:0031974~membrane-enclosed lumen	EG,NF,UP
+12017	GO:0044464~cell part	EG
+148345	GO:0044464~cell part	EG,NF,UP
+34385	GO:0031252~leading edge	NF
+42161	GO:0005737~cytoplasm	EG
+148697	GO:0044459~plasma membrane part	EG
+147130	GO:0043227~membrane-bound organelle	EG
+18571	GO:0044422~organelle part	EG,UP
+26782	GO:0005623~cell	EG,NF
+5514	GO:0005623~cell	EG,UP
+8599	GO:0015629~actin cytoskeleton	EG,NF,UP
+6797	GO:0044464~cell part	EG,NF
+146711	GO:0005730~nucleolus	EG,NF,UP
+3518	GO:0044444~cytoplasmic part	EG,NF,UP
+3809	GO:0031224~intrinsic to membrane	EG,NF,UP
+145241	GO:0043229~intracellular organelle	EG
+146378	GO:0031224~intrinsic to membrane	EG,NF,UP
+9209	GO:0044422~organelle part	EG,NF,UP
+23768	GO:0000267~cell fraction	UP
+15411	GO:0042175~nuclear envelope-endoplasmic reticulum network	EG,NF,UP
+18879	GO:0016021~integral to membrane	EG,NF,UP
+143739	GO:0044446~intracellular organelle part	EG,NF
+37803	GO:0005623~cell	EG,NF,UP
+18780	GO:0031224~intrinsic to membrane	EG,NF,UP
+43774	GO:0016020~membrane	EG
+148590	GO:0043228~non-membrane-bound organelle	NF,UP
+144555	GO:0044428~nuclear part	EG,NF,UP
+5058	GO:0043229~intracellular organelle	EG,UP
+26986	GO:0031224~intrinsic to membrane	EG
+27932	GO:0016020~membrane	EG,NF,UP
+7530	GO:0005623~cell	EG,NF
+5505	GO:0044425~membrane part	EG,NF
+14783	GO:0031224~intrinsic to membrane	EG,UP
+27559	GO:0031224~intrinsic to membrane	EG,NF
+6827	GO:0044441~cilium part	EG,NF,UP
+21360	GO:0043226~organelle	EG,NF,UP
+22989	GO:0031224~intrinsic to membrane	NF
+28422	GO:0031224~intrinsic to membrane	EG,NF
+18488	GO:0044425~membrane part	EG,NF,UP
+23852	GO:0031224~intrinsic to membrane	EG
+149748	GO:0031090~organelle membrane	EG,NF
+26757	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+146213	GO:0043226~organelle	EG,NF,UP
+22350	GO:0005886~plasma membrane	EG,NF
+27984	GO:0044444~cytoplasmic part	EG,NF,UP
+16609	GO:0030136~clathrin-coated vesicle	NF
+9693	GO:0043227~membrane-bound organelle	EG,NF
+26260	GO:0005578~proteinaceous extracellular matrix	EG,NF
+148697	GO:0000267~cell fraction	EG
+16613	GO:0005622~intracellular	EG,NF
+18647	GO:0044464~cell part	EG,NF,UP
+20428	GO:0031224~intrinsic to membrane	EG,NF
+27660	GO:0005623~cell	EG,NF
+14356	GO:0044451~nucleoplasm part	EG,NF
+12542	GO:0044464~cell part	EG,NF,UP
+25738	GO:0005623~cell	NF,UP
+28365	GO:0044424~intracellular part	EG,NF
+28438	GO:0043227~membrane-bound organelle	EG,NF,UP
+148870	GO:0044464~cell part	EG,NF
+19917	GO:0032991~macromolecular complex	NF
+13181	GO:0005622~intracellular	EG,NF,UP
+18075	GO:0044464~cell part	EG
+3758	GO:0043231~intracellular membrane-bound organelle	EG,NF
+4093	GO:0043226~organelle	EG,NF,UP
+149493	GO:0016020~membrane	EG,NF
+144403	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+7624	GO:0005623~cell	EG,NF,UP
+11417	GO:0044425~membrane part	EG,NF,UP
+27737	GO:0044424~intracellular part	EG,NF,UP
+26426	GO:0044424~intracellular part	EG,NF
+14847	GO:0031975~envelope	EG,NF
+26522	GO:0005623~cell	NF,UP
+149248	GO:0044464~cell part	NF,UP
+7203	GO:0044424~intracellular part	EG,NF,UP
+149033	GO:0005622~intracellular	EG,NF
+145944	GO:0043229~intracellular organelle	EG
+18578	GO:0044425~membrane part	EG,NF,UP
+9623	GO:0043229~intracellular organelle	EG,NF,UP
+5058	GO:0005622~intracellular	EG,UP
+148161	GO:0043229~intracellular organelle	EG
+7131	GO:0043227~membrane-bound organelle	EG,NF
+148102	GO:0044424~intracellular part	EG
+149704	GO:0030425~dendrite	EG
+13465	GO:0005737~cytoplasm	NF
+17007	GO:0044464~cell part	EG,NF,UP
+36804	GO:0043226~organelle	EG,NF
+7897	GO:0043231~intracellular membrane-bound organelle	UP
+19566	GO:0005622~intracellular	EG,NF,UP
+13271	GO:0005622~intracellular	EG,NF
+27984	GO:0044422~organelle part	EG,NF,UP
+22076	GO:0005886~plasma membrane	EG,UP
+12968	GO:0044459~plasma membrane part	EG,NF
+15987	GO:0005622~intracellular	EG
+144137	GO:0043229~intracellular organelle	EG
+26653	GO:0005634~nucleus	EG,UP
+14457	GO:0005623~cell	EG,NF,UP
+28368	GO:0043226~organelle	EG,NF,UP
+738531	GO:0031224~intrinsic to membrane	EG,NF,UP
+26616	GO:0005623~cell	EG,NF,UP
+9234	GO:0043228~non-membrane-bound organelle	EG
+9446	GO:0005622~intracellular	EG,NF
+3151	GO:0005622~intracellular	NF
+64481	GO:0005886~plasma membrane	EG
+146369	GO:0014704~intercalated disc	EG,NF,UP
+26294	GO:0043228~non-membrane-bound organelle	EG,NF
+146999	GO:0043227~membrane-bound organelle	EG
+25109	GO:0005634~nucleus	EG
+10745	GO:0005605~basal lamina	EG,NF
+4062	GO:0005737~cytoplasm	EG,NF,UP
+147786	GO:0005886~plasma membrane	EG
+13319	GO:0005623~cell	EG
+15514	GO:0043234~protein complex	EG
+27670	GO:0044446~intracellular organelle part	EG,NF,UP
+37995	GO:0044428~nuclear part	EG
+149934	GO:0044424~intracellular part	EG,NF
+149091	GO:0044425~membrane part	EG,NF
+12915	GO:0016021~integral to membrane	EG,NF
+148153	GO:0005737~cytoplasm	EG,UP
+27969	GO:0016020~membrane	EG,NF
+36927	GO:0043231~intracellular membrane-bound organelle	EG,NF
+148864	GO:0043229~intracellular organelle	EG,NF,UP
+26282	GO:0016020~membrane	EG,NF
+27555	GO:0016021~integral to membrane	EG,NF,UP
+26536	GO:0031975~envelope	EG,NF,UP
+10482	GO:0042995~cell projection	NF
+147300	GO:0005634~nucleus	EG,NF
+23119	GO:0016021~integral to membrane	EG,NF,UP
+3641	GO:0043228~non-membrane-bound organelle	EG,NF
+18341	GO:0031224~intrinsic to membrane	EG,NF
+5054	GO:0005634~nucleus	EG,NF,UP
+37565	GO:0005623~cell	EG,NF,UP
+148690	GO:0016021~integral to membrane	EG
+20044	GO:0043227~membrane-bound organelle	EG,NF
+19320	GO:0044456~synapse part	EG,NF
+15335	GO:0005623~cell	EG,UP
+10641	GO:0043228~non-membrane-bound organelle	EG,NF,UP
+18566	GO:0016020~membrane	EG,NF,UP
+7292	GO:0005623~cell	EG
+17911	GO:0044444~cytoplasmic part	EG,NF
+31953	GO:0044464~cell part	EG,NF,UP
+15011	GO:0016021~integral to membrane	EG,NF,UP
+26895	GO:0030425~dendrite	EG,NF,UP
+29957	GO:0044464~cell part	EG,NF,UP
+13251	GO:0005783~endoplasmic reticulum	EG,UP
+26785	GO:0044424~intracellular part	EG,NF
+37752	GO:0043229~intracellular organelle	EG,NF
+23413	GO:0031224~intrinsic to membrane	EG,NF
+6725	GO:0005576~extracellular region	EG,NF
+3550	GO:0043226~organelle	EG,NF
+11092	GO:0044464~cell part	EG,NF,UP
+144513	GO:0044422~organelle part	NF
+23820	GO:0043233~organelle lumen	EG,NF
+36927	GO:0005694~chromosome	EG,NF
+148497	GO:0005622~intracellular	EG,NF,UP
+31839	GO:0043226~organelle	EG,NF,UP
+45064	GO:0043229~intracellular organelle	EG
+144736	GO:0044425~membrane part	EG,NF
+8614	GO:0043231~intracellular membrane-bound organelle	UP
+149883	GO:0044421~extracellular region part	EG,NF
+15042	GO:0030529~ribonucleoprotein complex	EG,NF,UP
+149181	GO:0044425~membrane part	EG
+27954	GO:0031982~vesicle	EG,NF
+64493	GO:0016020~membrane	EG
+22426	GO:0005739~mitochondrion	EG,NF,UP
+17289	GO:0016020~membrane	EG
+4312	GO:0044424~intracellular part	EG,NF,UP
+149128	GO:0016020~membrane	EG,NF,UP
+31149	GO:0005622~intracellular	EG,NF,UP
+147641	GO:0043226~organelle	EG,NF,UP
+148133	GO:0044464~cell part	NF,UP
+37135	GO:0043226~organelle	EG
+16624	GO:0005743~mitochondrial inner membrane	EG,NF
+35369	GO:0044446~intracellular organelle part	EG,NF,UP
+18455	GO:0005737~cytoplasm	NF
+5189	GO:0031966~mitochondrial membrane	EG,NF,UP
+19676	GO:0043229~intracellular organelle	EG
+19714	GO:0042719~mitochondrial intermembrane space protein transporter complex	NF
+148286	GO:0005576~extracellular region	EG,NF
+23613	GO:0043227~membrane-bound organelle	EG,NF,UP
+22442	GO:0044421~extracellular region part	EG,NF
+22449	GO:0044464~cell part	EG,NF,UP
+10024	GO:0044464~cell part	EG,NF,UP
+10451	GO:0044459~plasma membrane part	EG,NF,UP
+19361	GO:0044459~plasma membrane part	EG,NF,UP
+145807	GO:0005654~nucleoplasm	EG
+30313	GO:0044464~cell part	NF,UP
+147375	GO:0031966~mitochondrial membrane	EG,NF,UP
+28317	GO:0044464~cell part	EG,UP
+18189	GO:0043025~cell soma	EG
+6248	GO:0005623~cell	EG,NF
+39675	GO:0005623~cell	EG
+36940	GO:0044425~membrane part	EG,UP
+7937	GO:0005576~extracellular region	EG,UP
+144289	GO:0005622~intracellular	EG,NF,UP
+27253	GO:0043226~organelle	EG,NF,UP
+5415	GO:0044446~intracellular organelle part	EG,UP
+22994	GO:0005737~cytoplasm	EG
+12582	GO:0031981~nuclear lumen	NF,UP
+38260	GO:0044422~organelle part	EG,NF
+148451	GO:0044421~extracellular region part	NF,UP
+26378	GO:0005623~cell	EG,NF,UP
+12567	GO:0044464~cell part	EG,NF
+31273	GO:0031982~vesicle	EG,NF
+4034	GO:0016020~membrane	NF,UP
+16272	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+15376	GO:0043227~membrane-bound organelle	EG,UP
+36955	GO:0005576~extracellular region	EG,NF
+28290	GO:0005737~cytoplasm	EG,NF,UP
+18435	GO:0044464~cell part	EG,NF
+16989	GO:0044422~organelle part	EG,NF,UP
+16307	GO:0005623~cell	EG
+28236	GO:0005634~nucleus	EG,NF,UP
+145747	GO:0005886~plasma membrane	EG
+4453	GO:0043226~organelle	EG,UP
+8264	GO:0005623~cell	EG,NF,UP
+10881	GO:0030529~ribonucleoprotein complex	EG
+144115	GO:0016021~integral to membrane	EG,NF,UP
+32837	GO:0044459~plasma membrane part	EG,NF,UP
+20317	GO:0043226~organelle	EG,NF,UP
+13231	GO:0043231~intracellular membrane-bound organelle	EG,NF
+9661	GO:0030016~myofibril	EG,NF,UP
+19890	GO:0031224~intrinsic to membrane	EG
+38089	GO:0043234~protein complex	EG,NF
+14405	GO:0043229~intracellular organelle	EG,NF
+4325	GO:0031988~membrane-bound vesicle	EG,NF,UP
+144343	GO:0005623~cell	EG,NF,UP
+38152	GO:0044464~cell part	EG,NF,UP
+3753	GO:0044446~intracellular organelle part	EG,NF,UP
+19085	GO:0044425~membrane part	EG,NF,UP
+150540	GO:0043226~organelle	EG,NF
+147670	GO:0005634~nucleus	EG
+28341	GO:0005758~mitochondrial intermembrane space	EG,NF,UP
+148110	GO:0044422~organelle part	EG,NF,UP
+7126	GO:0005623~cell	EG,NF,UP
+8856	GO:0044446~intracellular organelle part	NF,UP
+12835	GO:0043229~intracellular organelle	EG,NF,UP
+31192	GO:0030665~clathrin coated vesicle membrane	EG,NF,UP
+27025	GO:0044420~extracellular matrix part	EG,NF
+36943	GO:0044464~cell part	EG,NF,UP
+38038	GO:0043226~organelle	EG
+144152	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+33059	GO:0019866~organelle inner membrane	EG,NF,UP
+147827	GO:0044464~cell part	EG,NF,UP
+9032	GO:0044464~cell part	EG,NF,UP
+29251	GO:0030135~coated vesicle	EG,NF
+5180	GO:0016021~integral to membrane	EG,NF,UP
+27222	GO:0005737~cytoplasm	EG,NF
+10896	GO:0005623~cell	EG,NF,UP
+7902	GO:0016020~membrane	EG,UP
+5877	GO:0005923~tight junction	EG,NF,UP
+149658	GO:0005634~nucleus	EG,NF
+27256	GO:0005623~cell	EG,NF
+8622	GO:0043229~intracellular organelle	EG,NF
+15103	GO:0043025~cell soma	EG,NF,UP
+90603	GO:0031982~vesicle	EG,NF,UP
+145590	GO:0043229~intracellular organelle	EG,NF
+9142	GO:0005623~cell	EG,NF
+150685	GO:0043229~intracellular organelle	EG
+19175	GO:0044425~membrane part	EG,NF,UP
+148339	GO:0043231~intracellular membrane-bound organelle	EG
+87784	GO:0005654~nucleoplasm	EG
+146253	GO:0043227~membrane-bound organelle	EG,NF
+28177	GO:0005634~nucleus	EG,NF,UP
+21906	GO:0044464~cell part	EG,NF
+145221	GO:0005623~cell	EG,UP
+3966	GO:0016020~membrane	EG
+53833	GO:0044424~intracellular part	EG
+12978	GO:0043226~organelle	EG,NF,UP
+9980	GO:0005624~membrane fraction	EG,UP
+8004	GO:0005623~cell	EG,NF,UP
+33759	GO:0044464~cell part	EG,NF
+64882	GO:0005622~intracellular	EG,NF,UP
+210090	GO:0044424~intracellular part	NF,UP
+18647	GO:0016021~integral to membrane	EG,NF,UP
+15120	GO:0005634~nucleus	EG,UP
+37594	GO:0005740~mitochondrial envelope	EG,NF,UP
+5296	GO:0048471~perinuclear region of cytoplasm	NF
+148948	GO:0043229~intracellular organelle	NF
+12823	GO:0044425~membrane part	EG,NF
+27202	GO:0044464~cell part	NF,UP
+149548	GO:0009986~cell surface	EG,NF
+9236	GO:0005623~cell	EG,NF
+19984	GO:0044425~membrane part	EG
+37378	GO:0031090~organelle membrane	NF
+37068	GO:0044421~extracellular region part	EG,UP
+60265	GO:0043234~protein complex	EG,NF
+4639	GO:0044464~cell part	NF,UP
+3151	GO:0009536~plastid	NF
+22829	GO:0005737~cytoplasm	EG,NF,UP
+3575	GO:0043226~organelle	EG,NF,UP
+37846	GO:0044464~cell part	UP
+10960	GO:0043226~organelle	EG,UP
+3586	GO:0030286~dynein complex	EG,NF,UP
+9145	GO:0044425~membrane part	EG,NF,UP
+62954	GO:0031226~intrinsic to plasma membrane	EG
+13811	GO:0005622~intracellular	NF,UP
+149437	GO:0043231~intracellular membrane-bound organelle	EG
+11452	GO:0044464~cell part	EG
+5566	GO:0044425~membrane part	EG,NF
+7013	GO:0031224~intrinsic to membrane	EG,NF,UP
+19897	GO:0044451~nucleoplasm part	EG
+17320	GO:0044464~cell part	NF,UP
+28125	GO:0005737~cytoplasm	EG
+37274	GO:0044464~cell part	EG,NF,UP
+16674	GO:0005622~intracellular	EG,NF
+15926	GO:0016327~apicolateral plasma membrane	EG,UP
+147375	GO:0019866~organelle inner membrane	EG,NF,UP
+27719	GO:0043233~organelle lumen	EG,UP
+37320	GO:0032991~macromolecular complex	EG,NF
+7693	GO:0044444~cytoplasmic part	EG,NF,UP
+148158	GO:0044464~cell part	EG,UP
+11232	GO:0005856~cytoskeleton	EG,NF,UP
+15169	GO:0016020~membrane	EG,NF,UP
+17613	GO:0005615~extracellular space	EG,NF,UP
+37594	GO:0019866~organelle inner membrane	EG,NF,UP
+27964	GO:0044464~cell part	EG,NF,UP
+149704	GO:0044424~intracellular part	EG,NF
+34399	GO:0031224~intrinsic to membrane	NF
+12375	GO:0005737~cytoplasm	EG,NF
+15061	GO:0005634~nucleus	EG,NF,UP
+14881	GO:0031224~intrinsic to membrane	EG,UP
+146496	GO:0044446~intracellular organelle part	EG,UP
+148228	GO:0005622~intracellular	EG,NF,UP
+12652	GO:0005623~cell	UP
+28520	GO:0031224~intrinsic to membrane	EG,NF,UP
+147279	GO:0016459~myosin complex	EG,NF
+11478	GO:0044425~membrane part	UP
+5656	GO:0044425~membrane part	EG,NF,UP
+19774	GO:0044422~organelle part	EG,NF
+37725	GO:0005681~spliceosome	EG,NF
+7939	GO:0016020~membrane	EG,NF
+13884	GO:0005623~cell	EG,NF,UP
+12907	GO:0016459~myosin complex	EG
+37777	GO:0044421~extracellular region part	EG,NF,UP
+18085	GO:0005623~cell	EG,NF,UP
+26354	GO:0044429~mitochondrial part	EG,UP
+8017	GO:0044446~intracellular organelle part	UP
+146140	GO:0044464~cell part	EG,NF
+19332	GO:0031967~organelle envelope	EG,NF
+18675	GO:0043229~intracellular organelle	EG,NF,UP
+17049	GO:0005634~nucleus	EG,NF
+11234	GO:0005739~mitochondrion	EG,NF,UP
+26555	GO:0044424~intracellular part	EG,NF
+146931	GO:0005794~Golgi apparatus	EG,UP
+7332	GO:0044424~intracellular part	EG,NF
+40307	GO:0005623~cell	EG,NF
+9412	GO:0005737~cytoplasm	EG
+5412	GO:0005739~mitochondrion	EG,NF,UP
+149795	GO:0005623~cell	EG,NF
+37304	GO:0016021~integral to membrane	EG,NF
+3232	GO:0044444~cytoplasmic part	EG
+12927	GO:0044464~cell part	NF
+146321	GO:0005622~intracellular	EG,NF
+17968	GO:0043226~organelle	EG,NF,UP
+12746	GO:0005623~cell	EG,NF
+9509	GO:0043231~intracellular membrane-bound organelle	EG,NF
+149754	GO:0043231~intracellular membrane-bound organelle	EG,NF
+147635	GO:0005737~cytoplasm	EG
+148231	GO:0044424~intracellular part	EG,NF,UP
+4478	GO:0043226~organelle	EG,UP
+24616	GO:0044424~intracellular part	EG,NF
+12708	GO:0044444~cytoplasmic part	EG
+40765	GO:0005622~intracellular	NF
+26324	GO:0044464~cell part	EG,NF,UP
+37564	GO:0044424~intracellular part	EG,NF,UP
+15503	GO:0005576~extracellular region	EG,NF,UP
+5746	GO:0044425~membrane part	EG,NF,UP
+148683	GO:0044464~cell part	EG,NF
+149184	GO:0005622~intracellular	EG,NF,UP
+17663	GO:0031974~membrane-enclosed lumen	EG,NF
+24603	GO:0044444~cytoplasmic part	EG,NF,UP
+38177	GO:0044464~cell part	EG,NF
+12976	GO:0005887~integral to plasma membrane	NF
+11291	GO:0043226~organelle	EG,NF
+26904	GO:0032991~macromolecular complex	EG,NF,UP
+29242	GO:0043227~membrane-bound organelle	EG,NF,UP
+39573	GO:0043228~non-membrane-bound organelle	EG
+11608	GO:0005623~cell	EG,NF
+36992	GO:0005623~cell	EG
+8006	GO:0032991~macromolecular complex	EG,UP
+23762	GO:0000015~phosphopyruvate hydratase complex	EG,NF,UP
+3524	GO:0044464~cell part	EG,NF,UP
+13236	GO:0031224~intrinsic to membrane	EG,NF,UP
+11876	GO:0043228~non-membrane-bound organelle	EG,NF
+27745	GO:0044425~membrane part	EG,NF,UP
+13948	GO:0044459~plasma membrane part	EG
+20047	GO:0005622~intracellular	EG
+36814	GO:0043228~non-membrane-bound organelle	EG,NF,UP
+37375	GO:0043232~intracellular non-membrane-bound organelle	EG,NF,UP
+4797	GO:0005623~cell	EG,NF,UP
+8868	GO:0043229~intracellular organelle	EG,NF,UP
+146411	GO:0005622~intracellular	EG,NF
+28360	GO:0044421~extracellular region part	EG,NF
+9780	GO:0031975~envelope	EG,NF,UP
+6546	GO:0043227~membrane-bound organelle	EG,NF,UP
+113635	GO:0044425~membrane part	EG,NF,UP
+12996	GO:0044421~extracellular region part	EG,NF
+23695	GO:0005623~cell	EG,NF,UP
+144829	GO:0005622~intracellular	EG,NF,UP
+4672	GO:0031227~intrinsic to endoplasmic reticulum membrane	EG,NF,UP
+19378	GO:0044462~external encapsulating structure part	NF
+28295	GO:0044464~cell part	EG,NF,UP
+145077	GO:0005623~cell	EG,NF
+13624	GO:0005623~cell	EG
+149274	GO:0005622~intracellular	EG,UP
+145088	GO:0044424~intracellular part	EG
+7351	GO:0000267~cell fraction	EG,NF,UP
+37109	GO:0044464~cell part	EG,NF
+22190	GO:0044464~cell part	EG,NF
+3659	GO:0005623~cell	EG,NF,UP
+3269	GO:0043227~membrane-bound organelle	EG,NF,UP
+9491	GO:0031594~neuromuscular junction	EG
+126884	GO:0044422~organelle part	EG,NF,UP
+148936	GO:0030118~clathrin coat	EG,NF,UP
+15431	GO:0030016~myofibril	EG,NF,UP
+18985	GO:0044464~cell part	EG
+26528	GO:0043229~intracellular organelle	EG
+26292	GO:0043228~non-membrane-bound organelle	EG,NF
+37654	GO:0005737~cytoplasm	EG,NF
+34635	GO:0031974~membrane-enclosed lumen	EG,NF
+39133	GO:0016020~membrane	NF,UP
+11260	GO:0005737~cytoplasm	NF,UP
+145390	GO:0030658~transport vesicle membrane	EG,NF
+23789	GO:0005623~cell	EG
+20045	GO:0044421~extracellular region part	EG,NF
+16746	GO:0044421~extracellular region part	EG,NF,UP
+144919	GO:0005622~intracellular	EG
+10889	GO:0031090~organelle membrane	NF
+1210090	GO:0009507~chloroplast	NF
+32830	GO:0043229~intracellular organelle	EG,UP
+10716	GO:0044424~intracellular part	EG,NF,UP
+145785	GO:0005622~intracellular	EG,NF,UP
+148590	GO:0044424~intracellular part	NF,UP
+4135	GO:0044463~cell projection part	EG
+14912	GO:0016020~membrane	EG,NF,UP
+5752	GO:0044424~intracellular part	EG,NF,UP
+149629	GO:0005623~cell	EG,NF
+31136	GO:0005623~cell	EG,NF,UP
+103785	GO:0005654~nucleoplasm	EG,NF
+3935	GO:0043226~organelle	EG
+35672	GO:0032991~macromolecular complex	EG
+144887	GO:0044425~membrane part	EG,NF
+16696	GO:0016020~membrane	EG,NF,UP
+146651	GO:0044424~intracellular part	EG,NF,UP
+145340	GO:0044424~intracellular part	EG,NF
+72104	GO:0005622~intracellular	EG,NF,UP
+16853	GO:0043226~organelle	EG,NF,UP
+14549	GO:0044427~chromosomal part	EG
+148384	GO:0044444~cytoplasmic part	EG
+28266	GO:0042175~nuclear envelope-endoplasmic reticulum network	EG,NF
+145241	GO:0043227~membrane-bound organelle	EG
+146520	GO:0005737~cytoplasm	EG
+37634	GO:0044464~cell part	EG,NF
+5505	GO:0030054~cell junction	EG,NF
+4599	GO:0032991~macromolecular complex	EG,UP
+36997	GO:0043229~intracellular organelle	EG,NF,UP
+6951	GO:0005634~nucleus	EG,NF,UP
+31194	GO:0044464~cell part	UP
+19715	GO:0044425~membrane part	EG,NF
+148518	GO:0044464~cell part	EG,UP
+14499	GO:0043227~membrane-bound organelle	EG,NF
+22798	GO:0043231~intracellular membrane-bound organelle	EG,NF
+36826	GO:0005623~cell	EG
+38140	GO:0005578~proteinaceous extracellular matrix	EG,NF
+145875	GO:0005622~intracellular	EG,NF
+8251	GO:0044423~virion part	EG,NF
+149186	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+145076	GO:0005887~integral to plasma membrane	EG,NF
+15417	GO:0044425~membrane part	EG,NF,UP
+3232	GO:0031974~membrane-enclosed lumen	EG
+43720	GO:0016020~membrane	EG
+19888	GO:0044464~cell part	EG,NF
+17052	GO:0044449~contractile fiber part	EG,NF
+145167	GO:0044446~intracellular organelle part	EG,NF,UP
+8917	GO:0005576~extracellular region	EG,NF,UP
+27752	GO:0044464~cell part	EG
+20252	GO:0044424~intracellular part	EG,NF
+5752	GO:0005773~vacuole	EG,NF,UP
+38055	GO:0016529~sarcoplasmic reticulum	EG,UP
+9161	GO:0016020~membrane	EG,NF,UP
+32014	GO:0005623~cell	EG
+26683	GO:0005623~cell	EG,NF,UP
+19461	GO:0005667~transcription factor complex	EG,NF
+5415	GO:0005623~cell	EG,UP
+27638	GO:0043226~organelle	EG,NF,UP
+38842	GO:0005623~cell	EG,NF,UP
+27180	GO:0044464~cell part	EG,NF,UP
+146500	GO:0044464~cell part	EG,NF
+3904	GO:0005737~cytoplasm	NF,UP
+21198	GO:0043226~organelle	EG,NF
+12800	GO:0044446~intracellular organelle part	EG,NF
+27278	GO:0005615~extracellular space	EG,NF,UP
+53106	GO:0005623~cell	EG
+16822	GO:0005737~cytoplasm	EG
+147198	GO:0005740~mitochondrial envelope	NF,UP
+149531	GO:0016021~integral to membrane	EG,NF
+5071	GO:0043231~intracellular membrane-bound organelle	EG
+28294	GO:0005794~Golgi apparatus	EG,NF,UP
+17870	GO:0044464~cell part	EG
+26631	GO:0043229~intracellular organelle	EG
+37704	GO:0005623~cell	EG,NF,UP
+19194	GO:0044424~intracellular part	EG,NF,UP
+149022	GO:0031224~intrinsic to membrane	EG,NF
+4380	GO:0044464~cell part	EG
+32669	GO:0044464~cell part	EG,NF
+35752	GO:0043227~membrane-bound organelle	EG,NF,UP
+20244	GO:0044464~cell part	EG,UP
+145916	GO:0031224~intrinsic to membrane	EG,NF
+25324	GO:0016020~membrane	EG,NF,UP
+14450	GO:0005912~adherens junction	EG
+5242	GO:0043227~membrane-bound organelle	EG,NF
+32097	GO:0044464~cell part	EG,NF,UP
+5348	GO:0005634~nucleus	EG,NF,UP
+9258	GO:0043231~intracellular membrane-bound organelle	EG,UP
+32097	GO:0005802~trans-Golgi network	EG,NF,UP
+148416	GO:0031975~envelope	EG,UP
+146667	GO:0005624~membrane fraction	EG,NF,UP
+27561	GO:0005623~cell	EG,NF,UP
+15942	GO:0043229~intracellular organelle	EG,NF,UP
+21739	GO:0005737~cytoplasm	EG
+8925	GO:0043226~organelle	EG,NF,UP
+9417	GO:0044464~cell part	EG,NF
+28264	GO:0044424~intracellular part	EG
+16802	GO:0044464~cell part	EG,NF,UP
+26888	GO:0005634~nucleus	EG,NF,UP
+3312	GO:0044464~cell part	EG,NF,UP
+7525	GO:0005623~cell	EG
+3956	GO:0030132~clathrin coat of coated pit	NF
+25420	GO:0008021~synaptic vesicle	EG,NF,UP
+6720	GO:0044428~nuclear part	EG,NF
+27636	GO:0044424~intracellular part	EG,NF,UP
+26325	GO:0044424~intracellular part	EG,UP
+146020	GO:0044425~membrane part	EG
+4299	GO:0005623~cell	EG,NF,UP
+13831	GO:0005634~nucleus	EG,NF
+149313	GO:0044422~organelle part	EG,NF
+19680	GO:0043231~intracellular membrane-bound organelle	EG,NF
+82115	GO:0043229~intracellular organelle	EG
+5436	GO:0043231~intracellular membrane-bound organelle	EG,NF
+28083	GO:0044464~cell part	EG,NF,UP
+16116	GO:0043226~organelle	NF,UP
+13855	GO:0044459~plasma membrane part	EG,NF
+37378	GO:0005624~membrane fraction	EG,NF
+146119	GO:0044445~cytosolic part	NF,UP
+27575	GO:0016021~integral to membrane	EG,NF
+10893	GO:0019814~immunoglobulin complex	EG,NF,UP
+28342	GO:0044425~membrane part	EG,NF,UP
+15869	GO:0005622~intracellular	EG,NF,UP
+7331	GO:0005622~intracellular	EG,NF
+34454	GO:0005827~polar microtubule	NF,UP
+4755	GO:0016020~membrane	EG,NF
+27981	GO:0043229~intracellular organelle	EG,UP
+3752	GO:0005622~intracellular	EG,NF,UP
+16280	GO:0005623~cell	EG,NF
+18773	GO:0044464~cell part	EG,NF,UP
+13285	GO:0031974~membrane-enclosed lumen	EG,UP
+143757	GO:0000323~lytic vacuole	EG,NF,UP
+9570	GO:0032991~macromolecular complex	EG,NF
+27915	GO:0016020~membrane	EG,NF,UP
+62955	GO:0005887~integral to plasma membrane	EG
+15906	GO:0043231~intracellular membrane-bound organelle	EG
+149005	GO:0005622~intracellular	EG
+147560	GO:0043231~intracellular membrane-bound organelle	UP
+145426	GO:0005622~intracellular	EG,NF,UP
+28122	GO:0031966~mitochondrial membrane	EG
+37013	GO:0016020~membrane	NF
+90198	GO:0016021~integral to membrane	EG
+26542	GO:0005634~nucleus	NF
+5377	GO:0043227~membrane-bound organelle	EG,NF,UP
+129085	GO:0044464~cell part	EG,NF,UP
+7111	GO:0031224~intrinsic to membrane	EG
+27301	GO:0005623~cell	EG
+146824	GO:0005868~cytoplasmic dynein complex	EG
+146827	GO:0043231~intracellular membrane-bound organelle	EG,NF
+13158	GO:0016021~integral to membrane	EG,NF,UP
+119317	GO:0044459~plasma membrane part	EG,UP
+19696	GO:0005737~cytoplasm	EG,NF,UP
+9370	GO:0044464~cell part	EG,UP
+8833	GO:0044422~organelle part	NF,UP
+33077	GO:0016020~membrane	EG,NF,UP
+149833	GO:0044424~intracellular part	EG,NF
+27560	GO:0005737~cytoplasm	EG,NF,UP
+33545	GO:0005576~extracellular region	EG,NF,UP
+38019	GO:0005576~extracellular region	EG,NF
+148010	GO:0031224~intrinsic to membrane	EG,NF,UP
+13094	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+148901	GO:0031224~intrinsic to membrane	EG
+146415	GO:0016020~membrane	EG,NF
+145516	GO:0005622~intracellular	EG,NF
+13284	GO:0005634~nucleus	EG,NF,UP
+37081	GO:0044421~extracellular region part	UP
+37466	GO:0005623~cell	EG,NF,UP
+17133	GO:0044464~cell part	NF,UP
+17159	GO:0016323~basolateral plasma membrane	EG,NF,UP
+143756	GO:0016020~membrane	EG,NF,UP
+3151	GO:0043226~organelle	NF
+24656	GO:0005905~coated pit	NF
+144013	GO:0031224~intrinsic to membrane	EG,NF,UP
+15236	GO:0005623~cell	EG,NF
+37003	GO:0043227~membrane-bound organelle	EG,NF
+7193	GO:0005623~cell	EG
+9364	GO:0005624~membrane fraction	UP
+4148	GO:0016021~integral to membrane	EG,NF
+17019	GO:0043226~organelle	EG,NF
+148199	GO:0016020~membrane	EG,NF,UP
+133662	GO:0016020~membrane	EG
+13736	GO:0044424~intracellular part	NF,UP
+36824	GO:0031224~intrinsic to membrane	EG,UP
+27995	GO:0044424~intracellular part	EG,NF,UP
+13299	GO:0016020~membrane	EG,UP
+28365	GO:0043227~membrane-bound organelle	EG,NF
+8772	GO:0044424~intracellular part	EG,NF
+7461	GO:0044424~intracellular part	EG
+27838	GO:0005622~intracellular	EG,NF,UP
+27777	GO:0044464~cell part	EG,NF
+3290	GO:0044421~extracellular region part	EG
+59647	GO:0043229~intracellular organelle	EG
+10462	GO:0005783~endoplasmic reticulum	EG,NF
+37404	GO:0043229~intracellular organelle	EG,NF
+40612	GO:0005623~cell	NF,UP
+32477	GO:0005737~cytoplasm	EG,NF,UP
+27945	GO:0031012~extracellular matrix	EG,NF
+20052	GO:0005737~cytoplasm	EG,UP
+6833	GO:0044424~intracellular part	EG,UP
+19896	GO:0005615~extracellular space	EG,NF
+37693	GO:0044424~intracellular part	EG,NF
+5669	GO:0043227~membrane-bound organelle	UP
+17601	GO:0030660~Golgi-associated vesicle membrane	EG,NF
+145606	GO:0005622~intracellular	EG,NF
+7041	GO:0016020~membrane	NF,UP
+64312	GO:0044425~membrane part	EG
+7287	GO:0005623~cell	EG,NF
+26877	GO:0043229~intracellular organelle	EG
+9246	GO:0043232~intracellular non-membrane-bound organelle	EG,NF,UP
+37720	GO:0005622~intracellular	EG,NF,UP
+15001	GO:0043226~organelle	EG,NF
+43705	GO:0044459~plasma membrane part	EG,NF,UP
+10742	GO:0005737~cytoplasm	EG
+17895	GO:0044464~cell part	EG,NF,UP
+148469	GO:0005622~intracellular	EG,NF,UP
+19328	GO:0043229~intracellular organelle	EG,NF,UP
+26709	GO:0044464~cell part	NF,UP
+145574	GO:0044425~membrane part	EG,NF,UP
+27562	GO:0005739~mitochondrion	EG,NF
+3810	GO:0043231~intracellular membrane-bound organelle	EG,NF
+37790	GO:0044421~extracellular region part	EG,NF
+14202	GO:0043227~membrane-bound organelle	EG
+147279	GO:0044446~intracellular organelle part	EG,NF
+147007	GO:0031966~mitochondrial membrane	EG,NF,UP
+19219	GO:0044421~extracellular region part	EG,NF,UP
+148496	GO:0044464~cell part	EG,NF,UP
+30290	GO:0005634~nucleus	EG
+42153	GO:0005759~mitochondrial matrix	EG,NF,UP
+16171	GO:0016020~membrane	EG,NF
+3909	GO:0044464~cell part	NF
+52793	GO:0005623~cell	EG
+13018	GO:0005911~intercellular junction	EG,NF,UP
+26279	GO:0005623~cell	EG,NF,UP
+35387	GO:0044425~membrane part	NF,UP
+37138	GO:0043227~membrane-bound organelle	EG,UP
+37810	GO:0005622~intracellular	EG,UP
+4593	GO:0043229~intracellular organelle	EG,NF
+16827	GO:0044464~cell part	EG,NF,UP
+54677	GO:0005886~plasma membrane	EG
+20022	GO:0044424~intracellular part	EG,NF
+38152	GO:0005887~integral to plasma membrane	EG,NF
+16664	GO:0000139~Golgi membrane	EG,NF
+10451	GO:0016020~membrane	EG,NF,UP
+34455	GO:0045277~respiratory chain complex IV	EG,NF
+39807	GO:0005622~intracellular	EG
+149704	GO:0043229~intracellular organelle	EG,NF
+3337	GO:0044464~cell part	EG,NF,UP
+15290	GO:0043231~intracellular membrane-bound organelle	NF,UP
+10722	GO:0044464~cell part	EG,NF,UP
+4143	GO:0005783~endoplasmic reticulum	EG,NF
+7525	GO:0044446~intracellular organelle part	EG
+8357	GO:0005615~extracellular space	EG,NF,UP
+37085	GO:0032991~macromolecular complex	EG
+64476	GO:0016020~membrane	EG
+5091	GO:0005737~cytoplasm	EG,NF
+17277	GO:0032991~macromolecular complex	EG,NF,UP
+125929	GO:0016023~cytoplasmic membrane-bound vesicle	NF,UP
+16854	GO:0005669~transcription factor TFIID complex	EG,NF
+144521	GO:0043227~membrane-bound organelle	EG,NF
+144699	GO:0031224~intrinsic to membrane	EG,NF
+12945	GO:0031252~leading edge	EG
+14941	GO:0043229~intracellular organelle	EG,NF,UP
+147428	GO:0044464~cell part	EG,NF,UP
+144364	GO:0043227~membrane-bound organelle	EG,NF,UP
+28295	GO:0005623~cell	EG,NF,UP
+17303	GO:0005886~plasma membrane	EG
+11061	GO:0005624~membrane fraction	EG,NF,UP
+38055	GO:0031224~intrinsic to membrane	EG
+4230	GO:0043227~membrane-bound organelle	EG
+146364	GO:0043226~organelle	EG,NF
+30263	GO:0044444~cytoplasmic part	EG,NF,UP
+10369	GO:0043234~protein complex	EG,NF,UP
+5881	GO:0044424~intracellular part	NF,UP
+19477	GO:0043231~intracellular membrane-bound organelle	EG,NF
+117829	GO:0044464~cell part	EG,NF,UP
+28531	GO:0005886~plasma membrane	EG,NF
+18798	GO:0044464~cell part	EG,NF,UP
+22956	GO:0005623~cell	EG
+149934	GO:0005623~cell	EG,NF
+27157	GO:0005623~cell	EG,NF,UP
+26844	GO:0044422~organelle part	EG,NF,UP
+26662	GO:0044464~cell part	EG,NF,UP
+12693	GO:0044464~cell part	EG,NF
+146260	GO:0005623~cell	EG,NF,UP
+13713	GO:0005689~U12-dependent spliceosome	NF
+4023	GO:0005737~cytoplasm	EG
+8101	GO:0043232~intracellular non-membrane-bound organelle	EG,NF,UP
+3885	GO:0044459~plasma membrane part	EG,NF
+19057	GO:0044425~membrane part	EG,NF,UP
+38037	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+9043	GO:0005623~cell	NF,UP
+108926	GO:0043228~non-membrane-bound organelle	EG
+36813	GO:0032991~macromolecular complex	EG,NF,UP
+28335	GO:0019867~outer membrane	NF
+12579	GO:0043226~organelle	EG
+18762	GO:0016020~membrane	EG,NF,UP
+145410	GO:0044464~cell part	EG,NF
+27482	GO:0016021~integral to membrane	EG,NF,UP
+34412	GO:0043226~organelle	EG
+149399	GO:0044464~cell part	EG
+28034	GO:0044424~intracellular part	EG
+6704	GO:0043229~intracellular organelle	EG,NF,UP
+22083	GO:0031226~intrinsic to plasma membrane	EG,NF
+3862	GO:0044464~cell part	EG
+5491	GO:0012505~endomembrane system	EG,NF
+145122	GO:0005623~cell	EG,NF,UP
+18032	GO:0042613~MHC class II protein complex	UP
+3704	GO:0005623~cell	EG,UP
+7803	GO:0044444~cytoplasmic part	EG,UP
+29270	GO:0031974~membrane-enclosed lumen	NF
+146905	GO:0005737~cytoplasm	EG,NF,UP
+117561	GO:0005623~cell	EG,NF
+150654	GO:0005622~intracellular	EG,NF
+3290	GO:0044464~cell part	EG,NF
+3280	GO:0044444~cytoplasmic part	EG,NF
+20420	GO:0043227~membrane-bound organelle	EG,NF,UP
+19453	GO:0031224~intrinsic to membrane	EG,NF,UP
+9616	GO:0043226~organelle	EG,NF
+146665	GO:0016020~membrane	EG
+17029	GO:0005886~plasma membrane	NF,UP
+17158	GO:0044464~cell part	EG
+146333	GO:0005737~cytoplasm	EG,NF,UP
+22956	GO:0043229~intracellular organelle	EG
+18808	GO:0044421~extracellular region part	EG,NF
+23834	GO:0005623~cell	EG,NF,UP
+24316	GO:0043228~non-membrane-bound organelle	EG,NF
+149841	GO:0005667~transcription factor complex	EG
+28035	GO:0005623~cell	EG,NF,UP
+144380	GO:0044446~intracellular organelle part	NF,UP
+13065	GO:0016021~integral to membrane	EG,NF,UP
+43720	GO:0044431~Golgi apparatus part	EG,UP
+30268	GO:0043229~intracellular organelle	EG,NF,UP
+90826	GO:0005737~cytoplasm	EG
+27722	GO:0005576~extracellular region	EG,NF,UP
+26782	GO:0042175~nuclear envelope-endoplasmic reticulum network	EG,NF
+14656	GO:0005576~extracellular region	EG,UP
+6785	GO:0031224~intrinsic to membrane	EG,NF
+92155	GO:0031224~intrinsic to membrane	EG
+30277	GO:0044428~nuclear part	EG,NF,UP
+149247	GO:0043229~intracellular organelle	EG,NF,UP
+3229	GO:0030016~myofibril	EG,NF,UP
+147267	GO:0043226~organelle	EG,NF,UP
+145003	GO:0044444~cytoplasmic part	EG,NF,UP
+12548	GO:0005737~cytoplasm	EG,NF,UP
+9371	GO:0031982~vesicle	EG
+39187	GO:0005743~mitochondrial inner membrane	EG,NF,UP
+16556	GO:0005622~intracellular	EG
+16753	GO:0043231~intracellular membrane-bound organelle	EG,NF
+146000	GO:0005623~cell	UP
+20412	GO:0005737~cytoplasm	EG,NF
+14514	GO:0005886~plasma membrane	EG
+15140	GO:0044464~cell part	EG,UP
+19956	GO:0044425~membrane part	EG,UP
+12258	GO:0005622~intracellular	EG,NF,UP
+27447	GO:0044425~membrane part	EG
+16150	GO:0016021~integral to membrane	EG,NF
+146113	GO:0005622~intracellular	EG
+145821	GO:0043226~organelle	EG,NF,UP
+146313	GO:0044464~cell part	EG,NF,UP
+3717	GO:0005737~cytoplasm	EG,NF
+9784	GO:0015630~microtubule cytoskeleton	EG,NF,UP
+6608	GO:0016020~membrane	EG,NF,UP
+145867	GO:0000267~cell fraction	EG,NF,UP
+32101	GO:0005576~extracellular region	EG,NF,UP
+4765	GO:0044464~cell part	EG,NF,UP
+144633	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+37043	GO:0031224~intrinsic to membrane	NF
+16756	GO:0044424~intracellular part	EG,NF
+31192	GO:0031410~cytoplasmic vesicle	EG,NF,UP
+133655	GO:0005886~plasma membrane	EG
+31170	GO:0016020~membrane	EG,UP
+24656	GO:0048475~coated membrane	EG,NF
+147808	GO:0005737~cytoplasm	NF
+37972	GO:0044464~cell part	EG,NF
+90234	GO:0044464~cell part	EG
+4193	GO:0044464~cell part	EG,NF
+149630	GO:0005634~nucleus	EG
+4701	GO:0044421~extracellular region part	EG,NF,UP
+148856	GO:0044464~cell part	EG,NF,UP
+27537	GO:0044425~membrane part	EG,UP
+26292	GO:0044444~cytoplasmic part	EG
+149522	GO:0044456~synapse part	EG,NF
+6526	GO:0005622~intracellular	EG
+37070	GO:0043228~non-membrane-bound organelle	EG,NF,UP
+18799	GO:0016020~membrane	EG
+15938	GO:0005887~integral to plasma membrane	EG,NF
+149696	GO:0005623~cell	EG
+148919	GO:0005622~intracellular	EG,NF,UP
+146928	GO:0044422~organelle part	EG,NF,UP
+148399	GO:0044424~intracellular part	EG,NF,UP
+3631	GO:0044425~membrane part	EG,UP
+22120	GO:0005576~extracellular region	EG,NF,UP
+148284	GO:0044464~cell part	EG,NF
+7476	GO:0043228~non-membrane-bound organelle	EG,NF
+149066	GO:0005622~intracellular	EG,NF,UP
+11392	GO:0016020~membrane	EG,NF,UP
+7145	GO:0005794~Golgi apparatus	NF
+14596	GO:0005856~cytoskeleton	EG
+135598	GO:0015630~microtubule cytoskeleton	EG
+37463	GO:0044424~intracellular part	EG,NF
+16615	GO:0044464~cell part	EG,NF,UP
+36016	GO:0005622~intracellular	EG,NF
+64454	GO:0005623~cell	EG
+27901	GO:0044459~plasma membrane part	EG,NF
+3713	GO:0005634~nucleus	EG,UP
+146245	GO:0043234~protein complex	NF
+36904	GO:0044464~cell part	EG,NF,UP
+27704	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+15087	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+36893	GO:0005623~cell	EG,NF
+28380	GO:0005654~nucleoplasm	EG,NF
+36835	GO:0044424~intracellular part	EG,NF,UP
+3225	GO:0005634~nucleus	EG
+6821	GO:0016020~membrane	EG,NF,UP
+14663	GO:0005623~cell	EG,UP
+37988	GO:0031974~membrane-enclosed lumen	EG,NF,UP
+149884	GO:0044451~nucleoplasm part	EG
+147216	GO:0044464~cell part	EG,NF,UP
+23768	GO:0042175~nuclear envelope-endoplasmic reticulum network	NF,UP
+9262	GO:0030120~vesicle coat	NF
+15017	GO:0031224~intrinsic to membrane	EG,NF,UP
+149875	GO:0005622~intracellular	EG,NF,UP
+92109	GO:0005623~cell	EG
+31959	GO:0005737~cytoplasm	EG
+144950	GO:0043231~intracellular membrane-bound organelle	EG,NF
+13129	GO:0005911~intercellular junction	EG,NF,UP
+27645	GO:0043227~membrane-bound organelle	EG,NF,UP
+5773	GO:0031224~intrinsic to membrane	EG,NF
+45478	GO:0016021~integral to membrane	EG
+144221	GO:0044422~organelle part	EG,NF,UP
+145577	GO:0005622~intracellular	EG,NF
+4048	GO:0005737~cytoplasm	EG,UP
+9570	GO:0005654~nucleoplasm	EG,NF
+18574	GO:0016021~integral to membrane	EG,NF,UP
+146261	GO:0044425~membrane part	EG
+43495	GO:0043229~intracellular organelle	EG,NF,UP
+26450	GO:0044464~cell part	EG,NF,UP
+29481	GO:0005622~intracellular	EG,NF
+9167	GO:0043229~intracellular organelle	EG
+148507	GO:0005615~extracellular space	EG,NF,UP
+14493	GO:0044424~intracellular part	EG,NF
+27069	GO:0031012~extracellular matrix	EG,NF,UP
+148512	GO:0015030~Cajal body	EG,NF,UP
+23014	GO:0043232~intracellular non-membrane-bound organelle	NF,UP
+9614	GO:0019866~organelle inner membrane	EG,NF,UP
+19301	GO:0016020~membrane	EG,NF
+12909	GO:0016021~integral to membrane	EG,NF
+27427	GO:0016020~membrane	EG,NF,UP
+37771	GO:0005623~cell	EG,NF,UP
+29281	GO:0043229~intracellular organelle	EG
+36074	GO:0044425~membrane part	EG,NF
+34376	GO:0043229~intracellular organelle	EG,NF
+27945	GO:0005737~cytoplasm	EG,NF
+24768	GO:0016020~membrane	EG,NF,UP
+11500	GO:0044422~organelle part	EG,NF,UP
+3650	GO:0044464~cell part	EG,NF,UP
+10922	GO:0016020~membrane	EG,NF,UP
+19515	GO:0043229~intracellular organelle	EG,NF
+14195	GO:0045271~respiratory chain complex I	EG,NF
+16602	GO:0043227~membrane-bound organelle	EG,NF
+9183	GO:0044464~cell part	EG,NF,UP
+31939	GO:0044464~cell part	EG,NF
+144230	GO:0044422~organelle part	EG,NF
+3166	GO:0005634~nucleus	EG,NF,UP
+141906	GO:0044425~membrane part	EG,NF
+15209	GO:0044425~membrane part	EG,NF,UP
+18024	GO:0016020~membrane	NF,UP
+27373	GO:0005737~cytoplasm	NF
+5803	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+36031	GO:0031224~intrinsic to membrane	EG,NF,UP
+3536	GO:0043226~organelle	EG,NF
+15365	GO:0016020~membrane	EG,NF
+11926	GO:0044424~intracellular part	EG
+10615	GO:0044424~intracellular part	EG,NF,UP
+19351	GO:0005843~cytosolic small ribosomal subunit (sensu Eukaryota)	EG,NF,UP
+149414	GO:0005615~extracellular space	EG,NF
+17109	GO:0005830~cytosolic ribosome (sensu Eukaryota)	EG,NF
+144545	GO:0016020~membrane	EG,NF,UP
+14403	GO:0005623~cell	EG,NF,UP
+12304	GO:0016020~membrane	EG,NF
+146121	GO:0005737~cytoplasm	EG
+31037	GO:0005623~cell	EG,NF
+13325	GO:0043227~membrane-bound organelle	EG,NF,UP
+30037	GO:0044422~organelle part	EG,NF,UP
+37235	GO:0044464~cell part	EG,NF,UP
+3741	GO:0044422~organelle part	EG,UP
+148154	GO:0044446~intracellular organelle part	EG,NF
+9345	GO:0043232~intracellular non-membrane-bound organelle	EG,NF
+27989	GO:0005622~intracellular	EG,NF,UP
+37865	GO:0005623~cell	EG,NF
+149924	GO:0032432~actin filament bundle	EG,NF
+27937	GO:0043227~membrane-bound organelle	EG,UP
+3712	GO:0044424~intracellular part	EG
+52129	GO:0005623~cell	EG
+146035	GO:0044459~plasma membrane part	EG,NF
+145960	GO:0044464~cell part	EG,NF,UP
+147055	GO:0043226~organelle	EG,NF
+8115	GO:0044464~cell part	EG
+15500	GO:0044464~cell part	EG,NF
+26305	GO:0005737~cytoplasm	EG,NF,UP
+19489	GO:0044464~cell part	NF
+148664	GO:0005737~cytoplasm	EG
+14915	GO:0043232~intracellular non-membrane-bound organelle	EG,NF
+10516	GO:0005871~kinesin complex	EG
+148246	GO:0043229~intracellular organelle	EG,NF
+33573	GO:0005622~intracellular	EG,NF,UP
+15360	GO:0030125~clathrin vesicle coat	EG
+55629	GO:0043226~organelle	EG
+22440	GO:0043229~intracellular organelle	EG
+37296	GO:0043229~intracellular organelle	EG,NF,UP
+26632	GO:0044446~intracellular organelle part	EG,NF
+26167	GO:0005615~extracellular space	EG,NF,UP
+146101	GO:0044464~cell part	EG,NF,UP
+20151	GO:0044424~intracellular part	EG,NF,UP
+37997	GO:0044464~cell part	EG,NF,UP
+36019	GO:0000784~nuclear chromosome, telomeric region	EG,UP
+26584	GO:0005623~cell	EG,NF
+4553	GO:0044464~cell part	EG,UP
+37047	GO:0031090~organelle membrane	NF,UP
+17153	GO:0005622~intracellular	EG,UP
+6294	GO:0031967~organelle envelope	EG,NF,UP
+14509	GO:0031982~vesicle	EG
+146891	GO:0005576~extracellular region	EG,UP
+3653	GO:0044459~plasma membrane part	EG
+28177	GO:0043229~intracellular organelle	EG,NF,UP
+6912	GO:0032592~integral to mitochondrial membrane	NF
+28276	GO:0005737~cytoplasm	EG,NF,UP
+8470	GO:0005623~cell	EG,NF,UP
+27399	GO:0005615~extracellular space	EG,UP
+144905	GO:0044446~intracellular organelle part	EG,NF
+144336	GO:0044444~cytoplasmic part	EG,NF
+145837	GO:0009434~microtubule-based flagellum	EG,NF,UP
+37961	GO:0005622~intracellular	EG,UP
+26355	GO:0043231~intracellular membrane-bound organelle	EG
+3237	GO:0043234~protein complex	EG,UP
+16255	GO:0044425~membrane part	EG
+12680	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+144109	GO:0016021~integral to membrane	NF
+19338	GO:0016020~membrane	EG,NF,UP
+148024	GO:0005615~extracellular space	EG
+7910	GO:0044446~intracellular organelle part	NF
+148449	GO:0044446~intracellular organelle part	NF,UP
+17093	GO:0005615~extracellular space	EG,NF,UP
+37793	GO:0019867~outer membrane	EG,NF
+6135	GO:0044425~membrane part	EG,NF,UP
+148518	GO:0016020~membrane	EG,UP
+7332	GO:0005623~cell	EG,NF
+145859	GO:0016020~membrane	EG,NF,UP
+13147	GO:0043228~non-membrane-bound organelle	EG,NF
+36929	GO:0044464~cell part	EG,NF,UP
+18000	GO:0043231~intracellular membrane-bound organelle	EG
+10959	GO:0016020~membrane	EG
+60309	GO:0043226~organelle	NF,UP
+5246	GO:0043229~intracellular organelle	EG,NF
+18394	GO:0005737~cytoplasm	EG,NF,UP
+19684	GO:0043234~protein complex	NF,UP
+17154	GO:0044424~intracellular part	EG
+146863	GO:0044464~cell part	EG,NF,UP
+144474	GO:0016604~nuclear body	EG
+62962	GO:0005886~plasma membrane	EG
+9018	GO:0044464~cell part	EG,NF,UP
+42464	GO:0031012~extracellular matrix	EG,NF
+118473	GO:0044464~cell part	NF
+26341	GO:0043227~membrane-bound organelle	EG,NF
+145909	GO:0042995~cell projection	EG
+26841	GO:0031224~intrinsic to membrane	EG,UP
+6922	GO:0043227~membrane-bound organelle	EG
+37999	GO:0043229~intracellular organelle	EG,NF,UP
+27462	GO:0005623~cell	EG,NF,UP
+7123	GO:0005622~intracellular	EG,NF,UP
+146749	GO:0043226~organelle	EG,NF,UP
+39621	GO:0005623~cell	EG,UP
+37215	GO:0044421~extracellular region part	EG,NF,UP
+30252	GO:0044464~cell part	EG,NF
+12682	GO:0005783~endoplasmic reticulum	EG
+149596	GO:0043229~intracellular organelle	EG,NF
+16345	GO:0044425~membrane part	EG,NF,UP
+144238	GO:0005634~nucleus	EG,NF,UP
+144541	GO:0043233~organelle lumen	EG,NF,UP
+31091	GO:0044428~nuclear part	EG,NF
+14507	GO:0005615~extracellular space	EG,NF
+144970	GO:0044424~intracellular part	EG,NF
+28163	GO:0044424~intracellular part	EG
+31913	GO:0031224~intrinsic to membrane	EG,NF
+13826	GO:0043231~intracellular membrane-bound organelle	EG
+145480	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+146177	GO:0043226~organelle	EG,NF,UP
+12228	GO:0042995~cell projection	EG,NF,UP
+3645	GO:0043227~membrane-bound organelle	UP
+26324	GO:0005623~cell	EG,NF,UP
+26397	GO:0031090~organelle membrane	NF,UP
+147786	GO:0005737~cytoplasm	EG
+27535	GO:0044424~intracellular part	EG,NF
+98518	GO:0044425~membrane part	EG,NF
+26475	GO:0044464~cell part	EG,NF,UP
+19379	GO:0005634~nucleus	EG,NF,UP
+7000	GO:0044464~cell part	EG,NF,UP
+6700	GO:0005739~mitochondrion	EG,NF,UP
+6829	GO:0043228~non-membrane-bound organelle	EG,NF,UP
+15143	GO:0044444~cytoplasmic part	EG,NF,UP
+28415	GO:0044451~nucleoplasm part	NF
+31175	GO:0005737~cytoplasm	EG,NF,UP
+19551	GO:0016020~membrane	EG,NF,UP
+13720	GO:0005634~nucleus	EG,UP
+144591	GO:0043234~protein complex	NF
+39812	GO:0005615~extracellular space	EG,UP
+3634	GO:0005622~intracellular	EG,NF,UP
+18688	GO:0031224~intrinsic to membrane	EG
+15385	GO:0005739~mitochondrion	EG,NF,UP
+149667	GO:0043231~intracellular membrane-bound organelle	EG,NF
+148015	GO:0043227~membrane-bound organelle	EG,NF
+37233	GO:0044424~intracellular part	UP
+20256	GO:0043226~organelle	EG,NF
+57806	GO:0043227~membrane-bound organelle	EG
+25654	GO:0030529~ribonucleoprotein complex	NF
+19551	GO:0031224~intrinsic to membrane	EG,NF,UP
+45385	GO:0016021~integral to membrane	EG,UP
+22076	GO:0005624~membrane fraction	EG,UP
+11980	GO:0005623~cell	EG,NF,UP
+16181	GO:0005623~cell	EG,NF,UP
+37507	GO:0044444~cytoplasmic part	EG
+3675	GO:0044464~cell part	EG,UP
+28340	GO:0005623~cell	EG,NF,UP
+145109	GO:0043226~organelle	EG,NF
+13827	GO:0000313~organellar ribosome	EG,NF,UP
+18481	GO:0016021~integral to membrane	EG,NF,UP
+9543	GO:0044464~cell part	EG,NF,UP
+14045	GO:0016021~integral to membrane	EG,NF
+16593	GO:0044464~cell part	EG,NF
+148212	GO:0030119~AP-type membrane coat adaptor complex	EG
+16127	GO:0031224~intrinsic to membrane	UP
+18274	GO:0016020~membrane	EG,NF,UP
+9202	GO:0032991~macromolecular complex	EG,NF
+146718	GO:0005737~cytoplasm	EG,NF
+8266	GO:0043232~intracellular non-membrane-bound organelle	EG,NF,UP
+14907	GO:0044429~mitochondrial part	EG,NF
+16313	GO:0030135~coated vesicle	EG,NF
+25407	GO:0044464~cell part	EG
+145969	GO:0005623~cell	EG,NF
+6596	GO:0043229~intracellular organelle	EG,NF
+19297	GO:0005737~cytoplasm	EG
+5178	GO:0005634~nucleus	EG,NF,UP
+14300	GO:0016604~nuclear body	EG,UP
+10842	GO:0005623~cell	EG,NF,UP
+16479	GO:0043226~organelle	EG,NF,UP
+8004	GO:0043229~intracellular organelle	EG,NF,UP
+19502	GO:0005764~lysosome	EG,NF
+8593	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+27202	GO:0005623~cell	NF,UP
+27161	GO:0005737~cytoplasm	EG
+26476	GO:0043227~membrane-bound organelle	EG,NF
+145276	GO:0044425~membrane part	EG,NF,UP
+8833	GO:0044424~intracellular part	EG,NF,UP
+34374	GO:0043228~non-membrane-bound organelle	EG,NF
+149941	GO:0044428~nuclear part	EG,NF
+148809	GO:0005615~extracellular space	EG,NF
+147194	GO:0044464~cell part	EG,NF
+4598	GO:0005737~cytoplasm	EG,NF,UP
+5552	GO:0043231~intracellular membrane-bound organelle	EG,NF
+14875	GO:0043227~membrane-bound organelle	NF,UP
+113635	GO:0005886~plasma membrane	NF
+149732	GO:0044424~intracellular part	EG
+32798	GO:0044422~organelle part	EG,NF
+147315	GO:0045202~synapse	EG,NF
+15525	GO:0044464~cell part	EG,NF
+133636	GO:0043229~intracellular organelle	EG
+22120	GO:0044421~extracellular region part	EG,NF,UP
+32991	GO:0042611~MHC protein complex	NF,UP
+16885	GO:0044424~intracellular part	EG,NF,UP
+7990	GO:0044425~membrane part	EG,NF
+37512	GO:0005622~intracellular	NF,UP
+37367	GO:0005623~cell	EG,NF,UP
+37984	GO:0016020~membrane	EG
+7411	GO:0043226~organelle	EG,NF
+15137	GO:0005623~cell	EG,UP
+18229	GO:0005737~cytoplasm	EG
+91988	GO:0044459~plasma membrane part	EG
+7094	GO:0005623~cell	EG,NF,UP
+8270	GO:0005876~spindle microtubule	EG,NF
+15139	GO:0044422~organelle part	EG,NF,UP
+28323	GO:0016021~integral to membrane	EG,NF,UP
+120304	GO:0044464~cell part	EG
+35242	GO:0044464~cell part	EG,NF
+13635	GO:0044424~intracellular part	EG,NF,UP
+27894	GO:0044424~intracellular part	EG,NF,UP
+26583	GO:0044424~intracellular part	EG,NF,UP
+146126	GO:0044464~cell part	EG,NF
+36077	GO:0005622~intracellular	EG,NF
+4738	GO:0016020~membrane	EG,NF,UP
+21159	GO:0043226~organelle	EG
+150518	GO:0042613~MHC class II protein complex	EG,NF
+45487	GO:0031974~membrane-enclosed lumen	EG,NF
+145062	GO:0043226~organelle	EG,NF
+4578	GO:0044464~cell part	EG,NF,UP
+25955	GO:0044424~intracellular part	EG,NF
+19234	GO:0012505~endomembrane system	EG
+45252	GO:0043229~intracellular organelle	EG,NF,UP
+12952	GO:0005623~cell	EG,NF
+4110	GO:0044424~intracellular part	EG,NF,UP
+17153	GO:0005623~cell	EG,UP
+39223	GO:0044444~cytoplasmic part	EG,NF,UP
+17804	GO:0016020~membrane	EG,NF,UP
+21250	GO:0044451~nucleoplasm part	EG
+29312	GO:0005623~cell	EG,NF
+37602	GO:0005622~intracellular	EG,NF
+9385	GO:0044459~plasma membrane part	EG
+146589	GO:0044424~intracellular part	EG,NF
+26372	GO:0005634~nucleus	EG,NF
+3788	GO:0043234~protein complex	EG,NF,UP
+12952	GO:0032991~macromolecular complex	EG,NF
+37785	GO:0044464~cell part	EG,NF
+26768	GO:0043227~membrane-bound organelle	EG,NF
+145675	GO:0043229~intracellular organelle	EG,NF
+6247	GO:0016021~integral to membrane	EG,NF
+11391	GO:0044464~cell part	EG,NF,UP
+149754	GO:0044425~membrane part	EG,NF
+9354	GO:0043229~intracellular organelle	EG
+19588	GO:0016020~membrane	NF,UP
+3486	GO:0005886~plasma membrane	EG
+11277	GO:0043226~organelle	EG,NF,UP
+147321	GO:0044421~extracellular region part	EG,NF,UP
+145513	GO:0043229~intracellular organelle	EG
+53564	GO:0043234~protein complex	EG
+26855	GO:0005737~cytoplasm	EG,NF,UP
+13868	GO:0016020~membrane	EG,NF
+144179	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+27176	GO:0043229~intracellular organelle	EG,NF,UP
+146528	GO:0032991~macromolecular complex	EG,NF
+144020	GO:0016020~membrane	EG,NF,UP
+18152	GO:0008287~protein serine/threonine phosphatase complex	EG,NF,UP
+144051	GO:0005623~cell	EG,NF,UP
+19112	GO:0031224~intrinsic to membrane	EG,NF,UP
+26701	GO:0043233~organelle lumen	NF,UP
+26283	GO:0005737~cytoplasm	EG
+27318	GO:0031224~intrinsic to membrane	EG
+4236	GO:0005886~plasma membrane	EG,NF,UP
+27185	GO:0044446~intracellular organelle part	EG
+3284	GO:0044444~cytoplasmic part	EG,NF,UP
+35269	GO:0044425~membrane part	EG,NF,UP
+7630	GO:0005856~cytoskeleton	EG,NF,UP
+15115	GO:0031224~intrinsic to membrane	EG
+17125	GO:0044446~intracellular organelle part	EG,NF
+148957	GO:0005623~cell	NF
+30277	GO:0044464~cell part	EG,NF,UP
+146651	GO:0044464~cell part	EG,NF,UP
+23137	GO:0043234~protein complex	EG,NF
+58982	GO:0044424~intracellular part	EG,NF,UP
+3865	GO:0005623~cell	EG,NF
+36014	GO:0031981~nuclear lumen	EG,NF
+148719	GO:0005764~lysosome	EG,NF
+19708	GO:0044424~intracellular part	UP
+12605	GO:0043227~membrane-bound organelle	NF,UP
+27011	GO:0043233~organelle lumen	EG,NF,UP
+146537	GO:0043226~organelle	EG,NF
+7384	GO:0000267~cell fraction	UP
+125929	GO:0016020~membrane	EG,NF,UP
+17149	GO:0044444~cytoplasmic part	EG,NF
+147029	GO:0044464~cell part	EG,UP
+9394	GO:0016020~membrane	EG
+148871	GO:0005777~peroxisome	EG,UP
+147819	GO:0005623~cell	EG,NF,UP
+11260	GO:0045177~apical part of cell	NF,UP
+14668	GO:0044428~nuclear part	EG
+12683	GO:0044424~intracellular part	EG
+14711	GO:0032991~macromolecular complex	EG
+147974	GO:0044454~nuclear chromosome part	EG,NF,UP
+144145	GO:0005623~cell	EG,NF
+14410	GO:0044464~cell part	EG,UP
+12390	GO:0012505~endomembrane system	EG,NF,UP
+28196	GO:0005623~cell	EG,NF,UP
+20395	GO:0044464~cell part	NF
+36836	GO:0043229~intracellular organelle	EG,UP
+144471	GO:0005768~endosome	EG
+37088	GO:0015629~actin cytoskeleton	EG,NF
+26263	GO:0044464~cell part	EG,UP
+10744	GO:0044424~intracellular part	EG
+13984	GO:0043228~non-membrane-bound organelle	EG,NF
+5881	GO:0005623~cell	NF,UP
+19365	GO:0005667~transcription factor complex	EG,NF,UP
+30110	GO:0005623~cell	EG,NF
+22764	GO:0044446~intracellular organelle part	EG
+149672	GO:0016020~membrane	EG,NF
+144553	GO:0012505~endomembrane system	EG
+10698	GO:0005623~cell	EG,NF,UP
+27185	GO:0031975~envelope	EG
+14772	GO:0016020~membrane	EG,NF
+27058	GO:0005623~cell	EG,NF
+20335	GO:0043229~intracellular organelle	EG,NF
+9492	GO:0044444~cytoplasmic part	EG,NF,UP
+146161	GO:0005623~cell	EG,NF,UP
+31269	GO:0031224~intrinsic to membrane	EG
+27717	GO:0043229~intracellular organelle	EG,NF,UP
+15333	GO:0005737~cytoplasm	EG
+4743	GO:0005623~cell	EG,NF,UP
+13989	GO:0005654~nucleoplasm	EG,NF,UP
+9335	GO:0044422~organelle part	UP
+16839	GO:0043226~organelle	EG,NF,UP
+9331	GO:0044464~cell part	EG,NF,UP
+27186	GO:0005737~cytoplasm	EG
+24703	GO:0043226~organelle	EG
+144330	GO:0045177~apical part of cell	EG,NF,UP
+15116	GO:0005739~mitochondrion	EG,UP
+145023	GO:0005623~cell	EG,NF,UP
+37680	GO:0031966~mitochondrial membrane	NF,UP
+16267	GO:0043226~organelle	EG,NF,UP
+147554	GO:0044464~cell part	EG,NF
+3605	GO:0005623~cell	EG,UP
+4231	GO:0005622~intracellular	EG
+39800	GO:0016020~membrane	EG,NF,UP
+19538	GO:0043227~membrane-bound organelle	EG,NF,UP
+37048	GO:0044464~cell part	EG,NF,UP
+145433	GO:0044422~organelle part	EG,NF
+144676	GO:0005739~mitochondrion	EG
+27457	GO:0044421~extracellular region part	EG,NF,UP
+146490	GO:0043226~organelle	EG,NF
+19472	GO:0044421~extracellular region part	EG,NF,UP
+7631	GO:0044425~membrane part	EG,NF,UP
+147003	GO:0043227~membrane-bound organelle	EG
+64459	GO:0016020~membrane	EG
+25740	GO:0005737~cytoplasm	EG
+19415	GO:0016021~integral to membrane	EG,NF,UP
+27567	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+16664	GO:0031224~intrinsic to membrane	EG,NF
+5433	GO:0043229~intracellular organelle	EG,NF,UP
+27738	GO:0044464~cell part	EG
+27656	GO:0044445~cytosolic part	NF
+19504	GO:0005739~mitochondrion	NF,UP
+37003	GO:0044424~intracellular part	EG,NF
+12149	GO:0005737~cytoplasm	EG,NF
+18100	GO:0031224~intrinsic to membrane	EG,NF
+145390	GO:0030120~vesicle coat	EG,NF
+13256	GO:0044430~cytoskeletal part	UP
+27166	GO:0044464~cell part	EG,NF,UP
+19125	GO:0043228~non-membrane-bound organelle	EG,UP
+16817	GO:0044424~intracellular part	EG,NF
+15185	GO:0005634~nucleus	EG,NF,UP
+117269	GO:0043226~organelle	EG,NF,UP
+19613	GO:0043234~protein complex	EG
+45498	GO:0043229~intracellular organelle	EG
+25464	GO:0043227~membrane-bound organelle	EG
+4321	GO:0005622~intracellular	UP
+19212	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+4568	GO:0043231~intracellular membrane-bound organelle	EG,NF
+16808	GO:0005737~cytoplasm	EG
+145422	GO:0043226~organelle	EG,NF
+37246	GO:0016020~membrane	EG
+3318	GO:0005737~cytoplasm	EG,NF,UP
+27180	GO:0030141~secretory granule	EG,NF,UP
+26383	GO:0044428~nuclear part	EG,NF,UP
+28230	GO:0016021~integral to membrane	EG,NF
+18745	GO:0016020~membrane	EG
+8603	GO:0044424~intracellular part	EG
+4366	GO:0044464~cell part	EG,NF,UP
+148632	GO:0005694~chromosome	EG,NF
+146190	GO:0005773~vacuole	EG,NF,UP
+16792	GO:0043226~organelle	EG,NF,UP
+147925	GO:0016020~membrane	EG,NF,UP
+17284	GO:0044464~cell part	EG,NF,UP
+37573	GO:0044464~cell part	EG,NF
+146200	GO:0005829~cytosol	NF,UP
+28317	GO:0005622~intracellular	EG
+24613	GO:0005623~cell	EG
+22123	GO:0016020~membrane	EG,NF,UP
+64672	GO:0016020~membrane	EG
+24019	GO:0005622~intracellular	EG,UP
+12949	GO:0005622~intracellular	EG,NF,UP
+4411	GO:0005622~intracellular	EG,NF
+19958	GO:0043231~intracellular membrane-bound organelle	EG,UP
+45323	GO:0043226~organelle	UP
+146648	GO:0016020~membrane	EG,NF,UP
+37514	GO:0043227~membrane-bound organelle	EG
+146261	GO:0030054~cell junction	EG
+145282	GO:0000323~lytic vacuole	EG
+7399	GO:0044424~intracellular part	EG,NF
+10677	GO:0005700~polytene chromosome	EG,NF,UP
+27820	GO:0043229~intracellular organelle	EG,NF,UP
+13096	GO:0005622~intracellular	EG,NF,UP
+30257	GO:0031224~intrinsic to membrane	EG,NF
+13405	GO:0044424~intracellular part	EG,NF
+7274	GO:0005622~intracellular	EG,NF
+149597	GO:0005623~cell	EG
+148690	GO:0019866~organelle inner membrane	EG,NF,UP
+26353	GO:0044424~intracellular part	EG
+14470	GO:0005623~cell	EG,NF,UP
+7130	GO:0044424~intracellular part	EG,NF,UP
+27691	GO:0044464~cell part	EG,NF
+15724	GO:0043226~organelle	NF,UP
+37088	GO:0044446~intracellular organelle part	EG,NF,UP
+22422	GO:0005783~endoplasmic reticulum	EG
+26410	GO:0005622~intracellular	EG,NF,UP
+12548	GO:0005623~cell	EG,NF,UP
+27542	GO:0044421~extracellular region part	EG,NF,UP
+27562	GO:0043233~organelle lumen	NF
+27028	GO:0044446~intracellular organelle part	EG,NF
+9948	GO:0005737~cytoplasm	EG
+22449	GO:0030529~ribonucleoprotein complex	EG,NF,UP
+22112	GO:0005622~intracellular	NF
+37301	GO:0044425~membrane part	EG,NF,UP
+15152	GO:0043226~organelle	EG,NF,UP
+146053	GO:0044425~membrane part	EG,NF,UP
+35172	GO:0016021~integral to membrane	EG,NF
+28069	GO:0044464~cell part	EG
+144740	GO:0043227~membrane-bound organelle	EG,NF
+16223	GO:0044444~cytoplasmic part	EG,NF
+29273	GO:0005622~intracellular	EG
+146359	GO:0044424~intracellular part	EG,NF,UP
+13332	GO:0005623~cell	EG,NF,UP
+12673	GO:0005739~mitochondrion	EG,NF,UP
+26459	GO:0005739~mitochondrion	EG
+3271	GO:0005737~cytoplasm	EG,NF,UP
+147732	GO:0005576~extracellular region	UP
+18786	GO:0031224~intrinsic to membrane	EG,NF,UP
+39299	GO:0043229~intracellular organelle	EG,UP
+16697	GO:0031226~intrinsic to plasma membrane	EG,NF
+4156	GO:0000792~heterochromatin	EG,UP
+28375	GO:0044425~membrane part	EG,NF
+14564	GO:0005623~cell	EG,NF,UP
+22080	GO:0044425~membrane part	EG
+144912	GO:0016021~integral to membrane	EG,NF
+5269	GO:0044464~cell part	EG,NF,UP
+147041	GO:0005622~intracellular	EG,NF,UP
+3785	GO:0005622~intracellular	EG,NF,UP
+19357	GO:0005912~adherens junction	EG
+26342	GO:0031975~envelope	EG,NF,UP
+4599	GO:0005623~cell	EG,UP
+146044	GO:0044421~extracellular region part	EG,NF
+5657	GO:0031012~extracellular matrix	EG
+23858	GO:0031224~intrinsic to membrane	EG,NF,UP
+3387	GO:0000785~chromatin	EG,NF,UP
+13827	GO:0043228~non-membrane-bound organelle	EG,NF,UP
+146861	GO:0016020~membrane	EG,NF,UP
+20069	GO:0043226~organelle	EG,NF
+29157	GO:0016020~membrane	EG
+33812	GO:0044425~membrane part	EG,NF,UP
+16978	GO:0044464~cell part	EG,NF,UP
+13426	GO:0005623~cell	EG,NF,UP
+5383	GO:0005623~cell	EG,NF,UP
+1009059	GO:0016021~integral to membrane	NF
+37317	GO:0031226~intrinsic to plasma membrane	EG,NF
+147850	GO:0005622~intracellular	EG,NF,UP
+10759	GO:0043226~organelle	UP
+34173	GO:0032991~macromolecular complex	EG,NF
+37410	GO:0044446~intracellular organelle part	EG,NF,UP
+147922	GO:0044424~intracellular part	UP
+146611	GO:0044424~intracellular part	EG,NF
+148907	GO:0044444~cytoplasmic part	EG,NF,UP
+147579	GO:0044464~cell part	NF,UP
+148284	GO:0044455~mitochondrial membrane part	EG
+144384	GO:0044444~cytoplasmic part	EG
+17119	GO:0044464~cell part	EG,NF,UP
+3557	GO:0032991~macromolecular complex	EG,NF,UP
+37334	GO:0005615~extracellular space	EG,NF,UP
+143883	GO:0031224~intrinsic to membrane	EG,NF
+7249	GO:0043229~intracellular organelle	NF
+11375	GO:0016020~membrane	EG,NF
+19701	GO:0005576~extracellular region	EG,NF
+146952	GO:0044425~membrane part	EG,NF
+27601	GO:0005623~cell	EG,NF
+7910	GO:0044464~cell part	EG,NF
+9484	GO:0005856~cytoskeleton	EG
+37663	GO:0005622~intracellular	EG,NF
+11796	GO:0005737~cytoplasm	UP
+149898	GO:0044428~nuclear part	EG
+17188	GO:0044446~intracellular organelle part	EG,NF,UP
+14846	GO:0043226~organelle	EG,NF,UP
+10514	GO:0044424~intracellular part	EG,NF,UP
+4741	GO:0043227~membrane-bound organelle	EG,NF,UP
+6804	GO:0016020~membrane	EG,NF,UP
+144055	GO:0043229~intracellular organelle	EG
+8216	GO:0030017~sarcomere	EG,NF,UP
+9100	GO:0016021~integral to membrane	EG,NF
+50913	GO:0043231~intracellular membrane-bound organelle	EG
+26699	GO:0043226~organelle	EG,NF
+17092	GO:0005737~cytoplasm	EG
+4339	GO:0005623~cell	UP
+145561	GO:0044464~cell part	EG,NF
+148470	GO:0005624~membrane fraction	EG,NF,UP
+150489	GO:0005623~cell	EG,NF
+149210	GO:0005615~extracellular space	EG
+15101	GO:0044464~cell part	EG,NF
+8833	GO:0005737~cytoplasm	EG
+7493	GO:0005623~cell	EG,NF
+5098	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+149111	GO:0043227~membrane-bound organelle	EG
+10728	GO:0005737~cytoplasm	EG,NF
+50983	GO:0005623~cell	EG
+38187	GO:0016020~membrane	EG,NF
+37753	GO:0005622~intracellular	EG,NF
+8856	GO:0044444~cytoplasmic part	EG,NF,UP
+18995	GO:0016020~membrane	EG,NF,UP
+148632	GO:0000775~chromosome, pericentric region	EG,NF
+7960	GO:0005882~intermediate filament	EG,NF
+11776	GO:0044464~cell part	NF,UP
+15012	GO:0043234~protein complex	EG,NF
+146484	GO:0005737~cytoplasm	EG,NF
+11050	GO:0005634~nucleus	EG
+24681	GO:0043226~organelle	EG,NF,UP
+5647	GO:0042995~cell projection	EG,NF
+37598	GO:0044464~cell part	EG,NF,UP
+37169	GO:0043231~intracellular membrane-bound organelle	EG,NF
+9195	GO:0043226~organelle	EG,NF,UP
+15191	GO:0044444~cytoplasmic part	EG,NF,UP
+12390	GO:0031984~organelle subcompartment	NF
+64673	GO:0031226~intrinsic to plasma membrane	EG
+39619	GO:0031224~intrinsic to membrane	EG,NF
+19210	GO:0031224~intrinsic to membrane	EG,NF,UP
+17035	GO:0005622~intracellular	EG
+147269	GO:0005789~endoplasmic reticulum membrane	EG,NF,UP
+8599	GO:0043229~intracellular organelle	EG,NF,UP
+5246	GO:0000323~lytic vacuole	EG,NF
+40307	GO:0044464~cell part	EG,NF
+5217	GO:0005623~cell	EG
+147045	GO:0032991~macromolecular complex	EG,NF,UP
+144758	GO:0043229~intracellular organelle	EG,NF,UP
+18880	GO:0005576~extracellular region	EG,NF,UP
+6785	GO:0005576~extracellular region	EG,NF
+34424	GO:0042598~vesicular fraction	EG,UP
+8371	GO:0005623~cell	EG,NF,UP
+148688	GO:0043227~membrane-bound organelle	EG,NF,UP
+18229	GO:0044444~cytoplasmic part	EG
+144998	GO:0016324~apical plasma membrane	EG,NF,UP
+35216	GO:0043229~intracellular organelle	EG,NF,UP
+15291	GO:0044464~cell part	EG,NF,UP
+13188	GO:0005623~cell	EG,NF
+26431	GO:0005737~cytoplasm	EG
+38032	GO:0044459~plasma membrane part	EG,NF,UP
+23613	GO:0043226~organelle	EG,NF,UP
+10672	GO:0044429~mitochondrial part	EG,NF
+26264	GO:0016021~integral to membrane	EG,NF
+34758	GO:0005643~nuclear pore	EG,NF
+146108	GO:0043231~intracellular membrane-bound organelle	EG,NF
+107088	GO:0044446~intracellular organelle part	EG,NF,UP
+33063	GO:0044444~cytoplasmic part	EG,NF
+30306	GO:0043231~intracellular membrane-bound organelle	EG
+5434	GO:0005576~extracellular region	EG,NF,UP
+5752	GO:0044459~plasma membrane part	EG,NF,UP
+32796	GO:0031974~membrane-enclosed lumen	EG,NF,UP
+28016	GO:0044425~membrane part	EG,NF,UP
+18878	GO:0005623~cell	EG,NF
+28170	GO:0042995~cell projection	EG
+45324	GO:0032991~macromolecular complex	EG,NF
+9164	GO:0005737~cytoplasm	EG
+9112	GO:0043227~membrane-bound organelle	EG,NF
+35226	GO:0043231~intracellular membrane-bound organelle	EG,NF,UP
+13731	GO:0043226~organelle	EG,NF
+26648	GO:0044464~cell part	EG,NF,UP
+12648	GO:0044425~membrane part	EG
+146126	GO:0043227~membrane-bound organelle	EG,NF
+4110	GO:0044425~membrane part	EG,NF,UP
+6826	GO:0044425~membrane part	NF
+17093	GO:0044425~membrane part	EG,NF,UP
+45317	GO:0005737~cytoplasm	EG
+31348	GO:0005737~cytoplasm	NF
+6289	GO:0005622~intracellular	EG,UP
+144904	GO:0043226~organelle	EG,NF,UP
+12836	GO:0016021~integral to membrane	EG
+12844	GO:0043231~intracellular membrane-bound organelle	EG
+16429	GO:0043228~non-membrane-bound organelle	EG,NF,UP
+144127	GO:0005634~nucleus

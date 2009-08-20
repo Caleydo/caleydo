@@ -7,6 +7,7 @@ import java.net.URL;
 import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -27,16 +28,31 @@ import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
  */
 public class KeggPathwayCacher
 	extends APathwayCacher {
+
+	private static final String FETCH_URL_HOMO_SAPIENS = "http://www.genome.jp/kegg/xml/hsa/index.html";
+	private static final String FETCH_URL_MUS_MUSCULUS = "http://www.genome.jp/kegg/xml/mmu/index.html";
+
 	/**
 	 * Constructor.
 	 */
 	public KeggPathwayCacher(final Display display, final ProgressBar progressBar,
-		final CmdFetchPathwayData triggeringCommand) {
+		final CmdFetchPathwayData triggeringCommand, final EOrganism eOrganism) {
+
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
+		this.eOrganism = eOrganism;
 
-		iExpectedDownloads = 264;
+		if (eOrganism == EOrganism.HOMO_SAPIENS) {
+			sFetchURL = FETCH_URL_HOMO_SAPIENS;
+			iExpectedDownloads = 244;
+		}
+		else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+			sFetchURL = FETCH_URL_MUS_MUSCULUS;
+			iExpectedDownloads = 235;
+		}
+		else
+			throw new IllegalStateException("Cannot fetch pathways from organism " + eOrganism);
 	}
 
 	@Override
@@ -63,7 +79,7 @@ public class KeggPathwayCacher
 		RegExpFilterRule regExpFilterRule =
 			new RegExpJobFilter.RegExpFilterRule(
 				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html"
-					+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*Fig.*");
+					+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*br.*|.*menu.*|.*Fig.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
@@ -81,12 +97,12 @@ public class KeggPathwayCacher
 		UrlDownloadJob job = jobFactory.createDownloadJob();
 
 		try {
-			job.setUrl(new URL("http://www.genome.jp/kegg/xml/hsa/index.html"));
+			job.setUrl(new URL(sFetchURL));
 		}
 		catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		// "http://www.genome.jp/kegg/pathway/hsa/hsa00380.gif
+		// "http://www.genome.jp/kegg/ pathway/hsa00380.gif
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
@@ -96,6 +112,7 @@ public class KeggPathwayCacher
 		// triggerPathwayListGeneration();
 
 		if (triggeringCommand != null) {
+			progressBar.setSelection(100);
 			triggeringCommand.setFinishedKeggCacher();
 		}
 	}

@@ -33,6 +33,11 @@ public class GeneticUseCase
 	private boolean pathwayViewerMode;
 
 	/**
+	 * Organism on which the genetic analysis data bases on.
+	 */
+	private EOrganism eOrganism = EOrganism.HOMO_SAPIENS; // FIXME: just for testing
+
+	/**
 	 * Constructor.
 	 */
 	public GeneticUseCase() {
@@ -129,4 +134,11 @@ public class GeneticUseCase
 		this.pathwayViewerMode = pathwayViewerMode;
 	}
 
+	public void setOrganism(EOrganism eOrganism) {
+		this.eOrganism = eOrganism;
+	}
+
+	public EOrganism getOrganism() {
+		return eOrganism;
+	}
 }

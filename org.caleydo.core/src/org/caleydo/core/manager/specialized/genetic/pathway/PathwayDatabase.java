@@ -2,6 +2,10 @@ package org.caleydo.core.manager.specialized.genetic.pathway;
 
 import java.io.Serializable;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+
 /**
  * Class that holds information about a specific pathway database.
  * 
@@ -43,6 +47,19 @@ public class PathwayDatabase
 
 		if (sImageMapPath.startsWith(USER_HOME)) {
 			this.sImageMapPath = sImageMapPath.replace(USER_HOME, sUserHomePath);
+		}
+
+		if (type == EPathwayDatabaseType.KEGG) {
+			EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase()).getOrganism();
+
+			if (eOrganism == EOrganism.HOMO_SAPIENS) {
+				this.sImagePath += "hsa/";
+				this.sXMLPath += "hsa/";
+			}
+			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+				this.sImagePath += "mmu/";
+				this.sXMLPath += "mmu/";
+			}
 		}
 	}
 

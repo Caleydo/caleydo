@@ -14,7 +14,9 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 
 	private static String BIOCARTA_INPUT_FOLDER_PATH =
 		System.getProperty("user.home") + "/.caleydo/cgap.nci.nih.gov/Genes";
-	private static String OUTPUT_FILE_PATH = "data/genome/mapping/BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt";
+	
+	//private static String OUTPUT_FILE_PATH = "data/genome/mapping/HOMO_SAPIENS_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt";
+	private static String OUTPUT_FILE_PATH = "data/genome/mapping/MUS_MUSCULUS_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt";
 
 	private static String SEARCH_SEQUENCE =
 		"http://www.ncbi.nih.gov/entrez/query.fcgi?db=nucleotide&cmd=search&term=NM_";
@@ -41,7 +43,8 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 	public void searchForAccessionInFile(final File file) {
 
 		// Ignore mouse genes.
-		if (file.getName().contains("ORG=Mm"))
+		// ORG=Mm | ORG=Hs
+		if (file.getName().contains("ORG=Hs")) 
 			return;
 
 		try {
