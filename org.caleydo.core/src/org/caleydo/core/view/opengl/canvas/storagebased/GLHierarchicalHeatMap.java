@@ -2427,7 +2427,7 @@ public class GLHierarchicalHeatMap
 			glHeatMapView.getViewFrustum().setTop(ftop);
 		}
 		glHeatMapView.getViewFrustum().setRight(fright);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_VIEW_SELECTION,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
 			glHeatMapView.getID()));
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
@@ -2436,10 +2436,14 @@ public class GLHierarchicalHeatMap
 		// render embedded experiment dendrogram
 		if (bExperimentDendrogramActive) {
 			gl.glTranslatef(0f, 3.6f, 0f);
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION, glExperimentDendrogramView
+					.getID()));
 			glExperimentDendrogramView.getViewFrustum().setTop(ftop - 3.6f);
 			glExperimentDendrogramView.getViewFrustum().setRight(fWidthEHM);
 			glExperimentDendrogramView.setDisplayListDirty();
 			glExperimentDendrogramView.displayRemote(gl);
+			gl.glPopName();
 			gl.glTranslatef(0f, -3.6f, 0f);
 		}
 
@@ -2468,10 +2472,13 @@ public class GLHierarchicalHeatMap
 		// render embedded gene dendrogram
 		if (bGeneDendrogramActive) {
 			gl.glTranslatef(0f, 0.4f, 0f);
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION, glGeneDendrogramView.getID()));
 			glGeneDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
 			glGeneDendrogramView.getViewFrustum().setRight(1.7f);
 			glGeneDendrogramView.setDisplayListDirty();
 			glGeneDendrogramView.displayRemote(gl);
+			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
 		}
 
@@ -2533,11 +2540,18 @@ public class GLHierarchicalHeatMap
 			float fHeightSubTree = viewFrustum.getHeight();
 
 			int lastIndexOfSubTree = 0;
+
+			// FIXME: bad hack!!!
 			try {
 				lastIndexOfSubTree = contentVA.get(iLastSampleLevel1 + 1);
 			}
 			catch (IndexOutOfBoundsException e) {
-				lastIndexOfSubTree = contentVA.get(iLastSampleLevel1);
+				try {
+					lastIndexOfSubTree = contentVA.get(iLastSampleLevel1);
+				}
+				catch (IndexOutOfBoundsException e1) {
+					lastIndexOfSubTree = contentVA.get(iLastSampleLevel1 - 1);
+				}
 			}
 
 			glGeneDendrogramView.renderSubTreeFromIndexToIndex(gl, contentVA.get(iFirstSampleLevel1),
@@ -3806,7 +3820,47 @@ public class GLHierarchicalHeatMap
 				break;
 
 			// handle click on level 3 (EHM)
-			case HIER_HEAT_MAP_VIEW_SELECTION:
+			case HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						break;
+
+					case DRAGGED:
+						break;
+
+					case MOUSE_OVER:
+						break;
+
+					case RIGHT_CLICKED:
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						break;
+				}
+				break;
+
+			// handle click on gene dendrogram
+			case HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION:
+				switch (pickingMode) {
+					case CLICKED:
+						break;
+
+					case DRAGGED:
+						break;
+
+					case MOUSE_OVER:
+						break;
+
+					case RIGHT_CLICKED:
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						break;
+				}
+				break;
+
+			// handle click on gene dendrogram
+			case HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION:
 				switch (pickingMode) {
 					case CLICKED:
 						break;

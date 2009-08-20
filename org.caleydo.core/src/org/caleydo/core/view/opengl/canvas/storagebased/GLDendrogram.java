@@ -29,10 +29,12 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -48,6 +50,8 @@ import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
+import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -184,6 +188,13 @@ public class GLDendrogram
 	@Override
 	public void initLocal(GL gl) {
 
+		// Register keyboard listener to GL canvas
+		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
+
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		iGLDisplayListCutOffValue = gl.glGenLists(1);
@@ -198,6 +209,13 @@ public class GLDendrogram
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		this.glMouseListener = glMouseListener;
+
+		// Register keyboard listener to GL canvas
+		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -265,6 +283,9 @@ public class GLDendrogram
 
 		// display list for cut off value
 		gl.glCallList(iGLDisplayListCutOffValue);
+
+		if (!isRenderedRemote())
+			contextMenu.render(gl, this);
 	}
 
 	/**
@@ -630,6 +651,9 @@ public class GLDendrogram
 
 			if (currentNode.isPartOfSubTree()) {
 
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.DENDROGRAM_GENE_NODE_SELECTION, currentNode.getClusterNr()));
+
 				// vertical line connecting all child nodes
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(xmin, ymin, currentNode.getPosSubTree().z());
@@ -643,6 +667,7 @@ public class GLDendrogram
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
 					gl.glEnd();
 				}
+				gl.glPopName();
 			}
 
 		}
@@ -659,12 +684,15 @@ public class GLDendrogram
 		}
 
 		if (currentNode.isPartOfSubTree()) {
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_GENE_LEAF_SELECTION,
+				currentNode.getClusterNr()));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(currentNode.getPosSubTree().x() + fLevelWidthSubTree, currentNode.getPosSubTree()
 				.y(), currentNode.getPosSubTree().z());
 			gl.glVertex3f(currentNode.getPosSubTree().x(), currentNode.getPosSubTree().y(), currentNode
 				.getPosSubTree().z());
 			gl.glEnd();
+			gl.glPopName();
 		}
 	}
 
@@ -913,8 +941,8 @@ public class GLDendrogram
 
 			fDiff = fTemp - xmin;
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.DENDROGRAM_HORIZONTAL_SELECTION, currentNode.getClusterNr()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_GENE_NODE_SELECTION,
+				currentNode.getClusterNr()));
 
 			// vertical line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -937,8 +965,8 @@ public class GLDendrogram
 
 		}
 		else {
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.DENDROGRAM_HORIZONTAL_SELECTION, currentNode.getClusterNr()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_GENE_LEAF_SELECTION,
+				currentNode.getClusterNr()));
 
 			// horizontal line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1021,8 +1049,8 @@ public class GLDendrogram
 
 			fDiff = fTemp - ymax;
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_VERTICAL_SELECTION,
-				currentNode.getClusterNr()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.DENDROGRAM_EXPERIMENT_NODE_SELECTION, currentNode.getClusterNr()));
 
 			// horizontal line connecting all child nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1046,8 +1074,8 @@ public class GLDendrogram
 
 		}
 		else {
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_VERTICAL_SELECTION,
-				currentNode.getClusterNr()));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.DENDROGRAM_EXPERIMENT_LEAF_SELECTION, currentNode.getClusterNr()));
 
 			// vertical line visualizing leaf nodes
 			gl.glBegin(GL.GL_LINES);
@@ -1326,7 +1354,6 @@ public class GLDendrogram
 			return;
 		}
 
-		boolean bupdateSelectionManager = false;
 		ESelectionType eSelectionType = ESelectionType.NORMAL;
 
 		switch (ePickingType) {
@@ -1346,31 +1373,43 @@ public class GLDendrogram
 				}
 				break;
 
-			case DENDROGRAM_HORIZONTAL_SELECTION:
+			case DENDROGRAM_GENE_LEAF_SELECTION:
 
 				switch (pickingMode) {
 
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
-						if (contentSelectionManager.checkStatus(iExternalID))
-							bupdateSelectionManager = true;
-						if (storageSelectionManager.checkStatus(iExternalID))
-							bupdateSelectionManager = true;
-
 						break;
 					case DRAGGED:
 						break;
 					case MOUSE_OVER:
 						eSelectionType = ESelectionType.MOUSE_OVER;
-						// if (contentSelectionManager.checkStatus(iExternalID))
-						// bupdateSelectionManager = true;
-						// if (storageSelectionManager.checkStatus(iExternalID))
-						// bupdateSelectionManager = true;
+						break;
+					case RIGHT_CLICKED:
+
+						if (contentSelectionManager.checkStatus(iExternalID) == false
+							&& storageSelectionManager.checkStatus(iExternalID) == false)
+							break;
+
+						// Prevent handling of non genetic data in context menu
+						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+							break;
+
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+						}
+
+						GeneContextMenuItemContainer geneContextMenuItemContainer =
+							new GeneContextMenuItemContainer();
+						geneContextMenuItemContainer.setID(EIDType.EXPRESSION_INDEX, iExternalID);
+						contextMenu.addItemContanier(geneContextMenuItemContainer);
 
 						break;
 				}
 
-				if (bupdateSelectionManager) {
+				if (eSelectionType != ESelectionType.NORMAL) {
 
 					ISelectionDelta selectionDelta = null;
 					SelectionManager selectionManager = null;
@@ -1387,43 +1426,63 @@ public class GLDendrogram
 					event.setSelectionDelta((SelectionDelta) selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
-
 				}
 
-				if (tree.getNodeByNumber(iExternalID) != null) {
-					ClusterNodeSelectionEvent event = new ClusterNodeSelectionEvent();
-					SelectionDelta selectionDelta = new SelectionDelta(EIDType.CLUSTER_NUMBER);
-					selectionDelta.addSelection(iExternalID, eSelectionType);
-					event.setSelectionDelta(selectionDelta);
-					eventPublisher.triggerEvent(event);
-				}
 				break;
 
-			case DENDROGRAM_VERTICAL_SELECTION:
-
+			case DENDROGRAM_GENE_NODE_SELECTION:
 				switch (pickingMode) {
-
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
-						if (contentSelectionManager.checkStatus(iExternalID))
-							bupdateSelectionManager = true;
-						if (storageSelectionManager.checkStatus(iExternalID))
-							bupdateSelectionManager = true;
-
 						break;
 					case DRAGGED:
 						break;
 					case MOUSE_OVER:
 						eSelectionType = ESelectionType.MOUSE_OVER;
-						// if (contentSelectionManager.checkStatus(iExternalID))
-						// bupdateSelectionManager = true;
-						// if (storageSelectionManager.checkStatus(iExternalID))
-						// bupdateSelectionManager = true;
+						break;
+				}
+				if (eSelectionType != ESelectionType.NORMAL && tree.getNodeByNumber(iExternalID) != null) {
+					ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
+					SelectionDelta selectionDeltaClusterNode = new SelectionDelta(EIDType.CLUSTER_NUMBER);
+					selectionDeltaClusterNode.addSelection(iExternalID, eSelectionType);
+					clusterNodeEvent.setSelectionDelta(selectionDeltaClusterNode);
+					eventPublisher.triggerEvent(clusterNodeEvent);
+				}
+
+				break;
+
+			case DENDROGRAM_EXPERIMENT_LEAF_SELECTION:
+
+				switch (pickingMode) {
+
+					case CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
+						break;
+					case DRAGGED:
+						break;
+					case MOUSE_OVER:
+						eSelectionType = ESelectionType.MOUSE_OVER;
+						break;
+					case RIGHT_CLICKED:
+						if (contentSelectionManager.checkStatus(iExternalID) == false
+							&& storageSelectionManager.checkStatus(iExternalID) == false)
+							break;
+
+						if (!isRenderedRemote()) {
+							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+								getParentGLCanvas().getHeight());
+							contextMenu.setMasterGLView(this);
+						}
+
+						ExperimentContextMenuItemContainer experimentContextMenuItemContainer =
+							new ExperimentContextMenuItemContainer();
+						experimentContextMenuItemContainer.setID(iExternalID);
+						contextMenu.addItemContanier(experimentContextMenuItemContainer);
 
 						break;
 				}
 
-				if (bupdateSelectionManager) {
+				if (eSelectionType != ESelectionType.NORMAL) {
 
 					ISelectionDelta selectionDelta = null;
 					SelectionManager selectionManager = null;
@@ -1442,7 +1501,6 @@ public class GLDendrogram
 					eventPublisher.triggerEvent(event);
 
 					setDisplayListDirty();
-
 				}
 				break;
 		}
@@ -1592,10 +1650,10 @@ public class GLDendrogram
 		super.resetView();
 	}
 
-	public void setRedrawDendrogram(){
+	public void setRedrawDendrogram() {
 		this.bRedrawDendrogram = true;
 	}
-	
+
 	/**
 	 * This function calls a recursive function which is responsible for setting all nodes in the dendrogram
 	 * to {@link EselectionType.NORMAL}
