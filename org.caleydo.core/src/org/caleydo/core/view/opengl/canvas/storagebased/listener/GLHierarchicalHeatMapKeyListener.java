@@ -34,43 +34,52 @@ public class GLHierarchicalHeatMapKeyListener
 
 		KeyEvent keyEvent = wrapperKeyEvent.getKeyEvent();
 
+		if (keyEvent.character == 'e') {
+			glHierarchicalHeatMap.handleDendrogramActivation(false);
+			return;
+		}
+		else if (keyEvent.character == 'g') {
+			glHierarchicalHeatMap.handleDendrogramActivation(true);
+			return;
+		}
+
 		switch (keyEvent.keyCode) {
 			case SWT.ARROW_UP:
 
 				if (keyEvent.stateMask == SWT.CTRL) {
-					glHierarchicalHeatMap.handleArrowUpCtrlPressed();
+					glHierarchicalHeatMap.handleArrowAndCtrlPressed(true);
 				}
 				else if (keyEvent.stateMask == SWT.ALT) {
-					glHierarchicalHeatMap.handleArrowUpAltPressed();
+					glHierarchicalHeatMap.handleArrowAndAltPressed(true);
 				}
 				else {
-					glHierarchicalHeatMap.handleArrowUpPressed();
+					glHierarchicalHeatMap.handleArrowPressed(true);
 				}
 
 				break;
 			case SWT.ARROW_DOWN:
 
 				if (keyEvent.stateMask == SWT.CTRL) {
-					glHierarchicalHeatMap.handleArrowDownCtrlPressed();
+					glHierarchicalHeatMap.handleArrowAndCtrlPressed(false);
 				}
 				else if (keyEvent.stateMask == SWT.ALT) {
-					glHierarchicalHeatMap.handleArrowDownAltPressed();
+					glHierarchicalHeatMap.handleArrowAndAltPressed(false);
 				}
 				else {
-					glHierarchicalHeatMap.handleArrowDownPressed();
+					glHierarchicalHeatMap.handleArrowPressed(false);
 				}
 
 				break;
 			case SWT.ARROW_LEFT:
 
 				if (keyEvent.stateMask == SWT.SHIFT) {
-					glHierarchicalHeatMap.handleArrowLeftShiftPressed();
+					glHierarchicalHeatMap.handleArrowAndShiftPressed(true);
 				}
 				break;
 			case SWT.ARROW_RIGHT:
 
 				if (keyEvent.stateMask == SWT.SHIFT) {
-					glHierarchicalHeatMap.handleArrowRightShiftPressed();
+					glHierarchicalHeatMap.handleArrowAndShiftPressed(false);
 				}
 				break;
 		}

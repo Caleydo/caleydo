@@ -897,13 +897,13 @@ public class GLDendrogram
 				bCutOffActive[i] = false;
 
 				if (bEnableDepthCheck) {
-					if (current.getSelectionType() == ESelectionType.DESELECTED) {
+					if (current.getSelectionType() != ESelectionType.DESELECTED) {
 						renderDendrogramGenes(gl, current, 0.3f);
 						gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 					}
 					else {
-						renderDendrogramGenes(gl, current, 1);
-						// bCutOffActive[i] = true;
+						// renderDendrogramGenes(gl, current, 1);
+						bCutOffActive[i] = true;
 					}
 				}
 				else
@@ -926,10 +926,10 @@ public class GLDendrogram
 			for (int i = 0; i < iNrChildsNode; i++) {
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
-				// if (bCutOffActive[i])
-				// gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
-				// else
-				gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
+				if (bCutOffActive[i])
+					gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
+				else
+					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
 				gl.glEnd();
 			}
 
@@ -1006,13 +1006,13 @@ public class GLDendrogram
 				bCutOffActive[i] = false;
 
 				if (bEnableDepthCheck) {
-					if (current.getSelectionType() == ESelectionType.DESELECTED) {
+					if (current.getSelectionType() != ESelectionType.DESELECTED) {
 						renderDendrogramExperiments(gl, current, 0.3f);
 						gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 					}
 					else {
-						renderDendrogramExperiments(gl, current, 1);
-						// bCutOffActive[i] = true;
+						// renderDendrogramExperiments(gl, current, 1);
+						bCutOffActive[i] = true;
 					}
 				}
 				else
@@ -1035,10 +1035,10 @@ public class GLDendrogram
 				// vertical lines connecting all children with their parent
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(tempPositions[i].x(), ymax, tempPositions[i].z());
-				// if (bCutOffActive[i])
-				// gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
-				// else
-				gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
+				if (bCutOffActive[i])
+					gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
+				else
+					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
 				gl.glEnd();
 
 			}
@@ -1162,16 +1162,16 @@ public class GLDendrogram
 		fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		float fWidth = viewFrustum.getWidth() - 0.3f;
+		float fWidth = viewFrustum.getWidth() - 0.1f;
 		float fHeight = viewFrustum.getHeight();
 
 		if (bRenderGeneTree) {
 			if (fArTargetWorldCoordinates[0] > -0.1f && fArTargetWorldCoordinates[0] < fWidth)
-				fPosCut = fArTargetWorldCoordinates[0];
+				fPosCut = fArTargetWorldCoordinates[0] - 0.0f;
 		}
 		else {
 			if (fArTargetWorldCoordinates[1] > -0.1f && fArTargetWorldCoordinates[1] < fHeight)
-				fPosCut = fArTargetWorldCoordinates[1];
+				fPosCut = fArTargetWorldCoordinates[1] + 0.0f;
 		}
 		setDisplayListDirty();
 
@@ -1592,6 +1592,10 @@ public class GLDendrogram
 		super.resetView();
 	}
 
+	public void setRedrawDendrogram(){
+		this.bRedrawDendrogram = true;
+	}
+	
 	/**
 	 * This function calls a recursive function which is responsible for setting all nodes in the dendrogram
 	 * to {@link EselectionType.NORMAL}

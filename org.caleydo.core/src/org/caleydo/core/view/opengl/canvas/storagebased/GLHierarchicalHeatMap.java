@@ -90,7 +90,7 @@ public class GLHierarchicalHeatMap
 
 	private int iSamplesLevel2;
 	private final static int MIN_SAMPLES_LEVEL_2 = 200;
-	private final static int MAX_SAMPLES_LEVEL_2 = 500;
+	private final static int MAX_SAMPLES_LEVEL_2 = 400;
 
 	private int iSamplesPerHeatmap = 0;
 	private final static int MIN_SAMPLES_PER_HEATMAP = 14;
@@ -4226,101 +4226,152 @@ public class GLHierarchicalHeatMap
 		setDisplayListDirty();
 	}
 
-	public void handleArrowDownAltPressed() {
+	/**
+	 * Handels keyboard events for controlling level 2
+	 * 
+	 * @param bArrowUp
+	 *            true for arrow up, false for arrow down
+	 */
+	public void handleArrowAndAltPressed(boolean bArrowUp) {
 
 		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iSamplesLevel2));
 
-		if (iLastSampleLevel2 < iSamplesLevel2 - 1 - iNrElementsToShift) {
-			iLastSampleLevel2 += iNrElementsToShift;
-			iFirstSampleLevel2 += iNrElementsToShift;
-			setEmbeddedHeatMapData();
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(false);
+		if (bArrowUp) {
+			if (iFirstSampleLevel2 > iNrElementsToShift + 1) {
+				iLastSampleLevel2 -= iNrElementsToShift;
+				iFirstSampleLevel2 -= iNrElementsToShift;
+				setEmbeddedHeatMapData();
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(true);
+			}
+			else if (iFirstSampleLevel2 > 0) {
+				iLastSampleLevel2--;
+				iFirstSampleLevel2--;
+				setEmbeddedHeatMapData();
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(true);
+			}
 		}
-		else if (iLastSampleLevel2 < iSamplesLevel2 - 1) {
-			iLastSampleLevel2++;
-			iFirstSampleLevel2++;
-			setEmbeddedHeatMapData();
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(false);
-		}
-	}
-
-	public void handleArrowUpAltPressed() {
-
-		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iSamplesLevel2));
-
-		if (iFirstSampleLevel2 > iNrElementsToShift + 1) {
-			iLastSampleLevel2 -= iNrElementsToShift;
-			iFirstSampleLevel2 -= iNrElementsToShift;
-			setEmbeddedHeatMapData();
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(true);
-		}
-		else if (iFirstSampleLevel2 > 0) {
-			iLastSampleLevel2--;
-			iFirstSampleLevel2--;
-			setEmbeddedHeatMapData();
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(true);
+		else {
+			if (iLastSampleLevel2 < iSamplesLevel2 - 1 - iNrElementsToShift) {
+				iLastSampleLevel2 += iNrElementsToShift;
+				iFirstSampleLevel2 += iNrElementsToShift;
+				setEmbeddedHeatMapData();
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(false);
+			}
+			else if (iLastSampleLevel2 < iSamplesLevel2 - 1) {
+				iLastSampleLevel2++;
+				iFirstSampleLevel2++;
+				setEmbeddedHeatMapData();
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(false);
+			}
 		}
 	}
 
-	public void handleArrowDownCtrlPressed() {
+	/**
+	 * Handels keyboard events for controlling level 1
+	 * 
+	 * @param bArrowUp
+	 *            true for arrow up, false for arrow down
+	 */
+	public void handleArrowAndCtrlPressed(boolean bArrowUp) {
 
 		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iNumberOfElements));
 
-		if (iLastSampleLevel1 < iNumberOfElements - 1 - iNrElementsToShift) {
-			iFirstSampleLevel1 += iNrElementsToShift;
-			iLastSampleLevel1 += iNrElementsToShift;
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(false);
+		if (bArrowUp) {
+			if (iFirstSampleLevel1 > iNrElementsToShift + 1) {
+				iFirstSampleLevel1 -= iNrElementsToShift;
+				iLastSampleLevel1 -= iNrElementsToShift;
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(true);
+			}
+			else if (iFirstSampleLevel1 > 0) {
+				iFirstSampleLevel1--;
+				iLastSampleLevel1--;
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(true);
+			}
 		}
-		else if (iLastSampleLevel1 < iNumberOfElements - 1) {
-			iFirstSampleLevel1++;
-			iLastSampleLevel1++;
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(false);
-		}
-	}
-
-	public void handleArrowUpCtrlPressed() {
-
-		int iNrElementsToShift = (int) Math.floor(Math.sqrt(iNumberOfElements));
-
-		if (iFirstSampleLevel1 > iNrElementsToShift + 1) {
-			iFirstSampleLevel1 -= iNrElementsToShift;
-			iLastSampleLevel1 -= iNrElementsToShift;
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(true);
-		}
-		else if (iFirstSampleLevel1 > 0) {
-			iFirstSampleLevel1--;
-			iLastSampleLevel1--;
-			setDisplayListDirty();
-			// glHeatMapView.upDownSelect(true);
+		else {
+			if (iLastSampleLevel1 < iNumberOfElements - 1 - iNrElementsToShift) {
+				iFirstSampleLevel1 += iNrElementsToShift;
+				iLastSampleLevel1 += iNrElementsToShift;
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(false);
+			}
+			else if (iLastSampleLevel1 < iNumberOfElements - 1) {
+				iFirstSampleLevel1++;
+				iLastSampleLevel1++;
+				setDisplayListDirty();
+				// glHeatMapView.upDownSelect(false);
+			}
 		}
 	}
 
-	public void handleArrowUpPressed() {
+	/**
+	 * Handle keyboard events for enabling embedded dendrograms.
+	 * 
+	 * @param bGeneDendrogram
+	 *            true for gene dendrogram, false for experiment dendrogram
+	 */
+	public void handleDendrogramActivation(boolean bGeneDendrogram) {
+
+		if (bGeneDendrogram) {
+			if (set.getClusteredTreeGenes() == null)
+				return;
+			bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
+			if (bGeneDendrogramActive == true)
+				bIsHeatmapInFocus = false;
+			glHeatMapView.setDisplayListDirty();
+			setDisplayListDirty();
+		}
+		else {
+			if (set.getClusteredTreeExps() == null)
+				return;
+			bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false : true;
+			glHeatMapView.setDisplayListDirty();
+			setDisplayListDirty();
+		}
+	}
+
+	/**
+	 * Handels arrow up/down keyboard events
+	 * 
+	 * @param bArrowUp
+	 *            true for arrow up, false for arrow down
+	 */
+	public void handleArrowPressed(boolean bArrowUp) {
+		// if(bArrowUp)
 		// glHeatMapView.upDownSelect(true);
-	}
-
-	public void handleArrowDownPressed() {
+		// else
 		// glHeatMapView.upDownSelect(false);
 	}
 
-	public void handleArrowLeftShiftPressed() {
-		if (bIsHeatmapInFocus == false) {
-			bIsHeatmapInFocus = true;
-			setDisplayListDirty();
+	/**
+	 * Handle keyboard events for setting embedded heat map in focus
+	 * 
+	 * @param bArrowLeft
+	 *            true for arrow left, false for arrow right
+	 */
+	public void handleArrowAndShiftPressed(boolean bArrowLeft) {
+		if (bArrowLeft) {
+			if (bIsHeatmapInFocus == false) {
+				bGeneDendrogramActive = false;
+				bIsHeatmapInFocus = true;
+				setDisplayListDirty();
+				glExperimentDendrogramView.setRedrawDendrogram();
+				glExperimentDendrogramView.setDisplayListDirty();
+			}
 		}
-	}
-
-	public void handleArrowRightShiftPressed() {
-		if (bIsHeatmapInFocus) {
-			bIsHeatmapInFocus = false;
-			setDisplayListDirty();
+		else {
+			if (bIsHeatmapInFocus) {
+				bIsHeatmapInFocus = false;
+				setDisplayListDirty();
+				glExperimentDendrogramView.setRedrawDendrogram();
+				glExperimentDendrogramView.setDisplayListDirty();
+			}
 		}
 	}
 
