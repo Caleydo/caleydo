@@ -1,5 +1,8 @@
 package org.caleydo.testing.applications.caleydoplex;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import DKT.GroupwareClientAppIPrx;
 import DKT.GroupwareClientAppIPrxHelper;
 import DKT.GroupwareInformation;
@@ -32,20 +35,17 @@ public class DeskothequeManager {
 			// - as this is not possible from Java, we need to hardcode the port
 			int port = 8050;
 			Ice.ObjectAdapter adapter = null;
-			boolean loop = true;
 
 			// we need this loop as the port has to be unique
 			// --> if more than one Caleydo instance is running,
 			// the port number needs to be incremented!
-			while(loop) {
+			while(adapter == null) {
 				try {
 					System.out.println("Using port " + port);
 					adapter = communicator.createObjectAdapterWithEndpoints(
 							"GroupwareClient", "default -p " + port);
-					loop = false;
 				} catch (Exception e) {
 					System.out.println("Port " + port + " already in use");
-					// e.printStackTrace();
 				}
 				port ++;
 			}
@@ -55,18 +55,46 @@ public class DeskothequeManager {
 					.checkedCast(objPrx);
 			adapter.activate();
 
-			// FIXME: hostname is still hardcoded
-			String serverName = "ServerAppI-fcggpc203-1";
-			String serverEndPoint = "tcp -h fcggpc203 -p 8011";
+			// get local host name 
+			String hostname = ""; 
+			try {
+				InetAddress addr = InetAddress.getLocalHost();
+				hostname = addr.getHostName(); 
+				System.out.println("hostname="+hostname); 
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} 
+			
+			// get virtual display 
+			String displayVar = System.getenv("DISPLAY"); 
+			System.out.println("DISPLAY=" + displayVar); 
+			// the display variable is in the format: 
+			// :0.0 or :1
+			// - but we want a single integer instead 
+			if(displayVar.length() >= 2){
+				// the first number is obviously what we need 
+				displayVar = displayVar.substring(1, 2);
+			}
+			// turn display string into integer 
+			Integer displayNumInt = new Integer(displayVar); 
+			int displayNum = displayNumInt.intValue(); 
+			System.out.println("Display number: " + displayNum); 
+			
+			// the server name is of the form 
+			// ServerAppI-<hostname>-<xDisplay>
+			String serverName = "ServerAppI-" + hostname + "-" + displayNum; 
+			// the server endpoint is of the form 
+			// tcp -h <hostname> -p 8011
+			// the port 8011 is defined by Deskotheque so we have to 
+			// hardcode that value here 
+			String serverEndPoint = "tcp -h " + hostname + " -p 8011";
 
-			Ice.ObjectPrx proxy = communicator.stringToProxy(serverName + ":"
+			Ice.ObjectPrx proxy = communicator.stringToProxy(serverName + ":" 
 					+ serverEndPoint);
 			ServerApplicationIPrx serverPrx = ServerApplicationIPrxHelper
 					.checkedCast(proxy);
 
 			masterPrx = serverPrx.getMasterProxy();
-
-			// testing communication
 
 			// registration at master proxy
 			GroupwareInformation info = masterPrx.registerGroupwareClient(
@@ -78,6 +106,8 @@ public class DeskothequeManager {
 
 			// info.deskoXID is the unique identifier for Deskotheque
 			this.deskoID = info.deskoXID;
+			
+			// testing communication
 
 			// obtaining resource manager proxy
 			ResourceManagerIPrx resourceManagerPrx = masterPrx
