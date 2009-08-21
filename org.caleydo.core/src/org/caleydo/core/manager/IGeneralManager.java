@@ -10,7 +10,7 @@ import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
-import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -130,10 +130,16 @@ public interface IGeneralManager {
 	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase);
 	
 	/**
-	 * Obtains the {@link NetworkManager} responsible for communication purposes with other calyedo application
-	 * @return the {@link NetworkManager} of this caleydo application  
+	 * Obtains the {@link IGroupwareManager} responsible for communication purposes with other calyedo application
+	 * @return the {@link IGroupwareManager} of this caleydo application  
 	 */
-	public NetworkManager getNetworkManager();
+	public IGroupwareManager getGroupwareManager();
+
+	/**
+	 * Sets the {@link IGroupwareManager} responsible for communication purposes with other calyedo application
+	 * @param groupwareManager the environment specific {@link IGroupwareManager} to use  
+	 */
+	public void setGroupwareManager(IGroupwareManager groupwareManager);
 
 	/**
 	 * Obtains the {@link SerializationManager} responsible for xml-serialization related tasks 

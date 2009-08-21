@@ -30,7 +30,7 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ViewManager;
-import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.tracking.TrackDataProvider;
@@ -80,7 +80,7 @@ public class GeneralManager
 	private ResourceLoader resourceLoader;
 	private WiiRemote wiiRemote;
 	private TrackDataProvider trackDataProvider;
-	private NetworkManager networkManager;
+	private IGroupwareManager groupwareManager;
 	private SerializationManager serializationManager;
 
 	/**
@@ -123,7 +123,7 @@ public class GeneralManager
 		IDManager = new IDManager();
 		xmlParserManager.initHandlers();
 
-		networkManager = new NetworkManager();
+		groupwareManager = null;
 		serializationManager = new SerializationManager();
 		
 		initPreferences();
@@ -348,8 +348,13 @@ public class GeneralManager
 	}
 
 	@Override
-	public NetworkManager getNetworkManager() {
-		return networkManager;
+	public IGroupwareManager getGroupwareManager() {
+		return groupwareManager;
+	}
+
+	@Override
+	public void setGroupwareManager(IGroupwareManager groupwareManager) {
+		this.groupwareManager = groupwareManager;
 	}
 
 	@Override

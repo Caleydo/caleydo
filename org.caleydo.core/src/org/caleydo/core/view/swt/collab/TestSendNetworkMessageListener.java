@@ -26,7 +26,7 @@ public class TestSendNetworkMessageListener
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {
-		NetworkManager networkManager = GeneralManager.get().getNetworkManager();
+		NetworkManager networkManager = GeneralManager.get().getGroupwareManager().getNetworkManager();
 		Connection connection = networkManager.getConnections().get(0);
 		NetworkEventReceiver receiver = connection.getIncomingPublisher(); 
 		if (receiver != null) {

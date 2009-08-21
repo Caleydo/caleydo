@@ -23,7 +23,7 @@ public class CreateGUIViewListener
 			CreateGUIViewEvent createSWTViewEvent = (CreateGUIViewEvent) event;
 			System.out.println("create swt view event serialized-view=" + createSWTViewEvent.getSerializedView());
 			String target = createSWTViewEvent.getTargetApplicationID();
-			NetworkManager networkManager = GeneralManager.get().getNetworkManager();
+			NetworkManager networkManager = GeneralManager.get().getGroupwareManager().getNetworkManager();
 			if (target == null || target.equals(networkManager.getNetworkName())) {
 				handler.createSWTView(createSWTViewEvent.getSerializedView());
 			}

@@ -5,7 +5,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
-import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
@@ -91,10 +91,12 @@ public class CaleydoProjectWizard
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
 			} else if (page.getUseCaseMode() == EUseCaseMode.COLLABORATION_CLIENT) {
-				NetworkManager nm = GeneralManager.get().getNetworkManager();
-				nm.startNetworkService();
-				nm.setNetworkName(page.getNetworkName());
-				Application.initData = nm.createConnection(page.getNetworkAddress());
+				StandardGroupwareManager groupwareManager = new StandardGroupwareManager();
+				groupwareManager.setNetworkName(page.getNetworkName());
+				groupwareManager.setServerAddress(page.getNetworkAddress());
+				GeneralManager.get().setGroupwareManager(groupwareManager);
+				groupwareManager.startClient();
+				Application.initData = groupwareManager.getInitData();
 				useCase = Application.initData.getUseCase();
 				Application.applicationMode = EApplicationMode.COLLABORATION_CLIENT;
 			} else { 

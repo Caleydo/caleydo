@@ -1,7 +1,7 @@
 package org.caleydo.core.view.swt.collab;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.net.StandardGroupwareManager;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
@@ -16,8 +16,11 @@ public class StartServerListener
 
 	@Override
 	public void handleEvent(Event event) {
-		NetworkManager networkManager = GeneralManager.get().getNetworkManager();
-		networkManager.startServer();
+		StandardGroupwareManager groupwareManager = new StandardGroupwareManager();
+		
+		groupwareManager.setNetworkName("Server-0");
+		GeneralManager.get().setGroupwareManager(groupwareManager);
+		groupwareManager.startServer();
 	}
 
 }

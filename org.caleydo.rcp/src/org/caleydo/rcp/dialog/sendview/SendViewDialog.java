@@ -6,6 +6,7 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.Connection;
+import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.jface.dialogs.Dialog;
@@ -35,7 +36,7 @@ public class SendViewDialog
 	private List clientList;
 	
 	/** central {@link NetworkManager} to retrieve network related information */
-	NetworkManager networkManager;
+	IGroupwareManager groupwareManager;
 	
 	/** central {@link IViewManager} to retrieve view information */
 	IViewManager viewManager;	
@@ -47,7 +48,7 @@ public class SendViewDialog
 		super(parentShell);
 
 		viewManager = GeneralManager.get().getViewGLCanvasManager();
-		networkManager = GeneralManager.get().getNetworkManager();
+		groupwareManager = GeneralManager.get().getGroupwareManager();
 
 		clientList = null;
 		clientNames = null;
@@ -68,48 +69,26 @@ public class SendViewDialog
 		Composite parent = new Composite(p, SWT.NONE);
 		parent.setLayout(new GridLayout(1, false));
 
-		clientNames = createClientNames();
-		if (clientNames.length == 0) {
+		if (groupwareManager == null) {
 			Label label = new Label(parent, SWT.CENTER);
-			label.setText("No Clients connected");
+			label.setText("This application is not in collaboration mode.");
 		} else {
-			Label label = new Label(parent, SWT.NULL);
-			label.setText("Choose client(s) to send the view to:");
-
-			clientList = new List(parent, SWT.BORDER | SWT.MULTI);
-			for (String clientName : clientNames) {
-				clientList.add(clientName);
+			clientNames = groupwareManager.getAvailableGroupwareClients();
+			if (clientNames.length == 0) {
+				Label label = new Label(parent, SWT.CENTER);
+				label.setText("No Clients connected");
+			} else {
+				Label label = new Label(parent, SWT.NULL);
+				label.setText("Choose client(s) to send the view to:");
+	
+				clientList = new List(parent, SWT.BORDER | SWT.MULTI);
+				for (String clientName : clientNames) {
+					clientList.add(clientName);
+				}
 			}
 		}
 		
 		return parent;
-	}
-
-	/**
-	 * Retrieves the list of all client-names except this one.
-	 * @return list of remote client-names
-	 */
-	private String[] createClientNames() {
-		String[] names;
-		switch (networkManager.getStatus()) {
-			case STATUS_CLIENT:
-				ArrayList<String> clientNameList = new ArrayList<String>(networkManager.getClientNames());
-				clientNameList.remove(networkManager.getNetworkName());
-				names = clientNameList.toArray(new String[clientNameList.size()]);
-			break;
-			case STATUS_SERVER:
-				java.util.List<Connection> connections = networkManager.getConnections();
-				names = new String[connections.size()];
-				int i = 0;
-				for (Connection connection : connections) {
-					names[i++] = connection.getRemoteNetworkName(); 
-				}
-			break;
-			default:
-				names = new String[0];
-				
-		}
-		return names;
 	}
 	
 	@Override
@@ -125,7 +104,7 @@ public class SendViewDialog
 				event.setTargetApplicationID(clientNames[selection]);
 				event.setSender(this);
 				
-				networkManager.getGlobalOutgoingPublisher().triggerEvent(event);
+				groupwareManager.getNetworkManager().getGlobalOutgoingPublisher().triggerEvent(event);
 			}
 		}
 		super.okPressed();

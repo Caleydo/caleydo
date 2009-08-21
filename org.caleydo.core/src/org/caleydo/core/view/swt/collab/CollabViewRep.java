@@ -13,6 +13,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.ENetworkStatus;
 import org.caleydo.core.net.EventFilterBridge;
+import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.net.config.ConfigureableEventBridge;
 import org.caleydo.core.net.config.IConfigureableEventList;
@@ -79,7 +80,10 @@ public class CollabViewRep
 	public void initViewSWTComposite(Composite parentComposite) {
 		this.parentComposite = parentComposite;
 		baseComposite = null;
-		networkManager = generalManager.getNetworkManager();
+		IGroupwareManager groupwareManager = GeneralManager.get().getGroupwareManager();
+		if (groupwareManager != null) {
+			networkManager = groupwareManager.getNetworkManager();
+		}
 	}
 	
 	@Override
@@ -160,31 +164,17 @@ public class CollabViewRep
 
 		Button button;
 		Label label;
-		Text text;
 
-		button = new Button(testControls, SWT.CENTER);
-		button.setText("create network");
-		CreateNetworkListener createNetworkListener = new CreateNetworkListener();
-		button.addListener(SWT.Selection, createNetworkListener);
-		if (networkManager.getStatus() == ENetworkStatus.STATUS_STOPPED) {
-			label = new Label(testControls, SWT.LEFT);
-			label.setText("");
-		} else {
-			button.setEnabled(false);
-			label = new Label(testControls, SWT.LEFT);
-			label.setText("Network services started");
-		}
-		
 		button = new Button(testControls, SWT.CENTER);
 		button.setText("start server");
 		StartServerListener startServerListener = new StartServerListener();
 		button.addListener(SWT.Selection, startServerListener);
-		switch (networkManager.getStatus()) {
+		ENetworkStatus status = ENetworkStatus.STATUS_STOPPED;
+		if (networkManager != null) {
+			status = networkManager.getStatus();
+		}
+		switch (status) {
 			case STATUS_STOPPED:
-				button.setEnabled(false);
-				label = new Label(testControls, SWT.LEFT);
-				label.setText("Create network services first");
-				break;
 			case STATUS_STARTED:
 				label = new Label(testControls, SWT.LEFT);
 				label.setText("Use this caledyo application as a server");
@@ -203,18 +193,6 @@ public class CollabViewRep
 				button.setEnabled(false);
 				label = new Label(testControls, SWT.LEFT);
 				label.setText("unknown network status");
-		}
-
-		text = new Text(testControls, SWT.LEFT);
-		text.setText("127.0.0.1");
-		button = new Button(testControls, SWT.CENTER);
-		button.setText("connect");
-		ConnectToServerListener connectToServerListener = new ConnectToServerListener();
-		connectToServerListener.setAddressField(text);
-		button.addListener(SWT.Selection, connectToServerListener);
-		if (networkManager.getStatus() != ENetworkStatus.STATUS_STARTED) {
-			button.setEnabled(false);
-			text.setEnabled(false);
 		}
 
 		button = new Button(testControls, SWT.NULL);
@@ -249,16 +227,6 @@ public class CollabViewRep
 		Text target = new Text(testControls, SWT.LEFT);
 		target.setText("Client-1");
 		
-		button = new Button(testControls, SWT.CENTER);
-		button.setText("send view");
-		SendHistogramViewListener sendHistogramViewListener = new SendHistogramViewListener();
-		sendHistogramViewListener.setTarget(target);
-		sendHistogramViewListener.setViewList(viewList);
-		sendHistogramViewListener.setViewIds(viewIds);
-		
-		pathwayListener.setRequester(this);
-		button.addListener(SWT.Selection, sendHistogramViewListener);
-
 		new Composite(testControls, SWT.NULL);
 	}
 
@@ -282,43 +250,46 @@ public class CollabViewRep
 			}
 		};
 		tree.addListener(SWT.Selection, itemListener);
-		createEventBridgeTree(tree, generalManager.getNetworkManager());
+		createEventBridgeTree(tree, generalManager.getGroupwareManager());
 	}
 
-	public void createEventBridgeTree(Tree tree, NetworkManager networkManager) {
-		if (networkManager.getGlobalOutgoingPublisher() != null) {
-			EventFilterBridge outgoingBridge = networkManager.getOutgoingEventBridge();
-			TreeItem outgoingRoot = new TreeItem(tree, SWT.NULL);
-			String bridgeName = outgoingBridge.getName();
-			bridgeName += "(local=" + outgoingBridge.isBridgeLocalEvents();
-			bridgeName += ", remote=" + outgoingBridge.isBridgeRemoteEvents() + ")";
-			outgoingRoot.setText(bridgeName);
-			outgoingRoot.setData(ITEM_DATA_BRIDGE, outgoingBridge);
-			outgoingRoot.setData(ITEM_DATA_PUBLISHER, networkManager.getCentralEventPublisher());
-			
-			EventFilterBridge incomingBridge = networkManager.getIncomingEventBridge();
-			TreeItem incomingRoot = new TreeItem(tree, SWT.NULL);
-			bridgeName = incomingBridge.getName();
-			bridgeName += "(local=" + incomingBridge.isBridgeLocalEvents();
-			bridgeName += ", remote=" + incomingBridge.isBridgeRemoteEvents() + ")";
-			incomingRoot.setText(bridgeName);
-			incomingRoot.setData(ITEM_DATA_BRIDGE, incomingBridge);
-			incomingRoot.setData(ITEM_DATA_PUBLISHER, networkManager.getGlobalIncomingPublisher());
-
-			EventPublisher globalNetworkPublisher = networkManager.getGlobalOutgoingPublisher();
-			List<Connection> connections = networkManager.getConnections();
-			for (Connection connection : connections) {
-				TreeItem item = new TreeItem(outgoingRoot, SWT.NULL);
-				item.setText(connection.getOutgoingBridge().getName());
-				item.setData(ITEM_DATA_BRIDGE, connection.getOutgoingBridge());
-				item.setData(ITEM_DATA_PUBLISHER, globalNetworkPublisher);
+	public void createEventBridgeTree(Tree tree, IGroupwareManager groupwareManager) {
+		if (groupwareManager != null) {
+			networkManager = groupwareManager.getNetworkManager();
+			if (networkManager.getGlobalOutgoingPublisher() != null) {
+				EventFilterBridge outgoingBridge = networkManager.getOutgoingEventBridge();
+				TreeItem outgoingRoot = new TreeItem(tree, SWT.NULL);
+				String bridgeName = outgoingBridge.getName();
+				bridgeName += "(local=" + outgoingBridge.isBridgeLocalEvents();
+				bridgeName += ", remote=" + outgoingBridge.isBridgeRemoteEvents() + ")";
+				outgoingRoot.setText(bridgeName);
+				outgoingRoot.setData(ITEM_DATA_BRIDGE, outgoingBridge);
+				outgoingRoot.setData(ITEM_DATA_PUBLISHER, networkManager.getCentralEventPublisher());
 				
-				item = new TreeItem(incomingRoot, SWT.NULL);
-				item.setText(connection.getIncomingBridge().getName());
-				item.setData(ITEM_DATA_BRIDGE, connection.getIncomingBridge());
-				item.setData(ITEM_DATA_PUBLISHER, connection.getIncomingPublisher());
+				EventFilterBridge incomingBridge = networkManager.getIncomingEventBridge();
+				TreeItem incomingRoot = new TreeItem(tree, SWT.NULL);
+				bridgeName = incomingBridge.getName();
+				bridgeName += "(local=" + incomingBridge.isBridgeLocalEvents();
+				bridgeName += ", remote=" + incomingBridge.isBridgeRemoteEvents() + ")";
+				incomingRoot.setText(bridgeName);
+				incomingRoot.setData(ITEM_DATA_BRIDGE, incomingBridge);
+				incomingRoot.setData(ITEM_DATA_PUBLISHER, networkManager.getGlobalIncomingPublisher());
+	
+				EventPublisher globalNetworkPublisher = networkManager.getGlobalOutgoingPublisher();
+				List<Connection> connections = networkManager.getConnections();
+				for (Connection connection : connections) {
+					TreeItem item = new TreeItem(outgoingRoot, SWT.NULL);
+					item.setText(connection.getOutgoingBridge().getName());
+					item.setData(ITEM_DATA_BRIDGE, connection.getOutgoingBridge());
+					item.setData(ITEM_DATA_PUBLISHER, globalNetworkPublisher);
+					
+					item = new TreeItem(incomingRoot, SWT.NULL);
+					item.setText(connection.getIncomingBridge().getName());
+					item.setData(ITEM_DATA_BRIDGE, connection.getIncomingBridge());
+					item.setData(ITEM_DATA_PUBLISHER, connection.getIncomingPublisher());
+				}
+				
 			}
-			
 		}
 	}
 	
