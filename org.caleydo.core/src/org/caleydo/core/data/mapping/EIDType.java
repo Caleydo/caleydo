@@ -13,45 +13,60 @@ public enum EIDType {
 
 	// Genes
 	/** The full name of the gene */
-	GENE_NAME(EIDCategory.GENE, EStorageType.STRING, "gene-name", "gene pseudo name"),
+	GENE_NAME(EIDCategory.GENE, EStorageType.STRING, "Gene Name", "gene pseudo name"),
 	/** The short name of the gene */
-	GENE_SYMBOL(EIDCategory.GENE, EStorageType.STRING, "gene-symbol", "gene pseudo symbol"),
-	BIOCARTA_GENE_ID(EIDCategory.GENE, EStorageType.STRING, "biocarta geneid", "biocarta geneid"),
-	DAVID(EIDCategory.GENE, EStorageType.INT, "david", "david-id"),
-	REFSEQ_MRNA(EIDCategory.GENE, EStorageType.STRING, "refseq-mrna", "refseq-mrna-id"),
+	GENE_SYMBOL(EIDCategory.GENE, EStorageType.STRING, "Gene Symbol", "gene pseudo symbol"),
+	BIOCARTA_GENE_ID(EIDCategory.GENE, EStorageType.STRING, "BioCarta Gene ID", "biocarta geneid"),
+	DAVID(EIDCategory.GENE, EStorageType.INT, "David ID", "David ID"),
+	REFSEQ_MRNA(EIDCategory.GENE, EStorageType.STRING, "RefSeq MRNA ID", "refseq-mrna-id"),
 	REFSEQ_MRNA_INT(
 		EIDCategory.GENE,
 		EStorageType.INT,
-		"refseq-mrna int",
+		"RefSeq MRNA int",
 		"refseq-mrna-id int for internal usage in event system"),
-	ENTREZ_GENE_ID(EIDCategory.GENE, EStorageType.INT, "entrez-gene-id", "entrez-gene-id"),
+	ENTREZ_GENE_ID(EIDCategory.GENE, EStorageType.INT, "Entrez Gene ID", "entrez-gene-id"),
 	// FIXME: Make this general! Needed for Asslaber data
-	OLIGO(EIDCategory.GENE, EStorageType.STRING, "oligo", "oligo-id"),
-	EXPRESSION_INDEX(EIDCategory.GENE, EStorageType.INT, "expression-index", "The index of a gene expression value"),
+	OLIGO(EIDCategory.GENE, EStorageType.STRING, "Oligo ID", "oligo-id"),
+	EXPRESSION_INDEX(
+		EIDCategory.GENE,
+		EStorageType.INT,
+		"Expression Index",
+		"The index of a gene expression value"),
 	// EXPRESSION_EXPERIMENT(EStorageType.INT, "expression-experiment",
 	// "A expression experiment containing gene expression values"),
-	PATHWAY_VERTEX(EIDCategory.GENE, EStorageType.INT, "pathway vertex id", "The id of the pathway vertex"),
+	PATHWAY_VERTEX(EIDCategory.GENE, EStorageType.INT, "Pathway vertex ID", "The internal ID of the pathway vertex"),
+	PATHWAY(EIDCategory.PATHWAY, EStorageType.INT, "Pathway ID", "The internal ID of a pathway"),
+	EXPERIMENT(
+		EIDCategory.EXPERIMENT,
+		EStorageType.STRING,
+		"Experiment ID",
+		"The ID of the experiments"),
+	EXPERIMENT_INDEX(EIDCategory.EXPERIMENT, EStorageType.INT, "Experiment Index", "The experiment index"),
 
-	PATHWAY(EIDCategory.PATHWAY, EStorageType.INT, "pathway id", "The ID of a pathway"),
-	EXPERIMENT(EIDCategory.EXPERIMENT,  EStorageType.STRING, "experiment id", "The ID that connects clinical with microarray data"),
-	EXPERIMENT_INDEX(EIDCategory.EXPERIMENT, EStorageType.INT, "experiment index", "The experiment index"),
+	CELL_COMPONENT(EIDCategory.OTHER, EStorageType.STRING, "GO Cell Component", "The GO cell component"),
 
-	CELL_COMPONENT(EIDCategory.OTHER, EStorageType.STRING, "GO cell component", "The GO cell component"),
-
-	CLUSTER_NUMBER(EIDCategory.OTHER, EStorageType.INT, "cluster-number", "The cluster number of clusters and genes"),
+	CLUSTER_NUMBER(
+		EIDCategory.OTHER,
+		EStorageType.INT,
+		"Cluster Number",
+		"The cluster number of clusters and genes"),
 
 	/**
 	 * Used for external IDs that are read from arbitrary CSV file which should be used for linking between
 	 * the views (e.g. use case cytokine data from Leipzig)
 	 */
-	UNSPECIFIED(EIDCategory.OTHER, EStorageType.STRING, "unknown external identifier", "unknown external identifier");
+	UNSPECIFIED(
+		EIDCategory.OTHER,
+		EStorageType.STRING,
+		"Unknown External Identifier",
+		"unknown external identifier");
 
 	private final EStorageType storageType;
 
 	private final String sName;
 
 	private final String sDescription;
-	
+
 	private final EIDCategory category;
 
 	/**
@@ -68,7 +83,7 @@ public enum EIDType {
 		this.sName = sName;
 		this.sDescription = sDesciption;
 		this.storageType = storageType;
-		this.category = category; 
+		this.category = category;
 	}
 
 	/**
@@ -96,8 +111,8 @@ public enum EIDType {
 
 		return sName;
 	}
-	
-	public EIDCategory getCategory(){
+
+	public EIDCategory getCategory() {
 		return category;
 	}
 }

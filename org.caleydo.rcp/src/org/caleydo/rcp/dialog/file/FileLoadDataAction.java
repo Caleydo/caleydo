@@ -206,7 +206,7 @@ public class FileLoadDataAction
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					TableColumn idColumn = previewTable.getColumn(1);
-					idColumn.setText("ID: " + idCombo.getText());
+					idColumn.setText(idCombo.getText());
 				}
 			});
 		}
@@ -836,7 +836,7 @@ public class FileLoadDataAction
 			if (currentCorrectElements >= idList.size()) {
 				idCombo.select(alIDTypes.indexOf(idType));
 				TableColumn idColumn = previewTable.getColumn(1);
-				idColumn.setText("ID: " + idType.getName());
+				idColumn.setText(idType.getName());
 				return;
 			}
 			if (currentCorrectElements >= maxCorrectElements) {
@@ -847,7 +847,7 @@ public class FileLoadDataAction
 
 		idCombo.select(alIDTypes.indexOf(mostProbableIDType));
 		TableColumn idColumn = previewTable.getColumn(1);
-		idColumn.setText("ID: " + mostProbableIDType.getName());
+		idColumn.setText(mostProbableIDType.getName());
 		
 	}
 }
