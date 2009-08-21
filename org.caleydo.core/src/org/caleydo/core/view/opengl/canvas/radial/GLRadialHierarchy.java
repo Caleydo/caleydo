@@ -2,10 +2,7 @@ package org.caleydo.core.view.opengl.canvas.radial;
 
 import gleem.linalg.Vec2f;
 
-import java.awt.Font;
-import java.awt.geom.Rectangle2D;
 import java.io.FileNotFoundException;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,7 +38,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -65,9 +61,6 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneConte
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-
-import com.sun.opengl.util.BufferUtil;
-import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -82,13 +75,10 @@ public class GLRadialHierarchy
 	implements IClusterNodeEventReceiver, IViewCommandHandler, ISelectionUpdateHandler {
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 7;
-	private static final int MIN_PIXELS_PER_DISPLAYED_LEVEL = 20;
+	private static final int MIN_PIXELS_PER_DISPLAYED_LEVEL = 10;
+	private static final int MIN_DISPLAY_WIDTH = 350;
+	private static final int MIN_DISPLAY_HEIGHT = 300;
 
-	//Todo: remove
-	CaleydoTextRenderer textRenderer;
-	
-	
-	
 	private int iMaxDisplayedHierarchyDepth;
 	private int iUpwardNavigationSliderID;
 	private int iUpwardNavigationSliderButtonID;
@@ -113,6 +103,7 @@ public class GLRadialHierarchy
 	private DrawingController drawingController;
 	private NavigationHistory navigationHistory;
 	private OneWaySlider upwardNavigationSlider;
+	private Rectangle controlBox;
 
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
 	private RedrawViewListener redrawViewListener;
@@ -144,8 +135,9 @@ public class GLRadialHierarchy
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
 		renderStyle = new RadialHierarchyRenderStyle(viewFrustum);
-		renderStyle.setMinViewDimensions((MIN_PIXELS_PER_DISPLAYED_LEVEL * DISP_HIER_DEPTH_DEFAULT) + 30,
-			MIN_PIXELS_PER_DISPLAYED_LEVEL * DISP_HIER_DEPTH_DEFAULT, this);
+		renderStyle.setMinViewDimensions(MIN_DISPLAY_WIDTH + MIN_PIXELS_PER_DISPLAYED_LEVEL
+			* DISP_HIER_DEPTH_DEFAULT, MIN_DISPLAY_HEIGHT + MIN_PIXELS_PER_DISPLAYED_LEVEL
+			* DISP_HIER_DEPTH_DEFAULT, this);
 
 		hashPartialDiscs = new HashMap<Integer, PartialDisc>();
 		partialDiscTree = new Tree<PartialDisc>();
@@ -258,12 +250,11 @@ public class GLRadialHierarchy
 
 		selectionManager.addToType(ESelectionType.SELECTION, pdCurrentRootElement.getElementID());
 
-		Rectangle controlBox = new Rectangle(0, 0, 0.3f, 1.2f);
+		controlBox = new Rectangle(0, 0, 0.3f, 0.2f);
 		upwardNavigationSlider =
 			new OneWaySlider(new Vec2f(controlBox.getMinX() + 0.1f, controlBox.getMinY() + 0.1f), 0.2f, 1f,
 				pdRealRootElement.getHierarchyLevel(), 1, 0, pdRealRootElement.getHierarchyDepth() - 1);
-
-		LabelManager.get().setControlBox(controlBox);
+		upwardNavigationSlider.setMinSize(80);
 
 	}
 
@@ -302,7 +293,7 @@ public class GLRadialHierarchy
 		}
 	}
 
-	// TODO: Remove.
+	// TODO: Remove when really not needed any more.
 	private void initTestHierarchy() {
 
 		Tree<ClusterNode> tree = new Tree<ClusterNode>();
@@ -386,6 +377,12 @@ public class GLRadialHierarchy
 				upwardNavigationSlider
 					.draw(gl, pickingManager, textureManager, iUniqueID, iUpwardNavigationSliderID,
 						iUpwardNavigationSliderButtonID, iUpwardNavigationSliderBodyID);
+
+				float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
+				float fCurrentSliderHeight = upwardNavigationSlider.getScaledHeight(gl);
+
+				controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2, fCurrentSliderHeight + fCurrentSliderWidth);
+				LabelManager.get().setControlBox(controlBox);
 				drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 			}
 			else
@@ -421,6 +418,11 @@ public class GLRadialHierarchy
 			upwardNavigationSlider.draw(gl, pickingManager, textureManager, iUniqueID,
 				iUpwardNavigationSliderID, iUpwardNavigationSliderButtonID, iUpwardNavigationSliderBodyID);
 
+			float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
+			float fCurrentSliderHeight = upwardNavigationSlider.getScaledHeight(gl);
+
+			controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2, fCurrentSliderHeight + fCurrentSliderWidth);
+			LabelManager.get().setControlBox(controlBox);
 			drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 
 			gl.glEndList();
@@ -461,24 +463,24 @@ public class GLRadialHierarchy
 		gl.glPopAttrib();
 		tempTexture.disable();
 
-//		if(textRenderer == null)
-//			textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-//		
-//		textRenderer.setColor(0, 0, 0, 0.5f);
-//		
-//		textRenderer.renderText(gl, "Hallo!", 0, 0, 0, 0.02f, 10);
-//		
-//		IntBuffer buffer = BufferUtil.newIntBuffer(4);
-//		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-//		
-//		textRenderer.beginRendering(buffer.get(2), buffer.get(3));
-//		
-//		
-//		textRenderer.draw3D("Halloá!", 300, 300, 0, 1.5f);
-//		textRenderer.flush();
-//		
-//		textRenderer.endRendering();
-		
+		// if(textRenderer == null)
+		// textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
+		//		
+		// textRenderer.setColor(0, 0, 0, 0.5f);
+		//		
+		// textRenderer.renderText(gl, "Hallo!", 0, 0, 0, 0.02f, 10);
+		//		
+		// IntBuffer buffer = BufferUtil.newIntBuffer(4);
+		// gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+		//		
+		// textRenderer.beginRendering(buffer.get(2), buffer.get(3));
+		//		
+		//		
+		// textRenderer.draw3D("Halloá!", 300, 300, 0, 1.5f);
+		// textRenderer.flush();
+		//		
+		// textRenderer.endRendering();
+
 	}
 
 	/**
@@ -729,9 +731,9 @@ public class GLRadialHierarchy
 	public void setMaxDisplayedHierarchyDepth(int iMaxDisplayedHierarchyDepth) {
 		if (this.iMaxDisplayedHierarchyDepth != iMaxDisplayedHierarchyDepth) {
 
-			renderStyle.setMinViewDimensions(
-				(MIN_PIXELS_PER_DISPLAYED_LEVEL * iMaxDisplayedHierarchyDepth) + 20,
-				MIN_PIXELS_PER_DISPLAYED_LEVEL * iMaxDisplayedHierarchyDepth, this);
+			renderStyle.setMinViewDimensions(MIN_DISPLAY_WIDTH + MIN_PIXELS_PER_DISPLAYED_LEVEL
+				* iMaxDisplayedHierarchyDepth, MIN_DISPLAY_HEIGHT + MIN_PIXELS_PER_DISPLAYED_LEVEL
+				* iMaxDisplayedHierarchyDepth, this);
 
 			bIsNewSelection = false;
 			this.iMaxDisplayedHierarchyDepth = iMaxDisplayedHierarchyDepth;
@@ -1122,6 +1124,10 @@ public class GLRadialHierarchy
 			bIsNewSelection = true;
 			setDisplayListDirty();
 		}
+	}
+
+	public Rectangle getControlBox() {
+		return controlBox;
 	}
 
 }

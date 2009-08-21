@@ -1029,13 +1029,14 @@ public class GLParallelCoordinates
 							float fNumber =
 								(float) set.getRawForNormalized(fCurrentHeight / renderStyle.getAxisHeight());
 
-							Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(fNumber));
-							float fWidth =
-								(float) bounds.getWidth() * renderStyle.getSmallFontScalingFactor();
-							float fHeightHalf =
-								(float) bounds.getHeight() * renderStyle.getSmallFontScalingFactor() / 3;
+							Rectangle2D bounds =
+								textRenderer.getScaledBounds(gl, getDecimalFormat().format(fNumber),
+									renderStyle.getSmallFontScalingFactor(),
+									ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
+							float fWidth = (float) bounds.getWidth();
+							float fHeightHalf = (float) bounds.getHeight() / 3.0f;
 
-							renderNumber(getDecimalFormat().format(fNumber), fXPosition - fWidth
+							renderNumber(gl, getDecimalFormat().format(fNumber), fXPosition - fWidth
 								- AXIS_MARKER_WIDTH, fCurrentHeight - fHeightHalf);
 						}
 						else {
@@ -1055,12 +1056,14 @@ public class GLParallelCoordinates
 					// TODO not very generic here
 
 					case EXPRESSION_INDEX:
-						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-						// values, depending on the IDType that has been specified when loading expression data.
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a
+						// Set of
+						// values, depending on the IDType that has been specified when loading expression
+						// data.
 						// Possibly a different handling of the Set is required.
 						Set<String> setGeneSymbols =
-							idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
-								axisVA.get(iCount));
+							idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL, axisVA
+								.get(iCount));
 
 						if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
 							sAxisLabel = (String) setGeneSymbols.toArray()[0];
@@ -1087,7 +1090,8 @@ public class GLParallelCoordinates
 				float fScaling = renderStyle.getSmallFontScalingFactor();
 				if (isRenderedRemote())
 					fScaling *= 1.5f;
-				textRenderer.draw3D(sAxisLabel, 0, 0, 0, fScaling);
+				textRenderer.draw3D(gl, sAxisLabel, 0, 0, 0, fScaling,
+					ParCoordsRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
 				textRenderer.end3DRendering();
 				gl.glRotatef(-25, 0, 0, 1);
 				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
@@ -1129,6 +1133,17 @@ public class GLParallelCoordinates
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
 				iPickingID =
 					pickingManager.getPickingID(iUniqueID, EPickingType.ADD_GATE, axisVA.get(iCount));
+				
+//				Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,fYGateAddOrigin, AXIS_Z);
+//				Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
+//				Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+//				Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+
+				gl.glPushName(iPickingID);
+				
+//				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner,
+//					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1, 100);
+				
 				tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
 
 				tempTexture.enable();
@@ -1137,7 +1152,7 @@ public class GLParallelCoordinates
 
 				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 				gl.glColor4f(1, 1, 1, 1f);
-				gl.glPushName(iPickingID);
+				
 
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -1368,7 +1383,7 @@ public class GLParallelCoordinates
 
 		textRenderer.setColor(1, 1, 1, 1);
 		float fValue = (float) set.getRawForNormalized(fTop / renderStyle.getAxisHeight());
-		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fTop + 0.02f);
+		renderNumber(gl, getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fTop + 0.02f);
 
 		tempTexture.disable();
 		gl.glPopAttrib();
@@ -1444,7 +1459,7 @@ public class GLParallelCoordinates
 
 		textRenderer.setColor(1, 1, 1, 1);
 		fValue = (float) set.getRawForNormalized(fBottom / renderStyle.getAxisHeight());
-		renderNumber(getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fBottom
+		renderNumber(gl, getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fBottom
 			- fMenuHeight + 0.02f);
 
 		tempTexture.disable();
@@ -1558,10 +1573,11 @@ public class GLParallelCoordinates
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 
-		Rectangle2D tempRectangle = textRenderer.getBounds(sRawValue);
+		Rectangle2D tempRectangle =
+			textRenderer.getScaledBounds(gl, sRawValue, fScaling, ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
-		float fBackPlaneWidth = (float) tempRectangle.getWidth() * fScaling;
-		float fBackPlaneHeight = (float) tempRectangle.getHeight() * fScaling;
+		float fBackPlaneWidth = (float) tempRectangle.getWidth();
+		float fBackPlaneHeight = (float) tempRectangle.getHeight();
 		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 
@@ -1573,11 +1589,11 @@ public class GLParallelCoordinates
 		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, LABEL_Z);
 		gl.glEnd();
 
-		renderNumber(sRawValue, fXTextOrigin, fYTextOrigin);
+		renderNumber(gl, sRawValue, fXTextOrigin, fYTextOrigin);
 		gl.glPopAttrib();
 	}
 
-	private void renderNumber(String sRawValue, float fXOrigin, float fYOrigin) {
+	private void renderNumber(GL gl, String sRawValue, float fXOrigin, float fYOrigin) {
 		textRenderer.begin3DRendering();
 
 		// String text = "";
@@ -1590,7 +1606,8 @@ public class GLParallelCoordinates
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
-		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z, fScaling);
+		textRenderer.draw3D(gl, sRawValue, fXOrigin, fYOrigin, ParCoordsRenderStyle.TEXT_ON_LABEL_Z,
+			fScaling, ParCoordsRenderStyle.MIN_NUMBER_TEXT_SIZE);
 		textRenderer.end3DRendering();
 	}
 

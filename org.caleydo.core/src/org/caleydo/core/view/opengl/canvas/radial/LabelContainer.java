@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Represents a box that can be positioned containing all label lines of one label.

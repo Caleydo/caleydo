@@ -394,9 +394,9 @@ public class DrawingStateDetailOutside
 				+ Math.min(fXCenter * RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE,
 					fYCenter * RadialHierarchyRenderStyle.DETAIL_RADIUS_DELTA_SCREEN_PERCENTAGE);
 
-		//if (bInitialDraw) {
-			fDetailViewStartAngle = pdCurrentSelectedElement.getCurrentStartAngle();
-		//}
+		// if (bInitialDraw) {
+		fDetailViewStartAngle = pdCurrentSelectedElement.getCurrentStartAngle();
+		// }
 
 	}
 
@@ -411,7 +411,7 @@ public class DrawingStateDetailOutside
 
 			pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 				.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
-			
+
 			if (pdSelected == pdCurrentRootElement) {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				drawingController.setDrawingState(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT);
@@ -453,7 +453,7 @@ public class DrawingStateDetailOutside
 		PartialDisc pdCurrentSelectedElement = radialHierarchy.getCurrentSelectedElement();
 
 		if (pdSelected.hasChildren() && pdSelected.getCurrentDepth() > 1) {
-			
+
 			pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 				.getDefaultDrawingStrategy(), iDisplayedOverviewDepth);
 

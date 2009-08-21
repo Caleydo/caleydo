@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -25,7 +26,8 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Christian Partl
  */
-public class OneWaySlider {
+public class OneWaySlider
+	extends AGLGUIElement {
 
 	private static final float SLIDING_ELEMENT_MAX_HEIGHT = 0.2f;
 	private static final float DOWN_BUTTON_MAX_HEIGHT = 0.2f;
@@ -116,6 +118,8 @@ public class OneWaySlider {
 	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager, int iViewID,
 		int iSliderID, int iSliderButtonID, int iSliderBodyID) {
 
+		beginGUIElement(gl);
+
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION,
 			iSliderBodyID));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
@@ -146,28 +150,35 @@ public class OneWaySlider {
 		gl.glPushName(pickingManager.getPickingID(iViewID,
 			EPickingType.RAD_HIERARCHY_SLIDER_BUTTON_SELECTION, iSliderButtonID));
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
-		tempTexture.enable();
-		tempTexture.bind();
+//		Vec3f lowerLeftCorner = new Vec3f(vecPosition.x() + fWidth, vecPosition.y() + fDownButtonHeight, 0);
+//		Vec3f lowerRightCorner = new Vec3f(vecPosition.x(), vecPosition.y() + fDownButtonHeight, 0);
+//		Vec3f upperRightCorner = new Vec3f(vecPosition.x(), vecPosition.y(), 0);
+//		Vec3f upperLeftCorner = new Vec3f(vecPosition.x() + fWidth, vecPosition.y(), 0);
 
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glColor3f(0.3f, 0.3f, 0.3f);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(vecPosition.x(), vecPosition.y(), 0);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), 0);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() + fDownButtonHeight, 0);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(vecPosition.x(), vecPosition.y() + fDownButtonHeight, 0);
-
-		gl.glEnd();
-
-		gl.glPopName();
-
-		tempTexture.disable();
+//		textureManager.renderGUITexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE, lowerLeftCorner,
+//			lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1, 20);
+		 Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+		 tempTexture.enable();
+		 tempTexture.bind();
+		
+		 TextureCoords texCoords = tempTexture.getImageTexCoords();
+		
+		 gl.glColor3f(0.3f, 0.3f, 0.3f);
+		 gl.glBegin(GL.GL_POLYGON);
+		 gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		 gl.glVertex3f(vecPosition.x(), vecPosition.y(), 0);
+		 gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		 gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y(), 0);
+		 gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		 gl.glVertex3f(vecPosition.x() + fWidth, vecPosition.y() + fDownButtonHeight, 0);
+		 gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		 gl.glVertex3f(vecPosition.x(), vecPosition.y() + fDownButtonHeight, 0);
+		
+		 gl.glEnd();
+		
+		 gl.glPopName();
+		
+		 tempTexture.disable();
 
 		Rectangle2D bounds = textRenderer.getBounds(new Integer(iSelectedValue).toString());
 		float fFontScaling = determineFontScaling(new Integer(iSelectedValue).toString());
@@ -188,6 +199,7 @@ public class OneWaySlider {
 
 		gl.glPopAttrib();
 
+		endGUIElement(gl);
 	}
 
 	/**
@@ -372,5 +384,13 @@ public class OneWaySlider {
 				* ((fHeight - fSlidingElementHeight - fDownButtonHeight) / (float) (iMaxValue - iMinValue - 1));
 		fSlidingElementDrawingPosition =
 			vecPosition.y() + fDownButtonHeight + (float) iSelectedValue * fDrawingStep;
+	}
+
+	public float getScaledHeight(GL gl) {
+		return getScaledSizeOf(gl, fHeight);
+	}
+
+	public float getScaledWidth(GL gl) {
+		return getScaledSizeOf(gl, fWidth);
 	}
 }

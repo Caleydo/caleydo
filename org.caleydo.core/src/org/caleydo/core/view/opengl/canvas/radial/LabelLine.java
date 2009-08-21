@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * This class represents one line in a label. It consists of label items, which actually hold the content that

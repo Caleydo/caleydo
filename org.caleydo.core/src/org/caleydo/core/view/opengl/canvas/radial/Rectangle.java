@@ -20,6 +20,13 @@ public class Rectangle {
 		this.fMaxY = fMaxY;
 	}
 	
+	public void setRectangle(float fMinX, float fMinY, float fMaxX, float fMaxY) {
+		this.fMinX = fMinX;
+		this.fMinY = fMinY;
+		this.fMaxX = fMaxX;
+		this.fMaxY = fMaxY;
+	}
+	
 	
 	public float getMinX() {
 		return fMinX;

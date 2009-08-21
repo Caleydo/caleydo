@@ -37,9 +37,8 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.core.runtime.Status;
-
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Base class for OpenGL views that heavily use storages.
@@ -76,7 +75,7 @@ public abstract class AStorageBasedView
 	 */
 	protected boolean bRenderOnlyContext;
 
-	protected TextRenderer textRenderer;
+	protected CaleydoTextRenderer textRenderer;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -111,7 +110,7 @@ public abstract class AStorageBasedView
 		connectedElementRepresentationManager =
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
+		textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 		// registerEventListeners();
 	}
 

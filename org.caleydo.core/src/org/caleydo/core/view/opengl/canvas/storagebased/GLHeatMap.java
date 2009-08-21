@@ -1094,7 +1094,7 @@ public class GLHeatMap
 		gl.glTranslatef(fXOrigin, fYOrigin, fZOrigin);
 		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(sLabel, 0, 0, 0, fFontScaling);
+		textRenderer.draw3D(gl, sLabel, 0, 0, 0, fFontScaling, HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE);
 		textRenderer.end3DRendering();
 		gl.glRotatef(-fRotation, 0, 0, 1);
 		gl.glTranslatef(-fXOrigin, -fYOrigin, -fZOrigin);

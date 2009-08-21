@@ -4,9 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.util.text.CaleydoTextRenderer;
-
-import com.sun.opengl.util.j2d.TextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * Represents some text that can be drawn within a label. Note, that changes to the size of a text item cannot

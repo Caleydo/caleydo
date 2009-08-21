@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * The LabelManager is responsible for positioning all labels ({@link LabelContainer}), determining the labels

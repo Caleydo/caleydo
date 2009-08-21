@@ -1,4 +1,4 @@
-package org.caleydo.core.util.text;
+package org.caleydo.core.view.opengl.util.text;
 
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
@@ -110,7 +110,7 @@ public class CaleydoTextRenderer
 
 		begin3DRendering();
 
-		draw3D(text, x, y, 0, scaling);
+		draw3D(text, x, y, z, scaling);
 		flush();
 
 		end3DRendering();
@@ -139,7 +139,7 @@ public class CaleydoTextRenderer
 
 		scaling = calculateScaling(gl, scaling, minSize);
 
-		draw3D(text, x, y, 0, scaling);
+		draw3D(text, x, y, z, scaling);
 	}
 
 	/**

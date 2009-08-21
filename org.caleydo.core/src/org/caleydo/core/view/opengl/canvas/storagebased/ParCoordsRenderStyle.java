@@ -112,6 +112,11 @@ public class ParCoordsRenderStyle
 	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
 
 	private static final float fXAxisOverlap = 0.1f;
+	
+	// minimum text sizes
+	
+	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
+	public static final int MIN_NUMBER_TEXT_SIZE = 55;
 
 	private GLParallelCoordinates pcs;
 

@@ -22,6 +22,8 @@ public class HeatMapRenderStyle
 
 	private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
 	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
+	public static final int LABEL_TEXT_MIN_SIZE = 50;
+	
 	private float fSelectedFieldWidth = 1.0f;
 
 	private float fNormalFieldWidth = 0f;

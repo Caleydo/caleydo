@@ -31,7 +31,7 @@ public class RadialHierarchyRenderStyle
 	public static final int MAX_LABELING_DEPTH = 5;
 	public static final float[] LABEL_TEXT_COLOR = {0.2f, 0.2f, 0.2f, 1f};
 	public static final float[] LABEL_BACKGROUND_COLOR = {1f, 1f, 1f, 0.6f};
-	public static final int LABEL_TEXT_MIN_SIZE = 45;
+	public static final int LABEL_TEXT_MIN_SIZE = 60;
 	
 	
 
