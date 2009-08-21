@@ -8,6 +8,10 @@ import gleem.linalg.Vec3f;
 
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
+import java.nio.FloatBuffer;
+
+import com.sun.opengl.util.BufferUtil;
+
 
 /**
  * 
@@ -256,7 +260,7 @@ public class VisLink {
 			
 			polygonPoints.add(curvePoints.get(i).addScaled(width, dirVec));
 			polygonPoints.add(curvePoints.get(i).addScaled(width, invDirVec));
-		}		
+		}
 		return polygonPoints;
 	}
 	
@@ -337,12 +341,6 @@ public class VisLink {
 	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow)
 		throws IllegalArgumentException
 	{
-//		if(controlPoints.size() == (offset + 2))
-//			line(gl, controlPoints.get(0), controlPoints.get(1), shadow);
-//		else if(controlPoints.size() > (offset + 2))
-//		{
-//			spline(gl, controlPoints, offset, numberOfSegments, shadow);
-//		}
 		if(controlPoints.size() >= (offset + 2))
 			polygonLine(gl, controlPoints, offset, numberOfSegments, shadow);
 		else
@@ -368,10 +366,6 @@ public class VisLink {
 	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow)
 		throws IllegalArgumentException
 	{
-//		if(controlPoints.size() == (offset + 2))
-//			line(gl, controlPoints.get(offset), controlPoints.get(offset + 1), shadow);
-//		else if(controlPoints.size() > (offset + 2))
-//			spline(gl, controlPoints, offset, 10, shadow); // NOTE: generates a NURBS spline with 10 subsegments.	
 		if(controlPoints.size() >= (offset + 2))
 			polygonLine(gl, controlPoints, offset, 10, shadow);
 		else
@@ -394,7 +388,42 @@ public class VisLink {
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		points.add(srcPoint);
 		points.add(destPoint);
-		polygonLine(gl, points, 0, 0, shadow);		
+		polygonLine(gl, points, 0, 0, shadow);
+	}
+	
+	
+	protected static FloatBuffer generateTexture(float[] rgba)
+		throws IllegalArgumentException
+	{
+		
+		if(rgba.length < 4)
+			throw new IllegalArgumentException( "rgba must have 4 values" ); 
+		
+		float texels[][] = new float[8][4]; 
+		for(int i = 0; i < 8; i++) {
+			texels[i][0] = rgba[0];
+			texels[i][1] = rgba[1];
+			texels[i][2] = rgba[2];
+			texels[i][3] = rgba[3];
+		}
+		// alpha fading for a halo look 
+		texels[0][3] = 0.3f;
+		texels[1][3] = 0.6f;
+		texels[2][3] = 0.8f;
+		texels[5][3] = 0.8f;
+		texels[6][3] = 0.6f;
+		texels[7][3] = 0.3f;
+		
+		FloatBuffer texture = BufferUtil.newFloatBuffer(8*4);
+		for(int i = 0; i < 8; i++)
+			texture.put(texels[i]);
+		
+		//testing:
+		for(int i = 0; i < 8; i++)
+			System.out.println(texture.get(i) + " ");
+		System.out.println("----------------------");
+		
+		return texture;
 	}
 	
 }
