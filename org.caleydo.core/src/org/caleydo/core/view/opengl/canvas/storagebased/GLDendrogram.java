@@ -29,7 +29,6 @@ import org.caleydo.core.manager.event.data.ReplaceVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -1363,6 +1362,11 @@ public class GLDendrogram
 
 				if (eSelectionType != ESelectionType.NORMAL) {
 
+					resetAllTreeSelections();
+
+					if (tree.getNodeByNumber(iExternalID) != null)
+						tree.getNodeByNumber(iExternalID).setSelectionType(eSelectionType);
+
 					ISelectionDelta selectionDelta = null;
 					SelectionManager selectionManager = null;
 
@@ -1378,6 +1382,8 @@ public class GLDendrogram
 					event.setSelectionDelta((SelectionDelta) selectionDelta);
 					event.setInfo(getShortInfo());
 					eventPublisher.triggerEvent(event);
+
+					setDisplayListDirty();
 				}
 
 				break;
@@ -1394,6 +1400,11 @@ public class GLDendrogram
 						break;
 				}
 				if (eSelectionType != ESelectionType.NORMAL && tree.getNodeByNumber(iExternalID) != null) {
+
+					resetAllTreeSelections();
+
+					tree.getNodeByNumber(iExternalID).setSelectionType(eSelectionType);
+
 					ClusterNodeSelectionEvent clusterNodeEvent = new ClusterNodeSelectionEvent();
 					SelectionDelta selectionDeltaClusterNode = new SelectionDelta(EIDType.CLUSTER_NUMBER);
 					selectionDeltaClusterNode.addSelection(iExternalID, eSelectionType);
@@ -1436,6 +1447,11 @@ public class GLDendrogram
 
 				if (eSelectionType != ESelectionType.NORMAL) {
 
+					resetAllTreeSelections();
+
+					if (tree.getNodeByNumber(iExternalID) != null)
+						tree.getNodeByNumber(iExternalID).setSelectionType(eSelectionType);
+
 					ISelectionDelta selectionDelta = null;
 					SelectionManager selectionManager = null;
 
@@ -1474,13 +1490,16 @@ public class GLDendrogram
 	@Override
 	public void clearAllSelections() {
 
-		fPosCut = 0;
-		iMaxDepth = Integer.MAX_VALUE;
-		iAlClusterNodes.clear();
-		buildNewGroupList();
-		resetAllTreeSelections();
-		bRedrawDendrogram = true;
-		bEnableDepthCheck = false;
+		contentSelectionManager.clearSelections();
+		storageSelectionManager.clearSelections();
+
+		// fPosCut = 0;
+		// iMaxDepth = Integer.MAX_VALUE;
+		// iAlClusterNodes.clear();
+		// buildNewGroupList();
+		// resetAllTreeSelections();
+		// bRedrawDendrogram = true;
+		// bEnableDepthCheck = false;
 	}
 
 	@Override
@@ -1554,8 +1573,7 @@ public class GLDendrogram
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}
-
-				setDisplayListDirty();
+				// setDisplayListDirty();
 			}
 		}
 		else {
@@ -1581,7 +1599,7 @@ public class GLDendrogram
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}
-				setDisplayListDirty();
+				// setDisplayListDirty();
 			}
 		}
 	}

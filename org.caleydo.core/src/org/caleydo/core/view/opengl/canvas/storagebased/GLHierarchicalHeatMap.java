@@ -2487,6 +2487,7 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.getViewFrustum().setRight(fright);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 			EPickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION, glHeatMapView.getID()));
+		// setEmbeddedHeatMapData();
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
 		fWidthEHM = glHeatMapView.getViewFrustum().getWidth() - 0.95f;
@@ -2499,7 +2500,7 @@ public class GLHierarchicalHeatMap
 					.getID()));
 			glExperimentDendrogramView.getViewFrustum().setTop(ftop - 3.6f);
 			glExperimentDendrogramView.getViewFrustum().setRight(fWidthEHM);
-			glExperimentDendrogramView.setDisplayListDirty();
+			// glExperimentDendrogramView.setDisplayListDirty();
 			glExperimentDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -3.6f, 0f);
@@ -2534,7 +2535,7 @@ public class GLHierarchicalHeatMap
 				EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION, glGeneDendrogramView.getID()));
 			glGeneDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
 			glGeneDendrogramView.getViewFrustum().setRight(1.7f);
-			glGeneDendrogramView.setDisplayListDirty();
+			// glGeneDendrogramView.setDisplayListDirty();
 			glGeneDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
@@ -2649,12 +2650,18 @@ public class GLHierarchicalHeatMap
 			else
 				fHeightSubTree = viewFrustum.getHeight();
 
+			// FIXME: bad hack!!!
 			int lastIndexOfSubTree = 0;
 			try {
 				lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1 + iLastSampleLevel2 + 1);
 			}
 			catch (IndexOutOfBoundsException e) {
-				lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1 + iLastSampleLevel2);
+				try {
+					lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1 + iLastSampleLevel2);
+				}
+				catch (IndexOutOfBoundsException e1) {
+					lastIndexOfSubTree = contentVA.get(iFirstSampleLevel1 + iLastSampleLevel2 - 1);
+				}
 			}
 
 			glGeneDendrogramView.renderSubTreeFromIndexToIndex(gl, contentVA.get(iFirstSampleLevel1
@@ -2926,7 +2933,7 @@ public class GLHierarchicalHeatMap
 		}
 		// initPosCursorLevel2();
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		// setEmbeddedHeatMapData();
 	}
 
 	/**
@@ -2970,7 +2977,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		// setEmbeddedHeatMapData();
 	}
 
 	/**
@@ -3257,7 +3264,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		// setEmbeddedHeatMapData();
 
 		// System.out.println(" iSamplesPerTexture: " + iSamplesPerTexture + "  iFirstSampleLevel1: "
 		// + iFirstSampleLevel1 + "  iLastSampleLevel1: " + iLastSampleLevel1);
@@ -3312,7 +3319,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		// setEmbeddedHeatMapData();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingWholeBlockLevel2 = false;
@@ -3374,7 +3381,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		// setEmbeddedHeatMapData();
 
 		// System.out.println(" iSamplesPerTexture: " + iSamplesPerTexture + "  iFirstSampleLevel1: "
 		// + iFirstSampleLevel1 + "  iLastSampleLevel1: " + iLastSampleLevel1);
@@ -3439,7 +3446,7 @@ public class GLHierarchicalHeatMap
 		}
 
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		// setEmbeddedHeatMapData();
 
 		if (glMouseListener.wasMouseReleased()) {
 			bIsDraggingActiveLevel2 = false;
@@ -3650,6 +3657,7 @@ public class GLHierarchicalHeatMap
 						bIsHeatmapInFocus = bIsHeatmapInFocus == true ? false : true;
 						bGeneDendrogramActive = false;
 						glHeatMapView.setDisplayListDirty();
+						glExperimentDendrogramView.setRedrawDendrogram();
 						glExperimentDendrogramView.setDisplayListDirty();
 						setDisplayListDirty();
 
@@ -3848,7 +3856,7 @@ public class GLHierarchicalHeatMap
 						// setDisplayListDirty();
 						// }
 						pickingPointLevel1 = pick.getPickedPoint();
-						setEmbeddedHeatMapData();
+						// setEmbeddedHeatMapData();
 						setDisplayListDirty();
 						break;
 
@@ -3865,7 +3873,7 @@ public class GLHierarchicalHeatMap
 				switch (pickingMode) {
 					case CLICKED:
 						pickingPointLevel2 = pick.getPickedPoint();
-						setEmbeddedHeatMapData();
+						// setEmbeddedHeatMapData();
 						setDisplayListDirty();
 						break;
 
@@ -3960,7 +3968,7 @@ public class GLHierarchicalHeatMap
 			initPosCursorLevel1();
 		bRedrawTextures = true;
 		setDisplayListDirty();
-		setEmbeddedHeatMapData();
+		// setEmbeddedHeatMapData();
 		glHeatMapView.setDisplayListDirty();
 		glGeneDendrogramView.setDisplayListDirty();
 		glExperimentDendrogramView.setDisplayListDirty();
@@ -4133,7 +4141,7 @@ public class GLHierarchicalHeatMap
 		glGeneDendrogramView.initData();
 
 		glExperimentDendrogramView.setSet(set);
-		glExperimentDendrogramView.setContentVAType(EVAType.STORAGE);
+		glExperimentDendrogramView.setContentVAType(EVAType.CONTENT);
 		glExperimentDendrogramView.initData();
 
 		if (bSkipLevel2 == false)
@@ -4352,14 +4360,14 @@ public class GLHierarchicalHeatMap
 			if (iFirstSampleLevel2 > iNrElementsToShift + 1) {
 				iLastSampleLevel2 -= iNrElementsToShift;
 				iFirstSampleLevel2 -= iNrElementsToShift;
-				setEmbeddedHeatMapData();
+				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
 				// glHeatMapView.upDownSelect(true);
 			}
 			else if (iFirstSampleLevel2 > 0) {
 				iLastSampleLevel2--;
 				iFirstSampleLevel2--;
-				setEmbeddedHeatMapData();
+				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
 				// glHeatMapView.upDownSelect(true);
 			}
@@ -4368,14 +4376,14 @@ public class GLHierarchicalHeatMap
 			if (iLastSampleLevel2 < iSamplesLevel2 - 1 - iNrElementsToShift) {
 				iLastSampleLevel2 += iNrElementsToShift;
 				iFirstSampleLevel2 += iNrElementsToShift;
-				setEmbeddedHeatMapData();
+				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
 				// glHeatMapView.upDownSelect(false);
 			}
 			else if (iLastSampleLevel2 < iSamplesLevel2 - 1) {
 				iLastSampleLevel2++;
 				iFirstSampleLevel2++;
-				setEmbeddedHeatMapData();
+				// setEmbeddedHeatMapData();
 				setDisplayListDirty();
 				// glHeatMapView.upDownSelect(false);
 			}

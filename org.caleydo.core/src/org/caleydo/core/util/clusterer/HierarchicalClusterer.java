@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -193,32 +193,35 @@ public class HierarchicalClusterer
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		ArrayList<Integer> temp = new ArrayList<Integer>();
-		ArrayList<Integer> alExamples = new ArrayList<Integer>();
-
 		ArrayList<Double> clusters = new ArrayList<Double>();
 
 		for (int i = 0; i < clusterAssignments.length; i++) {
-			if (clusters.contains(clusterAssignments[i]) == false)
-				clusters.add(clusterAssignments[i]);
+			 if (clusters.contains(clusterAssignments[i]) == false)
+			clusters.add(clusterAssignments[i]);
 		}
 
-		HashMap<Double, Integer> hashClusters = new HashMap<Double, Integer>();
+		// variant 1
+//		for (double cluster : clusters) {
+//			for (int i = 0; i < data.numInstances(); i++) {
+//				if (clusterAssignments[i] == cluster) {
+//					indices.add(i);
+//				}
+//			}
+//		}
 
-		for (int i = 0; i < clusters.size(); i++) {
-			hashClusters.put(clusters.get(i), i);
-			temp.add(0);
-			alExamples.add(0);
-		}
-
-		for (double cluster : clusters) {
-			for (int i = 0; i < data.numInstances(); i++) {
+		// variant 2
+		Arrays.sort(clusterAssignments);
+		for (int i = 0; i < data.numInstances(); i++) {
+			int temp = 0;
+			for (double cluster : clusters) {
 				if (clusterAssignments[i] == cluster) {
-					indices.add(i);
-					temp.set(hashClusters.get(cluster), temp.get(hashClusters.get(cluster)) + 1);
+					indices.add(temp);
+					break;
 				}
+				temp++;
 			}
 		}
+		
 		processEvents();
 		if (bClusteringCanceled) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
