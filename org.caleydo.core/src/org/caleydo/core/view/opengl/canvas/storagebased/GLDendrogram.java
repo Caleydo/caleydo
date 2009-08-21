@@ -72,11 +72,6 @@ public class GLDendrogram
 	private Tree<ClusterNode> tree;
 	private DendrogramRenderStyle renderStyle;
 
-	/**
-	 * Used in case of we want to render only a sub-tree instead of the whole tree.
-	 */
-	private ClusterNode currentRootNode;
-
 	// variables used to build a group list
 	private ArrayList<ClusterNode> iAlClusterNodes = new ArrayList<ClusterNode>();
 	private GroupList groupList = null;
@@ -188,13 +183,6 @@ public class GLDendrogram
 	@Override
 	public void initLocal(GL gl) {
 
-		// Register keyboard listener to GL canvas
-		GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				parentGLCanvas.getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
-
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		iGLDisplayListCutOffValue = gl.glGenLists(1);
@@ -209,13 +197,6 @@ public class GLDendrogram
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		this.glMouseListener = glMouseListener;
-
-		// Register keyboard listener to GL canvas
-		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
@@ -402,10 +383,8 @@ public class GLDendrogram
 	 */
 	private void determinePositions() {
 
-		if (bRenderGeneTree) {
-			determinePosRecGenes(currentRootNode);
-			// determinePosRecGenes(tree.getRoot());
-		}
+		if (bRenderGeneTree)
+			determinePosRecGenes(tree.getRoot());
 		else
 			determinePosRecExperiments(tree.getRoot());
 
@@ -432,22 +411,22 @@ public class GLDendrogram
 		if (tree == null)
 			return;
 
-		determineNodesToRender(currentRootNode, fromIndex, toIndex, false);
-		removeWronglySelectedNodes(currentRootNode);
+		determineNodesToRender(tree.getRoot(), fromIndex, toIndex, false);
+		removeWronglySelectedNodes(tree.getRoot());
 		iMaxDepthSubTree = 0;
 		yPosInitSubTree = fHeight;
 		xGlobalMaxSubTree = fWidth;
 
-		determineMaxDepthSubTree(currentRootNode);
+		determineMaxDepthSubTree(tree.getRoot());
 
 		fLevelWidthSubTree = fWidth / (iMaxDepthSubTree + 1);
 		fSampleHeightSubTree = fHeight / iNrLeafs;
 
-		determinePosRecSubTree(currentRootNode);
+		determinePosRecSubTree(tree.getRoot());
 
 		gl.glTranslatef(0, -fSampleHeightSubTree / 2, 0);
 		gl.glLineWidth(1f);
-		renderSubTreeRec(gl, currentRootNode);
+		renderSubTreeRec(gl, tree.getRoot());
 		gl.glTranslatef(0, +fSampleHeightSubTree / 2, 0);
 	}
 
@@ -469,19 +448,13 @@ public class GLDendrogram
 
 		if (tree.hasChildren(currentNode)) {
 
-			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
-
-			int iNrChildsNode = alChilds.size();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				ClusterNode node = (ClusterNode) alChilds.get(i);
-				if (determineNodesToRender(node, from, to, boolVar)) {
-					node.setIsPartOfSubTree(true);
+			for (ClusterNode current : tree.getChildren(currentNode)) {
+				if (determineNodesToRender(current, from, to, boolVar)) {
+					current.setIsPartOfSubTree(true);
 					boolVar = true;
 				}
 				else {
-					node.setIsPartOfSubTree(false);
+					current.setIsPartOfSubTree(false);
 					boolVar = false;
 				}
 			}
@@ -505,25 +478,19 @@ public class GLDendrogram
 	private void removeWronglySelectedNodes(ClusterNode currentNode) {
 
 		if (tree.hasChildren(currentNode)) {
-			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
-
-			int iNrChildsNode = alChilds.size();
 
 			boolean bAllChildsPartOfSubTree = true;
 
-			for (int i = 0; i < iNrChildsNode; i++) {
-				ClusterNode node = (ClusterNode) alChilds.get(i);
-				removeWronglySelectedNodes(node);
-
+			for (ClusterNode current : tree.getChildren(currentNode)) {
+				removeWronglySelectedNodes(current);
 			}
 
-			for (int i = 0; i < iNrChildsNode; i++) {
-				ClusterNode node = (ClusterNode) alChilds.get(i);
-
-				if (node.isPartOfSubTree() == false) {
+			for (ClusterNode current : tree.getChildren(currentNode)) {
+				if (current.isPartOfSubTree() == false) {
 					bAllChildsPartOfSubTree = false;
 				}
 			}
+
 			if (bAllChildsPartOfSubTree == false)
 				currentNode.setIsPartOfSubTree(false);
 		}
@@ -543,12 +510,8 @@ public class GLDendrogram
 		}
 
 		if (tree.hasChildren(currentNode)) {
-			ArrayList<ClusterNode> alChilds = tree.getChildren(currentNode);
-			int iNrChildsNode = alChilds.size();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-				ClusterNode node = (ClusterNode) alChilds.get(i);
-				determineMaxDepthSubTree(node);
+			for (ClusterNode current : tree.getChildren(currentNode)) {
+				determineMaxDepthSubTree(current);
 			}
 		}
 	}
@@ -861,20 +824,11 @@ public class GLDendrogram
 		// gl.glEnd();
 		// }
 
-		List<ClusterNode> listGraph = null;
-
 		if (tree.hasChildren(currentNode)) {
-			listGraph = tree.getChildren(currentNode);
-
-			int iNrChildsNode = listGraph.size();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				ClusterNode current = (ClusterNode) listGraph.get(i);
+			for (ClusterNode current : tree.getChildren(currentNode)) {
 				renderSelections(gl, current);
 			}
 		}
-
 	}
 
 	/**
@@ -1111,7 +1065,6 @@ public class GLDendrogram
 				if (set.getClusteredTreeGenes() != null) {
 					tree = set.getClusteredTreeGenes();
 					groupList = new GroupList(1);
-					currentRootNode = tree.getRoot();
 				}
 				else
 					renderSymbol(gl);
@@ -1150,8 +1103,7 @@ public class GLDendrogram
 
 			if (bRenderGeneTree) {
 				gl.glTranslatef(0, -fSampleHeight / 2, 0);
-				renderDendrogramGenes(gl, currentRootNode, 1);
-				// renderDendrogramGenes(gl, tree.getRoot());
+				renderDendrogramGenes(gl, tree.getRoot(), 1);
 			}
 			else {
 				gl.glTranslatef(fSampleWidth / 2, 0, 0);
@@ -1508,7 +1460,10 @@ public class GLDendrogram
 
 	@Override
 	public String getShortInfo() {
-		return new String("Dendrogram view shortinfo()");
+		if (bRenderGeneTree)
+			return new String("Dendrogram - " + tree.getRoot().getNrElements() + " genes");
+		else
+			return new String("Dendrogram - " + tree.getRoot().getNrElements() + " experiments");
 	}
 
 	@Override
@@ -1586,7 +1541,7 @@ public class GLDendrogram
 					contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
-					iIndex = iSelectedID;// contentVA.indexOf(iSelectedID);
+					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.MOUSE_OVER);
 				}
@@ -1595,7 +1550,7 @@ public class GLDendrogram
 					contentSelectionManager.getElements(ESelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
 
-					iIndex = iSelectedID;// contentVA.indexOf(iSelectedID);
+					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}
@@ -1614,7 +1569,7 @@ public class GLDendrogram
 					storageSelectionManager.getElements(ESelectionType.MOUSE_OVER);
 				for (Integer iSelectedID : setMouseOverElements) {
 
-					iIndex = iSelectedID;// storageVA.indexOf(iSelectedID);
+					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.MOUSE_OVER);
 				}
@@ -1622,7 +1577,7 @@ public class GLDendrogram
 				Set<Integer> setSelectionElements =
 					storageSelectionManager.getElements(ESelectionType.SELECTION);
 				for (Integer iSelectedID : setSelectionElements) {
-					iIndex = iSelectedID;// storageVA.indexOf(iSelectedID);
+					iIndex = iSelectedID;
 					if (tree.getNodeByNumber(iIndex) != null)
 						tree.getNodeByNumber(iIndex).setSelectionType(ESelectionType.SELECTION);
 				}
@@ -1694,14 +1649,9 @@ public class GLDendrogram
 
 				for (SelectionDeltaItem item : deltaItems) {
 					int clusterNr = item.getPrimaryID();
-					if (tree.getNodeByNumber(clusterNr) != null) {
+					if (tree.getNodeByNumber(clusterNr) != null)
 						tree.getNodeByNumber(clusterNr).setSelectionType(item.getSelectionType());
-
-						// if (bIsRenderedRemote)
-						// currentRootNode = tree.getNodeByNumber(clusterNr);
-					}
 				}
-
 				setDisplayListDirty();
 			}
 		}

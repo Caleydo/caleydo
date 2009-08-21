@@ -377,13 +377,6 @@ public class TreeClusterer
 			}
 		}
 
-		for (int i = 0; i < result.length; i++) {
-			if (result[i].getLeft() >= 0)
-				alIndices.add(result[i].getLeft());
-			if (result[i].getRight() >= 0)
-				alIndices.add(result[i].getRight());
-		}
-
 		// set cluster result in Set
 		tree = new Tree<ClusterNode>();
 
@@ -618,19 +611,12 @@ public class TreeClusterer
 
 		determineExpressionValue(eClustererType);
 
-		// AlIndexes = getAl();
 		AlIndexes = ClusterHelper.getAl(tree);
 
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
 			set.setClusteredTreeGenes(tree);
 		else
 			set.setClusteredTreeExps(tree);
-
-		// Integer clusteredVAId = 0;
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// clusteredVAId = set.createContentVA(EVAType.CONTENT, AlIndexes);
-		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, AlIndexes);
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
