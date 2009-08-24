@@ -987,38 +987,59 @@ public class GLParallelCoordinates
 				// NaN Button
 				float fXButtonOrigin = alAxisSpacing.get(iCount);
 
-				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAN);
+				Vec3f lowerLeftCorner =
+					new Vec3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+						ParCoordsRenderStyle.NAN_Z);
+				Vec3f lowerRightCorner =
+					new Vec3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+						ParCoordsRenderStyle.NAN_Z);
+				Vec3f upperRightCorner =
+					new Vec3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+						ParCoordsRenderStyle.NAN_Z);
+				Vec3f upperLeftCorner =
+					new Vec3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+						ParCoordsRenderStyle.NAN_Z);
+				Vec3f scalingCenter =
+					new Vec3f(fXButtonOrigin, ParCoordsRenderStyle.NAN_Y_OFFSET, ParCoordsRenderStyle.NAN_Z);
 
-				tempTexture.enable();
-				tempTexture.bind();
-
-				TextureCoords texCoords = tempTexture.getImageTexCoords();
 				int iPickingID =
 					pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_NAN, axisVA.get(iCount));
-				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				gl.glColor4f(1, 1, 1, 1f);
 				gl.glPushName(iPickingID);
 
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-					ParCoordsRenderStyle.NAN_Z);
-				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-					ParCoordsRenderStyle.NAN_Z);
-				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-					ParCoordsRenderStyle.NAN_Z);
-				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-					ParCoordsRenderStyle.NAN_Z);
-				gl.glEnd();
+				textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner, lowerRightCorner,
+					upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 100);
+
+				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAN);
+				//
+				// tempTexture.enable();
+				// tempTexture.bind();
+				//
+				TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				// gl.glColor4f(1, 1, 1, 1f);
+				//				
+				//
+				// gl.glBegin(GL.GL_POLYGON);
+				// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				// gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+				// ParCoordsRenderStyle.NAN_Z);
+				// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				// gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
+				// ParCoordsRenderStyle.NAN_Z);
+				// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				// gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+				// ParCoordsRenderStyle.NAN_Z);
+				// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				// gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
+				// ParCoordsRenderStyle.NAN_Z);
+				// gl.glEnd();
 
 				gl.glPopName();
 
 				// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
 				// gl.glPopAttrib();
-				tempTexture.disable();
+				// tempTexture.disable();
 
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
@@ -1133,76 +1154,89 @@ public class GLParallelCoordinates
 				float fYGateAddOrigin = renderStyle.getAxisHeight();
 				iPickingID =
 					pickingManager.getPickingID(iUniqueID, EPickingType.ADD_GATE, axisVA.get(iCount));
-				
-//				Vec3f lowerLeftCorner = new Vec3f(fXButtonOrigin - 0.03f,fYGateAddOrigin, AXIS_Z);
-//				Vec3f lowerRightCorner = new Vec3f(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
-//				Vec3f upperRightCorner = new Vec3f(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-//				Vec3f upperLeftCorner = new Vec3f(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+
+				lowerLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
+				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
+				upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+				upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+				scalingCenter.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
 
 				gl.glPushName(iPickingID);
-				
-//				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner,
-//					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1, 100);
-				
-				tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
 
-				tempTexture.enable();
-				tempTexture.bind();
-				texCoords = tempTexture.getImageTexCoords();
-
-				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				gl.glColor4f(1, 1, 1, 1f);
-				
-
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
-				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
-				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-				gl.glEnd();
+				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner,
+					lowerRightCorner, upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 100);
+				// tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
+				//
+				// tempTexture.enable();
+				// tempTexture.bind();
+				// texCoords = tempTexture.getImageTexCoords();
+				//
+				// // gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				// gl.glColor4f(1, 1, 1, 1f);
+				//				
+				//
+				// gl.glBegin(GL.GL_POLYGON);
+				// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				// gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
+				// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				// gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
+				// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				// gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+				// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				// gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
+				// gl.glEnd();
 
 				gl.glPopName();
 
 				// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
 				// gl.glPopAttrib();
-				tempTexture.disable();
+				// tempTexture.disable();
 
 				if (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount))) {
+
+					lowerLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
+					lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
+					upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
+					upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
+					scalingCenter.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
+
 					// the mouse over drop
 					if (iChangeDropOnAxisNumber == iCount) {
-						tempTexture = textureManager.getIconTexture(gl, dropTexture);
+						// tempTexture = textureManager.getIconTexture(gl, dropTexture);
+						textureManager.renderGUITexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner,
+							upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 80);
+
 						if (!bWasAxisMoved) {
 							dropTexture = EIconTextures.DROP_NORMAL;
 						}
 					}
 					else {
-						tempTexture = textureManager.getIconTexture(gl, EIconTextures.DROP_NORMAL);
+						textureManager.renderGUITexture(gl, EIconTextures.DROP_NORMAL, lowerLeftCorner,
+							lowerRightCorner, upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1,
+							80);
+						// tempTexture = textureManager.getIconTexture(gl, EIconTextures.DROP_NORMAL);
 					}
-					tempTexture.enable();
-					tempTexture.bind();
+					// tempTexture.enable();
+					// tempTexture.bind();
+					//
+					// texCoords = tempTexture.getImageTexCoords();
+					//
+					// // gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+					// gl.glColor4f(1, 1, 1, 1);
 
-					texCoords = tempTexture.getImageTexCoords();
-
-					// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-					gl.glColor4f(1, 1, 1, 1);
-
-					gl.glBegin(GL.GL_POLYGON);
-					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-					gl.glVertex3f(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-					gl.glVertex3f(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-					gl.glTexCoord2f(texCoords.right(), texCoords.top());
-					gl.glVertex3f(fXButtonOrigin + 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-					gl.glTexCoord2f(texCoords.left(), texCoords.top());
-					gl.glVertex3f(fXButtonOrigin - 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-					gl.glEnd();
+					// gl.glBegin(GL.GL_POLYGON);
+					// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+					// gl.glVertex3f(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
+					// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+					// gl.glVertex3f(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
+					// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+					// gl.glVertex3f(fXButtonOrigin + 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
+					// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+					// gl.glVertex3f(fXButtonOrigin - 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
+					// gl.glEnd();
 
 					// gl.glPopAttrib();
-					tempTexture.disable();
+					// tempTexture.disable();
 
 					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.MOVE_AXIS, iCount);
 					gl.glColor4f(0, 0, 0, 0f);
@@ -1237,30 +1271,39 @@ public class GLParallelCoordinates
 				}
 				else {
 					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.MOVE_AXIS, iCount);
-					tempTexture = textureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
-					tempTexture.enable();
-					tempTexture.bind();
-
-					texCoords = tempTexture.getImageTexCoords();
+//					tempTexture = textureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
+//					tempTexture.enable();
+//					tempTexture.bind();
+//
+//					texCoords = tempTexture.getImageTexCoords();
 
 					gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-					gl.glColor4f(1, 1, 1, 1);
+//					gl.glColor4f(1, 1, 1, 1);
 					gl.glPushName(iPickingID);
 
-					gl.glBegin(GL.GL_POLYGON);
-					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-					gl.glVertex3f(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-					gl.glVertex3f(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
-					gl.glTexCoord2f(texCoords.right(), texCoords.top());
-					gl.glVertex3f(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
-					gl.glTexCoord2f(texCoords.left(), texCoords.top());
-					gl.glVertex3f(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
-					gl.glEnd();
+					lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
+					lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
+					upperRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
+					upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
+					scalingCenter.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
+
+					textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner,
+						lowerRightCorner, upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 80);
+
+//					gl.glBegin(GL.GL_POLYGON);
+//					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+//					gl.glVertex3f(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
+//					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+//					gl.glVertex3f(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
+//					gl.glTexCoord2f(texCoords.right(), texCoords.top());
+//					gl.glVertex3f(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
+//					gl.glTexCoord2f(texCoords.left(), texCoords.top());
+//					gl.glVertex3f(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
+//					gl.glEnd();
 
 					gl.glPopName();
 					gl.glPopAttrib();
-					tempTexture.disable();
+//					tempTexture.disable();
 
 				}
 				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);

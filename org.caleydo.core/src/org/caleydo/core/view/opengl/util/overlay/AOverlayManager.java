@@ -2,12 +2,14 @@ package org.caleydo.core.view.opengl.util.overlay;
 
 import java.awt.Point;
 
+import org.caleydo.core.view.opengl.util.AGLGUIElement;
+
 /**
  * Base class for overlays such as info areas or context menus
  * 
  * @author Alexander Lex
  */
-public abstract class AOverlayManager {
+public abstract class AOverlayManager extends AGLGUIElement {
 
 	/** The 2D coordinates where the mouse was clicked */
 	protected Point pickedPoint;

@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.util;
 
+import gleem.linalg.Vec3f;
+
 import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
@@ -8,13 +10,13 @@ import com.sun.opengl.util.BufferUtil;
 
 public abstract class AGLGUIElement {
 
-	private float minSize;
+	protected float minSize;
 
 	public AGLGUIElement() {
 		minSize = 10.0f;
 	}
 
-	public void beginGUIElement(GL gl) {
+	public void beginGUIElement(GL gl, Vec3f scalingPivot) {
 		IntBuffer buffer = BufferUtil.newIntBuffer(4);
 		gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
 		int currentWidth = buffer.get(2);
@@ -27,7 +29,9 @@ public abstract class AGLGUIElement {
 
 		gl.glPushMatrix();
 
+		gl.glTranslatef(scalingPivot.x(), scalingPivot.y(), scalingPivot.z());
 		gl.glScalef(scaling, scaling, scaling);
+		gl.glTranslatef(-scalingPivot.x(), -scalingPivot.y(), -scalingPivot.z());
 	}
 
 	public void endGUIElement(GL gl) {

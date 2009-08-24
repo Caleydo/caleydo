@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,6 +103,8 @@ public class ContextMenu
 		hashContextMenuItemToUniqueID = new HashMap<AContextMenuItem, Integer>();
 		hashContextMenuItemToMetaData = new HashMap<AContextMenuItem, ContextMenuMetaData>();
 		hashUniqueIDToContextMenuItem = new HashMap<Integer, AContextMenuItem>();
+		
+		minSize = 200;
 	}
 
 	/**
@@ -253,13 +257,14 @@ public class ContextMenu
 		if (isDisplayListDirty) {
 			gl.glNewList(displayListIndex, GL.GL_COMPILE);
 			gl.glDisable(GL.GL_DEPTH_TEST);
-			drawMenu(gl, contextMenuEntries, baseMenuMetaData);
+			drawMenu(gl, contextMenuEntries, baseMenuMetaData, true);
 			gl.glEnable(GL.GL_DEPTH_TEST);
 			gl.glEndList();
 			isDisplayListDirty = false;
 		}
 
 		gl.glCallList(displayListIndex);
+
 	}
 
 	/**
@@ -325,14 +330,19 @@ public class ContextMenu
 	 * 
 	 * @param gl
 	 */
-	private void drawMenu(GL gl, ArrayList<IContextMenuEntry> contextMenuItems, ContextMenuMetaData metaData) {
+	private void drawMenu(GL gl, ArrayList<IContextMenuEntry> contextMenuItems, ContextMenuMetaData metaData, boolean isBaseMenu) {
 
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
 		// FIXME: Find clean solution!!
+		
+		Vec3f scalingPivot = new Vec3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
+		
 		if (!(masterGLView instanceof GLRemoteRendering))
 			gl.glTranslatef(0, 0, 2);
-
+		
+		if(isBaseMenu)
+			beginGUIElement(gl, scalingPivot);
 		drawBackground(gl, metaData);
 
 		float yPosition = metaData.yOrigin - SIDE_SPACING;
@@ -437,8 +447,9 @@ public class ContextMenu
 						if ((subMetaData.yOrigin - subMetaData.height) < fBottomBorder)
 							subMetaData.yOrigin = fBottomBorder + subMetaData.height;
 
-						drawMenu(gl, item.getSubItems(), subMetaData);
-
+//						endGUIElement(gl);
+						drawMenu(gl, item.getSubItems(), subMetaData, false);
+//						beginGUIElement(gl, scalingPivot);
 					}
 				}
 			}
@@ -473,6 +484,9 @@ public class ContextMenu
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
 		// FIXME: Find clean solution!!
+		if(isBaseMenu)
+			endGUIElement(gl);
+		
 		if (!(masterGLView instanceof GLRemoteRendering))
 			gl.glTranslatef(0, 0, -2);
 	}

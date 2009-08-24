@@ -381,7 +381,8 @@ public class GLRadialHierarchy
 				float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
 				float fCurrentSliderHeight = upwardNavigationSlider.getScaledHeight(gl);
 
-				controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2, fCurrentSliderHeight + fCurrentSliderWidth);
+				controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2, fCurrentSliderHeight
+					+ fCurrentSliderWidth);
 				LabelManager.get().setControlBox(controlBox);
 				drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 			}
@@ -421,7 +422,8 @@ public class GLRadialHierarchy
 			float fCurrentSliderWidth = upwardNavigationSlider.getScaledWidth(gl);
 			float fCurrentSliderHeight = upwardNavigationSlider.getScaledHeight(gl);
 
-			controlBox.setRectangle(0, 0, fCurrentSliderWidth * 2, fCurrentSliderHeight + fCurrentSliderWidth);
+			controlBox
+				.setRectangle(0, 0, fCurrentSliderWidth * 2, fCurrentSliderHeight + fCurrentSliderWidth);
 			LabelManager.get().setControlBox(controlBox);
 			drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 
@@ -439,48 +441,29 @@ public class GLRadialHierarchy
 	 *            GL Object that shall be used for rendering.
 	 */
 	private void renderSymbol(GL gl) {
-		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
-		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
-		tempTexture.enable();
-		tempTexture.bind();
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1f, 1, 1, 1f);
-		gl.glBegin(GL.GL_POLYGON);
-
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
-		gl.glEnd();
-		gl.glPopAttrib();
-		tempTexture.disable();
-
-		// if(textRenderer == null)
-		// textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24), false);
-		//		
-		// textRenderer.setColor(0, 0, 0, 0.5f);
-		//		
-		// textRenderer.renderText(gl, "Hallo!", 0, 0, 0, 0.02f, 10);
-		//		
-		// IntBuffer buffer = BufferUtil.newIntBuffer(4);
-		// gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
-		//		
-		// textRenderer.beginRendering(buffer.get(2), buffer.get(3));
-		//		
-		//		
-		// textRenderer.draw3D("Halloá!", 300, 300, 0, 1.5f);
-		// textRenderer.flush();
-		//		
-		// textRenderer.endRendering();
-
+		 float fXButtonOrigin = 0.33f * renderStyle.getScaling();
+		 float fYButtonOrigin = 0.33f * renderStyle.getScaling();
+		 Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+		 tempTexture.enable();
+		 tempTexture.bind();
+		
+		 TextureCoords texCoords = tempTexture.getImageTexCoords();
+		
+		 gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		 gl.glColor4f(1f, 1, 1, 1f);
+		 gl.glBegin(GL.GL_POLYGON);
+		
+		 gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		 gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+		 gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		 gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
+		 gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		 gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
+		 gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		 gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
+		 gl.glEnd();
+		 gl.glPopAttrib();
+		 tempTexture.disable();
 	}
 
 	/**

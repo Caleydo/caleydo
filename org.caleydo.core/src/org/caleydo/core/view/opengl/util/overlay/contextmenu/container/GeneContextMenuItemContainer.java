@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
-import java.util.ArrayList;
-import java.util.Set;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -45,13 +43,15 @@ public class GeneContextMenuItemContainer
 			sGeneSymbol = "Unkonwn Gene";
 		addHeading(sGeneSymbol);
 
-		LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-		loadPathwaysByGeneItem.setDavid(davidID);
-		addContextMenuItem(loadPathwaysByGeneItem);
-
-		ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
-		showPathwaysByGeneItem.setDavid(davidID);
-		addContextMenuItem(showPathwaysByGeneItem);
+		if(GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()) {
+			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
+			loadPathwaysByGeneItem.setDavid(davidID);
+			addContextMenuItem(loadPathwaysByGeneItem);
+	
+			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
+			showPathwaysByGeneItem.setDavid(davidID);
+			addContextMenuItem(showPathwaysByGeneItem);
+		}
 
 
 		BookmarkItem addToListItem = new BookmarkItem(EIDType.DAVID, davidID);
