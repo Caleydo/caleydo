@@ -90,4 +90,4 @@ Export-Package: org.caleydo.rcp;
    org.caleydo.core.manager.usecase,
    org.eclipse.swt.widgets"
 Bundle-Vendor: Graz University of Technology
-Import-Package: org.caleydo.plex
+Import-Package: org.caleydo.plex;resolution:=optional
