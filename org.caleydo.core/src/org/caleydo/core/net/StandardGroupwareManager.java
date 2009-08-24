@@ -57,15 +57,13 @@ public class StandardGroupwareManager
 	}
 
 	@Override
-	public void getHomeGroupwareClient() {
-		// TODO Auto-generated method stub
-
+	public String getHomeGroupwareClient() {
+		throw new RuntimeException("obtain view not supported in standard network mode");
 	}
 
 	@Override
-	public void getPublicGroupwareClient() {
-		// TODO Auto-generated method stub
-
+	public String getPublicGroupwareClient() {
+		throw new RuntimeException("get public view not supported in standard network mode");
 	}
 
 	@Override

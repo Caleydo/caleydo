@@ -1,11 +1,8 @@
 package org.caleydo.rcp.dialog.sendview;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;

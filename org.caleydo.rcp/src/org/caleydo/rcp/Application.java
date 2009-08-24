@@ -13,10 +13,13 @@ import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.SetUtils;
 import org.caleydo.core.data.selection.VirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.net.GroupwareUtils;
+import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -130,14 +133,17 @@ public class Application
 			internetConfigurationWizard.open();
 		}
 
-		// If no file is provided as command line argument a XML file open
-		// dialog is opened
+		// If no file is provided as command line argument a wizard page is opened to determine the xml file
 		if (sCaleydoXMLfile.equals("")) {
-
-			WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
-
-			if (Window.CANCEL == projectWizardDialog.open()) {
-				shutDown();
+			
+			if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
+				Application.initData = GroupwareUtils.startPlexClient();
+				GeneralManager.get().setUseCase(Application.initData.getUseCase());
+			} else {
+				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
+				if (Window.CANCEL == projectWizardDialog.open()) {
+					shutDown();
+				}
 			}
 
 			if (sCaleydoXMLfile.equals("")) {
@@ -162,6 +168,7 @@ public class Application
 						break;
 					case LOAD_PROJECT:
 					case COLLABORATION_CLIENT:
+					case PLEX_CLIENT:
 						sCaleydoXMLfile = GeneralManager.get().getUseCase().getBootsTrapFileName();
 						break;
 						
@@ -223,6 +230,11 @@ public class Application
 				} else if (element.equals("load_pathways")) {
 					bLoadPathwayData = true;
 					bOverrulePrefStoreLoadPathwayData = true;
+				} else  if (element.equals("plexclient")) {
+					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
+						throw new IllegalArgumentException("It is not allowed to specify a bootstrap-file in plex-client mode.");
+					}
+					Application.applicationMode = EApplicationMode.PLEX_CLIENT;
 				} else {
 					EStartViewType viewType = null;
 					try {
@@ -230,6 +242,9 @@ public class Application
 						startViews.add(viewType.getSerializedViewClass());
 					} catch (IllegalArgumentException ex) {
 						// command line parameter was not a related to a view type, so it must be the bootstrap file
+						if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
+							throw new IllegalArgumentException("It is not allowed to specify a bootstrap-file in plex-client mode.");
+						}
 						sCaleydoXMLfile = element;
 					}
 						
@@ -240,18 +255,25 @@ public class Application
 	
 	private void shutDown() {
 		// Save preferences before shutdown
+		IGeneralManager generalManager = GeneralManager.get();
 		try {
-			GeneralManager.get().getLogger().log(
+			generalManager.getLogger().log(
 				new Status(Status.WARNING, Activator.PLUGIN_ID, "Save Caleydo preferences..."));
-			GeneralManager.get().getPreferenceStore().save();
+			generalManager.getPreferenceStore().save();
 		}
 		catch (IOException e) {
 			throw new IllegalStateException("Unable to save preference file.");
 		}
 
-		GeneralManager.get().getViewGLCanvasManager().stopAnimator();
+		IGroupwareManager groupwareManager = generalManager.getGroupwareManager();
+		if (groupwareManager != null) {
+			groupwareManager.stop();
+			generalManager.setGroupwareManager(null);
+		}
 
-		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, "Bye bye!"));
+		generalManager.getViewGLCanvasManager().stopAnimator();
+
+		generalManager.getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, "Bye bye!"));
 		// display.dispose();
 	}
 
@@ -279,7 +301,8 @@ public class Application
 
 		Shell shell = new Shell();
 
-		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT) {
+		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT ||
+			applicationMode == EApplicationMode.PLEX_CLIENT) {
 			AUseCase useCase = (AUseCase) initData.getUseCase();
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());

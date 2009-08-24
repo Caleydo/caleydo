@@ -180,7 +180,7 @@ public class NetworkManager
 	 * Starts the network server listening for incoming connections.
 	 */
 	public void startServer() {
-		networkName = "CaleydoServer" + "-" + connectionCounter;
+		// networkName = "CaleydoServer" + "-" + connectionCounter;
 		server = new Server(this, listenPort);
 		serverThread = new Thread(server, "Server");
 		serverThread.start();

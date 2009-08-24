@@ -2,7 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/Ice.jar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="lib/windows/Ice.jar"/>
+	<classpathentry kind="lib" path="lib/windows/dkt.jar"/>
+	<classpathentry kind="lib" path="lib/linux/dkt.jar"/>
+	<classpathentry kind="lib" path="lib/linux/Ice.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,5 +1,7 @@
 package org.caleydo.core.net;
 
+import org.caleydo.core.serialize.ApplicationInitData;
+
 /**
  * This interface has to be implemented by environment specific groupware-manager classes.
  * @author Werner Puff
@@ -10,9 +12,9 @@ public interface IGroupwareManager {
 	
 	public void startClient();
 	
-	public void getHomeGroupwareClient();
+	public String getHomeGroupwareClient();
 	
-	public void getPublicGroupwareClient();
+	public String getPublicGroupwareClient();
 	
 	public String[] getAvailableGroupwareClients();
 	
@@ -21,4 +23,6 @@ public interface IGroupwareManager {
 	public NetworkManager getNetworkManager();
 	
 	public void setNetworkManager(NetworkManager networkManager);
+
+	public ApplicationInitData getInitData();
 }

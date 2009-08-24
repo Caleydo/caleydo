@@ -272,6 +272,16 @@
             name="Send Bucket">
       </command>
       <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.ObtainViewHandler"
+            id="org.caleydo.rcp.command.sendviews.obtain"
+            name="Send Bucket">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.PublishViewHandler"
+            id="org.caleydo.rcp.command.sendviews.publish"
+            name="Send Bucket">
+      </command>
+      <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenBrowserHandler"
             id="org.caleydo.rcp.command.openviews.browser"
             name="Open Web Browser">
@@ -610,6 +620,16 @@
          <command
                commandId="org.caleydo.rcp.command.sendviews.remote"
                label="Send View to ..."
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.obtain"
+               label="Obtain View"
+               style="push">
+         </command>
+         <command
+               commandId="org.caleydo.rcp.command.sendviews.publish"
+               label="Publish View"
                style="push">
          </command>
       </menuContribution>

@@ -94,7 +94,6 @@ public class CaleydoProjectWizard
 				StandardGroupwareManager groupwareManager = new StandardGroupwareManager();
 				groupwareManager.setNetworkName(page.getNetworkName());
 				groupwareManager.setServerAddress(page.getNetworkAddress());
-				GeneralManager.get().setGroupwareManager(groupwareManager);
 				groupwareManager.startClient();
 				Application.initData = groupwareManager.getInitData();
 				useCase = Application.initData.getUseCase();

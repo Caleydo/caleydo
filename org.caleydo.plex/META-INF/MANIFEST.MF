@@ -1,10 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Plex
-Bundle-SymbolicName: org.caleydo.plex
+Bundle-SymbolicName: org.caleydo.plex;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-ClassPath: plex.jar,
- lib/Ice.jar
+ lib/linux/dkt.jar;osname=linux,
+ lib/linux/Ice.jar;osname=linux,
+ lib/windows/dkt.jar;osname=win32,
+ lib/windows/Ice.jar;osname=win32
 Export-Package: Freeze,
  Glacier2,
  Ice,
@@ -16,5 +19,14 @@ Export-Package: Freeze,
  IceUtil,
  IceUtilInternal,
  org.caleydo.plex
-Import-Package: org.caleydo.core.net,
- org.caleydo.core.serialize
+Import-Package: org.caleydo.core.manager,
+ org.caleydo.core.manager.event,
+ org.caleydo.core.manager.event.view,
+ org.caleydo.core.manager.general,
+ org.caleydo.core.net,
+ org.caleydo.core.serialize,
+ org.caleydo.core.view,
+ org.eclipse.core.commands,
+ org.eclipse.ui
+Bundle-Vendor: Graz University of Technology
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

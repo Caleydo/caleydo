@@ -195,6 +195,36 @@ public class CollabViewRep
 				label.setText("unknown network status");
 		}
 
+		button = new Button(testControls, SWT.CENTER);
+		button.setText("start deskotheque server");
+		StartDeskothequeServerListener startDeskothequeServerListener = new StartDeskothequeServerListener();
+		button.addListener(SWT.Selection, startDeskothequeServerListener);
+		status = ENetworkStatus.STATUS_STOPPED;
+		if (networkManager != null) {
+			status = networkManager.getStatus();
+		}
+		switch (status) {
+			case STATUS_STOPPED:
+			case STATUS_STARTED:
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("Use this caledyo application as a deskotheque server");
+				break;
+			case STATUS_SERVER:
+				button.setEnabled(false);
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("Server started");
+				break;
+			case STATUS_CLIENT:
+				button.setEnabled(false);
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("Already connected as a client");
+				break;
+			default:
+				button.setEnabled(false);
+				label = new Label(testControls, SWT.LEFT);
+				label.setText("unknown network status");
+		}
+
 		button = new Button(testControls, SWT.NULL);
 		button.setText("enable busy");
 		EnableBusyListener enableListener = new EnableBusyListener();
