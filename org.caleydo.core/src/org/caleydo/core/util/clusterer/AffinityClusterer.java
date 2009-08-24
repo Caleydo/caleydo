@@ -86,10 +86,14 @@ public class AffinityClusterer
 
 		IDistanceMeasure distanceMeasure;
 
-		if (clusterState.getDistanceMeasure() == EDistanceMeasure.EUCLIDEAN_DISTANCE)
-			distanceMeasure = new EuclideanDistance();
-		else
+		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAHN_DISTANCE)
+			distanceMeasure = new ManhattanDistance();
+		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.CHEBYSHEV_DISTANCE)
+			distanceMeasure = new ChebyshevDistance();
+		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.PEARSON_CORRELATION)
 			distanceMeasure = new PearsonCorrelation();
+		else
+			distanceMeasure = new EuclideanDistance();
 
 		int iPercentage = 1;
 

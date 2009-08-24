@@ -5,6 +5,7 @@ import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
 import org.caleydo.core.util.clusterer.EDistanceMeasure;
+import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
 import org.eclipse.jface.action.Action;
@@ -45,16 +46,17 @@ public class StartClusteringAction
 
 	private String clusterType;
 	private String distmeasure;
+	private String treeClusterAlgo;
 	private int iClusterCntGenes = 5;
 	private int iClusterCntExperiments = 5;
 	private float fclusterFactorGenes = 1f;
 	private float fclusterFactorExperiments = 1f;
-	private boolean bUseMaximumLinkage = true;
 
 	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Bi-Clustering" };
-	private String[] sArDistOptions = { "Euclid distance", "Pearson correlation" };
-	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };
-	private String[] sArTreeClusterer = { "Maximum Linkage", "Average Linkage" };
+	private String[] sArDistOptions =
+		{ "Euclid distance", "Manhattan distanece", "Chebyshev distance", "Pearson correlation" };
+	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };// ,"Chebyshev distance"};
+	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage", "Single Linkage" };
 
 	private ClusterState clusterState = new ClusterState();
 
@@ -323,7 +325,7 @@ public class StartClusteringAction
 
 		Composite clusterComposite = new Composite(composite, SWT.NONE);
 		clusterComposite.setLayout(new RowLayout());
-		
+
 		final Combo clusterTypeCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.select(0);
@@ -334,18 +336,15 @@ public class StartClusteringAction
 				clusterType = clusterTypeCombo.getText();
 			}
 		});
-		
+
 		final Combo treeClustererCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
 		treeClustererCombo.setItems(sArTreeClusterer);
 		treeClustererCombo.select(0);
-		bUseMaximumLinkage = true;
+		treeClusterAlgo = sArTreeClusterer[0];
 		treeClustererCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if(treeClustererCombo.getText() == sArTreeClusterer[0])
-					bUseMaximumLinkage = true;
-				else
-					bUseMaximumLinkage = false;
+				treeClusterAlgo = treeClustererCombo.getText();
 			}
 		});
 
@@ -436,15 +435,27 @@ public class StartClusteringAction
 		if (distmeasure.equals(sArDistOptions[0]))
 			clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		else if (distmeasure.equals(sArDistOptions[1]))
-			clusterState.setDistanceMeasure(EDistanceMeasure.PEARSON_CORRELATION);
-		else if (distmeasure.equals(sArDistOptionsWeka[1]))
 			clusterState.setDistanceMeasure(EDistanceMeasure.MANHATTAHN_DISTANCE);
+		else if (distmeasure.equals(sArDistOptions[2]))
+			clusterState.setDistanceMeasure(EDistanceMeasure.CHEBYSHEV_DISTANCE);
+		else if (distmeasure.equals(sArDistOptions[3]))
+			clusterState.setDistanceMeasure(EDistanceMeasure.PEARSON_CORRELATION);
+		// else if (distmeasure.equals(sArDistOptionsWeka[1]))
+		// clusterState.setDistanceMeasure(EDistanceMeasure.MANHATTAHN_DISTANCE);
+		// else if (distmeasure.equals(sArDistOptionsWeka[2]))
+		// clusterState.setDistanceMeasure(EDistanceMeasure.CHEBYSHEV_DISTANCE_WEKA);
+
+		if (treeClusterAlgo.equals(sArTreeClusterer[0]))
+			clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
+		else if (treeClusterAlgo.equals(sArTreeClusterer[1]))
+			clusterState.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
+		else if (treeClusterAlgo.equals(sArTreeClusterer[2]))
+			clusterState.setTreeClustererAlgo(ETreeClustererAlgo.SINGLE_LINKAGE);
 
 		clusterState.setAffinityPropClusterFactorGenes(fclusterFactorGenes);
 		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
 		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
 		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
-		clusterState.setUseMaximumLinkage(bUseMaximumLinkage);
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

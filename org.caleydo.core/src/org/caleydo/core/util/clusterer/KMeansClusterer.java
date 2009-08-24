@@ -49,22 +49,25 @@ public class KMeansClusterer
 		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 
-		DistanceFunction distFunc = null;
-		if (clusterState.getDistanceMeasure() == EDistanceMeasure.EUCLIDEAN_DISTANCE)
-			distFunc = new EuclideanDistance();
-		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAHN_DISTANCE)
-			distFunc = new ManhattanDistance();
+		DistanceFunction distanceMeasure;
+
+		// SimpleKMeans only supports Eudlidean and Manhattan at that time
+		// if (clusterState.getDistanceMeasure() == EDistanceMeasure.CHEBYSHEV_DISTANCE)
+		// distanceMeasure = new ChebyshevDistance();
+		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAHN_DISTANCE)
+			distanceMeasure = new ManhattanDistance();
+		else
+			distanceMeasure = new EuclideanDistance();
 
 		try {
 			clusterer.setNumClusters(iNrCluster);
 			clusterer.setMaxIterations(1000);
-			if (distFunc != null)
-				clusterer.setDistanceFunction(distFunc);
+			if (distanceMeasure != null)
+				clusterer.setDistanceFunction(distanceMeasure);
 		}
 		catch (Exception e2) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
-			// e2.printStackTrace();
 		}
 
 		StringBuffer buffer = new StringBuffer();
@@ -185,7 +188,6 @@ public class KMeansClusterer
 		catch (IOException e1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
-			// e1.printStackTrace();
 		}
 
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(10, false));
@@ -197,7 +199,6 @@ public class KMeansClusterer
 		catch (Exception e) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
-			// e.printStackTrace();
 		}
 
 		processEvents();
@@ -215,7 +216,6 @@ public class KMeansClusterer
 		catch (Exception e) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
-			// e.printStackTrace();
 		}
 		processEvents();
 		if (bClusteringCanceled) {
@@ -274,12 +274,6 @@ public class KMeansClusterer
 				}
 			}
 		}
-
-		// Integer clusteredVAId = 0;
-		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// clusteredVAId = set.createContentVA(EVAType.CONTENT, indexes);
-		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// clusteredVAId = set.createStorageVA(EVAType.STORAGE, indexes);
 
 		IVirtualArray virtualArray = null;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)

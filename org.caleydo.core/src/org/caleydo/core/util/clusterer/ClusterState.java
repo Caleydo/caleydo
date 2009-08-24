@@ -14,14 +14,11 @@ public class ClusterState {
 	private EClustererAlgo clustererAlgo;
 	private EClustererType clustererType;
 	private EDistanceMeasure distanceMeasure;
+	private ETreeClustererAlgo treeClustererAlgo;
 	private int kMeansClusterCntGenes;
 	private int kMeansClusterCntExperiments;
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
-	/**
-	 * if true maximum linkage will be used, if false average linkage
-	 */
-	private boolean bUseMaximumLinkage;
 
 	private int contentVaId = 0;
 	private int storageVaId = 0;
@@ -108,12 +105,12 @@ public class ClusterState {
 		return storageVaId;
 	}
 
-	public void setUseMaximumLinkage(boolean bUseMaximumLinkage) {
-		this.bUseMaximumLinkage = bUseMaximumLinkage;
+	public void setTreeClustererAlgo(ETreeClustererAlgo treeClustererAlgo) {
+		this.treeClustererAlgo = treeClustererAlgo;
 	}
 
-	public boolean isUseMaximumLinkage() {
-		return bUseMaximumLinkage;
+	public ETreeClustererAlgo getTreeClustererAlgo() {
+		return treeClustererAlgo;
 	}
 
 }

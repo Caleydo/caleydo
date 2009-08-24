@@ -87,10 +87,15 @@ public class TreeClusterer
 		IVirtualArray storageVA = set.getVA(iVAIdStorage);
 
 		IDistanceMeasure distanceMeasure;
-		if (eDistanceMeasure == EDistanceMeasure.EUCLIDEAN_DISTANCE)
-			distanceMeasure = new EuclideanDistance();
-		else
+
+		if (eDistanceMeasure == EDistanceMeasure.MANHATTAHN_DISTANCE)
+			distanceMeasure = new ManhattanDistance();
+		else if (eDistanceMeasure == EDistanceMeasure.CHEBYSHEV_DISTANCE)
+			distanceMeasure = new ChebyshevDistance();
+		else if (eDistanceMeasure == EDistanceMeasure.PEARSON_CORRELATION)
 			distanceMeasure = new PearsonCorrelation();
+		else
+			distanceMeasure = new EuclideanDistance();
 
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int iPercentage = 1;
@@ -267,6 +272,104 @@ public class TreeClusterer
 			}
 		}
 		return pair;
+	}
+
+	/**
+	 * The palcluster routine performs clustering using single linking on the given distance matrix.
+	 * 
+	 * @param eClustererType
+	 * @return virtual array with ordered indexes
+	 */
+	private IVirtualArray pslcluster(EClustererType eClustererType) {
+
+		int nnodes = iNrSamples - 1;
+		int[] vector = new int[nnodes];
+		float[] temp = new float[nnodes];
+		int[] index = new int[iNrSamples];
+		Node[] result = null;
+
+		float[][] distmatrix;
+
+		try {
+			result = new Node[iNrSamples];
+			distmatrix = new float[iNrSamples][iNrSamples];
+		}
+		catch (OutOfMemoryError e) {
+			return null;
+		}
+
+		distmatrix = similarities.clone();
+
+		for (int i = 0; i < iNrSamples; i++) {
+			result[i] = new Node();
+			result[i].setCorrelation(Float.MAX_VALUE);
+			for (int j = 0; j < i; j++)
+				temp[j] = distmatrix[i][j];
+			for (int j = 0; j < i; j++) {
+				int k = vector[j];
+				if (result[j].getCorrelation() >= temp[j]) {
+					if (result[j].getCorrelation() < temp[k])
+						temp[k] = result[j].getCorrelation();
+					result[j].setCorrelation(temp[j]);
+					vector[j] = i;
+				}
+				else if (temp[j] < temp[k])
+					temp[k] = temp[j];
+			}
+			for (int j = 0; j < i; j++) {
+				if (result[j].getCorrelation() >= result[vector[j]].getCorrelation())
+					vector[j] = i;
+			}
+		}
+
+		for (int i = 0; i < nnodes; i++)
+			result[i].setLeft(i);
+
+		for (int i = 0; i < iNrSamples; i++)
+			index[i] = i;
+
+		for (int i = 0; i < nnodes; i++) {
+			int j = result[i].getLeft();
+			int k = vector[j];
+			result[i].setLeft(index[j]);
+			result[i].setRight(index[k]);
+			index[k] = -i - 1;
+		}
+
+		Node[] result2 = new Node[nnodes];
+		for (int i = 0; i < nnodes; i++)
+			result2[i] = result[i];
+
+		// set cluster result in Set
+		tree = new Tree<ClusterNode>();
+
+		ClusterNode node = new ClusterNode("Root", getNodeCounter(), 0f, 0, true);
+		tree.setRootNode(node);
+		treeStructureToTree(node, result2, result2.length - 1, eClustererType);
+
+		ClusterHelper.determineNrElements(tree);
+		ClusterHelper.determineHierarchyDepth(tree);
+
+		determineExpressionValue(eClustererType);
+
+		ArrayList<Integer> alIndices = new ArrayList<Integer>();
+		alIndices = ClusterHelper.getAl(tree);
+
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			set.setClusteredTreeGenes(tree);
+		else
+			set.setClusteredTreeExps(tree);
+
+		IVirtualArray virtualArray = null;
+		if (eClustererType == EClustererType.GENE_CLUSTERING)
+			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndices);
+		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
+			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndices);
+
+		GeneralManager.get().getEventPublisher().triggerEvent(
+			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
+
+		return virtualArray;
 	}
 
 	/**
@@ -819,10 +922,12 @@ public class TreeClusterer
 
 		this.set = set;
 
-		if (clusterState.isUseMaximumLinkage())
+		if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.COMPLETE_LINKAGE)
 			virtualArray = pmlcluster(clusterState.getClustererType());
-		else
+		else if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.AVERAGE_LINKAGE)
 			virtualArray = palcluster(clusterState.getClustererType());
+		else
+			virtualArray = pslcluster(clusterState.getClustererType());
 
 		return virtualArray;
 	}
