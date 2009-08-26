@@ -292,18 +292,18 @@ public class Set
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
 
-		GeneralManager.get().getLogger().log(
-			new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-				"This method is untested - test when first used"));
+//		GeneralManager.get().getLogger().log(
+//			new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+//				"This method is untested - test when first used"));
 
 		double result;
-		if (dRaw < getMin() || dRaw > getMax())
-			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
+//		if (dRaw < getMin() || dRaw > getMax())
+//			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
 
 		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
 			result = dRaw;
 		}
-		if (externalDataRep == EExternalDataRepresentation.LOG2) {
+		else if (externalDataRep == EExternalDataRepresentation.LOG2) {
 			result = Math.log(dRaw) / Math.log(2);
 		}
 		else if (externalDataRep == EExternalDataRepresentation.LOG10) {

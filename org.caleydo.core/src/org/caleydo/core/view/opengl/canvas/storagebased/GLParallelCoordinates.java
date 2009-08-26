@@ -6,9 +6,6 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderSt
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_TIP_HEIGHT;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_WIDTH;
-import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.GATE_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.LABEL_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.NAN_Y_OFFSET;
@@ -82,7 +79,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -143,7 +139,8 @@ public class GLParallelCoordinates
 	 * Hashes a gate id, which is made up of an axis id + the last three digits a gate counter (per axis) to a
 	 * pair of values which make up the upper and lower gate tip
 	 */
-	private HashMap<Integer, Pair<Float, Float>> hashGates;
+	// private HashMap<Integer, Pair<Float, Float>> hashGates;
+	private HashMap<Integer, Gate> hashGates;
 	private HashMap<Integer, ArrayList<Integer>> hashIsGateBlocking;
 	/**
 	 * Hashes how many gates are used on a axis
@@ -153,7 +150,7 @@ public class GLParallelCoordinates
 	/**
 	 * HashMap for the gates that are used to remove selections across all axes, when the set is homogeneous
 	 */
-	private HashMap<Integer, Pair<Float, Float>> hashMasterGates;
+	private HashMap<Integer, Gate> hashMasterGates;
 	private int iNumberOfMasterGates;
 
 	/**
@@ -190,9 +187,6 @@ public class GLParallelCoordinates
 	private float fAxisDraggingOffset;
 
 	private int iMovedAxisPosition = -1;
-
-	private float fGateTopSpacing;
-	private float fGateBottomSpacing;
 
 	private Vec3f vecAngularBrushingPoint;
 
@@ -656,11 +650,11 @@ public class GLParallelCoordinates
 	 * the gate
 	 */
 	private void initGates() {
-		hashGates = new HashMap<Integer, Pair<Float, Float>>();
+		hashGates = new HashMap<Integer, Gate>();
 		hashNumberOfGatesPerAxisID = new HashMap<Integer, Integer>();
 		hashIsGateBlocking = new HashMap<Integer, ArrayList<Integer>>();
 		if (set.isSetHomogeneous()) {
-			hashMasterGates = new HashMap<Integer, Pair<Float, Float>>();
+			hashMasterGates = new HashMap<Integer, Gate>();
 			iNumberOfMasterGates = 0;
 		}
 		hashExcludeNAN = new HashMap<Integer, Boolean>();
@@ -999,7 +993,7 @@ public class GLParallelCoordinates
 				Vec3f upperLeftCorner =
 					new Vec3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
 						ParCoordsRenderStyle.NAN_Z);
-				Vec3f scalingCenter =
+				Vec3f scalingPivot =
 					new Vec3f(fXButtonOrigin, ParCoordsRenderStyle.NAN_Y_OFFSET, ParCoordsRenderStyle.NAN_Z);
 
 				int iPickingID =
@@ -1007,39 +1001,9 @@ public class GLParallelCoordinates
 				gl.glPushName(iPickingID);
 
 				textureManager.renderGUITexture(gl, EIconTextures.NAN, lowerLeftCorner, lowerRightCorner,
-					upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 100);
-
-				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAN);
-				//
-				// tempTexture.enable();
-				// tempTexture.bind();
-				//
-				TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-				// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				// gl.glColor4f(1, 1, 1, 1f);
-				//				
-				//
-				// gl.glBegin(GL.GL_POLYGON);
-				// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				// gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-				// ParCoordsRenderStyle.NAN_Z);
-				// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				// gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET - 0.03f,
-				// ParCoordsRenderStyle.NAN_Z);
-				// gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				// gl.glVertex3f(fXButtonOrigin + 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-				// ParCoordsRenderStyle.NAN_Z);
-				// gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				// gl.glVertex3f(fXButtonOrigin - 0.03f, ParCoordsRenderStyle.NAN_Y_OFFSET + 0.03f,
-				// ParCoordsRenderStyle.NAN_Z);
-				// gl.glEnd();
+					upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
 
 				gl.glPopName();
-
-				// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
-				// gl.glPopAttrib();
-				// tempTexture.disable();
 
 				// markers on axis
 				float fMarkerSpacing = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
@@ -1159,38 +1123,15 @@ public class GLParallelCoordinates
 				lowerRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
 				upperRightCorner.set(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
 				upperLeftCorner.set(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-				scalingCenter.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
+				scalingPivot.set(fXButtonOrigin, fYGateAddOrigin, AXIS_Z);
 
 				gl.glPushName(iPickingID);
 
 				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner,
-					lowerRightCorner, upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 100);
-				// tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
-				//
-				// tempTexture.enable();
-				// tempTexture.bind();
-				// texCoords = tempTexture.getImageTexCoords();
-				//
-				// // gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				// gl.glColor4f(1, 1, 1, 1f);
-				//				
-				//
-				// gl.glBegin(GL.GL_POLYGON);
-				// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				// gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin, AXIS_Z);
-				// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				// gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin, AXIS_Z);
-				// gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				// gl.glVertex3f(fXButtonOrigin + 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-				// gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				// gl.glVertex3f(fXButtonOrigin - 0.03f, fYGateAddOrigin + 0.12f, AXIS_Z);
-				// gl.glEnd();
-
+					lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
+				
 				gl.glPopName();
 
-				// gl.glBlendFunc(GL.GL_ONE, GL.GL_D);
-				// gl.glPopAttrib();
-				// tempTexture.disable();
 
 				if (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount))) {
 
@@ -1198,45 +1139,24 @@ public class GLParallelCoordinates
 					lowerRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
 					upperRightCorner.set(fXButtonOrigin + 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
 					upperLeftCorner.set(fXButtonOrigin - 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-					scalingCenter.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
+					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z + 0.005f);
 
 					// the mouse over drop
 					if (iChangeDropOnAxisNumber == iCount) {
 						// tempTexture = textureManager.getIconTexture(gl, dropTexture);
 						textureManager.renderGUITexture(gl, dropTexture, lowerLeftCorner, lowerRightCorner,
-							upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 80);
+							upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 
 						if (!bWasAxisMoved) {
 							dropTexture = EIconTextures.DROP_NORMAL;
 						}
 					}
 					else {
-						textureManager.renderGUITexture(gl, EIconTextures.DROP_NORMAL, lowerLeftCorner,
-							lowerRightCorner, upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1,
-							80);
-						// tempTexture = textureManager.getIconTexture(gl, EIconTextures.DROP_NORMAL);
+						textureManager
+							.renderGUITexture(gl, EIconTextures.DROP_NORMAL, lowerLeftCorner,
+								lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1,
+								1, 80);
 					}
-					// tempTexture.enable();
-					// tempTexture.bind();
-					//
-					// texCoords = tempTexture.getImageTexCoords();
-					//
-					// // gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-					// gl.glColor4f(1, 1, 1, 1);
-
-					// gl.glBegin(GL.GL_POLYGON);
-					// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-					// gl.glVertex3f(fXButtonOrigin - 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-					// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-					// gl.glVertex3f(fXButtonOrigin + 0.15f, fYDropOrigin - 0.3f, AXIS_Z + 0.005f);
-					// gl.glTexCoord2f(texCoords.right(), texCoords.top());
-					// gl.glVertex3f(fXButtonOrigin + 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-					// gl.glTexCoord2f(texCoords.left(), texCoords.top());
-					// gl.glVertex3f(fXButtonOrigin - 0.15f, fYDropOrigin, AXIS_Z + 0.005f);
-					// gl.glEnd();
-
-					// gl.glPopAttrib();
-					// tempTexture.disable();
 
 					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.MOVE_AXIS, iCount);
 					gl.glColor4f(0, 0, 0, 0f);
@@ -1271,39 +1191,22 @@ public class GLParallelCoordinates
 				}
 				else {
 					iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.MOVE_AXIS, iCount);
-//					tempTexture = textureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
-//					tempTexture.enable();
-//					tempTexture.bind();
-//
-//					texCoords = tempTexture.getImageTexCoords();
 
 					gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-//					gl.glColor4f(1, 1, 1, 1);
 					gl.glPushName(iPickingID);
 
 					lowerLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
 					lowerRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
 					upperRightCorner.set(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
 					upperLeftCorner.set(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
-					scalingCenter.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
+					scalingPivot.set(fXButtonOrigin, fYDropOrigin, AXIS_Z);
 
 					textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner,
-						lowerRightCorner, upperRightCorner, upperLeftCorner, scalingCenter, 1, 1, 1, 1, 80);
+						lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 
-//					gl.glBegin(GL.GL_POLYGON);
-//					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-//					gl.glVertex3f(fXButtonOrigin - 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
-//					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-//					gl.glVertex3f(fXButtonOrigin + 0.05f, fYDropOrigin - 0.2f, AXIS_Z);
-//					gl.glTexCoord2f(texCoords.right(), texCoords.top());
-//					gl.glVertex3f(fXButtonOrigin + 0.05f, fYDropOrigin, AXIS_Z);
-//					gl.glTexCoord2f(texCoords.left(), texCoords.top());
-//					gl.glVertex3f(fXButtonOrigin - 0.05f, fYDropOrigin, AXIS_Z);
-//					gl.glEnd();
 
 					gl.glPopName();
 					gl.glPopAttrib();
-//					tempTexture.disable();
 
 				}
 				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -1359,170 +1262,173 @@ public class GLParallelCoordinates
 		for (Integer iGateID : hashGates.keySet()) {
 			// Gate ID / 1000 is axis ID
 			int iAxisID = iGateID / 1000;
-			Pair<Float, Float> gate = hashGates.get(iGateID);
+			Gate gate = hashGates.get(iGateID);
+			// Pair<Float, Float> gate = hashGates.get(iGateID);
 			// TODO for all indices
 
 			ArrayList<Integer> iAlAxisIndex = axisVA.indicesOf(iAxisID);
 			for (int iAxisIndex : iAlAxisIndex) {
 				float fCurrentPosition = alAxisSpacing.get(iAxisIndex);
-				renderSingleGate(gl, gate, iAxisID, iGateID, fCurrentPosition);
+				gate.setCurrentPosition(fCurrentPosition);
+				gate.draw(gl, pickingManager, textureManager, textRenderer, iUniqueID);
+				// renderSingleGate(gl, gate, iAxisID, iGateID, fCurrentPosition);
 			}
 		}
 
 	}
 
-	private void renderSingleGate(GL gl, Pair<Float, Float> gate, int iAxisID, int iGateID,
-		float fCurrentPosition) {
-
-		Float fBottom = gate.getFirst();
-		Float fTop = gate.getSecond();
-
-		gl.glColor4f(1, 1, 1, 0f);
-		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_GATE, iGateID);
-		gl.glPushName(iPickingID);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop, GATE_Z);
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop, GATE_Z);
-		gl.glEnd();
-		gl.glPopName();
-
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_TOP);
-		tempTexture.enable();
-		tempTexture.bind();
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-		gl.glColor4f(1, 1, 1, 1);
-		// The tip of the gate
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_TIP_SELECTION, iGateID));
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop, GATE_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop, GATE_Z);
-		gl.glEnd();
-		tempTexture.disable();
-
-		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
-		tempTexture.enable();
-		tempTexture.bind();
-		texCoords = tempTexture.getImageTexCoords();
-		float fMenuHeight = 8 * GATE_WIDTH / 3.5f;
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fTop, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop + fMenuHeight, GATE_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fTop + fMenuHeight, GATE_Z);
-		gl.glEnd();
-
-		textRenderer.setColor(1, 1, 1, 1);
-		float fValue = (float) set.getRawForNormalized(fTop / renderStyle.getAxisHeight());
-		renderNumber(gl, getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fTop + 0.02f);
-
-		tempTexture.disable();
-		gl.glPopAttrib();
-		gl.glPopName();
-
-		// if (set.isSetHomogeneous())
-		// {
-		// // renderBoxedYValues(gl, fCurrentPosition, fTop,
-		// // getDecimalFormat().format(
-		// // set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
-		// // ESelectionType.NORMAL);
-		// }
-		// else
-		// {
-		// // TODO storage based acces
-		// }
-
-		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
-		tempTexture.enable();
-		tempTexture.bind();
-		texCoords = tempTexture.getImageTexCoords();
-		gl.glColor4f(1, 1, 1, 1);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BODY_SELECTION, iGateID));
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
-			GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
-			GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
-		gl.glEnd();
-		gl.glPopName();
-		tempTexture.disable();
-
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BOTTOM_SELECTION, iGateID));
-		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
-		tempTexture.enable();
-		tempTexture.bind();
-		texCoords = tempTexture.getImageTexCoords();
-		gl.glColor4f(1, 1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
-			GATE_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
-			GATE_Z);
-		gl.glEnd();
-
-		tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
-		tempTexture.enable();
-		tempTexture.bind();
-		texCoords = tempTexture.getImageTexCoords();
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fBottom, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom, GATE_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom - fMenuHeight, GATE_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fBottom - fMenuHeight, GATE_Z);
-		gl.glEnd();
-
-		textRenderer.setColor(1, 1, 1, 1);
-		fValue = (float) set.getRawForNormalized(fBottom / renderStyle.getAxisHeight());
-		renderNumber(gl, getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fBottom
-			- fMenuHeight + 0.02f);
-
-		tempTexture.disable();
-
-		gl.glPopName();
-
-		// if (set.isSetHomogeneous())
-		// {
-		// // float fValue = (float) set.getRawForNormalized(fBottom
-		// // / renderStyle.getAxisHeight());
-		// // if (fValue > set.getMin())
-		// // renderBoxedYValues(gl, fCurrentPosition, fBottom,
-		// // getDecimalFormat()
-		// // .format(fValue), ESelectionType.NORMAL);
-		// }
-		// else
-		// {
-		// // TODO storage based access
-		// }
-	}
+	// private void renderSingleGate(GL gl, Pair<Float, Float> gate, int iAxisID, int iGateID,
+	// float fCurrentPosition) {
+	//
+	// Float fBottom = gate.getFirst();
+	// Float fTop = gate.getSecond();
+	//
+	// gl.glColor4f(1, 1, 1, 0f);
+	// int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_GATE, iGateID);
+	// gl.glPushName(iPickingID);
+	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+	// gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+	// gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop, GATE_Z);
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop, GATE_Z);
+	// gl.glEnd();
+	// gl.glPopName();
+	//
+	// Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_TOP);
+	// tempTexture.enable();
+	// tempTexture.bind();
+	// TextureCoords texCoords = tempTexture.getImageTexCoords();
+	// gl.glColor4f(1, 1, 1, 1);
+	// // The tip of the gate
+	// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_TIP_SELECTION, iGateID));
+	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition + 0.1828f - GATE_WIDTH, fTop, GATE_Z);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop, GATE_Z);
+	// gl.glEnd();
+	// tempTexture.disable();
+	//
+	// tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
+	// tempTexture.enable();
+	// tempTexture.bind();
+	// texCoords = tempTexture.getImageTexCoords();
+	// float fMenuHeight = 8 * GATE_WIDTH / 3.5f;
+	// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fTop, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop + fMenuHeight, GATE_Z);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fTop + fMenuHeight, GATE_Z);
+	// gl.glEnd();
+	//
+	// textRenderer.setColor(1, 1, 1, 1);
+	// float fValue = (float) set.getRawForNormalized(fTop / renderStyle.getAxisHeight());
+	// renderNumber(gl, getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fTop + 0.02f);
+	//
+	// tempTexture.disable();
+	// gl.glPopAttrib();
+	// gl.glPopName();
+	//
+	// // if (set.isSetHomogeneous())
+	// // {
+	// // // renderBoxedYValues(gl, fCurrentPosition, fTop,
+	// // // getDecimalFormat().format(
+	// // // set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
+	// // // ESelectionType.NORMAL);
+	// // }
+	// // else
+	// // {
+	// // // TODO storage based acces
+	// // }
+	//
+	// tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BODY);
+	// tempTexture.enable();
+	// tempTexture.bind();
+	// texCoords = tempTexture.getImageTexCoords();
+	// gl.glColor4f(1, 1, 1, 1);
+	// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BODY_SELECTION, iGateID));
+	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+	// GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+	// GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fTop - GATE_TIP_HEIGHT, GATE_Z);
+	// gl.glEnd();
+	// gl.glPopName();
+	// tempTexture.disable();
+	//
+	// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.GATE_BOTTOM_SELECTION, iGateID));
+	// tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_BOTTOM);
+	// tempTexture.enable();
+	// tempTexture.bind();
+	// texCoords = tempTexture.getImageTexCoords();
+	// gl.glColor4f(1, 1, 1, 1);
+	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+	// GATE_Z);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition - GATE_WIDTH, fBottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+	// GATE_Z);
+	// gl.glEnd();
+	//
+	// tempTexture = textureManager.getIconTexture(gl, EIconTextures.GATE_MENUE);
+	// tempTexture.enable();
+	// tempTexture.bind();
+	// texCoords = tempTexture.getImageTexCoords();
+	// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fBottom, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.top());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom, GATE_Z);
+	// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition + GATE_WIDTH, fBottom - fMenuHeight, GATE_Z);
+	// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+	// gl.glVertex3f(fCurrentPosition - 7 * GATE_WIDTH, fBottom - fMenuHeight, GATE_Z);
+	// gl.glEnd();
+	//
+	// textRenderer.setColor(1, 1, 1, 1);
+	// fValue = (float) set.getRawForNormalized(fBottom / renderStyle.getAxisHeight());
+	// renderNumber(gl, getDecimalFormat().format(fValue), fCurrentPosition - 5 * GATE_WIDTH, fBottom
+	// - fMenuHeight + 0.02f);
+	//
+	// tempTexture.disable();
+	//
+	// gl.glPopName();
+	//
+	// // if (set.isSetHomogeneous())
+	// // {
+	// // // float fValue = (float) set.getRawForNormalized(fBottom
+	// // // / renderStyle.getAxisHeight());
+	// // // if (fValue > set.getMin())
+	// // // renderBoxedYValues(gl, fCurrentPosition, fBottom,
+	// // // getDecimalFormat()
+	// // // .format(fValue), ESelectionType.NORMAL);
+	// // }
+	// // else
+	// // {
+	// // // TODO storage based access
+	// // }
+	// }
 
 	private void renderGlobalBrush(GL gl) {
 		if (detailLevel != EDetailLevel.HIGH)
@@ -1576,9 +1482,9 @@ public class GLParallelCoordinates
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		for (Integer iGateID : hashMasterGates.keySet()) {
-			Pair<Float, Float> gate = hashMasterGates.get(iGateID);
-			Float fBottom = gate.getFirst();
-			Float fTop = gate.getSecond();
+			Gate gate = hashMasterGates.get(iGateID);
+			Float fBottom = gate.getCurrentBottom();
+			Float fTop = gate.getCurrentTop();
 
 			gl.glColor4fv(ParCoordsRenderStyle.GATE_BODY_COLOR, 0);
 			gl.glBegin(GL.GL_POLYGON);
@@ -1588,7 +1494,9 @@ public class GLParallelCoordinates
 			gl.glVertex3f(fXOrigin - 0.05f, fTop, 0);
 			gl.glEnd();
 
-			renderSingleGate(gl, gate, -1, iGateID, fXOrigin);
+			gate.setCurrentPosition(fXOrigin);
+			gate.draw(gl, pickingManager, textureManager, textRenderer, iUniqueID);
+			// renderSingleGate(gl, gate, -1, iGateID, fXOrigin);
 		}
 
 		// gl.glPopName();
@@ -1668,10 +1576,8 @@ public class GLParallelCoordinates
 		float[] fArTargetWorldCoordinates =
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		float height = fArTargetWorldCoordinates[1];
-
 		// todo only valid for one gate
-		Pair<Float, Float> gate;
+		Gate gate = null;
 		if (iDraggedGateNumber > 999) {
 			gate = hashGates.get(iDraggedGateNumber);
 		}
@@ -1681,44 +1587,10 @@ public class GLParallelCoordinates
 		if (gate == null)
 			return;
 
-		float fTop = gate.getSecond();
-		float fBottom = gate.getFirst();
+		gate.handleDragging(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], draggedObject,
+			bIsGateDraggingFirstTime);
+		bIsGateDraggingFirstTime = false;
 
-		if (bIsGateDraggingFirstTime) {
-			fGateTopSpacing = fTop - height;
-			fGateBottomSpacing = height - fBottom;
-			bIsGateDraggingFirstTime = false;
-		}
-		float fTipUpperLimit = renderStyle.getAxisHeight();
-		float fTipLowerLimit = fBottom + GATE_TIP_HEIGHT;
-		float fBottomLowerLimit = 0;
-		// - renderStyle.getGateTipHeight();
-		float fBottomUpperLimit = fTop - GATE_TIP_HEIGHT;
-
-		if (draggedObject == EPickingType.GATE_TIP_SELECTION) {
-			gate.setSecond(height);
-		}
-		else if (draggedObject == EPickingType.GATE_BOTTOM_SELECTION) {
-			gate.setFirst(height);
-		}
-		else if (draggedObject == EPickingType.GATE_BODY_SELECTION) {
-			gate.setSecond(height + fGateTopSpacing);
-			gate.setFirst(height - fGateBottomSpacing);
-
-		}
-
-		if (gate.getSecond() > fTipUpperLimit) {
-			gate.setSecond(fTipUpperLimit);
-		}
-		if (gate.getSecond() < fTipLowerLimit) {
-			gate.setSecond(fTipLowerLimit);
-		}
-		if (gate.getFirst() > fBottomUpperLimit) {
-			gate.setFirst(fBottomUpperLimit);
-		}
-		if (gate.getFirst() < fBottomLowerLimit) {
-			gate.setFirst(fBottomLowerLimit);
-		}
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
@@ -1749,24 +1621,28 @@ public class GLParallelCoordinates
 			if (alCurrentGateBlocks == null)
 				return;
 			alCurrentGateBlocks.clear();
-			Pair<Float, Float> gate = hashGates.get(iGateID);
+			Gate gate = hashGates.get(iGateID);
 
 			for (int iPolylineIndex : polylineVA) {
 				if (bRenderStorageHorizontally) {
-					fCurrentValue = set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisID);
+					fCurrentValue = set.get(iPolylineIndex).getFloat(EDataRepresentation.RAW, iAxisID);
 				}
 				else {
-					fCurrentValue = set.get(iAxisID).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+					fCurrentValue = set.get(iAxisID).getFloat(EDataRepresentation.RAW, iPolylineIndex);
 				}
 
 				if (Float.isNaN(fCurrentValue)) {
 					continue;
 				}
 
-				if (fCurrentValue <= (gate.getSecond() - 0.0000000001f) / renderStyle.getAxisHeight()
-					&& fCurrentValue >= gate.getFirst() / renderStyle.getAxisHeight()) {
+				if (fCurrentValue <= gate.getUpperValue() && fCurrentValue >= gate.getLowerValue()) {
 					alCurrentGateBlocks.add(iPolylineIndex);
 				}
+
+				// if (fCurrentValue <= (gate.getSecond() - 0.0000000001f) / renderStyle.getAxisHeight()
+				// && fCurrentValue >= gate.getFirst() / renderStyle.getAxisHeight()) {
+				// alCurrentGateBlocks.add(iPolylineIndex);
+				// }
 			}
 		}
 	}
@@ -1800,26 +1676,26 @@ public class GLParallelCoordinates
 			if (alCurrentGateBlocks == null)
 				return;
 			alCurrentGateBlocks.clear();
-			Pair<Float, Float> gate = hashMasterGates.get(iGateID);
-
+			Gate gate = hashMasterGates.get(iGateID);
 			for (int iPolylineIndex : polylineVA) {
 				boolean bIsBlocking = true;
 				for (int iAxisIndex : axisVA) {
 					if (bRenderStorageHorizontally) {
-						fCurrentValue =
-							set.get(iPolylineIndex).getFloat(EDataRepresentation.NORMALIZED, iAxisIndex);
+						fCurrentValue = set.get(iPolylineIndex).getFloat(EDataRepresentation.RAW, iAxisIndex);
 					}
 					else {
-						fCurrentValue =
-							set.get(iAxisIndex).getFloat(EDataRepresentation.NORMALIZED, iPolylineIndex);
+						fCurrentValue = set.get(iAxisIndex).getFloat(EDataRepresentation.RAW, iPolylineIndex);
 					}
 
 					if (Float.isNaN(fCurrentValue)) {
 						continue;
 					}
+					// if (fCurrentValue <= (gate.getSecond() - 0.0000000001f) / renderStyle.getAxisHeight()
+					// && fCurrentValue >= gate.getFirst() / renderStyle.getAxisHeight()) {
+					// bIsBlocking = true;
+					// }
 
-					if (fCurrentValue <= (gate.getSecond() - 0.0000000001f) / renderStyle.getAxisHeight()
-						&& fCurrentValue >= gate.getFirst() / renderStyle.getAxisHeight()) {
+					if (fCurrentValue <= gate.getUpperValue() && fCurrentValue >= gate.getLowerValue()) {
 						bIsBlocking = true;
 					}
 					else {
@@ -2210,7 +2086,12 @@ public class GLParallelCoordinates
 						}
 						hashNumberOfGatesPerAxisID.put(iExternalID, iGateCount);
 						int iGateID = iExternalID * 1000 + iGateCount;
-						hashGates.put(iGateID, new Pair<Float, Float>(0f, renderStyle.getAxisHeight() / 2f));
+						Gate gate =
+							new Gate(iGateID, (float) set.getRawForNormalized(0), (float) set
+								.getRawForNormalized(0.5f), set, renderStyle);
+						hashGates.put(iGateID, gate);
+						// hashGates.put(iGateID, new Pair<Float, Float>(0f, renderStyle.getAxisHeight() /
+						// 2f));
 
 						hashIsGateBlocking.put(iGateID, new ArrayList<Integer>());
 						handleUnselection();
@@ -2223,8 +2104,10 @@ public class GLParallelCoordinates
 			case ADD_MASTER_GATE:
 				switch (ePickingMode) {
 					case CLICKED:
-						hashMasterGates.put(++iNumberOfMasterGates, new Pair<Float, Float>(0f, renderStyle
-							.getAxisHeight() / 2f));
+						Gate gate =
+							new Gate(++iNumberOfMasterGates, (float) set.getRawForNormalized(0), (float) set
+								.getRawForNormalized(0.5f), set, renderStyle);
+						hashMasterGates.put(iNumberOfMasterGates, gate);
 						hashIsGateBlocking.put(iNumberOfMasterGates, new ArrayList<Integer>());
 						handleUnselection();
 						triggerSelectionUpdate();
