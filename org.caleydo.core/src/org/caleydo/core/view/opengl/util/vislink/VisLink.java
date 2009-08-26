@@ -255,30 +255,15 @@ public class VisLink {
 				invDirVec = invDirectionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i+1));
 			}
 			
-			dirVec = normalizeVector(dirVec);
-			invDirVec = normalizeVector(invDirVec);
+			dirVec.normalize();
+			invDirVec.normalize();
+			dirVec.scale(0.01f);
+			invDirVec.scale(0.01f);
 			
 			polygonPoints.add(curvePoints.get(i).addScaled(width, dirVec));
 			polygonPoints.add(curvePoints.get(i).addScaled(width, invDirVec));
 		}
 		return polygonPoints;
-	}
-	
-	
-	/**
-	 * 		Normalizes a vector to length 0.1
-	 * 	
-	 * @param vec vector to be normalized
-	 * @return normalized vector
-	 */
-	protected static Vec3f normalizeVector(Vec3f vec) {
-		Vec3f result = new Vec3f();
-		
-		result.setX((vec.x() / java.lang.Math.abs(vec.x())) * 0.01f);
-		result.setY((vec.y() / java.lang.Math.abs(vec.y())) * 0.01f);
-		result.setZ((vec.z() / java.lang.Math.abs(vec.z())) * 0.01f);
-		
-		return result; 
 	}
 	
 	
@@ -389,41 +374,6 @@ public class VisLink {
 		points.add(srcPoint);
 		points.add(destPoint);
 		polygonLine(gl, points, 0, 0, shadow);
-	}
-	
-	
-	protected static FloatBuffer generateTexture(float[] rgba)
-		throws IllegalArgumentException
-	{
-		
-		if(rgba.length < 4)
-			throw new IllegalArgumentException( "rgba must have 4 values" ); 
-		
-		float texels[][] = new float[8][4]; 
-		for(int i = 0; i < 8; i++) {
-			texels[i][0] = rgba[0];
-			texels[i][1] = rgba[1];
-			texels[i][2] = rgba[2];
-			texels[i][3] = rgba[3];
-		}
-		// alpha fading for a halo look 
-		texels[0][3] = 0.3f;
-		texels[1][3] = 0.6f;
-		texels[2][3] = 0.8f;
-		texels[5][3] = 0.8f;
-		texels[6][3] = 0.6f;
-		texels[7][3] = 0.3f;
-		
-		FloatBuffer texture = BufferUtil.newFloatBuffer(8*4);
-		for(int i = 0; i < 8; i++)
-			texture.put(texels[i]);
-		
-		//testing:
-		for(int i = 0; i < 8; i++)
-			System.out.println(texture.get(i) + " ");
-		System.out.println("----------------------");
-		
-		return texture;
 	}
 	
 }
