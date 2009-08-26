@@ -54,7 +54,7 @@ public class StartClusteringAction
 
 	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Bi-Clustering" };
 	private String[] sArDistOptions =
-		{ "Euclid distance", "Manhattan distanece", "Chebyshev distance", "Pearson correlation" };
+		{ "Euclid distance", "Manhattan distance", "Chebyshev distance", "Pearson correlation" };
 	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };// ,"Chebyshev distance"};
 	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage", "Single Linkage" };
 
