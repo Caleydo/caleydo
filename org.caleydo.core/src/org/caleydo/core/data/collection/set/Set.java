@@ -292,13 +292,13 @@ public class Set
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
 
-//		GeneralManager.get().getLogger().log(
-//			new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-//				"This method is untested - test when first used"));
+		// GeneralManager.get().getLogger().log(
+		// new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+		// "This method is untested - test when first used"));
 
 		double result;
-//		if (dRaw < getMin() || dRaw > getMax())
-//			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
+		// if (dRaw < getMin() || dRaw > getMax())
+		// throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
 
 		if (externalDataRep == EExternalDataRepresentation.NORMAL) {
 			result = dRaw;
@@ -720,6 +720,74 @@ public class Set
 	@Override
 	public String toString() {
 		return "Set " + getLabel() + " with " + alStorages.size() + " storages.";
+	}
+
+	@Override
+	public double getMinAs(EExternalDataRepresentation dataRepresentation) {
+		if (dMin == Double.MAX_VALUE) {
+			calculateGlobalExtrema();
+		}
+		if (dataRepresentation == externalDataRep)
+			return dMin;
+		double result = getRawFromExternalDataRep(dMin);
+
+		return getDataRepFromRaw(result, dataRepresentation);
+	}
+
+	@Override
+	public double getMaxAs(EExternalDataRepresentation dataRepresentation) {
+		if (dMax == Double.MIN_VALUE) {
+			calculateGlobalExtrema();
+		}
+		if (dataRepresentation == externalDataRep)
+			return dMax;
+		double result = getRawFromExternalDataRep(dMax);
+
+		return getDataRepFromRaw(result, dataRepresentation);
+	}
+
+	/**
+	 * Converts the specified value into raw using the current external data representation.
+	 * 
+	 * @param dNumber
+	 *            Value in the current external data representation.
+	 * @return Raw value converted from the specified value.
+	 */
+	private double getRawFromExternalDataRep(double dNumber) {
+		switch (externalDataRep) {
+			case NORMAL:
+				return dNumber;
+			case LOG2:
+				return Math.pow(2, dNumber);
+			case LOG10:
+				return Math.pow(10, dNumber);
+			default:
+				throw new IllegalStateException("Conversion to raw not implemented for data rep"
+					+ externalDataRep);
+		}
+	}
+
+	/**
+	 * Converts a raw value to the specified data representation.
+	 * 
+	 * @param dRaw
+	 *            Raw value that shall be converted
+	 * @param dataRepresentation
+	 *            Data representation the raw value shall be converted to.
+	 * @return Value in the specified data representation converted from the raw value.
+	 */
+	private double getDataRepFromRaw(double dRaw, EExternalDataRepresentation dataRepresentation) {
+		switch (dataRepresentation) {
+			case NORMAL:
+				return dRaw;
+			case LOG2:
+				return Math.log(dRaw) / Math.log(2);
+			case LOG10:
+				return Math.log10(dRaw);
+			default:
+				throw new IllegalStateException("Conversion to data rep not implemented for data rep"
+					+ dataRepresentation);
+		}
 	}
 
 }

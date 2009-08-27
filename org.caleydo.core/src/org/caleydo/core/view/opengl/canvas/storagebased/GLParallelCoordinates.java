@@ -1129,9 +1129,8 @@ public class GLParallelCoordinates
 
 				textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner,
 					lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
-				
-				gl.glPopName();
 
+				gl.glPopName();
 
 				if (selectedSet.contains(axisVA.get(iCount)) || mouseOverSet.contains(axisVA.get(iCount))) {
 
@@ -1203,7 +1202,6 @@ public class GLParallelCoordinates
 
 					textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner,
 						lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
-
 
 					gl.glPopName();
 					gl.glPopAttrib();
@@ -1454,37 +1452,25 @@ public class GLParallelCoordinates
 		// the gate add button
 		float fYGateAddOrigin = renderStyle.getAxisHeight();
 		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.ADD_MASTER_GATE, 1);
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.ADD_GATE);
-		tempTexture.enable();
-		tempTexture.bind();
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1, 1, 1, 1);
 		gl.glPushName(iPickingID);
 
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin - 0.05f, fYGateAddOrigin, AXIS_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + 0.05f, fYGateAddOrigin, AXIS_Z);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fXOrigin + 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXOrigin - 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
-		gl.glEnd();
+		Vec3f lowerLeftCorner = new Vec3f(fXOrigin - 0.05f, fYGateAddOrigin, AXIS_Z);
+		Vec3f lowerRightCorner = new Vec3f(fXOrigin + 0.05f, fYGateAddOrigin, AXIS_Z);
+		Vec3f upperRightCorner = new Vec3f(fXOrigin + 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
+		Vec3f upperLeftCorner = new Vec3f(fXOrigin - 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
+		Vec3f scalingPivot = new Vec3f(fXOrigin, fYGateAddOrigin, AXIS_Z);
+
+		textureManager.renderGUITexture(gl, EIconTextures.ADD_GATE, lowerLeftCorner, lowerRightCorner,
+			upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 100);
 
 		gl.glPopName();
-		gl.glPopAttrib();
-		tempTexture.disable();
 
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 		for (Integer iGateID : hashMasterGates.keySet()) {
 			Gate gate = hashMasterGates.get(iGateID);
-			Float fBottom = gate.getCurrentBottom();
-			Float fTop = gate.getCurrentTop();
+			Float fBottom = gate.getBottom();
+			Float fTop = gate.getTop();
 
 			gl.glColor4fv(ParCoordsRenderStyle.GATE_BODY_COLOR, 0);
 			gl.glBegin(GL.GL_POLYGON);
@@ -1590,7 +1576,6 @@ public class GLParallelCoordinates
 		gate.handleDragging(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1], draggedObject,
 			bIsGateDraggingFirstTime);
 		bIsGateDraggingFirstTime = false;
-
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;

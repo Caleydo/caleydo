@@ -38,6 +38,30 @@ public class TextureManager {
 		return mapIconTextures.get(eIconTextures);
 	}
 
+	/**
+	 * Convenience method for rendering textures on a rectangle.
+	 * 
+	 * @param gl
+	 *            GL Context.
+	 * @param eIconTextures
+	 *            Texture that should be rendered.
+	 * @param lowerLeftCorner
+	 *            Lower left corner of the texture.
+	 * @param lowerRightCorner
+	 *            Lower right corner of the texture.
+	 * @param upperRightCorner
+	 *            Upper right corner of the texture.
+	 * @param upperLeftCorner
+	 *            Upper left corner of the texture.
+	 * @param colorR
+	 *            Red portion of the color the Polygon should have where the texture is drawn on.
+	 * @param colorG
+	 *            Green portion of the color the Polygon should have where the texture is drawn on.
+	 * @param colorB
+	 *            Blue portion of the color the Polygon should have where the texture is drawn on.
+	 * @param alpha
+	 *            Alpha value the Polygon should have where the texture is drawn on.
+	 */
 	public void renderTexture(GL gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
 		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG,
 		float colorB, float alpha) {
@@ -64,8 +88,36 @@ public class TextureManager {
 		tempTexture.disable();
 	}
 
+	/**
+	 * Renders a texture on a rectangle with the specified minimum size.
+	 * 
+	 * @param gl
+	 *            GL Context.
+	 * @param eIconTextures
+	 *            Texture that should be rendered.
+	 * @param lowerLeftCorner
+	 *            Lower left corner of the texture.
+	 * @param lowerRightCorner
+	 *            Lower right corner of the texture.
+	 * @param upperRightCorner
+	 *            Upper right corner of the texture.
+	 * @param upperLeftCorner
+	 *            Upper left corner of the texture.
+	 * @param scalingPivot
+	 *            Pivot that is used when scaling the texture to the minimum size.
+	 * @param colorR
+	 *            Red portion of the color the Polygon should have where the texture is drawn on.
+	 * @param colorG
+	 *            Green portion of the color the Polygon should have where the texture is drawn on.
+	 * @param colorB
+	 *            Blue portion of the color the Polygon should have where the texture is drawn on.
+	 * @param alpha
+	 *            Alpha value the Polygon should have where the texture is drawn on.
+	 * @param minSize
+	 *            Minimum size the texture should have.
+	 */
 	public void renderGUITexture(GL gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
-		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, Vec3f scalingCenter,
+		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, Vec3f scalingPivot,
 		float colorR, float colorG, float colorB, float alpha, int minSize) {
 
 		IntBuffer buffer = BufferUtil.newIntBuffer(4);
@@ -79,9 +131,9 @@ public class TextureManager {
 			scaling = referenceWidth / (float) currentWidth;
 
 		gl.glPushMatrix();
-		gl.glTranslatef(scalingCenter.x(), scalingCenter.y(), scalingCenter.z());
+		gl.glTranslatef(scalingPivot.x(), scalingPivot.y(), scalingPivot.z());
 		gl.glScalef(scaling, scaling, scaling);
-		gl.glTranslatef(-scalingCenter.x(), -scalingCenter.y(), -scalingCenter.z());
+		gl.glTranslatef(-scalingPivot.x(), -scalingPivot.y(), -scalingPivot.z());
 		//		
 
 		Texture tempTexture = getIconTexture(gl, eIconTextures);

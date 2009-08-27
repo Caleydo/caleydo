@@ -8,6 +8,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -16,6 +17,11 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
+/**
+ * Represents a gate for {@link GLParallelCoordinates}.
+ * 
+ * @author Christian Partl
+ */
 public class Gate
 	extends AGLGUIElement {
 
@@ -27,32 +33,58 @@ public class Gate
 	private ParCoordsRenderStyle renderStyle;
 	private float mouseTopSpacing;
 	private float mouseBottomSpacing;
-	private float currentTop;
-	private float currentBottom;
+	private float top;
+	private float bottom;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param gateID
+	 *            ID of the gate.
+	 * @param lowerValue
+	 *            Lower cutoff value.
+	 * @param upperValue
+	 *            Upper cutoff value.
+	 * @param set
+	 *            Set.
+	 * @param renderStyle
+	 *            Render Style.
+	 */
 	public Gate(int gateID, float lowerValue, float upperValue, ISet set, ParCoordsRenderStyle renderStyle) {
 		this.gateID = gateID;
 		this.upperValue = upperValue;
 		this.lowerValue = lowerValue;
 		this.set = set;
 		this.renderStyle = renderStyle;
-		currentTop = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-		currentBottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
+		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		bottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
 		minSize = 100;
 	}
 
+	/**
+	 * Draws the gate using the upper and lower cutoff values to calculate the top and bottom of the gate.
+	 * 
+	 * @param gl
+	 *            GL context.
+	 * @param pickingManager
+	 *            PickingManager that shall be used.
+	 * @param textureManager
+	 *            TextureManager that shall be used.
+	 * @param textRenderer
+	 *            TextRenderer that shall be used.
+	 * @param iViewID
+	 *            Unique ID of the view.
+	 */
 	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
 		CaleydoTextRenderer textRenderer, int iViewID) {
 
-		currentTop = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 
 		// Scaled bottom = unscaled bottom !
-		currentBottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
-		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, currentTop, currentBottom);
+		bottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
+		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top, bottom);
 
-
-
-		Vec3f scalingPivot = new Vec3f(currentPosition, currentBottom, GATE_Z);
+		Vec3f scalingPivot = new Vec3f(currentPosition, bottom, GATE_Z);
 
 		beginGUIElement(gl, scalingPivot);
 
@@ -91,8 +123,8 @@ public class Gate
 			upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(gl, textRenderer, renderStyle, getDecimalFormat().format(upperValue), currentPosition
-			- 5 * GATE_WIDTH, unscaledTop + 0.02f);
+		renderNumber(textRenderer, getDecimalFormat().format(upperValue), currentPosition - 5 * GATE_WIDTH,
+			unscaledTop + 0.02f);
 		gl.glPopName();
 
 		// if (set.isSetHomogeneous())
@@ -109,9 +141,9 @@ public class Gate
 
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GATE_BODY_SELECTION, gateID));
 
-		lowerLeftCorner.set(currentPosition - GATE_WIDTH, currentBottom
+		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom
 			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, currentBottom
+		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom
 			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
 		upperLeftCorner.set(currentPosition - GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
@@ -121,39 +153,48 @@ public class Gate
 
 		gl.glPopName();
 
-		
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GATE_BOTTOM_SELECTION, gateID));
 
-		lowerLeftCorner.set(currentPosition - GATE_WIDTH, currentBottom, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, currentBottom, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, currentBottom
+		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom, GATE_Z);
+		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);
+		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom
 			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		upperLeftCorner.set(currentPosition - GATE_WIDTH, currentBottom
+		upperLeftCorner.set(currentPosition - GATE_WIDTH, bottom
 			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
 			upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
-		
-		
-		lowerLeftCorner.set(currentPosition - 7 * GATE_WIDTH, currentBottom - menuHeight, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, currentBottom - menuHeight, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, currentBottom, GATE_Z);
-		upperLeftCorner.set(currentPosition - 7 * GATE_WIDTH, currentBottom, GATE_Z);
+
+		lowerLeftCorner.set(currentPosition - 7 * GATE_WIDTH, bottom - menuHeight, GATE_Z);
+		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom - menuHeight, GATE_Z);
+		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);
+		upperLeftCorner.set(currentPosition - 7 * GATE_WIDTH, bottom, GATE_Z);
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_MENUE, lowerLeftCorner, lowerRightCorner,
 			upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		textRenderer.setColor(1, 1, 1, 1);
-		renderNumber(gl, textRenderer, renderStyle, getDecimalFormat().format(lowerValue), currentPosition
-			- 5 * GATE_WIDTH, currentBottom - menuHeight + 0.02f);
+		renderNumber(textRenderer, getDecimalFormat().format(lowerValue), currentPosition - 5 * GATE_WIDTH,
+			bottom - menuHeight + 0.02f);
 		gl.glPopName();
 
 		endGUIElement(gl);
 
 	}
 
-	private void renderNumber(GL gl, CaleydoTextRenderer textRenderer, ParCoordsRenderStyle renderStyle,
-		String rawValue, float xOrigin, float yOrigin) {
+	/**
+	 * Renders a specified number.
+	 * 
+	 * @param textRenderer
+	 *            TextRenderer that shall be used.
+	 * @param rawValue
+	 *            Number to render.
+	 * @param xOrigin
+	 *            X coordinate of the position where the number shall be rendered.
+	 * @param yOrigin
+	 *            Y coordinate of the position where the number shall be rendered.
+	 */
+	private void renderNumber(CaleydoTextRenderer textRenderer, String rawValue, float xOrigin, float yOrigin) {
 
 		textRenderer.begin3DRendering();
 		float scaling = 0.004f;
@@ -169,53 +210,64 @@ public class Gate
 		this.gateID = gateID;
 	}
 
+	/**
+	 * @return The current position (x coordinate) of the gate.
+	 */
 	public float getCurrentPosition() {
 		return currentPosition;
 	}
 
+	/**
+	 * Sets the current position (x coordinate) of the gate.
+	 * 
+	 * @param currentPosition
+	 *            Position of the gate.
+	 */
 	public void setCurrentPosition(float currentPosition) {
 		this.currentPosition = currentPosition;
 	}
 
+	/**
+	 * Handles the dragging of the current gate.
+	 * 
+	 * @param gl
+	 *            GL context.
+	 * @param mousePositionX
+	 *            X coordinate of the mouse position.
+	 * @param mousePositionY
+	 *            Y coordinate of the mouse position.
+	 * @param draggedObject
+	 *            Specifies the part of the gate that has been dragged.
+	 * @param isGateDraggingFirstTime
+	 *            Specifies whether the gate is dragged the first time or not.
+	 */
 	public void handleDragging(GL gl, float mousePositionX, float mousePositionY, EPickingType draggedObject,
 		boolean isGateDraggingFirstTime) {
 
 		if (isGateDraggingFirstTime) {
-			mouseTopSpacing = currentTop - mousePositionY;
-			mouseBottomSpacing = mousePositionY - currentBottom;
+			mouseTopSpacing = top - mousePositionY;
+			mouseBottomSpacing = mousePositionY - bottom;
 			isGateDraggingFirstTime = false;
 		}
 
 		float tipUpperLimit = renderStyle.getAxisHeight();
-		float tipLowerLimit = currentBottom + getScaledSizeOf(gl, GATE_TIP_HEIGHT);
+		float tipLowerLimit = bottom + getScaledSizeOf(gl, GATE_TIP_HEIGHT);
 		float bottomLowerLimit = 0;
-		float bottomUpperLimit = currentTop - GATE_TIP_HEIGHT;
+		float bottomUpperLimit = top - getScaledSizeOf(gl, GATE_TIP_HEIGHT);
 
 		switch (draggedObject) {
 
 			case GATE_TIP_SELECTION:
-				currentTop = mousePositionY;
-				setTop(currentTop);
+				setTop(mousePositionY);
 				break;
 
 			case GATE_BOTTOM_SELECTION:
-				if (mousePositionY <= bottomLowerLimit) {
-					currentBottom = bottomLowerLimit;
-				}
-				else if (mousePositionY <= bottomUpperLimit) {
-					currentBottom = mousePositionY;
-				}
-				else {
-					currentBottom = bottomUpperLimit;
-				}
-				setBottom(currentBottom);
+				setBottom(mousePositionY);
 				break;
 
 			case GATE_BODY_SELECTION:
-				currentBottom = mousePositionY - mouseBottomSpacing;
-				currentTop = mousePositionY + mouseTopSpacing;
-				setBottom(currentBottom);
-				setTop(currentTop);
+				setBottom(mousePositionY - mouseBottomSpacing);
+				setTop(mousePositionY + mouseTopSpacing);
 
 				break;
 
@@ -223,76 +275,98 @@ public class Gate
 				return;
 		}
 
-		if (currentTop > tipUpperLimit) {
-			currentTop = tipUpperLimit;
-			setTop(currentTop);
+		if (top > tipUpperLimit) {
+			setTop(tipUpperLimit);
 		}
-		if (currentTop < tipLowerLimit) {
-			currentTop = tipLowerLimit;
-			setTop(currentTop);
+		if (top < tipLowerLimit) {
+			setTop(tipLowerLimit);
 		}
-		if (currentBottom > currentTop - getScaledSizeOf(gl, GATE_TIP_HEIGHT)) {
-			currentBottom = currentTop - getScaledSizeOf(gl, GATE_TIP_HEIGHT);
-			setBottom(currentBottom);
+		if (bottom > bottomUpperLimit) {
+			setBottom(bottomUpperLimit);
 		}
-		if (currentBottom < bottomLowerLimit) {
-			currentBottom = bottomLowerLimit;
-			setBottom(currentBottom);
+		if (bottom < bottomLowerLimit) {
+			setBottom(bottomLowerLimit);
 		}
 	}
 
+	/**
+	 * Sets the bottom of the gate.
+	 * 
+	 * @param bottom Value the bottom of the gate shall be set to.
+	 */
 	public void setBottom(float bottom) {
+		this.bottom = bottom;
 		lowerValue = (float) set.getRawForNormalized(bottom / renderStyle.getAxisHeight());
 
-		double setMin = set.getMin();
+		double setMin = set.getMinAs(EExternalDataRepresentation.NORMAL);
 
 		if (lowerValue < setMin) {
 			lowerValue = (float) setMin;
 		}
 	}
 
+	/**
+	 * Sets the top of the gate.
+	 * 
+	 * @param top Value the top of the gate shall be set to.
+	 */
 	public void setTop(float top) {
+		this.top = top;
 		upperValue = (float) set.getRawForNormalized(top / renderStyle.getAxisHeight());
 
-		double setMax = set.getMax();
+		double setMax = set.getMaxAs(EExternalDataRepresentation.NORMAL);
 
 		if (upperValue > setMax) {
 			upperValue = (float) setMax;
 		}
 	}
 
+	/**
+	 * Sets the upper cutoff value of the gate.
+	 * 
+	 * @param upperValue Value the upper cutoff value shall be set to.
+	 */
 	public void setUpperValue(float upperValue) {
 		this.upperValue = upperValue;
-		currentTop = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-		// gate.setSecond(new Float(set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight()));
+		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 	}
 
+	/**
+	 * @return Upper cutoff value of the gate.
+	 */
 	public float getUpperValue() {
 		return upperValue;
 	}
 
+	/**
+	 * Sets the lower cutoff value of the gate.
+	 * 
+	 * @param lowerValue Value the lower cutoff value shall be set to.
+	 */
 	public void setLowerValue(float lowerValue) {
 		this.lowerValue = lowerValue;
-		currentBottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
+		bottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
 	}
 
+	/**
+	 * @return Lower cutoff value of the gate.
+	 */
 	public float getLowerValue() {
 		return lowerValue;
 	}
 
-	public float getCurrentTop() {
-		return currentTop;
+	/**
+	 * @return Top of the gate.
+	 */
+	public float getTop() {
+		return top;
 	}
 
-	public void setCurrentTop(float currentTop) {
-		this.currentTop = currentTop;
+	/**
+	 * @return Bottom of the gate.
+	 */
+	public float getBottom() {
+		return bottom;
 	}
 
-	public float getCurrentBottom() {
-		return currentBottom;
-	}
-
-	public void setCurrentBottom(float currentBottom) {
-		this.currentBottom = currentBottom;
-	}
 }

@@ -136,6 +136,26 @@ public interface ISet
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax();
+	
+	/**
+	 * Gets the minimum value in the set in the specified data representation.
+	 * 
+	 * @param dataRepresentation Data representation the minimum value shall be returned in.
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
+	 * @return The absolute minimum value in the set in the specified data representation.
+	 */
+	public double getMinAs(EExternalDataRepresentation dataRepresentation);
+	
+	/**
+	 * Gets the maximum value in the set in the specified data representation.
+	 * 
+	 * @param dataRepresentation Data representation the maximum value shall be returned in.
+	 * @throws OperationNotSupportedException
+	 *             when executed on nominal data
+	 * @return The absolute maximum value in the set in the specified data representation.
+	 */
+	public double getMaxAs(EExternalDataRepresentation dataRepresentation);
 
 	/**
 	 * Set an artificial minimum for the dataset. All elements smaller than that are clipped to this value in
