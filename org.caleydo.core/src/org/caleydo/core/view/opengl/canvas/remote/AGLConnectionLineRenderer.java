@@ -202,7 +202,7 @@ public abstract class AGLConnectionLineRenderer {
 		controlPoints.add(vecSrcPoint);
 		controlPoints.add(vecDestPoint);
 //		VisLink.renderLine(gl, controlPoints, 0, 10, true);
-		VisLink.polygonLine(gl, controlPoints, 0, 10, false); // FIXME: testing, use 1 line above instead
+		VisLink.polygonLine(gl, controlPoints, 0, 10, true);
 	}
 
 	/**
@@ -271,7 +271,8 @@ public abstract class AGLConnectionLineRenderer {
 		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
 		controlPoints.add(vecDestPoint);
 //		VisLink.renderLine(gl, controlPoints, 0, 10, true);
-		VisLink.polygonLine(gl, controlPoints, 0, 10, false); // FIXME: testing, use 1 line above instead
+		VisLink.polygonLine(gl, controlPoints, 0, 10, true);
+//		VisLink.renderPolygonLineWithHalo(gl, controlPoints, 0);
 	}
 
 	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
