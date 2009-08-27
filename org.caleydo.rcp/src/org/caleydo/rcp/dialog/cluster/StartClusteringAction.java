@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
@@ -52,7 +53,7 @@ public class StartClusteringAction
 	private float fclusterFactorGenes = 1f;
 	private float fclusterFactorExperiments = 1f;
 
-	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Bi-Clustering" };
+	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Both dimensions" };
 	private String[] sArDistOptions =
 		{ "Euclid distance", "Manhattan distance", "Chebyshev distance", "Pearson correlation" };
 	private String[] sArDistOptionsWeka = { "Euclid distance", "Manhattan distance" };// ,"Chebyshev distance"};
@@ -140,7 +141,11 @@ public class StartClusteringAction
 		cobwebTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		final Combo clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN);
+		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		clusterDimensionGroup.setText("Cluster:");
+		clusterDimensionGroup.setLayout(new GridLayout(1, false));
+		
+		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.setEnabled(true);
 		clusterTypeCombo.select(0);
@@ -161,8 +166,12 @@ public class StartClusteringAction
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		kMeansTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
-
-		final Combo clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN);
+		
+		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		clusterDimensionGroup.setText("Cluster:");
+		clusterDimensionGroup.setLayout(new GridLayout(1, false));
+		
+		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.select(0);
 		clusterType = sArTypeOptions[0];
@@ -178,7 +187,11 @@ public class StartClusteringAction
 			}
 		};
 
-		final Combo distMeasureCombo = new Combo(composite, SWT.DROP_DOWN);
+		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		distanceMeasureGroup.setText("Distance measure:");
+		distanceMeasureGroup.setLayout(new GridLayout(1, false));
+		
+		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptionsWeka);
 		distMeasureCombo.setEnabled(true);
 		distMeasureCombo.select(0);
@@ -198,7 +211,7 @@ public class StartClusteringAction
 		clusterCntGenes.addModifyListener(listenerIntGenes);
 		clusterCntGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterCntGenes.setText("5");
-		clusterCntGenes.setToolTipText("Integer value. Range: 1 up to the number of samples in data set");
+		clusterCntGenes.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
 
 		final Label lblClusterCntExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterCntExperiments.setText("Number clusters for clustering experiments");
@@ -209,7 +222,7 @@ public class StartClusteringAction
 		clusterCntExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterCntExperiments.setText("5");
 		clusterCntExperiments
-			.setToolTipText("Integer value. Range: 1 up to the number of samples in data set");
+			.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
 		clusterCntExperiments.setEnabled(false);
 
 		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
@@ -241,12 +254,20 @@ public class StartClusteringAction
 		affinityPropagationTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		final Combo clusterTypeCombo = new Combo(composite, SWT.DROP_DOWN);
+		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		clusterDimensionGroup.setText("Cluster:");
+		clusterDimensionGroup.setLayout(new GridLayout(1, false));
+		
+		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.select(0);
 		clusterType = sArTypeOptions[0];
 
-		final Combo distMeasureCombo = new Combo(composite, SWT.DROP_DOWN);
+		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		distanceMeasureGroup.setText("Distance measure:");
+		distanceMeasureGroup.setLayout(new GridLayout(1, false));
+		
+		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptions);
 		distMeasureCombo.setEnabled(true);
 		distMeasureCombo.select(0);
@@ -323,7 +344,11 @@ public class StartClusteringAction
 		treeClusteringTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		Composite clusterComposite = new Composite(composite, SWT.NONE);
+		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		clusterDimensionGroup.setText("Cluster:");
+		clusterDimensionGroup.setLayout(new GridLayout(2, false));
+		
+		Composite clusterComposite = new Composite(clusterDimensionGroup, SWT.NONE);
 		clusterComposite.setLayout(new RowLayout());
 
 		final Combo clusterTypeCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
@@ -348,7 +373,11 @@ public class StartClusteringAction
 			}
 		});
 
-		final Combo distMeasureCombo = new Combo(composite, SWT.DROP_DOWN);
+		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		distanceMeasureGroup.setText("Distance measure:");
+		distanceMeasureGroup.setLayout(new GridLayout(1, false));
+		
+		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptions);
 		distMeasureCombo.setEnabled(true);
 		distMeasureCombo.select(0);
