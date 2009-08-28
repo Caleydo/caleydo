@@ -57,6 +57,7 @@ public class AnimationPullInDetailOutside
 
 		moveValues(dTimePassed);
 
+		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
@@ -99,6 +100,7 @@ public class AnimationPullInDetailOutside
 				pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
+		gl.glPopMatrix();
 	}
 
 	/**

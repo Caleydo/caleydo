@@ -61,6 +61,7 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneConte
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -395,8 +396,8 @@ public class GLRadialHierarchy
 		else {
 			renderSymbol(gl);
 		}
-
 	}
+
 
 	/**
 	 * Builds the display list for a given display list index.
@@ -441,29 +442,115 @@ public class GLRadialHierarchy
 	 *            GL Object that shall be used for rendering.
 	 */
 	private void renderSymbol(GL gl) {
-		 float fXButtonOrigin = 0.33f * renderStyle.getScaling();
-		 float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		 Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
-		 tempTexture.enable();
-		 tempTexture.bind();
-		
-		 TextureCoords texCoords = tempTexture.getImageTexCoords();
-		
-		 gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		 gl.glColor4f(1f, 1, 1, 1f);
-		 gl.glBegin(GL.GL_POLYGON);
-		
-		 gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		 gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
-		 gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		 gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
-		 gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		 gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
-		 gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		 gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
-		 gl.glEnd();
-		 gl.glPopAttrib();
-		 tempTexture.disable();
+
+		// gl.glShadeModel(GL.GL_FLAT);
+		// gl.glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
+		// gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+
+		// gl.glClear(GL.GL_BACK);
+
+		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
+		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1f, 1, 1, 1f);
+		gl.glBegin(GL.GL_POLYGON);
+
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
+		gl.glEnd();
+		gl.glPopAttrib();
+		tempTexture.disable();
+
+		// // gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 2);
+		// // gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		//
+		// gl.glDisable(GL.GL_SCISSOR_TEST);
+		// // gl.glDisable(GL.GL_ALPHA_TEST);
+		// // gl.glDisable(GL.GL_STENCIL_TEST);
+		// gl.glDisable(GL.GL_DEPTH_TEST);
+		// // gl.glDisable(GL.GL_BLEND);
+		// // gl.glDisable(GL.GL_DITHER);
+		// // gl.glDisable(GL.GL_LOGIC_OP);
+		// // gl.glDisable(GL.GL_LIGHTING);
+		// // gl.glDisable(GL.GL_FOG);
+		// // gl.glDisable(GL.GL_TEXTURE_1D);
+		// // gl.glDisable(GL.GL_TEXTURE_2D);
+		// gl.glPixelTransferi(GL.GL_MAP_COLOR, GL.GL_FALSE);
+		//
+		// gl.glPixelTransferf(GL.GL_RED_SCALE, 1.0f);
+		// gl.glPixelTransferi(GL.GL_RED_BIAS, 0);
+		// gl.glPixelTransferf(GL.GL_GREEN_SCALE, 1.0f);
+		// gl.glPixelTransferi(GL.GL_GREEN_BIAS, 0);
+		// gl.glPixelTransferf(GL.GL_BLUE_SCALE, 1.0f);
+		// gl.glPixelTransferi(GL.GL_BLUE_BIAS, 0);
+		// gl.glPixelTransferi(GL.GL_ALPHA_SCALE, 1);
+		// gl.glPixelTransferi(GL.GL_ALPHA_BIAS, 0);
+		//
+		//
+		// gl.glColor3f(1, 0, 0);
+		// gl.glBegin(GL.GL_POLYGON);
+		//		
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(0, 1, 0);
+		// gl.glVertex3f(1, 1, 0);
+		// gl.glVertex3f(1, 0, 0);
+		// gl.glEnd();
+		//        
+		// // gl.glDrawPixels(100, 300, GL.GL_RGB,
+		// // GL.GL_UNSIGNED_BYTE, checkImageBuf);
+		//		
+		// // gl.glPixelStorei(GL.GL_UNPACK_ALIGNMENT, 1);
+		// Point currentPoint = glMouseListener.getPickedPoint();
+		//		
+		// IntBuffer buffer = BufferUtil.newIntBuffer(4);
+		// gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
+		// int currentHeight = buffer.get(3);
+		//
+		// float[] fArTargetWorldCoordinates =
+		// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x - 60,
+		// currentPoint.y + 60);
+		//		 
+		// // gl.glMatrixMode(GL.GL_PIXEL_TRANSFORM_2D_EXT);
+		// // gl.glLoadIdentity();
+		//		
+		// gl.glRasterPos2f(Math.max(fArTargetWorldCoordinates[0], 0), Math.max(fArTargetWorldCoordinates[1],
+		// 0));
+		// gl.glReadBuffer(GL.GL_BACK);
+		//		
+		// // gl.glScalef(2, 2, 1);
+		// gl.glPixelZoom(2.0f, 2.0f);
+		// gl.glCopyPixels(Math.max(currentPoint.x - 30, 0), Math.max((buffer.get(1) +
+		// currentHeight)-currentPoint.y - 30, 0), 60, 60, GL.GL_COLOR);
+		// // gl.glScalef(1, 1, 1);
+		// // gl.glPixelZoom(1.0f, 1.0f);
+		//      
+		// // gl.glMatrixMode(GL.GL_MODELVIEW);
+		// // gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		//      
+		// // gl.glEnable(GL.GL_DEPTH_TEST);
+		// // gl.glEnable(GL.GL_BLEND);
+		// gl.glEnable(GL.GL_DEPTH_TEST);
+
+		// int width = (int)((this.Width * 0.2)/2.0);
+		// gl.glReadBuffer(GL.GL_FRONT_AND_BACK);
+		// gl.glRasterPos2i(0, 0);
+		// gl.glBitmap(0, 0, 0, 0, mStartX - (width*2), mStartY, null);
+
+		// gl.glCopyPixels(mStartX - width, mStartY, width, width, GL.GL_COLOR);
+		// gl.glPixelTransferi(GL.GL_MAP_COLOR, GL.GL_FALSE);
+
 	}
 
 	/**
@@ -941,6 +1028,7 @@ public class GLRadialHierarchy
 
 	@Override
 	public void registerEventListeners() {
+		super.registerEventListeners();
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -985,6 +1073,7 @@ public class GLRadialHierarchy
 
 	@Override
 	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;

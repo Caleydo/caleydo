@@ -58,6 +58,7 @@ public class AnimationPopOutDetailOutside
 
 		moveValues(dTimePassed);
 
+		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
@@ -106,6 +107,7 @@ public class AnimationPopOutDetailOutside
 				pdCurrentRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
+		gl.glPopMatrix();
 	}
 
 	/**

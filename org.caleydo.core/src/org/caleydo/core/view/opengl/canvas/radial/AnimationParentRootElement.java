@@ -62,6 +62,7 @@ public class AnimationParentRootElement
 
 		moveValues(dTimePassed);
 
+		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
@@ -91,7 +92,7 @@ public class AnimationParentRootElement
 			radialHierarchy.setNewSelection(ESelectionType.SELECTION, pdNewRootElement, pdNewRootElement);
 			radialHierarchy.setDisplayListDirty();
 		}
-
+		gl.glPopMatrix();
 	}
 
 	/**

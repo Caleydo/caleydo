@@ -69,6 +69,7 @@ public class AnimationNewRootElement
 		dsFixedColor.setFillColor(mvCurrentRootColorR.getMovementValue(), mvCurrentRootColorG
 			.getMovementValue(), mvCurrentRootColorB.getMovementValue(), 1);
 
+		gl.glPushMatrix();
 		gl.glLoadIdentity();
 		gl.glTranslatef(fXCenter, fYCenter, 0);
 
@@ -94,6 +95,7 @@ public class AnimationNewRootElement
 			radialHierarchy.setDisplayListDirty();
 
 		}
+		gl.glPopMatrix();
 	}
 
 	/**

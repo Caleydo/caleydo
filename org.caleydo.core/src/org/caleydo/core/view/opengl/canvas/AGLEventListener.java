@@ -22,6 +22,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.IPollingListenerOwner;
+import org.caleydo.core.manager.event.view.ToggleMagnifyingGlassEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -37,12 +38,14 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
+import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -120,6 +123,12 @@ public abstract class AGLEventListener
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
 	private static final int NUMBER_OF_FRAMES = 15;
+	
+	protected GLMagnifyingGlass magnifyingGlass;
+	
+	private ToggleMagnifyingGlassListener magnifyingGlassListener;
+	
+	private boolean bShowMagnifyingGlass;
 
 	protected EBusyModeState eBusyModeState = EBusyModeState.OFF;
 
@@ -196,6 +205,8 @@ public abstract class AGLEventListener
 		contextMenu = ContextMenu.get();
 
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
+		
+		bShowMagnifyingGlass = false;
 	}
 
 	@Override
@@ -228,12 +239,19 @@ public abstract class AGLEventListener
 			gl.glRotatef(w, rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
 			displayLocal(gl);
-
+			
+			if(bShowMagnifyingGlass) {
+				if(magnifyingGlass == null) {
+					magnifyingGlass = new GLMagnifyingGlass();
+				}
+				magnifyingGlass.draw(gl, glMouseListener);
+			}
 		}
 		catch (RuntimeException exception) {
 			ExceptionHandler.get().handleException(exception);
 		}
 	}
+
 
 	@Override
 	public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
@@ -721,4 +739,26 @@ public abstract class AGLEventListener
 		// the default implementation does not initialize anything
 	}
 	
+	
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		magnifyingGlassListener = new ToggleMagnifyingGlassListener();
+		magnifyingGlassListener.setHandler(this);
+		eventPublisher.addListener(ToggleMagnifyingGlassEvent.class, magnifyingGlassListener);
+
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		if (magnifyingGlassListener != null) {
+			eventPublisher.removeListener(magnifyingGlassListener);
+			magnifyingGlassListener = null;
+		}
+	}
+	
+	public void handleToggleMagnifyingGlassEvent() {
+		bShowMagnifyingGlass = !bShowMagnifyingGlass;
+	}
 }
