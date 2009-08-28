@@ -5,7 +5,6 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 // import java.util.ArrayList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import gleem.linalg.Vec3f;
 
@@ -16,7 +15,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleLinearConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleSplineConnection;
 import org.caleydo.core.view.opengl.util.spline.Spline3D;
 
@@ -53,7 +52,7 @@ public final class HTLayouter
 		
 		// rootNode.drawAtPostion(gl, fCenterX, fCenterY, 0, 1 * 0.8f, 2,
 		// EDrawAbleNodeDetailLevel.Low);
-		float fNodeSize = 0.2f;
+		float fNodeSize = 0.05f;
 
 		// TEST RADIAL LAYOUT
 		// for (float fCurrentRadius = 1; fCurrentRadius < fDepth; fCurrentRadius++) {
@@ -96,14 +95,13 @@ public final class HTLayouter
 
 		// RECURSIVE TREE LAYOUTER
 		float layer = 1.0f;
-		float firstRadius = 0.5f;
+		float fRadius = 0.1f;
 		
 		float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
 		for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
 
-			float childRadius = firstRadius + 0.5f;
-			float alpha = calculateCircle((firstRadius), fCurrentNode, fNumberOfNodesInLayer);
-			float space = calculateChildSpace(childRadius, fNumberOfNodesInLayer);
+			float alpha = calculateCircle((fRadius), fCurrentNode, fNumberOfNodesInLayer);
+			float space = calculateChildSpace(fRadius + 0.2f, fNumberOfNodesInLayer);
 			
 			rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 			EDrawAbleNodeDetailLevel.Low);
@@ -111,9 +109,13 @@ public final class HTLayouter
 			
 
 		
-		calculateRecursiveLayout(gl, rootNode,  tree, firstRadius , alpha, layer, fCurrentNode, fNumberOfNodesInLayer, fNodeSize);
+		calculateRecursiveLayout(gl, rootNode,  tree, fRadius + 0.2f , alpha, layer, fCurrentNode, fNumberOfNodesInLayer*fNumberOfNodesInLayer, fNodeSize, getFXCoord(), getFYCoord());
+//		calculateRecursiveLayout(gl, node, tree, radius + 0.3f, childAngle, layer+1, numChilds+currentStep, fNumberOfNodesInNewLayer*childs, fNodeSize);
+//		}
 		}
 		
+		
+//		drawLine(gl, 1.0f, 1.0f, 2.0f, 2.0f);
 		fNodeSize = fNodeSize * HyperbolicRenderStyle.LIN_TREE_Y_SCALING_PER_LAYER;// TODO: generate own
 		
 
@@ -189,12 +191,13 @@ public final class HTLayouter
 	// }
 
 	public float calculateRecursiveLayout(GL gl, ADrawAbleNode node, Tree<ADrawAbleNode> tree,float radius, float angle, 
-		float layer, float currentStep, float fNumberOfNodesInLayer, float fNodeSize) {
+		float layer, float currentStep, float fNumberOfNodesInLayer, float fNodeSize, float xCoord, float yCoord) {
 		float fNumberOfNodesInNewLayer = fNumberOfNodesInLayer;// + layer;//node.getNumberOfNodesInLayer(layer);
 //		for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
 //
 //			float childRadius = radius + 0.5f;
 //			float alpha = calculateCircle((radius), fCurrentNode, fNumberOfNodesInLayer);
+		// float space = calculateChildSpace(radius, fNumberOfNodesInNewLayer);
 			float space = calculateChildSpace(radius, fNumberOfNodesInNewLayer);
 //			
 //			node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
@@ -202,17 +205,24 @@ public final class HTLayouter
 //			//if (tree.hasChildren(node)){
 
 			if (layer < fDepth){
-			float childs = 4.0f; // node.getNumberOfChildren()
+			float childs = 3.0f; // node.getNumberOfChildren()
 			int childCount = 0;
 			float childAngle = 0.0f;
-			for (float numChilds = 1; numChilds < childs; numChilds++) {
+			for (float numChilds = 1; numChilds <= childs; numChilds++) {
 			//use it in future
 			//for(ADrawAbleNode tmpNode : tree.getChildren(node)){
 				childCount++;
-				float parentAngle = (angle) - (angle/currentStep);
+				
+				float parentAngle = (angle) - (angle/currentStep/2);
+				//float parentAngle = (angle) - (angle/numChilds);
 				float alphaHalfOffset = (angle/currentStep / 2);
+				
+//				childAngle =
+//					calculateChildAngle(parentAngle , space/fNumberOfNodesInNewLayer , radius, numChilds)
+//						+ alphaHalfOffset;
+				
 				childAngle =
-				calculateChildAngle(parentAngle , space / childs, radius, numChilds)
+				calculateChildAngle(parentAngle , space , radius, numChilds)
 					+ alphaHalfOffset;
 				calcualteChildPosition(radius, childAngle, numChilds);
 				
@@ -223,7 +233,8 @@ public final class HTLayouter
 				
 				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 					EDrawAbleNodeDetailLevel.Low);
-				calculateRecursiveLayout(gl, node, tree, radius + 0.7f, childAngle, layer+1, numChilds, fNumberOfNodesInNewLayer*childs, fNodeSize);
+				drawLine(gl, xCoord, yCoord, getFXCoord(), getFYCoord());
+				calculateRecursiveLayout(gl, node, tree, radius + layer*0.3f, childAngle, layer+1, numChilds+currentStep, fNumberOfNodesInNewLayer*childs, fNodeSize, getFXCoord(), getFYCoord());
 			}
 			gl.glFlush();
 			}
@@ -305,6 +316,24 @@ public final class HTLayouter
 		setFXCoord((float) (fCenterX + radius * Math.cos(phi)));
 		setFYCoord((float) (fCenterY + radius * Math.sin(phi)));
 
+	}
+	private void drawLine(GL gl, float firstX, float firstY, float secondX, float secondY){
+		DrawAbleLinearConnection line = new DrawAbleLinearConnection();
+		ArrayList<Vec3f> points = new ArrayList();
+		Vec3f p1 = new Vec3f();
+		Vec3f p2 = new Vec3f();
+		p1.setX(firstX);
+		p1.setY(firstY);
+		p1.setZ(1.0f);
+		p2.setX(secondX);
+		p2.setY(secondY);
+		p2.setZ(1.0f);
+		
+		
+		points.add(p1);
+		points.add(p2);
+		line.setConnectionColor3f(1.0f, 1.0f, 0.0f);
+		line.drawConnectionFromStartToEnd(gl, points, 2.0f);
 	}
 
 }
