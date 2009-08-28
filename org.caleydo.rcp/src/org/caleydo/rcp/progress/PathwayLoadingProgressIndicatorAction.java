@@ -4,11 +4,13 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayLoaderThread;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
@@ -19,27 +21,38 @@ public class PathwayLoadingProgressIndicatorAction
 		Job job = new Job("Loading pathways...   ") {
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
-				// Turn on busy mode
-				IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
-				viewManager.requestBusyMode(this);
 
-				monitor.beginTask("Loading pathways", 100);
+				PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
+				String sPathwayDataSources =
+					prefStore.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
 
-				monitor.subTask("KEGG");
-				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
-					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
-				monitor.worked(50);
+				if (!sPathwayDataSources.isEmpty()) {
 
-				monitor.subTask("BioCarta");
-				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
-					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
-				monitor.worked(50);
+					// Turn on busy mode
+					IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
+					viewManager.requestBusyMode(this);
 
-				GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
+					monitor.beginTask("Loading pathways", 100);
 
-				monitor.done();
-				viewManager.releaseBusyMode(this);
-				
+					if (sPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
+						monitor.subTask("KEGG");
+						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
+							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
+						// monitor.worked(50);
+					}
+
+					if (sPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.name())) {
+						monitor.subTask("BioCarta");
+						PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager.get()
+							.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));
+						// monitor.worked(50);
+					}
+
+					GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
+					monitor.done();
+
+					viewManager.releaseBusyMode(this);
+				}
 				return Status.OK_STATUS;
 			}
 		};

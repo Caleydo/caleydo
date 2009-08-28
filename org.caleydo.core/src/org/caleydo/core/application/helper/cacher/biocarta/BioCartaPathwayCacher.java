@@ -130,7 +130,7 @@ public class BioCartaPathwayCacher
 		triggerPathwayListGeneration();
 
 		if (triggeringCommand != null) {
-			progressBar.setSelection(100);
+//			progressBar.setSelection(100);
 			triggeringCommand.setFinishedBioCartaCacher();
 		}
 	}

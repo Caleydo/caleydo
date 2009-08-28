@@ -20,14 +20,14 @@ import org.caleydo.core.manager.IGeneralManager;
 public class PathwayListGenerator {
 	public final static String INPUT_FOLDER_PATH_KEGG_HOMO_SAPIENS = "www.genome.jp/kegg/KGML/KGML_v0.6.1/hsa/";
 	public final static String INPUT_IMAGE_PATH_KEGG_HOMO_SAPIENS = "www.genome.jp/kegg/pathway/hsa/";
-	public final static String OUTPUT_FILE_NAME_KEGG_HOMO_SAPIENS = "pathway_list_KEGG.txt";//_homo_sapiens.txt";
+	public final static String OUTPUT_FILE_NAME_KEGG_HOMO_SAPIENS = "pathway_list_KEGG_homo_sapiens.txt";
 	public final static String INPUT_FOLDER_PATH_KEGG_MUS_MUSCULUS = "www.genome.jp/kegg/KGML/KGML_v0.6.1/mmu/";
 	public final static String INPUT_IMAGE_PATH_KEGG_MUS_MUSCULUS = "www.genome.jp/kegg/pathway/mmu/";
 	public final static String OUTPUT_FILE_NAME_KEGG_MUS_MUSCULUS = "pathway_list_KEGG_mus_musculus.txt";
 	
 	public final static String INPUT_FOLDER_PATH_BIOCARTA = "cgap.nci.nih.gov/Pathways/BioCarta/";
 	public final static String INPUT_IMAGE_PATH_BIOCARTA = "cgap.nci.nih.gov/BIOCARTA/Pathways/";
-	public final static String OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS = "pathway_list_BIOCARTA.txt";//_homo_sapiens.txt";
+	public final static String OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS = "pathway_list_BIOCARTA_homo_sapiens.txt";
 	public final static String OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS = "pathway_list_BIOCARTA_mus_musculus.txt";
 
 	private PrintWriter outputWriter;
@@ -50,10 +50,15 @@ public class PathwayListGenerator {
 				continue;
 			}
 
-//			// Ignore mouse pathways
-//			if (tmpFile.toString().contains("m_")) {
-//				continue;
-//			}
+			// Ignore mus musculus pathways when generating homo sapiens list
+			if (sOutputFileName.contains("homo_sapiens") && tmpFile.toString().contains("m_")) {
+				continue;
+			}
+			
+			// Ignore homo sapiens pathways when generating mus musculus list
+			if (sOutputFileName.contains("mus_musculus") && tmpFile.toString().contains("h_")) {
+				continue;
+			}
 
 			// Cut off path
 			sOutput = tmpFile.toString();
@@ -123,9 +128,9 @@ public class PathwayListGenerator {
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
 		try {
-			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG_HOMO_SAPIENS, INPUT_IMAGE_PATH_KEGG_HOMO_SAPIENS, OUTPUT_FILE_NAME_KEGG_HOMO_SAPIENS);
+//			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG_MUS_MUSCULUS, INPUT_IMAGE_PATH_KEGG_MUS_MUSCULUS, OUTPUT_FILE_NAME_KEGG_MUS_MUSCULUS);
 			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA,
-				OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS);
+				OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS);
 		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();

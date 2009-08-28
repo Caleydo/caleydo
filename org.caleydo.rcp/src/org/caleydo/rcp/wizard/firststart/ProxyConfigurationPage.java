@@ -91,7 +91,7 @@ public final class ProxyConfigurationPage
 			public void widgetSelected(SelectionEvent e) {
 				updateInternetStatusLabel();
 
-				PreferenceStore prefStore = Application.caleydoCore.getGeneralManager().getPreferenceStore();
+				PreferenceStore prefStore = Application.caleydoCoreBootloader.getGeneralManager().getPreferenceStore();
 				prefStore.setValue(PreferenceConstants.USE_PROXY, bUseProxy);
 
 				if (bUseProxy) {

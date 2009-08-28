@@ -7,7 +7,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.swt.widgets.Shell;
 
-public class ExportHandler
+public class ExportDataHandler
 	extends AbstractHandler
 	implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {

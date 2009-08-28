@@ -2,6 +2,7 @@ package org.caleydo.core.manager.specialized.genetic.pathway;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -43,8 +44,8 @@ public class PathwayLoaderThread
 		this.generalManager = GeneralManager.get();
 		this.pathwayDatabases = pathwayDatabases;
 
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Start pathway databases loader thread"));
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Start pathway databases loader thread"));
 
 		start();
 	}
@@ -72,26 +73,42 @@ public class PathwayLoaderThread
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Start parsing " + pathwayDatabase.getName() + " pathways."));
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Start parsing " + pathwayDatabase.getName()
+				+ " pathways."));
 
 		BufferedReader file = null;
 		String sLine = null;
 		String sFileName = "";
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		float fProgressFactor = 0;
-		
-		EOrganism eOrganism = ((GeneticUseCase)GeneralManager.get().getUseCase()).getOrganism();
-		
+
+		EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase()).getOrganism();
+
 		if (pathwayDatabase.getName().equals("KEGG")) {
-			
-			if (eOrganism == EOrganism.HOMO_SAPIENS)
-				sFileName = IGeneralManager.CALEYDO_HOME_PATH + PathwayListGenerator.OUTPUT_FILE_NAME_KEGG_HOMO_SAPIENS;
-			else if (eOrganism == EOrganism.MUS_MUSCULUS)
-				sFileName = IGeneralManager.CALEYDO_HOME_PATH + PathwayListGenerator.OUTPUT_FILE_NAME_KEGG_MUS_MUSCULUS;
-			else
+
+			if (eOrganism == EOrganism.HOMO_SAPIENS) {
+				sFileName =
+					IGeneralManager.CALEYDO_HOME_PATH
+						+ PathwayListGenerator.OUTPUT_FILE_NAME_KEGG_HOMO_SAPIENS;
+				
+				// Make sure that old pathway list files without organism specification still work
+				try {
+					new BufferedReader(new FileReader(sFileName));
+				}
+				catch (FileNotFoundException e) {
+					sFileName = IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_KEGG.txt";
+				}
+			}
+			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+				sFileName =
+					IGeneralManager.CALEYDO_HOME_PATH
+						+ PathwayListGenerator.OUTPUT_FILE_NAME_KEGG_MUS_MUSCULUS;
+			}
+			else {
 				throw new IllegalStateException("Cannot load pathways from organism " + eOrganism);
-			
+			}
+
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG;
 
 			generalManager.getSWTGUIManager()
@@ -99,13 +116,28 @@ public class PathwayLoaderThread
 		}
 		else if (pathwayDatabase.getName().equals("BioCarta")) {
 
-			if (eOrganism == EOrganism.HOMO_SAPIENS)
-				sFileName = IGeneralManager.CALEYDO_HOME_PATH + PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS;
-			else if (eOrganism == EOrganism.MUS_MUSCULUS)
-				sFileName = IGeneralManager.CALEYDO_HOME_PATH + PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS;
-			else
+			if (eOrganism == EOrganism.HOMO_SAPIENS) {
+				sFileName =
+					IGeneralManager.CALEYDO_HOME_PATH
+						+ PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_HOMO_SAPIENS;
+
+				// Make sure that old pathway list files without organism specification still work
+				try {
+					new BufferedReader(new FileReader(sFileName));
+				}
+				catch (FileNotFoundException e) {
+					sFileName = IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_BIOCARTA.txt";
+				}
+			}
+			else if (eOrganism == EOrganism.MUS_MUSCULUS) {
+				sFileName =
+					IGeneralManager.CALEYDO_HOME_PATH
+						+ PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA_MUS_MUSCULUS;
+			}
+			else {
 				throw new IllegalStateException("Cannot load pathways from organism " + eOrganism);
-			
+			}
+
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_BIOCARTA;
 
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
@@ -114,6 +146,7 @@ public class PathwayLoaderThread
 
 		int iPathwayIndex = 0;
 		try {
+
 			file = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			StringTokenizer tokenizer;
@@ -140,8 +173,9 @@ public class PathwayLoaderThread
 				int iImageHeight = tmpPathwayGraph.getHeight();
 
 				if (iImageWidth == -1 || iImageHeight == -1) {
-					generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-						"Pathway texture width=" + iImageWidth + " / height=" + iImageHeight));
+					generalManager.getLogger().log(
+						new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Pathway texture width="
+							+ iImageWidth + " / height=" + iImageHeight));
 				}
 
 				iPathwayIndex++;
@@ -166,7 +200,8 @@ public class PathwayLoaderThread
 		// tmpGLRemoteRendering3D.enableBusyMode(false);
 		// }
 
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Finished parsing " + pathwayDatabase.getName() + " pathways."));
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Finished parsing " + pathwayDatabase.getName()
+				+ " pathways."));
 	}
 }

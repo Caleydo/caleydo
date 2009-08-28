@@ -6,7 +6,7 @@ import java.util.List;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
-import org.caleydo.rcp.action.toolbar.general.LoadDataAction;
+import org.caleydo.rcp.action.toolbar.general.ImportDataAction;
 import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
@@ -64,7 +64,7 @@ public class WideScreenToolBarRenderer
 		alToolBarManager.add(toolBarManager2);
 
 		toolBarManager.add(new SaveProjectAction());
-		toolBarManager.add(new LoadDataAction());
+		toolBarManager.add(new ImportDataAction());
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
 

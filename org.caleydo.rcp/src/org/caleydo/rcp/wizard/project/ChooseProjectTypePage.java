@@ -3,6 +3,8 @@ package org.caleydo.rcp.wizard.project;
 import java.lang.reflect.Method;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
@@ -15,9 +17,11 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
@@ -37,15 +41,6 @@ public class ChooseProjectTypePage
 
 	public static final String PAGE_NAME = "Project Wizard";
 
-	public static final String GENE_DATA_MODE = "gene";
-	public static final String GENERAL_DATA_MODE = "general";
-	
-	/** preference store constant related to the collaboration mode  */
-	public static final String COLLABORATION_DATA_MODE = "collaboration";
-
-	/** preference store constant related to the load existing project mode */
-	public static final String LOAD_PROJECT_MODE = "load_project";
-
 	private static final String HCC_SAMPLE_DATASET_PAPER_LINK = "http://www.ncbi.nlm.nih.gov/pubmed/17241883";
 
 	public Wizard parentWizard = null;
@@ -57,9 +52,19 @@ public class ChooseProjectTypePage
 		SAMPLE_DATA_REAL
 	}
 
-	private EUseCaseMode useCaseMode = EUseCaseMode.GENETIC_DATA;
+	public enum EProjectLoadType {
+		RECENT,
+		SPECIFIED
+	}
+
+	private EUseCaseMode projectMode = EUseCaseMode.GENETIC_DATA;
 
 	private EProjectType projectType = EProjectType.SAMPLE_DATA_REAL;
+
+	private EOrganism organism;
+
+	private boolean bLoadKEGGPathwayData;
+	private boolean bLoadBioCartaPathwayData;
 
 	private TabItem generalDataUseCaseTab;
 
@@ -70,24 +75,21 @@ public class ChooseProjectTypePage
 
 	/** tab-page for loading a project from file system */
 	private TabItem loadProjectTab;
-	
+
 	/** text field to enter the network name by the user */
-	Text networkNameText;
-	
+	private Text networkNameText;
+
 	/** text field to enter the network address by the user */
-	Text networkAddressText;
+	private Text networkAddressText;
 
-	public enum EProjectLoadType {
-		RECENT,
-		SPECIFIED
-	}
-
-	/** type how a existing project should be loaded */ 
+	/** type how a existing project should be loaded */
 	private EProjectLoadType projectLoadType = EProjectLoadType.RECENT;
 
 	/** text field to enter the file-name to load a project from */
-	Text projectFileName;
+	private Text projectFileName;
 	
+	private Button btnLoadPathwayData;
+
 	/**
 	 * Constructor.
 	 */
@@ -104,6 +106,10 @@ public class ChooseProjectTypePage
 		setPageComplete(false);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 */
 	public void createControl(Composite parent) {
 		parentWizard = (Wizard) this.getWizard();
 
@@ -116,61 +122,44 @@ public class ChooseProjectTypePage
 		createGeneralDataUseCaseTab(tabFolder);
 		createLoadProjectTab(tabFolder);
 		createCollaborationClientTab(tabFolder);
-		String dataModeLastUsed =
-			GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_MODE_LAST_USED);
 
-		if (dataModeLastUsed == null || dataModeLastUsed.isEmpty() || dataModeLastUsed.equals(GENE_DATA_MODE)) {
+		String lastChosenProjectMode =
+			GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE);
+
+		if (lastChosenProjectMode == null || lastChosenProjectMode.isEmpty()
+			|| lastChosenProjectMode.equals(EUseCaseMode.GENETIC_DATA)) {
 			tabFolder.setSelection(0);
-			useCaseMode = EUseCaseMode.GENETIC_DATA;
-			Application.bLoadPathwayData = true;
-		} else if (dataModeLastUsed.equals(GENERAL_DATA_MODE)) {
+			projectMode = EUseCaseMode.GENETIC_DATA;
+		}
+		else if (lastChosenProjectMode.equals(EUseCaseMode.UNSPECIFIED_DATA)) {
 			tabFolder.setSelection(1);
-			useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
-			Application.bLoadPathwayData = false;
-		} else if (dataModeLastUsed.equals(LOAD_PROJECT_MODE)) {
-			useCaseMode = EUseCaseMode.LOAD_PROJECT;
+			projectMode = EUseCaseMode.UNSPECIFIED_DATA;
+		}
+		else if (lastChosenProjectMode.equals(EUseCaseMode.LOAD_PROJECT)) {
+			projectMode = EUseCaseMode.LOAD_PROJECT;
 			tabFolder.setSelection(2);
-		} else if (dataModeLastUsed.equals(COLLABORATION_DATA_MODE)) {
-			useCaseMode = EUseCaseMode.COLLABORATION_CLIENT;
+		}
+		else if (lastChosenProjectMode.equals(EUseCaseMode.COLLABORATION_CLIENT)) {
+			projectMode = EUseCaseMode.COLLABORATION_CLIENT;
 			tabFolder.setSelection(3);
 		}
-		
+
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
-				// FIXME: this should not be set when the user switches the tabs
-				// Better would be to determine the boolean's state when the user clicks "OK"
-				// and only when the user changed the selection compared to the stored mode in the
-				// preferences the old workbench state should be deleted.
-				Application.bDeleteRestoredWorkbenchState = true;
-				
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
-					useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
-
-					// Turn off pathway data loading for general data analysis use case
-					Application.bLoadPathwayData = false;
-
-					GeneralManager.get().getPreferenceStore().setValue(
-						PreferenceConstants.DATA_MODE_LAST_USED, GENERAL_DATA_MODE);
-				} else if (((TabItem) e.item) == geneticDataUseCaseTab) {
-					useCaseMode = EUseCaseMode.GENETIC_DATA;
-					Application.bLoadPathwayData = true;
-
-					GeneralManager.get().getPreferenceStore().setValue(
-						PreferenceConstants.DATA_MODE_LAST_USED, GENE_DATA_MODE);
-				} else if (((TabItem) e.item) == loadProjectTab) {
-					useCaseMode = EUseCaseMode.LOAD_PROJECT;
-
-					GeneralManager.get().getPreferenceStore().setValue(
-						PreferenceConstants.DATA_MODE_LAST_USED, LOAD_PROJECT_MODE);
-				} else if (((TabItem) e.item) == collaborationClientTab) {
-					useCaseMode = EUseCaseMode.COLLABORATION_CLIENT;
-//					Application.bLoadPathwayData = true;
-
-					GeneralManager.get().getPreferenceStore().setValue(
-						PreferenceConstants.DATA_MODE_LAST_USED, COLLABORATION_DATA_MODE);
+					projectMode = EUseCaseMode.UNSPECIFIED_DATA;
+				}
+				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
+					projectMode = EUseCaseMode.GENETIC_DATA;
+				}
+				else if (((TabItem) e.item) == loadProjectTab) {
+					projectMode = EUseCaseMode.LOAD_PROJECT;
+				}
+				else if (((TabItem) e.item) == collaborationClientTab) {
+					projectMode = EUseCaseMode.COLLABORATION_CLIENT;
 				}
 				else
 					throw new IllegalStateException("Not implemented!");
@@ -253,41 +242,159 @@ public class ChooseProjectTypePage
 		// buttonPathwayViewerMode.setText("Pathway viewer mode");
 		// buttonPathwayViewerMode.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final Button btnLoadPathwayData = new Button(composite, SWT.CHECK);
-		btnLoadPathwayData.setText("Load KEGG and BioCarta pathway data");
-		btnLoadPathwayData.setSelection(true);
+		Group groupOrganism = new Group(composite, SWT.None);
+		groupOrganism.setText("Select organism");
+		groupOrganism.setLayout(new RowLayout(SWT.VERTICAL));
+		// groupOrganism.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		final Button btnOrganismHuman = new Button(groupOrganism, SWT.RADIO);
+		btnOrganismHuman.setText("Human (homo sapiens)");
+		btnOrganismHuman.setEnabled(true);
+		btnOrganismHuman.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				organism = EOrganism.HOMO_SAPIENS;
+			}
+		});
+		// btnOrganismHuman.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		final Button btnOrganismMouse = new Button(groupOrganism, SWT.RADIO);
+		btnOrganismMouse.setText("Mouse (mus musculus)");
+		btnOrganismMouse.setEnabled(true);
+		btnOrganismMouse.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				organism = EOrganism.MUS_MUSCULUS;
+			}
+		});
+		// btnOrganismMouse.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		// Set organism which was used in last session
+		EOrganism lastChosenOrganism =
+			EOrganism.valueOf(GeneralManager.get().getPreferenceStore().getString(
+				PreferenceConstants.LAST_CHOSEN_ORGANISM));
+		if (lastChosenOrganism == EOrganism.HOMO_SAPIENS) {
+			btnOrganismHuman.setSelection(true);
+			organism = EOrganism.HOMO_SAPIENS;			
+		}
+		else {
+			btnOrganismMouse.setSelection(true);
+			organism = EOrganism.MUS_MUSCULUS;
+		}
+		btnLoadPathwayData = new Button(composite, SWT.CHECK);
+		btnLoadPathwayData.setText("Load pathway data");
 		btnLoadPathwayData.setEnabled(true);
 		btnLoadPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		// Application.caleydoCore.getGeneralManager().getPreferenceStore()
-		// .getBoolean(PreferenceConstants.PATHWAY_DATA_OK)
-		// ||
-		if (Application.caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-			PreferenceConstants.FIRST_START)
+		// Set if pathways were loaded in last session
+		String sLastChosenPathwayDataSources =
+			GeneralManager.get().getPreferenceStore().getString(
+				PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
+
+		if (sLastChosenPathwayDataSources.isEmpty())
+			btnLoadPathwayData.setSelection(false);
+		else
+			btnLoadPathwayData.setSelection(true);
+
+		final Group groupPathways = new Group(composite, SWT.None);
+		groupPathways.setText("Select pathway database");
+		groupPathways.setLayout(new RowLayout());
+
+		final Button btnLoadKEGGPathwayData = new Button(groupPathways, SWT.CHECK);
+		btnLoadKEGGPathwayData.setText("KEGG");
+		btnLoadKEGGPathwayData.setEnabled(true);
+		// btnLoadKEGGPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		final Button btnLoadBioCartaPathwayData = new Button(groupPathways, SWT.CHECK);
+		btnLoadBioCartaPathwayData.setText("BioCarta");
+		btnLoadBioCartaPathwayData.setEnabled(true);
+		// btnLoadKEGGPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		// Set pathway databases which was used in last session
+		if (sLastChosenPathwayDataSources.contains(EPathwayDatabaseType.KEGG.name())) {
+			btnLoadKEGGPathwayData.setSelection(true);
+			bLoadKEGGPathwayData = true;
+		}
+		else {
+			btnLoadKEGGPathwayData.setSelection(false);
+			bLoadKEGGPathwayData = false;
+		}
+
+		if (sLastChosenPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA.name())) {
+			btnLoadBioCartaPathwayData.setSelection(true);
+			bLoadBioCartaPathwayData = true;
+		}
+		else {
+			btnLoadBioCartaPathwayData.setSelection(false);
+			bLoadBioCartaPathwayData = false;
+		}
+
+		if (GeneralManager.get().getPreferenceStore().getBoolean(PreferenceConstants.FIRST_START)
 			&& !Application.isInternetConnectionOK()) {
 			btnLoadPathwayData.setEnabled(false);
+			groupPathways.setEnabled(false);
 		}
+
+		btnLoadKEGGPathwayData.setEnabled(btnLoadPathwayData.getSelection());
+		btnLoadBioCartaPathwayData.setEnabled(btnLoadPathwayData.getSelection());
 
 		btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
-
-				// if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
-				// MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-				// messageBox.setText("Load KEGG and BioCarta pathway data");
-				// messageBox
-				// .setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
-				// messageBox.open();
-				//
-				// ((Button) e.widget).setSelection(true);
-				//
-				// return;
-				// }
-
-				Application.bLoadPathwayData = bLoadPathwayData;
+				groupPathways.setEnabled(bLoadPathwayData);
+				btnLoadKEGGPathwayData.setEnabled(bLoadPathwayData);
+				btnLoadBioCartaPathwayData.setEnabled(bLoadPathwayData);
 			}
 		});
+
+		btnLoadKEGGPathwayData.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				bLoadKEGGPathwayData = ((Button) e.widget).getSelection();
+
+				if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
+					btnLoadPathwayData.setSelection(false);
+					btnLoadKEGGPathwayData.setEnabled(false);
+					btnLoadBioCartaPathwayData.setEnabled(false);
+				}
+			}
+		});
+
+		btnLoadBioCartaPathwayData.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				bLoadBioCartaPathwayData = ((Button) e.widget).getSelection();
+				
+				if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
+					btnLoadPathwayData.setSelection(false);
+					btnLoadKEGGPathwayData.setEnabled(false);
+					btnLoadBioCartaPathwayData.setEnabled(false);
+				}
+			}
+		});
+		//
+		// btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// boolean bLoadPathwayData = ((Button) e.widget).getSelection();
+		//
+		// // if (projectType == EProjectType.PATHWAY_VIEWER_MODE && !bLoadPathwayData) {
+		// // MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
+		// // messageBox.setText("Load KEGG and BioCarta pathway data");
+		// // messageBox
+		// //
+		// .setMessage("You have selected the pathway viewer mode. Therefore pathway data loading cannot be turned off.");
+		// // messageBox.open();
+		// //
+		// // ((Button) e.widget).setSelection(true);
+		// //
+		// // return;
+		// // }
+		//
+		// // Application.bLoadPathwayData = bLoadPathwayData;
+		// }
+		// });
 
 		// Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
 		// sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
@@ -372,7 +479,7 @@ public class ChooseProjectTypePage
 		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		gd.horizontalSpan = 2;
 		loadProject.setLayoutData(gd);
-		
+
 		final Button chooseProjectFile = new Button(composite, SWT.CENTER);
 		chooseProjectFile.setEnabled(false);
 		chooseProjectFile.setText("Choose File");
@@ -401,7 +508,8 @@ public class ChooseProjectTypePage
 				chooseProjectFile.setEnabled(true);
 				if (projectFileName.getText() != null && !projectFileName.getText().isEmpty()) {
 					setPageComplete(true);
-				} else {
+				}
+				else {
 					setPageComplete(false);
 				}
 			}
@@ -425,9 +533,11 @@ public class ChooseProjectTypePage
 	}
 
 	/**
-	 * Creates the tab for connecting a client to a already running caleydo-server-application
-	 * to get the use case and basic data from.
-	 * @param tabFolder tab-widget to create the new tab-item in
+	 * Creates the tab for connecting a client to a already running caleydo-server-application to get the use
+	 * case and basic data from.
+	 * 
+	 * @param tabFolder
+	 *            tab-widget to create the new tab-item in
 	 */
 	private void createCollaborationClientTab(TabFolder tabFolder) {
 		collaborationClientTab = new TabItem(tabFolder, SWT.NONE);
@@ -452,20 +562,29 @@ public class ChooseProjectTypePage
 		gd = new GridData();
 		gd.widthHint = 200;
 		networkAddressText.setLayoutData(gd);
-		
+
 		setPageComplete(true);
 	}
-	
+
 	public EProjectType getProjectType() {
 		return projectType;
 	}
 
 	public EUseCaseMode getUseCaseMode() {
-		return useCaseMode;
+		return projectMode;
+	}
+
+	public boolean isKEGGPathwayDataLoadingRequested() {
+		return bLoadKEGGPathwayData && btnLoadPathwayData.getSelection();
+	}
+
+	public boolean isBioCartaPathwayLoadingRequested() {
+		return bLoadBioCartaPathwayData && btnLoadPathwayData.getSelection();
 	}
 
 	/**
 	 * Returns the network-name entered by the user in the network-name text-field
+	 * 
 	 * @return network-name to use
 	 */
 	public String getNetworkName() {
@@ -474,6 +593,7 @@ public class ChooseProjectTypePage
 
 	/**
 	 * Returns the network-address entered by the user in the network-address text-field
+	 * 
 	 * @return network-address to connect to
 	 */
 	public String getNetworkAddress() {
@@ -482,14 +602,19 @@ public class ChooseProjectTypePage
 
 	/**
 	 * Returns the project file-name for open existing projects
+	 * 
 	 * @return
 	 */
-	public String  getProjectFileName() {
+	public String getProjectFileName() {
 		return projectFileName.getText();
 	}
 
 	public EProjectLoadType getProjectLoadType() {
 		return projectLoadType;
+	}
+
+	public EOrganism getOrganism() {
+		return organism;
 	}
 
 }

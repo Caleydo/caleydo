@@ -112,7 +112,7 @@ public class KeggPathwayCacher
 		// triggerPathwayListGeneration();
 
 		if (triggeringCommand != null) {
-			progressBar.setSelection(100);
+//			progressBar.setSelection(100);
 			triggeringCommand.setFinishedKeggCacher();
 		}
 	}

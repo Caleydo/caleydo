@@ -2064,7 +2064,7 @@ public class GLParallelCoordinates
 
 						Integer iGateCount = hashNumberOfGatesPerAxisID.get(iExternalID);
 						if (iGateCount == null) {
-							iGateCount = 1;
+							iGateCount = 0;
 						}
 						else {
 							iGateCount++;

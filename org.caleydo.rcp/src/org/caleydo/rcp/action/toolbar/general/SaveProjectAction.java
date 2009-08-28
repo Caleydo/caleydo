@@ -15,7 +15,7 @@ import org.eclipse.ui.PlatformUI;
 public class SaveProjectAction
 	extends AToolBarAction {
 	public static final String TEXT = "Save Project";
-	public static final String ICON = "resources/icons/general/export_data.png";
+	public static final String ICON = "resources/icons/general/save.png";
 
 	/**
 	 * Constructor.

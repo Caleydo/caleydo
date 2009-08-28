@@ -6,7 +6,7 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.rcp.Application;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.search.SearchBox;
 import org.caleydo.rcp.view.swt.toolbar.ToolBarView;
@@ -48,11 +48,11 @@ public class PathwaySearchBox
 		pathwaySearchBox.setItems(items);
 		pathwaySearchBox.setTextLimit(21);
 
-		if (Application.bLoadPathwayData) {
+		if (!GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES).isEmpty()) {
 			pathwaySearchBox.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent e) {
-					if (!Application.bLoadPathwayData) {
+					if (GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES).isEmpty()) {
 						pathwaySearchBox.setEnabled(false);
 						return;
 					}
@@ -73,7 +73,7 @@ public class PathwaySearchBox
 						// sArSearchItems[iIndex] = pathway.getType().toString()
 						// + " - " + sPathwayTitle;
 
-						sArSearchItems[iIndex] = sPathwayTitle + " (" + pathway.getType().toString() + ")";
+						sArSearchItems[iIndex] = sPathwayTitle + " (" + pathway.getType().getName() + ")";
 						iIndex++;
 					}
 
@@ -138,10 +138,10 @@ public class PathwaySearchBox
 	private boolean loadPathway(String sEntity) {
 		EPathwayDatabaseType ePathwayDatabaseType;
 
-		if (sEntity.contains("KEGG")) {
+		if (sEntity.contains(EPathwayDatabaseType.KEGG.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
 		}
-		else if (sEntity.contains("BioCarta")) {
+		else if (sEntity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
 			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
 		}
 		else

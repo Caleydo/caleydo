@@ -1,9 +1,12 @@
 package org.caleydo.rcp.wizard.firststart;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.dialogs.DialogPage;
@@ -11,11 +14,8 @@ import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -31,17 +31,19 @@ public final class FetchPathwayDataPage
 	public static final String PAGE_NAME = "Fetch Pathway Data";
 
 	public final WizardPage thisPage;
+	private ArrayList<EPathwayDatabaseType> alFetchPathwaySources;
 
 	/**
 	 * Constructor.
 	 */
-	public FetchPathwayDataPage() {
+	public FetchPathwayDataPage(ArrayList<EPathwayDatabaseType> alFetchPathwaySources) {
 		super(PAGE_NAME, PAGE_NAME, null);
 
 		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader().getResource(
 			"resources/wizard/wizard.png")));
 
 		thisPage = this;
+		this.alFetchPathwaySources = alFetchPathwaySources;
 
 		setPageComplete(false);
 	}
@@ -65,57 +67,58 @@ public final class FetchPathwayDataPage
 		progressBarGroup.setLayout(new GridLayout(2, false));
 		progressBarGroup.setText("Fetch Progress");
 
-		final Button buttonStartFetch = new Button(composite, SWT.NONE);
-		buttonStartFetch.setText("Start pathway download");
-		buttonStartFetch.setAlignment(SWT.CENTER);
+		ProgressBar progressBarKeggPathwayCacher = null;
+		ProgressBar progressBarKeggImagePathwayCacher = null;
+		if (alFetchPathwaySources.contains(EPathwayDatabaseType.KEGG)) {
+			Label lblKeggPathwayCacher = new Label(progressBarGroup, SWT.NULL);
+			lblKeggPathwayCacher.setText("KEGG Pathway Data Download Status:");
+			lblKeggPathwayCacher.setAlignment(SWT.RIGHT);
+			lblKeggPathwayCacher.setBounds(10, 10, 80, 20);
 
-		Label lblKeggPathwayCacher = new Label(progressBarGroup, SWT.NULL);
-		lblKeggPathwayCacher.setText("KEGG Pathway Data Download Status:");
-		lblKeggPathwayCacher.setAlignment(SWT.RIGHT);
-		lblKeggPathwayCacher.setBounds(10, 10, 80, 20);
+			progressBarKeggPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
+			progressBarKeggPathwayCacher.setBounds(10, 10, 200, 32);
 
-		final ProgressBar progressBarKeggPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-		progressBarKeggPathwayCacher.setBounds(10, 10, 200, 32);
+			Label lblKeggImagePathwayCacher = new Label(progressBarGroup, SWT.NULL);
+			lblKeggImagePathwayCacher.setText("KEGG Image Download Status:");
+			lblKeggImagePathwayCacher.setAlignment(SWT.RIGHT);
+			lblKeggImagePathwayCacher.setBounds(10, 10, 80, 20);
 
-		Label lblKeggImagePathwayCacher = new Label(progressBarGroup, SWT.NULL);
-		lblKeggImagePathwayCacher.setText("KEGG Image Download Status:");
-		lblKeggImagePathwayCacher.setAlignment(SWT.RIGHT);
-		lblKeggImagePathwayCacher.setBounds(10, 10, 80, 20);
+			progressBarKeggImagePathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
+			progressBarKeggImagePathwayCacher.setBounds(10, 10, 200, 32);
+		}
 
-		final ProgressBar progressBarKeggImagePathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-		progressBarKeggImagePathwayCacher.setBounds(10, 10, 200, 32);
+		ProgressBar progressBarBioCartaPathwayCacher = null;
+		if (alFetchPathwaySources.contains(EPathwayDatabaseType.BIOCARTA)) {
+			Label lblBioCartaPathwayCacher = new Label(progressBarGroup, SWT.NULL);
+			lblBioCartaPathwayCacher.setText("BioCarta Data and Image Download Status:");
+			lblBioCartaPathwayCacher.setAlignment(SWT.RIGHT);
+			lblBioCartaPathwayCacher.setBounds(10, 10, 80, 20);
 
-		Label lblBioCartaPathwayCacher = new Label(progressBarGroup, SWT.NULL);
-		lblBioCartaPathwayCacher.setText("BioCarta Data and Image Download Status:");
-		lblBioCartaPathwayCacher.setAlignment(SWT.RIGHT);
-		lblBioCartaPathwayCacher.setBounds(10, 10, 80, 20);
+			progressBarBioCartaPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
+			progressBarBioCartaPathwayCacher.setBounds(10, 10, 200, 32);
+		}
 
-		final ProgressBar progressBarBioCartaPathwayCacher = new ProgressBar(progressBarGroup, SWT.SMOOTH);
-		progressBarBioCartaPathwayCacher.setBounds(10, 10, 200, 32);
+		CmdFetchPathwayData cmdPathwayFetch =
+			(CmdFetchPathwayData) GeneralManager.get().getCommandManager().createCommandByType(
+				ECommandType.FETCH_PATHWAY_DATA);
 
-		buttonStartFetch.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				CmdFetchPathwayData cmdPathwayFetch =
-					(CmdFetchPathwayData) GeneralManager.get().getCommandManager().createCommandByType(
-						ECommandType.FETCH_PATHWAY_DATA);
+		PreferenceStore prefStore =
+			Application.caleydoCoreBootloader.getGeneralManager().getPreferenceStore();
 
-				cmdPathwayFetch.setAttributes(composite.getDisplay(), progressBarKeggPathwayCacher,
-					progressBarKeggImagePathwayCacher, progressBarBioCartaPathwayCacher, parentPage, EOrganism.HOMO_SAPIENS);
+		EOrganism eOrganism =
+			EOrganism.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 
-				PreferenceStore prefStore = Application.caleydoCore.getGeneralManager().getPreferenceStore();
+		cmdPathwayFetch.setAttributes(composite.getDisplay(), progressBarKeggPathwayCacher,
+			progressBarKeggImagePathwayCacher, progressBarBioCartaPathwayCacher, parentPage, eOrganism,
+			alFetchPathwaySources);
 
-				if (prefStore.getBoolean(PreferenceConstants.USE_PROXY)) {
-					String sProxyServer = prefStore.getString(PreferenceConstants.PROXY_SERVER);
-					String sProxyPort = prefStore.getString(PreferenceConstants.PROXY_PORT);
-					cmdPathwayFetch.setProxySettings(sProxyServer, Integer.parseInt(sProxyPort));
-				}
+		if (prefStore.getBoolean(PreferenceConstants.USE_PROXY)) {
+			String sProxyServer = prefStore.getString(PreferenceConstants.PROXY_SERVER);
+			String sProxyPort = prefStore.getString(PreferenceConstants.PROXY_PORT);
+			cmdPathwayFetch.setProxySettings(sProxyServer, Integer.parseInt(sProxyPort));
+		}
 
-				cmdPathwayFetch.doCommand();
-
-				buttonStartFetch.setEnabled(false);
-			}
-		});
+		cmdPathwayFetch.doCommand();
 
 		final Label lblNote = new Label(composite, SWT.NONE);
 		lblNote

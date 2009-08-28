@@ -1,10 +1,8 @@
 package org.caleydo.rcp.preferences;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayDataPage;
 import org.eclipse.jface.preference.PreferencePage;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -66,7 +64,7 @@ public class PathwayUpdatePreferencePage
 		lastUpdateLabel.setText("Last complete update: "
 			+ GeneralManager.get().getPreferenceStore().getString("lastPathwayDataUpdate"));
 
-		FetchPathwayDataPage page = new FetchPathwayDataPage();
+		FetchPathwayDataPage page = new FetchPathwayDataPage(null);
 		return page.createContent(composite, this);
 	}
 
@@ -101,19 +99,15 @@ public class PathwayUpdatePreferencePage
 	public boolean performCancel() {
 		super.performCancel();
 		
-		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-
-		if(store.getBoolean(PreferenceConstants.PATHWAY_DATA_OK))
-			return true;
-		
+//		PreferenceStore store = GeneralManager.get().getPreferenceStore();
+//
+//		if(store.getBoolean(PreferenceConstants.PATHWAY_DATA_OK))
+//			return true;
 
 		MessageBox messageBox = new MessageBox(this.getShell(), SWT.OK);
 		messageBox.setText("Pathway Update Notification");
 		messageBox.setMessage("You have cancelled the pathway update. "
-			+ "Please try again and wait until the update process has finished!");
-		// "The system restores the old pathway data fetched on"
-		// +GeneralManager.get()
-		// .getPreferenceStore().getString("lastPathwayDataUpdate"));
+			+ "Please try again and wait until the update process has finished!");;
 		messageBox.open();
 
 		return true;

@@ -274,16 +274,14 @@ public class ToolBarContentFactory {
 				}
 			}
 			catch (Exception e) {
-				System.out.println(e);
-				e.printStackTrace();
+				GeneralManager.get().getLogger().log(
+				new Status(Status.WARNING, Activator.PLUGIN_ID,
+					"No toolbar content providing class known for " + view
+						+ "; add its ToolBarInfo to ToolBarContentFactory"));
+				//e.printStackTrace();
 			}
 		}
-		else {
-//			GeneralManager.get().getLogger().log(
-//				new Status(Status.WARNING, Activator.PLUGIN_ID,
-//					"No toolbar content providing class known for " + view
-//						+ "; add its ToolBarInfo to ToolBarContentFactory"));
-		}
+
 		return content;
 	}
 

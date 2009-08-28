@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.Map.Entry;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
@@ -16,8 +17,12 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.net.GroupwareUtils;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -31,6 +36,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHe
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 import org.caleydo.rcp.core.bridge.RCPBridge;
+import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.view.RCPViewManager;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayWizard;
 import org.caleydo.rcp.wizard.firststart.InternetConfigurationWizard;
@@ -42,6 +48,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
@@ -63,7 +70,7 @@ public class Application
 
 	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE =
 		"data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
-	
+
 	@SuppressWarnings("unused")
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
@@ -71,7 +78,7 @@ public class Application
 	private static String REAL_DATA_SAMPLE_FILE =
 		"data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
 
-	public static CaleydoBootloader caleydoCore;
+	public static CaleydoBootloader caleydoCoreBootloader;
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
 
@@ -80,7 +87,10 @@ public class Application
 	public static boolean isStartedFromXML = false;
 
 	// The command line arguments overrules the preference store
-	public static boolean bLoadPathwayData = true;
+	// public static boolean bLoadPathwayDataKeggHomoSapiens = true;
+	// public static boolean bLoadPathwayDataKeggMusMusculus = true;
+	// public static boolean bLoadPathwayDataBiocartaHomoSapiens = true;
+	// public static boolean bLoadPathwayDataBiocartaMusMusculus = true;
 	public static boolean bOverrulePrefStoreLoadPathwayData = false;
 	public static boolean bIsWindowsOS = false;
 	public static boolean bIsInterentConnectionOK = false;
@@ -93,14 +103,16 @@ public class Application
 
 	/** list of serialized-view class to create during startup */
 	public static List<Class<? extends ASerializedView>> startViews;
-	
+
 	/** list of initialized {@link ASerializedView} instances */
 	public static List<ASerializedView> initializedStartViews;
 
-	/** initialization data received from a caleydo-server-application during startup */ 
+	/** initialization data received from a caleydo-server-application during startup */
 	public static ApplicationInitData initData = null;
-	
+
 	public RCPBridge rcpGuiBridge;
+
+	private PreferenceStore prefStore;
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -120,14 +132,15 @@ public class Application
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
-		caleydoCore = new CaleydoBootloader(rcpGuiBridge);
+		caleydoCoreBootloader = new CaleydoBootloader(rcpGuiBridge);
+
+		prefStore = GeneralManager.get().getPreferenceStore();
 
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
 
 		// Check if Caleydo will be started the first time and no internet connection is detected
-		if (caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(PreferenceConstants.FIRST_START)
-			&& !isInternetConnectionOK()) {
+		if (prefStore.getBoolean(PreferenceConstants.FIRST_START) && !isInternetConnectionOK()) {
 			WizardDialog internetConfigurationWizard =
 				new WizardDialog(shell, new InternetConfigurationWizard());
 			internetConfigurationWizard.open();
@@ -135,11 +148,12 @@ public class Application
 
 		// If no file is provided as command line argument a wizard page is opened to determine the xml file
 		if (sCaleydoXMLfile.equals("")) {
-			
+
 			if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
 				Application.initData = GroupwareUtils.startPlexClient();
 				GeneralManager.get().setUseCase(Application.initData.getUseCase());
-			} else {
+			}
+			else {
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
 				if (Window.CANCEL == projectWizardDialog.open()) {
 					shutDown();
@@ -149,9 +163,9 @@ public class Application
 			if (sCaleydoXMLfile.equals("")) {
 				IUseCase useCase = GeneralManager.get().getUseCase();
 				switch (applicationMode) {
-//					case GENE_EXPRESSION_PATHWAY_VIEWER:
-//						sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
-//						break;
+					// case GENE_EXPRESSION_PATHWAY_VIEWER:
+					// sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
+					// break;
 					case GENE_EXPRESSION_SAMPLE_DATA_RANDOM:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
 						useCase.setBootsTrapFileName(sCaleydoXMLfile);
@@ -171,12 +185,13 @@ public class Application
 					case PLEX_CLIENT:
 						sCaleydoXMLfile = GeneralManager.get().getUseCase().getBootsTrapFileName();
 						break;
-						
+
 					default:
 						throw new IllegalStateException("Unknown application mode " + applicationMode);
 				}
 			}
-		} else {
+		}
+		else {
 			// Assuming that if an external XML file is provided, the genetic use case applies
 			IUseCase useCase = new GeneticUseCase();
 			useCase.setBootsTrapFileName(sCaleydoXMLfile);
@@ -184,20 +199,12 @@ public class Application
 			isStartedFromXML = true;
 		}
 
-		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-			PreferenceConstants.PATHWAY_DATA_OK)
-			&& bLoadPathwayData)
-		// && !caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
-		// PreferenceConstants.FIRST_START))
-		{
-			WizardDialog firstStartWizard = new WizardDialog(shell, new FetchPathwayWizard());
-			firstStartWizard.open();
-		}
+		triggerPathwayFetching();
 
 		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
 		}
-
+		
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
 
@@ -207,10 +214,12 @@ public class Application
 
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
-			} else {
+			}
+			else {
 				return IApplication.EXIT_OK;
 			}
-		} finally {
+		}
+		finally {
 			if (!bDoExit) {
 				shutDown();
 			}
@@ -224,35 +233,43 @@ public class Application
 			for (String element : sArParam) {
 				if (element.equals("webstart")) {
 					bIsWebstart = true;
-				} else if (element.equals("no_pathways")) {
-					bLoadPathwayData = false;
+				}
+				else if (element.equals("no_pathways")) {
+					// bLoadPathwayData = false;
 					bOverrulePrefStoreLoadPathwayData = true;
-				} else if (element.equals("load_pathways")) {
-					bLoadPathwayData = true;
+				}
+				else if (element.equals("load_pathways")) {
+					// bLoadPathwayData = true;
 					bOverrulePrefStoreLoadPathwayData = true;
-				} else  if (element.equals("plexclient")) {
+				}
+				else if (element.equals("plexclient")) {
 					if (sCaleydoXMLfile != null && !sCaleydoXMLfile.isEmpty()) {
-						throw new IllegalArgumentException("It is not allowed to specify a bootstrap-file in plex-client mode.");
+						throw new IllegalArgumentException(
+							"It is not allowed to specify a bootstrap-file in plex-client mode.");
 					}
 					Application.applicationMode = EApplicationMode.PLEX_CLIENT;
-				} else {
+				}
+				else {
 					EStartViewType viewType = null;
 					try {
 						viewType = EStartViewType.valueOf(element);
 						startViews.add(viewType.getSerializedViewClass());
-					} catch (IllegalArgumentException ex) {
-						// command line parameter was not a related to a view type, so it must be the bootstrap file
+					}
+					catch (IllegalArgumentException ex) {
+						// command line parameter was not a related to a view type, so it must be the
+						// bootstrap file
 						if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
-							throw new IllegalArgumentException("It is not allowed to specify a bootstrap-file in plex-client mode.");
+							throw new IllegalArgumentException(
+								"It is not allowed to specify a bootstrap-file in plex-client mode.");
 						}
 						sCaleydoXMLfile = element;
 					}
-						
+
 				}
 			}
 		}
 	}
-	
+
 	private void shutDown() {
 		// Save preferences before shutdown
 		IGeneralManager generalManager = GeneralManager.get();
@@ -296,13 +313,13 @@ public class Application
 
 	public static void startCaleydoCore() {
 
-		caleydoCore.setXmlFileName(sCaleydoXMLfile);
-		caleydoCore.start();
+		caleydoCoreBootloader.setXmlFileName(sCaleydoXMLfile);
+		caleydoCoreBootloader.start();
 
 		Shell shell = new Shell();
 
-		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT ||
-			applicationMode == EApplicationMode.PLEX_CLIENT) {
+		if (applicationMode == EApplicationMode.COLLABORATION_CLIENT
+			|| applicationMode == EApplicationMode.PLEX_CLIENT) {
 			AUseCase useCase = (AUseCase) initData.getUseCase();
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.saveSetFile(loadDataParameters, initData.getSetFileContent());
@@ -313,21 +330,28 @@ public class Application
 				SetUtils.saveExperimentsTreeFile(loadDataParameters, initData.getGeneClusterTree());
 			}
 			// TODO remove temporary files (after storage creation or on shutdown)
-			
+
 			GeneralManager.get().setUseCase(useCase);
 
+			if (useCase instanceof GeneticUseCase)
+				triggerPathwayLoading();
+			
 			SetUtils.createStorages(loadDataParameters);
 			SetUtils.createData(useCase);
-			
+
 			HashMap<EVAType, VirtualArray> virtualArrayMap = initData.getVirtualArrayMap();
 			for (Entry<EVAType, VirtualArray> entry : virtualArrayMap.entrySet()) {
 				useCase.setVirtualArray(entry.getKey(), entry.getValue());
 			}
 			Application.initData = null;
-		} else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
+		}
+		else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
 			System.out.println("Load Project");
 			AUseCase useCase = (AUseCase) initData.getUseCase();
 			GeneralManager.get().setUseCase(useCase);
+
+			if (useCase instanceof GeneticUseCase)
+				triggerPathwayLoading();
 
 			LoadDataParameters loadDataParameters = useCase.getLoadDataParameters();
 			SetUtils.createStorages(loadDataParameters);
@@ -338,17 +362,24 @@ public class Application
 				useCase.setVirtualArray(entry.getKey(), entry.getValue());
 			}
 			Application.initData = null;
-		} else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL) {
+		}
+		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL) {
 
+			triggerPathwayLoading();
+			
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
 				bDoExit = true;
 			}
-		} else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
+		}
+		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
+			if (GeneralManager.get().getUseCase() instanceof GeneticUseCase)
+				triggerPathwayLoading();
+			
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
@@ -357,7 +388,7 @@ public class Application
 		}
 
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
-		// nicest place to do this. 
+		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML)
 			GeneralManager.get().getUseCase().updateSetInViews();
@@ -385,15 +416,16 @@ public class Application
 	}
 
 	/**
-	 * parses throw the list of start-views to initialize them by creating
-	 * default serialized representations of them.
+	 * parses throw the list of start-views to initialize them by creating default serialized representations
+	 * of them.
 	 */
 	public static void initializeDefaultStartViews() {
 		// Create view list dynamically when not specified via the command line
 		IUseCase usecase = GeneralManager.get().getUseCase();
 		if (startViews.isEmpty()) {
 			addDefaultStartViews(usecase);
-		} else {
+		}
+		else {
 			if (usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 				applyPathwayViewerViewFilter();
 			}
@@ -403,16 +435,18 @@ public class Application
 		for (Class<? extends ASerializedView> viewType : startViews) {
 			try {
 				initializedStartViews.add(viewType.newInstance());
-			} catch (IllegalAccessException ex) {
+			}
+			catch (IllegalAccessException ex) {
 				ex.printStackTrace();
-				// nothing we can do when the views no-arg constructor not public 
-			} catch (InstantiationException ex) {
+				// nothing we can do when the views no-arg constructor not public
+			}
+			catch (InstantiationException ex) {
 				throw new RuntimeException("Error while instantiating a view of type '" + viewType + "'", ex);
 			}
 		}
 		startViews = null;
 	}
-	
+
 	public static void openRCPViews(IFolderLayout layout) {
 
 		// Create RCP view manager
@@ -425,36 +459,41 @@ public class Application
 
 	/**
 	 * Adds the default start views. Used when no start views are defined with command line arguments.
-	 * @param useCase {@link IUseCase} to determine the correct default start views.
+	 * 
+	 * @param useCase
+	 *            {@link IUseCase} to determine the correct default start views.
 	 */
 	private static void addDefaultStartViews(IUseCase useCase) {
 		startViews.add(SerializedHTMLBrowserView.class);
-		
-		if (useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode()) {
+
+		if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
+			|| useCase instanceof UnspecifiedUseCase) {
 			// alStartViews.add(EStartViewType.TABULAR);
 			startViews.add(SerializedParallelCoordinatesView.class);
 			startViews.add(SerializedHierarchicalHeatMapView.class);
 		}
-		
+
 		// Only show bucket when pathway data is loaded
-		if (bLoadPathwayData) {
+		if (GeneralManager.get().getPathwayManager().size() > 0) {
 			startViews.add(SerializedRemoteRenderingView.class);
 		}
 	}
-	
+
 	/**
 	 * Filter all views except remote and browser in case of pathway viewer mode
 	 */
-	private static void applyPathwayViewerViewFilter() { 
-		ArrayList<Class <? extends ASerializedView>> newStartViews = new ArrayList<Class <? extends ASerializedView>>();
+	private static void applyPathwayViewerViewFilter() {
+		ArrayList<Class<? extends ASerializedView>> newStartViews =
+			new ArrayList<Class<? extends ASerializedView>>();
 		for (Class<? extends ASerializedView> view : startViews) {
-			if (view.equals(SerializedRemoteRenderingView.class) || view.equals(SerializedHTMLBrowserView.class)) {
+			if (view.equals(SerializedRemoteRenderingView.class)
+				|| view.equals(SerializedHTMLBrowserView.class)) {
 				newStartViews.add(view);
 			}
 		}
 		startViews = newStartViews;
 	}
-	
+
 	public static boolean isInternetConnectionOK() {
 
 		// Check internet connection
@@ -478,6 +517,44 @@ public class Application
 		}
 
 		deleteDir(path.toFile());
+	}
+
+	private static void triggerPathwayLoading() {
+		// Only load pathways in genetic use case mode
+		if (GeneralManager.get().getUseCase() instanceof GeneticUseCase) {
+			// Trigger pathway loading
+			new PathwayLoadingProgressIndicatorAction().run(null);
+		}
+	}
+
+	private void triggerPathwayFetching() {
+
+		// Only fetch pathways if in genetic use case mode
+		if (!prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE).equals(
+			EUseCaseMode.GENETIC_DATA.name()))
+			return;
+
+		String sPathwayDataSources =
+			prefStore.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
+		StringTokenizer tokenizer = new StringTokenizer(sPathwayDataSources, ";");
+		String sLoadedPathwaySources = prefStore.getString(PreferenceConstants.PATHWAY_DATA_OK);
+		ArrayList<EPathwayDatabaseType> alFetchPathwaySources = new ArrayList<EPathwayDatabaseType>();
+		EOrganism eOrganism =
+			EOrganism.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
+
+		// Look if organism and pathway source combination has been already fetched
+		while (tokenizer.hasMoreTokens()) {
+			EPathwayDatabaseType sTmpPathwayDataSource = EPathwayDatabaseType.valueOf(tokenizer.nextToken());
+			if (!sLoadedPathwaySources.contains(eOrganism.name() + "+" + sTmpPathwayDataSource))
+				alFetchPathwaySources.add(sTmpPathwayDataSource);
+		}
+
+		if (!alFetchPathwaySources.isEmpty()) {
+			WizardDialog firstStartWizard =
+				new WizardDialog(Display.getCurrent().getActiveShell(), new FetchPathwayWizard(
+					alFetchPathwaySources));
+			firstStartWizard.open();
+		}
 	}
 
 	// Deletes all files and subdirectories under dir.

@@ -10,6 +10,7 @@ import de.phleisch.app.itsucks.event.Event;
 import de.phleisch.app.itsucks.event.EventObserver;
 import de.phleisch.app.itsucks.io.http.impl.HttpRetrieverConfiguration;
 import de.phleisch.app.itsucks.job.Job;
+import de.phleisch.app.itsucks.job.JobList;
 import de.phleisch.app.itsucks.job.event.JobChangedEvent;
 
 /**
@@ -41,7 +42,7 @@ public abstract class APathwayCacher
 
 	protected int iExpectedDownloads = 0;
 
-	protected void processJobs(Dispatcher dispatcher) {
+	protected void processJobs(final Dispatcher dispatcher) {
 		dispatcher.getEventManager().registerObserver(new EventObserver() {
 			@Override
 			public void processEvent(Event arg0) {
@@ -49,6 +50,20 @@ public abstract class APathwayCacher
 					&& ((JobChangedEvent) arg0).getJob().getState() == Job.STATE_FINISHED) {
 					iDownloadCount++;
 
+					if (progressBar.isDisposed()) {
+//						dispatcher.getEventManager().shutdown();
+//						dispatcher.getWorkerPool().abortBusyWorker();
+						dispatcher.stop();
+						
+						while(dispatcher.getJobManager().getNextOpenJob() != null)
+							dispatcher.getJobManager().removeJob(dispatcher.getJobManager().getNextOpenJob());
+//						
+//						for (JobL job : dispatcher.getJobManager().getJobList())
+//							
+//						dispatcher.getJobManager().removeJob(arg0)
+						return;
+					}
+							
 					progressBar.getDisplay().asyncExec(new Runnable() {
 						public void run() {
 							if (progressBar.isDisposed())

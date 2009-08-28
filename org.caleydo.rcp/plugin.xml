@@ -317,9 +317,19 @@
             name="Open Clinical Parallel Coordinates">
       </command>
       <command
-            defaultHandler="org.caleydo.rcp.command.handler.ExportHandler"
-            id="org.caleydo.rcp.command.export"
-            name="Export">
+            defaultHandler="org.caleydo.rcp.command.handler.ExportDataHandler"
+            id="org.caleydo.rcp.command.export_data"
+            name="Export Data">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ImportDataHandler"
+            id="org.caleydo.rcp.command.import_data"
+            name="Import Data">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.SaveProjectHandler"
+            id="org.caleydo.rcp.command.save_project"
+            name="Save Project">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenRadialHierarchyHandler"
@@ -330,11 +340,6 @@
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenHyperbolicHandler"
             id="org.caleydo.rcp.command.openviews.hyperbolic"
             name="Open Hyperbolic">
-      </command>
-      <command
-            defaultHandler="org.caleydo.rcp.command.handler.LoadDataHandler"
-            id="org.caleydo.rcp.command.load_data"
-            name="Load Data">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenCollabHandler"
@@ -403,15 +408,21 @@
                id="fileMenu"
                label="File">
             <command
-                  commandId="org.caleydo.rcp.command.load_data"
-                  icon="resources/icons/general/load_data.png"
-                  label="Load Data"
+                  commandId="org.caleydo.rcp.command.save_project"
+                  icon="resources/icons/general/save.png"
+                  label="Save Project"
                   style="push">
             </command>
             <command
-                  commandId="org.caleydo.rcp.command.export"
+                  commandId="org.caleydo.rcp.command.import_data"
+                  icon="resources/icons/general/import_data.png"
+                  label="Import Data"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.export_data"
                   icon="resources/icons/general/export_data.png"
-                  label="Export"
+                  label="Export Data"
                   style="push">
             </command>
             <separator

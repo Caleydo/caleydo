@@ -1,6 +1,7 @@
 package org.caleydo.rcp;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
@@ -84,10 +85,14 @@ public class ApplicationWorkbenchWindowAdvisor
 				}
 			}
 		}
-
-		if (!Application.bDoExit && Application.bLoadPathwayData) {
-			// Trigger pathway loading
-			new PathwayLoadingProgressIndicatorAction().run(null);
-		}
+			
+//		if (!Application.bDoExit) {		
+//			
+//			// Only load pathways in genetic use case mode
+//			if (GeneralManager.get().getUseCase() instanceof GeneticUseCase) {
+//				// Trigger pathway loading
+//				new PathwayLoadingProgressIndicatorAction().run(null);				
+//			}
+//		}
 	}
 }

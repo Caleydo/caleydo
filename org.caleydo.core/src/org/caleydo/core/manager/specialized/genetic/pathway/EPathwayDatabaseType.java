@@ -35,10 +35,4 @@ public enum EPathwayDatabaseType {
 
 		return sURL;
 	}
-
-	@Override
-	public String toString() {
-
-		return sName;
-	}
 }

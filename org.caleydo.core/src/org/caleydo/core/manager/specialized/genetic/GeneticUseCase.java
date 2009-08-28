@@ -35,7 +35,7 @@ public class GeneticUseCase
 	/**
 	 * Organism on which the genetic analysis data bases on.
 	 */
-	private EOrganism eOrganism = EOrganism.HOMO_SAPIENS; // FIXME: just for testing
+	private EOrganism eOrganism = EOrganism.HOMO_SAPIENS;
 
 	/**
 	 * Constructor.

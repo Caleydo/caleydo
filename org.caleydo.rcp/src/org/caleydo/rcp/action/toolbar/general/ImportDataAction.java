@@ -7,7 +7,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class LoadDataAction
+public class ImportDataAction
 	extends AToolBarAction {
 	public static final String TEXT = "Load data";
 	public static final String ICON = "resources/icons/general/load_data.png";
@@ -15,7 +15,7 @@ public class LoadDataAction
 	/**
 	 * Constructor.
 	 */
-	public LoadDataAction() {
+	public ImportDataAction() {
 		super(-1);
 
 		setText(TEXT);

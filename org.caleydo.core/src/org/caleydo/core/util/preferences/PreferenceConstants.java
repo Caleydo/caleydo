@@ -12,6 +12,25 @@ public class PreferenceConstants {
 	public static final String P_CHOICE = "choicePreference";
 	public static final String P_STRING = "stringPreference";
 
+	// General
+	public static final String FIRST_START = "firstStart";
+	public static final String VERSION = "version";
+	
+	// Project mode
+//	public static final String GENETIC_DATA_MODE = "gene";
+//	public static final String UNSPECIFIED_DATA_MODE = "general";
+//	public static final String COLLABORATION_DATA_MODE = "collaboration";
+//	public static final String LOAD_PROJECT_MODE = "load_project";
+
+	// Pathway
+	public static final String PATHWAY_DATA_OK = "pathwayDataOK";
+	public static final String LAST_CHOSEN_PATHWAY_DATA_SOURCES = "lastLoadedPathwayDataSources";
+	public static final String LAST_CHOSEN_ORGANISM = "lastLoadedOrganism";
+	public static final String LAST_CHOSEN_USE_CASE_MODE = "lastChosenUseCaseMode";
+	
+	// TODO: make it specific for each pathway database + organism combination
+	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
+
 	// Color Mapping
 	public static final String GENE_EXPRESSION_PREFIX = EColorMappingType.GENE_EXPRESSION + "_";
 	public static final String NUMBER_OF_COLOR_MARKER_POINTS = "numberOfColorMarkerPoints";
@@ -31,17 +50,7 @@ public class PreferenceConstants {
 	// Parallel Coordinates
 	public static final String PC_NUM_RANDOM_SAMPLING_POINT = "pcNumRandomSamplinPoints";
 	public static final String PC_LIMIT_REMOTE_TO_CONTEXT = "pcLimitRemoteToContext";
-
-	// Pathway
-	public static final String PATHWAY_DATA_OK = "pathwayDataOK";
-	public static final String LOAD_PATHWAY_DATA = "loadPathwayData";
-
-	// General
-	public static final String FIRST_START = "firstStart";
-	public static final String VERSION = "version";
-
-	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
-
+	
 	@Deprecated
 	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
 
@@ -49,7 +58,5 @@ public class PreferenceConstants {
 	public static final String PROXY_SERVER = "proxyServer";
 	public static final String PROXY_PORT = "proxyPort";
 
-	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
-	
-	public static final String DATA_MODE_LAST_USED = "dataModeLastUsed";
+	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";	
 }

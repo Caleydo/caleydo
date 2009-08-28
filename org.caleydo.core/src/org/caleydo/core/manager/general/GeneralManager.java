@@ -25,10 +25,13 @@ import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
+import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
@@ -87,10 +90,9 @@ public class GeneralManager
 	 * The use case determines which kind of data is loaded in the views.
 	 */
 	private IUseCase useCase;
-	
+
 	/**
-	 * FIXME: Think about a more general way for loading clinical data 
-	 * and gene expression data concurrently.
+	 * FIXME: Think about a more general way for loading clinical data and gene expression data concurrently.
 	 * 
 	 * @deprecated A more general way for handling multiple use cases is needed.
 	 */
@@ -125,7 +127,7 @@ public class GeneralManager
 
 		groupwareManager = null;
 		serializationManager = new SerializationManager();
-		
+
 		initPreferences();
 
 		resourceLoader = new ResourceLoader();
@@ -134,7 +136,7 @@ public class GeneralManager
 		if (GeneralManager.get().isWiiModeActive()) {
 			wiiRemote.connect();
 		}
-		
+
 		trackDataProvider = new TrackDataProvider();
 	}
 
@@ -161,20 +163,21 @@ public class GeneralManager
 			preferenceStore.load();
 			String sStoredVersion = preferenceStore.getString(PreferenceConstants.VERSION);
 
-			// If stored version is older then current version - remove old caleydo folder
+			// If stored version is older then current version - remove old Caleydo folder
 			// Test 1st and 2nd number of version string
 			if (sStoredVersion.equals("")
-				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(IGeneralManager.VERSION.substring(0, 1)) && new Integer(
-					sStoredVersion.substring(2, 3)) < new Integer(IGeneralManager.VERSION.substring(2, 3)))) {
+				|| (new Integer(sStoredVersion.substring(0, 1)) <= new Integer(IGeneralManager.VERSION
+					.substring(0, 1)) && new Integer(sStoredVersion.substring(2, 3)) < new Integer(
+					IGeneralManager.VERSION.substring(2, 3)))) {
 
 				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
 				messageBox.setText("Clean old data");
 				messageBox
-					.setMessage("You have downloaded a new major version of Caleydo. \nOld pathway data and Caleydo settings will be discarded and newly created.");
+					.setMessage("You have downloaded a new major version of Caleydo ("+IGeneralManager.VERSION+"). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
 				messageBox.open();
-				
+
 				CmdFetchPathwayData.deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH));
-				
+
 				initCaleydoFolder();
 			}
 
@@ -211,8 +214,12 @@ public class GeneralManager
 		try {
 			preferenceStore.setValue(PreferenceConstants.VERSION, IGeneralManager.VERSION);
 			preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
-			preferenceStore.setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
-			preferenceStore.setValue(PreferenceConstants.LOAD_PATHWAY_DATA, true);
+			preferenceStore.setValue(PreferenceConstants.PATHWAY_DATA_OK, "");
+			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, EOrganism.HOMO_SAPIENS
+				.toString());
+			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
+				EPathwayDatabaseType.KEGG.name() + ";" + EPathwayDatabaseType.BIOCARTA.name());
+			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EUseCaseMode.GENETIC_DATA.name());
 			preferenceStore.setValue(PreferenceConstants.USE_PROXY, false);
 			preferenceStore.save();
 		}
@@ -302,7 +309,7 @@ public class GeneralManager
 	public IDManager getIDManager() {
 		return IDManager;
 	}
-	
+
 	@Override
 	public IGUIBridge getGUIBridge() {
 		return guiBridge;
@@ -312,12 +319,12 @@ public class GeneralManager
 	public boolean isWiiModeActive() {
 		return bIsWiiMode;
 	}
-	
+
 	@Override
 	public WiiRemote getWiiRemote() {
 		return wiiRemote;
 	}
-	
+
 	@Override
 	public TrackDataProvider getTrackDataProvider() {
 		return trackDataProvider;
@@ -335,13 +342,13 @@ public class GeneralManager
 
 	@Override
 	public ClinicalUseCase getClinicalUseCase() {
-		
+
 		if (clinicalUseCase == null)
 			clinicalUseCase = new ClinicalUseCase();
-		
+
 		return clinicalUseCase;
 	}
-	
+
 	@Override
 	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase) {
 		this.clinicalUseCase = clinicalUseCase;

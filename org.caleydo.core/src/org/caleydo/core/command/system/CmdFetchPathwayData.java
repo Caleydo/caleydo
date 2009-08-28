@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.caleydo.core.application.helper.cacher.biocarta.BioCartaPathwayCacher;
@@ -13,6 +14,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.dialogs.DialogPage;
@@ -28,7 +30,7 @@ import org.eclipse.swt.widgets.ProgressBar;
  */
 public class CmdFetchPathwayData
 	extends ACmdExternalAttributes {
-	
+
 	private Display display = null;
 
 	private DialogPage parentPage = null;
@@ -41,6 +43,8 @@ public class CmdFetchPathwayData
 	private KeggPathwayCacher keggPathwayCacher;
 	private KeggPathwayImageCacher keggPathwayImageCacher;
 
+	private EOrganism eOrganism;
+
 	/**
 	 * Constructor.
 	 */
@@ -50,17 +54,12 @@ public class CmdFetchPathwayData
 
 	@Override
 	public void doCommand() {
-		clearOldPathwayData();
+		// clearOldPathwayData();
 
-		try {
-			generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
-			generalManager.getPreferenceStore().save();
-		}
-		catch (IOException e1) {
-			throw new IllegalStateException("Unable to save preference file.");
-		}
-
-		keggPathwayCacher.start();
+		if (keggPathwayCacher != null)
+			keggPathwayCacher.start();
+		else
+			bioCartaPathwayCacher.start();
 
 		commandManager.runDoCommand(this);
 	}
@@ -78,58 +77,105 @@ public class CmdFetchPathwayData
 	public void setAttributes(final Display display, final ProgressBar progressBarKeggPathwayCacher,
 		final ProgressBar progressBarKeggPathwayImageCacher,
 		final ProgressBar progressBarBioCartaPathwayCacher, final DialogPage parentPage,
-		final EOrganism eOrganism) {
-		
+		final EOrganism eOrganism, final ArrayList<EPathwayDatabaseType> alPathwayDataSources) {
+
 		this.display = display;
 		this.parentPage = parentPage;
+		this.eOrganism = eOrganism;
 
-		bioCartaPathwayCacher = new BioCartaPathwayCacher(display, progressBarBioCartaPathwayCacher, this, eOrganism);
-		keggPathwayCacher = new KeggPathwayCacher(display, progressBarKeggPathwayCacher, this, eOrganism);
-		keggPathwayImageCacher = new KeggPathwayImageCacher(display, progressBarKeggPathwayImageCacher, this, eOrganism);
+		if (alPathwayDataSources.contains(EPathwayDatabaseType.BIOCARTA)) {
+			bioCartaPathwayCacher =
+				new BioCartaPathwayCacher(display, progressBarBioCartaPathwayCacher, this, eOrganism);
+		}
+
+		if (alPathwayDataSources.contains(EPathwayDatabaseType.KEGG)) {
+			keggPathwayCacher = new KeggPathwayCacher(display, progressBarKeggPathwayCacher, this, eOrganism);
+			keggPathwayImageCacher =
+				new KeggPathwayImageCacher(display, progressBarKeggPathwayImageCacher, this, eOrganism);
+		}
 	}
 
 	public void setProxySettings(String sProxyServer, int iProxyPort) {
-		bioCartaPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
-		keggPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
-		keggPathwayImageCacher.setProxySettings(sProxyServer, iProxyPort);
+
+		if (bioCartaPathwayCacher != null)
+			bioCartaPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
+
+		if (keggPathwayCacher != null) {
+			keggPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
+			keggPathwayImageCacher.setProxySettings(sProxyServer, iProxyPort);
+		}
 	}
 
 	public void setFinishedKeggCacher() {
 		isKeggCacherFinished = true;
 		notifyWizard();
 		keggPathwayImageCacher.start();
+		// setFinishedKeggImageCacher();
 	}
 
 	public void setFinishedKeggImageCacher() {
 		isKeggImageCacherFinished = true;
 		notifyWizard();
-		bioCartaPathwayCacher.start();
+
+		if (bioCartaPathwayCacher != null)
+			bioCartaPathwayCacher.start();
+
+		// Append pathway organism+source combination
+		generalManager.getPreferenceStore().setValue(
+			PreferenceConstants.PATHWAY_DATA_OK,
+			generalManager.getPreferenceStore().getString(PreferenceConstants.PATHWAY_DATA_OK)
+				+ eOrganism.name() + "+" + EPathwayDatabaseType.KEGG.name() + ";");
+		
+		try {
+			generalManager.getPreferenceStore().save();
+		}
+		catch (IOException e1) {
+			throw new IllegalStateException("Unable to save preference file.");
+		}
 	}
 
 	public void setFinishedBioCartaCacher() {
 		isBioCartaCacherFinished = true;
 		notifyWizard();
+
+		// Append pathway organism+source combination
+		generalManager.getPreferenceStore().setValue(
+			PreferenceConstants.PATHWAY_DATA_OK,
+			generalManager.getPreferenceStore().getString(PreferenceConstants.PATHWAY_DATA_OK)
+				+ eOrganism.name() + "+" + EPathwayDatabaseType.BIOCARTA.name() + ";");
+	
+		try {
+			generalManager.getPreferenceStore().save();
+		}
+		catch (IOException e1) {
+			throw new IllegalStateException("Unable to save preference file.");
+		}
 	}
 
 	public void notifyWizard() {
-		if (parentPage == null)
+		if (parentPage == null || ((WizardPage) parentPage).getWizard() == null
+			|| ((WizardPage) parentPage).getWizard().getContainer() == null)
 			return;
 
-		if (isKeggCacherFinished && isKeggImageCacherFinished && isBioCartaCacherFinished) {
+		if ((isKeggCacherFinished || keggPathwayCacher == null)
+			&& (isKeggImageCacherFinished || keggPathwayCacher == null)
+			&& (isBioCartaCacherFinished || bioCartaPathwayCacher == null)) {
+
 			display.asyncExec(new Runnable() {
 				public void run() {
 					if (parentPage instanceof WizardPage) {
 						((WizardPage) parentPage).setPageComplete(true);
+						// ((WizardPage) parentPage).getWizard().performFinish();
+						((WizardPage) parentPage).getWizard().getContainer().getShell().close();
 					}
-					else if (parentPage instanceof PreferencePage) {
-						((PreferencePage) parentPage).setValid(true);
-					}
+					// else if (parentPage instanceof PreferencePage) {
+					// ((PreferencePage) parentPage).setValid(true);
+					// }
+
+					generalManager.getPreferenceStore().setValue(PreferenceConstants.LAST_PATHWAY_UPDATE,
+						getDateTime());
 
 					try {
-						generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK,
-							true);
-						generalManager.getPreferenceStore().setValue(PreferenceConstants.LAST_PATHWAY_UPDATE,
-							getDateTime());
 						generalManager.getPreferenceStore().save();
 					}
 					catch (IOException e1) {
@@ -165,6 +211,9 @@ public class CmdFetchPathwayData
 	//		
 	// }
 
+	/**
+	 * @TODO: Call before updating pathway source
+	 */
 	private void clearOldPathwayData() {
 		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "kegg"));
 		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "cgap.nci.nih.gov"));
