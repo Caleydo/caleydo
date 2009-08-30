@@ -8,6 +8,12 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobject
  * @author Georg Neubauer
  */
 public final class DrawAbleObjectsFactory {
+	/**
+	 * Returns an object of type specified by the parameter
+	 * 
+	 * @param str
+	 * @return
+	 */
 	public static IDrawAbleObject getDrawAbleObject(String str) {
 		if (str == "Fallback")
 			return new DrawAbleObjectFallback();

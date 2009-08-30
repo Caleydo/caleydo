@@ -7,6 +7,8 @@ import java.util.EnumMap;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 
 /**
@@ -16,59 +18,98 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects
  */
 
 public abstract class ADrawAbleNode
-	implements IDrawAbleNode, Comparable<ADrawAbleNode> {
-	String nodeName;
-	int iComparableValue;
-	protected EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
+	implements IDrawAbleNode {
+	private String sNodeName;
+	private int iNodeID;
+	private ESelectionType eSelectionType;
+	private EDrawAbleNodeDetailLevel eDetailLevel;
+	private float fXCoord = 0;
+	private float fYCoord = 0;
+	private float fZCoord = 0;
+	private float fHeight = 0;
+	private float fWidth = 0;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param nodeName
-	 * @param iComparableValue
-	 */
-	public ADrawAbleNode(String nodeName, int iComparableValue) {
-		this.nodeName = nodeName;
-		this.iComparableValue = iComparableValue;
-		mRepresantations =
-			new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
-	}
+	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
+	private boolean bHighlight;
 
-	/**
-	 * Returns the name of the node.
-	 * 
-	 * @return
-	 */
+	@Override
 	public final String getNodeName() {
-		return this.nodeName;
+		return sNodeName;
 	}
 
 	@Override
-	public final int compareTo(ADrawAbleNode node) {
-		return this.iComparableValue - node.iComparableValue;
+	public final int getNodeNr() {
+		return iNodeID;
 	}
 
 	@Override
 	public final String toString() {
-		return this.nodeName + " " + this.iComparableValue;
+		return (sNodeName + ' ' + iNodeID);
 	}
 
-	// TODO: needs implementation of GLList
+	@Override
+	public final int compareTo(IDrawAbleNode node) {
+		return iNodeID - node.getNodeNr();
+	}
 
 	@Override
-	public final ArrayList<Vec3f> drawAtPostion(GL gl, float fXCoord, float fYCoord, float fZCoord,
-		float fHeight, float fWidth, EDrawAbleNodeDetailLevel eDetailLevel) {
-		return mRepresantations.get(eDetailLevel).drawObjectAtPosition(gl, fXCoord, fYCoord, fZCoord,
-			fHeight, fWidth);
+	public final void setHighlight(boolean b) {
+		this.bHighlight = b;
+	}
+
+	@Override
+	public final void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
+		this.fXCoord = fXCoord;
+		this.fYCoord = fYCoord;
+		this.fZCoord = fZCoord;
+		this.fHeight = fHeight;
+		this.fWidth = fWidth;
+	}
+
+	@Override
+	public final ArrayList<Vec3f> draw(GL gl) {
+		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		if (bHighlight)
+			daObj.drawHighlight(gl);
+		else
+			daObj.draw(gl);
+		return daObj.getConnectionPoints();
+	}
+
+	@Override
+	public final void setObjectToDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleObject iObject) {
+		mRepresantations.put(eDetailLevel, iObject);
+	}
+
+	@Override
+	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel) {
+		this.eDetailLevel = eDetailLevel;
+	}
+
+	@Override
+	public final ArrayList<Vec3f> getConnectionPoints() {
+		IDrawAbleObject daObj = mRepresantations.get(eSelectionType);
+		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		return daObj.getConnectionPoints();
 	}
 
 	/**
-	 * Add a draw able object to a specific detail level.
+	 * Constructor
 	 * 
-	 * @param eDetailLevel
-	 * @param iObject
+	 * @param sNodeName
+	 * @param iNodeID
+	 * @param sTypes
 	 */
-	public final void setDetailLevel(EDrawAbleNodeDetailLevel eDetailLevel, IDrawAbleObject iObject) {
-		mRepresantations.put(eDetailLevel, iObject);
+	public ADrawAbleNode(String sNodeName, int iNodeID, String[] sTypes) {
+		this.sNodeName = sNodeName;
+		this.iNodeID = iNodeID;
+		mRepresantations =
+			new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
+		eSelectionType = ESelectionType.DESELECTED;
+		int i = 0;
+		for (EDrawAbleNodeDetailLevel e : EDrawAbleNodeDetailLevel.values()) {
+			mRepresantations.put(e, DrawAbleObjectsFactory.getDrawAbleObject(sTypes[i++]));
+		}
 	}
 }

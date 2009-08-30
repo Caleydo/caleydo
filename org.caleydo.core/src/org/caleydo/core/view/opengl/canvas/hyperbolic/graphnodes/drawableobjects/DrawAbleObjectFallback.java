@@ -16,36 +16,46 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 public class DrawAbleObjectFallback
 	extends ADrawAbleObject {
 
-	public DrawAbleObjectFallback() {
-		this.fRed = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[0];
-		this.fGreen = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[1];
-		this.fBlue = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[2];
-		this.fAlpha = HyperbolicRenderStyle.DA_OBJ_FALLBACK_ALPHA;
+	@Override
+	protected void switchColorMapping(boolean b) {
+		if (b) {
+			this.fRed = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME_HL[0];
+			this.fGreen = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME_HL[1];
+			this.fBlue = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME_HL[2];
+			this.fAlpha = HyperbolicRenderStyle.DA_OBJ_FALLBACK_ALPHA_HL;
+		}
+		else {
+			this.fRed = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[0];
+			this.fGreen = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[1];
+			this.fBlue = HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME[2];
+			this.fAlpha = HyperbolicRenderStyle.DA_OBJ_FALLBACK_ALPHA;
+		}
 	}
 
 	@Override
-	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
-		float fHeight, float fWidth) {
-		float angle;
-		float radius;
-		gl.glColor4f(this.fRed, this.fGreen, this.fBlue, this.fAlpha);
-		radius = Math.min(fHeight / 2f, fWidth / 2f);
-		gl.glBegin(GL.GL_POLYGON);
-		for (int i = 0; i < 180; i++) {
-			angle = (float) (i * 2 * Math.PI / 180f);
-			gl.glVertex3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math.sin(angle)
-				* radius), 0.0f);
-		}
-		gl.glEnd();
-
+	public ArrayList<Vec3f> getConnectionPoints() {
 		ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
-
+		float radius = Math.min(fHeight / 2f, fWidth / 2f);
 		for (int i = 0; i < HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS; i++) {
-			angle = (float) (i * 2 * Math.PI / HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS);
+			float angle = (float) (i * 2 * Math.PI / HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS);
 			alPoints.add(new Vec3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math
 				.sin(angle)
 				* radius), fZCoord));
 		}
 		return alPoints;
+	}
+
+	@Override
+	public ArrayList<Vec3f> drawObject(GL gl) {
+		gl.glColor4f(fRed, fGreen, fBlue, fAlpha);
+		float radius = Math.min(fHeight / 2f, fWidth / 2f);
+		gl.glBegin(GL.GL_POLYGON);
+		for (int i = 0; i < 180; i++) {
+			float angle = (float) (i * 2 * Math.PI / 180f);
+			gl.glVertex3f((float) (fXCoord + Math.cos(angle) * radius), (float) (fYCoord + Math.sin(angle)
+				* radius), 0.0f);
+		}
+		gl.glEnd();
+		return getConnectionPoints();
 	}
 }

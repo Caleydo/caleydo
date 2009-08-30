@@ -6,28 +6,19 @@ import java.util.List;
 
 import javax.media.opengl.GL;
 
-public interface IDrawAbleConnection {
+public interface IDrawAbleConnection
+	extends Comparable<IDrawAbleConnection> {
 
-//	/**
-//	 * Draw the object at a certain position.
-//	 * 
-//	 * @param gl
-//	 * @param pStartPoint
-//	 * @param pEndPoint
-//	 * @param fThickness
-//	 * @return
-//	 */
-//	public void drawLineFromStartToEnd(GL gl, Vec3f pStartPoint, Vec3f pEndPoint, float fThickness);
-	
 	/**
 	 * Draw the object at a certain position.
 	 * 
 	 * @param gl
-	 * @param lPoints List of Points to connect
+	 * @param lPoints
+	 *            List of Points to connect
 	 * @param fThickness
 	 * @return
 	 */
-	public void drawConnectionFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness);
+	//public void drawConnectionFromStartToEnd(GL gl, List<Vec3f> lPoints, float fThickness);
 
 	/**
 	 * Set the background color of the draw able object type
@@ -46,4 +37,12 @@ public interface IDrawAbleConnection {
 	 * @return
 	 */
 	public void setConnectionAlpha(float fAlpha);
+	
+	public int getConnNr();
+	
+	void setHighlight(boolean b);
+	
+	void place(List<Vec3f> lPoints);
+	
+	void draw(GL gl);
 }

@@ -4,11 +4,9 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -18,17 +16,17 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleSplineConnection;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LinearTreeLayouter;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
@@ -51,15 +49,17 @@ public class GLHyperbolic
 	boolean bIsInListMode = false;
 
 	boolean bUseDetailLevel = true;
-	ISet set;
+	// ISet set;
 
-	Tree<ADrawAbleNode> tree = null;
+	boolean bIsSomethingHighlighted = false;
+
+	Tree<IDrawAbleNode> tree = null;
 
 	ITreeLayouter layouter = null;
 
 	HyperbolicRenderStyle renderStyle = null;
 
-	private ColorMappingManager colorMappingManager;
+	private ColorMappingManager colorMappingManager = null;
 
 	private RedrawViewListener redrawViewListener = null;
 
@@ -74,31 +74,32 @@ public class GLHyperbolic
 		super(glCanvas, sLabel, viewFrustum, true);
 
 		viewType = EManagedObjectType.GL_HYPERBOLIC;
+
+//		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
+//		alSelectionTypes.add(ESelectionType.NORMAL);
+//		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
+//		alSelectionTypes.add(ESelectionType.SELECTION);
+
 		colorMappingManager = ColorMappingManager.get();
 		renderStyle = new HyperbolicRenderStyle(viewFrustum);
-
-		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-		alSelectionTypes.add(ESelectionType.NORMAL);
-		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-		alSelectionTypes.add(ESelectionType.SELECTION);
 
 		// Build the Test Tree in Constructor
 		// TreeTester tester = new TreeTester();
 		// tree = tester;
 		// tree.runTest();
 
-//		tree = new Tree<ADrawAbleNode>();
-//		ADrawAbleNode test = new TestNode("first Test", 0);
-//		tree.setRootNode(test);
-//		for (int i = 1; i <= 6; ++i) {
-//			ADrawAbleNode test2 = new TestNode("childs", i);
-//			tree.addChild(test, test2);
-//			test = test2;
-//		}
-//
-//		test = tree.getRoot();
-//		ADrawAbleNode test2 = new TestNode("childs", 500);
-//		tree.addChild(test, test2);
+		// tree = new Tree<ADrawAbleNode>();
+		// ADrawAbleNode test = new TestNode("first Test", 0);
+		// tree.setRootNode(test);
+		// for (int i = 1; i <= 6; ++i) {
+		// ADrawAbleNode test2 = new TestNode("childs", i);
+		// tree.addChild(test, test2);
+		// test = test2;
+		// }
+		//
+		// test = tree.getRoot();
+		// ADrawAbleNode test2 = new TestNode("childs", 500);
+		// tree.addChild(test, test2);
 		// blabla(test);
 		// int lala = tree.getDepth();
 		// lala = tree.getDepth(test);
@@ -121,15 +122,19 @@ public class GLHyperbolic
 
 		// tree.addChild(test, test2);
 		// layouter = new LinearTreeLayouter(viewFrustum);
-		
+
 		tree = buildTestTree(3, 5);
 		System.out.println(tree.getGraph().toString());
-		layouter = new HTLayouter(viewFrustum);
+		layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
+		layouter.setTree(tree);
 	}
 
 	@Override
 	public void init(GL gl) {
-
+		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		layouter.init(gl);
+		if (tree == null)
+			return;
 		if (set == null)
 			return;
 	}
@@ -156,12 +161,12 @@ public class GLHyperbolic
 
 	}
 
-	public void setToListMode(boolean bSetToListMode) {
-		this.bIsInListMode = bSetToListMode;
-		super.setDetailLevel(EDetailLevel.HIGH);
-		bUseDetailLevel = false;
-		setDisplayListDirty();
-	}
+//	public void setToListMode(boolean bSetToListMode) {
+//		this.bIsInListMode = bSetToListMode;
+//		super.setDetailLevel(EDetailLevel.HIGH);
+//		bUseDetailLevel = false;
+//		setDisplayListDirty();
+//	}
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
@@ -175,11 +180,12 @@ public class GLHyperbolic
 	@Override
 	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
-
+		
 		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+			layouter.setLayoutDirty();
 		}
+		buildDisplayList(gl, iGLDisplayListIndexLocal);
+		bIsDisplayListDirtyLocal = false;
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
@@ -188,6 +194,10 @@ public class GLHyperbolic
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
+		//if (bIsSomethingHighlighted) {
+		//	bIsSomethingHighlighted = false;
+		//	setDisplayListDirty();
+		//}
 	}
 
 	@Override
@@ -200,6 +210,10 @@ public class GLHyperbolic
 
 		display(gl);
 		checkForHits(gl);
+		if (bIsSomethingHighlighted) {
+			bIsSomethingHighlighted = false;
+			setDisplayListDirty();
+		}
 
 		// glMouseListener.resetEvents();
 	}
@@ -207,7 +221,9 @@ public class GLHyperbolic
 	@Override
 	public void display(GL gl) {
 		processEvents();
+		layouter.display(gl);
 		gl.glCallList(iGLDisplayListToCall);
+	//	gl.glCallLists(arg0, arg1, arg2)
 		// GLHelperFunctions.drawAxis(gl);
 		// render(gl);
 		// clipToFrustum(gl);
@@ -228,11 +244,11 @@ public class GLHyperbolic
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		layouter.renderTreeLayout(gl, tree);
+		//gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		layouter.buildDisplayLists(gl);
 		// renderHistogram(gl);
 		// renderColorBars(gl);
-		gl.glEndList();
+		//gl.glEndList();
 	}
 
 	private void render(GL gl) {
@@ -294,13 +310,13 @@ public class GLHyperbolic
 		//		
 		// gl.glEnd();
 		// gl.glFlush();
-				
-		vec.add(new Vec3f(3.0f, 3.0f, 0));
-		vec.add(new Vec3f(2.0f, 2.0f, 0));
-		vec.add(new Vec3f(1.0f, 1.0f, 0));
 
-		DrawAbleSplineConnection spline = new DrawAbleSplineConnection();
-		spline.drawConnectionFromStartToEnd(gl, vec, 0.4f);
+		// vec.add(new Vec3f(3.0f, 3.0f, 0));
+		// vec.add(new Vec3f(2.0f, 2.0f, 0));
+		// vec.add(new Vec3f(1.0f, 1.0f, 0));
+
+		// DrawAbleSplineConnection spline = new DrawAbleSplineConnection();
+		// spline.drawConnectionFromStartToEnd(gl, vec, 0.4f);
 
 	}
 
@@ -315,22 +331,51 @@ public class GLHyperbolic
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
+
 		switch (ePickingType) {
 
-			case HEAT_MAP_STORAGE_SELECTION:
+			case HYPERBOLIC_NODE_SELECTION:
 
 				switch (pickingMode) {
 					case CLICKED:
 						break;
 					case MOUSE_OVER:
-
+						bIsSomethingHighlighted = true;
+						layouter.setHighlightedNode(iExternalID);
 						break;
+					case DOUBLE_CLICKED:
+						break;
+					case RIGHT_CLICKED:
+						break;
+
 					default:
-						return;
+						layouter.resetHighlight();
+						break;
 				}
 
-				setDisplayListDirty();
 				break;
+				
+			case HYPERBOLIC_LINE_SELECTION:
+
+				switch (pickingMode) {
+					case CLICKED:
+						break;
+					case MOUSE_OVER:
+						bIsSomethingHighlighted = true;
+						layouter.setHiglightedLine(iExternalID);
+						break;
+					case DOUBLE_CLICKED:
+						break;
+					case RIGHT_CLICKED:
+						break;
+
+					default:
+						layouter.resetHighlight();
+						break;
+				}
+
+				break;
+ 
 		}
 	}
 
@@ -403,29 +448,29 @@ public class GLHyperbolic
 
 	}
 
-	private Tree<ADrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {
+	private Tree<IDrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {
 		int iComp = 1;
-		Tree<ADrawAbleNode> tree = new Tree<ADrawAbleNode>();
+		Tree<IDrawAbleNode> tree = new Tree<IDrawAbleNode>();
 		ADrawAbleNode root = new TestNode("root node: " + iComp + " Layer: " + 1, iComp);
 		tree.setRootNode(root);
 		for (int j = 0; j <= iMaxNodesOnLayer; ++j) {
 			++iComp;
 			tree.addChild(root, new TestNode("child node: " + iComp + " Layer: " + 2, iComp));
 		}
-		ArrayList<ADrawAbleNode> nodesOnLayer = tree.getChildren(root);
+		ArrayList<IDrawAbleNode> nodesOnLayer = tree.getChildren(root);
 		for (int i = 2; i <= iDepth; ++i) {
 
-			ArrayList<ADrawAbleNode> nodes = new ArrayList<ADrawAbleNode>();
+			ArrayList<IDrawAbleNode> nodes = new ArrayList<IDrawAbleNode>();
 			for (int j = 0; j < iMaxNodesOnLayer; ++j) {
 				++iComp;
 				nodes.add(new TestNode("child node: " + iComp + " Layer: " + i, iComp));
 			}
-			ArrayList<ADrawAbleNode> nStore = new ArrayList<ADrawAbleNode>(nodes);
+			ArrayList<IDrawAbleNode> nStore = new ArrayList<IDrawAbleNode>(nodes);
 			while (!nodes.isEmpty())
-				for (ADrawAbleNode node : nodesOnLayer) {
+				for (IDrawAbleNode node : nodesOnLayer) {
 					if (nodes.isEmpty())
 						continue;
-					int s = Math.min(nodes.size(), (int)(Math.random() * (double)iMaxNodesOnLayer) / 4);
+					int s = Math.min(nodes.size(), (int) (Math.random() * (double) iMaxNodesOnLayer) / 4);
 					for (int j = 0; j < s; ++j) {
 						tree.addChild(node, nodes.get(0));
 						nodes.remove(0);

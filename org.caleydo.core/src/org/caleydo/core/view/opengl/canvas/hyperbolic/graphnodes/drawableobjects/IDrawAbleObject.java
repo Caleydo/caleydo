@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+
 /**
  * Defines the interface to draw able objects, held by draw able nodes with reference to a specific detail
  * level.
@@ -14,19 +16,43 @@ import javax.media.opengl.GL;
  */
 public interface IDrawAbleObject {
 	/**
-	 * Draw the object at a certain position.
+	 * Place the object on a specific position
 	 * 
-	 * @param gl
 	 * @param fXCoord
 	 * @param fYCoord
 	 * @param fZCoord
 	 * @param fHeight
 	 * @param fWidth
+	 */
+	public void place(float fXCoord, float fYCoord, float fZCoord,
+		float fHeight, float fWidth);
+	
+	/**
+	 * Draw the object in normal representation, taking
+	 * color mapping from {@link HyperbolicRenderStyle}
+	 * 
+	 * @param gl
+	 * @return ArrayList<Vec3f>
+	 */
+	public ArrayList<Vec3f> draw(GL gl);
+	
+	/**
+	 * Draw the object in highlight representation, taking
+	 * color mapping from {@link HyperbolicRenderStyle}
+	 * 
+	 * @param gl
+	 * @return ArrayList<Vec3f>
+	 */
+	public ArrayList<Vec3f> drawHighlight(GL gl);
+	
+	/**
+	 * Returns the connection points for the current representation and
+	 * placing
+	 * 
 	 * @return
 	 */
-	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
-		float fHeight, float fWidth);
-
+	public ArrayList<Vec3f> getConnectionPoints();
+	
 	/**
 	 * Set the background color of the draw able object type
 	 * 
@@ -35,7 +61,7 @@ public interface IDrawAbleObject {
 	 * @param fBlue
 	 * @return
 	 */
-	void setBgColor3f(float fRed, float fGreen, float fBlue);
+	public void setBgColor3f(float fRed, float fGreen, float fBlue);
 
 	/**
 	 * Set the alpha value of the draw able object type
@@ -43,5 +69,29 @@ public interface IDrawAbleObject {
 	 * @param fAlpha
 	 * @return
 	 */
-	void setAlpha(float fAlpha);
+	public void setAlpha(float fAlpha);
+
+	/**
+	 * Draw the object with current color mapping
+	 * 
+	 * @param gl
+	 * @return
+	 */
+	ArrayList<Vec3f> drawObject(GL gl);
+	
+	
+	
+//	/**
+//	 * Draw the object at a certain position.
+//	 * 
+//	 * @param gl
+//	 * @param fXCoord
+//	 * @param fYCoord
+//	 * @param fZCoord
+//	 * @param fHeight
+//	 * @param fWidth
+//	 * @return
+//	 */
+//	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
+//		float fHeight, float fWidth);
 }

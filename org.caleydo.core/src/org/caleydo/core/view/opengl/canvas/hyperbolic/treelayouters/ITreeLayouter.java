@@ -7,6 +7,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 /**
  * Defines standard interface to the tree layouter.
@@ -32,13 +33,31 @@ public interface ITreeLayouter {
 	 */
 //	public void renderTreeLayout(GL gl);  
 	
-	/**
-	 * Set the boarder space in percent.
-	 * 
-	 * @param fXBoarderSpacePercentage
-	 * @param fYBoarderSpacePercentage
-	 */
-	public void setBoarderSpaces(float fXBoarderSpacePercentage, float fYBoarderSpacePercentage);
+//	/**
+//	 * Set the boarder space in percent.
+//	 * 
+//	 * @param fXBoarderSpacePercentage
+//	 * @param fYBoarderSpacePercentage
+//	 */
+//	void setBoarderSpaces(float fXBoarderSpacePercentage, float fYBoarderSpacePercentage);
 
-	void renderTreeLayout(GL gl, Tree<ADrawAbleNode> tree);
+//	void renderTreeLayout(GL gl);
+
+	void setHighlightedNode(int iNodeID);
+	
+	void setHiglightedLine(int iLineID);
+
+	void setTree(Tree<IDrawAbleNode> tree);
+
+	void init(GL gl);
+
+	void display(GL gl);
+
+	void animateToNewTree(Tree<IDrawAbleNode> tree);
+
+	void setLayoutDirty();
+
+	void buildDisplayLists(GL gl);
+
+	void resetHighlight();
 }
