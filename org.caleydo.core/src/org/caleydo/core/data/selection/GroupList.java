@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 
 @XmlType

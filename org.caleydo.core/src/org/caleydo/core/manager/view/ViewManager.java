@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.media.opengl.GLCanvas;
 import javax.swing.JFrame;
 
 import org.caleydo.core.command.ECommandType;
@@ -17,6 +18,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
+import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -83,6 +85,8 @@ public class ViewManager
 	private Set<Object> busyRequests;
 
 	private CreateGUIViewListener createGUIViewListener; 
+
+	private DisplayLoopExecution displayLoopExecution;
 	
 	/**
 	 * Constructor.
@@ -102,6 +106,11 @@ public class ViewManager
 		busyRequests = new HashSet<Object>();
 		
 		registerEventListeners();
+
+		displayLoopExecution = DisplayLoopExecution.get();
+		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
+		
+		displayLoopExecution.executeMultiple(selectionManager);
 	}
 
 	@Override
@@ -297,11 +306,12 @@ public class ViewManager
 	@Override
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLEventListener gLEventListener) {
-		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener);
+		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener); 
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
 			return;
+
 
 		if (!hashGLCanvas2GLEventListeners.containsKey(glCanvas)) {
 			hashGLCanvas2GLEventListeners.put(glCanvas, new ArrayList<AGLEventListener>());
@@ -380,7 +390,7 @@ public class ViewManager
 	}
 
 	@Override
-	public void registerGLCanvasToAnimator(final GLCaleydoCanvas glCanvas) {
+	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
 		fpsAnimator.add(glCanvas);
 	}
 
@@ -459,7 +469,6 @@ public class ViewManager
 		createGUIViewListener = new CreateGUIViewListener();
 		createGUIViewListener.setHandler(this);
 		eventPublisher.addListener(CreateGUIViewEvent.class, createGUIViewListener);
-		
 	}
 	
 	@SuppressWarnings("unused")
@@ -471,6 +480,11 @@ public class ViewManager
 			eventPublisher.removeListener(createGUIViewListener);
 			createGUIViewListener = null;
 		}
+	}
+
+	@Override
+	public DisplayLoopExecution getDisplayLoopExecution() {
+		return displayLoopExecution;
 	}
 	
 }

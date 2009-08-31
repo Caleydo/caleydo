@@ -5,8 +5,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import javax.media.opengl.GL;
+
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
+import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
+import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
+import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.view.listener.AddSelectionListener;
+import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
+import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
@@ -24,16 +36,49 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
  * 
  * @author Marc Streit
  * @author Alexander Lex
+ * @author Werner Puff
  */
-public class ConnectedElementRepresentationManager {
+public class ConnectedElementRepresentationManager 
+	extends ADisplayLoopEventHandler {
 
-	HashMap<EIDType, HashMap<Integer, ArrayList<SelectedElementRep>>> hashIDTypes;
+	IGeneralManager generalManager;
+	
+	IEventPublisher eventPublisher;
+	
+	/**
+	 * Stores a {@link ConnectionMap} for each possible type as originally provided by the views.   
+	 */
+	HashMap<EIDType, ConnectionMap> sourceConnectionsByType;
 
+	/**
+	 * Stores a {@link ConnectionMap} with only transformed selection-points as defined by the 
+	 * transformation needed within remote rendered views.   
+	 */
+	HashMap<EIDType, ConnectionMap> transformedConnectionsByType;
+
+	/**
+	 * Stores {@link CanvasConnectionMap}s with only transformed selection-points as defined by the 
+	 * transformation needed within remote rendered views.   
+	 */
+	HashMap<EIDType, CanvasConnectionMap> canvasConnectionsByType;
+
+	ClearConnectionsListener clearConnectionsListener;
+	AddSelectionListener addSelectionListener;
+	
+	public boolean newCanvasPoints = false;
+	
 	/**
 	 * Constructor.
 	 */
 	protected ConnectedElementRepresentationManager() {
-		hashIDTypes = new HashMap<EIDType, HashMap<Integer, ArrayList<SelectedElementRep>>>();
+		generalManager = GeneralManager.get();
+		eventPublisher = generalManager.getEventPublisher();
+
+		sourceConnectionsByType = new HashMap<EIDType, ConnectionMap>();
+		transformedConnectionsByType = new HashMap<EIDType, ConnectionMap>();
+		canvasConnectionsByType = new HashMap<EIDType, CanvasConnectionMap>();
+
+		registerEventListeners();
 	}
 
 	/**
@@ -45,19 +90,29 @@ public class ConnectedElementRepresentationManager {
 	 * @param selectedElementRep
 	 *            the selected element rep associated with the tree specified
 	 */
-	public void addSelection(int iConnectionID, final SelectedElementRep selectedElementRep) {
-		HashMap<Integer, ArrayList<SelectedElementRep>> tmpHash =
-			hashIDTypes.get(selectedElementRep.getIDType());
+	public void addSelection(int connectionID, final SelectedElementRep selectedElementRep) {
+		AddSelectionEvent event = new AddSelectionEvent();
+		event.setConnectionID(connectionID);
+		event.setSelectedElementRep(selectedElementRep);
+		eventPublisher.triggerEvent(event);
+	}
+	
+	public void handleAddSelectionEvent(int connectionID, final SelectedElementRep selectedElementRep) {
+		System.out.println("cerm: handleAddSelectionEvent() called");
+		
+		ConnectionMap tmpHash = sourceConnectionsByType.get(selectedElementRep.getIDType());
+
 		if (tmpHash == null) {
-			tmpHash = new HashMap<Integer, ArrayList<SelectedElementRep>>();
-			hashIDTypes.put(selectedElementRep.getIDType(), tmpHash);
+			tmpHash = new ConnectionMap();
+			sourceConnectionsByType.put(selectedElementRep.getIDType(), tmpHash);
 		}
 
-		if (!tmpHash.containsKey(iConnectionID)) {
-			tmpHash.put(iConnectionID, new ArrayList<SelectedElementRep>());
+		if (!tmpHash.containsKey(connectionID)) {
+			tmpHash.put(connectionID, new SelectedElementRepList());
 		}
 
-		tmpHash.get(iConnectionID).add(selectedElementRep);
+		tmpHash.get(connectionID).add(selectedElementRep);
+		eventPublisher.triggerEvent(new NewConnectionsEvent());
 	}
 
 	/**
@@ -68,9 +123,9 @@ public class ConnectedElementRepresentationManager {
 	 */
 	public void removeSelection(final int iElementID, SelectedElementRep selectedElementRep) {
 
-		if (hashIDTypes.containsKey(iElementID)) {
-			hashIDTypes.get(iElementID).remove(selectedElementRep);
-			hashIDTypes.remove(iElementID);
+		if (sourceConnectionsByType.containsKey(iElementID)) {
+			sourceConnectionsByType.get(iElementID).remove(selectedElementRep);
+			sourceConnectionsByType.remove(iElementID);
 		}
 	}
 
@@ -82,7 +137,7 @@ public class ConnectedElementRepresentationManager {
 	 */
 	public void replaceSelection(final int iElementID, SelectedElementRep selectedElementRep) {
 		clear(selectedElementRep.getIDType());
-		addSelection(iElementID, selectedElementRep);
+		handleAddSelectionEvent(iElementID, selectedElementRep);
 	}
 
 	/**
@@ -91,7 +146,7 @@ public class ConnectedElementRepresentationManager {
 	 * @return a Set of EIDType
 	 */
 	public Set<EIDType> getOccuringIDTypes() {
-		return hashIDTypes.keySet();
+		return sourceConnectionsByType.keySet();
 	}
 
 	/**
@@ -100,7 +155,7 @@ public class ConnectedElementRepresentationManager {
 	 * @return a Set of IDs
 	 */
 	public Set<Integer> getIDList(EIDType idType) {
-		return hashIDTypes.get(idType).keySet();
+		return sourceConnectionsByType.get(idType).keySet();
 	}
 
 	/**
@@ -115,7 +170,7 @@ public class ConnectedElementRepresentationManager {
 	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(EIDType idType,
 		final int iElementID) {
 
-		ArrayList<SelectedElementRep> tempList = hashIDTypes.get(idType).get(iElementID);
+		ArrayList<SelectedElementRep> tempList = sourceConnectionsByType.get(idType).get(iElementID);
 
 		if (tempList == null)
 			throw new IllegalArgumentException("SelectionManager: No representations for this element ID");
@@ -126,20 +181,32 @@ public class ConnectedElementRepresentationManager {
 	 * Clear all selections and representations
 	 */
 	public void clearAll() {
-		hashIDTypes.clear();
+		sourceConnectionsByType.clear();
+		transformedConnectionsByType.clear();
+		canvasConnectionsByType.clear();
 	}
 
 	/**
 	 * Clear all selections of a given type
 	 */
-	public void clear(EIDType eIDType) {
-		if (!hashIDTypes.containsKey(eIDType))
-			return;
-
-		HashMap<Integer, ArrayList<SelectedElementRep>> tmp = hashIDTypes.get(eIDType);
-		tmp.clear();
+	public void clear(EIDType idType) {
+		ClearConnectionsEvent event = new ClearConnectionsEvent();
+		event.setIdType(idType);
+		eventPublisher.triggerEvent(event);
 	}
 
+	public void handleClearEvent(EIDType idType) {
+		System.out.println("cerm: handleClearEvent() called");
+		
+		ConnectionMap tmp = sourceConnectionsByType.get(idType);
+		if (tmp != null) {
+			tmp.clear();
+		}
+		transformedConnectionsByType.clear();
+		canvasConnectionsByType.clear();
+	}
+
+	
 	/**
 	 * Clear all selections of a given type that belong to a certain view
 	 * 
@@ -149,7 +216,7 @@ public class ConnectedElementRepresentationManager {
 	 *            the id of the view
 	 */
 	public void clearByViewAndType(EIDType idType, int iViewID) {
-		HashMap<Integer, ArrayList<SelectedElementRep>> hashReps = hashIDTypes.get(idType);
+		ConnectionMap hashReps = sourceConnectionsByType.get(idType);
 		if (hashReps == null)
 			return;
 		for (int iElementID : hashReps.keySet()) {
@@ -157,11 +224,13 @@ public class ConnectedElementRepresentationManager {
 
 			Iterator<SelectedElementRep> iterator = alRep.iterator();
 			while (iterator.hasNext()) {
-				if (iterator.next().getContainingViewID() == iViewID) {
+				if (iterator.next().getSourceViewID() == iViewID) {
 					iterator.remove();
 				}
 			}
 		}
+		transformedConnectionsByType.clear();
+		canvasConnectionsByType.clear();
 	}
 
 	/**
@@ -171,13 +240,72 @@ public class ConnectedElementRepresentationManager {
 	 *            the view which id's should be removed
 	 */
 	public void clearByView(int iViewID) {
-		for (EIDType idType : hashIDTypes.keySet()) {
+		for (EIDType idType : sourceConnectionsByType.keySet()) {
 			clearByViewAndType(idType, iViewID);
 		}
+		transformedConnectionsByType.clear();
+		canvasConnectionsByType.clear();
 	}
 
 	public void clearByConnectionID(EIDType idType, int iConnectionID) {
-		hashIDTypes.get(idType).remove(iConnectionID);
+		sourceConnectionsByType.get(idType).remove(iConnectionID);
+		transformedConnectionsByType.clear();
+		canvasConnectionsByType.clear();
+	}
+
+	public void clearCanvasConnections() {
+		canvasConnectionsByType.clear();
+	}
+
+	public void doViewRelatedTransformation(GL gl, ISelectionTransformer transformer) {
+		boolean newTransformedPoints = false;
+		newTransformedPoints = transformer.transform(sourceConnectionsByType, transformedConnectionsByType);
+
+		IGroupwareManager gm = GeneralManager.get().getGroupwareManager();
+		if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
+			if (newTransformedPoints) {
+				transformer.project(gl, gm.getNetworkManager().getNetworkName(), transformedConnectionsByType, canvasConnectionsByType);
+				newCanvasPoints = true;
+			}
+		}
+	}
+	
+	@Override
+	public void run() {
+		processEvents();
+	}
+
+	/**
+	 * Registers the event listeners.
+	 */
+	private void registerEventListeners() {
+		clearConnectionsListener = new ClearConnectionsListener();
+		clearConnectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearConnectionsEvent.class, clearConnectionsListener);
+
+		addSelectionListener = new AddSelectionListener();
+		addSelectionListener.setHandler(this);
+		eventPublisher.addListener(AddSelectionEvent.class, addSelectionListener);
+	}
+	
+	@SuppressWarnings("unused")
+	private void unregisterEventListeners() {
+		if (clearConnectionsListener != null) {
+			eventPublisher.removeListener(clearConnectionsListener);
+			clearConnectionsListener = null;
+		}
+		if (addSelectionListener != null) {
+			eventPublisher.removeListener(addSelectionListener);
+			addSelectionListener = null;
+		}
+	}
+
+	public HashMap<EIDType, CanvasConnectionMap> getCanvasConnectionsByType() {
+		return canvasConnectionsByType;
+	}
+
+	public HashMap<EIDType, ConnectionMap> getTransformedConnectionsByType() {
+		return transformedConnectionsByType;
 	}
 
 }

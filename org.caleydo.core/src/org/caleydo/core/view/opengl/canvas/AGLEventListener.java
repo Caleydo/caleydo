@@ -29,6 +29,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.view.ISelectionTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -165,7 +166,6 @@ public abstract class AGLEventListener
 	/** id of the related view in the gui (e.g. RCP) */
 	private String viewGUIID;
 	
-	
 	/**
 	 * Constructor.
 	 */
@@ -266,7 +266,6 @@ public abstract class AGLEventListener
 			viewFrustum.considerAspectRatio(true);
 		}
 		else {
-		
 			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
 			viewFrustum.setLeft(0);

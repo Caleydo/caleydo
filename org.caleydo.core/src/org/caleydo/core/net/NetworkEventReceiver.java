@@ -71,6 +71,9 @@ public class NetworkEventReceiver
 			} catch (ClosedByInterruptException ex) {
 				ex.printStackTrace();
 				// nothing to do, probably the thread needs to stop its execution
+			} catch (StringIndexOutOfBoundsException ex) {
+				networkManager.disposeConnection(connection);
+				stop();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				// continue execution when unexpected exceptions occure

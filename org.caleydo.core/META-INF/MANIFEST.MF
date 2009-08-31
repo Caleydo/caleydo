@@ -149,7 +149,9 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
  org.caleydo.core.manager.event.view.pathway;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.radial;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.manager.event.view.remote;uses:="org.caleydo.core.data.mapping,org.caleydo.core.manager.event",
+ org.caleydo.core.manager.event.view.selection,
  org.caleydo.core.manager.event.view.storagebased;uses:="org.caleydo.core.manager.event,org.caleydo.core.data.selection.delta",
+ org.caleydo.core.manager.execution,
  org.caleydo.core.manager.general;
   uses:="org.caleydo.core.util.wii,
    org.caleydo.core.manager.id,

@@ -492,7 +492,6 @@ public class GLHeatMap
 	}
 
 	private void createContentSelection(ESelectionType selectionType, int contentID) {
-
 		if (contentSelectionManager.checkStatus(selectionType, contentID))
 			return;
 
@@ -537,6 +536,7 @@ public class GLHeatMap
 			event.setSelectionDelta(selectionDelta);
 			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
+			System.out.println("heatmap: contentSel event");
 		}
 
 		setDisplayListDirty();

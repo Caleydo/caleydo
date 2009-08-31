@@ -43,6 +43,7 @@ public class GroupwareUtils {
 		IGroupwareManager groupwareManager = GroupwareUtils.createDeskothequeManager();
 		GeneralManager.get().setGroupwareManager(groupwareManager);
 		groupwareManager.startClient();
+		GeneralManager.get().getViewGLCanvasManager().getDisplayLoopExecution().executeMultiple(groupwareManager);
 		return (groupwareManager.getInitData());
 	}
 }

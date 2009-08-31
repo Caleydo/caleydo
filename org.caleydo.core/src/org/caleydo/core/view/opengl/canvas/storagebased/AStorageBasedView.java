@@ -210,6 +210,7 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		System.out.println("aStorageBased: handleSelectionUpdate()");
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()

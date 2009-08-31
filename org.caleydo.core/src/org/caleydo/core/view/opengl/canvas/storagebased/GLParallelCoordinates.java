@@ -73,11 +73,14 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.util.wii.WiiRemote;
@@ -236,6 +239,8 @@ public class GLParallelCoordinates
 
 	private GLInfoAreaManager infoAreaManager;
 
+	protected StandardTransformer selectionTransformer;
+	
 	// listeners
 	private ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener;
 	private ResetAxisSpacingListener resetAxisSpacingListener;
@@ -288,6 +293,7 @@ public class GLParallelCoordinates
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
+		selectionTransformer = new StandardTransformer(iUniqueID);
 		init(gl);
 	}
 
@@ -303,6 +309,8 @@ public class GLParallelCoordinates
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+
+		selectionTransformer = new StandardTransformer(iUniqueID);
 		init(gl);
 		// toggleRenderContext();
 	}
@@ -345,6 +353,8 @@ public class GLParallelCoordinates
 		checkForHits(gl);
 
 		display(gl);
+		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		// infoAreaManager.renderInPlaceInfo(gl);
 
@@ -2794,6 +2804,12 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 	}
 
+	@Override
+	public void destroy() {
+		selectionTransformer.destroy();
+		super.destroy();
+	}
+	
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();

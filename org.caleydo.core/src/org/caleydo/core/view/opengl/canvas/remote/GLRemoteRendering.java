@@ -45,6 +45,8 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
@@ -201,6 +203,8 @@ public class GLRemoteRendering
 
 	private GLInfoAreaManager infoAreaManager;
 
+	protected RemoteRenderingTransformer selectionTransformer; 
+	
 	protected AddPathwayListener addPathwayListener = null;
 	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	protected EnableGeneMappingListener enableGeneMappingListener = null;
@@ -296,7 +300,7 @@ public class GLRemoteRendering
 	@Override
 	public void initLocal(final GL gl) {
 		// iGLDisplayList = gl.glGenLists(1);
-
+		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, focusLevel, stackLevel);
 		init(gl);
 	}
 
@@ -337,7 +341,7 @@ public class GLRemoteRendering
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
 		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, null, -1);
-//		cmdCreateGLView.setSet(set);
+		// cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glBookmarkContainer.setRenderedRemote(true);
@@ -345,7 +349,8 @@ public class GLRemoteRendering
 		glBookmarkContainer.setSet(set);
 		glBookmarkContainer.initData();
 
-		externalSelectionLevel.getElementByPositionIndex(0).setContainedElementID(glBookmarkContainer.getID());
+		externalSelectionLevel.getElementByPositionIndex(0)
+			.setContainedElementID(glBookmarkContainer.getID());
 	}
 
 	@Override
@@ -374,6 +379,8 @@ public class GLRemoteRendering
 		// }
 
 		display(gl);
+		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
@@ -491,8 +498,8 @@ public class GLRemoteRendering
 				}
 			});
 
-			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelTrack(gl,
-				getParentGLCanvas().getBounds(), upperLeftScreenPos);
+			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelTrack(gl, getParentGLCanvas()
+				.getBounds(), upperLeftScreenPos);
 
 			((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelTrack();
 		}
@@ -510,7 +517,7 @@ public class GLRemoteRendering
 			}
 
 			renderRemoteLevel(gl, focusLevel);
-//			renderRemoteLevel(gl, stackLevel);
+			// renderRemoteLevel(gl, stackLevel);
 
 			glOffScreenRenderer.renderRubberBucket(gl, stackLevel,
 				(BucketLayoutRenderStyle) layoutRenderStyle, this);
@@ -533,6 +540,7 @@ public class GLRemoteRendering
 		// gl.glCallList(iGLDisplayList);
 
 		// comment here for connection lines
+		// transform-selections here
 		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
 			glConnectionLineRenderer.render(gl);
 		}
@@ -1645,7 +1653,7 @@ public class GLRemoteRendering
 			RemoteLevelElement destinationElement = slerpAction.getDestinationRemoteLevelElement();
 
 			updateViewDetailLevels(destinationElement);
-			
+
 			bUpdateOffScreenTextures = true;
 		}
 
@@ -1839,7 +1847,6 @@ public class GLRemoteRendering
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		lastSelectionDelta = selectionDelta;
-		
 		bUpdateOffScreenTextures = true;
 	}
 
@@ -2285,7 +2292,8 @@ public class GLRemoteRendering
 				}
 			}
 			newViews.removeAll(removeNewViews);
-		} else {
+		}
+		else {
 			newViews.clear();
 		}
 
@@ -2300,7 +2308,8 @@ public class GLRemoteRendering
 				}
 			}
 			containedViewIDs.removeAll(removeViewIDs);
-		} else {
+		}
+		else {
 			containedViewIDs.clear();
 		}
 
@@ -2337,7 +2346,7 @@ public class GLRemoteRendering
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 	}
-	
+
 	public void resetView() {
 		resetView(true);
 	}
@@ -2506,8 +2515,7 @@ public class GLRemoteRendering
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
-		if (GeneralManager.get().getPathwayManager().isPathwayLoadingFinished() &&
-			arSlerpActions.isEmpty()) {
+		if (GeneralManager.get().getPathwayManager().isPathwayLoadingFinished() && arSlerpActions.isEmpty()) {
 			if (!newViews.isEmpty()) {
 				ASerializedView serView = newViews.remove(0);
 				AGLEventListener view = createView(gl, serView);
@@ -2591,7 +2599,7 @@ public class GLRemoteRendering
 
 		view.initRemote(gl, this, glMouseListener, this, infoAreaManager);
 		view.setDetailLevel(EDetailLevel.MEDIUM);
-		
+
 		return true;
 	}
 
@@ -2610,7 +2618,7 @@ public class GLRemoteRendering
 		ECommandType cmdType = serView.getCreationCommandType();
 		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) cm.createCommandByType(cmdType);
 		cmdView.setAttributesFromSerializedForm(serView);
-//		cmdView.setSet(set);
+		// cmdView.setSet(set);
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
@@ -2918,10 +2926,11 @@ public class GLRemoteRendering
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
 		serializedForm.setGeneMappingEnabled(geneMappingEnabled);
 		serializedForm.setConnectionLinesEnabled(connectionLinesEnabled);
-		
+
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
-		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
+		ArrayList<ASerializedView> remoteViews =
+			new ArrayList<ASerializedView>(focusLevel.getAllElements().size());
 		for (RemoteLevelElement rle : focusLevel.getAllElements()) {
 			if (rle.getContainedElementID() != -1) {
 				AGLEventListener remoteView = viewManager.getGLEventListener(rle.getContainedElementID());
@@ -2938,14 +2947,14 @@ public class GLRemoteRendering
 			}
 		}
 		serializedForm.setStackViews(remoteViews);
-		
+
 		return serializedForm;
 	}
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 		resetView(false);
-		
+
 		SerializedRemoteRenderingView serializedView = (SerializedRemoteRenderingView) ser;
 
 		pathwayTexturesEnabled = serializedView.isPathwayTexturesEnabled();
@@ -2959,10 +2968,16 @@ public class GLRemoteRendering
 		for (ASerializedView remoteSerializedView : serializedView.getStackViews()) {
 			newViews.add(remoteSerializedView);
 		}
-		
+
 		setDisplayListDirty();
 	}
 
+	@Override
+	public void destroy() {
+		selectionTransformer.destroy();
+		super.destroy();
+	}
+	
 	public boolean isGeneMappingEnabled() {
 		return geneMappingEnabled;
 	}
@@ -3005,5 +3020,9 @@ public class GLRemoteRendering
 
 	public RemoteLevel getStackLevel() {
 		return stackLevel;
+	}
+
+	public AGLConnectionLineRenderer getGlConnectionLineRenderer() {
+		return glConnectionLineRenderer;
 	}
 }

@@ -1,7 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
-import gleem.linalg.Mat4f;
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.nio.FloatBuffer;
@@ -18,7 +16,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp. planes) between views in the
@@ -343,125 +340,4 @@ public abstract class AGLConnectionLineRenderer {
 		return vecCenterPoint;
 	}
 
-	protected Vec3f transform(Vec3f vecOriginalPoint, Vec3f vecTranslation, Vec3f vecScale, Rotf rotation,
-		RemoteLevelElement remoteLevelElement) {
-		Mat4f matSrc = new Mat4f();
-		Vec3f vecTransformedPoint = new Vec3f();
-
-		rotation.toMatrix(matSrc);
-
-		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()) {
-//			WiiRemote wiiRemote = GeneralManager.get().getWiiRemote();
-
-			float[] fArHeadPosition = GeneralManager.get().getTrackDataProvider().getEyeTrackData();
-
-			fArHeadPosition[0] -= 183;
-			fArHeadPosition[1] -= 112;
-
-			fArHeadPosition[0] = fArHeadPosition[0] - 1730/2;
-			fArHeadPosition[1] = (fArHeadPosition[1] - 1055/2f);
-			
-			fArHeadPosition[0] = fArHeadPosition[0] / 1730 * 4f;
-			fArHeadPosition[1] = fArHeadPosition[1] / 1055 * 4f * 0.61f;
-			
-//			fArHeadPosition[0] = 0f;
-//			fArHeadPosition[1] = -1.3f;
-			
-//			fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
-//			fArHeadPosition[1] *= 4;
-
-			float fBucketWidth = 2f;
-			float fBucketHeight = 2f;
-			float fBucketDepth = 4.0f;
-			float fBucketBottomLeft = -1 * fArHeadPosition[0] - fBucketWidth;// - 1.5f;
-			float fBucketBottomRight = -1 * fArHeadPosition[0] + fBucketWidth;// - 1.5f;
-			float fBucketBottomTop = fArHeadPosition[1] * 1.4f + fBucketHeight;
-			float fBucketBottomBottom = fArHeadPosition[1] * 1.4f - fBucketHeight;
-
-			float fNormalizedHeadDist =  
-				-1 * GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f
-				+ Math.abs(fBucketBottomRight - 2) / 2 + Math.abs(fBucketBottomTop - 2) * 2;// / 2;
-//				-1 * GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f + Math.abs(fBucketBottomRight - 2) / 2
-//					+ Math.abs(fBucketBottomTop - 2) / 2;
-
-			Vec3f vecTrackTranformPoint = new Vec3f(vecOriginalPoint);
-
-			if (stackLevel.getElementByPositionIndex(1) == remoteLevelElement) {
-				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;
-				float fGK = fBucketWidth + fBucketBottomLeft;
-				float fPlaneWidth = (float) Math.sqrt((double) (Math.pow(fAK, 2) + Math.pow(fGK, 2)));
-
-				float fTransformedX = vecOriginalPoint.x() / 8f * fPlaneWidth;
-				float fTransformedY = vecOriginalPoint.y() / 8f * fBucketHeight * 2f;// * (4 + fYTop - (-4 +
-				// fYBottom));
-
-				float fXScaling = fTransformedX / fPlaneWidth;
-				fTransformedY += fArHeadPosition[1] * fXScaling;
-
-				vecTrackTranformPoint =
-					new Vec3f(fTransformedX, -fBucketHeight + fTransformedY, vecOriginalPoint.z()); // / 4f *
-				// fBucketHeight
-			}
-			else if (stackLevel.getElementByPositionIndex(3) == remoteLevelElement) {
-				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;
-				float fGK = fBucketWidth - fBucketBottomRight;
-				float fPlaneWidth = (float) Math.sqrt((double) (Math.pow(fAK, 2) + Math.pow(fGK, 2)));
-
-				float fTransformedX = vecOriginalPoint.x() / 8f * fPlaneWidth;
-				float fTransformedY = vecOriginalPoint.y() / 8f * fBucketHeight * 2f;// * (4 + fYTop - (-4 +
-				// fYBottom));
-
-				float fXScaling = fTransformedX / fPlaneWidth;
-				fTransformedY += fArHeadPosition[1] * (1 - fXScaling);
-
-				vecTrackTranformPoint =
-					new Vec3f(fPlaneWidth - fTransformedX, -fBucketHeight + fTransformedY, vecOriginalPoint
-						.z()); // /
-				// 4f
-				// *
-				// fBucketHeight
-			}
-			else if (stackLevel.getElementByPositionIndex(0) == remoteLevelElement) {
-				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;
-				float fGK = fBucketWidth - fBucketBottomTop;
-				float fPlaneWidth = (float) Math.sqrt((double) (Math.pow(fAK, 2) + Math.pow(fGK, 2)));
-
-				float fTransformedX = vecOriginalPoint.x() / 8f * fBucketHeight * 2f;
-				float fTransformedY = vecOriginalPoint.y() / 8f * fPlaneWidth;// * (4 + fYTop - (-4 +
-				// fYBottom));
-
-				float fYScaling = fTransformedY / fPlaneWidth;
-				// fTransformedX += fArHeadPosition[0] * fYScaling;
-
-				vecTrackTranformPoint =
-					new Vec3f((fBucketWidth + fBucketBottomLeft) * (1 - fYScaling) + fTransformedX,
-						fPlaneWidth - fTransformedY, vecOriginalPoint.z());
-			}
-			else if (stackLevel.getElementByPositionIndex(2) == remoteLevelElement) {
-				float fAK = fBucketDepth - 1 * fNormalizedHeadDist;
-				float fGK = fBucketWidth + fBucketBottomBottom;
-				float fPlaneWidth = (float) Math.sqrt((double) (Math.pow(fAK, 2) + Math.pow(fGK, 2)));
-
-				float fTransformedX = vecOriginalPoint.x() / 8f * fBucketHeight * 2f;
-				float fTransformedY = vecOriginalPoint.y() / 8f * fPlaneWidth;
-
-				float fYScaling = fTransformedY / fPlaneWidth;
-				// fTransformedX += fArHeadPosition[1] * (1-fYScaling);
-
-				vecTrackTranformPoint =
-					new Vec3f((fBucketWidth + fBucketBottomLeft) * fYScaling + fTransformedX, fTransformedY,
-						vecOriginalPoint.z());
-			}
-
-			matSrc.xformPt(vecTrackTranformPoint, vecTransformedPoint);
-		}
-		else {
-			matSrc.xformPt(vecOriginalPoint, vecTransformedPoint);
-		}
-
-		vecTransformedPoint.componentMul(vecScale);
-		vecTransformedPoint.add(vecTranslation);
-
-		return vecTransformedPoint;
-	}
 }

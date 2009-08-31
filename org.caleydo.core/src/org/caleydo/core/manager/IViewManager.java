@@ -2,7 +2,10 @@ package org.caleydo.core.manager;
 
 import java.util.Collection;
 
+import javax.media.opengl.GLCanvas;
+
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -45,7 +48,7 @@ public interface IViewManager
 	/**
 	 * Remove canvas from animator. Therefore the canvas is not rendered anymore.
 	 */
-	public void registerGLCanvasToAnimator(final GLCaleydoCanvas glCanvas);
+	public void registerGLCanvasToAnimator(final GLCanvas glCanvas);
 
 	/**
 	 * Add canvas to animator. Therefore the canvas is rendered by the animator loop.
@@ -95,4 +98,11 @@ public interface IViewManager
 	 * @param requestInstance the object that requested the busy mode  
 	 */
 	public void releaseBusyMode(Object requestInstance);
+
+	/**
+	 * Retrieves the {@link DisplayLoopExecution} related to 
+	 * the {@link IViewManager}'s display loop.
+	 * @return {@link DisplayLoopExecution} for executing code in the display loop 
+	 */
+	public DisplayLoopExecution getDisplayLoopExecution();
 }

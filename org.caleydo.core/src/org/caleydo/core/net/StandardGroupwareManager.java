@@ -1,7 +1,10 @@
 package org.caleydo.core.net;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.serialize.ApplicationInitData;
 
 /**
@@ -67,6 +70,11 @@ public class StandardGroupwareManager
 	}
 
 	@Override
+	public void sendConnectionLines(HashMap<EIDType, CanvasConnectionMap> canvasConnections) {
+		// throw new RuntimeException("no connection line drawing standard network mode");
+	}
+
+	@Override
 	public void startClient() {
 		networkManager.setNetworkName(networkName);
 		networkManager.startNetworkService();
@@ -96,6 +104,11 @@ public class StandardGroupwareManager
 	}
 
 	@Override
+	public void run() {
+		
+	}
+	
+	@Override
 	public NetworkManager getNetworkManager() {
 		return networkManager;
 	}
@@ -103,6 +116,11 @@ public class StandardGroupwareManager
 	@Override
 	public void setNetworkManager(NetworkManager networkManager) {
 		this.networkManager = networkManager;
+	}
+
+	@Override
+	public boolean isGroupwareConnectionLinesEnabled() {
+		return false;
 	}
 
 	public String getServerAddress() {
@@ -124,5 +142,5 @@ public class StandardGroupwareManager
 	public ApplicationInitData getInitData() {
 		return initData;
 	}
-
+	
 }

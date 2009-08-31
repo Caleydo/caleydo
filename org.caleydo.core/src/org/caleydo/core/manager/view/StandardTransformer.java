@@ -1,0 +1,165 @@
+package org.caleydo.core.manager.view;
+
+import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.view.listener.NewConnectionsListener;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.eclipse.swt.graphics.Point;
+
+public class StandardTransformer
+	implements ISelectionTransformer, IListenerOwner {
+
+	private IEventPublisher eventPublisher; 
+	
+	protected int viewID;
+
+	protected boolean transformationFinished = false;
+	
+	private NewConnectionsListener newConnectionsListener;
+	
+	public StandardTransformer(int viewID) {
+		eventPublisher = GeneralManager.get().getEventPublisher();
+		this.viewID = viewID;
+		registerEventListeners();
+	}
+	
+	/**
+	 * Registers the event listeners.
+	 */
+	private void registerEventListeners() {
+		newConnectionsListener = new NewConnectionsListener();
+		newConnectionsListener.setHandler(this);
+		eventPublisher.addListener(NewConnectionsEvent.class, newConnectionsListener);
+
+	}
+	
+	private void unregisterEventListeners() {
+		if (newConnectionsListener != null) {
+			eventPublisher.removeListener(newConnectionsListener);
+			newConnectionsListener = null;
+		}
+	}
+
+	@Override
+	public void project(GL gl, String deskoXID, HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, CanvasConnectionMap> target) {
+		System.out.println("xyzTrans: projecting");
+		final double mvmatrix[] = new double[16];
+		final double projmatrix[] = new double[16];
+		final int viewport[] = new int[4];
+
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetDoublev(GL.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		gl.glGetDoublev(GL.GL_PROJECTION_MATRIX, projmatrix, 0);
+
+		final double[] wc = new double[4];
+		final GLU glu = new GLU();
+
+		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		AGLEventListener view = vm.getGLEventListener(viewID);
+		int canvasHeight = view.getParentGLCanvas().getHeight();
+
+		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
+			System.out.println("xyzTrans: typeConnections="+typeConnections);
+			CanvasConnectionMap canvasConnectionMap = target.get(typeConnections.getKey());
+			if (canvasConnectionMap == null) {
+				canvasConnectionMap = new CanvasConnectionMap();
+				target.put(typeConnections.getKey(), canvasConnectionMap);
+			}
+
+			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
+
+				SelectionPoint2DList points2D = canvasConnectionMap.get(connections.getKey()); 
+				if (points2D == null) {
+					points2D = new SelectionPoint2DList();
+					canvasConnectionMap.put(connections.getKey(), points2D);
+				}
+
+				for (SelectedElementRep sel : connections.getValue()) {
+					System.out.println("xyzTrans: " + sel.getRemoteViewID() + " =?= " + viewID);
+					if (sel.getRemoteViewID() == viewID) {
+						for (Vec3f vec : sel.getPoints()) {
+							glu.gluProject(vec.x(), vec.y(), vec.z(), mvmatrix, 0, projmatrix, 0, viewport, 0, wc, 0);
+							System.out.println("xyzTrans: projected x=" + wc[0] + ", y=" + wc[1] + ", z=" + wc[3]);
+							Point p = new Point((int) wc[0], canvasHeight - (int) wc[1]);
+							SelectionPoint2D sp = new SelectionPoint2D(deskoXID, viewID, p);
+							points2D.add(sp);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean transform(HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, ConnectionMap> target) {
+
+		if (transformationFinished) {
+			return false;
+		}
+		transformationFinished = true;
+		System.out.println("StandardTrans: transforming");
+		
+		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
+			
+			ConnectionMap connectionMap = target.get(typeConnections.getKey());
+			if (connectionMap == null) {
+				connectionMap = new ConnectionMap();
+				target.put(typeConnections.getKey(), connectionMap);
+			}
+
+			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
+
+				SelectedElementRepList repList = connectionMap.get(connections.getKey()); 
+				if (repList == null) {
+					repList = new SelectedElementRepList();
+					connectionMap.put(connections.getKey(), repList);
+				}
+
+				for (SelectedElementRep sel : connections.getValue()) {
+					if (viewID == sel.getSourceViewID()) {
+						ArrayList<Vec3f> transformedPoints = new ArrayList<Vec3f>(); 
+						for (Vec3f vec : sel.getPoints()) {
+							transformedPoints.add(vec);
+						}
+						SelectedElementRep trans = new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID, transformedPoints);
+						repList.add(trans);
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void destroy() {
+		unregisterEventListeners();
+	}
+
+	@Override
+	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		listener.handleEvent(event);
+	}
+
+	@Override
+	public void handleNewConnections() {
+		transformationFinished = false;
+		
+	}
+
+}
