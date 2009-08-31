@@ -94,8 +94,8 @@ public class MasterApplication extends _MasterApplicationIDisp {
 	    		if (dx < 0) dx = -dx;
 	    		int dy = v.y - s.y;
 	    		if (dy < 0) dy = -dy;
-	    		int ox = 0;
-	    		int oy = 4;
+	    		int ox = 4;
+	    		int oy = 0;
 	    		if (dx > dy) {
 	    			ox = 0;
 	    			oy = 4;
