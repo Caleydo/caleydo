@@ -23,6 +23,7 @@ Import-Package: org.caleydo.core.manager,
  org.caleydo.core.manager.event,
  org.caleydo.core.manager.event.view,
  org.caleydo.core.manager.general,
+ org.caleydo.core.manager.view,
  org.caleydo.core.net,
  org.caleydo.core.serialize,
  org.caleydo.core.view,
@@ -30,3 +31,7 @@ Import-Package: org.caleydo.core.manager,
  org.eclipse.ui
 Bundle-Vendor: Graz University of Technology
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.swt;bundle-version="3.4.1",
+ org.caleydo.core,
+ org.caleydo.util.gleem;bundle-version="1.0.1",
+ org.caleydo.lib.jogl;bundle-version="1.2.0"

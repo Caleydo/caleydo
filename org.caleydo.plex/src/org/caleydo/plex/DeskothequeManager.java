@@ -2,11 +2,31 @@ package org.caleydo.plex;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.event.view.selection.AddConnectionLinePointEvent;
+import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
+import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.view.CanvasConnectionMap;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.manager.view.SelectionPoint2D;
+import org.caleydo.core.manager.view.SelectionPoint2DList;
+import org.caleydo.core.net.ENetworkStatus;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.net.NetworkManager;
 import org.caleydo.core.serialize.ApplicationInitData;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
+import DKT.ConnectionLineVertex;
 import DKT.GroupwareClientAppIPrx;
 import DKT.GroupwareClientAppIPrxHelper;
 import DKT.GroupwareInformation;
@@ -16,14 +36,14 @@ import DKT.ServerApplicationIPrx;
 import DKT.ServerApplicationIPrxHelper;
 import Ice.Communicator;
 import Ice.ObjectAdapter;
-
 /**
  * GroupwareManager for Caleydo applications running in the deskotheque
  * environment. 
  * @see <a href="http://studierstube.icg.tu-graz.ac.at/deskotheque/">Deskotheque</a>
  * @author Werner Puff
  */
-public class DeskothequeManager
+public class DeskothequeManager 
+	extends ADisplayLoopEventHandler
 	implements IGroupwareManager {
 
 	/** default port for incoming ice-connections */
@@ -31,15 +51,16 @@ public class DeskothequeManager
 	
 	public static final int DKT_SERVER_PORT = 8011;
 	
+	private IGeneralManager generalManager;
+	
+	private IEventPublisher eventPublisher;
+	
 	/** network manager to manage the network connections and network traffic */
 	private NetworkManager networkManager;
 
 	/** the address or domain-name of server in case of beeing a client */ 
 	private String serverAddress;
 	
-	/** the name of this application in the network */
-	private String networkName;
-
 	/** initialization data for the application read from a server */
 	private ApplicationInitData initData;
 
@@ -64,12 +85,28 @@ public class DeskothequeManager
 	private ResourceManagerIPrx resourceManagerPrx;
 	
 	private GroupwareInformation groupwareInformation;
+
+	private boolean redrawConnectionLines = false;
+
+	/**
+	 * Stores {@link CanvasConnectionMap}s with connection lines in display coordinates and
+	 * the related network-name of the display. 
+	 */
+	HashMap<EIDType, CanvasConnectionMap> displayConnectionsByType;
+
+	AddConnectionLinePointsListener addConnectionLinePointsListener;
+	
+	ClearConnectionsListener clearConnectionsListener;
 	
 	/**
 	 * Creates an initalized {@link DeskothequeManager}
 	 */
 	public DeskothequeManager() {
+		generalManager = GeneralManager.get();
+		eventPublisher = generalManager.getEventPublisher();
+		
 		System.out.println("DeskothequeManager() called");
+		displayConnectionsByType = new HashMap<EIDType, CanvasConnectionMap>();
 		networkManager = new NetworkManager();
 	}
 	
@@ -100,6 +137,7 @@ public class DeskothequeManager
 
 		// FIXME
 		networkManager.setNetworkName(groupwareInformation.deskoXID);
+		registerEventListeners();
 	}
 
 	@Override
@@ -113,7 +151,7 @@ public class DeskothequeManager
 			ex.printStackTrace();
 			stop();
 		}
-		
+		registerEventListeners();
 	}
 
 	private void connectToDeskotheque() {
@@ -231,8 +269,156 @@ public class DeskothequeManager
 			default:
 				throw new IllegalStateException("unknown network status: " + networkManager.getStatus());
 		}
+		
+		unregisterEventListeners();
 	}
 
+	@Override
+	public void sendConnectionLines(HashMap<EIDType, CanvasConnectionMap> canvasConnections) {
+
+		for (Entry<EIDType, CanvasConnectionMap> ccm : canvasConnections.entrySet()) {
+			final EIDType idType = ccm.getKey(); 
+			for (Entry<Integer, SelectionPoint2DList> canvasPoints : ccm.getValue().entrySet()) {
+				final Integer connectionID = canvasPoints.getKey();
+				final SelectionPoint2DList pointList = canvasPoints.getValue();  
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						SelectionPoint2DList displayPoints = canvasPointsToDisplay(pointList);
+						sendConnectionLineEvent(idType, connectionID, displayPoints);
+					}
+				});
+			}
+		}
+	}
+	
+	private SelectionPoint2DList canvasPointsToDisplay(SelectionPoint2DList canvasPoints) {
+		SelectionPoint2DList displayPoints = new SelectionPoint2DList();
+		for (SelectionPoint2D p : canvasPoints) {
+			IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+			AGLEventListener view = vm.getGLEventListener(p.getViewID());
+			Composite composite = view.getParentGLCanvas().getParentComposite();
+			Point dp = composite.toDisplay(p.getPoint());
+			SelectionPoint2D displayPoint = new SelectionPoint2D(networkManager.getNetworkName(), p.getViewID(), dp);
+			displayPoints.add(displayPoint);
+		}
+		return displayPoints;
+	}
+	
+	private void sendConnectionLineEvent(EIDType idType, Integer connectionID, SelectionPoint2DList points) {
+		AddConnectionLinePointEvent event = new AddConnectionLinePointEvent();
+		event.setIdType(idType);
+		event.setConnectionID(connectionID);
+		event.setPoints(points);
+		event.setSender(null);
+		eventPublisher.triggerEvent(event);
+	}
+
+	private void drawConnectionLines() {
+//		for (CanvasConnectionMap ccm : displayConnectionsByType.values()) {
+		CanvasConnectionMap ccm = displayConnectionsByType.get(EIDType.EXPRESSION_INDEX);
+			for (Entry<Integer, SelectionPoint2DList> conDisplayPoints : ccm.entrySet()) {
+				SelectionPoint2DList displayPoints = conDisplayPoints.getValue();
+				final Integer connectionID = conDisplayPoints.getKey();
+				final ConnectionLineVertex vertices[] = new ConnectionLineVertex[displayPoints.size()];
+				int i = 0;
+				System.out.print("dm.drawConnectionLines(): call desko ");
+				for (SelectionPoint2D p : displayPoints) {
+					ConnectionLineVertex vertex = new ConnectionLineVertex();
+					vertex.x = p.getPoint().x;
+					vertex.y = p.getPoint().y;
+					vertices[i++] = vertex;
+					System.out.print("("+vertex.x+", "+vertex.y+"), ");
+				}
+				System.out.println();
+				Runnable drawer = new Runnable() {
+					public void run() {
+						masterPrx.drawConnectionLine(vertices, connectionID);
+					}
+				};
+				Thread drawThread = new Thread(drawer);
+				drawThread.start();
+				System.out.println("new draw thread");
+			}
+//		}
+		
+	}
+
+	/**
+	 * Adds connection-line points for groupware related connection line drawing. 
+	 * @param idType
+	 * @param connectionID
+	 * @param points
+	 */
+	public void addConnectionLinePoints(EIDType idType, int connectionID, SelectionPoint2DList newPoints) {
+		System.out.println("desko: addPoints() called, newPoints=" + newPoints);
+
+		CanvasConnectionMap dcm = displayConnectionsByType.get(idType);
+		if (dcm == null) {
+			System.out.println("desko: addPoints() new dcm");
+			dcm = new CanvasConnectionMap();
+			displayConnectionsByType.put(idType, dcm);
+		}
+		
+		SelectionPoint2DList pointList = dcm.get(connectionID);
+		if (pointList == null) {
+			System.out.println("desko: addPoints() new pointList");
+			pointList = new SelectionPoint2DList();
+			dcm.put(connectionID, pointList);
+		}
+		System.out.println("desko: addPoints() pointList="+pointList);
+
+		if (newPoints == null) {
+			System.out.println("desko: newPoints=null");
+		} else {
+			pointList.addAll(newPoints);
+		}
+		redrawConnectionLines = true;
+	}
+	
+	public void clearConnections(EIDType idType) {
+		System.out.println("desko: clearConnections(), idType="+idType);
+		CanvasConnectionMap ccm = displayConnectionsByType.get(idType);
+		if (ccm != null) {
+			ccm.clear();
+		}
+	}
+	
+	@Override
+	public void run() {
+		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		if (cerm.newCanvasPoints) {
+			System.out.println("desko: sending conLines");
+			sendConnectionLines(cerm.getCanvasConnectionsByType());
+			cerm.newCanvasPoints = false;
+		}
+		processEvents();
+		if (redrawConnectionLines && networkManager.getStatus() == ENetworkStatus.STATUS_SERVER) {
+			drawConnectionLines();
+			redrawConnectionLines = false;
+		}
+	}
+	
+	private void registerEventListeners() {
+		addConnectionLinePointsListener = new AddConnectionLinePointsListener();
+		addConnectionLinePointsListener.setHandler(this);
+		eventPublisher.addListener(AddConnectionLinePointEvent.class, addConnectionLinePointsListener);
+
+		clearConnectionsListener = new ClearConnectionsListener();
+		clearConnectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearConnectionsEvent.class, clearConnectionsListener);
+	}
+	
+	private void unregisterEventListeners() {
+		if (addConnectionLinePointsListener != null) {
+			eventPublisher.removeListener(addConnectionLinePointsListener);
+			addConnectionLinePointsListener = null;
+		}
+		if (clearConnectionsListener != null) {
+			eventPublisher.removeListener(clearConnectionsListener);
+			clearConnectionsListener = null;
+		}
+	}
+	
 	@Override
 	public NetworkManager getNetworkManager() {
 		return networkManager;
@@ -243,20 +429,17 @@ public class DeskothequeManager
 		this.networkManager = networkManager;
 	}
 
+	@Override
+	public boolean isGroupwareConnectionLinesEnabled() {
+		return true;
+	}
+
 	public String getServerAddress() {
 		return serverAddress;
 	}
 
 	public void setServerAddress(String serverAddress) {
 		this.serverAddress = serverAddress;
-	}
-
-	public String getNetworkName() {
-		return networkName;
-	}
-
-	public void setNetworkName(String networkName) {
-		this.networkName = networkName;
 	}
 
 	public ApplicationInitData getInitData() {

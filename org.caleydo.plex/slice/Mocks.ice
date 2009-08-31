@@ -22,6 +22,15 @@ module DKT {
 		string deskoXID;
 	}; 
 
+	struct ConnectionLineVertex
+	{
+		string clientID;
+		int x;
+		int y;
+	};
+
+	sequence<ConnectionLineVertex> ConnectionLineVertices;
+
     interface ResourceManagerI
     {
         StringList getAvailableGroupwareClients(string clientID);
@@ -48,6 +57,7 @@ module DKT {
     {
     	ResourceManagerI* getResourceManagerProxy();
         GroupwareInformation registerGroupwareClient(GroupwareClientAppI* client, string id, ServerApplicationI* serverApp, int x, int y, int w, int h);
+        void drawConnectionLine(ConnectionLineVertices vertices, int selectionID);
     };
 
 };
