@@ -14,7 +14,7 @@ import org.caleydo.core.manager.view.SelectionPoint2DList;
  */
 @XmlRootElement
 @XmlType
-public class AddConnectionLinePointEvent
+public class AddConnectionLineVerticesEvent
 	extends AEvent {
 
 	private EIDType idType;

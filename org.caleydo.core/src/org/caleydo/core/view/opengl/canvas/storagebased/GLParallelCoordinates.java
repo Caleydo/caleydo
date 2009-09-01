@@ -239,6 +239,7 @@ public class GLParallelCoordinates
 
 	private GLInfoAreaManager infoAreaManager;
 
+	/** Utility object for coordinate transformation and projection */
 	protected StandardTransformer selectionTransformer;
 	
 	// listeners

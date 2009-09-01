@@ -9,9 +9,10 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.event.view.selection.AddConnectionLinePointEvent;
+import org.caleydo.core.manager.event.view.selection.AddConnectionLineVerticesEvent;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
+import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -51,8 +52,10 @@ public class DeskothequeManager
 	
 	public static final int DKT_SERVER_PORT = 8011;
 	
+	/** reference for common usage */
 	private IGeneralManager generalManager;
 	
+	/** reference for common usage */
 	private IEventPublisher eventPublisher;
 	
 	/** network manager to manage the network connections and network traffic */
@@ -64,28 +67,28 @@ public class DeskothequeManager
 	/** initialization data for the application read from a server */
 	private ApplicationInitData initData;
 
-	private int left;
-	
-	private int top;
-	
-	private int width;
-	
-	private int height;
-	
+	/** ice utility object for communication */
 	private Communicator communicator;
 	
+	/** ice utility object for remote object access */
 	private ObjectAdapter adapter;
 
+	/** ice proxy for {@link GroupwareClient} */
 	private GroupwareClientAppIPrx groupwareClientPrx;
 	
+	/** ice proxy for accessing deskotheque's Master */
 	private MasterApplicationIPrx masterPrx;
 
+	/** ice proxy for accessing deskotheque's Server */
 	private ServerApplicationIPrx serverPrx;
 	
+	/** ice proxy for accessing deskotheque's ResourceManager */
 	private ResourceManagerIPrx resourceManagerPrx;
 	
+	/** groupware information for this caleydo application as retrieved from deskotheque */
 	private GroupwareInformation groupwareInformation;
 
+	/** <code>true</code> to indicate that groupware connection lines should be redrawn */
 	private boolean redrawConnectionLines = false;
 
 	/**
@@ -94,8 +97,7 @@ public class DeskothequeManager
 	 */
 	HashMap<EIDType, CanvasConnectionMap> displayConnectionsByType;
 
-	AddConnectionLinePointsListener addConnectionLinePointsListener;
-	
+	AddConnectionLineVerticesListener addConnectionLinePointsListener;
 	ClearConnectionsListener clearConnectionsListener;
 	
 	/**
@@ -140,6 +142,9 @@ public class DeskothequeManager
 		registerEventListeners();
 	}
 
+	/**
+	 * Starts a caleydo server and registers this application as a server at deskotheque 
+	 */
 	@Override
 	public void startServer() {
 		try {
@@ -154,6 +159,9 @@ public class DeskothequeManager
 		registerEventListeners();
 	}
 
+	/**
+	 * Connects to deskotheque with the ice-interface of deskotheque.
+	 */
 	private void connectToDeskotheque() {
 		communicator = Ice.Util.initialize();
 
@@ -170,21 +178,38 @@ public class DeskothequeManager
 		obtainResourceManagerPrx();
 	}
 
+	/**
+	 * registers this caleydo application at deskotheque as a server  
+	 */
 	private void registerGroupwareServer() {
+		
+		// FIXME get shell coordinates
+		int left = 0;
+		int top = 0;
+		int width = 800;
+		int height = 600;
+		
 		groupwareInformation = 
 			masterPrx.registerGroupwareClient(groupwareClientPrx, "Caleydo", serverPrx, left, top, width, height);
 
-		System.out.println("Groupware information: displayID: "
-			+ groupwareInformation.displayID + ", is private: " + groupwareInformation.isPrivate
-			+ ", deskoXID: " + groupwareInformation.deskoXID);
+//		System.out.println("Groupware information: displayID: "
+//			+ groupwareInformation.displayID + ", is private: " + groupwareInformation.isPrivate
+//			+ ", deskoXID: " + groupwareInformation.deskoXID);
 	}
 	
+	/**
+	 * Retrieves an ice-proxy for deskotheque's ResourceManager for communication
+	 * with deskotheque. 
+	 */
 	private void obtainResourceManagerPrx() {
 		// obtaining resource manager proxy
 		resourceManagerPrx = masterPrx.getResourceManagerProxy();
 	}
 
-	
+	/**
+	 * Retrieves an ice-proxy for deskotheque's Master for communication
+	 * with deskotheque. 
+	 */
 	private void obtainMasterPrx() {
 		// get local host name 
 		String hostname = ""; 
@@ -198,7 +223,6 @@ public class DeskothequeManager
 		
 		// get virtual display 
 		String displayVar = System.getenv("DISPLAY"); 
-		System.out.println("DISPLAY=" + displayVar); 
 		// the display variable is in the format: :0.0 or :1
 		// - but we want a single integer instead 
 		if (displayVar == null) { // for windows machines the display-var defaults to "0" 
@@ -220,7 +244,11 @@ public class DeskothequeManager
 
 		masterPrx = serverPrx.getMasterProxy();
 	}
-	
+
+	/**
+	 * Creates the ICE adapter for communication with deskotheque 
+	 * @param communicator
+	 */
 	private void createAdapter(Communicator communicator) {
 
 		int port = DEFAULT_LISTENING_PORT;
@@ -230,13 +258,17 @@ public class DeskothequeManager
 				System.out.println("Using port " + port);
 				adapter = communicator.createObjectAdapterWithEndpoints("GroupwareClient", "default -p " + port);
 			} catch (Ice.SocketException e) {
-				// e.printStackTrace();
-				System.out.println("Port " + port + " already in use");
+//				e.printStackTrace();
+//				System.out.println("Port " + port + " already in use");
 			}
 			port ++;
 		}
 	}
 
+	/**
+	 * Releases all obtained resources (especially the ICE based communication resources)
+	 * and stops the network services.
+	 */
 	@Override
 	public void stop() {
 
@@ -273,6 +305,11 @@ public class DeskothequeManager
 		unregisterEventListeners();
 	}
 
+	/**
+	 * Sends information for connection lines as an event.
+	 * The server within the connected groupware application is responsible for collecting
+	 * the information and drawing the lines with help of deskotheque
+	 */
 	@Override
 	public void sendConnectionLines(HashMap<EIDType, CanvasConnectionMap> canvasConnections) {
 
@@ -290,7 +327,12 @@ public class DeskothequeManager
 			}
 		}
 	}
-	
+
+	/**
+	 * Transforms the given list of selection vertices from canvas coordinates to display coordinates
+	 * @param canvasPoints list of canvas-vertices of connection lines
+	 * @return list of selection vertices in display coordinates 
+	 */
 	private SelectionPoint2DList canvasPointsToDisplay(SelectionPoint2DList canvasPoints) {
 		SelectionPoint2DList displayPoints = new SelectionPoint2DList();
 		for (SelectionPoint2D p : canvasPoints) {
@@ -303,9 +345,15 @@ public class DeskothequeManager
 		}
 		return displayPoints;
 	}
-	
+
+	/**
+	 * Helper method to send {@link AddConnectionLineVerticesEvent
+	 * @param idType
+	 * @param connectionID
+	 * @param points
+	 */
 	private void sendConnectionLineEvent(EIDType idType, Integer connectionID, SelectionPoint2DList points) {
-		AddConnectionLinePointEvent event = new AddConnectionLinePointEvent();
+		AddConnectionLineVerticesEvent event = new AddConnectionLineVerticesEvent();
 		event.setIdType(idType);
 		event.setConnectionID(connectionID);
 		event.setPoints(points);
@@ -313,6 +361,10 @@ public class DeskothequeManager
 		eventPublisher.triggerEvent(event);
 	}
 
+	/**
+	 * Tells deskotheque to draw connection lines for all known selection vertices
+	 * for the {@link EIDType#EXPRESSION_INDEX} 
+	 */
 	private void drawConnectionLines() {
 //		for (CanvasConnectionMap ccm : displayConnectionsByType.values()) {
 		CanvasConnectionMap ccm = displayConnectionsByType.get(EIDType.EXPRESSION_INDEX);
@@ -321,7 +373,6 @@ public class DeskothequeManager
 				final Integer connectionID = conDisplayPoints.getKey();
 				final ConnectionLineVertex vertices[] = new ConnectionLineVertex[displayPoints.size()];
 				int i = 0;
-				System.out.print("dm.drawConnectionLines(): call desko ");
 				for (SelectionPoint2D p : displayPoints) {
 					ConnectionLineVertex vertex = new ConnectionLineVertex();
 					vertex.x = p.getPoint().x;
@@ -337,44 +388,39 @@ public class DeskothequeManager
 				};
 				Thread drawThread = new Thread(drawer);
 				drawThread.start();
-				System.out.println("new draw thread");
 			}
-//		}
-		
 	}
 
 	/**
 	 * Adds connection-line points for groupware related connection line drawing. 
-	 * @param idType
-	 * @param connectionID
-	 * @param points
+	 * @param idType type of selection the given connection line references to
+	 * @param connectionID unique id for connection lines
+	 * @param newPoints the list selection vertices in display coordinates to add 
 	 */
-	public void addConnectionLinePoints(EIDType idType, int connectionID, SelectionPoint2DList newPoints) {
-		System.out.println("desko: addPoints() called, newPoints=" + newPoints);
+	public void addConnectionLineVertices(EIDType idType, int connectionID, SelectionPoint2DList newPoints) {
 
 		CanvasConnectionMap dcm = displayConnectionsByType.get(idType);
 		if (dcm == null) {
-			System.out.println("desko: addPoints() new dcm");
 			dcm = new CanvasConnectionMap();
 			displayConnectionsByType.put(idType, dcm);
 		}
 		
 		SelectionPoint2DList pointList = dcm.get(connectionID);
 		if (pointList == null) {
-			System.out.println("desko: addPoints() new pointList");
 			pointList = new SelectionPoint2DList();
 			dcm.put(connectionID, pointList);
 		}
-		System.out.println("desko: addPoints() pointList="+pointList);
 
-		if (newPoints == null) {
-			System.out.println("desko: newPoints=null");
-		} else {
+		if (newPoints != null) {
 			pointList.addAll(newPoints);
 		}
 		redrawConnectionLines = true;
 	}
 	
+	/**
+	 * Clears the all known connection lines for the given {@link EIDType} 
+	 * @param idType {@link EIDType} to remove the connection lines of 
+	 */
 	public void clearConnections(EIDType idType) {
 		System.out.println("desko: clearConnections(), idType="+idType);
 		CanvasConnectionMap ccm = displayConnectionsByType.get(idType);
@@ -382,7 +428,13 @@ public class DeskothequeManager
 			ccm.clear();
 		}
 	}
-	
+
+	/**
+	 * Execution method for {@link DisplayLoopExecution#executeMultiple(Runnable)}.
+	 * During the execution groupware connection lines are propagated to other
+	 * instances, event handling ist done and groupware connection lines are drawn
+	 * with help of deskotheque.
+	 */
 	@Override
 	public void run() {
 		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
@@ -397,16 +449,22 @@ public class DeskothequeManager
 		}
 	}
 	
+	/**
+	 * Registers the event listeners to the central event system.
+	 */
 	private void registerEventListeners() {
-		addConnectionLinePointsListener = new AddConnectionLinePointsListener();
+		addConnectionLinePointsListener = new AddConnectionLineVerticesListener();
 		addConnectionLinePointsListener.setHandler(this);
-		eventPublisher.addListener(AddConnectionLinePointEvent.class, addConnectionLinePointsListener);
+		eventPublisher.addListener(AddConnectionLineVerticesEvent.class, addConnectionLinePointsListener);
 
 		clearConnectionsListener = new ClearConnectionsListener();
 		clearConnectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearConnectionsEvent.class, clearConnectionsListener);
 	}
-	
+
+	/**
+	 * Unregisters the event listeners and releases the resources.
+	 */
 	private void unregisterEventListeners() {
 		if (addConnectionLinePointsListener != null) {
 			eventPublisher.removeListener(addConnectionLinePointsListener);
@@ -423,24 +481,39 @@ public class DeskothequeManager
 		return networkManager;
 	}
 
+	
 	@Override
 	public void setNetworkManager(NetworkManager networkManager) {
 		this.networkManager = networkManager;
 	}
 
+	/**
+	 * As deskotheque is able to draw visual connection lines this method
+	 * always returns <code>true</code>
+	 * @return <code>true</code>
+	 */
 	@Override
 	public boolean isGroupwareConnectionLinesEnabled() {
 		return true;
 	}
 
+	/**
+	 * Gets server address to use for caleydo clients to connect to.
+	 * @return caleydo application server ip address 
+	 */
 	public String getServerAddress() {
 		return serverAddress;
 	}
 
+	/**
+	 * Sets server address to use for caleydo clients to connect to.
+	 * @param serverAddress caleydo application server ip address
+	 */ 
 	public void setServerAddress(String serverAddress) {
 		this.serverAddress = serverAddress;
 	}
 
+	@Override
 	public ApplicationInitData getInitData() {
 		return initData;
 	}

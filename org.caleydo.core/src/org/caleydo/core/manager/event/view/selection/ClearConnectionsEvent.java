@@ -7,7 +7,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- *  
+ * Event to signal that all selections for a specific {@link EIDType} should be deleted.
  * 
  * @author Werner Puff
  */
@@ -16,11 +16,14 @@ import org.caleydo.core.manager.event.AEvent;
 public class ClearConnectionsEvent
 	extends AEvent {
 
+	/** selection type to be deleted */
 	private EIDType idType;
 
 	@Override
 	public boolean checkIntegrity() {
-		// TODO Auto-generated method stub
+		if (idType == null) {
+			return false;
+		}
 		return true;
 	}
 

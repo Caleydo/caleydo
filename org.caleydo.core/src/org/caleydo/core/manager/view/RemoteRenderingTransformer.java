@@ -27,12 +27,24 @@ public class RemoteRenderingTransformer
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
 	
+	/**
+	 * Creates a new instance for a related {@link GLRemoteRendering} view.
+	 * Only transformations for remote rendered views in focus or stack level can be performed.
+	 * @param viewID the viewID of the {@link GLRemoteRendering} view to do transformations.
+	 * @param focusLevel the focus-{@link RemoteLevel} of the related view.
+	 * @param stackLevel the stack-{@link RemoteLevel} of the related view.
+	 */
 	public RemoteRenderingTransformer(int viewID, RemoteLevel focusLevel, RemoteLevel stackLevel) {
 		super(viewID);
 		this.focusLevel = focusLevel;
 		this.stackLevel = stackLevel;
 	}
 
+	/**
+	 * Transforms all selection points in the source map that have been provided by views, remotely rendered
+	 * by the related {@link GLRemoteRendering} view into the {@link GLRemoteRendering}-view's coordinate system.
+	 * @see ISelectionTransformer#transform(HashMap, HashMap)
+	 */
 	@Override
 	public boolean transform(HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, ConnectionMap> target) {
 
@@ -40,7 +52,6 @@ public class RemoteRenderingTransformer
 			return false;
 		}
 		transformationFinished = true;
-		System.out.println("RemoteTrans: transforming");
 
 		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
 			

@@ -7,6 +7,10 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
+/**
+ * SWT event listener for requesting busy mode     
+ * @author Werner Puff
+ */
 public class EnableBusyListener 
 	implements Listener {
 	
@@ -19,6 +23,7 @@ public class EnableBusyListener
 		log.log(Level.INFO, "enable busy");
 		GeneralManager.get().getViewGLCanvasManager().requestBusyMode(requester);
 	}
+
 	public void setRequester(Object requester) {
 		this.requester = requester;
 	}

@@ -6,6 +6,11 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 
+/**
+ * Listens for {@link AddSelectionEvent} to pass it to the 
+ * related {@link ConnectedElementRepresentationManager} for handling. 
+ * @author Werner Puff
+ */
 public class AddSelectionListener
 	extends AEventListener<ConnectedElementRepresentationManager> {
 

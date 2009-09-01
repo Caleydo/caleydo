@@ -22,17 +22,30 @@ import org.caleydo.core.manager.view.listener.NewConnectionsListener;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.swt.graphics.Point;
 
+/**
+ * Transforms and projects selection of standard planar views.
+ * The transformation is done by copying the coordinates.   
+ * 
+ * @author Werner Puff
+ */
 public class StandardTransformer
 	implements ISelectionTransformer, IListenerOwner {
 
+	/** reference for common usage */
 	private IEventPublisher eventPublisher; 
 	
+	/** viewID of the view related to this {@link ISelectionTransformer} implementation */
 	protected int viewID;
 
+	/** <code>true</code> if all source points are transformed, <code>false</code> otherwise */
 	protected boolean transformationFinished = false;
 	
 	private NewConnectionsListener newConnectionsListener;
 	
+	/**
+	 * Creates a new instance for a related {@link AGLEventListener} (view).
+	 * @param viewID the viewID of the {@link AGLEventListener} (view) to do transformations for
+	 */
 	public StandardTransformer(int viewID) {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		this.viewID = viewID;
@@ -48,7 +61,10 @@ public class StandardTransformer
 		eventPublisher.addListener(NewConnectionsEvent.class, newConnectionsListener);
 
 	}
-	
+
+	/**
+	 * Unregisters the event listeners and releases resources
+	 */
 	private void unregisterEventListeners() {
 		if (newConnectionsListener != null) {
 			eventPublisher.removeListener(newConnectionsListener);
@@ -159,7 +175,6 @@ public class StandardTransformer
 	@Override
 	public void handleNewConnections() {
 		transformationFinished = false;
-		
 	}
 
 }

@@ -15,6 +15,7 @@ import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
 import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
+import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.listener.AddSelectionListener;
 import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
@@ -27,8 +28,18 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
  * </p>
  * <p>
  * The manager is able to identify identical selections in different views. Selections have selection
- * representations. Selection representations store their containing view and the x/y position in the view
+ * representations. Selection representations store their containing view and the x/y/z position in the view
  * area.
+ * </p>
+ * <p>
+ * The manager manages also the transformed selections vertices of the selections for remote rendered views
+ * and the projected x/y canvas coordinates. The projected coordinates are used to draw connection lines
+ * across window borders e.g. with the help of a IGroupwareManager. 
+ * </p>
+ * <p>
+ * Adding and clearing of selections is done with events. Therefore this manager should is 
+ * a {@link ADisplayLoopEventHandler} and should be added to a {@link DisplayLoopExecution} to handle the
+ * incoming events during each display loop cycle.
  * </p>
  * <p>
  * The purpose of this manager is to make selections available to an external instance that connects them, for
@@ -279,6 +290,9 @@ public class ConnectedElementRepresentationManager
 		}
 	}
 	
+	/**
+	 * To be executed during the display loop with help of a {@link DisplayLoopExecution}
+	 */
 	@Override
 	public void run() {
 		processEvents();
@@ -309,19 +323,39 @@ public class ConnectedElementRepresentationManager
 		}
 	}
 
-	
+	/**
+	 * Gets all {@link CanvasConnectionMap}s by {@link EIDType} containing the
+	 * finally transformed and to-canvas-projected selection vertices.  
+	 * @return 2D canvas selection vertices
+	 */
 	public HashMap<EIDType, CanvasConnectionMap> getCanvasConnectionsByType() {
 		return canvasConnectionsByType;
 	}
 
+	/** 
+	 * Gets all {@link ConnectionMap}s by {@link EIDType} containing 
+	 * transformed selection vertices. The remoteViewID field of the contained 
+	 * {@link SelectedElementRep}s references to the view, the coordinates are
+	 * related to.
+	 * @return
+	 */
 	public HashMap<EIDType, ConnectionMap> getTransformedConnectionsByType() {
 		return transformedConnectionsByType;
 	}
 
+	/**
+	 * <code>true</code> if there are new vertices for 2D connection line drawing, 
+	 * <code>false</code> otherwise
+	 * @return flag if new connection line vertices exists
+	 */
 	public boolean isNewCanvasVertices() {
 		return newCanvasVertices;
 	}
 
+	/**
+	 * Sets the status of flag to indicate if new 2D connection line vertices exists.
+	 * @newCanvasVertices new value for the flag
+	 */
 	public void setNewCanvasVertices(boolean newCanvasVertices) {
 		this.newCanvasVertices = newCanvasVertices;
 	}

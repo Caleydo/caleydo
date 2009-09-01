@@ -86,6 +86,10 @@ public class ViewManager
 
 	private CreateGUIViewListener createGUIViewListener; 
 
+	/**
+	 * Utility object to execute code within the display loop, e.g. used by managers 
+	 * to avoid access conflicts with views.
+	 * */
 	private DisplayLoopExecution displayLoopExecution;
 	
 	/**

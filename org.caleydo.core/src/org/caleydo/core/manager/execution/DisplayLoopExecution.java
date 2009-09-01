@@ -16,7 +16,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Provides execution of {@link Runnable}'s within the openGL's display loop.   
+ * Provides execution of {@link Runnable}'s within the openGL's display loop.
+ * During creation of the singleton reference for this class, the singleton
+ * is added to GL's display loop.
+ *
  * @author Werner Puff
  */
 public class DisplayLoopExecution
@@ -39,11 +42,21 @@ public class DisplayLoopExecution
 	/** {@link List} of the {@link Runnable}'s to execute during each display-loop cycle */
 	private List<Runnable> multiple;
 
+	/**
+	 * Hidden default constructor which creates an instance with empty 
+	 * once- and multiple-exec lists
+	 * to a GL display loop.
+	 */
 	private DisplayLoopExecution() {
 		once = new ArrayList<Runnable>();
 		multiple = new ArrayList<Runnable>();
 	}
-	
+
+	/**
+	 * Retrieves the singleton reference of this class.
+	 * If no singleton exists yet, it will be created. 
+	 * @return
+	 */
 	public static DisplayLoopExecution get() {
 		if (displayLoopExecution == null) {
 			displayLoopExecution = new DisplayLoopExecution();
@@ -94,10 +107,20 @@ public class DisplayLoopExecution
 		return displayLoopCanvas;
 	}
 
+	/**
+	 * Queues the given {@link Runnable} for one time execution during the display loop.
+	 * @param runnable {@link Runnable} to execute
+	 */
 	public void executeOnce(Runnable runnable) {
 		once.add(runnable);
 	}
 	
+	/**
+	 * Queues the given {@link Runnable} for execution during the display loop.
+	 * The {@link Runnable}'s <code>run()</code> method will be called once during
+	 * each display loop cycle.
+	 * @param runnable {@link Runnable} to execute
+	 */
 	public void executeMultiple(Runnable runnable) {
 		if (runnable != null) {
 			multiple.add(runnable);
@@ -106,7 +129,12 @@ public class DisplayLoopExecution
 		}
 
 	}
-	
+
+	/**
+	 * Stops executing the given {@link Runnable} during each display loop cycle.
+	 * Execution of currently executed {@link Runnable}s will not be interrupted.  
+	 * @param runnable {@link Runnable} to remove from the multiple execution list. 
+	 */
 	public void stopMultipleExecution(Runnable runnable) {
 		multiple.remove(runnable);
 	}

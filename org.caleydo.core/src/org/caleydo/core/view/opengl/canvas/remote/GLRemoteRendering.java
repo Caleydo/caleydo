@@ -203,6 +203,7 @@ public class GLRemoteRendering
 
 	private GLInfoAreaManager infoAreaManager;
 
+	/** Transformation utility object to transform and project view related coordinates */
 	protected RemoteRenderingTransformer selectionTransformer; 
 	
 	protected AddPathwayListener addPathwayListener = null;
@@ -2270,7 +2271,6 @@ public class GLRemoteRendering
 	 */
 	public void removeView(AGLEventListener glEventListener) {
 		if (glEventListener != null) {
-
 			glEventListener.destroy();
 		}
 	}
@@ -2975,6 +2975,7 @@ public class GLRemoteRendering
 	@Override
 	public void destroy() {
 		selectionTransformer.destroy();
+		selectionTransformer = null;
 		super.destroy();
 	}
 	

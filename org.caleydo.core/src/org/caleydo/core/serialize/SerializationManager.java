@@ -48,7 +48,7 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
-import org.caleydo.core.manager.event.view.selection.AddConnectionLinePointEvent;
+import org.caleydo.core.manager.event.view.selection.AddConnectionLineVerticesEvent;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
@@ -197,7 +197,7 @@ public class SerializationManager {
 		eventTypes.add(StartClusteringEvent.class);
 		eventTypes.add(ClusterNodeSelectionEvent.class);
 		eventTypes.add(ClientListEvent.class);
-		eventTypes.add(AddConnectionLinePointEvent.class);
+		eventTypes.add(AddConnectionLineVerticesEvent.class);
 		eventTypes.add(ClearConnectionsEvent.class);
 
 //		eventTypes.add(NewSetEvent.class);
