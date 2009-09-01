@@ -386,10 +386,9 @@ public class DeskothequeManager
 	@Override
 	public void run() {
 		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
-		if (cerm.newCanvasPoints) {
-			System.out.println("desko: sending conLines");
+		if (cerm.isNewCanvasVertices()) {
+			cerm.setNewCanvasVertices(false);
 			sendConnectionLines(cerm.getCanvasConnectionsByType());
-			cerm.newCanvasPoints = false;
 		}
 		processEvents();
 		if (redrawConnectionLines && networkManager.getStatus() == ENetworkStatus.STATUS_SERVER) {

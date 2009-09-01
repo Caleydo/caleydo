@@ -1,5 +1,8 @@
 package org.caleydo.rcp;
 
+import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
@@ -12,6 +15,8 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 public class ApplicationWorkbenchAdvisor
 	extends WorkbenchAdvisor {
 	private static final String PERSPECTIVE_ID = "org.caleydo.rcp.perspective";
+
+	private AutoSaver autoSaver;
 
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
@@ -44,6 +49,10 @@ public class ApplicationWorkbenchAdvisor
 
 		filterPreferencePages();
 		initializeViews();
+
+		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		autoSaver = new AutoSaver();
+		vm.getDisplayLoopExecution().executeMultiple(autoSaver);
 	}
 
 	private void filterPreferencePages() {
@@ -67,6 +76,10 @@ public class ApplicationWorkbenchAdvisor
 	@Override
 	public boolean preShutdown() {
 		super.preShutdown();
+		
+		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
+		vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
+		autoSaver = null;
 
 		ProjectSaver saver = new ProjectSaver();
 		saver.saveRecentProject();

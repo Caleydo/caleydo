@@ -99,7 +99,12 @@ public class DisplayLoopExecution
 	}
 	
 	public void executeMultiple(Runnable runnable) {
-		multiple.add(runnable);
+		if (runnable != null) {
+			multiple.add(runnable);
+		} else {
+			throw new NullPointerException("the Runnable to execute was null");
+		}
+
 	}
 	
 	public void stopMultipleExecution(Runnable runnable) {

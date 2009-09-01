@@ -340,8 +340,6 @@ public class GLPathway
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-		System.out.println("pathway: handleSelectionUpdate()");
-
 		// generalManager.getLogger().log(
 		// Level.INFO,
 		// "Update called by " + eventTrigger.getClass().getSimpleName()
@@ -363,9 +361,7 @@ public class GLPathway
 			setDisplayListDirty();
 
 			int iPathwayHeight = pathway.getHeight();
-//			System.out.println("pathway: resolvedDelta=" + resolvedDelta.size());
 			for (SelectionDeltaItem item : resolvedDelta) {
-//				System.out.println("pathway: type=" + item.getSelectionType());
 				if (item.getSelectionType() != ESelectionType.MOUSE_OVER
 					&& item.getSelectionType() != ESelectionType.SELECTION) {
 					continue;
@@ -375,12 +371,6 @@ public class GLPathway
 					(PathwayVertexGraphItemRep) generalManager.getPathwayItemManager().getItem(
 						item.getPrimaryID());
 
-//				System.out.println("pathway: vertexRep=(" + vertexRep.getXOrigin() + ", " + vertexRep.getYOrigin() + ")");
-//				System.out.println("pathway: connIDs=" + item.getConnectionIDs());
-				if (item.getConnectionIDs().size() == 0) {
-//					System.out.println("empty");
-				}
-				
 				SelectedElementRep elementRep =
 					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vertexRep.getXOrigin()
 						* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x() + vecTranslation.x(),

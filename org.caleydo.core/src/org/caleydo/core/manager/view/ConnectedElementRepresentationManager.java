@@ -41,13 +41,13 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 public class ConnectedElementRepresentationManager 
 	extends ADisplayLoopEventHandler {
 
-	IGeneralManager generalManager;
+	/** Stored reference for common usage */  
+	protected IGeneralManager generalManager;
 	
-	IEventPublisher eventPublisher;
+	/** Stored reference for common usage */  
+	protected IEventPublisher eventPublisher;
 	
-	/**
-	 * Stores a {@link ConnectionMap} for each possible type as originally provided by the views.   
-	 */
+	/** Stores a {@link ConnectionMap} for each possible type as originally provided by the views. */
 	HashMap<EIDType, ConnectionMap> sourceConnectionsByType;
 
 	/**
@@ -65,7 +65,8 @@ public class ConnectedElementRepresentationManager
 	ClearConnectionsListener clearConnectionsListener;
 	AddSelectionListener addSelectionListener;
 	
-	public boolean newCanvasPoints = false;
+	/** <code>true</code if there are new vertices in the list of 2D canvas conneciton vertices */
+	protected boolean newCanvasVertices = false;
 	
 	/**
 	 * Constructor.
@@ -82,8 +83,8 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Add a selection to a specific tree. The data type is determined by the selectedElementRep, the
-	 * connection id has to be specified manually
+	 * Sends event to add a selection to a specific tree. The data type is determined by the 
+	 * {@link SelectedElementRep}, the connection id has to be specified manually
 	 * 
 	 * @param iConnectionID
 	 *            the connection ID - one connection id per connection line tree
@@ -97,9 +98,16 @@ public class ConnectedElementRepresentationManager
 		eventPublisher.triggerEvent(event);
 	}
 	
+	/**
+	 * Adds a selection to a specific tree. The data type is determined by the 
+	 * {@link SelectedElementRep}, the connection id has to be specified manually
+	 * 
+	 * @param iConnectionID
+	 *            the connection ID - one connection id per connection line tree
+	 * @param selectedElementRep
+	 *            the selected element rep associated with the tree specified
+	 */
 	public void handleAddSelectionEvent(int connectionID, final SelectedElementRep selectedElementRep) {
-		System.out.println("cerm: handleAddSelectionEvent() called");
-		
 		ConnectionMap tmpHash = sourceConnectionsByType.get(selectedElementRep.getIDType());
 
 		if (tmpHash == null) {
@@ -187,7 +195,7 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Clear all selections of a given type
+	 * Sends event to clear all selections of a given type
 	 */
 	public void clear(EIDType idType) {
 		ClearConnectionsEvent event = new ClearConnectionsEvent();
@@ -195,9 +203,10 @@ public class ConnectedElementRepresentationManager
 		eventPublisher.triggerEvent(event);
 	}
 
+	/**
+	 * Clear all selections of a given type
+	 */
 	public void handleClearEvent(EIDType idType) {
-		System.out.println("cerm: handleClearEvent() called");
-		
 		ConnectionMap tmp = sourceConnectionsByType.get(idType);
 		if (tmp != null) {
 			tmp.clear();
@@ -265,7 +274,7 @@ public class ConnectedElementRepresentationManager
 		if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
 			if (newTransformedPoints) {
 				transformer.project(gl, gm.getNetworkManager().getNetworkName(), transformedConnectionsByType, canvasConnectionsByType);
-				newCanvasPoints = true;
+				newCanvasVertices = true;
 			}
 		}
 	}
@@ -300,12 +309,21 @@ public class ConnectedElementRepresentationManager
 		}
 	}
 
+	
 	public HashMap<EIDType, CanvasConnectionMap> getCanvasConnectionsByType() {
 		return canvasConnectionsByType;
 	}
 
 	public HashMap<EIDType, ConnectionMap> getTransformedConnectionsByType() {
 		return transformedConnectionsByType;
+	}
+
+	public boolean isNewCanvasVertices() {
+		return newCanvasVertices;
+	}
+
+	public void setNewCanvasVertices(boolean newCanvasVertices) {
+		this.newCanvasVertices = newCanvasVertices;
 	}
 
 }
