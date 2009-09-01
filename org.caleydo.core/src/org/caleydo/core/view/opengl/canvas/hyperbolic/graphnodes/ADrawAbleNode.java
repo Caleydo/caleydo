@@ -30,7 +30,6 @@ public abstract class ADrawAbleNode
 	private float fWidth = 0;
 
 	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
-	private boolean bHighlight;
 
 	@Override
 	public final String getNodeName() {
@@ -53,11 +52,6 @@ public abstract class ADrawAbleNode
 	}
 
 	@Override
-	public final void setHighlight(boolean b) {
-		this.bHighlight = b;
-	}
-
-	@Override
 	public final void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
 		this.fXCoord = fXCoord;
 		this.fYCoord = fYCoord;
@@ -67,13 +61,10 @@ public abstract class ADrawAbleNode
 	}
 
 	@Override
-	public final ArrayList<Vec3f> draw(GL gl) {
+	public final ArrayList<Vec3f> draw(GL gl, boolean bHighlight) {
 		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
 		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
-		if (bHighlight)
-			daObj.drawHighlight(gl);
-		else
-			daObj.draw(gl);
+		daObj.draw(gl, bHighlight);
 		return daObj.getConnectionPoints();
 	}
 
@@ -113,3 +104,10 @@ public abstract class ADrawAbleNode
 		}
 	}
 }
+
+// private boolean bHighlight;
+// @Override
+// public final void setHighlight(boolean b) {
+// this.bHighlight = b;
+// }
+

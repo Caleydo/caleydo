@@ -1,13 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
-
-
 /**
  * Factory to auto-generate draw able objects.
  * 
  * @author Georg Neubauer
  */
 public final class DrawAbleObjectsFactory {
+
 	/**
 	 * Returns an object of type specified by the parameter
 	 * 
@@ -18,7 +17,7 @@ public final class DrawAbleObjectsFactory {
 		if (str == "Fallback")
 			return new DrawAbleObjectFallback();
 		else if (str == "Square")
-			return new DrawAbleObjectSquare();
+			return new DrawAbleObjectQuad();
 		return null;
 	}
 }

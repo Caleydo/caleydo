@@ -24,74 +24,73 @@ public interface IDrawAbleObject {
 	 * @param fHeight
 	 * @param fWidth
 	 */
-	public void place(float fXCoord, float fYCoord, float fZCoord,
-		float fHeight, float fWidth);
-	
+	public void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth);
+
 	/**
-	 * Draw the object in normal representation, taking
-	 * color mapping from {@link HyperbolicRenderStyle}
+	 * Draw the object in normal representation, taking color mapping from {@link HyperbolicRenderStyle}
 	 * 
 	 * @param gl
 	 * @return ArrayList<Vec3f>
 	 */
-	public ArrayList<Vec3f> draw(GL gl);
-	
+	public ArrayList<Vec3f> draw(GL gl, boolean bHighlight);
+
 	/**
-	 * Draw the object in highlight representation, taking
-	 * color mapping from {@link HyperbolicRenderStyle}
-	 * 
-	 * @param gl
-	 * @return ArrayList<Vec3f>
-	 */
-	public ArrayList<Vec3f> drawHighlight(GL gl);
-	
-	/**
-	 * Returns the connection points for the current representation and
-	 * placing
+	 * Returns the connection points for the current representation and placing
 	 * 
 	 * @return
 	 */
 	public ArrayList<Vec3f> getConnectionPoints();
-	
-	/**
-	 * Set the background color of the draw able object type
-	 * 
-	 * @param fRed
-	 * @param fGreen
-	 * @param fBlue
-	 * @return
-	 */
-	public void setBgColor3f(float fRed, float fGreen, float fBlue);
 
-	/**
-	 * Set the alpha value of the draw able object type
-	 * 
-	 * @param fAlpha
-	 * @return
-	 */
-	public void setAlpha(float fAlpha);
+	// /**
+	// * Draw the object in highlight representation, taking
+	// * color mapping from {@link HyperbolicRenderStyle}
+	// *
+	// * @param gl
+	// * @return ArrayList<Vec3f>
+	// */
+	// public ArrayList<Vec3f> drawHighlight(GL gl);
 
-	/**
-	 * Draw the object with current color mapping
-	 * 
-	 * @param gl
-	 * @return
-	 */
-	ArrayList<Vec3f> drawObject(GL gl);
-	
-	
-	
-//	/**
-//	 * Draw the object at a certain position.
-//	 * 
-//	 * @param gl
-//	 * @param fXCoord
-//	 * @param fYCoord
-//	 * @param fZCoord
-//	 * @param fHeight
-//	 * @param fWidth
-//	 * @return
-//	 */
-//	public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
-//		float fHeight, float fWidth);
+	// /**
+	// * Set the background color of the draw able object type
+	// *
+	// * @param fRed
+	// * @param fGreen
+	// * @param fBlue
+	// * @return
+	// */
+	// public void setBgColor3f(float fRed, float fGreen, float fBlue);
+	//
+	// /**
+	// * Set the alpha value of the draw able object type
+	// *
+	// * @param fAlpha
+	// * @return
+	// */
+	// public void setAlpha(float fAlpha);
+
+	// /**
+	// * Draw the object with current color mapping
+	// *
+	// * @param gl
+	// * @return
+	// */
+	// ArrayList<Vec3f> drawObject(GL gl);
+
+	// public void setHighlight(boolean b);
+
+	// public boolean isHighlighted();
+
+	// /**
+	// * Draw the object at a certain position.
+	// *
+	// * @param gl
+	// * @param fXCoord
+	// * @param fYCoord
+	// * @param fZCoord
+	// * @param fHeight
+	// * @param fWidth
+	// * @return
+	// */
+	// public ArrayList<Vec3f> drawObjectAtPosition(GL gl, float fXCoord, float fYCoord, float fZCoord,
+	// float fHeight, float fWidth);
 }

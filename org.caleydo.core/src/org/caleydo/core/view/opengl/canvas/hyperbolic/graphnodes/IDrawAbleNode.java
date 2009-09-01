@@ -29,13 +29,6 @@ public interface IDrawAbleNode
 	int getNodeNr();
 
 	/**
-	 * Set how the node is selected
-	 * 
-	 * @param eSelectionType
-	 */
-	void setHighlight(boolean b);
-
-	/**
 	 * Place the node on a specific position
 	 * 
 	 * @param fXCoord
@@ -52,7 +45,7 @@ public interface IDrawAbleNode
 	 * @param gl
 	 * @return ArrayList<Vec3f>
 	 */
-	ArrayList<Vec3f> draw(GL gl);
+	ArrayList<Vec3f> draw(GL gl, boolean bHighlight);
 
 	/**
 	 * Set or replace the representation for a specific detail-level for this node
@@ -75,6 +68,13 @@ public interface IDrawAbleNode
 	 * @return
 	 */
 	ArrayList<Vec3f> getConnectionPoints();
+
+	// /**
+	// * Set how the node is selected
+	// *
+	// * @param eSelectionType
+	// */
+	// void setHighlight(boolean b);
 
 	//	
 	// /**
@@ -104,5 +104,4 @@ public interface IDrawAbleNode
 	// // void drawHighlight(GL gl);
 	//	
 	// int getID();
-
 }

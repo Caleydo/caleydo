@@ -1,12 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
-/**
- * TODO: replace with standard tree someday! 
- */
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 /**

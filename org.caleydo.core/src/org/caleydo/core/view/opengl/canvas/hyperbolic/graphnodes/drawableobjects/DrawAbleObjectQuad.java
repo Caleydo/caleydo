@@ -13,36 +13,23 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
  * 
  * @author Georg Neubauer
  */
-public class DrawAbleObjectSquare
+public class DrawAbleObjectQuad
 	extends ADrawAbleObject {
 
 	@Override
-	public ArrayList<Vec3f> drawObject(GL gl) {
+	public ArrayList<Vec3f> draw(GL gl, boolean bHighlight) {
 		float fSideL = Math.min(fWidth, fHeight) / 2f;
-		gl.glColor4f(this.fRed, this.fGreen, this.fBlue, this.fAlpha);
-		gl.glBegin(GL.GL_POLYGON);
+		if (bHighlight)
+			gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_QUAD_COLORSCHEME_HL, 0);
+		else
+			gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_QUAD_COLORSCHEME, 0);
+		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(fXCoord + fSideL, fYCoord + fSideL, fZCoord);
 		gl.glVertex3f(fXCoord + fSideL, fYCoord - fSideL, fZCoord);
 		gl.glVertex3f(fXCoord - fSideL, fYCoord - fSideL, fZCoord);
 		gl.glVertex3f(fXCoord - fSideL, fYCoord + fSideL, fZCoord);
 		gl.glEnd();
 		return getConnectionPoints();
-	}
-
-	@Override
-	protected void switchColorMapping(boolean b) {
-		if (b) {
-			this.fRed = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME_HL[0];
-			this.fGreen = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME_HL[1];
-			this.fBlue = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME_HL[2];
-			this.fAlpha = HyperbolicRenderStyle.DA_OBJ_SQUARE_ALPHA_HL;
-		}
-		else {
-			this.fRed = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[0];
-			this.fGreen = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[1];
-			this.fBlue = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[2];
-			this.fAlpha = HyperbolicRenderStyle.DA_OBJ_SQUARE_ALPHA;
-		}
 	}
 
 	@Override
@@ -67,6 +54,22 @@ public class DrawAbleObjectSquare
 		}
 		return alPoints;
 	}
+
+	// @Override
+	// protected void switchColorMapping(boolean b) {
+	// if (b) {
+	// this.fRed = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME_HL[0];
+	// this.fGreen = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME_HL[1];
+	// this.fBlue = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME_HL[2];
+	// this.fAlpha = HyperbolicRenderStyle.DA_OBJ_SQUARE_ALPHA_HL;
+	// }
+	// else {
+	// this.fRed = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[0];
+	// this.fGreen = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[1];
+	// this.fBlue = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[2];
+	// this.fAlpha = HyperbolicRenderStyle.DA_OBJ_SQUARE_ALPHA;
+	// }
+	// }
 
 	// public DrawAbleObjectSquare() {
 	// this.fRed = HyperbolicRenderStyle.DA_OBJ_SQUARE_COLORSCHEME[0];

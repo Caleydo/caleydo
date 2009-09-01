@@ -10,7 +10,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 
@@ -25,33 +24,27 @@ public abstract class ATreeLayouter
 	protected float fViewSpaceYAbs = 0;
 	protected IViewFrustum viewFrustum;
 
-	// protected boolean bIsRemoteLayoutDirty = true;
-	// protected boolean bIsRemoteNodeListDirty = false;
-	// protected boolean bIsRemoteConnectionListDirty = false;
+	private boolean bIsLayoutDirty = true;
+	private boolean bIsNodeListDirty = false;
+	private boolean bIsConnectionListDirty = false;
 
-	protected boolean bIsLayoutDirty = true;
-	protected boolean bIsNodeListDirty = false;
-	protected boolean bIsConnectionListDirty = false;
+	private boolean bIsNodeHighlighted = false;
+	private int iHighlightedNode = 0;
 
-	protected boolean bIsNodeHighlighted = false;
-	protected int iHighlightedNode = 0;
+	private boolean bIsConnectionHighlighted = false;
+	private int iHighlightedConnection = 0;
 
-	protected boolean bIsConnectionHighlighted = false;
-	protected int iHighlightedConnection = 0;
+	private boolean bIsAnimating = false;
 
-	protected boolean bIsAnimating = false;
-
+	// TODO: Maybe replace by maps!
 	protected List<IDrawAbleNode> nodeLayout;
 	protected List<IDrawAbleConnection> connectionLayout;
 
-	PickingManager pickingManager;
+	private PickingManager pickingManager;
+	private int iViewID;
+	private int iGLDisplayListNode;
+	private int iGLDisplayListConnection;
 
-	int iViewID;
-
-	int iGLDisplayListNode;
-	int iGLDisplayListConnection;
-	// int iGLDisplayListNodeRemote;
-	// int iGLDisplayListConnectionRemote;
 	protected Tree<IDrawAbleNode> tree = null;
 
 	public ATreeLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
@@ -80,16 +73,6 @@ public abstract class ATreeLayouter
 		fViewSpaceY[1] = fHeight - fHeight * HyperbolicRenderStyle.Y_BORDER_SPACING;
 		fViewSpaceYAbs = Math.abs(fViewSpaceY[0] - fViewSpaceY[1]);
 	}
-
-	/*
-	 * protected final void drawLayout(GL gl) { if (bIsNodeHighlighted) for (IDrawAbleNode node : layout) { if
-	 * (node.getNodeNr() == iHighlightedNode) node.setHighlight(true); else node.setHighlight(false);
-	 * gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION,
-	 * node.getNodeNr())); node.draw(gl); gl.glPopName(); } else for (IDrawAbleNode node : layout) {
-	 * node.setHighlight(false); gl.glPushName(pickingManager.getPickingID(iViewID,
-	 * EPickingType.HYPERBOLIC_NODE_SELECTION, node.getNodeNr())); node.draw(gl); gl.glPopName(); }
-	 * resetHighlight(); }
-	 */
 
 	@Override
 	public final void setLayoutDirty() {
@@ -134,13 +117,12 @@ public abstract class ATreeLayouter
 	private final void buildDisplayListNodes(GL gl, int iGLListToBuild) {
 		gl.glNewList(iGLListToBuild, GL.GL_COMPILE);
 		for (IDrawAbleNode node : nodeLayout) {
-			if (bIsNodeHighlighted && node.getNodeNr() == iHighlightedNode)
-				node.setHighlight(true);
-			else
-				node.setHighlight(false);
 			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION, node
 				.getNodeNr()));
-			node.draw(gl);
+			if (bIsNodeHighlighted && node.getNodeNr() == iHighlightedNode)
+				node.draw(gl, true);
+			else
+				node.draw(gl, false);
 			gl.glPopName();
 		}
 		gl.glEndList();
@@ -149,29 +131,17 @@ public abstract class ATreeLayouter
 	private final void buildDisplayListConnections(GL gl, int iGLListToBuild) {
 		gl.glNewList(iGLListToBuild, GL.GL_COMPILE);
 		for (IDrawAbleConnection conn : connectionLayout) {
-			if (bIsConnectionHighlighted && conn.getConnNr() == iHighlightedConnection)
-				conn.setHighlight(true);
-			else
-				conn.setHighlight(false);
 			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION, conn
 				.getConnNr()));
-			conn.draw(gl);
+			if (bIsConnectionHighlighted && conn.getConnNr() == iHighlightedConnection)
+				conn.draw(gl, true);
+			else
+				conn.draw(gl, false);
 			gl.glPopName();
 		}
 		gl.glEndList();
 
 	}
-
-	// public final void initLocal(GL gl) {
-	// iGLDisplayListNode = gl.glGenLists(1);
-	// iGLDisplayListConnection = gl.glGenLists(1);
-	// init(gl);
-	// }
-
-	// public final void initRemote(GL gl) {
-	// iGLDisplayListConnectionRemote = gl.glGenLists(1);
-	// iGLDisplayListNodeRemote = gl.glGenLists(1);
-	// init(gl);
 
 	@Override
 	public void init(GL gl) {
@@ -195,7 +165,6 @@ public abstract class ATreeLayouter
 			buildDisplayListConnections(gl, iGLDisplayListConnection);
 			bIsConnectionListDirty = false;
 		}
-		// resetHighlight();
 		setLayoutClean();
 	}
 
@@ -203,12 +172,12 @@ public abstract class ATreeLayouter
 	public final void display(GL gl) {
 		gl.glCallList(iGLDisplayListConnection);
 		gl.glCallList(iGLDisplayListNode);
-		
 	}
 
 	private final void clearDisplay() {
 		nodeLayout.clear();
 		connectionLayout.clear();
+		setLayoutDirty();
 	}
 
 	@Override
@@ -217,6 +186,32 @@ public abstract class ATreeLayouter
 		this.tree = tree;
 	}
 
-	@Override
-	public abstract void animateToNewTree(Tree<IDrawAbleNode> tree);
+	// @Override
+	// public abstract void animateToNewTree(Tree<IDrawAbleNode> tree);
+
+	// public final void initLocal(GL gl) {
+	// iGLDisplayListNode = gl.glGenLists(1);
+	// iGLDisplayListConnection = gl.glGenLists(1);
+	// init(gl);
+	// }
+
+	// public final void initRemote(GL gl) {
+	// iGLDisplayListConnectionRemote = gl.glGenLists(1);
+	// iGLDisplayListNodeRemote = gl.glGenLists(1);
+	// init(gl);
+
+	/*
+	 * protected final void drawLayout(GL gl) { if (bIsNodeHighlighted) for (IDrawAbleNode node : layout) { if
+	 * (node.getNodeNr() == iHighlightedNode) node.setHighlight(true); else node.setHighlight(false);
+	 * gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION,
+	 * node.getNodeNr())); node.draw(gl); gl.glPopName(); } else for (IDrawAbleNode node : layout) {
+	 * node.setHighlight(false); gl.glPushName(pickingManager.getPickingID(iViewID,
+	 * EPickingType.HYPERBOLIC_NODE_SELECTION, node.getNodeNr())); node.draw(gl); gl.glPopName(); }
+	 * resetHighlight(); }
+	 */
+	// protected boolean bIsRemoteLayoutDirty = true;
+	// protected boolean bIsRemoteNodeListDirty = false;
+	// protected boolean bIsRemoteConnectionListDirty = false;
+	// int iGLDisplayListNodeRemote;
+	// int iGLDisplayListConnectionRemote;
 }
