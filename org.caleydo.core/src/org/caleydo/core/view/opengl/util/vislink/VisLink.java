@@ -18,7 +18,7 @@ import com.sun.opengl.util.BufferUtil;
 /**
  * 
  * @author Oliver Pimas
- * @version 0.2 (2009-08-11)
+ * @version 0.3 (2009-09-02)
  * 
  * VisLink offers static methods to render a connection line.
  * 
@@ -27,11 +27,59 @@ import com.sun.opengl.util.BufferUtil;
 
 public class VisLink {
 	
-	private static final int TEXTURE_SIZE = 128;
-	private static int viewportX = 0;
-	private static int viewportY = 0;
-	private static int viewportWidth = 640;
-	private static int viewportHeight = 480;
+	private ArrayList<Vec3f> linePoints;
+	private ArrayList<Vec3f> polygonLineVertices;
+	private ArrayList<Vec3f> shadowLineVertices;
+	
+	private float width = 2.0f;
+	
+	private final int TEXTURE_SIZE = 128;
+	private int viewportX = 0;
+	private int viewportY = 0;
+	private int viewportWidth = 640;
+	private int viewportHeight = 480;
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param controlPoints Specifies the set of control points of which the spline is generated.
+	 * @param offset Specifies the offset in controlPoints
+	 */
+	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset) {
+		this.width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+		
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>(controlPoints.subList(offset, controlPoints.size()));
+		if(points.size() == 2) {
+			this.linePoints = points;
+		}
+		else {
+			NURBSCurve curve = new NURBSCurve(points, 10);
+			this.linePoints = curve.getCurvePoints();
+		}
+	}
+	
+	
+	/**
+	 * Constructor
+	 * 
+	 * @param controlPoints Specifies the set of control points of which the spline is generated.
+	 * @param offset Specifies the offset in controlPoints
+	 * @param numberOfSegments Specifies the subintervals of the spline. Note that for
+	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
+	 * the curve and n+1 vertices connecting the n segments.
+	 */
+	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset, int numberOfSegments) {
+		this.width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+		
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>(controlPoints.subList(offset, controlPoints.size()));
+		if(points.size() == 2) {
+			this.linePoints = points;
+		}
+		else {
+			NURBSCurve curve = new NURBSCurve(points, numberOfSegments);
+			this.linePoints = curve.getCurvePoints();
+		}
+	}
 	
 	
 	/**
@@ -54,11 +102,13 @@ public class VisLink {
 	public static void renderLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow)
 		throws IllegalArgumentException
 	{
-		if(controlPoints.size() == (offset + 2))
+		if(controlPoints.size() == (offset + 2)) {
 			line(gl, controlPoints.get(0), controlPoints.get(1), shadow);
+		}
 		else if(controlPoints.size() > (offset + 2))
 		{
-			spline(gl, controlPoints, offset, numberOfSegments, shadow);
+			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
+			visLink.spline(gl, shadow);
 		}
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
@@ -72,9 +122,9 @@ public class VisLink {
 	 *
 	 * @param gl the GL object
 	 * 
-	 * @param controlPoints the control points for the NURBS spline
+	 * @param controlPoints set of control points for the NURBS spline
 	 * 
-	 * @param offset the offset of control points
+	 * @param offset specifies the offset of control points
 	 * 
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 * 
@@ -85,8 +135,10 @@ public class VisLink {
 	{
 		if(controlPoints.size() == (offset + 2))
 			line(gl, controlPoints.get(offset), controlPoints.get(offset + 1), shadow);
-		else if(controlPoints.size() > (offset + 2))
-			spline(gl, controlPoints, offset, 10, shadow); // NOTE: generates a NURBS spline with 10 subsegments.	
+		else if(controlPoints.size() > (offset + 2)) {
+			VisLink visLink = new VisLink(controlPoints, offset);
+			visLink.spline(gl, shadow); // NOTE: generates a NURBS spline with 10 subsegments.
+		}
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
 	}
@@ -115,37 +167,28 @@ public class VisLink {
 	 *
 	 * @param gl the GL object
 	 * 
-	 * @param controlPoints the control points for the NURBS spline
-	 * 
-	 * @param offset the offset of control points
-	 * 
-	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
-	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
-	 * 
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */
-	protected static void spline(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow) {
-		NURBSCurve curve = new NURBSCurve(controlPoints, 10);
+	protected void spline(final GL gl, boolean shadow) {
 		
+		// line shadow
 		if(shadow == true) {
-			// line shadow
 			gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 			gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2.0f);
 			gl.glBegin(GL.GL_LINE_STRIP);
-			for(int i = offset; i < curve.getNumberOfCurvePoints(); i++)
-				gl.glVertex3f(curve.getCurvePoint(i).x(), curve.getCurvePoint(i).y(), curve.getCurvePoint(i).z());
+			for(int i = 0; i < linePoints.size(); i++)
+				gl.glVertex3f(linePoints.get(i).x(), linePoints.get(i).y(), linePoints.get(i).z());
 			gl.glEnd();
 		}
 		
-		// The spline attributes
+		// the spline attributes
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-		//gl.glLineWidth(8f); // FIXME: for testing purpose only
 		
 		// the spline
 		gl.glBegin(GL.GL_LINE_STRIP);
-		for(int i = offset; i < curve.getNumberOfCurvePoints(); i++)
-			gl.glVertex3f(curve.getCurvePoint(i).x(), curve.getCurvePoint(i).y(), curve.getCurvePoint(i).z());
+		for(int i = 0; i < linePoints.size(); i++)
+			gl.glVertex3f(linePoints.get(i).x(), linePoints.get(i).y(), linePoints.get(i).z());
 		gl.glEnd();
 	}
 	
@@ -163,8 +206,8 @@ public class VisLink {
 	 */
 	protected static void line(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint, boolean shadow) {
 		
+		// Line shadow
 		if(shadow == true) {
-			// Line shadow
 			gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 			gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2.0f);
 			gl.glBegin(GL.GL_LINES);
@@ -173,10 +216,11 @@ public class VisLink {
 			gl.glEnd();
 		}
 		
-		// line
+		// the line attributes
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-		//gl.glLineWidth(8f); // FIXME: for testing purpose only
+		
+		// the line
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
@@ -184,58 +228,141 @@ public class VisLink {
 	}
 	
 	
+	
+	
+	/**
+	 * 		Creates a polygon visual link. Static method.
+	 * When the number of control points is 2, this method renders a straight line.
+	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
+	 *
+	 * @param gl the GL object
+	 * 
+	 * @param controlPoints the control points for the NURBS spline
+	 * 
+	 * @param offset specifies the offset of control points
+	 * 
+	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
+	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
+	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
+	 * 
+	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */	
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow)
+		throws IllegalArgumentException
+	{
+		if(controlPoints.size() >= (offset + 2)) {
+			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
+			if(shadow == true)
+				visLink.generateShadowLineVertices(gl);
+			visLink.generatePolygonLineVertices(gl);			
+			visLink.polygonLine(gl, shadow);
+		}
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
+	}
+	
+	
+	/**
+	 * 		Creates a polygon visual link. Static method.
+	 * When the number of control points is 2, this method renders a straight line.
+	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
+	 *
+	 * @param gl the GL object
+	 * 
+	 * @param controlPoints the control points for the NURBS spline
+	 * 
+	 * @param offset specifies the offset of control points
+	 * 
+	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */	
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow)
+		throws IllegalArgumentException
+	{
+		if(controlPoints.size() >= (offset + 2)) {
+			VisLink visLink = new VisLink(controlPoints, offset);
+			if(shadow == true)
+				visLink.generateShadowLineVertices(gl);
+			visLink.generatePolygonLineVertices(gl);			
+			visLink.polygonLine(gl, shadow);
+		}
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
+	}
+	
+	
+	/**
+	 * 		Creates a polygon visual link. Static method.
+	 *
+	 * @param gl the GL object
+	 * 
+	 * @param srcPoint the lines point of origin
+	 * 
+	 * @param destPoint the lines end point
+	 * 
+	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 */	
+	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow) {
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+		points.add(srcPoint);
+		points.add(destPoint);
+		VisLink visLink = new VisLink(points, 0);
+		if(shadow == true)
+			visLink.generateShadowLineVertices(gl);
+		visLink.generatePolygonLineVertices(gl);			
+		visLink.polygonLine(gl, shadow);
+	}
+	
+	
+	/**
+	 * 		generates the vertices for the polygon shadow and stores it in shadowLineVertices
+	 * 
+	 * @param gl The GL object
+	 */
+	protected void generateShadowLineVertices(GL gl) {
+		this.shadowLineVertices = generatePolygonVertices(gl, linePoints, (width + 1f) );
+	}
+	
+	
+	/**
+	 * 		generates the vertices for the polygon line and stores it in polygonLineVertices
+	 * 
+	 * @param gl The GL object
+	 */
+	protected void generatePolygonLineVertices(GL gl) {
+		this.polygonLineVertices = generatePolygonVertices(gl, linePoints, width );
+	}
+	
+	
 	/**
 	 * 		Renders a polygon line. Recommended for lines with higher width.
 	 * 
 	 * @param gl the GL object
-	 * @param srcPoint the lines point of origin
-	 * @param bundlingPoint the lines bundling point
-	 * @param destPoint the lines end point
-	 * @param numberOfSegments numberOfSegments the number of sub-intervals the spline is evaluated with
-	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */
-	public static void polygonLine(final GL gl, final ArrayList<Vec3f> points, final int offset, final int numberOfSegments, boolean shadow) {
-		ArrayList<Vec3f> polygonPoints = new ArrayList<Vec3f>();
-		float width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH / 2f;
+	protected void polygonLine(final GL gl, boolean shadow) {
 		
 		if(shadow == true) {
-			ArrayList<Vec3f> shadowPoints = new ArrayList<Vec3f>();
-			if(points.size() == (offset + 2))
-				shadowPoints = generatePolygonVertices(gl, points, (width + 1.5f / 2) );
-			else if(points.size() > (offset + 2)) {
-				NURBSCurve curve = new NURBSCurve(points, 10);
-				shadowPoints = generatePolygonVertices(gl, curve.getCurvePoints(), (width + 1.5f / 2) );
-			}
-			else
-				throw new IllegalArgumentException( "Need at least two points to render a line!" );
-			
 			// shadow color
 			gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 			
 			// shadow
 			gl.glBegin(GL.GL_QUAD_STRIP);
-			for(int i = 0; i < shadowPoints.size(); i++)
-				gl.glVertex3f(shadowPoints.get(i).x(), shadowPoints.get(i).y(), shadowPoints.get(i).z());
+			for(int i = 0; i < shadowLineVertices.size(); i++)
+				gl.glVertex3f(shadowLineVertices.get(i).x(), shadowLineVertices.get(i).y(), shadowLineVertices.get(i).z());
 			gl.glEnd();
 		}
-		
-		if(points.size() == (offset + 2))
-			polygonPoints = generatePolygonVertices(gl, points, width);
-		else if(points.size() > (offset + 2)) {
-			NURBSCurve curve = new NURBSCurve(points, 10);
-			polygonPoints = generatePolygonVertices(gl, curve.getCurvePoints(), width);
-		}
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" );	
 		
 		// The spline attributes
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 		
 		// the spline
 		gl.glBegin(GL.GL_QUAD_STRIP);
-		for(int i = 0; i < polygonPoints.size(); i++)
-			gl.glVertex3f(polygonPoints.get(i).x(), polygonPoints.get(i).y(), polygonPoints.get(i).z());
+		for(int i = 0; i < polygonLineVertices.size(); i++)
+			gl.glVertex3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
 		gl.glEnd();
 	}
 	
@@ -248,32 +375,31 @@ public class VisLink {
 	 *
 	 *@return a list of vertices
 	*/
-	protected static ArrayList<Vec3f> generatePolygonVertices(final GL gl, ArrayList<Vec3f> curvePoints, float width)
+	protected static ArrayList<Vec3f> generatePolygonVertices(final GL gl, ArrayList<Vec3f> points, float width)
 	throws IllegalArgumentException
 	{
-		if(curvePoints.size() <= 0)
+		if(points.size() <= 0)
 			throw new IllegalArgumentException( "given set of curve points is empty" );
-		if(curvePoints.size() == 1)
+		if(points.size() == 1)
 			throw new IllegalArgumentException( "at least two points are needed for rendering a line" );
 					
-		ArrayList<Vec3f> polygonPoints = new ArrayList<Vec3f>();
-//		float width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH / 2f;
+		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
 		
 		Vec3f dirVec = new Vec3f();
 		Vec3f invDirVec = new Vec3f();
 		
-		for ( int i = 0; i < curvePoints.size(); i++) {	
+		for ( int i = 0; i < points.size(); i++) {	
 			if(i == 0) {
-				dirVec = directionVec(curvePoints.get(i), curvePoints.get(i), curvePoints.get(i+1));
-				invDirVec = invDirectionVec(curvePoints.get(i), curvePoints.get(i), curvePoints.get(i+1));
+				dirVec = directionVec(points.get(i), points.get(i), points.get(i+1));
+				invDirVec = invDirectionVec(points.get(i), points.get(i), points.get(i+1));
 			}
-			else if (i == (curvePoints.size() - 1) ) {
-				dirVec = directionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i));
-				invDirVec = invDirectionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i));
+			else if (i == (points.size() - 1) ) {
+				dirVec = directionVec(points.get(i-1), points.get(i), points.get(i));
+				invDirVec = invDirectionVec(points.get(i-1), points.get(i), points.get(i));
 			}
 			else {
-				dirVec = directionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i+1));
-				invDirVec = invDirectionVec(curvePoints.get(i-1), curvePoints.get(i), curvePoints.get(i+1));
+				dirVec = directionVec(points.get(i-1), points.get(i), points.get(i+1));
+				invDirVec = invDirectionVec(points.get(i-1), points.get(i), points.get(i+1));
 			}
 			
 			dirVec.normalize();
@@ -281,10 +407,10 @@ public class VisLink {
 			dirVec.scale(0.01f);
 			invDirVec.scale(0.01f);
 			
-			polygonPoints.add(curvePoints.get(i).addScaled(width, dirVec));
-			polygonPoints.add(curvePoints.get(i).addScaled(width, invDirVec));
+			vertices.add(points.get(i).addScaled(width, dirVec));
+			vertices.add(points.get(i).addScaled(width, invDirVec));
 		}
-		return polygonPoints;
+		return vertices;
 	}
 	
 	
@@ -326,76 +452,7 @@ public class VisLink {
 	
 	
 	
-	
-	/**
-	 * 		Creates a polygon visual link. Static method.
-	 * When the number of control points is 2, this method renders a straight line.
-	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
-	 *
-	 * @param gl the GL object
-	 * 
-	 * @param controlPoints the control points for the NURBS spline
-	 * 
-	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
-	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
-	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
-	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
-	 * 
-	 * @throws IllegalArgumentException if there are < 2 control points
-	 */	
-	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow)
-		throws IllegalArgumentException
-	{
-		if(controlPoints.size() >= (offset + 2))
-			polygonLine(gl, controlPoints, offset, numberOfSegments, shadow);
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
-	}
-	
-	
-	/**
-	 * 		Creates a polygon visual link. Static method.
-	 * When the number of control points is 2, this method renders a straight line.
-	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
-	 *
-	 * @param gl the GL object
-	 * 
-	 * @param controlPoints the control points for the NURBS spline
-	 * 
-	 * @param offset the offset of control points
-	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
-	 * 
-	 * @throws IllegalArgumentException if there are < 2 control points
-	 */	
-	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow)
-		throws IllegalArgumentException
-	{
-		if(controlPoints.size() >= (offset + 2))
-			polygonLine(gl, controlPoints, offset, 10, shadow);
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
-	}
-	
-	
-	/**
-	 * 		Creates a polygon visual link. Static method.
-	 *
-	 * @param gl the GL object
-	 * 
-	 * @param srcPoint the lines point of origin
-	 * 
-	 * @param destPoint the lines end point
-	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
-	 */	
-	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow) {
-		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-		points.add(srcPoint);
-		points.add(destPoint);
-		polygonLine(gl, points, 0, 0, shadow);
-	}
+
 	
 	
 	
@@ -408,7 +465,8 @@ public class VisLink {
 	
 //	public static void renderPolygonLineWithHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset) {
 //        
-//		int blurTexture = createBlurTexture(gl);   
+//		int blurTexture = createBlurTexture(gl);  
+//		int frameBufferObject = 0; // FIXME: implement createFrameBufferObject(GL gl)
 //		
 //		IntBuffer viewportBuffer = BufferUtil.newIntBuffer(4);
 //		
@@ -423,11 +481,11 @@ public class VisLink {
 ////    		System.out.print(viewportBuffer.get(i) + "  ");
 ////    	System.out.println();
 //
-//        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);                        // Set The Clear Color To Black
-//        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);    // Clear Screen And Depth Buffer
-//        gl.glLoadIdentity();
+////        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);                        // Set The Clear Color To Black
+////        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);    // Clear Screen And Depth Buffer
+////        gl.glLoadIdentity();
 //        
-//        renderToTexture(gl, blurTexture, controlPoints);           // Render To A Texture
+//        renderToTexture(gl, blurTexture, controlPoints, frameBufferObject);           // Render To A Texture
 //        
 //        VisLink.polygonLine(gl, controlPoints, 0, 10, false);
 //
@@ -455,7 +513,7 @@ public class VisLink {
 //        gl.glMatrixMode(GL.GL_PROJECTION);                               // Select Projection
 //        gl.glPushMatrix();                                               // Push The Matrix
 //        gl.glLoadIdentity();                                             // Reset The Matrix
-//        gl.glOrtho(0, 640, 480, 0, -1, 1);                               // Select Ortho Mode (640x480)
+//        gl.glOrtho(0, viewportWidth, viewportHeight, 0, -1, 1);          // Select Ortho Mode (640x480)
 //        gl.glMatrixMode(GL.GL_MODELVIEW);                                // Select Modelview Matrix
 //        gl.glPushMatrix();                                               // Push The Matrix
 //        gl.glLoadIdentity();                                             // Reset The Matrix
@@ -469,7 +527,15 @@ public class VisLink {
 //        gl.glPopMatrix();                                                // Pop The Matrix
 //    }
 //    
-//    private static void renderToTexture(GL gl, int blurTexture, ArrayList<Vec3f> controlPoints) {
+//    private static void renderToTexture(GL gl, int blurTexture, ArrayList<Vec3f> controlPoints, int frameBufferObject) {
+//    	
+//    	if (frameBufferObject == -1) {
+//    		System.err.println("error: couldn't create framebuffer object needed for halo. rendering normal polygon line instead.");
+//    		VisLink.polygonLine(gl, controlPoints, 0, 10, false);
+//        }
+//    	
+//    	// Bind the fbo
+//        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBufferObject);
 //    	
 //        // Set Our Viewport (Match Texture Size)
 //        gl.glViewport(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
@@ -491,8 +557,8 @@ public class VisLink {
 //    }
 //    
 //    private static void drawBlur(GL gl, int times, float inc, int blurTexture) {
-//        float spost = 0.0f;                                      // Starting Texture Coordinate Offset
-//        float alpha = 0.2f;                                      // Starting Alpha Value
+//    	float spost = 0.0f; // Starting Texture Coordinate Offset
+//    	float alpha = 0.2f; // Starting Alpha Value
 //
 //        // Disable AutoTexture Coordinates
 ////        gl.glDisable(GL.GL_TEXTURE_GEN_S);
@@ -515,13 +581,13 @@ public class VisLink {
 //            gl.glVertex2f(0, 0);                                 // First Vertex		(   0,   0 )
 //
 //            gl.glTexCoord2f(0 + spost, 0 + spost);               // Texture Coordinate	( 0, 0 )
-//            gl.glVertex2f(0, 480);                               // Second Vertex	(   0, 480 )
+//            gl.glVertex2f(0, viewportHeight);                    // Second Vertex	(   0, 480 )
 //
 //            gl.glTexCoord2f(1 - spost, 0 + spost);               // Texture Coordinate	( 1, 0 )
-//            gl.glVertex2f(640, 480);                             // Third Vertex		( 640, 480 )
+//            gl.glVertex2f(viewportWidth, viewportHeight);        // Third Vertex		( 640, 480 )
 //
 //            gl.glTexCoord2f(1 - spost, 1 - spost);               // Texture Coordinate	( 1, 1 )
-//            gl.glVertex2f(640, 0);                               // Fourth Vertex	( 640,   0 )
+//            gl.glVertex2f(viewportWidth, 0);                     // Fourth Vertex	( 640,   0 )
 //
 //            spost += inc;                                        // Gradually Increase spost (Zooming Closer To Texture Center)
 //            alpha = alpha - alphainc;                            // Gradually Decrease alpha (Gradually Fading Image Out)
@@ -532,11 +598,10 @@ public class VisLink {
 //
 //        gl.glEnable(GL.GL_DEPTH_TEST);                           // Enable Depth Testing
 //        gl.glDisable(GL.GL_TEXTURE_2D);                          // Disable 2D Texture Mapping
-//        gl.glDisable(GL.GL_TEXTURE_2D);                          // Disable 2D Texture Mapping
-//        gl.glDisable(GL.GL_TEXTURE_2D);                          // Disable 2D Texture Mapping
 //        gl.glDisable(GL.GL_BLEND);                               // Disable Blending
 //        gl.glBindTexture(GL.GL_TEXTURE_2D, 0);                   // Unbind The Blur Texture
 //    }
     
 	
 }
+
