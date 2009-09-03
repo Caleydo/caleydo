@@ -83,6 +83,7 @@ public abstract class ATreeLayouter
 		bIsLayoutDirty = true;
 		bIsNodeListDirty = true;
 		bIsConnectionListDirty = true;
+		clearDisplay();
 	}
 
 	public final void setLayoutClean() {
@@ -159,7 +160,6 @@ public abstract class ATreeLayouter
 	public final void buildDisplayLists(GL gl) {
 		if (bIsLayoutDirty) {
 			setLayoutDirty();
-			clearDisplay();
 			renderTreeLayout();
 		}
 		if (bIsNodeListDirty) {
@@ -182,13 +182,12 @@ public abstract class ATreeLayouter
 	private final void clearDisplay() {
 		nodeLayout.clear();
 		connectionLayout.clear();
-		setLayoutDirty();
 	}
 
 	@Override
 	public final void setTree(Tree<IDrawAbleNode> tree) {
-		setLayoutDirty();
 		this.tree = tree;
+		setLayoutDirty();
 	}
 
 	protected final void placeNode(IDrawAbleNode node, float fXCoord, float fYCoord, float fZCoord,

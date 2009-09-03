@@ -49,7 +49,7 @@ public final class LTLayouter
 //			fMaxNodeH, fMaxNodeW);
 		placeNode(rootNode, fWidth / 2 + 2f, fHeight / 2 - 3f, 0.1f , 0.5f, 0.5f);	
 		
-		IDrawAbleConnection conn = DrawAbleConnectionsFactory.getDrawAbleConnection("Line");
+		IDrawAbleConnection conn = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.LINEAR_TREE_LAYOUTER_CONNECTION_TYPE);
 		List<Vec3f> lP = new ArrayList<Vec3f>();
 		Vec3f vf = new Vec3f(fViewSpaceX[0], fViewSpaceY[0], 0.1f);
 		lP.add(vf);

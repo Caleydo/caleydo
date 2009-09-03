@@ -14,8 +14,8 @@ public final class DrawAbleConnectionsFactory {
 	public static IDrawAbleConnection getDrawAbleConnection(String str){
 		if(str == "Line")
 			return new DrawAbleLinearConnection(iID++);
-//		else if (str == "Spline")
-//			return 0;
+		else if (str == "Spline")
+			return new DrawAbleSplineConnection(iID++);
 		return null;
 			
 	}

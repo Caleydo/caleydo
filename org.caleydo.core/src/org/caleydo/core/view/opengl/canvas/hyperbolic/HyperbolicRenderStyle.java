@@ -33,6 +33,15 @@ public class HyperbolicRenderStyle
 
 	public static final float[] DA_LINEAR_CONNECTION_COLORSHEME_HL = { 0f, 1f, 0f, 1f };
 	public static final float DA_LINEAR_CONNECTION_THICKNESS_HL = 5f;
+	
+	public static final float[] DA_SPLINE_CONNECTION_COLORSHEME = { 1f, 0f, 0f, 1f };
+	public static final float DA_SPLINE_CONNECTION_THICKNESS = 1f;
+
+	public static final float[] DA_SPLINE_CONNECTION_COLORSHEME_HL = { 0f, 1f, 0f, 1f };
+	public static final float DA_SPLINE_CONNECTION_THICKNESS_HL = 5f;
+	
+	public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Line";
+	public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Line";
 
 	/**
 	 * Specify how many contact points a DA object should return. value must be a multiple of 4 (4, 8, 12,
