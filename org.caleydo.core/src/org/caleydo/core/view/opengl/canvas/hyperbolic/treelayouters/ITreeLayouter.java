@@ -44,7 +44,7 @@ public interface ITreeLayouter {
 
 	void setTree(Tree<IDrawAbleNode> tree);
 
-	void init(GL gl);
+	void init(int iGLDisplayListNode, int iGLDisplayListConnection);
 
 	void display(GL gl);
 

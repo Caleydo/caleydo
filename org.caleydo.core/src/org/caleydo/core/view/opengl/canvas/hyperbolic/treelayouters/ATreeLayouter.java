@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +39,8 @@ public abstract class ATreeLayouter
 	private boolean bIsAnimating = false;
 
 	// TODO: Maybe replace by maps!
-	protected List<IDrawAbleNode> nodeLayout;
-	protected List<IDrawAbleConnection> connectionLayout;
+	private List<IDrawAbleNode> nodeLayout;
+	private List<IDrawAbleConnection> connectionLayout;
 
 	private PickingManager pickingManager;
 	private int iViewID;
@@ -61,7 +63,7 @@ public abstract class ATreeLayouter
 		return this.iComparableValue - layouter.iComparableValue;
 	}
 
-	protected abstract void renderTreeLayout(GL gl);
+	protected abstract void renderTreeLayout();
 
 	protected final void updateSizeInfo() {
 		fHeight = viewFrustum.getHeight();
@@ -89,6 +91,8 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void setHighlightedNode(int iNodeID) {
+		if(bIsNodeHighlighted && iHighlightedNode == iNodeID)
+			return;
 		resetHighlight();
 		bIsNodeHighlighted = true;
 		iHighlightedNode = iNodeID;
@@ -96,6 +100,8 @@ public abstract class ATreeLayouter
 	}
 
 	public final void setHiglightedLine(int iLineID) {
+		if(bIsConnectionHighlighted && iHighlightedConnection == iLineID)
+			return;
 		resetHighlight();
 		bIsConnectionHighlighted = true;
 		iHighlightedConnection = iLineID;
@@ -114,8 +120,8 @@ public abstract class ATreeLayouter
 		}
 	}
 
-	private final void buildDisplayListNodes(GL gl, int iGLListToBuild) {
-		gl.glNewList(iGLListToBuild, GL.GL_COMPILE);
+	private final void buildDisplayListNodes(GL gl) {
+		gl.glNewList(iGLDisplayListNode, GL.GL_COMPILE);
 		for (IDrawAbleNode node : nodeLayout) {
 			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION, node
 				.getNodeNr()));
@@ -128,8 +134,8 @@ public abstract class ATreeLayouter
 		gl.glEndList();
 	}
 
-	private final void buildDisplayListConnections(GL gl, int iGLListToBuild) {
-		gl.glNewList(iGLListToBuild, GL.GL_COMPILE);
+	private final void buildDisplayListConnections(GL gl) {
+		gl.glNewList(iGLDisplayListConnection, GL.GL_COMPILE);
 		for (IDrawAbleConnection conn : connectionLayout) {
 			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION, conn
 				.getConnNr()));
@@ -144,9 +150,9 @@ public abstract class ATreeLayouter
 	}
 
 	@Override
-	public void init(GL gl) {
-		iGLDisplayListNode = gl.glGenLists(1);
-		iGLDisplayListConnection = gl.glGenLists(1);
+	public final void init(int iGLDisplayListNode, int iGLDisplayListConnection) {
+		this.iGLDisplayListNode = iGLDisplayListNode;
+		this.iGLDisplayListConnection = iGLDisplayListConnection;
 	}
 
 	@Override
@@ -154,15 +160,14 @@ public abstract class ATreeLayouter
 		if (bIsLayoutDirty) {
 			setLayoutDirty();
 			clearDisplay();
-			renderTreeLayout(gl);
-
+			renderTreeLayout();
 		}
 		if (bIsNodeListDirty) {
-			buildDisplayListNodes(gl, iGLDisplayListNode);
+			buildDisplayListNodes(gl);
 			bIsNodeListDirty = false;
 		}
 		if (bIsConnectionListDirty) {
-			buildDisplayListConnections(gl, iGLDisplayListConnection);
+			buildDisplayListConnections(gl);
 			bIsConnectionListDirty = false;
 		}
 		setLayoutClean();
@@ -184,6 +189,17 @@ public abstract class ATreeLayouter
 	public final void setTree(Tree<IDrawAbleNode> tree) {
 		setLayoutDirty();
 		this.tree = tree;
+	}
+
+	protected final void placeNode(IDrawAbleNode node, float fXCoord, float fYCoord, float fZCoord,
+		float fHeight, float fWidth) {
+		node.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		nodeLayout.add(node);
+	}
+
+	protected final void placeConnection(IDrawAbleConnection conn, List<Vec3f> lPoints) {
+		conn.place(lPoints);
+		connectionLayout.add(conn);
 	}
 
 	// @Override

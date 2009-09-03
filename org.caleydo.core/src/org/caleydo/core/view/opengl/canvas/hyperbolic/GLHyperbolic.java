@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
@@ -62,6 +63,9 @@ public class GLHyperbolic
 	private ColorMappingManager colorMappingManager = null;
 
 	private RedrawViewListener redrawViewListener = null;
+	
+	private int iGLDisplayListNode;
+	private int iGLDisplayListConnection;
 
 	/**
 	 * Constructor.
@@ -132,7 +136,9 @@ public class GLHyperbolic
 	@Override
 	public void init(GL gl) {
 		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
-		layouter.init(gl);
+		iGLDisplayListNode = gl.glGenLists(1);
+		iGLDisplayListConnection = gl.glGenLists(1);
+		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
 		if (tree == null)
 			return;
 		if (set == null)

@@ -25,7 +25,7 @@ public final class LTLayouter
 	}
 
 	@Override
-	public void renderTreeLayout(GL gl) {
+	public void renderTreeLayout() {
 		updateSizeInfo();
 		if (tree == null)
 			return;
@@ -44,20 +44,18 @@ public final class LTLayouter
 
 		// first start with root node
 		IDrawAbleNode rootNode = tree.getRoot();
-		rootNode.place(fViewSpaceY[1] - fLayerH / 2.0f, fViewSpaceX[0] + fViewSpaceXAbs / 2.0f, 0.1f,
-			fMaxNodeH, fMaxNodeW);
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh);
-		nodeLayout.add(rootNode);
+//		placeNode(rootNode, fViewSpaceY[1] - fLayerH / 2.0f, fViewSpaceX[0] + fViewSpaceXAbs / 2.0f, 0.1f,
+//			fMaxNodeH, fMaxNodeW);
+		placeNode(rootNode, fWidth / 2 + 2f, fHeight / 2 - 3f, 0.1f , 0.5f, 0.5f);	
 		
 		IDrawAbleConnection conn = DrawAbleConnectionsFactory.getDrawAbleConnection("Line");
 		List<Vec3f> lP = new ArrayList<Vec3f>();
 		Vec3f vf = new Vec3f(fViewSpaceX[0], fViewSpaceY[0], 0.1f);
 		lP.add(vf);
-		vf = new Vec3f(fViewSpaceX[1], fViewSpaceY[1], 0.1f);
+		vf = new Vec3f(fViewSpaceX[1], fViewSpaceY[0]+2f, 0.1f);
 		lP.add(vf);
-		conn.place(lP);
-		connectionLayout.add(conn);
-
+		placeConnection(conn, lP);
 	}
 
 	//

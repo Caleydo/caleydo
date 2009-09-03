@@ -37,7 +37,7 @@ public interface IDrawAbleNode
 	 * @param fHeight
 	 * @param fWidth
 	 */
-	void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth);
+	ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth);
 
 	/**
 	 * Draw the node in current representation
@@ -45,7 +45,7 @@ public interface IDrawAbleNode
 	 * @param gl
 	 * @return ArrayList<Vec3f>
 	 */
-	ArrayList<Vec3f> draw(GL gl, boolean bHighlight);
+	void draw(GL gl, boolean bHighlight);
 
 	/**
 	 * Set or replace the representation for a specific detail-level for this node

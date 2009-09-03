@@ -52,20 +52,21 @@ public abstract class ADrawAbleNode
 	}
 
 	@Override
-	public final void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
+	public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
 		this.fXCoord = fXCoord;
 		this.fYCoord = fYCoord;
 		this.fZCoord = fZCoord;
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
+		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		return daObj.getConnectionPoints();
 	}
 
 	@Override
-	public final ArrayList<Vec3f> draw(GL gl, boolean bHighlight) {
+	public final void draw(GL gl, boolean bHighlight) {
 		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
-		daObj.draw(gl, bHighlight);
-		return daObj.getConnectionPoints();
+		daObj.draw(gl, bHighlight);	
 	}
 
 	@Override
@@ -81,7 +82,6 @@ public abstract class ADrawAbleNode
 	@Override
 	public final ArrayList<Vec3f> getConnectionPoints() {
 		IDrawAbleObject daObj = mRepresantations.get(eSelectionType);
-		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
 		return daObj.getConnectionPoints();
 	}
 
