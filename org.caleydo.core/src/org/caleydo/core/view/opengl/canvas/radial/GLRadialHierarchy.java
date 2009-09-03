@@ -166,7 +166,7 @@ public class GLRadialHierarchy
 			// initHierarchy(tree);
 		}
 		else {
-			// initTestHierarchy();
+//			 initTestHierarchy();
 		}
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -569,6 +569,7 @@ public class GLRadialHierarchy
 			PartialDisc pdSelectedElement = drawingController.getCurrentDrawingState().getSelectedElement();
 			if (pdSelectedElement != null) {
 				pdCurrentSelectedElement = pdSelectedElement;
+				pdSelectedElement.setCurrentStartAngle(0);
 			}
 			navigationHistory.addNewHistoryEntry(drawingController.getCurrentDrawingState(),
 				pdCurrentRootElement, pdCurrentSelectedElement, iMaxDisplayedHierarchyDepth);
