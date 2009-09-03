@@ -146,6 +146,12 @@ public class HeatMapRenderStyle
 		return fWidthGeneDendrogram;
 	}
 
+	// function called by HHM to set width of gene dendrogram
+	public void setWidthGeneDendrogram(float fWidthGeneDendrogram) {
+
+		this.fWidthGeneDendrogram = fWidthGeneDendrogram;
+	}
+	
 	public float getWidthClusterVisualization() {
 
 		return fWidthClusterVisualization;

@@ -80,6 +80,8 @@ public class GLDendrogram
 	 */
 	private boolean bRenderGeneTree;
 
+	private boolean bRenderUntilCut = false;
+
 	private boolean bIsDraggingActive = false;
 	private float fPosCut = 0.0f;
 
@@ -266,6 +268,14 @@ public class GLDendrogram
 
 		if (!isRenderedRemote())
 			contextMenu.render(gl, this);
+	}
+
+	public float getPositionOfCut() {
+		return fPosCut;
+	}
+
+	public void setRenderUntilCut(boolean bRenderUntilCut) {
+		this.bRenderUntilCut = bRenderUntilCut;
 	}
 
 	/**
@@ -877,14 +887,15 @@ public class GLDendrogram
 
 				bCutOffActive[i] = false;
 
-				if (bEnableDepthCheck) {
-					if (current.getSelectionType() != ESelectionType.DESELECTED) {
+				if (bEnableDepthCheck && bRenderUntilCut == true) {
+					if (current.getPos().x() >= fPosCut) {
+//					if (current.getSelectionType() != ESelectionType.DESELECTED) {
 						renderDendrogramGenes(gl, current, 1);
-						// renderDendrogramGenes(gl, current, 0.3f);
+//						 renderDendrogramGenes(gl, current, 0.3f);
 						// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 					}
 					else {
-						// renderDendrogramGenes(gl, current, 1);
+						 renderDendrogramGenes(gl, current, 1);
 						bCutOffActive[i] = true;
 					}
 				}
@@ -908,8 +919,10 @@ public class GLDendrogram
 			for (int i = 0; i < iNrChildsNode; i++) {
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(xmin, tempPositions[i].y(), tempPositions[i].z());
-				if (bCutOffActive[i])
+				if (bCutOffActive[i] && bRenderUntilCut == false)
 					gl.glVertex3f(xGlobalMax, tempPositions[i].y(), tempPositions[i].z());
+				else if(bCutOffActive[i] && bRenderUntilCut == true)
+					gl.glVertex3f(fPosCut + 0.1f, tempPositions[i].y(), tempPositions[i].z());
 				else
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
 				gl.glEnd();
@@ -1124,7 +1137,7 @@ public class GLDendrogram
 		// display list for cut off value
 		gl.glNewList(iGLDisplayListCutOffValue, GL.GL_COMPILE);
 
-		if (tree != null)
+		if (tree != null && bRenderUntilCut == false)
 			renderCut(gl);
 
 		gl.glEndList();
