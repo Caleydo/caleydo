@@ -23,6 +23,12 @@ public class HeatMapRenderStyle
 	private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
 	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
+
+	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
+	public static final float[] GROUP_COLOR_UNSELECTED = { 0.5f, 1f, 1f, 1 };
+	public static final float[] GROUP_COLOR_SELECTED = { 0.5f, 1f, 0.5f, 1 };
+	public static final float CLUSTER_BORDERS_Z = 0.009f;
+	public static final float BUTTON_Z = 0.01f;
 	
 	private float fSelectedFieldWidth = 1.0f;
 
@@ -34,11 +40,19 @@ public class HeatMapRenderStyle
 
 	private int iNotSelectedLevel = 1000;
 
+	private float fWidthLevel1 = 0.2f;
+	private float fWidthLevel2 = 0.0f;
+	private float fWidthLevel3 = 0.0f;
+	private float fWidthClusterVisualization = 0.1f;
+	private float fHeightExperimentDendrogram = 1.45f;
+	private float fWidthGeneDendrogram = 1.6f;
+
 	// private ArrayList<FieldWidthElement> alFieldWidths;
 
 	private HashMap<Integer, Float> hashLevelToWidth;
 
 	GLHeatMap heatMap;
+	GLHierarchicalHeatMap hierarchicalHeatMap;
 
 	public HeatMapRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum) {
 
@@ -66,6 +80,14 @@ public class HeatMapRenderStyle
 
 			hashLevelToWidth.put(iCount, fCurrentWidth);
 		}
+
+	}
+
+	public HeatMapRenderStyle(GLHierarchicalHeatMap hierarchicalHeatMap, IViewFrustum viewFrustum) {
+
+		super(viewFrustum);
+
+		this.hierarchicalHeatMap = hierarchicalHeatMap;
 
 	}
 
@@ -114,6 +136,44 @@ public class HeatMapRenderStyle
 		fNormalFieldWidth = fNormalFieldWidth > fSelectedFieldWidth ? fSelectedFieldWidth : fNormalFieldWidth;
 	}
 
+	public float getHeightExperimentDendrogram() {
+
+		return fHeightExperimentDendrogram;
+	}
+	
+	public float getWidthGeneDendrogram() {
+
+		return fWidthGeneDendrogram;
+	}
+
+	public float getWidthClusterVisualization() {
+
+		return fWidthClusterVisualization;
+	}
+
+	public float getWidthLevel1() {
+
+		return fWidthLevel1;
+	}
+
+	public float getWidthLevel2() {
+
+		fWidthLevel2 = hierarchicalHeatMap.getViewFrustum().getWidth() / 5;
+
+		return fWidthLevel2;
+	}
+
+	public float getWidthLevel3() {
+
+		return fWidthLevel3;
+	}
+
+	// function called by HHM to set width of embedded HM
+	public void setWidthLevel3(float fWidthLevel3) {
+
+		this.fWidthLevel3 = fWidthLevel3;
+	}
+	
 	public float getNormalFieldWidth() {
 
 		return fNormalFieldWidth;

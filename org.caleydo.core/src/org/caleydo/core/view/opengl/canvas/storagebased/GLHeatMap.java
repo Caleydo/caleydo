@@ -92,6 +92,12 @@ public class GLHeatMap
 	int iCurrentMouseOverElement = -1;
 
 	/**
+	 * Determines whether a bigger space between heat map and caption is needed or not. If false no cluster
+	 * info is available and therefore no additional space is needed. Set by remote rendering view (HHM).
+	 */
+	private boolean bClusterVisualizationActive = false;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param glCanvas
@@ -747,17 +753,23 @@ public class GLHeatMap
 
 					textRenderer.setColor(0, 0, 0, 1);
 
+					if (bClusterVisualizationActive)
+						gl.glTranslatef(0, renderStyle.getWidthClusterVisualization(), 0);
+
 					if (currentType == ESelectionType.SELECTION || currentType == ESelectionType.MOUSE_OVER) {
-						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 2.5f, fYPosition + 0.1f,
+						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 2.5f, fYPosition + 0.05f,
 							0, fLineDegrees, fFontScaling);
 						if (refSeq != null)
-							renderCaption(gl, refSeq, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.1f,
-								0, fLineDegrees, fFontScaling);
+							renderCaption(gl, refSeq, fXPosition + fFieldWidth / 6 * 4.5f,
+								fYPosition + 0.05f, 0, fLineDegrees, fFontScaling);
 					}
 					else {
-						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.1f,
+						renderCaption(gl, sContent, fXPosition + fFieldWidth / 6 * 4.5f, fYPosition + 0.05f,
 							0, fLineDegrees, fFontScaling);
 					}
+
+					if (bClusterVisualizationActive)
+						gl.glTranslatef(0, -renderStyle.getWidthClusterVisualization(), 0);
 				}
 
 			}
@@ -1141,4 +1153,9 @@ public class GLHeatMap
 	public void handleUpdateView() {
 		setDisplayListDirty();
 	}
+
+	public void setClusterVisualizationActiveFlag(boolean bClusterVisualizationActive) {
+		this.bClusterVisualizationActive = bClusterVisualizationActive;
+	}
+
 }

@@ -879,8 +879,9 @@ public class GLDendrogram
 
 				if (bEnableDepthCheck) {
 					if (current.getSelectionType() != ESelectionType.DESELECTED) {
-						renderDendrogramGenes(gl, current, 0.3f);
-						gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+						renderDendrogramGenes(gl, current, 1);
+						// renderDendrogramGenes(gl, current, 0.3f);
+						// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 					}
 					else {
 						// renderDendrogramGenes(gl, current, 1);
@@ -988,8 +989,9 @@ public class GLDendrogram
 
 				if (bEnableDepthCheck) {
 					if (current.getSelectionType() != ESelectionType.DESELECTED) {
-						renderDendrogramExperiments(gl, current, 0.3f);
-						gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+						renderDendrogramExperiments(gl, current, 1f);
+						// renderDendrogramExperiments(gl, current, 0.3f);
+						// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 					}
 					else {
 						// renderDendrogramExperiments(gl, current, 1);
