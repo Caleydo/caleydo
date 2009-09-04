@@ -42,6 +42,10 @@ public class VisLink {
 	private int[] blurTexture;
 	private int[] frameBufferObject;
 	
+	// to delete the Buffers
+	private int[] colorBuff;
+	private int[] depthBuff;
+	
 	
 	/**
 	 * Constructor
@@ -552,8 +556,7 @@ public class VisLink {
 		throws IllegalArgumentException
 	{
 		if(controlPoints.size() >= (offset + 2)) {
-			VisLink visLink = new VisLink(controlPoints, offset, 10);
-			visLink.generatePolygonLineVertices(gl);			
+			VisLink visLink = new VisLink(controlPoints, offset, 10);			
 			visLink.polygonLineWithHalo(gl); // FIXME
 		}
 		else
@@ -570,9 +573,7 @@ public class VisLink {
     		System.err.println("error: couldn't create framebuffer object needed for halo. rendering normal polygon line instead.");
     		polygonLine(gl, false);
     		return;
-        }
-			
-		generatePolygonLineVertices(gl);
+		}
 		
 		IntBuffer viewportBuffer = BufferUtil.newIntBuffer(4);
 		
@@ -587,16 +588,21 @@ public class VisLink {
 //    		System.out.print(viewportBuffer.get(i) + "  ");
 //    	System.out.println();
     	
-    	renderToTexture(gl);
     	
+    	// line with blur effect
+    	renderToTexture(gl);
+    	// restore default FB
+    	gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, 0);
+    	// restore the viewport
+    	gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
     	polygonLine(gl, false);
     	drawBlur(gl, 25, 0.02f, blurTexture[0]);
-        
-//    	drawLineWithHalo(gl);
     	
+    	// delete the Buffers
     	gl.glDeleteTextures(1, blurTexture, 0);
-        // Delete the FBO
-        gl.glDeleteFramebuffersEXT(1, frameBufferObject, 0);
+    	gl.glDeleteFramebuffersEXT(1, frameBufferObject, 0);
+    	gl.glDeleteTextures(1, colorBuff, 0);
+    	gl.glDeleteRenderbuffersEXT(1, depthBuff, 0);
 	}
 	
 	
@@ -636,7 +642,7 @@ public class VisLink {
     
     private void renderToTexture(GL gl) {
     	
-    	// if fbo couldn't be created, we can't render to texture and therefore can't use halo
+    	// if FBO couldn't be created, we can't render to texture and therefore can't use halo
     	if (frameBufferObject[0] == -1) {
     		System.err.println("error: couldn't create framebuffer object needed for halo.");
     		return;
@@ -655,13 +661,6 @@ public class VisLink {
         // Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
         gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]);
         gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE, 0);
-        
-        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, 0); // restore default fb
-
-        // Restore the viewport
-    	gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
-//		System.out.println(viewportX + "  " + viewportY + "  " + viewportWidth + "  " + viewportHeight);
-//		System.out.println("--------------------");
     }
     
     private void drawBlur(GL gl, int times, float inc, int blurTexture) {
@@ -672,70 +671,50 @@ public class VisLink {
     		return;
         }
     	
-    	float spost = 0.0f; // Starting Texture Coordinate Offset
-    	float alpha = 0.2f; // Starting Alpha Value
-
-        // Disable AutoTexture Coordinates
-    	gl.glDisable(GL.GL_TEXTURE_GEN_S);
-    	gl.glDisable(GL.GL_TEXTURE_GEN_T);
-
-        gl.glEnable(GL.GL_TEXTURE_2D);                           // Enable 2D Texture Mapping
-        gl.glDisable(GL.GL_DEPTH_TEST);                          // Disable Depth Testing
-        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);              // Set Blending Mode
-        gl.glEnable(GL.GL_BLEND);                                // Enable Blending
-        gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture);         // Bind To The Blur Texture
-        viewOrtho(gl);                                           // Switch To An Ortho View
-
-        float alphainc = alpha / times;                          // alphainc=0.2f / Times To Render Blur
-
-        gl.glBegin(GL.GL_QUADS);                                 // Begin Drawing Quads
-        for (int num = 0; num < times; num++)                    // Number Of Times To Render Blur
-        {
-            gl.glColor4f(1.0f, 1.0f, 1.0f, alpha);               // Set The Alpha Value (Starts At 0.2)
-            gl.glTexCoord2f(0 + spost, 1 - spost);               // Texture Coordinate	( 0, 1 )
-            gl.glVertex2f(0, 0);                                 // First Vertex		(   0,   0 )
-
-            gl.glTexCoord2f(0 + spost, 0 + spost);               // Texture Coordinate	( 0, 0 )
-            gl.glVertex2f(0, viewportHeight);                    // Second Vertex	(   0, 480 )
-
-            gl.glTexCoord2f(1 - spost, 0 + spost);               // Texture Coordinate	( 1, 0 )
-            gl.glVertex2f(viewportWidth, viewportHeight);        // Third Vertex		( 640, 480 )
-
-            gl.glTexCoord2f(1 - spost, 1 - spost);               // Texture Coordinate	( 1, 1 )
-            gl.glVertex2f(viewportWidth, 0);                     // Fourth Vertex	( 640,   0 )
-
-            spost += inc;                                        // Gradually Increase spost (Zooming Closer To Texture Center)
-            alpha = alpha - alphainc;                            // Gradually Decrease alpha (Gradually Fading Image Out)
-        }
-        gl.glEnd();                                              // Done Drawing Quads
-
-        viewPerspective(gl);                                     // Switch To A Perspective View
-
-        gl.glEnable(GL.GL_DEPTH_TEST);                           // Enable Depth Testing
-        gl.glDisable(GL.GL_TEXTURE_2D);
-        gl.glDisable(GL.GL_BLEND);                               // Disable Blending
-        gl.glBindTexture(GL.GL_TEXTURE_2D, 0);                   // Unbind The Blur Texture
-    }
-    
-    
-    protected void drawLineWithHalo(final GL gl) { //FIXME
+		float spost = 0.0f; // Starting Texture Coordinate Offset
+		float alpha = 0.2f; // Starting Alpha Value
 		
-		// The spline attributes
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+		// Disable AutoTexture Coordinates
+//		gl.glDisable(GL.GL_TEXTURE_GEN_S);
+//		gl.glDisable(GL.GL_TEXTURE_GEN_T);
+
+		gl.glEnable(GL.GL_TEXTURE_2D);                           // Enable 2D Texture Mapping
+		gl.glDisable(GL.GL_DEPTH_TEST);                          // Disable Depth Testing
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);              // Set Blending Mode
+		gl.glEnable(GL.GL_BLEND);                                // Enable Blending
+		gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture);         // Bind To The Blur Texture
+		viewOrtho(gl);                                           // Switch To An Ortho View
 		
-		gl.glEnable(GL.GL_TEXTURE_2D);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]);
+		float alphainc = alpha / times;                          // alphainc=0.2f / Times To Render Blur
 		
-		// the spline
-		gl.glBegin(GL.GL_QUAD_STRIP);
-		for(int i = 0; i < polygonLineVertices.size(); i++) {
-			gl.glTexCoord3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
-			gl.glVertex3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
+		gl.glBegin(GL.GL_QUADS);                                 // Begin Drawing Quads
+		for (int num = 0; num < times; num++)                    // Number Of Times To Render Blur
+		{
+		    gl.glColor4f(1.0f, 1.0f, 1.0f, alpha);               // Set The Alpha Value (Starts At 0.2)
+		    gl.glTexCoord2f(0 + spost, 1 - spost);               // Texture Coordinate	( 0, 1 )
+		    gl.glVertex2f(0, 0);                                 // First Vertex		(   0,   0 )
+		
+		    gl.glTexCoord2f(0 + spost, 0 + spost);               // Texture Coordinate	( 0, 0 )
+		    gl.glVertex2f(0, viewportHeight);                    // Second Vertex	(   0, 480 )
+		
+		    gl.glTexCoord2f(1 - spost, 0 + spost);               // Texture Coordinate	( 1, 0 )
+		    gl.glVertex2f(viewportWidth, viewportHeight);        // Third Vertex		( 640, 480 )
+		
+		    gl.glTexCoord2f(1 - spost, 1 - spost);               // Texture Coordinate	( 1, 1 )
+		    gl.glVertex2f(viewportWidth, 0);                     // Fourth Vertex	( 640,   0 )
+		
+		    spost += inc;                                        // Gradually Increase spost (Zooming Closer To Texture Center)
+		    alpha = alpha - alphainc;                            // Gradually Decrease alpha (Gradually Fading Image Out)
 		}
-		gl.glEnd();
-	}
+		gl.glEnd();                                              // Done Drawing Quads
+		
+		viewPerspective(gl);                                     // Switch To A Perspective View
+		
+		gl.glEnable(GL.GL_DEPTH_TEST);                           // Enable Depth Testing
+		gl.glDisable(GL.GL_TEXTURE_2D);
+		gl.glDisable(GL.GL_BLEND);                               // Disable Blending
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 0);                   // Unbind The Blur Texture
+    }
     
     
     /**
@@ -743,92 +722,95 @@ public class VisLink {
      * @return the newly created frame buffer object is or -1 if a frame buffer object could not be created
      */
     private int createFrameBufferObject(GL gl) {
-        // Create the FBO
-        int[] frameBuffer = new int[1];
-        gl.glGenFramebuffersEXT(1, frameBuffer, 0);
-        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBuffer[0]);
+		// Create the FBO
+		int[] frameBuffer = new int[1];
+		gl.glGenFramebuffersEXT(1, frameBuffer, 0);
+		gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBuffer[0]);
+		
+		// Create a TEXTURE_SIZE x TEXTURE_SIZE RGBA texture that will be used as color attachment
+		// for the fbo.
+		int[] colorBuffer = new int[1];
+		gl.glGenTextures(1, colorBuffer, 0);                 // Create 1 Texture
+		gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]);  // Bind The Texture
+		gl.glTexImage2D(                                     // Build Texture Using Information In data
+		                                                     GL.GL_TEXTURE_2D,
+		                                                     0,
+		                                                     GL.GL_RGBA,
+		                                                     TEXTURE_SIZE,
+		                                                     TEXTURE_SIZE,
+		                                                     0,
+		                                                     GL.GL_RGBA,
+		                                                     GL.GL_UNSIGNED_BYTE,
+		                                                     BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE * 4)
+		);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+		
+		// Attach the texture to the frame buffer as the color attachment. This
+		// will cause the results of rendering to the FBO to be written in the blur texture.
+		gl.glFramebufferTexture2DEXT(
+		        GL.GL_FRAMEBUFFER_EXT,
+		        GL.GL_COLOR_ATTACHMENT0_EXT,
+		        GL.GL_TEXTURE_2D,
+		        colorBuffer[0],
+		        0
+		);
+		
+//		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, blurTexture[0], 0); // FIXME: added
 
-        // Create a TEXTURE_SIZE x TEXTURE_SIZE RGBA texture that will be used as color attachment
-        // for the fbo.
-//        int[] colorBuffer = new int[1];
-//        gl.glGenTextures(1, colorBuffer, 0);                 // Create 1 Texture
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]);  // Bind The Texture
-//        gl.glTexImage2D(                                     // Build Texture Using Information In data
-//                                                             GL.GL_TEXTURE_2D,
-//                                                             0,
-//                                                             GL.GL_RGBA,
-//                                                             TEXTURE_SIZE,
-//                                                             TEXTURE_SIZE,
-//                                                             0,
-//                                                             GL.GL_RGBA,
-//                                                             GL.GL_UNSIGNED_BYTE,
-//                                                             BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE * 4)
-//        );
-//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-//        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-//
-//        // Attach the texture to the frame buffer as the color attachment. This
-//        // will cause the results of rendering to the FBO to be written in the blur texture.
-//        gl.glFramebufferTexture2DEXT(
-//                GL.GL_FRAMEBUFFER_EXT,
-//                GL.GL_COLOR_ATTACHMENT0_EXT,
-//                GL.GL_TEXTURE_2D,
-//                colorBuffer[0],
-//                0
-//        );
-        
-        gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, blurTexture[0], 0); // FIXME: added
-
-        gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
-
-        // Create a 24-bit TEXTURE_SIZE x TEXTURE_SIZE depth buffer for the FBO.
-        // We need this to get correct rendering results.
-        int[] depthBuffer = new int[1];
-        gl.glGenRenderbuffersEXT(1, depthBuffer, 0);
-        gl.glBindRenderbufferEXT(GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
-        gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, TEXTURE_SIZE, TEXTURE_SIZE);
-
-        // Attach the newly created depth buffer to the FBO.
-        gl.glFramebufferRenderbufferEXT(
-                GL.GL_FRAMEBUFFER_EXT,
-                GL.GL_DEPTH_ATTACHMENT_EXT,
-                GL.GL_RENDERBUFFER_EXT,
-                depthBuffer[0]
-        );
-
-        // Make sure the framebuffer object is complete (i.e. set up correctly)
-        int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
-        if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT) {
-            return frameBuffer[0];
-        } else {
-            // No matter what goes wrong, we simply delete the frame buffer object
-            // This switch statement simply serves to list all possible error codes
-            switch(status) {
-                case GL.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-                    // One of the attachments is incomplete
-                case GL.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-                    // Not all attachments have the same size
-                case GL.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-                    // The desired read buffer has no attachment
-                case GL.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-                    // The desired draw buffer has no attachment
-                case GL.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-                    // Not all color attachments have the same internal format
-                case GL.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-                    // No attachments have been attached
-                case GL.GL_FRAMEBUFFER_UNSUPPORTED_EXT:
-                    // The combination of internal formats is not supported
-                case GL.GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT:
-                    // This value is no longer in the EXT_framebuffer_object specification
-                default:
-                    // Delete the color buffer texture
-                    gl.glDeleteTextures(1, blurTexture, 0); // FIXME: changed
-                    // Delete the depth buffer
-                    gl.glDeleteRenderbuffersEXT(1, depthBuffer, 0);
-                    // Delete the FBO
-                    gl.glDeleteFramebuffersEXT(1, frameBuffer, 0);
-                    return -1;
-            }
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+		
+		// Create a 24-bit TEXTURE_SIZE x TEXTURE_SIZE depth buffer for the FBO.
+		// We need this to get correct rendering results.
+		int[] depthBuffer = new int[1];
+		gl.glGenRenderbuffersEXT(1, depthBuffer, 0);
+		gl.glBindRenderbufferEXT(GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
+		gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, TEXTURE_SIZE, TEXTURE_SIZE);
+		
+		// Attach the newly created depth buffer to the FBO.
+		gl.glFramebufferRenderbufferEXT(
+		        GL.GL_FRAMEBUFFER_EXT,
+		        GL.GL_DEPTH_ATTACHMENT_EXT,
+		        GL.GL_RENDERBUFFER_EXT,
+		        depthBuffer[0]
+		);
+		
+		// Make sure the framebuffer object is complete (i.e. set up correctly)
+		int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
+		if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT) {
+		    colorBuff = colorBuffer;
+		    depthBuff = depthBuffer;
+		    return frameBuffer[0];
+		} else {
+		    // No matter what goes wrong, we simply delete the frame buffer object
+		    // This switch statement simply serves to list all possible error codes
+		    switch(status) {
+		        case GL.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+		            // One of the attachments is incomplete
+		        case GL.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+		            // Not all attachments have the same size
+		        case GL.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+		            // The desired read buffer has no attachment
+		        case GL.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+		            // The desired draw buffer has no attachment
+		        case GL.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+		            // Not all color attachments have the same internal format
+		        case GL.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+		            // No attachments have been attached
+		        case GL.GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+		            // The combination of internal formats is not supported
+		        case GL.GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT:
+		            // This value is no longer in the EXT_framebuffer_object specification
+		        default:
+		            // Delete the color buffer texture
+		        	gl.glDeleteTextures(1, colorBuffer, 0);
+//		        	gl.glDeleteTextures(1, blurTexture, 0);
+		        	// Delete the depth buffer
+		        	gl.glDeleteRenderbuffersEXT(1, depthBuffer, 0);
+		        	// Delete the FBO
+		        	gl.glDeleteFramebuffersEXT(1, frameBuffer, 0);
+		        	return -1;
+		    }
         }
     }
     
