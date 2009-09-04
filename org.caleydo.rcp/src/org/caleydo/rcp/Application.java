@@ -65,6 +65,9 @@ import org.eclipse.ui.internal.WorkbenchPlugin;
 public class Application
 	implements IApplication {
 
+	/** determines if initialize-views should be loaded lazy (=<code>true</code>)or immediate (=<code>false</code) */
+	public static final boolean LAZY_VIEW_LOADING = false;
+	
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
 
@@ -452,9 +455,12 @@ public class Application
 		// Create RCP view manager
 		RCPViewManager.get();
 
-		for (ASerializedView startView : initializedStartViews) {
-			layout.addView(startView.getViewGUIID());
+		if (Application.LAZY_VIEW_LOADING) {
+			for (ASerializedView startView : initializedStartViews) {
+				layout.addView(startView.getViewGUIID());
+			}
 		}
+		
 	}
 
 	/**

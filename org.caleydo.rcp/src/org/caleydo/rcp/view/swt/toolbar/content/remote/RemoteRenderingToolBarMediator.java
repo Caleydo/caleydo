@@ -35,7 +35,6 @@ public class RemoteRenderingToolBarMediator
 	protected DisableConnectionLinesListener disableConnectionLinesListener;
 	
 	public RemoteRenderingToolBarMediator() {
-		System.out.println("RemoteRenderingToolBarMediator(): constructor");
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}

@@ -78,6 +78,9 @@ public class ProjectSaver {
 			zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
 		}
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
+
+		// remove saveViewData() for LAZY_VIEW_LOADING
+		saveViewData(RECENT_PROJECT_DIR_NAME);
 	}
 
 	/**

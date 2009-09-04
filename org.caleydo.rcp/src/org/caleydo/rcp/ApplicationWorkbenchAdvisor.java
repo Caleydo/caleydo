@@ -1,11 +1,16 @@
 package org.caleydo.rcp;
 
+import java.util.List;
+
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -18,11 +23,14 @@ public class ApplicationWorkbenchAdvisor
 
 	private AutoSaver autoSaver;
 
+	private IWorkbenchWindowConfigurer workbenchConfigurer;
+	
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		PlatformUI.getPreferenceStore()
 			.setValue(IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
-
+		workbenchConfigurer = configurer;
+		
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
@@ -36,10 +44,23 @@ public class ApplicationWorkbenchAdvisor
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
 	}
-
+	
 	@Override
 	public void postStartup() {
 		super.postStartup();
+
+		if (!Application.LAZY_VIEW_LOADING) {
+			ASerializedView[] serViews = new ASerializedView[Application.initializedStartViews.size()];
+			serViews = Application.initializedStartViews.toArray(serViews);
+			IWorkbenchPage activePage = workbenchConfigurer.getWindow().getActivePage();
+			for (ASerializedView startView : serViews) {
+				try {
+					activePage.showView(startView.getViewGUIID());
+				} catch (PartInitException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
 
 		// Check if an early exit should be performed
 		if (Application.bDoExit) {
