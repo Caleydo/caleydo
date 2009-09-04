@@ -40,7 +40,7 @@ public class VirtualArray
 	public VirtualArray() {
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 	}
-	
+
 	/**
 	 * Constructor. Pass the length of the managed collection
 	 * 
@@ -285,6 +285,35 @@ public class VirtualArray
 	}
 
 	@Override
+	public ArrayList<Integer> getGeneIdsOfGroup(int iGroupIdx) {
+
+		if (groupList == null)
+			return null;
+
+		ArrayList<Integer> alGeneIds = new ArrayList<Integer>();
+
+		int iNrElements = size();
+		int iCounter = 0;
+		int iOffset = 0;
+
+		for (int i = 0; i < iGroupIdx; i++) {
+			iOffset += groupList.get(i).getNrElements();
+		}
+
+		for (int i = iOffset; i < iNrElements; i++) {
+
+			alGeneIds.add(iCounter, get(i));
+
+			iCounter++;
+
+			if (groupList.get(iGroupIdx).getNrElements() == iCounter)
+				break;
+		}
+
+		return alGeneIds;
+	}
+
+	@Override
 	public GroupList newGroupList() {
 
 		this.groupList = new GroupList(this.size());
@@ -321,7 +350,7 @@ public class VirtualArray
 
 	@Override
 	public void setID(int iUniqueID) {
-		this.iUniqueID = iUniqueID;		
+		this.iUniqueID = iUniqueID;
 	}
 
 	@XmlElementWrapper

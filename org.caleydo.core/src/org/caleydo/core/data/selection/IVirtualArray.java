@@ -223,6 +223,16 @@ public interface IVirtualArray
 	public GroupList getGroupList();
 
 	/**
+	 * Returns an ArrayList with indexes of one group (genes/experiments) determined by iGroupIdx.
+	 * 
+	 * @param iGroupIdx
+	 *            index of group in groupList
+	 * @return ArrayList<Integer> containing all indexes of one group determined by iGroupIdx. Null will be
+	 *         returned in case of groupList is null.
+	 */
+	public ArrayList<Integer> getGeneIdsOfGroup(int iGroupIdx);
+
+	/**
 	 * Sets group list in VA, used especially by affinity clusterer.
 	 * 
 	 * @param groupList
@@ -233,12 +243,14 @@ public interface IVirtualArray
 
 	/**
 	 * Produces a clone of the virtual array
+	 * 
 	 * @return
 	 */
 	public IVirtualArray clone();
 
 	/**
 	 * Replace the internally created ID with the specified. Used when this VA replaces another VA
+	 * 
 	 * @param iUniqueID
 	 */
 	public void setID(int iUniqueID);

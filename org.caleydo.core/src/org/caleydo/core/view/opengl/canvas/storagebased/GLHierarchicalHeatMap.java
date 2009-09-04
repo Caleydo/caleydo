@@ -3615,7 +3615,7 @@ public class GLHierarchicalHeatMap
 						bActivateDraggingGenes = true;
 
 						// ArrayList<Integer> temp =
-						// contentVA.getGroupList().getGeneIdsOfGroup(contentVA, iExternalID);
+						// contentVA.getGeneIdsOfGroup( iExternalID);
 						// for (int i = 0; i < temp.size(); i++) {
 						// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 						// EIDType.GENE_SYMBOL, temp.get(i)));
@@ -3712,7 +3712,7 @@ public class GLHierarchicalHeatMap
 						bActivateDraggingExperiments = true;
 
 						// ArrayList<Integer> temp =
-						// storageVA.getGroupList().getGeneIdsOfGroup(storageVA, iExternalID);
+						// storageVA.getGeneIdsOfGroup( iExternalID);
 						// for (int i = 0; i < temp.size(); i++) {
 						// System.out.println(set.get(temp.get(i)).getLabel());
 						// }
