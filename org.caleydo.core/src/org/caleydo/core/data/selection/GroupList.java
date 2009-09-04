@@ -395,8 +395,42 @@ public class GroupList
 		this.groups = groups;
 	}
 
-	public ArrayList<Float> determineRepresentativeElement(ISet set, IVirtualArray contentVA, IVirtualArray storageVA,
-		int iGroupNr, boolean bGeneGroup) {
+	/**
+	 * Returns an ArrayList with indexes of one group (genes/experiments) determined by iGroupIdx.
+	 * 
+	 * @param currentVA
+	 *            virtual array including all indexes
+	 * @param iGroupIdx
+	 *            index of group in groupList
+	 * @return ArrayList<Integer> containing all indexes of one group determined by iGroupIdx
+	 */
+	public ArrayList<Integer> getGeneIdsOfGroup(IVirtualArray currentVA, int iGroupIdx) {
+
+		ArrayList<Integer> alGeneIds = new ArrayList<Integer>();
+
+		int iNrElements = currentVA.size();
+		int iCounter = 0;
+		int iOffset = 0;
+
+		for (int i = 0; i < iGroupIdx; i++) {
+			iOffset += groups.get(i).getNrElements();
+		}
+
+		for (int i = iOffset; i < iNrElements; i++) {
+
+			alGeneIds.add(iCounter, currentVA.get(i));
+
+			iCounter++;
+
+			if (groups.get(iGroupIdx).getNrElements() == iCounter)
+				break;
+		}
+
+		return alGeneIds;
+	}
+
+	public ArrayList<Float> determineRepresentativeElement(ISet set, IVirtualArray contentVA,
+		IVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
 
 		ArrayList<Float> representative = new ArrayList<Float>();
 
