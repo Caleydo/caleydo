@@ -40,11 +40,11 @@ public class BucketLayoutRenderStyle
 
 	private float x = 0;
 	private float y = 0;
-	private float fTargetY = 0;
-	private boolean bAnimationRunningOut = false;
-	private boolean bAnimationRunningIn = false;
-	private boolean bFocusOnTopStackLayer = false;
-	private boolean bFocusOnBottomStackLayer = false;
+//	private float fTargetY = 0;
+//	private boolean bAnimationRunningOut = false;
+//	private boolean bAnimationRunningIn = false;
+//	private boolean bFocusOnTopStackLayer = false;
+//	private boolean bFocusOnBottomStackLayer = false;
 
 	/**
 	 * Constructor.

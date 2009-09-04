@@ -19,13 +19,13 @@ public class AutoSaver
 
 	ILog log = GeneralManager.get().getLogger();
 	
-	/** Default interval to wait between 2 auto-saves in miliseconds */
-	public static final long DEFAULT_INTERVAL = 300000; 
+	/** Default interval to wait between 2 auto-saves in milliseconds */
+	public static final long DEFAULT_INTERVAL = 100000; 
 	
-	/** Timestamp of the last save operation, initialized with the object creation timestamp */ 
+	/** Time stamp of the last save operation, initialized with the object creation time stamp */ 
 	protected Date lastSaveTimeStamp;
 	
-	/** interval to wait between 2 auto-saves in miliseconds */
+	/** interval to wait between 2 auto-saves in milliseconds */
 	protected long interval;
 
 	public AutoSaver() {

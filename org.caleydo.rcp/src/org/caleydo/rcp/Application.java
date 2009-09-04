@@ -139,7 +139,7 @@ public class Application
 		Display display = PlatformUI.createDisplay();
 		Shell shell = new Shell(display);
 
-		// Check if Caleydo will be started the first time and no internet connection is detected
+		// Check if Caleydo will be started the first time and no Internet connection is detected
 		if (prefStore.getBoolean(PreferenceConstants.FIRST_START) && !isInternetConnectionOK()) {
 			WizardDialog internetConfigurationWizard =
 				new WizardDialog(shell, new InternetConfigurationWizard());
