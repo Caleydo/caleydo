@@ -2360,15 +2360,20 @@ public class GLHierarchicalHeatMap
 
 		// render embedded experiment dendrogram
 		if (bExperimentDendrogramActive) {
-			gl.glTranslatef(0f, 3.6f, 0f);
+
+			float fOffsetx = ftop - renderStyle.getHeightExperimentDendrogram();
+			if (storageVA.getGroupList() != null)
+				fOffsetx += renderStyle.getWidthClusterVisualization();
+
+			gl.glTranslatef(0f, fOffsetx, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION, glExperimentDendrogramView
 					.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(ftop - 3.6f);
+			glExperimentDendrogramView.getViewFrustum().setTop(renderStyle.getHeightExperimentDendrogram());
 			glExperimentDendrogramView.getViewFrustum().setRight(renderStyle.getWidthLevel3());
 			glExperimentDendrogramView.displayRemote(gl);
 			gl.glPopName();
-			gl.glTranslatef(0f, -3.6f, 0f);
+			gl.glTranslatef(0f, -fOffsetx, 0f);
 		}
 
 		gl.glTranslatef(-fleftOffset, +0.2f, 0);
@@ -2436,15 +2441,19 @@ public class GLHierarchicalHeatMap
 
 		// render embedded experiment dendrogram
 		if (bExperimentDendrogramActive) {
-			gl.glTranslatef(0f, 3.6f, 0f);
+			float fOffsetx = ftop - renderStyle.getHeightExperimentDendrogram();
+			if (storageVA.getGroupList() != null)
+				fOffsetx += renderStyle.getWidthClusterVisualization();
+
+			gl.glTranslatef(0f, fOffsetx, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION, glExperimentDendrogramView
 					.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(ftop - 3.6f);
+			glExperimentDendrogramView.getViewFrustum().setTop(renderStyle.getHeightExperimentDendrogram());
 			glExperimentDendrogramView.getViewFrustum().setRight(renderStyle.getWidthLevel3());
 			glExperimentDendrogramView.displayRemote(gl);
 			gl.glPopName();
-			gl.glTranslatef(0f, -3.6f, 0f);
+			gl.glTranslatef(0f, -fOffsetx, 0f);
 		}
 
 		gl.glTranslatef(-fleftOffset, +0.2f, 0);
@@ -2502,15 +2511,19 @@ public class GLHierarchicalHeatMap
 
 		// render embedded experiment dendrogram
 		if (bExperimentDendrogramActive) {
-			gl.glTranslatef(0f, 3.6f, 0f);
+			float fOffsetx = ftop - renderStyle.getHeightExperimentDendrogram();
+			if (storageVA.getGroupList() != null)
+				fOffsetx += renderStyle.getWidthClusterVisualization();
+
+			gl.glTranslatef(0f, fOffsetx, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_EXPERIMENT_DENDROGRAM_SELECTION, glExperimentDendrogramView
 					.getID()));
-			glExperimentDendrogramView.getViewFrustum().setTop(ftop - 3.6f);
+			glExperimentDendrogramView.getViewFrustum().setTop(renderStyle.getHeightExperimentDendrogram());
 			glExperimentDendrogramView.getViewFrustum().setRight(renderStyle.getWidthLevel3());
 			glExperimentDendrogramView.displayRemote(gl);
 			gl.glPopName();
-			gl.glTranslatef(0f, -3.6f, 0f);
+			gl.glTranslatef(0f, -fOffsetx, 0f);
 		}
 
 		gl.glTranslatef(-fleftOffset, +0.2f, 0);
@@ -3833,7 +3846,7 @@ public class GLHierarchicalHeatMap
 						}
 						else {
 							float temp = glGeneDendrogramView.getViewFrustum().getWidth();
-							
+
 							if (temp > 0.5 && temp <= 1.7f)
 								renderStyle.setWidthGeneDendrogram(temp - 0.1f);
 
@@ -3842,7 +3855,7 @@ public class GLHierarchicalHeatMap
 
 						bIsHeatmapInFocus = false;
 						glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-//						glGeneDendrogramView.setRedrawDendrogram();
+						// glGeneDendrogramView.setRedrawDendrogram();
 						glGeneDendrogramView.setDisplayListDirty();
 						glHeatMapView.setDisplayListDirty();
 						setDisplayListDirty();
