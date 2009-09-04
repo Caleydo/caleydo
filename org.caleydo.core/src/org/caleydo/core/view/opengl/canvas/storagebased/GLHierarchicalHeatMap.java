@@ -1,12 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BACKGROUND_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BUTTON_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.CLUSTER_BORDERS_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.FIELD_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.GROUP_COLOR_SELECTED;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.GROUP_COLOR_UNSELECTED;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.SELECTION_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BUTTON_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.CLUSTER_BORDERS_Z;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import gleem.linalg.Vec3f;
@@ -2411,8 +2411,8 @@ public class GLHierarchicalHeatMap
 		if (contentVA.getGroupList() != null)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
 
-		if (bGeneDendrogramActive) {
-			fleftOffset += renderStyle.getWidthGeneDendrogram();
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
+			fleftOffset += renderStyle.getWidthGeneDendrogram() + 0.0f;
 			fright -= 0.3f;
 		}
 
@@ -2459,13 +2459,14 @@ public class GLHierarchicalHeatMap
 		gl.glTranslatef(-fleftOffset, +0.2f, 0);
 
 		// render embedded gene dendrogram
-		if (bGeneDendrogramActive) {
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 
 			gl.glTranslatef(0f, 0.4f, 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION, glGeneDendrogramView.getID()));
 			glGeneDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
 			glGeneDendrogramView.getViewFrustum().setRight(1.7f);
+			glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 			glGeneDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
@@ -2478,7 +2479,7 @@ public class GLHierarchicalHeatMap
 
 		float fleftOffset = 0.1f;
 
-		if (bGeneDendrogramActive) {
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 			fright = viewFrustum.getWidth() - 1.4f;
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
 		}
@@ -2529,7 +2530,7 @@ public class GLHierarchicalHeatMap
 		gl.glTranslatef(-fleftOffset, +0.2f, 0);
 
 		// render embedded gene dendrogram
-		if (bGeneDendrogramActive) {
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 
 			if (bExperimentDendrogramActive)
 				ftop -= renderStyle.getHeightExperimentDendrogram();
@@ -2539,6 +2540,7 @@ public class GLHierarchicalHeatMap
 				EPickingType.HIER_HEAT_MAP_GENE_DENDROGRAM_SELECTION, glGeneDendrogramView.getID()));
 			glGeneDendrogramView.getViewFrustum().setTop(ftop - 0.6f);
 			glGeneDendrogramView.getViewFrustum().setRight(1.7f);
+			glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 			glGeneDendrogramView.displayRemote(gl);
 			gl.glPopName();
 			gl.glTranslatef(0f, -0.4f, 0f);
@@ -2604,7 +2606,7 @@ public class GLHierarchicalHeatMap
 
 	private void renderViewsLevel_1_2_3_Active(GL gl) {
 
-		if (bIsHeatmapInFocus || bGeneDendrogramActive) {
+		if (bIsHeatmapInFocus || bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 			fAnimationScale = 0.2f;
 		}
 		else {
@@ -2744,14 +2746,14 @@ public class GLHierarchicalHeatMap
 
 	private void renderViewsLevel_2_3_Active(GL gl) {
 
-		if (bIsHeatmapInFocus || bGeneDendrogramActive) {
+		if (bIsHeatmapInFocus || bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 			fAnimationScale = 0.2f;
 		}
 		else {
 			fAnimationScale = 1.0f;
 		}
 
-		if (bGeneDendrogramActive)
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
 			gl.glTranslatef(renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 		renderDendrogramButton(gl);
@@ -2815,21 +2817,21 @@ public class GLHierarchicalHeatMap
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
-		if (bGeneDendrogramActive)
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
 			gl.glTranslatef(-renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 	}
 
 	private void renderViewsLevel_3_Active(GL gl) {
 
-		if (bGeneDendrogramActive)
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
 			gl.glTranslatef(renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 		renderDendrogramButton(gl);
 		renderClassAssignmentsGenesLevel3(gl);
 		renderClassAssignmentsExperimentsLevel3(gl);
 
-		if (bGeneDendrogramActive)
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
 			gl.glTranslatef(-renderStyle.getWidthGeneDendrogram(), 0, 0);
 	}
 
