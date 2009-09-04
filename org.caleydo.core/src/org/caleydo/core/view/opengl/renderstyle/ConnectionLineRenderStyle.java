@@ -14,4 +14,6 @@ public class ConnectionLineRenderStyle
 	public static final float CONNECTION_LINE_WIDTH = 2f;
 
 	public static final float[] CONNECTION_LINE_SHADOW_COLOR = { 0.4f, 0.4f, 0.4f, 0.8f };
+	
+	public static final int LINE_ANTI_ALIASING_QUALITY = 5;
 }
