@@ -188,9 +188,11 @@ public class TabularAsciiDataReader
 			}
 
 			// Replace empty cells with NaN
-			sLine =
-				sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
-
+			sLine = sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
+			// Take care of empty cells in first column because they are not embedded between two token separators
+			if (sLine.substring(0, 1).equals(sTokenSeperator))
+				sLine = "NaN" + sLine;
+			
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
 
 			iColumnIndex = 0;
