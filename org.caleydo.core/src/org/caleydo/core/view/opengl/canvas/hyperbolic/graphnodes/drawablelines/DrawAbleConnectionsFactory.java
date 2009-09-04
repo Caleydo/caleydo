@@ -10,12 +10,11 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
  */
 
 public final class DrawAbleConnectionsFactory {
-	private static int iID = 0;
-	public static IDrawAbleConnection getDrawAbleConnection(String str){
+	public static IDrawAbleConnection getDrawAbleConnection(String str, int iID){
 		if(str == "Line")
-			return new DrawAbleLinearConnection(iID++);
+			return new DrawAbleLinearConnection(iID);
 		else if (str == "Spline")
-			return new DrawAbleSplineConnection(iID++);
+			return new DrawAbleSplineConnection(iID);
 		return null;
 			
 	}

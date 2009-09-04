@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 
 public abstract class ATreeLayouter
-	implements ITreeLayouter, Comparable<ATreeLayouter> {
+	implements ITreeLayouter {
 	protected int iComparableValue = 0;
 	protected float fHeight = 0;
 	protected float fWidth = 0;
@@ -59,8 +59,8 @@ public abstract class ATreeLayouter
 	}
 
 	@Override
-	public final int compareTo(ATreeLayouter layouter) {
-		return this.iComparableValue - layouter.iComparableValue;
+	public final int compareTo(ITreeLayouter layouter) {
+		return this.iComparableValue - layouter.getID();
 	}
 
 	protected abstract void renderTreeLayout();
@@ -78,12 +78,9 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void setLayoutDirty() {
-		bIsConnectionHighlighted = false;
-		bIsNodeHighlighted = false;
 		bIsLayoutDirty = true;
 		bIsNodeListDirty = true;
 		bIsConnectionListDirty = true;
-		clearDisplay();
 	}
 
 	public final void setLayoutClean() {
@@ -94,31 +91,21 @@ public abstract class ATreeLayouter
 	public final void setHighlightedNode(int iNodeID) {
 		if(bIsNodeHighlighted && iHighlightedNode == iNodeID)
 			return;
-		resetHighlight();
 		bIsNodeHighlighted = true;
 		iHighlightedNode = iNodeID;
 		bIsNodeListDirty = true;
+		bIsConnectionListDirty = bIsConnectionHighlighted;
+		bIsConnectionHighlighted = false;
 	}
 
 	public final void setHiglightedLine(int iLineID) {
 		if(bIsConnectionHighlighted && iHighlightedConnection == iLineID)
 			return;
-		resetHighlight();
 		bIsConnectionHighlighted = true;
 		iHighlightedConnection = iLineID;
 		bIsConnectionListDirty = true;
-	}
-
-	@Override
-	public final void resetHighlight() {
-		if (bIsConnectionHighlighted) {
-			bIsConnectionHighlighted = false;
-			bIsConnectionListDirty = true;
-		}
-		if (bIsNodeHighlighted) {
-			bIsNodeHighlighted = false;
-			bIsNodeListDirty = true;
-		}
+		bIsNodeListDirty = bIsNodeHighlighted;
+		bIsNodeHighlighted = false;
 	}
 
 	private final void buildDisplayListNodes(GL gl) {
@@ -160,6 +147,7 @@ public abstract class ATreeLayouter
 	public final void buildDisplayLists(GL gl) {
 		if (bIsLayoutDirty) {
 			setLayoutDirty();
+			clearDisplay();
 			renderTreeLayout();
 		}
 		if (bIsNodeListDirty) {
@@ -176,6 +164,15 @@ public abstract class ATreeLayouter
 	@Override
 	public final void display(GL gl) {
 		gl.glCallList(iGLDisplayListConnection);
+//		for (IDrawAbleConnection conn : connectionLayout) {
+//			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION, conn
+//				.getConnNr()));
+//			if (bIsConnectionHighlighted && conn.getConnNr() == iHighlightedConnection)
+//				conn.draw(gl, true);
+//			else
+//				conn.draw(gl, false);
+//			gl.glPopName();
+//		}
 		gl.glCallList(iGLDisplayListNode);
 	}
 
@@ -199,6 +196,11 @@ public abstract class ATreeLayouter
 	protected final void placeConnection(IDrawAbleConnection conn, List<Vec3f> lPoints) {
 		conn.place(lPoints);
 		connectionLayout.add(conn);
+	}
+	
+	@Override
+	public final int getID(){
+		return iComparableValue;
 	}
 
 	// @Override

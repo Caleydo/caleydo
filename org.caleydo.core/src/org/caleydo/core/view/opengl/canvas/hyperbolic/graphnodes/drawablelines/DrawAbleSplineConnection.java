@@ -37,20 +37,35 @@ public class DrawAbleSplineConnection
 			gl.glColor4fv(HyperbolicRenderStyle.DA_SPLINE_CONNECTION_COLORSHEME, 0);
 			gl.glLineWidth(HyperbolicRenderStyle.DA_SPLINE_CONNECTION_THICKNESS);
 		}
-		
-		FloatBuffer fBuff = FloatBuffer.allocate(lPoints.size()*3);
-		for(Vec3f point : lPoints){
+		FloatBuffer fBuff = FloatBuffer.allocate(lPoints.size() * 3);
+		for (Vec3f point : lPoints) {
 			fBuff.put(point.x());
 			fBuff.put(point.y());
 			fBuff.put(point.z());
 		}
 		fBuff.rewind();
+		
+		//float[] fA={0.0f,0.0f,0.0f,1.0f,1.0f,0.0f,3.0f,3.0f,0.0f,5.0f,2.0f,0.0f};
+		//fBuff = FloatBuffer.allocate(12);
+		//fBuff.put(fA);
+		//fBuff.rewind();
+		gl.glEnable(GL.GL_MAP1_VERTEX_3);
 		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, lPoints.size(), fBuff);
 		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i = 0; i <= 10; i++) {
-			gl.glEvalCoord1f((float) i / 10);
+	//	for (int i = 0; i < lPoints.size(); i++) 	gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
+		for (int i = 0; i <= 10; i++)
+			gl.glEvalCoord1f((float) i / 10.0f);
+		gl.glEnd();
+
+		gl.glPointSize(10);
+		//float[] fA = { 0.0f, 0.0f, 1.0f, 1.0f };
+	//	gl.glColor4fv(fA, 0);
+		gl.glBegin(GL.GL_POINTS);
+		for (int i = 0; i < lPoints.size(); i++) {
+			gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
 		}
 		gl.glEnd();
+
 	}
 }
 // implements IDrawAbleConnection {

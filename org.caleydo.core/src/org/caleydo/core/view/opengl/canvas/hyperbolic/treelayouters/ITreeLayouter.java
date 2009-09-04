@@ -8,38 +8,12 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
  * Defines standard interface to the tree layouter.
  * 
  * @author Georg Neubauer
- *
  */
-public interface ITreeLayouter {
-
-	/**
-	 * Set the tree to view by the layouter.
-	 * 
-	 * @param tree
-	 * @return
-	 */
-//	public void setTree(Tree<IDrawableNode> tree);
-	
-	/**
-	 * Draw the tree layout.
-	 * 
-	 * TODO: specify params and maybe naming (espacially GLLists and Animation)
-	 * @return
-	 */
-//	public void renderTreeLayout(GL gl);  
-	
-//	/**
-//	 * Set the boarder space in percent.
-//	 * 
-//	 * @param fXBoarderSpacePercentage
-//	 * @param fYBoarderSpacePercentage
-//	 */
-//	void setBoarderSpaces(float fXBoarderSpacePercentage, float fYBoarderSpacePercentage);
-
-//	void renderTreeLayout(GL gl);
+public interface ITreeLayouter
+	extends Comparable<ITreeLayouter> {
 
 	void setHighlightedNode(int iNodeID);
-	
+
 	void setHiglightedLine(int iLineID);
 
 	void setTree(Tree<IDrawAbleNode> tree);
@@ -54,5 +28,5 @@ public interface ITreeLayouter {
 
 	void buildDisplayLists(GL gl);
 
-	void resetHighlight();
+	int getID();
 }

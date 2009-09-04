@@ -45,16 +45,23 @@ public final class LTLayouter
 		// first start with root node
 		IDrawAbleNode rootNode = tree.getRoot();
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh);
-//		placeNode(rootNode, fViewSpaceY[1] - fLayerH / 2.0f, fViewSpaceX[0] + fViewSpaceXAbs / 2.0f, 0.1f,
-//			fMaxNodeH, fMaxNodeW);
-		placeNode(rootNode, fWidth / 2 + 2f, fHeight / 2 - 3f, 0.1f , 0.5f, 0.5f);	
+		placeNode(rootNode, fViewSpaceX[0] + fViewSpaceXAbs / 2.0f, fViewSpaceY[1] - fLayerH / 2.0f, 0.1f,
+			fMaxNodeH, fMaxNodeW);
+	//	placeNode(rootNode, fWidth / 2, fHeight / 2, 0.1f , 0.5f, 0.5f);	
 		
-		IDrawAbleConnection conn = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.LINEAR_TREE_LAYOUTER_CONNECTION_TYPE);
+		IDrawAbleConnection conn = DrawAbleConnectionsFactory.getDrawAbleConnection("Line",1);//HyperbolicRenderStyle.LINEAR_TREE_LAYOUTER_CONNECTION_TYPE, 1);
 		List<Vec3f> lP = new ArrayList<Vec3f>();
 		Vec3f vf = new Vec3f(fViewSpaceX[0], fViewSpaceY[0], 0.1f);
 		lP.add(vf);
-		vf = new Vec3f(fViewSpaceX[1], fViewSpaceY[0]+2f, 0.1f);
+		vf = new Vec3f(fViewSpaceX[1]/3, fViewSpaceY[1]/3+1, 0.1f);
 		lP.add(vf);
+		vf = new Vec3f(fViewSpaceX[1]*2/3, fViewSpaceY[1]*2/3-1, 0.1f);
+		lP.add(vf);
+		vf = new Vec3f(fViewSpaceX[1], fViewSpaceY[1], 0.1f);
+		lP.add(vf);
+		placeConnection(conn, lP);
+		
+		conn = DrawAbleConnectionsFactory.getDrawAbleConnection("Spline",2);//HyperbolicRenderStyle.LINEAR_TREE_LAYOUTER_CONNECTION_TYPE, 1);
 		placeConnection(conn, lP);
 	}
 
