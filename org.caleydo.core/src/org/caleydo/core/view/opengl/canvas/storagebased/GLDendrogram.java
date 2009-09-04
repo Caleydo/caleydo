@@ -1204,12 +1204,12 @@ public class GLDendrogram
 			groupList = null;
 			if (bRenderGeneTree) {
 				useCase.getSet().setGroupListGenes(groupList);
+				useCase.replaceVirtualArray(EVAType.CONTENT, contentVA);
 			}
 			else {
 				useCase.getSet().setGroupListExperiments(groupList);
+				useCase.replaceVirtualArray(EVAType.STORAGE, storageVA);
 			}
-
-			eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.CONTENT));
 
 			bRedrawDendrogram = true;
 			bEnableDepthCheck = false;
@@ -1245,11 +1245,11 @@ public class GLDendrogram
 		}
 
 		if (bRenderGeneTree) {
-			contentVA.setGroupList(groupList);
+			useCase.getSet().setGroupListGenes(groupList);
 			useCase.replaceVirtualArray(EVAType.CONTENT, contentVA);
 		}
 		else {
-			storageVA.setGroupList(groupList);
+			useCase.getSet().setGroupListExperiments(groupList);
 			useCase.replaceVirtualArray(EVAType.STORAGE, storageVA);
 		}
 	}
