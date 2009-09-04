@@ -1,7 +1,8 @@
 package org.caleydo.core.util.collection;
 
 /**
- * A pair of values, inspired by STL
+ * A pair of values, inspired by STL Caution: when using the compare function only the first element of the
+ * pair is used
  * 
  * @author Alexander Lex
  * @param <T>
@@ -9,7 +10,8 @@ package org.caleydo.core.util.collection;
  * @param <E>
  *            second type
  */
-public class Pair<T, E> {
+public class Pair<T, E>
+	implements Comparable<Pair<T, E>> {
 	private T first;
 	private E second;
 
@@ -55,17 +57,29 @@ public class Pair<T, E> {
 	// public int compareTo(Pair<T, E> checkedPair) {
 	// int compareResultFirst = first.compareTo(checkedPair.getFirst());
 	// int compareResultSecond = second.compareTo(checkedPair.getSecond());
-	//		
+	//			
 	// if(compareResultFirst > 0 && compareResultSecond > 0)
 	// return 1;
 	// if(compareResultFirst == 0 && compareResultSecond == 0)
 	// return 0;
-	//		
+	//			
 	// return -1;
 	// }
-	
+
 	@Override
 	public String toString() {
 		return "<" + first.toString() + ", " + second.toString() + ">";
 	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public int compareTo(Pair<T, E> o) {
+		if (o.getFirst() instanceof Comparable<?>) {
+			return ((Comparable<T>) first).compareTo(o.getFirst());
+		}
+		else {
+			throw new IllegalStateException("Tried to compare non-comparable values");
+		}
+	}
+
 }

@@ -3676,6 +3676,12 @@ public class GLHierarchicalHeatMap
 								iNrSelectedGroups++;
 						}
 
+						GroupContextMenuItemContainer groupContextMenuItemContainer =
+							new GroupContextMenuItemContainer();
+						groupContextMenuItemContainer.setContextMenuFlags(true, bEnableMerge,
+							bEnableInterchange);
+						groupContextMenuItemContainer.setGenes(EIDType.EXPRESSION_INDEX, contentVA.getGeneIdsOfGroup(iExternalID));
+						
 						if (iNrSelectedGroups >= 2) {
 
 							bEnableMerge = true;
@@ -3683,10 +3689,9 @@ public class GLHierarchicalHeatMap
 							if (iNrSelectedGroups == 2)
 								bEnableInterchange = true;
 
-							GroupContextMenuItemContainer groupContextMenuItemContainer =
-								new GroupContextMenuItemContainer();
-							groupContextMenuItemContainer.setContextMenuFlags(true, bEnableMerge,
-								bEnableInterchange);
+						
+
+							
 							contextMenu.addItemContanier(groupContextMenuItemContainer);
 
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),

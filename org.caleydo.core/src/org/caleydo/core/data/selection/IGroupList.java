@@ -1,5 +1,7 @@
 package org.caleydo.core.data.selection;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 
 /**
@@ -219,5 +221,6 @@ public interface IGroupList
 	public boolean containsElement(Group element);
 
 	public IGroupList clone();
+	
 
 }
