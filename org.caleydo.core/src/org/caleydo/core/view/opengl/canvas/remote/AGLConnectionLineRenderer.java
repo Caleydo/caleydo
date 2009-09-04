@@ -20,6 +20,7 @@ import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.vislink.VisLink;
+import org.caleydo.core.view.opengl.util.vislink.VisLink;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp. planes) between views in the
@@ -202,7 +203,8 @@ public abstract class AGLConnectionLineRenderer {
 		controlPoints.add(vecSrcPoint);
 		controlPoints.add(vecDestPoint);
 //		VisLink.renderLine(gl, controlPoints, 0, 10, true);
-		VisLink.polygonLine(gl, controlPoints, 0, 10, true);
+		VisLink.renderPolygonLine(gl, controlPoints, 0, 10, true, true);
+//		VisLink.renderPolygonLineWithHalo(gl, controlPoints, 0);
 	}
 
 	/**
@@ -271,7 +273,7 @@ public abstract class AGLConnectionLineRenderer {
 		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
 		controlPoints.add(vecDestPoint);
 //		VisLink.renderLine(gl, controlPoints, 0, 10, true);
-		VisLink.polygonLine(gl, controlPoints, 0, 10, true);
+		VisLink.renderPolygonLine(gl, controlPoints, 0, 10, true, true);
 //		VisLink.renderPolygonLineWithHalo(gl, controlPoints, 0);
 	}
 
