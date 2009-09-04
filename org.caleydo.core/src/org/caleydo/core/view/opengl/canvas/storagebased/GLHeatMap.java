@@ -542,7 +542,6 @@ public class GLHeatMap
 			event.setSelectionDelta(selectionDelta);
 			event.setInfo(getShortInfo());
 			eventPublisher.triggerEvent(event);
-			System.out.println("heatmap: contentSel event");
 		}
 
 		setDisplayListDirty();
