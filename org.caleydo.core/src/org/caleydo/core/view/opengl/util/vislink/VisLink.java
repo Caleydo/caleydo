@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.util.vislink;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
 
 import gleem.linalg.Vec3f;
 
@@ -32,12 +31,17 @@ public class VisLink {
 	private ArrayList<Vec3f> shadowLineVertices;
 	
 	private float width = 2.0f;
+	private int antiAliasingQuality = 5;
 	
 	private final int TEXTURE_SIZE = 128;
 	private int viewportX = 0;
 	private int viewportY = 0;
 	private int viewportWidth = 640;
 	private int viewportHeight = 480;
+	
+	private int[] blurTexture;
+	private int[] frameBufferObject;
+	
 	
 	/**
 	 * Constructor
@@ -47,6 +51,10 @@ public class VisLink {
 	 */
 	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset) {
 		this.width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+		this.antiAliasingQuality = ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY;
+		
+		this.blurTexture = new int[1];
+		this.frameBufferObject = new int[1];
 		
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>(controlPoints.subList(offset, controlPoints.size()));
 		if(points.size() == 2) {
@@ -70,6 +78,10 @@ public class VisLink {
 	 */
 	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset, int numberOfSegments) {
 		this.width = ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH;
+		this.antiAliasingQuality = ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY;
+		
+		this.blurTexture = new int[1];
+		this.frameBufferObject = new int[1];
 		
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>(controlPoints.subList(offset, controlPoints.size()));
 		if(points.size() == 2) {
@@ -249,15 +261,16 @@ public class VisLink {
 	 * 
 	 * @throws IllegalArgumentException if there are < 2 control points
 	 */	
-	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow)
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow, boolean antiAliasing)
 		throws IllegalArgumentException
 	{
 		if(controlPoints.size() >= (offset + 2)) {
 			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
-			if(shadow == true)
-				visLink.generateShadowLineVertices(gl);
-			visLink.generatePolygonLineVertices(gl);			
-			visLink.polygonLine(gl, shadow);
+			if(antiAliasing == true)
+				visLink.polygonLineAA(gl, shadow);
+			else
+				visLink.polygonLine(gl, shadow);
+			
 		}
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
@@ -279,15 +292,15 @@ public class VisLink {
 	 * 
 	 * @throws IllegalArgumentException if there are < 2 control points
 	 */	
-	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow)
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow, boolean antiAliasing)
 		throws IllegalArgumentException
 	{
 		if(controlPoints.size() >= (offset + 2)) {
 			VisLink visLink = new VisLink(controlPoints, offset);
-			if(shadow == true)
-				visLink.generateShadowLineVertices(gl);
-			visLink.generatePolygonLineVertices(gl);			
-			visLink.polygonLine(gl, shadow);
+			if(antiAliasing == true)
+				visLink.polygonLineAA(gl, shadow);
+			else
+				visLink.polygonLine(gl, shadow);
 		}
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
@@ -305,15 +318,15 @@ public class VisLink {
 	 * 
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */	
-	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow) {
+	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow, boolean antiAliasing) {
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		points.add(srcPoint);
 		points.add(destPoint);
 		VisLink visLink = new VisLink(points, 0);
-		if(shadow == true)
-			visLink.generateShadowLineVertices(gl);
-		visLink.generatePolygonLineVertices(gl);			
-		visLink.polygonLine(gl, shadow);
+		if(antiAliasing == true)
+			visLink.polygonLineAA(gl, shadow);
+		else
+			visLink.polygonLine(gl, shadow);
 	}
 	
 	
@@ -346,6 +359,8 @@ public class VisLink {
 	protected void polygonLine(final GL gl, boolean shadow) {
 		
 		if(shadow == true) {
+			generateShadowLineVertices(gl);
+			
 			// shadow color
 			gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
 			
@@ -355,6 +370,8 @@ public class VisLink {
 				gl.glVertex3f(shadowLineVertices.get(i).x(), shadowLineVertices.get(i).y(), shadowLineVertices.get(i).z());
 			gl.glEnd();
 		}
+		
+		generatePolygonLineVertices(gl);
 		
 		// The spline attributes
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
@@ -449,158 +466,371 @@ public class VisLink {
 	}
 	
 	
+	/**
+	 * 		Renders a polygon line with AA. Recommended for lines with higher width.
+	 * 
+	 * @param gl The GL object
+	 * @param cycles Specifies the quality of AA
+	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 */
+	protected void polygonLineAA(final GL gl, boolean shadow) {
+		
+		float red = 0f;
+		float green = 0f;
+		float blue = 0f;
+		float alpha = 0f;
+		float alphaChange = 0f;
+		float unit = 0f;
+		float lineWidth = 0f;
+		
+		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
+		
+		if(shadow == true) {
+			red = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR[0];
+			green = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR[1];
+			blue = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR[2];
+			alpha = ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR[3];
+			alphaChange = alpha / antiAliasingQuality;
+			unit = (width+1f) / antiAliasingQuality;
+			lineWidth = (width+1f) - (((antiAliasingQuality - 1) * unit) / 2);
+			
+			for(int j = 1; j <= antiAliasingQuality; j++) {
+				// The spline attributes
+				gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+				
+				vertices.clear();
+				vertices = generatePolygonVertices(gl, linePoints, lineWidth);
+				
+				// the spline
+				gl.glBegin(GL.GL_QUAD_STRIP);
+				for(int i = 0; i < vertices.size(); i++)
+					gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+				gl.glEnd();
+				
+				alpha -= alphaChange;
+				lineWidth += unit;
+			}
+		}
+		
+		red = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
+		green = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
+		blue = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
+		alpha = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3];
+		alphaChange = alpha / antiAliasingQuality;
+		unit = width / antiAliasingQuality;
+		lineWidth = width - (((antiAliasingQuality - 1) * unit) / 2);
+		
+//		System.out.println("alpha=" + alpha + "  alphaChange=" + alphaChange + "  unit=" + unit + "  lineWidth=" + lineWidth);
+		
+		for(int j = 1; j <= antiAliasingQuality; j++) {
+			// The spline attributes
+			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+			
+			vertices.clear();
+			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
+			
+			// the spline
+			gl.glBegin(GL.GL_QUAD_STRIP);
+			for(int i = 0; i < vertices.size(); i++)
+				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+			gl.glEnd();
+			
+			alpha -= alphaChange;
+			lineWidth += unit;
+		}
+	}
 	
 	
 	
+//---------------------------------------------------------------------------------------------------------------------
+// Halo ...
+//---------------------------------------------------------------------------------------------------------------------
+	
+	
+	
+	public static void renderPolygonLineWithHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
+		throws IllegalArgumentException
+	{
+		if(controlPoints.size() >= (offset + 2)) {
+			VisLink visLink = new VisLink(controlPoints, offset, 10);
+			visLink.generatePolygonLineVertices(gl);			
+			visLink.polygonLineWithHalo(gl); // FIXME
+		}
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+	}
+	
+	
+	protected void polygonLineWithHalo(final GL gl) {
+        
+		this.blurTexture[0] = createBlurTexture(gl);  
+		this.frameBufferObject[0] = createFrameBufferObject(gl); // FIXME: this method is buggy
+		
+		if (frameBufferObject[0] == -1) {
+    		System.err.println("error: couldn't create framebuffer object needed for halo. rendering normal polygon line instead.");
+    		polygonLine(gl, false);
+    		return;
+        }
+			
+		generatePolygonLineVertices(gl);
+		
+		IntBuffer viewportBuffer = BufferUtil.newIntBuffer(4);
+		
+		// store current viewport
+    	gl.glGetIntegerv(GL.GL_VIEWPORT, viewportBuffer);
+    	this.viewportX = viewportBuffer.get(0);
+    	this.viewportY = viewportBuffer.get(1);
+    	this.viewportWidth = viewportBuffer.get(2);
+    	this.viewportHeight = viewportBuffer.get(3);
+    	
+//    	for(int i = 0; i < viewportBuffer.capacity(); i++)
+//    		System.out.print(viewportBuffer.get(i) + "  ");
+//    	System.out.println();
+    	
+    	renderToTexture(gl);
+    	
+    	polygonLine(gl, false);
+    	drawBlur(gl, 25, 0.02f, blurTexture[0]);
+        
+//    	drawLineWithHalo(gl);
+    	
+    	gl.glDeleteTextures(1, blurTexture, 0);
+        // Delete the FBO
+        gl.glDeleteFramebuffersEXT(1, frameBufferObject, 0);
+	}
+	
+	
+	private int createBlurTexture(GL gl) {                                // Create An Empty Texture
+		
+        ByteBuffer data = BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE); // Create Storage Space For Texture Data (128x128x4)
+        data.limit(data.capacity());
 
+        int[] txtnumber = new int[1];
+        gl.glGenTextures(1, txtnumber, 0);                                // Create 1 Texture
+        gl.glBindTexture(GL.GL_TEXTURE_2D, txtnumber[0]);                 // Bind The Texture
+        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, TEXTURE_SIZE, TEXTURE_SIZE, 0, GL.GL_LUMINANCE, GL.GL_UNSIGNED_BYTE, data);                        // Build Texture Using Information In data
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+
+        return txtnumber[0];                                              // Return The Texture ID
+    }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	public static void renderPolygonLineWithHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset) {
-//        
-//		int blurTexture = createBlurTexture(gl);  
-//		int frameBufferObject = 0; // FIXME: implement createFrameBufferObject(GL gl)
-//		
-//		IntBuffer viewportBuffer = BufferUtil.newIntBuffer(4);
-//		
-//		// store current viewport
-//    	gl.glGetIntegerv(GL.GL_VIEWPORT, viewportBuffer);
-//    	viewportX = viewportBuffer.get(0);
-//    	viewportY = viewportBuffer.get(1);
-//    	viewportWidth = viewportBuffer.get(2);
-//    	viewportHeight = viewportBuffer.get(3);
-//    	
-////    	for(int i = 0; i < viewportBuffer.capacity(); i++)
-////    		System.out.print(viewportBuffer.get(i) + "  ");
-////    	System.out.println();
-//
-////        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);                        // Set The Clear Color To Black
-////        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);    // Clear Screen And Depth Buffer
-////        gl.glLoadIdentity();
-//        
-//        renderToTexture(gl, blurTexture, controlPoints, frameBufferObject);           // Render To A Texture
-//        
-//        VisLink.polygonLine(gl, controlPoints, 0, 10, false);
-//
-//        drawBlur(gl, 25, 0.02f, blurTexture);                                        // Draw The Blur Effect
-//	}
-//	
-//	
-//	private static int createBlurTexture(GL gl) {                                // Create An Empty Texture
-//		
-//        ByteBuffer data = BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE); // Create Storage Space For Texture Data (128x128x4)
-//        data.limit(data.capacity());
-//
-//        int[] txtnumber = new int[1];
-//        gl.glGenTextures(1, txtnumber, 0);                                // Create 1 Texture
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, txtnumber[0]);                 // Bind The Texture
-//        gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, TEXTURE_SIZE, TEXTURE_SIZE, 0, GL.GL_LUMINANCE, GL.GL_UNSIGNED_BYTE, data);                        // Build Texture Using Information In data
+	private void viewOrtho(GL gl)                                        // Set Up An Ortho View
+    {
+        gl.glMatrixMode(GL.GL_PROJECTION);                               // Select Projection
+        gl.glPushMatrix();                                               // Push The Matrix
+        gl.glLoadIdentity();                                             // Reset The Matrix
+        gl.glOrtho(0, viewportWidth, viewportHeight, 0, -1, 1);          // Select Ortho Mode (640x480)
+        gl.glMatrixMode(GL.GL_MODELVIEW);                                // Select Modelview Matrix
+        gl.glPushMatrix();                                               // Push The Matrix
+        gl.glLoadIdentity();                                             // Reset The Matrix
+    }
+
+    private void viewPerspective(GL gl)                                  // Set Up A Perspective View
+    {
+        gl.glMatrixMode(GL.GL_PROJECTION);                               // Select Projection
+        gl.glPopMatrix();                                                // Pop The Matrix
+        gl.glMatrixMode(GL.GL_MODELVIEW);                                // Select Modelview
+        gl.glPopMatrix();                                                // Pop The Matrix
+    }
+    
+    private void renderToTexture(GL gl) {
+    	
+    	// if fbo couldn't be created, we can't render to texture and therefore can't use halo
+    	if (frameBufferObject[0] == -1) {
+    		System.err.println("error: couldn't create framebuffer object needed for halo.");
+    		return;
+        }
+    	
+        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBufferObject[0]);
+    	
+        // Set Our Viewport (Match Texture Size)
+        gl.glViewport(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
+        
+        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
+        polygonLine(gl, false);
+
+        // Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
+        gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]);
+        gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE, 0);
+        
+        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, 0); // restore default fb
+
+        // Restore the viewport
+    	gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+//		System.out.println(viewportX + "  " + viewportY + "  " + viewportWidth + "  " + viewportHeight);
+//		System.out.println("--------------------");
+    }
+    
+    private void drawBlur(GL gl, int times, float inc, int blurTexture) {
+    	
+    	// if fbo couldn't be created, we can't render to texture and therefore can't use halo
+    	if (frameBufferObject[0] == -1) {
+    		System.err.println("error: couldn't create framebuffer object needed for halo.");
+    		return;
+        }
+    	
+    	float spost = 0.0f; // Starting Texture Coordinate Offset
+    	float alpha = 0.2f; // Starting Alpha Value
+
+        // Disable AutoTexture Coordinates
+    	gl.glDisable(GL.GL_TEXTURE_GEN_S);
+    	gl.glDisable(GL.GL_TEXTURE_GEN_T);
+
+        gl.glEnable(GL.GL_TEXTURE_2D);                           // Enable 2D Texture Mapping
+        gl.glDisable(GL.GL_DEPTH_TEST);                          // Disable Depth Testing
+        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);              // Set Blending Mode
+        gl.glEnable(GL.GL_BLEND);                                // Enable Blending
+        gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture);         // Bind To The Blur Texture
+        viewOrtho(gl);                                           // Switch To An Ortho View
+
+        float alphainc = alpha / times;                          // alphainc=0.2f / Times To Render Blur
+
+        gl.glBegin(GL.GL_QUADS);                                 // Begin Drawing Quads
+        for (int num = 0; num < times; num++)                    // Number Of Times To Render Blur
+        {
+            gl.glColor4f(1.0f, 1.0f, 1.0f, alpha);               // Set The Alpha Value (Starts At 0.2)
+            gl.glTexCoord2f(0 + spost, 1 - spost);               // Texture Coordinate	( 0, 1 )
+            gl.glVertex2f(0, 0);                                 // First Vertex		(   0,   0 )
+
+            gl.glTexCoord2f(0 + spost, 0 + spost);               // Texture Coordinate	( 0, 0 )
+            gl.glVertex2f(0, viewportHeight);                    // Second Vertex	(   0, 480 )
+
+            gl.glTexCoord2f(1 - spost, 0 + spost);               // Texture Coordinate	( 1, 0 )
+            gl.glVertex2f(viewportWidth, viewportHeight);        // Third Vertex		( 640, 480 )
+
+            gl.glTexCoord2f(1 - spost, 1 - spost);               // Texture Coordinate	( 1, 1 )
+            gl.glVertex2f(viewportWidth, 0);                     // Fourth Vertex	( 640,   0 )
+
+            spost += inc;                                        // Gradually Increase spost (Zooming Closer To Texture Center)
+            alpha = alpha - alphainc;                            // Gradually Decrease alpha (Gradually Fading Image Out)
+        }
+        gl.glEnd();                                              // Done Drawing Quads
+
+        viewPerspective(gl);                                     // Switch To A Perspective View
+
+        gl.glEnable(GL.GL_DEPTH_TEST);                           // Enable Depth Testing
+        gl.glDisable(GL.GL_TEXTURE_2D);
+        gl.glDisable(GL.GL_BLEND);                               // Disable Blending
+        gl.glBindTexture(GL.GL_TEXTURE_2D, 0);                   // Unbind The Blur Texture
+    }
+    
+    
+    protected void drawLineWithHalo(final GL gl) { //FIXME
+		
+		// The spline attributes
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+		
+		gl.glEnable(GL.GL_TEXTURE_2D);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]);
+		
+		// the spline
+		gl.glBegin(GL.GL_QUAD_STRIP);
+		for(int i = 0; i < polygonLineVertices.size(); i++) {
+			gl.glTexCoord3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
+			gl.glVertex3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
+		}
+		gl.glEnd();
+	}
+    
+    
+    /**
+     * Creates a frame buffer object.
+     * @return the newly created frame buffer object is or -1 if a frame buffer object could not be created
+     */
+    private int createFrameBufferObject(GL gl) {
+        // Create the FBO
+        int[] frameBuffer = new int[1];
+        gl.glGenFramebuffersEXT(1, frameBuffer, 0);
+        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBuffer[0]);
+
+        // Create a TEXTURE_SIZE x TEXTURE_SIZE RGBA texture that will be used as color attachment
+        // for the fbo.
+//        int[] colorBuffer = new int[1];
+//        gl.glGenTextures(1, colorBuffer, 0);                 // Create 1 Texture
+//        gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]);  // Bind The Texture
+//        gl.glTexImage2D(                                     // Build Texture Using Information In data
+//                                                             GL.GL_TEXTURE_2D,
+//                                                             0,
+//                                                             GL.GL_RGBA,
+//                                                             TEXTURE_SIZE,
+//                                                             TEXTURE_SIZE,
+//                                                             0,
+//                                                             GL.GL_RGBA,
+//                                                             GL.GL_UNSIGNED_BYTE,
+//                                                             BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE * 4)
+//        );
 //        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
 //        gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 //
-//        return txtnumber[0];                                              // Return The Texture ID
-//    }
-//	
-//	private static void viewOrtho(GL gl)                                        // Set Up An Ortho View
-//    {
-//        gl.glMatrixMode(GL.GL_PROJECTION);                               // Select Projection
-//        gl.glPushMatrix();                                               // Push The Matrix
-//        gl.glLoadIdentity();                                             // Reset The Matrix
-//        gl.glOrtho(0, viewportWidth, viewportHeight, 0, -1, 1);          // Select Ortho Mode (640x480)
-//        gl.glMatrixMode(GL.GL_MODELVIEW);                                // Select Modelview Matrix
-//        gl.glPushMatrix();                                               // Push The Matrix
-//        gl.glLoadIdentity();                                             // Reset The Matrix
-//    }
-//
-//    private static void viewPerspective(GL gl)                                  // Set Up A Perspective View
-//    {
-//        gl.glMatrixMode(GL.GL_PROJECTION);                               // Select Projection
-//        gl.glPopMatrix();                                                // Pop The Matrix
-//        gl.glMatrixMode(GL.GL_MODELVIEW);                                // Select Modelview
-//        gl.glPopMatrix();                                                // Pop The Matrix
-//    }
-//    
-//    private static void renderToTexture(GL gl, int blurTexture, ArrayList<Vec3f> controlPoints, int frameBufferObject) {
-//    	
-//    	if (frameBufferObject == -1) {
-//    		System.err.println("error: couldn't create framebuffer object needed for halo. rendering normal polygon line instead.");
-//    		VisLink.polygonLine(gl, controlPoints, 0, 10, false);
-//        }
-//    	
-//    	// Bind the fbo
-//        gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBufferObject);
-//    	
-//        // Set Our Viewport (Match Texture Size)
-//        gl.glViewport(0, 0, TEXTURE_SIZE, TEXTURE_SIZE);
-//
-//        // Render the line
-//        VisLink.polygonLine(gl, controlPoints, 0, 10, false);
-//
-//        // Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture);
-//        gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE, 0);
-//
-//        gl.glClearColor(0.0f, 0.0f, 0.5f, 0.5f); // Set The Clear Color To Medium Blue
-//    	gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // Clear The Screen And Depth Buffer
-//
-//        // Restore the viewport
-//    	gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
-////		System.out.println(viewportX + "  " + viewportY + "  " + viewportWidth + "  " + viewportHeight);
-////		System.out.println("--------------------");
-//    }
-//    
-//    private static void drawBlur(GL gl, int times, float inc, int blurTexture) {
-//    	float spost = 0.0f; // Starting Texture Coordinate Offset
-//    	float alpha = 0.2f; // Starting Alpha Value
-//
-//        // Disable AutoTexture Coordinates
-////        gl.glDisable(GL.GL_TEXTURE_GEN_S);
-////        gl.glDisable(GL.GL_TEXTURE_GEN_T);
-//
-//        gl.glEnable(GL.GL_TEXTURE_2D);                           // Enable 2D Texture Mapping
-//        gl.glDisable(GL.GL_DEPTH_TEST);                          // Disable Depth Testing
-//        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);              // Set Blending Mode
-//        gl.glEnable(GL.GL_BLEND);                                // Enable Blending
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture);         // Bind To The Blur Texture
-//        viewOrtho(gl);                                           // Switch To An Ortho View
-//
-//        float alphainc = alpha / times;                          // alphainc=0.2f / Times To Render Blur
-//
-//        gl.glBegin(GL.GL_QUADS);                                 // Begin Drawing Quads
-//        for (int num = 0; num < times; num++)                    // Number Of Times To Render Blur
-//        {
-//            gl.glColor4f(1.0f, 1.0f, 1.0f, alpha);               // Set The Alpha Value (Starts At 0.2)
-//            gl.glTexCoord2f(0 + spost, 1 - spost);               // Texture Coordinate	( 0, 1 )
-//            gl.glVertex2f(0, 0);                                 // First Vertex		(   0,   0 )
-//
-//            gl.glTexCoord2f(0 + spost, 0 + spost);               // Texture Coordinate	( 0, 0 )
-//            gl.glVertex2f(0, viewportHeight);                    // Second Vertex	(   0, 480 )
-//
-//            gl.glTexCoord2f(1 - spost, 0 + spost);               // Texture Coordinate	( 1, 0 )
-//            gl.glVertex2f(viewportWidth, viewportHeight);        // Third Vertex		( 640, 480 )
-//
-//            gl.glTexCoord2f(1 - spost, 1 - spost);               // Texture Coordinate	( 1, 1 )
-//            gl.glVertex2f(viewportWidth, 0);                     // Fourth Vertex	( 640,   0 )
-//
-//            spost += inc;                                        // Gradually Increase spost (Zooming Closer To Texture Center)
-//            alpha = alpha - alphainc;                            // Gradually Decrease alpha (Gradually Fading Image Out)
-//        }
-//        gl.glEnd();                                              // Done Drawing Quads
-//
-//        viewPerspective(gl);                                     // Switch To A Perspective View
-//
-//        gl.glEnable(GL.GL_DEPTH_TEST);                           // Enable Depth Testing
-//        gl.glDisable(GL.GL_TEXTURE_2D);                          // Disable 2D Texture Mapping
-//        gl.glDisable(GL.GL_BLEND);                               // Disable Blending
-//        gl.glBindTexture(GL.GL_TEXTURE_2D, 0);                   // Unbind The Blur Texture
-//    }
+//        // Attach the texture to the frame buffer as the color attachment. This
+//        // will cause the results of rendering to the FBO to be written in the blur texture.
+//        gl.glFramebufferTexture2DEXT(
+//                GL.GL_FRAMEBUFFER_EXT,
+//                GL.GL_COLOR_ATTACHMENT0_EXT,
+//                GL.GL_TEXTURE_2D,
+//                colorBuffer[0],
+//                0
+//        );
+        
+        gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, blurTexture[0], 0); // FIXME: added
+
+        gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+
+        // Create a 24-bit TEXTURE_SIZE x TEXTURE_SIZE depth buffer for the FBO.
+        // We need this to get correct rendering results.
+        int[] depthBuffer = new int[1];
+        gl.glGenRenderbuffersEXT(1, depthBuffer, 0);
+        gl.glBindRenderbufferEXT(GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
+        gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, TEXTURE_SIZE, TEXTURE_SIZE);
+
+        // Attach the newly created depth buffer to the FBO.
+        gl.glFramebufferRenderbufferEXT(
+                GL.GL_FRAMEBUFFER_EXT,
+                GL.GL_DEPTH_ATTACHMENT_EXT,
+                GL.GL_RENDERBUFFER_EXT,
+                depthBuffer[0]
+        );
+
+        // Make sure the framebuffer object is complete (i.e. set up correctly)
+        int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
+        if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT) {
+            return frameBuffer[0];
+        } else {
+            // No matter what goes wrong, we simply delete the frame buffer object
+            // This switch statement simply serves to list all possible error codes
+            switch(status) {
+                case GL.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+                    // One of the attachments is incomplete
+                case GL.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+                    // Not all attachments have the same size
+                case GL.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+                    // The desired read buffer has no attachment
+                case GL.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+                    // The desired draw buffer has no attachment
+                case GL.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+                    // Not all color attachments have the same internal format
+                case GL.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+                    // No attachments have been attached
+                case GL.GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+                    // The combination of internal formats is not supported
+                case GL.GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT:
+                    // This value is no longer in the EXT_framebuffer_object specification
+                default:
+                    // Delete the color buffer texture
+                    gl.glDeleteTextures(1, blurTexture, 0); // FIXME: changed
+                    // Delete the depth buffer
+                    gl.glDeleteRenderbuffersEXT(1, depthBuffer, 0);
+                    // Delete the FBO
+                    gl.glDeleteFramebuffersEXT(1, frameBuffer, 0);
+                    return -1;
+            }
+        }
+    }
     
 	
 }
