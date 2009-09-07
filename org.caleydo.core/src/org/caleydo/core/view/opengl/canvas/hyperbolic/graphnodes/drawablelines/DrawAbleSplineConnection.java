@@ -53,8 +53,8 @@ public class DrawAbleSplineConnection
 		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, lPoints.size(), fBuff);
 		gl.glBegin(GL.GL_LINE_STRIP);
 	//	for (int i = 0; i < lPoints.size(); i++) 	gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
-		for (int i = 0; i <= 10; i++)
-			gl.glEvalCoord1f((float) i / 10.0f);
+		for (int i = 0; i <= HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS; i++)
+			gl.glEvalCoord1f((float) i / (float) HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS);
 		gl.glEnd();
 
 		gl.glPointSize(10);

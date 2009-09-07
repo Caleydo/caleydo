@@ -123,7 +123,8 @@ public abstract class ATreeLayouter
 	}
 
 	private final void buildDisplayListConnections(GL gl) {
-		gl.glNewList(iGLDisplayListConnection, GL.GL_COMPILE);
+		//TODO: check usage of DL with Bezier Splines and glevalcoord1f function!
+		//gl.glNewList(iGLDisplayListConnection, GL.GL_COMPILE);
 		for (IDrawAbleConnection conn : connectionLayout) {
 			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION, conn
 				.getConnNr()));
@@ -133,7 +134,7 @@ public abstract class ATreeLayouter
 				conn.draw(gl, false);
 			gl.glPopName();
 		}
-		gl.glEndList();
+		//gl.glEndList();
 
 	}
 
@@ -163,16 +164,9 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void display(GL gl) {
-		gl.glCallList(iGLDisplayListConnection);
-//		for (IDrawAbleConnection conn : connectionLayout) {
-//			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION, conn
-//				.getConnNr()));
-//			if (bIsConnectionHighlighted && conn.getConnNr() == iHighlightedConnection)
-//				conn.draw(gl, true);
-//			else
-//				conn.draw(gl, false);
-//			gl.glPopName();
-//		}
+		//TODO: Really bad!
+		//gl.glCallList(iGLDisplayListConnection);
+		buildDisplayListConnections(gl);
 		gl.glCallList(iGLDisplayListNode);
 	}
 

@@ -320,7 +320,7 @@ public final class HTLayouter
 
 	}
 	private void drawLine(float firstX, float firstY, float secondX, float secondY){
-		IDrawAbleConnection line = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE, 1);
+		IDrawAbleConnection line = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE, 0,1);
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		Vec3f p1 = new Vec3f();
 		Vec3f p2 = new Vec3f();
