@@ -38,6 +38,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
+import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
@@ -57,6 +58,8 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
+import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingActionListener;
@@ -85,7 +88,7 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
-	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver {
+	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver, IClusterNodeEventReceiver {
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -188,6 +191,7 @@ public class GLHierarchicalHeatMap
 	private GroupMergingActionListener groupMergingActionListener;
 	private GroupInterChangingActionListener groupInterChangingActionListener;
 	private UpdateViewListener updateViewListener;
+	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
@@ -3680,8 +3684,9 @@ public class GLHierarchicalHeatMap
 							new GroupContextMenuItemContainer();
 						groupContextMenuItemContainer.setContextMenuFlags(true, bEnableMerge,
 							bEnableInterchange);
-						groupContextMenuItemContainer.setGenes(EIDType.EXPRESSION_INDEX, contentVA.getGeneIdsOfGroup(iExternalID));
-						
+						groupContextMenuItemContainer.setGenes(EIDType.EXPRESSION_INDEX, contentVA
+							.getGeneIdsOfGroup(iExternalID));
+
 						if (iNrSelectedGroups >= 2) {
 
 							bEnableMerge = true;
@@ -3689,9 +3694,6 @@ public class GLHierarchicalHeatMap
 							if (iNrSelectedGroups == 2)
 								bEnableInterchange = true;
 
-						
-
-							
 							contextMenu.addItemContanier(groupContextMenuItemContainer);
 
 							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
@@ -4382,7 +4384,7 @@ public class GLHierarchicalHeatMap
 
 			generalManager.getEventPublisher().triggerEvent(new UpdateViewEvent());
 
-			ArrayList<Integer> newArraylist = ClusterHelper.getAl(tree);
+			ArrayList<Integer> newArraylist = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
 
 			IVirtualArray virtualArray = null;
 			if (bGeneGroup) {
@@ -4451,7 +4453,7 @@ public class GLHierarchicalHeatMap
 
 				generalManager.getEventPublisher().triggerEvent(new UpdateViewEvent());
 
-				ArrayList<Integer> newArraylist = ClusterHelper.getAl(tree);
+				ArrayList<Integer> newArraylist = ClusterHelper.getGeneIdsOfNode(tree, tree.getRoot());
 
 				IVirtualArray virtualArray = null;
 				if (bGeneGroup) {
@@ -4498,6 +4500,11 @@ public class GLHierarchicalHeatMap
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
 		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
+
+		clusterNodeMouseOverListener = new ClusterNodeSelectionListener();
+		clusterNodeMouseOverListener.setHandler(this);
+		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeMouseOverListener);
+
 	}
 
 	@Override
@@ -4515,6 +4522,10 @@ public class GLHierarchicalHeatMap
 		if (updateViewListener != null) {
 			eventPublisher.removeListener(updateViewListener);
 			updateViewListener = null;
+		}
+		if (clusterNodeMouseOverListener != null) {
+			eventPublisher.removeListener(clusterNodeMouseOverListener);
+			clusterNodeMouseOverListener = null;
 		}
 	}
 
@@ -4711,4 +4722,37 @@ public class GLHierarchicalHeatMap
 		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 
+	@Override
+	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
+
+		// TODO: visualize all elements in selected sub tree
+
+		// SelectionDelta selectionDeltaTree = event.getSelectionDelta();
+		//
+		// // cluster mouse over events only used for gene trees
+		// Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		//
+		// if (selectionDeltaTree.getIDType() == EIDType.CLUSTER_NUMBER && tree != null) {
+		//
+		// Collection<SelectionDeltaItem> deltaItems = selectionDeltaTree.getAllItems();
+		//
+		// for (SelectionDeltaItem item : deltaItems) {
+		// int clusterNr = item.getPrimaryID();
+		//
+		// ClusterNode currentNode = tree.getNodeByNumber(clusterNr);
+		//
+		// if (currentNode != null) {
+		// ArrayList<Integer> alGenes = new ArrayList<Integer>();
+		// alGenes = ClusterHelper.getAl(tree, currentNode);
+		//
+		// for (Integer geneId : alGenes) {
+		//
+		// System.out.println(idMappingManager.getID(EIDType.EXPRESSION_INDEX,
+		// EIDType.GENE_SYMBOL, geneId.intValue()));
+		//
+		// }
+		// }
+		// }
+		// }
+	}
 }
