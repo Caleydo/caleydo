@@ -3765,7 +3765,7 @@ public class GLHierarchicalHeatMap
 					case RIGHT_CLICKED:
 
 						// user interaction only allowed in case of partition based cluster result
-						if (set.getClusteredTreeGenes() != null)
+						if (set.getClusteredTreeExps() != null)
 							break;
 
 						boolean bEnableInterchange = false;

@@ -22,7 +22,7 @@ public class MergeClustersItem
 	}
 
 	/**
-	 * Depending on which group info should be handeld a bollean has to be set. True for genes, false for
+	 * Depending on which group info should be handled a boolean has to be set. True for genes, false for
 	 * experiments
 	 * 
 	 * @param bGeneGroup
