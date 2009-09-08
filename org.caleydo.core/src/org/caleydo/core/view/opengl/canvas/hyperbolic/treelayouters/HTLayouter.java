@@ -29,7 +29,7 @@ public final class HTLayouter
 	float fCenterX;
 	float fCenterY;
 	//float childAngle;
-	float fDepth = 5.0f; // tree.getDepth();
+	float fDepth = 2.0f; // tree.getDepth();
 
 	ArrayList<Vec3f> vec = new ArrayList();
 
@@ -106,6 +106,7 @@ public final class HTLayouter
 			
 			rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
 			placeNode(rootNode, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f);
+			drawLine(fCenterX, fCenterY, getFXCoord(), getFYCoord());
 			//rootNode.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,EDrawAbleNodeDetailLevel.Low);
 			//if (tree.hasChildren(node)){
 			
@@ -215,9 +216,9 @@ public final class HTLayouter
 			//for(ADrawAbleNode tmpNode : tree.getChildren(node)){
 				childCount++;
 				
-				float parentAngle = (angle) - (angle/currentStep/2);
+				float parentAngle = (angle*currentStep) - (angle);
 				//float parentAngle = (angle) - (angle/numChilds);
-				float alphaHalfOffset = (angle/currentStep / 2);
+				float alphaHalfOffset = (angle/ 2);
 				
 //				childAngle =
 //					calculateChildAngle(parentAngle , space/fNumberOfNodesInNewLayer , radius, numChilds)
@@ -225,8 +226,8 @@ public final class HTLayouter
 				
 				childAngle =
 				calculateChildAngle(parentAngle , space , radius, numChilds)
-					+ alphaHalfOffset;
-				calcualteChildPosition(radius, childAngle, numChilds);
+					;//+ alphaHalfOffset;
+				calcualteChildPosition(radius, parentAngle + childAngle, numChilds);
 				
 //				childAngle =
 //				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
@@ -289,11 +290,17 @@ public final class HTLayouter
 	}
 
 	private float calculateCircle(float radius, float current_step, float numberOfElements) {
-		float phi = (float) ((float) 2 * Math.PI / numberOfElements);
+		float phi1 = (float) ((float) 2 * Math.PI / numberOfElements);
 		// float phi = 1;
-		setFXCoord((float) (fCenterX + radius * Math.cos(phi * current_step)));
-		setFYCoord((float) (fCenterY + radius * Math.sin(phi * current_step)));
-		return phi * current_step;
+		//float phi2 = (float)Math.toDegrees(phi1);
+
+		float cos = (float)Math.cos(phi1 * current_step);
+		float sin = (float)Math.sin(phi1 * current_step);
+		setFXCoord((float) (fCenterX + radius * cos));
+		setFYCoord((float) (fCenterY + radius * sin));
+//		setFXCoord((float) (fCenterX + radius * Math.cos(phi2 * current_step)));
+//		setFYCoord((float) (fCenterY + radius * Math.sin(phi2 * current_step)));
+		return phi1;
 	}
 
 	private float calculateChildSpace(float radius, float numberOfNodesInLayer) {
@@ -306,7 +313,7 @@ public final class HTLayouter
 
 	private float calculateChildAngle(float parentAngle, float space, float radius, float currentStep) {
 
-		float angle = parentAngle + ((space / radius)*currentStep);
+		float angle = ((space / radius)*currentStep);
 		//float angle = parentAngle - space / radius;
 
 		return angle;
