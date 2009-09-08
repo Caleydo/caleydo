@@ -29,7 +29,7 @@ public final class HTLayouter
 	float fCenterX;
 	float fCenterY;
 	//float childAngle;
-	float fDepth = 2.0f; // tree.getDepth();
+	float fDepth = 3.0f; // tree.getDepth();
 
 	ArrayList<Vec3f> vec = new ArrayList();
 
@@ -227,7 +227,7 @@ public final class HTLayouter
 				childAngle =
 				calculateChildAngle(parentAngle , space , radius, numChilds)
 					;//+ alphaHalfOffset;
-				calcualteChildPosition(radius, parentAngle + childAngle, numChilds);
+				calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
 				
 //				childAngle =
 //				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
@@ -238,7 +238,7 @@ public final class HTLayouter
 //				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 //					EDrawAbleNodeDetailLevel.Low);
 				drawLine(xCoord, yCoord, getFXCoord(), getFYCoord());
-				calculateRecursiveLayout(node, radius + layer*0.3f, childAngle, layer+1, numChilds+currentStep, fNumberOfNodesInNewLayer*childs, fNodeSize, getFXCoord(), getFYCoord());
+				calculateRecursiveLayout(node, radius + layer*0.3f, childAngle, layer+1, numChilds, fNumberOfNodesInNewLayer*childs, fNodeSize, getFXCoord(), getFYCoord());
 			}
 			}
 
@@ -313,7 +313,8 @@ public final class HTLayouter
 
 	private float calculateChildAngle(float parentAngle, float space, float radius, float currentStep) {
 
-		float angle = ((space / radius)*currentStep);
+		float angle = ((space / radius));
+		//float angle = ((space / radius)*currentStep);
 		//float angle = parentAngle - space / radius;
 
 		return angle;
