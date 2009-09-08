@@ -219,6 +219,9 @@ public class GLHierarchicalHeatMap
 
 		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
 
+		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
+		super.renderStyle = renderStyle;
+		
 		createHeatMap();
 		createDendrogram();
 	}
@@ -1846,44 +1849,46 @@ public class GLHierarchicalHeatMap
 
 		renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
-		tempTexture.enable();
-		tempTexture.bind();
+		if (bGeneDendrogramRenderCut == false) {
 
-		float fYCoord = viewFrustum.getHeight() / 2;
+			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			tempTexture.enable();
+			tempTexture.bind();
 
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
+			float fYCoord = viewFrustum.getHeight() / 2;
 
-		gl
-			.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_INFOCUS_SELECTION,
-				1));
-		if (bIsHeatmapInFocus) {
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
-			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
-			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
-			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
-			gl.glEnd();
+			TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_INFOCUS_SELECTION, 1));
+			if (bIsHeatmapInFocus) {
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
+				gl.glEnd();
+			}
+			else {
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
+				gl.glEnd();
+			}
+			gl.glPopName();
+
+			tempTexture.disable();
 		}
-		else {
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
-			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fWidthLevel2 + 0.2f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
-			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord + 0.3f, BUTTON_Z);
-			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(fWidthLevel2 + 0.3f + fOffsetClusterVis, fYCoord - 0.3f, BUTTON_Z);
-			gl.glEnd();
-		}
-		gl.glPopName();
-
-		tempTexture.disable();
 
 		if (bRenderCaption == true) {
 			renderCaption(gl, "Number Samples:" + iSamplesPerHeatmap, 0.0f, viewFrustum.getHeight()
@@ -2295,6 +2300,13 @@ public class GLHierarchicalHeatMap
 		// bSplitGroupGene = false;
 		// }
 		// }
+
+		// in case of a partition-based clusterer was executed and hierarchical clustering was done before the
+		// dendrogram flags have to be reseted to avoid problems in the visualization.
+		if (set.getClusteredTreeGenes() == null)
+			bGeneDendrogramActive = false;
+		if (set.getClusteredTreeExps() == null)
+			bExperimentDendrogramActive = false;
 
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -2982,9 +2994,6 @@ public class GLHierarchicalHeatMap
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++) {
 			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
 		}
-
-		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-		super.renderStyle = renderStyle;
 
 		setDisplayListDirty();
 
@@ -4294,14 +4303,6 @@ public class GLHierarchicalHeatMap
 	public void initData() {
 
 		super.initData();
-
-		// FIXME: in case of loading a new data file the old cluster assignment must be deleted
-		// contentVA.setGroupList(null);
-		// storageVA.setGroupList(null);
-
-		// FIXME: in case of loading a new data file the old dendrogram views should not be active
-		// bGeneDendrogramActive = false;
-		// bExperimentDendrogramActive = false;
 
 		initHierarchy();
 		calculateTextures();

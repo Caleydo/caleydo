@@ -1,5 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
+import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.CUT_OFF_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.CUT_OFF_HANDLE_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.CUT_OFF_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.DENDROGRAM_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.SELECTION_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.SUB_DENDROGRAM_Z;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import gleem.linalg.Vec3f;
@@ -209,7 +215,6 @@ public class GLDendrogram
 	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
-			// renderStyle.setDetailLevel(detailLevel);
 		}
 	}
 
@@ -269,16 +274,27 @@ public class GLDendrogram
 			contextMenu.render(gl, this);
 	}
 
+	/**
+	 * Returns the position of the cut. This function is used in HHM to determine how many area the dendrogram
+	 * up to the cut requires.
+	 * 
+	 * @return position of cut
+	 */
 	public float getPositionOfCut() {
 		return fPosCut;
 	}
 
+	/**
+	 * Function is responsible for activating/deactivating "render up to cut" mode.
+	 * 
+	 * @param bRenderUntilCut
+	 */
 	public void setRenderUntilCut(boolean bRenderUntilCut) {
 		this.bRenderUntilCut = bRenderUntilCut;
 	}
 
 	/**
-	 * Render the handles for the "cut of value"
+	 * Render the handles for the "cut off value"
 	 * 
 	 * @param gl
 	 */
@@ -286,62 +302,63 @@ public class GLDendrogram
 
 		float fHeight = viewFrustum.getHeight();
 		float fWidth = viewFrustum.getWidth();
+		float fWidthCutOf = renderStyle.getWidthCutOff();
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 		if (bRenderGeneTree) {
-			gl.glColor4f(0f, 0f, 1f, 0.4f);
+			gl.glColor4fv(CUT_OFF_COLOR, 0);
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(fPosCut, 0.0f, 0);
-			gl.glVertex3f(fPosCut, fHeight, 0);
-			gl.glVertex3f(fPosCut + 0.05f, fHeight, 0);
-			gl.glVertex3f(fPosCut + 0.05f, 0.0f, 0);
+			gl.glVertex3f(fPosCut, 0, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut, fHeight, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut + fWidthCutOf, fHeight, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut + fWidthCutOf, 0, CUT_OFF_Z);
 			gl.glEnd();
 
-			gl.glColor4f(0f, 0f, 1f, 1f);
+			gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
 			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(fPosCut - 0.2f, -0.1f, 0);
-			gl.glVertex3f(fPosCut + 0.0f, -0.0f, 0);
-			gl.glVertex3f(fPosCut + 0.0f, -0.2f, 0);
-			gl.glVertex3f(fPosCut + 0.05f, -0.0f, 0);
-			gl.glVertex3f(fPosCut + 0.05f, -0.2f, 0);
-			gl.glVertex3f(fPosCut + 0.25f, -0.1f, 0);
+			gl.glVertex3f(fPosCut - 0.2f, -0.1f, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut + 0.0f, -0.0f, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut + 0.0f, -0.2f, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut + 0.05f, -0.0f, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut + 0.05f, -0.2f, CUT_OFF_Z);
+			gl.glVertex3f(fPosCut + 0.25f, -0.1f, CUT_OFF_Z);
 			gl.glEnd();
 
 			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			// gl.glVertex3f(fPosCut - 0.2f, fHeight + 0.1f, 0);
-			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.0f, 0);
-			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.2f, 0);
-			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.0f, 0);
-			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.2f, 0);
-			// gl.glVertex3f(fPosCut + 0.25f, fHeight + 0.1f, 0);
+			// gl.glVertex3f(fPosCut - 0.2f, fHeight + 0.1f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.2f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.2f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.25f, fHeight + 0.1f, CUT_OFF_Z);
 			// gl.glEnd();
 		}
 		else {
-			gl.glColor4f(0f, 0f, 1f, 0.4f);
+			gl.glColor4fv(CUT_OFF_COLOR, 0);
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(0, fPosCut, 0);
-			gl.glVertex3f(fWidth, fPosCut, 0);
-			gl.glVertex3f(fWidth, fPosCut + 0.05f, 0);
-			gl.glVertex3f(0.0f, fPosCut + 0.05f, 0);
+			gl.glVertex3f(0, fPosCut, CUT_OFF_Z);
+			gl.glVertex3f(fWidth, fPosCut, CUT_OFF_Z);
+			gl.glVertex3f(fWidth, fPosCut + fWidthCutOf, CUT_OFF_Z);
+			gl.glVertex3f(0, fPosCut + fWidthCutOf, CUT_OFF_Z);
 			gl.glEnd();
 
-			gl.glColor4f(0f, 0f, 1f, 1f);
+			gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
 			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(-0.1f, fPosCut - 0.2f, 0);
-			gl.glVertex3f(-0.2f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(-0.0f, fPosCut + 0.0f, 0);
-			gl.glVertex3f(-0.2f, fPosCut + 0.05f, 0);
-			gl.glVertex3f(-0.0f, fPosCut + 0.05f, 0);
-			gl.glVertex3f(-0.1f, fPosCut + 0.25f, 0);
+			gl.glVertex3f(-0.1f, fPosCut - 0.2f, CUT_OFF_Z);
+			gl.glVertex3f(-0.2f, fPosCut + 0.0f, CUT_OFF_Z);
+			gl.glVertex3f(-0.0f, fPosCut + 0.0f, CUT_OFF_Z);
+			gl.glVertex3f(-0.2f, fPosCut + 0.05f, CUT_OFF_Z);
+			gl.glVertex3f(-0.0f, fPosCut + 0.05f, CUT_OFF_Z);
+			gl.glVertex3f(-0.1f, fPosCut + 0.25f, CUT_OFF_Z);
 			gl.glEnd();
 
 			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			// gl.glVertex3f(fWidth + 0.1f, fPosCut - 0.2f, 0);
-			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.0f, 0);
-			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.0f, 0);
-			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.05f, 0);
-			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.05f, 0);
-			// gl.glVertex3f(fWidth + 0.1f, fPosCut + 0.25f, 0);
+			// gl.glVertex3f(fWidth + 0.1f, fPosCut - 0.2f, CUT_OFF_Z);
+			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.05f, CUT_OFF_Z);
+			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.05f, CUT_OFF_Z);
+			// gl.glVertex3f(fWidth + 0.1f, fPosCut + 0.25f, CUT_OFF_Z);
 			// gl.glEnd();
 		}
 		gl.glPopName();
@@ -433,7 +450,7 @@ public class GLDendrogram
 		determinePosRecSubTree(tree.getRoot());
 
 		gl.glTranslatef(0, -fSampleHeightSubTree / 2, 0);
-		gl.glLineWidth(1f);
+		gl.glLineWidth(renderStyle.getDendrogramLineWidth());
 		renderSubTreeRec(gl, tree.getRoot());
 		gl.glTranslatef(0, +fSampleHeightSubTree / 2, 0);
 	}
@@ -558,7 +575,7 @@ public class GLDendrogram
 
 			pos.setX(fXmin - fLevelWidthSubTree);
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
-			pos.setZ(0f);
+			pos.setZ(SUB_DENDROGRAM_Z);
 
 		}
 		else {
@@ -566,7 +583,7 @@ public class GLDendrogram
 				pos.setY(yPosInitSubTree);
 				yPosInitSubTree -= fSampleHeightSubTree;
 				pos.setX(xGlobalMaxSubTree - fLevelWidthSubTree);
-				pos.setZ(0f);
+				pos.setZ(SUB_DENDROGRAM_Z);
 			}
 		}
 
@@ -707,14 +724,14 @@ public class GLDendrogram
 
 			pos.setX(fXmin - fLevelWidth);// * (1 + fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
-			pos.setZ(0f);
+			pos.setZ(DENDROGRAM_Z);
 
 		}
 		else {
 			pos.setY(yPosInit);
 			yPosInit -= fSampleHeight;
 			pos.setX(xGlobalMax - fLevelWidth);// - currentNode.getCoefficient());
-			pos.setZ(0f);
+			pos.setZ(DENDROGRAM_Z);
 		}
 
 		currentNode.setPos(pos);
@@ -764,14 +781,14 @@ public class GLDendrogram
 
 			pos.setX(fXmin + (fXmax - fXmin) / 2);
 			pos.setY(fYmax + fLevelHeight);// * (1 + fCoeff));
-			pos.setZ(0f);
+			pos.setZ(DENDROGRAM_Z);
 
 		}
 		else {
 			pos.setX(xPosInit);
 			xPosInit += fSampleWidth;
 			pos.setY(yGlobalMin + fLevelHeight);// currentNode.getCoefficient());
-			pos.setZ(0f);
+			pos.setZ(DENDROGRAM_Z);
 		}
 
 		currentNode.setPos(pos);
@@ -791,14 +808,10 @@ public class GLDendrogram
 			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, currentNode
-				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, currentNode
-				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, currentNode
-				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, currentNode
-				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, SELECTION_Z);
 			gl.glEnd();
 
 		}
@@ -806,31 +819,13 @@ public class GLDendrogram
 			gl.glColor4fv(SELECTED_COLOR, 0);
 
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, currentNode
-				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, currentNode
-				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, currentNode
-				.getPos().z());
-			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, currentNode
-				.getPos().z());
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, SELECTION_Z);
+			gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, SELECTION_Z);
 			gl.glEnd();
 
 		}
-		// if (currentNode.isPartOfSubTree()) {
-		// gl.glColor4fv(SELECTED_COLOR, 0);
-		//
-		// gl.glBegin(GL.GL_QUADS);
-		// gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() - 0.025f, currentNode
-		// .getPos().z());
-		// gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() - 0.025f, currentNode
-		// .getPos().z());
-		// gl.glVertex3f(currentNode.getPos().x() + 0.025f, currentNode.getPos().y() + 0.025f, currentNode
-		// .getPos().z());
-		// gl.glVertex3f(currentNode.getPos().x() - 0.025f, currentNode.getPos().y() + 0.025f, currentNode
-		// .getPos().z());
-		// gl.glEnd();
-		// }
 
 		if (tree.hasChildren(currentNode)) {
 			for (ClusterNode current : tree.getChildren(currentNode)) {
@@ -845,7 +840,7 @@ public class GLDendrogram
 	 * @param gl
 	 * @param currentNode
 	 * @param fOpacity
-	 *            Opacity value of the current node. In case of determine clusters with the cut of value.
+	 *            Opacity value of the current node. In case of determine clusters with the cut off value.
 	 */
 	private void renderDendrogramGenes(final GL gl, ClusterNode currentNode, float fOpacity) {
 
@@ -956,7 +951,7 @@ public class GLDendrogram
 	 * @param gl
 	 * @param currentNode
 	 * @param fOpacity
-	 *            Opacity value of the current node. In case of determine clusters with the cut of value.
+	 *            Opacity value of the current node. In case of determine clusters with the cut off value.
 	 */
 	private void renderDendrogramExperiments(final GL gl, ClusterNode currentNode, float fOpacity) {
 
@@ -1063,13 +1058,6 @@ public class GLDendrogram
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		// gl.glBegin(GL.GL_LINE_LOOP);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), 0);
-		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), 0);
-		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0);
-		// gl.glEnd();
-
 		if (tree == null) {
 
 			iAlClusterNodes.clear();
@@ -1112,7 +1100,7 @@ public class GLDendrogram
 				bHasFrustumChanged = false;
 			}
 
-			gl.glLineWidth(0.1f);
+			gl.glLineWidth(renderStyle.getDendrogramLineWidth());
 
 			if (bRenderGeneTree) {
 				gl.glTranslatef(0, -fSampleHeight / 2, 0);
@@ -1179,7 +1167,7 @@ public class GLDendrogram
 
 	/**
 	 * This function calls a recursive function which is responsible for setting nodes in the dendrogram
-	 * deselected depending on the current position of the "cut of value"
+	 * deselected depending on the current position of the "cut off value"
 	 */
 	private void determineSelectedNodes() {
 
@@ -1507,14 +1495,6 @@ public class GLDendrogram
 
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
-
-		// fPosCut = 0;
-		// iMaxDepth = Integer.MAX_VALUE;
-		// iAlClusterNodes.clear();
-		// buildNewGroupList();
-		// resetAllTreeSelections();
-		// bRedrawDendrogram = true;
-		// bEnableDepthCheck = false;
 	}
 
 	@Override
@@ -1638,6 +1618,10 @@ public class GLDendrogram
 		super.resetView();
 	}
 
+	/**
+	 * Function enables redraw of dendrogram, needed in case of viewfrustum changed and view is rendered
+	 * remote.
+	 */
 	public void setRedrawDendrogram() {
 		this.bRedrawDendrogram = true;
 	}
