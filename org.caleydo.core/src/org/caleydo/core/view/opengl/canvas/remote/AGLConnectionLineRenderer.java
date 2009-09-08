@@ -84,6 +84,7 @@ public abstract class AGLConnectionLineRenderer {
 		}
 
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
+		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>(); //FIXME: added
 
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
@@ -93,12 +94,15 @@ public abstract class AGLConnectionLineRenderer {
 					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
 				}
 				else {
-					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, hashViewToCenterPoint
-						.get(iKey), fArColor);
+//					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, hashViewToCenterPoint
+//						.get(iKey), fArColor);
+					pointsToDepthSort.add(alCurrentPoints.get(0)); //FIXME: added
 				}
 			}
-
+			for(Vec3f currentPoint : depthSort(pointsToDepthSort)) //FIXME: added
+				renderLine(gl, vecViewBundlingPoint, currentPoint, 0, hashViewToCenterPoint.get(iKey), fArColor); //FIXME: added
 			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
+			pointsToDepthSort.clear();
 		}
 	}
 
@@ -482,5 +486,37 @@ public abstract class AGLConnectionLineRenderer {
 		vecTransformedPoint.add(vecTranslation);
 
 		return vecTransformedPoint;
+	}
+	
+	
+	/**
+	 * 		Depth-sorts the given set of points according to their z-value.
+	 * 
+	 * @param points Specifies the given set of points to be depth-sorted.
+	 * @return The depth-sorted set of points.
+	 */
+	protected ArrayList<Vec3f> depthSort(final ArrayList<Vec3f> points) {
+		ArrayList<Vec3f> sortedPoints = new ArrayList<Vec3f>();
+		boolean foundSpot = false;
+		
+		for(Vec3f point : points) {
+			foundSpot = false;
+			for(int i = 0; i < sortedPoints.size(); i++)
+				if(point.z() <= sortedPoints.get(i).z()) {
+					sortedPoints.add(i, point);
+					foundSpot = true;
+					break;
+				}
+			if(foundSpot == false)
+				sortedPoints.add(point);
+		}
+//		System.out.println("Points:");
+//		for(Vec3f point : points)
+//			System.out.println(point.z());
+//		System.out.println("Sorted Points:");
+//		for(Vec3f sorted : sortedPoints)
+//			System.out.println(sorted.z());
+//		System.out.println("----------------------------------------");
+		return sortedPoints;
 	}
 }
