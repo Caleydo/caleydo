@@ -1,5 +1,6 @@
 package org.caleydo.rcp.dialog.cluster;
 
+import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
@@ -8,6 +9,7 @@ import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.progress.ClusteringProgressBar;
+import org.caleydo.rcp.view.swt.HTMLBrowserView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -18,6 +20,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -27,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 
@@ -104,6 +108,28 @@ public class StartClusteringAction
 		createKMeansTab(tabFolder);
 		createCobwebTab(tabFolder);
 
+		Button helpButton = new Button(composite, SWT.PUSH);
+		helpButton.setText("Help");
+		helpButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+						HTMLBrowserView.ID);
+
+					String stHelp = "http://www.caleydo.org/help/gene_expression.html#Cobweb";
+
+					ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+					changeURLEvent.setSender(this);
+					changeURLEvent.setUrl(stHelp);
+					GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
+				}
+				catch (PartInitException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		// set default value for cluster algo
 		clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
 
@@ -144,7 +170,7 @@ public class StartClusteringAction
 		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		clusterDimensionGroup.setText("Cluster:");
 		clusterDimensionGroup.setLayout(new GridLayout(1, false));
-		
+
 		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.setEnabled(true);
@@ -156,7 +182,6 @@ public class StartClusteringAction
 				clusterType = clusterTypeCombo.getText();
 			}
 		});
-
 	}
 
 	private void createKMeansTab(TabFolder tabFolder) {
@@ -166,11 +191,11 @@ public class StartClusteringAction
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		kMeansTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
-		
+
 		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		clusterDimensionGroup.setText("Cluster:");
 		clusterDimensionGroup.setLayout(new GridLayout(1, false));
-		
+
 		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.select(0);
@@ -190,7 +215,7 @@ public class StartClusteringAction
 		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		distanceMeasureGroup.setText("Distance measure:");
 		distanceMeasureGroup.setLayout(new GridLayout(1, false));
-		
+
 		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptionsWeka);
 		distMeasureCombo.setEnabled(true);
@@ -211,7 +236,8 @@ public class StartClusteringAction
 		clusterCntGenes.addModifyListener(listenerIntGenes);
 		clusterCntGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterCntGenes.setText("5");
-		clusterCntGenes.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
+		clusterCntGenes
+			.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
 
 		final Label lblClusterCntExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterCntExperiments.setText("Number clusters for clustering experiments");
@@ -257,7 +283,7 @@ public class StartClusteringAction
 		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		clusterDimensionGroup.setText("Cluster:");
 		clusterDimensionGroup.setLayout(new GridLayout(1, false));
-		
+
 		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(sArTypeOptions);
 		clusterTypeCombo.select(0);
@@ -266,7 +292,7 @@ public class StartClusteringAction
 		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		distanceMeasureGroup.setText("Distance measure:");
 		distanceMeasureGroup.setLayout(new GridLayout(1, false));
-		
+
 		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptions);
 		distMeasureCombo.setEnabled(true);
@@ -347,7 +373,7 @@ public class StartClusteringAction
 		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		clusterDimensionGroup.setText("Cluster:");
 		clusterDimensionGroup.setLayout(new GridLayout(2, false));
-		
+
 		Composite clusterComposite = new Composite(clusterDimensionGroup, SWT.NONE);
 		clusterComposite.setLayout(new RowLayout());
 
@@ -376,7 +402,7 @@ public class StartClusteringAction
 		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		distanceMeasureGroup.setText("Distance measure:");
 		distanceMeasureGroup.setLayout(new GridLayout(1, false));
-		
+
 		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
 		distMeasureCombo.setItems(sArDistOptions);
 		distMeasureCombo.setEnabled(true);

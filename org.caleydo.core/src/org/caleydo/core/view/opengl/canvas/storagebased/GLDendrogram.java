@@ -152,6 +152,10 @@ public class GLDendrogram
 		this.bRenderGeneTree = bRenderGeneTree;
 
 		fPosCut = 0f;
+		// if (bRenderGeneTree)
+		// fPosCut = viewFrustum.getWidth() / 5f;
+		// else
+		// fPosCut = viewFrustum.getHeight() / 5f;
 	}
 
 	@Override
@@ -282,6 +286,26 @@ public class GLDendrogram
 	 */
 	public float getPositionOfCut() {
 		return fPosCut;
+	}
+
+	/**
+	 * Function sets an initial value for the position of the cut off value. Used in HHM when rendering a
+	 * dendrogram the first time.
+	 * 
+	 * @return True in case of tree is available and clusters are determined, false in case of no tree
+	 *         available.
+	 */
+	public boolean setInitialPositionOfCut() {
+		if (bRenderGeneTree)
+			fPosCut = viewFrustum.getWidth() / 4f;
+		else
+			fPosCut = viewFrustum.getHeight() - viewFrustum.getHeight() / 4f;
+
+		if (tree != null) {
+			determineSelectedNodes();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -994,8 +1018,9 @@ public class GLDendrogram
 
 				bCutOffActive[i] = false;
 
-				if (bEnableDepthCheck) {
-					if (current.getSelectionType() != ESelectionType.DESELECTED) {
+				if (bEnableDepthCheck && bRenderUntilCut == true) {
+					if (current.getPos().y() >= fPosCut) {
+						// if (current.getSelectionType() != ESelectionType.DESELECTED) {
 						renderDendrogramExperiments(gl, current, 1f);
 						// renderDendrogramExperiments(gl, current, 0.3f);
 						// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
@@ -1025,8 +1050,10 @@ public class GLDendrogram
 				// vertical lines connecting all children with their parent
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(tempPositions[i].x(), ymax, tempPositions[i].z());
-				if (bCutOffActive[i])
+				if (bCutOffActive[i] && bRenderUntilCut == false)
 					gl.glVertex3f(tempPositions[i].x(), yGlobalMin, tempPositions[i].z());
+				else if (bCutOffActive[i] && bRenderUntilCut == true)
+					gl.glVertex3f(tempPositions[i].x(), fPosCut - 0.1f, tempPositions[i].z());
 				else
 					gl.glVertex3f(tempPositions[i].x(), tempPositions[i].y(), tempPositions[i].z());
 				gl.glEnd();

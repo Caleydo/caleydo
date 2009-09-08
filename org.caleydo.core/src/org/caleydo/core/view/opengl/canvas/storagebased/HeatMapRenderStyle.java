@@ -141,6 +141,12 @@ public class HeatMapRenderStyle
 		return fHeightExperimentDendrogram;
 	}
 	
+	// function called by HHM to set height of experiment dendrogram
+	public void setHeightExperimentDendrogram(float fHeightExperimentDendrogram) {
+
+		this.fHeightExperimentDendrogram = fHeightExperimentDendrogram;
+	}
+	
 	public float getWidthGeneDendrogram() {
 
 		return fWidthGeneDendrogram;
