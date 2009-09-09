@@ -237,13 +237,13 @@ public abstract class AUseCase
 	@Override
 	public void startClustering(ClusterState clusterState) {
 
-		clusterState.setContentVaId(mapVAIDs.get(EVAType.CONTENT));
+		clusterState.setContentVaId(mapVAIDs.get(clusterState.getContentVAType()));
 		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE));
 
 		ArrayList<IVirtualArray> iAlNewVAs = set.cluster(clusterState);
 
 		if (iAlNewVAs != null) {
-			set.replaceVA(mapVAIDs.get(EVAType.CONTENT), iAlNewVAs.get(0));
+			set.replaceVA(mapVAIDs.get(clusterState.getContentVAType()), iAlNewVAs.get(0));
 			set.replaceVA(mapVAIDs.get(EVAType.STORAGE), iAlNewVAs.get(1));
 		}
 
@@ -251,7 +251,7 @@ public abstract class AUseCase
 		set.setGeneClusterInfoFlag(false);
 		set.setExperimentClusterInfoFlag(false);
 
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.CONTENT));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(clusterState.getContentVAType()));
 
 	}
 

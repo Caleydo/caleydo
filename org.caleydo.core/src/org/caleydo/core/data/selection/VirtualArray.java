@@ -339,7 +339,7 @@ public class VirtualArray
 		catch (CloneNotSupportedException e) {
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
-		va.iUniqueID = (GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+//		va.iUniqueID = (GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		va.length = length;
 		va.virtualArray = (ArrayList<Integer>) virtualArray.clone();
 		if (groupList != null)

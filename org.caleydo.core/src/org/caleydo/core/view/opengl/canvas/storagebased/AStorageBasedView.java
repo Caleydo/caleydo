@@ -549,13 +549,19 @@ public abstract class AStorageBasedView
 	@Override
 	public void replaceVirtualArray(EVAType vaType) {
 		if (vaType == storageVAType)
+		{
 			storageVA = useCase.getVA(vaType);
+			storageSelectionManager.setVA(storageVA);
+		}
 		else if (vaType == contentVAType)
+		{
 			contentVA = useCase.getVA(vaType);
+			contentSelectionManager.setVA(contentVA);
+		}
 		else
 			return;
 
-		initData();
+//		initData();
 	}
 
 	/**

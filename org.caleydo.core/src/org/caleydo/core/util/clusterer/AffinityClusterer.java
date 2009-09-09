@@ -486,9 +486,9 @@ public class AffinityClusterer
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndexes);
+			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndexes);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndexes);
+			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndexes);
 
 		set.setAlClusterSizes(alClusterSizes);
 		set.setAlExamples(idxExamples);

@@ -2,6 +2,8 @@ package org.caleydo.core.util.clusterer;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
+
 /**
  * Stores the cluster state which is determined in the {@link StartClusteringAction}. Depending on the
  * selected algorithm different variables (cluster factor, cluster number) are needed.
@@ -19,6 +21,9 @@ public class ClusterState {
 	private int kMeansClusterCntExperiments;
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
+	
+	private EVAType contentVAType = EVAType.CONTENT;
+	private EVAType storageVAType = EVAType.STORAGE;
 
 	private int contentVaId = 0;
 	private int storageVaId = 0;
@@ -33,6 +38,16 @@ public class ClusterState {
 		this.setDistanceMeasure(dist);
 	}
 
+	public void setContentVAType(EVAType contentVAType)
+	{
+		this.contentVAType = contentVAType;
+	}
+	
+	public EVAType getContentVAType()
+	{
+		return contentVAType;
+	}
+	
 	public void setClustererAlgo(EClustererAlgo eClustererAlgo) {
 		this.clustererAlgo = eClustererAlgo;
 	}

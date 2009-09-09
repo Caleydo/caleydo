@@ -36,6 +36,12 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.clusterer.AffinityClusterer;
+import org.caleydo.core.util.clusterer.ClusterManager;
+import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.clusterer.EClustererAlgo;
+import org.caleydo.core.util.clusterer.EClustererType;
+import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -1128,7 +1134,33 @@ public class GLHeatMap
 
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
-		super.handleVirtualArrayUpdate(delta, info);
+		
+		System.out.println("Size of va: " + contentVA.size());
+		super.handleVirtualArrayUpdate(delta, info);		
+		System.out.println("Size of va: " + contentVA.size());
+		
+		if (delta.getVAType() == EVAType.CONTENT_CONTEXT && contentVAType == EVAType.CONTENT_CONTEXT) {
+
+			long original = System.currentTimeMillis();
+			System.out.println("beginning clustering");
+			AffinityClusterer clusterer = new AffinityClusterer(contentVA.size());
+			ClusterState state =
+				new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION, EClustererType.GENE_CLUSTERING,
+					EDistanceMeasure.EUCLIDEAN_DISTANCE);
+			int contentVAID = contentVA.getID();
+			state.setContentVaId(contentVA.getID());
+			state.setStorageVaId(storageVA.getID());
+			state.setAffinityPropClusterFactorGenes(4.0f);
+			IVirtualArray tempVA2 = set.getVA(contentVAID);
+			IVirtualArray tempVA = clusterer.getSortedVA(set, state, 0, 2);
+			
+			contentVA = tempVA;
+			contentSelectionManager.setVA(contentVA);
+			contentVA.setID(contentVAID);
+			long result = System.currentTimeMillis() - original;
+			System.out.println("Clustering took in ms: " + result);
+
+		}
 	}
 
 	@Override
