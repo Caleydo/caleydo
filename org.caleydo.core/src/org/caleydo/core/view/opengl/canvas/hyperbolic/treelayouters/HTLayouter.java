@@ -28,6 +28,7 @@ public final class HTLayouter
 	float fYCoord;
 	float fCenterX;
 	float fCenterY;
+	int ilineIDDummy = 0;
 	//float childAngle;
 	float fDepth = 3.0f; // tree.getDepth();
 
@@ -96,7 +97,7 @@ public final class HTLayouter
 
 		// RECURSIVE TREE LAYOUTER
 		float layer = 1.0f;
-		float fRadius = 0.1f;
+		float fRadius = 0.2f;
 		
 		float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
 		for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
@@ -112,7 +113,7 @@ public final class HTLayouter
 			
 
 		
-		calculateRecursiveLayout(rootNode, fRadius + 0.2f , alpha, layer, fCurrentNode, fNumberOfNodesInLayer*fNumberOfNodesInLayer, fNodeSize, getFXCoord(), getFYCoord());
+		calculateRecursiveLayout(rootNode, fRadius + 0.2f , alpha, layer+1, fCurrentNode, fNumberOfNodesInLayer*fNumberOfNodesInLayer, fNodeSize, getFXCoord(), getFYCoord());
 //		calculateRecursiveLayout(gl, node, tree, radius + 0.3f, childAngle, layer+1, numChilds+currentStep, fNumberOfNodesInNewLayer*childs, fNodeSize);
 //		}
 		}
@@ -195,6 +196,7 @@ public final class HTLayouter
 
 	public float calculateRecursiveLayout(IDrawAbleNode node, float radius, float angle, 
 		float layer, float currentStep, float fNumberOfNodesInLayer, float fNodeSize, float xCoord, float yCoord) {
+		if (layer <= fDepth){
 		float fNumberOfNodesInNewLayer = fNumberOfNodesInLayer;// + layer;//node.getNumberOfNodesInLayer(layer);
 //		for (float fCurrentNode = 1; fCurrentNode <= fNumberOfNodesInLayer; fCurrentNode++) {
 //
@@ -207,7 +209,6 @@ public final class HTLayouter
 //			EDrawAbleNodeDetailLevel.Low);
 //			//if (tree.hasChildren(node)){
 
-			if (layer < fDepth){
 			float childs = 3.0f; // node.getNumberOfChildren()
 			int childCount = 0;
 			float childAngle = 0.0f;
@@ -216,7 +217,7 @@ public final class HTLayouter
 			//for(ADrawAbleNode tmpNode : tree.getChildren(node)){
 				childCount++;
 				
-				float parentAngle = (angle*currentStep) - (angle);
+				float parentAngle = (angle*currentStep);// - (angle);
 				//float parentAngle = (angle) - (angle/numChilds);
 				float alphaHalfOffset = (angle/ 2);
 				
@@ -226,19 +227,24 @@ public final class HTLayouter
 				
 				childAngle =
 				calculateChildAngle(parentAngle , space , radius, numChilds)
-					;//+ alphaHalfOffset;
-				calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
 				
+					;//+ alphaHalfOffset;
+				//calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
+				calcualteChildPosition(radius, parentAngle + (childAngle*numChilds - childAngle), numChilds);
+				
+				float x = getFXCoord();
+				float y = getFYCoord();
+				drawLine(xCoord, yCoord, x, y);
 //				childAngle =
 //				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
 //					+ (alpha / 2);
 //			calcualteChildPosition(childRadius, childAngle, numChilds);
 				node.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-				placeNode(node, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f);
+				placeNode(node, x, y, 0, fNodeSize, 0.2f);
 //				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 //					EDrawAbleNodeDetailLevel.Low);
-				drawLine(xCoord, yCoord, getFXCoord(), getFYCoord());
-				calculateRecursiveLayout(node, radius + layer*0.3f, childAngle, layer+1, numChilds, fNumberOfNodesInNewLayer*childs, fNodeSize, getFXCoord(), getFYCoord());
+				//drawLine(getFXCoord(), getFYCoord(), x, y);
+				calculateRecursiveLayout(node, radius + 0.2f, parentAngle + (childAngle*numChilds - childAngle), layer+1, numChilds, fNumberOfNodesInNewLayer/**childs*/, fNodeSize, x, y);
 			}
 			}
 
@@ -290,7 +296,7 @@ public final class HTLayouter
 	}
 
 	private float calculateCircle(float radius, float current_step, float numberOfElements) {
-		float phi1 = (float) ((float) 2 * Math.PI / numberOfElements);
+		float phi1 = (float) (2 * Math.PI) / numberOfElements;
 		// float phi = 1;
 		//float phi2 = (float)Math.toDegrees(phi1);
 
@@ -328,7 +334,7 @@ public final class HTLayouter
 
 	}
 	private void drawLine(float firstX, float firstY, float secondX, float secondY){
-		IDrawAbleConnection line = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE, 0,1);
+		IDrawAbleConnection line = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE, ilineIDDummy++,ilineIDDummy++);
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		Vec3f p1 = new Vec3f();
 		Vec3f p2 = new Vec3f();
