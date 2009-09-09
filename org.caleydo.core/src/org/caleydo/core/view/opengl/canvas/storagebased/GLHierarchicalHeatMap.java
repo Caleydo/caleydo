@@ -40,6 +40,7 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -58,12 +59,14 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
+import org.caleydo.core.view.opengl.canvas.listener.UpdateGroupInfoListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingActionListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupMergingActionListener;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsInterChangingActionReceiver;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsMergingActionReceiver;
+import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHierarchicalHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -196,6 +199,7 @@ public class GLHierarchicalHeatMap
 	private GroupInterChangingActionListener groupInterChangingActionListener;
 	private UpdateViewListener updateViewListener;
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
+	private UpdateGroupInfoListener updateGroupInfoListener;
 
 	private org.eclipse.swt.graphics.Point upperLeftScreenPos = new org.eclipse.swt.graphics.Point(0, 0);
 
@@ -4624,6 +4628,10 @@ public class GLHierarchicalHeatMap
 		clusterNodeMouseOverListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeSelectionEvent.class, clusterNodeMouseOverListener);
 
+		updateGroupInfoListener = new UpdateGroupInfoListener();
+		updateGroupInfoListener.setHandler(this);
+		eventPublisher.addListener(UpdateGroupInfoEvent.class, updateGroupInfoListener);
+
 	}
 
 	@Override
@@ -4646,11 +4654,17 @@ public class GLHierarchicalHeatMap
 			eventPublisher.removeListener(clusterNodeMouseOverListener);
 			clusterNodeMouseOverListener = null;
 		}
+		if (updateGroupInfoListener != null) {
+			eventPublisher.removeListener(updateGroupInfoListener);
+			updateGroupInfoListener = null;
+		}
+
 	}
 
 	@Override
 	public void handleUpdateView() {
 		bRedrawTextures = true;
+
 		setDisplayListDirty();
 	}
 
@@ -4893,5 +4907,33 @@ public class GLHierarchicalHeatMap
 		// }
 		// }
 		// }
+	}
+
+	@Override
+	public void handleUpdateGroupInfo() {
+
+		// if partion-based group info available clear this
+		if (contentVA.getGroupList() != null) {
+			contentVA.setGroupList(null);
+		}
+
+		// if hierarchical clusterer ran before, discard tree
+		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
+		if (tree != null) {
+			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = new Shell();
+					MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
+					messageBox.setText("Warning");
+					messageBox
+						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+					messageBox.open();
+				}
+			});
+
+			bGeneDendrogramActive = false;
+			bGeneDendrogramRenderCut = false;
+			set.setClusteredTreeGenes(null);
+		}
 	}
 }

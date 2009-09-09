@@ -8,7 +8,8 @@ import org.caleydo.core.manager.event.IListenerOwner;
  * 
  * @author Werner Puff
  */
-public interface IViewCommandHandler extends IListenerOwner {
+public interface IViewCommandHandler
+	extends IListenerOwner {
 
 	/**
 	 * Handler method to be called when a redraw view update event is caught by a related
@@ -28,4 +29,9 @@ public interface IViewCommandHandler extends IListenerOwner {
 	 */
 	public void handleClearSelections();
 
+	/**
+	 * Handler method to be called when a update of the group information is required. It is caught by a
+	 * related ({@link UpdateGroupInfoListener}.
+	 */
+	public void handleUpdateGroupInfo();
 }

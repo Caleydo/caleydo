@@ -70,6 +70,7 @@ import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
+import org.caleydo.core.manager.event.view.storagebased.UpdateGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
@@ -241,7 +242,7 @@ public class GLParallelCoordinates
 
 	/** Utility object for coordinate transformation and projection */
 	protected StandardTransformer selectionTransformer;
-	
+
 	// listeners
 	private ApplyCurrentSelectionToVirtualArrayListener applyCurrentSelectionToVirtualArrayListener;
 	private ResetAxisSpacingListener resetAxisSpacingListener;
@@ -354,7 +355,8 @@ public class GLParallelCoordinates
 		checkForHits(gl);
 
 		display(gl);
-		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		ConnectedElementRepresentationManager cerm =
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		// infoAreaManager.renderInPlaceInfo(gl);
@@ -571,6 +573,7 @@ public class GLParallelCoordinates
 
 		// polylineSelectionManager.moveType(ESelectionType.DESELECTED,
 		// ESelectionType.REMOVE);
+
 		polylineSelectionManager.removeElements(ESelectionType.DESELECTED);
 		clearAllSelections();
 		setDisplayListDirty();
@@ -581,6 +584,11 @@ public class GLParallelCoordinates
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
+
+		UpdateGroupInfoEvent updateGroupInfoEvent = new UpdateGroupInfoEvent();
+		updateGroupInfoEvent.setSender(this);
+		eventPublisher.triggerEvent(updateGroupInfoEvent);
+
 	}
 
 	/**
@@ -2810,7 +2818,7 @@ public class GLParallelCoordinates
 		selectionTransformer.destroy();
 		super.destroy();
 	}
-	
+
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
@@ -2900,4 +2908,11 @@ public class GLParallelCoordinates
 		else
 			return ("PCs, remote, " + iNumElements + " elements");
 	}
+
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

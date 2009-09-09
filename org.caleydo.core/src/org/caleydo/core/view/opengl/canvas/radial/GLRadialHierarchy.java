@@ -1203,4 +1203,10 @@ public class GLRadialHierarchy
 		return controlBox;
 	}
 
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

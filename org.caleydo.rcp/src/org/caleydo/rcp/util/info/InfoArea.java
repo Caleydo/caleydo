@@ -556,4 +556,10 @@ public class InfoArea
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
 }

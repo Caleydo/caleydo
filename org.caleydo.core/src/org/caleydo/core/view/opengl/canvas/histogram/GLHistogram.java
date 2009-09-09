@@ -626,4 +626,10 @@ public class GLHistogram
 			clearSelectionsListener = null;
 		}
 	}
+
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
 }

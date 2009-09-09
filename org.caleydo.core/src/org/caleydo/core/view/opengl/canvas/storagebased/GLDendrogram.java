@@ -1709,4 +1709,10 @@ public class GLDendrogram
 		bRedrawDendrogram = true;
 		setDisplayListDirty();
 	}
+
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
 }

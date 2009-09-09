@@ -937,4 +937,10 @@ public class TabularDataViewRep
 		initData();
 	}
 
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

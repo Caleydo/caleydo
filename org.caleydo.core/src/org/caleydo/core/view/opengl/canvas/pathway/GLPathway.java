@@ -979,4 +979,10 @@ public class GLPathway
 
 	}
 
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -1157,4 +1157,10 @@ public class GLHeatMap
 		this.bClusterVisualizationActive = bClusterVisualizationActive;
 	}
 
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

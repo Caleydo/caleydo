@@ -485,4 +485,10 @@ public class GLHyperbolic
 
 		return tree;
 	}
+
+	@Override
+	public void handleUpdateGroupInfo() {
+		// TODO Auto-generated method stub
+
+	}
 }
