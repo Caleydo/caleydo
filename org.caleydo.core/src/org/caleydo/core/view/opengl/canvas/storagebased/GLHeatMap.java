@@ -1135,9 +1135,9 @@ public class GLHeatMap
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
 		
-		System.out.println("Size of va: " + contentVA.size());
+//		System.out.println("Size of va: " + contentVA.size());
 		super.handleVirtualArrayUpdate(delta, info);		
-		System.out.println("Size of va: " + contentVA.size());
+//		System.out.println("Size of va: " + contentVA.size());
 		
 		if (delta.getVAType() == EVAType.CONTENT_CONTEXT && contentVAType == EVAType.CONTENT_CONTEXT) {
 

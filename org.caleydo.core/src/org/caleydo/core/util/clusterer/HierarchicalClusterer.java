@@ -231,9 +231,9 @@ public class HierarchicalClusterer
 
 		IVirtualArray virtualArray = null;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), indices);
+			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indices);
 		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), indices);
+			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indices);
 
 		CNode node = clusterer.m_cobwebTree;
 

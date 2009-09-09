@@ -3,6 +3,7 @@ package org.caleydo.core.util.clusterer;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -243,7 +244,7 @@ public class KMeansClusterer
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == cluster) {
-					alExamples.add(currentVA.get(i));
+					alExamples.add(i);
 					break;
 				}
 			}
@@ -255,10 +256,18 @@ public class KMeansClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
+		HashMap<Integer, Integer> hashExamples = new HashMap<Integer, Integer>();
+
+		int cnt = 0;
+		for (int example : alExamples) {
+			hashExamples.put(example, cnt);
+			cnt++;
+		}
+
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		// ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, clusterState
-		// .getClustererType());
+		ClusterHelper.sortClusters(set, iVAIdContent, iVAIdStorage, alExamples, clusterState
+			.getClustererType());
 
 		IVirtualArray virualArray;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
@@ -266,20 +275,20 @@ public class KMeansClusterer
 		else
 			virualArray = set.getVA(iVAIdStorage);
 
-		for (int cluster = 0; cluster < iNrCluster; cluster++) {
+		for (int cluster : alExamples) {
 			for (int i = 0; i < data.numInstances(); i++) {
-				if (ClusterAssignments[i] == cluster) {
+				if (ClusterAssignments[i] == hashExamples.get(cluster)) {
 					indexes.add(virualArray.get(i));
-					count.set(cluster, count.get(cluster) + 1);
+					count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
 				}
 			}
 		}
 
 		IVirtualArray virtualArray = null;
 		if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), indexes);
+			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), indexes);
 		else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), indexes);
+			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), indexes);
 
 		// set cluster result in Set
 		set.setAlClusterSizes(count);

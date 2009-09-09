@@ -213,7 +213,8 @@ public class ClusterHelper {
 
 				for (Integer iStorageIndex : storageVA) {
 					float temp =
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+							set.getVA(iVAIdContent).get(iContentIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
 					else
@@ -233,7 +234,8 @@ public class ClusterHelper {
 
 				for (Integer iContentIndex : contentVA) {
 					float temp =
-						set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+						set.get(set.getVA(iVAIdStorage).get(iStorageIndex)).getFloat(
+							EDataRepresentation.NORMALIZED, iContentIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
 					else
@@ -248,12 +250,12 @@ public class ClusterHelper {
 		int i = 0;
 
 		for (int f = 1; f < iNrExamples; f++) {
-			if (fColorSum[f] > fColorSum[f - 1])
+			if (fColorSum[f] < fColorSum[f - 1])
 				continue;
 			temp = fColorSum[f];
 			iTemp = examples.get(f);
 			i = f - 1;
-			while ((i >= 0) && (fColorSum[i] > temp)) {
+			while ((i >= 0) && (fColorSum[i] < temp)) {
 				fColorSum[i + 1] = fColorSum[i];
 				examples.set(i + 1, examples.get(i));
 				i--;

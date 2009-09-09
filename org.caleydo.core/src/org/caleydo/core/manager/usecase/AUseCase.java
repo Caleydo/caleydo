@@ -252,7 +252,8 @@ public abstract class AUseCase
 		set.setExperimentClusterInfoFlag(false);
 
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(clusterState.getContentVAType()));
-
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.STORAGE));
+		
 	}
 
 	@Override

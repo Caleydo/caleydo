@@ -38,6 +38,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.manager.event.view.group.ExportGroupsEvent;
 import org.caleydo.core.manager.event.view.group.InterchangeGroupsEvent;
 import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateGroupInfoEvent;
@@ -62,11 +63,10 @@ import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateGroupInfoListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.listener.GroupExportingListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingActionListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupMergingActionListener;
-import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsInterChangingActionReceiver;
-import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsMergingActionReceiver;
-import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
+import org.caleydo.core.view.opengl.canvas.remote.receiver.IGroupsActionHandler;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHierarchicalHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -92,7 +92,7 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
-	implements IGroupsMergingActionReceiver, IGroupsInterChangingActionReceiver, IClusterNodeEventReceiver {
+	implements IGroupsActionHandler, IClusterNodeEventReceiver {
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -195,8 +195,9 @@ public class GLHierarchicalHeatMap
 	private int iGeneGroupToDrag = -1;
 	private boolean bActivateDraggingGenes = false;
 
-	private GroupMergingActionListener groupMergingActionListener;
-	private GroupInterChangingActionListener groupInterChangingActionListener;
+	private GroupExportingListener groupExportingListener;
+	private GroupInterChangingActionListener groupInterchangingListener;
+	private GroupMergingActionListener groupMergingListener;
 	private UpdateViewListener updateViewListener;
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
 	private UpdateGroupInfoListener updateGroupInfoListener;
@@ -901,18 +902,22 @@ public class GLHierarchicalHeatMap
 		// fill gap
 		gl.glBegin(GL.GL_QUADS);
 		if (bHandleEndpoint1LowerStartpoint1) {
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, startpoint1.y() - fthickness * fScalFactor3, endpoint1
-				.z());
-			gl.glVertex3f(endpoint1.x() - 2 * fthickness, startpoint1.y() - fthickness * fScalFactor3, endpoint1
-				.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, startpoint1.y() - fthickness * fScalFactor3,
+				endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 2 * fthickness, startpoint1.y() - fthickness * fScalFactor3,
+				endpoint1.z());
 		}
 		else {
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
-			gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1,
+				endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1,
+				endpoint1.z());
 		}
 
-		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
-		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2
+			.z());
+		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2
+			.z());
 		gl.glEnd();
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
@@ -930,11 +935,11 @@ public class GLHierarchicalHeatMap
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y(), startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + fthickness* fScalFactor1, startpoint1
-			.z());
+		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + fthickness * fScalFactor1,
+			startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + fthickness * fScalFactor1, startpoint1
-			.z());
+		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + fthickness * fScalFactor1,
+			startpoint1.z());
 		gl.glEnd();
 
 		gl.glBegin(GL.GL_POLYGON);
@@ -943,11 +948,11 @@ public class GLHierarchicalHeatMap
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y(), startpoint2.z());
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y() - fthickness * fScalFactor2, startpoint2
-			.z());
+		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y() - fthickness * fScalFactor2,
+			startpoint2.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y() - fthickness * fScalFactor2, startpoint2
-			.z());
+		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y() - fthickness * fScalFactor2,
+			startpoint2.z());
 		gl.glEnd();
 
 		if (bHandleEndpoint1LowerStartpoint1) {
@@ -959,7 +964,8 @@ public class GLHierarchicalHeatMap
 			gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
 			gl.glVertex3f(endpoint1.x(), endpoint1.y() + fthickness * fScalFactor3, endpoint1.z());
 			gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() + fthickness * fScalFactor3, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() + fthickness * fScalFactor3,
+				endpoint1.z());
 			gl.glEnd();
 		}
 
@@ -973,9 +979,11 @@ public class GLHierarchicalHeatMap
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
+		gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1
+			.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
+		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1
+			.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y(), endpoint1.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -984,9 +992,11 @@ public class GLHierarchicalHeatMap
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2
+			.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2
+			.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y(), endpoint2.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -3726,6 +3736,7 @@ public class GLHierarchicalHeatMap
 
 						boolean bEnableInterchange = false;
 						boolean bEnableMerge = false;
+						boolean bEnableExport = false;
 						int iNrSelectedGroups = 0;
 
 						IGroupList tempGroupList = contentVA.getGroupList();
@@ -3734,6 +3745,9 @@ public class GLHierarchicalHeatMap
 							if (group.getSelectionType() == ESelectionType.SELECTION)
 								iNrSelectedGroups++;
 						}
+
+						if (iNrSelectedGroups >= 1)
+							bEnableExport = true;
 
 						if (iNrSelectedGroups >= 2) {
 
@@ -3746,12 +3760,11 @@ public class GLHierarchicalHeatMap
 						GroupContextMenuItemContainer groupContextMenuItemContainer =
 							new GroupContextMenuItemContainer();
 						groupContextMenuItemContainer.setContextMenuFlags(true, bEnableMerge,
-							bEnableInterchange);
+							bEnableInterchange, bEnableExport);
 						groupContextMenuItemContainer.setGenes(EIDType.EXPRESSION_INDEX, contentVA
 							.getGeneIdsOfGroup(iExternalID));
 
 						contextMenu.addItemContanier(groupContextMenuItemContainer);
-
 						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
 							getParentGLCanvas().getHeight());
 						contextMenu.setMasterGLView(this);
@@ -3822,6 +3835,7 @@ public class GLHierarchicalHeatMap
 
 						boolean bEnableInterchange = false;
 						boolean bEnableMerge = false;
+						boolean bEnableExport = false;
 						int iNrSelectedGroups = 0;
 
 						IGroupList tempGroupList = storageVA.getGroupList();
@@ -3831,23 +3845,26 @@ public class GLHierarchicalHeatMap
 								iNrSelectedGroups++;
 						}
 
+						if (iNrSelectedGroups >= 1)
+							bEnableExport = true;
+
 						if (iNrSelectedGroups >= 2) {
 
 							bEnableMerge = true;
 
 							if (iNrSelectedGroups == 2)
 								bEnableInterchange = true;
-
-							GroupContextMenuItemContainer groupContextMenuItemContainer =
-								new GroupContextMenuItemContainer();
-							groupContextMenuItemContainer.setContextMenuFlags(false, bEnableMerge,
-								bEnableInterchange);
-							contextMenu.addItemContanier(groupContextMenuItemContainer);
-
-							contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
-								getParentGLCanvas().getHeight());
-							contextMenu.setMasterGLView(this);
 						}
+						GroupContextMenuItemContainer groupContextMenuItemContainer =
+							new GroupContextMenuItemContainer();
+						groupContextMenuItemContainer.setContextMenuFlags(false, bEnableMerge,
+							bEnableInterchange, bEnableExport);
+
+						contextMenu.addItemContanier(groupContextMenuItemContainer);
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+
 						break;
 
 					case MOUSE_OVER:
@@ -4414,6 +4431,72 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
+	public void handleExportGroups(boolean bGeneGroup) {
+
+		ArrayList<Integer> algenesToExport = new ArrayList<Integer>();
+		ArrayList<Integer> alExperiments = new ArrayList<Integer>();
+
+		if (bGeneGroup) {
+			IGroupList groupList = contentVA.getGroupList();
+
+			int groupCnt = 0;
+
+			for (Group iter : groupList) {
+				if (iter.getSelectionType() == ESelectionType.SELECTION)
+					algenesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
+				groupCnt++;
+			}
+
+			if (storageVA.getGroupList() != null) {
+				groupList = storageVA.getGroupList();
+
+				groupCnt = 0;
+				for (Group iter : groupList) {
+					if (iter.getSelectionType() == ESelectionType.SELECTION)
+						alExperiments.addAll(storageVA.getGeneIdsOfGroup(groupCnt));
+					groupCnt++;
+				}
+				if (alExperiments.size() == 0)
+					alExperiments = storageVA.getIndexList();
+
+			}
+			else
+				alExperiments = storageVA.getIndexList();
+		}
+		else {
+			IGroupList groupList = storageVA.getGroupList();
+
+			int groupCnt = 0;
+
+			for (Group iter : groupList) {
+				if (iter.getSelectionType() == ESelectionType.SELECTION)
+					alExperiments.addAll(storageVA.getGeneIdsOfGroup(groupCnt));
+				groupCnt++;
+			}
+
+			if (contentVA.getGroupList() != null) {
+				groupList = contentVA.getGroupList();
+
+				groupCnt = 0;
+				for (Group iter : groupList) {
+					if (iter.getSelectionType() == ESelectionType.SELECTION)
+						algenesToExport.addAll(contentVA.getGeneIdsOfGroup(groupCnt));
+					groupCnt++;
+				}
+				if (algenesToExport.size() == 0)
+					algenesToExport = contentVA.getIndexList();
+
+			}
+			else
+				algenesToExport = contentVA.getIndexList();
+		}
+
+		set.exportGroups(GeneralManager.CALEYDO_HOME_PATH + "exportedGroups.csv", algenesToExport,
+			alExperiments);
+
+	}
+
+	@Override
 	public void handleInterchangeGroups(boolean bGeneGroup) {
 		IVirtualArray va;
 		Tree<ClusterNode> tree = null;
@@ -4612,13 +4695,17 @@ public class GLHierarchicalHeatMap
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		groupMergingActionListener = new GroupMergingActionListener();
-		groupMergingActionListener.setHandler(this);
-		eventPublisher.addListener(MergeGroupsEvent.class, groupMergingActionListener);
+		groupExportingListener = new GroupExportingListener();
+		groupExportingListener.setHandler(this);
+		eventPublisher.addListener(ExportGroupsEvent.class, groupExportingListener);
 
-		groupInterChangingActionListener = new GroupInterChangingActionListener();
-		groupInterChangingActionListener.setHandler(this);
-		eventPublisher.addListener(InterchangeGroupsEvent.class, groupInterChangingActionListener);
+		groupInterchangingListener = new GroupInterChangingActionListener();
+		groupInterchangingListener.setHandler(this);
+		eventPublisher.addListener(InterchangeGroupsEvent.class, groupInterchangingListener);
+
+		groupMergingListener = new GroupMergingActionListener();
+		groupMergingListener.setHandler(this);
+		eventPublisher.addListener(MergeGroupsEvent.class, groupMergingListener);
 
 		updateViewListener = new UpdateViewListener();
 		updateViewListener.setHandler(this);
@@ -4638,13 +4725,17 @@ public class GLHierarchicalHeatMap
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (groupMergingActionListener != null) {
-			eventPublisher.removeListener(groupMergingActionListener);
-			groupMergingActionListener = null;
+		if (groupExportingListener != null) {
+			eventPublisher.removeListener(groupExportingListener);
+			groupExportingListener = null;
 		}
-		if (groupInterChangingActionListener != null) {
-			eventPublisher.removeListener(groupInterChangingActionListener);
-			groupInterChangingActionListener = null;
+		if (groupInterchangingListener != null) {
+			eventPublisher.removeListener(groupInterchangingListener);
+			groupInterchangingListener = null;
+		}
+		if (groupMergingListener != null) {
+			eventPublisher.removeListener(groupMergingListener);
+			groupMergingListener = null;
 		}
 		if (updateViewListener != null) {
 			eventPublisher.removeListener(updateViewListener);

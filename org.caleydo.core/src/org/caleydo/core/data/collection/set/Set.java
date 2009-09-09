@@ -548,6 +548,12 @@ public class Set
 	}
 
 	@Override
+	public void exportGroups(String sFileName, ArrayList<Integer> alGenes, ArrayList<Integer> alExperiments) {
+		SetExporter exporter = new SetExporter();
+		exporter.exportGroups(this, sFileName, alGenes, alExperiments);
+	}
+	
+	@Override
 	public ArrayList<IVirtualArray> cluster(ClusterState clusterState) {
 
 		if (bIsNumerical == true && bIsSetHomogeneous == true) {

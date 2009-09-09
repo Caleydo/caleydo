@@ -362,9 +362,9 @@ public class TreeClusterer
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndices);
+			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndices);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndices);
+			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndices);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
@@ -501,9 +501,9 @@ public class TreeClusterer
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), alIndices);
+			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), alIndices);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), alIndices);
+			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), alIndices);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
@@ -723,9 +723,9 @@ public class TreeClusterer
 
 		IVirtualArray virtualArray = null;
 		if (eClustererType == EClustererType.GENE_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.CONTENT, set.depth(), AlIndexes);
+			virtualArray = new VirtualArray(set.getVA(iVAIdContent).getVAType(), set.depth(), AlIndexes);
 		else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-			virtualArray = new VirtualArray(EVAType.STORAGE, set.size(), AlIndexes);
+			virtualArray = new VirtualArray(set.getVA(iVAIdStorage).getVAType(), set.size(), AlIndexes);
 
 		GeneralManager.get().getEventPublisher().triggerEvent(
 			new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));

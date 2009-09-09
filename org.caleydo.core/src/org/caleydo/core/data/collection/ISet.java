@@ -136,21 +136,23 @@ public interface ISet
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax();
-	
+
 	/**
 	 * Gets the minimum value in the set in the specified data representation.
 	 * 
-	 * @param dataRepresentation Data representation the minimum value shall be returned in.
+	 * @param dataRepresentation
+	 *            Data representation the minimum value shall be returned in.
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
 	 * @return The absolute minimum value in the set in the specified data representation.
 	 */
 	public double getMinAs(EExternalDataRepresentation dataRepresentation);
-	
+
 	/**
 	 * Gets the maximum value in the set in the specified data representation.
 	 * 
-	 * @param dataRepresentation Data representation the maximum value shall be returned in.
+	 * @param dataRepresentation
+	 *            Data representation the maximum value shall be returned in.
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
 	 * @return The absolute maximum value in the set in the specified data representation.
@@ -246,8 +248,7 @@ public interface ISet
 	 * 
 	 * @return the unique id associated with the virtual array
 	 */
-//	public int createStorageVA(EVAType vaType);
-
+	// public int createStorageVA(EVAType vaType);
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the set
 	 * 
@@ -255,8 +256,7 @@ public interface ISet
 	 *            a list of indices
 	 * @return the unique id associated with the virtual array
 	 */
-//	public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections);
-
+	// public int createStorageVA(EVAType vaType, ArrayList<Integer> iAlSelections);
 	/**
 	 * Returns the virtual array associated with the unique ID
 	 * 
@@ -282,6 +282,15 @@ public interface ISet
 	 * @param bExportBucketInternal
 	 */
 	public void export(String sFileName, EWhichViewToExport eWhichViewToExport);
+
+	/**
+	 * Export a sub set of genes to the destination specified in sFileName.
+	 * 
+	 * @param sFileName
+	 * @param alGenes
+	 * @param alExperiments
+	 */
+	public void exportGroups(String sFileName, ArrayList<Integer> alGenes, ArrayList<Integer> alExperiments);
 
 	/**
 	 * Clusters a Storage

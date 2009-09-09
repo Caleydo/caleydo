@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
@@ -30,6 +31,57 @@ public class SetExporter {
 	public enum EWhichViewToExport {
 		BUCKET,
 		WHOLE_DATA
+	}
+
+	public void exportGroups(ISet set, String sFileName, ArrayList<Integer> alGenes,
+		ArrayList<Integer> alExperiments) {
+
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
+			// Writing storage labels
+			out.print("Identifier \t");
+			for (Integer iStorageIndex : alExperiments) {
+				out.print(set.get(iStorageIndex).getLabel());
+				out.print("\t");
+			}
+
+			out.println();
+			
+			String identifier;
+			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
+			for (Integer iContentIndex : alGenes) {
+				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+
+					Set<String> setRefSeqIDs =
+						iDMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
+							iContentIndex);
+
+					if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
+						identifier = (String) setRefSeqIDs.toArray()[0];
+					}
+					else {
+						continue;
+					}
+				}
+				else {
+					identifier =
+						iDMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.UNSPECIFIED, iContentIndex);
+				}
+				out.print(identifier + "\t");
+				for (Integer iStorageIndex : alExperiments) {
+					IStorage storage = set.get(iStorageIndex);
+					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
+					out.print("\t");
+				}
+				out.println();
+			}
+
+			out.close();
+
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void export(ISet set, String sFileName, EWhichViewToExport eWhichViewToExport) {
@@ -75,8 +127,9 @@ public class SetExporter {
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
 				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-					
-					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+
+					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
+					// of
 					// values, depending on the IDType that has been specified when loading expression data.
 					// Possibly a different handling of the Set is required.
 					Set<String> setRefSeqIDs =
