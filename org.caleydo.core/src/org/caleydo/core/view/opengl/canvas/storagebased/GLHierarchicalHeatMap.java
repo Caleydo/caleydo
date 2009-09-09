@@ -901,18 +901,18 @@ public class GLHierarchicalHeatMap
 		// fill gap
 		gl.glBegin(GL.GL_QUADS);
 		if (bHandleEndpoint1LowerStartpoint1) {
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, startpoint1.y() - 0.1f * fScalFactor3, endpoint1
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, startpoint1.y() - fthickness * fScalFactor3, endpoint1
 				.z());
-			gl.glVertex3f(endpoint1.x() - 2 * fthickness, startpoint1.y() - 0.1f * fScalFactor3, endpoint1
+			gl.glVertex3f(endpoint1.x() - 2 * fthickness, startpoint1.y() - fthickness * fScalFactor3, endpoint1
 				.z());
 		}
 		else {
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - 0.1f * fScalFactor1, endpoint1.z());
-			gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - 0.1f * fScalFactor1, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
 		}
 
-		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + 0.1f * fScalFactor2, endpoint2.z());
-		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + 0.1f * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
 		gl.glEnd();
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
@@ -930,10 +930,10 @@ public class GLHierarchicalHeatMap
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y(), startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + 0.1f * fScalFactor1, startpoint1
+		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + fthickness* fScalFactor1, startpoint1
 			.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + 0.1f * fScalFactor1, startpoint1
+		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + fthickness * fScalFactor1, startpoint1
 			.z());
 		gl.glEnd();
 
@@ -943,10 +943,10 @@ public class GLHierarchicalHeatMap
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y(), startpoint2.z());
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y() - 0.1f * fScalFactor2, startpoint2
+		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y() - fthickness * fScalFactor2, startpoint2
 			.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y() - 0.1f * fScalFactor2, startpoint2
+		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y() - fthickness * fScalFactor2, startpoint2
 			.z());
 		gl.glEnd();
 
@@ -957,9 +957,9 @@ public class GLHierarchicalHeatMap
 			gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 			gl.glVertex3f(endpoint1.x(), endpoint1.y(), endpoint1.z());
 			gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-			gl.glVertex3f(endpoint1.x(), endpoint1.y() + 0.1f * fScalFactor3, endpoint1.z());
+			gl.glVertex3f(endpoint1.x(), endpoint1.y() + fthickness * fScalFactor3, endpoint1.z());
 			gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() + 0.1f * fScalFactor3, endpoint1.z());
+			gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() + fthickness * fScalFactor3, endpoint1.z());
 			gl.glEnd();
 		}
 
@@ -973,9 +973,9 @@ public class GLHierarchicalHeatMap
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - 0.1f * fScalFactor1, endpoint1.z());
+		gl.glVertex3f(endpoint1.x() - 2 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - 0.1f * fScalFactor1, endpoint1.z());
+		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y() - fthickness * fScalFactor1, endpoint1.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 		gl.glVertex3f(endpoint1.x() - 1 * fthickness, endpoint1.y(), endpoint1.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -984,9 +984,9 @@ public class GLHierarchicalHeatMap
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + 0.1f * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 2 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + 0.1f * fScalFactor2, endpoint2.z());
+		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y() + fthickness * fScalFactor2, endpoint2.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 		gl.glVertex3f(endpoint2.x() - 1 * fthickness, endpoint2.y(), endpoint2.z());
 		gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
@@ -996,10 +996,10 @@ public class GLHierarchicalHeatMap
 		if (bHandleEndpoint1LowerStartpoint1) {
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.bottom());
-			gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() - 0.1f * fScalFactor3,
+			gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() - fthickness * fScalFactor3,
 				startpoint1.z());
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.bottom());
-			gl.glVertex3f(startpoint1.x() + 3 * fthickness, startpoint1.y() - 0.1f * fScalFactor3,
+			gl.glVertex3f(startpoint1.x() + 3 * fthickness, startpoint1.y() - fthickness * fScalFactor3,
 				startpoint1.z());
 			gl.glTexCoord2f(texCoordsMaskNeg.left(), texCoordsMaskNeg.top());
 			gl.glVertex3f(startpoint1.x() + 3 * fthickness, startpoint1.y(), startpoint1.z());
@@ -2207,9 +2207,9 @@ public class GLHierarchicalHeatMap
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 5, fPosCursorFirstElementLevel2, BUTTON_Z);
+		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel2, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 5, fPosCursorFirstElementLevel2 + 0.1f, BUTTON_Z);
+		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel2 + 0.1f, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2 + 0.1f, BUTTON_Z);
 		gl.glEnd();
