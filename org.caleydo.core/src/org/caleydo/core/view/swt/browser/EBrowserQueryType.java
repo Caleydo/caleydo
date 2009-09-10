@@ -19,14 +19,27 @@ public enum EBrowserQueryType {
 		"Entrez",
 		"http://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=search&term=",
 		EMappingType.DAVID_2_ENTREZ_GENE_ID),
-	KEGG("KEGG", "http://www.genome.jp/dbget-bin/www_bget?hsa+", EMappingType.DAVID_2_ENTREZ_GENE_ID),
+	KEGG_HomoSapiens("KEGG (homo sapiens)", "http://www.genome.jp/dbget-bin/www_bget?hsa+", EMappingType.DAVID_2_ENTREZ_GENE_ID),
+	KEGG_MusMusculus("KEGG (mus musculus)", "http://www.genome.jp/dbget-bin/www_bget?mmu+", EMappingType.DAVID_2_ENTREZ_GENE_ID),
 	GeneCards(
 		"GeneCards",
 		"http://www.genecards.org/cgi-bin/carddisp.pl?gene=",
 		EMappingType.DAVID_2_GENE_SYMBOL),
-	BioCarta(
-		"BioCarta",
+	Ensembl_HomoSapiens(
+			"Ensembl (homo sapiens)",
+			"http://www.ensembl.org/Homo_sapiens/Search/Summary?species=Homo_sapiens;idx=;q=",
+			EMappingType.DAVID_2_GENE_SYMBOL),	
+	Ensembl_MusMusculus(
+		"Ensembl (mus musculus)",
+		"http://www.ensembl.org/Mus_musculus/Search/Summary?species=Mus_musculus;idx=;q=",
+		EMappingType.DAVID_2_GENE_SYMBOL),
+	BioCarta_HomoSapiens(
+		"BioCarta (homo sapiens)",
 		"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Hs&BCID=",
+		EMappingType.DAVID_2_BIOCARTA_GENE_ID),
+	BioCarta_MusMusculus(
+		"BioCarta (mus musculus)",
+		"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Mm&BCID=",
 		EMappingType.DAVID_2_BIOCARTA_GENE_ID);
 
 	private String sTitle;
@@ -54,5 +67,11 @@ public enum EBrowserQueryType {
 
 	public String getTitle() {
 		return sTitle;
+	}
+	
+	@Override
+	public String toString() {
+		
+		return getTitle();
 	}
 }

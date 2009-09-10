@@ -10,6 +10,8 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
@@ -55,20 +57,44 @@ public class GenomeHTMLBrowserViewRep
 	public void initViewSWTComposite(Composite parentComposite) {
 		super.initViewSWTComposite(parentComposite);
 
+		useCase = generalManager.getUseCase();
+		
 		final Combo queryTypeCombo = new Combo(subContributionComposite, SWT.READ_ONLY);
-		queryTypeCombo.add(EBrowserQueryType.EntrezGene.toString());
-		queryTypeCombo.add(EBrowserQueryType.KEGG.toString());
-		queryTypeCombo.add(EBrowserQueryType.BioCarta.toString());
-		queryTypeCombo.add(EBrowserQueryType.GeneCards.toString());
-		queryTypeCombo.add(EBrowserQueryType.PubMed.toString());
+	
+		if (useCase instanceof GeneticUseCase) {
+			queryTypeCombo.add(EBrowserQueryType.EntrezGene.toString());
+			queryTypeCombo.add(EBrowserQueryType.PubMed.toString());			
+			queryTypeCombo.add(EBrowserQueryType.GeneCards.toString());			
+			
+			EOrganism organism = ((GeneticUseCase)useCase).getOrganism();
+			if (organism == EOrganism.HOMO_SAPIENS) {
+				queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens.toString());
+				queryTypeCombo.add(EBrowserQueryType.KEGG_HomoSapiens.toString());
+				queryTypeCombo.add(EBrowserQueryType.BioCarta_HomoSapiens.toString());
+			}
+			else if (organism == EOrganism.MUS_MUSCULUS) {
+				queryTypeCombo.add(EBrowserQueryType.Ensembl_MusMusculus.toString());
+				queryTypeCombo.add(EBrowserQueryType.KEGG_MusMusculus.toString());
+				queryTypeCombo.add(EBrowserQueryType.BioCarta_MusMusculus.toString());
+			}
+		}
 
 		queryTypeCombo.select(0);
 
 		queryTypeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				changeQueryType(EBrowserQueryType.valueOf(queryTypeCombo.getItem(queryTypeCombo
-					.getSelectionIndex())));
+				
+				String sQueryTypeTitle = queryTypeCombo.getItem(queryTypeCombo
+					.getSelectionIndex());
+				
+				for (EBrowserQueryType eBrowserQueryType : EBrowserQueryType.values()) {
+					if (eBrowserQueryType.getTitle().equals(sQueryTypeTitle))
+					{
+						changeQueryType(eBrowserQueryType);
+						break;
+					}
+				}
 			}
 		});
 
@@ -82,7 +108,7 @@ public class GenomeHTMLBrowserViewRep
 			return;
 
 		// Prevent handling of non genetic entities
-		if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+		if (useCase.getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
 			return;
 
 		Display.getDefault().asyncExec(new Runnable() {

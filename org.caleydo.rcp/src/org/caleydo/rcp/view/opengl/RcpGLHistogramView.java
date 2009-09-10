@@ -72,12 +72,10 @@ public class RcpGLHistogramView
 		minSizeComposite.setExpandHorizontal(true);
 		minSizeComposite.setExpandVertical(true);
 		
-//		baseComposite = new Composite(histoComposite, SWT.NULL);
 		GridLayout baseLayout = new GridLayout(1, false);
 		baseLayout.verticalSpacing = 2;
 		histoComposite.setLayout(baseLayout);
 		
-//		super.createPartControl(baseComposite);
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
