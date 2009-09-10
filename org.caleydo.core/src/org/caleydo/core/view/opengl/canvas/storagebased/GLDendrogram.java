@@ -597,16 +597,21 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			pos.setX(fXmin - fLevelWidthSubTree);
+			// float fCoeff = currentNode.getCoefficient();
+
+			pos.setX(fXmin - fLevelWidthSubTree);// * (1 - fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
 			pos.setZ(SUB_DENDROGRAM_Z);
 
 		}
 		else {
 			if (currentNode.isPartOfSubTree()) {
+
+				// float fCoeff = currentNode.getCoefficient();
+
 				pos.setY(yPosInitSubTree);
 				yPosInitSubTree -= fSampleHeightSubTree;
-				pos.setX(xGlobalMaxSubTree - fLevelWidthSubTree);
+				pos.setX(xGlobalMaxSubTree - fLevelWidthSubTree);// * (1 - fCoeff));
 				pos.setZ(SUB_DENDROGRAM_Z);
 			}
 		}
@@ -744,17 +749,19 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			// float fCoeff = currentNode.getCoefficient();
+			float fCoeff = currentNode.getCoefficient();
 
-			pos.setX(fXmin - fLevelWidth);// * (1 + fCoeff));
+			pos.setX(fXmin - fLevelWidth * (1 - fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
 			pos.setZ(DENDROGRAM_Z);
 
 		}
 		else {
+			float fCoeff = currentNode.getCoefficient();
+
 			pos.setY(yPosInit);
 			yPosInit -= fSampleHeight;
-			pos.setX(xGlobalMax - fLevelWidth);// - currentNode.getCoefficient());
+			pos.setX(xGlobalMax - fLevelWidth * (1 - fCoeff));
 			pos.setZ(DENDROGRAM_Z);
 		}
 
@@ -801,17 +808,20 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			// float fCoeff = currentNode.getCoefficient();
+			float fCoeff = currentNode.getCoefficient();
 
 			pos.setX(fXmin + (fXmax - fXmin) / 2);
-			pos.setY(fYmax + fLevelHeight);// * (1 + fCoeff));
+			pos.setY(fYmax + fLevelHeight * (1 - fCoeff));
 			pos.setZ(DENDROGRAM_Z);
 
 		}
 		else {
+
+			float fCoeff = currentNode.getCoefficient();
+
 			pos.setX(xPosInit);
 			xPosInit += fSampleWidth;
-			pos.setY(yGlobalMin + fLevelHeight);// currentNode.getCoefficient());
+			pos.setY(yGlobalMin + fLevelHeight * (1 - fCoeff));
 			pos.setZ(DENDROGRAM_Z);
 		}
 
@@ -1515,6 +1525,14 @@ public class GLDendrogram
 	@Override
 	public String getDetailedInfo() {
 		return new String("Dendrogram view detailedInfo()");
+	}
+
+	@Override
+	public String toString() {
+		return "Standalone " + ((bRenderGeneTree) ? "gene" : "experiment") + " dendrogram, rendered remote: "
+			+ isRenderedRemote() + ", Tree with: " + tree.getRoot().getNrElements()
+			+ ((bRenderGeneTree) ? " genes" : " experiments") + ", remoteRenderer: "
+			+ getRemoteRenderingGLCanvas();
 	}
 
 	@Override

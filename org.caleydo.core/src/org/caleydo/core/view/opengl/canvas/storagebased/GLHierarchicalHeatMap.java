@@ -2632,7 +2632,9 @@ public class GLHierarchicalHeatMap
 
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
+			glGeneDendrogramView.setRedrawDendrogram();
 			glGeneDendrogramView.setDisplayListDirty();
+			glExperimentDendrogramView.setRedrawDendrogram();
 			glExperimentDendrogramView.setDisplayListDirty();
 			bHasFrustumChanged = false;
 		}
@@ -3057,6 +3059,13 @@ public class GLHierarchicalHeatMap
 
 		setDisplayListDirty();
 
+	}
+
+	@Override
+	public String toString() {
+		return "Standalone hierarchical heat map, rendered remote: " + isRenderedRemote() + ", contentSize: "
+			+ contentVA.size() + ", storageSize: " + storageVA.size() + ", contentVAType: " + contentVAType
+			+ ", remoteRenderer: " + getRemoteRenderingGLCanvas();
 	}
 
 	@Override
@@ -4400,24 +4409,24 @@ public class GLHierarchicalHeatMap
 
 		// in case of a partition-based clusterer was executed and hierarchical clustering was done before the
 		// dendrogram flags have to be reseted to avoid problems in the visualization.
-		if (set.getClusteredTreeGenes() != null) {
-			bGeneDendrogramActive = true;
-			// bGeneDendrogramRenderCut = false;
+		if (set.getClusteredTreeGenes() == null) {
+			bGeneDendrogramActive = false;
+			bGeneDendrogramRenderCut = false;
 		}
-		if (set.getClusteredTreeExps() != null) {
-			bExperimentDendrogramActive = true;
-			// bExperimentDendrogramRenderCut = false;
+		if (set.getClusteredTreeExps() == null) {
+			bExperimentDendrogramActive = false;
+			bExperimentDendrogramRenderCut = false;
 		}
 
 		glGeneDendrogramView.setSet(set);
 		glGeneDendrogramView.setContentVAType(EVAType.CONTENT);
 		glGeneDendrogramView.initData();
-		glGeneDendrogramView.setRenderUntilCut(false);
+		glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 
 		glExperimentDendrogramView.setSet(set);
 		glExperimentDendrogramView.setContentVAType(EVAType.CONTENT);
 		glExperimentDendrogramView.initData();
-		glExperimentDendrogramView.setRenderUntilCut(false);
+		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 
 		if (bSkipLevel2 == false)
 			bRedrawTextures = true;
