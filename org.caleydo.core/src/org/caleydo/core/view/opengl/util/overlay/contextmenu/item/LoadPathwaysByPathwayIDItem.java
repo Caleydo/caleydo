@@ -35,7 +35,7 @@ public class LoadPathwaysByPathwayIDItem
 		if (numberOfOccurences == 0)
 			setText(pathwayName);
 		else
-			setText("(" + numberOfOccurences + ")" + pathwayName);
+			setText("(" + numberOfOccurences + ") " + pathwayName);
 
 		setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();

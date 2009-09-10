@@ -16,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.AOverlayManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -243,10 +244,11 @@ public class ContextMenu
 
 			initializeSubMenus(contextMenuEntries, baseMenuMetaData);
 
-			if ((fRightBorder - baseMenuMetaData.xOrigin) < baseMenuMetaData.width)
+//			GLHelperFunctions.drawPointAt(gl, baseMenuMetaData.xOrigin, 1, 1);
+			if ((fRightBorder - baseMenuMetaData.xOrigin) < getScaledSizeOf(gl,baseMenuMetaData.width))
 				baseMenuMetaData.xOrigin -= baseMenuMetaData.width;
 
-			if ((fBottomBorder + baseMenuMetaData.yOrigin) < baseMenuMetaData.height)
+			if ((fBottomBorder + baseMenuMetaData.yOrigin) < getScaledSizeOf(gl,baseMenuMetaData.height))
 				baseMenuMetaData.yOrigin += baseMenuMetaData.height;
 
 		}

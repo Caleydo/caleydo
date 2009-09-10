@@ -14,7 +14,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  * 
  * @author Alexander Lex
  */
-public abstract class AContextMenuItem implements IContextMenuEntry {
+public abstract class AContextMenuItem
+	implements IContextMenuEntry {
 	private String text;
 	private EIconTextures iconTexture;
 	private AEvent event;
@@ -110,7 +111,8 @@ public abstract class AContextMenuItem implements IContextMenuEntry {
 	 * Triggers the supplied event via the event publishing system
 	 */
 	public void triggerEvent() {
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		if (event != null)
+			GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 }

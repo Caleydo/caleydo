@@ -31,11 +31,11 @@ class ExperimentBookmark
 	@Override
 	public void render(GL gl) {
 		String sContent = GeneralManager.get().getUseCase().getSet().get(id).getLabel();
-			GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.GENE_SYMBOL, id);
+		GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.GENE_SYMBOL, id);
 
 		float yOrigin = dimensions.getYOrigin() - 0.08f;
-		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin(), yOrigin,
-			GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin()
+			+ BookmarkRenderStyle.SIDE_SPACING * 2, yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
 

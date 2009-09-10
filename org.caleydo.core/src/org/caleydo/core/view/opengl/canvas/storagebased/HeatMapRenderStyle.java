@@ -29,7 +29,7 @@ public class HeatMapRenderStyle
 	public static final float[] GROUP_COLOR_SELECTED = { 0.5f, 1f, 0.5f, 1 };
 	public static final float CLUSTER_BORDERS_Z = 0.009f;
 	public static final float BUTTON_Z = 0.01f;
-	
+
 	private float fSelectedFieldWidth = 1.0f;
 
 	private float fNormalFieldWidth = 0f;
@@ -53,6 +53,12 @@ public class HeatMapRenderStyle
 
 	GLHeatMap heatMap;
 	GLHierarchicalHeatMap hierarchicalHeatMap;
+
+	private boolean useFishEye = true;
+
+	public void disableFishEye() {
+		useFishEye = false;
+	}
 
 	public HeatMapRenderStyle(GLHeatMap heatMap, IViewFrustum viewFrustum) {
 
@@ -91,18 +97,33 @@ public class HeatMapRenderStyle
 
 	}
 
-	public void updateFieldSizesnofish() {
-		fSelectedFieldWidth = getRenderWidth() / heatMap.getContentVA().size();
-		fNormalFieldWidth = fSelectedFieldWidth;
+	public void updateFieldSizes() {
+		if (useFishEye)
+			updateFieldSizesWithFish();
+		else
+			updateFieldSizesnofish();
+	}
 
-		fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
+	public void updateFieldSizesnofish() {
+		if (heatMap.bRenderStorageHorizontally) {
+			fSelectedFieldWidth = getRenderWidth() / heatMap.getContentVA().size();
+			fNormalFieldWidth = fSelectedFieldWidth;
+
+			fFieldHeight = getRenderHeight() / heatMap.getStorageVA().size();
+		}
+		else {
+			fSelectedFieldWidth = getRenderHeight() / heatMap.getContentVA().size();
+			fNormalFieldWidth = fSelectedFieldWidth;
+
+			fFieldHeight = getRenderWidth() / heatMap.getStorageVA().size();
+		}
 	}
 
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays etc. Call this every time
 	 * something has changed.
 	 */
-	public void updateFieldSizes() {
+	public void updateFieldSizesWithFish() {
 		int iNumberSelected = heatMap.contentSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
 		iNumberSelected += heatMap.contentSelectionManager.getNumberOfElements(ESelectionType.SELECTION);
 
@@ -140,13 +161,13 @@ public class HeatMapRenderStyle
 
 		return fHeightExperimentDendrogram;
 	}
-	
+
 	// function called by HHM to set height of experiment dendrogram
 	public void setHeightExperimentDendrogram(float fHeightExperimentDendrogram) {
 
 		this.fHeightExperimentDendrogram = fHeightExperimentDendrogram;
 	}
-	
+
 	public float getWidthGeneDendrogram() {
 
 		return fWidthGeneDendrogram;
@@ -157,7 +178,7 @@ public class HeatMapRenderStyle
 
 		this.fWidthGeneDendrogram = fWidthGeneDendrogram;
 	}
-	
+
 	public float getWidthClusterVisualization() {
 
 		return fWidthClusterVisualization;
@@ -185,7 +206,7 @@ public class HeatMapRenderStyle
 
 		this.fWidthLevel3 = fWidthLevel3;
 	}
-	
+
 	public float getNormalFieldWidth() {
 
 		return fNormalFieldWidth;

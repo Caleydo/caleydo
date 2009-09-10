@@ -131,7 +131,8 @@ public class GLHeatMap
 
 	@Override
 	public void init(GL gl) {
-
+		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
+		super.renderStyle = renderStyle;
 	}
 
 	@Override
@@ -156,6 +157,11 @@ public class GLHeatMap
 		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLView;
+
+		// FIXME - remoteRenderingGLView is null if is rendered remote by any other than bucket - and this is
+		// used for testing here
+		if (remoteRenderingGLView == null)
+			renderStyle.disableFishEye();
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -353,8 +359,10 @@ public class GLHeatMap
 			contentSelectionManager.initialAdd(contentVA.get(iColumnCount));
 		}
 
+		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-		super.renderStyle = renderStyle;
+		if (getRemoteRenderingGLCanvas() == null)
+			renderStyle.disableFishEye();
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
@@ -1137,6 +1145,8 @@ public class GLHeatMap
 		super.handleVirtualArrayUpdate(delta, info);
 
 		if (delta.getVAType() == EVAType.CONTENT_CONTEXT && contentVAType == EVAType.CONTENT_CONTEXT) {
+			if (contentVA.size() == 0)
+				return;
 			// FIXME: this is only proof of concept - use the cluster manager instead of affinity directly
 			// long original = System.currentTimeMillis();
 			// System.out.println("beginning clustering");

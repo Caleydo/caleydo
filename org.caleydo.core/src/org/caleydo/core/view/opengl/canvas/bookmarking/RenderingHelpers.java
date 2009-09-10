@@ -8,8 +8,10 @@ import com.sun.opengl.util.j2d.TextRenderer;
 
 class RenderingHelpers {
 
-	
-	static void renderText(GL gl, TextRenderer textRenderer,  String sLabel, float fXOrigin, float fYOrigin, float fFontScaling) {
+	static void renderText(GL gl, TextRenderer textRenderer, String sLabel, float fXOrigin, float fYOrigin,
+		float fFontScaling) {
+
+		textRenderer.setColor(0, 0, 0, 1);
 
 		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
 			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
@@ -22,5 +24,5 @@ class RenderingHelpers {
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
 	}
-	
+
 }

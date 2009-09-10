@@ -34,7 +34,7 @@ class GeneBookmark
 			GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.GENE_SYMBOL, id);
 
 		float yOrigin = dimensions.getYOrigin() - 0.08f;
-		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin(), yOrigin,
+		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING * 2, yOrigin,
 			GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}

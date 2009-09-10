@@ -182,7 +182,7 @@ public class GLBookmarkManager
 
 		processEvents();
 
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		float currentHeight = viewFrustum.getHeight() - BookmarkRenderStyle.TOP_SPACING;
 		for (ABookmarkContainer container : bookmarkContainers) {
