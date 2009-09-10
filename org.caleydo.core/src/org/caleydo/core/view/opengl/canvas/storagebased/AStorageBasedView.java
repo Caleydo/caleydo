@@ -551,17 +551,17 @@ public abstract class AStorageBasedView
 		if (vaType == storageVAType)
 		{
 			storageVA = useCase.getVA(vaType);
-			storageSelectionManager.setVA(storageVA);
+//			storageSelectionManager.setVA(storageVA);
 		}
 		else if (vaType == contentVAType)
 		{
 			contentVA = useCase.getVA(vaType);
-			contentSelectionManager.setVA(contentVA);
+//			contentSelectionManager.setVA(contentVA);
 		}
 		else
 			return;
 
-//		initData();
+		initData();
 	}
 
 	/**

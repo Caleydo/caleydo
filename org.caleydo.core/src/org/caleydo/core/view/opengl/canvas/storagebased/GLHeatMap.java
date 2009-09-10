@@ -1134,15 +1134,13 @@ public class GLHeatMap
 
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta delta, String info) {
-		
-//		System.out.println("Size of va: " + contentVA.size());
-		super.handleVirtualArrayUpdate(delta, info);		
-//		System.out.println("Size of va: " + contentVA.size());
-		
-		if (delta.getVAType() == EVAType.CONTENT_CONTEXT && contentVAType == EVAType.CONTENT_CONTEXT) {
 
-			long original = System.currentTimeMillis();
-			System.out.println("beginning clustering");
+		super.handleVirtualArrayUpdate(delta, info);
+
+		if (delta.getVAType() == EVAType.CONTENT_CONTEXT && contentVAType == EVAType.CONTENT_CONTEXT) {
+			// FIXME: this is only proof of concept - use the cluster manager instead of affinity directly
+			// long original = System.currentTimeMillis();
+			// System.out.println("beginning clustering");
 			AffinityClusterer clusterer = new AffinityClusterer(contentVA.size());
 			ClusterState state =
 				new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION, EClustererType.GENE_CLUSTERING,
@@ -1151,14 +1149,13 @@ public class GLHeatMap
 			state.setContentVaId(contentVA.getID());
 			state.setStorageVaId(storageVA.getID());
 			state.setAffinityPropClusterFactorGenes(4.0f);
-			IVirtualArray tempVA2 = set.getVA(contentVAID);
 			IVirtualArray tempVA = clusterer.getSortedVA(set, state, 0, 2);
-			
+
 			contentVA = tempVA;
 			contentSelectionManager.setVA(contentVA);
 			contentVA.setID(contentVAID);
-			long result = System.currentTimeMillis() - original;
-			System.out.println("Clustering took in ms: " + result);
+			// long result = System.currentTimeMillis() - original;
+			// System.out.println("Clustering took in ms: " + result);
 
 		}
 	}
@@ -1193,6 +1190,13 @@ public class GLHeatMap
 	public void handleUpdateGroupInfo() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String toString() {
+		return "Standalone heat map, rendered remote: " + isRenderedRemote() + ", contentSize: "
+			+ contentVA.size() + ", storageSize: " + storageVA.size() + ", contentVAType: " + contentVAType
+			+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
 	}
 
 }
