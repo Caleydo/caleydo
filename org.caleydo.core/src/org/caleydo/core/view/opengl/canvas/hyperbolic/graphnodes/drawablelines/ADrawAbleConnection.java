@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 
 import gleem.linalg.Vec3f;
+
 import java.util.List;
 
 public abstract class ADrawAbleConnection

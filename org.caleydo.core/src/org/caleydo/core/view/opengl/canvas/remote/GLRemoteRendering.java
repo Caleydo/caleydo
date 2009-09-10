@@ -107,8 +107,8 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
- * Abstract class that is able to remotely rendering views. Subclasses implement the positioning of the views
- * (bucket, jukebox, etc.).
+ * Class that is able to remotely rendering views. Subclasses implement the positioning of the views (bucket,
+ * jukebox, etc.).
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -116,14 +116,12 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements ISelectionUpdateHandler, IGLCanvasRemoteRendering, IRemoteRenderingHandler {
+	implements ISelectionUpdateHandler, IGLRemoteRenderingBucketView, IRemoteRenderingHandler {
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1400;
-
-	// private GenericSelectionManager selectionManager;
 
 	private int iMouseOverObjectID = -1;
 
@@ -163,8 +161,6 @@ public class GLRemoteRendering
 
 	private BucketMouseWheelListener bucketMouseWheelListener;
 
-	// private GLColorMappingBarMiniView colorMappingBarMiniView;
-
 	private ArrayList<Integer> containedViewIDs;
 
 	/**
@@ -187,9 +183,6 @@ public class GLRemoteRendering
 
 	private boolean connectionLinesEnabled = true;
 
-	// never read locally
-	// private boolean bRightMouseClickEventInvalid = false;
-
 	/** stores if the gene-mapping should be enabled */
 	private boolean geneMappingEnabled = true;
 
@@ -204,8 +197,8 @@ public class GLRemoteRendering
 	private GLInfoAreaManager infoAreaManager;
 
 	/** Transformation utility object to transform and project view related coordinates */
-	protected RemoteRenderingTransformer selectionTransformer; 
-	
+	protected RemoteRenderingTransformer selectionTransformer;
+
 	protected AddPathwayListener addPathwayListener = null;
 	protected LoadPathwaysByGeneListener loadPathwaysByGeneListener = null;
 	protected EnableGeneMappingListener enableGeneMappingListener = null;
@@ -307,7 +300,7 @@ public class GLRemoteRendering
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
 		GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
@@ -356,20 +349,6 @@ public class GLRemoteRendering
 
 	@Override
 	public void displayLocal(final GL gl) {
-		// if (glMouseListener.wasRightMouseButtonPressed() &&
-		// !bucketMouseWheelListener.isZoomedIn()
-		// && !bRightMouseClickEventInvalid && !(layoutRenderStyle instanceof ListLayoutRenderStyle)) {
-		// bEnableNavigationOverlay = !bEnableNavigationOverlay;
-		//
-		// bRightMouseClickEventInvalid = true;
-		//
-		// if (glConnectionLineRenderer != null) {
-		// glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
-		// }
-		// }
-		// else if (glMouseListener.wasMouseReleased()) {
-		// bRightMouseClickEventInvalid = false;
-		// }
 
 		pickingManager.handlePicking(this, gl);
 
@@ -380,7 +359,8 @@ public class GLRemoteRendering
 		// }
 
 		display(gl);
-		ConnectedElementRepresentationManager cerm = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		ConnectedElementRepresentationManager cerm =
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
@@ -553,28 +533,6 @@ public class GLRemoteRendering
 		gl.glTranslatef(0, 0, fZTranslation);
 		contextMenu.render(gl, this);
 		gl.glTranslatef(0, 0, -fZTranslation);
-
-		// System.out.println(size.height + " - " + size.width);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
-		// infoAreaManager.renderRemoteInPlaceInfo(gl, size.width, size.height, left, right, bottom, top);
-		// infoAreaManager.renderInPlaceInfo(gl);
-		// viewFrustum.setBottom(-4);
-		// viewFrustum.setTop(+4);
-		// viewFrustum.setLeft(-4);
-		// viewFrustum.setRight(4);
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0, 0, 4));
-
-		// Dimension size = getParentGLCanvas().getSize();
-		// infoAreaManager.renderRemoteInPlaceInfo(gl, 100, 100, viewFrustum);
-		// contextMenu.render(gl);
-		//		
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, 1, 4));
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(1, -1, 4));
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(-1, -1, 4));
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(-1, 1, 4));
-
 	}
 
 	public void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs) {
@@ -617,13 +575,6 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.4f, 0.4f, 0.4f, 1f);
 		gl.glLineWidth(1f);
-
-		// gl.glBegin(GL.GL_LINES);
-		// gl.glVertex3f(0, 0, -0.02f);
-		// gl.glVertex3f(0, 8, -0.02f);
-		// gl.glVertex3f(8, 8, -0.02f);
-		// gl.glVertex3f(8, 0, -0.02f);
-		// gl.glEnd();
 	}
 
 	private void renderRemoteLevel(final GL gl, final RemoteLevel level) {
@@ -696,12 +647,7 @@ public class GLRemoteRendering
 				renderPoolSelection(gl, translation.x() - 0.4f / fAspectRatio, translation.y() * scale.y()
 					+ 5.2f,
 
-				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f, element); // 1.8f
-				// ->
-				// pool
-				// focus
-				// scaling
-
+				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f, element);
 				gl.glTranslatef(0.8f, 1.3f, 0);
 
 				fTextScalingFactor = 0.075f;
@@ -1343,13 +1289,6 @@ public class GLRemoteRendering
 		gl.glColor4f(tmpColor_lock.x(), tmpColor_lock.y(), tmpColor_lock.z(),
 			ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		// gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		// gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		// gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		// gl.glEnd();
-
 		textureViewSymbol.enable();
 		textureViewSymbol.bind();
 
@@ -1381,13 +1320,6 @@ public class GLRemoteRendering
 
 		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(),
 			ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(0.05f, 0.05f, 0.02f);
-		// gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		// gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		// gl.glVertex3f(7.95f, 0.02f, 0.02f);
-		// gl.glEnd();
 
 		textureMoveIn.enable();
 		textureMoveIn.bind();
@@ -1422,13 +1354,6 @@ public class GLRemoteRendering
 		gl.glColor4f(tmpColor_right.x(), tmpColor_right.y(), tmpColor_right.z(),
 			ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(7.95f, 0.05f, 0.02f);
-		// gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		// gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		// gl.glVertex3f(7.95f, 7.95f, 0.02f);
-		// gl.glEnd();
-
 		textureMoveRight.enable();
 		textureMoveRight.bind();
 
@@ -1462,13 +1387,6 @@ public class GLRemoteRendering
 		gl.glColor4f(tmpColor_left.x(), tmpColor_left.y(), tmpColor_left.z(),
 			ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(0.05f, 0.05f, fNavigationZValue);
-		// gl.glVertex3f(0.05f, 7.95f, fNavigationZValue);
-		// gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
-		// gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
-		// gl.glEnd();
-
 		textureMoveLeft.enable();
 		textureMoveLeft.bind();
 
@@ -1501,13 +1419,6 @@ public class GLRemoteRendering
 
 		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(),
 			ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(0.05f, 7.95f, 0.02f);
-		// gl.glVertex3f(7.95f, 7.95f, 0.02f);
-		// gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		// gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		// gl.glEnd();
 
 		textureMoveOut.enable();
 		textureMoveOut.bind();
@@ -1851,9 +1762,6 @@ public class GLRemoteRendering
 		bUpdateOffScreenTextures = true;
 	}
 
-	/**
-	 * 
-	 */
 	@Override
 	public void addInitialRemoteView(ASerializedView serView) {
 		newViews.add(serView);
@@ -2515,21 +2423,21 @@ public class GLRemoteRendering
 	 * @param GL
 	 */
 	private void initNewView(GL gl) {
-		if (GeneralManager.get().getPathwayManager().isPathwayLoadingFinished() && arSlerpActions.isEmpty()) {
-			if (!newViews.isEmpty()) {
-				ASerializedView serView = newViews.remove(0);
-				AGLEventListener view = createView(gl, serView);
-				if (hasFreeViewPosition()) {
-					addSlerpActionForView(gl, view);
-					containedViewIDs.add(view.getID());
-				}
-				else {
-					newViews.clear();
-				}
-				if (newViews.isEmpty()) {
-					triggerToolBarUpdate();
-					enableUserInteraction();
-				}
+		if (!newViews.isEmpty() && GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()
+			&& arSlerpActions.isEmpty()) {
+
+			ASerializedView serView = newViews.remove(0);
+			AGLEventListener view = createView(gl, serView);
+			if (hasFreeViewPosition()) {
+				addSlerpActionForView(gl, view);
+				containedViewIDs.add(view.getID());
+			}
+			else {
+				newViews.clear();
+			}
+			if (newViews.isEmpty()) {
+				triggerToolBarUpdate();
+				enableUserInteraction();
 			}
 		}
 	}
@@ -2978,7 +2886,7 @@ public class GLRemoteRendering
 		selectionTransformer = null;
 		super.destroy();
 	}
-	
+
 	public boolean isGeneMappingEnabled() {
 		return geneMappingEnabled;
 	}

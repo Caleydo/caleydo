@@ -2,7 +2,7 @@ package org.caleydo.rcp.action.toolbar.view.glyph;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.view.opengl.GLGlyphView;
+import org.caleydo.rcp.view.opengl.RcpGLGlyphView;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
@@ -30,10 +30,10 @@ public class OpenNewWindowAction
 		super.run();
 
 		try {
-			String rcpid = GLGlyphView.ID;
+			String rcpid = RcpGLGlyphView.ID;
 
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(rcpid,
-				rcpid + Integer.toString(GLGlyphView.viewCount), IWorkbenchPage.VIEW_CREATE);
+				rcpid + Integer.toString(RcpGLGlyphView.viewCount), IWorkbenchPage.VIEW_CREATE);
 
 		}
 		catch (PartInitException e) {

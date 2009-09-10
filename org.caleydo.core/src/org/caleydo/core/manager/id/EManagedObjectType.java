@@ -41,6 +41,7 @@ public enum EManagedObjectType {
 	GL_HYPERBOLIC(40),
 	GL_HISTOGRAM(41),
 	GL_DENDOGRAM(42),
+	GL_DATA_FLIPPER(43),
 	
 	GL_CONTEXT_MENUE(49),
 

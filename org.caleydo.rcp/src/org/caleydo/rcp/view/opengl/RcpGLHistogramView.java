@@ -36,8 +36,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class GLHistogramView
-	extends AGLViewPart
+public class RcpGLHistogramView
+	extends ARcpGLViewPart
 	implements IViewCommandHandler, IListenerOwner, INewSetHandler {
 
 	public static final String ID = SerializedHistogramView.GUI_ID;
@@ -50,38 +50,51 @@ public class GLHistogramView
 	protected ClearSelectionsListener clearSelectionsListener = null;
 	protected NewSetListener newSetListener = null;
 
-	protected Composite baseComposite;
+	protected Composite histoComposite;
 	
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
 	
 	/**
 	 * Constructor.
 	 */
-	public GLHistogramView() {
+	public RcpGLHistogramView() {
 		super();
 	}
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		baseComposite = new Composite(parent, SWT.NULL);
+
+		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		// fillToolBar();
+		histoComposite = new Composite(minSizeComposite, SWT.NULL);
+		minSizeComposite.setContent(histoComposite);
+		minSizeComposite.setMinSize(160, 80);
+		minSizeComposite.setExpandHorizontal(true);
+		minSizeComposite.setExpandVertical(true);
+		
+//		baseComposite = new Composite(histoComposite, SWT.NULL);
 		GridLayout baseLayout = new GridLayout(1, false);
 		baseLayout.verticalSpacing = 2;
-		baseComposite.setLayout(baseLayout);
-
-		super.createPartControl(baseComposite);
+		histoComposite.setLayout(baseLayout);
+		
+//		super.createPartControl(baseComposite);
+		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-
+		
 		SerializedHistogramView serialized = new SerializedHistogramView();
 		redrawView(serialized);
 		glEventListener.setViewGUIID(ID);
 	}
-
+	
 	/**
 	 * Redraws the view from scratch with new initialization data obtained by its serialized form
 	 * @param serialized serialized form of this view for initialization
 	 */
 	public void redrawView(SerializedHistogramView serialized) {
 
+		createGLCanvas();
+		createGLEventListener(initSerializedView, glCanvas.getID());
+		
 		// Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
 		// colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		// GridLayout layout = new GridLayout(1, false);
@@ -90,7 +103,7 @@ public class GLHistogramView
 		// layout.verticalSpacing = 0;
 		// colorMappingComposite.setLayout(layout);
 		// Button button = new Button(buttonComposite, SWT.PUSH);
-		colorMappingPreviewLabel = new CLabel(baseComposite, SWT.SHADOW_IN);
+		colorMappingPreviewLabel = new CLabel(histoComposite, SWT.SHADOW_IN);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 10;
 		gridData.grabExcessHorizontalSpace = true;
@@ -124,7 +137,7 @@ public class GLHistogramView
 		});
 
 		FillLayout fillLayout = new FillLayout();
-		Composite labelComposite = new Composite(baseComposite, SWT.NULL);
+		Composite labelComposite = new Composite(histoComposite, SWT.NULL);
 		labelComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		labelComposite.setLayout(fillLayout);
 
@@ -147,8 +160,7 @@ public class GLHistogramView
 
 		updateColorLabel();
 
-		createGLCanvas();
-		createGLEventListener(initSerializedView, glCanvas.getID());
+
 	}
 	
 	private void updateColorLabel() {
@@ -292,7 +304,5 @@ public class GLHistogramView
 	@Override
 	public void handleUpdateGroupInfo() {
 		// TODO Auto-generated method stub
-
 	}
-
 }

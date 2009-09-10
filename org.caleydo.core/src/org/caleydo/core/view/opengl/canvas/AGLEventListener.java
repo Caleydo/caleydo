@@ -29,7 +29,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.view.ISelectionTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -41,7 +40,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -103,7 +102,7 @@ public abstract class AGLEventListener
 	 */
 	protected RemoteLevelElement remoteLevelElement;
 
-	protected IGLCanvasRemoteRendering remoteRenderingGLView;
+	protected IGLRemoteRenderingView remoteRenderingGLView;
 
 	protected boolean bIsRenderedRemote = false;
 
@@ -379,7 +378,7 @@ public abstract class AGLEventListener
 	 *            TODO
 	 */
 	public abstract void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
 		GLInfoAreaManager infoAreaManager);
 
 	/**
@@ -527,7 +526,7 @@ public abstract class AGLEventListener
 		this.bIsRenderedRemote = bIsRenderedRemote;
 	}
 
-	public final IGLCanvasRemoteRendering getRemoteRenderingGLCanvas() {
+	public final IGLRemoteRenderingView getRemoteRenderingGLCanvas() {
 		return remoteRenderingGLView;
 	}
 

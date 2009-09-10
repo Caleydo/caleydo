@@ -16,9 +16,9 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView;
-import org.caleydo.rcp.view.opengl.GLParCoordsView;
-import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.view.opengl.RcpGLHierarchicalHeatMapView;
+import org.caleydo.rcp.view.opengl.RcpGLParCoordsView;
+import org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -56,7 +56,7 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public class SearchView
+public class RcpSearchView
 	extends ViewPart {
 
 	public static final String ID = "org.caleydo.rcp.views.swt.SearchView";
@@ -95,7 +95,7 @@ public class SearchView
 
 	private SearchViewMediator searchViewMediator;
 
-	public SearchView() {
+	public RcpSearchView() {
 		searchViewMediator = new SearchViewMediator();
 	}
 
@@ -556,7 +556,7 @@ private void searchForGene(final String sSearchQuery) {
 							// Switch to browser view
 							try {
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(HTMLBrowserView.ID);
+									.showView(RcpHTMLBrowserView.ID);
 							}
 							catch (PartInitException e1) {
 								e1.printStackTrace();
@@ -589,7 +589,7 @@ private void searchForGene(final String sSearchQuery) {
 							// Switch to browser view
 							try {
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(GLHierarchicalHeatMapView.ID);
+									.showView(RcpGLHierarchicalHeatMapView.ID);
 							}
 							catch (PartInitException e1) {
 								e1.printStackTrace();
@@ -611,7 +611,7 @@ private void searchForGene(final String sSearchQuery) {
 							// Switch to browser view
 							try {
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-									.showView(GLParCoordsView.ID);
+									.showView(RcpGLParCoordsView.ID);
 							}
 							catch (PartInitException e1) {
 								e1.printStackTrace();
@@ -648,7 +648,7 @@ private void searchForGene(final String sSearchQuery) {
 						// Switch to browser view
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-								HTMLBrowserView.ID);
+								RcpHTMLBrowserView.ID);
 						}
 						catch (PartInitException e1) {
 							e1.printStackTrace();
@@ -670,7 +670,7 @@ private void searchForGene(final String sSearchQuery) {
 						// Switch to bucket view
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-								GLRemoteRenderingView.ID);
+								RcpGLRemoteRenderingView.ID);
 						}
 						catch (PartInitException e1) {
 							e1.printStackTrace();

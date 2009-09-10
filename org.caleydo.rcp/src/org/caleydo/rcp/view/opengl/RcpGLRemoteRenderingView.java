@@ -8,8 +8,8 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.SerializedRemoteRenderingView;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLRemoteRenderingView
-	extends AGLViewPart {
+public class RcpGLRemoteRenderingView
+	extends ARcpGLViewPart {
 
 	public static final String ID = SerializedRemoteRenderingView.GUI_ID;
 
@@ -18,7 +18,7 @@ public class GLRemoteRenderingView
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteRenderingView() {
+	public RcpGLRemoteRenderingView() {
 		super();
 
 		iAlContainedViewIDs = new ArrayList<Integer>();
@@ -43,8 +43,6 @@ public class GLRemoteRenderingView
 		GLRemoteRendering glRemoteView =
 			(GLRemoteRendering) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
-		// glRemoteView.clearAll();
-
 		for (Integer iContainedViewID : iAlContainedViewIDs) {
 			glRemoteView.removeView(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 				iContainedViewID));
@@ -56,8 +54,6 @@ public class GLRemoteRenderingView
 			iViewID);
 
 		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
-
-		// TODO: cleanup data entity searcher view
 	}
 
 	@Override

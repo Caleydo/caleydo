@@ -8,15 +8,15 @@ import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLRadialHierarchyView
-	extends AGLViewPart {
+public class RcpGLRadialHierarchyView
+	extends ARcpGLViewPart {
 
 	public static final String ID = SerializedRadialHierarchyView.GUI_ID;
 
 	/**
 	 * Constructor.
 	 */
-	public GLRadialHierarchyView() {
+	public RcpGLRadialHierarchyView() {
 		super();
 	}
 

@@ -1,18 +1,21 @@
 package org.caleydo.rcp.view.opengl;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.glyph.sliderview.SerializedGlyphSliderView;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
-public class ClinicalGLParCoordsView
-	extends AGLViewPart {
+public class RcpGLGlyphSliderView
+	extends ARcpGLViewPart {
 
-	public static final String ID = SerializedParallelCoordinatesView.GUI_ID;
+	public static final String ID = SerializedGlyphSliderView.GUI_ID;
 
 	/**
 	 * Constructor.
 	 */
-	public ClinicalGLParCoordsView() {
+	public RcpGLGlyphSliderView() {
 		super();
 	}
 
@@ -24,9 +27,15 @@ public class ClinicalGLParCoordsView
 		createGLEventListener(initSerializedView, glCanvas.getID());
 	}
 
+	public static void createToolBarItems(int iViewID) {
+		alToolbar = new ArrayList<IAction>();
+		return;
+
+	}
+
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView();
+		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView();
 		return serializedView;
 	}
 

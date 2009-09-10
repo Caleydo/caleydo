@@ -24,7 +24,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.view.CaleydoViewPart;
+import org.caleydo.rcp.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
@@ -39,8 +39,8 @@ import org.eclipse.ui.PartInitException;
  * @author Marc Streit
  * @author Werner Puff
  */
-public abstract class AGLViewPart
-	extends CaleydoViewPart {
+public abstract class ARcpGLViewPart
+	extends CaleydoRCPViewPart {
 
 	protected Frame frameGL;
 	protected GLCaleydoCanvas glCanvas;
@@ -53,7 +53,7 @@ public abstract class AGLViewPart
 	/**
 	 * Constructor.
 	 */
-	public AGLViewPart() {
+	public ARcpGLViewPart() {
 		super();
 	}
 

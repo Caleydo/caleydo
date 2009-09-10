@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -61,7 +61,7 @@ public class GLCell
 
 	@Override
 	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
-		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		IGLRemoteRenderingView remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		this.glMouseListener = glMouseListener;

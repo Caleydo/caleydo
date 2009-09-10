@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 
 import org.caleydo.core.manager.event.view.group.ExportGroupsEvent;
-import org.caleydo.core.manager.event.view.group.MergeGroupsEvent;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 

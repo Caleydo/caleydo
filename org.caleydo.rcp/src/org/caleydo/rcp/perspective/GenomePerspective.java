@@ -1,9 +1,9 @@
 package org.caleydo.rcp.perspective;
 
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.view.opengl.GLHistogramView;
-import org.caleydo.rcp.view.swt.SelectionInfoView;
-import org.caleydo.rcp.view.swt.toolbar.ToolBarView;
+import org.caleydo.rcp.view.opengl.RcpGLHistogramView;
+import org.caleydo.rcp.view.swt.RcpSelectionInfoView;
+import org.caleydo.rcp.view.swt.toolbar.RcpToolBarView;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
@@ -31,18 +31,18 @@ public class GenomePerspective
 
 		if (bIsWideScreen) {
 			fRatio =
-				(float) ToolBarView.TOOLBAR_WIDTH
+				(float) RcpToolBarView.TOOLBAR_WIDTH
 					/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().width;
 
 			IFolderLayout topLeft =
 				layout.createFolder("topLeft", IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);
-			topLeft.addView(ToolBarView.ID);
+			topLeft.addView(RcpToolBarView.ID);
 
 			IFolderLayout middleLeft =
 				layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.5f, "topLeft");
-			middleLeft.addView(SelectionInfoView.ID);			
+			middleLeft.addView(RcpSelectionInfoView.ID);			
 			
-			layout.addStandaloneView(GLHistogramView.ID, true, IPageLayout.BOTTOM, 0.7f, "middleLeft");
+			layout.addStandaloneView(RcpGLHistogramView.ID, true, IPageLayout.BOTTOM, 0.7f, "middleLeft");
 //			IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.45f, "middleLeft");
 //			bottomLeft.addPlaceholder(GLHistogramView.ID);
 
@@ -54,15 +54,15 @@ public class GenomePerspective
 		}
 		else {
 			fRatio =
-				(float) ToolBarView.TOOLBAR_HEIGHT
+				(float) RcpToolBarView.TOOLBAR_HEIGHT
 					/ PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().height;
 			
 			IFolderLayout topFolder =
 				layout.createFolder("top", IPageLayout.TOP, fRatio, IPageLayout.ID_EDITOR_AREA);
-			topFolder.addView(ToolBarView.ID);
+			topFolder.addView(RcpToolBarView.ID);
 
-			layout.addStandaloneView(SelectionInfoView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
-			layout.addStandaloneView(GLHistogramView.ID, true, IPageLayout.RIGHT, 0.8f, "top");
+			layout.addStandaloneView(RcpSelectionInfoView.ID, true, IPageLayout.RIGHT, 0.75f, "top");
+			layout.addStandaloneView(RcpGLHistogramView.ID, true, IPageLayout.RIGHT, 0.8f, "top");
 					
 //			IFolderLayout bottomFolder = layout.createFolder("bottom", IPageLayout.BOTTOM, 1 - fRatio, IPageLayout.ID_EDITOR_AREA);		
 			

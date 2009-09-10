@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.opengl.GLDendrogramHorizontalView;
+import org.caleydo.rcp.view.opengl.RcpGLDendrogramHorizontalView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,7 +14,7 @@ public class OpenDendrogramHorizontalHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLDendrogramHorizontalView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLDendrogramHorizontalView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

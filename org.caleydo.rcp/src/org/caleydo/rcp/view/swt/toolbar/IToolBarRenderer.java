@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Group;
 
 public interface IToolBarRenderer {
 
-	public abstract Runnable createRenderJob(ToolBarView toolBarView, List<AToolBarContent> toolBarContents);
+	public abstract Runnable createRenderJob(RcpToolBarView toolBarView, List<AToolBarContent> toolBarContents);
 
 	public abstract GridLayout createLayout();
 

@@ -37,7 +37,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
-import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -50,7 +49,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -153,7 +152,7 @@ public class GLHeatMap
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLView,
+		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLView,
 		GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLView;

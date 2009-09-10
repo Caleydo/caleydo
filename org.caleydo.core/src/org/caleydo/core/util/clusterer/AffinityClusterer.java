@@ -9,7 +9,6 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 // http://www.psi.toronto.edu/affinitypropagation/
 

@@ -6,7 +6,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -19,7 +19,7 @@ extends AEventListener<IListenerOwner> {
 		if (event instanceof LoadPathwayEvent || event instanceof LoadPathwaysByGeneEvent) {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
-					GLRemoteRenderingView.ID);
+					RcpGLRemoteRenderingView.ID);
 			}
 			catch (PartInitException e) {
 				e.printStackTrace();

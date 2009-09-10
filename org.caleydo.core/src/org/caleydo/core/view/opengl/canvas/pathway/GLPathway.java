@@ -69,7 +69,8 @@ import org.caleydo.core.view.opengl.canvas.pathway.listeners.DisableTexturesList
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableGeneMappingListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableNeighborhoodListener;
 import org.caleydo.core.view.opengl.canvas.pathway.listeners.EnableTexturesListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingBucketView;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -199,7 +200,7 @@ public class GLPathway
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
 		GLInfoAreaManager infoAreaManager) {
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 		this.glMouseListener = glMouseListener;
@@ -305,7 +306,7 @@ public class GLPathway
 		// front level
 		gl.glTranslatef(0, tmp, 0);
 
-		if (remoteRenderingGLView.getBucketMouseWheelListener() != null) {
+		if (((IGLRemoteRenderingBucketView)remoteRenderingGLView).getBucketMouseWheelListener() != null) {
 			// if
 			// (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 			// .getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)

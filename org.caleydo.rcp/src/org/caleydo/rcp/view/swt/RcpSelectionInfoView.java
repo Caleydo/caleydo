@@ -13,7 +13,7 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public class SelectionInfoView
+public class RcpSelectionInfoView
 	extends ViewPart {
 
 	public static final String ID = "org.caleydo.rcp.views.swt.SelectionInfoView";

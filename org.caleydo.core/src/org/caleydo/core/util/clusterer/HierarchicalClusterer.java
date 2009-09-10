@@ -14,7 +14,6 @@ import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 
 import weka.clusterers.ClusterEvaluation;

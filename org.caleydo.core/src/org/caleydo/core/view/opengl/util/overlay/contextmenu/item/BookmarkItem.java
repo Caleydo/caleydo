@@ -3,12 +3,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.item;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.delta.VADeltaItem;
-import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
-import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
-import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 

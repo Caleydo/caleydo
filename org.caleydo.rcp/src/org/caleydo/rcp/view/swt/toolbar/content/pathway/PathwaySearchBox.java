@@ -9,7 +9,7 @@ import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.search.SearchBox;
-import org.caleydo.rcp.view.swt.toolbar.ToolBarView;
+import org.caleydo.rcp.view.swt.toolbar.RcpToolBarView;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
@@ -115,7 +115,7 @@ public class PathwaySearchBox
 	@Override
 	protected int computeWidth(Control control) {
 		if (GenomePerspective.bIsWideScreen)
-			return ToolBarView.TOOLBAR_WIDTH - 25;
+			return RcpToolBarView.TOOLBAR_WIDTH - 25;
 		
 		return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
 	}

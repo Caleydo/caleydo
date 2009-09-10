@@ -1,8 +1,8 @@
 package org.caleydo.rcp.command.handler.view;
 
 import org.caleydo.rcp.dialog.sendview.SendViewDialog;
-import org.caleydo.rcp.view.CaleydoViewPart;
-import org.caleydo.rcp.view.opengl.AGLViewPart;
+import org.caleydo.rcp.view.CaleydoRCPViewPart;
+import org.caleydo.rcp.view.opengl.ARcpGLViewPart;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -24,10 +24,10 @@ public class SendRemoteHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
-		if (activePart instanceof CaleydoViewPart) {
-			if (activePart instanceof AGLViewPart) {
+		if (activePart instanceof CaleydoRCPViewPart) {
+			if (activePart instanceof ARcpGLViewPart) {
 				SendViewDialog dialog = new SendViewDialog(new Shell());
-				AGLViewPart glViewPart = (AGLViewPart) activePart;
+				ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 				dialog.setViewID(glViewPart.getGLEventListener().getID());
 				dialog.open();
 			} else {

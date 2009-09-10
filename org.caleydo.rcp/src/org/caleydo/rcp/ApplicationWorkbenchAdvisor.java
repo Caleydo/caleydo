@@ -1,7 +1,5 @@
 package org.caleydo.rcp;
 
-import java.util.List;
-
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;

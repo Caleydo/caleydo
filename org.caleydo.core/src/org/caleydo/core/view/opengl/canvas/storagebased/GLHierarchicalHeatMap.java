@@ -62,7 +62,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateGroupInfoListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupExportingListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupInterChangingActionListener;
 import org.caleydo.core.view.opengl.canvas.remote.listener.GroupMergingActionListener;
@@ -318,7 +318,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void initRemote(GL gl, final AGLEventListener glParentView, GLMouseListener glMouseListener,
-		IGLCanvasRemoteRendering remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
+		IGLRemoteRenderingView remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
 
 		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
@@ -2725,7 +2725,7 @@ public class GLHierarchicalHeatMap
 					lastIndexOfSubTree = contentVA.get(iLastSampleLevel1);
 				}
 				catch (IndexOutOfBoundsException e1) {
-					lastIndexOfSubTree = contentVA.get(iLastSampleLevel1 - 1);
+ 
 				}
 			}
 

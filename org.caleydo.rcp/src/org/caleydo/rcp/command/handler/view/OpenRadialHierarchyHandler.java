@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
+import org.caleydo.rcp.view.opengl.RcpGLRadialHierarchyView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -15,7 +15,7 @@ public class OpenRadialHierarchyHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			IViewPart vp = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLRadialHierarchyView.ID);
+			IViewPart vp = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLRadialHierarchyView.ID);
 			System.out.println("vp="+vp);
 		}
 		catch (PartInitException e) {

@@ -17,7 +17,7 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public abstract class CaleydoViewPart
+public abstract class CaleydoRCPViewPart
 	extends ViewPart {
 	protected static ArrayList<IAction> alToolbar;
 	// protected static ArrayList<IContributionItem> alToolbarContributions;

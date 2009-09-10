@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.swt.toolbar.ToolBarView;
+import org.caleydo.rcp.view.swt.toolbar.RcpToolBarView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -15,7 +15,7 @@ public class OpenToolBarHandler
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(ToolBarView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpToolBarView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

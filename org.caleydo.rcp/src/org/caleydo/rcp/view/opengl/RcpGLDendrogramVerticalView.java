@@ -3,26 +3,26 @@ package org.caleydo.rcp.view.opengl;
 import java.util.ArrayList;
 
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramVerticalView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLHyperbolicView
-	extends AGLViewPart {
+public class RcpGLDendrogramVerticalView
+	extends ARcpGLViewPart {
 
-	public static final String ID = SerializedHyperbolicView.GUI_ID;
+	public static final String ID = SerializedDendogramVerticalView.GUI_ID;
 
 	/**
 	 * Constructor.
 	 */
-	public GLHyperbolicView() {
+	public RcpGLDendrogramVerticalView() {
 		super();
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
-		super.createPartControl(parent);
 
+		super.createPartControl(parent);
 		createGLCanvas();
 		createGLEventListener(initSerializedView, glCanvas.getID());
 	}
@@ -31,10 +31,9 @@ public class GLHyperbolicView
 		alToolbar = new ArrayList<IAction>();
 	}
 
-
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedHyperbolicView serializedView = new SerializedHyperbolicView();
+		SerializedDendogramVerticalView serializedView = new SerializedDendogramVerticalView();
 		return serializedView;
 	}
 

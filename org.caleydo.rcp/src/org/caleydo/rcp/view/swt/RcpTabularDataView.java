@@ -5,11 +5,11 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
-import org.caleydo.rcp.view.CaleydoViewPart;
+import org.caleydo.rcp.view.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
-public class TabularDataView
-	extends CaleydoViewPart {
+public class RcpTabularDataView
+	extends CaleydoRCPViewPart {
 
 	public static final String ID = SerializedTabularDataView.GUI_ID;
 

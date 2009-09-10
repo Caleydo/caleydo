@@ -1,8 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 
 /**

@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.swt.SWTGlyphMappingConfigurationView;
+import org.caleydo.rcp.view.swt.RcpGlyphMappingConfigurationView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -15,7 +15,7 @@ public class OpenGlyphMappingConfigurationHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
-				SWTGlyphMappingConfigurationView.ID);
+				RcpGlyphMappingConfigurationView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

@@ -92,7 +92,7 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.bookmarking.GLBookmarkManager;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.AngularBrushingListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ApplyCurrentSelectionToVirtualArrayListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.BookmarkButtonListener;
@@ -301,7 +301,7 @@ public class GLParallelCoordinates
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
 		GLInfoAreaManager infoAreaManager) {
 
 		bShowSelectionHeatMap = false;

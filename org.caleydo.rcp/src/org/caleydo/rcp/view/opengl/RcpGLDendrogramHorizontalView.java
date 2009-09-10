@@ -7,15 +7,15 @@ import org.caleydo.core.view.opengl.canvas.storagebased.SerializedDendogramHoriz
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLDendrogramHorizontalView
-	extends AGLViewPart {
+public class RcpGLDendrogramHorizontalView
+	extends ARcpGLViewPart {
 
 	public static final String ID = SerializedDendogramHorizontalView.GUI_ID;
 
 	/**
 	 * Constructor.
 	 */
-	public GLDendrogramHorizontalView() {
+	public RcpGLDendrogramHorizontalView() {
 		super();
 	}
 

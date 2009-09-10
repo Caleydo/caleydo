@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.opengl.GLHyperbolicView;
+import org.caleydo.rcp.view.opengl.RcpGLHyperbolicView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,7 +14,7 @@ public class OpenHyperbolicHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLHyperbolicView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLHyperbolicView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

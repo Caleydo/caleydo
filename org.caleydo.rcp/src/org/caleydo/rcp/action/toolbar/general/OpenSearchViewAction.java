@@ -2,7 +2,7 @@ package org.caleydo.rcp.action.toolbar.general;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
-import org.caleydo.rcp.view.swt.SearchView;
+import org.caleydo.rcp.view.swt.RcpSearchView;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -29,7 +29,7 @@ public class OpenSearchViewAction
 		super.run();
 
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(SearchView.ID);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RcpSearchView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

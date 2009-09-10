@@ -28,7 +28,7 @@ public class ToolBarMediator
 	implements IListenerOwner {
 
 	/** the related toolbar that should react to events */
-	ToolBarView toolBarView;
+	RcpToolBarView toolBarView;
 
 	private List<AToolBarContent> currentToolBarContents;
 	
@@ -83,11 +83,11 @@ public class ToolBarMediator
 
 	}
 
-	public ToolBarView getToolBarView() {
+	public RcpToolBarView getToolBarView() {
 		return toolBarView;
 	}
 
-	public void setToolBarView(ToolBarView toolBarView) {
+	public void setToolBarView(RcpToolBarView toolBarView) {
 		this.toolBarView = toolBarView;
 	}
 

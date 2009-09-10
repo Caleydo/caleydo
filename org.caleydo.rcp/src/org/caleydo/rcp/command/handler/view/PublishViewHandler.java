@@ -4,8 +4,8 @@ import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.rcp.dialog.sendview.SendViewDialog;
-import org.caleydo.rcp.view.CaleydoViewPart;
-import org.caleydo.rcp.view.opengl.AGLViewPart;
+import org.caleydo.rcp.view.CaleydoRCPViewPart;
+import org.caleydo.rcp.view.opengl.ARcpGLViewPart;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -29,9 +29,9 @@ public class PublishViewHandler
 
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		IWorkbenchPart activePart = activePage.getActivePart();
-		if (activePart instanceof CaleydoViewPart) {
-			if (activePart instanceof AGLViewPart) {
-				AGLViewPart glViewPart = (AGLViewPart) activePart;
+		if (activePart instanceof CaleydoRCPViewPart) {
+			if (activePart instanceof ARcpGLViewPart) {
+				ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 
 				IGroupwareManager groupwareManager = GeneralManager.get().getGroupwareManager();
 				String targetApplicationID = groupwareManager.getPublicGroupwareClient();

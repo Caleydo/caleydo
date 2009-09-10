@@ -4,8 +4,6 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleLinearConnection;
-
 
 public final class LinearLineFactory
 	extends ALineFactory {

@@ -23,7 +23,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLHeatMapView"
+            class="org.caleydo.rcp.view.opengl.RcpGLHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.opengl.GLHeatMapView"
             name="Heat Map">
@@ -32,7 +32,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLHierarchicalHeatMapView"
+            class="org.caleydo.rcp.view.opengl.RcpGLHierarchicalHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
             name="Heat Map">
@@ -41,7 +41,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLParCoordsView"
+            class="org.caleydo.rcp.view.opengl.RcpGLParCoordsView"
             icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.opengl.GLParCoordsView"
             name="Parallel Coordinates">
@@ -49,7 +49,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.ClinicalGLParCoordsView"
+            class="org.caleydo.rcp.view.opengl.RcpGLParCoordsClinicalView"
             icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView"
             name="Clinical Parallel Coordinates">
@@ -58,7 +58,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLPathwayView"
+            class="org.caleydo.rcp.view.opengl.RcpGLPathwayView"
             icon="resources/icons/view/pathway.png"
             id="org.caleydo.rcp.views.opengl.GLPathwayView"
             name="Pathway">
@@ -67,7 +67,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLRemoteRenderingView"
+            class="org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView"
             icon="resources/icons/view/remote.png"
             id="org.caleydo.rcp.views.opengl.GLRemoteRenderingView"
             name="Bucket">
@@ -77,13 +77,13 @@
             id="org.caleydo.rcp.views.swt.HTMLBrowserView"
             name="Browser"
             icon="resources/icons/view/browser.png"
-            class="org.caleydo.rcp.view.swt.HTMLBrowserView"
+            class="org.caleydo.rcp.view.swt.RcpHTMLBrowserView"
             category="org.caleydo.rcp.views">
       </view>
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLGlyphView"
+            class="org.caleydo.rcp.view.opengl.RcpGLGlyphView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.opengl.GLGlyphView"
             name="Glyph">
@@ -91,7 +91,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLGlyphSliderView"
+            class="org.caleydo.rcp.view.opengl.RcpGLGlyphSliderView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
             name="Glyph Slider">
@@ -99,21 +99,21 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.swt.SWTGlyphMappingConfigurationView"
+            class="org.caleydo.rcp.view.swt.RcpGlyphMappingConfigurationView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
             name="Glyph Mapping Configuration">
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.swt.TabularDataView"
+            class="org.caleydo.rcp.view.swt.RcpTabularDataView"
             icon="resources/icons/view/tabular_data_viewer.png"
             id="org.caleydo.rcp.views.swt.TabularDataView"
             name="Tabular Data Viewer">
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.swt.toolbar.ToolBarView"
+            class="org.caleydo.rcp.view.swt.toolbar.RcpToolBarView"
             icon="resources/icons/view/general.png"
             id="org.caleydo.rcp.views.swt.ToolBarView"
             name="Tool Bar">
@@ -121,7 +121,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLRadialHierarchyView"
+            class="org.caleydo.rcp.view.opengl.RcpGLRadialHierarchyView"
             icon="resources/icons/view/radial.png"
             id="org.caleydo.rcp.views.GLRadialHierarchyView"
             name="Radial Hierarchy">
@@ -129,20 +129,20 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLHyperbolicView"
+            class="org.caleydo.rcp.view.opengl.RcpGLHyperbolicView"
             id="org.caleydo.rcp.views.GLHyperbolicView"
             name="Hyperbolic">
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.swt.CollabView"
+            class="org.caleydo.rcp.view.swt.RcpCollabView"
             id="org.caleydo.rcp.views.swt.CollabView"
             name="Testing">
       </view>
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLHistogramView"
+            class="org.caleydo.rcp.view.opengl.RcpGLHistogramView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLHistogramView"
             name="Color Map">
@@ -150,7 +150,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.swt.SearchView"
+            class="org.caleydo.rcp.view.swt.RcpSearchView"
             icon="resources/icons/view/search.png"
             id="org.caleydo.rcp.views.swt.SearchView"
             name="Search">
@@ -158,7 +158,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.swt.SelectionInfoView"
+            class="org.caleydo.rcp.view.swt.RcpSelectionInfoView"
             icon="resources/icons/view/info.png"
             id="org.caleydo.rcp.views.swt.SelectionInfoView"
             name="Info">
@@ -166,7 +166,7 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLDendrogramHorizontalView"
+            class="org.caleydo.rcp.view.opengl.RcpGLDendrogramHorizontalView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLDendrogramHorizontalView"
             name="Dendrogram Horizontal">
@@ -174,7 +174,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLHistogramView"
+            class="org.caleydo.rcp.view.opengl.RcpGLHistogramView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLHistogramView"
             name="Histogram">
@@ -182,10 +182,17 @@
       <view
             allowMultiple="false"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.view.opengl.GLDendrogramVerticalView"
+            class="org.caleydo.rcp.view.opengl.RcpGLDendrogramVerticalView"
             icon="resources/icons/view/color_mapping.png"
             id="org.caleydo.rcp.views.opengl.GLDendrogramVerticalView"
             name="Dendrogram Vertical">
+      </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLDataFlipperView"
+            icon="resources/icons/view/browser.png"
+            id="org.caleydo.rcp.views.opengl.GLDataFlipperView"
+            name="Data Flippper">
       </view>
 
       
@@ -260,6 +267,11 @@
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenParCoordsHandler"
             id="org.caleydo.rcp.command.openviews.parcoords"
             name="Open Parallel Coordinates">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenDataFlipperHandler"
+            id="org.caleydo.rcp.command.openviews.dataflipper"
+            name="Open Data Flipper">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenRemoteHandler"
@@ -552,6 +564,12 @@
                   commandId="org.caleydo.rcp.command.openviews.dendrogram_vertical"
                   icon="resources/icons/view/heatmap.png"
                   label="Dendrogram Vertical"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.dataflipper"
+                  icon="resources/icons/view/browser.png"
+                  label="Data Flipper"
                   style="push">
             </command>
          </menu>

@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.swt.SearchView;
+import org.caleydo.rcp.view.swt.RcpSearchView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -15,7 +15,7 @@ public class OpenSearchHandler
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(SearchView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpSearchView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

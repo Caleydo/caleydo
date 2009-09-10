@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
@@ -84,14 +85,14 @@ public class ViewManager
 
 	private Set<Object> busyRequests;
 
-	private CreateGUIViewListener createGUIViewListener; 
+	private CreateGUIViewListener createGUIViewListener;
 
 	/**
-	 * Utility object to execute code within the display loop, e.g. used by managers 
-	 * to avoid access conflicts with views.
-	 * */
+	 * Utility object to execute code within the display loop, e.g. used by managers to avoid access conflicts
+	 * with views.
+	 */
 	private DisplayLoopExecution displayLoopExecution;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -108,12 +109,12 @@ public class ViewManager
 		fpsAnimator = new FPSAnimator(null, 60);
 
 		busyRequests = new HashSet<Object>();
-		
+
 		registerEventListeners();
 
 		displayLoopExecution = DisplayLoopExecution.get();
 		fpsAnimator.add(displayLoopExecution.getDisplayLoopCanvas());
-		
+
 		displayLoopExecution.executeMultiple(selectionManager);
 	}
 
@@ -244,6 +245,10 @@ public class ViewManager
 						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
 				break;
 
+			case CREATE_GL_DATA_FLIPPER:
+				glEventListener = new GLDataFlipper(glCanvas, sLabel, viewFrustum);
+				break;
+
 			case CREATE_GL_RADIAL_HIERARCHY:
 				glEventListener = new GLRadialHierarchy(glCanvas, sLabel, viewFrustum);
 				break;
@@ -310,12 +315,11 @@ public class ViewManager
 	@Override
 	public void registerGLEventListenerByGLCanvas(final GLCaleydoCanvas glCanvas,
 		final AGLEventListener gLEventListener) {
-		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener); 
+		hashGLEventListenerID2GLEventListener.put(gLEventListener.getID(), gLEventListener);
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
 			return;
-
 
 		if (!hashGLCanvas2GLEventListeners.containsKey(glCanvas)) {
 			hashGLCanvas2GLEventListeners.put(glCanvas, new ArrayList<AGLEventListener>());
@@ -459,22 +463,23 @@ public class ViewManager
 	@Override
 	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
 		final AEvent event) {
-//		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getDisplay().asyncExec(new Runnable() {
-//			public void run() {
-				listener.handleEvent(event);
-//			}
-//		});
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getDisplay().asyncExec(new
+		// Runnable() {
+		// public void run() {
+		listener.handleEvent(event);
+		// }
+		// });
 	}
 
 	private void registerEventListeners() {
 		IGeneralManager generalManager = GeneralManager.get();
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		
+
 		createGUIViewListener = new CreateGUIViewListener();
 		createGUIViewListener.setHandler(this);
 		eventPublisher.addListener(CreateGUIViewEvent.class, createGUIViewListener);
 	}
-	
+
 	@SuppressWarnings("unused")
 	private void unregisterEventListeners() {
 		IGeneralManager generalManager = GeneralManager.get();
@@ -490,5 +495,5 @@ public class ViewManager
 	public DisplayLoopExecution getDisplayLoopExecution() {
 		return displayLoopExecution;
 	}
-	
+
 }

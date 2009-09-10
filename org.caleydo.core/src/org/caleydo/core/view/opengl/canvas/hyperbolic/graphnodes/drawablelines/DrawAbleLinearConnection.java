@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 
 import javax.media.opengl.GL;
+
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 
 public final class DrawAbleLinearConnection

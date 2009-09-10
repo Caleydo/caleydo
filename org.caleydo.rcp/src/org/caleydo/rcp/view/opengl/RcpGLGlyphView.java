@@ -4,8 +4,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.eclipse.swt.widgets.Composite;
 
-public class GLGlyphView
-	extends AGLViewPart {
+public class RcpGLGlyphView
+	extends ARcpGLViewPart {
 
 	public static final String ID = SerializedGlyphView.GUI_ID;
 
@@ -14,7 +14,7 @@ public class GLGlyphView
 	/**
 	 * Constructor.
 	 */
-	public GLGlyphView() {
+	public RcpGLGlyphView() {
 		super();
 		viewCount++;
 	}

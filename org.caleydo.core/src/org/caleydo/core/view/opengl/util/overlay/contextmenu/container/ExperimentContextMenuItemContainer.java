@@ -1,15 +1,10 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadPathwaysByGeneItem;
-import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.ShowPathwaysByGeneItem;
 
 /**
  * Implementation of AItemContainer for Experiments. You need to pass an ID of the Gene Category, which has

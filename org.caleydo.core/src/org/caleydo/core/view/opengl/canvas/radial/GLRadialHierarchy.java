@@ -55,7 +55,7 @@ import org.caleydo.core.view.opengl.canvas.radial.listener.DetailOutsideListener
 import org.caleydo.core.view.opengl.canvas.radial.listener.GoBackInHistoryListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.GoForthInHistoryListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.SetMaxDisplayedHierarchyDepthListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;
@@ -194,7 +194,7 @@ public class GLRadialHierarchy
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLCanvasRemoteRendering remoteRenderingGLCanvas,
+		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
 		GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas

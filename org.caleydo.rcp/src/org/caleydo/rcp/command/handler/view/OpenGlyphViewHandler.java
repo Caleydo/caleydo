@@ -1,6 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
-import org.caleydo.rcp.view.opengl.GLGlyphView;
+import org.caleydo.rcp.view.opengl.RcpGLGlyphView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -14,7 +14,7 @@ public class OpenGlyphViewHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(GLGlyphView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLGlyphView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

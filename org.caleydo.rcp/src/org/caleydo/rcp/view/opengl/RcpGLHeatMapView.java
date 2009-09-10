@@ -4,35 +4,22 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IMemento;
-import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.PartInitException;
 
-public class GLParCoordsView
-	extends AGLViewPart {
+public class RcpGLHeatMapView
+	extends ARcpGLViewPart {
 
-	public static final String ID = SerializedParallelCoordinatesView.GUI_ID;
+	public static final String ID = SerializedHeatMapView.GUI_ID;
 
 	/**
 	 * Constructor.
 	 */
-	public GLParCoordsView() {
+	public RcpGLHeatMapView() {
 		super();
-	}
-
-	@Override 
-	public void init(IViewSite site, IMemento memento) throws PartInitException {
-		super.init(site, memento);
-
-		if (memento == null) {
-			SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView();
-			initSerializedView = serializedView;
-		}
 	}
 
 	@Override
@@ -42,7 +29,7 @@ public class GLParCoordsView
 		IUseCase usecase = GeneralManager.get().getUseCase();
 		if (usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
-			alert.setMessage("Cannot create parallel coordinates in pathway viewer mode!");
+			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();
 
 			dispose();
@@ -51,13 +38,11 @@ public class GLParCoordsView
 
 		createGLCanvas();
 		createGLEventListener(initSerializedView, glCanvas.getID());
-		
-		glEventListener.setViewGUIID(ID);
 	}
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView();
+		SerializedHeatMapView serializedView = new SerializedHeatMapView();
 		return serializedView;
 	}
 

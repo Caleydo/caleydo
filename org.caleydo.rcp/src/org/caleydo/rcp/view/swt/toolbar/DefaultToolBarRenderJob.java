@@ -35,7 +35,7 @@ public class DefaultToolBarRenderJob
 	private List<AToolBarContent> toolBarContents;
 
 	/** toolbar view to render the content into */
-	private ToolBarView toolBarView;
+	private RcpToolBarView toolBarView;
 
 	/** toolbar renderer */
 	private IToolBarRenderer toolBarRenderer;
@@ -160,11 +160,11 @@ public class DefaultToolBarRenderJob
 		this.toolBarContents = toolBarContents;
 	}
 
-	public ToolBarView getToolBarView() {
+	public RcpToolBarView getToolBarView() {
 		return toolBarView;
 	}
 
-	public void setToolBarView(ToolBarView toolBarView) {
+	public void setToolBarView(RcpToolBarView toolBarView) {
 		this.toolBarView = toolBarView;
 	}
 

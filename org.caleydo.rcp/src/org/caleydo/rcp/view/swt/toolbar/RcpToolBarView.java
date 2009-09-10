@@ -8,7 +8,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.perspective.GenomePerspective;
-import org.caleydo.rcp.view.opengl.GLPathwayView;
+import org.caleydo.rcp.view.opengl.RcpGLPathwayView;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -28,7 +28,7 @@ import org.eclipse.ui.part.ViewPart;
  * 
  * @author Marc Streit
  */
-public class ToolBarView
+public class RcpToolBarView
 	extends ViewPart
 	implements ISizeProvider {
 	public static final String ID = "org.caleydo.rcp.views.swt.ToolBarView";
@@ -155,7 +155,7 @@ public class ToolBarView
 								if (group.getData("viewID") != null
 									&& ((Integer) group.getData("viewID")).intValue() == iViewID
 									|| eventTrigger instanceof GLPathway
-									&& group.getData("viewType") == GLPathwayView.ID) {
+									&& group.getData("viewType") == RcpGLPathwayView.ID) {
 									((Label) subControl).setBackground(Display.getCurrent().getSystemColor(
 										SWT.COLOR_DARK_GRAY));
 								}
@@ -176,9 +176,9 @@ public class ToolBarView
 		int preferredResult) {
 		// Set minimum size of the view
 		if (width == true)
-			return (int) ToolBarView.TOOLBAR_WIDTH;
+			return (int) RcpToolBarView.TOOLBAR_WIDTH;
 
-		return (int) ToolBarView.TOOLBAR_HEIGHT;
+		return (int) RcpToolBarView.TOOLBAR_HEIGHT;
 	}
 
 	@Override

@@ -15,6 +15,8 @@ import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.sun.opengl.util.FPSAnimator;
+
 /**
  * Provides execution of {@link Runnable}'s within the openGL's display loop.
  * During creation of the singleton reference for this class, the singleton

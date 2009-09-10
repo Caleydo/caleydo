@@ -18,7 +18,6 @@ import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.dialogs.DialogPage;
-import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;

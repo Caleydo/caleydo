@@ -3,11 +3,11 @@ package org.caleydo.rcp.view.swt;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.collab.CollabViewRep;
-import org.caleydo.rcp.view.CaleydoViewPart;
+import org.caleydo.rcp.view.CaleydoRCPViewPart;
 import org.eclipse.swt.widgets.Composite;
 
-public class CollabView
-	extends CaleydoViewPart {
+public class RcpCollabView
+	extends CaleydoRCPViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.CollabView";
 
 	private CollabViewRep testingView;

@@ -1,8 +1,10 @@
 package org.caleydo.core.view.opengl.util.texture;
 
+import gleem.linalg.Vec3f;
+
 import java.nio.IntBuffer;
 import java.util.EnumMap;
-import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.general.GeneralManager;

@@ -10,7 +10,6 @@ import de.phleisch.app.itsucks.event.Event;
 import de.phleisch.app.itsucks.event.EventObserver;
 import de.phleisch.app.itsucks.io.http.impl.HttpRetrieverConfiguration;
 import de.phleisch.app.itsucks.job.Job;
-import de.phleisch.app.itsucks.job.JobList;
 import de.phleisch.app.itsucks.job.event.JobChangedEvent;
 
 /**

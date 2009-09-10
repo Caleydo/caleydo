@@ -4,15 +4,15 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 
 
-public class GLPathwayView
-	extends AGLViewPart {
+public class RcpGLPathwayView
+	extends ARcpGLViewPart {
 
 	public static final String ID = SerializedPathwayView.GUI_ID;
 
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayView() {
+	public RcpGLPathwayView() {
 		super();
 	}
 

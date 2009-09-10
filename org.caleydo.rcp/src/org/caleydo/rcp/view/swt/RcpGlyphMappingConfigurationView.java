@@ -6,7 +6,7 @@ import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-public class SWTGlyphMappingConfigurationView
+public class RcpGlyphMappingConfigurationView
 	extends ViewPart {
 	public static final String ID = "org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView";
 

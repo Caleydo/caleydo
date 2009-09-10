@@ -11,7 +11,6 @@ import org.caleydo.rcp.action.toolbar.general.OpenSearchViewAction;
 import org.caleydo.rcp.action.toolbar.general.SaveProjectAction;
 import org.caleydo.rcp.action.toolbar.view.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
-import org.caleydo.rcp.action.toolbar.view.radial.ToggleMagnifyingGlassAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.StartClusteringAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.eclipse.jface.action.IToolBarManager;
@@ -31,7 +30,7 @@ import org.eclipse.swt.widgets.ToolBar;
 public class StandardToolBarRenderer 
 	implements IToolBarRenderer {
 
-	public Runnable createRenderJob(ToolBarView toolBarView, List<AToolBarContent> toolBarContents) {
+	public Runnable createRenderJob(RcpToolBarView toolBarView, List<AToolBarContent> toolBarContents) {
 		DefaultToolBarRenderJob job = new DefaultToolBarRenderJob();
 		job.setToolBarView(toolBarView);
 		job.setToolBarContents(toolBarContents);

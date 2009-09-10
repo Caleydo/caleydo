@@ -4,21 +4,21 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
+import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class GLHeatMapView
-	extends AGLViewPart {
+public class RcpGLHierarchicalHeatMapView
+	extends ARcpGLViewPart {
 
-	public static final String ID = SerializedHeatMapView.GUI_ID;
+	public static final String ID = SerializedHierarchicalHeatMapView.GUI_ID;
 
 	/**
 	 * Constructor.
 	 */
-	public GLHeatMapView() {
+	public RcpGLHierarchicalHeatMapView() {
 		super();
 	}
 
@@ -42,7 +42,7 @@ public class GLHeatMapView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedHeatMapView serializedView = new SerializedHeatMapView();
+		SerializedHierarchicalHeatMapView serializedView = new SerializedHierarchicalHeatMapView();
 		return serializedView;
 	}
 

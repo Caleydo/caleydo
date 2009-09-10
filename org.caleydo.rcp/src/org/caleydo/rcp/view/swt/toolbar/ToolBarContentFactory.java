@@ -16,13 +16,13 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.Activator;
-import org.caleydo.rcp.view.CaleydoViewPart;
-import org.caleydo.rcp.view.opengl.GLGlyphView;
-import org.caleydo.rcp.view.opengl.GLHeatMapView;
-import org.caleydo.rcp.view.opengl.GLHistogramView;
-import org.caleydo.rcp.view.opengl.GLParCoordsView;
-import org.caleydo.rcp.view.opengl.GLRadialHierarchyView;
-import org.caleydo.rcp.view.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.view.CaleydoRCPViewPart;
+import org.caleydo.rcp.view.opengl.RcpGLGlyphView;
+import org.caleydo.rcp.view.opengl.RcpGLHeatMapView;
+import org.caleydo.rcp.view.opengl.RcpGLHistogramView;
+import org.caleydo.rcp.view.opengl.RcpGLParCoordsView;
+import org.caleydo.rcp.view.opengl.RcpGLRadialHierarchyView;
+import org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HeatMapToolBarContent;
@@ -79,7 +79,7 @@ public class ToolBarContentFactory {
 		info = new ToolBarInfo();
 		info.viewClass = GLHeatMap.class;
 		info.contentClass = HeatMapToolBarContent.class;
-		info.rcpID = GLHeatMapView.ID;
+		info.rcpID = RcpGLHeatMapView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
@@ -93,14 +93,14 @@ public class ToolBarContentFactory {
 		info = new ToolBarInfo();
 		info.viewClass = GLParallelCoordinates.class;
 		info.contentClass = ParCoordsToolBarContent.class;
-		info.rcpID = GLParCoordsView.ID;
+		info.rcpID = RcpGLParCoordsView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
 		info.viewClass = GLRemoteRendering.class;
 		info.contentClass = RemoteRenderingToolBarContent.class;
-		info.rcpID = GLRemoteRenderingView.ID;
+		info.rcpID = RcpGLRemoteRenderingView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
@@ -114,21 +114,21 @@ public class ToolBarContentFactory {
 		info = new ToolBarInfo();
 		info.viewClass = GLGlyph.class;
 		info.contentClass = GlyphToolBarContent.class;
-		info.rcpID = GLGlyphView.ID;
+		info.rcpID = RcpGLGlyphView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
 		info.viewClass = GLHistogram.class;
 		info.contentClass = null;
-		info.rcpID = GLHistogramView.ID;
+		info.rcpID = RcpGLHistogramView.ID;
 		info.ignored = true;
 		toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
 		info.viewClass = GLRadialHierarchy.class;
 		info.contentClass = RadialHierarchyToolBarContent.class;
-		info.rcpID = GLRadialHierarchyView.ID;
+		info.rcpID = RcpGLRadialHierarchyView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
@@ -222,11 +222,11 @@ public class ToolBarContentFactory {
 
 		IView view = retrieveView(viewID);
 
-		if (view instanceof CaleydoViewPart) {
-			return ((CaleydoViewPart) view).isAttached();
+		if (view instanceof CaleydoRCPViewPart) {
+			return ((CaleydoRCPViewPart) view).isAttached();
 		}
 		else if (view instanceof AView) {
-			CaleydoViewPart relatedView = getRelatedViewPart(view);
+			CaleydoRCPViewPart relatedView = getRelatedViewPart(view);
 			if (relatedView != null) {
 				return relatedView.isAttached();
 			}
@@ -238,7 +238,7 @@ public class ToolBarContentFactory {
 		return false;
 	}
 
-	private CaleydoViewPart getRelatedViewPart(IView view) {
+	private CaleydoRCPViewPart getRelatedViewPart(IView view) {
 
 		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
 		ToolBarInfo info = toolBarInfos.get(view.getClass());
@@ -249,8 +249,8 @@ public class ToolBarContentFactory {
 				for (IWorkbenchPage page : pages) {
 					IViewPart relatedView = page.findView(rcpViewPartID);
 					if (relatedView != null) {
-						if (relatedView instanceof CaleydoViewPart) {
-							return (CaleydoViewPart) relatedView;
+						if (relatedView instanceof CaleydoRCPViewPart) {
+							return (CaleydoRCPViewPart) relatedView;
 						}
 					}
 				}

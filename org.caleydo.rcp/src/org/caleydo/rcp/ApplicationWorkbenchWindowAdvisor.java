@@ -1,11 +1,9 @@
 package org.caleydo.rcp;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
-import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.graphics.Rectangle;
