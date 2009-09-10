@@ -30,7 +30,7 @@ public final class HTLayouter
 	float fCenterY;
 	int ilineIDDummy = 0;
 	//float childAngle;
-	float fDepth = 3.0f; // tree.getDepth();
+	float fDepth = 6.0f; // tree.getDepth();
 
 	ArrayList<Vec3f> vec = new ArrayList();
 
@@ -113,7 +113,7 @@ public final class HTLayouter
 			
 
 		
-		calculateRecursiveLayout(rootNode, fRadius + 0.2f , alpha, layer+1, fCurrentNode, fNumberOfNodesInLayer*fNumberOfNodesInLayer, fNodeSize, getFXCoord(), getFYCoord());
+		calculateRecursiveLayout(rootNode, fRadius*2 + 0.05f , alpha*fCurrentNode, layer+1, fCurrentNode, fNumberOfNodesInLayer*fNumberOfNodesInLayer, fNodeSize, getFXCoord(), getFYCoord());
 //		calculateRecursiveLayout(gl, node, tree, radius + 0.3f, childAngle, layer+1, numChilds+currentStep, fNumberOfNodesInNewLayer*childs, fNodeSize);
 //		}
 		}
@@ -217,8 +217,8 @@ public final class HTLayouter
 			//for(ADrawAbleNode tmpNode : tree.getChildren(node)){
 				childCount++;
 				
-				float parentAngle = (angle*currentStep);// - (angle);
-				//float parentAngle = (angle) - (angle/numChilds);
+				//float parentAngle = (angle*currentStep);// - (angle);
+				float parentAngle = angle;
 				float alphaHalfOffset = (angle/ 2);
 				
 //				childAngle =
@@ -230,7 +230,9 @@ public final class HTLayouter
 				
 					;//+ alphaHalfOffset;
 				//calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
-				calcualteChildPosition(radius, parentAngle + (childAngle*numChilds - childAngle), numChilds);
+//				float realChildAngle = parentAngle + (childAngle*(numChilds - 1));
+				float realChildAngle = parentAngle - (childAngle*(childs-1)/2) + childAngle*(numChilds-1);
+				calcualteChildPosition(radius, realChildAngle, numChilds);
 				
 				float x = getFXCoord();
 				float y = getFYCoord();
@@ -244,7 +246,7 @@ public final class HTLayouter
 //				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 //					EDrawAbleNodeDetailLevel.Low);
 				//drawLine(getFXCoord(), getFYCoord(), x, y);
-				calculateRecursiveLayout(node, radius + 0.2f, parentAngle + (childAngle*numChilds - childAngle), layer+1, numChilds, fNumberOfNodesInNewLayer/**childs*/, fNodeSize, x, y);
+				calculateRecursiveLayout(node, radius + 5.0f/(layer*6), realChildAngle, layer+1, numChilds, fNumberOfNodesInNewLayer*childs, fNodeSize, x, y);
 			}
 			}
 
