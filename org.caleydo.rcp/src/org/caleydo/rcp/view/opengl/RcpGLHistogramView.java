@@ -300,7 +300,7 @@ public class RcpGLHistogramView
 	}
 
 	@Override
-	public void handleUpdateGroupInfo() {
+	public void handleUpdateGroupInfo(boolean bGeneGroup) {
 		// TODO Auto-generated method stub
 	}
 }

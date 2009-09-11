@@ -21,7 +21,7 @@ public class UpdateGroupInfoListener
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof UpdateGroupInfoEvent) {
-			handler.handleUpdateGroupInfo();
+			handler.handleUpdateGroupInfo(((UpdateGroupInfoEvent) event).isGeneGroup());
 		}
 	}
 

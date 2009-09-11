@@ -587,6 +587,7 @@ public class GLParallelCoordinates
 
 		UpdateGroupInfoEvent updateGroupInfoEvent = new UpdateGroupInfoEvent();
 		updateGroupInfoEvent.setSender(this);
+		updateGroupInfoEvent.setGeneGroup(true);
 		eventPublisher.triggerEvent(updateGroupInfoEvent);
 
 	}
@@ -2037,6 +2038,12 @@ public class GLParallelCoordinates
 						sendVirtualArrayUpdateEvent(vaDelta);
 						setDisplayListDirty();
 						resetAxisSpacing();
+						
+						UpdateGroupInfoEvent updateGroupInfoEvent = new UpdateGroupInfoEvent();
+						updateGroupInfoEvent.setSender(this);
+						updateGroupInfoEvent.setGeneGroup(false);
+						eventPublisher.triggerEvent(updateGroupInfoEvent);
+						
 						break;
 				}
 				break;
@@ -2910,7 +2917,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void handleUpdateGroupInfo() {
+	public void handleUpdateGroupInfo(boolean bGeneGroup) {
 		// TODO Auto-generated method stub
 
 	}

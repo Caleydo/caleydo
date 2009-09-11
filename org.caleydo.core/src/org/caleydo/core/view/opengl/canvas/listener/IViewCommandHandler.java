@@ -33,5 +33,5 @@ public interface IViewCommandHandler
 	 * Handler method to be called when an update of the group information is required. It is caught by a
 	 * related ({@link UpdateGroupInfoListener}.
 	 */
-	public void handleUpdateGroupInfo();
+	public void handleUpdateGroupInfo(boolean bGeneGroup);
 }

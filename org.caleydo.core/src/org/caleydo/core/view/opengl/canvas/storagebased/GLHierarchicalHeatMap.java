@@ -817,6 +817,7 @@ public class GLHierarchicalHeatMap
 	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
 		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 		bRedrawTextures = true;
+
 		setDisplayListDirty();
 	}
 
@@ -5016,15 +5017,26 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void handleUpdateGroupInfo() {
+	public void handleUpdateGroupInfo(boolean bGeneGroup) {
+
+		IVirtualArray virtualArray = null;
+		Tree<ClusterNode> tree = null;
+
+		if (bGeneGroup) {
+			virtualArray = contentVA;
+			tree = set.getClusteredTreeGenes();
+		}
+		else {
+			virtualArray = storageVA;
+			tree = set.getClusteredTreeExps();
+		}
 
 		// if partion-based group info available clear this
-		if (contentVA.getGroupList() != null) {
-			contentVA.setGroupList(null);
+		if (virtualArray.getGroupList() != null) {
+			virtualArray.setGroupList(null);
 		}
 
 		// if hierarchical clusterer ran before, discard tree
-		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		if (tree != null) {
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 				public void run() {
@@ -5037,9 +5049,16 @@ public class GLHierarchicalHeatMap
 				}
 			});
 
-			bGeneDendrogramActive = false;
-			bGeneDendrogramRenderCut = false;
-			set.setClusteredTreeGenes(null);
+			if (bGeneGroup) {
+				bGeneDendrogramActive = false;
+				bGeneDendrogramRenderCut = false;
+				set.setClusteredTreeGenes(null);
+			}
+			else {
+				bExperimentDendrogramActive = false;
+				bExperimentDendrogramRenderCut = false;
+				set.setClusteredTreeExps(null);
+			}
 		}
 	}
 }

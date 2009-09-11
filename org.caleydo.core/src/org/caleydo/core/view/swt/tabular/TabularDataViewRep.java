@@ -938,7 +938,7 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void handleUpdateGroupInfo() {
+	public void handleUpdateGroupInfo(boolean bGeneGroup) {
 		// TODO Auto-generated method stub
 
 	}
