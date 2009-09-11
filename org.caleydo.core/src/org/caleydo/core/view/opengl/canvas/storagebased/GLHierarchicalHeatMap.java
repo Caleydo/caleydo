@@ -5019,24 +5019,16 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void handleUpdateGroupInfo(boolean bGeneGroup) {
 
-		IVirtualArray virtualArray = null;
 		Tree<ClusterNode> tree = null;
 
 		if (bGeneGroup) {
-			virtualArray = contentVA;
 			tree = set.getClusteredTreeGenes();
 		}
 		else {
-			virtualArray = storageVA;
 			tree = set.getClusteredTreeExps();
 		}
 
-		// if partion-based group info available clear this
-		if (virtualArray.getGroupList() != null) {
-			virtualArray.setGroupList(null);
-		}
-
-		// if hierarchical clusterer ran before, discard tree
+		// if hierarchical clusterer result available, discard tree
 		if (tree != null) {
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
 				public void run() {

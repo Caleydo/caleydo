@@ -395,6 +395,23 @@ public class GroupList
 		this.groups = groups;
 	}
 
+	public void removeElementOfVA(int indexOfElement){
+		
+		int iOffset = 0;
+		int iGroupIdx = 0;
+		for (int index = 0; index < groups.size(); index++) {
+			iOffset += groups.get(index).getNrElements();
+			if(iOffset > indexOfElement)
+				break;
+			iGroupIdx++;
+		}
+		
+		groups.get(iGroupIdx).setNrElements(groups.get(iGroupIdx).getNrElements() - 1);
+		if(groups.get(iGroupIdx).getNrElements() == 0)
+			groups.remove(iGroupIdx);
+		
+	}
+	
 	public ArrayList<Float> determineRepresentativeElement(ISet set, IVirtualArray contentVA,
 		IVirtualArray storageVA, int iGroupNr, boolean bGeneGroup) {
 

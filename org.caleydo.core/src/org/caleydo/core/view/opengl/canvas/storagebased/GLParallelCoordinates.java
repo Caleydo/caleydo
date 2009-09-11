@@ -2076,6 +2076,11 @@ public class GLParallelCoordinates
 							vaDelta.add(VADeltaItem.copy(iExternalID));
 							sendVirtualArrayUpdateEvent(vaDelta);
 
+							UpdateGroupInfoEvent updateGroupInfoEvent = new UpdateGroupInfoEvent();
+							updateGroupInfoEvent.setSender(this);
+							updateGroupInfoEvent.setGeneGroup(false);
+							eventPublisher.triggerEvent(updateGroupInfoEvent);
+							
 							setDisplayListDirty();
 							// resetSelections();
 							// initGates();

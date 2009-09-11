@@ -161,11 +161,21 @@ public class VirtualArray
 
 	@Override
 	public Integer remove(int iIndex) {
+		
+		if(groupList != null){
+			groupList.removeElementOfVA(iIndex);
+		}
+		
 		return virtualArray.remove(iIndex);
 	}
 
 	@Override
 	public void removeByElement(int iElement) {
+		
+		if(groupList != null){
+			groupList.removeElementOfVA(virtualArray.indexOf(iElement));
+		}
+		
 		Iterator<Integer> iter = virtualArray.iterator();
 		while (iter.hasNext()) {
 			if (iter.next() == iElement) {
