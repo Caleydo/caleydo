@@ -15,9 +15,19 @@ import org.caleydo.core.manager.event.AEvent;
 public class UpdateGroupInfoEvent
 	extends AEvent {
 
+	private boolean bGeneGroup; 
+	
 	@Override
 	public boolean checkIntegrity() {
 		return true;
+	}
+
+	public void setGeneGroup(boolean bGeneGroup) {
+		this.bGeneGroup = bGeneGroup;
+	}
+
+	public boolean isGeneGroup() {
+		return bGeneGroup;
 	}
 
 }
