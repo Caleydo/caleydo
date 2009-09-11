@@ -54,8 +54,8 @@ which means you can use it in any way you want provided you keep the link to the
 	<ul>
 		<li><a href="#ParallelCoordinates">Parallel Coordinates</a></li>
 		<li><a href="#HeatMap">Heat Map</a></li>
-		<li><a href="#TabularDataViewer">Tabular Data Viewer</a></li>
 		<li><a href="#Clustering">Clustering</a></li>
+		<li><a href="#TabularDataViewer">Tabular Data Viewer</a></li>
 	</ul>
 	</li>
 	<li><a href="bucket.html">Using the Bucket, working with
@@ -272,81 +272,32 @@ indicated in the second and third level.</p>
 <h2><a name="Clustering"></a>Clustering</h2>
 <p><img src="../images/help/gene_expression/clustering.png"
 	alt="Clustering icon"
-	style="border-style: none; float: left; padding-right: 1em;" />
+	style="border-style: none; float: left; padding-right: 1em;" /> <img
+	src="../images/help/gene_expression/clustering_screenshot.png"
+	alt="Clustering GUI screenshot"
+	style="border-style: none; float: right; padding-left: 1em;" />
 Caleydo currently supports four clustering algorithms, two partitional
 (where no relation between the separate cluster is known) and two
 hierarchical (which build a complete tree of relations):</p>
 <ul>
 	<li>A tree clusterer, using similarities (hierarchical),</li>
 	<li>affinity propagation clustering, which usually delivers the
-	best results (partition-based),</li>
-	<li>KMeans clustering, as implemented by WEKA<a id="Witten2005"
-		href="#Witten2005">[4]</a> (partition-based), and</li>
-	<li>Cobweb, as implemented by WEKA<a id="Witten2005"
-		href="#Witten2005">[4]</a> (hierarchical).</li>
+	best results (partitional),</li>
+	<li>KMeans clustering, as implemented by WEKA (hierarchical), and</li>
+	<li>Cobweb, as implemented by WEKA (partitional).</li>
 </ul>
 <p>All algorithms can be used to cluster either the genes, the
 experiments or both (bi-clustering).</p>
-<p>Depending on the chosen cluster algorithm up to four different
-distance measures are available: the euclidian distance, the manhattan
-distance, the chebyshev distance, and the pearson correlation. Due the
-framework provides an interface class for distance measurements, it is
-extensible.</p>
-
-<h3><a name="Tree Clusterer"></a>Tree Clusterer</h3>
-<p><img
-	src="../images/help/gene_expression/treeclusterer_screenshot.png"
-	alt="TreeClusterer GUI screenshot"
-	style="border-style: none; float: right; padding-left: 1em;" /> Tree
-Clusterer <a id="Eisen1998" href="#Eisen1998">[1]</a> is a hierarchical
-cluster algorithm that means the clusterer returns a hierarchical tree
-structure, which determines the similarities between data samples and
-clusters, as an result. This tree structure is visualized with the help
-of a dendrogram view, which is integrated in the hierarchical heat map.
-Additionally a radial hierarchy view <a id="Stasko2000"
-	href="#Stasko2000">[5]</a> is available to visualize the hierarchical
-cluster result. There exist three different methods to form clusters:
-single linkage, complete linkage, and average linkage. Complete linkage
-seems to perform best and give the best results for gene expression data
-sets. As distance measurements all four above mentioned measures are
-available.</p>
-
-<h3><a name="Affinity Propagation"></a>Affinity Propagation</h3>
-<p><img src="../images/help/gene_expression/affinity_screenshot.png"
-	alt="Affinity Propagation GUI screenshot"
-	style="border-style: none; float: right; padding-left: 1em;" />
-Affinity propagation <a id="Frey2007" href="#Frey2007">[3]</a> lets you
-choose a factor which influences the number of clusters returned, which
-may be between 1 and 10. The choice of a small factor causes the
-algorithm to form many clusters and vice versa. As distance measurements
-all four above mentioned measures are available.</p>
-
-<h3><a name="KMeans"></a>KMeans</h3>
-<p><img src="../images/help/gene_expression/kmeans_screenshot.png"
-	alt="KMeans GUI screenshot"
-	style="border-style: none; float: right; padding-left: 1em;" /> KMeans
-is a partition-based cluster algorithm and hence that requires you to
-specify the number of clusters for each dimension (gene and/or
-experiment) you want to cluster. Default the number of clusters is set
-to five. Beacuse of this algorithm is not implemented by our own only
-two distance measures (provided by Weka<a id="Witten2005"
-	href="#Witten2005">[4]</a>) are available.</p>
-
-<h3><a name="Cobweb"></a>Cobweb</h3>
-<p><!--<img src="../images/help/gene_expression/cobweb_screenshot.png"-->
-<!--	alt="CobWeb GUI screenshot"--> <!--	style="border-style: none; float: right; padding-left: 1em;" /> -->
-Cobweb <a id="Fisher1987" href="#Fisher1987">[2]</a> is a hierarchical
-cluster algorithm implemented in Weka <a id="Witten2005"
-	href="#Witten2005">[4]</a>. There are no parameters available for this
-algorithm.</p>
-
+<p>Two different distance measures are available: the euclidian
+distance and the pearson correlation.</p>
+<p>Affinity propagation lets you choose a factor which influences
+the number of clusters returned, which may be between 1 and 10. KMeans
+requires you to specify the number of clusters.</p>
 <p>When you have chosen the clustering algorithm and the parameters,
 press OK. A status bar will pop up, displaying the progress of the
 algorithm. Depending on the algorithm and the size of the data this
 process can take a while. Once clustering is complete, the heat map will
-show the updated ordering of the elements. In case of a hierarchical
-clusterer was chosen a dendrogram appears which visualizes the tree
-structure determined by the algorithm.</p>
+show the updated ordering of the elements.</p>
 
 <h2><a name="TabularDataViewer"></a>Tabular Data Viewer</h2>
 <p><img src="../images/help/gene_expression/tabular_data_viewer.png"
@@ -354,39 +305,14 @@ structure determined by the algorithm.</p>
 	style="border-style: none; float: left; padding-right: 1em;" /><img
 	src="../images/help/gene_expression/tabular.png"
 	alt="Tabular data viewer screen shot"
-	style="border-style: none; float: right; padding-left: 1em; padding-bottom: 1em;" />
-The tabular data viewer is a table containing the original values. It is
+	style="border-style: none; float: right; padding-left: 1em;padding-bottom: 1em;" /> The
+tabular data viewer is a table containing the original values. It is
 synchronized with the rest of the system and always jumps to the
 currently active value.</p>
 <p>The gene short name and the RefSeq ID are always shown in the two
 leftmost columns. Furthermore you can delete columns by pressing the
 button at the bottom of the column.</p>
 
-<h2><a name="References"></a>References</h2>
-
-<p id="Eisen1998"><a href="#Eisen1998">[1]</a> Michael B. Eisen,
-Paul T. Spellman, Patrick O. Brown, and David Botstein. Cluster analysis
-and display of genom-wide expression patterns. Proc. Natl. Academy of
-Science USA, volume 95(25):pp. 14863{14868, December 1998. ISSN
-0027-8424.</p>
-
-<p id="Fisher1987"><a href="#Fisher1987">[2]</a> Douglas H. Fisher.
-Knowledge acquisition via incremental conceptual clustering. Mach.
-Learn., volume 2(2):pp. 139{172, 1987. ISSN 0885- 6125.</p>
-
-<p id="Frey2007"><a href="#Frey2007">[2]</a> Brendan J J. Frey and
-Delbert Dueck. Clustering by passing messages between data points.
-Science, volume 315(5814):pp. 972{976, January 2007. ISSN 1095-9203.</p>
-
-<p id="Witten2005"><a href="#Witten2005">[4]</a> Ian H. Witten and
-Eibe Frank. Data Mining: Practical Machine Learning Tools and
-Techniques. Morgan Kaufmann Series in Data Management Systems. Morgan
-Kaufmann, second edition, June 2005. ISBN 0120884070.</p>
-
-<p id="Stasko2000"><a href="#Stasko2000">[5]</a> J. Stasko and E.
-Zhang. Focus+context display and navigation techniques for enhancing
-radial, spacefilling hierarchy visualizations. Information
-Visualization, 2000. InfoVis 2000. IEEE Symposium on, pp. 57{65, 2000.</p>
 
 <br />
 <table style="width: 100%">
