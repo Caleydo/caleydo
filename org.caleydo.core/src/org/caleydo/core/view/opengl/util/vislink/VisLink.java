@@ -6,12 +6,16 @@ import javax.media.opengl.GL;
 
 import gleem.linalg.Vec3f;
 
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 
 
 /**
@@ -33,7 +37,7 @@ public class VisLink {
 	private float width = 2.0f;
 	private int antiAliasingQuality = 5;
 	
-	private final int TEXTURE_SIZE = 128;
+	private /*final*/ int TEXTURE_SIZE = 128;
 	private int viewportX = 0;
 	private int viewportY = 0;
 	private int viewportWidth = 640;
@@ -45,6 +49,8 @@ public class VisLink {
 	// to delete the Buffers
 	private int[] colorBuff;
 	private int[] depthBuff;
+	
+	private IGeneralManager generalManager; // FIXME: added
 	
 	
 	/**
@@ -68,6 +74,7 @@ public class VisLink {
 			NURBSCurve curve = new NURBSCurve(points, 10);
 			this.linePoints = curve.getCurvePoints();
 		}
+		this.generalManager = GeneralManager.get(); // FIXME: added
 	}
 	
 	
@@ -95,6 +102,7 @@ public class VisLink {
 			NURBSCurve curve = new NURBSCurve(points, numberOfSegments);
 			this.linePoints = curve.getCurvePoints();
 		}
+		this.generalManager = GeneralManager.get(); // FIXME: added
 	}
 	
 	
@@ -549,6 +557,46 @@ public class VisLink {
 //---------------------------------------------------------------------------------------------------------------------
 // Halo ...
 //---------------------------------------------------------------------------------------------------------------------
+	protected void polygonLineWithHalo2(final GL gl) {
+		generatePolygonLineVertices(gl);
+		
+		// The spline attributes
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+
+		Texture texture = null;
+		texture = generalManager.getResourceLoader().getTexture(new String("resources/vislinktextures/glowTextureBlue.png"));
+//		texture = generalManager.getResourceLoader().getTexture(new String("resources/vislinktextures/glowTextureYellow.gif"));
+		texture.enable();
+		texture.bind();
+		
+		gl.glTexEnvf(GL.GL_TEXTURE_ENV, GL.GL_TEXTURE_ENV_MODE, GL.GL_REPLACE);
+		TextureCoords texCoords = texture.getImageTexCoords();
+		
+		// the spline
+		gl.glBegin(GL.GL_QUAD_STRIP);
+		for(int i = 0; i < polygonLineVertices.size(); i++) {
+			gl.glVertex3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
+			if(i == 0)
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			if(i == 1)
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			if(i == (polygonLineVertices.size() - 2) )
+				gl.glTexCoord2f(texCoords.right(), (texCoords.bottom() * (polygonLineVertices.size() -1) ));
+			if(i == (polygonLineVertices.size() - 1) )
+				gl.glTexCoord2f(texCoords.right(), (texCoords.top() * (polygonLineVertices.size() -1) ));
+		}
+		gl.glEnd();
+		
+//		gl.glBegin(GL.GL_QUADS);
+//		gl.glVertex3f(-1f,-1f,0f); gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+//		gl.glVertex3f(1f,-1f,0f); gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+//		gl.glVertex3f(1f,1f,0f); gl.glTexCoord2f(texCoords.right(), texCoords.top());
+//		gl.glVertex3f(-1f,1f,0f); gl.glTexCoord2f(texCoords.left(), texCoords.top());
+//		gl.glEnd();
+		
+		texture.disable();
+	}
+	
 	
 	
 	
@@ -557,7 +605,7 @@ public class VisLink {
 	{
 		if(controlPoints.size() >= (offset + 2)) {
 			VisLink visLink = new VisLink(controlPoints, offset, 10);			
-			visLink.polygonLineWithHalo(gl); // FIXME
+			visLink.polygonLineWithHalo2(gl); // FIXME
 		}
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" );
@@ -596,7 +644,7 @@ public class VisLink {
     	// restore the viewport
     	gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
     	polygonLine(gl, false);
-    	drawBlur(gl, 25, 0.02f, blurTexture[0]);
+    	drawBlur(gl, 25, 0.02f);
     	
     	// delete the Buffers
     	gl.glDeleteTextures(1, blurTexture, 0);
@@ -612,7 +660,7 @@ public class VisLink {
         data.limit(data.capacity());
 
         int[] txtnumber = new int[1];
-        gl.glGenTextures(1, txtnumber, 0);                                // Create 1 Texture
+        gl.glGenTextures(1, txtnumber, 0);                               // Create 1 Texture
         gl.glBindTexture(GL.GL_TEXTURE_2D, txtnumber[0]);                 // Bind The Texture
         gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, TEXTURE_SIZE, TEXTURE_SIZE, 0, GL.GL_LUMINANCE, GL.GL_UNSIGNED_BYTE, data);                        // Build Texture Using Information In data
         gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
@@ -662,8 +710,9 @@ public class VisLink {
         gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]);
         gl.glCopyTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_LUMINANCE, 0, 0, TEXTURE_SIZE, TEXTURE_SIZE, 0);
     }
+
     
-    private void drawBlur(GL gl, int times, float inc, int blurTexture) {
+    private void drawBlur(GL gl, int times, float inc) {
     	
     	// if fbo couldn't be created, we can't render to texture and therefore can't use halo
     	if (frameBufferObject[0] == -1) {
@@ -682,7 +731,7 @@ public class VisLink {
 		gl.glDisable(GL.GL_DEPTH_TEST);                          // Disable Depth Testing
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);              // Set Blending Mode
 		gl.glEnable(GL.GL_BLEND);                                // Enable Blending
-		gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture);         // Bind To The Blur Texture
+		gl.glBindTexture(GL.GL_TEXTURE_2D, blurTexture[0]);         // Bind To The Blur Texture
 		viewOrtho(gl);                                           // Switch To An Ortho View
 		
 		float alphainc = alpha / times;                          // alphainc=0.2f / Times To Render Blur
@@ -730,32 +779,15 @@ public class VisLink {
 		// Create a TEXTURE_SIZE x TEXTURE_SIZE RGBA texture that will be used as color attachment
 		// for the fbo.
 		int[] colorBuffer = new int[1];
-		gl.glGenTextures(1, colorBuffer, 0);                 // Create 1 Texture
+		gl.glGenTextures(1, colorBuffer, 0); // Create 1 Texture
 		gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]);  // Bind The Texture
-		gl.glTexImage2D(                                     // Build Texture Using Information In data
-		                                                     GL.GL_TEXTURE_2D,
-		                                                     0,
-		                                                     GL.GL_RGBA,
-		                                                     TEXTURE_SIZE,
-		                                                     TEXTURE_SIZE,
-		                                                     0,
-		                                                     GL.GL_RGBA,
-		                                                     GL.GL_UNSIGNED_BYTE,
-		                                                     BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE * 4)
-		);
+		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA,TEXTURE_SIZE, TEXTURE_SIZE,0, GL.GL_RGBA, GL.GL_UNSIGNED_BYTE, BufferUtil.newByteBuffer(TEXTURE_SIZE * TEXTURE_SIZE * 4));
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 		
 		// Attach the texture to the frame buffer as the color attachment. This
 		// will cause the results of rendering to the FBO to be written in the blur texture.
-		gl.glFramebufferTexture2DEXT(
-		        GL.GL_FRAMEBUFFER_EXT,
-		        GL.GL_COLOR_ATTACHMENT0_EXT,
-		        GL.GL_TEXTURE_2D,
-		        colorBuffer[0],
-		        0
-		);
-		
+		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, colorBuffer[0], 0);
 //		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT, GL.GL_TEXTURE_2D, blurTexture[0], 0); // FIXME: added
 
 		gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
@@ -768,12 +800,7 @@ public class VisLink {
 		gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, TEXTURE_SIZE, TEXTURE_SIZE);
 		
 		// Attach the newly created depth buffer to the FBO.
-		gl.glFramebufferRenderbufferEXT(
-		        GL.GL_FRAMEBUFFER_EXT,
-		        GL.GL_DEPTH_ATTACHMENT_EXT,
-		        GL.GL_RENDERBUFFER_EXT,
-		        depthBuffer[0]
-		);
+		gl.glFramebufferRenderbufferEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_DEPTH_ATTACHMENT_EXT, GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
 		
 		// Make sure the framebuffer object is complete (i.e. set up correctly)
 		int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
