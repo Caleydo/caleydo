@@ -13,6 +13,8 @@ import org.caleydo.rcp.view.swt.RcpHTMLBrowserView;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.HelpEvent;
+import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -102,6 +104,25 @@ public class StartClusteringAction
 		// composite.setLayout(new FillLayout(SWT.VERTICAL));
 
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
+
+		composite.addHelpListener(new HelpListener() {
+
+			@Override
+			public void helpRequested(HelpEvent e) {
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+						RcpHTMLBrowserView.ID);
+					
+					final String URL_HELP_CLUSTERING = "http://www.caleydo.org/help/gene_expression.html#Clustering";
+					ChangeURLEvent changeURLEvent = new ChangeURLEvent();
+					changeURLEvent.setSender(this);
+					changeURLEvent.setUrl(URL_HELP_CLUSTERING);
+					GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
+				}
+				catch (PartInitException partInitException) {
+				}
+			}
+		});
 
 		createTreeClusteringTab(tabFolder);
 		createAffinityPropagationTab(tabFolder);

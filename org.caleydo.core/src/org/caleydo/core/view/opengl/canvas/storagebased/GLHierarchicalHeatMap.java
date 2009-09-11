@@ -2725,7 +2725,7 @@ public class GLHierarchicalHeatMap
 					lastIndexOfSubTree = contentVA.get(iLastSampleLevel1);
 				}
 				catch (IndexOutOfBoundsException e1) {
- 
+
 				}
 			}
 
@@ -4499,6 +4499,12 @@ public class GLHierarchicalHeatMap
 			else
 				algenesToExport = contentVA.getIndexList();
 		}
+
+		// TODO: open a dialog to select a folder and file name
+		// GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+		// public void run() {
+		// }
+		// });
 
 		set.exportGroups(GeneralManager.CALEYDO_HOME_PATH + "exportedGroups.csv", algenesToExport,
 			alExperiments);

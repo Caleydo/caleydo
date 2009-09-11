@@ -2,7 +2,7 @@ package org.caleydo.rcp.dialog.cluster;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterState;
-import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Shell;
  * @author Bernhard Schlegl
  */
 public class StartClusteringDialog
-	extends Dialog {
+	extends TrayDialog {
 
 	private StartClusteringAction startClusteringAction;
 
@@ -31,6 +31,9 @@ public class StartClusteringDialog
 		newShell.setText(StartClusteringAction.TEXT);
 		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
 			StartClusteringAction.ICON));
+		
+		TrayDialog trayDialog = (TrayDialog) newShell.getData();
+		trayDialog.setHelpAvailable(true);
 	}
 
 	@Override
