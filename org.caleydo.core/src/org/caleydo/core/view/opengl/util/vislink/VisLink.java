@@ -655,7 +655,21 @@ public class VisLink {
 //---------------------------------------------------------------------------------------------------------------------
 // Halo ...
 //---------------------------------------------------------------------------------------------------------------------
+	
+	public static void renderPolygonLineWithHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
+		throws IllegalArgumentException
+	{
+		if(controlPoints.size() >= (offset + 2)) {
+			VisLink visLink = new VisLink(controlPoints, offset, 10);			
+			visLink.polygonLineWithHalo3(gl);
+		}
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+	}
+	
+	
 	protected void polygonLineWithHalo2(final GL gl) {
+		
 		generatePolygonLineVertices(gl);
 		
 		// The spline attributes
@@ -676,18 +690,20 @@ public class VisLink {
 		gl.glBegin(GL.GL_QUAD_STRIP);
 		for(int i = 0; i < polygonLineVertices.size(); i++) {
 			gl.glVertex3f(polygonLineVertices.get(i).x(), polygonLineVertices.get(i).y(), polygonLineVertices.get(i).z());
-			if(i == 0)
+			if(i%2 == 0)
+//				gl.glTexCoord2f(i/2, texCoords.top());
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			if(i == 1)
-				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			if(i == 2)
-				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			if(i == 3)
-				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-//			if(i == (polygonLineVertices.size() - 2) )
-//				gl.glTexCoord2f(texCoords.right(), (texCoords.bottom() * (polygonLineVertices.size() -1) ));
-//			if(i == (polygonLineVertices.size() - 1) )
-//				gl.glTexCoord2f(texCoords.right(), (texCoords.top() * (polygonLineVertices.size() -1) ));
+			else
+//				gl.glTexCoord2f( (i-1)/2, texCoords.bottom());
+				gl.glTexCoord2f( texCoords.right(), texCoords.bottom());
+//			if(i == 0)
+//				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+//			else if(i == 1)
+//				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+//			else if(i == 2)
+//				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+//			if(i == 3)
+//				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		}
 		gl.glEnd();
 		
@@ -729,19 +745,6 @@ protected void polygonLineWithHalo3(final GL gl) {
 		}
 	}
 	
-	
-	
-	
-	public static void renderPolygonLineWithHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
-		throws IllegalArgumentException
-	{
-		if(controlPoints.size() >= (offset + 2)) {
-			VisLink visLink = new VisLink(controlPoints, offset, 10);			
-			visLink.polygonLineWithHalo3(gl); // FIXME
-		}
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" );
-	}
 	
 	
 //	protected void polygonLineWithHalo(final GL gl) {
