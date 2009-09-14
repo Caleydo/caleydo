@@ -14,6 +14,7 @@ public enum EIconTextures {
 	DROP_DUPLICATE("resources/icons/view/storagebased/parcoords/drop_duplicate.png"),
 	DROP_MOVE("resources/icons/view/storagebased/parcoords/drop_move.png"),
 	SMALL_DROP("resources/icons/view/storagebased/parcoords/drop_small.png"),
+	SMALL_DROP_ROTATED("resources/icons/view/storagebased/parcoords/drop_small_rotated.png"),
 	ADD_GATE("resources/icons/view/storagebased/parcoords/add_gate.png"),
 	NAN("resources/icons/view/storagebased/parcoords/nan.png"),
 

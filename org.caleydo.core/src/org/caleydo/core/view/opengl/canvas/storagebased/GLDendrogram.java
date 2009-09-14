@@ -6,6 +6,7 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderS
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.DENDROGRAM_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.SELECTION_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.SUB_DENDROGRAM_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.ParCoordsRenderStyle.AXIS_Z;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
 import gleem.linalg.Vec3f;
@@ -338,15 +339,15 @@ public class GLDendrogram
 			gl.glVertex3f(fPosCut + fWidthCutOf, 0, CUT_OFF_Z);
 			gl.glEnd();
 
-			gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
-			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(fPosCut - 0.2f, -0.1f, CUT_OFF_Z);
-			gl.glVertex3f(fPosCut + 0.0f, -0.0f, CUT_OFF_Z);
-			gl.glVertex3f(fPosCut + 0.0f, -0.2f, CUT_OFF_Z);
-			gl.glVertex3f(fPosCut + 0.05f, -0.0f, CUT_OFF_Z);
-			gl.glVertex3f(fPosCut + 0.05f, -0.2f, CUT_OFF_Z);
-			gl.glVertex3f(fPosCut + 0.25f, -0.1f, CUT_OFF_Z);
-			gl.glEnd();
+			// gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
+			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
+			// gl.glVertex3f(fPosCut - 0.2f, -0.1f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.0f, -0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.0f, -0.2f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.05f, -0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.05f, -0.2f, CUT_OFF_Z);
+			// gl.glVertex3f(fPosCut + 0.25f, -0.1f, CUT_OFF_Z);
+			// gl.glEnd();
 
 			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
 			// gl.glVertex3f(fPosCut - 0.2f, fHeight + 0.1f, CUT_OFF_Z);
@@ -356,6 +357,20 @@ public class GLDendrogram
 			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.2f, CUT_OFF_Z);
 			// gl.glVertex3f(fPosCut + 0.25f, fHeight + 0.1f, CUT_OFF_Z);
 			// gl.glEnd();
+
+			Vec3f lowerLeftCorner = new Vec3f();
+			Vec3f lowerRightCorner = new Vec3f();
+			Vec3f upperRightCorner = new Vec3f();
+			Vec3f upperLeftCorner = new Vec3f();
+			Vec3f scalingPivot = new Vec3f();
+			lowerLeftCorner.set(fWidthCutOf / 2 + fPosCut - 0.05f, -0.16f, AXIS_Z);
+			lowerRightCorner.set(fWidthCutOf / 2 + fPosCut + 0.05f, -0.16f, AXIS_Z);
+			upperRightCorner.set(fWidthCutOf / 2 + fPosCut + 0.05f, 0.04f, AXIS_Z);
+			upperLeftCorner.set(fWidthCutOf / 2 + fPosCut - 0.05f, 0.04f, AXIS_Z);
+			scalingPivot.set(fWidthCutOf / 2 + fPosCut, -0.06f, AXIS_Z + 0.005f);
+
+			textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 		}
 		else {
 			gl.glColor4fv(CUT_OFF_COLOR, 0);
@@ -366,15 +381,15 @@ public class GLDendrogram
 			gl.glVertex3f(0, fPosCut + fWidthCutOf, CUT_OFF_Z);
 			gl.glEnd();
 
-			gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
-			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glVertex3f(-0.1f, fPosCut - 0.2f, CUT_OFF_Z);
-			gl.glVertex3f(-0.2f, fPosCut + 0.0f, CUT_OFF_Z);
-			gl.glVertex3f(-0.0f, fPosCut + 0.0f, CUT_OFF_Z);
-			gl.glVertex3f(-0.2f, fPosCut + 0.05f, CUT_OFF_Z);
-			gl.glVertex3f(-0.0f, fPosCut + 0.05f, CUT_OFF_Z);
-			gl.glVertex3f(-0.1f, fPosCut + 0.25f, CUT_OFF_Z);
-			gl.glEnd();
+			// gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
+			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
+			// gl.glVertex3f(-0.1f, fPosCut - 0.2f, CUT_OFF_Z);
+			// gl.glVertex3f(-0.2f, fPosCut + 0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(-0.0f, fPosCut + 0.0f, CUT_OFF_Z);
+			// gl.glVertex3f(-0.2f, fPosCut + 0.05f, CUT_OFF_Z);
+			// gl.glVertex3f(-0.0f, fPosCut + 0.05f, CUT_OFF_Z);
+			// gl.glVertex3f(-0.1f, fPosCut + 0.25f, CUT_OFF_Z);
+			// gl.glEnd();
 
 			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
 			// gl.glVertex3f(fWidth + 0.1f, fPosCut - 0.2f, CUT_OFF_Z);
@@ -384,6 +399,20 @@ public class GLDendrogram
 			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.05f, CUT_OFF_Z);
 			// gl.glVertex3f(fWidth + 0.1f, fPosCut + 0.25f, CUT_OFF_Z);
 			// gl.glEnd();
+
+			Vec3f lowerLeftCorner = new Vec3f();
+			Vec3f lowerRightCorner = new Vec3f();
+			Vec3f upperRightCorner = new Vec3f();
+			Vec3f upperLeftCorner = new Vec3f();
+			Vec3f scalingPivot = new Vec3f();
+			lowerLeftCorner.set(-0.16f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
+			lowerRightCorner.set(0.04f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
+			upperRightCorner.set(0.04f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
+			upperLeftCorner.set(-0.16f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
+			scalingPivot.set(-0.06f, fWidthCutOf / 2 + fPosCut, AXIS_Z + 0.005f);
+
+			textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP_ROTATED, lowerLeftCorner,
+				lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 		}
 		gl.glPopName();
 
@@ -751,7 +780,7 @@ public class GLDendrogram
 
 			float fCoeff = currentNode.getCoefficient();
 
-			pos.setX(fXmin - fLevelWidth * (1 - fCoeff));
+			pos.setX(fXmin - fLevelWidth);// * (1 - fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
 			pos.setZ(DENDROGRAM_Z);
 
@@ -761,7 +790,7 @@ public class GLDendrogram
 
 			pos.setY(yPosInit);
 			yPosInit -= fSampleHeight;
-			pos.setX(xGlobalMax - fLevelWidth * (1 - fCoeff));
+			pos.setX(xGlobalMax - fLevelWidth);// * (1 - fCoeff));
 			pos.setZ(DENDROGRAM_Z);
 		}
 
@@ -811,7 +840,7 @@ public class GLDendrogram
 			float fCoeff = currentNode.getCoefficient();
 
 			pos.setX(fXmin + (fXmax - fXmin) / 2);
-			pos.setY(fYmax + fLevelHeight * (1 - fCoeff));
+			pos.setY(fYmax + fLevelHeight);// * (1 - fCoeff));
 			pos.setZ(DENDROGRAM_Z);
 
 		}
@@ -821,7 +850,7 @@ public class GLDendrogram
 
 			pos.setX(xPosInit);
 			xPosInit += fSampleWidth;
-			pos.setY(yGlobalMin + fLevelHeight * (1 - fCoeff));
+			pos.setY(yGlobalMin + fLevelHeight);// * (1 - fCoeff));
 			pos.setZ(DENDROGRAM_Z);
 		}
 
