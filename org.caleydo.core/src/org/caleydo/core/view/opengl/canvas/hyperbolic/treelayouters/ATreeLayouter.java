@@ -3,6 +3,8 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.media.opengl.GL;
@@ -195,6 +197,25 @@ public abstract class ATreeLayouter
 	@Override
 	public final int getID(){
 		return iComparableValue;
+	}
+	
+	protected final List<Vec3f> findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){
+		float fMin = Float.MAX_VALUE;
+		Vec3f foundA = null;
+		Vec3f foundB = null;
+		float ft;
+		for(Vec3f pointA : pointsA)
+			for(Vec3f pointB : pointsB)
+				if((ft = (float) Math.sqrt(Math.pow(pointA.x()-pointB.x(), 2)+Math.pow(pointA.y()-pointB.y(), 2))) < fMin)
+				{
+					foundA = pointA;
+					foundB = pointB;
+					fMin = ft;
+				}
+		List<Vec3f> lP = new ArrayList<Vec3f>(); 
+		lP.add(foundA);
+		lP.add(foundB);
+		return lP;
 	}
 
 	// @Override

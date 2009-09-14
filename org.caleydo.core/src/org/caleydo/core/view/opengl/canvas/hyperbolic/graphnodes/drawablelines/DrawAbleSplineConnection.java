@@ -60,11 +60,11 @@ public class DrawAbleSplineConnection
 		gl.glPointSize(10);
 		//float[] fA = { 0.0f, 0.0f, 1.0f, 1.0f };
 	//	gl.glColor4fv(fA, 0);
-		gl.glBegin(GL.GL_POINTS);
-		for (int i = 0; i < lPoints.size(); i++) {
-			gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
-		}
-		gl.glEnd();
+//		gl.glBegin(GL.GL_POINTS);
+//		for (int i = 0; i < lPoints.size(); i++) {
+//			gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
+//		}
+//		gl.glEnd();
 
 	}
 }

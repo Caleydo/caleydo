@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -17,7 +18,11 @@ public class HyperbolicRenderStyle
 
 	public static final float Y_LAYER_SPACING = 0.1f;
 	public static final float X_NODE_SPACING = 0.1f;
-	public static final float LIN_TREE_Y_SCALING_PER_LAYER = 0.9f;
+	public static final float NODE_SCALING_PER_LAYER = 0.9f;
+	public static final float MAX_NODE_SIZE = 0.5f;
+	public static final int MAX_DEPTH = 10;
+	public static final EDrawAbleNodeDetailLevel[] DETAIL_LEVEL_GRADING= {EDrawAbleNodeDetailLevel.VeryHigh, EDrawAbleNodeDetailLevel.High,
+		EDrawAbleNodeDetailLevel.Normal, EDrawAbleNodeDetailLevel.Low, EDrawAbleNodeDetailLevel.VeryLow};
 
 	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME = { 0.5f, 0.5f, 0.5f, 1f };
 	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME_HL = { 0.8f, 0.4f, 0.2f, 1f };
@@ -26,7 +31,7 @@ public class HyperbolicRenderStyle
 	public static final float[] DA_OBJ_QUAD_COLORSCHEME_HL = { 0.4f, 0.6f, 0.2f, 1f };
 
 	public static final String[] DA_TEST_NODE_DL_OBJ =
-		{ "Square", "Fallback", "Fallback", "Fallback", "Fallback" };
+		{ "Fallback", "Fallback", "Fallback", "Fallback", "Fallback" };
 
 	public static final float[] DA_LINEAR_CONNECTION_COLORSHEME = { 1f, 0f, 0f, 1f };
 	public static final float DA_LINEAR_CONNECTION_THICKNESS = 1f;
@@ -41,9 +46,11 @@ public class HyperbolicRenderStyle
 	public static final float DA_SPLINE_CONNECTION_THICKNESS_HL = 5f;
 	public static final int DA_SPLINE_CONNECTION_NR_CTRLPOINTS = 50;
 	
-	public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Line";
-	public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Line";
-
+	public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
+	public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
+	
+	 
+	
 	/**
 	 * Specify how many contact points a DA object should return. value must be a multiple of 4 (4, 8, 12,
 	 * 16,...)

@@ -81,7 +81,7 @@ public abstract class ADrawAbleNode
 
 	@Override
 	public final ArrayList<Vec3f> getConnectionPoints() {
-		IDrawAbleObject daObj = mRepresantations.get(eSelectionType);
+		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
 		return daObj.getConnectionPoints();
 	}
 

@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -126,9 +127,9 @@ public class GLHyperbolic
 		// tree.addChild(test, test2);
 		// layouter = new LinearTreeLayouter(viewFrustum);
 
-		tree = buildTestTree(3, 5);
+		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 12);
 		System.out.println(tree.getGraph().toString());
-		layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
+		layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.setTree(tree);
 	}
 
@@ -343,6 +344,8 @@ public class GLHyperbolic
 
 				switch (pickingMode) {
 					case CLICKED:
+						tree = convertTreeToNewOne(iExternalID);
+						layouter.setTree(tree);
 						break;
 					case MOUSE_OVER:
 						bIsSomethingHighlighted = true;
@@ -380,6 +383,39 @@ public class GLHyperbolic
 				break;
  
 		}
+	}
+
+	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
+		IDrawAbleNode rootNode = tree.getNodeByNumber(iExternalID);
+		if(tree.getRoot().compareTo(rootNode) == 0)
+			return tree;
+		Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>();
+		
+		newTree.setRootNode(rootNode);
+		convertTreeToNewOneWorker(rootNode, newTree);
+		return newTree;
+	}
+
+	private void convertTreeToNewOneWorker(IDrawAbleNode rootNode, Tree<IDrawAbleNode> newTree) {
+		
+		IDrawAbleNode theirRoot = tree.getParent(rootNode);
+		IDrawAbleNode ourRoot = newTree.getParent(rootNode);
+		if(theirRoot != null) {
+			if(ourRoot == null || theirRoot.compareTo(ourRoot) != 0){
+			newTree.addChild(rootNode, theirRoot);
+			convertTreeToNewOneWorker(theirRoot, newTree);
+	}
+		}
+		//IDrawAbleNode ourRoot=null;
+		//if(newTree.getRoot().compareTo(rootNode) != 0)
+		if(tree.hasChildren(rootNode))
+			for(IDrawAbleNode node : tree.getChildren(rootNode)){
+				if(ourRoot != null)
+					if(node.compareTo(ourRoot) == 0)
+						continue;
+				newTree.addChild(rootNode, node);
+				convertTreeToNewOneWorker(node, newTree);						
+			}		
 	}
 
 	public boolean isInListMode() {
