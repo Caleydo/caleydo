@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -59,6 +60,9 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		// TODO: this should be removed later on, only for testing purposes
 		if (rootNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
+		
+		if (rootNode instanceof IDrawAbleNode)
+			hashNodes.put(((IDrawAbleNode) rootNode).getNodeNr(), rootNode);
 	}
 
 	/**
@@ -99,8 +103,12 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		setDepthFlag();
 
 		// TODO: this should be removed later on, only for testing purposes
+		// TODO: isn't it better to use CompareAbleValue (and introduce an interface that implements .getID())???
 		if (childNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) childNode).getClusterNr(), childNode);
+		
+		if (childNode instanceof IDrawAbleNode)
+			hashNodes.put(((IDrawAbleNode) childNode).getNodeNr(), childNode);
 	}
 
 	/**
@@ -115,6 +123,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		for (NodeType child : children) {
 			addChild(parentNode, child);
 			// TODO: this should be removed later on, only for testing purposes
+			// isn't this done in addchild?
 			if (child instanceof ClusterNode)
 				hashNodes.put(((ClusterNode) child).getClusterNr(), child);
 		}
