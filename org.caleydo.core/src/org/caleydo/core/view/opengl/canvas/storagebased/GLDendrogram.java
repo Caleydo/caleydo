@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.CUT_OFF_COLOR;
-import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.CUT_OFF_HANDLE_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.CUT_OFF_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.DENDROGRAM_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.SELECTION_Z;
@@ -331,6 +330,8 @@ public class GLDendrogram
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 		if (bRenderGeneTree) {
+			gl.glTranslatef(+fLevelWidth, 0, 0);
+
 			gl.glColor4fv(CUT_OFF_COLOR, 0);
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(fPosCut, 0, CUT_OFF_Z);
@@ -369,10 +370,17 @@ public class GLDendrogram
 			upperLeftCorner.set(fWidthCutOf / 2 + fPosCut - 0.05f, 0.04f, AXIS_Z);
 			scalingPivot.set(fWidthCutOf / 2 + fPosCut, -0.06f, AXIS_Z + 0.005f);
 
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+			gl.glTranslatef(-fLevelWidth, 0, 0);
 		}
 		else {
+
+			gl.glTranslatef(0, -fLevelHeight, 0);
+
 			gl.glColor4fv(CUT_OFF_COLOR, 0);
 			gl.glBegin(GL.GL_QUADS);
 			gl.glVertex3f(0, fPosCut, CUT_OFF_Z);
@@ -410,9 +418,12 @@ public class GLDendrogram
 			upperRightCorner.set(0.04f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
 			upperLeftCorner.set(-0.16f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
 			scalingPivot.set(-0.06f, fWidthCutOf / 2 + fPosCut, AXIS_Z + 0.005f);
-
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP_ROTATED, lowerLeftCorner,
 				lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
+			gl.glTranslatef(0, +fLevelHeight, 0);
 		}
 		gl.glPopName();
 
@@ -1215,11 +1226,11 @@ public class GLDendrogram
 
 		if (bRenderGeneTree) {
 			if (fArTargetWorldCoordinates[0] > -0.1f && fArTargetWorldCoordinates[0] < fWidth)
-				fPosCut = fArTargetWorldCoordinates[0] - 0.0f;
+				fPosCut = fArTargetWorldCoordinates[0] - fLevelWidth;
 		}
 		else {
 			if (fArTargetWorldCoordinates[1] > -0.1f && fArTargetWorldCoordinates[1] < fHeight)
-				fPosCut = fArTargetWorldCoordinates[1] + 0.0f;
+				fPosCut = fArTargetWorldCoordinates[1] + fLevelHeight;
 		}
 		setDisplayListDirty();
 
@@ -1252,9 +1263,14 @@ public class GLDendrogram
 	 */
 	private void buildNewGroupList() {
 
-		if (iAlClusterNodes.size() < 2) {
+		if (iAlClusterNodes.size() < 1) {
 
-			groupList = null;
+			groupList = new GroupList(iAlClusterNodes.size());
+			Group temp =
+				new Group(tree.getRoot().getNrElements(), false, 0, ESelectionType.NORMAL, tree.getRoot());
+
+			groupList.append(temp);
+
 			if (bRenderGeneTree) {
 				useCase.getSet().setGroupListGenes(groupList);
 				useCase.replaceVirtualArray(EVAType.CONTENT, contentVA);
@@ -1264,9 +1280,9 @@ public class GLDendrogram
 				useCase.replaceVirtualArray(EVAType.STORAGE, storageVA);
 			}
 
-			bRedrawDendrogram = true;
-			bEnableDepthCheck = false;
-			setDisplayListDirty();
+//			bRedrawDendrogram = true;
+//			bEnableDepthCheck = false;
+//			setDisplayListDirty();
 
 			return;
 		}
