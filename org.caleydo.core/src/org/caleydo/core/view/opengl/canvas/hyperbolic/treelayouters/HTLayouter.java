@@ -50,15 +50,15 @@ public final class HTLayouter
 		// TODO: put it into abstract class
 		setFCenterX(fWidth / 2); // it brings in constructor strange results????
 		setFCenterY(fHeight / 2);
-		float fNodeSize = 0.05f;
+		float fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE;
 
 		IDrawAbleNode rootNode = tree.getRoot();
 		
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-		placeNode(rootNode, fCenterX, fCenterY, 0, fNodeSize, 0.2f);
+		placeNode(rootNode, fCenterX, fCenterY, 0, fNodeSize, fNodeSize);
 	
 		// RECURSIVE TREE LAYOUTER
-		float fLayer = 1.0f;
+		float fLayer = 2.0f;
 		float fRadius = 0.5f;
 		
 		//float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
@@ -73,9 +73,12 @@ public final class HTLayouter
 			float fFirstLayerAngle = calculateCircle((fRadius), fCurrentNodeCount, fNumberOfNodesInLayer);
 		//	float space = calculateChildSpace(fRadius + 0.2f, fNumberOfNodesInLayer);
 			
+			fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
 			tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-			placeNode(tmpChild, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f);
-			drawLine(fCenterX, fCenterY, getFXCoord(), getFYCoord());
+			placeNode(tmpChild, getFXCoord(), getFYCoord(), 0, fNodeSize, fNodeSize);
+			float fFirstChildX = getFXCoord();
+			float fFirstChildY = getFYCoord();
+			drawLine(fCenterX, fCenterY, fFirstChildX, fFirstChildY);
 			
 			calculateRecursiveLayout(tmpChild, fRadius - 0.05f , fFirstLayerAngle*fCurrentNodeCount, fLayer+1, fNodeSize, getFXCoord(), getFYCoord());
 		
@@ -89,14 +92,15 @@ public final class HTLayouter
 
 	public float calculateRecursiveLayout(IDrawAbleNode node, float fRadius, float fParentAngle, 
 		float fLayer, float fNodeSize, float fXCoordOfParent, float fYCoordOfParent) {
-		if (fLayer <= fDepth){
+		if (fLayer <= fDepth)
+		{
 		//float fNumberOfNodesInNewLayer = fNumberOfNodesInLayer;// + layer;//node.getNumberOfNodesInLayer(layer);
 			float fNumberOfNodesInNewLayer = tree.getNumberOfElementsInLayer((int)fLayer);
 
 			//float fChildSpace = calculateChildSpace(fRadius, fNumberOfNodesInNewLayer);
 			
-			if (tree.hasChildren(node)){
-				
+			if (tree.hasChildren(node))
+				{	
 
 //				float fDeltaRadius = 5.0f/(fLayer*6);
 			//float childs = 3.0f; // node.getNumberOfChildren()
@@ -134,17 +138,21 @@ public final class HTLayouter
 				
 				float fXCoord = getFXCoord();
 				float fYCoord = getFYCoord();
-				float fLayerOfBranch = calculateRecursiveLayout(tmpChild, fDeltaRadius, fRealChildAngle, fLayer+1, fNodeSize, fXCoord, fYCoord);
+				//if(tree.hasChildren(tmpChild))
+				{
+					float fLayerOfBranch = calculateRecursiveLayout(tmpChild, fDeltaRadius, fRealChildAngle, fLayer+1, fNodeSize, fXCoord, fYCoord);
 				drawLine(fXCoordOfParent, fYCoordOfParent, fXCoord, fYCoord);
 //				childAngle =
 //				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
 //					+ (alpha / 2);
 //			calcualteChildPosition(childRadius, childAngle, numChilds);
+				fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
 				tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-				placeNode(tmpChild, fXCoord, fYCoord, 0, fNodeSize, 0.2f);
+				placeNode(tmpChild, fXCoord, fYCoord, 0, fNodeSize, fNodeSize);
 //				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 //					EDrawAbleNodeDetailLevel.Low);
 				//drawLine(getFXCoord(), getFYCoord(), x, y);
+				}
 				
 			}
 			}
