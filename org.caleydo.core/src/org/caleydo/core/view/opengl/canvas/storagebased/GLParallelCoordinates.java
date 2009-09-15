@@ -66,11 +66,11 @@ import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
 import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
+import org.caleydo.core.manager.event.view.storagebased.NewGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.storagebased.UpdateGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
@@ -585,10 +585,12 @@ public class GLParallelCoordinates
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 
-		UpdateGroupInfoEvent updateGroupInfoEvent = new UpdateGroupInfoEvent();
-		updateGroupInfoEvent.setSender(this);
-		updateGroupInfoEvent.setGeneGroup(true);
-		eventPublisher.triggerEvent(updateGroupInfoEvent);
+		NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+		newGroupInfoEvent.setSender(this);
+		newGroupInfoEvent.setEVAType(polylineVAType);
+		newGroupInfoEvent.setGroupList(null);
+		newGroupInfoEvent.setDeleteTree(true);
+		eventPublisher.triggerEvent(newGroupInfoEvent);
 
 	}
 
@@ -2039,10 +2041,12 @@ public class GLParallelCoordinates
 						setDisplayListDirty();
 						resetAxisSpacing();
 						
-						UpdateGroupInfoEvent updateGroupInfoEvent = new UpdateGroupInfoEvent();
-						updateGroupInfoEvent.setSender(this);
-						updateGroupInfoEvent.setGeneGroup(false);
-						eventPublisher.triggerEvent(updateGroupInfoEvent);
+						NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+						newGroupInfoEvent.setSender(this);
+						newGroupInfoEvent.setEVAType(axisVAType);
+						newGroupInfoEvent.setGroupList(null);
+						newGroupInfoEvent.setDeleteTree(true);
+						eventPublisher.triggerEvent(newGroupInfoEvent);
 						
 						break;
 				}
@@ -2076,10 +2080,12 @@ public class GLParallelCoordinates
 							vaDelta.add(VADeltaItem.copy(iExternalID));
 							sendVirtualArrayUpdateEvent(vaDelta);
 
-							UpdateGroupInfoEvent updateGroupInfoEvent = new UpdateGroupInfoEvent();
-							updateGroupInfoEvent.setSender(this);
-							updateGroupInfoEvent.setGeneGroup(false);
-							eventPublisher.triggerEvent(updateGroupInfoEvent);
+							NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+							newGroupInfoEvent.setSender(this);
+							newGroupInfoEvent.setEVAType(axisVAType);
+							newGroupInfoEvent.setGroupList(null);
+							newGroupInfoEvent.setDeleteTree(true);
+							eventPublisher.triggerEvent(newGroupInfoEvent);
 							
 							setDisplayListDirty();
 							// resetSelections();
@@ -2919,12 +2925,6 @@ public class GLParallelCoordinates
 			return ("PCs, standalone, " + iNumElements + " elements");
 		else
 			return ("PCs, remote, " + iNumElements + " elements");
-	}
-
-	@Override
-	public void handleUpdateGroupInfo(boolean bGeneGroup) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

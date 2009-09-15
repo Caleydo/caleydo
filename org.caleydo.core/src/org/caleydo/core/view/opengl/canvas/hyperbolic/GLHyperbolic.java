@@ -521,9 +521,4 @@ public class GLHyperbolic
 		return tree;
 	}
 
-	@Override
-	public void handleUpdateGroupInfo(boolean bGeneGroup) {
-		// TODO Auto-generated method stub
-
-	}
 }

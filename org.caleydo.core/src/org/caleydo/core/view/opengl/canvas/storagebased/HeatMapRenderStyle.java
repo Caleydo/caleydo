@@ -25,10 +25,12 @@ public class HeatMapRenderStyle
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
 
 	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
-	public static final float[] GROUP_COLOR_UNSELECTED = { 0.5f, 1f, 1f, 1 };
-	public static final float[] GROUP_COLOR_SELECTED = { 0.5f, 1f, 0.5f, 1 };
+	public static final float[] GROUP_COLOR_NORMAL = { 0.5f, 1f, 1f, 1 };
+	public static final float[] GROUP_COLOR_SELECTED = GeneralRenderStyle.SELECTED_COLOR;
+	public static final float[] DENDROGRAM_BACKROUND = { 0.5f, 0.5f, 0.5f, 1 };
 	public static final float CLUSTER_BORDERS_Z = 0.009f;
 	public static final float BUTTON_Z = 0.01f;
+	public static final float BACKGROUND_Z = -0.1f;
 
 	private float fSelectedFieldWidth = 1.0f;
 

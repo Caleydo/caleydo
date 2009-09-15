@@ -32,6 +32,7 @@ import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.manager.event.view.storagebased.NewGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.UpdateViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -120,6 +121,8 @@ public class GLDendrogram
 	private UpdateViewListener updateViewListener;
 
 	private int iGLDisplayListCutOffValue = 0;
+
+	private boolean bUseBlackColoring = false;
 
 	/**
 	 * Constructor.
@@ -330,6 +333,7 @@ public class GLDendrogram
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 		if (bRenderGeneTree) {
+
 			gl.glTranslatef(+fLevelWidth, 0, 0);
 
 			gl.glColor4fv(CUT_OFF_COLOR, 0);
@@ -339,25 +343,6 @@ public class GLDendrogram
 			gl.glVertex3f(fPosCut + fWidthCutOf, fHeight, CUT_OFF_Z);
 			gl.glVertex3f(fPosCut + fWidthCutOf, 0, CUT_OFF_Z);
 			gl.glEnd();
-
-			// gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
-			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			// gl.glVertex3f(fPosCut - 0.2f, -0.1f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.0f, -0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.0f, -0.2f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.05f, -0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.05f, -0.2f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.25f, -0.1f, CUT_OFF_Z);
-			// gl.glEnd();
-
-			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			// gl.glVertex3f(fPosCut - 0.2f, fHeight + 0.1f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.0f, fHeight + 0.2f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.05f, fHeight + 0.2f, CUT_OFF_Z);
-			// gl.glVertex3f(fPosCut + 0.25f, fHeight + 0.1f, CUT_OFF_Z);
-			// gl.glEnd();
 
 			Vec3f lowerLeftCorner = new Vec3f();
 			Vec3f lowerRightCorner = new Vec3f();
@@ -379,7 +364,8 @@ public class GLDendrogram
 		}
 		else {
 
-			gl.glTranslatef(0, -fLevelHeight, 0);
+			if (fPosCut > fLevelHeight)
+				gl.glTranslatef(0, -fLevelHeight, 0);
 
 			gl.glColor4fv(CUT_OFF_COLOR, 0);
 			gl.glBegin(GL.GL_QUADS);
@@ -389,41 +375,23 @@ public class GLDendrogram
 			gl.glVertex3f(0, fPosCut + fWidthCutOf, CUT_OFF_Z);
 			gl.glEnd();
 
-			// gl.glColor4fv(CUT_OFF_HANDLE_COLOR, 0);
-			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			// gl.glVertex3f(-0.1f, fPosCut - 0.2f, CUT_OFF_Z);
-			// gl.glVertex3f(-0.2f, fPosCut + 0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(-0.0f, fPosCut + 0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(-0.2f, fPosCut + 0.05f, CUT_OFF_Z);
-			// gl.glVertex3f(-0.0f, fPosCut + 0.05f, CUT_OFF_Z);
-			// gl.glVertex3f(-0.1f, fPosCut + 0.25f, CUT_OFF_Z);
-			// gl.glEnd();
-
-			// gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			// gl.glVertex3f(fWidth + 0.1f, fPosCut - 0.2f, CUT_OFF_Z);
-			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.0f, CUT_OFF_Z);
-			// gl.glVertex3f(fWidth + 0.2f, fPosCut + 0.05f, CUT_OFF_Z);
-			// gl.glVertex3f(fWidth - 0.0f, fPosCut + 0.05f, CUT_OFF_Z);
-			// gl.glVertex3f(fWidth + 0.1f, fPosCut + 0.25f, CUT_OFF_Z);
-			// gl.glEnd();
-
 			Vec3f lowerLeftCorner = new Vec3f();
 			Vec3f lowerRightCorner = new Vec3f();
 			Vec3f upperRightCorner = new Vec3f();
 			Vec3f upperLeftCorner = new Vec3f();
 			Vec3f scalingPivot = new Vec3f();
-			lowerLeftCorner.set(-0.16f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
-			lowerRightCorner.set(0.04f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
-			upperRightCorner.set(0.04f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
-			upperLeftCorner.set(-0.16f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
-			scalingPivot.set(-0.06f, fWidthCutOf / 2 + fPosCut, AXIS_Z + 0.005f);
+			lowerLeftCorner.set(fWidth + 0.16f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
+			lowerRightCorner.set(fWidth - 0.04f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
+			upperRightCorner.set(fWidth - 0.04f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
+			upperLeftCorner.set(fWidth + 0.16f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
+			scalingPivot.set(fWidth + 0.06f, fWidthCutOf / 2 + fPosCut, AXIS_Z + 0.005f);
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP_ROTATED, lowerLeftCorner,
 				lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-			gl.glTranslatef(0, +fLevelHeight, 0);
+			if (fPosCut > fLevelHeight)
+				gl.glTranslatef(0, +fLevelHeight, 0);
 		}
 		gl.glPopName();
 
@@ -671,7 +639,11 @@ public class GLDendrogram
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], 1);
+
+		if (bUseBlackColoring)
+			gl.glColor4f(0, 0, 0, 1);
+		else
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], 1);
 
 		if (currentNode.isPartOfSubTree())
 			currentNode.getPosSubTree().x();
@@ -789,7 +761,7 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			float fCoeff = currentNode.getCoefficient();
+			// float fCoeff = currentNode.getCoefficient();
 
 			pos.setX(fXmin - fLevelWidth);// * (1 - fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
@@ -797,7 +769,7 @@ public class GLDendrogram
 
 		}
 		else {
-			float fCoeff = currentNode.getCoefficient();
+			// float fCoeff = currentNode.getCoefficient();
 
 			pos.setY(yPosInit);
 			yPosInit -= fSampleHeight;
@@ -848,7 +820,7 @@ public class GLDendrogram
 				fYmin = Math.min(fYmin, vec.y());
 			}
 
-			float fCoeff = currentNode.getCoefficient();
+			// float fCoeff = currentNode.getCoefficient();
 
 			pos.setX(fXmin + (fXmax - fXmin) / 2);
 			pos.setY(fYmax + fLevelHeight);// * (1 - fCoeff));
@@ -857,7 +829,7 @@ public class GLDendrogram
 		}
 		else {
 
-			float fCoeff = currentNode.getCoefficient();
+			// float fCoeff = currentNode.getCoefficient();
 
 			pos.setX(xPosInit);
 			xPosInit += fSampleWidth;
@@ -920,7 +892,11 @@ public class GLDendrogram
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+
+		if (bUseBlackColoring)
+			gl.glColor4f(0, 0, 0, 1);
+		else
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		float fDiff = 0;
 		float fTemp = currentNode.getPos().x();
@@ -1031,7 +1007,11 @@ public class GLDendrogram
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
 		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+
+		if (bUseBlackColoring)
+			gl.glColor4f(0, 0, 0, 1);
+		else
+			gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		float fDiff = 0;
 		float fTemp = currentNode.getPos().y();
@@ -1272,17 +1252,21 @@ public class GLDendrogram
 			groupList.append(temp);
 
 			if (bRenderGeneTree) {
-				useCase.getSet().setGroupListGenes(groupList);
-				useCase.replaceVirtualArray(EVAType.CONTENT, contentVA);
+				NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+				newGroupInfoEvent.setSender(this);
+				newGroupInfoEvent.setEVAType(EVAType.CONTENT);
+				newGroupInfoEvent.setGroupList(groupList);
+				newGroupInfoEvent.setDeleteTree(false);
+				eventPublisher.triggerEvent(newGroupInfoEvent);
 			}
 			else {
-				useCase.getSet().setGroupListExperiments(groupList);
-				useCase.replaceVirtualArray(EVAType.STORAGE, storageVA);
+				NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+				newGroupInfoEvent.setSender(this);
+				newGroupInfoEvent.setEVAType(EVAType.STORAGE);
+				newGroupInfoEvent.setGroupList(groupList);
+				newGroupInfoEvent.setDeleteTree(false);
+				eventPublisher.triggerEvent(newGroupInfoEvent);
 			}
-
-//			bRedrawDendrogram = true;
-//			bEnableDepthCheck = false;
-//			setDisplayListDirty();
 
 			return;
 		}
@@ -1314,12 +1298,20 @@ public class GLDendrogram
 		}
 
 		if (bRenderGeneTree) {
-			useCase.getSet().setGroupListGenes(groupList);
-			useCase.replaceVirtualArray(EVAType.CONTENT, contentVA);
+			NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+			newGroupInfoEvent.setSender(this);
+			newGroupInfoEvent.setEVAType(EVAType.CONTENT);
+			newGroupInfoEvent.setGroupList(groupList);
+			newGroupInfoEvent.setDeleteTree(false);
+			eventPublisher.triggerEvent(newGroupInfoEvent);
 		}
 		else {
-			useCase.getSet().setGroupListExperiments(groupList);
-			useCase.replaceVirtualArray(EVAType.STORAGE, storageVA);
+			NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+			newGroupInfoEvent.setSender(this);
+			newGroupInfoEvent.setEVAType(EVAType.STORAGE);
+			newGroupInfoEvent.setGroupList(groupList);
+			newGroupInfoEvent.setDeleteTree(false);
+			eventPublisher.triggerEvent(newGroupInfoEvent);
 		}
 	}
 
@@ -1773,9 +1765,11 @@ public class GLDendrogram
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void handleUpdateGroupInfo(boolean bGeneGroup) {
-		// TODO Auto-generated method stub
-
+	/**
+	 * Toggles the coloring scheme of the dendrogram view. Either normal coloring or only black coloring is
+	 * used.
+	 */
+	public void toggleColoringScheme() {
+		bUseBlackColoring = bUseBlackColoring ? (false) : (true);
 	}
 }

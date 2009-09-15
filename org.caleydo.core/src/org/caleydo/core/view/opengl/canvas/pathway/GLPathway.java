@@ -980,10 +980,4 @@ public class GLPathway
 
 	}
 
-	@Override
-	public void handleUpdateGroupInfo(boolean bGeneGroup) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

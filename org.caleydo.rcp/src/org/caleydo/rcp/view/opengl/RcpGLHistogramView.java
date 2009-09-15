@@ -299,8 +299,4 @@ public class RcpGLHistogramView
 		return ID;
 	}
 
-	@Override
-	public void handleUpdateGroupInfo(boolean bGeneGroup) {
-		// TODO Auto-generated method stub
-	}
 }

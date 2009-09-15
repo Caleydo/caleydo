@@ -1271,10 +1271,4 @@ public class GLGlyph
 		forceRebuild();
 	}
 
-	@Override
-	public void handleUpdateGroupInfo(boolean bGeneGroup) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

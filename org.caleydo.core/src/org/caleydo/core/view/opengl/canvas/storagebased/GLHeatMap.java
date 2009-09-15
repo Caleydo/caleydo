@@ -100,7 +100,9 @@ public class GLHeatMap
 	 * Determines whether a bigger space between heat map and caption is needed or not. If false no cluster
 	 * info is available and therefore no additional space is needed. Set by remote rendering view (HHM).
 	 */
-	private boolean bClusterVisualizationActive = false;
+	private boolean bClusterVisualizationGenesActive = false;
+
+	private boolean bClusterVisualizationExperimentsActive = false;
 
 	/**
 	 * Constructor.
@@ -765,7 +767,7 @@ public class GLHeatMap
 
 					textRenderer.setColor(0, 0, 0, 1);
 
-					if (bClusterVisualizationActive)
+					if (bClusterVisualizationGenesActive)
 						gl.glTranslatef(0, renderStyle.getWidthClusterVisualization(), 0);
 
 					if (currentType == ESelectionType.SELECTION || currentType == ESelectionType.MOUSE_OVER) {
@@ -780,7 +782,7 @@ public class GLHeatMap
 							0, fLineDegrees, fFontScaling);
 					}
 
-					if (bClusterVisualizationActive)
+					if (bClusterVisualizationGenesActive)
 						gl.glTranslatef(0, -renderStyle.getWidthClusterVisualization(), 0);
 				}
 
@@ -794,12 +796,19 @@ public class GLHeatMap
 			if (detailLevel == EDetailLevel.HIGH) {
 				if (iCount == contentVA.size()) {
 					fYPosition = 0;
+
+					if (bClusterVisualizationExperimentsActive)
+						gl.glTranslatef(+renderStyle.getWidthClusterVisualization(), 0, 0);
+
 					for (Integer iStorageIndex : storageVA) {
 						textRenderer.setColor(0, 0, 0, 1);
-						renderCaption(gl, set.get(iStorageIndex).getLabel(), fXPosition + 0.1f, fYPosition
+						renderCaption(gl, set.get(iStorageIndex).getLabel(), fXPosition + 0.05f, fYPosition
 							+ fFieldHeight / 2, 0, fColumnDegrees, renderStyle.getSmallFontScalingFactor());
 						fYPosition += fFieldHeight;
 					}
+					
+					if (bClusterVisualizationExperimentsActive)
+						gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 				}
 			}
 		}
@@ -1191,14 +1200,12 @@ public class GLHeatMap
 		setDisplayListDirty();
 	}
 
-	public void setClusterVisualizationActiveFlag(boolean bClusterVisualizationActive) {
-		this.bClusterVisualizationActive = bClusterVisualizationActive;
+	public void setClusterVisualizationGenesActiveFlag(boolean bClusterVisualizationActive) {
+		this.bClusterVisualizationGenesActive = bClusterVisualizationActive;
 	}
 
-	@Override
-	public void handleUpdateGroupInfo(boolean bGeneGroup) {
-		// TODO Auto-generated method stub
-
+	public void setClusterVisualizationExperimentsActiveFlag(boolean bClusterVisualizationExperimentsActive) {
+		this.bClusterVisualizationExperimentsActive = bClusterVisualizationExperimentsActive;
 	}
 
 	@Override
