@@ -1,14 +1,17 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 public final class DrawAbleLinearConnection
 	extends ADrawAbleConnection {
 
-	public DrawAbleLinearConnection(int iConnID) {
-		super(iConnID);
+	public DrawAbleLinearConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB) {
+		super(iNodeA, iNodeB);
 	}
 
 	@Override
@@ -22,14 +25,10 @@ public final class DrawAbleLinearConnection
 			gl.glLineWidth(HyperbolicRenderStyle.DA_LINEAR_CONNECTION_THICKNESS);
 		}
 
-		if (lPoints.size() > 1) {
-			gl.glBegin(GL.GL_LINE_STRIP);
-			for (int i = 0; i < lPoints.size() - 1; i++) {
-				gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
-				gl.glVertex3f(lPoints.get(i + 1).x(), lPoints.get(i + 1).y(), lPoints.get(i + 1).z());
-			}
-			gl.glEnd();
-		}
+		gl.glBegin(gl.GL_LINE);
+		for (Vec3f point : findClosestCorrespondendingPoints())
+			gl.glVertex3f(point.x(), point.y(), point.z());
+		gl.glEnd();
 	}
 }
 

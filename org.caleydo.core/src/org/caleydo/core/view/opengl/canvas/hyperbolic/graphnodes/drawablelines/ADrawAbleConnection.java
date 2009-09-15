@@ -2,16 +2,23 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 public abstract class ADrawAbleConnection
 	implements IDrawAbleConnection {
 
 	private int iConnID;
-	protected List<Vec3f> lPoints;
+	//protected List<Vec3f> lPoints;
+	protected IDrawAbleNode iNodeA;
+	protected IDrawAbleNode iNodeB;
 
-	public ADrawAbleConnection(int iConnID) {
-		this.iConnID = iConnID;
+	public ADrawAbleConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB) {
+		this.iNodeA = iNodeA;
+		this.iNodeB = iNodeB;
+		this.iConnID = generateID(iNodeA.getNodeNr(), iNodeB.getNodeNr());
 	}
 
 	@Override
@@ -24,10 +31,36 @@ public abstract class ADrawAbleConnection
 		return iConnID - conn.getConnNr();
 	}
 
-	@Override
-	public final void place(List<Vec3f> lPoints) {
-		this.lPoints = lPoints;
+	private int generateID(int iID1, int iID2) {
+		int left = (iID1 >= iID2 ? iID1 : iID2);
+		int right = (iID1 < iID2 ? iID1 : iID2);
+		return ((left << 12) | (left >> (32 - 12))) ^ right;
 	}
+	
+	protected final List<Vec3f> findClosestCorrespondendingPoints(){
+		float fMin = Float.MAX_VALUE;
+		Vec3f foundA = null;
+		Vec3f foundB = null;
+		float ft;
+		for(Vec3f pointA : iNodeA.getConnectionPoints())
+			for(Vec3f pointB : iNodeB.getConnectionPoints())
+				if((ft = (float) Math.sqrt(Math.pow(pointA.x()-pointB.x(), 2)+Math.pow(pointA.y()-pointB.y(), 2))) < fMin)
+				{
+					foundA = pointA;
+					foundB = pointB;
+					fMin = ft;
+				}
+		List<Vec3f> lP = new ArrayList<Vec3f>(); 
+		lP.add(foundA);
+		lP.add(foundB);
+		return lP;
+	}
+	
+	
+//	@Override
+//	public final void place(List<Vec3f> lPoints) {
+//		this.lPoints = lPoints;
+//	}
 
 	// protected float fRed = 0;
 	// protected float fGreen = 0;

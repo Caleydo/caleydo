@@ -39,15 +39,15 @@ public class HyperbolicRenderStyle
 	public static final float[] DA_LINEAR_CONNECTION_COLORSHEME_HL = { 0f, 1f, 0f, 1f };
 	public static final float DA_LINEAR_CONNECTION_THICKNESS_HL = 5f;
 	
-	public static final float[] DA_SPLINE_CONNECTION_COLORSHEME = { 0f, 0f, 1f, 1f };
-	public static final float DA_SPLINE_CONNECTION_THICKNESS = 1f;
+	public static final float[] DA_HB_GEOM_CONNECTION_COLORSHEME = { 0f, 0f, 1f, 1f };
+	public static final float DA_HB_GEOM_CONNECTION_THICKNESS = 1f;
 
-	public static final float[] DA_SPLINE_CONNECTION_COLORSHEME_HL = { 0f, 1f, 0f, 1f };
-	public static final float DA_SPLINE_CONNECTION_THICKNESS_HL = 5f;
+	public static final float[] DA_HB_GEOM_CONNECTION_COLORSHEME_HL = { 0f, 1f, 0f, 1f };
+	public static final float DA_HB_GEOM_CONNECTION_THICKNESS_HL = 5f;
 	public static final int DA_SPLINE_CONNECTION_NR_CTRLPOINTS = 50;
 	
-	public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
-	public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
+	//public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
+	//public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
 	
 	 
 	

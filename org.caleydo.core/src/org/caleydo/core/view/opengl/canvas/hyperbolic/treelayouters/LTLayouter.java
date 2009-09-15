@@ -13,7 +13,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleConnectionsFactory;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleLinearConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 
 public final class LTLayouter
@@ -31,22 +31,13 @@ public final class LTLayouter
 		if (tree == null)
 			return;
 
-		int iNumLayers = tree.getDepth();
-		
-		int iCurrentLayer = 1;
-		
 		float fLayerH = fViewSpaceYAbs / HyperbolicRenderStyle.MAX_DEPTH;
-		float fMaxNodeH = fLayerH * (1.0f - HyperbolicRenderStyle.Y_LAYER_SPACING);
-
 		float fCurNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE;
-		
 		IDrawAbleNode rootNode = tree.getRoot();
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh);
-		
 		iNodesPlacedInLayer = new int[HyperbolicRenderStyle.MAX_DEPTH];
-		
 		placeNode(rootNode, fViewSpaceX[1] / 2, fViewSpaceY[1] - fLayerH / 2.0f, 0.1f, fCurNodeSize, fCurNodeSize);
-		placeRecursive(rootNode, iCurrentLayer + 1, fLayerH);
+		placeRecursive(rootNode, 2, fLayerH);
 	}
 	
 	private void placeRecursive(IDrawAbleNode rootNode, int iCurrentLayer, float fLayerHigh){
@@ -64,8 +55,7 @@ public final class LTLayouter
 			placeNode(node, fViewSpaceX[0] + fViewSpaceXAbs / (iNodesInThisLayer + 1) * ++iNodesPlacedInLayer[iCurrentLayer - 1], fViewSpaceY[1] - fLayerHigh * iCurrentLayer + fLayerHigh / 2, 0.1f,
 				fCurNodeSize, fCurNodeSize);		
 			placeRecursive(node, iCurrentLayer + 1, fLayerHigh);
-			placeConnection(DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.LINEAR_TREE_LAYOUTER_CONNECTION_TYPE,
-				rootNode.getNodeNr(), node.getNodeNr()),findClosestCorrespondendingPoints(rootNode.getConnectionPoints(), node.getConnectionPoints()));
+			placeConnection(new DrawAbleLinearConnection(rootNode, node));
 			}
 	}
 		

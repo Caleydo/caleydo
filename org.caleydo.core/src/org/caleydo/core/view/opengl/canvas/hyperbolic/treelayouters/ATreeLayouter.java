@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public abstract class ATreeLayouter
 	protected float fViewSpaceY[] = { 0f, 0f };
 	protected float fViewSpaceXAbs = 0;
 	protected float fViewSpaceYAbs = 0;
+	protected float fViewRadius = 0;
+	protected Vec2f fvViewCenterPoint = null;
 	protected IViewFrustum viewFrustum;
 
 	private boolean bIsLayoutDirty = true;
@@ -76,6 +79,7 @@ public abstract class ATreeLayouter
 		fViewSpaceY[0] = fHeight * HyperbolicRenderStyle.Y_BORDER_SPACING;
 		fViewSpaceY[1] = fHeight - fHeight * HyperbolicRenderStyle.Y_BORDER_SPACING;
 		fViewSpaceYAbs = Math.abs(fViewSpaceY[0] - fViewSpaceY[1]);
+		fvViewCenterPoint = new Vec2f(fWidth / 2.0f, fHeight / 2.0f);
 	}
 
 	@Override
@@ -189,8 +193,7 @@ public abstract class ATreeLayouter
 		nodeLayout.add(node);
 	}
 
-	protected final void placeConnection(IDrawAbleConnection conn, List<Vec3f> lPoints) {
-		conn.place(lPoints);
+	protected final void placeConnection(IDrawAbleConnection conn) {
 		connectionLayout.add(conn);
 	}
 	

@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.nio.FloatBuffer;
@@ -7,6 +8,7 @@ import java.nio.FloatBuffer;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 //
 // import gleem.linalg.Vec3f;
@@ -20,53 +22,67 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 // import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 // import org.caleydo.core.view.opengl.util.spline.Spline3D;
 //
-public class DrawAbleSplineConnection
+public class DrawAbleHyperbolicGeometryConnection
 	extends ADrawAbleConnection {
 
-	public DrawAbleSplineConnection(int iConnID) {
-		super(iConnID);
+	private Vec2f fvHTCenterpoint;
+	private float fHTRadius;
+
+	public DrawAbleHyperbolicGeometryConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB,
+		Vec2f fvHTCenterpoint, float fHTRadius) {
+		super(iNodeA, iNodeB);
+		this.fvHTCenterpoint = fvHTCenterpoint;
+		this.fHTRadius = fHTRadius;
 	}
 
 	@Override
 	public void draw(GL gl, boolean bHighlight) {
 		if (bHighlight) {
-			gl.glColor4fv(HyperbolicRenderStyle.DA_SPLINE_CONNECTION_COLORSHEME_HL, 0);
-			gl.glLineWidth(HyperbolicRenderStyle.DA_SPLINE_CONNECTION_THICKNESS_HL);
+			gl.glColor4fv(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_COLORSHEME_HL, 0);
+			gl.glLineWidth(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_THICKNESS_HL);
 		}
 		else {
-			gl.glColor4fv(HyperbolicRenderStyle.DA_SPLINE_CONNECTION_COLORSHEME, 0);
-			gl.glLineWidth(HyperbolicRenderStyle.DA_SPLINE_CONNECTION_THICKNESS);
+			gl.glColor4fv(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_COLORSHEME, 0);
+			gl.glLineWidth(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_THICKNESS);
 		}
-		FloatBuffer fBuff = FloatBuffer.allocate(lPoints.size() * 3);
-		for (Vec3f point : lPoints) {
-			fBuff.put(point.x());
-			fBuff.put(point.y());
-			fBuff.put(point.z());
-		}
-		fBuff.rewind();
-		
-		//float[] fA={0.0f,0.0f,0.0f,1.0f,1.0f,0.0f,3.0f,3.0f,0.0f,5.0f,2.0f,0.0f};
-		//fBuff = FloatBuffer.allocate(12);
-		//fBuff.put(fA);
-		//fBuff.rewind();
-		gl.glEnable(GL.GL_MAP1_VERTEX_3);
-		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, lPoints.size(), fBuff);
-		gl.glBegin(GL.GL_LINE_STRIP);
-	//	for (int i = 0; i < lPoints.size(); i++) 	gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
-		for (int i = 0; i <= HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS; i++)
-			gl.glEvalCoord1f((float) i / (float) HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS);
+		// TODO: implement!!!
+		gl.glBegin(gl.GL_LINE);
+		for (Vec3f point : findClosestCorrespondendingPoints())
+			gl.glVertex3f(point.x(), point.y(), point.z());
 		gl.glEnd();
 
-		gl.glPointSize(10);
-		//float[] fA = { 0.0f, 0.0f, 1.0f, 1.0f };
-	//	gl.glColor4fv(fA, 0);
-//		gl.glBegin(GL.GL_POINTS);
-//		for (int i = 0; i < lPoints.size(); i++) {
-//			gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
-//		}
-//		gl.glEnd();
-
 	}
+	// FloatBuffer fBuff = FloatBuffer.allocate(lPoints.size() * 3);
+	// for (Vec3f point : lPoints) {
+	// fBuff.put(point.x());
+	// fBuff.put(point.y());
+	// fBuff.put(point.z());
+	// }
+	// fBuff.rewind();
+
+	// float[] fA={0.0f,0.0f,0.0f,1.0f,1.0f,0.0f,3.0f,3.0f,0.0f,5.0f,2.0f,0.0f};
+	// fBuff = FloatBuffer.allocate(12);
+	// fBuff.put(fA);
+	// fBuff.rewind();
+	// gl.glEnable(GL.GL_MAP1_VERTEX_3);
+	// gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, lPoints.size(), fBuff);
+	// gl.glBegin(GL.GL_LINE_STRIP);
+	// // for (int i = 0; i < lPoints.size(); i++) gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(),
+	// lPoints.get(i).z());
+	// for (int i = 0; i <= HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS; i++)
+	// gl.glEvalCoord1f((float) i / (float) HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS);
+	// gl.glEnd();
+	//
+	// gl.glPointSize(10);
+	// float[] fA = { 0.0f, 0.0f, 1.0f, 1.0f };
+	// gl.glColor4fv(fA, 0);
+	// gl.glBegin(GL.GL_POINTS);
+	// for (int i = 0; i < lPoints.size(); i++) {
+	// gl.glVertex3f(lPoints.get(i).x(), lPoints.get(i).y(), lPoints.get(i).z());
+	// }
+	// gl.glEnd();
+
+	// }
 }
 // implements IDrawAbleConnection {
 //	

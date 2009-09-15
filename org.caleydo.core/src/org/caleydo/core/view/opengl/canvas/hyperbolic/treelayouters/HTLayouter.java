@@ -15,7 +15,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleConnectionsFactory;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicGeometryConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 
 
@@ -78,7 +78,7 @@ public final class HTLayouter
 			placeNode(tmpChild, getFXCoord(), getFYCoord(), 0, fNodeSize, fNodeSize);
 			float fFirstChildX = getFXCoord();
 			float fFirstChildY = getFYCoord();
-			drawLine(fCenterX, fCenterY, fFirstChildX, fFirstChildY);
+			placeConnection(new DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, fvViewCenterPoint, fViewRadius));
 			
 			calculateRecursiveLayout(tmpChild, fRadius - 0.05f , fFirstLayerAngle*fCurrentNodeCount, fLayer+1, fNodeSize, getFXCoord(), getFYCoord());
 		
@@ -141,7 +141,8 @@ public final class HTLayouter
 				//if(tree.hasChildren(tmpChild))
 				{
 					float fLayerOfBranch = calculateRecursiveLayout(tmpChild, fDeltaRadius, fRealChildAngle, fLayer+1, fNodeSize, fXCoord, fYCoord);
-				drawLine(fXCoordOfParent, fYCoordOfParent, fXCoord, fYCoord);
+				placeConnection(new DrawAbleHyperbolicGeometryConnection(node, tmpChild, fvViewCenterPoint, fViewRadius));
+					//drawLine(fXCoordOfParent, fYCoordOfParent, fXCoord, fYCoord);
 //				childAngle =
 //				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
 //					+ (alpha / 2);
@@ -241,25 +242,25 @@ public final class HTLayouter
 		setFYCoord((float) (fParentYCoord + fRadius * Math.sin(fAngle)));
 
 	}
-	private void drawLine(float fFirstXCoord, float fFirstYCoord, float fSecondXCoord, float fSecondYCoord){
-		IDrawAbleConnection line = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE, iLineIDDummy++,iLineIDDummy++);
-		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-		Vec3f p1 = new Vec3f();
-		Vec3f p2 = new Vec3f();
-		p1.setX(fFirstXCoord);
-		p1.setY(fFirstYCoord);
-		p1.setZ(1.0f);
-		p2.setX(fSecondXCoord);
-		p2.setY(fSecondYCoord);
-		p2.setZ(1.0f);
-		
-		
-		points.add(p1);
-		points.add(p2);
-		//line.setConnectionColor3f(1.0f, 1.0f, 0.0f);
-		placeConnection(line, points);
-	//	line.drawConnectionFromStartToEnd(gl, points, 2.0f);
-	}
+//	private void drawLine(float fFirstXCoord, float fFirstYCoord, float fSecondXCoord, float fSecondYCoord){
+//		IDrawAbleConnection line = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE, iLineIDDummy++,iLineIDDummy++);
+//		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+//		Vec3f p1 = new Vec3f();
+//		Vec3f p2 = new Vec3f();
+//		p1.setX(fFirstXCoord);
+//		p1.setY(fFirstYCoord);
+//		p1.setZ(1.0f);
+//		p2.setX(fSecondXCoord);
+//		p2.setY(fSecondYCoord);
+//		p2.setZ(1.0f);
+//		
+//		
+//		points.add(p1);
+//		points.add(p2);
+//		//line.setConnectionColor3f(1.0f, 1.0f, 0.0f);
+//		placeConnection(line, points);
+//	//	line.drawConnectionFromStartToEnd(gl, points, 2.0f);
+//	}
 
 	@Override
 	public void animateToNewTree(Tree<IDrawAbleNode> tree) {

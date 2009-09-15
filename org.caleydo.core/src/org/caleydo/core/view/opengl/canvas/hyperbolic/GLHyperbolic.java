@@ -127,7 +127,7 @@ public class GLHyperbolic
 		// tree.addChild(test, test2);
 		// layouter = new LinearTreeLayouter(viewFrustum);
 
-		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 12);
+		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 5);
 		System.out.println(tree.getGraph().toString());
 		layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.setTree(tree);
@@ -220,8 +220,6 @@ public class GLHyperbolic
 			bIsSomethingHighlighted = false;
 			setDisplayListDirty();
 		}
-
-		// glMouseListener.resetEvents();
 	}
 
 	@Override
@@ -229,101 +227,13 @@ public class GLHyperbolic
 		processEvents();
 		layouter.display(gl);
 		gl.glCallList(iGLDisplayListToCall);
-	//	gl.glCallLists(arg0, arg1, arg2)
-		// GLHelperFunctions.drawAxis(gl);
-		// render(gl);
-		// clipToFrustum(gl);
-		//
-		// gl.glCallList(iGLDisplayListToCall);
-
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-
-		// if (iPathwayID != -1)
-		// {
-		// PathwayGraph pathwayGraph = generalManager.getPathwayManager().getItem(iPathwayID);
-		// for (IGraphItem node : pathwayGraph.getAllItemsByKind(EGraphItemKind.NODE))
-		// {
-		// System.out.println("Node:" + node);
-		// }
-		// }
-
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex) {
-		//gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		layouter.buildDisplayLists(gl);
-		// renderHistogram(gl);
-		// renderColorBars(gl);
-		//gl.glEndList();
 	}
 
 	private void render(GL gl) {
-		// layouter.renderTreeLayout(gl);
-
-		// TestLayout layout = new TestLayout(gl, viewFrustum, tree.getTree());
-		// layout.drawGraph(gl);
-		// gl.glFlush();
-
-		// gl.glColor4f(1, 0, 0, 1);
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(0, 0, 0);
-		// gl.glVertex3f(0, 1, 0);
-		// gl.glVertex3f(1, 1, 0);
-		// gl.glVertex3f(1, 0, 0);
-		// gl.glEnd();
-
-		// gl.glColor4f(1, 1, 0, 1);
-
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex2f(0.0f, 0.0f);
-		// gl.glVertex2f(0.0f, 3.0f);
-		// gl.glVertex2f(1.0f, 0.0f);
-		// gl.glVertex2f(1.0f, 3.0f);
-		// gl.glVertex2f(0.0f, 1.5f);
-		// gl.glVertex2f(1.0f, 1.5f);
-		// gl.glVertex2f(2.0f, 0.0f);
-		// gl.glVertex2f(2.0f, 3.0f);
-		// gl.glVertex2f(2.0f, 1.5f);
-		// gl.glVertex2f(3.0f, 1.5f);
-		// gl.glVertex2f(2.0f, 3.0f);
-		// gl.glVertex2f(0.0f, 5.0f);
-		// // glVertex2f(4.0, 3.0);
-		// // glVertex2f(6.0, 1.5);
-		// // glVertex2f(4.0, 0.0);
-		// gl.glEnd();
-
-		// gl.glBegin(GL.GL_LINES);
-		// gl.glVertex3f(0.0f, 10.0f, 0.0f); // origin of the line
-		// gl.glVertex3f(200.0f, 14.0f, 0.0f); // ending point of the line
-		// gl.glEnd( );
-
-		// gl.glColor4f(1, 1, 0, 1);
-		//		
-		// gl.glBegin(GL.GL_LINE);
-		//
-		// gl.glVertex2f(0.0f, 0.0f);
-		// gl.glVertex2f(5.0f, 3.0f);
-		// // gl.glVertex3f(20F, 1F, 0F);
-		// // gl.glVertex3f(30F, 2F, 0F);
-		// // gl.glVertex3f(40F, 3F, 0F);
-		// gl.glEnd();
-
-		// gl.glPointSize(5.0f);
-		// gl.glColor4f(0,0,1,1);
-		// gl.glBegin(GL.GL_POINTS);
-		//		
-		// gl.glVertex3f(5.0f, 3.0f, 0.0f);
-		//		
-		// gl.glEnd();
-		// gl.glFlush();
-
-		// vec.add(new Vec3f(3.0f, 3.0f, 0));
-		// vec.add(new Vec3f(2.0f, 2.0f, 0));
-		// vec.add(new Vec3f(1.0f, 1.0f, 0));
-
-		// DrawAbleSplineConnection spline = new DrawAbleSplineConnection();
-		// spline.drawConnectionFromStartToEnd(gl, vec, 0.4f);
-
 	}
 
 	@Override
@@ -509,7 +419,7 @@ public class GLHyperbolic
 				for (IDrawAbleNode node : nodesOnLayer) {
 					if (nodes.isEmpty())
 						continue;
-					int s = Math.min(nodes.size(), (int) (Math.random() * (double) iMaxNodesOnLayer) / 4);
+					int s = Math.min(nodes.size(), (int) Math.round((Math.random() * (double) iMaxNodesOnLayer) / 4));
 					for (int j = 0; j < s; ++j) {
 						tree.addChild(node, nodes.get(0));
 						nodes.remove(0);

@@ -11,10 +11,11 @@ public interface IDrawAbleConnection
 
 	public int getConnNr();
 
-	public void place(List<Vec3f> lPoints);
-
 	public void draw(GL gl, boolean bHighlight);
 
+	
+	//public void place(List<Vec3f> lPoints);
+	
 	// public void setHighlight(boolean b);
 
 	// /**
