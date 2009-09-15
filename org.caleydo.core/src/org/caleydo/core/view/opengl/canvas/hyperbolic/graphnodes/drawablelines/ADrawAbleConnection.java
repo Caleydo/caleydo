@@ -37,7 +37,7 @@ public abstract class ADrawAbleConnection
 		return ((left << 12) | (left >> (32 - 12))) ^ right;
 	}
 	
-	protected final List<Vec3f> findClosestCorrespondendingPoints(){
+	protected final Vec3f[] findClosestCorrespondendingPoints(){
 		float fMin = Float.MAX_VALUE;
 		Vec3f foundA = null;
 		Vec3f foundB = null;
@@ -50,10 +50,8 @@ public abstract class ADrawAbleConnection
 					foundB = pointB;
 					fMin = ft;
 				}
-		List<Vec3f> lP = new ArrayList<Vec3f>(); 
-		lP.add(foundA);
-		lP.add(foundB);
-		return lP;
+		Vec3f[] vaPoints = {foundA, foundB}; 
+		return vaPoints;
 	}
 	
 	

@@ -4,6 +4,7 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.nio.FloatBuffer;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -46,11 +47,73 @@ public class DrawAbleHyperbolicGeometryConnection
 			gl.glLineWidth(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_THICKNESS);
 		}
 		// TODO: implement!!!
-		gl.glBegin(gl.GL_LINE);
-		for (Vec3f point : findClosestCorrespondendingPoints())
-			gl.glVertex3f(point.x(), point.y(), point.z());
-		gl.glEnd();
 
+		Vec3f[] endPoints = findClosestCorrespondendingPoints();
+		Vec3f pStartP = endPoints[0];
+		Vec3f pEndP = endPoints[1];
+
+		Vec2f v2Start = new Vec2f(pStartP.x(), pStartP.y());
+		Vec2f v2End = new Vec2f(pEndP.x(), pEndP.y());
+		float alpha =
+			(float) Math.acos((v2Start.x() * v2End.x() + v2Start.y() * v2End.y())
+				/ (v2Start.length() * v2End.length()));
+		if (v2Start.x() > fvHTCenterpoint.x())
+			if (v2Start.y() > v2End.y())
+				alpha = alpha * -1.0f;
+			else
+				;
+		else if (v2Start.y() < v2End.y())
+			alpha = alpha * -1.0f;
+		else
+			;
+
+		Vec3f vSE = new Vec3f(pEndP.x() - pStartP.x(), pEndP.y() - pStartP.y(), pEndP.z() - pStartP.z());
+		Vec3f pSpP1 =
+			new Vec3f(pStartP.x() + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
+				/ 2.0f);
+		Vec3f pSpP2 =
+			new Vec3f((float) (pSpP1.x() + Math.sin(alpha)), (float) (pSpP1.y() + Math.sin(alpha)), pSpP1.z());
+
+		// Vec3f vnpSP1 = new Vec3f(-pSpP1.y(), pSpP1.x(), pSpP1.z());
+		// Vec3f vME = new Vec3f(pEndP.x() - fvHTCenterpoint.x(), pEndP.y() - fvHTCenterpoint.y(), 0);
+
+		// float s = (pSpP1.y() - vME.y() * (pSpP1.x() + fvHTCenterpoint.x()) - fvHTCenterpoint.y() * vME.x())
+		// / (vnpSP1.x() * vME.y() - vnpSP1.y());
+		// float s = (vME.x()*(fvHTCenterpoint.y()-pSpP1.y())+vME.y()*(pSpP1.x() - fvHTCenterpoint.x())) /
+		// (vME.x()*vnpSP1.y() - vME.y()*vnpSP1.x());
+		// Vec3f pSpP2 = new Vec3f(pSpP1.x() + s * vnpSP1.x(), pSpP1.y() + s * vnpSP1.y(), pSpP1.z());
+
+		// Vec3f vnSP1 = new Vec3f(-pSpP1.y()+pSpP1.x(), pSpP1.x()+pSpP1.y(), pSpP1.z());
+		// vnSP1.times((float) 1.0f / (float) Math.sqrt(vnSP1.x() * vnSP1.x() + vnSP1.y() * vnSP1.y()));
+		// Vec3f pSpP2 =
+		// new Vec3f((vME.y() - vnSP1.y()) / (vnSP1.x() - vME.x()), (vnSP1.x() * vME.y() - vME.x()
+		// * vnSP1.y())
+		// / (vnSP1.x() - vME.x()), vnSP1.z());
+		// FloatBuffer fBuff = FloatBuffer.allocate(4 * 3);
+		// float[] fA =
+		// { pStartP.x(), pStartP.y(), pStartP.z(), pSpP1.x(), pSpP1.y(), pSpP1.z(), pSpP2.x(), pSpP2.y(),
+		// pSpP2.z(), pEndP.x(), pEndP.y(), pEndP.z() };
+		FloatBuffer fBuff;
+		fBuff = FloatBuffer.allocate(3 * 3);
+		if (Math.abs(alpha) < 2 * Math.PI / 180.0f) {
+			float[] fA =
+				{ pStartP.x(), pStartP.y(), pStartP.z(), pSpP1.x(), pSpP1.y(), pSpP1.z(), pEndP.x(),
+						pEndP.y(), pEndP.z() };
+			fBuff.put(fA);
+		}
+		else {
+			float[] fA =
+				{ pStartP.x(), pStartP.y(), pStartP.z(), pSpP2.x(), pSpP2.y(), pSpP2.z(), pEndP.x(),
+						pEndP.y(), pEndP.z() };
+			fBuff.put(fA);
+		}
+		fBuff.rewind();
+		gl.glEnable(GL.GL_MAP1_VERTEX_3);
+		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, fBuff);
+		gl.glBegin(GL.GL_LINE_STRIP);
+		for (int i = 0; i <= HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS; i++)
+			gl.glEvalCoord1f((float) i / (float) HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS);
+		gl.glEnd();
 	}
 	// FloatBuffer fBuff = FloatBuffer.allocate(lPoints.size() * 3);
 	// for (Vec3f point : lPoints) {
