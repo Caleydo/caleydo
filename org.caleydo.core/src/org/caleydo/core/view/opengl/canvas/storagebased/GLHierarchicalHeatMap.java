@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BACKGROUND_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BACKGROUND_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.DENDROGRAM_BACKROUND;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.DRAGGING_CURSOR_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BUTTON_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.CLUSTER_BORDERS_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.FIELD_Z;
@@ -1874,7 +1875,7 @@ public class GLHierarchicalHeatMap
 
 		renderSelectedDomain(gl, startpoint1, endpoint1, startpoint2, endpoint2);
 
-//		if (bGeneDendrogramRenderCut == false) {
+		// if (bGeneDendrogramRenderCut == false) {
 		{
 			gl.glLineWidth(1f);
 			gl.glColor4f(1, 0, 0, 1);
@@ -1883,7 +1884,9 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fWidthLevel2, -0.4f, BUTTON_Z);
 			gl.glEnd();
 
-			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
+
+			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable();
 			tempTexture.bind();
 
@@ -1898,11 +1901,11 @@ public class GLHierarchicalHeatMap
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(fWidthLevel2, -0.4f, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(fWidthLevel2, -0.2f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel2 - 0.1f, -0.2f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel2 - 0.1f, -0.4f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
 			}
 			else {
@@ -1910,11 +1913,11 @@ public class GLHierarchicalHeatMap
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidthLevel2, -0.4f, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel2, -0.2f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(fWidthLevel2 - 0.1f, -0.2f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fWidthLevel2 - 0.1f, -0.4f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel2 - fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
 			}
 			gl.glPopName();
@@ -2036,7 +2039,7 @@ public class GLHierarchicalHeatMap
 	private void renderCursorLevel1(final GL gl) {
 
 		float fWidthLevel1 = renderStyle.getWidthLevel1();
-
+		float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
 		float fOffsetClusterVis = 0f;
 
 		if (contentVA.getGroupList() != null)
@@ -2044,7 +2047,9 @@ public class GLHierarchicalHeatMap
 
 		gl.glTranslatef(fWidthLevel1 + fOffsetClusterVis, 0, 0);
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_SMALL);
+		gl.glColor4f(1, 1, 1, 1);
+
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -2053,47 +2058,48 @@ public class GLHierarchicalHeatMap
 		// Polygon for iFirstElement-Cursor
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 1));
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel1, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel1 + 0.1f, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1 + 0.1f, BUTTON_Z);
+		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel1, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel1 + fSizeHeatmapArrow, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1 + fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		// Polygon for iLastElement-Cursor
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL1, 2));
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorLastElementLevel1, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorLastElementLevel1 - 0.1f, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1 - 0.1f, BUTTON_Z);
-		gl.glEnd();
-		gl.glPopName();
-
-		// fill gap between cursor
-		gl.glColor4f(0f, 0f, 0f, 0.45f);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1,
-			1));
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorLastElementLevel1, BUTTON_Z);
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1, BUTTON_Z);
-		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1, BUTTON_Z);
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel1, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1 - fSizeHeatmapArrow, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1 - fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		gl.glPopAttrib();
+		tempTexture.disable();
+
+		// fill gap between cursor
+		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1,
+			1));
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel1, BUTTON_Z);
+		gl.glVertex3f(0.0f, fPosCursorLastElementLevel1, BUTTON_Z);
+		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel1, BUTTON_Z);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel1, BUTTON_Z);
+		gl.glEnd();
+		gl.glPopName();
 
 		gl.glTranslatef(-(fWidthLevel1 + fOffsetClusterVis), 0, 0);
-		tempTexture.disable();
+
 	}
 
 	/**
@@ -2104,10 +2110,12 @@ public class GLHierarchicalHeatMap
 	 */
 	private void renderCursorLevel2(final GL gl) {
 
+		float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
+
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glColor4f(1f, 1, 1, 1f);
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_SMALL);
+		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -2116,45 +2124,46 @@ public class GLHierarchicalHeatMap
 		// Polygon for iFirstElement-Cursor
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 1));
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel2, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel2 + 0.1f, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2 + 0.1f, BUTTON_Z);
+		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel2, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel2 + fSizeHeatmapArrow, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2 + fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		// Polygon for iLastElement-Cursor
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_CURSOR_LEVEL2, 2));
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorLastElementLevel2, BUTTON_Z);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorLastElementLevel2 - 0.1f, BUTTON_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2 - 0.1f, BUTTON_Z);
-		gl.glEnd();
-		gl.glPopName();
-
-		// fill gap between cursor
-		gl.glColor4f(0f, 0f, 0f, 0.45f);
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2,
-			1));
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorLastElementLevel2, BUTTON_Z);
 		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2, BUTTON_Z);
-		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2, BUTTON_Z);
-		gl.glVertex3f(GAP_BETWEEN_LEVELS / 4, fPosCursorFirstElementLevel2, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2 - fSizeHeatmapArrow, BUTTON_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2 - fSizeHeatmapArrow, BUTTON_Z);
 		gl.glEnd();
 		gl.glPopName();
 
 		gl.glPopAttrib();
 		tempTexture.disable();
+
+		// fill gap between cursor
+		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2,
+			1));
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorLastElementLevel2, BUTTON_Z);
+		gl.glVertex3f(0.0f, fPosCursorLastElementLevel2, BUTTON_Z);
+		gl.glVertex3f(0.0f, fPosCursorFirstElementLevel2, BUTTON_Z);
+		gl.glVertex3f(fSizeHeatmapArrow, fPosCursorFirstElementLevel2, BUTTON_Z);
+		gl.glEnd();
+		gl.glPopName();
+
 	}
 
 	@Override
@@ -2264,8 +2273,7 @@ public class GLHierarchicalHeatMap
 
 		float fleftOffset = 0.1f + GAP_BETWEEN_LEVELS + renderStyle.getWidthLevel2() * fAnimationScale;
 
-
-		 if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut) {
 			fleftOffset += renderStyle.getWidthGeneDendrogram() + 0.8;
 			fright = viewFrustum.getWidth() - 3.2f;
 		}
@@ -2274,10 +2282,10 @@ public class GLHierarchicalHeatMap
 			fleftOffset += 0.78f;
 		}
 
-			if (bIsHeatmapInFocus) {
+		if (bIsHeatmapInFocus) {
 			fright = viewFrustum.getWidth() - 2f;
 		}
-		 
+
 		if (contentVA.getGroupList() != null)
 			fleftOffset += 2 * renderStyle.getWidthClusterVisualization();
 
@@ -2809,6 +2817,7 @@ public class GLHierarchicalHeatMap
 	private void renderGeneDendrogramBackground(GL gl) {
 
 		float fHeight = viewFrustum.getHeight();
+		float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
 		float fWidthGeneDendrogram = renderStyle.getWidthGeneDendrogram();
 
 		float fWidthCurveTexture = GAP_BETWEEN_LEVELS / 4;
@@ -2873,7 +2882,7 @@ public class GLHierarchicalHeatMap
 
 		if (set.getClusteredTreeGenes() != null) {
 
-			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable();
 			tempTexture.bind();
 
@@ -2886,11 +2895,11 @@ public class GLHierarchicalHeatMap
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(-fWidthGeneDendrogram, -0.4f, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(-fWidthGeneDendrogram, -0.2f, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(-fWidthGeneDendrogram + 0.1f, -0.2f, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(-fWidthGeneDendrogram + 0.1f, -0.4f, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
 			}
 			else {
@@ -2898,11 +2907,11 @@ public class GLHierarchicalHeatMap
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(-fWidthGeneDendrogram, -0.4f, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(-fWidthGeneDendrogram, -0.2f, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(-fWidthGeneDendrogram + 0.1f, -0.2f, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f + fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(-fWidthGeneDendrogram + 0.1f, -0.4f, BUTTON_Z);
+				gl.glVertex3f(-fWidthGeneDendrogram + fSizeHeatmapArrow, -0.4f, BUTTON_Z);
 				gl.glEnd();
 			}
 			gl.glPopName();
@@ -2915,6 +2924,7 @@ public class GLHierarchicalHeatMap
 
 		float fHeight = viewFrustum.getHeight();
 		float fWidthLevel3 = renderStyle.getWidthLevel3();
+		float fSizeHeatmapArrow = renderStyle.getSizeHeatmapArrow();
 		float fHeightExperimentDendrogram = renderStyle.getHeightExperimentDendrogram();
 
 		float fWidthCurveTexture = GAP_BETWEEN_LEVELS / 4;
@@ -2979,7 +2989,7 @@ public class GLHierarchicalHeatMap
 
 		if (set.getClusteredTreeExps() != null) {
 
-			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
 			tempTexture.enable();
 			tempTexture.bind();
 
@@ -2990,11 +3000,11 @@ public class GLHierarchicalHeatMap
 			if (bExperimentDendrogramActive) {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fWidthLevel3 + 0.2f, fHeight, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel3 + 0.2f, fHeight - 0.1f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight - 0.1f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
 				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight, BUTTON_Z);
 				gl.glEnd();
@@ -3002,11 +3012,11 @@ public class GLHierarchicalHeatMap
 			else {
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(fWidthLevel3 + 0.2f, fHeight, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fWidthLevel3 + 0.2f, fHeight - 0.1f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f - fSizeHeatmapArrow, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight - 0.1f, BUTTON_Z);
+				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight - fSizeHeatmapArrow, BUTTON_Z);
 				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidthLevel3 + 0.4f, fHeight, BUTTON_Z);
 				gl.glEnd();

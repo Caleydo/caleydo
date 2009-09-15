@@ -25,6 +25,7 @@ public class HeatMapRenderStyle
 	public static final int LABEL_TEXT_MIN_SIZE = 50;
 
 	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
+	public static final float[] DRAGGING_CURSOR_COLOR = { 0.2f, 0.2f, 0.2f, 1 };
 	public static final float[] GROUP_COLOR_NORMAL = { 0.5f, 1f, 1f, 1 };
 	public static final float[] GROUP_COLOR_SELECTED = GeneralRenderStyle.SELECTED_COLOR;
 	public static final float[] DENDROGRAM_BACKROUND = { 0.5f, 0.5f, 0.5f, 1 };
@@ -48,6 +49,7 @@ public class HeatMapRenderStyle
 	private float fWidthClusterVisualization = 0.1f;
 	private float fHeightExperimentDendrogram = 1.45f;
 	private float fWidthGeneDendrogram = 1.6f;
+	private float fSizeHeatmapArrow = 0.17f;
 
 	// private ArrayList<FieldWidthElement> alFieldWidths;
 
@@ -259,5 +261,9 @@ public class HeatMapRenderStyle
 			return viewFrustum.getHeight() - 2 * getYSpacing();
 		return viewFrustum.getHeight();
 
+	}
+
+	public float getSizeHeatmapArrow() {
+		return fSizeHeatmapArrow;
 	}
 }

@@ -22,7 +22,7 @@ public enum EIconTextures {
 	GATE_TOP("resources/icons/view/storagebased/parcoords/gate_top.png"),
 	GATE_MENUE("resources/icons/view/storagebased/parcoords/gate_menue.png"),
 	GATE_BODY("resources/icons/view/storagebased/parcoords/gate_body.png"),
-	
+
 	REMOVE("resources/icons/general/remove.png"),
 
 	// POLYLINE_TO_AXIS("resources/icons/general/no_icon_available.png"),
@@ -31,9 +31,19 @@ public enum EIconTextures {
 	// RESET_SELECTIONS("resources/icons/general/no_icon_available.png"),
 	// SAVE_SELECTIONS("resources/icons/general/no_icon_available.png"),
 	// ANGULAR_BRUSHING("resources/icons/view/storagebased/parcoords/angular_brush.png"),
+
+	// hierarchical heat map
 	HEAT_MAP_SYMBOL("resources/icons/view/storagebased/heatmap/heatmap128x128.png"),
-	DENDROGRAM_HORIZONTAL_SYMBOL("resources/icons/view/storagebased/dendrogram_horizontal.png"),
-	DENDROGRAM_VERTICAL_SYMBOL("resources/icons/view/storagebased/dendrogram_vertical.png"),
+	HEAT_MAP_ARROW("resources/icons/view/storagebased/heatmap/hm_arrow.png"),
+	HEAT_MAP_GROUP_SELECTED("resources/icons/view/storagebased/heatmap/hm_group_selected.png"),
+	HEAT_MAP_GROUP_NORMAL("resources/icons/view/storagebased/heatmap/hm_group_normal.png"),
+
+	// dendrogram
+	SLIDER_MIDDLE("resources/icons/view/storagebased/dendrogram/slider_middle.png"),
+	SLIDER_ENDING("resources/icons/view/storagebased/dendrogram/slider_ending.png"),
+	DENDROGRAM_HORIZONTAL_SYMBOL("resources/icons/view/storagebased/dendrogram/dendrogram_horizontal.png"),
+	DENDROGRAM_VERTICAL_SYMBOL("resources/icons/view/storagebased/dendrogram/dendrogram_vertical.png"),
+
 	PAR_COORDS_SYMBOL("resources/icons/view/storagebased/parcoords/parcoords128x128.png"),
 	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
 	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
@@ -68,7 +78,7 @@ public enum EIconTextures {
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
 
 	CELL_MODEL("resources/models/cell.jpg"),
-	
+
 	// context menu elements
 	CM_LOAD_DEPENDING_PATHWAYS("/resources/context_menu/load_depending_pathways.png"),
 	CM_DEPENDING_PATHWAYS("/resources/context_menu/depending_pathways.png"),
