@@ -59,7 +59,7 @@ public final class HTLayouter
 	
 		// RECURSIVE TREE LAYOUTER
 		float fLayer = 1.0f;
-		float fRadius = 0.2f;
+		float fRadius = 0.5f;
 		
 		//float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
 		float fNumberOfNodesInLayer = tree.getNumberOfElementsInLayer((int)fLayer);
@@ -77,7 +77,7 @@ public final class HTLayouter
 			placeNode(tmpChild, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f);
 			drawLine(fCenterX, fCenterY, getFXCoord(), getFYCoord());
 			
-			calculateRecursiveLayout(tmpChild, fRadius*2 + 0.05f , fFirstLayerAngle*fCurrentNodeCount, fLayer+1, fNodeSize, getFXCoord(), getFYCoord());
+			calculateRecursiveLayout(tmpChild, fRadius - 0.05f , fFirstLayerAngle*fCurrentNodeCount, fLayer+1, fNodeSize, getFXCoord(), getFYCoord());
 		
 		}
 		}
@@ -98,13 +98,15 @@ public final class HTLayouter
 			if (tree.hasChildren(node)){
 				
 
-				float fDeltaRadius = 5.0f/(fLayer*6);
-				float fChildSpace = fDeltaRadius * (float)Math.PI;
+//				float fDeltaRadius = 5.0f/(fLayer*6);
 			//float childs = 3.0f; // node.getNumberOfChildren()
 			
 			ArrayList<IDrawAbleNode> childsOfCurrentNode = new ArrayList<IDrawAbleNode>();
 			childsOfCurrentNode = tree.getChildren(node);
-			float fNumberOfChildsInBranch = childsOfCurrentNode.size();
+//			float fDeltaRadius = fRadius/1.95f;
+			float fDeltaRadius = fRadius;
+			float fChildSpace = (fDeltaRadius * (float)Math.PI)/(childsOfCurrentNode.size()+1);
+			float fNumberOfChildsOfNode = childsOfCurrentNode.size();
 			float fChildCount = 0.0f;
 			float fChildAngle = 0.0f;
 			//for (float numChilds = 1; numChilds <= childs; numChilds++) {
@@ -121,17 +123,18 @@ public final class HTLayouter
 //						+ alphaHalfOffset;
 				
 				fChildAngle =
-				calculateChildAngle(fParentAngle , fChildSpace , fRadius, fChildCount)
+				calculateChildAngle(fParentAngle , fChildSpace ,  fDeltaRadius, fChildCount)
 				
 					;//+ alphaHalfOffset;
 				//calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
 //				float realChildAngle = parentAngle + (childAngle*(numChilds - 1));
-				float fRealChildAngle = fParentAngle - (fChildAngle*(fNumberOfChildsInBranch-1)/2) + fChildAngle*(fChildCount-1);
+				float fRealChildAngle = fParentAngle - ((fChildAngle*(fNumberOfChildsOfNode-1))/2) + fChildAngle*(fChildCount-1);
 //				calcualteChildPosition(fRadius, fRealChildAngle, fChildCount, fXCoordOfParent, fYCoordOfParent);
 				calcualteChildPosition(fDeltaRadius, fRealChildAngle, fChildCount, fXCoordOfParent, fYCoordOfParent);
 				
 				float fXCoord = getFXCoord();
 				float fYCoord = getFYCoord();
+				float fLayerOfBranch = calculateRecursiveLayout(tmpChild, fDeltaRadius, fRealChildAngle, fLayer+1, fNodeSize, fXCoord, fYCoord);
 				drawLine(fXCoordOfParent, fYCoordOfParent, fXCoord, fYCoord);
 //				childAngle =
 //				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
@@ -142,7 +145,7 @@ public final class HTLayouter
 //				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 //					EDrawAbleNodeDetailLevel.Low);
 				//drawLine(getFXCoord(), getFYCoord(), x, y);
-				calculateRecursiveLayout(tmpChild, fRadius + fDeltaRadius, fRealChildAngle, fLayer+1, fNodeSize, fXCoord, fYCoord);
+				
 			}
 			}
 
