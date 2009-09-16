@@ -21,7 +21,7 @@ public class DendrogramRenderStyle
 	public static final float SUB_DENDROGRAM_Z = 0.01f;
 	public static final float CUT_OFF_Z = 0.01f;
 
-	private float fWidthCutOff = 0.3f;
+	private float fWidthCutOff = 0.2f;
 	private float fDendrogramLineWidth = 0.1f;
 	private float fSizeDendrogramArrow = 0.17f;
 

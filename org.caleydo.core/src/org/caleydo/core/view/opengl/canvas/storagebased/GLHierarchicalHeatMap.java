@@ -2,13 +2,11 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BACKGROUND_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BACKGROUND_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.DENDROGRAM_BACKROUND;
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.DRAGGING_CURSOR_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BUTTON_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.CLUSTER_BORDERS_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.DENDROGRAM_BACKROUND;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.DRAGGING_CURSOR_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.GROUP_COLOR_SELECTED;
-import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.GROUP_COLOR_NORMAL;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.SELECTION_Z;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
@@ -1057,21 +1055,40 @@ public class GLHierarchicalHeatMap
 
 			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
 
-			if (groupList.get(i).getSelectionType() == ESelectionType.NORMAL)
-				gl.glColor4fv(GROUP_COLOR_NORMAL, 0);
-			if (groupList.get(i).getSelectionType() == ESelectionType.SELECTION)
-				gl.glColor4fv(GROUP_COLOR_SELECTED, 0);
+			gl.glColor4f(1, 1, 1, 1);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			Texture tempTexture = null;
+			
+			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.NORMAL){
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_NORMAL);
+			}
+			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.SELECTION){
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			}
 
-			// gl.glPushName(pickingManager.getPickingID(iUniqueID,
-			// EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+
+			tempTexture.enable();
+			tempTexture.bind();
+
+			TextureCoords texCoords = tempTexture.getImageTexCoords();
+
 			gl.glBegin(GL.GL_QUADS);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(fxpos, 0, FIELD_Z);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(fxpos, 0 - fHeightClusterVisualization, FIELD_Z);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(fxpos + classWidth, 0 - fHeightClusterVisualization, FIELD_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(fxpos + classWidth, 0, FIELD_Z);
 			gl.glEnd();
-			// gl.glPopName();
 
+			tempTexture.disable();
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glPopName();
+			
 			if (i == iNrClasses - 1)
 				return;
 
@@ -1116,21 +1133,40 @@ public class GLHierarchicalHeatMap
 
 			float classWidth = groupList.get(i).getNrElements() * fWidthSamples;
 
-			if (groupList.get(i).getSelectionType() == ESelectionType.NORMAL)
-				gl.glColor4fv(GROUP_COLOR_NORMAL, 0);
-			if (groupList.get(i).getSelectionType() == ESelectionType.SELECTION)
-				gl.glColor4fv(GROUP_COLOR_SELECTED, 0);
+			gl.glColor4f(1, 1, 1, 1);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			Texture tempTexture = null;
+			
+			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.NORMAL){
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_NORMAL);
+			}
+			if (storageVA.getGroupList().get(i).getSelectionType() == ESelectionType.SELECTION){
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			}
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_EXPERIMENTS_GROUP, i));
+
+			tempTexture.enable();
+			tempTexture.bind();
+
+			TextureCoords texCoords = tempTexture.getImageTexCoords();
+
 			gl.glBegin(GL.GL_QUADS);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(fxpos, 0, FIELD_Z);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(fxpos, 0 - fHeightClusterVisualization, FIELD_Z);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(fxpos + classWidth, 0 - fHeightClusterVisualization, FIELD_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(fxpos + classWidth, 0, FIELD_Z);
 			gl.glEnd();
-			gl.glPopName();
 
+			tempTexture.disable();
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glPopName();
+			
 			if (i == iNrClasses - 1)
 				return;
 
@@ -1173,21 +1209,42 @@ public class GLHierarchicalHeatMap
 		for (int i = 0; i < iNrClasses; i++) {
 
 			float classHeight = groupList.get(i).getNrElements() * fHeightSamples;
+			
+			gl.glColor4f(1, 1, 1, 1);
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+			Texture tempTexture = null;
+			
+			if (contentVA.getGroupList().get(i).getSelectionType() == ESelectionType.NORMAL){
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_NORMAL);
+			}
+			if (contentVA.getGroupList().get(i).getSelectionType() == ESelectionType.SELECTION){
+				tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_SELECTED);
+			}
 
-			if (groupList.get(i).getSelectionType() == ESelectionType.NORMAL)
-				gl.glColor4fv(GROUP_COLOR_NORMAL, 0);
-			if (groupList.get(i).getSelectionType() == ESelectionType.SELECTION)
-				gl.glColor4fv(GROUP_COLOR_SELECTED, 0);
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
+				i));
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP, i));
+			tempTexture.enable();
+			tempTexture.bind();
+
+			TextureCoords texCoords = tempTexture.getImageTexCoords();
+
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(fWidthClusterVisualization, fyPos, FIELD_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(0, fyPos, FIELD_Z);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl.glVertex3f(0 + fWidthClusterVisualization, fyPos, FIELD_Z);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			gl.glVertex3f(0 + fWidthClusterVisualization, fyPos - classHeight,
+				FIELD_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(0, fyPos - classHeight, FIELD_Z);
-			gl.glVertex3f(fWidthClusterVisualization, fyPos - classHeight, FIELD_Z);
 			gl.glEnd();
-			gl.glPopName();
 
+			tempTexture.disable();
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glPopName();
+			
 			if (i == iNrClasses - 1) {
 				gl.glTranslatef(-fWidthLevel1, 0, 0);
 				return;
@@ -1241,21 +1298,41 @@ public class GLHierarchicalHeatMap
 
 			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getNrElements()) {
 
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL)
-					gl.glColor4fv(GROUP_COLOR_NORMAL, 0);
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
-					gl.glColor4fv(GROUP_COLOR_SELECTED, 0);
+				gl.glColor4f(1, 1, 1, 1);
+				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+				Texture tempTexture = null;
+				
+				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL){
+					tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_NORMAL);
+				}
+				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION){
+					tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_SELECTED);
+				}
 
 				gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
 					iIdxCluster));
-				gl.glBegin(GL.GL_QUADS);
-				gl.glVertex3f(fWidthClusterVisualization, fHeight, FIELD_Z);
-				gl.glVertex3f(0, fHeight, FIELD_Z);
-				gl.glVertex3f(0, fHeight - fHeightSamples * iCnt, FIELD_Z);
-				gl.glVertex3f(fWidthClusterVisualization, fHeight - fHeightSamples * iCnt, FIELD_Z);
-				gl.glEnd();
-				gl.glPopName();
 
+				tempTexture.enable();
+				tempTexture.bind();
+
+				TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+				gl.glBegin(GL.GL_QUADS);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(0, fHeight, FIELD_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(0 + fWidthClusterVisualization, fHeight, FIELD_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(0 + fWidthClusterVisualization, fHeight - fHeightSamples * iCnt,
+					FIELD_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(0, fHeight - fHeightSamples * iCnt, FIELD_Z);
+				gl.glEnd();
+
+				tempTexture.disable();
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glPopName();
+				
 				gl.glColor4fv(BACKGROUND_COLOR, 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(fWidthClusterVisualization, fHeight - fHeightSamples * iCnt, CLUSTER_BORDERS_Z);
@@ -1275,21 +1352,41 @@ public class GLHierarchicalHeatMap
 			iCounter++;
 		}
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL)
-			gl.glColor4fv(GROUP_COLOR_NORMAL, 0);
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
-			gl.glColor4fv(GROUP_COLOR_SELECTED, 0);
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		Texture tempTexture = null;
+		
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL){
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_NORMAL);
+		}
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION){
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_SELECTED);
+		}
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
 			iIdxCluster));
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fWidthClusterVisualization, fHeight, FIELD_Z);
-		gl.glVertex3f(0, fHeight, FIELD_Z);
-		gl.glVertex3f(0, 0, FIELD_Z);
-		gl.glVertex3f(fWidthClusterVisualization, 0, FIELD_Z);
-		gl.glEnd();
-		gl.glPopName();
 
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(0, fHeight, FIELD_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(0 + fWidthClusterVisualization, fHeight, FIELD_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(0 + fWidthClusterVisualization, 0,
+			FIELD_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(0, 0, FIELD_Z);
+		gl.glEnd();
+
+		tempTexture.disable();
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glPopName();
+		
 		gl.glTranslatef(-fWidthLevel2, 0, 0);
 
 	}
@@ -1334,22 +1431,41 @@ public class GLHierarchicalHeatMap
 
 			if (iCounter == contentVA.getGroupList().get(iIdxCluster).getNrElements()) {
 
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL)
-					gl.glColor4fv(GROUP_COLOR_NORMAL, 0);
-				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
-					gl.glColor4fv(GROUP_COLOR_SELECTED, 0);
+				gl.glColor4f(1, 1, 1, 1);
+				gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+				Texture tempTexture = null;
+				
+				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL){
+					tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_NORMAL);
+				}
+				if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION){
+					tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_SELECTED);
+				}
 
 				gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
 					iIdxCluster));
+
+				tempTexture.enable();
+				tempTexture.bind();
+
+				TextureCoords texCoords = tempTexture.getImageTexCoords();
+
 				gl.glBegin(GL.GL_QUADS);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 				gl.glVertex3f(fWidthEHM, fHeight, FIELD_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight, FIELD_Z);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
 				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight - fHeightSamples * iCnt,
 					FIELD_Z);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
 				gl.glVertex3f(fWidthEHM, fHeight - fHeightSamples * iCnt, FIELD_Z);
 				gl.glEnd();
-				gl.glPopName();
 
+				tempTexture.disable();
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+				gl.glPopName();
+				
 				gl.glColor4fv(BACKGROUND_COLOR, 0);
 				gl.glBegin(GL.GL_LINES);
 				gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight - fHeightSamples * iCnt,
@@ -1369,21 +1485,40 @@ public class GLHierarchicalHeatMap
 			iCounter++;
 		}
 
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL)
-			gl.glColor4fv(GROUP_COLOR_NORMAL, 0);
-		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION)
-			gl.glColor4fv(GROUP_COLOR_SELECTED, 0);
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
+		Texture tempTexture = null;
+		
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.NORMAL){
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_NORMAL);
+		}
+		if (contentVA.getGroupList().get(iIdxCluster).getSelectionType() == ESelectionType.SELECTION){
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_GROUP_SELECTED);
+		}
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_GENES_GROUP,
 			iIdxCluster));
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight, FIELD_Z);
-		gl.glVertex3f(fWidthEHM, fHeight, FIELD_Z);
-		gl.glVertex3f(fWidthEHM, 0, FIELD_Z);
-		gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, 0, FIELD_Z);
-		gl.glEnd();
-		gl.glPopName();
 
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fWidthEHM, fHeight, FIELD_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, fHeight, FIELD_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fWidthEHM + fWidthClusterVisualization, 0,
+			FIELD_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fWidthEHM, 0, FIELD_Z);
+		gl.glEnd();
+
+		tempTexture.disable();
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glPopName();
 	}
 
 	/**
@@ -2049,6 +2184,7 @@ public class GLHierarchicalHeatMap
 
 		gl.glColor4f(1, 1, 1, 1);
 
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
 		tempTexture.enable();
 		tempTexture.bind();
@@ -2085,7 +2221,8 @@ public class GLHierarchicalHeatMap
 
 		gl.glPopAttrib();
 		tempTexture.disable();
-
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		
 		// fill gap between cursor
 		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL1,
@@ -2115,6 +2252,7 @@ public class GLHierarchicalHeatMap
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glColor4f(1f, 1, 1, 1f);
 
+		gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
 		tempTexture.enable();
 		tempTexture.bind();
@@ -2151,7 +2289,8 @@ public class GLHierarchicalHeatMap
 
 		gl.glPopAttrib();
 		tempTexture.disable();
-
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		
 		// fill gap between cursor
 		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HIER_HEAT_MAP_BLOCK_CURSOR_LEVEL2,
@@ -2279,7 +2418,7 @@ public class GLHierarchicalHeatMap
 		}
 		else {
 			fright = viewFrustum.getWidth() - 2.95f;
-			fleftOffset += 0.78f;
+			fleftOffset += 0.8f;
 		}
 
 		if (bIsHeatmapInFocus) {
@@ -4031,7 +4170,7 @@ public class GLHierarchicalHeatMap
 				}
 				break;
 
-			// handle click on button for setting vertical dendrogram active
+			// handle click on button for setting experiment dendrogram active
 			case HIER_HEAT_MAP_ACTIVATE_VERTICAL_DENDROGRAM:
 				switch (pickingMode) {
 
@@ -4074,7 +4213,7 @@ public class GLHierarchicalHeatMap
 				}
 				break;
 
-			// handle click on button for setting horizontal dendrogram active
+			// handle click on button for setting gene dendrogram active
 			case HIER_HEAT_MAP_ACTIVATE_HORIZONTAL_DENDROGRAM:
 				switch (pickingMode) {
 

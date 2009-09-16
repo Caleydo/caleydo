@@ -330,7 +330,8 @@ public class GLDendrogram
 		float fWidth = viewFrustum.getWidth();
 		float fWidthCutOf = renderStyle.getWidthCutOff();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_SELECTION, 1));
+		gl.glColor4f(1, 1, 1, 1);
+
 		if (bRenderGeneTree) {
 			gl.glTranslatef(+fLevelWidth, 0, 0);
 			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
@@ -338,10 +339,9 @@ public class GLDendrogram
 			Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.SLIDER_ENDING);
 			tempTexture.enable();
 			tempTexture.bind();
-			gl.glColor4f(1, 1, 1, 1);
+
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			// gl.glColor4fv(CUT_OFF_COLOR, 0);
 			gl.glBegin(GL.GL_QUADS);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(fPosCut - fWidthCutOf / 2, fHeight, CUT_OFF_Z);
@@ -378,6 +378,7 @@ public class GLDendrogram
 
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
@@ -388,6 +389,7 @@ public class GLDendrogram
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, 0, BUTTON_Z);
 			gl.glEnd();
+
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, -fSizeDendrogramArrow, BUTTON_Z);
@@ -398,31 +400,17 @@ public class GLDendrogram
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
 			gl.glVertex3f(fPosCut, 0, BUTTON_Z);
 			gl.glEnd();
+			gl.glPopName();
 
 			textureArrow.disable();
 
-			// Vec3f lowerLeftCorner = new Vec3f();
-			// Vec3f lowerRightCorner = new Vec3f();
-			// Vec3f upperRightCorner = new Vec3f();
-			// Vec3f upperLeftCorner = new Vec3f();
-			// Vec3f scalingPivot = new Vec3f();
-			// lowerLeftCorner.set(fWidthCutOf / 2 + fPosCut - 0.05f, -0.16f, AXIS_Z);
-			// lowerRightCorner.set(fWidthCutOf / 2 + fPosCut + 0.05f, -0.16f, AXIS_Z);
-			// upperRightCorner.set(fWidthCutOf / 2 + fPosCut + 0.05f, 0.04f, AXIS_Z);
-			// upperLeftCorner.set(fWidthCutOf / 2 + fPosCut - 0.05f, 0.04f, AXIS_Z);
-			// scalingPivot.set(fWidthCutOf / 2 + fPosCut, -0.06f, AXIS_Z + 0.005f);
-			//
-			// textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP, lowerLeftCorner,
-			// lowerRightCorner,
-			// upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
 			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 			gl.glTranslatef(-fLevelWidth, 0, 0);
 		}
 		else {
 
-			gl.glColor4f(1, 1, 1, 1);
-
+			gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			if (fPosCut > fLevelHeight)
 				gl.glTranslatef(0, -fLevelHeight, 0);
 
@@ -431,26 +419,23 @@ public class GLDendrogram
 			tempTexture.bind();
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-			// gl.glColor4fv(CUT_OFF_COLOR, 0);
-			// gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glBegin(GL.GL_QUADS);
-			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(-0.1f, fPosCut - fWidthCutOf / 2, CUT_OFF_Z);
-			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(0, fPosCut - fWidthCutOf / 2, CUT_OFF_Z);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(0, fPosCut + fWidthCutOf / 2, CUT_OFF_Z);
+			gl.glVertex3f(-0.1f, fPosCut - fWidthCutOf / 2, CUT_OFF_Z);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl.glVertex3f(+0.0f, fPosCut - fWidthCutOf / 2, CUT_OFF_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+			gl.glVertex3f(+0.0f, fPosCut + fWidthCutOf / 2, CUT_OFF_Z);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(-0.1f, fPosCut + fWidthCutOf / 2, CUT_OFF_Z);
 			gl.glEnd();
-			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
 			tempTexture.disable();
-			tempTexture = textureManager.getIconTexture(gl, EIconTextures.SLIDER_ENDING);
+			tempTexture = textureManager.getIconTexture(gl, EIconTextures.SLIDER_MIDDLE);
 			tempTexture.enable();
 			tempTexture.bind();
 			texCoords = tempTexture.getImageTexCoords();
-			
+
 			gl.glBegin(GL.GL_QUADS);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(0, fPosCut - fWidthCutOf / 2, CUT_OFF_Z);
@@ -463,14 +448,6 @@ public class GLDendrogram
 			gl.glEnd();
 			tempTexture.disable();
 
-			// gl.glColor4fv(CUT_OFF_COLOR, 0);
-			// gl.glBegin(GL.GL_QUADS);
-			// gl.glVertex3f(0, fPosCut, CUT_OFF_Z);
-			// gl.glVertex3f(fWidth, fPosCut, CUT_OFF_Z);
-			// gl.glVertex3f(fWidth, fPosCut + fWidthCutOf, CUT_OFF_Z);
-			// gl.glVertex3f(0, fPosCut + fWidthCutOf, CUT_OFF_Z);
-			// gl.glEnd();
-
 			float fSizeDendrogramArrow = renderStyle.getSizeDendrogramArrow();
 
 			Texture textureArrow = textureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_ARROW);
@@ -479,6 +456,7 @@ public class GLDendrogram
 
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.DENDROGRAM_CUT_SELECTION, 1));
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut, BUTTON_Z);
@@ -489,6 +467,7 @@ public class GLDendrogram
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth, fPosCut, BUTTON_Z);
 			gl.glEnd();
+
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoordsArrow.right(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth + fSizeDendrogramArrow, fPosCut, BUTTON_Z);
@@ -499,28 +478,14 @@ public class GLDendrogram
 			gl.glTexCoord2f(texCoordsArrow.left(), texCoordsArrow.bottom());
 			gl.glVertex3f(fWidth, fPosCut, BUTTON_Z);
 			gl.glEnd();
+			gl.glPopName();
 
 			textureArrow.disable();
 
-			// Vec3f lowerLeftCorner = new Vec3f();
-			// Vec3f lowerRightCorner = new Vec3f();
-			// Vec3f upperRightCorner = new Vec3f();
-			// Vec3f upperLeftCorner = new Vec3f();
-			// Vec3f scalingPivot = new Vec3f();
-			// lowerLeftCorner.set(fWidth + 0.16f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
-			// lowerRightCorner.set(fWidth - 0.04f, fWidthCutOf / 2 + fPosCut + 0.05f, AXIS_Z);
-			// upperRightCorner.set(fWidth - 0.04f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
-			// upperLeftCorner.set(fWidth + 0.16f, fWidthCutOf / 2 + fPosCut - 0.05f, AXIS_Z);
-			// scalingPivot.set(fWidth + 0.06f, fWidthCutOf / 2 + fPosCut, AXIS_Z + 0.005f);
-			// gl.glBlendFunc(GL.GL_ONE, GL.GL_ONE_MINUS_SRC_ALPHA);
-			// textureManager.renderGUITexture(gl, EIconTextures.SMALL_DROP_ROTATED, lowerLeftCorner,
-			// lowerRightCorner, upperRightCorner, upperLeftCorner, scalingPivot, 1, 1, 1, 1, 80);
-			// gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
 			if (fPosCut > fLevelHeight)
 				gl.glTranslatef(0, +fLevelHeight, 0);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		}
-		gl.glPopName();
 
 	}
 
@@ -1885,8 +1850,8 @@ public class GLDendrogram
 
 	@Override
 	public void handleUpdateView() {
-		tree = null;
-		fPosCut = 0f;
+//		tree = null;
+//		fPosCut = 0f;
 		resetAllTreeSelections();
 		bRedrawDendrogram = true;
 		setDisplayListDirty();
