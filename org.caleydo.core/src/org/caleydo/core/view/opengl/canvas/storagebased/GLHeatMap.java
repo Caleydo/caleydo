@@ -36,7 +36,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterManager;
+import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -1159,9 +1159,7 @@ public class GLHeatMap
 			// FIXME: this is only proof of concept - use the cluster manager instead of affinity directly
 			// long original = System.currentTimeMillis();
 			// System.out.println("beginning clustering");
-
-			ClusterManager clusterManager = new ClusterManager(set);
-
+			AffinityClusterer clusterer = new AffinityClusterer(contentVA.size());
 			ClusterState state =
 				new ClusterState(EClustererAlgo.AFFINITY_PROPAGATION, EClustererType.GENE_CLUSTERING,
 					EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -1169,12 +1167,9 @@ public class GLHeatMap
 			state.setContentVaId(contentVA.getID());
 			state.setStorageVaId(storageVA.getID());
 			state.setAffinityPropClusterFactorGenes(4.0f);
+			IVirtualArray tempVA = clusterer.getSortedVA(set, state, 0, 2);
 
-			// virtual arrays after clustering, index 0 contentVA, index 1 storageVA
-			// in case of gene clustering only contentVA is changed
-			ArrayList<IVirtualArray> iAlVAs = clusterManager.cluster(state);
-
-			contentVA = iAlVAs.get(0);
+			contentVA = tempVA;
 			contentSelectionManager.setVA(contentVA);
 			contentVA.setID(contentVAID);
 			// long result = System.currentTimeMillis() - original;
