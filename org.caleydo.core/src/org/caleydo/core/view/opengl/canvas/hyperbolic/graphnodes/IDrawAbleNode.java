@@ -29,7 +29,7 @@ public interface IDrawAbleNode
 	 * 
 	 * @return int
 	 */
-	int getNodeNr();
+	int getID();
 
 	/**
 	 * Place the node on a specific position

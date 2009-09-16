@@ -20,7 +20,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects
 public abstract class ADrawAbleNode
 	implements IDrawAbleNode {
 	private String sNodeName;
-	private int iNodeID;
+	private int iID;
 	private ESelectionType eSelectionType;
 	private EDrawAbleNodeDetailLevel eDetailLevel;
 	private float fXCoord = 0;
@@ -37,18 +37,18 @@ public abstract class ADrawAbleNode
 	}
 
 	@Override
-	public final int getNodeNr() {
-		return iNodeID;
+	public final int getID() {
+		return iID;
 	}
 
 	@Override
 	public final String toString() {
-		return (sNodeName + ' ' + iNodeID);
+		return (sNodeName + ' ' + iID);
 	}
 
 	@Override
 	public final int compareTo(IDrawAbleNode node) {
-		return iNodeID - node.getNodeNr();
+		return iID - node.getID();
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public abstract class ADrawAbleNode
 	 */
 	public ADrawAbleNode(String sNodeName, int iNodeID, String[] sTypes) {
 		this.sNodeName = sNodeName;
-		this.iNodeID = iNodeID;
+		this.iID = iNodeID;
 		mRepresantations =
 			new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
 		eSelectionType = ESelectionType.DESELECTED;

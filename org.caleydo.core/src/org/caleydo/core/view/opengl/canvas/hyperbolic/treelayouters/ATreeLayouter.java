@@ -119,8 +119,8 @@ public abstract class ATreeLayouter
 		gl.glNewList(iGLDisplayListNode, GL.GL_COMPILE);
 		for (IDrawAbleNode node : nodeLayout) {
 			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION, node
-				.getNodeNr()));
-			if (bIsNodeHighlighted && node.getNodeNr() == iHighlightedNode)
+				.getID()));
+			if (bIsNodeHighlighted && node.getID() == iHighlightedNode)
 				node.draw(gl, true);
 			else
 				node.draw(gl, false);
@@ -134,8 +134,8 @@ public abstract class ATreeLayouter
 		//gl.glNewList(iGLDisplayListConnection, GL.GL_COMPILE);
 		for (IDrawAbleConnection conn : connectionLayout) {
 			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION, conn
-				.getConnNr()));
-			if (bIsConnectionHighlighted && conn.getConnNr() == iHighlightedConnection)
+				.getID()));
+			if (bIsConnectionHighlighted && conn.getID() == iHighlightedConnection)
 				conn.draw(gl, true);
 			else
 				conn.draw(gl, false);

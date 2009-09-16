@@ -62,7 +62,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
 		
 		if (rootNode instanceof IDrawAbleNode)
-			hashNodes.put(((IDrawAbleNode) rootNode).getNodeNr(), rootNode);
+			hashNodes.put(((IDrawAbleNode) rootNode).getID(), rootNode);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 			hashNodes.put(((ClusterNode) childNode).getClusterNr(), childNode);
 		
 		if (childNode instanceof IDrawAbleNode)
-			hashNodes.put(((IDrawAbleNode) childNode).getNodeNr(), childNode);
+			hashNodes.put(((IDrawAbleNode) childNode).getID(), childNode);
 	}
 
 	/**

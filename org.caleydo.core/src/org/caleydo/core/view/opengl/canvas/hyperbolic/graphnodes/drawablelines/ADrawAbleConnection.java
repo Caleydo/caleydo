@@ -10,7 +10,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 public abstract class ADrawAbleConnection
 	implements IDrawAbleConnection {
 
-	private int iConnID;
+	private int iID;
 	//protected List<Vec3f> lPoints;
 	protected IDrawAbleNode iNodeA;
 	protected IDrawAbleNode iNodeB;
@@ -18,17 +18,17 @@ public abstract class ADrawAbleConnection
 	public ADrawAbleConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB) {
 		this.iNodeA = iNodeA;
 		this.iNodeB = iNodeB;
-		this.iConnID = generateID(iNodeA.getNodeNr(), iNodeB.getNodeNr());
+		this.iID = generateID(iNodeA.getID(), iNodeB.getID());
 	}
 
 	@Override
-	public final int getConnNr() {
-		return iConnID;
+	public final int getID() {
+		return iID;
 	}
 
 	@Override
 	public final int compareTo(IDrawAbleConnection conn) {
-		return iConnID - conn.getConnNr();
+		return iID - conn.getID();
 	}
 
 	private int generateID(int iID1, int iID2) {

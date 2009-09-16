@@ -9,7 +9,7 @@ import javax.media.opengl.GL;
 public interface IDrawAbleConnection
 	extends Comparable<IDrawAbleConnection> {
 
-	public int getConnNr();
+	public int getID();
 
 	public void draw(GL gl, boolean bHighlight);
 
