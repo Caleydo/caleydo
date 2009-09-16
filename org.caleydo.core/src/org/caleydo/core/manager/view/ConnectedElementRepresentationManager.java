@@ -13,12 +13,14 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
+import org.caleydo.core.manager.event.view.selection.ClearTransformedConnectionsEvent;
 import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.listener.AddSelectionListener;
 import org.caleydo.core.manager.view.listener.ClearConnectionsListener;
+import org.caleydo.core.manager.view.listener.ClearTransformedConnectionsListener;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
@@ -74,6 +76,7 @@ public class ConnectedElementRepresentationManager
 	HashMap<EIDType, CanvasConnectionMap> canvasConnectionsByType;
 
 	ClearConnectionsListener clearConnectionsListener;
+	ClearTransformedConnectionsListener clearTransformedConnectionsListener;
 	AddSelectionListener addSelectionListener;
 	
 	/** <code>true</code if there are new vertices in the list of 2D canvas conneciton vertices */
@@ -274,8 +277,14 @@ public class ConnectedElementRepresentationManager
 	}
 
 	public void clearTransformedConnections() {
+		ClearTransformedConnectionsEvent event = new ClearTransformedConnectionsEvent();
+		eventPublisher.triggerEvent(event);
+	}
+	
+	public void handleClearTransformedConnectionsEvent() {
 		transformedConnectionsByType.clear();
 		canvasConnectionsByType.clear();
+		GeneralManager.get().getEventPublisher().triggerEvent(new NewConnectionsEvent());
 	}
 	
 	public void clearCanvasConnections() {
@@ -311,6 +320,10 @@ public class ConnectedElementRepresentationManager
 		clearConnectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearConnectionsEvent.class, clearConnectionsListener);
 
+		clearTransformedConnectionsListener = new ClearTransformedConnectionsListener();
+		clearTransformedConnectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearTransformedConnectionsEvent.class, clearTransformedConnectionsListener);
+
 		addSelectionListener = new AddSelectionListener();
 		addSelectionListener.setHandler(this);
 		eventPublisher.addListener(AddSelectionEvent.class, addSelectionListener);
@@ -321,6 +334,10 @@ public class ConnectedElementRepresentationManager
 		if (clearConnectionsListener != null) {
 			eventPublisher.removeListener(clearConnectionsListener);
 			clearConnectionsListener = null;
+		}
+		if (clearTransformedConnectionsListener != null) {
+			eventPublisher.removeListener(clearTransformedConnectionsListener);
+			clearTransformedConnectionsListener = null;
 		}
 		if (addSelectionListener != null) {
 			eventPublisher.removeListener(addSelectionListener);

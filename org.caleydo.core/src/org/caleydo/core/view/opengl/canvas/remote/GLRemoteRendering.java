@@ -442,7 +442,6 @@ public class GLRemoteRendering
 				}
 			}
 
-			eventPublisher.triggerEvent(new NewConnectionsEvent());
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 			dragAndDrop.stopDragAction();
 			bUpdateOffScreenTextures = true;
@@ -1580,7 +1579,6 @@ public class GLRemoteRendering
 			}
 
 			generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
-			eventPublisher.triggerEvent(new NewConnectionsEvent());
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 		}
 	}

@@ -11,6 +11,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.view.selection.AddConnectionLineVerticesEvent;
 import org.caleydo.core.manager.event.view.selection.ClearConnectionsEvent;
+import org.caleydo.core.manager.event.view.selection.ClearTransformedConnectionsEvent;
 import org.caleydo.core.manager.execution.ADisplayLoopEventHandler;
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -99,6 +100,7 @@ public class DeskothequeManager
 
 	AddConnectionLineVerticesListener addConnectionLinePointsListener;
 	ClearConnectionsListener clearConnectionsListener;
+	ClearTransformedConnectionsListener clearTransformedConnectionsListener;
 	
 	/**
 	 * Creates an initalized {@link DeskothequeManager}
@@ -366,8 +368,8 @@ public class DeskothequeManager
 	 * for the {@link EIDType#EXPRESSION_INDEX} 
 	 */
 	private void drawConnectionLines() {
-//		for (CanvasConnectionMap ccm : displayConnectionsByType.values()) {
 		CanvasConnectionMap ccm = displayConnectionsByType.get(EIDType.EXPRESSION_INDEX);
+		if (ccm != null) {
 			for (Entry<Integer, SelectionPoint2DList> conDisplayPoints : ccm.entrySet()) {
 				SelectionPoint2DList displayPoints = conDisplayPoints.getValue();
 				final Integer connectionID = conDisplayPoints.getKey();
@@ -389,6 +391,7 @@ public class DeskothequeManager
 				Thread drawThread = new Thread(drawer);
 				drawThread.start();
 			}
+		}
 	}
 
 	/**
@@ -418,15 +421,21 @@ public class DeskothequeManager
 	}
 	
 	/**
-	 * Clears the all known connection lines for the given {@link EIDType} 
+	 * Clears all known connection lines for the given {@link EIDType} 
 	 * @param idType {@link EIDType} to remove the connection lines of 
 	 */
 	public void clearConnections(EIDType idType) {
-		System.out.println("desko: clearConnections(), idType="+idType);
 		CanvasConnectionMap ccm = displayConnectionsByType.get(idType);
 		if (ccm != null) {
 			ccm.clear();
 		}
+	}
+
+	/**
+	 * Clears all known connection lines 
+	 */
+	public void clearConnections() {
+		displayConnectionsByType.clear();
 	}
 
 	/**
@@ -460,6 +469,10 @@ public class DeskothequeManager
 		clearConnectionsListener = new ClearConnectionsListener();
 		clearConnectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearConnectionsEvent.class, clearConnectionsListener);
+
+		clearTransformedConnectionsListener = new ClearTransformedConnectionsListener();
+		clearTransformedConnectionsListener.setHandler(this);
+		eventPublisher.addListener(ClearTransformedConnectionsEvent.class, clearTransformedConnectionsListener);
 	}
 
 	/**
@@ -473,6 +486,10 @@ public class DeskothequeManager
 		if (clearConnectionsListener != null) {
 			eventPublisher.removeListener(clearConnectionsListener);
 			clearConnectionsListener = null;
+		}
+		if (clearTransformedConnectionsListener != null) {
+			eventPublisher.removeListener(clearTransformedConnectionsListener);
+			clearTransformedConnectionsListener = null;
 		}
 	}
 	

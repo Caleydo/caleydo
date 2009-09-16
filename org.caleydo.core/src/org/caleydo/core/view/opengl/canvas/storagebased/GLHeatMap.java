@@ -230,6 +230,7 @@ public class GLHeatMap
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
+//			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
