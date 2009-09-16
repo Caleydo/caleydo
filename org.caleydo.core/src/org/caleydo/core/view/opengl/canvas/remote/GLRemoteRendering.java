@@ -39,6 +39,7 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
+import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -441,6 +442,8 @@ public class GLRemoteRendering
 				}
 			}
 
+			eventPublisher.triggerEvent(new NewConnectionsEvent());
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 			dragAndDrop.stopDragAction();
 			bUpdateOffScreenTextures = true;
 		}
@@ -1577,6 +1580,8 @@ public class GLRemoteRendering
 			}
 
 			generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
+			eventPublisher.triggerEvent(new NewConnectionsEvent());
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 		}
 	}
 
@@ -2933,5 +2938,9 @@ public class GLRemoteRendering
 
 	public AGLConnectionLineRenderer getGlConnectionLineRenderer() {
 		return glConnectionLineRenderer;
+	}
+
+	public RemoteRenderingTransformer getSelectionTransformer() {
+		return selectionTransformer;
 	}
 }

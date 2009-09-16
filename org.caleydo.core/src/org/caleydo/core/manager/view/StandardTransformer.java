@@ -74,7 +74,6 @@ public class StandardTransformer
 
 	@Override
 	public void project(GL gl, String deskoXID, HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, CanvasConnectionMap> target) {
-		System.out.println("xyzTrans: projecting");
 		final double mvmatrix[] = new double[16];
 		final double projmatrix[] = new double[16];
 		final int viewport[] = new int[4];
@@ -91,7 +90,6 @@ public class StandardTransformer
 		int canvasHeight = view.getParentGLCanvas().getHeight();
 
 		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
-			System.out.println("xyzTrans: typeConnections="+typeConnections);
 			CanvasConnectionMap canvasConnectionMap = target.get(typeConnections.getKey());
 			if (canvasConnectionMap == null) {
 				canvasConnectionMap = new CanvasConnectionMap();
@@ -107,11 +105,9 @@ public class StandardTransformer
 				}
 
 				for (SelectedElementRep sel : connections.getValue()) {
-					System.out.println("xyzTrans: " + sel.getRemoteViewID() + " =?= " + viewID);
 					if (sel.getRemoteViewID() == viewID) {
 						for (Vec3f vec : sel.getPoints()) {
 							glu.gluProject(vec.x(), vec.y(), vec.z(), mvmatrix, 0, projmatrix, 0, viewport, 0, wc, 0);
-							System.out.println("xyzTrans: projected x=" + wc[0] + ", y=" + wc[1] + ", z=" + wc[3]);
 							Point p = new Point((int) wc[0], canvasHeight - (int) wc[1]);
 							SelectionPoint2D sp = new SelectionPoint2D(deskoXID, viewID, p);
 							points2D.add(sp);
@@ -129,7 +125,6 @@ public class StandardTransformer
 			return false;
 		}
 		transformationFinished = true;
-		System.out.println("StandardTrans: transforming");
 		
 		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
 			

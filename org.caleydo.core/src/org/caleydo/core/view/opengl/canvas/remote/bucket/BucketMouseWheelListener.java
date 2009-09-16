@@ -8,6 +8,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -119,6 +120,9 @@ public class BucketMouseWheelListener
 			bucketLayoutRenderStyle.initPoolLevel(-1);
 			bucketLayoutRenderStyle.initMemoLevel();
 
+			GeneralManager.get().getEventPublisher().triggerEvent(new NewConnectionsEvent());
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+			
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(false);
 		}

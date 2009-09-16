@@ -273,6 +273,11 @@ public class ConnectedElementRepresentationManager
 		canvasConnectionsByType.clear();
 	}
 
+	public void clearTransformedConnections() {
+		transformedConnectionsByType.clear();
+		canvasConnectionsByType.clear();
+	}
+	
 	public void clearCanvasConnections() {
 		canvasConnectionsByType.clear();
 	}
