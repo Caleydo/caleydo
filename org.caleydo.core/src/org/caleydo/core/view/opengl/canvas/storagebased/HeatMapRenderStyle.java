@@ -26,8 +26,6 @@ public class HeatMapRenderStyle
 
 	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
 	public static final float[] DRAGGING_CURSOR_COLOR = { 0.2f, 0.2f, 0.2f, 1 };
-	public static final float[] GROUP_COLOR_NORMAL = { 0.5f, 1f, 1f, 1 };
-	public static final float[] GROUP_COLOR_SELECTED = GeneralRenderStyle.SELECTED_COLOR;
 	public static final float[] DENDROGRAM_BACKROUND = { 0.5f, 0.5f, 0.5f, 1 };
 	public static final float CLUSTER_BORDERS_Z = 0.009f;
 	public static final float BUTTON_Z = 0.01f;

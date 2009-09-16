@@ -13,8 +13,6 @@ public class DendrogramRenderStyle
 	extends GeneralRenderStyle {
 
 	public static final float SIDE_SPACING = 0.1f;
-	public static final float[] CUT_OFF_COLOR = { 0.3f, 0.3f, 0.3f, 1 };
-	public static final float[] CUT_OFF_HANDLE_COLOR = { 0f, 0f, 1f, 1f };
 
 	public static final float DENDROGRAM_Z = 0.001f;
 	public static final float SELECTION_Z = 0.005f;
