@@ -5,6 +5,7 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 // import java.util.ArrayList;
 
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -15,8 +16,11 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperboicGeometryGlobeProjection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicGeometryConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.HyperbolicGlobeProjection;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 
 
@@ -31,6 +35,9 @@ public final class HTLayouter
 	int iLineIDDummy = 0;
 	//float childAngle;
 	float fDepth = 6.0f; // tree.getDepth();
+	
+	boolean bHyperbolicFlag = true;
+	
 
 	//ArrayList<Vec3f> vec = new ArrayList<Vec3f>();
 
@@ -43,6 +50,11 @@ public final class HTLayouter
 	@Override
 	public void renderTreeLayout() {
 		updateSizeInfo();
+		if(bHyperbolicFlag)
+		{
+		treeProjector = new HyperbolicGlobeProjection(1, fHeight, fWidth, 0.01f, fViewSpaceX,
+			fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
+		}
 		if (tree == null)
 			return;
 
@@ -59,7 +71,8 @@ public final class HTLayouter
 	
 		// RECURSIVE TREE LAYOUTER
 		float fLayer = 2.0f;
-		float fRadius = 0.5f;
+		float fRadius = 0.6f;
+//		float fRadius = 3.0f;
 		
 		//float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
 		float fNumberOfNodesInLayer = tree.getNumberOfElementsInLayer((int)fLayer);
@@ -75,12 +88,18 @@ public final class HTLayouter
 			
 			fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
 			tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-			placeNode(tmpChild, getFXCoord(), getFYCoord(), 0, fNodeSize, fNodeSize);
+			if(bHyperbolicFlag){
+			Vec3f tmpPoint = new Vec3f();
+			tmpPoint = treeProjector.projectCoordinates(new Vec3f(getFXCoord(), getFYCoord(), 0.02f));
+			placeNode(tmpChild, tmpPoint.x(), tmpPoint.y(), tmpPoint.z(), fNodeSize, fNodeSize);
+			}
+			else
+				placeNode(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize);
 			float fFirstChildX = getFXCoord();
 			float fFirstChildY = getFYCoord();
 			placeConnection(new DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, fvViewCenterPoint, fViewRadius));
 			
-			calculateRecursiveLayout(tmpChild, fRadius - 0.05f , fFirstLayerAngle*fCurrentNodeCount, fLayer+1, fNodeSize, getFXCoord(), getFYCoord());
+			calculateRecursiveLayout(tmpChild, fRadius , fFirstLayerAngle*fCurrentNodeCount, fLayer+1, fNodeSize, getFXCoord(), getFYCoord());
 		
 		}
 		}
@@ -141,7 +160,6 @@ public final class HTLayouter
 				//if(tree.hasChildren(tmpChild))
 				{
 					float fLayerOfBranch = calculateRecursiveLayout(tmpChild, fDeltaRadius, fRealChildAngle, fLayer+1, fNodeSize, fXCoord, fYCoord);
-				placeConnection(new DrawAbleHyperbolicGeometryConnection(node, tmpChild, fvViewCenterPoint, fViewRadius));
 					//drawLine(fXCoordOfParent, fYCoordOfParent, fXCoord, fYCoord);
 //				childAngle =
 //				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
@@ -149,7 +167,29 @@ public final class HTLayouter
 //			calcualteChildPosition(childRadius, childAngle, numChilds);
 				fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
 				tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-				placeNode(tmpChild, fXCoord, fYCoord, 0, fNodeSize, fNodeSize);
+				DrawAbleHyperboicGeometryGlobeProjection p = new DrawAbleHyperboicGeometryGlobeProjection(node, tmpChild, fvViewCenterPoint, fHeight/2);
+//				{
+//					Vec2f fvFirstPoint = new Vec2f();
+//					Vec2f fvSecondPoint = new Vec2f();
+//
+//					fvFirstPoint.set(fXCoordOfParent, fYCoordOfParent);
+//					fvSecondPoint.set(fXCoord, fYCoord);
+//					
+//				float line = 0; 
+//				line = p.projectLineOnGlobe( fvFirstPoint, fvSecondPoint);
+				
+				if(bHyperbolicFlag){
+				Vec3f tmpLinPointCoord = new Vec3f();
+				Vec3f projectedPointCoord = new Vec3f();
+				tmpLinPointCoord.set(fXCoord, fYCoord, 0.0f);
+				projectedPointCoord = treeProjector.projectCoordinates(tmpLinPointCoord);
+				placeNode(tmpChild, projectedPointCoord.x(), projectedPointCoord.y(), projectedPointCoord.z(), fNodeSize, fNodeSize);
+				}
+				else
+					placeNode(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize);
+				placeConnection(new DrawAbleHyperbolicGeometryConnection(node, tmpChild, fvViewCenterPoint, fViewRadius));
+				
+				
 //				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
 //					EDrawAbleNodeDetailLevel.Low);
 				//drawLine(getFXCoord(), getFYCoord(), x, y);

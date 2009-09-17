@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 public abstract class ATreeLayouter
 	implements ITreeLayouter {
@@ -52,6 +53,8 @@ public abstract class ATreeLayouter
 	private int iViewID;
 	private int iGLDisplayListNode;
 	private int iGLDisplayListConnection;
+	
+	protected ITreeProjection treeProjector = null;
 
 	protected Tree<IDrawAbleNode> tree = null;
 
@@ -175,6 +178,8 @@ public abstract class ATreeLayouter
 		//gl.glCallList(iGLDisplayListConnection);
 		buildDisplayListConnections(gl);
 		gl.glCallList(iGLDisplayListNode);
+		if(treeProjector != null)
+			treeProjector.drawCanvas(gl);
 	}
 
 	private final void clearDisplay() {
