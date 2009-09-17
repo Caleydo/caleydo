@@ -68,6 +68,8 @@ public enum EIconTextures {
 	NAVIGATION_NEXT_SMALL("resources/navigation/next_small.png"),
 	NAVIGATION_MASK_CURVE("resources/navigation/mask_curve.png"),
 	NAVIGATION_MASK_CURVE_NEG("resources/navigation/mask_curve_neg.png"),
+	NAVIGATION_MASK_CURVE_WHITE("resources/navigation/mask_curve_white.png"),
+	NAVIGATION_MASK_CURVE_NEG_WHITE("resources/navigation/mask_curve_neg_white.png"),
 
 	POOL_REMOVE_VIEW("resources/icons/general/pool_remove_view.png"),
 	POOL_DRAG_VIEW("resources/icons/general/pool_drag_view.png"),

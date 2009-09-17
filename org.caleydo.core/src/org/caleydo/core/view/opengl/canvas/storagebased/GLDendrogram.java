@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.CUT_OFF_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.DENDROGRAM_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.SELECTION_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.DendrogramRenderStyle.SUB_DENDROGRAM_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.BUTTON_Z;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
@@ -701,7 +700,7 @@ public class GLDendrogram
 
 			pos.setX(fXmin - fLevelWidthSubTree);// * (1 - fCoeff));
 			pos.setY(fYmin + (fYmax - fYmin) / 2);
-			pos.setZ(SUB_DENDROGRAM_Z);
+			pos.setZ(DENDROGRAM_Z);
 
 		}
 		else {
@@ -712,7 +711,7 @@ public class GLDendrogram
 				pos.setY(yPosInitSubTree);
 				yPosInitSubTree -= fSampleHeightSubTree;
 				pos.setX(xGlobalMaxSubTree - fLevelWidthSubTree);// * (1 - fCoeff));
-				pos.setZ(SUB_DENDROGRAM_Z);
+				pos.setZ(DENDROGRAM_Z);
 			}
 		}
 
@@ -1850,8 +1849,8 @@ public class GLDendrogram
 
 	@Override
 	public void handleUpdateView() {
-//		tree = null;
-//		fPosCut = 0f;
+		tree = null;
+		// setInitialPositionOfCut();
 		resetAllTreeSelections();
 		bRedrawDendrogram = true;
 		setDisplayListDirty();

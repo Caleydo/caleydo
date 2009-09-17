@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
@@ -30,12 +31,16 @@ import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.opengl.canvas.listener.IVirtualArrayUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.StartClusteringListener;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Abstract use case class that implements data and view management.
@@ -253,7 +258,7 @@ public abstract class AUseCase
 
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(clusterState.getContentVAType()));
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.STORAGE));
-		
+
 	}
 
 	@Override
@@ -270,6 +275,29 @@ public abstract class AUseCase
 	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
 
 		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
+
+		Tree<ClusterNode> tree = null;
+		if (vaType == EVAType.CONTENT)
+			tree = set.getClusteredTreeGenes();
+		else if (vaType == EVAType.STORAGE)
+			tree = set.getClusteredTreeExps();
+
+		if (tree != null) {
+			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {
+				public void run() {
+					Shell shell = new Shell();
+					MessageBox messageBox = new MessageBox(shell, SWT.CANCEL);
+					messageBox.setText("Warning");
+					messageBox
+						.setMessage("Modifications break tree structure, therefore dendrogram will be closed!");
+					messageBox.open();
+				}
+			});
+			if (vaType == EVAType.CONTENT)
+				set.setClusteredTreeGenes(null);
+			else if (vaType == EVAType.STORAGE)
+				set.setClusteredTreeExps(null);
+		}
 
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(vaType));
 	}

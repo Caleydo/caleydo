@@ -66,7 +66,6 @@ import org.caleydo.core.manager.event.view.storagebased.AngularBrushingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ApplyCurrentSelectionToVirtualArrayEvent;
 import org.caleydo.core.manager.event.view.storagebased.BookmarkButtonEvent;
 import org.caleydo.core.manager.event.view.storagebased.ChangeOrientationParallelCoordinatesEvent;
-import org.caleydo.core.manager.event.view.storagebased.NewGroupInfoEvent;
 import org.caleydo.core.manager.event.view.storagebased.PreventOcclusionEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetAxisSpacingEvent;
 import org.caleydo.core.manager.event.view.storagebased.ResetParallelCoordinatesEvent;
@@ -584,13 +583,6 @@ public class GLParallelCoordinates
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
-
-		NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
-		newGroupInfoEvent.setSender(this);
-		newGroupInfoEvent.setEVAType(polylineVAType);
-		newGroupInfoEvent.setGroupList(null);
-		newGroupInfoEvent.setDeleteTree(true);
-		eventPublisher.triggerEvent(newGroupInfoEvent);
 
 	}
 
@@ -2040,14 +2032,14 @@ public class GLParallelCoordinates
 						sendVirtualArrayUpdateEvent(vaDelta);
 						setDisplayListDirty();
 						resetAxisSpacing();
-						
-						NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
-						newGroupInfoEvent.setSender(this);
-						newGroupInfoEvent.setEVAType(axisVAType);
-						newGroupInfoEvent.setGroupList(null);
-						newGroupInfoEvent.setDeleteTree(true);
-						eventPublisher.triggerEvent(newGroupInfoEvent);
-						
+
+						// NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+						// newGroupInfoEvent.setSender(this);
+						// newGroupInfoEvent.setEVAType(axisVAType);
+						// newGroupInfoEvent.setGroupList(null);
+						// newGroupInfoEvent.setDeleteTree(true);
+						// eventPublisher.triggerEvent(newGroupInfoEvent);
+
 						break;
 				}
 				break;
@@ -2080,13 +2072,13 @@ public class GLParallelCoordinates
 							vaDelta.add(VADeltaItem.copy(iExternalID));
 							sendVirtualArrayUpdateEvent(vaDelta);
 
-							NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
-							newGroupInfoEvent.setSender(this);
-							newGroupInfoEvent.setEVAType(axisVAType);
-							newGroupInfoEvent.setGroupList(null);
-							newGroupInfoEvent.setDeleteTree(true);
-							eventPublisher.triggerEvent(newGroupInfoEvent);
-							
+							// NewGroupInfoEvent newGroupInfoEvent = new NewGroupInfoEvent();
+							// newGroupInfoEvent.setSender(this);
+							// newGroupInfoEvent.setEVAType(axisVAType);
+							// newGroupInfoEvent.setGroupList(null);
+							// newGroupInfoEvent.setDeleteTree(true);
+							// eventPublisher.triggerEvent(newGroupInfoEvent);
+
 							setDisplayListDirty();
 							// resetSelections();
 							// initGates();
