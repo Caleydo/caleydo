@@ -127,7 +127,7 @@ public class GLHyperbolic
 		// tree.addChild(test, test2);
 		// layouter = new LinearTreeLayouter(viewFrustum);
 
-		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 20);
+		tree = buildTestTree(7, 6);
 		System.out.println(tree.getGraph().toString());
 		layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.setTree(tree);
