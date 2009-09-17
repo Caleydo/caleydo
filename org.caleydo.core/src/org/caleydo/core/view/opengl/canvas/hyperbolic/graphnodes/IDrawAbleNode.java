@@ -72,6 +72,8 @@ public interface IDrawAbleNode
 	 */
 	ArrayList<Vec3f> getConnectionPoints();
 
+	Vec3f getCoordinates();
+
 	// /**
 	// * Set how the node is selected
 	// *

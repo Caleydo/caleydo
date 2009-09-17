@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public final class LTLayouter
 	extends ATreeLayouter {
 
 	int[] iNodesPlacedInLayer;
+	Map<IDrawAbleNode, Integer> mNodeSpaceRec; 
+	float fCalcMaxNodeSize;
+	float fCurNodeRealSize;
 	
 	public LTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
 		super(frustum, pickingManager, iViewID);
@@ -30,34 +34,106 @@ public final class LTLayouter
 		updateSizeInfo();
 		if (tree == null)
 			return;
-
-		float fLayerH = fViewSpaceYAbs / HyperbolicRenderStyle.MAX_DEPTH;
-		float fCurNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE;
+		
+		mNodeSpaceRec = new HashMap<IDrawAbleNode, Integer>();
 		IDrawAbleNode rootNode = tree.getRoot();
+		int overall = 0;
+		if(tree.hasChildren(rootNode))
+			overall = updateNodespace(tree.getChildren(rootNode), 2);
+		mNodeSpaceRec.put(rootNode, overall);
+		
+		
+		float fLayerH = fViewSpaceYAbs / HyperbolicRenderStyle.MAX_DEPTH;
+		fCalcMaxNodeSize = fViewSpaceXAbs / overall;
+		float fCurNodeSize = (HyperbolicRenderStyle.MAX_NODE_SIZE < fCalcMaxNodeSize ? HyperbolicRenderStyle.MAX_NODE_SIZE : fCalcMaxNodeSize);
+		fCurNodeRealSize = fCurNodeSize - 0.05f;
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh);
 		iNodesPlacedInLayer = new int[HyperbolicRenderStyle.MAX_DEPTH];
 		placeNode(rootNode, fViewSpaceX[1] / 2, fViewSpaceY[1] - fLayerH / 2.0f, 0.1f, fCurNodeSize, fCurNodeSize);
-		placeRecursive(rootNode, 2, fLayerH);
+		placeRecursive(rootNode, 2, fLayerH, fViewSpaceX[0]);
 	}
 	
-	private void placeRecursive(IDrawAbleNode rootNode, int iCurrentLayer, float fLayerHigh){
+	private int updateNodespace(ArrayList<IDrawAbleNode> children, int iLayer) {
+		if(iLayer > HyperbolicRenderStyle.MAX_DEPTH)
+			return 0;
+		int overall = children.size();
+		for(IDrawAbleNode node : children){
+			int temp = 0;
+			if(tree.hasChildren(node))
+				temp = updateNodespace(tree.getChildren(node), iLayer + 1);
+			mNodeSpaceRec.put(node, temp);
+			overall = (temp > overall ? temp : overall);
+		}
+		return overall;
+	}
+
+	private void placeRecursive(IDrawAbleNode rootNode, int iCurrentLayer, float fLayerHigh, float viewSpace){
 		if(iCurrentLayer > HyperbolicRenderStyle.MAX_DEPTH)
 			return;
 		if(!tree.hasChildren(rootNode))
 			return;
 		int iNodesInThisLayer = tree.getNumberOfElementsInLayer(iCurrentLayer);
-		float fCurNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, iCurrentLayer);
-		for(IDrawAbleNode node : tree.getChildren(rootNode)){
+		
+		ArrayList<IDrawAbleNode> children = tree.getChildren(rootNode);
+		float placelast = 0;
+		for(int i = 0; i < children.size(); ++i){
+			IDrawAbleNode node = children.get(i);
+			float fNumberNodesbefore = (i==0 ? 0:(float) mNodeSpaceRec.get(children.get(i-1)));
 			if(iCurrentLayer < HyperbolicRenderStyle.DETAIL_LEVEL_GRADING.length)
 				node.setDetailLevel(HyperbolicRenderStyle.DETAIL_LEVEL_GRADING[iCurrentLayer - 1]);
 			else
 				node.setDetailLevel(EDrawAbleNodeDetailLevel.VeryLow);
-			placeNode(node, fViewSpaceX[0] + fViewSpaceXAbs / (iNodesInThisLayer + 1) * ++iNodesPlacedInLayer[iCurrentLayer - 1], fViewSpaceY[1] - fLayerHigh * iCurrentLayer + fLayerHigh / 2, 0.1f,
-				fCurNodeSize, fCurNodeSize);		
-			placeRecursive(node, iCurrentLayer + 1, fLayerHigh);
+			if(i==0)
+				placelast = viewSpace + (float) mNodeSpaceRec.get(node)*fCalcMaxNodeSize / 4.0f;
+			else
+				placelast += fCalcMaxNodeSize / 2.0f + (float) mNodeSpaceRec.get(node) * fCalcMaxNodeSize /4.0f + (float) mNodeSpaceRec.get(children.get(i-1)) / 4.0f * fCalcMaxNodeSize;
+			placeNode(node, placelast, fViewSpaceY[1] - fLayerHigh * iCurrentLayer + fLayerHigh / 2.0f, 0.1f, fCurNodeRealSize, fCurNodeRealSize);
 			placeConnection(new DrawAbleLinearConnection(rootNode, node));
-			}
+			placeRecursive(node, iCurrentLayer + 1, fLayerHigh, placelast - (float) mNodeSpaceRec.get(node) / 4.0f * fCalcMaxNodeSize);
+		}
+		return;
+		
+//		float fCurNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, iCurrentLayer);
+//		for(IDrawAbleNode node : tree.getChildren(rootNode)){
+//			if(iCurrentLayer < HyperbolicRenderStyle.DETAIL_LEVEL_GRADING.length)
+//				node.setDetailLevel(HyperbolicRenderStyle.DETAIL_LEVEL_GRADING[iCurrentLayer - 1]);
+//			else
+//				node.setDetailLevel(EDrawAbleNodeDetailLevel.VeryLow);
+//			placeNode(node, fViewSpaceX[0] + fViewSpaceXAbs / (iNodesInThisLayer + 1) * ++iNodesPlacedInLayer[iCurrentLayer - 1], fViewSpaceY[1] - fLayerHigh * iCurrentLayer + fLayerHigh / 2, 0.1f,
+//				fCurNodeSize, fCurNodeSize);		
+//			placeRecursive(node, iCurrentLayer + 1, fLayerHigh);
+//			placeConnection(new DrawAbleLinearConnection(rootNode, node));
+//			}
 	}
+
+
+//		float fLayerH = fViewSpaceYAbs / HyperbolicRenderStyle.MAX_DEPTH;
+//		float fCurNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE;
+//		IDrawAbleNode rootNode = tree.getRoot();
+//		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh);
+//		iNodesPlacedInLayer = new int[HyperbolicRenderStyle.MAX_DEPTH];
+//		placeNode(rootNode, fViewSpaceX[1] / 2, fViewSpaceY[1] - fLayerH / 2.0f, 0.1f, fCurNodeSize, fCurNodeSize);
+//		placeRecursive(rootNode, 2, fLayerH);
+//	}
+//	
+//	private void placeRecursive(IDrawAbleNode rootNode, int iCurrentLayer, float fLayerHigh){
+//		if(iCurrentLayer > HyperbolicRenderStyle.MAX_DEPTH)
+//			return;
+//		if(!tree.hasChildren(rootNode))
+//			return;
+//		int iNodesInThisLayer = tree.getNumberOfElementsInLayer(iCurrentLayer);
+//		float fCurNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, iCurrentLayer);
+//		for(IDrawAbleNode node : tree.getChildren(rootNode)){
+//			if(iCurrentLayer < HyperbolicRenderStyle.DETAIL_LEVEL_GRADING.length)
+//				node.setDetailLevel(HyperbolicRenderStyle.DETAIL_LEVEL_GRADING[iCurrentLayer - 1]);
+//			else
+//				node.setDetailLevel(EDrawAbleNodeDetailLevel.VeryLow);
+//			placeNode(node, fViewSpaceX[0] + fViewSpaceXAbs / (iNodesInThisLayer + 1) * ++iNodesPlacedInLayer[iCurrentLayer - 1], fViewSpaceY[1] - fLayerHigh * iCurrentLayer + fLayerHigh / 2, 0.1f,
+//				fCurNodeSize, fCurNodeSize);		
+//			placeRecursive(node, iCurrentLayer + 1, fLayerHigh);
+//			placeConnection(new DrawAbleLinearConnection(rootNode, node));
+//			}
+//	}
 		
 		//for(IDrawAbleNode node : tree.getChildren(rootNode))		{
 			

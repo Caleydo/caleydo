@@ -16,7 +16,6 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicGeometryGlobeProjection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicGeometryConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.HyperbolicGlobeProjection;
@@ -167,7 +166,8 @@ public final class HTLayouter
 //			calcualteChildPosition(childRadius, childAngle, numChilds);
 				fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
 				tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-				DrawAbleHyperbolicGeometryGlobeProjection p = new DrawAbleHyperbolicGeometryGlobeProjection(node, tmpChild, fvViewCenterPoint, fHeight/2);
+				//DrawAbleHyperbolicGeometryGlobeProjection p = new DrawAbleHyperbolicGeometryGlobeProjection(node, tmpChild, fvViewCenterPoint, fHeight/2);
+				ITreeProjection p = new HyperbolicGlobeProjection(1, fHeight, fWidth, 1.0f, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
 //				{
 //					Vec2f fvFirstPoint = new Vec2f();
 //					Vec2f fvSecondPoint = new Vec2f();

@@ -103,6 +103,11 @@ public abstract class ADrawAbleNode
 			mRepresantations.put(e, DrawAbleObjectsFactory.getDrawAbleObject(sTypes[i++]));
 		}
 	}
+	
+	@Override
+	public final Vec3f getCoordinates(){
+		return new Vec3f(fXCoord, fYCoord, fZCoord);
+	}
 }
 
 // private boolean bHighlight;

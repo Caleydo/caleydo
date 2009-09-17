@@ -49,30 +49,35 @@ public class DrawAbleHyperbolicGeometryConnection
 		// TODO: implement!!!
 
 		Vec3f[] endPoints = findClosestCorrespondendingPoints();
+		// first point
 		Vec3f pStartP = endPoints[0];
+		// last point
 		Vec3f pEndP = endPoints[1];
-
-		Vec2f v2Start = new Vec2f(pStartP.x(), pStartP.y());
-		Vec2f v2End = new Vec2f(pEndP.x(), pEndP.y());
-		float alpha =
-			(float) Math.acos((v2Start.x() * v2End.x() + v2Start.y() * v2End.y())
-				/ (v2Start.length() * v2End.length()));
-		if (v2Start.x() > fvHTCenterpoint.x())
-			if (v2Start.y() > v2End.y())
-				alpha = alpha * -1.0f;
-			else
-				;
-		else if (v2Start.y() < v2End.y())
-			alpha = alpha * -1.0f;
-		else
-			;
-
 		Vec3f vSE = new Vec3f(pEndP.x() - pStartP.x(), pEndP.y() - pStartP.y(), pEndP.z() - pStartP.z());
+		// base point ... middle of vec start -> end
 		Vec3f pSpP1 =
 			new Vec3f(pStartP.x() + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
 				/ 2.0f);
-		Vec3f pSpP2 =
-			new Vec3f((float) (pSpP1.x() + Math.sin(alpha)), (float) (pSpP1.y() + Math.sin(alpha)), pSpP1.z());
+
+		Vec2f v2Start = new Vec2f(pStartP.x(), pStartP.y());
+		Vec2f v2End = new Vec2f(pEndP.x(), pEndP.y());
+	//	float alpha =
+	//		(float) Math.acos((v2Start.x() * v2End.x() + v2Start.y() * v2End.y())
+	//			/ (v2Start.length() * v2End.length()));
+//		if (v2Start.x() > fvHTCenterpoint.x())
+//			if (v2Start.y() > v2End.y())
+//				alpha = alpha * -1.0f;
+//			else
+//				;
+//		else if (v2Start.y() < v2End.y())
+//			alpha = alpha * -1.0f;
+//		else
+//			;
+
+		
+		
+	//	Vec3f pSpP2 =
+	//		new Vec3f((float) (pSpP1.x() + Math.cos(alpha)), (float) (pSpP1.y() + Math.sin(alpha)), pSpP1.z());
 
 		// Vec3f vnpSP1 = new Vec3f(-pSpP1.y(), pSpP1.x(), pSpP1.z());
 		// Vec3f vME = new Vec3f(pEndP.x() - fvHTCenterpoint.x(), pEndP.y() - fvHTCenterpoint.y(), 0);
@@ -95,18 +100,18 @@ public class DrawAbleHyperbolicGeometryConnection
 		// pSpP2.z(), pEndP.x(), pEndP.y(), pEndP.z() };
 		FloatBuffer fBuff;
 		fBuff = FloatBuffer.allocate(3 * 3);
-		if (Math.abs(alpha) < 2 * Math.PI / 180.0f) {
+		//if (Math.abs(alpha) < 2 * Math.PI / 180.0f) {
 			float[] fA =
 				{ pStartP.x(), pStartP.y(), pStartP.z(), pSpP1.x(), pSpP1.y(), pSpP1.z(), pEndP.x(),
 						pEndP.y(), pEndP.z() };
 			fBuff.put(fA);
-		}
-		else {
-			float[] fA =
-				{ pStartP.x(), pStartP.y(), pStartP.z(), pSpP2.x(), pSpP2.y(), pSpP2.z(), pEndP.x(),
-						pEndP.y(), pEndP.z() };
-			fBuff.put(fA);
-		}
+//		}
+//		else {
+//			float[] fA =
+//				{ pStartP.x(), pStartP.y(), pStartP.z(), pSpP2.x(), pSpP2.y(), pSpP2.z(), pEndP.x(),
+//						pEndP.y(), pEndP.z() };
+//			fBuff.put(fA);
+//		}
 		fBuff.rewind();
 		gl.glEnable(GL.GL_MAP1_VERTEX_3);
 		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, fBuff);
