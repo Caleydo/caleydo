@@ -26,8 +26,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 public class DrawAbleHyperbolicGeometryConnection
 	extends ADrawAbleConnection {
 
-	private Vec2f fvHTCenterpoint;
-	private float fHTRadius;
+	protected Vec2f fvHTCenterpoint;
+	protected float fHTRadius;
 
 	public DrawAbleHyperbolicGeometryConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB,
 		Vec2f fvHTCenterpoint, float fHTRadius) {
