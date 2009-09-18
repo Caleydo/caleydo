@@ -74,6 +74,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.EmbeddedPathwayContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -200,9 +201,8 @@ public class GLPathway
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
-		GLInfoAreaManager infoAreaManager) {
-		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
+		
 		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
@@ -306,7 +306,8 @@ public class GLPathway
 		// front level
 		gl.glTranslatef(0, tmp, 0);
 
-		if (((IGLRemoteRenderingBucketView)remoteRenderingGLView).getBucketMouseWheelListener() != null) {
+		if (glRemoteRenderingView instanceof IGLRemoteRenderingBucketView
+			&& ((IGLRemoteRenderingBucketView) glRemoteRenderingView).getBucketMouseWheelListener() != null) {
 			// if
 			// (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 			// .getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
@@ -460,8 +461,7 @@ public class GLPathway
 				continue;
 				// throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 			}
-			Integer iDavidID = (Integer)setIDs.toArray()[0];
-			
+			Integer iDavidID = (Integer) setIDs.toArray()[0];
 
 			pathwayVertexGraphItem =
 				generalManager.getPathwayItemManager().getPathwayVertexGraphItemByDavidId(iDavidID);
@@ -596,7 +596,7 @@ public class GLPathway
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
@@ -676,8 +676,8 @@ public class GLPathway
 
 								GeneContextMenuItemContainer geneContextMenuItemContainer =
 									new GeneContextMenuItemContainer();
-								geneContextMenuItemContainer.setID(EIDType.DAVID, generalManager.getPathwayItemManager()
-									.getDavidIdByPathwayVertexGraphItem(
+								geneContextMenuItemContainer.setID(EIDType.DAVID, generalManager
+									.getPathwayItemManager().getDavidIdByPathwayVertexGraphItem(
 										(PathwayVertexGraphItem) pathwayVertexGraphItem));
 								contextMenu.addItemContanier(geneContextMenuItemContainer);
 							}

@@ -194,8 +194,7 @@ public class GLRadialHierarchy
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
-		GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -203,8 +202,6 @@ public class GLRadialHierarchy
 				glParentView.getParentGLCanvas().getParentComposite().addKeyListener(glKeyListener);
 			}
 		});
-
-		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		this.glMouseListener = glMouseListener;
 
@@ -585,7 +582,7 @@ public class GLRadialHierarchy
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;

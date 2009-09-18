@@ -41,10 +41,12 @@ import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.remote.dataflipper.GLDataFlipper;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
@@ -102,9 +104,7 @@ public abstract class AGLEventListener
 	 */
 	protected RemoteLevelElement remoteLevelElement;
 
-	protected IGLRemoteRenderingView remoteRenderingGLView;
-
-	protected boolean bIsRenderedRemote = false;
+	protected IGLRemoteRenderingView glRemoteRenderingView;
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
@@ -123,11 +123,11 @@ public abstract class AGLEventListener
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
 	private static final int NUMBER_OF_FRAMES = 15;
-	
+
 	protected GLMagnifyingGlass magnifyingGlass;
-	
+
 	private ToggleMagnifyingGlassListener magnifyingGlassListener;
-	
+
 	private boolean bShowMagnifyingGlass;
 
 	protected EBusyModeState eBusyModeState = EBusyModeState.OFF;
@@ -164,7 +164,7 @@ public abstract class AGLEventListener
 
 	/** id of the related view in the gui (e.g. RCP) */
 	private String viewGUIID;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -204,7 +204,7 @@ public abstract class AGLEventListener
 		contextMenu = ContextMenu.get();
 
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
-		
+
 		bShowMagnifyingGlass = false;
 	}
 
@@ -238,9 +238,9 @@ public abstract class AGLEventListener
 			gl.glRotatef(w, rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 
 			displayLocal(gl);
-			
-			if(bShowMagnifyingGlass) {
-				if(magnifyingGlass == null) {
+
+			if (bShowMagnifyingGlass) {
+				if (magnifyingGlass == null) {
 					magnifyingGlass = new GLMagnifyingGlass();
 				}
 				magnifyingGlass.draw(gl, glMouseListener);
@@ -251,7 +251,6 @@ public abstract class AGLEventListener
 		}
 	}
 
-
 	@Override
 	public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
 
@@ -261,14 +260,15 @@ public abstract class AGLEventListener
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
-		if (remoteRenderingGLView != null || this instanceof GLRemoteRendering || this instanceof GLGlyph) {
+		if (glRemoteRenderingView != null || this instanceof GLRemoteRendering || this instanceof GLGlyph
+			|| this instanceof GLDataFlipper) {
 			viewFrustum.considerAspectRatio(true);
 		}
 		else {
 			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
 			viewFrustum.setLeft(0);
-//			viewFrustum.setRight(8);// frame.width / 100);
+			// viewFrustum.setRight(8);// frame.width / 100);
 			viewFrustum.setBottom(0);
 			float value = (float) frame.height / (float) frame.width * 8.0f;
 			viewFrustum.setTop(value);
@@ -278,15 +278,15 @@ public abstract class AGLEventListener
 			bIsDisplayListDirtyRemote = true;
 			bHasFrustumChanged = true;
 		}
-		
+
 		GL gl = drawable.getGL();
-		
+
 		fAspectRatio = (float) height / (float) width;
 
 		gl.glViewport(x, y, width, height);
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
-			
+
 		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 	}
 
@@ -378,8 +378,7 @@ public abstract class AGLEventListener
 	 *            TODO
 	 */
 	public abstract void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
-		GLInfoAreaManager infoAreaManager);
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager);
 
 	/**
 	 * GL display method that has to be called in all cases
@@ -462,7 +461,7 @@ public abstract class AGLEventListener
 					else {
 						if (tempPick.getPickingMode() != EPickingMode.RIGHT_CLICKED)
 							contextMenu.flush();
-						handleEvents(pickingType, ePickingMode, iExternalID, tempPick);
+						handlePickingEvents(pickingType, ePickingMode, iExternalID, tempPick);
 					}
 					pickingManager.flushHits(iUniqueID, pickingType);
 				}
@@ -484,7 +483,7 @@ public abstract class AGLEventListener
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
 	 */
-	abstract protected void handleEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
+	abstract protected void handlePickingEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
 		final int iExternalID, final Pick pick);
 
 	public abstract String getShortInfo();
@@ -519,15 +518,15 @@ public abstract class AGLEventListener
 	}
 
 	public final boolean isRenderedRemote() {
-		return bIsRenderedRemote;
+		return glRemoteRenderingView != null;
 	}
 
-	public final void setRenderedRemote(boolean bIsRenderedRemote) {
-		this.bIsRenderedRemote = bIsRenderedRemote;
+	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {
+		this.glRemoteRenderingView = glRemoteRenderingView;;
 	}
 
 	public final IGLRemoteRenderingView getRemoteRenderingGLCanvas() {
-		return remoteRenderingGLView;
+		return glRemoteRenderingView;
 	}
 
 	protected void renderBusyMode(final GL gl) {
@@ -705,15 +704,6 @@ public abstract class AGLEventListener
 		return viewIDs;
 	}
 
-	// /*
-	// * *
-	// * @deprecated Use {@link #queueEvent(AEventListener,AEvent)} instead
-	// */
-	// @Override
-	// public void queueEvent(AEventListener<IListenerOwner> listener, AEvent event) {
-	// queueEvent(listener, event);
-	// }
-
 	@Override
 	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
@@ -736,8 +726,7 @@ public abstract class AGLEventListener
 	public void initFromSerializableRepresentation(ASerializedView ser) {
 		// the default implementation does not initialize anything
 	}
-	
-	
+
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
@@ -755,7 +744,7 @@ public abstract class AGLEventListener
 			magnifyingGlassListener = null;
 		}
 	}
-	
+
 	public void handleToggleMagnifyingGlassEvent() {
 		bShowMagnifyingGlass = !bShowMagnifyingGlass;
 	}

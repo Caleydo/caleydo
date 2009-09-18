@@ -1,12 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
 import gleem.linalg.Vec2f;
-import gleem.linalg.Vec3f;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.media.opengl.GL;

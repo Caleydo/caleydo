@@ -76,10 +76,21 @@ public enum EIconTextures {
 	POOL_VIEW_BACKGROUND("resources/navigation/pool_view_background.png"),
 	POOL_VIEW_BACKGROUND_SELECTION("resources/navigation/pool_view_background_selection.png"),
 
+	DATA_FLIPPER_CONNECTION_STRAIGHT("resources/icons/view/dataflipper/connection_straigth.png"),
+	DATA_FLIPPER_CONNECTION_CORNER("resources/icons/view/dataflipper/connection_corner.png"),
+	DATA_FLIPPER_DATA_ICON_BACKGROUND("resources/icons/view/dataflipper/data_icon_background.png"),
+	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED("resources/icons/view/dataflipper/view_icon_background_rounded.png"),
+	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE("resources/icons/view/dataflipper/view_icon_background_square.png"),	
+	DATA_FLIPPER_DATA_ICON_PATIENT("resources/icons/view/dataflipper/patient.png"),
+	DATA_FLIPPER_DATA_ICON_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
+	DATA_FLIPPER_DATA_ICON_GENE_EXPRESSION("resources/icons/view/dataflipper/gene_expression.png"),
+	DATA_FLIPPER_DATA_ICON_TISSUE("resources/icons/view/dataflipper/tissue.png"),
+	
 	LOADING("resources/loading/loading_background.png"),
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
 
 	CELL_MODEL("resources/models/cell.jpg"),
+	TISSUE_SAMPLE("resources/sample/tissue.jpg"),
 
 	// context menu elements
 	CM_LOAD_DEPENDING_PATHWAYS("/resources/context_menu/load_depending_pathways.png"),

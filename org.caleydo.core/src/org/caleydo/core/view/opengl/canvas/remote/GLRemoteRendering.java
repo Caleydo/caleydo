@@ -39,7 +39,6 @@ import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
-import org.caleydo.core.manager.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -301,8 +300,7 @@ public class GLRemoteRendering
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
-		GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
@@ -324,7 +322,7 @@ public class GLRemoteRendering
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
 		createSelectionHeatMap();
-		glBookmarkContainer.initRemote(gl, this, glMouseListener, this, null);
+		glBookmarkContainer.initRemote(gl, this, glMouseListener, null);
 
 		if (generalManager.getTrackDataProvider().isTrackModeActive())
 			glOffScreenRenderer.init(gl);
@@ -339,7 +337,7 @@ public class GLRemoteRendering
 		// cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
-		glBookmarkContainer.setRenderedRemote(true);
+		glBookmarkContainer.setRemoteRenderingGLView(this);
 		glBookmarkContainer.setUseCase(useCase);
 		glBookmarkContainer.setSet(set);
 		glBookmarkContainer.initData();
@@ -442,7 +440,8 @@ public class GLRemoteRendering
 				}
 			}
 
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clearTransformedConnections();
 			dragAndDrop.stopDragAction();
 			bUpdateOffScreenTextures = true;
 		}
@@ -1550,7 +1549,7 @@ public class GLRemoteRendering
 
 		gl.glPushMatrix();
 
-		slerpMod.applySlerp(gl, transform);
+		slerpMod.applySlerp(gl, transform, false);
 
 		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).displayRemote(gl);
 
@@ -1579,7 +1578,8 @@ public class GLRemoteRendering
 			}
 
 			generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clearTransformedConnections();
 		}
 	}
 
@@ -1786,7 +1786,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 		switch (pickingType) {
 			case BUCKET_DRAG_ICON_SELECTION:
@@ -2508,7 +2508,7 @@ public class GLRemoteRendering
 		SlerpAction slerpActionTransition = new SlerpAction(origin, destination);
 		arSlerpActions.add(slerpActionTransition);
 
-		view.initRemote(gl, this, glMouseListener, this, infoAreaManager);
+		view.initRemote(gl, this, glMouseListener, infoAreaManager);
 		view.setDetailLevel(EDetailLevel.MEDIUM);
 
 		return true;
@@ -2534,7 +2534,7 @@ public class GLRemoteRendering
 
 		AGLEventListener glView = cmdView.getCreatedObject();
 		glView.setUseCase(useCase);
-		glView.setRenderedRemote(true);
+		glView.setRemoteRenderingGLView(this);
 		glView.setSet(set);
 
 		if (glView instanceof GLPathway) {

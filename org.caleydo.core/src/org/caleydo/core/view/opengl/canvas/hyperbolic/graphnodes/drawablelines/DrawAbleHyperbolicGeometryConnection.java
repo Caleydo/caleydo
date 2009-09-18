@@ -4,7 +4,6 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.nio.FloatBuffer;
-import java.util.List;
 
 import javax.media.opengl.GL;
 

@@ -118,7 +118,8 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  */
 public class GLParallelCoordinates
-	extends AStorageBasedView {
+	extends AStorageBasedView 
+	implements IGLRemoteRenderingView {
 
 	/**
 	 * Flag whether to take measures against occlusion or not
@@ -300,11 +301,9 @@ public class GLParallelCoordinates
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
-		GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		bShowSelectionHeatMap = false;
-		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 		this.glMouseListener = glMouseListener;
 		this.infoAreaManager = infoAreaManager;
 
@@ -389,6 +388,7 @@ public class GLParallelCoordinates
 
 	@Override
 	public void display(final GL gl) {
+
 		processEvents();
 		if (bShowSelectionHeatMap) {
 
@@ -462,13 +462,13 @@ public class GLParallelCoordinates
 			viewFrustum.getTop(), -20, 20, null, -1);
 		cmdCreateGLView.doCommand();
 		glSelectionHeatMap = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
-		glSelectionHeatMap.setRenderedRemote(true);
+		glSelectionHeatMap.setRemoteRenderingGLView(this);
 		glSelectionHeatMap.setUseCase(useCase);
 		glSelectionHeatMap.setSet(set);
 		glSelectionHeatMap.initData();
 
 		// FIXME: remoteRenderingGLCanvas is null, conceptual error
-		glSelectionHeatMap.initRemote(gl, this, glMouseListener, remoteRenderingGLView, null);
+		glSelectionHeatMap.initRemote(gl, this, glMouseListener, null);
 	}
 
 	public void triggerAngularBrushing() {
@@ -1797,7 +1797,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	protected void handleEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
+	protected void handlePickingEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
 		final int iExternalID, final Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
 			return;

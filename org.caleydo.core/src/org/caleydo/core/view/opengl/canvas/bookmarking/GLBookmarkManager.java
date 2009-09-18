@@ -29,10 +29,8 @@ import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.ContextMenu;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 
@@ -221,7 +219,7 @@ public class GLBookmarkManager
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode ePickingMode, int iExternalID,
+	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode ePickingMode, int iExternalID,
 		Pick pick) {
 		switch (ePickingType) {
 			case BOOKMARK_ELEMENT:
@@ -268,8 +266,8 @@ public class GLBookmarkManager
 
 	@Override
 	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
-		IGLRemoteRenderingView remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		GLInfoAreaManager infoAreaManager) {
+
 		init(gl);
 
 	}

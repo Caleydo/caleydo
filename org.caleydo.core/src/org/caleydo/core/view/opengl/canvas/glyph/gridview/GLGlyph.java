@@ -335,11 +335,9 @@ public class GLGlyph
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
-		GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		bIsLocal = false;
-		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 
 		// Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
@@ -904,7 +902,7 @@ public class GLGlyph
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
 
 		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
 			switch (pickingMode) {

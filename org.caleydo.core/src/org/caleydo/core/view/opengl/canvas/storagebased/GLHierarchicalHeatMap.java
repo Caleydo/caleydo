@@ -94,7 +94,7 @@ import com.sun.opengl.util.texture.TextureIO;
  */
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
-	implements IGroupsActionHandler, IClusterNodeEventReceiver, INewGroupInfoHandler {
+	implements IGroupsActionHandler, IClusterNodeEventReceiver, INewGroupInfoHandler, IGLRemoteRenderingView {
 
 	private HeatMapRenderStyle renderStyle;
 
@@ -241,9 +241,9 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void init(GL gl) {
-		glHeatMapView.initRemote(gl, this, glMouseListener, null, null);
-		glGeneDendrogramView.initRemote(gl, this, glMouseListener, null, null);
-		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null, null);
+		glHeatMapView.initRemote(gl, this, glMouseListener, null);
+		glGeneDendrogramView.initRemote(gl, this, glMouseListener, null);
+		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null);
 		initTextures(gl);
 		// activateGroupHandling();
 	}
@@ -325,9 +325,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public void initRemote(GL gl, final AGLEventListener glParentView, GLMouseListener glMouseListener,
-		IGLRemoteRenderingView remoteRenderingGLCanvas, GLInfoAreaManager infoAreaManager) {
-
-		this.remoteRenderingGLView = remoteRenderingGLCanvas;
+		GLInfoAreaManager infoAreaManager) {
 
 		// Register keyboard listener to GL canvas
 		glParentView.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -611,7 +609,7 @@ public class GLHierarchicalHeatMap
 
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 		glHeatMapView.setUseCase(GeneralManager.get().getUseCase());
-		glHeatMapView.setRenderedRemote(true);
+		glHeatMapView.setRemoteRenderingGLView(this);
 
 	}
 
@@ -635,7 +633,7 @@ public class GLHierarchicalHeatMap
 
 		glGeneDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
 		glGeneDendrogramView.setUseCase(GeneralManager.get().getUseCase());
-		glGeneDendrogramView.setRenderedRemote(true);
+		glGeneDendrogramView.setRemoteRenderingGLView(this);
 
 		cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
@@ -648,7 +646,7 @@ public class GLHierarchicalHeatMap
 
 		glExperimentDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
 		glExperimentDendrogramView.setUseCase(GeneralManager.get().getUseCase());
-		glExperimentDendrogramView.setRenderedRemote(true);
+		glExperimentDendrogramView.setRemoteRenderingGLView(this);
 	}
 
 	@Override
@@ -2673,8 +2671,8 @@ public class GLHierarchicalHeatMap
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		gl.glLoadIdentity();
+		// gl.glMatrixMode(GL.GL_MODELVIEW);
+		// gl.glLoadIdentity();
 
 		// background color
 		gl.glColor4fv(BACKGROUND_COLOR, 0);
@@ -3959,7 +3957,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;

@@ -172,11 +172,9 @@ public class GLGlyphSliderView
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLCanvas,
-		GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
 		this.glMouseListener = glMouseListener;
-		this.remoteRenderingGLView = remoteRenderingGLCanvas;
 		iMaxCols = 5;
 		init(gl);
 
@@ -353,7 +351,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID, Pick pick) {
 		if (pickingType == EPickingType.SLIDER_SELECTION) {
 			for (int i = 0; i < alSlider.size(); ++i) {
 				alSlider.get(i).handleEvents(pickingType, pickingMode, externalID, pick);

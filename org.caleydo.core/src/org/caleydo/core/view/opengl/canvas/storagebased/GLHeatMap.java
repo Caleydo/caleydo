@@ -49,7 +49,6 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
@@ -155,14 +154,9 @@ public class GLHeatMap
 
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
-		final GLMouseListener glMouseListener, final IGLRemoteRenderingView remoteRenderingGLView,
-		GLInfoAreaManager infoAreaManager) {
+		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
 
-		this.remoteRenderingGLView = remoteRenderingGLView;
-
-		// FIXME - remoteRenderingGLView is null if is rendered remote by any other than bucket - and this is
-		// used for testing here
-		if (remoteRenderingGLView == null)
+		if (glRemoteRenderingView instanceof GLRemoteRendering)
 			renderStyle.disableFishEye();
 
 		// Register keyboard listener to GL canvas
@@ -422,7 +416,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
+	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
 		Pick pick) {
 		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
@@ -1116,7 +1110,7 @@ public class GLHeatMap
 	// }
 	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fZOrigin,
 		float fRotation, float fFontScaling) {
-		if (isRenderedRemote() && remoteRenderingGLView instanceof GLRemoteRendering)
+		if (isRenderedRemote() && glRemoteRenderingView instanceof GLRemoteRendering)
 			fFontScaling *= 1.5;
 		if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
 			sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);

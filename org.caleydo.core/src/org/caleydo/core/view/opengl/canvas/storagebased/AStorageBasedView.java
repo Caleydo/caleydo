@@ -36,6 +36,7 @@ import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.VirtualArrayUpdateListener;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.ReplaceVirtualArrayListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.core.runtime.Status;
@@ -134,7 +135,7 @@ public abstract class AStorageBasedView
 
 		super.initData();
 
-		bRenderOnlyContext = bIsRenderedRemote;
+		bRenderOnlyContext = glRemoteRenderingView instanceof GLRemoteRendering;
 
 		// TODO: do we need this here?
 		if (set == null) {

@@ -118,6 +118,7 @@ public class CommandFactory
 			case CREATE_GL_JUKEBOX_3D:
 			case CREATE_GL_DATA_FLIPPER:
 			case CREATE_GL_CELL:
+			case CREATE_GL_TISSUE:
 			case CREATE_GL_REMOTE_GLYPH:
 			case CREATE_GL_RADIAL_HIERARCHY:
 			case CREATE_GL_HYPERBOLIC:

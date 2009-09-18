@@ -81,7 +81,7 @@ public class TextureManager {
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), lowerRightCorner.z());
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(upperRightCorner.x(), upperLeftCorner.y(), upperRightCorner.z());
+		gl.glVertex3f(upperRightCorner.x(), upperRightCorner.y(), upperRightCorner.z());
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(upperLeftCorner.x(), upperLeftCorner.y(), upperLeftCorner.z());
 

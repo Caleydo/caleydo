@@ -34,13 +34,11 @@ public class GLHelperFunctions {
 
 		gl.glColor3f(1, 0, 0);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 0);// viewFrustum.getLeft(),
-		// viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), 0, 0);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
 		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop()
 			- viewFrustum.getBottom(), 0);
-		gl.glVertex3f(0, viewFrustum.getTop() - viewFrustum.getBottom(), 0);
-		// gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), 0);
 
 		gl.glEnd();
 	}
@@ -56,14 +54,13 @@ public class GLHelperFunctions {
 		gl.glVertex3f(vecPoint.x(), vecPoint.y() + 10, vecPoint.z());
 		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() - 10);
 		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() + 10);
-//		gl.glVertex3f(vecPoint.x() - 10, vecPoint.y() -10, vecPoint.z());
-//		gl.glVertex3f(vecPoint.x() + 10, vecPoint.y() +10, vecPoint.z());
-		
+		// gl.glVertex3f(vecPoint.x() - 10, vecPoint.y() -10, vecPoint.z());
+		// gl.glVertex3f(vecPoint.x() + 10, vecPoint.y() +10, vecPoint.z());
+
 		gl.glEnd();
 	}
-	
-	public static void drawPointAt(final GL gl, float x, float y, float z)
-	{
+
+	public static void drawPointAt(final GL gl, float x, float y, float z) {
 		drawPointAt(gl, new Vec3f(x, y, z));
 	}
 }

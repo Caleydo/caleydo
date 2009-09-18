@@ -40,16 +40,21 @@ public class Slerp {
 		return resultTransform;
 	}
 
-	public void applySlerp(final GL gl, final Transform transform) {
+	public void applySlerp(final GL gl, final Transform transform, boolean bIgnoreZRotation) {
 
 		Vec3f translation = transform.getTranslation();
 		Vec3f scale = transform.getScale();
 		Vec3f axis = new Vec3f();
 		float fAngle = transform.getRotation().get(axis);
 
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		gl.glTranslatef(translation.x()-1.5f, translation.y()-1.5f, translation.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
+		
+		float fZRot = 0;
+		if (!bIgnoreZRotation)
+			fZRot = axis.z();
+		
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), fZRot);
 	}
 
 	// /**

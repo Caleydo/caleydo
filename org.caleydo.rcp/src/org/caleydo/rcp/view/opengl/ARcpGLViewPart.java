@@ -49,7 +49,7 @@ public abstract class ARcpGLViewPart
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView initSerializedView;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -84,31 +84,32 @@ public abstract class ARcpGLViewPart
 
 		CmdCreateGLEventListener cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(glViewType);
-	
+
 		IUseCase useCase;
 		ISet set;
-		
-		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D) {
-			
+
+		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D
+			|| glViewType == ECommandType.CREATE_GL_DATA_FLIPPER) {
+
 			useCase = GeneralManager.get().getUseCase();
 			set = useCase.getSet();
-			
+
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, set,
-//			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f, 2f, 3.82f, 100, set,
+			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f, 2f, 3.82f, 100, set,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH) {
-			
+
 			useCase = GeneralManager.get().getClinicalUseCase();
 			set = useCase.getSet();
-			
+
 			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, set,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
 			useCase = GeneralManager.get().getUseCase();
 			set = useCase.getSet();
-			
+
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, set, iParentCanvasID);
 		}
 
@@ -121,10 +122,10 @@ public abstract class ARcpGLViewPart
 
 		glView.setUseCase(useCase);
 		glView.setSet(set);
-				
+
 		glView.setViewGUIID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
-		
+
 		return glView;
 	}
 
@@ -142,7 +143,7 @@ public abstract class ARcpGLViewPart
 	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
-		
+
 		String viewXml = null;
 		if (memento != null) {
 			viewXml = memento.getString("serialized");
@@ -153,19 +154,22 @@ public abstract class ARcpGLViewPart
 			Unmarshaller unmarshaller;
 			try {
 				unmarshaller = jaxbContext.createUnmarshaller();
-			} catch (JAXBException ex) {
+			}
+			catch (JAXBException ex) {
 				throw new RuntimeException("could not create xml unmarshaller", ex);
 			}
-			
+
 			StringReader xmlInputReader = new StringReader(viewXml);
 			try {
 				initSerializedView = (ASerializedView) unmarshaller.unmarshal(xmlInputReader);
-			} catch (JAXBException ex) {
+			}
+			catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
-		} else {
+		}
+		else {
 			initSerializedView = createDefaultSerializedView();
-			
+
 			// check if the view is within the list of stored views
 			ASerializedView storedView = null;
 			for (ASerializedView initView : Application.initializedStartViews) {
@@ -189,7 +193,8 @@ public abstract class ARcpGLViewPart
 		try {
 			marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("could not create xml marshaller", ex);
 		}
 
@@ -198,7 +203,8 @@ public abstract class ARcpGLViewPart
 			marshaller.marshal(glEventListener.getSerializableRepresentation(), xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -253,12 +259,14 @@ public abstract class ARcpGLViewPart
 
 	/**
 	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
+	 * 
 	 * @return serialized form of the gl-view with default initialization
 	 */
 	public abstract ASerializedView createDefaultSerializedView();
 
 	/**
 	 * Returns the rcp-ID of the view
+	 * 
 	 * @return rcp-ID of the view
 	 */
 	public abstract String getViewGUIID();

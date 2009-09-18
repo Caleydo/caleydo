@@ -1,4 +1,6 @@
-package org.caleydo.core.view.opengl.canvas.cell;
+package org.caleydo.core.view.opengl.canvas.tissue;
+
+import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 
@@ -29,29 +31,21 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Marc Streit
  */
-public class GLCell
+public class GLTissue
 	extends AGLEventListener {
-	// private ConnectedElementRepresentationManager connectedElementRepresentationManager;
-
-	// private GenericSelectionManager selectionManager;
 
 	/**
 	 * Constructor.
 	 */
-	public GLCell(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
+	public GLTissue(GLCaleydoCanvas glCanvas, final String sLabel, final IViewFrustum viewFrustum) {
 		super(glCanvas, sLabel, viewFrustum, false);
-		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
-
-		// connectedElementRepresentationManager =
-		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		viewType = EManagedObjectType.GL_TISSUE;
 
 		// initialize internal gene selection manager
 		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
 		for (ESelectionType selectionType : ESelectionType.values()) {
 			alSelectionType.add(selectionType);
 		}
-
-		// selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 	}
 
 	@Override
@@ -62,6 +56,7 @@ public class GLCell
 	@Override
 	public void initRemote(GL gl, AGLEventListener glParentView, GLMouseListener glMouseListener,
 		GLInfoAreaManager infoAreaManager) {
+
 		this.glMouseListener = glMouseListener;
 		init(gl);
 	}
@@ -101,72 +96,10 @@ public class GLCell
 
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
-		tempTexture.enable();
-		tempTexture.bind();
-
-		TextureCoords texCoords = tempTexture.getImageTexCoords();
-		gl.glColor3f(1, 1, 1);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.025f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), -0.025f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop()
-			- viewFrustum.getBottom(), -0.025f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), -0.025f);
-		gl.glEnd();
-
-		tempTexture.disable();
+		textureManager.renderTexture(gl, EIconTextures.TISSUE_SAMPLE, new Vec3f(0, 0, 0), new Vec3f(8, 0, 0),
+			new Vec3f(8, 8, 0), new Vec3f(0, 8, 0), 1, 1, 1, 1);
 
 	}
-
-	// private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) {
-	// ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.DAVID);
-	//
-	// int iDavidID = 0;
-	//
-	// for (SelectionDeltaItem item : selectionDelta) {
-	// if (item.getSelectionType() != ESelectionType.MOUSE_OVER
-	// && item.getSelectionType() != ESelectionType.SELECTION) {
-	// continue;
-	// }
-	//
-	// iDavidID = item.getPrimaryID();
-	//
-	// System.out.println("Cell component: "
-	// + GeneralManager.get().getIDMappingManager().getID(EMappingType.DAVID_2_CELL_COMPONENT,
-	// iDavidID));
-	// }
-	// //
-	// // iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
-	// // .getPathwayVertexGraphItemIdByDavidId(iDavidID);
-	// //
-	// // // Ignore David IDs that do not exist in any pathway
-	// // if (iPathwayVertexGraphItemID == -1)
-	// // {
-	// // continue;
-	// // }
-	// //
-	// // // Convert DAVID ID to pathway graph item representation ID
-	// // for (IGraphItem tmpGraphItemRep :
-	// // generalManager.getPathwayItemManager().getItem(
-	// // iPathwayVertexGraphItemID).getAllItemsByProp(
-	// // EGraphItemProperty.ALIAS_CHILD))
-	// // {
-	// // if
-	// // (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
-	// // continue;
-	// //
-	// // newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item
-	// // .getSelectionType(), iDavidID);
-	// // }
-	// // }
-	// //
-	// return newSelectionDelta;
-	// }
 
 	@Override
 	protected void handlePickingEvents(EPickingType ePickingType, EPickingMode pickingMode, int iExternalID,
@@ -187,7 +120,7 @@ public class GLCell
 		//		
 		// return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
 
-		return null;
+		return "Tissue Viewer";
 	}
 
 	@Override
@@ -205,7 +138,7 @@ public class GLCell
 		//
 		// return sInfoText.toString();
 
-		return null;
+		return "Tissuew Viewer";
 	}
 
 	@Override

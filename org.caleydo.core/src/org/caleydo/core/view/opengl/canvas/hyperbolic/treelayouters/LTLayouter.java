@@ -1,11 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
-import gleem.linalg.Vec2f;
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.caleydo.core.data.graph.tree.Tree;
@@ -15,7 +11,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleLinearConnection;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 
 public final class LTLayouter
 	extends ATreeLayouter {

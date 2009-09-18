@@ -8,13 +8,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
+import org.caleydo.core.view.opengl.canvas.tissue.SerializedTissueView;
 
 /**
  * Serialized form of the data flipper view. 
@@ -30,31 +33,32 @@ public class SerializedDataFlipperView
 	/** list of initially contained view-ids */
 	private List<ASerializedView> initialContainedViews;
 	
-	private ASerializedView focusView;
-	
 	/**
 	 * No-Arg Constructor to create a serialized data flipper view with default parameters.
 	 */
 	public SerializedDataFlipperView() {
-		
-		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
+		initialContainedViews = new ArrayList<ASerializedView>();
+		
 		IUseCase usecase = GeneralManager.get().getUseCase();
 		if (usecase instanceof GeneticUseCase) {
-
+	
 			SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
-			remoteViews.add(heatMap);
+			initialContainedViews.add(heatMap);	
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
-			remoteViews.add(parCoords);			
+			initialContainedViews.add(parCoords);
+			SerializedPathwayView pathway = new SerializedPathwayView();
+			pathway.setPathwayID(((PathwayGraph)GeneralManager.get().getPathwayManager().getAllItems().toArray()[0]).getID());
+			initialContainedViews.add(pathway);	
+			pathway = new SerializedPathwayView();
+			pathway.setPathwayID(((PathwayGraph)GeneralManager.get().getPathwayManager().getAllItems().toArray()[1]).getID());
+			initialContainedViews.add(pathway);	
+			pathway = new SerializedPathwayView();
+			pathway.setPathwayID(((PathwayGraph)GeneralManager.get().getPathwayManager().getAllItems().toArray()[2]).getID());
+			initialContainedViews.add(pathway);	
+			SerializedTissueView tissue = new SerializedTissueView();
+			initialContainedViews.add(tissue);	
 		}
-		
-		focusView = remoteViews.remove(0);
-		
-//		ArrayList<ASerializedView> initialContainedViews = new ArrayList<ASerializedView>();
-//		if (remoteViews.size() > 0) {
-//			focusLevel.add(remoteViews.remove(0));
-//		}
-//		setFocusViews(focusLevel);
 	}
 	
 	@Override
@@ -68,22 +72,9 @@ public class SerializedDataFlipperView
 	}
 
 	@XmlElementWrapper
-	public ASerializedView getFocusView() {
-		return focusView;
+	public List<ASerializedView> getInitialContainedViews() {
+		return initialContainedViews;
 	}
-//
-//	public void setFocusViews(List<ASerializedView> focusViews) {
-//		this.focusViews = focusViews;
-//	}
-//
-//	@XmlElementWrapper
-//	public List<ASerializedView> getStackViews() {
-//		return stackViews;
-//	}
-//
-//	public void setStackViews(List<ASerializedView> stackViews) {
-//		this.stackViews = stackViews;
-//	}
 
 	@Override
 	public String getViewGUIID() {
