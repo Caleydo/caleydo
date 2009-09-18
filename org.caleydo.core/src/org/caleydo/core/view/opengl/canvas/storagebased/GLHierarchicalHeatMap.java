@@ -143,7 +143,7 @@ public class GLHierarchicalHeatMap
 
 	private boolean bRenderCaption = false;
 
-	private float fAnimationScale = 1.0f;
+	private float fScalingLevel2 = 1.0f;
 
 	// embedded heat map
 	private GLHeatMap glHeatMapView;
@@ -1055,10 +1055,10 @@ public class GLHierarchicalHeatMap
 		if (storageVA.getGroupList() == null)
 			return;
 
-		if (fAnimationScale == 0.2f)
+		if (fScalingLevel2 == 0.2f)
 			return;
 
-		float fWidthLevel2 = renderStyle.getWidthLevel2() * fAnimationScale;
+		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
 		int iNrElements = storageVA.size();
 		float fWidthSamples = fWidthLevel2 / iNrElements;
 		float fxpos = 0;
@@ -1292,7 +1292,7 @@ public class GLHierarchicalHeatMap
 
 		float fHeight = viewFrustum.getHeight();
 		float fHeightSamples = fHeight / iSamplesLevel2;
-		float fWidthLevel2 = renderStyle.getWidthLevel2() * fAnimationScale;
+		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
 		float fWidthClusterVisualization = renderStyle.getWidthClusterVisualization();
 
 		gl.glTranslatef(fWidthLevel2, 0, 0);
@@ -1735,7 +1735,7 @@ public class GLHierarchicalHeatMap
 
 		fHeight = viewFrustum.getHeight();
 		// fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-		float fWidthLevel2 = renderStyle.getWidthLevel2() * fAnimationScale;
+		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
 
 		int iFirstTexture = 0;
 		int iLastTexture = 0;
@@ -1980,7 +1980,7 @@ public class GLHierarchicalHeatMap
 	private void renderMarkerTexture(final GL gl) {
 
 		// float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-		float fWidthLevel2 = renderStyle.getWidthLevel2() * fAnimationScale;
+		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
 		// float fHeight = viewFrustum.getHeight();
 		float fHeightSampleLevel2 = viewFrustum.getHeight() / iSamplesLevel2;
 
@@ -2089,7 +2089,7 @@ public class GLHierarchicalHeatMap
 	private void renderSelectedElementsTexture(GL gl) {
 
 		// float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
-		float fWidthLevel2 = renderStyle.getWidthLevel2() * fAnimationScale;
+		float fWidthLevel2 = renderStyle.getWidthLevel2() * fScalingLevel2;
 		float fHeightSample = viewFrustum.getHeight() / iSamplesLevel2;
 		float fExpWidth = fWidthLevel2 / storageVA.size();
 
@@ -2427,7 +2427,7 @@ public class GLHierarchicalHeatMap
 
 		float fleftOffset =
 			0.1f + renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS + renderStyle.getWidthLevel2()
-				* fAnimationScale + GAP_BETWEEN_LEVELS;
+				* fScalingLevel2 + GAP_BETWEEN_LEVELS;
 
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
 			fleftOffset += renderStyle.getWidthGeneDendrogram();
@@ -2507,7 +2507,7 @@ public class GLHierarchicalHeatMap
 		float fright = 0.0f;
 		float ftop = viewFrustum.getTop();
 
-		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fAnimationScale + GAP_BETWEEN_LEVELS;
+		float fleftOffset = 0.1f + renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
 
 		if (contentVA.getGroupList() != null)
 			fleftOffset += renderStyle.getWidthClusterVisualization();
@@ -2668,9 +2668,7 @@ public class GLHierarchicalHeatMap
 		if (bHasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
 			glGeneDendrogramView.setRedrawDendrogram();
-			glGeneDendrogramView.setDisplayListDirty();
 			glExperimentDendrogramView.setRedrawDendrogram();
-			glExperimentDendrogramView.setDisplayListDirty();
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -2699,6 +2697,11 @@ public class GLHierarchicalHeatMap
 		else
 			bRenderDendrogramBackgroundWhite = false;
 
+		updateLevels();
+
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
+			gl.glTranslatef(+renderStyle.getWidthGeneDendrogram(), 0, 0);
+
 		// all levels active (no one skipped)
 		if (bSkipLevel1 == false && bSkipLevel2 == false) {
 			renderViewsLevel_1_2_3_Active(gl);
@@ -2715,6 +2718,9 @@ public class GLHierarchicalHeatMap
 			throw new IllegalStateException();
 		}
 
+		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
+			gl.glTranslatef(-renderStyle.getWidthGeneDendrogram(), 0, 0);
+
 		gl.glTranslatef(-0.1f, -0.4f, 0);
 		viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
 		viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
@@ -2722,17 +2728,41 @@ public class GLHierarchicalHeatMap
 		gl.glEndList();
 	}
 
-	private void renderViewsLevel_1_2_3_Active(GL gl) {
+	private void updateLevels() {
 
-		if (bIsHeatmapInFocus) {// || bGeneDendrogramActive || bGeneDendrogramRenderCut) {
-			fAnimationScale = 0.2f;
+		if (bIsHeatmapInFocus) {
+			fScalingLevel2 = 0.2f;
 		}
 		else {
-			fAnimationScale = 1.0f;
+			fScalingLevel2 = 1.0f;
+		}
+
+		float fleftOffset = 0;
+
+		if (bSkipLevel1 == false && bSkipLevel2 == false) {
+			fleftOffset +=
+				renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS + renderStyle.getWidthLevel2()
+					* fScalingLevel2 + GAP_BETWEEN_LEVELS;
+		}
+		if (bSkipLevel1 == true && bSkipLevel2 == false) {
+			fleftOffset += renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
 		}
 
 		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
-			gl.glTranslatef(renderStyle.getWidthGeneDendrogram(), 0, 0);
+			fleftOffset += renderStyle.getWidthGeneDendrogram();
+
+		if (contentVA.getGroupList() != null && bSkipLevel1 == false && bSkipLevel2 == false)
+			fleftOffset += 2 * renderStyle.getWidthClusterVisualization();
+
+		if (contentVA.getGroupList() != null && bSkipLevel1 == true && bSkipLevel2 == false)
+			fleftOffset += renderStyle.getWidthClusterVisualization();
+
+		float fWidthLevel3 = viewFrustum.getWidth() - fleftOffset - 0.95f;
+
+		renderStyle.setWidthLevel3(fWidthLevel3);
+	}
+
+	private void renderViewsLevel_1_2_3_Active(GL gl) {
 
 		renderClassAssignmentsGenesLevel1(gl);
 
@@ -2799,7 +2829,7 @@ public class GLHierarchicalHeatMap
 		// render sub tree for level 3
 		if (set.getClusteredTreeGenes() != null) {
 			gl.glTranslatef(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-				* fAnimationScale + GAP_BETWEEN_LEVELS, 0, 0);
+				* fScalingLevel2 + GAP_BETWEEN_LEVELS, 0, 0);
 
 			if (contentVA.getGroupList() != null)
 				gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
@@ -2832,47 +2862,33 @@ public class GLHierarchicalHeatMap
 				gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
 
 			gl.glTranslatef(-(0.3f + renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2()
-				* fAnimationScale + GAP_BETWEEN_LEVELS), 0, 0);
+				* fScalingLevel2 + GAP_BETWEEN_LEVELS), 0, 0);
 		}
 
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(2 * renderStyle.getWidthClusterVisualization(), 0, 0);
-		gl.glTranslatef(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fAnimationScale, 0, 0);
+		gl.glTranslatef(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fScalingLevel2, 0, 0);
 		gl.glTranslatef(1 * GAP_BETWEEN_LEVELS, 0, 0);
 
 		renderCursorLevel2(gl);
 
 		gl.glTranslatef(1 * GAP_BETWEEN_LEVELS, 0, 0);
 
-		// if (contentVA.getGroupList() != null)
-		// gl.glTranslatef(-1 * renderStyle.getWidthClusterVisualization(), 0, 0);
 		renderClassAssignmentsGenesLevel3(gl);
 		renderClassAssignmentsExperimentsLevel3(gl);
 		renderExperimentDendrogramBackground(gl);
 		gl.glTranslatef(-2 * GAP_BETWEEN_LEVELS, 0, 0);
 
-		gl.glTranslatef(-(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fAnimationScale), 0,
-			0);
+		gl
+			.glTranslatef(-(renderStyle.getWidthLevel1() + renderStyle.getWidthLevel2() * fScalingLevel2), 0,
+				0);
 
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(-2 * renderStyle.getWidthClusterVisualization(), 0, 0);
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
-			gl.glTranslatef(-renderStyle.getWidthGeneDendrogram(), 0, 0);
-
 	}
 
 	private void renderViewsLevel_2_3_Active(GL gl) {
-
-		if (bIsHeatmapInFocus) {// || bGeneDendrogramActive || bGeneDendrogramRenderCut) {
-			fAnimationScale = 0.2f;
-		}
-		else {
-			fAnimationScale = 1.0f;
-		}
-
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
-			gl.glTranslatef(renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 		handleTexturePickingLevel2(gl);
 		renderTextureHeatMap(gl);
@@ -2885,7 +2901,7 @@ public class GLHierarchicalHeatMap
 
 		// render sub tree for level 3
 		if (set.getClusteredTreeGenes() != null) {
-			gl.glTranslatef(renderStyle.getWidthLevel2() * fAnimationScale + GAP_BETWEEN_LEVELS / 2, 0, 0);
+			gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 2, 0, 0);
 
 			if (contentVA.getGroupList() != null)
 				gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
@@ -2916,12 +2932,12 @@ public class GLHierarchicalHeatMap
 			if (contentVA.getGroupList() != null)
 				gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
 
-			gl.glTranslatef(-(renderStyle.getWidthLevel2() * fAnimationScale + GAP_BETWEEN_LEVELS / 2), 0, 0);
+			gl.glTranslatef(-(renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS / 2), 0, 0);
 		}
 
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(renderStyle.getWidthClusterVisualization(), 0, 0);
-		gl.glTranslatef(renderStyle.getWidthLevel2() * fAnimationScale, 0, 0);
+		gl.glTranslatef(renderStyle.getWidthLevel2() * fScalingLevel2, 0, 0);
 
 		renderCursorLevel2(gl);
 
@@ -2931,27 +2947,19 @@ public class GLHierarchicalHeatMap
 		renderExperimentDendrogramBackground(gl);
 		gl.glTranslatef(-GAP_BETWEEN_LEVELS, 0, 0);
 
-		gl.glTranslatef(-renderStyle.getWidthLevel2() * fAnimationScale, 0, 0);
+		gl.glTranslatef(-renderStyle.getWidthLevel2() * fScalingLevel2, 0, 0);
 		if (contentVA.getGroupList() != null)
 			gl.glTranslatef(-renderStyle.getWidthClusterVisualization(), 0, 0);
-
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
-			gl.glTranslatef(-renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 	}
 
 	private void renderViewsLevel_3_Active(GL gl) {
-
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
-			gl.glTranslatef(renderStyle.getWidthGeneDendrogram(), 0, 0);
 
 		renderClassAssignmentsGenesLevel3(gl);
 		renderClassAssignmentsExperimentsLevel3(gl);
 		renderGeneDendrogramBackground(gl);
 		renderExperimentDendrogramBackground(gl);
 
-		if (bGeneDendrogramActive || bGeneDendrogramRenderCut)
-			gl.glTranslatef(-renderStyle.getWidthGeneDendrogram(), 0, 0);
 	}
 
 	private void renderGeneDendrogramBackground(GL gl) {
@@ -3489,7 +3497,7 @@ public class GLHierarchicalHeatMap
 			fgaps = GAP_BETWEEN_LEVELS + GAP_BETWEEN_LEVELS;
 
 		float fleftOffset = 0.075f + // width level 1
-			fgaps + viewFrustum.getWidth() / 4f * fAnimationScale;
+			fgaps + viewFrustum.getWidth() / 4f * fScalingLevel2;
 
 		float fWidthSample = renderStyle.getWidthLevel3() / iNrSamples;
 
@@ -3700,7 +3708,7 @@ public class GLHierarchicalHeatMap
 			float fXPosDrag = fArDraggedPoint[0] - 0.7f;
 			float fXPosRelease = fArTargetWorldCoordinates[0] - 0.7f;
 
-			float fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
+			float fWidth = viewFrustum.getWidth() / 4.0f * fScalingLevel2;
 			int iNrSamples = storageVA.size();
 			float fWidthSample = fWidth / iNrSamples;
 
@@ -4166,7 +4174,6 @@ public class GLHierarchicalHeatMap
 						glHeatMapView.setDisplayListDirty();
 						glGeneDendrogramView.setDisplayListDirty();
 						glExperimentDendrogramView.setRedrawDendrogram();
-						glExperimentDendrogramView.setDisplayListDirty();
 						setDisplayListDirty();
 
 						break;
@@ -4186,9 +4193,6 @@ public class GLHierarchicalHeatMap
 					case CLICKED:
 
 						bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false : true;
-						glHeatMapView.setDisplayListDirty();
-						glGeneDendrogramView.setDisplayListDirty();
-						setDisplayListDirty();
 
 						if (bExperimentDendrogramActive == true) {
 							float highDendro = glExperimentDendrogramView.getViewFrustum().getHeight();
@@ -4209,7 +4213,6 @@ public class GLHierarchicalHeatMap
 						glExperimentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 						glExperimentDendrogramView.setDisplayListDirty();
 						glGeneDendrogramView.setRedrawDendrogram();
-						glGeneDendrogramView.setDisplayListDirty();
 						glHeatMapView.setDisplayListDirty();
 						setDisplayListDirty();
 
@@ -4248,7 +4251,6 @@ public class GLHierarchicalHeatMap
 						glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 						glGeneDendrogramView.setDisplayListDirty();
 						glExperimentDendrogramView.setRedrawDendrogram();
-						glExperimentDendrogramView.setDisplayListDirty();
 						glHeatMapView.setDisplayListDirty();
 						setDisplayListDirty();
 
@@ -4639,6 +4641,7 @@ public class GLHierarchicalHeatMap
 			bGeneDendrogramActive = true;
 			bGeneDendrogramRenderCut = false;
 			bFirstStartGeneDendrogram = true;
+			renderStyle.setWidthGeneDendrogram(1.6f);
 		}
 		else {
 			bGeneDendrogramActive = false;
@@ -4649,6 +4652,7 @@ public class GLHierarchicalHeatMap
 			bExperimentDendrogramActive = true;
 			bExperimentDendrogramRenderCut = false;
 			bFirstStartExperimentDendrogram = true;
+			renderStyle.setHeightExperimentDendrogram(1.45f);
 		}
 		else {
 			bExperimentDendrogramActive = false;
@@ -5010,6 +5014,8 @@ public class GLHierarchicalHeatMap
 		bFirstStartExperimentDendrogram = true;
 		bFirstStartGeneDendrogram = true;
 
+		initData();
+		
 		setDisplayListDirty();
 	}
 
@@ -5109,7 +5115,7 @@ public class GLHierarchicalHeatMap
 			if (set.getClusteredTreeGenes() == null)
 				return;
 			bGeneDendrogramActive = bGeneDendrogramActive == true ? false : true;
-			glExperimentDendrogramView.setRedrawDendrogram();
+
 			if (bGeneDendrogramActive == true) {
 				float widthDendro = glGeneDendrogramView.getViewFrustum().getWidth();
 
@@ -5124,17 +5130,19 @@ public class GLHierarchicalHeatMap
 				bGeneDendrogramRenderCut = true;
 			}
 
+			glExperimentDendrogramView.setRedrawDendrogram();
+
 			glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 			glGeneDendrogramView.setRedrawDendrogram();
-			glGeneDendrogramView.setDisplayListDirty();
+
 			glHeatMapView.setDisplayListDirty();
+
 			setDisplayListDirty();
 		}
 		else {
 			if (set.getClusteredTreeExps() == null)
 				return;
 			bExperimentDendrogramActive = bExperimentDendrogramActive == true ? false : true;
-			glGeneDendrogramView.setRedrawDendrogram();
 
 			if (bExperimentDendrogramActive == true) {
 				float highDendro = glExperimentDendrogramView.getViewFrustum().getHeight();
@@ -5152,10 +5160,13 @@ public class GLHierarchicalHeatMap
 				bExperimentDendrogramRenderCut = true;
 			}
 
+			glGeneDendrogramView.setRedrawDendrogram();
+
 			glExperimentDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
 			glExperimentDendrogramView.setRedrawDendrogram();
-			glExperimentDendrogramView.setDisplayListDirty();
+
 			glHeatMapView.setDisplayListDirty();
+
 			setDisplayListDirty();
 		}
 	}
@@ -5180,22 +5191,18 @@ public class GLHierarchicalHeatMap
 	 *            true for arrow left, false for arrow right
 	 */
 	public void handleArrowAndShiftPressed(boolean bArrowLeft) {
-		if (bArrowLeft) {
-			if (bIsHeatmapInFocus == false) {
-				bIsHeatmapInFocus = true;
-				setDisplayListDirty();
-				glExperimentDendrogramView.setRedrawDendrogram();
-				glExperimentDendrogramView.setDisplayListDirty();
-			}
+		if (bArrowLeft == true && bIsHeatmapInFocus == false) {
+			bIsHeatmapInFocus = true;
+
 		}
-		else {
-			if (bIsHeatmapInFocus) {
-				bIsHeatmapInFocus = false;
-				setDisplayListDirty();
-				glExperimentDendrogramView.setRedrawDendrogram();
-				glExperimentDendrogramView.setDisplayListDirty();
-			}
+		else if (bArrowLeft == false && bIsHeatmapInFocus == true) {
+			bIsHeatmapInFocus = false;
 		}
+
+		glExperimentDendrogramView.setRedrawDendrogram();
+
+		updateLevels();
+		setDisplayListDirty();
 	}
 
 	/**
@@ -5291,6 +5298,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
+		updateLevels();
 		setDisplayListDirty();
 
 	}

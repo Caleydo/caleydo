@@ -299,6 +299,8 @@ public abstract class AUseCase
 				set.setClusteredTreeExps(null);
 		}
 
+		virtualArray.setGroupList(null);
+
 		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(vaType));
 	}
 

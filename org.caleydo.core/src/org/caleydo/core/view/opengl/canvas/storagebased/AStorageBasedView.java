@@ -189,7 +189,6 @@ public abstract class AStorageBasedView
 	//
 	// setDisplayListDirty();
 	// }
-
 	/**
 	 * View specific data initialization
 	 */
@@ -247,6 +246,16 @@ public abstract class AStorageBasedView
 		// check whether the delta is actually of the correct VA Type
 		if (delta.getVAType() != contentVAType && delta.getVAType() != storageVAType)
 			return;
+
+		// delete group info for according virtual array
+		if (delta.getVAType() == contentVAType) {
+			// set.setClusteredTreeGenes(null);
+			contentVA.setGroupList(null);
+		}
+		if (delta.getVAType() == storageVAType) {
+			// set.setClusteredTreeExps(null);
+			storageVA.setGroupList(null);
+		}
 
 		SelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX) {
@@ -432,7 +441,6 @@ public abstract class AStorageBasedView
 	 * Broadcast all elements independent of their type.
 	 */
 	// public abstract void broadcastElements();
-
 	@Override
 	public void broadcastElements(EVAOperation type) {
 		// nothing to do
@@ -548,15 +556,13 @@ public abstract class AStorageBasedView
 
 	@Override
 	public void replaceVirtualArray(EVAType vaType) {
-		if (vaType == storageVAType)
-		{
+		if (vaType == storageVAType) {
 			storageVA = useCase.getVA(vaType);
-//			storageSelectionManager.setVA(storageVA);
+			// storageSelectionManager.setVA(storageVA);
 		}
-		else if (vaType == contentVAType)
-		{
+		else if (vaType == contentVAType) {
 			contentVA = useCase.getVA(vaType);
-//			contentSelectionManager.setVA(contentVA);
+			// contentSelectionManager.setVA(contentVA);
 		}
 		else
 			return;

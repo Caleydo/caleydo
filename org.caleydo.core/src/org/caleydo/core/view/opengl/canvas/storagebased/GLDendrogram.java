@@ -1382,7 +1382,8 @@ public class GLDendrogram
 			// Group temp = new Group(iter.getNrElements(), false, currentVA.get(iExample),
 			// iter.getRepresentativeElement(), ESelectionType.NORMAL, iter);
 			Group temp =
-				new Group(iter.getNrElements(), false, currentVA.get(iExample), ESelectionType.NORMAL, iter);
+				new Group(iter.getNrElements(), false, currentVA.indexOf(iExample), ESelectionType.NORMAL,
+					iter);
 			groupList.append(temp);
 			cnt++;
 			iExample += iter.getNrElements();
@@ -1797,6 +1798,7 @@ public class GLDendrogram
 	 */
 	public void setRedrawDendrogram() {
 		this.bRedrawDendrogram = true;
+		setDisplayListDirty();
 	}
 
 	/**
