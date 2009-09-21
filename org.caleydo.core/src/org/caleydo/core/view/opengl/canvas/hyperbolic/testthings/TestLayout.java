@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.DefaultNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.Layouter;
 
 public class TestLayout
 	extends Layouter {
 
-	Tree<DefaultNode> testTree;
+	Tree<IDrawAbleNode> testTree;
 	float fYBorderSpace = 7.0f;
 	float fXBorderSpace = 7.0f;
 	int iDebug = 0;
@@ -26,7 +26,7 @@ public class TestLayout
 	
 	public void drawGraph(GL gl) {
 		int iDeph = 1;//testTree.getDeph();
-		DefaultNode root = testTree.getRoot();
+		IDrawAbleNode root = testTree.getRoot();
 		// float xRootPixel = this.fWidth/2.0f;
 		// float yRootPixel = this.fHight - (this.fHight/100*fBorderSpace);
 		// root.setXCoord(this.fWidth/2.0f);
@@ -61,7 +61,7 @@ public class TestLayout
 	// return tree.getNumberOfChildren(node);
 	// }
 
-	private void drawVertex(GL gl, DefaultNode node) {
+	private void drawVertex(GL gl, IDrawAbleNode node) {
 		gl.glPointSize(10.0f);
 		gl.glColor4f(0, 0, 1, 1);
 		gl.glBegin(GL.GL_POINTS);
@@ -72,7 +72,7 @@ public class TestLayout
 		gl.glEnd();
 	}
 
-	private void drawLine(GL gl, DefaultNode node, DefaultNode parentNode) {
+	private void drawLine(GL gl, IDrawAbleNode node, IDrawAbleNode parentNode) {
 
 		// gl.glPointSize(10.0f);
 		// gl.glColor4f(0,0,1,1);
@@ -84,12 +84,12 @@ public class TestLayout
 		gl.glEnd();
 	}
 
-	private void recursiveTreeBuilder(GL gl, DefaultNode node, int iLayer, float fStep, int iDeph) {
+	private void recursiveTreeBuilder(GL gl, IDrawAbleNode node, int iLayer, float fStep, int iDeph) {
 		// for(int i = 0; i <= iDeph; i++)
 		// if(testTree.hasChildren(node))
 		if (iLayer != iDeph) {
 
-			ArrayList<DefaultNode> childs = testTree.getChildren(node);
+			ArrayList<IDrawAbleNode> childs = testTree.getChildren(node);
 			// int iNumberOfNodeChilds = testTree.getNumberOfChildren(node);
 
 			// float fYCoord = this.fHight -(this.fHight/100*fYBorderSpace)*fStep;
@@ -97,7 +97,7 @@ public class TestLayout
 
 			float iSpaceCount = 1.0f;
 
-			for (DefaultNode tempNode : childs) {
+			for (IDrawAbleNode tempNode : childs) {
 
 				recursiveTreeBuilder(gl, tempNode, iLayer + 1, fStep * (iLayer + 1), iDeph);
 
@@ -119,10 +119,10 @@ public class TestLayout
 
 	}
 
-	public void calulateXCoordValues(DefaultNode node, float fCount) {
-		DefaultNode parent = testTree.getParent(node);
+	public void calulateXCoordValues(IDrawAbleNode node, float fCount) {
+		IDrawAbleNode parent = testTree.getParent(node);
 		if (parent != null) {
-			ArrayList<DefaultNode> siblings = testTree.getChildren(parent);
+			ArrayList<IDrawAbleNode> siblings = testTree.getChildren(parent);
 			float fNumberOfSiblings = siblings.size();
 			float fSpaceForNodes = parent.getRightBorderOfXCoord() - parent.getLeftBorderOfXCoord();
 

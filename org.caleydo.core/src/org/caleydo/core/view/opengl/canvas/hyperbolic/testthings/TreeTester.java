@@ -1,11 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.testthings;
 
-import org.caleydo.core.view.opengl.canvas.hyperbolic.DefaultNode;
+import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.IDrawAbleNode;
 
 
 public class TreeTester {
 
-	Tree<DefaultNode> tree;
+	Tree<IDrawAbleNode> tree;
 	/**
 	 * @param args
 	 */
@@ -30,24 +31,24 @@ public class TreeTester {
 //
 //		System.out.println(graph.toString());
 
-		tree = new Tree<DefaultNode>();
+		tree = new Tree<IDrawAbleNode>();
 //		tree.getRoot();
-		DefaultNode node = new DefaultNode("Root", 1);
+		IDrawAbleNode node = new IDrawAbleNode("Root", 1);
 		tree.setRootNode(node);
-		DefaultNode childNode = new DefaultNode("Child1 l1", 1);
+		IDrawAbleNode childNode = new IDrawAbleNode("Child1 l1", 1);
 		tree.addChild(node, childNode);
 
 		
-		tree.addChild(node, new DefaultNode("Child2 l1", 3));
-		tree.addChild(node, new DefaultNode("Child3 l1", 5));
+		tree.addChild(node, new IDrawAbleNode("Child2 l1", 3));
+		tree.addChild(node, new IDrawAbleNode("Child3 l1", 5));
 
 		int iCount = 50;
-		for (DefaultNode tempNode : tree.getChildren(node)) {
+		for (IDrawAbleNode tempNode : tree.getChildren(node)) {
 			for (int i = 1; i <= 4; i++)
 			{
 				String childname = "Child " + i;
-				DefaultNode grandChild = new DefaultNode(childname, iCount--);
-				tree.addChild(tempNode, new DefaultNode(childname, iCount--));
+				IDrawAbleNode grandChild = new IDrawAbleNode(childname, iCount--);
+				tree.addChild(tempNode, new IDrawAbleNode(childname, iCount--));
 				
 				//TO Test
 //				tree.addChild(tempNode, grandChild);
@@ -78,13 +79,13 @@ public class TreeTester {
 		
 	}
 	
-	private  boolean printChildren(DefaultNode node)
+	private  boolean printChildren(IDrawAbleNode node)
 	{	
 		System.out.println(node.toString());
 		if(tree.hasChildren(node))
 		{
 			
-			for(DefaultNode tempNode : tree.getChildren(node))
+			for(IDrawAbleNode tempNode : tree.getChildren(node))
 			{
 				printChildren(tempNode);
 			}
@@ -92,7 +93,7 @@ public class TreeTester {
 		}
 		return false;
 	}
-	public Tree<DefaultNode> getTree()
+	public Tree<IDrawAbleNode> getTree()
 	{
 		return tree;
 	}

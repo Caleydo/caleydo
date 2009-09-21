@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 /**
  * Defines the interface to draw able objects, held by draw able nodes with reference to a specific detail
@@ -26,6 +27,19 @@ public interface IDrawAbleObject {
 	 */
 	public void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth);
 
+//	/**
+//	 * Place the node on a specific position calcutated by the projection type
+//	 * 
+//	 * @param fXCoord
+//	 * @param fYCoord
+//	 * @param fZCoord
+//	 * @param fHeight
+//	 * @param fWidth
+//	 * @param projection
+//	 */
+//	public void placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection projection);
+
+	
 	/**
 	 * Draw the object in normal representation, taking color mapping from {@link HyperbolicRenderStyle}
 	 * 
@@ -40,6 +54,7 @@ public interface IDrawAbleObject {
 	 * @return
 	 */
 	public ArrayList<Vec3f> getConnectionPoints();
+
 
 	// /**
 	// * Draw the object in highlight representation, taking

@@ -19,7 +19,7 @@ public class Layouter {
 	protected float fHight;
 	protected float fCenterX;
 	protected float fCenterY;
-	protected DefaultNode rootNode;
+	protected IDrawAbleNode rootNode;
 	
 	
 	public Layouter(GL gl, IViewFrustum frustum)

@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ATreeProjection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 public abstract class ATreeLayouter
@@ -26,7 +28,7 @@ public abstract class ATreeLayouter
 	protected float fViewSpaceXAbs = 0;
 	protected float fViewSpaceYAbs = 0;
 	protected float fViewRadius = 0;
-	protected Vec2f fvViewCenterPoint = null;
+	protected Vec3f fvViewCenterPoint = null;
 	protected IViewFrustum viewFrustum;
 
 	private boolean bIsLayoutDirty = true;
@@ -79,7 +81,8 @@ public abstract class ATreeLayouter
 		fViewSpaceY[0] = fHeight * HyperbolicRenderStyle.Y_BORDER_SPACING;
 		fViewSpaceY[1] = fHeight - fHeight * HyperbolicRenderStyle.Y_BORDER_SPACING;
 		fViewSpaceYAbs = Math.abs(fViewSpaceY[0] - fViewSpaceY[1]);
-		fvViewCenterPoint = new Vec2f(fWidth / 2.0f, fHeight / 2.0f);
+		fvViewCenterPoint = new Vec3f(fWidth / 2.0f, fHeight / 2.0f, 0.0f);
+		fViewRadius = Math.min(fViewSpaceXAbs/2, fViewSpaceYAbs/2);
 	}
 
 	@Override
@@ -192,6 +195,12 @@ public abstract class ATreeLayouter
 	protected final void placeNode(IDrawAbleNode node, float fXCoord, float fYCoord, float fZCoord,
 		float fHeight, float fWidth) {
 		node.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		nodeLayout.add(node);
+	}
+	
+	protected final void placeNodeAndProject(IDrawAbleNode node, float fXCoord, float fYCoord, float fZCoord,
+		float fHeight, float fWidth, ITreeProjection projection) {
+		node.placeAndProject(fXCoord, fYCoord, fZCoord, fHeight, fWidth, projection);
 		nodeLayout.add(node);
 	}
 

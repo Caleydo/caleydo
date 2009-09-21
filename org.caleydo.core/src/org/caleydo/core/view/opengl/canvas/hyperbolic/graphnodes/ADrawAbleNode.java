@@ -10,6 +10,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 /**
  * Abstract of draw able node type. This type defines node objects which are self drawing.
@@ -28,6 +29,11 @@ public abstract class ADrawAbleNode
 	private float fZCoord = 0;
 	private float fHeight = 0;
 	private float fWidth = 0;
+	private ITreeProjection projection;
+	private float fProjectedXCoord = 0;
+	private float fProjectedYCoord = 0;
+	private float fProjectedZCoord = 0;
+	private ArrayList<Vec3f> alOriginalCorrespondingPoints = null;
 
 	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
 
@@ -60,8 +66,33 @@ public abstract class ADrawAbleNode
 		this.fWidth = fWidth;
 		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
 		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		alOriginalCorrespondingPoints = new ArrayList<Vec3f>();
+		alOriginalCorrespondingPoints = daObj.getConnectionPoints();
 		return daObj.getConnectionPoints();
 	}
+	
+	@Override
+	public final ArrayList<Vec3f> placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection projection) {
+		this.fXCoord = fXCoord;
+		this.fYCoord = fYCoord;
+		this.fZCoord = fZCoord;
+		this.fHeight = fHeight;
+		this.fWidth = fWidth;
+		this.projection = projection;
+		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+		Vec3f vpProjectedPoint = new Vec3f();
+		vpProjectedPoint = projection.projectCoordinates(new Vec3f(fXCoord, fYCoord, fZCoord));
+		this.fProjectedXCoord = vpProjectedPoint.x();
+		this.fProjectedYCoord = vpProjectedPoint.y();
+		this.fProjectedZCoord = vpProjectedPoint.z();
+		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		alOriginalCorrespondingPoints = new ArrayList<Vec3f>();
+		alOriginalCorrespondingPoints = daObj.getConnectionPoints();
+		daObj.place(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord, fHeight, fWidth);
+		return daObj.getConnectionPoints();
+	}
+	
+	
 
 	@Override
 	public final void draw(GL gl, boolean bHighlight) {
@@ -83,6 +114,13 @@ public abstract class ADrawAbleNode
 	public final ArrayList<Vec3f> getConnectionPoints() {
 		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
 		return daObj.getConnectionPoints();
+	}
+	
+	public final ArrayList<Vec3f> getConnectionPointsOfOriginalPosition() {
+//		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+//		return daObj.getConnectionPoints();
+//		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+		return alOriginalCorrespondingPoints;
 	}
 
 	/**

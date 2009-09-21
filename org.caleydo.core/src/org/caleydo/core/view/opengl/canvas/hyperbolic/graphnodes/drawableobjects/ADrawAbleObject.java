@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
+
 /**
  * Abstract of draw able node type. This type defines objects which are self drawing, which are held by nodes.
  * 
@@ -13,6 +15,7 @@ public abstract class ADrawAbleObject
 	protected float fZCoord = 0;
 	protected float fHeight = 0;
 	protected float fWidth = 0;
+//	private ITreeProjection projection;
 
 	@Override
 	public final void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
@@ -22,6 +25,18 @@ public abstract class ADrawAbleObject
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
 	}
+	
+//	@Override
+//	public final void bla(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection projection) {
+//		this.fXCoord = fXCoord;
+//		this.fYCoord = fYCoord;
+//		this.fZCoord = fZCoord;
+//		this.fHeight = fHeight;
+//		this.fWidth = fWidth;
+//		this.projection = projection;
+//	}
+	
+	
 
 	// private boolean bHighlight;
 	// @Override

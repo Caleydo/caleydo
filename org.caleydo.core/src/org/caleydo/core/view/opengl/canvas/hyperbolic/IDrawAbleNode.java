@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
-public class DefaultNode
-	implements Comparable<DefaultNode> {
+public class IDrawAbleNode
+	implements Comparable<IDrawAbleNode> {
 
 	String nodeName;
 	int iComparableValue;
@@ -10,7 +10,7 @@ public class DefaultNode
 	float fLeftXBorder;
 	float fRightXBorder;
 
-	public DefaultNode(String nodeName, int iComparableValue) {
+	public IDrawAbleNode(String nodeName, int iComparableValue) {
 		this.iComparableValue = iComparableValue;
 		this.nodeName = nodeName;
 	}
@@ -20,7 +20,7 @@ public class DefaultNode
 	}
 
 	@Override
-	public int compareTo(DefaultNode node) {
+	public int compareTo(IDrawAbleNode node) {
 		return iComparableValue - node.iComparableValue;
 	}
 

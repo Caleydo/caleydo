@@ -8,7 +8,6 @@ public abstract class ADrawAbleConnection
 	implements IDrawAbleConnection {
 
 	private int iID;
-	//protected List<Vec3f> lPoints;
 	protected IDrawAbleNode iNodeA;
 	protected IDrawAbleNode iNodeB;
 
@@ -49,6 +48,23 @@ public abstract class ADrawAbleConnection
 				}
 		Vec3f[] vaPoints = {foundA, foundB}; 
 		return vaPoints;
+	}
+	protected final Vec3f[] findClosestCorrespondingPointsOfOriginalPosition(){
+		float fMin = Float.MAX_VALUE;
+		Vec3f foundA = null;
+		Vec3f foundB = null;
+		float ft;
+		for(Vec3f pointA : iNodeA.getConnectionPointsOfOriginalPosition())
+			for(Vec3f pointB : iNodeB.getConnectionPointsOfOriginalPosition())
+				if((ft = (float) Math.sqrt(Math.pow(pointA.x()-pointB.x(), 2)+Math.pow(pointA.y()-pointB.y(), 2))) < fMin)
+				{
+					foundA = pointA;
+					foundB = pointB;
+					fMin = ft;
+				}
+		Vec3f[] vaPoints = {foundA, foundB}; 
+		return vaPoints;
+
 	}
 	
 	

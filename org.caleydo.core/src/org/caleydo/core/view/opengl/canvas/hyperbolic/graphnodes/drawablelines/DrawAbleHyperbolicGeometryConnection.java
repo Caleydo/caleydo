@@ -4,11 +4,15 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 //
 // import gleem.linalg.Vec3f;
@@ -25,14 +29,23 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 public class DrawAbleHyperbolicGeometryConnection
 	extends ADrawAbleConnection {
 
-	protected Vec2f fvHTCenterpoint;
+	protected Vec3f fvHTCenterpoint;
 	protected float fHTRadius;
+	float resolution = 100;
+	protected ArrayList<Vec3f> vecs;
+	ITreeProjection projection = null;
 
 	public DrawAbleHyperbolicGeometryConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB,
-		Vec2f fvHTCenterpoint, float fHTRadius) {
+		Vec3f fvHTCenterpoint, float fHTRadius) {
 		super(iNodeA, iNodeB);
 		this.fvHTCenterpoint = fvHTCenterpoint;
 		this.fHTRadius = fHTRadius;
+		this.vecs = new ArrayList<Vec3f>();
+	}
+	public DrawAbleHyperbolicGeometryConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB, 
+		ITreeProjection projection) {
+		super(iNodeA, iNodeB);
+		this.projection = projection;
 	}
 
 	@Override
@@ -54,12 +67,55 @@ public class DrawAbleHyperbolicGeometryConnection
 		Vec3f pEndP = endPoints[1];
 		Vec3f vSE = new Vec3f(pEndP.x() - pStartP.x(), pEndP.y() - pStartP.y(), pEndP.z() - pStartP.z());
 		// base point ... middle of vec start -> end
-		Vec3f pSpP1 =
-			new Vec3f(pStartP.x() + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
-				/ 2.0f);
 
+		Vec3f pSpP1 = new Vec3f
+			(pStartP.x() + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
+			/ 2.0f); 
+
+		//if projection exists, use it, else calculate Spline Point in the middle of the line
+		if(projection != null){
+			pSpP1 = getSplinePoint();
+			pSpP1 = projection.projectCoordinates(pSpP1);
+			
+		}
+		else{
+			pSpP1.set
+			(pStartP.x() + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
+				/ 2.0f);
+		}
+
+		
 		Vec2f v2Start = new Vec2f(pStartP.x(), pStartP.y());
 		Vec2f v2End = new Vec2f(pEndP.x(), pEndP.y());
+		
+		
+//		float length = (float)Math.sqrt(Math.pow(pEndP.x() - pStartP.x(), 2) + Math.pow(pEndP.y() - pStartP.y(), 2));
+//		float dx = pEndP.x() - pStartP.x();
+//		float adx = Math.abs(pEndP.x() - pStartP.x());
+//		float dy = pEndP.y() - pStartP.y();
+//		float m = dy/dx;
+//		float x = pStartP.x();
+//		int step =(int) (dx / resolution);
+//		for (int tx = 0; tx<resolution; tx++){
+//			x = x + dx/resolution;
+//			float b = pStartP.y() - m*pStartP.x();
+//			float y = m*x+b;
+//			Vec3f point = new Vec3f(x, y, 0.0f);// = new Vec3f();
+//			//point.set(x, y, 0.0f);
+//			point = projectCoordinates(point);
+//			vecs.add(point);
+////			vecs.set(tx, point);
+//			
+//			//gl.glVertex3f(point.x(), point.y(), point.z());
+//		}
+//		gl.glBegin(GL.GL_LINE_STRIP);
+//		for (int i = 0; i < vecs.size(); i++){
+//			Vec3f point = new Vec3f();
+//		point = vecs.get(i);
+//			gl.glVertex3f(point.x(), point.y(), point.z());
+//		}
+//		gl.glEnd();
+		
 	//	float alpha =
 	//		(float) Math.acos((v2Start.x() * v2End.x() + v2Start.y() * v2End.y())
 	//			/ (v2Start.length() * v2End.length()));
@@ -97,14 +153,27 @@ public class DrawAbleHyperbolicGeometryConnection
 		// float[] fA =
 		// { pStartP.x(), pStartP.y(), pStartP.z(), pSpP1.x(), pSpP1.y(), pSpP1.z(), pSpP2.x(), pSpP2.y(),
 		// pSpP2.z(), pEndP.x(), pEndP.y(), pEndP.z() };
-		FloatBuffer fBuff;
-		fBuff = FloatBuffer.allocate(3 * 3);
 		//if (Math.abs(alpha) < 2 * Math.PI / 180.0f) {
+		
+//		pStartP = projectCoordinates(pStartP);
+//		if (vSP != null)
+//		pSpP1 = projectCoordinates(pSpP1);
+//		pEndP = projectCoordinates(pEndP);
+//		FloatBuffer fBuff;
+//		fBuff = FloatBuffer.allocate(2 * 2);
+//
+//		float[] fA =
+//		{ pStartP.x(), pStartP.y(), pStartP.z(), pEndP.x(),
+//				pEndP.y(), pEndP.z() };
+//	fBuff.put(fA);
+		
+	FloatBuffer fBuff;
+	fBuff = FloatBuffer.allocate(3 * 3);
 			float[] fA =
 				{ pStartP.x(), pStartP.y(), pStartP.z(), pSpP1.x(), pSpP1.y(), pSpP1.z(), pEndP.x(),
 						pEndP.y(), pEndP.z() };
 			fBuff.put(fA);
-//		}
+		
 //		else {
 //			float[] fA =
 //				{ pStartP.x(), pStartP.y(), pStartP.z(), pSpP2.x(), pSpP2.y(), pSpP2.z(), pEndP.x(),
@@ -114,6 +183,7 @@ public class DrawAbleHyperbolicGeometryConnection
 		fBuff.rewind();
 		gl.glEnable(GL.GL_MAP1_VERTEX_3);
 		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, fBuff);
+		
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i = 0; i <= HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS; i++)
 			gl.glEvalCoord1f((float) i / (float) HyperbolicRenderStyle.DA_SPLINE_CONNECTION_NR_CTRLPOINTS);
@@ -150,6 +220,70 @@ public class DrawAbleHyperbolicGeometryConnection
 	// gl.glEnd();
 
 	// }
+
+	public Vec3f getSplinePoint(){
+		Vec3f[] endPoints = findClosestCorrespondingPointsOfOriginalPosition();
+		
+		Vec3f pStartP = endPoints[0];
+		// last point
+		Vec3f pEndP = endPoints[1];
+		Vec3f vSE = new Vec3f(pEndP.x() - pStartP.x(), pEndP.y() - pStartP.y(), pEndP.z() - pStartP.z());
+		// base point ... middle of vec start -> end
+
+		Vec3f pSpP1 = new Vec3f 
+			(pStartP.x() + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
+				/ 2.0f);
+		
+		return pSpP1;
+
+		
+	}
+//public Vec3f projectCoordinates(Vec3f fvCoords) {
+//	
+//	float fNewXCoordinate = 0;
+//	float fNewYCoordinate = 0;
+//	float fXCoordOfPoint = fvCoords.x();
+//	float fYCoordOfPoint = fvCoords.y();
+//	
+//	float fDistanceInXDirection = fvHTCenterpoint.x() - fXCoordOfPoint;
+//	float fDistanceInYDirection = fvHTCenterpoint.y() - fYCoordOfPoint;
+//
+//	
+//	float fXAngle = fDistanceInXDirection/fHTRadius;
+//	float fYAngle = fDistanceInYDirection/fHTRadius;
+//	
+//	
+//	float fProjectedXDistance = (float)Math.cos(fYAngle)*(float)Math.sin(fXAngle)*fHTRadius;
+//	float fProjectedYDistance = ((float)Math.sin(fYAngle)*fHTRadius);
+//	
+////	
+//	fNewXCoordinate = fvHTCenterpoint.x() + fProjectedXDistance;
+//	fNewYCoordinate = fvHTCenterpoint.y() + fProjectedYDistance;
+//	
+//
+//	
+//	float fZCoordOfProjectedPoint = fvHTCenterpoint.z() + (float)Math.cos(fYAngle)*(float)Math.cos(fXAngle)*fHTRadius;
+//
+//	Vec3f newPoint = new Vec3f();
+//
+//	newPoint.set(fNewXCoordinate, fNewYCoordinate, fZCoordOfProjectedPoint);
+//	
+//	return newPoint;
+//}
+//public Vec3f findSplinePoint()
+//{
+//	Vec3f[] endPoints = findClosestCorrespondendingPoints();
+//	// first point
+//	Vec3f pStartP = endPoints[0];
+//	// last point
+//	Vec3f pEndP = endPoints[1];
+//	Vec3f vSE = new Vec3f(pEndP.x() - pStartP.x(), pEndP.y() - pStartP.y(), pEndP.z() - pStartP.z());
+//	// base point ... middle of vec start -> end
+//	Vec3f pSpP1 =
+//		new Vec3f(pStartP.x() + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
+//			/ 2.0f);
+//	return pSpP1;
+//}
 }
 // implements IDrawAbleConnection {
 //	

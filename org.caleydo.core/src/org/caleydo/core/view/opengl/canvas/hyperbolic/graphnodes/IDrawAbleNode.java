@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 /**
  * Defines interface for drawable nodes
@@ -43,6 +44,19 @@ public interface IDrawAbleNode
 	ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth);
 
 	/**
+	 * Place the node on a specific position calcutated by the projection type
+	 * 
+	 * @param fXCoord
+	 * @param fYCoord
+	 * @param fZCoord
+	 * @param fHeight
+	 * @param fWidth
+	 * @param projection
+	 */
+	ArrayList<Vec3f> placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection projection);
+
+	
+	/**
 	 * Draw the node in current representation
 	 * 
 	 * @param gl
@@ -71,6 +85,13 @@ public interface IDrawAbleNode
 	 * @return
 	 */
 	ArrayList<Vec3f> getConnectionPoints();
+	
+	/**
+	 * Returns the connection points for the original representation and placing
+	 * 
+	 * @return
+	 */	
+	ArrayList<Vec3f> getConnectionPointsOfOriginalPosition();
 
 	Vec3f getCoordinates();
 

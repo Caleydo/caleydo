@@ -1,6 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
+
+// import gleem.linalg.Vec3f;
+
+// import java.util.ArrayList;
+
 import gleem.linalg.Vec3f;
+
 
 import java.util.ArrayList;
 
@@ -12,9 +18,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDe
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicGeometryConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.HyperbolicGlobeProjection;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
-
-
 public final class HTLayouter
 	extends ATreeLayouter
 	implements ITreeLayouter {
@@ -24,187 +27,211 @@ public final class HTLayouter
 	float fCenterX;
 	float fCenterY;
 	int iLineIDDummy = 0;
-	//float childAngle;
 	float fDepth = 6.0f; // tree.getDepth();
-	
-	boolean bHyperbolicFlag = true;
-	
 
-	//ArrayList<Vec3f> vec = new ArrayList<Vec3f>();
+	boolean bHyperbolicFlag = true;
+
+	// ArrayList<Vec3f> vec = new ArrayList<Vec3f>();
 
 	public HTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
-		super(frustum,pickingManager, iViewID);
-		
+		super(frustum, pickingManager, iViewID);
 
 	}
 
 	@Override
 	public void renderTreeLayout() {
 		updateSizeInfo();
-		if(bHyperbolicFlag)
-		{
-		treeProjector = new HyperbolicGlobeProjection(1, fHeight, fWidth, 0.01f, fViewSpaceX,
-			fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
+		if (bHyperbolicFlag) {
+			treeProjector =
+				new HyperbolicGlobeProjection(1, fHeight, fWidth, 0.0f, fViewSpaceX, fViewSpaceXAbs,
+					fViewSpaceY, fViewSpaceYAbs);
 		}
 		if (tree == null)
 			return;
 
 		fDepth = tree.getDepth();
 		// TODO: put it into abstract class
-		setFCenterX(fWidth / 2); // it brings in constructor strange results????
+		setFCenterX(fWidth / 2);
 		setFCenterY(fHeight / 2);
 		float fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE;
 
 		IDrawAbleNode rootNode = tree.getRoot();
-		
+
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
 		placeNode(rootNode, fCenterX, fCenterY, 0, fNodeSize, fNodeSize);
-	
+
 		// RECURSIVE TREE LAYOUTER
 		float fLayer = 2.0f;
-		float fRadius = 0.6f;
-//		float fRadius = 3.0f;
-		
-		//float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
-		float fNumberOfNodesInLayer = tree.getNumberOfElementsInLayer((int)fLayer);
-		float fCurrentNodeCount = 0;
-		if(tree.hasChildren(rootNode)){
-		ArrayList<IDrawAbleNode> childs = new ArrayList<IDrawAbleNode>();
-		childs = tree.getChildren(rootNode);
-		for (IDrawAbleNode tmpChild : childs) {
+		float fRadius = 0.7f;
+		// float fRadius = 3.0f;
 
-			fCurrentNodeCount++;
-			float fFirstLayerAngle = calculateCircle((fRadius), fCurrentNodeCount, fNumberOfNodesInLayer);
-		//	float space = calculateChildSpace(fRadius + 0.2f, fNumberOfNodesInLayer);
-			
-			fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
-			tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-			if(bHyperbolicFlag){
-			Vec3f tmpPoint = new Vec3f();
-			tmpPoint = treeProjector.projectCoordinates(new Vec3f(getFXCoord(), getFYCoord(), 0.02f));
-			placeNode(tmpChild, tmpPoint.x(), tmpPoint.y(), tmpPoint.z(), fNodeSize, fNodeSize);
+		// float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
+		float fNumberOfNodesInLayer = tree.getNumberOfElementsInLayer((int) fLayer);
+		float fCurrentNodeCount = 0;
+		if (tree.hasChildren(rootNode)) {
+			ArrayList<IDrawAbleNode> childs = new ArrayList<IDrawAbleNode>();
+			childs = tree.getChildren(rootNode);
+			for (IDrawAbleNode tmpChild : childs) {
+
+				fCurrentNodeCount++;
+				float fFirstLayerAngle = calculateCircle((fRadius), fCurrentNodeCount, fNumberOfNodesInLayer);
+				// float space = calculateChildSpace(fRadius + 0.2f, fNumberOfNodesInLayer);
+
+				fNodeSize =
+					HyperbolicRenderStyle.MAX_NODE_SIZE
+						* (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
+				tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
+
+				// placeNode(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize);
+				// DrawAbleHyperbolicGeometryConnection conn = new
+				// DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, fvViewCenterPoint, fViewRadius);
+				// Vec3f splinePoint = new Vec3f();
+				// splinePoint = conn.findSplinePoint();
+				//				
+				if (bHyperbolicFlag) {
+					// Vec3f tmpPoint = new Vec3f();
+					// tmpPoint = treeProjector.projectCoordinates(new Vec3f(getFXCoord(), getFYCoord(),
+					// 0.02f));
+					// splinePoint = treeProjector.projectCoordinates(splinePoint);
+					// placeNodeAndProject(tmpChild, tmpPoint.x(), tmpPoint.y(), tmpPoint.z(), fNodeSize,
+					// fNodeSize);
+					placeNodeAndProject(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize,
+						treeProjector);
+
+				}
+				else
+					placeNode(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize);
+
+				// placeConnection(new DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, treeProjector,
+				// fvViewCenterPoint, fViewRadius));
+
+				placeConnection(new DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, treeProjector));
+
+				calculateRecursiveLayout(tmpChild, fRadius, fFirstLayerAngle * fCurrentNodeCount, fLayer + 1,
+					fNodeSize, getFXCoord(), getFYCoord());
+
 			}
-			else
-				placeNode(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize);
-			float fFirstChildX = getFXCoord();
-			float fFirstChildY = getFYCoord();
-			placeConnection(new DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, fvViewCenterPoint, fViewRadius));
-			
-			calculateRecursiveLayout(tmpChild, fRadius , fFirstLayerAngle*fCurrentNodeCount, fLayer+1, fNodeSize, getFXCoord(), getFYCoord());
-		
 		}
-		}
-		
+
 		return;
 	}
 
-
-
-	public float calculateRecursiveLayout(IDrawAbleNode node, float fRadius, float fParentAngle, 
+	public float calculateRecursiveLayout(IDrawAbleNode node, float fRadius, float fParentAngle,
 		float fLayer, float fNodeSize, float fXCoordOfParent, float fYCoordOfParent) {
-		if (fLayer <= fDepth)
-		{
-		//float fNumberOfNodesInNewLayer = fNumberOfNodesInLayer;// + layer;//node.getNumberOfNodesInLayer(layer);
-			float fNumberOfNodesInNewLayer = tree.getNumberOfElementsInLayer((int)fLayer);
+		if (fLayer <= fDepth) {
+			// float fNumberOfNodesInNewLayer = fNumberOfNodesInLayer;// +
+			// layer;//node.getNumberOfNodesInLayer(layer);
+			float fNumberOfNodesInNewLayer = tree.getNumberOfElementsInLayer((int) fLayer);
 
-			//float fChildSpace = calculateChildSpace(fRadius, fNumberOfNodesInNewLayer);
-			
-			if (tree.hasChildren(node))
-				{	
+			// float fChildSpace = calculateChildSpace(fRadius, fNumberOfNodesInNewLayer);
 
-//				float fDeltaRadius = 5.0f/(fLayer*6);
-			//float childs = 3.0f; // node.getNumberOfChildren()
-			
-			ArrayList<IDrawAbleNode> childsOfCurrentNode = new ArrayList<IDrawAbleNode>();
-			childsOfCurrentNode = tree.getChildren(node);
-//			float fDeltaRadius = fRadius/1.95f;
-			float fDeltaRadius = fRadius;
-			float fChildSpace = (fDeltaRadius * (float)Math.PI)/(childsOfCurrentNode.size()+1);
-			float fNumberOfChildsOfNode = childsOfCurrentNode.size();
-			float fChildCount = 0.0f;
-			float fChildAngle = 0.0f;
-			//for (float numChilds = 1; numChilds <= childs; numChilds++) {
-			//use it in future
-			for(IDrawAbleNode tmpChild : childsOfCurrentNode){
-				fChildCount++;
-				
-				//float parentAngle = (angle*currentStep);// - (angle);
-				//float parentAngle = angle;
-				//float alphaHalfOffset = (angle/ 2);
-				
-//				childAngle =
-//					calculateChildAngle(parentAngle , space/fNumberOfNodesInNewLayer , radius, numChilds)
-//						+ alphaHalfOffset;
-				
-				fChildAngle =
-				calculateChildAngle(fParentAngle , fChildSpace ,  fDeltaRadius, fChildCount)
-				
-					;//+ alphaHalfOffset;
-				//calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
-//				float realChildAngle = parentAngle + (childAngle*(numChilds - 1));
-				float fRealChildAngle = fParentAngle - ((fChildAngle*(fNumberOfChildsOfNode-1))/2) + fChildAngle*(fChildCount-1);
-//				calcualteChildPosition(fRadius, fRealChildAngle, fChildCount, fXCoordOfParent, fYCoordOfParent);
-				calcualteChildPosition(fDeltaRadius, fRealChildAngle, fChildCount, fXCoordOfParent, fYCoordOfParent);
-				
-				float fXCoord = getFXCoord();
-				float fYCoord = getFYCoord();
-				//if(tree.hasChildren(tmpChild))
-				{
-					float fLayerOfBranch = calculateRecursiveLayout(tmpChild, fDeltaRadius, fRealChildAngle, fLayer+1, fNodeSize, fXCoord, fYCoord);
-					//drawLine(fXCoordOfParent, fYCoordOfParent, fXCoord, fYCoord);
-//				childAngle =
-//				calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
-//					+ (alpha / 2);
-//			calcualteChildPosition(childRadius, childAngle, numChilds);
-				fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE * (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
-				tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-				//DrawAbleHyperbolicGeometryGlobeProjection p = new DrawAbleHyperbolicGeometryGlobeProjection(node, tmpChild, fvViewCenterPoint, fHeight/2);
-				ITreeProjection p = new HyperbolicGlobeProjection(1, fHeight, fWidth, 1.0f, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
-//				{
-//					Vec2f fvFirstPoint = new Vec2f();
-//					Vec2f fvSecondPoint = new Vec2f();
-//
-//					fvFirstPoint.set(fXCoordOfParent, fYCoordOfParent);
-//					fvSecondPoint.set(fXCoord, fYCoord);
-//					
-//				float line = 0; 
-//				line = p.projectLineOnGlobe( fvFirstPoint, fvSecondPoint);
-				
-				if(bHyperbolicFlag){
-				Vec3f tmpLinPointCoord = new Vec3f();
-				Vec3f projectedPointCoord = new Vec3f();
-				tmpLinPointCoord.set(fXCoord, fYCoord, 0.0f);
-				projectedPointCoord = treeProjector.projectCoordinates(tmpLinPointCoord);
-				placeNode(tmpChild, projectedPointCoord.x(), projectedPointCoord.y(), projectedPointCoord.z(), fNodeSize, fNodeSize);
+			if (tree.hasChildren(node)) {
+
+				// float fDeltaRadius = 5.0f/(fLayer*6);
+				// float childs = 3.0f; // node.getNumberOfChildren()
+
+				ArrayList<IDrawAbleNode> childsOfCurrentNode = new ArrayList<IDrawAbleNode>();
+				childsOfCurrentNode = tree.getChildren(node);
+				// float fDeltaRadius = fRadius/1.95f;
+				float fDeltaRadius = fRadius;
+				float fChildSpace = (fDeltaRadius * (float) Math.PI) / (childsOfCurrentNode.size() + 1);
+				float fNumberOfChildsOfNode = childsOfCurrentNode.size();
+				float fChildCount = 0.0f;
+				float fChildAngle = 0.0f;
+				// for (float numChilds = 1; numChilds <= childs; numChilds++) {
+				// use it in future
+				for (IDrawAbleNode tmpChild : childsOfCurrentNode) {
+					fChildCount++;
+
+					// float parentAngle = (angle*currentStep);// - (angle);
+					// float parentAngle = angle;
+					// float alphaHalfOffset = (angle/ 2);
+
+					// childAngle =
+					// calculateChildAngle(parentAngle , space/fNumberOfNodesInNewLayer , radius, numChilds)
+					// + alphaHalfOffset;
+
+					fChildAngle = calculateChildAngle(fParentAngle, fChildSpace, fDeltaRadius, fChildCount);// +
+					// alphaHalfOffset;
+					// calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
+					// float realChildAngle = parentAngle + (childAngle*(numChilds - 1));
+					float fRealChildAngle =
+						fParentAngle - ((fChildAngle * (fNumberOfChildsOfNode - 1)) / 2) + fChildAngle
+							* (fChildCount - 1);
+					// calcualteChildPosition(fRadius, fRealChildAngle, fChildCount, fXCoordOfParent,
+					// fYCoordOfParent);
+					calcualteChildPosition(fDeltaRadius, fRealChildAngle, fChildCount, fXCoordOfParent,
+						fYCoordOfParent);
+
+					float fXCoord = getFXCoord();
+					float fYCoord = getFYCoord();
+					// if(tree.hasChildren(tmpChild))
+					{
+						float fLayerOfBranch =
+							calculateRecursiveLayout(tmpChild, fDeltaRadius, fRealChildAngle, fLayer + 1,
+								fNodeSize, fXCoord, fYCoord);
+						// drawLine(fXCoordOfParent, fYCoordOfParent, fXCoord, fYCoord);
+						// childAngle =
+						// calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
+						// + (alpha / 2);
+						// calcualteChildPosition(childRadius, childAngle, numChilds);
+						fNodeSize =
+							HyperbolicRenderStyle.MAX_NODE_SIZE
+								* (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
+						tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
+						// DrawAbleHyperbolicGeometryGlobeProjection p = new
+						// DrawAbleHyperbolicGeometryGlobeProjection(node, tmpChild, fvViewCenterPoint,
+						// fHeight/2);
+						// ITreeProjection p = new HyperbolicGlobeProjection(1, fHeight, fWidth, 1.0f,
+						// fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
+						// {
+						// Vec2f fvFirstPoint = new Vec2f();
+						// Vec2f fvSecondPoint = new Vec2f();
+						//
+						// fvFirstPoint.set(fXCoordOfParent, fYCoordOfParent);
+						// fvSecondPoint.set(fXCoord, fYCoord);
+						//					
+						// float line = 0;
+						// line = p.projectLineOnGlobe( fvFirstPoint, fvSecondPoint);
+
+						// Vec3f pSpP1 =
+						// new Vec3f( + vSE.x() / 2.0f, pStartP.y() + vSE.y() / 2.0f, pStartP.z() + vSE.z()
+						// / 2.0f);
+						//				
+						// placeNode(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize);
+						// DrawAbleHyperbolicGeometryConnection conn = new
+						// DrawAbleHyperbolicGeometryConnection(node, tmpChild, fvViewCenterPoint,
+						// fViewRadius);
+						// Vec3f splinePoint = new Vec3f();
+						// splinePoint = conn.findSplinePoint();
+						if (bHyperbolicFlag) {
+							// Vec3f tmpLinPointCoord = new Vec3f();
+							// Vec3f projectedPointCoord = new Vec3f();
+							// tmpLinPointCoord.set(fXCoord, fYCoord, 0.0f);
+							// projectedPointCoord = treeProjector.projectCoordinates(tmpLinPointCoord);
+							// splinePoint = treeProjector.projectCoordinates(splinePoint);
+							// placeNodeAndProject(tmpChild, projectedPointCoord.x(), projectedPointCoord.y(),
+							// projectedPointCoord.z(), fNodeSize, fNodeSize, treeProjector);
+							placeNodeAndProject(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize,
+								treeProjector);
+						}
+						else
+							placeNode(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize);
+						placeConnection(new DrawAbleHyperbolicGeometryConnection(node, tmpChild,
+							treeProjector));
+
+						// node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
+						// EDrawAbleNodeDetailLevel.Low);
+						// drawLine(getFXCoord(), getFYCoord(), x, y);
+					}
+
 				}
-				else
-					placeNode(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize);
-				placeConnection(new DrawAbleHyperbolicGeometryConnection(node, tmpChild, fvViewCenterPoint, fViewRadius));
-				
-				
-//				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
-//					EDrawAbleNodeDetailLevel.Low);
-				//drawLine(getFXCoord(), getFYCoord(), x, y);
-				}
-				
-			}
 			}
 
-			//float childs = 5.0f; // node.getNumberOfChildren()
-//			for (float numChilds = 1; numChilds < childs; numChilds++) {
-//
-//				childAngle =
-//					calculateChildAngle(alpha * fCurrentNode, space / childs, childRadius) * numChilds
-//						+ (alpha / 2);
-//				calcualteChildPosition(childRadius, childAngle, numChilds);
-//				node.drawAtPostion(gl, getFXCoord(), getFYCoord(), 0, fNodeSize, 0.2f,
-//					EDrawAbleNodeDetailLevel.Low);
-//			}
 		}
-			
-			return fLayer;
-		}
-	
+
+		return fLayer;
+	}
 
 	public float getFCenterX() {
 		return fCenterX;
@@ -243,8 +270,8 @@ public final class HTLayouter
 
 		setFXCoord((float) (fCenterX + fRadius * (Math.cos(fPhi * fCurrent_step))));
 		setFYCoord((float) (fCenterY + fRadius * (Math.sin(fPhi * fCurrent_step))));
-//		setFXCoord((float) (fCenterX + radius * Math.cos(phi2 * current_step)));
-//		setFYCoord((float) (fCenterY + radius * Math.sin(phi2 * current_step)));
+		// setFXCoord((float) (fCenterX + radius * Math.cos(phi2 * current_step)));
+		// setFYCoord((float) (fCenterY + radius * Math.sin(phi2 * current_step)));
 		return fPhi;
 	}
 
@@ -259,45 +286,47 @@ public final class HTLayouter
 	private float calculateChildAngle(float fParentAngle, float fChildSpace, float fRadius, float fCurrentStep) {
 
 		float fChildAngle = ((fChildSpace / fRadius));
-		//float angle = ((space / radius)*currentStep);
-		//float angle = parentAngle - space / radius;
+		// float angle = ((space / radius)*currentStep);
+		// float angle = parentAngle - space / radius;
 
 		return fChildAngle;
 	}
 
-	private void calcualteChildPosition(float fRadius, float fAngle, float fCurrentStep, float fParentXCoord, float fParentYCoord) {
-		// setFXCoord((float) (fCenterX + radius * Math.cos(phi * currentStep)));
-		// setFYCoord( (float) (fCenterY + radius * Math.sin(phi * currentStep)));
-//		setFXCoord((float) (fCenterX + fRadius * Math.cos(fAngle)));
-//		setFYCoord((float) (fCenterY + fRadius * Math.sin(fAngle)));
+	private void calcualteChildPosition(float fRadius, float fAngle, float fCurrentStep, float fParentXCoord,
+		float fParentYCoord) {
+
 		setFXCoord((float) (fParentXCoord + fRadius * Math.cos(fAngle)));
 		setFYCoord((float) (fParentYCoord + fRadius * Math.sin(fAngle)));
 
 	}
-//	private void drawLine(float fFirstXCoord, float fFirstYCoord, float fSecondXCoord, float fSecondYCoord){
-//		IDrawAbleConnection line = DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE, iLineIDDummy++,iLineIDDummy++);
-//		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-//		Vec3f p1 = new Vec3f();
-//		Vec3f p2 = new Vec3f();
-//		p1.setX(fFirstXCoord);
-//		p1.setY(fFirstYCoord);
-//		p1.setZ(1.0f);
-//		p2.setX(fSecondXCoord);
-//		p2.setY(fSecondYCoord);
-//		p2.setZ(1.0f);
-//		
-//		
-//		points.add(p1);
-//		points.add(p2);
-//		//line.setConnectionColor3f(1.0f, 1.0f, 0.0f);
-//		placeConnection(line, points);
-//	//	line.drawConnectionFromStartToEnd(gl, points, 2.0f);
-//	}
+
+	// private void drawLine(float fFirstXCoord, float fFirstYCoord, float fSecondXCoord, float
+	// fSecondYCoord){
+	// IDrawAbleConnection line =
+	// DrawAbleConnectionsFactory.getDrawAbleConnection(HyperbolicRenderStyle.HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE,
+	// iLineIDDummy++,iLineIDDummy++);
+	// ArrayList<Vec3f> points = new ArrayList<Vec3f>();
+	// Vec3f p1 = new Vec3f();
+	// Vec3f p2 = new Vec3f();
+	// p1.setX(fFirstXCoord);
+	// p1.setY(fFirstYCoord);
+	// p1.setZ(1.0f);
+	// p2.setX(fSecondXCoord);
+	// p2.setY(fSecondYCoord);
+	// p2.setZ(1.0f);
+	//		
+	//		
+	// points.add(p1);
+	// points.add(p2);
+	// //line.setConnectionColor3f(1.0f, 1.0f, 0.0f);
+	// placeConnection(line, points);
+	// // line.drawConnectionFromStartToEnd(gl, points, 2.0f);
+	// }
 
 	@Override
 	public void animateToNewTree(Tree<IDrawAbleNode> tree) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
