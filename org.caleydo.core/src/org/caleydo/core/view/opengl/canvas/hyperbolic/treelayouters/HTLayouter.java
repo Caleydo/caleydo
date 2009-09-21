@@ -22,13 +22,16 @@ public final class HTLayouter
 	extends ATreeLayouter
 	implements ITreeLayouter {
 
-	float fXCoord;
-	float fYCoord;
-	float fCenterX;
-	float fCenterY;
+	float fXCoord = 0.0f;
+	float fYCoord = 0.0f;
+	float fCenterX = 0.0f;
+	float fCenterY = 0.0f;
+	float fCenterZ = 0.0f;
 	int iLineIDDummy = 0;
 	float fDepth = 6.0f; // tree.getDepth();
+	float fRadius = 0.7f;
 
+	//activates hyperbolic style
 	boolean bHyperbolicFlag = true;
 
 	// ArrayList<Vec3f> vec = new ArrayList<Vec3f>();
@@ -41,33 +44,34 @@ public final class HTLayouter
 	@Override
 	public void renderTreeLayout() {
 		updateSizeInfo();
+		fDepth = tree.getDepth();
+		// TODO: put it into abstract class
+		setFCenterX(fWidth / 2);
+		setFCenterY(fHeight / 2);
+		setFCenterZ(0.0f);
 		if (bHyperbolicFlag) {
 			treeProjector =
-				new HyperbolicGlobeProjection(1, fHeight, fWidth, 0.0f, fViewSpaceX, fViewSpaceXAbs,
+				new HyperbolicGlobeProjection(1, fHeight, fWidth, fCenterZ, fViewSpaceX, fViewSpaceXAbs,
 					fViewSpaceY, fViewSpaceYAbs);
 		}
 		if (tree == null)
 			return;
 
-		fDepth = tree.getDepth();
-		// TODO: put it into abstract class
-		setFCenterX(fWidth / 2);
-		setFCenterY(fHeight / 2);
 		float fNodeSize = HyperbolicRenderStyle.MAX_NODE_SIZE;
 
 		IDrawAbleNode rootNode = tree.getRoot();
 
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
-		placeNode(rootNode, fCenterX, fCenterY, 0, fNodeSize, fNodeSize);
+		placeNode(rootNode, fCenterX, fCenterY, fCenterZ, fNodeSize, fNodeSize);
 
 		// RECURSIVE TREE LAYOUTER
 		float fLayer = 2.0f;
-		float fRadius = 0.7f;
+//		float fRadius = 0.7f;
 		// float fRadius = 3.0f;
 
 		// float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
 		float fNumberOfNodesInLayer = tree.getNumberOfElementsInLayer((int) fLayer);
-		float fCurrentNodeCount = 0;
+		float fCurrentNodeCount = 0.0f;
 		if (tree.hasChildren(rootNode)) {
 			ArrayList<IDrawAbleNode> childs = new ArrayList<IDrawAbleNode>();
 			childs = tree.getChildren(rootNode);
@@ -95,12 +99,12 @@ public final class HTLayouter
 					// splinePoint = treeProjector.projectCoordinates(splinePoint);
 					// placeNodeAndProject(tmpChild, tmpPoint.x(), tmpPoint.y(), tmpPoint.z(), fNodeSize,
 					// fNodeSize);
-					placeNodeAndProject(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize,
+					placeNodeAndProject(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize,
 						treeProjector);
 
 				}
 				else
-					placeNode(tmpChild, getFXCoord(), getFYCoord(), 0.0f, fNodeSize, fNodeSize);
+					placeNode(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize);
 
 				// placeConnection(new DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, treeProjector,
 				// fvViewCenterPoint, fViewRadius));
@@ -108,7 +112,7 @@ public final class HTLayouter
 				placeConnection(new DrawAbleHyperbolicGeometryConnection(rootNode, tmpChild, treeProjector));
 
 				calculateRecursiveLayout(tmpChild, fRadius, fFirstLayerAngle * fCurrentNodeCount, fLayer + 1,
-					fNodeSize, getFXCoord(), getFYCoord());
+					fNodeSize, fXCoord, fYCoord);
 
 			}
 		}
@@ -116,12 +120,20 @@ public final class HTLayouter
 		return;
 	}
 
+	public float getFCenterZ() {
+		return fCenterZ;
+	}
+
+	public void setFCenterZ(float centerZ) {
+		fCenterZ = centerZ;
+	}
+
 	public float calculateRecursiveLayout(IDrawAbleNode node, float fRadius, float fParentAngle,
 		float fLayer, float fNodeSize, float fXCoordOfParent, float fYCoordOfParent) {
 		if (fLayer <= fDepth) {
 			// float fNumberOfNodesInNewLayer = fNumberOfNodesInLayer;// +
 			// layer;//node.getNumberOfNodesInLayer(layer);
-			float fNumberOfNodesInNewLayer = tree.getNumberOfElementsInLayer((int) fLayer);
+//			float fNumberOfNodesInNewLayer = tree.getNumberOfElementsInLayer((int) fLayer);
 
 			// float fChildSpace = calculateChildSpace(fRadius, fNumberOfNodesInNewLayer);
 
@@ -163,8 +175,8 @@ public final class HTLayouter
 					calcualteChildPosition(fDeltaRadius, fRealChildAngle, fChildCount, fXCoordOfParent,
 						fYCoordOfParent);
 
-					float fXCoord = getFXCoord();
-					float fYCoord = getFYCoord();
+					float fXCoord1 = fXCoord;
+					float fYCoord2 = fYCoord;
 					// if(tree.hasChildren(tmpChild))
 					{
 						float fLayerOfBranch =
@@ -212,11 +224,11 @@ public final class HTLayouter
 							// splinePoint = treeProjector.projectCoordinates(splinePoint);
 							// placeNodeAndProject(tmpChild, projectedPointCoord.x(), projectedPointCoord.y(),
 							// projectedPointCoord.z(), fNodeSize, fNodeSize, treeProjector);
-							placeNodeAndProject(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize,
+							placeNodeAndProject(tmpChild, fXCoord1, fYCoord2, 0.0f, fNodeSize, fNodeSize,
 								treeProjector);
 						}
 						else
-							placeNode(tmpChild, fXCoord, fYCoord, 0.0f, fNodeSize, fNodeSize);
+							placeNode(tmpChild, fXCoord1, fYCoord2, 0.0f, fNodeSize, fNodeSize);
 						placeConnection(new DrawAbleHyperbolicGeometryConnection(node, tmpChild,
 							treeProjector));
 
@@ -249,17 +261,17 @@ public final class HTLayouter
 		fCenterY = centerY;
 	}
 
-	public float getFXCoord() {
-		return fXCoord;
-	}
+//	public float () {
+//		return fXCoord;
+//	}
 
 	public void setFXCoord(float coord) {
 		fXCoord = coord;
 	}
 
-	public float getFYCoord() {
-		return fYCoord;
-	}
+//	public float fYCoord() {
+//		return fYCoord;
+//	}
 
 	public void setFYCoord(float coord) {
 		fYCoord = coord;

@@ -2,6 +2,8 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+
 import gleem.linalg.Vec3f;
 
 public class HyperbolicGlobeProjection
@@ -231,8 +233,8 @@ public class HyperbolicGlobeProjection
 
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glColor4f(0, 1, 1, 0.3f);
-		gl.glLineWidth(2);
+		gl.glColor4fv(HyperbolicRenderStyle.DA_HB_GEOM_GLOBE_COLORSHEME_HL, 0);
+		gl.glLineWidth(HyperbolicRenderStyle.DA_HB_GEOM_GLOBE_THICKNESS_HL);
 
 		gl.glBegin(GL.GL_POLYGON);
 		// gl.glBegin(GL.GL_LINE_LOOP);

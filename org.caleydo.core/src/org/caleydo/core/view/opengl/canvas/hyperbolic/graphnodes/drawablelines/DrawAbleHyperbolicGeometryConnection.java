@@ -31,8 +31,8 @@ public class DrawAbleHyperbolicGeometryConnection
 
 	protected Vec3f fvHTCenterpoint;
 	protected float fHTRadius;
-	float resolution = 100;
-	protected ArrayList<Vec3f> vecs;
+//	float resolution = 100;
+//	protected ArrayList<Vec3f> vecs;
 	ITreeProjection projection = null;
 
 	public DrawAbleHyperbolicGeometryConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB,
@@ -40,7 +40,7 @@ public class DrawAbleHyperbolicGeometryConnection
 		super(iNodeA, iNodeB);
 		this.fvHTCenterpoint = fvHTCenterpoint;
 		this.fHTRadius = fHTRadius;
-		this.vecs = new ArrayList<Vec3f>();
+//		this.vecs = new ArrayList<Vec3f>();
 	}
 	public DrawAbleHyperbolicGeometryConnection(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB, 
 		ITreeProjection projection) {
