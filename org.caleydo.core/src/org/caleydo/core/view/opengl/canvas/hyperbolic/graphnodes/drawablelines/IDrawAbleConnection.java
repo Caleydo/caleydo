@@ -9,6 +9,8 @@ public interface IDrawAbleConnection
 
 	public void draw(GL gl, boolean bHighlight);
 
+	boolean isPickAble();
+
 	
 	//public void place(List<Vec3f> lPoints);
 	

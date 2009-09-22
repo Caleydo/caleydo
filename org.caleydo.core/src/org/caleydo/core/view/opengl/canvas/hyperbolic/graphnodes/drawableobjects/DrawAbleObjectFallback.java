@@ -31,10 +31,13 @@ public class DrawAbleObjectFallback
 
 	@Override
 	public ArrayList<Vec3f> draw(GL gl, boolean bHighlight) {
-		if (bHighlight)
-			gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME_HL, 0);
+		if(bIsAbleToPick)
+			if (bHighlight)
+				gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME_HL, 0);
+			else
+				gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME, 0);
 		else
-			gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME, 0);
+			gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME_NO_PICK, 0);
 
 		float radius = Math.min(fHeight / 2f, fWidth / 2f);
 		gl.glBegin(GL.GL_POLYGON);

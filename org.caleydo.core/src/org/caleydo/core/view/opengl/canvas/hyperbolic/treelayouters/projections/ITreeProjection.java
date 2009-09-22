@@ -13,4 +13,7 @@ extends Comparable<ITreeProjection>{
 	
 	public void drawCanvas(GL gl);
 
+	void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
+		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs);
+
 }

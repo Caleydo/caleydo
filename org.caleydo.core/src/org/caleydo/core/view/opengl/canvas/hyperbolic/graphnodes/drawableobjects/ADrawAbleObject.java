@@ -16,6 +16,7 @@ public abstract class ADrawAbleObject
 	protected float fHeight = 0;
 	protected float fWidth = 0;
 //	private ITreeProjection projection;
+	protected boolean bIsAbleToPick;
 
 	@Override
 	public final void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
@@ -24,6 +25,11 @@ public abstract class ADrawAbleObject
 		this.fZCoord = fZCoord;
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
+	}
+	
+	@Override
+	public final void setPickAble(boolean bIsAbleToPick){
+		this.bIsAbleToPick = bIsAbleToPick;
 	}
 	
 //	@Override

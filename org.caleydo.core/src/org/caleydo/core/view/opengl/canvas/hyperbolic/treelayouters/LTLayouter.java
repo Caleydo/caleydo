@@ -10,7 +10,6 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleLinearConnection;
 
 public final class LTLayouter
 	extends ATreeLayouter {
@@ -21,7 +20,7 @@ public final class LTLayouter
 	float fCurNodeRealSize;
 	
 	public LTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
-		super(frustum, pickingManager, iViewID);
+		super(frustum, pickingManager, iViewID, null);
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public final class LTLayouter
 			else
 				placelast += fCalcMaxNodeSize / 2.0f + (float) mNodeSpaceRec.get(node) * fCalcMaxNodeSize /4.0f + (float) mNodeSpaceRec.get(children.get(i-1)) / 4.0f * fCalcMaxNodeSize;
 			placeNode(node, placelast, fViewSpaceY[1] - fLayerHigh * iCurrentLayer + fLayerHigh / 2.0f, 0.1f, fCurNodeRealSize, fCurNodeRealSize);
-			placeConnection(new DrawAbleLinearConnection(rootNode, node));
+			placeConnection(rootNode, node);
 			placeRecursive(node, iCurrentLayer + 1, fLayerHigh, placelast - (float) mNodeSpaceRec.get(node) / 4.0f * fCalcMaxNodeSize);
 		}
 		return;
@@ -234,10 +233,4 @@ public final class LTLayouter
 	// fNodeSpacing - fNodeSpacing * 0.1f, eDetailLevel);
 	//
 	// }
-
-	@Override
-	public void animateToNewTree(Tree<IDrawAbleNode> tree) {
-		// TODO Auto-generated method stub
-
-	}
 }

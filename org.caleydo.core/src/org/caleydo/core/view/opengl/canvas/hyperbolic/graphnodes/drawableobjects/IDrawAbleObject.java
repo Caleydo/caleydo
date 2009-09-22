@@ -55,6 +55,8 @@ public interface IDrawAbleObject {
 	 */
 	public ArrayList<Vec3f> getConnectionPoints();
 
+	void setPickAble(boolean bIsAbleToPick);
+
 
 	// /**
 	// * Draw the object in highlight representation, taking

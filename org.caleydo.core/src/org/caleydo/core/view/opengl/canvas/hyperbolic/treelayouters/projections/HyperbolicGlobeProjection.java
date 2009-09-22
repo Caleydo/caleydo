@@ -12,6 +12,10 @@ public class HyperbolicGlobeProjection
 	Vec3f fCenterPoint;
 	float radius;
 
+	public HyperbolicGlobeProjection(int iID) {
+		super(iID);
+	}
+	
 	public HyperbolicGlobeProjection(int iID, float height, float width, float depth, float[] viewSpaceX,
 		float viewSpaceXAbs, float[] viewSpaceY, float viewSpaceYAbs) {
 		super(iID, height, width, depth, viewSpaceX, viewSpaceXAbs, viewSpaceY, viewSpaceYAbs);
@@ -19,9 +23,16 @@ public class HyperbolicGlobeProjection
 		fCenterPoint = new Vec3f(width / 2.0f, height / 2.0f, depth);
 		radius = Math.min(viewSpaceXAbs, viewSpaceYAbs) / 2.0f;
 		// radius = viewSpaceYAbs / 2.0f;
-
 	}
 
+	
+	public void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
+		float fViewSpaceXAbs, float[] fViewSpaceY,float fViewSpaceYAbs){
+		super.updateFrustumInfos(fHeight, fWidth, fDepth, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
+		fCenterPoint = new Vec3f(fWidth / 2.0f, fHeight / 2.0f, fDepth);
+		radius = Math.min(fViewSpaceXAbs, fViewSpaceYAbs) / 2.0f;
+	}
+	
 	@Override
 	public Vec3f projectCoordinates(Vec3f fvCoords) {
 
@@ -59,6 +70,7 @@ public class HyperbolicGlobeProjection
 
 		// float fZCoordOfProjectedPoint = -0.2f;
 
+		// TODO: disable picking!
 		float fZCoordOfProjectedPoint =
 			fCenterPoint.z() + (float) Math.cos(fYAngle) * (float) Math.cos(fXAngle) * radius;
 
@@ -67,11 +79,7 @@ public class HyperbolicGlobeProjection
 		// fZCoordOfProjectedPoint = 2.0f;
 		// else
 		// fZCoordOfProjectedPoint = -2.0f;
-		Vec3f newPoint = new Vec3f();
-
-		newPoint.set(fNewXCoordinate, fNewYCoordinate, fZCoordOfProjectedPoint);
-
-		return newPoint;
+		return new Vec3f(fNewXCoordinate, fNewYCoordinate, fZCoordOfProjectedPoint);
 	}
 
 	// @Override

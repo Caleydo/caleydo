@@ -24,11 +24,13 @@ public class HyperbolicRenderStyle
 	public static final EDrawAbleNodeDetailLevel[] DETAIL_LEVEL_GRADING= {EDrawAbleNodeDetailLevel.VeryHigh, EDrawAbleNodeDetailLevel.High,
 		EDrawAbleNodeDetailLevel.Normal, EDrawAbleNodeDetailLevel.Low, EDrawAbleNodeDetailLevel.VeryLow};
 
-	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME = { 0.5f, 0.5f, 0.5f, 1f };
+	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1f };
 	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME_HL = { 0.8f, 0.4f, 0.2f, 1f };
+	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME_NO_PICK = { 0.5f, 0.5f, 0.5f, 0.2f };
 
 	public static final float[] DA_OBJ_QUAD_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1f };
 	public static final float[] DA_OBJ_QUAD_COLORSCHEME_HL = { 0.4f, 0.6f, 0.2f, 1f };
+	public static final float[] DA_OBJ_QUAD_COLORSCHEME_NO_PICK = { 0.5f, 0.5f, 0.5f, 0.2f };
 
 	public static final String[] DA_TEST_NODE_DL_OBJ =
 		{ "Fallback", "Fallback", "Fallback", "Fallback", "Fallback" };
@@ -39,15 +41,18 @@ public class HyperbolicRenderStyle
 	public static final float[] DA_LINEAR_CONNECTION_COLORSHEME_HL = { 0f, 1f, 0f, 1f };
 	public static final float DA_LINEAR_CONNECTION_THICKNESS_HL = 5f;
 	
-	public static final float[] DA_HB_GEOM_CONNECTION_COLORSHEME = { 0f, 0f, 1f, 1f };
-	public static final float DA_HB_GEOM_CONNECTION_THICKNESS = 1f;
+	public static final float[] DA_HB_CONNECTION_COLORSHEME = { 0f, 0f, 1f, 1f };
+	public static final float DA_HB_CONNECTION_THICKNESS = 2f;
+	
+	public static final float[] DA_HB_CONNECTION_COLORSHEME_NO_PICK = { 0f, 0f, 0f, 0.5f };
+	public static final float DA_HB_CONNECTION_THICKNESS_NO_PICK = 1f;
 
 	public static final float[] DA_HB_GEOM_CONNECTION_COLORSHEME_HL = { 0f, 1f, 0f, 1f };
 	public static final float DA_HB_GEOM_CONNECTION_THICKNESS_HL = 5f;
-	public static final int DA_SPLINE_CONNECTION_NR_CTRLPOINTS = 50;
+	public static final int DA_SPLINE_CONNECTION_NR_CTRLPOINTS = 20;
 	
 	public static final float[] DA_HB_GEOM_GLOBE_COLORSHEME_HL = { 0f, 1f, 1f, 0.3f };
-	public static final float DA_HB_GEOM_GLOBE_THICKNESS_HL = 2.0f;
+	public static final float DA_HB_GEOM_GLOBE_THICKNESS_HL = 2.5f;
 	
 	//public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
 	//public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";

@@ -8,13 +8,13 @@ public abstract class ATreeProjection
 	implements ITreeProjection {
 
 	private final int iID;
-	protected final float fHeight;
-	protected final float fWidth;
-	protected final float fDepth;
-	protected final float[] fViewSpaceX;
-	protected final float fViewSpaceXAbs;
-	protected final float[] fViewSpaceY;
-	protected final float fViewSpaceYAbs;
+	protected float fHeight = 0;
+	protected float fWidth = 0;
+	protected float fDepth = 0;
+	protected float[] fViewSpaceX = {};
+	protected float fViewSpaceXAbs = 0;
+	protected float[] fViewSpaceY = {};
+	protected float fViewSpaceYAbs = 0;
 	
 	
 	public ATreeProjection(int iID,float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
@@ -27,7 +27,10 @@ public abstract class ATreeProjection
 		this.fViewSpaceXAbs = fViewSpaceXAbs;
 		this.fViewSpaceY = fViewSpaceY;
 		this.fViewSpaceYAbs = fViewSpaceYAbs;
-		
+	}
+	
+	public ATreeProjection(int iID){
+		this.iID = iID;
 	}
 	
 	@Override
@@ -40,5 +43,15 @@ public abstract class ATreeProjection
 		return iID;
 	}
 	
-
+	@Override
+	public void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
+		float fViewSpaceXAbs, float[] fViewSpaceY,float fViewSpaceYAbs){
+		this.fHeight = fHeight;
+		this.fWidth = fWidth;
+		this.fDepth = fDepth;
+		this.fViewSpaceX = fViewSpaceX;
+		this.fViewSpaceXAbs = fViewSpaceXAbs;
+		this.fViewSpaceY = fViewSpaceY;
+		this.fViewSpaceYAbs = fViewSpaceYAbs;
+	}
 }

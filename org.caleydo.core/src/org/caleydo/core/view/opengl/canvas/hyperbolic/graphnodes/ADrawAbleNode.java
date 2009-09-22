@@ -34,7 +34,8 @@ public abstract class ADrawAbleNode
 	private float fProjectedYCoord = 0;
 	private float fProjectedZCoord = 0;
 	private ArrayList<Vec3f> alOriginalCorrespondingPoints = null;
-
+	protected boolean bIsAbleToPick = true; 
+	
 	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
 
 	@Override
@@ -57,39 +58,44 @@ public abstract class ADrawAbleNode
 		return iID - node.getID();
 	}
 
-	@Override
-	public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
-		this.fXCoord = fXCoord;
-		this.fYCoord = fYCoord;
-		this.fZCoord = fZCoord;
-		this.fHeight = fHeight;
-		this.fWidth = fWidth;
-		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
-		alOriginalCorrespondingPoints = new ArrayList<Vec3f>();
-		alOriginalCorrespondingPoints = daObj.getConnectionPoints();
-		return daObj.getConnectionPoints();
-	}
+//	@Override
+//	public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth) {
+//		this.fXCoord = fXCoord;
+//		this.fYCoord = fYCoord;
+//		this.fZCoord = fZCoord;
+//		this.fHeight = fHeight;
+//		this.fWidth = fWidth;
+//		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+//		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+//		alOriginalCorrespondingPoints = new ArrayList<Vec3f>();
+//		alOriginalCorrespondingPoints = daObj.getConnectionPoints();
+//		return daObj.getConnectionPoints();
+//	}
 	
 	@Override
-	public final ArrayList<Vec3f> placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection projection) {
+	public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection treeProjection) {
 		this.fXCoord = fXCoord;
 		this.fYCoord = fYCoord;
 		this.fZCoord = fZCoord;
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
-		this.projection = projection;
+		if(treeProjection != null){
+			Vec3f vpProjectedPoint = treeProjection.projectCoordinates(new Vec3f(fXCoord, fYCoord, fZCoord));
+			this.fProjectedXCoord = vpProjectedPoint.x();
+			this.fProjectedYCoord = vpProjectedPoint.y();
+			this.fProjectedZCoord = vpProjectedPoint.z();
+		}
+		else{
+			this.fProjectedXCoord = this.fXCoord;
+			this.fProjectedYCoord = this.fYCoord;
+			this.fProjectedZCoord = this.fZCoord;
+		}
 		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-		Vec3f vpProjectedPoint = new Vec3f();
-		vpProjectedPoint = projection.projectCoordinates(new Vec3f(fXCoord, fYCoord, fZCoord));
-		this.fProjectedXCoord = vpProjectedPoint.x();
-		this.fProjectedYCoord = vpProjectedPoint.y();
-		this.fProjectedZCoord = vpProjectedPoint.z();
 		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
-		alOriginalCorrespondingPoints = new ArrayList<Vec3f>();
 		alOriginalCorrespondingPoints = daObj.getConnectionPoints();
 		daObj.place(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord, fHeight, fWidth);
-		return daObj.getConnectionPoints();
+		bIsAbleToPick = fProjectedZCoord >= 0.0f;
+		return alOriginalCorrespondingPoints;
 	}
 	
 	
@@ -97,6 +103,7 @@ public abstract class ADrawAbleNode
 	@Override
 	public final void draw(GL gl, boolean bHighlight) {
 		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+		daObj.setPickAble(bIsAbleToPick);
 		daObj.draw(gl, bHighlight);	
 	}
 
@@ -145,6 +152,11 @@ public abstract class ADrawAbleNode
 	@Override
 	public final Vec3f getCoordinates(){
 		return new Vec3f(fXCoord, fYCoord, fZCoord);
+	}
+	
+	@Override
+	public final boolean isPickAble(){
+		return bIsAbleToPick;
 	}
 }
 

@@ -10,6 +10,8 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.data.selection.delta.ISelectionDelta;
+import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -28,6 +30,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
+import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
+import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -41,7 +45,7 @@ import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
  */
 public class GLHyperbolic
 	extends AGLEventListener
-	implements IViewCommandHandler {
+	implements IClusterNodeEventReceiver, IViewCommandHandler, ISelectionUpdateHandler {
 
 	// private Tree<DefaultNode> tree;
 	public List<Vec3f> vec;
@@ -126,7 +130,7 @@ public class GLHyperbolic
 		// tree.addChild(test, test2);
 		// layouter = new LinearTreeLayouter(viewFrustum);
 
-		tree = buildTestTree(7, 6);
+		tree = buildTestTree(7, 5);
 		System.out.println(tree.getGraph().toString());
 		layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.setTree(tree);
@@ -251,6 +255,7 @@ public class GLHyperbolic
 				switch (pickingMode) {
 					case CLICKED:
 						tree = convertTreeToNewOne(iExternalID);
+						//layouter.animateToNewTree(tree);
 						layouter.setTree(tree);
 						break;
 					case MOUSE_OVER:
@@ -425,6 +430,18 @@ public class GLHyperbolic
 		}
 
 		return tree;
+	}
+
+	@Override
+	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
