@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -92,7 +93,7 @@ public interface IUseCase {
 	 */
 	public LoadDataParameters getLoadDataParameters();
 
-	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray);
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType, IVirtualArray virtualArray);
 
 	/**
 	 * Sets the parameters for loading the data-{@link Set} contained in this use case

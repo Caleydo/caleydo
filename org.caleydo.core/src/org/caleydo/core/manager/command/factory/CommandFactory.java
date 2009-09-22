@@ -65,6 +65,7 @@ public class CommandFactory
 			}
 			case CREATE_DATA_DOMAIN: {
 				createdCommand = new CmdDataCreateDataDomain(cmdType);
+				break;
 			}
 			case CREATE_STORAGE: {
 				createdCommand = new CmdDataCreateStorage(cmdType);

@@ -205,24 +205,10 @@ public class GeneralManager
 			throw new IllegalStateException(
 				"Unable to create log folder .caleydo/log. Check user permissions!");
 
-		logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at "
-			+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
+//		logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at "
+//			+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
 
-		try {
-			preferenceStore.setValue(PreferenceConstants.VERSION, IGeneralManager.VERSION);
-			preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
-			preferenceStore.setValue(PreferenceConstants.PATHWAY_DATA_OK, "");
-			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, EOrganism.HOMO_SAPIENS
-				.toString());
-			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
-				EPathwayDatabaseType.KEGG.name() + ";" + EPathwayDatabaseType.BIOCARTA.name());
-			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EDataDomain.GENETIC_DATA.name());
-			preferenceStore.setValue(PreferenceConstants.USE_PROXY, false);
-			preferenceStore.save();
-		}
-		catch (IOException e1) {
-			throw new IllegalStateException("Unable to save preference file.");
-		}
+	
 	}
 
 	/**

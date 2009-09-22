@@ -44,6 +44,7 @@ import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -118,7 +119,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  */
 public class GLParallelCoordinates
-	extends AStorageBasedView 
+	extends AStorageBasedView
 	implements IGLRemoteRenderingView {
 
 	/**
@@ -458,8 +459,8 @@ public class GLParallelCoordinates
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
-			viewFrustum.getTop(), -20, 20, -1);
+		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum
+			.getBottom(), viewFrustum.getTop(), -20, 20, -1);
 		cmdCreateGLView.doCommand();
 		glSelectionHeatMap = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRemoteRenderingGLView(this);
@@ -579,7 +580,8 @@ public class GLParallelCoordinates
 
 		// todo this doesn't work for turned stuff
 		ReplaceVirtualArrayInUseCaseEvent event =
-			new ReplaceVirtualArrayInUseCaseEvent(polylineVAType, (VirtualArray) polylineVA);
+			new ReplaceVirtualArrayInUseCaseEvent(ePolylineDataType.getCategory(), polylineVAType,
+				(VirtualArray) polylineVA);
 
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);

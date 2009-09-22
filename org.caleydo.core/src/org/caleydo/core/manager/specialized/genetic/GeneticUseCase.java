@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.specialized.genetic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -8,7 +9,11 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.delta.DeltaConverter;
+import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.AUseCase;
@@ -48,11 +53,16 @@ public class GeneticUseCase
 		useCaseMode = EDataDomain.GENETIC_DATA;
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
+
 		possibleViews = new ArrayList<EManagedObjectType>();
-//		possibleViews.add(EManagedObjectType.GL_HEAT_MAP);
+		// possibleViews.add(EManagedObjectType.GL_HEAT_MAP);
 		possibleViews.add(EManagedObjectType.GL_HIER_HEAT_MAP);
 		possibleViews.add(EManagedObjectType.GL_PARALLEL_COORDINATES);
-		
+
+		possibleIDCategories = new HashMap<EIDCategory, Boolean>();
+		possibleIDCategories.put(EIDCategory.GENE, null);
+		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
+
 	}
 
 	/**
@@ -146,5 +156,20 @@ public class GeneticUseCase
 
 	public EOrganism getOrganism() {
 		return eOrganism;
+	}
+
+	@Override
+	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
+		EIDCategory targetCategory = vaDelta.getIDType().getCategory();
+		if (!(targetCategory == EIDCategory.EXPERIMENT || targetCategory == EIDCategory.GENE))
+			return;
+
+		Integer vaID = mapVAIDs.get(vaDelta.getVAType());
+
+		// if (vaDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
+		// vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
+		IVirtualArray va = set.getVA(vaID);
+
+		va.setDelta(vaDelta);
 	}
 }

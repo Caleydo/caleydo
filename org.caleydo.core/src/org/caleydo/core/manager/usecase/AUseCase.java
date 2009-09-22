@@ -2,6 +2,7 @@ package org.caleydo.core.manager.usecase;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -13,10 +14,9 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IUseCase;
@@ -90,6 +90,9 @@ public abstract class AUseCase
 
 	/** Every use case needs to state all views that can visualize its data */
 	protected ArrayList<EManagedObjectType> possibleViews;
+
+	/** Every use case needs to state all ID Categories it can handle */
+	protected HashMap<EIDCategory, Boolean> possibleIDCategories;
 
 	public AUseCase() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
@@ -251,6 +254,9 @@ public abstract class AUseCase
 	@Override
 	public void startClustering(ClusterState clusterState) {
 
+		if (!(this instanceof GeneticUseCase))
+			return;
+
 		clusterState.setContentVaId(mapVAIDs.get(clusterState.getContentVAType()));
 		clusterState.setStorageVaId(mapVAIDs.get(EVAType.STORAGE));
 
@@ -265,8 +271,9 @@ public abstract class AUseCase
 		set.setGeneClusterInfoFlag(false);
 		set.setExperimentClusterInfoFlag(false);
 
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(clusterState.getContentVAType()));
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EVAType.STORAGE));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.GENE, clusterState
+			.getContentVAType()));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(EIDCategory.EXPERIMENT, EVAType.STORAGE));
 
 	}
 
@@ -281,9 +288,10 @@ public abstract class AUseCase
 	}
 
 	@Override
-	public void replaceVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
+	public void replaceVirtualArray(EIDCategory idCategory, EVAType vaType, IVirtualArray virtualArray) {
 
-		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
+		if (!possibleIDCategories.containsKey(idCategory))
+			return;
 
 		Tree<ClusterNode> tree = null;
 		if (vaType == EVAType.CONTENT)
@@ -310,7 +318,7 @@ public abstract class AUseCase
 
 		virtualArray.setGroupList(null);
 
-		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(vaType));
+		eventPublisher.triggerEvent(new ReplaceVirtualArrayEvent(idCategory, vaType));
 	}
 
 	public void setVirtualArray(EVAType vaType, IVirtualArray virtualArray) {
@@ -321,13 +329,6 @@ public abstract class AUseCase
 	@Override
 	public void handleVirtualArrayUpdate(IVirtualArrayDelta vaDelta, String info) {
 
-		Integer vaID = mapVAIDs.get(vaDelta.getVAType());
-
-		if (vaDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
-		IVirtualArray va = set.getVA(vaID);
-
-		va.setDelta(vaDelta);
 	}
 
 	public void registerEventListeners() {

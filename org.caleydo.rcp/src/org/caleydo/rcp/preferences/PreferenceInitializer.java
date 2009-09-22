@@ -8,7 +8,13 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.GENE_EXPRESS
 import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
 
+import java.io.IOException;
+
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.EOrganism;
+import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -49,7 +55,18 @@ public class PreferenceInitializer
 		store.setDefault(PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT, true);
 		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 1000);
 		store.setDefault(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT, true);
-//		store.setDefault(PreferenceConstants.XP_CLASSIC_STYLE_MODE, false);
+		// store.setDefault(PreferenceConstants.XP_CLASSIC_STYLE_MODE, false);
 		store.setDefault(PreferenceConstants.DATA_FILTER_LEVEL, "only_context");
+
+		store.setDefault(PreferenceConstants.VERSION, IGeneralManager.VERSION);
+		store.setDefault(PreferenceConstants.FIRST_START, true);
+		store.setDefault(PreferenceConstants.PATHWAY_DATA_OK, "");
+		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, EOrganism.HOMO_SAPIENS.toString());
+		store.setDefault(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, EPathwayDatabaseType.KEGG
+			.name()
+			+ ";" + EPathwayDatabaseType.BIOCARTA.name());
+		store.setDefault(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EDataDomain.GENETIC_DATA.name());
+		store.setDefault(PreferenceConstants.USE_PROXY, false);
+
 	}
 }

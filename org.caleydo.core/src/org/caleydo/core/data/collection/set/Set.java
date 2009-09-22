@@ -143,7 +143,6 @@ public class Set
 
 	@Override
 	public IStorage get(int iIndex) {
-
 		return alStorages.get(iIndex);
 	}
 
