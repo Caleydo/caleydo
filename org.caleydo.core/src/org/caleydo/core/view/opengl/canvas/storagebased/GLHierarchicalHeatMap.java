@@ -72,7 +72,6 @@ import org.caleydo.core.view.opengl.canvas.remote.receiver.INewGroupInfoHandler;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHierarchicalHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GroupContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -243,11 +242,9 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void init(GL gl) {
 
-
 		createHeatMap();
 		createDendrogram();
-		
-
+	
 		glHeatMapView.initRemote(gl, this, glMouseListener, null);
 		glGeneDendrogramView.initRemote(gl, this, glMouseListener, null);
 		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null);

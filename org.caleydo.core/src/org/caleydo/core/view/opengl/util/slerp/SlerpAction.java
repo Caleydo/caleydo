@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util.slerp;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 

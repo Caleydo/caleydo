@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 /**
  * Defines the interface to draw able objects, held by draw able nodes with reference to a specific detail

@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.preferences.PreferenceConstants;
@@ -47,6 +48,11 @@ public class GeneticUseCase
 		useCaseMode = EDataDomain.GENETIC_DATA;
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
+		possibleViews = new ArrayList<EManagedObjectType>();
+//		possibleViews.add(EManagedObjectType.GL_HEAT_MAP);
+		possibleViews.add(EManagedObjectType.GL_HIER_HEAT_MAP);
+		possibleViews.add(EManagedObjectType.GL_PARALLEL_COORDINATES);
+		
 	}
 
 	/**

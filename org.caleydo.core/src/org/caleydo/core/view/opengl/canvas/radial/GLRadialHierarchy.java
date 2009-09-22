@@ -55,7 +55,6 @@ import org.caleydo.core.view.opengl.canvas.radial.listener.DetailOutsideListener
 import org.caleydo.core.view.opengl.canvas.radial.listener.GoBackInHistoryListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.GoForthInHistoryListener;
 import org.caleydo.core.view.opengl.canvas.radial.listener.SetMaxDisplayedHierarchyDepthListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.DetailOutsideItem;

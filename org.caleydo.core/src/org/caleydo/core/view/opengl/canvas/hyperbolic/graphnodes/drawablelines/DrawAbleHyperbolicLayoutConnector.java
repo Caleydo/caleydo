@@ -1,11 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 
+import gleem.linalg.Vec3f;
+
 import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
-
-import gleem.linalg.Vec2f;
-import gleem.linalg.Vec3f;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;

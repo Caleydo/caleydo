@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects;
 
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 
 /**
  * Abstract of draw able node type. This type defines objects which are self drawing, which are held by nodes.

@@ -5,16 +5,10 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
-import org.caleydo.core.view.opengl.canvas.radial.SerializedRadialHierarchyView;
-import org.caleydo.rcp.action.toolbar.view.radial.ChangeColorModeAction;
-import org.caleydo.rcp.action.toolbar.view.radial.GoBackInHistoryAction;
-import org.caleydo.rcp.action.toolbar.view.radial.GoForthInHistoryAction;
-import org.caleydo.rcp.action.toolbar.view.radial.ToggleMagnifyingGlassAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.IToolBarItem;
 import org.caleydo.rcp.view.swt.toolbar.content.ToolBarContainer;
-import org.caleydo.rcp.view.swt.toolbar.content.radial.DepthSlider;
 
 public class HyperbolicToolBarContent
 	extends AToolBarContent {

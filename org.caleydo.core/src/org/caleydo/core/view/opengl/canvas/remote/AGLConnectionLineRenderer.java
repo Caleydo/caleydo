@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.remote;
 
 import gleem.linalg.Vec3f;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;

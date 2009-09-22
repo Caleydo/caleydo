@@ -1,8 +1,11 @@
 package org.caleydo.core.manager;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
@@ -21,6 +24,12 @@ public interface IUseCase {
 	 * if a more specialized use case (e.g. gene expression) is active.
 	 */
 	public EDataDomain getDataDomain();
+	
+	/**
+	 * Returns a list of views that can visualize the data in the domain
+	 * @return
+	 */
+	public ArrayList<EManagedObjectType> getPossibleViews(); 
 
 	/**
 	 * Returns the set which is currently loaded and used inside the views for this use case.
@@ -97,5 +106,7 @@ public interface IUseCase {
 	public String getBootstrapFileName();
 
 	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
-	public void setBootsTrapFileName(String bootsTrapFileName);
+	public void setBootsTrapFileName(String bootstrapFileName);
+	
+	
 }

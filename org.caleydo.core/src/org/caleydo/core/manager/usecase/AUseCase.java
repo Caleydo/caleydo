@@ -29,6 +29,7 @@ import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -87,6 +88,9 @@ public abstract class AUseCase
 	private ReplaceVirtualArrayInUseCaseListener replaceVirtualArrayInUseCaseListener;
 	private VirtualArrayUpdateListener virtualArrayUpdateListener;
 
+	/** Every use case needs to state all views that can visualize its data */
+	protected ArrayList<EManagedObjectType> possibleViews;
+
 	public AUseCase() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
@@ -97,9 +101,14 @@ public abstract class AUseCase
 		return useCaseMode;
 	}
 
-//	public void setUseCaseMode(EDataDomain useCaseMode) {
-//		this.useCaseMode = useCaseMode;
-//	}
+	// public void setUseCaseMode(EDataDomain useCaseMode) {
+	// this.useCaseMode = useCaseMode;
+	// }
+
+	@Override
+	public ArrayList<EManagedObjectType> getPossibleViews() {
+		return possibleViews;
+	}
 
 	@XmlTransient
 	@Override

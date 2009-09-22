@@ -4,7 +4,6 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.swt.widgets.Composite;
