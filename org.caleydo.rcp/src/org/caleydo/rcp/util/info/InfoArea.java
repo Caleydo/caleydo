@@ -1,6 +1,5 @@
 package org.caleydo.rcp.util.info;
 
-import java.util.Collection;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.ISet;
@@ -15,6 +14,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -25,7 +25,7 @@ import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -165,7 +165,8 @@ public class InfoArea
 		experimentTree.setExpanded(true);
 		experimentTree.setData(-1);
 		experimentTree.setText("Experiments");
-		contentTree.setText(GeneralManager.get().getUseCase().getContentLabel(true, true));
+		// TODO we can not do this here without knowing which use case is active
+		// contentTree.setText(GeneralManager.get().getUseCase().getContentLabel(true, true));
 
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");
@@ -227,7 +228,7 @@ public class InfoArea
 									(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 							String sContentName = "";
-							if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+							if (generalManager.getUseCase(EDataDomain.GENETIC_DATA) != null) {
 
 								// Integer iRefSeq =
 								// idMappingManager.getID(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT,
@@ -245,8 +246,10 @@ public class InfoArea
 
 								int iExpressionIndex = selectionItem.getPrimaryID();
 
-								// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-								// values, depending on the IDType that has been specified when loading expression data.
+								// FIXME: Due to new mapping system, a mapping involving expression index can
+								// return a Set of
+								// values, depending on the IDType that has been specified when loading
+								// expression data.
 								// Possibly a different handling of the Set is required.
 								Set<String> setRefSeqIDs =
 									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
@@ -256,12 +259,14 @@ public class InfoArea
 									sRefSeqID = (String) setRefSeqIDs.toArray()[0];
 								}
 
-								// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-								// values, depending on the IDType that has been specified when loading expression data.
+								// FIXME: Due to new mapping system, a mapping involving expression index can
+								// return a Set of
+								// values, depending on the IDType that has been specified when loading
+								// expression data.
 								// Possibly a different handling of the Set is required.
 								Set<String> setGeneSymbols =
-									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.GENE_SYMBOL,
-										iExpressionIndex);
+									idMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX,
+										EIDType.GENE_SYMBOL, iExpressionIndex);
 
 								if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
 									sContentName = (String) setGeneSymbols.toArray()[0];
@@ -309,9 +314,11 @@ public class InfoArea
 
 							// Flush old experiments from this selection type
 							for (TreeItem item : experimentTree.getItems()) {
-								if (item.getData("selection_type") == selectionItem.getSelectionType()
+								if (item.getData() == null
+									|| item.getData("selection_type") == selectionItem.getSelectionType()
 									|| ((Integer) item.getData()) == selectionItem.getPrimaryID()) {
 									item.dispose();
+
 								}
 							}
 
@@ -331,27 +338,30 @@ public class InfoArea
 
 							// Retrieve current set
 							// FIXME: This solution is not robust if new data are loaded -> REDESIGN
-							ISet geneExpressionSet = null;
-							Collection<ISet> sets = generalManager.getSetManager().getAllItems();
-							// int iSetCount = 0;
-							for (ISet set : sets) {
-								// if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
-								// iSetCount++;
-								geneExpressionSet = set;
-								break;
+
+							IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
+							if (useCase != null) {
+
+								ISet set = useCase.getSet();
+								// int iSetCount = 0;
+								// for (ISet set : sets) {
+								// // if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA) {
+								// // iSetCount++;
+								// geneExpressionSet = set;
+								// break;
+								// // }
 								// }
+
+								TreeItem item = new TreeItem(experimentTree, SWT.NONE);
+								item.setText(set.get(selectionItem.getPrimaryID()).getLabel());
+								item.setData(selectionItem.getPrimaryID());
+								// item.setData("mapping_type",
+								// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
+								item.setData("selection_type", selectionItem.getSelectionType());
+								item.setBackground(color);
+
+								experimentTree.setExpanded(true);
 							}
-
-							TreeItem item = new TreeItem(experimentTree, SWT.NONE);
-							item.setText(geneExpressionSet.get(selectionItem.getPrimaryID()).getLabel());
-							item.setData(selectionItem.getPrimaryID());
-							// item.setData("mapping_type",
-							// EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX.toString());
-							item.setData("selection_type", selectionItem.getSelectionType());
-							item.setBackground(color);
-
-							experimentTree.setExpanded(true);
-
 							// addGlyphInfo(selectionItem, item);
 						}
 					}

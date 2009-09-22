@@ -333,7 +333,7 @@ public class GLRemoteRendering
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, null, -1);
+		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, -1);
 		// cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
@@ -1779,7 +1779,7 @@ public class GLRemoteRendering
 
 		if (!generalManager.getPathwayManager().isPathwayVisible(
 			generalManager.getPathwayManager().getItem(iPathwayID))) {
-			SerializedPathwayView serPathway = new SerializedPathwayView();
+			SerializedPathwayView serPathway = new SerializedPathwayView(dataDomain);
 			serPathway.setPathwayID(iPathwayID);
 			newViews.add(serPathway);
 		}
@@ -2831,7 +2831,7 @@ public class GLRemoteRendering
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedRemoteRenderingView serializedForm = new SerializedRemoteRenderingView();
+		SerializedRemoteRenderingView serializedForm = new SerializedRemoteRenderingView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);

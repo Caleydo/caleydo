@@ -18,6 +18,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -38,6 +39,7 @@ import org.eclipse.ui.PartInitException;
  * @author Michael Kalkusch
  * @author Marc Streit
  * @author Werner Puff
+ * @author Alexander Lex
  */
 public abstract class ARcpGLViewPart
 	extends CaleydoRCPViewPart {
@@ -80,6 +82,10 @@ public abstract class ARcpGLViewPart
 	protected AGLEventListener createGLEventListener(ASerializedView serializedView, int iParentCanvasID) {
 
 		ECommandType glViewType = serializedView.getCreationCommandType();
+		EDataDomain dataDomain = serializedView.getDataDomain();
+		if(dataDomain == null)
+			dataDomain = EDataDomain.GENETIC_DATA;
+
 		IGeneralManager generalManager = GeneralManager.get();
 
 		CmdCreateGLEventListener cmdView =
@@ -88,29 +94,33 @@ public abstract class ARcpGLViewPart
 		IUseCase useCase;
 		ISet set;
 
+		
+		useCase = GeneralManager.get().getUseCase(dataDomain);
+		set = useCase.getSet();
+		
+		
+				
+		
+
+
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D
 			|| glViewType == ECommandType.CREATE_GL_DATA_FLIPPER) {
 
-			useCase = GeneralManager.get().getUseCase();
-			set = useCase.getSet();
 
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, set,
+			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f, 2f, 3.82f, 100, set,
-				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+				
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH) {
 
-			useCase = GeneralManager.get().getClinicalUseCase();
-			set = useCase.getSet();
 
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, set,
+			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, 
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
-			useCase = GeneralManager.get().getUseCase();
-			set = useCase.getSet();
+		
+			cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20,  iParentCanvasID);
 
-			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, set, iParentCanvasID);
 		}
 
 		cmdView.doCommand();
@@ -120,6 +130,7 @@ public abstract class ARcpGLViewPart
 		setGLData(glCanvas, glView);
 		createPartControlGL();
 
+		glView.setDataDomain(dataDomain);
 		glView.setUseCase(useCase);
 		glView.setSet(set);
 

@@ -2,6 +2,7 @@ package org.caleydo.core.manager.general;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.EnumMap;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
@@ -23,7 +24,6 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
-import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
@@ -31,7 +31,7 @@ import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.pathway.PathwayManager;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
@@ -85,18 +85,14 @@ public class GeneralManager
 	private TrackDataProvider trackDataProvider;
 	private IGroupwareManager groupwareManager;
 	private SerializationManager serializationManager;
+	
+
 
 	/**
 	 * The use case determines which kind of data is loaded in the views.
 	 */
-	private IUseCase useCase;
+	private EnumMap<EDataDomain, IUseCase> useCaseMap;
 
-	/**
-	 * FIXME: Think about a more general way for loading clinical data and gene expression data concurrently.
-	 * 
-	 * @deprecated A more general way for handling multiple use cases is needed.
-	 */
-	private ClinicalUseCase clinicalUseCase;
 
 	private boolean bIsWiiMode = false;
 
@@ -138,6 +134,7 @@ public class GeneralManager
 		}
 
 		trackDataProvider = new TrackDataProvider();
+		useCaseMap = new EnumMap<EDataDomain, IUseCase>(EDataDomain.class);
 	}
 
 	/**
@@ -219,7 +216,7 @@ public class GeneralManager
 				.toString());
 			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
 				EPathwayDatabaseType.KEGG.name() + ";" + EPathwayDatabaseType.BIOCARTA.name());
-			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EUseCaseMode.GENETIC_DATA.name());
+			preferenceStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, EDataDomain.GENETIC_DATA.name());
 			preferenceStore.setValue(PreferenceConstants.USE_PROXY, false);
 			preferenceStore.save();
 		}
@@ -331,27 +328,13 @@ public class GeneralManager
 	}
 
 	@Override
-	public void setUseCase(IUseCase useCase) {
-		this.useCase = useCase;
+	public void addUseCase(IUseCase useCase) {
+		useCaseMap.put(useCase.getDataDomain(), useCase);
 	}
 
 	@Override
-	public IUseCase getUseCase() {
-		return useCase;
-	}
-
-	@Override
-	public ClinicalUseCase getClinicalUseCase() {
-
-		if (clinicalUseCase == null)
-			clinicalUseCase = new ClinicalUseCase();
-
-		return clinicalUseCase;
-	}
-
-	@Override
-	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase) {
-		this.clinicalUseCase = clinicalUseCase;
+	public IUseCase getUseCase(EDataDomain useCaseType) {
+		return useCaseMap.get(useCaseType);
 	}
 
 	@Override

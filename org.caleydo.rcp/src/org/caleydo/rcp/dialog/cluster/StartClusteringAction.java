@@ -2,6 +2,7 @@ package org.caleydo.rcp.dialog.cluster;
 
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.EClustererAlgo;
 import org.caleydo.core.util.clusterer.EClustererType;
@@ -88,7 +89,8 @@ public class StartClusteringAction
 		this.parentComposite = parentComposite;
 
 		// Determine content label dynamically
-		sArTypeOptions[0] = GeneralManager.get().getUseCase().getContentLabel(true, false);
+		// FIXME this is not generic
+		sArTypeOptions[0] = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getContentLabel(true, false);
 	}
 
 	@Override

@@ -146,11 +146,11 @@ public class GlyphDataLoader {
 		IIDMappingManager IdMappingManager = generalManager.getIDMappingManager();
 		// now convert the storages to real glyphs
 
-		if (!IdMappingManager.hasMapping(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX)) {
-			this.generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"GlyphDataLoader: No ID Mapping found - using internal ids"));
-		}
+//		if (!IdMappingManager.hasMapping(EIDType.EXPERIMENT, EIDType.EXPERIMENT_INDEX)) {
+//			this.generalManager.getLogger().log(
+//				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+//					"GlyphDataLoader: No ID Mapping found - using internal ids"));
+//		}
 
 		int counter = gman.getGlyphs().size();
 		int iExperimentID = 0;

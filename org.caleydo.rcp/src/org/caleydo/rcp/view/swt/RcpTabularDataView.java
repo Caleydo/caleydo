@@ -24,7 +24,7 @@ public class RcpTabularDataView
 		// tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
 		// .getFileNameCurrentDataSet());
 
-		IUseCase useCase = GeneralManager.get().getUseCase();
+		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
 		tabularDataView.setSet(useCase.getSet());
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();

@@ -15,6 +15,7 @@ import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.eclipse.core.runtime.Status;
 
 /**
@@ -83,7 +84,7 @@ public class PathwayLoaderThread
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		float fProgressFactor = 0;
 
-		EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase()).getOrganism();
+		EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
 
 		if (pathwayDatabase.getName().equals("KEGG")) {
 

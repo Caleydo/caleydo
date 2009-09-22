@@ -79,7 +79,7 @@ public class RcpGLHistogramView
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		
-		SerializedHistogramView serialized = new SerializedHistogramView();
+		SerializedHistogramView serialized = new SerializedHistogramView(dataDomain);
 		redrawView(serialized);
 		glEventListener.setViewGUIID(ID);
 	}
@@ -163,6 +163,8 @@ public class RcpGLHistogramView
 	
 	private void updateColorLabel() {
 
+		// FIXME  this is all specific to gene expression
+		
 		DecimalFormat decimalFormat;
 
 		int iNumberOfMarkerPoints =
@@ -177,7 +179,8 @@ public class RcpGLHistogramView
 				store.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 					+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-			double correspondingValue = GeneralManager.get().getUseCase().getSet().getRawForNormalized(normalizedValue);
+	
+			double correspondingValue = GeneralManager.get().getUseCase(dataDomain).getSet().getRawForNormalized(normalizedValue);
 
 			if (Math.abs(correspondingValue) > 10000)
 				decimalFormat = new DecimalFormat("0.#E0");
@@ -290,7 +293,7 @@ public class RcpGLHistogramView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedHistogramView serializedView = new SerializedHistogramView();
+		SerializedHistogramView serializedView = new SerializedHistogramView(dataDomain);
 		return serializedView;
 	}
 

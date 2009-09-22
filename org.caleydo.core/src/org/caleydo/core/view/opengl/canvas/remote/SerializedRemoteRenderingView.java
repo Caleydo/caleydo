@@ -11,6 +11,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
@@ -19,31 +20,32 @@ import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordi
 import org.eclipse.core.runtime.Status;
 
 /**
- * Serialized form of the remote-rendering view (bucket). 
+ * Serialized form of the remote-rendering view (bucket).
+ * 
  * @author Werner Puff
  */
 @XmlRootElement
 @XmlType
-public class SerializedRemoteRenderingView 
+public class SerializedRemoteRenderingView
 	extends ASerializedView {
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLRemoteRenderingView";
 
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.pathwayTexturesEnabled} */
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.pathwayTexturesEnabled */
 	private boolean pathwayTexturesEnabled;
-	
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.geneMappingEnabled} */
+
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.geneMappingEnabled */
 	private boolean geneMappingEnabled;
-	
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.neighborhoodEnabled} */
+
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.neighborhoodEnabled */
 	private boolean neighborhoodEnabled;
-	
-	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.connectionLinesEnabled} */
+
+	/** @see org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering.connectionLinesEnabled */
 	private boolean connectionLinesEnabled;
 
 	/** list of view-ids contained in the focus-level */
 	private List<ASerializedView> focusViews;
-	
+
 	/** list of view-ids contained in the stack-level */
 	private List<ASerializedView> stackViews;
 
@@ -51,36 +53,44 @@ public class SerializedRemoteRenderingView
 	 * No-Arg Constructor to create a serialized bucket-view with default parameters.
 	 */
 	public SerializedRemoteRenderingView() {
+		this(EDataDomain.GENETIC_DATA);
+	}
+
+	public SerializedRemoteRenderingView(EDataDomain dataDomain) {
+		super(dataDomain);
 		setPathwayTexturesEnabled(true);
 		setNeighborhoodEnabled(true);
 		setGeneMappingEnabled(true);
 		setConnectionLinesEnabled(true);
-		
+
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		IUseCase usecase = GeneralManager.get().getUseCase();
-		if (usecase instanceof GeneticUseCase && !((GeneticUseCase) usecase).isPathwayViewerMode()) {
+		// FIXME: This works only for genetic data - we need to ask the view about it's domain
+		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
+		if (usecase != null && usecase instanceof GeneticUseCase
+			&& !((GeneticUseCase) usecase).isPathwayViewerMode()) {
 
 			// FIXME: This is just a temporary solution to check if glyph view
 			// should be added to bucket.
 			try {
 				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-				SerializedGlyphView glyph1 = new SerializedGlyphView();
-				remoteViews.add(glyph1);			
-				SerializedGlyphView glyph2 = new SerializedGlyphView();
-				remoteViews.add(glyph2);			
+				SerializedGlyphView glyph1 = new SerializedGlyphView(dataDomain);
+				remoteViews.add(glyph1);
+				SerializedGlyphView glyph2 = new SerializedGlyphView(dataDomain);
+				remoteViews.add(glyph2);
 			}
 			catch (IllegalArgumentException e) {
-				GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"Cannot add glyph to bucket! No glyph data loaded!"));
+				GeneralManager.get().getLogger().log(
+					new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"Cannot add glyph to bucket! No glyph data loaded!"));
 			}
 
-			SerializedHeatMapView heatMap = new SerializedHeatMapView();
+			SerializedHeatMapView heatMap = new SerializedHeatMapView(dataDomain);
 			remoteViews.add(heatMap);
-			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
-			remoteViews.add(parCoords);			
+			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView(dataDomain);
+			remoteViews.add(parCoords);
 		}
-		
+
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();
 		if (remoteViews.size() > 0) {
 			focusLevel.add(remoteViews.remove(0));
@@ -88,7 +98,7 @@ public class SerializedRemoteRenderingView
 		setFocusViews(focusLevel);
 		setStackViews(remoteViews);
 	}
-	
+
 	@Override
 	public ECommandType getCreationCommandType() {
 		return ECommandType.CREATE_GL_BUCKET_3D;
@@ -152,5 +162,10 @@ public class SerializedRemoteRenderingView
 	@Override
 	public String getViewGUIID() {
 		return GUI_ID;
+	}
+
+	@Override
+	public EDataDomain getDataDomain() {
+		return dataDomain;
 	}
 }

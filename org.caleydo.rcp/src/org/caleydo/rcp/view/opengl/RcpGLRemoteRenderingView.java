@@ -34,7 +34,7 @@ public class RcpGLRemoteRenderingView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView();
+		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView(dataDomain);
 		return serializedView;
 	}
 	

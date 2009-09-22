@@ -4,26 +4,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of a heatmap-view. 
+ * Serialized form of a heatmap-view.
+ * 
  * @author Werner Puff
  */
 @XmlRootElement
 @XmlType
-public class SerializedHyperbolicView 
+public class SerializedHyperbolicView
 	extends ASerializedView {
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.GLHyperbolicView";
-	
+
 	/**
 	 * Default constructor with default initialization
 	 */
 	public SerializedHyperbolicView() {
-
+	}
+	
+	public SerializedHyperbolicView(EDataDomain dataDomain) {
+		super(dataDomain);
 	}
 
 	@Override

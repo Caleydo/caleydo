@@ -36,7 +36,7 @@ public class CmdCreateGLPathway
 	public void setAttributes(final int iPathwayID, final ISet set,
 		final EProjectionMode eProjectionMode, final float fLeft, final float fRight, final float fTop,
 		final float fBottom, final float fNear, final float fFar) {
-		super.setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, set, -1);
+		super.setAttributes(dataDomain, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar,  -1);
 
 		this.iPathwayID = iPathwayID;
 		this.iExternalID = iUniqueID;

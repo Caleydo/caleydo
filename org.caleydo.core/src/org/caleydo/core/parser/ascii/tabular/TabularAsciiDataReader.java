@@ -11,6 +11,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
 import org.eclipse.core.runtime.Status;
@@ -45,12 +46,15 @@ public class TabularAsciiDataReader
 
 	private boolean bUseExperimentClusterInfo;
 
+	private EDataDomain dataDomain;
+
 	/**
 	 * Constructor.
 	 */
-	public TabularAsciiDataReader(final String sFileName) {
+	public TabularAsciiDataReader(final String sFileName, EDataDomain dataDomain) {
 		super(sFileName);
 
+		this.dataDomain = dataDomain;
 		alTargetStorages = new ArrayList<IStorage>();
 		alColumnDataTypes = new ArrayList<EStorageType>();
 
@@ -188,11 +192,13 @@ public class TabularAsciiDataReader
 			}
 
 			// Replace empty cells with NaN
-			sLine = sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
-			// Take care of empty cells in first column because they are not embedded between two token separators
+			sLine =
+				sLine.replace(sTokenSeperator + sTokenSeperator, sTokenSeperator + "NaN" + sTokenSeperator);
+			// Take care of empty cells in first column because they are not embedded between two token
+			// separators
 			if (sLine.substring(0, 1).equals(sTokenSeperator))
 				sLine = "NaN" + sLine;
-			
+
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
 
 			iColumnIndex = 0;
@@ -286,7 +292,7 @@ public class TabularAsciiDataReader
 		int iStringArrayIndex = 0;
 		int iStorageIndex = 0;
 
-		ISet set = GeneralManager.get().getUseCase().getSet();
+		ISet set = GeneralManager.get().getUseCase(dataDomain).getSet();
 
 		for (EStorageType storageType : alColumnDataTypes) {
 			// if(iStorageIndex + 1 == alTargetStorages.size())

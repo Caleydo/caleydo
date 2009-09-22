@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.EDataDomain;
 
 /**
  * Class that holds information about a specific pathway database.
@@ -50,7 +51,7 @@ public class PathwayDatabase
 		}
 
 		if (type == EPathwayDatabaseType.KEGG) {
-			EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase()).getOrganism();
+			EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
 
 			if (eOrganism == EOrganism.HOMO_SAPIENS) {
 				this.sImagePath += "hsa/";

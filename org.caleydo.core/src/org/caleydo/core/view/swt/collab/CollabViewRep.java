@@ -10,6 +10,7 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.net.Connection;
 import org.caleydo.core.net.ENetworkStatus;
 import org.caleydo.core.net.EventFilterBridge;
@@ -395,7 +396,7 @@ public class CollabViewRep
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedDummyView serializedForm = new SerializedDummyView(EDataDomain.UNSPECIFIED);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

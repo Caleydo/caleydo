@@ -376,7 +376,7 @@ public class GLGlyphSliderView
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedGlyphSliderView serializedForm = new SerializedGlyphSliderView();
+		SerializedGlyphSliderView serializedForm = new SerializedGlyphSliderView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

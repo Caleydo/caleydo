@@ -1,10 +1,13 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;

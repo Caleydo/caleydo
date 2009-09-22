@@ -78,7 +78,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
@@ -458,8 +458,8 @@ public class GLParallelCoordinates
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
-			viewFrustum.getTop(), -20, 20, null, -1);
+		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, viewFrustum.getBottom(),
+			viewFrustum.getTop(), -20, 20, -1);
 		cmdCreateGLView.doCommand();
 		glSelectionHeatMap = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
 		glSelectionHeatMap.setRemoteRenderingGLView(this);
@@ -1829,7 +1829,7 @@ public class GLParallelCoordinates
 						eSelectionType = ESelectionType.SELECTION;
 
 						// Prevent handling of non genetic data in context menu
-						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+						if (dataDomain != EDataDomain.GENETIC_DATA)
 							break;
 
 						GeneContextMenuItemContainer geneContextMenuItemContainer =
@@ -2813,7 +2813,7 @@ public class GLParallelCoordinates
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedParallelCoordinatesView serializedForm = new SerializedParallelCoordinatesView();
+		SerializedParallelCoordinatesView serializedForm = new SerializedParallelCoordinatesView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

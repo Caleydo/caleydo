@@ -18,7 +18,7 @@ public class RcpGLPathwayView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedPathwayView serializedView = new SerializedPathwayView();
+		SerializedPathwayView serializedView = new SerializedPathwayView(dataDomain);
 		return serializedView;
 	}
 

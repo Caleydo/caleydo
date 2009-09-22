@@ -4,21 +4,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of a pathway-view. 
+ * Serialized form of a pathway-view.
+ * 
  * @author Werner Puff
  */
 @XmlRootElement
 @XmlType
-public class SerializedPathwayView 
+public class SerializedPathwayView
 	extends ASerializedView {
-	
+
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLPathwayView";
-	
+
 	/** id of the pathway in caleydo's pathway library, -1 for unknown pathway */
 	private int pathwayID;
 
@@ -26,6 +28,10 @@ public class SerializedPathwayView
 	 * Default constructor with default initialization
 	 */
 	public SerializedPathwayView() {
+	}
+
+	public SerializedPathwayView(EDataDomain dataDomain) {
+		super(dataDomain);
 		pathwayID = -1;
 	}
 
@@ -36,6 +42,7 @@ public class SerializedPathwayView
 
 	/**
 	 * Gets the pathwayId of this SerializedPathwayView
+	 * 
 	 * @return pathwayId
 	 */
 	public int getPathwayID() {
@@ -44,7 +51,9 @@ public class SerializedPathwayView
 
 	/**
 	 * Sets the pathwayId of this SerlializedPathwayView
-	 * @param pathwayId a valid pathwayId as in Caleydo's pathway library or -1 for an unknow or unitialized pathway
+	 * 
+	 * @param pathwayId
+	 *            a valid pathwayId as in Caleydo's pathway library or -1 for an unknow or unitialized pathway
 	 */
 	public void setPathwayID(int pathwayId) {
 		this.pathwayID = pathwayId;

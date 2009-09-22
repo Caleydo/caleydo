@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ApplicationInitData;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 import org.eclipse.core.runtime.ILog;
@@ -253,10 +254,11 @@ public class Connection {
 	private void sendServerInitializationData(OutputStream outputStream) {
 		ApplicationInitData initData = new ApplicationInitData();
 
-		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase();
+		// FIXME this should work for more than one use case now
+		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		ISet set = useCase.getSet();
 		
-		initData.setUseCase((AUseCase) GeneralManager.get().getUseCase());
+		initData.setUseCase(useCase);
 		initData.setSetFileContent(SetUtils.loadSetFile(useCase.getLoadDataParameters()));
 		initData.setGeneClusterTree(SetUtils.getGeneClusterXml(set));
 		initData.setExperimentClusterTree(SetUtils.getExperimentClusterXml(set));

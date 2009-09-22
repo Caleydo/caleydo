@@ -1,7 +1,7 @@
 package org.caleydo.rcp;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.perspective.PartListener;
 import org.eclipse.jface.action.IContributionItem;
@@ -63,7 +63,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		// Application.startCaleydoCore();
 		// }
 
-		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+		if (GeneralManager.get().getUseCase(EDataDomain.GENERAL_DATA) != null ) {
 
 			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
 

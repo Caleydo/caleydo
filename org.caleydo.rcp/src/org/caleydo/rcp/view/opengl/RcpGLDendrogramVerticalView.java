@@ -33,7 +33,7 @@ public class RcpGLDendrogramVerticalView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedDendogramVerticalView serializedView = new SerializedDendogramVerticalView();
+		SerializedDendogramVerticalView serializedView = new SerializedDendogramVerticalView(dataDomain);
 		return serializedView;
 	}
 

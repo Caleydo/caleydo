@@ -1,24 +1,27 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of a glyph-view. 
+ * Serialized form of a glyph-view.
+ * 
  * @author Werner Puff
  */
-public class SerializedGlyphView 
+public class SerializedGlyphView
 	extends ASerializedView {
-	
+
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLGlyphView";
 
-	/**
-	 * Default constructor with default initialization
-	 */
 	public SerializedGlyphView() {
+	}
 
+	
+	public SerializedGlyphView(EDataDomain dataDomain) {
+		super(dataDomain);
 	}
 
 	@Override

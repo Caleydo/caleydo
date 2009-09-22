@@ -35,7 +35,7 @@ public class RcpGLRadialHierarchyView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedRadialHierarchyView serializedView = new SerializedRadialHierarchyView();
+		SerializedRadialHierarchyView serializedView = new SerializedRadialHierarchyView(dataDomain);
 		return serializedView;
 	}
 

@@ -27,9 +27,10 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Utility class that features loading and saving set-files and set-creation and storage-creation.
@@ -40,10 +41,10 @@ public class SetUtils {
 
 	/** prefix for temporary set-file */
 	public static final String DATA_FILE_PREFIX = "setfile";
-	
+
 	/** prefix for temporary gene-tree--file */
 	public static final String GENE_FILE_PREFIX = "genetree";
-	
+
 	/** prefix for temporary experiment-tree-file */
 	public static final String EXPERIMENT_FILE_PREFIX = "exptree";
 
@@ -98,17 +99,12 @@ public class SetUtils {
 	}
 
 	/**
-<<<<<<< .mine
-	 * Saves the set-data contained in the useCase in the given file. The {@link LoadDataParameters} of the
-	 * useCase are set according to the created set-file
-	 * 
-	 * @param useCase
-	 *            useCase to get the set-data from
-=======
 	 * Saves the given data in the given file.
-	 * @param data data to save.
-	 * @param target file to store the data.
->>>>>>> .r2323
+	 * 
+	 * @param data
+	 *            data to save.
+	 * @param target
+	 *            file to store the data.
 	 */
 	public static void saveFile(byte[] data, File setFile) {
 		FileOutputStream os = null;
@@ -144,7 +140,7 @@ public class SetUtils {
 	public static boolean createStorages(LoadDataParameters loadDataParameters) {
 		ArrayList<Integer> storageIds = new ArrayList<Integer>();
 
-		TabularAsciiDataReader reader = new TabularAsciiDataReader(null);
+		TabularAsciiDataReader reader = new TabularAsciiDataReader(null, loadDataParameters.getDataDomain());
 		reader.setTokenPattern(loadDataParameters.getInputPattern());
 		ArrayList<EStorageType> dataTypes = reader.getColumnDataTypes();
 
@@ -199,10 +195,10 @@ public class SetUtils {
 			(CmdDataCreateSet) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.CREATE_SET_DATA);
 
-		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) {
 			cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
 		}
-		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+		else if (useCase.getDataDomain() == EDataDomain.GENERAL_DATA) {
 			cmdCreateSet.setAttributes(iAlStorageId, ESetType.UNSPECIFIED);
 		}
 		else {
@@ -228,14 +224,14 @@ public class SetUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager().createCommandByType(
 				ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		if (useCase.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+		if (useCase.getDataDomain() == EDataDomain.GENETIC_DATA) {
 			String lookupTableInfo =
 				loadDataParameters.getFileIDType().toString() + "_2_EXPRESSION_INDEX REVERSE";
 
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
 				.getStartParseFileAtLine(), -1, lookupTableInfo, loadDataParameters.getDelimiter(), "");
 		}
-		else if (useCase.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+		else if (useCase.getDataDomain() == EDataDomain.GENERAL_DATA) {
 			cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(), loadDataParameters
 				.getStartParseFileAtLine(), -1, "UNSPECIFIED_2_EXPRESSION_INDEX REVERSE", loadDataParameters
 				.getDelimiter(), "");
@@ -247,6 +243,8 @@ public class SetUtils {
 		cmdLoadLookupTableFile.doCommand();
 
 		ISet set = useCase.getSet();
+
+		loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
 			set.setMin(loadDataParameters.getMin());
@@ -276,36 +274,44 @@ public class SetUtils {
 
 	/**
 	 * Creates the gene-cluster information of the given {@link ISet} as xml-String
-	 * @param set {@link ISet} to create the gene-cluster information of
-	 * @return xml-document representing the gene-cluster information 
+	 * 
+	 * @param set
+	 *            {@link ISet} to create the gene-cluster information of
+	 * @return xml-document representing the gene-cluster information
 	 */
 	public static String getGeneClusterXml(ISet set) {
 		String xml = null;
 
 		try {
 			xml = getTreeClusterXml(set.getClusteredTreeGenes());
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("error while creating experiment-cluster-XML", ex);
 		}
 
 		return xml;
 	}
-	
+
 	/**
 	 * Creates the experiment-cluster information of the given {@link ISet} as XML-String
-	 * @param set {@link ISet} to create the experiment-cluster information of
-	 * @return XML-document representing the experiment-cluster information 
+	 * 
+	 * @param set
+	 *            {@link ISet} to create the experiment-cluster information of
+	 * @return XML-document representing the experiment-cluster information
 	 */
 	public static String getExperimentClusterXml(ISet set) {
 		String xml = null;
 
 		try {
 			xml = getTreeClusterXml(set.getClusteredTreeExps());
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("error while creating experiment-cluster-XML", ex);
 		}
 
@@ -314,16 +320,19 @@ public class SetUtils {
 
 	/**
 	 * Creates the tree-cluster information of the given {@link Tree} as XML-String
-	 * @param tree {@link Tree} to create the XML-String of
+	 * 
+	 * @param tree
+	 *            {@link Tree} to create the XML-String of
 	 * @return XML-String of the given {@link Tree}
-	 * @throws IOException if a error occurs while writing the XML-String
-	 * @throws JAXBException if a XML-serialization error occurs
+	 * @throws IOException
+	 *             if a error occurs while writing the XML-String
+	 * @throws JAXBException
+	 *             if a XML-serialization error occurs
 	 */
-	public static String getTreeClusterXml(Tree<ClusterNode> tree) 
-	throws IOException, JAXBException {
+	public static String getTreeClusterXml(Tree<ClusterNode> tree) throws IOException, JAXBException {
 		String xml = null;
 
-		if (tree != null) { 
+		if (tree != null) {
 			StringWriter writer = new StringWriter();
 			TreePorter treePorter = new TreePorter();
 			treePorter.exportTree(writer, tree);
@@ -335,8 +344,11 @@ public class SetUtils {
 
 	/**
 	 * Saves the gene-tree-xml in a new created temp-file.
-	 * @param parameters set-load parameters to store the filename;
-	 * @param data set-data to save
+	 * 
+	 * @param parameters
+	 *            set-load parameters to store the filename;
+	 * @param data
+	 *            set-data to save
 	 */
 	public static void saveGeneTreeFile(LoadDataParameters parameters, String data) {
 		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
@@ -353,8 +365,11 @@ public class SetUtils {
 
 	/**
 	 * Saves the experiments-tree-xml in a new created temp-file.
-	 * @param parameters set-load parameters to store the filename;
-	 * @param data set-data to save
+	 * 
+	 * @param parameters
+	 *            set-load parameters to store the filename;
+	 * @param data
+	 *            set-data to save
 	 */
 	public static void saveExperimentsTreeFile(LoadDataParameters parameters, String data) {
 		File homeDir = new File(IGeneralManager.CALEYDO_HOME_PATH);
@@ -368,5 +383,53 @@ public class SetUtils {
 		}
 		saveFile(data.getBytes(), expFile);
 	}
-	
+
+	private static void loadTrees(LoadDataParameters loadDataParameters, ISet set) {
+		// import gene tree
+		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
+		if (geneTreeFileName != null) {
+			if (geneTreeFileName.equals("") == false) {
+				GeneralManager.get().getLogger().log(
+					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading gene tree from file "
+						+ geneTreeFileName));
+
+				TreePorter treePorter = new TreePorter();
+				Tree<ClusterNode> tree;
+				try {
+					tree = treePorter.importTree(geneTreeFileName);
+					set.setClusteredTreeGenes(tree);
+				}
+				catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				catch (JAXBException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		// import experiment tree
+		String experimentsTreeFileName = loadDataParameters.getExperimentsFileName();
+		if (experimentsTreeFileName != null) {
+			if (experimentsTreeFileName.equals("") == false) {
+				GeneralManager.get().getLogger().log(
+					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Loading experiments tree from file "
+						+ experimentsTreeFileName));
+
+				TreePorter treePorter = new TreePorter();
+				Tree<ClusterNode> tree;
+				try {
+					tree = treePorter.importTree(experimentsTreeFileName);
+					set.setClusteredTreeExps(tree);
+				}
+				catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				catch (JAXBException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 }

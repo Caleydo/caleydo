@@ -34,7 +34,7 @@ public class RcpGLDataFlipperView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedDataFlipperView serializedView = new SerializedDataFlipperView();
+		SerializedDataFlipperView serializedView = new SerializedDataFlipperView(dataDomain);
 		return serializedView;
 	}
 	

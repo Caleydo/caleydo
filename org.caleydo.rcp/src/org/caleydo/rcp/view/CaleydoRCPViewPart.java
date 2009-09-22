@@ -6,6 +6,7 @@ import java.util.List;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IViewSite;
@@ -26,6 +27,9 @@ public abstract class CaleydoRCPViewPart
 	protected IEventPublisher eventPublisher = null; 
 
 	protected int iViewID;
+	
+	// FIXME we need to set this intelligently
+	protected EDataDomain dataDomain = EDataDomain.GENETIC_DATA;
 
 	/** stores the attach status of the viewpart, true means within caleydo's main window, false otherwise */
 	protected boolean attached;

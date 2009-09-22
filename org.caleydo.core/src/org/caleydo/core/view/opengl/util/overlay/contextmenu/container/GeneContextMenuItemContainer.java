@@ -3,7 +3,7 @@ package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.AItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.BookmarkItem;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.item.LoadPathwaysByGeneItem;
@@ -24,7 +24,7 @@ public class GeneContextMenuItemContainer
 	public GeneContextMenuItemContainer() {
 		super();
 
-		if (GeneralManager.get().getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) == null)
 			throw new IllegalStateException("This context menu container is only valid for genetic data");
 
 	}

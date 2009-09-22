@@ -11,6 +11,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.NewSetEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.canvas.listener.NewSetListener;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,6 +29,11 @@ public abstract class AView
 	protected IGeneralManager generalManager;
 
 	protected IEventPublisher eventPublisher;
+
+	/**
+	 * The data domain the view is operating on
+	 */
+	protected EDataDomain dataDomain;
 
 	/**
 	 * The use case which determines the use case specific behavior of the view.
@@ -83,6 +89,16 @@ public abstract class AView
 		if (parentComposite != null) {
 			parentComposite.getShell().setText(label);
 		}
+	}
+
+	@Override
+	public EDataDomain getDataDomain() {
+		return dataDomain;
+	}
+
+	@Override
+	public void setDataDomain(EDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 
 	@Override

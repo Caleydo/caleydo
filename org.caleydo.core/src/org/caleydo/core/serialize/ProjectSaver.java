@@ -18,6 +18,7 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -73,7 +74,8 @@ public class ProjectSaver {
 	 */
 	public void saveRecentProject() {
 		ZipUtils zipUtils = new ZipUtils();
-		if (!GeneralManager.get().getUseCase().getLoadDataParameters().getFileName().startsWith(
+		// FIXME - this works only for genetic data now
+		if (!GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getLoadDataParameters().getFileName().startsWith(
 			RECENT_PROJECT_DIR_NAME)) {
 			zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
 		}
@@ -97,7 +99,8 @@ public class ProjectSaver {
 		File tempDirFile = new File(dirName);
 		tempDirFile.mkdir();
 
-		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase();
+		// FIXME - this works only for genetic data now
+		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		LoadDataParameters parameters = useCase.getLoadDataParameters();
 		byte[] data = SetUtils.loadSetFile(parameters);
 

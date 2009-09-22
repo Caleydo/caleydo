@@ -26,8 +26,8 @@ public class RcpGLHeatMapView
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		IUseCase usecase = GeneralManager.get().getUseCase();
-		if (usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
+		if (usecase != null && usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();
@@ -42,7 +42,7 @@ public class RcpGLHeatMapView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedHeatMapView serializedView = new SerializedHeatMapView();
+		SerializedHeatMapView serializedView = new SerializedHeatMapView(dataDomain);
 		return serializedView;
 	}
 

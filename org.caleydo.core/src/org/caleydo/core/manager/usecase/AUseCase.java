@@ -66,7 +66,7 @@ public abstract class AUseCase
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
 	 * expression features are not available.
 	 */
-	protected EUseCaseMode useCaseMode = EUseCaseMode.UNSPECIFIED_DATA;
+	protected EDataDomain useCaseMode = EDataDomain.GENERAL_DATA;
 
 	/** map selection type to unique id for virtual array */
 	protected EnumMap<EVAType, Integer> mapVAIDs;
@@ -93,13 +93,13 @@ public abstract class AUseCase
 	}
 
 	@Override
-	public EUseCaseMode getUseCaseMode() {
+	public EDataDomain getDataDomain() {
 		return useCaseMode;
 	}
 
-	public void setUseCaseMode(EUseCaseMode useCaseMode) {
-		this.useCaseMode = useCaseMode;
-	}
+//	public void setUseCaseMode(EDataDomain useCaseMode) {
+//		this.useCaseMode = useCaseMode;
+//	}
 
 	@XmlTransient
 	@Override
@@ -110,9 +110,9 @@ public abstract class AUseCase
 	@Override
 	public void setSet(ISet set) {
 
-		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EUseCaseMode.GENETIC_DATA)
-			|| (set.getSetType() == ESetType.CLINICAL_DATA && useCaseMode == EUseCaseMode.CLINICAL_DATA)
-			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EUseCaseMode.UNSPECIFIED_DATA)) {
+		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EDataDomain.GENETIC_DATA)
+			|| (set.getSetType() == ESetType.CLINICAL_DATA && useCaseMode == EDataDomain.CLINICAL_DATA)
+			|| (set.getSetType() == ESetType.UNSPECIFIED && useCaseMode == EDataDomain.GENERAL_DATA)) {
 
 			oldSet = this.set;
 			this.set = set;
@@ -423,7 +423,7 @@ public abstract class AUseCase
 		this.loadDataParameters = loadDataParameters;
 	}
 
-	public String getBootsTrapFileName() {
+	public String getBootstrapFileName() {
 		return bootsTrapFileName;
 	}
 

@@ -11,7 +11,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
@@ -44,7 +44,7 @@ public class GeneticUseCase
 
 		super();
 		pathwayViewerMode = false;
-		useCaseMode = EUseCaseMode.GENETIC_DATA;
+		useCaseMode = EDataDomain.GENETIC_DATA;
 		contentLabelSingular = "gene";
 		contentLabelPlural = "genes";
 	}

@@ -6,10 +6,10 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDManager;
-import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genetic.IPathwayManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.tracking.TrackDataProvider;
@@ -110,24 +110,14 @@ public interface IGeneralManager {
 	 * Returns the current use case. The use case determines which views are showing what kind of data 
 	 * and which data set is currently in use.
 	 */
-	public IUseCase getUseCase();
+	public IUseCase getUseCase(EDataDomain useCaseType);
 	
 	/**
 	 * Set a different use case. The use case changes the behavior of the views and its loaded data.
 	 * @param useCase
 	 */
-	public void setUseCase(IUseCase useCase);
+	public void addUseCase(IUseCase useCase);
 	
-	/**
-	 * Returns the current clinical use case.
-	 */
-	public ClinicalUseCase getClinicalUseCase();
-	
-	/**
-	 * Set a different clinical use case. The use case changes the behavior of the views and its loaded data.
-	 * @param useCase
-	 */
-	public void setClinicalUseCase(ClinicalUseCase clinicalUseCase);
 	
 	/**
 	 * Obtains the {@link IGroupwareManager} responsible for communication purposes with other calyedo application

@@ -14,8 +14,9 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.swt.tabular.LabelEditorDialog;
+import org.caleydo.rcp.Application;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -112,9 +113,13 @@ public class FileLoadDataAction
 	}
 
 	private void createGUI() {
+		int numGridCols = 4;
 
-		int numGridCols =
-			(GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) ? (4) : (3);
+		if (Application.dataDomain != EDataDomain.GENETIC_DATA)
+			numGridCols = 3;
+
+		loadDataParameters.setDataDomain(Application.dataDomain);
+		
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(numGridCols, false);
 		composite.setLayout(layout);
@@ -148,7 +153,7 @@ public class FileLoadDataAction
 
 				createDataPreviewTable("\t");
 
-				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+				if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA) {
 					determineFileIDType();
 				}
 			}
@@ -176,7 +181,7 @@ public class FileLoadDataAction
 			}
 		});
 
-		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+		if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA) {
 
 			Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 			idTypeGroup.setText("ID type");
@@ -184,15 +189,15 @@ public class FileLoadDataAction
 
 			idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
 			alIDTypes = new ArrayList<EIDType>();
-			
+
 			ArrayList<EIDType> alIDTypesTemp =
 				(ArrayList<EIDType>) GeneralManager.get().getIDMappingManager().getIDTypes(EIDCategory.GENE);
-			
+
 			for (EIDType idType : alIDTypesTemp) {
 				if (!idType.equals(EIDType.REFSEQ_MRNA_INT))
 					alIDTypes.add(idType);
 			}
-			
+
 			String[] idTypes = new String[alIDTypes.size()];
 			int index = 0;
 			for (EIDType idType : alIDTypes) {
@@ -495,7 +500,7 @@ public class FileLoadDataAction
 
 			createDataPreviewTable("\t");
 
-			if (GeneralManager.get().getUseCase().getUseCaseMode().equals(EUseCaseMode.GENETIC_DATA))
+			if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA)
 				determineFileIDType();
 		}
 	}
@@ -677,11 +682,12 @@ public class FileLoadDataAction
 		}
 		readParameters();
 
-		IUseCase useCase = GeneralManager.get().getUseCase();
+		IUseCase useCase = GeneralManager.get().getUseCase(loadDataParameters.getDataDomain());
 		useCase.setLoadDataParameters(loadDataParameters);
 
 		if (success) {
-			success = SetUtils.createData(GeneralManager.get().getUseCase());
+			success =
+				SetUtils.createData(GeneralManager.get().getUseCase(loadDataParameters.getDataDomain()));
 		}
 		return success;
 	}
@@ -705,7 +711,7 @@ public class FileLoadDataAction
 			}
 		}
 
-		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+		if (loadDataParameters.getDataDomain() == EDataDomain.GENETIC_DATA) {
 			loadDataParameters.setFileIDType(alIDTypes.get(idCombo.getSelectionIndex()));
 		}
 
@@ -848,6 +854,6 @@ public class FileLoadDataAction
 		idCombo.select(alIDTypes.indexOf(mostProbableIDType));
 		TableColumn idColumn = previewTable.getColumn(1);
 		idColumn.setText(mostProbableIDType.getName());
-		
+
 	}
 }

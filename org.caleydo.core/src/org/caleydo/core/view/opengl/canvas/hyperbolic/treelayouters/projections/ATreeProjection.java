@@ -1,8 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
-import gleem.linalg.Vec2f;
-
-import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 
 public abstract class ATreeProjection
 	implements ITreeProjection {

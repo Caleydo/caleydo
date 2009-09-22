@@ -3,6 +3,7 @@ package org.caleydo.core.view;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IUseCase;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.INewSetHandler;
 
@@ -35,6 +36,18 @@ public interface IView
 	 *            the label
 	 */
 	void setLabel(String label);
+	
+	/**
+	 * Set the data domain of the view
+	 */
+	public void setDataDomain(EDataDomain dataDomain);
+	
+	
+	/**
+	 * Get the data domain the view is operating on
+	 * @return
+	 */
+	public EDataDomain getDataDomain();
 
 	
 	/**

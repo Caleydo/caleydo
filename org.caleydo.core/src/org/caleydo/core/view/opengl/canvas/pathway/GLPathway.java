@@ -957,7 +957,7 @@ public class GLPathway
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedPathwayView serializedForm = new SerializedPathwayView();
+		SerializedPathwayView serializedForm = new SerializedPathwayView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayID(pathway.getID());
 		return serializedForm;

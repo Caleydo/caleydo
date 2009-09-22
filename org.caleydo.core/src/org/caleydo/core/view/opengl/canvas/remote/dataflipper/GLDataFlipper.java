@@ -27,6 +27,7 @@ import org.caleydo.core.manager.specialized.PathwayUseCase;
 import org.caleydo.core.manager.specialized.TissueUseCase;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
@@ -217,7 +218,7 @@ public class GLDataFlipper
 		initNewView(gl);
 
 		renderHandles(gl);
-		renderDataViewIcons(gl, GeneralManager.get().getClinicalUseCase());
+		renderDataViewIcons(gl, GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA));
 		renderDataViewIcons(gl, new TissueUseCase());
 		renderDataViewIcons(gl, useCase);
 		renderDataViewIcons(gl, new PathwayUseCase());

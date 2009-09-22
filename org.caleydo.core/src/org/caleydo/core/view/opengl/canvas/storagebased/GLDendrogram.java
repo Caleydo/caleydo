@@ -37,7 +37,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -1508,7 +1508,7 @@ public class GLDendrogram
 							break;
 
 						// Prevent handling of non genetic data in context menu
-						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+						if (dataDomain != EDataDomain.GENETIC_DATA)
 							break;
 
 						if (!isRenderedRemote()) {
@@ -1671,11 +1671,11 @@ public class GLDendrogram
 	public ASerializedView getSerializableRepresentation() {
 		ASerializedView serializedForm;
 		if (bRenderGeneTree) {
-			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView();
+			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView(dataDomain);
 			serializedForm = horizontal;
 		}
 		else {
-			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView();
+			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView(dataDomain);
 			serializedForm = vertical;
 		}
 		serializedForm.setViewID(this.getID());

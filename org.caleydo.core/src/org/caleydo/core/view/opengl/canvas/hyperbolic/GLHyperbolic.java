@@ -29,7 +29,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -359,7 +358,7 @@ public class GLHyperbolic
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHyperbolicView serializedForm = new SerializedHyperbolicView();
+		SerializedHyperbolicView serializedForm = new SerializedHyperbolicView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

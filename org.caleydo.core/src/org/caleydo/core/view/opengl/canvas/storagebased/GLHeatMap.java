@@ -34,7 +34,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.AffinityClusterer;
 import org.caleydo.core.util.clusterer.ClusterState;
@@ -440,7 +440,7 @@ public class GLHeatMap
 						eSelectionType = ESelectionType.SELECTION;
 
 						// Prevent handling of non genetic data in context menu
-						if (generalManager.getUseCase().getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+						if (generalManager.getUseCase(dataDomain).getDataDomain() != EDataDomain.GENETIC_DATA)
 							break;
 
 						if (!isRenderedRemote()) {
@@ -1185,7 +1185,7 @@ public class GLHeatMap
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHeatMapView serializedForm = new SerializedHeatMapView();
+		SerializedHeatMapView serializedForm = new SerializedHeatMapView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

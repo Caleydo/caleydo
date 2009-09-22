@@ -47,6 +47,7 @@ public enum ECommandType {
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),
 	EXTERNAL_ACTION_TRIGGER("cmd", "type", "-1", "External action trigger"),
 
+	CREATE_DATA_DOMAIN("cmd", "type", "-1", "Create Data Domain"),
 	CREATE_SET_DATA("cmd", "type", "-1", "Create SET"),
 	CREATE_STORAGE("cmd", "type", "-1", "Create Storage"),
 	CREATE_VIRTUAL_ARRAY("cmd", "type", "-1", "Create VirtualArray"),

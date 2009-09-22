@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 
 /**
  * TODO The use case for clinical input data.
@@ -22,7 +22,7 @@ public class ClinicalUseCase
 	 */
 	public ClinicalUseCase() {
 
-		useCaseMode = EUseCaseMode.CLINICAL_DATA;
+		useCaseMode = EDataDomain.CLINICAL_DATA;
 	}
 	
 	@Override
@@ -30,4 +30,6 @@ public class ClinicalUseCase
 
 		super.setSet(set);
 	}
+	
+	
 }

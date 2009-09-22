@@ -54,6 +54,11 @@ public class IDManager {
 		hashInternalToExternalID.put(iInternalID, iExternalID);
 	}
 
+	/**
+	 * Converts IDs used in xml files to those used internally. 
+	 * @param iAlExternalIDs
+	 * @return
+	 */
 	public ArrayList<Integer> convertExternalToInternalIDs(ArrayList<Integer> iAlExternalIDs) {
 		ArrayList<Integer> iAlInternalIDs = new ArrayList<Integer>(iAlExternalIDs.size());
 

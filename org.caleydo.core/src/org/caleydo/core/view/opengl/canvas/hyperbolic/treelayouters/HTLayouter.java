@@ -1,5 +1,14 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.HyperbolicGlobeProjection;
+
 
 // import gleem.linalg.Vec3f;
 
@@ -8,17 +17,9 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 //import gleem.linalg.Vec3f;
 
 
-import java.util.ArrayList;
 
-//import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicGeometryConnection;
-//import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicLayoutConnector;
-import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.HyperbolicGlobeProjection;
+
+
 public final class HTLayouter
 	extends ATreeLayouter
 	implements ITreeLayouter {

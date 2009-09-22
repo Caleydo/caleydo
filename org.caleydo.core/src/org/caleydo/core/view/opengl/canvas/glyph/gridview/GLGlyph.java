@@ -44,6 +44,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.clinical.glyph.GlyphManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -273,9 +274,8 @@ public class GLGlyph
 
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
 
-		if (generalManager.getClinicalUseCase() != null)
-			if (generalManager.getClinicalUseCase().getSet() != null)
-				set = generalManager.getClinicalUseCase().getSet();
+		if (generalManager.getUseCase(EDataDomain.CLINICAL_DATA) != null)
+				set = generalManager.getUseCase(EDataDomain.CLINICAL_DATA).getSet();
 
 		if (set.getSetType() == ESetType.CLINICAL_DATA)
 			grid_.loadData(set);
@@ -1160,7 +1160,7 @@ public class GLGlyph
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedGlyphView serializedForm = new SerializedGlyphView();
+		SerializedGlyphView serializedForm = new SerializedGlyphView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

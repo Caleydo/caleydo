@@ -6,7 +6,7 @@ import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.net.StandardGroupwareManager;
 import org.caleydo.core.serialize.ProjectLoader;
@@ -59,57 +59,60 @@ public class CaleydoProjectWizard
 
 			// When the user changed the selection use case mode compared to the stored mode in the
 			// preferences the old workbench state should be deleted.
-			EUseCaseMode eOldUseCaseMode =
-				EUseCaseMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE));
+			EApplicationMode eOldUseCaseMode =
+				EApplicationMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE));
 
-			if (page.getUseCaseMode() != eOldUseCaseMode)
+			if (page.getApplicationMode() != eOldUseCaseMode)
 				Application.bDeleteRestoredWorkbenchState = true;
 
-			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, page.getUseCaseMode().name());
+			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, page.getApplicationMode()
+				.name());
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
-			
+
 			try {
 				prefStore.save();
 			}
 			catch (IOException e) {
 				throw new IllegalStateException("Unable to save preference file.");
 			}
-			
-			IUseCase useCase;
-			if (page.getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
 
+			IUseCase useCase;
+			if (page.getApplicationMode() == EApplicationMode.GENE_EXPRESSION_NEW_DATA
+				|| page.getApplicationMode() == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
+				Application.dataDomain = EDataDomain.GENETIC_DATA;
 				useCase = new GeneticUseCase();
-				((GeneticUseCase)useCase).setOrganism(page.getOrganism());
+				((GeneticUseCase) useCase).setOrganism(page.getOrganism());
 
 				// if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
 				// Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
 				// }
-				if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
-					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_RANDOM;
-				}
-				else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
-					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL;
+				if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
+					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
 				}
 				else if (page.getProjectType() == EProjectType.NEW_PROJECT) {
 					Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 				}
-				
+
 				String sNewPathwayDataSources = "";
 				if (page.isKEGGPathwayDataLoadingRequested())
-					sNewPathwayDataSources += EPathwayDatabaseType.KEGG.name()+";";
+					sNewPathwayDataSources += EPathwayDatabaseType.KEGG.name() + ";";
 				if (page.isBioCartaPathwayLoadingRequested())
-					sNewPathwayDataSources += EPathwayDatabaseType.BIOCARTA.name()+";";
-				
-				if (sNewPathwayDataSources != prefStore.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
+					sNewPathwayDataSources += EPathwayDatabaseType.BIOCARTA.name() + ";";
+
+				if (sNewPathwayDataSources != prefStore
+					.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES))
 					Application.bDeleteRestoredWorkbenchState = true;
-				
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, sNewPathwayDataSources);
+
+				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
+					sNewPathwayDataSources);
 			}
-			else if (page.getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+			else if (page.getApplicationMode() == EApplicationMode.UNSPECIFIED_NEW_DATA) {
 				useCase = new UnspecifiedUseCase();
+				Application.dataDomain = EDataDomain.GENERAL_DATA;
 				Application.applicationMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 			}
-			else if (page.getUseCaseMode() == EUseCaseMode.LOAD_PROJECT) {
+			else if (page.getApplicationMode() == EApplicationMode.LOAD_PROJECT) {
+				// FIXME determine the application domain somewhere?
 				System.out.println("Load Project");
 				ProjectLoader loader = new ProjectLoader();
 				if (page.getProjectLoadType() == ChooseProjectTypePage.EProjectLoadType.RECENT) {
@@ -127,7 +130,7 @@ public class CaleydoProjectWizard
 				Application.applicationMode = EApplicationMode.LOAD_PROJECT;
 				Application.bDeleteRestoredWorkbenchState = true;
 			}
-			else if (page.getUseCaseMode() == EUseCaseMode.COLLABORATION_CLIENT) {
+			else if (page.getApplicationMode() == EApplicationMode.COLLABORATION_CLIENT) {
 				StandardGroupwareManager groupwareManager = new StandardGroupwareManager();
 				groupwareManager.setNetworkName(page.getNetworkName());
 				groupwareManager.setServerAddress(page.getNetworkAddress());
@@ -140,7 +143,7 @@ public class CaleydoProjectWizard
 				throw new IllegalStateException("Not implemented!");
 			}
 
-			GeneralManager.get().setUseCase(useCase);
+			GeneralManager.get().addUseCase(useCase);
 
 			return true;
 		}
@@ -163,46 +166,49 @@ public class CaleydoProjectWizard
 		return false;
 	}
 
-//	@Override
-//	public IWizardPage getNextPage(IWizardPage page) {
-//		if (page instanceof ChooseProjectTypePage) {
-//
-//			ChooseProjectTypePage projectPage = (ChooseProjectTypePage) page;
-//
-//
-//			if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() == EProjectType.NEW_PROJECT) {
-//				NewProjectImportDataPage nextPage =
-//					(NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
-//
-//				nextPage.setPageComplete(true);
-//				return nextPage;
-//			}
-//			/*
-//			 * else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)) .getProjectType()
-//			 * == EProjectType.EXISTING_PROJECT) { // FileOpenProjectAction fileOpenProjectAction = new
-//			 * FileOpenProjectAction(this.getShell()); // fileOpenProjectAction.run(); this.performFinish(); }
-//			 */else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() == EProjectType.SAMPLE_DATA_RANDOM) {
-//
-//			}
-//			else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() == EProjectType.SAMPLE_DATA_REAL) {
-//
-//			}
-//			// else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
-//			// .getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
-//			// // Remove heatmap and par coord views
-//			// for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
-//			// .getAllGLEventListeners()) {
-//			// if (glEventListener instanceof GLHeatMap
-//			// || glEventListener instanceof GLParallelCoordinates) {
-//			// GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-//			// glEventListener);
-//			// }
-//			// }
-//			//
-//			// this.performFinish();
-//			// }
-//		}
-//
-//		return page;
-//	}
+	// @Override
+	// public IWizardPage getNextPage(IWizardPage page) {
+	// if (page instanceof ChooseProjectTypePage) {
+	//
+	// ChooseProjectTypePage projectPage = (ChooseProjectTypePage) page;
+	//
+	//
+	// if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() ==
+	// EProjectType.NEW_PROJECT) {
+	// NewProjectImportDataPage nextPage =
+	// (NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
+	//
+	// nextPage.setPageComplete(true);
+	// return nextPage;
+	// }
+	// /*
+	// * else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)) .getProjectType()
+	// * == EProjectType.EXISTING_PROJECT) { // FileOpenProjectAction fileOpenProjectAction = new
+	// * FileOpenProjectAction(this.getShell()); // fileOpenProjectAction.run(); this.performFinish(); }
+	// */else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() ==
+	// EProjectType.SAMPLE_DATA_RANDOM) {
+	//
+	// }
+	// else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).getProjectType() ==
+	// EProjectType.SAMPLE_DATA_REAL) {
+	//
+	// }
+	// // else if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
+	// // .getProjectType() == EProjectType.PATHWAY_VIEWER_MODE) {
+	// // // Remove heatmap and par coord views
+	// // for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager()
+	// // .getAllGLEventListeners()) {
+	// // if (glEventListener instanceof GLHeatMap
+	// // || glEventListener instanceof GLParallelCoordinates) {
+	// // GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
+	// // glEventListener);
+	// // }
+	// // }
+	// //
+	// // this.performFinish();
+	// // }
+	// }
+	//
+	// return page;
+	// }
 }

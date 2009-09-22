@@ -374,7 +374,7 @@ public class GlyphMappingConfigurationViewRep
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedDummyView serializedForm = new SerializedDummyView();
+		SerializedDummyView serializedForm = new SerializedDummyView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm; 
 	}

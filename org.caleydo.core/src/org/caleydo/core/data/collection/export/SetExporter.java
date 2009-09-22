@@ -17,7 +17,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
@@ -46,12 +46,13 @@ public class SetExporter {
 			}
 
 			out.println();
-			
+
+			// IUseCase useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
+			//		
 			String identifier;
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : alGenes) {
-				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
-
+				if (set.getSetType().getDataDomain() == EDataDomain.GENETIC_DATA) {
 					Set<String> setRefSeqIDs =
 						iDMappingManager.getIDAsSet(EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA,
 							iContentIndex);
@@ -88,7 +89,7 @@ public class SetExporter {
 		IVirtualArray contentVA = null;
 		IVirtualArray storageVA = null;
 
-		IUseCase useCase = GeneralManager.get().getUseCase();
+		IUseCase useCase = GeneralManager.get().getUseCase(set.getSetType().getDataDomain());
 
 		if (eWhichViewToExport == EWhichViewToExport.BUCKET) {
 
@@ -126,7 +127,7 @@ public class SetExporter {
 			String identifier;
 			IIDMappingManager iDMappingManager = GeneralManager.get().getIDMappingManager();
 			for (Integer iContentIndex : contentVA) {
-				if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+				if (set.getSetType().getDataDomain() == EDataDomain.GENETIC_DATA) {
 
 					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
 					// of

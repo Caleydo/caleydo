@@ -1,8 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
-import javax.media.opengl.GL;
-
 import gleem.linalg.Vec3f;
+
+import javax.media.opengl.GL;
 
 public interface ITreeProjection 
 extends Comparable<ITreeProjection>{

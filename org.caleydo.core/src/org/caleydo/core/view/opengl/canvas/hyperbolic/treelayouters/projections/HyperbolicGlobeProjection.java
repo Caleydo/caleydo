@@ -1,10 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
-import javax.media.opengl.GL;
-
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 
 import gleem.linalg.Vec3f;
+
+import javax.media.opengl.GL;
 
 public class HyperbolicGlobeProjection
 	extends ATreeProjection {

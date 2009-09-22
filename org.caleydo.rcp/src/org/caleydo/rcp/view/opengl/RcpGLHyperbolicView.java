@@ -34,7 +34,7 @@ public class RcpGLHyperbolicView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedHyperbolicView serializedView = new SerializedHyperbolicView();
+		SerializedHyperbolicView serializedView = new SerializedHyperbolicView(dataDomain);
 		return serializedView;
 	}
 

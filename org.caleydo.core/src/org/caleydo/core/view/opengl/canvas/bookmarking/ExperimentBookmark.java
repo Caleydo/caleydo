@@ -4,6 +4,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -30,7 +31,8 @@ class ExperimentBookmark
 
 	@Override
 	public void render(GL gl) {
-		String sContent = GeneralManager.get().getUseCase().getSet().get(id).getLabel();
+		String sContent =
+			GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getSet().get(id).getLabel();
 		GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.GENE_SYMBOL, id);
 
 		float yOrigin = dimensions.getYOrigin() - 0.08f;

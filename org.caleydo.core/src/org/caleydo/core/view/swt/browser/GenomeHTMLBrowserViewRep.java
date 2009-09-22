@@ -12,7 +12,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
@@ -57,7 +57,7 @@ public class GenomeHTMLBrowserViewRep
 	public void initViewSWTComposite(Composite parentComposite) {
 		super.initViewSWTComposite(parentComposite);
 
-		useCase = generalManager.getUseCase();
+		useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
 		
 		final Combo queryTypeCombo = new Combo(subContributionComposite, SWT.READ_ONLY);
 	
@@ -108,7 +108,7 @@ public class GenomeHTMLBrowserViewRep
 			return;
 
 		// Prevent handling of non genetic entities
-		if (useCase.getUseCaseMode() != EUseCaseMode.GENETIC_DATA)
+		if (useCase.getDataDomain() != EDataDomain.GENETIC_DATA)
 			return;
 
 		Display.getDefault().asyncExec(new Runnable() {
@@ -238,7 +238,7 @@ public class GenomeHTMLBrowserViewRep
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHTMLBrowserView serializedForm = new SerializedHTMLBrowserView();
+		SerializedHTMLBrowserView serializedForm = new SerializedHTMLBrowserView(dataDomain);
 		serializedForm.setViewID(getID());
 		serializedForm.setQueryType(getCurrentBrowserQueryType());
 		serializedForm.setUrl(getUrl());

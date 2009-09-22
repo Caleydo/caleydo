@@ -4,20 +4,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of the remote-rendering view (bucket). 
+ * Serialized form of the remote-rendering view (bucket).
+ * 
  * @author Werner Puff
  */
 @XmlRootElement
 @XmlType
-public class SerializedHistogramView 
+public class SerializedHistogramView
 	extends ASerializedView {
 
-	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
+	public SerializedHistogramView() {
+	}
 	
+	public SerializedHistogramView(EDataDomain dataDomain) {
+		super(dataDomain);
+	}
+
+	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLHistogramView";
+
 	@Override
 	public ECommandType getCreationCommandType() {
 		return ECommandType.CREATE_GL_HISTOGRAM;
@@ -32,5 +41,5 @@ public class SerializedHistogramView
 	public String getViewGUIID() {
 		return GUI_ID;
 	}
-	
+
 }

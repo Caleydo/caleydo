@@ -35,7 +35,7 @@ public class RcpGLGlyphSliderView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView();
+		SerializedGlyphSliderView serializedView = new SerializedGlyphSliderView(dataDomain);
 		return serializedView;
 	}
 

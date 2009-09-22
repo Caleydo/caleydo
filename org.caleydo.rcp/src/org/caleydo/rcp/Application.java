@@ -21,7 +21,7 @@ import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.usecase.AUseCase;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.usecase.UnspecifiedUseCase;
 import org.caleydo.core.net.GroupwareUtils;
 import org.caleydo.core.net.IGroupwareManager;
@@ -65,9 +65,15 @@ import org.eclipse.ui.internal.WorkbenchPlugin;
 public class Application
 	implements IApplication {
 
-	/** determines if initialize-views should be loaded lazy (=<code>true</code>)or immediate (=<code>false</code) */
+	/**
+	 * determines if initialize-views should be loaded lazy (=<code>true</code>)or immediate (=
+	 * <code>false</code)
+	 */
 	public static final boolean LAZY_VIEW_LOADING = false;
 	
+	/** Temporary solution to store data domain based on the gui dialog */
+	public static EDataDomain dataDomain;
+
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE =
 		"data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
 
@@ -154,7 +160,7 @@ public class Application
 
 			if (Application.applicationMode == EApplicationMode.PLEX_CLIENT) {
 				Application.initData = GroupwareUtils.startPlexClient();
-				GeneralManager.get().setUseCase(Application.initData.getUseCase());
+				GeneralManager.get().addUseCase(Application.initData.getUseCase());
 			}
 			else {
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
@@ -164,16 +170,12 @@ public class Application
 			}
 
 			if (sCaleydoXMLfile.equals("")) {
-				IUseCase useCase = GeneralManager.get().getUseCase();
+				IUseCase useCase = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 				switch (applicationMode) {
 					// case GENE_EXPRESSION_PATHWAY_VIEWER:
 					// sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
 					// break;
-					case GENE_EXPRESSION_SAMPLE_DATA_RANDOM:
-						sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
-						useCase.setBootsTrapFileName(sCaleydoXMLfile);
-						break;
-					case GENE_EXPRESSION_SAMPLE_DATA_REAL:
+					case GENE_EXPRESSION_SAMPLE_DATA:
 					case GENE_EXPRESSION_NEW_DATA:
 						sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
 						useCase.setBootsTrapFileName(sCaleydoXMLfile);
@@ -186,7 +188,7 @@ public class Application
 					case LOAD_PROJECT:
 					case COLLABORATION_CLIENT:
 					case PLEX_CLIENT:
-						sCaleydoXMLfile = GeneralManager.get().getUseCase().getBootsTrapFileName();
+						sCaleydoXMLfile = useCase.getBootstrapFileName();
 						break;
 
 					default:
@@ -198,7 +200,7 @@ public class Application
 			// Assuming that if an external XML file is provided, the genetic use case applies
 			IUseCase useCase = new GeneticUseCase();
 			useCase.setBootsTrapFileName(sCaleydoXMLfile);
-			GeneralManager.get().setUseCase(useCase);
+			GeneralManager.get().addUseCase(useCase);
 			isStartedFromXML = true;
 		}
 
@@ -207,7 +209,7 @@ public class Application
 		if (bDeleteRestoredWorkbenchState) {
 			removeStoredWorkbenchState();
 		}
-		
+
 		try {
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
 
@@ -334,11 +336,11 @@ public class Application
 			}
 			// TODO remove temporary files (after storage creation or on shutdown)
 
-			GeneralManager.get().setUseCase(useCase);
+			GeneralManager.get().addUseCase(useCase);
 
 			if (useCase instanceof GeneticUseCase)
 				triggerPathwayLoading();
-			
+
 			SetUtils.createStorages(loadDataParameters);
 			SetUtils.createData(useCase);
 
@@ -351,7 +353,7 @@ public class Application
 		else if (applicationMode == EApplicationMode.LOAD_PROJECT) {
 			System.out.println("Load Project");
 			AUseCase useCase = (AUseCase) initData.getUseCase();
-			GeneralManager.get().setUseCase(useCase);
+			GeneralManager.get().addUseCase(useCase);
 
 			if (useCase instanceof GeneticUseCase)
 				triggerPathwayLoading();
@@ -366,10 +368,10 @@ public class Application
 			}
 			Application.initData = null;
 		}
-		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA_REAL) {
+		else if (applicationMode == EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
 			triggerPathwayLoading();
-			
+
 			WizardDialog dataImportWizard =
 				new WizardDialog(shell, new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
 
@@ -380,9 +382,9 @@ public class Application
 		else if ((applicationMode == EApplicationMode.GENE_EXPRESSION_NEW_DATA || applicationMode == EApplicationMode.UNSPECIFIED_NEW_DATA)
 			&& (sCaleydoXMLfile.equals(BOOTSTRAP_FILE_GENE_EXPRESSION_MODE) || sCaleydoXMLfile.equals(""))) {
 
-			if (GeneralManager.get().getUseCase() instanceof GeneticUseCase)
+			if (applicationMode.getDataDomain() == EDataDomain.GENETIC_DATA)
 				triggerPathwayLoading();
-			
+
 			WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(shell));
 
 			if (Window.CANCEL == dataImportWizard.open()) {
@@ -394,11 +396,11 @@ public class Application
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML)
-			GeneralManager.get().getUseCase().updateSetInViews();
+			GeneralManager.get().getUseCase(applicationMode.getDataDomain()).updateSetInViews();
 
 		initializeColorMapping();
 		if (initializedStartViews == null) {
-			initializeDefaultStartViews();
+			initializeDefaultStartViews(applicationMode.getDataDomain());
 		}
 
 		// if (GeneralManager.get().isStandalone()) {
@@ -422,14 +424,16 @@ public class Application
 	 * parses throw the list of start-views to initialize them by creating default serialized representations
 	 * of them.
 	 */
-	public static void initializeDefaultStartViews() {
+	public static void initializeDefaultStartViews(EDataDomain dataDomain) {
 		// Create view list dynamically when not specified via the command line
-		IUseCase usecase = GeneralManager.get().getUseCase();
+
 		if (startViews.isEmpty()) {
-			addDefaultStartViews(usecase);
+			addDefaultStartViews(dataDomain);
 		}
 		else {
-			if (usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+
+			IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
+			if (dataDomain == EDataDomain.GENETIC_DATA && ((GeneticUseCase) useCase).isPathwayViewerMode()) {
 				applyPathwayViewerViewFilter();
 			}
 		}
@@ -460,7 +464,7 @@ public class Application
 				layout.addView(startView.getViewGUIID());
 			}
 		}
-		
+
 	}
 
 	/**
@@ -469,10 +473,11 @@ public class Application
 	 * @param useCase
 	 *            {@link IUseCase} to determine the correct default start views.
 	 */
-	private static void addDefaultStartViews(IUseCase useCase) {
+	private static void addDefaultStartViews(EDataDomain dataDomain) {
 		startViews.add(SerializedHTMLBrowserView.class);
 
-		if ((useCase instanceof GeneticUseCase && !((GeneticUseCase) useCase).isPathwayViewerMode())
+		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
+		if ((dataDomain == EDataDomain.GENETIC_DATA && ((GeneticUseCase) useCase).isPathwayViewerMode())
 			|| useCase instanceof UnspecifiedUseCase) {
 			// alStartViews.add(EStartViewType.TABULAR);
 			startViews.add(SerializedParallelCoordinatesView.class);
@@ -527,7 +532,7 @@ public class Application
 
 	private static void triggerPathwayLoading() {
 		// Only load pathways in genetic use case mode
-		if (GeneralManager.get().getUseCase() instanceof GeneticUseCase) {
+		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) != null) {
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
 		}
@@ -537,7 +542,7 @@ public class Application
 
 		// Only fetch pathways if in genetic use case mode
 		if (!prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE).equals(
-			EUseCaseMode.GENETIC_DATA.name()))
+			EDataDomain.GENETIC_DATA.name()))
 			return;
 
 		String sPathwayDataSources =

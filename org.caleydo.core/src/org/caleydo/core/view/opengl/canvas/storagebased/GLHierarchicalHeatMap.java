@@ -235,15 +235,22 @@ public class GLHierarchicalHeatMap
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 		super.renderStyle = renderStyle;
 
-		createHeatMap();
-		createDendrogram();
+	
+
 	}
 
 	@Override
 	public void init(GL gl) {
+
+
+		createHeatMap();
+		createDendrogram();
+		
+
 		glHeatMapView.initRemote(gl, this, glMouseListener, null);
 		glGeneDendrogramView.initRemote(gl, this, glMouseListener, null);
 		glExperimentDendrogramView.initRemote(gl, this, glMouseListener, null);
+
 		initTextures(gl);
 		// activateGroupHandling();
 	}
@@ -602,14 +609,21 @@ public class GLHierarchicalHeatMap
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
-			set, -1);
+		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth,
+			-20, 20, -1);
 
 		cmdView.doCommand();
 
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
-		glHeatMapView.setUseCase(GeneralManager.get().getUseCase());
+		glHeatMapView.setUseCase(useCase);
 		glHeatMapView.setRemoteRenderingGLView(this);
+		
+
+		glHeatMapView.setDataDomain(dataDomain);
+		glHeatMapView.setUseCase(useCase);
+		glHeatMapView.setSet(set);
+		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+		glHeatMapView.initData();
 
 	}
 
@@ -626,27 +640,38 @@ public class GLHierarchicalHeatMap
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
-			set, -1);
+		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth,
+			-20, 20, -1);
 
 		cmdView.doCommand();
 
 		glGeneDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
-		glGeneDendrogramView.setUseCase(GeneralManager.get().getUseCase());
+		glGeneDendrogramView.setUseCase(GeneralManager.get().getUseCase(dataDomain));
 		glGeneDendrogramView.setRemoteRenderingGLView(this);
 
 		cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_DENDROGRAM_VERTICAL);
 
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth, -20, 20,
-			set, -1);
+		cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0, fHeatMapWidth,
+			-20, 20, -1);
 
 		cmdView.doCommand();
 
 		glExperimentDendrogramView = (GLDendrogram) cmdView.getCreatedObject();
-		glExperimentDendrogramView.setUseCase(GeneralManager.get().getUseCase());
+		glExperimentDendrogramView.setDataDomain(dataDomain);
+		glExperimentDendrogramView.setUseCase(useCase);
 		glExperimentDendrogramView.setRemoteRenderingGLView(this);
+		
+		glGeneDendrogramView.setSet(set);
+		glGeneDendrogramView.setContentVAType(EVAType.CONTENT);
+		glGeneDendrogramView.initData();
+		glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+
+		glExperimentDendrogramView.setSet(set);
+		glExperimentDendrogramView.setContentVAType(EVAType.CONTENT);
+		glExperimentDendrogramView.initData();
+		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 	}
 
 	@Override
@@ -2234,6 +2259,9 @@ public class GLHierarchicalHeatMap
 		gl.glPopName();
 
 		tempTexture.disable();
+
+//		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
 
 		// fill gap between cursor
 		gl.glColor4fv(DRAGGING_CURSOR_COLOR, 0);
@@ -4630,10 +4658,12 @@ public class GLHierarchicalHeatMap
 		if (bSkipLevel2 == false) {
 			initPosCursorLevel2();
 		}
-
-		glHeatMapView.setSet(set);
-		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
-		glHeatMapView.initData();
+//
+//		glHeatMapView.setDataDomain(dataDomain);
+//		glHeatMapView.setUseCase(useCase);
+//		glHeatMapView.setSet(set);
+//		glHeatMapView.setContentVAType(EVAType.CONTENT_EMBEDDED_HM);
+//		glHeatMapView.initData();
 
 		if (set.getClusteredTreeGenes() != null) {
 			bGeneDendrogramActive = true;
@@ -4657,15 +4687,15 @@ public class GLHierarchicalHeatMap
 			bExperimentDendrogramRenderCut = false;
 		}
 
-		glGeneDendrogramView.setSet(set);
-		glGeneDendrogramView.setContentVAType(EVAType.CONTENT);
-		glGeneDendrogramView.initData();
-		glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
-
-		glExperimentDendrogramView.setSet(set);
-		glExperimentDendrogramView.setContentVAType(EVAType.CONTENT);
-		glExperimentDendrogramView.initData();
-		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
+//		glGeneDendrogramView.setSet(set);
+//		glGeneDendrogramView.setContentVAType(EVAType.CONTENT);
+//		glGeneDendrogramView.initData();
+//		glGeneDendrogramView.setRenderUntilCut(bGeneDendrogramRenderCut);
+//
+//		glExperimentDendrogramView.setSet(set);
+//		glExperimentDendrogramView.setContentVAType(EVAType.CONTENT);
+//		glExperimentDendrogramView.initData();
+//		glExperimentDendrogramView.setRenderUntilCut(bExperimentDendrogramRenderCut);
 
 		if (bSkipLevel2 == false)
 			bRedrawTextures = true;
@@ -4673,7 +4703,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView();
+		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

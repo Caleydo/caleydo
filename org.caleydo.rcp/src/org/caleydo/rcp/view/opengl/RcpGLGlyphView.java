@@ -29,7 +29,7 @@ public class RcpGLGlyphView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedGlyphView serializedView = new SerializedGlyphView();
+		SerializedGlyphView serializedView = new SerializedGlyphView(dataDomain);
 		return serializedView;
 	}
 

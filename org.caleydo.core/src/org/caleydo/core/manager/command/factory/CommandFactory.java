@@ -2,6 +2,7 @@ package org.caleydo.core.manager.command.factory;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.data.CmdDataCreateDataDomain;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
@@ -61,6 +62,9 @@ public class CommandFactory
 			case LOAD_DATA_FILE: {
 				createdCommand = new CmdLoadFileNStorages(cmdType);
 				break;
+			}
+			case CREATE_DATA_DOMAIN: {
+				createdCommand = new CmdDataCreateDataDomain(cmdType);
 			}
 			case CREATE_STORAGE: {
 				createdCommand = new CmdDataCreateStorage(cmdType);

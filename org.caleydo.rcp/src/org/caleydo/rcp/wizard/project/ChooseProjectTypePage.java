@@ -5,9 +5,9 @@ import java.lang.reflect.Method;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;
 import org.caleydo.core.manager.specialized.genetic.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.EApplicationMode;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -57,7 +57,7 @@ public class ChooseProjectTypePage
 		SPECIFIED
 	}
 
-	private EUseCaseMode projectMode = EUseCaseMode.GENETIC_DATA;
+	private EApplicationMode projectMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 
 	private EProjectType projectType = EProjectType.SAMPLE_DATA_REAL;
 
@@ -87,7 +87,7 @@ public class ChooseProjectTypePage
 
 	/** text field to enter the file-name to load a project from */
 	private Text projectFileName;
-	
+
 	private Button btnLoadPathwayData;
 
 	/**
@@ -128,20 +128,25 @@ public class ChooseProjectTypePage
 				.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE);
 
 		if (lastChosenProjectMode == null || lastChosenProjectMode.isEmpty()
-			|| lastChosenProjectMode.equals(EUseCaseMode.GENETIC_DATA)) {
+			|| lastChosenProjectMode.equals(EApplicationMode.GENE_EXPRESSION_NEW_DATA)) {
 			tabFolder.setSelection(0);
-			projectMode = EUseCaseMode.GENETIC_DATA;
+			projectMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 		}
-		else if (lastChosenProjectMode.equals(EUseCaseMode.UNSPECIFIED_DATA)) {
+		else if (lastChosenProjectMode == null || lastChosenProjectMode.isEmpty()
+			|| lastChosenProjectMode.equals(EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA)) {
+			tabFolder.setSelection(0);
+			projectMode = EApplicationMode.GENE_EXPRESSION_SAMPLE_DATA;
+		}
+		else if (lastChosenProjectMode.equals(EApplicationMode.UNSPECIFIED_NEW_DATA)) {
 			tabFolder.setSelection(1);
-			projectMode = EUseCaseMode.UNSPECIFIED_DATA;
+			projectMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 		}
-		else if (lastChosenProjectMode.equals(EUseCaseMode.LOAD_PROJECT)) {
-			projectMode = EUseCaseMode.LOAD_PROJECT;
+		else if (lastChosenProjectMode.equals(EApplicationMode.LOAD_PROJECT)) {
+			projectMode = EApplicationMode.LOAD_PROJECT;
 			tabFolder.setSelection(2);
 		}
-		else if (lastChosenProjectMode.equals(EUseCaseMode.COLLABORATION_CLIENT)) {
-			projectMode = EUseCaseMode.COLLABORATION_CLIENT;
+		else if (lastChosenProjectMode.equals(EApplicationMode.COLLABORATION_CLIENT)) {
+			projectMode = EApplicationMode.COLLABORATION_CLIENT;
 			tabFolder.setSelection(3);
 		}
 
@@ -150,16 +155,16 @@ public class ChooseProjectTypePage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
-					projectMode = EUseCaseMode.UNSPECIFIED_DATA;
+					projectMode = EApplicationMode.UNSPECIFIED_NEW_DATA;
 				}
 				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
-					projectMode = EUseCaseMode.GENETIC_DATA;
+					projectMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 				}
 				else if (((TabItem) e.item) == loadProjectTab) {
-					projectMode = EUseCaseMode.LOAD_PROJECT;
+					projectMode = EApplicationMode.LOAD_PROJECT;
 				}
 				else if (((TabItem) e.item) == collaborationClientTab) {
-					projectMode = EUseCaseMode.COLLABORATION_CLIENT;
+					projectMode = EApplicationMode.COLLABORATION_CLIENT;
 				}
 				else
 					throw new IllegalStateException("Not implemented!");
@@ -275,7 +280,7 @@ public class ChooseProjectTypePage
 				PreferenceConstants.LAST_CHOSEN_ORGANISM));
 		if (lastChosenOrganism == EOrganism.HOMO_SAPIENS) {
 			btnOrganismHuman.setSelection(true);
-			organism = EOrganism.HOMO_SAPIENS;			
+			organism = EOrganism.HOMO_SAPIENS;
 		}
 		else {
 			btnOrganismMouse.setSelection(true);
@@ -365,7 +370,7 @@ public class ChooseProjectTypePage
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				bLoadBioCartaPathwayData = ((Button) e.widget).getSelection();
-				
+
 				if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
 					btnLoadPathwayData.setSelection(false);
 					btnLoadKEGGPathwayData.setEnabled(false);
@@ -570,7 +575,7 @@ public class ChooseProjectTypePage
 		return projectType;
 	}
 
-	public EUseCaseMode getUseCaseMode() {
+	public EApplicationMode getApplicationMode() {
 		return projectMode;
 	}
 

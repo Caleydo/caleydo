@@ -29,6 +29,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -72,7 +73,7 @@ public abstract class AGLEventListener
 		ON,
 		OFF
 	}
-
+	
 	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
 
 	// TODO: should be a list of parent canvas object to be generic
@@ -681,7 +682,7 @@ public abstract class AGLEventListener
 
 		this.set = set;
 		initData();
-		setDisplayListDirty();
+//		setDisplayListDirty();
 		// In GL views the new set is not immediately written to the set variable of AView.
 		// The new set is then assigned to the working set when the display list is dirty the next time.
 		// newSet = set;

@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -18,7 +19,7 @@ public class SerializedRadialHierarchyView
 	extends ASerializedView {
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.GLRadialHierarchyView";
-	
+
 	private EDrawingStateType drawingStateType;
 	private int maxDisplayedHierarchyDepth;
 	private int rootElementID;
@@ -27,11 +28,20 @@ public class SerializedRadialHierarchyView
 	private float selectedElementStartAngle;
 	private boolean isNewSelection;
 	private EPDDrawingStrategyType defaultDrawingStrategyType;
-	
+
 	/**
 	 * No-Arg Constructor to create a serialized radial-view with default parameters.
 	 */
 	public SerializedRadialHierarchyView() {
+		init();
+	}
+
+	public SerializedRadialHierarchyView(EDataDomain dataDomain) {
+		super(dataDomain);
+		init();
+	}
+
+	private void init() {
 		setMaxDisplayedHierarchyDepth(GLRadialHierarchy.DISP_HIER_DEPTH_DEFAULT);
 		setDrawingStateType(EDrawingStateType.DRAWING_STATE_FULL_HIERARCHY);
 		setDefaultDrawingStrategyType(EPDDrawingStrategyType.EXPRESSION_COLOR);
@@ -41,7 +51,7 @@ public class SerializedRadialHierarchyView
 		setSelectedElementStartAngle(0);
 		setNewSelection(true);
 	}
-	
+
 	@Override
 	public ECommandType getCreationCommandType() {
 		return ECommandType.CREATE_GL_RADIAL_HIERARCHY;

@@ -27,7 +27,7 @@ import org.caleydo.core.manager.event.view.storagebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
@@ -172,7 +172,7 @@ public class TabularDataViewRep
 			return;
 		}
 
-		useCase = GeneralManager.get().getUseCase();
+		useCase = GeneralManager.get().getUseCase(dataDomain);
 		contentVA = useCase.getVA(contentVAType);
 
 		storageVA = useCase.getVA(storageVAType);
@@ -389,7 +389,7 @@ public class TabularDataViewRep
 		column.setText("#");
 		column.setWidth(50);
 
-		if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+		if (dataDomain == EDataDomain.GENETIC_DATA) {
 
 			column = new TableColumn(labelTable, SWT.NONE);
 			column.setText("RefSeq ID");
@@ -399,7 +399,7 @@ public class TabularDataViewRep
 			column.setText("Gene Symbol");
 			column.setWidth(110);
 		}
-		else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+		else if (dataDomain == EDataDomain.GENERAL_DATA) {
 
 			column = new TableColumn(labelTable, SWT.NONE);
 			column.setText("ID");
@@ -410,8 +410,7 @@ public class TabularDataViewRep
 			column.setWidth(0);
 		}
 		else {
-			throw new IllegalStateException("The use case type "
-				+ GeneralManager.get().getUseCase().getUseCaseMode()
+			throw new IllegalStateException("The data domain " + dataDomain
 				+ " is not implemented in the tabular data viewer.");
 		}
 
@@ -445,7 +444,7 @@ public class TabularDataViewRep
 			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(iContentIndex));
 
-			if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+			if (dataDomain == EDataDomain.GENETIC_DATA) {
 				String sGeneSymbol = null;
 				String srefSeqID = null;
 
@@ -492,14 +491,13 @@ public class TabularDataViewRep
 					item.setText(2, "Unknown");
 				}
 			}
-			else if (GeneralManager.get().getUseCase().getUseCaseMode() == EUseCaseMode.UNSPECIFIED_DATA) {
+			else if (dataDomain == EDataDomain.GENERAL_DATA) {
 
 				item.setText(1, (String) idMappingManager.getID(EIDType.EXPRESSION_INDEX,
 					EIDType.UNSPECIFIED, iContentIndex));
 			}
 			else {
-				throw new IllegalStateException("The use case type "
-					+ GeneralManager.get().getUseCase().getUseCaseMode()
+				throw new IllegalStateException("The use case type " + dataDomain
 					+ " is not implemented in the tabular data viewer.");
 			}
 
@@ -715,7 +713,7 @@ public class TabularDataViewRep
 		contentSelectionManager.clearSelection(eSelectionType);
 		contentSelectionManager.addToType(eSelectionType, (Integer) iContentIndex);
 
-		if (generalManager.getUseCase().getUseCaseMode() == EUseCaseMode.GENETIC_DATA) {
+		if (dataDomain == EDataDomain.GENETIC_DATA) {
 			// Resolve multiple spotting on chip and add all to the
 			// selection manager.
 			Integer iRefSeqID = null;
@@ -857,7 +855,7 @@ public class TabularDataViewRep
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedTabularDataView serializedForm = new SerializedTabularDataView();
+		SerializedTabularDataView serializedForm = new SerializedTabularDataView(dataDomain);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}

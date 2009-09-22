@@ -26,8 +26,9 @@ public class RcpGLHierarchicalHeatMapView
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		IUseCase usecase = GeneralManager.get().getUseCase();
-		if (usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
+		if (usecase != null && usecase instanceof GeneticUseCase
+			&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();
@@ -42,7 +43,7 @@ public class RcpGLHierarchicalHeatMapView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedHierarchicalHeatMapView serializedView = new SerializedHierarchicalHeatMapView();
+		SerializedHierarchicalHeatMapView serializedView = new SerializedHierarchicalHeatMapView(dataDomain);
 		return serializedView;
 	}
 

@@ -26,7 +26,7 @@ public class RcpGLParCoordsClinicalView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView();
+		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(dataDomain);
 		return serializedView;
 	}
 

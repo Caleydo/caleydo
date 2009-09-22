@@ -3,7 +3,7 @@ package org.caleydo.core.manager;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.LoadDataParameters;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.manager.usecase.EUseCaseMode;
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
@@ -20,7 +20,7 @@ public interface IUseCase {
 	 * Returns whether the application can load and work with non further specified data (general use case) or
 	 * if a more specialized use case (e.g. gene expression) is active.
 	 */
-	public EUseCaseMode getUseCaseMode();
+	public EDataDomain getDataDomain();
 
 	/**
 	 * Returns the set which is currently loaded and used inside the views for this use case.
@@ -94,7 +94,7 @@ public interface IUseCase {
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters);
 
 	/** Sets the name of the boots-trap xml-file this useCase was or should be loaded */
-	public String getBootsTrapFileName();
+	public String getBootstrapFileName();
 
 	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
 	public void setBootsTrapFileName(String bootsTrapFileName);
