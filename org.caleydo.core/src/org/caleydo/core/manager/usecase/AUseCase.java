@@ -121,6 +121,7 @@ public abstract class AUseCase
 
 	@Override
 	public void setSet(ISet set) {
+		assert (set != null);
 
 		if ((set.getSetType() == ESetType.GENE_EXPRESSION_DATA && useCaseMode == EDataDomain.GENETIC_DATA)
 			|| (set.getSetType() == ESetType.CLINICAL_DATA && useCaseMode == EDataDomain.CLINICAL_DATA)
@@ -292,6 +293,8 @@ public abstract class AUseCase
 
 		if (!possibleIDCategories.containsKey(idCategory))
 			return;
+
+		set.replaceVA(mapVAIDs.get(vaType), virtualArray.clone());
 
 		Tree<ClusterNode> tree = null;
 		if (vaType == EVAType.CONTENT)

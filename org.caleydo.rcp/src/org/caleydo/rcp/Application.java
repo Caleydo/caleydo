@@ -198,9 +198,9 @@ public class Application
 		}
 		else {
 			// Assuming that if an external XML file is provided, the genetic use case applies
-			IUseCase useCase = new GeneticUseCase();
-			useCase.setBootsTrapFileName(sCaleydoXMLfile);
-			GeneralManager.get().addUseCase(useCase);
+//			IUseCase useCase = new GeneticUseCase();
+//			useCase.setBootsTrapFileName(sCaleydoXMLfile);
+//			GeneralManager.get().addUseCase(useCase);
 			isStartedFromXML = true;
 		}
 

@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.delta.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.delta.VADeltaItem;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -91,9 +92,9 @@ public class VirtualArray
 		}
 		else
 			throw new IllegalArgumentException(
-				"Tried to add an element to a virtual array that is not within the "
-					+ "allowed range (which is determined by the length of the collection "
-					+ "on which the virtual array is applied)");
+				"Tried to add an element ("+ iNewElement + ") to a virtual array that is not within the "
+					+ "allowed range  (" + length + "), which is determined by the length of the collection"
+					+ "on which the virtual array is applied");
 	}
 
 	@Override
@@ -225,7 +226,7 @@ public class VirtualArray
 	}
 
 	@Override
-	public void setDelta(IVirtualArrayDelta delta) {
+	public void setDelta(IVirtualArrayDelta delta) {		
 		for (VADeltaItem item : delta) {
 			switch (item.getType()) {
 				case ADD:

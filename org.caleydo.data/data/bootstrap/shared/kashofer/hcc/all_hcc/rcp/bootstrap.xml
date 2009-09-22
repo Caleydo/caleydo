@@ -4,7 +4,11 @@
   
     <Application remote="no" IP="127.0.0.1" port="4000" >
   
-    <CommandBuffer>  			   				
+    <CommandBuffer>  	
+    
+    	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"
+					cmdId="13993" uniqueId="453010" label="create_data_domain" attrib1="GENETIC_DATA" />
+    		   				
 
       	<!-- Creating GenomeId mapping -->
 		  	<read-xml-file target="data/bootstrap/shared/kashofer/hcc/load_genome_id_mapping.xml" />	   				

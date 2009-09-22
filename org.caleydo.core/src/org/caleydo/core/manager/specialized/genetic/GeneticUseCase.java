@@ -26,6 +26,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
  * Use case specialized to genetic data.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 @XmlType
 @XmlRootElement
@@ -166,8 +167,8 @@ public class GeneticUseCase
 
 		Integer vaID = mapVAIDs.get(vaDelta.getVAType());
 
-		// if (vaDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
-		// vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
+		if (targetCategory == EIDCategory.GENE && vaDelta.getIDType() != EIDType.EXPRESSION_INDEX)
+			vaDelta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, vaDelta);
 		IVirtualArray va = set.getVA(vaID);
 
 		va.setDelta(vaDelta);

@@ -6,7 +6,6 @@
 <!-- clinical data -->
 <!--  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"	cmdId="22991"	uniqueId="352010" label="Select file" attrib1="0 -99 0 1"	/>-->
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"				cmdId="13993"	uniqueId="453010" label="create_data_domain"					attrib1="CLINICAL_DATA"/>
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453010" label="id"					attrib1="NOMINAL"	attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453020" label="sid"					attrib1="NOMINAL" 	attrib2="test data	from file" />

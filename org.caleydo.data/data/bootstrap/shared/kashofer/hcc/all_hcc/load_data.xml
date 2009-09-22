@@ -2,8 +2,7 @@
 
 <details>
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_DATA_DOMAIN"				cmdId="13993"	uniqueId="453010" label="create_data_domain"					attrib1="GENETIC_DATA"/>
-
+	
 	
 	<!-- Expression data set/storage/ -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="HCC011_K"  attrib1="NUMERICAL" attrib2="test data	from file" />
