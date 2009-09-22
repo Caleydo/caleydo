@@ -11,6 +11,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.histogram.GLHistogram;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
@@ -20,6 +21,7 @@ import org.caleydo.rcp.view.CaleydoRCPViewPart;
 import org.caleydo.rcp.view.opengl.RcpGLGlyphView;
 import org.caleydo.rcp.view.opengl.RcpGLHeatMapView;
 import org.caleydo.rcp.view.opengl.RcpGLHistogramView;
+import org.caleydo.rcp.view.opengl.RcpGLHyperbolicView;
 import org.caleydo.rcp.view.opengl.RcpGLParCoordsView;
 import org.caleydo.rcp.view.opengl.RcpGLRadialHierarchyView;
 import org.caleydo.rcp.view.opengl.RcpGLRemoteRenderingView;
@@ -27,6 +29,7 @@ import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.GlyphToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.HeatMapToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ParCoordsToolBarContent;
+import org.caleydo.rcp.view.swt.toolbar.content.hyperbolic.HyperbolicToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.radial.RadialHierarchyToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.remote.RemoteRenderingToolBarContent;
 import org.eclipse.core.runtime.Status;
@@ -129,6 +132,13 @@ public class ToolBarContentFactory {
 		info.viewClass = GLRadialHierarchy.class;
 		info.contentClass = RadialHierarchyToolBarContent.class;
 		info.rcpID = RcpGLRadialHierarchyView.ID;
+		info.ignored = false;
+		toolBarInfos.put(info.viewClass, info);
+		
+		info = new ToolBarInfo();
+		info.viewClass = GLHyperbolic.class;
+		info.contentClass = HyperbolicToolBarContent.class;
+		info.rcpID = RcpGLHyperbolicView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
