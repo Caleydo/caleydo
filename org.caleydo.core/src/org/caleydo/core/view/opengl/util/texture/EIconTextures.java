@@ -34,6 +34,7 @@ public enum EIconTextures {
 
 	// hierarchical heat map
 	HEAT_MAP_SYMBOL("resources/icons/view/storagebased/heatmap/heatmap128x128.png"),
+	HEAT_MAP_ICON("resources/icons/view/storagebased/heatmap/heatmap.png"),
 	HEAT_MAP_ARROW("resources/icons/view/storagebased/heatmap/hm_arrow.png"),
 	HEAT_MAP_GROUP_SELECTED("resources/icons/view/storagebased/heatmap/hm_group_selected.png"),
 	HEAT_MAP_GROUP_NORMAL("resources/icons/view/storagebased/heatmap/hm_group_normal.png"),
@@ -45,9 +46,13 @@ public enum EIconTextures {
 	DENDROGRAM_VERTICAL_SYMBOL("resources/icons/view/storagebased/dendrogram/dendrogram_vertical.png"),
 
 	PAR_COORDS_SYMBOL("resources/icons/view/storagebased/parcoords/parcoords128x128.png"),
-	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
-	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
+	PAR_COORDS_ICON("resources/icons/view/storagebased/parcoords/parcoords.png"),
 
+	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
+	PATHWAY_ICON("resources/icons/view/pathway/pathway.png"),
+	
+	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
+	GLYPH_ICON("resources/icons/view/glyph/glyph.png"),
 	GLYPH_SORT_RANDOM("resources/icons/view/glyph/sort_random.png"),
 	GLYPH_SORT_CIRCLE("resources/icons/view/glyph/sort_spirale.png"),
 	GLYPH_SORT_RECTANGLE("resources/icons/view/glyph/sort_zickzack.png"),

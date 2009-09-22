@@ -718,6 +718,10 @@ public abstract class AGLEventListener
 		return viewGUIID;
 	}
 
+	public EManagedObjectType getViewType() {
+		return viewType;
+	}
+	
 	public void setViewGUIID(String viewGUIID) {
 		this.viewGUIID = viewGUIID;
 	}

@@ -57,8 +57,8 @@ public class GeneticUseCase
 
 		possibleViews = new ArrayList<EManagedObjectType>();
 		// possibleViews.add(EManagedObjectType.GL_HEAT_MAP);
-		possibleViews.add(EManagedObjectType.GL_HIER_HEAT_MAP);
 		possibleViews.add(EManagedObjectType.GL_PARALLEL_COORDINATES);
+		possibleViews.add(EManagedObjectType.GL_HIER_HEAT_MAP);
 
 		possibleIDCategories = new HashMap<EIDCategory, Boolean>();
 		possibleIDCategories.put(EIDCategory.GENE, null);

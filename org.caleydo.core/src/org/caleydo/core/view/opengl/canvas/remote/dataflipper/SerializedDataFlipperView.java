@@ -58,19 +58,19 @@ public class SerializedDataFlipperView
 			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
 			initialContainedViews.add(parCoords);
 			SerializedPathwayView pathway = new SerializedPathwayView();
-			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
-				.toArray()[0]).getID());
-			initialContainedViews.add(pathway);
+//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
+//				.toArray()[0]).getID());
+//			initialContainedViews.add(pathway);
 			pathway = new SerializedPathwayView();
 			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
 				.toArray()[1]).getID());
 			initialContainedViews.add(pathway);
-			pathway = new SerializedPathwayView();
-			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
-				.toArray()[2]).getID());
-			initialContainedViews.add(pathway);
 			SerializedTissueView tissue = new SerializedTissueView();
 			initialContainedViews.add(tissue);
+//			pathway = new SerializedPathwayView();
+//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
+//				.toArray()[2]).getID());
+//			initialContainedViews.add(pathway);
 		}
 
 	}

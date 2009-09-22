@@ -17,12 +17,16 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.specialized.PathwayUseCase;
+import org.caleydo.core.manager.specialized.TissueUseCase;
+import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
@@ -33,9 +37,12 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.canvas.tissue.GLTissue;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -60,7 +67,7 @@ public class GLDataFlipper
 
 	private ArrayList<ASerializedView> newViews;
 
-	private ArrayList<Integer> containedViewIDs;
+	private ArrayList<AGLEventListener> containedGLViews;
 
 	private RemoteLevelElement focusElement;
 	private ArrayList<RemoteLevelElement> stackElementsLeft;
@@ -118,7 +125,7 @@ public class GLDataFlipper
 		glMouseListener.addGLCanvas(this);
 
 		newViews = new ArrayList<ASerializedView>();
-		containedViewIDs = new ArrayList<Integer>();
+		containedGLViews = new ArrayList<AGLEventListener>();
 		stackElementsRight = new ArrayList<RemoteLevelElement>();
 		stackElementsLeft = new ArrayList<RemoteLevelElement>();
 
@@ -155,6 +162,11 @@ public class GLDataFlipper
 
 		glConnectionLineRenderer =
 			new GLConnectionLineRendererDataFlipper(focusElement, stackElementsLeft, stackElementsRight);
+
+		// FIXME: remove when alex is ready with use case changes
+		generalManager.addUseCase(new ClinicalUseCase());
+		generalManager.addUseCase(new PathwayUseCase());
+		generalManager.addUseCase(new TissueUseCase());
 	}
 
 	@Override
@@ -339,7 +351,7 @@ public class GLDataFlipper
 			view.initRemote(gl, this, glMouseListener, infoAreaManager);
 			// view.getViewFrustum().considerAspectRatio(true);
 
-			containedViewIDs.add(view.getID());
+			containedGLViews.add(view);
 
 			if (focusElement.isFree()) {
 				focusElement.setContainedElementID(view.getID());
@@ -412,7 +424,17 @@ public class GLDataFlipper
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
-		glView.setDataDomain(dataDomain);
+
+		// TODO: remove when alex has finished use case work
+		if (glView instanceof GLTissue) {
+			glView.setDataDomain(EDataDomain.TISSUE_DATA);
+		}
+		else if (glView instanceof GLPathway) {
+			glView.setDataDomain(EDataDomain.PATHWAY_DATA);
+		}
+		else
+			glView.setDataDomain(dataDomain);
+
 		glView.setUseCase(useCase);
 		glView.setRemoteRenderingGLView(this);
 		glView.setSet(set);
@@ -712,6 +734,9 @@ public class GLDataFlipper
 
 	private void renderDataViewIcons(final GL gl, EDataDomain dataDomain) {
 
+		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
+		ArrayList<EManagedObjectType> possibleViews = useCase.getPossibleViews();
+
 		EIconTextures dataIcon = null;
 		float fXPos = 0.6f;
 
@@ -737,26 +762,169 @@ public class GLDataFlipper
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_DATA_ICON_BACKGROUND, new Vec3f(0, 0, 0),
 			new Vec3f(0.63f, 0, 0), new Vec3f(0.63f, 0.46f, 0), new Vec3f(0, 0.46f, 0), 1, 1, 1, 1);
 
+		// First view background
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(
 			0.15f, 0.47f, 0), new Vec3f(0, 0.47f, 0), new Vec3f(0, 0.62f, 0), new Vec3f(0.15f, 0.62f, 0), 1,
 			1, 1, 1);
 
+		// Second view background
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE, new Vec3f(
 			0.16f, 0.47f, 0), new Vec3f(0.31f, 0.47f, 0), new Vec3f(0.31f, 0.62f, 0), new Vec3f(0.16f, 0.62f,
 			0), 1, 1, 1, 1);
 
+		// Third view background
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE, new Vec3f(
 			0.32f, 0.47f, 0), new Vec3f(0.47f, 0.47f, 0), new Vec3f(0.47f, 0.62f, 0), new Vec3f(0.32f, 0.62f,
 			0), 1, 1, 1, 1);
 
+		// Forth view background
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(
 			0.48f, 0.47f, 0), new Vec3f(0.63f, 0.47f, 0), new Vec3f(0.63f, 0.62f, 0), new Vec3f(0.48f, 0.62f,
 			0), 1, 1, 1, 1);
 
-		textureManager.renderTexture(gl, dataIcon, new Vec3f(0f, 0f, 0.01f), new Vec3f(0.63f, 0.0f, 0.01f),
-			new Vec3f(0.63f, 0.47f, 0.01f), new Vec3f(0.0f, 0.47f, 0.01f), 1, 1, 1, 1);
+		for (int iViewIndex = 0; iViewIndex < possibleViews.size(); iViewIndex++) {
 
+			EIconTextures iconTextureType;
+			EManagedObjectType viewType = possibleViews.get(iViewIndex);
+			switch (viewType) {
+				case GL_HIER_HEAT_MAP:
+					iconTextureType = EIconTextures.HEAT_MAP_ICON;
+					break;
+				case GL_PARALLEL_COORDINATES:
+					iconTextureType = EIconTextures.PAR_COORDS_ICON;
+					break;
+				case GL_GLYPH:
+					iconTextureType = EIconTextures.GLYPH_ICON;
+					break;
+				case GL_PATHWAY:
+					iconTextureType = EIconTextures.PATHWAY_ICON;
+					break;
+				case GL_TISSUE:
+					iconTextureType = EIconTextures.TISSUE_SAMPLE;
+					break;
+				default:
+					iconTextureType = EIconTextures.LOCK;
+					break;
+			}
+
+			RemoteLevelElement element = findElementContainingView(dataDomain, viewType);
+
+			gl.glLineWidth(1);
+			gl.glColor3f(1, 0, 0);
+
+			gl.glBegin(GL.GL_LINES);
+
+			if (element != null)  {			
+
+//				gl.glTranslatef(fXPos, -2.6f, 3);			
+				Transform transform = element.getTransform();
+				Vec3f translation = transform.getTranslation();
+				Vec3f scale = transform.getScale();
+				
+//				GLHelperFunctions.drawAxis(gl);
+				
+				if (element == focusElement)
+					 gl.glVertex3f(-fXPos+translation.x(), 2.6f+translation.y()-1.5f, -3+translation.z());
+				else if (element == stackElementsLeft.get(0))
+					// LEFT first
+				 gl.glVertex3f(-fXPos+translation.x()-1.5f, 2.6f+translation.y()-1.5f, -3+translation.z());
+				else if (element == stackElementsLeft.get(1))
+//					// LEFT second
+					 gl.glVertex3f(-fXPos+translation.x()-1.5f, 2.6f+translation.y()-1.5f, -3+translation.z());
+				else if (element == stackElementsRight.get(0))
+//					// RIGHT first
+					gl.glVertex3f(-fXPos+2.8f, 2.6f-1.5f+0.02f, -3+4);
+				else if (element == stackElementsRight.get(1))
+//					// RIGHT second
+					gl.glVertex3f(-fXPos+2.8f+0.4f, 2.6f-1.5f+0.02f, -3+4);
+			}
+			
+			switch (iViewIndex) {
+				case 0:
+					gl.glVertex3f(0.08f, 0.63f, 0);
+					break;
+				case 1:
+					gl.glVertex3f(0.24f, 0.63f, 0);
+					break;
+				case 2:
+					gl.glVertex3f(0.40f, 0.63f, 0);
+					break;
+				case 3:
+					gl.glVertex3f(0.55f, 0.63f, 0);
+					break;
+			}
+
+			gl.glEnd();
+
+			float fIconBackgroundGray = 1;
+			if (element == null)
+				fIconBackgroundGray = 0.6f;
+
+			if (element != null)
+				gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT,
+					element.getID()));
+
+			gl.glTranslatef(0, 0, 0.001f);
+			switch (iViewIndex) {
+				case 0:
+					// Data icon
+					textureManager.renderTexture(gl, dataIcon, new Vec3f(0f, 0.02f, 0.01f), new Vec3f(0.63f,
+						0.02f, 0.01f), new Vec3f(0.63f, 0.43f, 0.01f), new Vec3f(0.0f, 0.43f, 0.01f), 1, 1,
+						1, 1);
+
+					// First view icon
+					textureManager.renderTexture(gl, iconTextureType, new Vec3f(0.14f, 0.49f, 0), new Vec3f(
+						0.02f, 0.49f, 0), new Vec3f(0.02f, 0.6f, 0), new Vec3f(0.14f, 0.6f, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
+					break;
+				case 1:
+					// Second view icon
+					textureManager.renderTexture(gl, iconTextureType, new Vec3f(0.17f, 0.49f, 0), new Vec3f(
+						0.29f, 0.49f, 0), new Vec3f(0.29f, 0.6f, 0), new Vec3f(0.17f, 0.6f, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
+					break;
+				case 2:
+					// Third view icon
+					textureManager.renderTexture(gl, iconTextureType, new Vec3f(0.32f, 0.52f, 0), new Vec3f(
+						0.45f, 0.52f, 0), new Vec3f(0.45f, 0.64f, 0), new Vec3f(0.32f, 0.62f, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
+					break;
+				case 3:
+					// Forth view icon
+					textureManager.renderTexture(gl, iconTextureType, new Vec3f(0.48f, 0.52f, 0), new Vec3f(
+						0.61f, 0.52f, 0), new Vec3f(0.61f, 0.64f, 0), new Vec3f(0.48f, 0.62f, 0),
+						fIconBackgroundGray, fIconBackgroundGray, fIconBackgroundGray, 1);
+					break;
+			}
+
+			if (element != null)
+				gl.glPopName();
+			gl.glTranslatef(0, 0, -0.001f);
+
+		}
 		gl.glTranslatef(-fXPos, 2.6f, -3);
+	}
+
+	private RemoteLevelElement findElementContainingView(EDataDomain dataDomain, EManagedObjectType viewType) {
+
+		for (AGLEventListener glView : containedGLViews) {
+			if (glView.getViewType() == viewType && glView.getDataDomain() == dataDomain) {
+				if (focusElement.getContainedElementID() == glView.getID())
+					return focusElement;
+
+				for (RemoteLevelElement element : stackElementsLeft) {
+					if (element.getContainedElementID() == glView.getID())
+						return element;
+				}
+
+				for (RemoteLevelElement element : stackElementsRight) {
+					if (element.getContainedElementID() == glView.getID())
+						return element;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	// FIXME: method copied from bucket
@@ -828,6 +996,16 @@ public class GLDataFlipper
 			gl.glRotatef(90, 0, 0, 1);
 			gl.glTranslatef(-1.165f, -2, -4.02f);
 		}
+	}
+
+	private void renderViewConnectionPipes(final GL gl, RemoteLevelElement element) {
+
+		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_STRAIGHT, new Vec3f(0, 0, 0),
+			new Vec3f(0.63f, 0, 0), new Vec3f(0.63f, 0.46f, 0), new Vec3f(0, 0.46f, 0), 1, 1, 1, 1);
+
+		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_CONNECTION_CORNER, new Vec3f(0, 0, 0),
+			new Vec3f(0.63f, 0, 0), new Vec3f(0.63f, 0.46f, 0), new Vec3f(0, 0.46f, 0), 1, 1, 1, 1);
+
 	}
 
 	// FIXME: method copied from bucket
@@ -1105,7 +1283,7 @@ public class GLDataFlipper
 			glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
 		}
 		else {
-			glActiveSubView.setDetailLevel(EDetailLevel.LOW);			
+			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 		}
 	}
 }
