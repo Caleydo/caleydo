@@ -13,6 +13,7 @@ import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.ICommandManager;
@@ -28,6 +29,8 @@ import org.caleydo.core.manager.specialized.TissueUseCase;
 import org.caleydo.core.manager.specialized.clinical.ClinicalUseCase;
 import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
@@ -35,6 +38,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
@@ -64,8 +68,13 @@ public class GLDataFlipper
 	private ArrayList<Integer> containedViewIDs;
 
 	private RemoteLevelElement focusElement;
-	private ArrayList<RemoteLevelElement> remoteLevelElementsLeft;
-	private ArrayList<RemoteLevelElement> remoteLevelElementsRight;
+	private ArrayList<RemoteLevelElement> stackElementsLeft;
+	private ArrayList<RemoteLevelElement> stackElementsRight;
+
+	protected AGLConnectionLineRenderer glConnectionLineRenderer;
+
+	/** Transformation utility object to transform and project view related coordinates */
+	protected RemoteRenderingTransformer selectionTransformer;
 
 	private GLInfoAreaManager infoAreaManager;
 
@@ -83,7 +92,7 @@ public class GLDataFlipper
 	private ArrayList<SlerpAction> arSlerpActions;
 
 	private Time time;
-	
+
 	private RemoteLevelElement lastPickedRemoteLevelElement;
 	private int iLastPickedViewID;
 
@@ -115,16 +124,16 @@ public class GLDataFlipper
 
 		newViews = new ArrayList<ASerializedView>();
 		containedViewIDs = new ArrayList<Integer>();
-		remoteLevelElementsRight = new ArrayList<RemoteLevelElement>();
-		remoteLevelElementsLeft = new ArrayList<RemoteLevelElement>();
+		stackElementsRight = new ArrayList<RemoteLevelElement>();
+		stackElementsLeft = new ArrayList<RemoteLevelElement>();
 
 		// TODO: Move to render style
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(-0.2f, -0f, 4));//-1.7f, -1.5f, 4));
+		transform.setTranslation(new Vec3f(-0.2f, -0f, 4));// -1.7f, -1.5f, 4));
 		transform.setScale(new Vec3f(1 / 2.3f, 1 / 2.3f, 1 / 2.3f));
-//		transform.setTranslation(new Vec3f(-1.95f, -1.4f, 0));
-//		transform.setScale(new Vec3f(1 / 1.15f, 1 / 1.15f, 1 / 1.1f));
-		
+		// transform.setTranslation(new Vec3f(-1.95f, -1.4f, 0));
+		// transform.setScale(new Vec3f(1 / 1.15f, 1 / 1.15f, 1 / 1.1f));
+
 		focusElement = new RemoteLevelElement(null);
 		focusElement.setTransform(transform);
 		RemoteElementManager.get().registerItem(focusElement);
@@ -132,27 +141,37 @@ public class GLDataFlipper
 		for (int iSideViewsIndex = 1; iSideViewsIndex <= MAX_SIDE_VIEWS; iSideViewsIndex++) {
 			RemoteLevelElement newElement = new RemoteLevelElement(null);
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2.2f - iSideViewsIndex / 2f +1.5f, -1.5f+1.5f, 4f));
+			transform.setTranslation(new Vec3f(-2.2f - iSideViewsIndex / 2f + 1.5f, -1.5f + 1.5f, 4f));
 			transform.setScale(new Vec3f(1 / 2.3f, 1 / 2.3f, 1 / 2.3f));
 			transform.setRotation(new Rotf(new Vec3f(0, 1, 0), Vec3f.convertGrad2Radiant(100)));
 			newElement.setTransform(transform);
-			remoteLevelElementsLeft.add(newElement);
+			stackElementsLeft.add(newElement);
 			RemoteElementManager.get().registerItem(newElement);
 
 			newElement = new RemoteLevelElement(null);
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(3.6f + iSideViewsIndex / 2f+1.5f, -1.79f+1.5f, -1f));
+			transform.setTranslation(new Vec3f(3.6f + iSideViewsIndex / 2f + 1.5f, -1.79f + 1.5f, -1f));
 			transform.setScale(new Vec3f(1 / 1.9f, 1 / 1.9f, 1 / 1.9f));
 			transform.setRotation(new Rotf(new Vec3f(0, -1, 0), Vec3f.convertGrad2Radiant(100)));
 			newElement.setTransform(transform);
-			remoteLevelElementsRight.add(newElement);
+			stackElementsRight.add(newElement);
 			RemoteElementManager.get().registerItem(newElement);
 		}
+
+		glConnectionLineRenderer =
+			new GLConnectionLineRendererDataFlipper(focusElement, stackElementsLeft, stackElementsRight);
 	}
 
 	@Override
 	public void initLocal(final GL gl) {
 		// iGLDisplayList = gl.glGenLists(1);
+
+		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
+		remoteLevelElementWhiteList.add(focusElement);
+		remoteLevelElementWhiteList.add(stackElementsLeft.get(0));
+		remoteLevelElementWhiteList.add(stackElementsRight.get(0));
+		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
+
 		init(gl);
 	}
 
@@ -173,12 +192,20 @@ public class GLDataFlipper
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
 
+		if (glConnectionLineRenderer != null) {
+			glConnectionLineRenderer.init(gl);
+		}
+
 	}
 
 	@Override
 	public void displayLocal(final GL gl) {
 
 		pickingManager.handlePicking(this, gl);
+
+		ConnectedElementRepresentationManager cerm =
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		display(gl);
 
@@ -218,19 +245,19 @@ public class GLDataFlipper
 		initNewView(gl);
 
 		renderHandles(gl);
-		renderDataViewIcons(gl, GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA));
-		renderDataViewIcons(gl, new TissueUseCase());
-		renderDataViewIcons(gl, useCase);
-		renderDataViewIcons(gl, new PathwayUseCase());
+		renderDataViewIcons(gl, EDataDomain.CLINICAL_DATA);
+		renderDataViewIcons(gl, EDataDomain.TISSUE_DATA);
+		renderDataViewIcons(gl, EDataDomain.GENETIC_DATA);
+		renderDataViewIcons(gl, EDataDomain.PATHWAY_DATA);
 
 		// renderHandles(gl);
 		renderRemoteLevelElement(gl, focusElement);
 
-		for (RemoteLevelElement element : remoteLevelElementsLeft) {
+		for (RemoteLevelElement element : stackElementsLeft) {
 			renderRemoteLevelElement(gl, element);
 		}
 
-		for (RemoteLevelElement element : remoteLevelElementsRight) {
+		for (RemoteLevelElement element : stackElementsRight) {
 			renderRemoteLevelElement(gl, element);
 		}
 
@@ -241,6 +268,10 @@ public class GLDataFlipper
 		// gl.glVertex3f(1, 6, 3);
 		// gl.glEnd();
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
+		if (glConnectionLineRenderer != null && arSlerpActions.isEmpty()) {
+			glConnectionLineRenderer.render(gl);
+		}
 
 		float fZTranslation = 0;
 		fZTranslation = 4f;
@@ -280,7 +311,7 @@ public class GLDataFlipper
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
 
-		gl.glTranslatef(translation.x()-1.5f, translation.y()-1.5f, translation.z());
+		gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f, translation.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
@@ -311,33 +342,38 @@ public class GLDataFlipper
 
 			// TODO: remove when activating slerp
 			view.initRemote(gl, this, glMouseListener, infoAreaManager);
-			view.setDetailLevel(EDetailLevel.HIGH);
 			// view.getViewFrustum().considerAspectRatio(true);
 
 			containedViewIDs.add(view.getID());
 
 			if (focusElement.isFree()) {
 				focusElement.setContainedElementID(view.getID());
+				view.setRemoteLevelElement(focusElement);
+				view.setDetailLevel(EDetailLevel.HIGH);
 			}
 			else {
 
 				if (newViews.size() % 2 == 0) {
 
-					Iterator<RemoteLevelElement> iter = remoteLevelElementsLeft.iterator();
+					Iterator<RemoteLevelElement> iter = stackElementsLeft.iterator();
 					while (iter.hasNext()) {
 						RemoteLevelElement element = iter.next();
 						if (element.isFree()) {
 							element.setContainedElementID(view.getID());
+							view.setRemoteLevelElement(element);
+							view.setDetailLevel(EDetailLevel.LOW);
 							break;
 						}
 					}
 				}
 				else {
-					Iterator<RemoteLevelElement> iter = remoteLevelElementsRight.iterator();
+					Iterator<RemoteLevelElement> iter = stackElementsRight.iterator();
 					while (iter.hasNext()) {
 						RemoteLevelElement element = iter.next();
 						if (element.isFree()) {
 							element.setContainedElementID(view.getID());
+							view.setRemoteLevelElement(element);
+							view.setDetailLevel(EDetailLevel.LOW);
 							break;
 						}
 					}
@@ -381,6 +417,7 @@ public class GLDataFlipper
 		cmdView.doCommand();
 
 		AGLEventListener glView = cmdView.getCreatedObject();
+		glView.setDataDomain(dataDomain);
 		glView.setUseCase(useCase);
 		glView.setRemoteRenderingGLView(this);
 		glView.setSet(set);
@@ -441,18 +478,20 @@ public class GLDataFlipper
 		// Check if slerp action is finished
 		if (iSlerpFactor >= SLERP_RANGE) {
 
-//			// Finish in reverse order - otherwise the target ID would overwrite the next
-//			for (int iSlerpIndex = arSlerpActions.size() - 1; iSlerpIndex >= 0; iSlerpIndex--) {
-//				arSlerpActions.get(iSlerpIndex).finished();
-//			}
-			
+			// // Finish in reverse order - otherwise the target ID would overwrite the next
+			// for (int iSlerpIndex = arSlerpActions.size() - 1; iSlerpIndex >= 0; iSlerpIndex--) {
+			// arSlerpActions.get(iSlerpIndex).finished();
+			// }
+
 			for (SlerpAction tmpSlerpAction : arSlerpActions) {
 				tmpSlerpAction.finished();
+
+				updateViewDetailLevels(tmpSlerpAction.getDestinationRemoteLevelElement());
 			}
 
 			arSlerpActions.clear();
 			iSlerpFactor = 0;
-			
+
 			// Trigger chain move when selected view has not reached the focus position
 			if (iLastPickedViewID != focusElement.getContainedElementID())
 				chainMove(lastPickedRemoteLevelElement);
@@ -542,9 +581,29 @@ public class GLDataFlipper
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick) {
 
 		switch (pickingType) {
+
+			case VIEW_SELECTION:
+				switch (pickingMode) {
+					case MOUSE_OVER:
+
+						setDisplayListDirty();
+						break;
+
+					case CLICKED:
+						break;
+					case RIGHT_CLICKED:
+						contextMenu.setLocation(pick.getPickedPoint(), getParentGLCanvas().getWidth(),
+							getParentGLCanvas().getHeight());
+						contextMenu.setMasterGLView(this);
+						break;
+
+				}
+				infoAreaManager.setData(iExternalID, EIDType.EXPRESSION_INDEX, pick.getPickedPoint(), 0.3f);// pick.getDepth());
+				break;
 
 			case REMOTE_LEVEL_ELEMENT:
 				switch (pickingMode) {
@@ -580,66 +639,61 @@ public class GLDataFlipper
 
 	private void chainMove(RemoteLevelElement selectedElement) {
 		// Chain slerping to the right
-		if (remoteLevelElementsLeft.contains(selectedElement)) {
+		if (stackElementsLeft.contains(selectedElement)) {
 
-			for (int iElementIndex = remoteLevelElementsLeft.size(); iElementIndex >= 0; iElementIndex--) {
+			for (int iElementIndex = stackElementsLeft.size(); iElementIndex >= 0; iElementIndex--) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-					arSlerpActions.add(new SlerpAction(remoteLevelElementsLeft
-						.get(iElementIndex + 1), remoteLevelElementsLeft.get(iElementIndex)));
+					arSlerpActions.add(new SlerpAction(stackElementsLeft.get(iElementIndex + 1),
+						stackElementsLeft.get(iElementIndex)));
 				}
 
 				if (iElementIndex == 0) {
-					arSlerpActions.add(new SlerpAction(remoteLevelElementsLeft
-						.get(iElementIndex), focusElement));
+					arSlerpActions.add(new SlerpAction(stackElementsLeft.get(iElementIndex), focusElement));
 				}
 			}
 
-			arSlerpActions
-				.add(new SlerpAction(focusElement, remoteLevelElementsRight.get(0)));
+			arSlerpActions.add(new SlerpAction(focusElement, stackElementsRight.get(0)));
 
-			for (int iElementIndex = 0; iElementIndex < remoteLevelElementsRight.size(); iElementIndex++) {
+			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
 					// if (!remoteLevelElementsRight.get(iElementIndex + 1).isFree()) {
-					arSlerpActions
-						.add(new SlerpAction(remoteLevelElementsRight.get(iElementIndex),
-							remoteLevelElementsRight.get(iElementIndex + 1)));
+					arSlerpActions.add(new SlerpAction(stackElementsRight.get(iElementIndex),
+						stackElementsRight.get(iElementIndex + 1)));
 					// }
 				}
 			}
 		}
 		// Chain slerping to the left
-		else if (remoteLevelElementsRight.contains(selectedElement)) {
+		else if (stackElementsRight.contains(selectedElement)) {
 
-			for (int iElementIndex = 0; iElementIndex < remoteLevelElementsRight.size(); iElementIndex++) {
+			for (int iElementIndex = 0; iElementIndex < stackElementsRight.size(); iElementIndex++) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
-					arSlerpActions
-						.add(new SlerpAction(remoteLevelElementsRight.get(iElementIndex + 1),
-							remoteLevelElementsRight.get(iElementIndex)));
+					arSlerpActions.add(new SlerpAction(stackElementsRight.get(iElementIndex + 1),
+						stackElementsRight.get(iElementIndex)));
 				}
 
 				if (iElementIndex == 0) {
-					arSlerpActions.add(new SlerpAction(remoteLevelElementsRight
-						.get(iElementIndex), focusElement));
+					arSlerpActions.add(new SlerpAction(stackElementsRight.get(iElementIndex), focusElement));
 				}
 			}
 
-			arSlerpActions.add(new SlerpAction(focusElement, remoteLevelElementsLeft.get(0)));
+			arSlerpActions.add(new SlerpAction(focusElement, stackElementsLeft.get(0)));
 
-			for (int iElementIndex = 0; iElementIndex < remoteLevelElementsLeft.size(); iElementIndex++) {
+			for (int iElementIndex = 0; iElementIndex < stackElementsLeft.size(); iElementIndex++) {
 
 				if (iElementIndex < (MAX_SIDE_VIEWS - 1)) {
 					// if (!remoteLevelElementsLeft.get(iElementIndex + 1).isFree()) {
-					arSlerpActions.add(new SlerpAction(remoteLevelElementsLeft
-						.get(iElementIndex), remoteLevelElementsLeft.get(iElementIndex + 1)));
+					arSlerpActions.add(new SlerpAction(stackElementsLeft.get(iElementIndex),
+						stackElementsLeft.get(iElementIndex + 1)));
 					// }
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		// TODO Auto-generated method stub
@@ -661,24 +715,24 @@ public class GLDataFlipper
 		// glView.reshape(drawable, x, y, width, height);
 	}
 
-	private void renderDataViewIcons(final GL gl, IUseCase dataDomain) {
+	private void renderDataViewIcons(final GL gl, EDataDomain dataDomain) {
 
 		EIconTextures dataIcon = null;
 		float fXPos = 0.6f;
-		
-		if (dataDomain instanceof ClinicalUseCase) {
+
+		if (dataDomain == EDataDomain.CLINICAL_DATA) {
 			dataIcon = EIconTextures.DATA_FLIPPER_DATA_ICON_PATIENT;
 			fXPos += -2.4f;
 		}
-		else if (dataDomain instanceof TissueUseCase) {
+		else if (dataDomain == EDataDomain.TISSUE_DATA) {
 			dataIcon = EIconTextures.DATA_FLIPPER_DATA_ICON_TISSUE;
 			fXPos += -1.4f;
 		}
-		else if (dataDomain instanceof GeneticUseCase) {
+		else if (dataDomain == EDataDomain.GENETIC_DATA) {
 			dataIcon = EIconTextures.DATA_FLIPPER_DATA_ICON_GENE_EXPRESSION;
 			fXPos += -0.4f;
 		}
-		else if (dataDomain instanceof PathwayUseCase) {
+		else if (dataDomain == EDataDomain.PATHWAY_DATA) {
 			dataIcon = EIconTextures.DATA_FLIPPER_DATA_ICON_PATHWAY;
 			fXPos += 0.6f;
 		}
@@ -703,10 +757,9 @@ public class GLDataFlipper
 		textureManager.renderTexture(gl, EIconTextures.DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED, new Vec3f(
 			0.48f, 0.47f, 0), new Vec3f(0.63f, 0.47f, 0), new Vec3f(0.63f, 0.62f, 0), new Vec3f(0.48f, 0.62f,
 			0), 1, 1, 1, 1);
-		
-		textureManager.renderTexture(gl, dataIcon, new Vec3f(0f,
-			0f, 0.01f), new Vec3f(0.63f, 0.0f, 0.01f), new Vec3f(0.63f, 0.47f, 0.01f), new Vec3f(0.0f,
-			0.47f, 0.01f), 1, 1, 1, 1);
+
+		textureManager.renderTexture(gl, dataIcon, new Vec3f(0f, 0f, 0.01f), new Vec3f(0.63f, 0.0f, 0.01f),
+			new Vec3f(0.63f, 0.47f, 0.01f), new Vec3f(0.0f, 0.47f, 0.01f), 1, 1, 1, 1);
 
 		gl.glTranslatef(-fXPos, 2.6f, -3);
 	}
@@ -728,19 +781,19 @@ public class GLDataFlipper
 			translation = transform.getTranslation();
 			scale = transform.getScale();
 
-			gl.glTranslatef(translation.x()-1.5f, translation.y() - 0.075f + fYCorrection,
+			gl.glTranslatef(translation.x() - 1.5f, translation.y() - 0.075f + fYCorrection,
 				translation.z() + 0.001f);
 
-//			gl.glScalef(scale.x() * 4, scale.y() * 4, 1);
+			// gl.glScalef(scale.x() * 4, scale.y() * 4, 1);
 			renderNavigationHandleBar(gl, element, 3.48f, 0.075f, false, 2);
-//			gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1);
+			// gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1);
 
-			gl.glTranslatef(-translation.x()+1.5f, -translation.y() + 0.075f - fYCorrection,
-				-translation.z() - 0.001f);
+			gl.glTranslatef(-translation.x() + 1.5f, -translation.y() + 0.075f - fYCorrection, -translation
+				.z() - 0.001f);
 		}
 
 		// Left first
-		element = remoteLevelElementsLeft.get(0);
+		element = stackElementsLeft.get(0);
 		if (element.getContainedElementID() != -1) {
 
 			gl.glTranslatef(-0.68f, -1.495f, 4.02f);
@@ -751,7 +804,7 @@ public class GLDataFlipper
 		}
 
 		// Left second
-		element = remoteLevelElementsLeft.get(1);
+		element = stackElementsLeft.get(1);
 		if (element.getContainedElementID() != -1) {
 
 			gl.glTranslatef(-1.17f, -1.495f, 4.02f);
@@ -762,7 +815,7 @@ public class GLDataFlipper
 		}
 
 		// Right first
-		element = remoteLevelElementsRight.get(0);
+		element = stackElementsRight.get(0);
 		if (element.getContainedElementID() != -1) {
 			gl.glTranslatef(0.765f, 2, 4.02f);
 			gl.glRotatef(-90, 0, 0, 1);
@@ -772,7 +825,7 @@ public class GLDataFlipper
 		}
 
 		// Right second
-		element = remoteLevelElementsRight.get(1);
+		element = stackElementsRight.get(1);
 		if (element.getContainedElementID() != -1) {
 			gl.glTranslatef(1.165f, 2, 4.02f);
 			gl.glRotatef(-90, 0, 0, 1);
@@ -1041,5 +1094,23 @@ public class GLDataFlipper
 
 		gl.glColor4f(0.4f, 0.4f, 0.4f, 1f);
 		gl.glLineWidth(1f);
+	}
+
+	private void updateViewDetailLevels(RemoteLevelElement element) {
+		if (element.getContainedElementID() == -1)
+			return;
+
+		AGLEventListener glActiveSubView =
+			GeneralManager.get().getViewGLCanvasManager().getGLEventListener(element.getContainedElementID());
+
+		glActiveSubView.setRemoteLevelElement(element);
+
+		// Update detail level of moved view when slerp action is finished;
+		if (element == focusElement) {
+			glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
+		}
+		else {
+			glActiveSubView.setDetailLevel(EDetailLevel.LOW);			
+		}
 	}
 }

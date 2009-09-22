@@ -21,7 +21,7 @@ public class GLConnectionLineRendererJukebox
 	 */
 	public GLConnectionLineRendererJukebox(final RemoteLevel focusLevel, final RemoteLevel stackLevel,
 		final RemoteLevel poolLevel) {
-		super(focusLevel, stackLevel, poolLevel);
+		super();
 	}
 
 	@Override

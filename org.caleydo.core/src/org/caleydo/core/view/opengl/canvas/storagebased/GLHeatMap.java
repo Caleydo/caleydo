@@ -52,6 +52,7 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.listener.GLHeatMapKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.ExperimentContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.contextmenu.container.GeneContextMenuItemContainer;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
@@ -224,7 +225,7 @@ public class GLHeatMap
 		if (bIsDisplayListDirtyRemote) {
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
-//			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+			// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
@@ -983,9 +984,14 @@ public class GLHeatMap
 			// break;
 			// }
 
+			int iViewID = iUniqueID;
+			// If rendered remote (hierarchical heat map) - use the remote view ID
+			if (glRemoteRenderingView != null)
+				iViewID = glRemoteRenderingView.getID();
+			
 			if (bRenderStorageHorizontally) {
 				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, fXValue
 						+ fAnimationTranslation, fYValue, 0);
 
 			}
@@ -994,7 +1000,7 @@ public class GLHeatMap
 				Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 				vecPoint.setY(vecPoint.y() + vecTranslation.y());
 				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, vecPoint.x(), vecPoint.y()
 						- fAnimationTranslation, 0);
 
 			}
@@ -1208,6 +1214,16 @@ public class GLHeatMap
 		return "Standalone heat map, rendered remote: " + isRenderedRemote() + ", contentSize: "
 			+ contentVA.size() + ", storageSize: " + storageVA.size() + ", contentVAType: " + contentVAType
 			+ ", remoteRenderer:" + getRemoteRenderingGLCanvas();
+	}
+
+	@Override
+	public RemoteLevelElement getRemoteLevelElement() {
+
+		// If the view is rendered remote - the remote level element from the parent is returned
+		if (glRemoteRenderingView != null && glRemoteRenderingView instanceof AGLEventListener)
+			return ((AGLEventListener) glRemoteRenderingView).getRemoteLevelElement();
+
+		return super.getRemoteLevelElement();
 	}
 
 }

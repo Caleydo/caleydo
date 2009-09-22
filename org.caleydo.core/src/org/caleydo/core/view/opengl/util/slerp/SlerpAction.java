@@ -1,5 +1,8 @@
 package org.caleydo.core.view.opengl.util.slerp;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
@@ -40,6 +43,12 @@ public class SlerpAction {
 
 	public void finished() {
 		destinationRemoteLevelElement.setContainedElementID(iElementID);
+		
+		if (iElementID != -1) {
+			AGLEventListener glView = (AGLEventListener)GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iElementID);
+			if (glView != null)
+				glView.setRemoteLevelElement(destinationRemoteLevelElement);			
+		}
 	}
 
 	public int getElementId() {

@@ -477,7 +477,7 @@ public class Application
 		startViews.add(SerializedHTMLBrowserView.class);
 
 		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
-		if ((dataDomain == EDataDomain.GENETIC_DATA && ((GeneticUseCase) useCase).isPathwayViewerMode())
+		if ((dataDomain == EDataDomain.GENETIC_DATA && !((GeneticUseCase) useCase).isPathwayViewerMode())
 			|| useCase instanceof UnspecifiedUseCase) {
 			// alStartViews.add(EStartViewType.TABULAR);
 			startViews.add(SerializedParallelCoordinatesView.class);

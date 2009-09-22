@@ -49,4 +49,13 @@ public enum EApplicationMode {
 	EDataDomain getDataDomain() {
 		return dataDomain;
 	}
+	
+	public static EApplicationMode getApplicationModeFromDomain(EDataDomain dataDomain) {
+		for (EApplicationMode mode : EApplicationMode.values()) {
+			if (mode.getDataDomain() == dataDomain)
+				return mode;
+		}
+		
+		return EApplicationMode.GENE_EXPRESSION_NEW_DATA;
+	}
 }

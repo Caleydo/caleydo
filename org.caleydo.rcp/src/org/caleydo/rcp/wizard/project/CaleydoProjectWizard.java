@@ -59,14 +59,14 @@ public class CaleydoProjectWizard
 
 			// When the user changed the selection use case mode compared to the stored mode in the
 			// preferences the old workbench state should be deleted.
-			EApplicationMode eOldUseCaseMode =
-				EApplicationMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE));
-
+//			EApplicationMode eOldUseCaseMode =
+				
+			EDataDomain dataDomain = EDataDomain.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE));
+			EApplicationMode eOldUseCaseMode = EApplicationMode.getApplicationModeFromDomain(dataDomain);
+			
 			if (page.getApplicationMode() != eOldUseCaseMode)
 				Application.bDeleteRestoredWorkbenchState = true;
 
-			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, page.getApplicationMode()
-				.name());
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
 
 			try {
@@ -143,6 +143,8 @@ public class CaleydoProjectWizard
 				throw new IllegalStateException("Not implemented!");
 			}
 
+			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_USE_CASE_MODE, Application.dataDomain.name());
+			
 			GeneralManager.get().addUseCase(useCase);
 
 			return true;

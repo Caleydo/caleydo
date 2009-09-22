@@ -268,7 +268,7 @@ public class GLRemoteRendering
 		spawnLevel = layoutRenderStyle.initSpawnLevel();
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel, poolLevel);
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel, stackLevel, poolLevel);
@@ -294,7 +294,12 @@ public class GLRemoteRendering
 	@Override
 	public void initLocal(final GL gl) {
 		// iGLDisplayList = gl.glGenLists(1);
-		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, focusLevel, stackLevel);
+
+		ArrayList<RemoteLevelElement> remoteLevelElementWhiteList = new ArrayList<RemoteLevelElement>();
+		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
+		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
+		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
+		
 		init(gl);
 	}
 
@@ -2135,7 +2140,7 @@ public class GLRemoteRendering
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel, poolLevel);
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX)) {
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum, layoutRenderStyle);

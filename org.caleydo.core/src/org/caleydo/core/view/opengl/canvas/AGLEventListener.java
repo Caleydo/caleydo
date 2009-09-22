@@ -514,7 +514,8 @@ public abstract class AGLEventListener
 		this.remoteLevelElement = element;
 	}
 
-	public final RemoteLevelElement getRemoteLevelElement() {
+	public RemoteLevelElement getRemoteLevelElement() {
+				
 		return remoteLevelElement;
 	}
 
