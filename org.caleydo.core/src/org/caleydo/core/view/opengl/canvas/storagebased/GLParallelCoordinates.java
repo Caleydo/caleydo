@@ -42,9 +42,9 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.mapping.EIDCategory;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -145,7 +145,7 @@ public class GLParallelCoordinates
 	 * pair of values which make up the upper and lower gate tip
 	 */
 	// private HashMap<Integer, Pair<Float, Float>> hashGates;
-	private HashMap<Integer, Gate> hashGates;
+	private HashMap<Integer, AGate> hashGates;
 	private HashMap<Integer, ArrayList<Integer>> hashIsGateBlocking;
 	/**
 	 * Hashes how many gates are used on a axis
@@ -633,10 +633,25 @@ public class GLParallelCoordinates
 	 * Build mapping between polyline/axis and storage/content for virtual arrays and selection managers
 	 */
 	private void initContentVariables() {
+		EIDType contentDataType;
+		EIDType storageDataType;
+		if (dataDomain == EDataDomain.GENETIC_DATA) {
+			contentDataType = EIDType.EXPRESSION_INDEX;
+			storageDataType = EIDType.EXPERIMENT_INDEX;
+		}
+		else if (dataDomain == EDataDomain.CLINICAL_DATA) {
+			contentDataType = EIDType.EXPERIMENT_INDEX;
+			storageDataType = EIDType.EXPERIMENT_RECORD;
+		}
+		else {
+			throw new IllegalStateException("Unsupported data domain (" + dataDomain
+				+ ") for parallel coordinates");
+		}
+
 		if (bRenderStorageHorizontally) {
 
-			eAxisDataType = EIDType.EXPRESSION_INDEX;
-			ePolylineDataType = EIDType.EXPERIMENT_INDEX;
+			eAxisDataType = contentDataType;
+			ePolylineDataType = storageDataType;
 
 			axisVA = contentVA;
 			axisVAType = contentVAType;
@@ -666,7 +681,7 @@ public class GLParallelCoordinates
 	 * the gate
 	 */
 	private void initGates() {
-		hashGates = new HashMap<Integer, Gate>();
+		hashGates = new HashMap<Integer, AGate>();
 		hashNumberOfGatesPerAxisID = new HashMap<Integer, Integer>();
 		hashIsGateBlocking = new HashMap<Integer, ArrayList<Integer>>();
 		if (set.isSetHomogeneous()) {
@@ -1276,7 +1291,7 @@ public class GLParallelCoordinates
 		for (Integer iGateID : hashGates.keySet()) {
 			// Gate ID / 1000 is axis ID
 			int iAxisID = iGateID / 1000;
-			Gate gate = hashGates.get(iGateID);
+			AGate gate = hashGates.get(iGateID);
 			// Pair<Float, Float> gate = hashGates.get(iGateID);
 			// TODO for all indices
 
@@ -1284,6 +1299,8 @@ public class GLParallelCoordinates
 			for (int iAxisIndex : iAlAxisIndex) {
 				float fCurrentPosition = alAxisSpacing.get(iAxisIndex);
 				gate.setCurrentPosition(fCurrentPosition);
+				String label = set.get(iAxisID).getLabel();
+
 				gate.draw(gl, pickingManager, textureManager, textRenderer, iUniqueID);
 				// renderSingleGate(gl, gate, iAxisID, iGateID, fCurrentPosition);
 			}
@@ -1579,7 +1596,7 @@ public class GLParallelCoordinates
 			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
 		// todo only valid for one gate
-		Gate gate = null;
+		AGate gate = null;
 		if (iDraggedGateNumber > 999) {
 			gate = hashGates.get(iDraggedGateNumber);
 		}
@@ -1622,14 +1639,17 @@ public class GLParallelCoordinates
 			if (alCurrentGateBlocks == null)
 				return;
 			alCurrentGateBlocks.clear();
-			Gate gate = hashGates.get(iGateID);
+			AGate gate = hashGates.get(iGateID);
 
 			for (int iPolylineIndex : polylineVA) {
+				EDataRepresentation usedDataRepresentation = EDataRepresentation.RAW;
+				if (!set.isSetHomogeneous())
+					usedDataRepresentation = EDataRepresentation.NORMALIZED;
 				if (bRenderStorageHorizontally) {
-					fCurrentValue = set.get(iPolylineIndex).getFloat(EDataRepresentation.RAW, iAxisID);
+					fCurrentValue = set.get(iPolylineIndex).getFloat(usedDataRepresentation, iAxisID);
 				}
 				else {
-					fCurrentValue = set.get(iAxisID).getFloat(EDataRepresentation.RAW, iPolylineIndex);
+					fCurrentValue = set.get(iAxisID).getFloat(usedDataRepresentation, iPolylineIndex);
 				}
 
 				if (Float.isNaN(fCurrentValue)) {
@@ -1744,7 +1764,8 @@ public class GLParallelCoordinates
 
 		handleGateUnselection();
 		handleNANUnselection();
-		handleMasterGateUnselection();
+		if (set.isSetHomogeneous())
+			handleMasterGateUnselection();
 
 		// HashMap<Integer, Boolean> hashDeselectedPolylines = new
 		// HashMap<Integer, Boolean>();
@@ -2102,9 +2123,15 @@ public class GLParallelCoordinates
 						}
 						hashNumberOfGatesPerAxisID.put(iExternalID, iGateCount);
 						int iGateID = iExternalID * 1000 + iGateCount;
-						Gate gate =
-							new Gate(iGateID, (float) set.getRawForNormalized(0), (float) set
-								.getRawForNormalized(0.5f), set, renderStyle);
+						AGate gate;
+						if (set.isSetHomogeneous()) {
+							gate =
+								new Gate(iGateID, (float) set.getRawForNormalized(0), (float) set
+									.getRawForNormalized(0.5f), set, renderStyle);
+						}
+						else {
+							gate = new NominalGate(iGateID, 0, 0.5f, set, renderStyle);
+						}
 						hashGates.put(iGateID, gate);
 						// hashGates.put(iGateID, new Pair<Float, Float>(0f, renderStyle.getAxisHeight() /
 						// 2f));
@@ -2919,6 +2946,11 @@ public class GLParallelCoordinates
 			return ("PCs, standalone, " + iNumElements + " elements");
 		else
 			return ("PCs, remote, " + iNumElements + " elements");
+	}
+
+	@Override
+	public void setSet(ISet set) {
+		super.setSet(set);
 	}
 
 }

@@ -551,7 +551,7 @@ public class Set
 		SetExporter exporter = new SetExporter();
 		exporter.exportGroups(this, sFileName, alGenes, alExperiments);
 	}
-	
+
 	@Override
 	public ArrayList<IVirtualArray> cluster(ClusterState clusterState) {
 
@@ -724,7 +724,7 @@ public class Set
 
 	@Override
 	public String toString() {
-		return "Set " + getLabel() + " with " + alStorages.size() + " storages.";
+		return "Set " + getLabel() + " of type " + setType + " with " + alStorages.size() + " storages.";
 	}
 
 	@Override

@@ -42,6 +42,7 @@ public enum EIDType {
 		"Experiment ID",
 		"The ID of the experiments"),
 	EXPERIMENT_INDEX(EIDCategory.EXPERIMENT, EStorageType.INT, "Experiment Index", "The experiment index"),
+	EXPERIMENT_RECORD(EIDCategory.EXPERIMENT, EStorageType.INT, "Experiment Record", "The other dimension to the experiment index, eg., gender, age etc."),
 
 	CELL_COMPONENT(EIDCategory.OTHER, EStorageType.STRING, "GO Cell Component", "The GO cell component"),
 

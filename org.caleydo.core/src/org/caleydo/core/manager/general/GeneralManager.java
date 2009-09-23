@@ -2,6 +2,7 @@ package org.caleydo.core.manager.general;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.EnumMap;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
@@ -85,14 +86,11 @@ public class GeneralManager
 	private TrackDataProvider trackDataProvider;
 	private IGroupwareManager groupwareManager;
 	private SerializationManager serializationManager;
-	
-
 
 	/**
 	 * The use case determines which kind of data is loaded in the views.
 	 */
 	private EnumMap<EDataDomain, IUseCase> useCaseMap;
-
 
 	private boolean bIsWiiMode = false;
 
@@ -169,8 +167,9 @@ public class GeneralManager
 
 				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
 				messageBox.setText("Clean old data");
-				messageBox
-					.setMessage("You have downloaded a new major version of Caleydo ("+IGeneralManager.VERSION+"). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
+				messageBox.setMessage("You have downloaded a new major version of Caleydo ("
+					+ IGeneralManager.VERSION
+					+ "). \nYour old Caleydo settings and pathway data will be discarded and newly created.");
 				messageBox.open();
 
 				CmdFetchPathwayData.deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH));
@@ -205,10 +204,9 @@ public class GeneralManager
 			throw new IllegalStateException(
 				"Unable to create log folder .caleydo/log. Check user permissions!");
 
-//		logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at "
-//			+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
+		// logger.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Create new preference store at "
+		// + IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME));
 
-	
 	}
 
 	/**
@@ -336,5 +334,10 @@ public class GeneralManager
 	@Override
 	public SerializationManager getSerializationManager() {
 		return serializationManager;
+	}
+
+	@Override
+	public Collection<IUseCase> getAllUseCases() {
+		return useCaseMap.values();
 	}
 }

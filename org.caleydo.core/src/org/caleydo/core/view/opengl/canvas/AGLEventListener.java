@@ -677,7 +677,7 @@ public abstract class AGLEventListener
 	 * Sets the set, calls {@link #initData()} and sets display lists dirty
 	 */
 	@Override
-	public final void setSet(ISet set) {
+	public  void setSet(ISet set) {
 
 		this.set = set;
 		initData();

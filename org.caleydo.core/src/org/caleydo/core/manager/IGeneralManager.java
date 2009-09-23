@@ -1,6 +1,7 @@
 package org.caleydo.core.manager;
 
 import java.io.File;
+import java.util.Collection;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
@@ -111,6 +112,12 @@ public interface IGeneralManager {
 	 * and which data set is currently in use.
 	 */
 	public IUseCase getUseCase(EDataDomain useCaseType);
+	
+	/**
+	 * Returns all use cases that are currently registered.
+	 * @return
+	 */
+	public Collection<IUseCase> getAllUseCases();
 	
 	/**
 	 * Set a different use case. The use case changes the behavior of the views and its loaded data.

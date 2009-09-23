@@ -396,7 +396,13 @@ public class Application
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
 		if (isStartedFromXML)
-			GeneralManager.get().getUseCase(applicationMode.getDataDomain()).updateSetInViews();
+		{
+			for(IUseCase useCase : GeneralManager.get().getAllUseCases())
+			{
+				useCase.updateSetInViews();	
+			}
+			
+		}
 
 		initializeColorMapping();
 		if (initializedStartViews == null) {

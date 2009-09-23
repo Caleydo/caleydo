@@ -1,5 +1,6 @@
 package org.caleydo.rcp.view.opengl;
 
+import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
 import org.eclipse.swt.widgets.Composite;
@@ -7,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 public class RcpGLParCoordsClinicalView
 	extends ARcpGLViewPart {
 
-	public static final String ID = SerializedParallelCoordinatesView.GUI_ID;
+	public static final String ID =  "org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView";
 
 	/**
 	 * Constructor.
@@ -26,7 +27,7 @@ public class RcpGLParCoordsClinicalView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(dataDomain);
+		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(EDataDomain.CLINICAL_DATA);
 		return serializedView;
 	}
 
