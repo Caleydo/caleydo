@@ -14,9 +14,7 @@ import javax.xml.bind.Unmarshaller;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
@@ -82,7 +80,7 @@ public abstract class ARcpGLViewPart
 	protected AGLEventListener createGLEventListener(ASerializedView serializedView, int iParentCanvasID) {
 
 		ECommandType glViewType = serializedView.getCreationCommandType();
-		EDataDomain dataDomain = serializedView.getDataDomain();
+		dataDomain = serializedView.getDataDomain();
 		if(dataDomain == null)
 			dataDomain = EDataDomain.GENETIC_DATA;
 
@@ -90,18 +88,6 @@ public abstract class ARcpGLViewPart
 
 		CmdCreateGLEventListener cmdView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(glViewType);
-
-		IUseCase useCase;
-		ISet set;
-
-		
-		useCase = GeneralManager.get().getUseCase(dataDomain);
-		set = useCase.getSet();
-		
-		
-				
-		
-
 
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D
 			|| glViewType == ECommandType.CREATE_GL_DATA_FLIPPER) {
@@ -129,11 +115,7 @@ public abstract class ARcpGLViewPart
 
 		setGLData(glCanvas, glView);
 		createPartControlGL();
-
-		glView.setDataDomain(dataDomain);
-		glView.setUseCase(useCase);
-		glView.setSet(set);
-
+		
 		glView.setViewGUIID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
 

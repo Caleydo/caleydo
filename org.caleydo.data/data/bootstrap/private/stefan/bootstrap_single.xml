@@ -24,6 +24,9 @@
 				<read-xml-file
 					target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />
 
+				<!-- Creating Data -->
+				<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+
 				<!-- Setting paths -->
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS"
 					cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths"
@@ -36,9 +39,7 @@
 					attrib1="user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/"
 					attrib2="user.home/.caleydo/www.genome.jp/kegg/pathway/" attrib3="user.home/.caleydo/?" />
 
-
-				<!-- Creating Data -->
-				<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA" 	cmdId="" uniqueId="11331" label="Load pathway data" /> 				
 
 				<!-- 2nd window -->
 				<!--

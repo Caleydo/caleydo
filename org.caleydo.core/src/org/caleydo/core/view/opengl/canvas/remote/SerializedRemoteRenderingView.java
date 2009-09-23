@@ -74,9 +74,9 @@ public class SerializedRemoteRenderingView
 			// should be added to bucket.
 			try {
 				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-				SerializedGlyphView glyph1 = new SerializedGlyphView(dataDomain);
+				SerializedGlyphView glyph1 = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
 				remoteViews.add(glyph1);
-				SerializedGlyphView glyph2 = new SerializedGlyphView(dataDomain);
+				SerializedGlyphView glyph2 = new SerializedGlyphView(EDataDomain.CLINICAL_DATA);
 				remoteViews.add(glyph2);
 			}
 			catch (IllegalArgumentException e) {

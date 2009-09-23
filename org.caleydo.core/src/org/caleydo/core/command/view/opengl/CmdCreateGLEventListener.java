@@ -8,8 +8,11 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -36,7 +39,6 @@ public class CmdCreateGLEventListener
 	protected Rotf cameraRotation;
 
 	protected EDataDomain dataDomain;
-//	protected ISet set;
 
 	/**
 	 * Constructor.
@@ -190,6 +192,7 @@ public class CmdCreateGLEventListener
 	 */
 	public void setAttributesFromSerializedForm(ASerializedView serView) {
 		setViewFrustum(serView.getViewFrustum());
+		dataDomain = serView.getDataDomain();
 	}
 
 	public void setParentCanvasID(int parentCanvasID) {
@@ -225,6 +228,14 @@ public class CmdCreateGLEventListener
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
 		// createdObject.setSet(set);
 
+		IUseCase useCase = GeneralManager.get().getUseCase(dataDomain);
+		ISet set = useCase.getSet();
+		createdObject.setDataDomain(dataDomain);
+		createdObject.setUseCase(useCase);
+		
+		if (set != null)
+			createdObject.setSet(set);
+		
 		commandManager.runDoCommand(this);
 	}
 

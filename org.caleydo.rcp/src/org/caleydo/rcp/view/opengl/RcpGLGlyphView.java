@@ -38,5 +38,4 @@ public class RcpGLGlyphView
 	public String getViewGUIID() {
 		return ID;
 	}
-
 }

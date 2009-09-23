@@ -400,8 +400,7 @@ public class Application
 			for(IUseCase useCase : GeneralManager.get().getAllUseCases())
 			{
 				useCase.updateSetInViews();	
-			}
-			
+			}	
 		}
 
 		initializeColorMapping();

@@ -15,6 +15,7 @@ import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.SerializedGlyphView;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHierarchicalHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
@@ -28,7 +29,8 @@ import org.caleydo.core.view.opengl.canvas.tissue.SerializedTissueView;
 @XmlRootElement
 @XmlType
 public class SerializedDataFlipperView
-	extends ASerializedView {
+	extends ASerializedView
+{
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLDataFlipperView";
 
@@ -36,62 +38,74 @@ public class SerializedDataFlipperView
 	private List<ASerializedView> initialContainedViews;
 
 	/**
-	 * No-Arg Constructor to create a serialized data flipper view with default parameters.
+	 * No-Arg Constructor to create a serialized data flipper view with default
+	 * parameters.
 	 */
-	public SerializedDataFlipperView() {
+	public SerializedDataFlipperView()
+	{
 
 	}
 
-	public SerializedDataFlipperView(EDataDomain dataDomain) {
+	public SerializedDataFlipperView(EDataDomain dataDomain)
+	{
 		super(dataDomain);
 		init();
 	}
 
-	public void init() {
+	public void init()
+	{
 		initialContainedViews = new ArrayList<ASerializedView>();
 
-		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
-		if (usecase != null && usecase instanceof GeneticUseCase) {
+		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
+		parCoords.setDataDomain(EDataDomain.GENETIC_DATA);
+		initialContainedViews.add(parCoords);
 
-			SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
-			initialContainedViews.add(heatMap);
-			SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
-			initialContainedViews.add(parCoords);
-			SerializedPathwayView pathway = new SerializedPathwayView();
-//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
-//				.toArray()[0]).getID());
-//			initialContainedViews.add(pathway);
-			pathway = new SerializedPathwayView();
-			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
-				.toArray()[1]).getID());
-			initialContainedViews.add(pathway);
-			SerializedTissueView tissue = new SerializedTissueView();
-			initialContainedViews.add(tissue);
-//			pathway = new SerializedPathwayView();
-//			pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems()
-//				.toArray()[2]).getID());
-//			initialContainedViews.add(pathway);
-		}
+		SerializedTissueView tissue = new SerializedTissueView();
+		tissue.setDataDomain(EDataDomain.GENETIC_DATA);
+		initialContainedViews.add(tissue);
+
+		SerializedHierarchicalHeatMapView heatMap = new SerializedHierarchicalHeatMapView();
+		heatMap.setDataDomain(EDataDomain.GENETIC_DATA);
+		initialContainedViews.add(heatMap);
+
+		SerializedGlyphView glyph = new SerializedGlyphView();
+		glyph.setDataDomain(EDataDomain.GENETIC_DATA);
+		initialContainedViews.add(glyph);
+
+		SerializedPathwayView pathway = new SerializedPathwayView();
+		pathway = new SerializedPathwayView();
+		pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
+			.getAllItems().toArray()[0]).getID());
+		pathway.setDataDomain(EDataDomain.GENETIC_DATA);
+		initialContainedViews.add(pathway);
+
+		parCoords = new SerializedParallelCoordinatesView();
+		parCoords.setDataDomain(EDataDomain.CLINICAL_DATA);
+		initialContainedViews.add(parCoords);
 
 	}
 
 	@Override
-	public ECommandType getCreationCommandType() {
+	public ECommandType getCreationCommandType()
+	{
 		return ECommandType.CREATE_GL_DATA_FLIPPER;
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum() {
+	public ViewFrustum getViewFrustum()
+	{
 		return null;
 	}
 
 	@XmlElementWrapper
-	public List<ASerializedView> getInitialContainedViews() {
+	public List<ASerializedView> getInitialContainedViews()
+	{
 		return initialContainedViews;
 	}
 
 	@Override
-	public String getViewGUIID() {
+	public String getViewGUIID()
+	{
 		return GUI_ID;
 	}
 }
