@@ -1,17 +1,15 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -27,8 +25,10 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeTreeTypeListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -68,6 +68,8 @@ public class GLHyperbolic
 
 	private int iGLDisplayListNode;
 	private int iGLDisplayListConnection;
+
+	private ChangeTreeTypeListener changeTreeTypeListener;
 
 	/**
 	 * Constructor.
@@ -131,7 +133,7 @@ public class GLHyperbolic
 
 		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 7);
 		System.out.println(tree.getGraph().toString());
-		layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
+		layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.setTree(tree);
 	}
 
@@ -366,6 +368,11 @@ public class GLHyperbolic
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
+		
+		changeTreeTypeListener = new ChangeTreeTypeListener();
+		changeTreeTypeListener.setHandler(this);
+		eventPublisher.addListener(ChangeTreeTypeEvent.class, changeTreeTypeListener);
+		
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -442,6 +449,16 @@ public class GLHyperbolic
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void changeTreeType() {
+		if(layouter instanceof LTLayouter)
+			layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
+		else
+			layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
+		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
+		layouter.setTree(tree);
+		setDisplayListDirty();
 	}
 
 }
