@@ -15,8 +15,10 @@ public class OpenRadialHierarchyHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			IViewPart vp = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLRadialHierarchyView.ID);
-			System.out.println("vp="+vp);
+			IViewPart vp =
+				HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+					RcpGLRadialHierarchyView.ID);
+			System.out.println("vp=" + vp);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

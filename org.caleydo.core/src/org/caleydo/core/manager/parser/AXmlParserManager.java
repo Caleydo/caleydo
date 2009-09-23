@@ -220,8 +220,8 @@ public abstract class AXmlParserManager
 				reader.setProperty(Parser.schemaProperty, htmlSchema);
 			}
 
-//			generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-//				"Start parsing file " + sFileName));
+			// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+			// "Start parsing file " + sFileName));
 
 			reader.parse(inputSource);
 
@@ -232,12 +232,13 @@ public abstract class AXmlParserManager
 				inputSource.getCharacterStream().close();
 			}
 
-//			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID, 
-//				"Finished parsing file " + sFileName));
+			// generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+			// "Finished parsing file " + sFileName));
 
 		}
 		catch (SAXException saxe) {
-			throw new IllegalStateException("SAXParser-error during parsing file "+sFileName+".\n SAX error: " + saxe.toString());
+			throw new IllegalStateException("SAXParser-error during parsing file " + sFileName
+				+ ".\n SAX error: " + saxe.toString());
 		}
 		catch (IOException ioe) {
 			throw new IllegalStateException("IO-error during parsing");

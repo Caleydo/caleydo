@@ -9,9 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.manager.IUseCase;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genetic.GeneticUseCase;
 import org.caleydo.core.manager.usecase.EDataDomain;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -29,8 +27,7 @@ import org.caleydo.core.view.opengl.canvas.tissue.SerializedTissueView;
 @XmlRootElement
 @XmlType
 public class SerializedDataFlipperView
-	extends ASerializedView
-{
+	extends ASerializedView {
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLDataFlipperView";
 
@@ -38,22 +35,18 @@ public class SerializedDataFlipperView
 	private List<ASerializedView> initialContainedViews;
 
 	/**
-	 * No-Arg Constructor to create a serialized data flipper view with default
-	 * parameters.
+	 * No-Arg Constructor to create a serialized data flipper view with default parameters.
 	 */
-	public SerializedDataFlipperView()
-	{
+	public SerializedDataFlipperView() {
 
 	}
 
-	public SerializedDataFlipperView(EDataDomain dataDomain)
-	{
+	public SerializedDataFlipperView(EDataDomain dataDomain) {
 		super(dataDomain);
 		init();
 	}
 
-	public void init()
-	{
+	public void init() {
 		initialContainedViews = new ArrayList<ASerializedView>();
 
 		SerializedParallelCoordinatesView parCoords = new SerializedParallelCoordinatesView();
@@ -74,8 +67,9 @@ public class SerializedDataFlipperView
 
 		SerializedPathwayView pathway = new SerializedPathwayView();
 		pathway = new SerializedPathwayView();
-		pathway.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager()
-			.getAllItems().toArray()[0]).getID());
+		pathway
+			.setPathwayID(((PathwayGraph) GeneralManager.get().getPathwayManager().getAllItems().toArray()[0])
+				.getID());
 		pathway.setDataDomain(EDataDomain.GENETIC_DATA);
 		initialContainedViews.add(pathway);
 
@@ -86,26 +80,22 @@ public class SerializedDataFlipperView
 	}
 
 	@Override
-	public ECommandType getCreationCommandType()
-	{
+	public ECommandType getCreationCommandType() {
 		return ECommandType.CREATE_GL_DATA_FLIPPER;
 	}
 
 	@Override
-	public ViewFrustum getViewFrustum()
-	{
+	public ViewFrustum getViewFrustum() {
 		return null;
 	}
 
 	@XmlElementWrapper
-	public List<ASerializedView> getInitialContainedViews()
-	{
+	public List<ASerializedView> getInitialContainedViews() {
 		return initialContainedViews;
 	}
 
 	@Override
-	public String getViewGUIID()
-	{
+	public String getViewGUIID() {
 		return GUI_ID;
 	}
 }

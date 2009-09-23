@@ -43,7 +43,7 @@ public enum EManagedObjectType {
 	GL_DENDOGRAM(42),
 	GL_DATA_FLIPPER(43),
 	GL_TISSUE(44),
-	
+
 	GL_CONTEXT_MENUE(49),
 
 	GUI_SWT_WINDOW(50),

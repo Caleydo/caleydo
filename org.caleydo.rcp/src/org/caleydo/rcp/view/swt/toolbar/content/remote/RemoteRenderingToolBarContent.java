@@ -17,7 +17,8 @@ import org.caleydo.rcp.view.swt.toolbar.content.pathway.PathwayToolBarContainer;
 import org.caleydo.rcp.view.swt.toolbar.content.pathway.PathwayToolBarMediator;
 
 /**
- * ToolBarContent implementation for bucket specific toolbar items.  
+ * ToolBarContent implementation for bucket specific toolbar items.
+ * 
  * @author Werner Puff
  */
 public class RemoteRenderingToolBarContent
@@ -30,14 +31,14 @@ public class RemoteRenderingToolBarContent
 	public static final String PATHWAY_VIEW_TITLE = "Pathways";
 
 	RemoteRenderingToolBarMediator mediator;
-	
+
 	ToggleConnectionLinesAction toggleConnectionLinesAction;
-	
+
 	@Override
 	public Class<?> getViewClass() {
 		return GLRemoteRendering.class;
 	}
-	
+
 	@Override
 	protected List<ToolBarContainer> getToolBarContent() {
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
@@ -49,6 +50,7 @@ public class RemoteRenderingToolBarContent
 
 	/**
 	 * Creates and returns icons for bucket related toolbar box
+	 * 
 	 * @return bucket related toolbar box
 	 */
 	private ToolBarContainer createBucketContainer() {
@@ -69,22 +71,20 @@ public class RemoteRenderingToolBarContent
 		toggleConnectionLinesAction = new ToggleConnectionLinesAction(mediator);
 		toggleConnectionLinesAction.setConnectionLinesEnabled(serializedView.isConnectionLinesEnabled());
 		actionList.add(toggleConnectionLinesAction);
-		
+
 		NavigationModeAction navigationModeAction = new NavigationModeAction(mediator);
 		actionList.add(navigationModeAction);
-		
+
 		ToggleZoomAction toggleZoomAction = new ToggleZoomAction(mediator);
 		actionList.add(toggleZoomAction);
-		
+
 		return container;
 	}
 
 	/**
-	 * Creates and returns icons for pathway related toolbar box
-	 *
-	 * FIXME: pathway buttons do not work this way at the moment, because the related 
-	 * commands need a pathway-view-id, not a bucket id. instead of commands an event should be dispatched
-	 * where all pathways are listening, too.
+	 * Creates and returns icons for pathway related toolbar box FIXME: pathway buttons do not work this way
+	 * at the moment, because the related commands need a pathway-view-id, not a bucket id. instead of
+	 * commands an event should be dispatched where all pathways are listening, too.
 	 * 
 	 * @return pathway related toolbar box
 	 */
@@ -94,13 +94,13 @@ public class RemoteRenderingToolBarContent
 
 		container.setImagePath(PATHWAY_IMAGE_PATH);
 		container.setTitle(PATHWAY_VIEW_TITLE);
-		
+
 		container.setPathwayToolBarMediator(new PathwayToolBarMediator());
 		container.setTargetViewData((SerializedRemoteRenderingView) getTargetViewData());
 
 		return container;
 	}
-	
+
 	@Override
 	public void dispose() {
 		if (mediator != null) {

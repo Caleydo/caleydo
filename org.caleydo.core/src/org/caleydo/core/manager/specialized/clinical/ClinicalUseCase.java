@@ -28,23 +28,21 @@ public class ClinicalUseCase
 	public ClinicalUseCase() {
 
 		useCaseMode = EDataDomain.CLINICAL_DATA;
-		
 
 		possibleViews = new ArrayList<EManagedObjectType>();
-//		possibleViews.add(EManagedObjectType.GL_HEAT_MAP);
+		// possibleViews.add(EManagedObjectType.GL_HEAT_MAP);
 		possibleViews.add(EManagedObjectType.GL_GLYPH);
 		possibleViews.add(EManagedObjectType.GL_PARALLEL_COORDINATES);
-		
+
 		possibleIDCategories = new HashMap<EIDCategory, Boolean>();
-//		possibleIDCategories.put(EIDCategory., null);
+		// possibleIDCategories.put(EIDCategory., null);
 		possibleIDCategories.put(EIDCategory.EXPERIMENT, null);
 	}
-	
+
 	@Override
 	public void setSet(ISet set) {
 
 		super.setSet(set);
 	}
-	
-	
+
 }

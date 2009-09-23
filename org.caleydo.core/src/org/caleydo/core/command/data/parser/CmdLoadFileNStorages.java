@@ -104,7 +104,8 @@ public class CmdLoadFileNStorages
 				+ loadDataParameters.getInputPattern() + ". Data is stored in Storage with ID "
 				+ iAlStorageIDs.toString()));
 
-		TabularAsciiDataReader loader = new TabularAsciiDataReader(loadDataParameters.getFileName(), dataDomain);
+		TabularAsciiDataReader loader =
+			new TabularAsciiDataReader(loadDataParameters.getFileName(), dataDomain);
 		loader.setTokenPattern(loadDataParameters.getInputPattern());
 		loader.setTargetStorages(iAlStorageIDs);
 		if (loadDataParameters.isUseExperimentClusterInfo())

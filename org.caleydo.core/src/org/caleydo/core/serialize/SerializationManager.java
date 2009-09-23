@@ -66,36 +66,39 @@ import org.caleydo.core.net.event.ClientListEvent;
 
 /**
  * Central access point for xml-serialization related tasks.
+ * 
  * @author Werner Puff
  */
 public class SerializationManager {
 
 	/** {@link JAXBContext} for view (de-)serialization */
 	private JAXBContext viewContext;
-	
+
 	/** {@link JAXBContext} for event (de-)serialization */
 	private JAXBContext eventContext;
-	
+
 	/** {link JAXBContext} for project (de-)serialization */
 	private JAXBContext projectContext;
-	
+
 	public SerializationManager() {
 		try {
 			viewContext = JAXBContext.newInstance(ASerializedView.class);
-			
-			Collection<Class<? extends AEvent>>eventTypes = getSerializeableEventTypes();
+
+			Collection<Class<? extends AEvent>> eventTypes = getSerializeableEventTypes();
 			Class<?>[] classes = new Class<?>[eventTypes.size()];
 			classes = eventTypes.toArray(classes);
 			eventContext = JAXBContext.newInstance(classes);
-			
+
 			projectContext = JAXBContext.newInstance(ApplicationInitData.class, ViewList.class);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
 
 	/**
 	 * Gets the {@link JAXBContext} used to serialize views.
+	 * 
 	 * @return view-serialization {@link JAXBContext}.
 	 */
 	public JAXBContext getViewContext() {
@@ -104,6 +107,7 @@ public class SerializationManager {
 
 	/**
 	 * Gets the {@link JAXBContext} used to serialize events.
+	 * 
 	 * @return events-serialization {@link JAXBContext}.
 	 */
 	public JAXBContext getEventContext() {
@@ -112,6 +116,7 @@ public class SerializationManager {
 
 	/**
 	 * Gets the {@link JAXBContext} used during load/save caleydo projects.
+	 * 
 	 * @return caleydo-project serialization {@link JAXBContext}.
 	 */
 	public JAXBContext getProjectContext() {
@@ -119,20 +124,21 @@ public class SerializationManager {
 	}
 
 	/**
-	 * Generates and returns a {@link Collection} of all views that may be serialized.
-	 * This list can e.g. be used to get the list of views to save in a caledyo-project file.
+	 * Generates and returns a {@link Collection} of all views that may be serialized. This list can e.g. be
+	 * used to get the list of views to save in a caledyo-project file.
 	 * 
 	 * @return {@link Collection} of serialized-view-classes that may be serialized.
 	 */
 	public Collection<Class<? extends ASerializedView>> getSerializeableViewTypes() {
-		Collection<Class<? extends ASerializedView>> viewTypes = new ArrayList<Class<? extends ASerializedView>>();
+		Collection<Class<? extends ASerializedView>> viewTypes =
+			new ArrayList<Class<? extends ASerializedView>>();
 
 		// the list of views is maintained in the {@link ASerilializedView}'s {@link XmlSeeAlso} annotation.
 		viewTypes.add(ASerializedView.class);
-		
+
 		return viewTypes;
 	}
-	
+
 	/**
 	 * Generates and returns a {@link Collection} of all events to serialize
 	 * 
@@ -159,8 +165,8 @@ public class SerializationManager {
 		eventTypes.add(ApplyCurrentSelectionToVirtualArrayEvent.class);
 		eventTypes.add(BookmarkButtonEvent.class);
 		eventTypes.add(ChangeColorModeEvent.class);
-//		eventTypes.add(GoBackInHistoryEvent.class);
-//		eventTypes.add(GoForthInHistoryEvent.class);
+		// eventTypes.add(GoBackInHistoryEvent.class);
+		// eventTypes.add(GoForthInHistoryEvent.class);
 		eventTypes.add(SetMaxDisplayedHierarchyDepthEvent.class);
 		eventTypes.add(UpdateDepthSliderPositionEvent.class);
 		eventTypes.add(RedrawViewEvent.class);
@@ -200,7 +206,7 @@ public class SerializationManager {
 		eventTypes.add(AddConnectionLineVerticesEvent.class);
 		eventTypes.add(ClearConnectionsEvent.class);
 
-//		eventTypes.add(NewSetEvent.class);
+		// eventTypes.add(NewSetEvent.class);
 
 		return eventTypes;
 	}

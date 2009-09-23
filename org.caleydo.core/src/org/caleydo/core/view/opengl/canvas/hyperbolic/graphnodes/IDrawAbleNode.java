@@ -41,7 +41,8 @@ public interface IDrawAbleNode
 	 * @param fHeight
 	 * @param fWidth
 	 */
-	ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection treeProjection);
+	ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth,
+		ITreeProjection treeProjection);
 
 	/**
 	 * Place the node on a specific position calcutated by the projection type
@@ -53,9 +54,9 @@ public interface IDrawAbleNode
 	 * @param fWidth
 	 * @param projection
 	 */
-//	ArrayList<Vec3f> placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection projection);
+	// ArrayList<Vec3f> placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float
+	// fWidth, ITreeProjection projection);
 
-	
 	/**
 	 * Draw the node in current representation
 	 * 
@@ -85,12 +86,12 @@ public interface IDrawAbleNode
 	 * @return
 	 */
 	ArrayList<Vec3f> getConnectionPoints();
-	
+
 	/**
 	 * Returns the connection points for the original representation and placing
 	 * 
 	 * @return
-	 */	
+	 */
 	ArrayList<Vec3f> getConnectionPointsOfOriginalPosition();
 
 	Vec3f getCoordinates();

@@ -16,8 +16,7 @@ import java.util.List;
  */
 public enum EGraphItemKind {
 
-	NODE(false),
-	EDGE(false),
+	NODE(false), EDGE(false),
 
 	// /**
 	// * Consists of NODE and EDGE
@@ -27,7 +26,8 @@ public enum EGraphItemKind {
 	GRAPH(true);
 
 	/**
-	 * Specify if this is a graph or this is not a graph. IF it is not a graph it must be a graph-item.
+	 * Specify if this is a graph or this is not a graph. IF it is not a graph
+	 * it must be a graph-item.
 	 */
 	private boolean bIsGraph;
 
@@ -42,7 +42,8 @@ public enum EGraphItemKind {
 	}
 
 	/**
-	 * Test if this is a graph item or a graph. NODE and EDGE will return FLASE; GRAPH will return TRUE.
+	 * Test if this is a graph item or a graph. NODE and EDGE will return FLASE;
+	 * GRAPH will return TRUE.
 	 * 
 	 * @return NODE, EDGE will return FLASE; GRAPH will return TRUE
 	 */

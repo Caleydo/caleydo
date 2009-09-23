@@ -84,25 +84,28 @@ public interface IViewManager
 	public Composite getActiveSWTView();
 
 	/**
-	 * Requests busy mode for the application. This method should be called
-	 * whenever a process needs to stop any user interaction with the application,
-	 * e.g. when starting up or when loading multiple pathways.
-	 * Usually this should result disabling user events and showing a loading screen animation. 
-	 * @param requestInstance object that wants to request busy mode
+	 * Requests busy mode for the application. This method should be called whenever a process needs to stop
+	 * any user interaction with the application, e.g. when starting up or when loading multiple pathways.
+	 * Usually this should result disabling user events and showing a loading screen animation.
+	 * 
+	 * @param requestInstance
+	 *            object that wants to request busy mode
 	 */
 	public void requestBusyMode(Object requestInstance);
-	
+
 	/**
-	 * Releases a previously requested busy mode. Releases are only performed by
-	 * passing the originally requesting object to this method.
-	 * @param requestInstance the object that requested the busy mode  
+	 * Releases a previously requested busy mode. Releases are only performed by passing the originally
+	 * requesting object to this method.
+	 * 
+	 * @param requestInstance
+	 *            the object that requested the busy mode
 	 */
 	public void releaseBusyMode(Object requestInstance);
 
 	/**
-	 * Retrieves the {@link DisplayLoopExecution} related to 
-	 * the {@link IViewManager}'s display loop.
-	 * @return {@link DisplayLoopExecution} for executing code in the display loop 
+	 * Retrieves the {@link DisplayLoopExecution} related to the {@link IViewManager}'s display loop.
+	 * 
+	 * @return {@link DisplayLoopExecution} for executing code in the display loop
 	 */
 	public DisplayLoopExecution getDisplayLoopExecution();
 }

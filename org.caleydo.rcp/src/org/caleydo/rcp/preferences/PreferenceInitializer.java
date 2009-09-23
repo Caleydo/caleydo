@@ -8,8 +8,6 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.GENE_EXPRESS
 import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
 import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
 
-import java.io.IOException;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genetic.EOrganism;

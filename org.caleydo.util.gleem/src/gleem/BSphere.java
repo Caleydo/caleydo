@@ -79,7 +79,8 @@ public class BSphere {
 	}
 
 	/**
-	 * Mutate this sphere to encompass both itself and the argument. Ignores zero-size arguments.
+	 * Mutate this sphere to encompass both itself and the argument. Ignores
+	 * zero-size arguments.
 	 */
 	public void extendBy(BSphere arg) {
 		if (radius == 0.0f || arg.radius == 0.0f)
@@ -109,23 +110,26 @@ public class BSphere {
 		for (int i = 0; i < 4; i++) {
 			if (intPt[i].getT() < minIntPt.getT()) {
 				minIntPt = intPt[i];
-			}
-			else if (intPt[i].getT() > maxIntPt.getT()) {
+			} else if (intPt[i].getT() > maxIntPt.getT()) {
 				maxIntPt = intPt[i];
 			}
 		}
 		// Compute the average -- this is the new center
-		center.add(minIntPt.getIntersectionPoint(), maxIntPt.getIntersectionPoint());
+		center.add(minIntPt.getIntersectionPoint(), maxIntPt
+				.getIntersectionPoint());
 		center.scale(0.5f);
 		// Compute half the length -- this is the radius
-		setRadius(0.5f * minIntPt.getIntersectionPoint().minus(maxIntPt.getIntersectionPoint()).length());
+		setRadius(0.5f * minIntPt.getIntersectionPoint().minus(
+				maxIntPt.getIntersectionPoint()).length());
 	}
 
 	/**
-	 * Intersect a ray with the sphere. This is a one-sided ray cast. Mutates one or both of intPt0 and
-	 * intPt1. Returns number of intersections which occurred.
+	 * Intersect a ray with the sphere. This is a one-sided ray cast. Mutates
+	 * one or both of intPt0 and intPt1. Returns number of intersections which
+	 * occurred.
 	 */
-	int intersectRay(Vec3f rayStart, Vec3f rayDirection, IntersectionPoint intPt0, IntersectionPoint intPt1) {
+	int intersectRay(Vec3f rayStart, Vec3f rayDirection,
+			IntersectionPoint intPt0, IntersectionPoint intPt1) {
 		// Solve quadratic equation
 		float a = rayDirection.lengthSquared();
 		if (a == 0.0)
@@ -139,8 +143,7 @@ public class BSphere {
 		int numIntersections;
 		if (disc == 0.0f) {
 			numIntersections = 1;
-		}
-		else {
+		} else {
 			numIntersections = 2;
 		}
 		intPt0.setT(0.5f * (-1.0f * b + (float) Math.sqrt(disc)) / a);

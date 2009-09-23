@@ -22,10 +22,10 @@ public class TestLayout
 		testTree = tree;
 	}
 
-	//TODO: DELETE AS SOON AS POSSIBLE!!!
-	
+	// TODO: DELETE AS SOON AS POSSIBLE!!!
+
 	public void drawGraph(GL gl) {
-		int iDeph = 1;//testTree.getDeph();
+		int iDeph = 1;// testTree.getDeph();
 		IDrawAbleNode root = testTree.getRoot();
 		// float xRootPixel = this.fWidth/2.0f;
 		// float yRootPixel = this.fHight - (this.fHight/100*fBorderSpace);
@@ -43,7 +43,6 @@ public class TestLayout
 
 		recursiveTreeBuilder(gl, root, 0, fStep, iDeph);
 
-		
 		// ArrayList<DefaultNode> childs = testTree.getChildren(root);
 		// //int numberOfRootChilds = testTree.getNumberOfChildren(root);
 		//		

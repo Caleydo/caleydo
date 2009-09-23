@@ -10,13 +10,15 @@ import org.eclipse.core.runtime.Platform;
 
 /**
  * Porvides utility methods for groupware related tasks.
+ * 
  * @author Werner Puff
- *
  */
 public class GroupwareUtils {
 
 	/**
-	 * Loads the groupware manager for deskotheque as defined by the extension 'org.caleydo.plex.DeskothequeManager'
+	 * Loads the groupware manager for deskotheque as defined by the extension
+	 * 'org.caleydo.plex.DeskothequeManager'
+	 * 
 	 * @return {@link IGroupwareManager} for deskotheque
 	 */
 	public static IGroupwareManager createDeskothequeManager() {
@@ -24,26 +26,29 @@ public class GroupwareUtils {
 		IExtensionPoint ep = reg.getExtensionPoint("org.caleydo.plex.GroupwareManager");
 		IExtension ext = ep.getExtension("org.caleydo.plex.DeskothequeManager");
 		IConfigurationElement[] ce = ext.getConfigurationElements();
-	
+
 		IGroupwareManager groupwareManager = null;
 		try {
 			groupwareManager = (IGroupwareManager) ce[0].createExecutableExtension("class");
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new RuntimeException("Could not instantiate DeskotequeManager", ex);
 		}
 		return groupwareManager;
 	}
-	
+
 	/**
-	 * Starts the plugin org.caleydo.plex, retrieves the deskotheque-manager from it
-	 * and starts this application as a groupware-client.
+	 * Starts the plugin org.caleydo.plex, retrieves the deskotheque-manager from it and starts this
+	 * application as a groupware-client.
+	 * 
 	 * @return intiialization data retrieved from the groupware server to complete application startup
 	 */
 	public static ApplicationInitData startPlexClient() {
 		IGroupwareManager groupwareManager = GroupwareUtils.createDeskothequeManager();
 		GeneralManager.get().setGroupwareManager(groupwareManager);
 		groupwareManager.startClient();
-		GeneralManager.get().getViewGLCanvasManager().getDisplayLoopExecution().executeMultiple(groupwareManager);
+		GeneralManager.get().getViewGLCanvasManager().getDisplayLoopExecution().executeMultiple(
+			groupwareManager);
 		return (groupwareManager.getInitData());
 	}
 }

@@ -34,11 +34,10 @@ class GeneBookmark
 			GeneralManager.get().getIDMappingManager().getID(EIDType.DAVID, EIDType.GENE_SYMBOL, id);
 
 		float yOrigin = dimensions.getYOrigin() - 0.08f;
-		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin() + BookmarkRenderStyle.SIDE_SPACING * 2, yOrigin,
-			GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
+		RenderingHelpers.renderText(gl, textRenderer, sContent, dimensions.getXOrigin()
+			+ BookmarkRenderStyle.SIDE_SPACING * 2, yOrigin, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR);
 
 	}
-	
 
 	// fAlXDistances.clear();
 	// renderStyle.updateFieldSizes();
@@ -218,54 +217,51 @@ class GeneBookmark
 	// fXPosition);
 	// fAlXDistances.add(fXPosition);
 
-
-
-// private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
-// final float fXPosition, final float fYPosition, final float fFieldWidth, final float fFieldHeight) {
-//
-// float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
-//
-// float fOpacity = 0;
-// if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
-// fOpacity = 0.3f;
-// }
-// else {
-// fOpacity = 1.0f;
-// }
-//
-// float[] fArMappingColor = colorMapper.getColor(fLookupValue);
-//
-// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
-//
-// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_STORAGE_SELECTION,
-// iStorageIndex));
-// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_LINE_SELECTION,
-// iContentIndex));
-// gl.glBegin(GL.GL_POLYGON);
-// gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
-// gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
-// gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight, FIELD_Z);
-// gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
-// gl.glEnd();
-//
-// gl.glPopName();
-// gl.glPopName();
-// }
-//
-// private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fZOrigin,
-// float fRotation, float fFontScaling) {
-//
-// if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
-// sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
-// sLabel = sLabel + "..";
-// }
-//
-// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-// textRenderer.begin3DRendering();
-// textRenderer.draw3D(sLabel, fXOrigin, fYOrigin, 0, fFontScaling);
-// textRenderer.end3DRendering();
-// gl.glPopAttrib();
-// }
-
+	// private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
+	// final float fXPosition, final float fYPosition, final float fFieldWidth, final float fFieldHeight) {
+	//
+	// float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+	//
+	// float fOpacity = 0;
+	// if (contentSelectionManager.checkStatus(ESelectionType.DESELECTED, iContentIndex)) {
+	// fOpacity = 0.3f;
+	// }
+	// else {
+	// fOpacity = 1.0f;
+	// }
+	//
+	// float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+	//
+	// gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
+	//
+	// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_STORAGE_SELECTION,
+	// iStorageIndex));
+	// gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_LINE_SELECTION,
+	// iContentIndex));
+	// gl.glBegin(GL.GL_POLYGON);
+	// gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
+	// gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
+	// gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight, FIELD_Z);
+	// gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
+	// gl.glEnd();
+	//
+	// gl.glPopName();
+	// gl.glPopName();
+	// }
+	//
+	// private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin, float fZOrigin,
+	// float fRotation, float fFontScaling) {
+	//
+	// if (sLabel.length() > GeneralRenderStyle.NUM_CHAR_LIMIT + 1) {
+	// sLabel = sLabel.substring(0, GeneralRenderStyle.NUM_CHAR_LIMIT - 2);
+	// sLabel = sLabel + "..";
+	// }
+	//
+	// gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+	// textRenderer.begin3DRendering();
+	// textRenderer.draw3D(sLabel, fXOrigin, fYOrigin, 0, fFontScaling);
+	// textRenderer.end3DRendering();
+	// gl.glPopAttrib();
+	// }
 
 }

@@ -17,14 +17,14 @@ public class KnownBugsHandler
 	private final static String URL_KNOWN_BUGS = "https://trac.icg.tugraz.at/projects/org.caleydo/report/1";
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
+
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpHTMLBrowserView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();
 		}
-		
+
 		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
 		changeURLEvent.setSender(this);
 		changeURLEvent.setUrl(URL_KNOWN_BUGS);
@@ -33,5 +33,3 @@ public class KnownBugsHandler
 		return null;
 	}
 }
-
-

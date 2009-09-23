@@ -11,8 +11,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-public class ActivateViewListener 
-extends AEventListener<IListenerOwner> {
+public class ActivateViewListener
+	extends AEventListener<IListenerOwner> {
 
 	@Override
 	public void handleEvent(AEvent event) {

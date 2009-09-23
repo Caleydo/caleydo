@@ -55,7 +55,8 @@ public class LabelLine {
 	 *            Bitmask which determines the types of label items that should be taken into consideration
 	 *            when determining the line's height.
 	 */
-	public void calculateSize(GL gl, CaleydoTextRenderer textRenderer, float fTextScaling, int iConsideredLabelTypes) {
+	public void calculateSize(GL gl, CaleydoTextRenderer textRenderer, float fTextScaling,
+		int iConsideredLabelTypes) {
 
 		fHeight = 0;
 		fWidth = 0;

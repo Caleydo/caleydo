@@ -13,7 +13,7 @@ public class StopTrackingHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		GeneralManager.get().getTrackDataProvider().stopTracking();
-	
+
 		return null;
 	}
 }

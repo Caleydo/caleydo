@@ -83,8 +83,7 @@ public class Mat4f_GeneralRotf {
 
 		if (Math.abs(rotation.get(new Vec3f())) < EPSILON) {
 			bNoRotation = true;
-		}
-		else {
+		} else {
 			bNoRotation = false;
 		}
 	}
@@ -93,7 +92,8 @@ public class Mat4f_GeneralRotf {
 	 * @param rotation
 	 *            the rotation to set
 	 */
-	public final void setAllAndUpdate(final Vec3f centerOfRotation, final Rotf rotation) {
+	public final void setAllAndUpdate(final Vec3f centerOfRotation,
+			final Rotf rotation) {
 
 		this.rotation.set(rotation);
 		this.centerOfRotation.set(centerOfRotation);
@@ -148,8 +148,8 @@ public class Mat4f_GeneralRotf {
 		this.setRotation(new Rotf(axis, angle));
 		this.update();
 
-		System.out.println("CENTER: " + centerOfRotation.toString() + "\nROT: " + rotation.toString()
-			+ "\n ---\n");
+		System.out.println("CENTER: " + centerOfRotation.toString() + "\nROT: "
+				+ rotation.toString() + "\n ---\n");
 
 		Vec3f inPoint = new Vec3f(7, 3, 5);
 		float xStart = (int) inPoint.x();
@@ -159,7 +159,8 @@ public class Mat4f_GeneralRotf {
 			inPoint.setX((float) i + xStart);
 			Vec3f outPoint = this.xformPt(inPoint);
 
-			System.out.println("IN: " + inPoint.toString() + "\nOUT: " + outPoint.toString());
+			System.out.println("IN: " + inPoint.toString() + "\nOUT: "
+					+ outPoint.toString());
 		}
 
 		System.out.println(" ==================\n ");
@@ -211,12 +212,12 @@ public class Mat4f_GeneralRotf {
 		Mat4f R = new Mat4f();
 
 		T.setTranslation(centerOfRotation);
-		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation.y(), -centerOfRotation.z()));
+		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation
+				.y(), -centerOfRotation.z()));
 
 		if (bNoRotation) {
 			R.makeIdent();
-		}
-		else {
+		} else {
 			rotation.toMatrix(R);
 			/* set missing homogeneous coordinate */
 			R.set(3, 3, 1.0f);

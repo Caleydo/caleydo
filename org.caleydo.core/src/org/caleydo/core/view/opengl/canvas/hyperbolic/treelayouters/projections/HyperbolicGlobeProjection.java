@@ -15,7 +15,7 @@ public class HyperbolicGlobeProjection
 	public HyperbolicGlobeProjection(int iID) {
 		super(iID);
 	}
-	
+
 	public HyperbolicGlobeProjection(int iID, float height, float width, float depth, float[] viewSpaceX,
 		float viewSpaceXAbs, float[] viewSpaceY, float viewSpaceYAbs) {
 		super(iID, height, width, depth, viewSpaceX, viewSpaceXAbs, viewSpaceY, viewSpaceYAbs);
@@ -25,14 +25,14 @@ public class HyperbolicGlobeProjection
 		// radius = viewSpaceYAbs / 2.0f;
 	}
 
-	
 	public void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
-		float fViewSpaceXAbs, float[] fViewSpaceY,float fViewSpaceYAbs){
-		super.updateFrustumInfos(fHeight, fWidth, fDepth, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
+		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
+		super.updateFrustumInfos(fHeight, fWidth, fDepth, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY,
+			fViewSpaceYAbs);
 		fCenterPoint = new Vec3f(fWidth / 2.0f, fHeight / 2.0f, fDepth);
 		radius = Math.min(fViewSpaceXAbs, fViewSpaceYAbs) / 2.0f;
 	}
-	
+
 	@Override
 	public Vec3f projectCoordinates(Vec3f fvCoords) {
 

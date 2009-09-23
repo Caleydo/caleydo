@@ -16,7 +16,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  */
 public class RCPViewManager
-implements IListenerOwner {
+	implements IListenerOwner {
 
 	private static RCPViewManager rcpViewManager = null;
 

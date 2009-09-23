@@ -7,20 +7,20 @@ import org.caleydo.core.data.selection.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that ???
- * FIXME description about the meaning of virtual array deltas
- * Migration from EEventType.VA_UPDATE 
+ * Event to signal that ??? FIXME description about the meaning of virtual array deltas Migration from
+ * EEventType.VA_UPDATE
+ * 
  * @author Werner Puff
  */
 @XmlRootElement
 @XmlType
 public class VirtualArrayUpdateEvent
 	extends AEvent {
-	
+
 	/** delta between old and new selection */
 	private VirtualArrayDelta virtualArrayDelta;
 
-	/**	additional information about the selection, e.g. to display in the info-box */
+	/** additional information about the selection, e.g. to display in the info-box */
 	private String info;
 
 	public VirtualArrayDelta getVirtualArrayDelta() {
@@ -41,12 +41,11 @@ public class VirtualArrayUpdateEvent
 
 	@Override
 	public boolean checkIntegrity() {
-		if(virtualArrayDelta == null)
-		{
-			throw new IllegalStateException("Integrity check in " + this + "failed - virtualArrayDelta was null");
+		if (virtualArrayDelta == null) {
+			throw new IllegalStateException("Integrity check in " + this
+				+ "failed - virtualArrayDelta was null");
 		}
 		return true;
 	}
-	
-	
+
 }

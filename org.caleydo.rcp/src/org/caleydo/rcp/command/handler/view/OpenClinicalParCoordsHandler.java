@@ -14,7 +14,8 @@ public class OpenClinicalParCoordsHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLParCoordsClinicalView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+				RcpGLParCoordsClinicalView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

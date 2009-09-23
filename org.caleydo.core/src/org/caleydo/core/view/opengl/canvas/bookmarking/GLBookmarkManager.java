@@ -133,7 +133,7 @@ public class GLBookmarkManager
 		bookmarkListener = new BookmarkListener();
 		bookmarkListener.setHandler(this);
 		eventPublisher.addListener(BookmarkEvent.class, bookmarkListener);
-		
+
 		removeBookmarkListener = new RemoveBookmarkListener();
 		removeBookmarkListener.setHandler(this);
 		eventPublisher.addListener(RemoveBookmarkEvent.class, removeBookmarkListener);
@@ -157,9 +157,8 @@ public class GLBookmarkManager
 			eventPublisher.removeListener(bookmarkListener);
 			bookmarkListener = null;
 		}
-		
-		if(removeBookmarkListener != null)
-		{
+
+		if (removeBookmarkListener != null) {
 			eventPublisher.removeListener(removeBookmarkListener);
 			removeBookmarkListener = null;
 		}
@@ -180,7 +179,7 @@ public class GLBookmarkManager
 
 		processEvents();
 
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		float currentHeight = viewFrustum.getHeight() - BookmarkRenderStyle.TOP_SPACING;
 		for (ABookmarkContainer container : bookmarkContainers) {

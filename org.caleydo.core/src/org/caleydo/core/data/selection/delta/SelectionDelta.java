@@ -28,11 +28,11 @@ public class SelectionDelta
 	 * Default Constructor.
 	 */
 	public SelectionDelta() {
-		
+
 	}
-	
+
 	public SelectionDelta(EIDType idType) {
-		if(idType == null)
+		if (idType == null)
 			throw new IllegalArgumentException("idType was null");
 		selectionItems = new HashMap<Integer, SelectionDeltaItem>();
 		this.idType = idType;
@@ -41,7 +41,6 @@ public class SelectionDelta
 	public SelectionDelta(EIDType idType, EIDType internalIDType) {
 		this(idType);
 
-		
 		this.secondaryIDType = internalIDType;
 	}
 

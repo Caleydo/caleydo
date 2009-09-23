@@ -10,12 +10,12 @@ public class UseRandomSamplingListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		
+
 		if (event instanceof UseRandomSamplingEvent) {
 			UseRandomSamplingEvent randomSamplingEvent = (UseRandomSamplingEvent) event;
 			handler.useRandomSampling(randomSamplingEvent.getFlag());
 		}
-		
+
 	}
 
 }

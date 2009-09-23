@@ -18,9 +18,9 @@ import org.caleydo.rcp.Activator;
 import org.eclipse.core.runtime.Status;
 
 public class SearchViewMediator {
-	
+
 	IEventPublisher eventPublisher;
-	
+
 	public SearchViewMediator() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
@@ -31,22 +31,22 @@ public class SearchViewMediator {
 		event.setPathwayID(pathwayID);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void loadURLInBrowser(String url) {
 		ChangeURLEvent event = new ChangeURLEvent();
 		event.setSender(this);
 		event.setUrl(url);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void loadPathwayByGene(int davidID) {
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID((davidID));
 		loadPathwaysByGeneEvent.setIdType(EIDType.DAVID);
-		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);		
+		eventPublisher.triggerEvent(loadPathwaysByGeneEvent);
 	}
-	
+
 	public void selectGeneSystemWide(int davidID) {
 
 		// First the current selections need to be cleared
@@ -61,18 +61,18 @@ public class SearchViewMediator {
 		ISelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
 
 		Set<Integer> setExpIndex =
-			GeneralManager.get().getIDMappingManager()
-				.getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, davidID);
+			GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX,
+				davidID);
 
 		ArrayList<Integer> alExpressionIndex = null;
-		
+
 		if (setExpIndex != null) {
 			alExpressionIndex = new ArrayList<Integer>();
 			alExpressionIndex.addAll(setExpIndex);
 		}
 
-//		ArrayList<Integer> alExpressionIndex =
-//			GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
+		// ArrayList<Integer> alExpressionIndex =
+		// GeneticIDMappingHelper.get().getExpressionIndicesFromDavid(davidID);
 
 		if (alExpressionIndex == null) {
 			GeneralManager.get().getLogger().log(

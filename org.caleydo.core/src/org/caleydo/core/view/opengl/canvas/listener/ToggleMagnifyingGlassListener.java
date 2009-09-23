@@ -10,7 +10,7 @@ public class ToggleMagnifyingGlassListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof ToggleMagnifyingGlassEvent) {
+		if (event instanceof ToggleMagnifyingGlassEvent) {
 			handler.handleToggleMagnifyingGlassEvent();
 		}
 	}

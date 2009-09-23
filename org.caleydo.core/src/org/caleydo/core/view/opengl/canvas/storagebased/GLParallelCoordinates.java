@@ -579,7 +579,7 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 
 		polylineVA.setGroupList(null);
-		
+
 		// todo this doesn't work for turned stuff
 		ReplaceVirtualArrayInUseCaseEvent event =
 			new ReplaceVirtualArrayInUseCaseEvent(ePolylineDataType.getCategory(), polylineVAType,

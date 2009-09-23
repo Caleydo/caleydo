@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.util.overlay.contextmenu.container;
 
-
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.usecase.EDataDomain;
@@ -43,16 +42,15 @@ public class GeneContextMenuItemContainer
 			sGeneSymbol = "Unkonwn Gene";
 		addHeading(sGeneSymbol);
 
-		if(GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()) {
+		if (GeneralManager.get().getPathwayManager().isPathwayLoadingFinished()) {
 			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
 			loadPathwaysByGeneItem.setDavid(davidID);
 			addContextMenuItem(loadPathwaysByGeneItem);
-	
+
 			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem();
 			showPathwaysByGeneItem.setDavid(davidID);
 			addContextMenuItem(showPathwaysByGeneItem);
 		}
-
 
 		BookmarkItem addToListItem = new BookmarkItem(EIDType.DAVID, davidID);
 

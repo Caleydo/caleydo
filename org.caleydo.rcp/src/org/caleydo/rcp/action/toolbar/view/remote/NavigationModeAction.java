@@ -16,7 +16,7 @@ public class NavigationModeAction
 
 	/** mediator to handle actions triggered by instances of this class */
 	RemoteRenderingToolBarMediator remoteRenderingToolBarMediator;
-	
+
 	/**
 	 * Constructor.
 	 */

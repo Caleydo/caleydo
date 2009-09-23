@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class ASWTView
 	extends AView
 	implements ISWTView {
-	
+
 	/**
 	 * Constructor.
 	 */

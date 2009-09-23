@@ -31,8 +31,6 @@ import org.eclipse.swt.widgets.ToolItem;
 /**
  * Simple HTML browser.
  * 
- * 
- * 
  * @author Marc Streit
  */
 public class HTMLBrowserViewRep
@@ -40,25 +38,25 @@ public class HTMLBrowserViewRep
 	implements ISWTView {
 
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
-	
+
 	protected Browser browser;
 
 	/**
 	 * Subclasses can add widgets to this composite which appear before the browser icons.
 	 */
 	protected Composite subContributionComposite;
-	
+
 	protected String url = CALEYDO_HOME + "/help/user_interface.html";
 
 	protected Text textURL;
 
-//	protected IDExtractionLocationListener idExtractionLocationListener;
+	// protected IDExtractionLocationListener idExtractionLocationListener;
 
 	private ToolItem goButton;
 	private ToolItem homeButton;
 	private ToolItem backButton;
 	private ToolItem stopButton;
-	
+
 	private ChangeURLListener changeURLListener;
 
 	/**
@@ -80,13 +78,14 @@ public class HTMLBrowserViewRep
 
 	/**
 	 * Basic initialization, used only within constructors.
+	 * 
 	 * @param parentComposite
 	 */
 	private void init() {
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 	}
-	
+
 	@Override
 	public void initViewSWTComposite(Composite parentComposite) {
 		Composite composite = new Composite(parentComposite, SWT.NONE);
@@ -96,7 +95,7 @@ public class HTMLBrowserViewRep
 
 		Composite browserBarComposite = new Composite(composite, SWT.NONE);
 		browserBarComposite.setLayout(new GridLayout(3, false));
-		
+
 		subContributionComposite = new Composite(browserBarComposite, SWT.NONE);
 		subContributionComposite.setLayout(new FillLayout());
 
@@ -204,8 +203,8 @@ public class HTMLBrowserViewRep
 			}
 		});
 
-//		idExtractionLocationListener = new IDExtractionLocationListener(browser, iUniqueID, -1);
-//		browser.addLocationListener(idExtractionLocationListener);
+		// idExtractionLocationListener = new IDExtractionLocationListener(browser, iUniqueID, -1);
+		// browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();
 		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
@@ -229,8 +228,8 @@ public class HTMLBrowserViewRep
 			});
 		}
 		catch (SWTException swte) {
-			generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-				"Error while loading " + url, swte));
+			generalManager.getLogger().log(
+				new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Error while loading " + url, swte));
 		}
 	}
 
@@ -241,7 +240,7 @@ public class HTMLBrowserViewRep
 	public void setUrl(String sUrl) {
 		this.url = sUrl;
 
-//		idExtractionLocationListener.updateSkipNextChangeEvent(true);
+		// idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
 	}
 
@@ -258,7 +257,7 @@ public class HTMLBrowserViewRep
 
 		return true;
 	}
-	
+
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
@@ -267,10 +266,10 @@ public class HTMLBrowserViewRep
 		eventPublisher.addListener(ChangeURLEvent.class, changeURLListener);
 
 	}
-	
+
 	/**
-	 * Registers the listeners for this view to the event system.
-	 * To release the allocated resources unregisterEventListeners() has to be called.
+	 * Registers the listeners for this view to the event system. To release the allocated resources
+	 * unregisterEventListeners() has to be called.
 	 */
 	@Override
 	public void unregisterEventListeners() {
@@ -282,14 +281,14 @@ public class HTMLBrowserViewRep
 	}
 
 	/**
-	 * Unregisters the listeners for this view from the event system.
-	 * To release the allocated resources unregisterEventListenrs() has to be called.
+	 * Unregisters the listeners for this view from the event system. To release the allocated resources
+	 * unregisterEventListenrs() has to be called.
 	 */
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView(dataDomain);
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 	@Override

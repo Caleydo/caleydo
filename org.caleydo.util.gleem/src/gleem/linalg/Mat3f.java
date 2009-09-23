@@ -24,8 +24,9 @@
 package gleem.linalg;
 
 /**
- * 3x3 matrix class useful for simple linear algebra. Representation is (as Mat4f) in row major order and
- * assumes multiplication by column vectors on the right.
+ * 3x3 matrix class useful for simple linear algebra. Representation is (as
+ * Mat4f) in row major order and assumes multiplication by column vectors on the
+ * right.
  */
 
 public class Mat3f {
@@ -42,8 +43,7 @@ public class Mat3f {
 			for (int j = 0; j < 3; j++) {
 				if (i == j) {
 					set(i, j, 1.0f);
-				}
-				else {
+				} else {
 					set(i, j, 0.0f);
 				}
 			}
@@ -51,14 +51,16 @@ public class Mat3f {
 	}
 
 	/**
-	 * Gets the (i,j)th element of this matrix, where i is the row index and j is the column index
+	 * Gets the (i,j)th element of this matrix, where i is the row index and j
+	 * is the column index
 	 */
 	public float get(int i, int j) {
 		return data[3 * i + j];
 	}
 
 	/**
-	 * Sets the (i,j)th element of this matrix, where i is the row index and j is the column index
+	 * Sets the (i,j)th element of this matrix, where i is the row index and j
+	 * is the column index
 	 */
 	public void set(int i, int j, float val) {
 		data[3 * i + j] = val;
@@ -96,14 +98,15 @@ public class Mat3f {
 
 	/** Return the determinant. Computed across the zeroth row. */
 	public float determinant() {
-		return get(0, 0) * (get(1, 1) * get(2, 2) - get(2, 1) * get(1, 2)) + get(0, 1)
-			* (get(2, 0) * get(1, 2) - get(1, 0) * get(2, 2)) + get(0, 2)
-			* (get(1, 0) * get(2, 1) - get(2, 0) * get(1, 1));
+		return get(0, 0) * (get(1, 1) * get(2, 2) - get(2, 1) * get(1, 2))
+				+ get(0, 1) * (get(2, 0) * get(1, 2) - get(1, 0) * get(2, 2))
+				+ get(0, 2) * (get(1, 0) * get(2, 1) - get(2, 0) * get(1, 1));
 	}
 
 	/**
-	 * Full matrix inversion in place. If matrix is singular, returns false and matrix contents are untouched.
-	 * If you know the matrix is orthonormal, you can call transpose() instead.
+	 * Full matrix inversion in place. If matrix is singular, returns false and
+	 * matrix contents are untouched. If you know the matrix is orthonormal, you
+	 * can call transpose() instead.
 	 */
 	public boolean invert() {
 		float det = determinant();
@@ -132,10 +135,12 @@ public class Mat3f {
 	}
 
 	/**
-	 * Multiply a 3D vector by this matrix. NOTE: src and dest must be different vectors.
+	 * Multiply a 3D vector by this matrix. NOTE: src and dest must be different
+	 * vectors.
 	 */
 	public void xformVec(Vec3f src, Vec3f dest) {
-		dest.set(get(0, 0) * src.x() + get(0, 1) * src.y() + get(0, 2) * src.z(),
+		dest.set(get(0, 0) * src.x() + get(0, 1) * src.y() + get(0, 2)
+				* src.z(),
 
 		get(1, 0) * src.x() + get(1, 1) * src.y() + get(1, 2) * src.z(),
 
@@ -175,7 +180,8 @@ public class Mat3f {
 	@Override
 	public String toString() {
 		String endl = System.getProperty("line.separator");
-		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + endl + get(1, 0) + ", " + get(1, 1)
-			+ ", " + get(1, 2) + endl + get(2, 0) + ", " + get(2, 1) + ", " + get(2, 2) + ")";
+		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + endl
+				+ get(1, 0) + ", " + get(1, 1) + ", " + get(1, 2) + endl
+				+ get(2, 0) + ", " + get(2, 1) + ", " + get(2, 2) + ")";
 	}
 }

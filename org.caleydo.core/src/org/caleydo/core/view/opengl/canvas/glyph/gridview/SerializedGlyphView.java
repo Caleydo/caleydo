@@ -19,7 +19,6 @@ public class SerializedGlyphView
 	public SerializedGlyphView() {
 	}
 
-	
 	public SerializedGlyphView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}

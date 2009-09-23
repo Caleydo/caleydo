@@ -26,12 +26,11 @@ package gleem;
 import gleem.linalg.Mat4f;
 
 /**
- * A Group which contains an offset transformation which is performed before the one handed down in
- * setTransform.
+ * A Group which contains an offset transformation which is performed before the
+ * one handed down in setTransform.
  */
 @SuppressWarnings("all")
-public class ManipPartTransform
-	extends ManipPartGroup {
+public class ManipPartTransform extends ManipPartGroup {
 	private Mat4f offsetTransform;
 
 	public ManipPartTransform() {

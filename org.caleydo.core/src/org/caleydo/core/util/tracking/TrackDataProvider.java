@@ -12,12 +12,12 @@ import java.util.Queue;
 public class TrackDataProvider {
 
 	public static final ETrackerMode eTrackerMode = ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT;
-	
+
 	public static float POSITON_SMOOTH_RANGE = 20;
 	public static float DEPTH_SMOOTH_RANGE = 30;
 
-	 public static String IP_TRACKER = "192.168.1.91";
-//	public static String IP_TRACKER = "169.254.55.198";
+	public static String IP_TRACKER = "192.168.1.91";
+	// public static String IP_TRACKER = "169.254.55.198";
 	// public static String IP_LOCAL = "169.254.7.200";
 
 	private Queue<float[]> eyePosInputQueue = new LinkedList<float[]>();
@@ -37,7 +37,7 @@ public class TrackDataProvider {
 		HED
 		// head tracker based
 	};
-	
+
 	public void startTracking() {
 
 		if (bIsTrackMode)
@@ -71,12 +71,12 @@ public class TrackDataProvider {
 			InetAddress smiPCAddress = InetAddress.getByName(IP_TRACKER);
 
 			String command = "";
-			
-			if (eTrackerMode == ETrackerMode.RED || eTrackerMode == ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT) 
+
+			if (eTrackerMode == ETrackerMode.RED || eTrackerMode == ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT)
 				command = "ET_STR \nET_FRM \"%SX %SY %DX %DY\" \n";
 			else if (eTrackerMode == ETrackerMode.HED)
 				command = "ET_STR \nET_FRM \"%HX %HY %HZ\" \n";
-			
+
 			byte[] sendData = new byte[1024];
 			sendData = command.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, smiPCAddress, 4444);;
@@ -131,8 +131,8 @@ public class TrackDataProvider {
 		System.out.println("Eye position: " + fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
 
 		return fArSmoothedPoint;
-		
-//		return new float[]{800, 600};
+
+		// return new float[]{800, 600};
 	}
 
 	public float getDepth() {

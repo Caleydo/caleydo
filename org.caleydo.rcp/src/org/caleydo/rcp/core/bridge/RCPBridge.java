@@ -27,7 +27,7 @@ public class RCPBridge
 
 	@Override
 	public void setShortInfo(String sMessage) {
-//		PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	}
 
 	@Override
@@ -45,20 +45,23 @@ public class RCPBridge
 
 		return PlatformUI.getWorkbench().getDisplay();
 	}
-	
+
 	@Override
 	public void createView(final ASerializedView serializedView) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				try {
-					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					IWorkbenchPage page =
+						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewGUIID());
 					AGLEventListener view = viewPart.getGLEventListener();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
-					
-				} catch (PartInitException ex) {
-					throw new RuntimeException("could not create view with gui-id=" + serializedView.getViewGUIID(), ex);
+
+				}
+				catch (PartInitException ex) {
+					throw new RuntimeException("could not create view with gui-id="
+						+ serializedView.getViewGUIID(), ex);
 				}
 			}
 		});

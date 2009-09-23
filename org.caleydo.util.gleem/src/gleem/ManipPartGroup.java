@@ -33,11 +33,11 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 /**
- * This class groups a set of ManipParts. Makes a set of ManipParts look like one.
+ * This class groups a set of ManipParts. Makes a set of ManipParts look like
+ * one.
  */
 @SuppressWarnings("all")
-public class ManipPartGroup
-	extends ManipPart {
+public class ManipPartGroup extends ManipPart {
 	private boolean pickable = true;
 	private boolean visible = true;
 	private List children = new ArrayList();
@@ -58,7 +58,8 @@ public class ManipPartGroup
 		return (ManipPart) children.get(index);
 	}
 
-	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results, Manip caller) {
+	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results,
+			Manip caller) {
 		if (!pickable)
 			return;
 

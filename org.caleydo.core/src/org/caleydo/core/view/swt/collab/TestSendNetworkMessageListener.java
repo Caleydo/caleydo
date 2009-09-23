@@ -28,7 +28,7 @@ public class TestSendNetworkMessageListener
 	public void widgetSelected(SelectionEvent e) {
 		NetworkManager networkManager = GeneralManager.get().getGroupwareManager().getNetworkManager();
 		Connection connection = networkManager.getConnections().get(0);
-		NetworkEventReceiver receiver = connection.getIncomingPublisher(); 
+		NetworkEventReceiver receiver = connection.getIncomingPublisher();
 		if (receiver != null) {
 			receiver.handleNetworkEvent(messageField.getText());
 		}

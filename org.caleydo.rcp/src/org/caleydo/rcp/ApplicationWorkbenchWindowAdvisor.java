@@ -63,7 +63,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		// Application.startCaleydoCore();
 		// }
 
-		if (GeneralManager.get().getUseCase(EDataDomain.GENERAL_DATA) != null ) {
+		if (GeneralManager.get().getUseCase(EDataDomain.GENERAL_DATA) != null) {
 
 			IActionBarConfigurer configurer = getWindowConfigurer().getActionBarConfigurer();
 
@@ -83,14 +83,14 @@ public class ApplicationWorkbenchWindowAdvisor
 				}
 			}
 		}
-			
-//		if (!Application.bDoExit) {		
-//			
-//			// Only load pathways in genetic use case mode
-//			if (GeneralManager.get().getUseCase() instanceof GeneticUseCase) {
-//				// Trigger pathway loading
-//				new PathwayLoadingProgressIndicatorAction().run(null);				
-//			}
-//		}
+
+		// if (!Application.bDoExit) {
+		//			
+		// // Only load pathways in genetic use case mode
+		// if (GeneralManager.get().getUseCase() instanceof GeneticUseCase) {
+		// // Trigger pathway loading
+		// new PathwayLoadingProgressIndicatorAction().run(null);
+		// }
+		// }
 	}
 }

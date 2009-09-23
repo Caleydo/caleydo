@@ -31,7 +31,7 @@ public class StartClusteringDialog
 		newShell.setText(StartClusteringAction.TEXT);
 		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
 			StartClusteringAction.ICON));
-		
+
 		TrayDialog trayDialog = (TrayDialog) newShell.getData();
 		trayDialog.setHelpAvailable(true);
 	}

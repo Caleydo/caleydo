@@ -65,7 +65,7 @@ public class GLHyperbolic
 	private ColorMappingManager colorMappingManager = null;
 
 	private RedrawViewListener redrawViewListener = null;
-	
+
 	private int iGLDisplayListNode;
 	private int iGLDisplayListConnection;
 
@@ -81,10 +81,10 @@ public class GLHyperbolic
 
 		viewType = EManagedObjectType.GL_HYPERBOLIC;
 
-//		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
-//		alSelectionTypes.add(ESelectionType.NORMAL);
-//		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
-//		alSelectionTypes.add(ESelectionType.SELECTION);
+		// ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
+		// alSelectionTypes.add(ESelectionType.NORMAL);
+		// alSelectionTypes.add(ESelectionType.MOUSE_OVER);
+		// alSelectionTypes.add(ESelectionType.SELECTION);
 
 		colorMappingManager = ColorMappingManager.get();
 		renderStyle = new HyperbolicRenderStyle(viewFrustum);
@@ -166,12 +166,12 @@ public class GLHyperbolic
 
 	}
 
-//	public void setToListMode(boolean bSetToListMode) {
-//		this.bIsInListMode = bSetToListMode;
-//		super.setDetailLevel(EDetailLevel.HIGH);
-//		bUseDetailLevel = false;
-//		setDisplayListDirty();
-//	}
+	// public void setToListMode(boolean bSetToListMode) {
+	// this.bIsInListMode = bSetToListMode;
+	// super.setDetailLevel(EDetailLevel.HIGH);
+	// bUseDetailLevel = false;
+	// setDisplayListDirty();
+	// }
 
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
@@ -185,7 +185,7 @@ public class GLHyperbolic
 	@Override
 	public void displayLocal(GL gl) {
 		pickingManager.handlePicking(this, gl);
-		
+
 		if (bIsDisplayListDirtyLocal) {
 			layouter.setLayoutDirty();
 		}
@@ -199,10 +199,10 @@ public class GLHyperbolic
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);
 		}
-		//if (bIsSomethingHighlighted) {
-		//	bIsSomethingHighlighted = false;
-		//	setDisplayListDirty();
-		//}
+		// if (bIsSomethingHighlighted) {
+		// bIsSomethingHighlighted = false;
+		// setDisplayListDirty();
+		// }
 	}
 
 	@Override
@@ -254,7 +254,7 @@ public class GLHyperbolic
 				switch (pickingMode) {
 					case CLICKED:
 						tree = convertTreeToNewOne(iExternalID);
-						//layouter.animateToNewTree(tree);
+						// layouter.animateToNewTree(tree);
 						layouter.setTree(tree);
 						break;
 					case MOUSE_OVER:
@@ -271,7 +271,7 @@ public class GLHyperbolic
 				}
 
 				break;
-				
+
 			case HYPERBOLIC_LINE_SELECTION:
 
 				switch (pickingMode) {
@@ -291,41 +291,41 @@ public class GLHyperbolic
 				}
 
 				break;
- 
+
 		}
 	}
 
 	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
 		IDrawAbleNode rootNode = tree.getNodeByNumber(iExternalID);
-		if(tree.getRoot().compareTo(rootNode) == 0)
+		if (tree.getRoot().compareTo(rootNode) == 0)
 			return tree;
 		Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>();
-		
+
 		newTree.setRootNode(rootNode);
 		convertTreeToNewOneWorker(rootNode, newTree);
 		return newTree;
 	}
 
 	private void convertTreeToNewOneWorker(IDrawAbleNode rootNode, Tree<IDrawAbleNode> newTree) {
-		
+
 		IDrawAbleNode theirRoot = tree.getParent(rootNode);
 		IDrawAbleNode ourRoot = newTree.getParent(rootNode);
-		if(theirRoot != null) {
-			if(ourRoot == null || theirRoot.compareTo(ourRoot) != 0){
-			newTree.addChild(rootNode, theirRoot);
-			convertTreeToNewOneWorker(theirRoot, newTree);
-	}
+		if (theirRoot != null) {
+			if (ourRoot == null || theirRoot.compareTo(ourRoot) != 0) {
+				newTree.addChild(rootNode, theirRoot);
+				convertTreeToNewOneWorker(theirRoot, newTree);
+			}
 		}
-		//IDrawAbleNode ourRoot=null;
-		//if(newTree.getRoot().compareTo(rootNode) != 0)
-		if(tree.hasChildren(rootNode))
-			for(IDrawAbleNode node : tree.getChildren(rootNode)){
-				if(ourRoot != null)
-					if(node.compareTo(ourRoot) == 0)
+		// IDrawAbleNode ourRoot=null;
+		// if(newTree.getRoot().compareTo(rootNode) != 0)
+		if (tree.hasChildren(rootNode))
+			for (IDrawAbleNode node : tree.getChildren(rootNode)) {
+				if (ourRoot != null)
+					if (node.compareTo(ourRoot) == 0)
 						continue;
 				newTree.addChild(rootNode, node);
-				convertTreeToNewOneWorker(node, newTree);						
-			}		
+				convertTreeToNewOneWorker(node, newTree);
+			}
 	}
 
 	public boolean isInListMode() {
@@ -419,7 +419,9 @@ public class GLHyperbolic
 				for (IDrawAbleNode node : nodesOnLayer) {
 					if (nodes.isEmpty())
 						continue;
-					int s = Math.min(nodes.size(), (int) Math.round((Math.random() * (double) iMaxNodesOnLayer) / 4));
+					int s =
+						Math.min(nodes.size(), (int) Math
+							.round((Math.random() * (double) iMaxNodesOnLayer) / 4));
 					for (int j = 0; j < s; ++j) {
 						tree.addChild(node, nodes.get(0));
 						nodes.remove(0);
@@ -434,13 +436,13 @@ public class GLHyperbolic
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleSelectionUpdate(ISelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

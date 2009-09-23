@@ -164,9 +164,9 @@ public class DrawAbleHyperbolicLayoutConnector
 		return pSpP1;
 
 	}
-	
+
 	@Override
-	public final boolean isPickAble(){
+	public final boolean isPickAble() {
 		return bIsPickAble;
 	}
 

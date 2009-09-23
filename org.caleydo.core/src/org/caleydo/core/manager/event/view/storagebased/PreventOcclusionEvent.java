@@ -21,7 +21,7 @@ public class PreventOcclusionEvent
 	public PreventOcclusionEvent() {
 		// nothing to initialize
 	}
-	
+
 	/**
 	 * True for flag means that the parallel coordinates should enable occlusion prevention, flase disable
 	 * 

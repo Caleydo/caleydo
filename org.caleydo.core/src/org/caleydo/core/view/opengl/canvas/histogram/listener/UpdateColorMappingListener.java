@@ -10,15 +10,17 @@ import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
 
 /**
  * Listener for updates on {@link ColorMapping}s.
-
+ * 
  * @author Werner Puff
  */
-public class UpdateColorMappingListener 
+public class UpdateColorMappingListener
 	extends AEventListener<IColorMappingHandler> {
 
 	/**
 	 * Handles {@link ClearSelectionsEvent}s calling the related handler
-	 * @param event {@link RedrawViewEvent} to handle, other events will be ignored 
+	 * 
+	 * @param event
+	 *            {@link RedrawViewEvent} to handle, other events will be ignored
 	 */
 	@Override
 	public void handleEvent(AEvent event) {

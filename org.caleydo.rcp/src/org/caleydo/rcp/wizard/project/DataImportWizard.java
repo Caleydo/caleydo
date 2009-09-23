@@ -52,12 +52,12 @@ public class DataImportWizard
 	@Override
 	public boolean performFinish() {
 		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete()) {
-			
+
 			if (!((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
-			.getFileLoadDataAction().execute()) {
-				return false;				
+				.getFileLoadDataAction().execute()) {
+				return false;
 			}
-			
+
 			Application.applicationMode = EApplicationMode.GENE_EXPRESSION_NEW_DATA;
 			return true;
 		}

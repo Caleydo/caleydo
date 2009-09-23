@@ -25,7 +25,7 @@ public class GlyphUpdatePositionModelEvent
 	public GlyphUpdatePositionModelEvent() {
 		// nothing to initialize here
 	}
-	
+
 	/**
 	 * @param positionModel
 	 * @param use
@@ -39,7 +39,7 @@ public class GlyphUpdatePositionModelEvent
 		this.axis = axis;
 		this.value = colnum;
 	}
-	
+
 	public int getViewID() {
 		return viewID;
 	}

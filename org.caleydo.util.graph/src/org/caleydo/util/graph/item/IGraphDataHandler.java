@@ -21,7 +21,8 @@ public interface IGraphDataHandler {
 	public Object getData(int key);
 
 	/**
-	 * Get all objects. Does not return NULL but an empty List in case no objects are registered.
+	 * Get all objects. Does not return NULL but an empty List in case no
+	 * objects are registered.
 	 * 
 	 * @return List of objects of empty collection
 	 */
@@ -32,7 +33,8 @@ public interface IGraphDataHandler {
 	 *            index to access data
 	 * @param data
 	 *            raw data to be stored at each node
-	 * @return TURE if identifier was not registered previously, FLASE if identifier was already stored.
+	 * @return TURE if identifier was not registered previously, FLASE if
+	 *         identifier was already stored.
 	 */
 	public boolean setData(int key, Object data);
 
@@ -41,7 +43,8 @@ public interface IGraphDataHandler {
 	 * 
 	 * @param key
 	 *            address one object
-	 * @return Object that was removed or NULL if identifier was not bound to an object
+	 * @return Object that was removed or NULL if identifier was not bound to an
+	 *         object
 	 */
 	public Object removeData(int key);
 

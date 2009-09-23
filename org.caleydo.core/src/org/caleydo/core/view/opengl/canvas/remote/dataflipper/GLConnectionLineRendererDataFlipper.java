@@ -35,8 +35,7 @@ public class GLConnectionLineRendererDataFlipper
 	 * Constructor.
 	 */
 	public GLConnectionLineRendererDataFlipper(RemoteLevelElement focusElement,
-		ArrayList<RemoteLevelElement> stackElementsLeft,
-		ArrayList<RemoteLevelElement> stackElementsRight) {
+		ArrayList<RemoteLevelElement> stackElementsLeft, ArrayList<RemoteLevelElement> stackElementsRight) {
 
 		super();
 
@@ -100,31 +99,30 @@ public class GLConnectionLineRendererDataFlipper
 					}
 				}
 			}
-			
-			if(viewToPointList.containsKey(focusElement.getContainedElementID()))
-			{
-				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList.get(focusElement.getContainedElementID()))
-				{
+
+			if (viewToPointList.containsKey(focusElement.getContainedElementID())) {
+				for (ArrayList<Vec3f> sourceViewPoints : viewToPointList.get(focusElement
+					.getContainedElementID())) {
 					// Connect point in focus view with points in first view in LEFT stack
-					if (viewToPointList.containsKey(stackElementsLeft.get(0).getContainedElementID()))
-					{
-						for(ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsLeft.get(0).getContainedElementID()))
-						{
-							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[]{1,0,0});
+					if (viewToPointList.containsKey(stackElementsLeft.get(0).getContainedElementID())) {
+						for (ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsLeft.get(0)
+							.getContainedElementID())) {
+							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[] {
+									1, 0, 0 });
 						}
 					}
-					
+
 					// Connect point in focus view with points in first view in RIGHT stack
-					if (viewToPointList.containsKey(stackElementsRight.get(0).getContainedElementID()))
-					{
-						for(ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsRight.get(0).getContainedElementID()))
-						{
-							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[]{1,0,0});
+					if (viewToPointList.containsKey(stackElementsRight.get(0).getContainedElementID())) {
+						for (ArrayList<Vec3f> targetViewPoints : viewToPointList.get(stackElementsRight
+							.get(0).getContainedElementID())) {
+							renderLine(gl, sourceViewPoints.get(0), targetViewPoints.get(0), 0, new float[] {
+									1, 0, 0 });
 						}
 					}
 				}
 			}
-			
+
 			hashIDTypeToViewToPointLists.clear();
 		}
 	}

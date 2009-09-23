@@ -10,7 +10,7 @@ public class ApplyCurrentSelectionToVirtualArrayListener
 	@Override
 	public void handleEvent(AEvent event) {
 		handler.saveSelection();
-		
+
 	}
 
 }

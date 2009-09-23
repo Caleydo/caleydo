@@ -51,16 +51,16 @@ public class RcpGLHistogramView
 	protected NewSetListener newSetListener = null;
 
 	protected Composite histoComposite;
-	
+
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
-	
+
 	/**
 	 * Constructor.
 	 */
 	public RcpGLHistogramView() {
 		super();
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 
@@ -71,28 +71,30 @@ public class RcpGLHistogramView
 		minSizeComposite.setMinSize(160, 80);
 		minSizeComposite.setExpandHorizontal(true);
 		minSizeComposite.setExpandVertical(true);
-		
+
 		GridLayout baseLayout = new GridLayout(1, false);
 		baseLayout.verticalSpacing = 2;
 		histoComposite.setLayout(baseLayout);
-		
+
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		SerializedHistogramView serialized = new SerializedHistogramView(dataDomain);
 		redrawView(serialized);
 		glEventListener.setViewGUIID(ID);
 	}
-	
+
 	/**
 	 * Redraws the view from scratch with new initialization data obtained by its serialized form
-	 * @param serialized serialized form of this view for initialization
+	 * 
+	 * @param serialized
+	 *            serialized form of this view for initialization
 	 */
 	public void redrawView(SerializedHistogramView serialized) {
 
 		createGLCanvas();
 		createGLEventListener(initSerializedView, glCanvas.getID());
-		
+
 		// Composite colorMappingComposite = new Composite(baseComposite, SWT.NULL);
 		// colorMappingComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		// GridLayout layout = new GridLayout(1, false);
@@ -158,13 +160,12 @@ public class RcpGLHistogramView
 
 		updateColorLabel();
 
-
 	}
-	
+
 	private void updateColorLabel() {
 
-		// FIXME  this is all specific to gene expression
-		
+		// FIXME this is all specific to gene expression
+
 		DecimalFormat decimalFormat;
 
 		int iNumberOfMarkerPoints =
@@ -179,8 +180,8 @@ public class RcpGLHistogramView
 				store.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
 					+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 
-	
-			double correspondingValue = GeneralManager.get().getUseCase(dataDomain).getSet().getRawForNormalized(normalizedValue);
+			double correspondingValue =
+				GeneralManager.get().getUseCase(dataDomain).getSet().getRawForNormalized(normalizedValue);
 
 			if (Math.abs(correspondingValue) > 10000)
 				decimalFormat = new DecimalFormat("0.#E0");
@@ -255,9 +256,9 @@ public class RcpGLHistogramView
 
 	@Override
 	public void unregisterEventListeners() {
-		
+
 		super.unregisterEventListeners();
-		
+
 		if (redrawViewListener != null) {
 			eventPublisher.removeListener(redrawViewListener);
 			redrawViewListener = null;
@@ -285,7 +286,7 @@ public class RcpGLHistogramView
 
 	@Override
 	public void setSet(ISet set) {
-		
+
 		// We no not need a private set here (it is taken from the use case)
 		// we only react to the new set event
 		updateColorLabel();

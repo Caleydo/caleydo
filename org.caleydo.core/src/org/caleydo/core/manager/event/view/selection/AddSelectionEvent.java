@@ -8,6 +8,7 @@ import org.caleydo.core.manager.event.AEvent;
 
 /**
  * Signals the creation of a new selection.
+ * 
  * @author Werner Puff
  */
 @XmlRootElement
@@ -17,7 +18,7 @@ public class AddSelectionEvent
 
 	/** Related connectionID of the selection, might be legal in different views */
 	private Integer connectionID;
-	
+
 	/** {@link SelectedElementRep} of the selection to add */
 	private SelectedElementRep selectedElementRep;
 

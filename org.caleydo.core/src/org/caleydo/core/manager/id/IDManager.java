@@ -55,7 +55,8 @@ public class IDManager {
 	}
 
 	/**
-	 * Converts IDs used in xml files to those used internally. 
+	 * Converts IDs used in xml files to those used internally.
+	 * 
 	 * @param iAlExternalIDs
 	 * @return
 	 */

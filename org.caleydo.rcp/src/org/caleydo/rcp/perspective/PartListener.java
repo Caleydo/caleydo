@@ -33,12 +33,12 @@ import org.eclipse.ui.PlatformUI;
 public class PartListener
 	implements IPartListener2, IUniqueObject {
 
-	IEventPublisher eventPublisher; 
+	IEventPublisher eventPublisher;
 
 	public PartListener() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
-	
+
 	@Override
 	public int getID() {
 		return 815; // FIXXXME unique id for this object or find another uniqueObject to trigger events from
@@ -56,7 +56,7 @@ public class PartListener
 			return;
 
 		ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
-		
+
 		if (glView == null)
 			return;
 
@@ -78,26 +78,27 @@ public class PartListener
 	public void partVisible(IWorkbenchPartReference partRef) {
 
 		IWorkbenchPart activePart = partRef.getPart(false);
-		
+
 		if (!(activePart instanceof CaleydoRCPViewPart)) {
 			return;
 		}
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
 		viewPart.setAttached(isViewAttached(viewPart));
-		
-//		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
-//			"partVisible(): " +viewPart));
+
+		// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
+		// "partVisible(): " +viewPart));
 
 		if (viewPart instanceof ARcpGLViewPart) {
 			GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
 				((ARcpGLViewPart) viewPart).getGLCanvas());
 		}
-		
+
 		if (!activePart.getSite().getShell().getText().equals("Caleydo")) {
 			// viewpart is detached from caleydo main window
 			drawInlineToolBar(viewPart);
 			removeViewSpecificToolBarItems();
-		} else {
+		}
+		else {
 			// viewpart is attached within caleydo main window
 			removeInlineToolBar((CaleydoRCPViewPart) viewPart);
 			sendViewActivationEvent(viewPart);
@@ -117,10 +118,10 @@ public class PartListener
 			return;
 		}
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
-		
-//		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
-//			"partHidden(): " +viewPart));
-		
+
+		// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
+		// "partHidden(): " +viewPart));
+
 		viewPart.setAttached(isViewAttached(viewPart));
 
 		if (!(activePart instanceof ARcpGLViewPart)) {
@@ -128,8 +129,8 @@ public class PartListener
 		}
 		ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 
-		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvasFromAnimator(
-			glViewPart.getGLCanvas());
+		GeneralManager.get().getViewGLCanvasManager()
+			.unregisterGLCanvasFromAnimator(glViewPart.getGLCanvas());
 	}
 
 	@Override
@@ -143,12 +144,12 @@ public class PartListener
 		if (!(activePart instanceof CaleydoRCPViewPart)) {
 			return;
 		}
-		
+
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
-		
-//		GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
-//			"partActivated(): " +viewPart));
-		
+
+		// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
+		// "partActivated(): " +viewPart));
+
 		// Make sure that keyboard listener gets the events
 		if (viewPart.getSWTComposite() != null)
 			viewPart.getSWTComposite().forceFocus();
@@ -156,7 +157,7 @@ public class PartListener
 		sendViewActivationEvent(viewPart);
 	}
 
-	private void sendViewActivationEvent(CaleydoRCPViewPart viewPart) { 
+	private void sendViewActivationEvent(CaleydoRCPViewPart viewPart) {
 		ViewEvent viewActivationEvent;
 		viewActivationEvent = new ViewActivationEvent();
 		viewActivationEvent.setSender(this);
@@ -171,11 +172,13 @@ public class PartListener
 
 	/**
 	 * draws the toolbar items within the views default toolbar (inline)
-	 * @param viewPart view to add the toolbar items
+	 * 
+	 * @param viewPart
+	 *            view to add the toolbar items
 	 */
 	private void drawInlineToolBar(CaleydoRCPViewPart viewPart) {
 		List<Integer> viewIDs = getAllViewIDs(viewPart);
-		
+
 		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
 		List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(viewIDs);
 
@@ -187,7 +190,8 @@ public class PartListener
 				for (IToolBarItem item : container.getToolBarItems()) {
 					if (item instanceof IAction) {
 						toolBarManager.add((IAction) item);
-					} else if (item instanceof ControlContribution) {
+					}
+					else if (item instanceof ControlContribution) {
 						toolBarManager.add((ControlContribution) item);
 					}
 				}
@@ -206,10 +210,12 @@ public class PartListener
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	/**
 	 * removes all inline toolbar items
-	 * @param viewPart view to remove the toolbar items from
+	 * 
+	 * @param viewPart
+	 *            view to remove the toolbar items from
 	 */
 	private void removeInlineToolBar(CaleydoRCPViewPart viewPart) {
 		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
@@ -219,6 +225,7 @@ public class PartListener
 
 	/**
 	 * Gets the view-ids and all sub-view-ids (if there are any)
+	 * 
 	 * @param viewPart
 	 * @return
 	 */
@@ -226,25 +233,26 @@ public class PartListener
 		return viewPart.getAllViewIDs();
 	}
 
-//	List<Integer> viewIDs;
-//		if (viewPart instanceof HTMLBrowserView) {
-//			viewIDs = new ArrayList<Integer>();
-//			viewIDs.add(viewPart.getViewID());
-//		} else if (viewPart instanceof AGLViewPart) {
-//			IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
-//			viewManager.setActiveSWTView(viewPart.getSWTComposite());
-//			AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
-//			viewIDs = glView.getAllViewIDs();
-//		} else {
-//			viewIDs = new ArrayList<Integer>();
-//		}
-//		return viewIDs;
-//	}
-	
+	// List<Integer> viewIDs;
+	// if (viewPart instanceof HTMLBrowserView) {
+	// viewIDs = new ArrayList<Integer>();
+	// viewIDs.add(viewPart.getViewID());
+	// } else if (viewPart instanceof AGLViewPart) {
+	// IViewManager viewManager = GeneralManager.get().getViewGLCanvasManager();
+	// viewManager.setActiveSWTView(viewPart.getSWTComposite());
+	// AGLEventListener glView = ((AGLViewPart) viewPart).getGLEventListener();
+	// viewIDs = glView.getAllViewIDs();
+	// } else {
+	// viewIDs = new ArrayList<Integer>();
+	// }
+	// return viewIDs;
+	// }
+
 	public boolean isViewAttached(IViewPart viewPart) {
 		if (viewPart.getSite().getShell().getText().equals("Caleydo")) {
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}

@@ -10,17 +10,17 @@ public class ClusterHandler
 	extends AbstractHandler
 	implements IHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
+
 		StartClusteringAction action = new StartClusteringAction();
 		action.run();
-		
-//		StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
-//		dialog.open();
-//		ClusterState clusterState = dialog.getClusterState();
-//
-//		if (clusterState != null)
-//			GeneralManager.get().getEventPublisher().triggerEvent(new StartClusteringEvent(clusterState));
-//	
+
+		// StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
+		// dialog.open();
+		// ClusterState clusterState = dialog.getClusterState();
+		//
+		// if (clusterState != null)
+		// GeneralManager.get().getEventPublisher().triggerEvent(new StartClusteringEvent(clusterState));
+		//	
 		return null;
 	}
 }

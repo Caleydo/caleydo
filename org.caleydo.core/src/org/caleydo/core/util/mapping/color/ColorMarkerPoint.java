@@ -29,9 +29,9 @@ public class ColorMarkerPoint
 	 * Default no-arg constructor, especially needed for xml-serialization.
 	 */
 	public ColorMarkerPoint() {
-		
+
 	}
-	
+
 	/**
 	 * Constructor. To create a new marker point pass two variables, fValue and fArColor.
 	 * <p>
@@ -138,11 +138,13 @@ public class ColorMarkerPoint
 			throw new IllegalArgumentException("Invalid length of color array fColor");
 
 		if (fValue > 1 || fValue < 0)
-			throw new IllegalArgumentException("Invalid value for fValue. Has to be between 0 and 1, but was: " + fValue);
+			throw new IllegalArgumentException(
+				"Invalid value for fValue. Has to be between 0 and 1, but was: " + fValue);
 
 		for (float fColorValue : fArColor) {
 			if (fColorValue > 1 || fColorValue < 0)
-				throw new IllegalArgumentException("Invalid value in fArColor. Has to be between 0 and 1, but was: " + fColorValue);
+				throw new IllegalArgumentException(
+					"Invalid value in fArColor. Has to be between 0 and 1, but was: " + fColorValue);
 		}
 
 		this.fValue = fValue;

@@ -70,7 +70,7 @@ class NodeInfo {
 	public void setDepth(int iDepth) {
 		this.iDepth = iDepth;
 	}
-	
+
 	public int getDepth() {
 		return iDepth;
 	}

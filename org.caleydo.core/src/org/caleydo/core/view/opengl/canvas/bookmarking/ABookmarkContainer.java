@@ -142,8 +142,8 @@ abstract class ABookmarkContainer {
 			item.getDimensions().setOrigins(0, yOrigin);
 			yOrigin -= item.getDimensions().getHeight();
 
-//			if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, item.getID()))
-//				GLHelperFunctions.drawPointAt(gl, item.getDimensions().getXOrigin(), yOrigin, 0);
+			// if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, item.getID()))
+			// GLHelperFunctions.drawPointAt(gl, item.getDimensions().getXOrigin(), yOrigin, 0);
 			int pickingID = pickingIDManager.getPickingID(this, item.getID());
 			gl.glPushName(pickingID);
 			item.render(gl);
@@ -211,7 +211,7 @@ abstract class ABookmarkContainer {
 				break;
 
 			case BOOKMARK_CONTAINER_HEADING:
-				
+
 				break;
 		}
 

@@ -397,8 +397,8 @@ public class RcpSearchView
 		pathwayTable.getColumn(1).pack();
 	}
 
-private void searchForGene(final String sSearchQuery) {
-		
+	private void searchForGene(final String sSearchQuery) {
+
 		// Flush old pathway results
 		for (TableItem item : geneTable.getItems())
 			item.dispose();
@@ -417,8 +417,7 @@ private void searchForGene(final String sSearchQuery) {
 		}
 
 		if (useGeneEntrezGeneID.getSelection()) {
-			for (Object iEntrezGeneID : idMappingManager.getMap(EMappingType.ENTREZ_GENE_ID_2_DAVID)
-				.keySet()) {
+			for (Object iEntrezGeneID : idMappingManager.getMap(EMappingType.ENTREZ_GENE_ID_2_DAVID).keySet()) {
 				regexMatcher = pattern.matcher(iEntrezGeneID.toString());
 				if (regexMatcher.find())
 					iArDavidGeneResults.add((Integer) idMappingManager.getID(EIDType.ENTREZ_GENE_ID,
@@ -481,10 +480,10 @@ private void searchForGene(final String sSearchQuery) {
 
 			// Determine whether the gene has a valid expression value in the current data set
 			String sExpressionValueInCurrentDataSet = "NOT FOUND";
-			
+
 			Set<Integer> setExpIndex =
 				idMappingManager.getIDAsSet(EIDType.DAVID, EIDType.EXPRESSION_INDEX, iDavidID);
-			//	h.getExpressionIndicesFromDavid(iDavidID);
+			// h.getExpressionIndicesFromDavid(iDavidID);
 
 			if (setExpIndex != null && setExpIndex.size() > 0)
 				sExpressionValueInCurrentDataSet = "FOUND";

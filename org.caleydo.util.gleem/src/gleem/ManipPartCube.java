@@ -26,16 +26,18 @@ package gleem;
 import gleem.linalg.Vec3f;
 
 /**
- * A cube of width, height, and depth 2, centered about the origin and aligned with the X, Y, and Z axes.
+ * A cube of width, height, and depth 2, centered about the origin and aligned
+ * with the X, Y, and Z axes.
  */
 @SuppressWarnings("all")
-public class ManipPartCube
-	extends ManipPartTriBased {
+public class ManipPartCube extends ManipPartTriBased {
 	private static final Vec3f[] vertices = {
-	// Front side
-			new Vec3f(-1, 1, 1), new Vec3f(-1, -1, 1), new Vec3f(1, -1, 1), new Vec3f(1, 1, 1),
+			// Front side
+			new Vec3f(-1, 1, 1), new Vec3f(-1, -1, 1), new Vec3f(1, -1, 1),
+			new Vec3f(1, 1, 1),
 			// Back side
-			new Vec3f(-1, 1, -1), new Vec3f(-1, -1, -1), new Vec3f(1, -1, -1), new Vec3f(1, 1, -1), };
+			new Vec3f(-1, 1, -1), new Vec3f(-1, -1, -1), new Vec3f(1, -1, -1),
+			new Vec3f(1, 1, -1),};
 
 	private static final int[] vertexIndices = {
 	// Front face
@@ -49,7 +51,7 @@ public class ManipPartCube
 			// Top face
 			4, 0, 3, 4, 3, 7,
 			// Bottom face
-			1, 5, 6, 1, 6, 2 };
+			1, 5, 6, 1, 6, 2};
 
 	private static Vec3f[] normals = null;
 	private static int[] normalIndices = null;
@@ -58,7 +60,8 @@ public class ManipPartCube
 		super();
 
 		if (normals == null) {
-			NormalCalc.NormalInfo normInfo = NormalCalc.computeFacetedNormals(vertices, vertexIndices, true);
+			NormalCalc.NormalInfo normInfo = NormalCalc.computeFacetedNormals(
+					vertices, vertexIndices, true);
 			normals = normInfo.normals;
 			normalIndices = normInfo.normalIndices;
 		}

@@ -15,9 +15,7 @@ import org.caleydo.util.graph.IGraphItem;
  * 
  * @author Michael Kalkusch
  */
-public class GraphItem
-	extends AGraphDataHandler
-	implements IGraphItem {
+public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	private static final long serialVersionUID = 1L;
 
 	private int iGraphItemId = 0;
@@ -45,12 +43,14 @@ public class GraphItem
 	/**
 	 * Calls GraphItem(int, EGraphItemKind, int, int) with default settings.
 	 * 
-	 * @see org.caleydo.util.graph.item.GraphItem#GraphItem(int, EGraphItemKind, int, int)
+	 * @see org.caleydo.util.graph.item.GraphItem#GraphItem(int, EGraphItemKind,
+	 *      int, int)
 	 * @param kind
 	 *            use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
 	public GraphItem(final int id, final EGraphItemKind kind) {
-		this(id, kind, GraphItem.iInitialSizeItemsDefault, GraphItem.iInitalSizeGraphsDefault);
+		this(id, kind, GraphItem.iInitialSizeItemsDefault,
+				GraphItem.iInitalSizeGraphsDefault);
 
 	}
 
@@ -64,21 +64,19 @@ public class GraphItem
 	 * @param kind
 	 *            use EGraphItemKind.NODE or EGraphItemKind.EDGE
 	 */
-	public GraphItem(final int id, final EGraphItemKind kind, final int iInitialSizeItems,
-		final int iInitalSizeGraphs) {
+	public GraphItem(final int id, final EGraphItemKind kind,
+			final int iInitialSizeItems, final int iInitalSizeGraphs) {
 
 		/** create graph-data objects .. */
 		super(iInitialSizeItems);
 
 		/** create container for items */
-		items =
-			new GraphGenericContainer<IGraphItem, EGraphItemProperty>(EGraphItemProperty.getActiveItems(),
-				iInitialSizeItems);
+		items = new GraphGenericContainer<IGraphItem, EGraphItemProperty>(
+				EGraphItemProperty.getActiveItems(), iInitialSizeItems);
 
 		/** create container for graphs */
-		graphs =
-			new GraphGenericContainer<IGraph, EGraphItemHierarchy>(EGraphItemHierarchy.getActiveItems(),
-				iInitalSizeGraphs);
+		graphs = new GraphGenericContainer<IGraph, EGraphItemHierarchy>(
+				EGraphItemHierarchy.getActiveItems(), iInitalSizeGraphs);
 
 		this.iGraphItemId = id;
 		this.itemKind = kind;
@@ -95,11 +93,12 @@ public class GraphItem
 	}
 
 	@Override
-	public final void addItemDoubleLinked(IGraphItem item, EGraphItemProperty prop)
-		throws GraphRuntimeException {
+	public final void addItemDoubleLinked(IGraphItem item,
+			EGraphItemProperty prop) throws GraphRuntimeException {
 		try {
 			/**
-			 * assign prop.getInvertProperty() to test if prop has an inverse EGraphItemProperty
+			 * assign prop.getInvertProperty() to test if prop has an inverse
+			 * EGraphItemProperty
 			 */
 			EGraphItemProperty prop_inverted = prop.getInvertProperty();
 
@@ -109,15 +108,16 @@ public class GraphItem
 			/** add reverse with inverted property */
 			item.addItem(this, prop_inverted);
 
-		}
-		catch (GraphRuntimeException ge) {
-			throw new GraphRuntimeException("Exception during addItemDoubleLinked(); " + ge.toString());
+		} catch (GraphRuntimeException ge) {
+			throw new GraphRuntimeException(
+					"Exception during addItemDoubleLinked(); " + ge.toString());
 		}
 
 	}
 
 	@Override
-	public void addItem(IGraphItem item, EGraphItemProperty prop) throws GraphRuntimeException {
+	public void addItem(IGraphItem item, EGraphItemProperty prop)
+			throws GraphRuntimeException {
 		items.addGraphComponent(item, prop);
 	}
 
@@ -151,7 +151,8 @@ public class GraphItem
 			/** need to update all references! */
 			assert false : "not implemented yet!";
 
-			throw new GraphRuntimeException("setGraphKind() not implemented yet!");
+			throw new GraphRuntimeException(
+					"setGraphKind() not implemented yet!");
 		}
 	}
 

@@ -12,8 +12,8 @@ import org.caleydo.core.manager.event.AEvent;
 
 /**
  * A SelectionCommandEvent holds a {@link SelectionCommand} which is used to signal one of the actions defined
- * in {@link ESelectionCommandType} to a {@link SelectionManager}. Which particular selection manager
- * the command should be applied to is specified via the additional {@link EIDType}.
+ * in {@link ESelectionCommandType} to a {@link SelectionManager}. Which particular selection manager the
+ * command should be applied to is specified via the additional {@link EIDType}.
  * 
  * @author Werner Puff
  * @author Alexander Lex
@@ -24,7 +24,7 @@ public class SelectionCommandEvent
 	extends AEvent {
 
 	/** selected genome data-type */
-	EIDCategory	category;
+	EIDCategory category;
 
 	/** list of selection commands to handle by the receiver */
 	SelectionCommand selectionCommand = null;

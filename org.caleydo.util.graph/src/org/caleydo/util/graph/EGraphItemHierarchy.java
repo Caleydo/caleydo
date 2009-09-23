@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Graph hierarchy properties like "PARENT, CHILD, NEIGHBOUR" as well as "GRAPH_ALIAS" and "GRAPH_NONE".
- * Describe properties of a graph.
+ * Graph hierarchy properties like "PARENT, CHILD, NEIGHBOUR" as well as
+ * "GRAPH_ALIAS" and "GRAPH_NONE". Describe properties of a graph.
  * 
  * @see org.caleydo.util.graph.EGraphProperty
  * @see org.caleydo.util.graph.EGraphItemProperty
@@ -14,9 +14,7 @@ import java.util.List;
  */
 public enum EGraphItemHierarchy {
 
-	GRAPH_PARENT,
-	GRAPH_CHILDREN,
-	GRAPH_NEIGHBOUR,
+	GRAPH_PARENT, GRAPH_CHILDREN, GRAPH_NEIGHBOUR,
 
 	GRAPH_ALIAS,
 	// GRAPH_DATA,
@@ -36,7 +34,8 @@ public enum EGraphItemHierarchy {
 	 */
 	public static final List<EGraphItemHierarchy> getActiveItems() {
 
-		List<EGraphItemHierarchy> resultList = new ArrayList<EGraphItemHierarchy>(4);
+		List<EGraphItemHierarchy> resultList = new ArrayList<EGraphItemHierarchy>(
+				4);
 		resultList.add(EGraphItemHierarchy.GRAPH_PARENT);
 		resultList.add(EGraphItemHierarchy.GRAPH_NEIGHBOUR);
 		resultList.add(EGraphItemHierarchy.GRAPH_CHILDREN);

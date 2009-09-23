@@ -90,7 +90,8 @@ public class StartClusteringAction
 
 		// Determine content label dynamically
 		// FIXME this is not generic
-		sArTypeOptions[0] = GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getContentLabel(true, false);
+		sArTypeOptions[0] =
+			GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getContentLabel(true, false);
 	}
 
 	@Override
@@ -114,8 +115,9 @@ public class StartClusteringAction
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 						RcpHTMLBrowserView.ID);
-					
-					final String URL_HELP_CLUSTERING = "http://www.caleydo.org/help/gene_expression.html#Clustering";
+
+					final String URL_HELP_CLUSTERING =
+						"http://www.caleydo.org/help/gene_expression.html#Clustering";
 					ChangeURLEvent changeURLEvent = new ChangeURLEvent();
 					changeURLEvent.setSender(this);
 					changeURLEvent.setUrl(URL_HELP_CLUSTERING);

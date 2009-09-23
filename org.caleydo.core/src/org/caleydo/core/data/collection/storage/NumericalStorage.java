@@ -101,28 +101,24 @@ public class NumericalStorage
 
 	@Override
 	public Histogram getHistogram() {
-		
-		int iNumberOfBuckets = (int)Math.sqrt(size());
+
+		int iNumberOfBuckets = (int) Math.sqrt(size());
 		Histogram histogram = new Histogram(iNumberOfBuckets);
-		for(int iCount = 0; iCount < iNumberOfBuckets; iCount++)
-		{
+		for (int iCount = 0; iCount < iNumberOfBuckets; iCount++) {
 			histogram.add(0);
 		}
-		
-		FloatCContainerIterator iterator =( (FloatCContainer)hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator();
-		while(iterator.hasNext())
-		{
-			int iIndex = (int)(iterator.next() * iNumberOfBuckets);
-			if(iIndex == iNumberOfBuckets)
+
+		FloatCContainerIterator iterator =
+			((FloatCContainer) hashCContainers.get(EDataRepresentation.NORMALIZED)).iterator();
+		while (iterator.hasNext()) {
+			int iIndex = (int) (iterator.next() * iNumberOfBuckets);
+			if (iIndex == iNumberOfBuckets)
 				iIndex--;
 			Integer iNumOccurences = histogram.get(iIndex);
 			histogram.set(iIndex, ++iNumOccurences);
 		}
-		
-		
+
 		return histogram;
 	}
-	
-	
 
 }

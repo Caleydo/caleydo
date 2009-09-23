@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.event;
 
-
 /**
  * General event listener interface for classes that handle events. Inherited classes should usually handle
  * exactly one type of event. Related views or mediators should register one listener to exactly one event
@@ -46,11 +45,11 @@ public abstract class AEventListener<T extends IListenerOwner> {
 	 *            event object to handle by this listener
 	 */
 	public void queueEvent(AEvent event) {
-//		if (event.getSender() == null) {
-//			GeneralManager.get().getLogger().log(
-//				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "handling " + this.getClass().getName()
-//					+ " with sender==null"));
-//		}
+		// if (event.getSender() == null) {
+		// GeneralManager.get().getLogger().log(
+		// new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "handling " + this.getClass().getName()
+		// + " with sender==null"));
+		// }
 		if (event.getSender() != this.getHandler()) {
 			handler.queueEvent(this, event);
 		}

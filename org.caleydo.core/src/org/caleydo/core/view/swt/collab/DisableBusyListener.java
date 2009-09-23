@@ -7,11 +7,11 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-public class DisableBusyListener 
+public class DisableBusyListener
 	implements Listener {
-	
+
 	Logger log = Logger.getLogger(DisableBusyListener.class.getName());
-	
+
 	Object requester;
 
 	@Override
@@ -19,6 +19,7 @@ public class DisableBusyListener
 		log.log(Level.INFO, "enable busy");
 		GeneralManager.get().getViewGLCanvasManager().releaseBusyMode(requester);
 	}
+
 	public void setRequester(Object requester) {
 		this.requester = requester;
 	}

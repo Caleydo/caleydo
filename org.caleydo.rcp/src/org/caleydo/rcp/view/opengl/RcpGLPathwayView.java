@@ -3,7 +3,6 @@ package org.caleydo.rcp.view.opengl;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.pathway.SerializedPathwayView;
 
-
 public class RcpGLPathwayView
 	extends ARcpGLViewPart {
 

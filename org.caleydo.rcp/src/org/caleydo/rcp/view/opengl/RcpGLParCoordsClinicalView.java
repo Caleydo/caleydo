@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 public class RcpGLParCoordsClinicalView
 	extends ARcpGLViewPart {
 
-	public static final String ID =  "org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView";
+	public static final String ID = "org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView";
 
 	/**
 	 * Constructor.
@@ -27,7 +27,8 @@ public class RcpGLParCoordsClinicalView
 
 	@Override
 	public ASerializedView createDefaultSerializedView() {
-		SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(EDataDomain.CLINICAL_DATA);
+		SerializedParallelCoordinatesView serializedView =
+			new SerializedParallelCoordinatesView(EDataDomain.CLINICAL_DATA);
 		return serializedView;
 	}
 

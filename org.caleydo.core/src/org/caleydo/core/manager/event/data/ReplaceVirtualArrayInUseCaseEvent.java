@@ -28,9 +28,9 @@ public class ReplaceVirtualArrayInUseCaseEvent
 	public ReplaceVirtualArrayInUseCaseEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public ReplaceVirtualArrayInUseCaseEvent(EIDCategory idCategory, EVAType vaType, VirtualArray virtualArray) {
 		super(idCategory, vaType, virtualArray);
-		
-	}	
+
+	}
 }

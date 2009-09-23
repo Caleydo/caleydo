@@ -50,8 +50,9 @@ public class ObjectGroup {
 
 	public void draw(GL gl) {
 		if (iDisplayList < 0) {
-			GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-				this.getClass().toString() + ": display list was drawn, before init!"));
+			GeneralManager.get().getLogger().log(
+				new Status(Status.INFO, GeneralManager.PLUGIN_ID, this.getClass().toString()
+					+ ": display list was drawn, before init!"));
 			init(gl);
 		}
 

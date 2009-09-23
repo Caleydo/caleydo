@@ -19,7 +19,7 @@ import de.phleisch.app.itsucks.job.event.JobChangedEvent;
  */
 public abstract class APathwayCacher
 	extends Thread {
-	
+
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -30,9 +30,9 @@ public abstract class APathwayCacher
 	protected CmdFetchPathwayData triggeringCommand;
 
 	protected EOrganism eOrganism;
-	
+
 	protected String sFetchURL;
-	
+
 	protected int iDownloadCount = 0;
 
 	protected boolean bEnableProxy = false;
@@ -50,19 +50,19 @@ public abstract class APathwayCacher
 					iDownloadCount++;
 
 					if (progressBar.isDisposed()) {
-//						dispatcher.getEventManager().shutdown();
-//						dispatcher.getWorkerPool().abortBusyWorker();
+						// dispatcher.getEventManager().shutdown();
+						// dispatcher.getWorkerPool().abortBusyWorker();
 						dispatcher.stop();
-						
-						while(dispatcher.getJobManager().getNextOpenJob() != null)
+
+						while (dispatcher.getJobManager().getNextOpenJob() != null)
 							dispatcher.getJobManager().removeJob(dispatcher.getJobManager().getNextOpenJob());
-//						
-//						for (JobL job : dispatcher.getJobManager().getJobList())
-//							
-//						dispatcher.getJobManager().removeJob(arg0)
+						//						
+						// for (JobL job : dispatcher.getJobManager().getJobList())
+						//							
+						// dispatcher.getJobManager().removeJob(arg0)
 						return;
 					}
-							
+
 					progressBar.getDisplay().asyncExec(new Runnable() {
 						public void run() {
 							if (progressBar.isDisposed())

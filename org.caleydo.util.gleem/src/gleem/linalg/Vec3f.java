@@ -135,16 +135,16 @@ public class Vec3f {
 	/** Sets the ith component, 0 <= i < 3 */
 	public void set(int i, float val) {
 		switch (i) {
-			case 0:
+			case 0 :
 				x = val;
 				break;
-			case 1:
+			case 1 :
 				y = val;
 				break;
-			case 2:
+			case 2 :
 				z = val;
 				break;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}
@@ -152,13 +152,13 @@ public class Vec3f {
 	/** Gets the ith component, 0 <= i < 3 */
 	public float get(int i) {
 		switch (i) {
-			case 0:
+			case 0 :
 				return x;
-			case 1:
+			case 1 :
 				return y;
-			case 2:
+			case 2 :
 				return z;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}
@@ -280,7 +280,8 @@ public class Vec3f {
 	}
 
 	/**
-	 * this = a cross b. NOTE: "this" must be a different vector than both a and b.
+	 * this = a cross b. NOTE: "this" must be a different vector than both a and
+	 * b.
 	 */
 	public void cross(Vec3f a, Vec3f b) {
 		x = a.y * b.z - a.z * b.y;
@@ -289,8 +290,8 @@ public class Vec3f {
 	}
 
 	/**
-	 * Sets each component of this vector to the product of the component with the corresponding component of
-	 * the argument vector.
+	 * Sets each component of this vector to the product of the component with
+	 * the corresponding component of the argument vector.
 	 */
 	public void componentMul(Vec3f arg) {
 		x *= arg.x;

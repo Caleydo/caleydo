@@ -232,8 +232,9 @@ public class GlyphDefinitionSaxHandler
 		}
 		catch (NumberFormatException ex) {
 			gatActualColumn = null;
-			generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler:: colnumber is not an integer! (" + label + ")", ex));
+			generalManager.getLogger().log(
+				new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler:: colnumber is not an integer! (" + label + ")", ex));
 			return;
 		}
 
@@ -254,8 +255,9 @@ public class GlyphDefinitionSaxHandler
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
 		if (!pTag.equals("column")) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleNominalTag() - nominal tag not in column tag embeded"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler::handleNominalTag() - nominal tag not in column tag embeded"));
 			return;
 		}
 
@@ -294,16 +296,18 @@ public class GlyphDefinitionSaxHandler
 			fnu = Float.parseFloat(nu);
 		}
 		catch (NumberFormatException ex) {
-			generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleNominalTag() nominal numeric is not an float!", ex));
+			generalManager.getLogger().log(
+				new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler::handleNominalTag() nominal numeric is not an float!", ex));
 			return;
 		}
 		try {
 			igr = Integer.parseInt(gr);
 		}
 		catch (NumberFormatException ex) {
-			generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleNominalTag() group is not an integer!", ex));
+			generalManager.getLogger().log(
+				new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler::handleNominalTag() group is not an integer!", ex));
 			return;
 		}
 
@@ -318,8 +322,9 @@ public class GlyphDefinitionSaxHandler
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
 		if (!pTag.equals("column")) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleNominalTag() - int tag not in column tag embeded"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler::handleNominalTag() - int tag not in column tag embeded"));
 			return;
 		}
 
@@ -355,8 +360,9 @@ public class GlyphDefinitionSaxHandler
 			iint = Integer.parseInt(sint);
 		}
 		catch (NumberFormatException ex) {
-			generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleIntTag() given data is not an integer!", ex));
+			generalManager.getLogger().log(
+				new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler::handleIntTag() given data is not an integer!", ex));
 			return;
 		}
 
@@ -371,8 +377,9 @@ public class GlyphDefinitionSaxHandler
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
 		if (!pTag.equals("item")) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleColorTag() - color tag not in item tag embeded"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler::handleColorTag() - color tag not in item tag embeded"));
 			return;
 		}
 
@@ -391,8 +398,9 @@ public class GlyphDefinitionSaxHandler
 				if (svalue.length() != 6) {
 					generalManager
 						.getLogger()
-						.log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-							"GlyphSaxDefinitionHandler::handleColorTag() color definition error (string too short (6))"));
+						.log(
+							new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+								"GlyphSaxDefinitionHandler::handleColorTag() color definition error (string too short (6))"));
 					continue;
 				}
 
@@ -406,8 +414,9 @@ public class GlyphDefinitionSaxHandler
 					color.set(2, Integer.parseInt(blue, 16) / 255.0f);
 				}
 				catch (NumberFormatException ex) {
-					generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-						"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!", ex));
+					generalManager.getLogger().log(
+						new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+							"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!", ex));
 				}
 
 			}
@@ -418,8 +427,9 @@ public class GlyphDefinitionSaxHandler
 					fvalue = Float.parseFloat(svalue);
 				}
 				catch (NumberFormatException ex) {
-					generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-						"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!", ex));
+					generalManager.getLogger().log(
+						new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+							"GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!", ex));
 				}
 
 				if (sAttributeName.equals("rn")) {
@@ -454,8 +464,11 @@ public class GlyphDefinitionSaxHandler
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
 		if (!pTag.equals("glyphobjects")) {
-			generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleGlyphTag() - glyph tag not in glyphobjects tag embeded"));
+			generalManager
+				.getLogger()
+				.log(
+					new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+						"GlyphSaxDefinitionHandler::handleGlyphTag() - glyph tag not in glyphobjects tag embeded"));
 			return;
 		}
 
@@ -483,8 +496,9 @@ public class GlyphDefinitionSaxHandler
 					detaillevel = Integer.parseInt(attributes.getValue(iAttributeIndex));
 				}
 				catch (Exception e) {
-					generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-						"GlyphSaxDefinitionHandler::handleGlyphTag() - detaillevel wasn't a integer", e));
+					generalManager.getLogger().log(
+						new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+							"GlyphSaxDefinitionHandler::handleGlyphTag() - detaillevel wasn't a integer", e));
 				}
 			}
 		}
@@ -507,14 +521,18 @@ public class GlyphDefinitionSaxHandler
 		String pTag = tagHierarchie.lastElement(); // parent tag
 
 		if (!pTag.equals("glyph")) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleGlyphPartTag() - glyphpart tag not in glyph tag embeded"));
+			generalManager
+				.getLogger()
+				.log(
+					new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"GlyphSaxDefinitionHandler::handleGlyphPartTag() - glyphpart tag not in glyph tag embeded"));
 			return;
 		}
 
 		if (glyphDefinition == null) {
-			generalManager.getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-				"GlyphSaxDefinitionHandler::handleGlyphPartTag() - wtf?"));
+			generalManager.getLogger().log(
+				new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
+					"GlyphSaxDefinitionHandler::handleGlyphPartTag() - wtf?"));
 			return;
 		}
 
@@ -541,8 +559,9 @@ public class GlyphDefinitionSaxHandler
 		if (!pTag.equals("part")) {
 			generalManager
 				.getLogger()
-				.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"GlyphSaxDefinitionHandler::handleGlyphParameterTag() - glyph parameter tag not in glyph part tag embeded"));
+				.log(
+					new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"GlyphSaxDefinitionHandler::handleGlyphParameterTag() - glyph parameter tag not in glyph part tag embeded"));
 			return;
 		}
 
@@ -579,8 +598,9 @@ public class GlyphDefinitionSaxHandler
 		if (!pTag.equals("part")) {
 			generalManager
 				.getLogger()
-				.log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"GlyphSaxDefinitionHandler::handleGlyphAnchorTag() - glyph parameter tag not in glyph part tag embeded"));
+				.log(
+					new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"GlyphSaxDefinitionHandler::handleGlyphAnchorTag() - glyph parameter tag not in glyph part tag embeded"));
 			return;
 		}
 

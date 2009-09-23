@@ -158,11 +158,10 @@ public class PickingManager {
 		 */
 		public Set<Integer> getAllPickingIDs() {
 			Set<Integer> set = new HashSet<Integer>();
-			for(EPickingType type : hashTypeToPickingIDToExternalID.keySet())
-			{
+			for (EPickingType type : hashTypeToPickingIDToExternalID.keySet()) {
 				set.addAll(hashTypeToPickingIDToExternalID.get(type).keySet());
 			}
-				
+
 			return set;
 		}
 	}

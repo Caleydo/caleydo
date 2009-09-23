@@ -36,43 +36,45 @@ public interface IView
 	 *            the label
 	 */
 	void setLabel(String label);
-	
+
 	/**
 	 * Set the data domain of the view
 	 */
 	public void setDataDomain(EDataDomain dataDomain);
-	
-	
+
 	/**
 	 * Get the data domain the view is operating on
+	 * 
 	 * @return
 	 */
 	public EDataDomain getDataDomain();
 
-	
 	/**
 	 * Returns the current set which the view is rendering.
 	 */
 	public ISet getSet();
-	
+
 	/**
-	 * Set the use case which determines the behavior of the view.
-	 * Attention: The use case need not be changed during runtime of the view.
+	 * Set the use case which determines the behavior of the view. Attention: The use case need not be changed
+	 * during runtime of the view.
 	 * 
 	 * @param useCase
 	 */
 	public void setUseCase(IUseCase useCase);
-	
+
 	/**
 	 * Retrieves a serializeable representation of the view
-	 * @return serialized representation of the view 
+	 * 
+	 * @return serialized representation of the view
 	 */
 	public ASerializedView getSerializableRepresentation();
 
 	/**
 	 * Initializes the view with the values from the given {@link ASerializedView}.
-	 * @param serializedView serialized representation of the view.
+	 * 
+	 * @param serializedView
+	 *            serialized representation of the view.
 	 */
 	public void initFromSerializableRepresentation(ASerializedView serializedView);
-	
+
 }

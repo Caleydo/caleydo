@@ -63,8 +63,7 @@ public abstract class APDDrawingStrategy {
 	 * Gets the drawing strategy type of the current instance.
 	 */
 	public abstract EPDDrawingStrategyType getDrawingStrategyType();
-	
-	
+
 	/**
 	 * Gets the number of slices which shall be drawn to approximate a disc.
 	 * 
@@ -78,7 +77,8 @@ public abstract class APDDrawingStrategy {
 	 * Sets the number of slices which shall be drawn to approximate a disc. Higher numbers produce a better
 	 * approximation but the performance is worse.
 	 * 
-	 * @param iNumSlicesPerFullDisc Number of slices per full disc.
+	 * @param iNumSlicesPerFullDisc
+	 *            Number of slices per full disc.
 	 */
 	public void setNumSlicesPerFullDisc(int iNumSlicesPerFullDisc) {
 		this.iNumSlicesPerFullDisc = iNumSlicesPerFullDisc;

@@ -22,16 +22,15 @@ import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
  * @author Alexander Lex
  */
 
-public class ColorMappingManager 
+public class ColorMappingManager
 	implements IColorMappingHandler {
 
 	private static ColorMappingManager colorMappingManager = null;
 	private EnumMap<EColorMappingType, ColorMapping> hashColorMapping = null;
 
-	
 	private IEventPublisher eventPublisher;
 	private UpdateColorMappingListener updateColorMappingListener;
-	
+
 	/**
 	 * Constructor, only called internally
 	 */
@@ -54,13 +53,13 @@ public class ColorMappingManager
 	}
 
 	private void registerEventListeners() {
-		
+
 		updateColorMappingListener = new UpdateColorMappingListener();
 		updateColorMappingListener.setHandler(this);
 		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
-		
+
 	}
-	
+
 	/**
 	 * TODO from where should this method be called? are managers released anywhere?
 	 */
@@ -71,7 +70,7 @@ public class ColorMappingManager
 			eventPublisher.removeListener(updateColorMappingListener);
 			updateColorMappingListener = null;
 		}
-		
+
 	}
 
 	/**
@@ -95,7 +94,7 @@ public class ColorMappingManager
 	 * display list to dirty to have immediate effect.
 	 */
 	public void initiFromPreferenceStore(EColorMappingType colorMappingType) {
-				
+
 		if (hashColorMapping.containsKey(colorMappingType)) {
 			hashColorMapping.get(colorMappingType).initiFromPreferenceStore();
 			return;
@@ -154,9 +153,11 @@ public class ColorMappingManager
 	}
 
 	/**
-	 * Handles changes of {@link ColorMapping}s by storing the new received ColorMapping
-	 * with the contained {@link EColorMappingType}.   
-	 * @param colorMapping changed {@link ColorMapping} to store
+	 * Handles changes of {@link ColorMapping}s by storing the new received ColorMapping with the contained
+	 * {@link EColorMappingType}.
+	 * 
+	 * @param colorMapping
+	 *            changed {@link ColorMapping} to store
 	 */
 	public void distributeColorMapping(ColorMapping colorMapping) {
 		hashColorMapping.put(colorMapping.getColorMappingType(), colorMapping);
@@ -168,18 +169,17 @@ public class ColorMappingManager
 	}
 
 	/**
-	 * 
 	 * @param colorMapping
 	 */
 	public void changeColorMapping(ColorMapping colorMapping) {
 		distributeColorMapping(colorMapping);
-		
+
 		UpdateColorMappingEvent updateColorMappingEvent = new UpdateColorMappingEvent();
 		updateColorMappingEvent.setSender(this);
 		updateColorMappingEvent.setColorMapping(colorMapping);
 		eventPublisher.triggerEvent(updateColorMappingEvent);
 	}
-	
+
 	@Override
 	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		listener.handleEvent(event);

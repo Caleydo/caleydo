@@ -11,10 +11,10 @@ public class ReplaceVirtualArrayInUseCaseListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof ReplaceVirtualArrayInUseCaseEvent) {
 			ReplaceVirtualArrayInUseCaseEvent vaEvent = (ReplaceVirtualArrayInUseCaseEvent) event;
-			
-			handler.replaceVirtualArray(vaEvent.getIDCategory(), vaEvent.getVaType(), vaEvent.getVirtualArray());
-		}
 
+			handler.replaceVirtualArray(vaEvent.getIDCategory(), vaEvent.getVaType(), vaEvent
+				.getVirtualArray());
+		}
 
 	}
 

@@ -21,8 +21,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * @author Christian Partl
  */
 public class NominalGate
-	extends AGate{
-
+	extends AGate {
 
 	/**
 	 * Constructor.
@@ -40,11 +39,11 @@ public class NominalGate
 	 */
 	public NominalGate(int gateID, float bottom, float top, ISet set, ParCoordsRenderStyle renderStyle) {
 		this.gateID = gateID;
-		
+
 		this.set = set;
 		this.renderStyle = renderStyle;
-//		top = upperValue;
-//		bottom = lowerValue;
+		// top = upperValue;
+		// bottom = lowerValue;
 		this.top = top;
 		this.bottom = bottom;
 		minSize = 100;
@@ -67,13 +66,14 @@ public class NominalGate
 	public void draw(GL gl, PickingManager pickingManager, TextureManager textureManager,
 		CaleydoTextRenderer textRenderer, int iViewID) {
 
-//		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-//		top = upperValue;
+		// top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+		// top = upperValue;
 
 		// Scaled bottom = unscaled bottom !
-//		bottom = lowerValue * renderStyle.getAxisHeight();
-//		bottom = upperValue;
-		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top * renderStyle.getAxisHeight(), bottom);
+		// bottom = lowerValue * renderStyle.getAxisHeight();
+		// bottom = upperValue;
+		float unscaledTop =
+			getRealCoordinateFromScaledCoordinate(gl, top * renderStyle.getAxisHeight(), bottom);
 		float unscaledBottom = bottom * renderStyle.getAxisHeight();
 
 		Vec3f scalingPivot = new Vec3f(currentPosition, bottom, GATE_Z);
@@ -211,8 +211,6 @@ public class NominalGate
 		return currentPosition;
 	}
 
-
-
 	/**
 	 * Handles the dragging of the current gate.
 	 * 
@@ -236,7 +234,7 @@ public class NominalGate
 			isGateDraggingFirstTime = false;
 		}
 
-		float tipUpperLimit =1;
+		float tipUpperLimit = 1;
 		float tipLowerLimit = bottom + getScaledSizeOf(gl, GATE_TIP_HEIGHT);
 		float bottomLowerLimit = 0;
 		float bottomUpperLimit = top - getScaledSizeOf(gl, GATE_TIP_HEIGHT);
@@ -275,31 +273,27 @@ public class NominalGate
 		}
 	}
 
-	
-
 	/**
 	 * Sets the upper cutoff value of the gate.
 	 * 
-	 * @param upperValue Value the upper cutoff value shall be set to.
+	 * @param upperValue
+	 *            Value the upper cutoff value shall be set to.
 	 */
-//	public void setUpperValue(float upperValue) {
-//		this.upperValue = upperValue;
-//		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-//	}
-
-
+	// public void setUpperValue(float upperValue) {
+	// this.upperValue = upperValue;
+	// top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
+	// }
 
 	/**
 	 * Sets the lower cutoff value of the gate.
 	 * 
-	 * @param lowerValue Value the lower cutoff value shall be set to.
+	 * @param lowerValue
+	 *            Value the lower cutoff value shall be set to.
 	 */
-//	public void setLowerValue(float lowerValue) {
-//		this.lowerValue = lowerValue;
-//		bottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
-//	}
-
-
+	// public void setLowerValue(float lowerValue) {
+	// this.lowerValue = lowerValue;
+	// bottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
+	// }
 
 	/**
 	 * @return Top of the gate.

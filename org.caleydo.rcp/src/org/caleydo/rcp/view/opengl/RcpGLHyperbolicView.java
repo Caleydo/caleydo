@@ -31,7 +31,6 @@ public class RcpGLHyperbolicView
 		alToolbar = new ArrayList<IAction>();
 	}
 
-
 	@Override
 	public ASerializedView createDefaultSerializedView() {
 		SerializedHyperbolicView serializedView = new SerializedHyperbolicView(dataDomain);

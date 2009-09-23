@@ -8,12 +8,14 @@ import org.caleydo.core.manager.event.view.selection.AddSelectionEvent;
 import org.caleydo.core.manager.view.SelectionPoint2DList;
 
 /**
- * Listens for {@link AddSelectionEvent} to pass it to the 
- * related {@link DeskothequeManager} for handling. 
+ * Listens for {@link AddSelectionEvent} to pass it to the related
+ * {@link DeskothequeManager} for handling.
+ * 
  * @author Werner Puff
  */
 public class AddConnectionLineVerticesListener
-	extends AEventListener<DeskothequeManager> {
+		extends
+			AEventListener<DeskothequeManager> {
 
 	@Override
 	public void handleEvent(AEvent event) {

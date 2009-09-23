@@ -17,7 +17,7 @@ public abstract class ADisplayLoopEventHandler
 	public ADisplayLoopEventHandler() {
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 	}
-	
+
 	/**
 	 * This method should be called every display cycle when it is save to change the state of the object. It
 	 * processes all the previously submitted events.

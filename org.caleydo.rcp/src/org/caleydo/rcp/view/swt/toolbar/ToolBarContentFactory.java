@@ -86,12 +86,12 @@ public class ToolBarContentFactory {
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
 
-//		info = new ToolBarInfo();
-//		info.viewClass = GLHierarchicalHeatMap.class;
-//		info.contentClass = HierarchicalHeatMapToolBarContent.class;
-//		info.rcpID = GLHierarchicalHeatMapView.ID;
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewClass, info);
+		// info = new ToolBarInfo();
+		// info.viewClass = GLHierarchicalHeatMap.class;
+		// info.contentClass = HierarchicalHeatMapToolBarContent.class;
+		// info.rcpID = GLHierarchicalHeatMapView.ID;
+		// info.ignored = false;
+		// toolBarInfos.put(info.viewClass, info);
 
 		info = new ToolBarInfo();
 		info.viewClass = GLParallelCoordinates.class;
@@ -134,7 +134,7 @@ public class ToolBarContentFactory {
 		info.rcpID = RcpGLRadialHierarchyView.ID;
 		info.ignored = false;
 		toolBarInfos.put(info.viewClass, info);
-		
+
 		info = new ToolBarInfo();
 		info.viewClass = GLHyperbolic.class;
 		info.contentClass = HyperbolicToolBarContent.class;
@@ -285,10 +285,10 @@ public class ToolBarContentFactory {
 			}
 			catch (Exception e) {
 				GeneralManager.get().getLogger().log(
-				new Status(Status.WARNING, Activator.PLUGIN_ID,
-					"No toolbar content providing class known for " + view
-						+ "; add its ToolBarInfo to ToolBarContentFactory"));
-				//e.printStackTrace();
+					new Status(Status.WARNING, Activator.PLUGIN_ID,
+						"No toolbar content providing class known for " + view
+							+ "; add its ToolBarInfo to ToolBarContentFactory"));
+				// e.printStackTrace();
 			}
 		}
 
@@ -314,7 +314,8 @@ public class ToolBarContentFactory {
 				if (info != null) {
 					ignored |= info.ignored;
 				}
-			} catch (IllegalArgumentException ex) {
+			}
+			catch (IllegalArgumentException ex) {
 				ignored = true;
 			}
 		}

@@ -7,8 +7,8 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
- * Event to create SWT-views from its serialized form. 
- * Especially used to transmit a view to a remote caleydo application or load views from disk. 
+ * Event to create SWT-views from its serialized form. Especially used to transmit a view to a remote caleydo
+ * application or load views from disk.
  * 
  * @author Werner Puff
  */
@@ -19,10 +19,10 @@ public class CreateGUIViewEvent
 
 	/** serialized form of the view to create */
 	private ASerializedView serializedView;
-	
+
 	/** application id of caleydo application where the id should be created */
 	private String targetApplicationID;
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		if (serializedView == null) {
@@ -31,7 +31,7 @@ public class CreateGUIViewEvent
 		if (targetApplicationID == null) {
 			throw new IllegalStateException("the targetApplicationID has not been set");
 		}
-		
+
 		return true;
 	}
 

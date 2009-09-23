@@ -171,7 +171,7 @@ public class GeneralRenderStyle {
 
 		sendSetMinSizeEvent(view);
 	}
-	
+
 	private void sendSetMinSizeEvent(AGLEventListener view) {
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		SetMinViewSizeEvent event = new SetMinViewSizeEvent();

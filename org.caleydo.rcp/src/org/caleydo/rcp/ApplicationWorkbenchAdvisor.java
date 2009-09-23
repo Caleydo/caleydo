@@ -22,13 +22,13 @@ public class ApplicationWorkbenchAdvisor
 	private AutoSaver autoSaver;
 
 	private IWorkbenchWindowConfigurer workbenchConfigurer;
-	
+
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		PlatformUI.getPreferenceStore()
 			.setValue(IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
 		workbenchConfigurer = configurer;
-		
+
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
@@ -42,7 +42,7 @@ public class ApplicationWorkbenchAdvisor
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
 	}
-	
+
 	@Override
 	public void postStartup() {
 		super.postStartup();
@@ -54,7 +54,8 @@ public class ApplicationWorkbenchAdvisor
 			for (ASerializedView startView : serViews) {
 				try {
 					activePage.showView(startView.getViewGUIID());
-				} catch (PartInitException ex) {
+				}
+				catch (PartInitException ex) {
 					ex.printStackTrace();
 				}
 			}
@@ -81,21 +82,21 @@ public class ApplicationWorkbenchAdvisor
 		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
 		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");
 	}
-	
+
 	/**
-	 * Sets the views init-parameters. In case of a loaded project, the views are
-	 * initialized from their restored serialized-representation.
+	 * Sets the views init-parameters. In case of a loaded project, the views are initialized from their
+	 * restored serialized-representation.
 	 */
 	private void initializeViews() {
 		if (Application.applicationMode == EApplicationMode.LOAD_PROJECT) {
-			
+
 		}
 	}
-	
+
 	@Override
 	public boolean preShutdown() {
 		super.preShutdown();
-		
+
 		IViewManager vm = GeneralManager.get().getViewGLCanvasManager();
 		vm.getDisplayLoopExecution().stopMultipleExecution(autoSaver);
 		autoSaver = null;

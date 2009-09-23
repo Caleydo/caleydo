@@ -45,16 +45,16 @@ public class Vec3d {
 	/** Sets the ith component, 0 <= i < 3 */
 	public void set(int i, double val) {
 		switch (i) {
-			case 0:
+			case 0 :
 				x = val;
 				break;
-			case 1:
+			case 1 :
 				y = val;
 				break;
-			case 2:
+			case 2 :
 				z = val;
 				break;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}
@@ -62,13 +62,13 @@ public class Vec3d {
 	/** Gets the ith component, 0 <= i < 3 */
 	public double get(int i) {
 		switch (i) {
-			case 0:
+			case 0 :
 				return x;
-			case 1:
+			case 1 :
 				return y;
-			case 2:
+			case 2 :
 				return z;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}
@@ -190,7 +190,8 @@ public class Vec3d {
 	}
 
 	/**
-	 * this = a cross b. NOTE: "this" must be a different vector than both a and b.
+	 * this = a cross b. NOTE: "this" must be a different vector than both a and
+	 * b.
 	 */
 	public void cross(Vec3d a, Vec3d b) {
 		x = a.y * b.z - a.z * b.y;

@@ -100,18 +100,18 @@ public class ExportDataAction
 		});
 
 		boolean bDoesBucketExist = false;
-//		boolean doesHeatMapExist = false;
-//		boolean doParallelCoordinatesExist = false;
+		// boolean doesHeatMapExist = false;
+		// boolean doParallelCoordinatesExist = false;
 		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners()) {
 			if (view instanceof GLRemoteRendering) {
 				bDoesBucketExist = true;
 			}
-//			if (view instanceof GLHierarchicalHeatMap && !view.isRenderedRemote()) {
-//				doesHeatMapExist = true;
-//			}
-//			if (view instanceof GLParallelCoordinates && !view.isRenderedRemote()) {
-//				doParallelCoordinatesExist = true;
-//			}
+			// if (view instanceof GLHierarchicalHeatMap && !view.isRenderedRemote()) {
+			// doesHeatMapExist = true;
+			// }
+			// if (view instanceof GLParallelCoordinates && !view.isRenderedRemote()) {
+			// doParallelCoordinatesExist = true;
+			// }
 		}
 
 		radios[0] = new Button(composite, SWT.RADIO);
@@ -125,22 +125,22 @@ public class ExportDataAction
 		radios[1].setText("Export data as shown in the standalone views");
 		radios[1].setBounds(10, 30, 75, 30);
 		radios[1].setSelection(true);
-//		if (!doesHeatMapExist) {
-//			radios[1].setEnabled(false);
-//		}
-//		else if (!bDoesBucketExist) {
-//			radios[1].setSelection(true);
-//		}
+		// if (!doesHeatMapExist) {
+		// radios[1].setEnabled(false);
+		// }
+		// else if (!bDoesBucketExist) {
+		// radios[1].setSelection(true);
+		// }
 
-//		radios[2] = new Button(composite, SWT.RADIO);
-//		radios[2].setText("Export Parallel Coordinates");
-//		radios[2].setBounds(10, 30, 75, 30);
-//		if (!doParallelCoordinatesExist) {
-//			radios[1].setEnabled(false);
-//		}
-//		else if (!bDoesBucketExist) {
-//			radios[1].setSelection(true);
-//		}
+		// radios[2] = new Button(composite, SWT.RADIO);
+		// radios[2].setText("Export Parallel Coordinates");
+		// radios[2].setBounds(10, 30, 75, 30);
+		// if (!doParallelCoordinatesExist) {
+		// radios[1].setEnabled(false);
+		// }
+		// else if (!bDoesBucketExist) {
+		// radios[1].setSelection(true);
+		// }
 
 	}
 
@@ -152,9 +152,9 @@ public class ExportDataAction
 			else if (radios[1].getSelection()) {
 				set.export(sFileName, EWhichViewToExport.WHOLE_DATA);
 			}
-//			else if (radios[2].getSelection()) {
-//				set.export(sFileName, EWhichViewToExport.PARALLEL_COORDINATES);
-//			}
+			// else if (radios[2].getSelection()) {
+			// set.export(sFileName, EWhichViewToExport.PARALLEL_COORDINATES);
+			// }
 
 		}
 

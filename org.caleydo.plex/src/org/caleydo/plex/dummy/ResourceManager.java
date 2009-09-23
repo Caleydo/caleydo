@@ -16,11 +16,13 @@ public class ResourceManager extends _ResourceManagerIDisp {
 	Communicator communicator;
 
 	private ArrayList<String> clientIDList = new ArrayList<String>();
-	
+
 	@Override
-	public String[] getAvailableGroupwareClients(String clientID, Current __current) {
-		System.out.println("ResourceManager.getAvailableGroupwareClients() called");
-		
+	public String[] getAvailableGroupwareClients(String clientID,
+			Current __current) {
+		System.out
+				.println("ResourceManager.getAvailableGroupwareClients() called");
+
 		String[] clientIDs = new String[clientIDList.size()];
 		clientIDs = clientIDList.toArray(clientIDs);
 		return clientIDs;
@@ -40,7 +42,8 @@ public class ResourceManager extends _ResourceManagerIDisp {
 
 	@Override
 	public void unregisterGroupwareClient(String clientID, Current __current) {
-		System.out.println("ResourceManager.unregisterGroupwareClient() called");
+		System.out
+				.println("ResourceManager.unregisterGroupwareClient() called");
 		clientIDList.remove(clientID);
 	}
 
@@ -49,7 +52,7 @@ public class ResourceManager extends _ResourceManagerIDisp {
 		clientIDList.add(id);
 		return id;
 	}
-	
+
 	public ObjectAdapter getAdapter() {
 		return adapter;
 	}

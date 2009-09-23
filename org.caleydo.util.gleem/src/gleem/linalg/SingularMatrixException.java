@@ -24,11 +24,11 @@
 package gleem.linalg;
 
 /**
- * Thrown to indicate a singular matrix during an inversion or related operation.
+ * Thrown to indicate a singular matrix during an inversion or related
+ * operation.
  */
 
-public class SingularMatrixException
-	extends RuntimeException {
+public class SingularMatrixException extends RuntimeException {
 
 	/**
 	* 

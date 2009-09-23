@@ -28,16 +28,16 @@ public class SendViewDialog
 
 	/** connections to remote applications in the moment of the dialog creation */
 	private String[] clientNames;
-	
+
 	/** List to let the user choose the connections to send the view to */
 	private List clientList;
-	
+
 	/** central {@link NetworkManager} to retrieve network related information */
 	IGroupwareManager groupwareManager;
-	
+
 	/** central {@link IViewManager} to retrieve view information */
-	IViewManager viewManager;	
-	
+	IViewManager viewManager;
+
 	/**
 	 * Constructor.
 	 */
@@ -56,8 +56,8 @@ public class SendViewDialog
 		super.configureShell(newShell);
 
 		newShell.setText("Send Client to View");
-//		newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
-//			StartClusteringAction.ICON));
+		// newShell.setImage(GeneralManager.get().getResourceLoader().getImage(newShell.getDisplay(),
+		// StartClusteringAction.ICON));
 	}
 
 	@Override
@@ -69,25 +69,27 @@ public class SendViewDialog
 		if (groupwareManager == null) {
 			Label label = new Label(parent, SWT.CENTER);
 			label.setText("This application is not in collaboration mode.");
-		} else {
+		}
+		else {
 			clientNames = groupwareManager.getAvailableGroupwareClients();
 			if (clientNames.length == 0) {
 				Label label = new Label(parent, SWT.CENTER);
 				label.setText("No Clients connected");
-			} else {
+			}
+			else {
 				Label label = new Label(parent, SWT.NULL);
 				label.setText("Choose client(s) to send the view to:");
-	
+
 				clientList = new List(parent, SWT.BORDER | SWT.MULTI);
 				for (String clientName : clientNames) {
 					clientList.add(clientName);
 				}
 			}
 		}
-		
+
 		return parent;
 	}
-	
+
 	@Override
 	protected void okPressed() {
 		if (clientList != null) {
@@ -100,7 +102,7 @@ public class SendViewDialog
 				event.setSerializedView(view.getSerializableRepresentation());
 				event.setTargetApplicationID(clientNames[selection]);
 				event.setSender(this);
-				
+
 				groupwareManager.getNetworkManager().getGlobalOutgoingPublisher().triggerEvent(event);
 			}
 		}
@@ -114,6 +116,7 @@ public class SendViewDialog
 
 	/**
 	 * Returns the viewID of the view that should be send.
+	 * 
 	 * @return viewID of view to send
 	 */
 	public int getViewID() {
@@ -121,9 +124,11 @@ public class SendViewDialog
 	}
 
 	/**
-	 * Sets the viewID of the view that should be send. 
-	 * This viewID must be specified by the invoker of the dialog. 
-	 * @param viewID viewID of view to send.
+	 * Sets the viewID of the view that should be send. This viewID must be specified by the invoker of the
+	 * dialog.
+	 * 
+	 * @param viewID
+	 *            viewID of view to send.
 	 */
 	public void setViewID(int viewID) {
 		this.viewID = viewID;

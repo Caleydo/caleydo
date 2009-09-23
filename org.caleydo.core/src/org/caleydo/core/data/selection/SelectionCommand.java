@@ -4,8 +4,7 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * SelectionCommand stores a command and a data type on which it should be applied. It is used to pass
- * commands between two instances to remotely control the {@link SelectionManager} of the receiving
- * instance.
+ * commands between two instances to remotely control the {@link SelectionManager} of the receiving instance.
  * 
  * @author Alexander Lex
  */
@@ -18,9 +17,9 @@ public class SelectionCommand {
 	 * Default Constructor
 	 */
 	public SelectionCommand() {
-		
+
 	}
-	
+
 	/**
 	 * Constructor that can be used for selection commands that don't depend on a particular
 	 * {@link ESelectionType} such as {@link ESelectionCommandType#CLEAR_ALL} or

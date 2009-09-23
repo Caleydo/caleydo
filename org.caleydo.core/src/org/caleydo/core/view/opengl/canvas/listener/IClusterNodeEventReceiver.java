@@ -9,7 +9,8 @@ import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
  * @author Christian Partl
  */
 
-public interface IClusterNodeEventReceiver extends IListenerOwner{
+public interface IClusterNodeEventReceiver
+	extends IListenerOwner {
 
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event);
 }

@@ -15,8 +15,7 @@ import org.caleydo.util.graph.item.GraphGenericContainer;
  * 
  * @author Michael Kalkusch
  */
-public class Graph
-	extends AGraph {
+public class Graph extends AGraph {
 	private static final int initialSizeItems = 10;
 
 	private static final int initialSizeGraph = 3;
@@ -33,18 +32,17 @@ public class Graph
 		super(id);
 
 		/** create container for items */
-		items =
-			new GraphGenericContainer<IGraphItem, EGraphItemKind>(EGraphItemKind.getActiveItems(),
-				Graph.initialSizeItems);
+		items = new GraphGenericContainer<IGraphItem, EGraphItemKind>(
+				EGraphItemKind.getActiveItems(), Graph.initialSizeItems);
 
 		/** create container for graphs */
-		graphs =
-			new GraphGenericContainer<IGraph, EGraphItemHierarchy>(EGraphItemHierarchy.getActiveItems(),
-				Graph.initialSizeGraph);
+		graphs = new GraphGenericContainer<IGraph, EGraphItemHierarchy>(
+				EGraphItemHierarchy.getActiveItems(), Graph.initialSizeGraph);
 	}
 
 	@Override
-	public boolean addGraph(IGraph graph, EGraphItemHierarchy type) throws GraphRuntimeException {
+	public boolean addGraph(IGraph graph, EGraphItemHierarchy type)
+			throws GraphRuntimeException {
 
 		graphs.addGraphComponent(graph, type);
 
@@ -62,7 +60,8 @@ public class Graph
 	public void clearGraph() {
 
 		/** items .. */
-		Iterator<IGraphItem> iter = items.getAllGraphComponent(EGraphItemKind.NODE).iterator();
+		Iterator<IGraphItem> iter = items.getAllGraphComponent(
+				EGraphItemKind.NODE).iterator();
 
 		while (iter.hasNext()) {
 			iter.next().removeGraph(this, null);
@@ -75,7 +74,8 @@ public class Graph
 		}
 
 		/** graphs .. */
-		Iterator<IGraph> iterGraph = graphs.getAllGraphComponent(null).iterator();
+		Iterator<IGraph> iterGraph = graphs.getAllGraphComponent(null)
+				.iterator();
 
 		while (iterGraph.hasNext()) {
 			iterGraph.next().removeGraph(this, null);
@@ -98,14 +98,15 @@ public class Graph
 	public void removeAllByKind(EGraphItemKind kind) {
 
 		switch (kind) {
-			case EDGE:
+			case EDGE :
 				break;
 
-			case NODE:
+			case NODE :
 				break;
 
-			default:
-				throw new GraphRuntimeException("unsupported type= " + kind.toString());
+			default :
+				throw new GraphRuntimeException("unsupported type= "
+						+ kind.toString());
 		}
 
 		items.getAllGraphComponent(kind).clear();

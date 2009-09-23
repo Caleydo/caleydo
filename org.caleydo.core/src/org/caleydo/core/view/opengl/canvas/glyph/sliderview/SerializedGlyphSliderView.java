@@ -10,19 +10,20 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**
- * Serialized form of a heatmap-view. 
+ * Serialized form of a heatmap-view.
+ * 
  * @author Werner Puff
  */
 @XmlRootElement
 @XmlType
-public class SerializedGlyphSliderView 
+public class SerializedGlyphSliderView
 	extends ASerializedView {
-	
+
 	public static final String GUI_ID = "org.caleydo.rcp.views.opengl.GLGlyphSliderView";
 
 	public SerializedGlyphSliderView() {
 	}
-	
+
 	/**
 	 * Default constructor with default initialization
 	 */

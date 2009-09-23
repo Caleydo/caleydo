@@ -8,14 +8,15 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 /**
- * SWT event listener for requesting busy mode     
+ * SWT event listener for requesting busy mode
+ * 
  * @author Werner Puff
  */
-public class EnableBusyListener 
+public class EnableBusyListener
 	implements Listener {
-	
+
 	Logger log = Logger.getLogger(EnableBusyListener.class.getName());
-	
+
 	Object requester;
 
 	@Override

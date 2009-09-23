@@ -51,7 +51,8 @@ public class PathwayDatabase
 		}
 
 		if (type == EPathwayDatabaseType.KEGG) {
-			EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
+			EOrganism eOrganism =
+				((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
 
 			if (eOrganism == EOrganism.HOMO_SAPIENS) {
 				this.sImagePath += "hsa/";

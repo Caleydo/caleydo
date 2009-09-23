@@ -103,7 +103,7 @@ public class ContextMenu
 		hashContextMenuItemToUniqueID = new HashMap<AContextMenuItem, Integer>();
 		hashContextMenuItemToMetaData = new HashMap<AContextMenuItem, ContextMenuMetaData>();
 		hashUniqueIDToContextMenuItem = new HashMap<Integer, AContextMenuItem>();
-		
+
 		minSize = 200;
 	}
 
@@ -243,11 +243,11 @@ public class ContextMenu
 
 			initializeSubMenus(contextMenuEntries, baseMenuMetaData);
 
-//			GLHelperFunctions.drawPointAt(gl, baseMenuMetaData.xOrigin, 1, 1);
-			if ((fRightBorder - baseMenuMetaData.xOrigin) < getScaledSizeOf(gl,baseMenuMetaData.width))
+			// GLHelperFunctions.drawPointAt(gl, baseMenuMetaData.xOrigin, 1, 1);
+			if ((fRightBorder - baseMenuMetaData.xOrigin) < getScaledSizeOf(gl, baseMenuMetaData.width))
 				baseMenuMetaData.xOrigin -= baseMenuMetaData.width;
 
-			if ((fBottomBorder + baseMenuMetaData.yOrigin) < getScaledSizeOf(gl,baseMenuMetaData.height))
+			if ((fBottomBorder + baseMenuMetaData.yOrigin) < getScaledSizeOf(gl, baseMenuMetaData.height))
 				baseMenuMetaData.yOrigin += baseMenuMetaData.height;
 
 		}
@@ -331,18 +331,19 @@ public class ContextMenu
 	 * 
 	 * @param gl
 	 */
-	private void drawMenu(GL gl, ArrayList<IContextMenuEntry> contextMenuItems, ContextMenuMetaData metaData, boolean isBaseMenu) {
+	private void drawMenu(GL gl, ArrayList<IContextMenuEntry> contextMenuItems, ContextMenuMetaData metaData,
+		boolean isBaseMenu) {
 
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
 		// FIXME: Find clean solution!!
-		
+
 		Vec3f scalingPivot = new Vec3f(metaData.xOrigin, metaData.yOrigin, BASIC_Z);
-		
+
 		if (!(masterGLView instanceof GLRemoteRendering))
 			gl.glTranslatef(0, 0, 2);
-		
-		if(isBaseMenu)
+
+		if (isBaseMenu)
 			beginGUIElement(gl, scalingPivot);
 		drawBackground(gl, metaData);
 
@@ -448,9 +449,9 @@ public class ContextMenu
 						if ((subMetaData.yOrigin - subMetaData.height) < fBottomBorder)
 							subMetaData.yOrigin = fBottomBorder + subMetaData.height;
 
-//						endGUIElement(gl);
+						// endGUIElement(gl);
 						drawMenu(gl, item.getSubItems(), subMetaData, false);
-//						beginGUIElement(gl, scalingPivot);
+						// beginGUIElement(gl, scalingPivot);
 					}
 				}
 			}
@@ -485,9 +486,9 @@ public class ContextMenu
 		// This is necessary because of the problems
 		// with the frustum and picking in the Bucket view.
 		// FIXME: Find clean solution!!
-		if(isBaseMenu)
+		if (isBaseMenu)
 			endGUIElement(gl);
-		
+
 		if (!(masterGLView instanceof GLRemoteRendering))
 			gl.glTranslatef(0, 0, -2);
 	}
@@ -520,7 +521,7 @@ public class ContextMenu
 	 *            the id which has to match one of the ids specified in {@link #display}
 	 */
 	public void handleEvents(EPickingMode ePickingMode, int iExternalID) {
-		if(iExternalID == Integer.MAX_VALUE)
+		if (iExternalID == Integer.MAX_VALUE)
 			return;
 		switch (ePickingMode) {
 			case MOUSE_OVER:

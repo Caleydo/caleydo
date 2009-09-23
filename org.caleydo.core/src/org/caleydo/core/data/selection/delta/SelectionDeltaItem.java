@@ -20,16 +20,16 @@ public class SelectionDeltaItem
 	private int primaryID = -1;
 	private ESelectionType selectionType;
 	private int secondaryID = -1;
-	
+
 	private ArrayList<Integer> connectionIDs;
 
 	/**
 	 * Default Constructor.
 	 */
 	public SelectionDeltaItem() {
-		
+
 	}
-	
+
 	/**
 	 * Constructor
 	 * 

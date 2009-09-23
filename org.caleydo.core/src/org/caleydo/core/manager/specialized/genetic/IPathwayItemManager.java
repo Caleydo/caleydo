@@ -22,8 +22,8 @@ public interface IPathwayItemManager
 	public IGraphItem createVertex(final String sName, final String sType, final String sExternalLink,
 		final String sReactionId);
 
-	public ArrayList<IGraphItem> createVertexGene(final String sName, final String sType, final String sExternalLink,
-		final String sReactionId, final Set<Integer> iSetDavidId);
+	public ArrayList<IGraphItem> createVertexGene(final String sName, final String sType,
+		final String sExternalLink, final String sReactionId, final Set<Integer> iSetDavidId);
 
 	public IGraphItem createVertexRep(final IGraph parentPathway,
 		final ArrayList<IGraphItem> alVertexGraphItem, final String sName, final String sShapeType,

@@ -12,7 +12,6 @@ import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -25,10 +24,8 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 public class Gate
 	extends AGate {
 
-	
 	private float upperValue;
 	private float lowerValue;
-	
 
 	/**
 	 * Constructor.
@@ -50,8 +47,8 @@ public class Gate
 		this.lowerValue = lowerValue;
 		this.set = set;
 		this.renderStyle = renderStyle;
-//		top = upperValue;
-//		bottom = lowerValue;
+		// top = upperValue;
+		// bottom = lowerValue;
 		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
 		bottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
 		minSize = 100;
@@ -75,11 +72,11 @@ public class Gate
 		CaleydoTextRenderer textRenderer, int iViewID) {
 
 		top = (float) set.getNormalizedForRaw(upperValue) * renderStyle.getAxisHeight();
-//		top = upperValue;
+		// top = upperValue;
 
 		// Scaled bottom = unscaled bottom !
 		bottom = (float) set.getNormalizedForRaw(lowerValue) * renderStyle.getAxisHeight();
-//		bottom = upperValue;
+		// bottom = upperValue;
 		float unscaledTop = getRealCoordinateFromScaledCoordinate(gl, top, bottom);
 
 		Vec3f scalingPivot = new Vec3f(currentPosition, bottom, GATE_Z);
@@ -139,10 +136,10 @@ public class Gate
 
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.GATE_BODY_SELECTION, gateID));
 
-		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom
-			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom
-			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+			GATE_Z);
+		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+			GATE_Z);
 		upperRightCorner.set(currentPosition + GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
 		upperLeftCorner.set(currentPosition - GATE_WIDTH, unscaledTop - GATE_TIP_HEIGHT, GATE_Z);
 
@@ -155,10 +152,10 @@ public class Gate
 
 		lowerLeftCorner.set(currentPosition - GATE_WIDTH, bottom, GATE_Z);
 		lowerRightCorner.set(currentPosition + GATE_WIDTH, bottom, GATE_Z);
-		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom
-			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
-		upperLeftCorner.set(currentPosition - GATE_WIDTH, bottom
-			+ ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT, GATE_Z);
+		upperRightCorner.set(currentPosition + GATE_WIDTH, bottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+			GATE_Z);
+		upperLeftCorner.set(currentPosition - GATE_WIDTH, bottom + ParCoordsRenderStyle.GATE_BOTTOM_HEIGHT,
+			GATE_Z);
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_BOTTOM, lowerLeftCorner, lowerRightCorner,
 			upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
@@ -225,12 +222,11 @@ public class Gate
 		this.currentPosition = currentPosition;
 	}
 
-
-
 	/**
 	 * Sets the bottom of the gate.
 	 * 
-	 * @param bottom Value the bottom of the gate shall be set to.
+	 * @param bottom
+	 *            Value the bottom of the gate shall be set to.
 	 */
 	public void setBottom(float bottom) {
 		this.bottom = bottom;
@@ -246,7 +242,8 @@ public class Gate
 	/**
 	 * Sets the top of the gate.
 	 * 
-	 * @param top Value the top of the gate shall be set to.
+	 * @param top
+	 *            Value the top of the gate shall be set to.
 	 */
 	public void setTop(float top) {
 		this.top = top;
@@ -262,7 +259,8 @@ public class Gate
 	/**
 	 * Sets the upper cutoff value of the gate.
 	 * 
-	 * @param upperValue Value the upper cutoff value shall be set to.
+	 * @param upperValue
+	 *            Value the upper cutoff value shall be set to.
 	 */
 	public void setUpperValue(float upperValue) {
 		this.upperValue = upperValue;
@@ -279,7 +277,8 @@ public class Gate
 	/**
 	 * Sets the lower cutoff value of the gate.
 	 * 
-	 * @param lowerValue Value the lower cutoff value shall be set to.
+	 * @param lowerValue
+	 *            Value the lower cutoff value shall be set to.
 	 */
 	public void setLowerValue(float lowerValue) {
 		this.lowerValue = lowerValue;

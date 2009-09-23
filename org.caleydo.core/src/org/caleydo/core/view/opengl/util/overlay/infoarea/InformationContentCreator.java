@@ -18,7 +18,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 public class InformationContentCreator {
 	private ArrayList<String> sContent;
 
-//	private GeneAnnotationMapper mapper;
+	// private GeneAnnotationMapper mapper;
 
 	private IGeneralManager generalManager;
 
@@ -29,7 +29,7 @@ public class InformationContentCreator {
 	 */
 	public InformationContentCreator() {
 		sContent = new ArrayList<String>();
-//		mapper = new GeneAnnotationMapper();
+		// mapper = new GeneAnnotationMapper();
 
 		this.generalManager = GeneralManager.get();
 	}
@@ -57,10 +57,10 @@ public class InformationContentCreator {
 					// generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_REFSEQ_MRNA,
 					// iUniqueID);
 					sGeneName = "as";
-//					generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
+					// generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
 					sGeneSymbol = "aas";
-//						generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
-//							iUniqueID);
+					// generalManager.getIDMappingManager().getID(EMappingType.DAVID_2_GENE_SYMBOL,
+					// iUniqueID);
 				}
 
 				// Cut too long gene names

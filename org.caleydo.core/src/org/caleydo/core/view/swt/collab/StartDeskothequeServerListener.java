@@ -7,8 +7,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 /**
- * Listener for the "start server" button that triggers the creation of the 
- * deskotheque related groupware management.
+ * Listener for the "start server" button that triggers the creation of the deskotheque related groupware
+ * management.
  * 
  * @author Werner Puff
  */
@@ -20,7 +20,8 @@ public class StartDeskothequeServerListener
 		IGroupwareManager groupwareManager = GroupwareUtils.createDeskothequeManager();
 		GeneralManager.get().setGroupwareManager(groupwareManager);
 		groupwareManager.startServer();
-		GeneralManager.get().getViewGLCanvasManager().getDisplayLoopExecution().executeMultiple(groupwareManager);
+		GeneralManager.get().getViewGLCanvasManager().getDisplayLoopExecution().executeMultiple(
+			groupwareManager);
 	}
 
 }

@@ -24,8 +24,8 @@
 package gleem.linalg;
 
 /**
- * Arbitrary-size single-precision matrix class. Currently very simple and only supports a few needed
- * operations.
+ * Arbitrary-size single-precision matrix class. Currently very simple and only
+ * supports a few needed operations.
  */
 
 public class Matf {
@@ -56,14 +56,16 @@ public class Matf {
 	}
 
 	/**
-	 * Gets the (i,j)th element of this matrix, where i is the row index and j is the column index
+	 * Gets the (i,j)th element of this matrix, where i is the row index and j
+	 * is the column index
 	 */
 	public float get(int i, int j) {
 		return data[nCol * i + j];
 	}
 
 	/**
-	 * Sets the (i,j)th element of this matrix, where i is the row index and j is the column index
+	 * Sets the (i,j)th element of this matrix, where i is the row index and j
+	 * is the column index
 	 */
 	public void set(int i, int j, float val) {
 		data[nCol * i + j] = val;

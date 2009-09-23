@@ -21,7 +21,7 @@ public class RcpSelectionInfoView
 	public static boolean bHorizontal = false;
 
 	private Composite parentComposite;
-	
+
 	private InfoArea infoArea;
 
 	@Override
@@ -80,20 +80,20 @@ public class RcpSelectionInfoView
 
 		infoArea.dispose();
 	}
-	
-//	@Override
-//	public int computePreferredSize(boolean width, int availableParallel, int availablePerpendicular,
-//		int preferredResult) {
-//		// Set minimum size of the view
-//		if (width == true)
-//			return (int) SearchView.TOOLBAR_WIDTH;
-//
-//		return (int) SearchView.TOOLBAR_HEIGHT;
-//	}
 
-//	@Override
-//	public int getSizeFlags(boolean width) {
-//		return SWT.MIN;
-//	}
+	// @Override
+	// public int computePreferredSize(boolean width, int availableParallel, int availablePerpendicular,
+	// int preferredResult) {
+	// // Set minimum size of the view
+	// if (width == true)
+	// return (int) SearchView.TOOLBAR_WIDTH;
+	//
+	// return (int) SearchView.TOOLBAR_HEIGHT;
+	// }
+
+	// @Override
+	// public int getSizeFlags(boolean width) {
+	// return SWT.MIN;
+	// }
 
 }

@@ -24,7 +24,6 @@ class GeneBookmarkContainer
 		super(manager, EIDCategory.GENE, EIDType.DAVID);
 		bookmarkItems = new UniqueList<ABookmark>();
 
-
 		colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		selectionManager = new SelectionManager.Builder(EIDType.DAVID).build();
@@ -41,7 +40,7 @@ class GeneBookmarkContainer
 			if (event.getIDType().getCategory() == EIDCategory.GENE) {
 				davidID =
 					GeneralManager.get().getIDMappingManager().getID(event.getIDType(), EIDType.DAVID, id);
-				if(davidID == null)
+				if (davidID == null)
 					continue;
 			}
 			else

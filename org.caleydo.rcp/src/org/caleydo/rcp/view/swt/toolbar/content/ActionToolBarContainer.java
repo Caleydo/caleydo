@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * ToolBarContainer for toolbar groups that only contains actions.
+ * 
  * @author Werner Puff
  */
 public class ActionToolBarContainer
@@ -14,6 +15,7 @@ public class ActionToolBarContainer
 
 	/**
 	 * Gets the list of actions currently defined within this tool bar container
+	 * 
 	 * @return list of actions
 	 */
 	@Override
@@ -23,11 +25,13 @@ public class ActionToolBarContainer
 
 	/**
 	 * sets the list of actions for this tool bar container
-	 * @param actions list of actions
+	 * 
+	 * @param actions
+	 *            list of actions
 	 */
 	@Override
 	public void setToolBarItems(List<IToolBarItem> actions) {
 		this.actions = actions;
 	}
-	
+
 }

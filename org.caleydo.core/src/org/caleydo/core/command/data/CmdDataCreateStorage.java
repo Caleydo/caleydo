@@ -33,8 +33,8 @@ public class CmdDataCreateStorage
 
 		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
 
-//		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, 
-//			"Created Storage with ID: " + createdObject.getID()));
+		// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
+		// "Created Storage with ID: " + createdObject.getID()));
 		commandManager.runDoCommand(this);
 	}
 

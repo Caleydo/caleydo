@@ -17,8 +17,8 @@ public class SelectedElementRep {
 
 	/** viewID of the original view that contained the selection point */
 	private int sourceViewID;
-	
-	/** viewID of the view the 3d-coordinates are transformed to */ 
+
+	/** viewID of the view the 3d-coordinates are transformed to */
 	private int remoteViewID;
 
 	private EIDType idType;
@@ -28,7 +28,7 @@ public class SelectedElementRep {
 
 	/** list of points for this selection in the views 3d coordinate system */
 	private ArrayList<Vec3f> points;
-	
+
 	/**
 	 * Constructor. Use this constructor for a one point element rep
 	 * 
@@ -40,7 +40,8 @@ public class SelectedElementRep {
 	 * @param y
 	 * @param z
 	 */
-	public SelectedElementRep(EIDType idType, final int sourceViewID, final float x, final float y, final float z) {
+	public SelectedElementRep(EIDType idType, final int sourceViewID, final float x, final float y,
+		final float z) {
 		this(idType, sourceViewID, sourceViewID, x, y, z);
 	}
 
@@ -57,7 +58,8 @@ public class SelectedElementRep {
 	 * @param y
 	 * @param z
 	 */
-	public SelectedElementRep(EIDType idType, final int sourceViewID, int remoteViewID, final float x, final float y, final float z) {
+	public SelectedElementRep(EIDType idType, final int sourceViewID, int remoteViewID, final float x,
+		final float y, final float z) {
 		this.idType = idType;
 		this.sourceViewID = sourceViewID;
 		this.remoteViewID = remoteViewID;
@@ -87,7 +89,8 @@ public class SelectedElementRep {
 	 * @param points3d
 	 *            the list of connection points
 	 */
-	public SelectedElementRep(EIDType idType, final int sourceViewID, int remoteViewID, final ArrayList<Vec3f> points3d) {
+	public SelectedElementRep(EIDType idType, final int sourceViewID, int remoteViewID,
+		final ArrayList<Vec3f> points3d) {
 		this.idType = idType;
 		this.sourceViewID = sourceViewID;
 		this.remoteViewID = remoteViewID;
@@ -106,6 +109,7 @@ public class SelectedElementRep {
 
 	/**
 	 * Get the ID of the view that created the element rep
+	 * 
 	 * @return view-id
 	 */
 	public int getSourceViewID() {
@@ -114,6 +118,7 @@ public class SelectedElementRep {
 
 	/**
 	 * Get the list of selection points in the view's 3d coordinate system
+	 * 
 	 * @return 3d point list of selection points
 	 */
 	public ArrayList<Vec3f> getPoints() {
@@ -122,6 +127,7 @@ public class SelectedElementRep {
 
 	/**
 	 * Get the ID of the view that the coordinates are related to
+	 * 
 	 * @return view-id
 	 */
 	public int getRemoteViewID() {

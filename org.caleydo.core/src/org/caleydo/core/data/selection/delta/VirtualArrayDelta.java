@@ -34,7 +34,7 @@ public class VirtualArrayDelta
 	public VirtualArrayDelta() {
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
-	
+
 	public VirtualArrayDelta(EVAType vaType, EIDType idType) {
 		this.vaType = vaType;
 		this.idType = idType;
@@ -52,7 +52,7 @@ public class VirtualArrayDelta
 	}
 
 	@Override
-	public void setVAType(EVAType vaType){
+	public void setVAType(EVAType vaType) {
 		this.vaType = vaType;
 	}
 

@@ -13,7 +13,7 @@ public class CloseOrResetContainedViews
 
 	/** mediator to handle actions triggered by instances of this class */
 	RemoteRenderingToolBarMediator remoteRenderingToolBarMediator;
-	
+
 	public static final String TEXT = "Remove Pathways, Reset Other views";
 	public static final String ICON = "resources/icons/view/remote/close_or_reset_contained_views.png";
 
@@ -22,7 +22,7 @@ public class CloseOrResetContainedViews
 	 */
 	public CloseOrResetContainedViews(RemoteRenderingToolBarMediator mediator) {
 		remoteRenderingToolBarMediator = mediator;
-		
+
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

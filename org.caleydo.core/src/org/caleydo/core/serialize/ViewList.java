@@ -7,7 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Collection-class for a list of all views to store 
+ * Collection-class for a list of all views to store
+ * 
  * @author Werner Puff
  */
 @XmlType
@@ -25,5 +26,5 @@ public class ViewList {
 	public void setViews(List<ASerializedView> views) {
 		this.views = views;
 	}
-	
+
 }

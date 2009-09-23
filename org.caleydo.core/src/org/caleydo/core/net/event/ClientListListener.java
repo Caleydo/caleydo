@@ -14,7 +14,7 @@ public class ClientListListener
 		if (event instanceof ClientListEvent) {
 			ClientListEvent clientListEvent = (ClientListEvent) event;
 			List<String> clientNames = clientListEvent.getClientNames();
-			
+
 			// int port = connectToServerEvent.getPort();
 
 			handler.setClientNames(clientNames);

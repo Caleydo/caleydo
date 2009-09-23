@@ -29,7 +29,6 @@ public class LoadPathwaysByPathwayIDItem
 		setPathwayID(pathwayID);
 	}
 
-
 	private void setPathwayID(int pathwayID) {
 		String pathwayName = GeneralManager.get().getPathwayManager().getItem(pathwayID).getTitle();
 		if (numberOfOccurences == 0)

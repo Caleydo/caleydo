@@ -24,9 +24,10 @@
 package gleem.linalg;
 
 /**
- * This differs from the Plane class in that it maintains an origin and orthonormal U, V axes in the plane so
- * that it can project a 3D point to a 2D one. U cross V = normal. U and V coordinates are computed with
- * respect to the origin.
+ * This differs from the Plane class in that it maintains an origin and
+ * orthonormal U, V axes in the plane so that it can project a 3D point to a 2D
+ * one. U cross V = normal. U and V coordinates are computed with respect to the
+ * origin.
  */
 
 public class PlaneUV {
@@ -37,17 +38,18 @@ public class PlaneUV {
 	private Vec3f vAxis = new Vec3f();
 
 	/**
-	 * Default constructor initializes normal to (0, 1, 0), origin to (0, 0, 0), U axis to (1, 0, 0) and V
-	 * axis to (0, 0, -1).
+	 * Default constructor initializes normal to (0, 1, 0), origin to (0, 0, 0),
+	 * U axis to (1, 0, 0) and V axis to (0, 0, -1).
 	 */
 	public PlaneUV() {
-		setEverything(new Vec3f(0, 1, 0), new Vec3f(0, 0, 0), new Vec3f(1, 0, 0), new Vec3f(0, 0, -1));
+		setEverything(new Vec3f(0, 1, 0), new Vec3f(0, 0, 0),
+				new Vec3f(1, 0, 0), new Vec3f(0, 0, -1));
 	}
 
 	/**
-	 * Takes normal vector and a point which the plane goes through (which becomes the plane's "origin").
-	 * Normal does NOT have to be normalized, but may not be zero vector. U and V axes are initialized to
-	 * arbitrary values.
+	 * Takes normal vector and a point which the plane goes through (which
+	 * becomes the plane's "origin"). Normal does NOT have to be normalized, but
+	 * may not be zero vector. U and V axes are initialized to arbitrary values.
 	 */
 	public PlaneUV(Vec3f normal, Vec3f origin) {
 		setOrigin(origin);
@@ -55,9 +57,10 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Takes normal vector, point which plane goes through, and the "u" axis in the plane. Computes the "v"
-	 * axis by taking the cross product of the normal and the u axis. Axis must be perpendicular to normal.
-	 * Normal and uAxis do NOT have to be normalized, but neither may be the zero vector.
+	 * Takes normal vector, point which plane goes through, and the "u" axis in
+	 * the plane. Computes the "v" axis by taking the cross product of the
+	 * normal and the u axis. Axis must be perpendicular to normal. Normal and
+	 * uAxis do NOT have to be normalized, but neither may be the zero vector.
 	 */
 	public PlaneUV(Vec3f normal, Vec3f origin, Vec3f uAxis) {
 		setOrigin(origin);
@@ -65,16 +68,17 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Takes normal vector, point which plane goes through, and both the u and v axes. u axis cross v axis =
-	 * normal. Normal, uAxis, and vAxis do NOT have to be normalized, but none may be the zero vector.
+	 * Takes normal vector, point which plane goes through, and both the u and v
+	 * axes. u axis cross v axis = normal. Normal, uAxis, and vAxis do NOT have
+	 * to be normalized, but none may be the zero vector.
 	 */
 	public PlaneUV(Vec3f normal, Vec3f origin, Vec3f uAxis, Vec3f vAxis) {
 		setEverything(normal, origin, uAxis, vAxis);
 	}
 
 	/**
-	 * Set the origin, through which this plane goes and with respect to which U and V coordinates are
-	 * computed
+	 * Set the origin, through which this plane goes and with respect to which U
+	 * and V coordinates are computed
 	 */
 	public void setOrigin(Vec3f origin) {
 		this.origin.set(origin);
@@ -85,8 +89,8 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Normal, U and V axes must be orthogonal and satisfy U cross V = normal, do not need to be unit length
-	 * but must not be the zero vector.
+	 * Normal, U and V axes must be orthogonal and satisfy U cross V = normal,
+	 * do not need to be unit length but must not be the zero vector.
 	 */
 	public void setNormalAndUV(Vec3f normal, Vec3f uAxis, Vec3f vAxis) {
 		setEverything(normal, origin, uAxis, vAxis);
@@ -109,8 +113,9 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Normal, U and V axes are normalized internally, so, for example, <b>normal</b> is not necessarily equal
-	 * to <code>plane.setNormal(normal); plane.getNormal();</code>
+	 * Normal, U and V axes are normalized internally, so, for example,
+	 * <b>normal</b> is not necessarily equal to
+	 * <code>plane.setNormal(normal); plane.getNormal();</code>
 	 */
 	public Vec3f getNormal() {
 		return normal;
@@ -141,11 +146,12 @@ public class PlaneUV {
 	}
 
 	/**
-	 * Intersect a ray with this plane, outputting not only the 3D intersection point but also the U, V
-	 * coordinates of the intersection. Returns true if intersection occurred, false otherwise. This is a
-	 * two-sided ray cast.
+	 * Intersect a ray with this plane, outputting not only the 3D intersection
+	 * point but also the U, V coordinates of the intersection. Returns true if
+	 * intersection occurred, false otherwise. This is a two-sided ray cast.
 	 */
-	public boolean intersectRay(Vec3f rayStart, Vec3f rayDirection, IntersectionPoint intPt, Vec2f uvCoords) {
+	public boolean intersectRay(Vec3f rayStart, Vec3f rayDirection,
+			IntersectionPoint intPt, Vec2f uvCoords) {
 		float denom = rayDirection.dot(normal);
 		if (denom == 0.0f)
 			return false;
@@ -165,7 +171,8 @@ public class PlaneUV {
 		return true;
 	}
 
-	private void setEverything(Vec3f normal, Vec3f origin, Vec3f uAxis, Vec3f vAxis) {
+	private void setEverything(Vec3f normal, Vec3f origin, Vec3f uAxis,
+			Vec3f vAxis) {
 		this.normal.set(normal);
 		this.origin.set(origin);
 		this.uAxis.set(uAxis);

@@ -52,7 +52,7 @@ public class TakeSnapshotAction
 
 		ImageLoader loader = new ImageLoader();
 		loader.data = new ImageData[] { image.getImageData() };
-		
+
 		// check if file dialog was canceled
 		if (sFilePath != null)
 			loader.save(sFilePath, SWT.IMAGE_PNG);

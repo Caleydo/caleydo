@@ -17,7 +17,7 @@ public class SetPositionModelEvent
 	public SetPositionModelEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public SetPositionModelEvent(int iViewID, EPositionModel positionModel) {
 		super();
 		this.viewID = iViewID;
@@ -27,7 +27,7 @@ public class SetPositionModelEvent
 	public EPositionModel getPositionModel() {
 		return positionModel;
 	}
-	
+
 	public int getViewID() {
 		return viewID;
 	}

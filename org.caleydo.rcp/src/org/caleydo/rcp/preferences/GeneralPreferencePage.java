@@ -51,7 +51,7 @@ public class GeneralPreferencePage
 				"Filter level for gene expression data.", 1, new String[][] { { "No Filtering", "complete" },
 						{ "Use only values that have a DAVID ID Mapping", "only_mapping" },
 						{ "Use only values that occur in pathways", "only_context" } }, mainComp);
-//		dataFilterLevelFE.loadDefault();
+		// dataFilterLevelFE.loadDefault();
 		addField(dataFilterLevelFE);
 
 		Label label = new Label(mainComp, SWT.NONE);

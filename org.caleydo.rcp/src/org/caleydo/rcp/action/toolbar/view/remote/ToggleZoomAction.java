@@ -22,7 +22,7 @@ public class ToggleZoomAction
 	 */
 	public ToggleZoomAction(RemoteRenderingToolBarMediator mediator) {
 		remoteRenderingToolBarMediator = mediator;
-		
+
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI

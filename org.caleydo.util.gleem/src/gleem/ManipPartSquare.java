@@ -26,18 +26,19 @@ package gleem;
 import gleem.linalg.Vec3f;
 
 /**
- * A 2x2 square in the X-Y plane, centered about the origin, with the normal pointing in the +Z direction.
+ * A 2x2 square in the X-Y plane, centered about the origin, with the normal
+ * pointing in the +Z direction.
  */
 @SuppressWarnings("all")
-public class ManipPartSquare
-	extends ManipPartTriBased {
+public class ManipPartSquare extends ManipPartTriBased {
 	private static final Vec3f[] vertices = {
-	// Counter-clockwise, starting from upper left
-			new Vec3f(-1, 1, 0), new Vec3f(-1, -1, 0), new Vec3f(1, -1, 0), new Vec3f(1, 1, 0) };
+			// Counter-clockwise, starting from upper left
+			new Vec3f(-1, 1, 0), new Vec3f(-1, -1, 0), new Vec3f(1, -1, 0),
+			new Vec3f(1, 1, 0)};
 
 	private static final int[] vertexIndices = {
 	// Just the front face
-			0, 1, 2, 0, 2, 3, };
+			0, 1, 2, 0, 2, 3,};
 
 	private static Vec3f[] normals = null;
 	private static int[] normalIndices = null;
@@ -46,7 +47,8 @@ public class ManipPartSquare
 		super();
 
 		if (normals == null) {
-			NormalCalc.NormalInfo normInfo = NormalCalc.computeFacetedNormals(vertices, vertexIndices, true);
+			NormalCalc.NormalInfo normInfo = NormalCalc.computeFacetedNormals(
+					vertices, vertexIndices, true);
 			normals = normInfo.normals;
 			normalIndices = normInfo.normalIndices;
 		}

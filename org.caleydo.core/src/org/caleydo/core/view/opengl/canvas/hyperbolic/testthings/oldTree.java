@@ -24,9 +24,9 @@ public class oldTree<NodeType extends Comparable<NodeType>> {
 	DirectedGraph<NodeType, DefaultEdge> graph;
 
 	private HashMap<Integer, NodeType> hashNodes;
-	
+
 	int iDeph;
-	//List<Integer> dephList;
+	// List<Integer> dephList;
 	ArrayList<NodeType> folios;
 	HashMap<Integer, ArrayList<DefaultNode>> layerMap;
 
@@ -37,10 +37,10 @@ public class oldTree<NodeType extends Comparable<NodeType>> {
 
 	}
 
-	public void setHashMap(HashMap<Integer, NodeType> hashNodes){
+	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
 		this.hashNodes = hashNodes;
 	}
-	
+
 	public void setRootNode(NodeType rootNode) {
 		this.rootNode = rootNode;
 		graph.addVertex(rootNode);
@@ -171,77 +171,60 @@ public class oldTree<NodeType extends Comparable<NodeType>> {
 	public NodeType getNodeByNumber(int iClusterNr) {
 		return hashNodes.get(iClusterNr);
 	}
-	
-	public int getNumberOfChildren (DefaultNode node)
-	{
+
+	public int getNumberOfChildren(DefaultNode node) {
 		return hashNodes.size();
 	}
-	public int getDephOfTree()//NodeType parentNode)
+
+	public int getDephOfTree()// NodeType parentNode)
 	{
-		//List<Integer> dephList = new ArrayList<Integer>();
-		iDeph = getDephOfTreeWorker(getRoot(), 0);//, dephList);
-		//deph = Collections.max(dephList);
+		// List<Integer> dephList = new ArrayList<Integer>();
+		iDeph = getDephOfTreeWorker(getRoot(), 0);// , dephList);
+		// deph = Collections.max(dephList);
 		return iDeph;
-		//return Collections.max(dephList.toArray());
-		/*	
-	 * ArrayList<NodeType> childs = getChildren(parentNode);
-		for (NodeType tmpNode : childs)
-		{
-			if (hasChildren(tmpNode))
-			{
-				deph++;
-				getDephOfTree(tmpNode);
-			}
-			else
-			{
-				dephList.add(deph);
-				folios.add(tmpNode);
-			}
-		}
-		
-		Collections.sort(dephList);
-		
-		return dephList.indexOf(0);
-	*/}
-	private int getDephOfTreeWorker(NodeType parentNode, int d)//, List<Integer> dephList)
+		// return Collections.max(dephList.toArray());
+		/*
+		 * ArrayList<NodeType> childs = getChildren(parentNode); for (NodeType tmpNode : childs) { if
+		 * (hasChildren(tmpNode)) { deph++; getDephOfTree(tmpNode); } else { dephList.add(deph);
+		 * folios.add(tmpNode); } } Collections.sort(dephList); return dephList.indexOf(0);
+		 */}
+
+	private int getDephOfTreeWorker(NodeType parentNode, int d)// , List<Integer> dephList)
 	{
 		List<Integer> li = new ArrayList<Integer>();;// = new List();
-		
-		if(hasChildren(parentNode))
-		{
+
+		if (hasChildren(parentNode)) {
 			ArrayList<NodeType> childs = getChildren(parentNode);
 			for (NodeType tmpNode : childs)
-				li.add(getDephOfTreeWorker(tmpNode, d+1));
+				li.add(getDephOfTreeWorker(tmpNode, d + 1));
 		}
 		else
 			return d;
 		return Collections.max(li);
 	}
-	
-	public int getNumberOfFolios()
-	{
+
+	public int getNumberOfFolios() {
 		return folios.size();
 	}
-	public int getDeph()
-	{
+
+	public int getDeph() {
 		iDeph = getDephOfTree();
 		return iDeph;
 	}
-	public void setNodeInLayerMap(int layer, DefaultNode node)
-	{
+
+	public void setNodeInLayerMap(int layer, DefaultNode node) {
 		ArrayList<DefaultNode> tmp = null;
-		//node.
-		
-		if(layerMap.containsKey(layer))
-		{
+		// node.
+
+		if (layerMap.containsKey(layer)) {
 			tmp = layerMap.get(layer);
 		}
 
 		tmp.add(node);
 		layerMap.put(layer, tmp);
 	}
-	public int getNumberOfNodesInLayer(int layer)
-	{
+
+	public int getNumberOfNodesInLayer(int layer) {
 		return layerMap.get(layer).size();
 	}
 

@@ -219,6 +219,5 @@ public interface IGroupList
 	public boolean containsElement(Group element);
 
 	public IGroupList clone();
-	
 
 }

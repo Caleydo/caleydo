@@ -60,7 +60,7 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		// TODO: this should be removed later on, only for testing purposes
 		if (rootNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) rootNode).getClusterNr(), rootNode);
-		
+
 		if (rootNode instanceof IDrawAbleNode)
 			hashNodes.put(((IDrawAbleNode) rootNode).getID(), rootNode);
 	}
@@ -103,10 +103,11 @@ public class Tree<NodeType extends Comparable<NodeType>> {
 		setDepthFlag();
 
 		// TODO: this should be removed later on, only for testing purposes
-		// TODO: isn't it better to use CompareAbleValue (and introduce an interface that implements .getID())???
+		// TODO: isn't it better to use CompareAbleValue (and introduce an interface that implements
+		// .getID())???
 		if (childNode instanceof ClusterNode)
 			hashNodes.put(((ClusterNode) childNode).getClusterNr(), childNode);
-		
+
 		if (childNode instanceof IDrawAbleNode)
 			hashNodes.put(((IDrawAbleNode) childNode).getID(), childNode);
 	}

@@ -75,8 +75,9 @@ public class LabelManager {
 	 */
 	public void drawAllLabels(GL gl, GLU glu, float fScreenWidth, float fScreenHeight,
 		float fHierarchyOuterRadius) {
-		
-		textRenderer = new CaleydoTextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
+
+		textRenderer =
+			new CaleydoTextRenderer(new Font(LABEL_FONT_NAME, LABEL_FONT_STYLE, LABEL_FONT_SIZE), false);
 		textRenderer.setColor(0, 0, 0, 1);
 
 		float fXCenter = fScreenWidth / 2.0f;
@@ -205,8 +206,8 @@ public class LabelManager {
 	 *            Height of the screen.
 	 * @return Label container that has been created using the specified parameters.
 	 */
-	private LabelContainer createLabelContainer(GL gl, Label label, float fXContainerLeft, float fYContainerCenter,
-		float fScreenHeight) {
+	private LabelContainer createLabelContainer(GL gl, Label label, float fXContainerLeft,
+		float fYContainerCenter, float fScreenHeight) {
 
 		float fLabelScaling;
 		LabelContainer labelContainer = null;

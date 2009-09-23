@@ -24,16 +24,16 @@ public abstract class CaleydoRCPViewPart
 	// protected static ArrayList<IContributionItem> alToolbarContributions;
 
 	protected IGeneralManager generalManager = null;
-	protected IEventPublisher eventPublisher = null; 
+	protected IEventPublisher eventPublisher = null;
 
 	protected int iViewID;
-	
+
 	// FIXME we need to set this intelligently
 	protected EDataDomain dataDomain = EDataDomain.GENETIC_DATA;
 
 	/** stores the attach status of the viewpart, true means within caleydo's main window, false otherwise */
 	protected boolean attached;
-	
+
 	protected Composite parentComposite;
 
 	@Override
@@ -43,18 +43,19 @@ public abstract class CaleydoRCPViewPart
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();
 	}
-	
+
 	/**
-	 * Generates and returns a list of all view-ids, caleydo-view-part-ids and gl-view-ids, 
-	 * contained in this view. 
-	 * @return list of all view-ids contained in this view 
+	 * Generates and returns a list of all view-ids, caleydo-view-part-ids and gl-view-ids, contained in this
+	 * view.
+	 * 
+	 * @return list of all view-ids contained in this view
 	 */
 	public List<Integer> getAllViewIDs() {
 		List<Integer> ids = new ArrayList<Integer>();
 		ids.add(getViewID());
 		return ids;
 	}
-	
+
 	public int getViewID() {
 		return iViewID;
 	}
@@ -76,12 +77,12 @@ public abstract class CaleydoRCPViewPart
 		unregisterEventListeners();
 		super.dispose();
 	}
-	
+
 	public void registerEventListeners() {
-		// no registration to the event system in the default implementation 
+		// no registration to the event system in the default implementation
 	}
 
 	public void unregisterEventListeners() {
-		// no registration to the event system in the default implementation 
+		// no registration to the event system in the default implementation
 	}
 }

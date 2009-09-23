@@ -21,11 +21,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 
 /**
- * Provides toolbar rendering specific data for 4:3 screen toolbars (toolbars on upper side of the screen) 
- * in the default style (toolbar on the left side). 
+ * Provides toolbar rendering specific data for 4:3 screen toolbars (toolbars on upper side of the screen) in
+ * the default style (toolbar on the left side).
+ * 
  * @author Werner Puff
  */
-public class StandardToolBarRenderer 
+public class StandardToolBarRenderer
 	implements IToolBarRenderer {
 
 	public Runnable createRenderJob(RcpToolBarView toolBarView, List<AToolBarContent> toolBarContents) {
@@ -35,13 +36,13 @@ public class StandardToolBarRenderer
 		job.setToolBarRenderer(this);
 		return job;
 	}
-	
+
 	public GridLayout createLayout() {
 		return new GridLayout(10, false);
 	}
 
 	public void addGeneralToolBarActions(Group group) {
-		
+
 		// Needed to simulate toolbar wrapping which is not implemented for
 		// linux
 		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
@@ -57,23 +58,22 @@ public class StandardToolBarRenderer
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
-		
-		
+
 		toolBarManager.add(new SaveProjectAction());
 		toolBarManager.add(new ImportDataAction());
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
-				
-//		if (GeneralManager.get().getUseCase().getApplicationMode() == EDataDomain.GENETIC_DATA) {
-			
-			toolBarManager2.add(new StartClusteringAction());
-//		}
-		
+
+		// if (GeneralManager.get().getUseCase().getApplicationMode() == EDataDomain.GENETIC_DATA) {
+
+		toolBarManager2.add(new StartClusteringAction());
+		// }
+
 		toolBarManager2.add(new OpenSearchViewAction());
 		toolBarManager2.add(new ClearSelectionsAction());
-		
-//		toolBarManager2.add(new MagnifyingGlassAction());
-		
+
+		// toolBarManager2.add(new MagnifyingGlassAction());
+
 		toolBarManager.update(true);
 
 		if (toolBarManager2.isEmpty())
@@ -90,7 +90,8 @@ public class StandardToolBarRenderer
 
 		if (size <= 4) {
 			wrapCount = 2;
-		} else {
+		}
+		else {
 			wrapCount = 4;
 		}
 
@@ -103,47 +104,15 @@ public class StandardToolBarRenderer
 
 }
 /*
-
-public GridData createContainerGridData() {
-	GridData gridData = new GridData(GridData.FILL_VERTICAL);
-	gridData.minimumWidth = 230;
-	gridData.widthHint = 230;
-	return gridData;
-}
-
-public GridLayout createSearchLayout() {
-	GridLayout layout = new GridLayout(2, false);
-	layout.marginHeight = layout.marginWidth = 0;
-	return layout;
-}
-
-public GridData createSpacerGridData() {
-	return new GridData(GridData.FILL_BOTH);
-}
-
-public GridLayout createInfoBarLayout() {
-	GridLayout layout = new GridLayout(2, false);
-	layout.marginBottom = 0;
-	layout.marginTop = 0;
-	layout.marginLeft = 0;
-	layout.marginRight = 0;
-	layout.horizontalSpacing = 0;
-	layout.verticalSpacing = 0;
-	layout.marginHeight = 0; 
-	layout.marginWidth = 0;
-
-	return layout;
-}
-
-public void addInfoBarSpacer(Group group) {
-	Label spacer = new Label(group, SWT.NULL);
-	spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-}
-
-public GridData createColorMappingGridData() {
-	GridData data = new GridData(GridData.FILL_VERTICAL);
-	data.minimumWidth = 110;
-	data.widthHint = 110;
-	return data;
-}
-*/
+ * public GridData createContainerGridData() { GridData gridData = new GridData(GridData.FILL_VERTICAL);
+ * gridData.minimumWidth = 230; gridData.widthHint = 230; return gridData; } public GridLayout
+ * createSearchLayout() { GridLayout layout = new GridLayout(2, false); layout.marginHeight =
+ * layout.marginWidth = 0; return layout; } public GridData createSpacerGridData() { return new
+ * GridData(GridData.FILL_BOTH); } public GridLayout createInfoBarLayout() { GridLayout layout = new
+ * GridLayout(2, false); layout.marginBottom = 0; layout.marginTop = 0; layout.marginLeft = 0;
+ * layout.marginRight = 0; layout.horizontalSpacing = 0; layout.verticalSpacing = 0; layout.marginHeight = 0;
+ * layout.marginWidth = 0; return layout; } public void addInfoBarSpacer(Group group) { Label spacer = new
+ * Label(group, SWT.NULL); spacer.setLayoutData(new GridData(GridData.FILL_BOTH)); } public GridData
+ * createColorMappingGridData() { GridData data = new GridData(GridData.FILL_VERTICAL); data.minimumWidth =
+ * 110; data.widthHint = 110; return data; }
+ */

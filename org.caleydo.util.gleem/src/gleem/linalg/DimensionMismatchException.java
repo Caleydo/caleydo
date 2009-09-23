@@ -27,8 +27,7 @@ package gleem.linalg;
  * Thrown to indicate a mismatch of dimensionality of a matrix or vector.
  */
 
-public class DimensionMismatchException
-	extends RuntimeException {
+public class DimensionMismatchException extends RuntimeException {
 
 	/**
    * 

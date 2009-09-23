@@ -124,7 +124,7 @@ public class CmdFetchPathwayData
 			PreferenceConstants.PATHWAY_DATA_OK,
 			generalManager.getPreferenceStore().getString(PreferenceConstants.PATHWAY_DATA_OK)
 				+ eOrganism.name() + "+" + EPathwayDatabaseType.KEGG.name() + ";");
-		
+
 		try {
 			generalManager.getPreferenceStore().save();
 		}
@@ -142,7 +142,7 @@ public class CmdFetchPathwayData
 			PreferenceConstants.PATHWAY_DATA_OK,
 			generalManager.getPreferenceStore().getString(PreferenceConstants.PATHWAY_DATA_OK)
 				+ eOrganism.name() + "+" + EPathwayDatabaseType.BIOCARTA.name() + ";");
-	
+
 		try {
 			generalManager.getPreferenceStore().save();
 		}

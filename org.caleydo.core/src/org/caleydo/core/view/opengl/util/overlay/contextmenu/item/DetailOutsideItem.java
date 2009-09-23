@@ -5,8 +5,8 @@ import org.caleydo.core.view.opengl.util.overlay.contextmenu.AContextMenuItem;
 
 public class DetailOutsideItem
 	extends AContextMenuItem {
-	
-	public DetailOutsideItem (int elementID) {
+
+	public DetailOutsideItem(int elementID) {
 		super();
 		setText("Toggle Detail View (D)");
 		DetailOutsideEvent event = new DetailOutsideEvent();

@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 @XmlType
 public class SerializedHierarchicalHeatMapView
 	extends ASerializedView {
-	
+
 	public SerializedHierarchicalHeatMapView() {
 	}
 

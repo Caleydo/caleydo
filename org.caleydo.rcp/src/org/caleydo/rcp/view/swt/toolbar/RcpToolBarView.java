@@ -41,24 +41,25 @@ public class RcpToolBarView
 	private Composite parentComposite;
 
 	private ArrayList<Group> viewSpecificGroups;
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
 
 		if (GenomePerspective.bIsWideScreen) {
 			toolBarRenderer = new WideScreenToolBarRenderer();
-		} else {
+		}
+		else {
 			toolBarRenderer = new StandardToolBarRenderer();
 		}
 
 		parentComposite.setLayout(toolBarRenderer.createLayout());
 		this.parentComposite = parentComposite;
-	
+
 		viewSpecificGroups = new ArrayList<Group>();
 
 		addGeneralToolBar();
-		
+
 		ToolBarMediator toolBarMediator = new ToolBarMediator();
 		toolBarMediator.setToolBarView(this);
 	}
@@ -125,7 +126,7 @@ public class RcpToolBarView
 		layout.marginHeight = layout.marginWidth = 0;
 		group.setLayout(layout);
 		group.setLayoutData(toolBarRenderer.createStandardGridData());
-		
+
 		// group.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 
 		toolBarRenderer.addGeneralToolBarActions(group);
@@ -140,12 +141,12 @@ public class RcpToolBarView
 		if (eventTrigger instanceof AGLEventListener) {
 			final int iViewID = ((AGLEventListener) eventTrigger).getID();
 
-//			if (parentComposite == null || !parentComposite.isDisposed()) {
-//				GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID, 
-//					"Parent composite is null. The toolbars can't be updated.", new NullPointerException()));
-//				return;
-//			}
-				
+			// if (parentComposite == null || !parentComposite.isDisposed()) {
+			// GeneralManager.get().getLogger().log(new Status(Status.INFO, Activator.PLUGIN_ID,
+			// "Parent composite is null. The toolbars can't be updated.", new NullPointerException()));
+			// return;
+			// }
+
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				public void run() {
 					// Check if toolbar is present

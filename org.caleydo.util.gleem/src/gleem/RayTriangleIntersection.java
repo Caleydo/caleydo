@@ -37,21 +37,25 @@ public class RayTriangleIntersection {
 	public static final int INTERSECTION = 2;
 
 	/**
-	 * Allow roundoff error of this amount. Be very careful adjusting this. Too big a value may cause valid
-	 * triangles to be rejected. Too small a value may trigger an assert in the code to create an orthonormal
-	 * basis in intersectRayWithTriangle.
+	 * Allow roundoff error of this amount. Be very careful adjusting this. Too
+	 * big a value may cause valid triangles to be rejected. Too small a value
+	 * may trigger an assert in the code to create an orthonormal basis in
+	 * intersectRayWithTriangle.
 	 */
 	private static final float epsilon = 1.0e-3f;
 
 	/**
-	 * Cast a ray starting at rayOrigin with rayDirection into the triangle defined by vertices v0, v1, and
-	 * v2. If intersection occurred returns INTERSECTION and sets intersectionPoint appropriately, including t
-	 * parameter (scale factor for rayDirection to reach intersection plane starting from rayOrigin). Returns
-	 * NO_INTERSECTION if no intersection, or ERROR if triangle was degenerate or line was parallel to plane
-	 * of triangle.
+	 * Cast a ray starting at rayOrigin with rayDirection into the triangle
+	 * defined by vertices v0, v1, and v2. If intersection occurred returns
+	 * INTERSECTION and sets intersectionPoint appropriately, including t
+	 * parameter (scale factor for rayDirection to reach intersection plane
+	 * starting from rayOrigin). Returns NO_INTERSECTION if no intersection, or
+	 * ERROR if triangle was degenerate or line was parallel to plane of
+	 * triangle.
 	 */
-	public static int intersectRayWithTriangle(Vec3f rayOrigin, Vec3f rayDirection, Vec3f v0, Vec3f v1,
-		Vec3f v2, IntersectionPoint intersectionPoint) {
+	public static int intersectRayWithTriangle(Vec3f rayOrigin,
+			Vec3f rayDirection, Vec3f v0, Vec3f v1, Vec3f v2,
+			IntersectionPoint intersectionPoint) {
 		// Returns INTERSECTION if intersection computed, NO_INTERSECTION
 		// if no intersection with triangle, ERROR if triangle was
 		// degenerate or line did not intersect plane containing triangle.
@@ -159,7 +163,8 @@ public class RayTriangleIntersection {
 		return INTERSECTION;
 	}
 
-	private static boolean approxOnSameSide(Vec2f linePt1, Vec2f linePt2, Vec2f testPt1, Vec2f testPt2) {
+	private static boolean approxOnSameSide(Vec2f linePt1, Vec2f linePt2,
+			Vec2f testPt1, Vec2f testPt2) {
 		// Evaluate line equation for testPt1 and testPt2
 
 		// ((y2 - y1) / (x2 - x1)) - ((y1 - y) / (x1 - x))
@@ -184,8 +189,10 @@ public class RayTriangleIntersection {
 
 		float m = num0 / den0;
 		// (y - y1) - m(x - x1)
-		float val1 = testPt1.y() - linePt1.y() - m * (testPt1.x() - linePt1.x());
-		float val2 = testPt2.y() - linePt1.y() - m * (testPt2.x() - linePt1.x());
+		float val1 = testPt1.y() - linePt1.y() - m
+				* (testPt1.x() - linePt1.x());
+		float val2 = testPt2.y() - linePt1.y() - m
+				* (testPt2.x() - linePt1.x());
 		if (Math.abs(val1) < epsilon || Math.abs(val2) < epsilon)
 			return true;
 

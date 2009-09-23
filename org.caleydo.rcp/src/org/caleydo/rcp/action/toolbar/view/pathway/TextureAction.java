@@ -18,7 +18,7 @@ public class TextureAction
 
 	/** mediator to handle actions triggered by instances of this class */
 	private PathwayToolBarMediator pathwayToolbarMediator;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -38,7 +38,8 @@ public class TextureAction
 		texturesEnabled = !texturesEnabled;
 		if (texturesEnabled) {
 			pathwayToolbarMediator.enableTextures();
-		} else {
+		}
+		else {
 			pathwayToolbarMediator.disableTextures();
 		}
 	}

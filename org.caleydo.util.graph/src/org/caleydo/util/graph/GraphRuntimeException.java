@@ -9,8 +9,7 @@ package org.caleydo.util.graph;
  * @see org.caleydo.util.graph.IGraph
  * @author Michael Kalkusch
  */
-public final class GraphRuntimeException
-	extends RuntimeException {
+public final class GraphRuntimeException extends RuntimeException {
 
 	/**
 	 * id for serialization.

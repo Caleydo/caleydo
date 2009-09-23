@@ -162,5 +162,4 @@ public class PDDrawingStrategyLabelDecorator
 		return clone;
 	}
 
-	
 }

@@ -196,7 +196,9 @@ public class GLRemoteRendering
 
 	private GLInfoAreaManager infoAreaManager;
 
-	/** Transformation utility object to transform and project view related coordinates */
+	/**
+	 * Transformation utility object to transform and project view related coordinates
+	 */
 	protected RemoteRenderingTransformer selectionTransformer;
 
 	protected AddPathwayListener addPathwayListener = null;
@@ -299,7 +301,7 @@ public class GLRemoteRendering
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
 		selectionTransformer = new RemoteRenderingTransformer(iUniqueID, remoteLevelElementWhiteList);
-		
+
 		init(gl);
 	}
 
@@ -338,7 +340,8 @@ public class GLRemoteRendering
 		CmdCreateGLEventListener cmdCreateGLView =
 			(CmdCreateGLEventListener) generalManager.getCommandManager().createCommandByType(
 				ECommandType.CREATE_GL_PROPAGATION_HEAT_MAP_3D);
-		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20, -1);
+		cmdCreateGLView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0.1f, 4.1f, -20, 20,
+			-1);
 		// cmdCreateGLView.setSet(set);
 		cmdCreateGLView.doCommand();
 		glBookmarkContainer = (GLBookmarkManager) cmdCreateGLView.getCreatedObject();
@@ -466,7 +469,8 @@ public class GLRemoteRendering
 		time.update();
 		processEvents();
 
-		// Update the pool transformations according to the current mouse over object
+		// Update the pool transformations according to the current mouse over
+		// object
 		layoutRenderStyle.initPoolLevel(iMouseOverObjectID);
 		layoutRenderStyle.initFocusLevel();
 
@@ -477,7 +481,8 @@ public class GLRemoteRendering
 		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()
 			&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 
-			// TODO: very performance intensive - better solution needed (only in reshape)!
+			// TODO: very performance intensive - better solution needed (only
+			// in reshape)!
 			getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
@@ -1791,7 +1796,8 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick) {
 
 		switch (pickingType) {
 			case BUCKET_DRAG_ICON_SELECTION:
@@ -2246,7 +2252,8 @@ public class GLRemoteRendering
 		clearRemoteLevel(transitionLevel);
 
 		if (reinitialize) {
-			// Move heat map and par coords view to its initial position in the bucket
+			// Move heat map and par coords view to its initial position in the
+			// bucket
 			for (int viewID : containedViewIDs) {
 				AGLEventListener view = viewManager.getGLEventListener(viewID);
 				if (view instanceof GLParallelCoordinates) {
@@ -2769,7 +2776,8 @@ public class GLRemoteRendering
 
 		// resetRemoteRendererListener = new ResetRemoteRendererListener();
 		// resetRemoteRendererListener.setHandler(this);
-		// eventPublisher.addListener(ResetRemoteRendererEvent.class, resetRemoteRendererListener);
+		// eventPublisher.addListener(ResetRemoteRendererEvent.class,
+		// resetRemoteRendererListener);
 	}
 
 	/**

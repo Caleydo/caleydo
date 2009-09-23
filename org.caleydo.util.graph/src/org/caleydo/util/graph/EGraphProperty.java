@@ -4,7 +4,8 @@
 package org.caleydo.util.graph;
 
 /**
- * Define graph properties like HAS_CYCLES, HAS_NO_CYCLES, IS_TREE, HAS_SUB_GRAPH
+ * Define graph properties like HAS_CYCLES, HAS_NO_CYCLES, IS_TREE,
+ * HAS_SUB_GRAPH
  * 
  * @author Michael Kalkusch
  * @see org.caleydo.util.graph.EGraphItemHierarchy
@@ -13,9 +14,7 @@ package org.caleydo.util.graph;
  */
 public enum EGraphProperty {
 
-	HAS_NO_CYCLES(),
-	IS_TREE(),
-	HAS_SUB_GRAPH();
+	HAS_NO_CYCLES(), IS_TREE(), HAS_SUB_GRAPH();
 
 	private EGraphProperty() {
 		/** no local variables necessary yet! */

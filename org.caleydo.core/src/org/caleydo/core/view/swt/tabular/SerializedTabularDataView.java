@@ -14,10 +14,10 @@ public class SerializedTabularDataView
 	extends ASerializedView {
 
 	public static final String GUI_ID = "org.caleydo.rcp.views.swt.TabularDataView";
-	
+
 	public SerializedTabularDataView() {
 	}
-	
+
 	public SerializedTabularDataView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}

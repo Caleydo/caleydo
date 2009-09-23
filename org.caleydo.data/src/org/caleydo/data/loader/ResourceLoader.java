@@ -26,19 +26,20 @@ public class ResourceLoader {
 		BufferedReader file;
 
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
-			file = new BufferedReader(new InputStreamReader(loadResourceAsInputStream(sFileName)));
-		}
-		else {
+			file = new BufferedReader(new InputStreamReader(
+					loadResourceAsInputStream(sFileName)));
+		} else {
 			try {
 				file = new BufferedReader(new FileReader(sFileName));
-			}
-			catch (FileNotFoundException e) {
-				throw new IllegalStateException("Cannot load resource: " + sFileName);
+			} catch (FileNotFoundException e) {
+				throw new IllegalStateException("Cannot load resource: "
+						+ sFileName);
 			}
 		}
 
 		if (file == null)
-			throw new IllegalStateException("Cannot load resource: " + sFileName);
+			throw new IllegalStateException("Cannot load resource: "
+					+ sFileName);
 
 		return file;
 	}
@@ -48,18 +49,19 @@ public class ResourceLoader {
 
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
-		}
-		else {
+		} else {
 			try {
-				inputSource = new InputSource(new FileReader(new File(sFileName)));
-			}
-			catch (IOException e) {
-				throw new IllegalStateException("Cannot load resource: " + sFileName);
+				inputSource = new InputSource(new FileReader(
+						new File(sFileName)));
+			} catch (IOException e) {
+				throw new IllegalStateException("Cannot load resource: "
+						+ sFileName);
 			}
 		}
 
 		if (inputSource == null)
-			throw new IllegalStateException("Cannot load resource: " + sFileName);
+			throw new IllegalStateException("Cannot load resource: "
+					+ sFileName);
 
 		return inputSource;
 	}
@@ -67,9 +69,9 @@ public class ResourceLoader {
 	public Image getImage(Display display, String sFileName) {
 		Image image;
 		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
-			image = new Image(display, this.getClass().getClassLoader().getResourceAsStream(sFileName));
-		}
-		else {
+			image = new Image(display, this.getClass().getClassLoader()
+					.getResourceAsStream(sFileName));
+		} else {
 			image = new Image(display, sFileName);
 		}
 
@@ -83,7 +85,8 @@ public class ResourceLoader {
 		URL url = this.getClass().getClassLoader().getResource(sFileName);
 
 		if (url == null)
-			throw new IllegalStateException("Cannot load resource URL: " + sFileName);
+			throw new IllegalStateException("Cannot load resource URL: "
+					+ sFileName);
 
 		return url;
 	}
@@ -93,15 +96,13 @@ public class ResourceLoader {
 
 		try {
 			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
-				texture =
-					TextureIO.newTexture(TextureIO.newTextureData(loadResourceAsInputStream(sFileName), true,
-						"GIF"));
+				texture = TextureIO.newTexture(TextureIO.newTextureData(
+						loadResourceAsInputStream(sFileName), true, "GIF"));
+			} else {
+				texture = TextureIO.newTexture(TextureIO.newTextureData(
+						new File(sFileName), true, "GIF"));
 			}
-			else {
-				texture = TextureIO.newTexture(TextureIO.newTextureData(new File(sFileName), true, "GIF"));
-			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException("Cannot load texture: " + sFileName);
 		}
 
@@ -123,7 +124,8 @@ public class ResourceLoader {
 		// }
 
 		if (file == null)
-			throw new IllegalStateException("Cannot load resource: " + sFileName);
+			throw new IllegalStateException("Cannot load resource: "
+					+ sFileName);
 
 		return file;
 	}

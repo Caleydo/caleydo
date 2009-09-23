@@ -254,10 +254,10 @@ public class DrawingStateFullHierarchy
 		PartialDisc pdCurrentRootElement = radialHierarchy.getCurrentRootElement();
 
 		if (pdSelected != pdRealRootElement && pdSelected.hasChildren()) {
-			
+
 			pdCurrentRootElement.setPDDrawingStrategyChildren(DrawingStrategyManager.get()
 				.getDefaultDrawingStrategy(), iDisplayedHierarchyDepth);
-			
+
 			if (pdSelected == pdCurrentRootElement) {
 				radialHierarchy.setCurrentSelectedElement(pdSelected);
 				drawingController.setDrawingState(EDrawingStateType.ANIMATION_PARENT_ROOT_ELEMENT);

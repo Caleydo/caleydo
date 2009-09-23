@@ -71,7 +71,7 @@ public abstract class AGLEventListener
 		ON,
 		OFF
 	}
-	
+
 	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
 
 	// TODO: should be a list of parent canvas object to be generic
@@ -482,8 +482,8 @@ public abstract class AGLEventListener
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
 	 */
-	abstract protected void handlePickingEvents(final EPickingType ePickingType, final EPickingMode ePickingMode,
-		final int iExternalID, final Pick pick);
+	abstract protected void handlePickingEvents(final EPickingType ePickingType,
+		final EPickingMode ePickingMode, final int iExternalID, final Pick pick);
 
 	public abstract String getShortInfo();
 
@@ -513,7 +513,7 @@ public abstract class AGLEventListener
 	}
 
 	public RemoteLevelElement getRemoteLevelElement() {
-				
+
 		return remoteLevelElement;
 	}
 
@@ -677,11 +677,11 @@ public abstract class AGLEventListener
 	 * Sets the set, calls {@link #initData()} and sets display lists dirty
 	 */
 	@Override
-	public  void setSet(ISet set) {
+	public void setSet(ISet set) {
 
 		this.set = set;
 		initData();
-//		setDisplayListDirty();
+		// setDisplayListDirty();
 		// In GL views the new set is not immediately written to the set variable of AView.
 		// The new set is then assigned to the working set when the display list is dirty the next time.
 		// newSet = set;
@@ -721,7 +721,7 @@ public abstract class AGLEventListener
 	public EManagedObjectType getViewType() {
 		return viewType;
 	}
-	
+
 	public void setViewGUIID(String viewGUIID) {
 		this.viewGUIID = viewGUIID;
 	}

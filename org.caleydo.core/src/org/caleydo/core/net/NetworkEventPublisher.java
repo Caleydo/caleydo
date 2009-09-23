@@ -39,7 +39,7 @@ public class NetworkEventPublisher
 	/** Related {@link Connection} for this {@link NetworkEventReceiver} */
 	private Connection connection;
 
-	/** {@link OutputStream} to write the serialized events to */ 
+	/** {@link OutputStream} to write the serialized events to */
 	private OutputStream outputStream;
 
 	/** name of the connected client */
@@ -47,7 +47,7 @@ public class NetworkEventPublisher
 
 	/** flag for stopping the execution of sending events to the connected caleydo application */
 	private boolean stop = false;
-	
+
 	/**
 	 * Default Constructor
 	 */
@@ -96,7 +96,7 @@ public class NetworkEventPublisher
 	 */
 	@Override
 	public void triggerEvent(AEvent event) {
-		System.out.println("NetworkEventPublisher.triggerEvent(): event="+event);
+		System.out.println("NetworkEventPublisher.triggerEvent(): event=" + event);
 		eventQueue.add(event);
 	}
 
@@ -110,7 +110,8 @@ public class NetworkEventPublisher
 			JAXBContext jaxbContext = GeneralManager.get().getSerializationManager().getEventContext();
 			marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("could not create xml marshaller", ex);
 		}
 
@@ -128,17 +129,19 @@ public class NetworkEventPublisher
 						outputStream.write(xmlOutput.getBytes());
 						outputStream.write("\r\n\r\n".getBytes());
 						outputStream.flush();
-					} catch (IOException ex) {
+					}
+					catch (IOException ex) {
 						ex.printStackTrace();
 						networkManager.disposeConnection(connection);
 						stop();
 					}
 
-//					TestSerializationEvent testSerializationEvent = new TestSerializationEvent();
-//					testSerializationEvent.setSerializedText(xmlOutput);
-//					eventPublisher.triggerEvent(testSerializationEvent);
+					// TestSerializationEvent testSerializationEvent = new TestSerializationEvent();
+					// testSerializationEvent.setSerializedText(xmlOutput);
+					// eventPublisher.triggerEvent(testSerializationEvent);
 
-				} catch (JAXBException ex) {
+				}
+				catch (JAXBException ex) {
 					ex.printStackTrace();
 				}
 			}
@@ -155,7 +158,7 @@ public class NetworkEventPublisher
 	public void stop() {
 		stop = true;
 	}
-	
+
 	public NetworkManager getNetworkManager() {
 		return networkManager;
 	}

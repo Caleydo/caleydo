@@ -42,11 +42,13 @@ public class SlerpAction {
 
 	public void finished() {
 		destinationRemoteLevelElement.setContainedElementID(iElementID);
-		
+
 		if (iElementID != -1) {
-			AGLEventListener glView = (AGLEventListener)GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iElementID);
+			AGLEventListener glView =
+				(AGLEventListener) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+					iElementID);
 			if (glView != null)
-				glView.setRemoteLevelElement(destinationRemoteLevelElement);			
+				glView.setRemoteLevelElement(destinationRemoteLevelElement);
 		}
 	}
 

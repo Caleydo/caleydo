@@ -9,7 +9,8 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.ChangeOrientationAction;
 
 /**
- * ToolBarContent implementation for heatmap specific toolbar items.  
+ * ToolBarContent implementation for heatmap specific toolbar items.
+ * 
  * @author Werner Puff
  */
 public class HeatMapToolBarContent
@@ -23,7 +24,7 @@ public class HeatMapToolBarContent
 	public Class<?> getViewClass() {
 		return GLHeatMap.class;
 	}
-	
+
 	@Override
 	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
@@ -42,7 +43,7 @@ public class HeatMapToolBarContent
 			IToolBarItem propagateSelectionAction = new PropagateSelectionsAction(targetViewID);
 			actionList.add(propagateSelectionAction);
 		}
-		
+
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
 

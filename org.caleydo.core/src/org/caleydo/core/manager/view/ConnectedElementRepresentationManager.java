@@ -36,11 +36,11 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
  * <p>
  * The manager manages also the transformed selections vertices of the selections for remote rendered views
  * and the projected x/y canvas coordinates. The projected coordinates are used to draw connection lines
- * across window borders e.g. with the help of a IGroupwareManager. 
+ * across window borders e.g. with the help of a IGroupwareManager.
  * </p>
  * <p>
- * Adding and clearing of selections is done with events. Therefore this manager should is 
- * a {@link ADisplayLoopEventHandler} and should be added to a {@link DisplayLoopExecution} to handle the
+ * Adding and clearing of selections is done with events. Therefore this manager should is a
+ * {@link ADisplayLoopEventHandler} and should be added to a {@link DisplayLoopExecution} to handle the
  * incoming events during each display loop cycle.
  * </p>
  * <p>
@@ -51,37 +51,37 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class ConnectedElementRepresentationManager 
+public class ConnectedElementRepresentationManager
 	extends ADisplayLoopEventHandler {
 
-	/** Stored reference for common usage */  
+	/** Stored reference for common usage */
 	protected IGeneralManager generalManager;
-	
-	/** Stored reference for common usage */  
+
+	/** Stored reference for common usage */
 	protected IEventPublisher eventPublisher;
-	
+
 	/** Stores a {@link ConnectionMap} for each possible type as originally provided by the views. */
 	HashMap<EIDType, ConnectionMap> sourceConnectionsByType;
 
 	/**
-	 * Stores a {@link ConnectionMap} with only transformed selection-points as defined by the 
-	 * transformation needed within remote rendered views.   
+	 * Stores a {@link ConnectionMap} with only transformed selection-points as defined by the transformation
+	 * needed within remote rendered views.
 	 */
 	HashMap<EIDType, ConnectionMap> transformedConnectionsByType;
 
 	/**
-	 * Stores {@link CanvasConnectionMap}s with only transformed selection-points as defined by the 
-	 * transformation needed within remote rendered views.   
+	 * Stores {@link CanvasConnectionMap}s with only transformed selection-points as defined by the
+	 * transformation needed within remote rendered views.
 	 */
 	HashMap<EIDType, CanvasConnectionMap> canvasConnectionsByType;
 
 	ClearConnectionsListener clearConnectionsListener;
 	ClearTransformedConnectionsListener clearTransformedConnectionsListener;
 	AddSelectionListener addSelectionListener;
-	
+
 	/** <code>true</code if there are new vertices in the list of 2D canvas conneciton vertices */
 	protected boolean newCanvasVertices = false;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -97,7 +97,7 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Sends event to add a selection to a specific tree. The data type is determined by the 
+	 * Sends event to add a selection to a specific tree. The data type is determined by the
 	 * {@link SelectedElementRep}, the connection id has to be specified manually
 	 * 
 	 * @param iConnectionID
@@ -111,10 +111,10 @@ public class ConnectedElementRepresentationManager
 		event.setSelectedElementRep(selectedElementRep);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	/**
-	 * Adds a selection to a specific tree. The data type is determined by the 
-	 * {@link SelectedElementRep}, the connection id has to be specified manually
+	 * Adds a selection to a specific tree. The data type is determined by the {@link SelectedElementRep}, the
+	 * connection id has to be specified manually
 	 * 
 	 * @param iConnectionID
 	 *            the connection ID - one connection id per connection line tree
@@ -229,7 +229,6 @@ public class ConnectedElementRepresentationManager
 		canvasConnectionsByType.clear();
 	}
 
-	
 	/**
 	 * Clear all selections of a given type that belong to a certain view
 	 * 
@@ -280,13 +279,13 @@ public class ConnectedElementRepresentationManager
 		ClearTransformedConnectionsEvent event = new ClearTransformedConnectionsEvent();
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void handleClearTransformedConnectionsEvent() {
 		transformedConnectionsByType.clear();
 		canvasConnectionsByType.clear();
 		GeneralManager.get().getEventPublisher().triggerEvent(new NewConnectionsEvent());
 	}
-	
+
 	public void clearCanvasConnections() {
 		canvasConnectionsByType.clear();
 	}
@@ -298,12 +297,13 @@ public class ConnectedElementRepresentationManager
 		IGroupwareManager gm = GeneralManager.get().getGroupwareManager();
 		if (gm != null && gm.isGroupwareConnectionLinesEnabled()) {
 			if (newTransformedPoints) {
-				transformer.project(gl, gm.getNetworkManager().getNetworkName(), transformedConnectionsByType, canvasConnectionsByType);
+				transformer.project(gl, gm.getNetworkManager().getNetworkName(),
+					transformedConnectionsByType, canvasConnectionsByType);
 				newCanvasVertices = true;
 			}
 		}
 	}
-	
+
 	/**
 	 * To be executed during the display loop with help of a {@link DisplayLoopExecution}
 	 */
@@ -322,13 +322,14 @@ public class ConnectedElementRepresentationManager
 
 		clearTransformedConnectionsListener = new ClearTransformedConnectionsListener();
 		clearTransformedConnectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearTransformedConnectionsEvent.class, clearTransformedConnectionsListener);
+		eventPublisher.addListener(ClearTransformedConnectionsEvent.class,
+			clearTransformedConnectionsListener);
 
 		addSelectionListener = new AddSelectionListener();
 		addSelectionListener.setHandler(this);
 		eventPublisher.addListener(AddSelectionEvent.class, addSelectionListener);
 	}
-	
+
 	@SuppressWarnings("unused")
 	private void unregisterEventListeners() {
 		if (clearConnectionsListener != null) {
@@ -346,19 +347,20 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Gets all {@link CanvasConnectionMap}s by {@link EIDType} containing the
-	 * finally transformed and to-canvas-projected selection vertices.  
+	 * Gets all {@link CanvasConnectionMap}s by {@link EIDType} containing the finally transformed and
+	 * to-canvas-projected selection vertices.
+	 * 
 	 * @return 2D canvas selection vertices
 	 */
 	public HashMap<EIDType, CanvasConnectionMap> getCanvasConnectionsByType() {
 		return canvasConnectionsByType;
 	}
 
-	/** 
-	 * Gets all {@link ConnectionMap}s by {@link EIDType} containing 
-	 * transformed selection vertices. The remoteViewID field of the contained 
-	 * {@link SelectedElementRep}s references to the view, the coordinates are
-	 * related to.
+	/**
+	 * Gets all {@link ConnectionMap}s by {@link EIDType} containing transformed selection vertices. The
+	 * remoteViewID field of the contained {@link SelectedElementRep}s references to the view, the coordinates
+	 * are related to.
+	 * 
 	 * @return
 	 */
 	public HashMap<EIDType, ConnectionMap> getTransformedConnectionsByType() {
@@ -366,8 +368,9 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * <code>true</code> if there are new vertices for 2D connection line drawing, 
-	 * <code>false</code> otherwise
+	 * <code>true</code> if there are new vertices for 2D connection line drawing, <code>false</code>
+	 * otherwise
+	 * 
 	 * @return flag if new connection line vertices exists
 	 */
 	public boolean isNewCanvasVertices() {
@@ -376,6 +379,7 @@ public class ConnectedElementRepresentationManager
 
 	/**
 	 * Sets the status of flag to indicate if new 2D connection line vertices exists.
+	 * 
 	 * @newCanvasVertices new value for the flag
 	 */
 	public void setNewCanvasVertices(boolean newCanvasVertices) {

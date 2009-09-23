@@ -60,11 +60,11 @@ public class PathwayItemManager
 		return pathwayVertex;
 	}
 
-	public ArrayList<IGraphItem> createVertexGene(final String sName, final String sType, final String sExternalLink,
-		final String sReactionId, final Set<Integer> iSetDavidId) {
-		
+	public ArrayList<IGraphItem> createVertexGene(final String sName, final String sType,
+		final String sExternalLink, final String sReactionId, final Set<Integer> iSetDavidId) {
+
 		ArrayList<IGraphItem> alGraphItems = new ArrayList<IGraphItem>();
-		IGraphItem tmpGraphItem = null;		
+		IGraphItem tmpGraphItem = null;
 		for (int iDavidId : iSetDavidId) {
 
 			// Do not create a new vertex if it is already registered
@@ -73,9 +73,9 @@ public class PathwayItemManager
 			}
 			else {
 				tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
-									
-				hashDavidIdToPathwayVertexGraphItem.put(iDavidId, (PathwayVertexGraphItem)tmpGraphItem);
-				hashPathwayVertexGraphItemToDavidId.put((PathwayVertexGraphItem)tmpGraphItem, iDavidId);
+
+				hashDavidIdToPathwayVertexGraphItem.put(iDavidId, (PathwayVertexGraphItem) tmpGraphItem);
+				hashPathwayVertexGraphItemToDavidId.put((PathwayVertexGraphItem) tmpGraphItem, iDavidId);
 			}
 
 			if (tmpGraphItem == null)
@@ -90,7 +90,7 @@ public class PathwayItemManager
 	public IGraphItem createVertexRep(final IGraph parentPathway,
 		final ArrayList<IGraphItem> alVertexGraphItem, final String sName, final String sShapeType,
 		final short shHeight, final short shWidth, final short shXPosition, final short shYPosition) {
-		
+
 		ICaleydoGraphItem pathwayVertexRep =
 			new PathwayVertexGraphItemRep(sName, sShapeType, shHeight, shWidth, shXPosition, shYPosition);
 
@@ -110,9 +110,10 @@ public class PathwayItemManager
 		return pathwayVertexRep;
 	}
 
-	public IGraphItem createVertexRep(final IGraph parentPathway, final ArrayList<IGraphItem> alVertexGraphItem,
-		final String sName, final String sShapeType, final String sCoords) {
-		
+	public IGraphItem createVertexRep(final IGraph parentPathway,
+		final ArrayList<IGraphItem> alVertexGraphItem, final String sName, final String sShapeType,
+		final String sCoords) {
+
 		ICaleydoGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(sName, sShapeType, sCoords);
 
 		registerItem(pathwayVertexRep);

@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection;
 
-
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical data of a continuous range,
  * equivalent to the set of real numbers. In terms of scales it can be interpreted as a data structure for an

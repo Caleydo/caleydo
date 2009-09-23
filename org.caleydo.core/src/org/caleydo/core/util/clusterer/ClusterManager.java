@@ -249,7 +249,7 @@ public class ClusterManager {
 		clusterer.destroy();
 
 		GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
-		
+
 		if (tempVA == null) {
 
 			GeneralManager.get().getGUIBridge().getDisplay().asyncExec(new Runnable() {

@@ -81,7 +81,7 @@ public abstract class ARcpGLViewPart
 
 		ECommandType glViewType = serializedView.getCreationCommandType();
 		dataDomain = serializedView.getDataDomain();
-		if(dataDomain == null)
+		if (dataDomain == null)
 			dataDomain = EDataDomain.GENETIC_DATA;
 
 		IGeneralManager generalManager = GeneralManager.get();
@@ -92,20 +92,20 @@ public abstract class ARcpGLViewPart
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D
 			|| glViewType == ECommandType.CREATE_GL_DATA_FLIPPER) {
 
-
-			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100,
+				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 			// cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -2f, 2f, -2f, 2f, 3.82f, 100, set,
-				
+
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH) {
 
-
-			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100, 
+			cmdView.setAttributes(dataDomain, EProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 2.9f, 100,
 				iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else {
-		
-			cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20,  iParentCanvasID);
+
+			cmdView.setAttributes(dataDomain, EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20,
+				iParentCanvasID);
 
 		}
 
@@ -115,7 +115,7 @@ public abstract class ARcpGLViewPart
 
 		setGLData(glCanvas, glView);
 		createPartControlGL();
-		
+
 		glView.setViewGUIID(getViewGUIID());
 		glView.initFromSerializableRepresentation(serializedView);
 

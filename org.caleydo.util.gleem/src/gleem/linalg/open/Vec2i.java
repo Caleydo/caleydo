@@ -8,8 +8,7 @@ import gleem.linalg.Veci;
 /**
  * @author Michael Kalkusch
  */
-public class Vec2i
-	extends Veci {
+public class Vec2i extends Veci {
 
 	protected static final int X = 0;
 	protected static final int Y = 1;

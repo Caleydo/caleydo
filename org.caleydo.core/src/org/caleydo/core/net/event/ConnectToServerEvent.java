@@ -2,15 +2,15 @@ package org.caleydo.core.net.event;
 
 import org.caleydo.core.manager.event.AEvent;
 
-public class ConnectToServerEvent 
+public class ConnectToServerEvent
 	extends AEvent {
 
 	/** hostname/ip-address to connect to */
 	String address = null;
-	
+
 	/** port to connect to */
 	int port = -1;
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		if (address == null) {

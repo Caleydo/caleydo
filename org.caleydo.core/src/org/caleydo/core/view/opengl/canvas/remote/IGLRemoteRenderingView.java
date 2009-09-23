@@ -8,7 +8,8 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * 
  * @author Marc Streit
  */
-public interface IGLRemoteRenderingView extends IUniqueObject {
-	
+public interface IGLRemoteRenderingView
+	extends IUniqueObject {
+
 	public GLCaleydoCanvas getParentGLCanvas();
 }

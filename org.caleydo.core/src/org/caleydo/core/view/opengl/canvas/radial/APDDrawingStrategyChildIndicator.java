@@ -163,7 +163,7 @@ public abstract class APDDrawingStrategyChildIndicator
 			this.fArChildIndicatorColor = fArChildIndicatorColor;
 		}
 	}
-	
+
 	public void setTransparency(float fTransparency) {
 		this.fTransparency = fTransparency;
 	}

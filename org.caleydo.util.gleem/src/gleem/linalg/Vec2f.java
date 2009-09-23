@@ -56,13 +56,13 @@ public class Vec2f {
 	/** Sets the ith component, 0 <= i < 2 */
 	public void set(int i, float val) {
 		switch (i) {
-			case 0:
+			case 0 :
 				x = val;
 				break;
-			case 1:
+			case 1 :
 				y = val;
 				break;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}
@@ -70,11 +70,11 @@ public class Vec2f {
 	/** Gets the ith component, 0 <= i < 2 */
 	public float get(int i) {
 		switch (i) {
-			case 0:
+			case 0 :
 				return x;
-			case 1:
+			case 1 :
 				return y;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}

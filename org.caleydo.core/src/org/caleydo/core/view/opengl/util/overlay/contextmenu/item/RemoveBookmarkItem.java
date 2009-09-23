@@ -40,8 +40,8 @@ public class RemoveBookmarkItem
 		super();
 		setIconTexture(EIconTextures.CM_BOOKMARK);
 		setText("Bookmark");
-		BookmarkEvent<Integer>event = new BookmarkEvent<Integer>(idType);
-	
+		BookmarkEvent<Integer> event = new BookmarkEvent<Integer>(idType);
+
 		for (Integer id : ids)
 			event.addBookmark(id);
 		registerEvent(event);

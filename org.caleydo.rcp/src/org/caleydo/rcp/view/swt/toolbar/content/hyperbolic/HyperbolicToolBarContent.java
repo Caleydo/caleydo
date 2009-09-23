@@ -30,18 +30,18 @@ public class HyperbolicToolBarContent
 		SerializedHyperbolicView serializedView = (SerializedHyperbolicView) getTargetViewData();
 		int targetViewID = serializedView.getViewID();
 
-//		IToolBarItem goBackInHistory = new GoBackInHistoryAction(targetViewID);
-//		IToolBarItem goForthInHistory = new GoForthInHistoryAction(targetViewID);
-//		IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);
-//		IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
-//		if (depthSlider == null) {
-//			depthSlider = new DepthSlider("", serializedView.getMaxDisplayedHierarchyDepth());
-//		}
-//		actionList.add(goBackInHistory);
-//		actionList.add(goForthInHistory);
-//		actionList.add(changeColorMode);
-//		actionList.add(magnifyingGlass);
-//		actionList.add(depthSlider);
+		// IToolBarItem goBackInHistory = new GoBackInHistoryAction(targetViewID);
+		// IToolBarItem goForthInHistory = new GoForthInHistoryAction(targetViewID);
+		// IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);
+		// IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
+		// if (depthSlider == null) {
+		// depthSlider = new DepthSlider("", serializedView.getMaxDisplayedHierarchyDepth());
+		// }
+		// actionList.add(goBackInHistory);
+		// actionList.add(goForthInHistory);
+		// actionList.add(changeColorMode);
+		// actionList.add(magnifyingGlass);
+		// actionList.add(depthSlider);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
@@ -53,5 +53,5 @@ public class HyperbolicToolBarContent
 	public Class<?> getViewClass() {
 		return GLRadialHierarchy.class;
 	}
-	
+
 }

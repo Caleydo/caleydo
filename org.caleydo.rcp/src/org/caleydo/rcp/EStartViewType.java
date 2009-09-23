@@ -21,16 +21,16 @@ import org.caleydo.core.view.swt.tabular.SerializedTabularDataView;
  */
 public enum EStartViewType {
 
-	glyphview(SerializedGlyphView.class), 
-	parcoords(SerializedParallelCoordinatesView.class), 
-	heatmap(SerializedHeatMapView.class), 
-	remote(SerializedRemoteRenderingView.class), 
-	browser(SerializedHTMLBrowserView.class), 
-	tabular(SerializedTabularDataView.class), 
-	radial(SerializedRadialHierarchyView.class), 
-	hyperbolic(SerializedHyperbolicView.class), 
-	histogram(SerializedHistogramView.class), 
-	dendrogram_horizontal(SerializedDendogramHorizontalView.class), 
+	glyphview(SerializedGlyphView.class),
+	parcoords(SerializedParallelCoordinatesView.class),
+	heatmap(SerializedHeatMapView.class),
+	remote(SerializedRemoteRenderingView.class),
+	browser(SerializedHTMLBrowserView.class),
+	tabular(SerializedTabularDataView.class),
+	radial(SerializedRadialHierarchyView.class),
+	hyperbolic(SerializedHyperbolicView.class),
+	histogram(SerializedHistogramView.class),
+	dendrogram_horizontal(SerializedDendogramHorizontalView.class),
 	dendrogram_vertical(SerializedDendogramVerticalView.class);
 
 	private Class<? extends ASerializedView> serializedViewClass;
@@ -38,12 +38,12 @@ public enum EStartViewType {
 	/**
 	 * Constructor
 	 * 
-	 * @param serializedViewClass class related to the command-line argument 
+	 * @param serializedViewClass
+	 *            class related to the command-line argument
 	 */
 	private EStartViewType(Class<? extends ASerializedView> serializedViewClass) {
 		this.serializedViewClass = serializedViewClass;
 	}
-
 
 	public Class<? extends ASerializedView> getSerializedViewClass() {
 		return serializedViewClass;

@@ -17,8 +17,8 @@ import javax.xml.bind.annotation.XmlType;
  * @author Christian Partl
  */
 @XmlType
-@XmlSeeAlso({AnimationNewRootElement.class, AnimationParentRootElement.class, 
-	AnimationPopOutDetailOutside.class, AnimationPullInDetailOutside.class})
+@XmlSeeAlso( { AnimationNewRootElement.class, AnimationParentRootElement.class,
+		AnimationPopOutDetailOutside.class, AnimationPullInDetailOutside.class })
 public abstract class ADrawingStateAnimation
 	extends ADrawingState {
 

@@ -165,7 +165,7 @@ public class GLRadialHierarchy
 			// initHierarchy(tree);
 		}
 		else {
-//			 initTestHierarchy();
+			// initTestHierarchy();
 		}
 
 		gl.glEnable(GL.GL_LINE_SMOOTH);
@@ -393,7 +393,6 @@ public class GLRadialHierarchy
 			renderSymbol(gl);
 		}
 	}
-
 
 	/**
 	 * Builds the display list for a given display list index.

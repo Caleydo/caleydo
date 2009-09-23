@@ -20,7 +20,7 @@ public class SerializedHistogramView
 
 	public SerializedHistogramView() {
 	}
-	
+
 	public SerializedHistogramView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}

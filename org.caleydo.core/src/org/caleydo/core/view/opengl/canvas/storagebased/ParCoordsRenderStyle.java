@@ -112,9 +112,9 @@ public class ParCoordsRenderStyle
 	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
 
 	private static final float fXAxisOverlap = 0.1f;
-	
+
 	// minimum text sizes
-	
+
 	public static final int MIN_AXIS_LABEL_TEXT_SIZE = 60;
 	public static final int MIN_NUMBER_TEXT_SIZE = 55;
 
@@ -155,16 +155,16 @@ public class ParCoordsRenderStyle
 	}
 
 	public float getWidthOfCoordinateSystem() {
-		
+
 		// this checks whether we render a global brush or not
 		float numberOfSpacings = 2;
-		if(pcs.getSet().isSetHomogeneous())
+		if (pcs.getSet().isSetHomogeneous())
 			numberOfSpacings = 2.5f;
-		
+
 		if (pcs.bShowSelectionHeatMap)
 			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings * getScaling()
 				- pcs.glSelectionHeatMap.getViewFrustum().getWidth();
-	
+
 		else
 			return viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * numberOfSpacings * getScaling();
 	}

@@ -15,7 +15,7 @@ public class RenameProgressBarEvent
 	public RenameProgressBarEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public RenameProgressBarEvent(String stProgressBarTitle) {
 		this.progressbarTitle = stProgressBarTitle;
 	}

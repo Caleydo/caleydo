@@ -36,9 +36,9 @@ import org.caleydo.core.view.swt.browser.SerializedHTMLBrowserView;
 		SerializedHTMLBrowserView.class })
 public abstract class ASerializedView {
 
-	public ASerializedView()
-	{}
-	
+	public ASerializedView() {
+	}
+
 	public ASerializedView(EDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
@@ -55,15 +55,16 @@ public abstract class ASerializedView {
 	 * @return command-type as used by command-factory
 	 */
 	public abstract ECommandType getCreationCommandType();
-	
+
 	/**
 	 * Sets the data domain associated with a view
+	 * 
 	 * @param dataDomain
 	 */
-	public void setDataDomain(EDataDomain dataDomain)
-	{
+	public void setDataDomain(EDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
+
 	/**
 	 * Returns the data domain a view is associated with
 	 * 

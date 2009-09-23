@@ -160,8 +160,7 @@ public abstract class ATreeLayouter
 		for (IDrawAbleConnection conn : connectionLayout) {
 			if (conn.isPickAble()) {
 				gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_LINE_SELECTION,
-					conn
-					.getID()));
+					conn.getID()));
 				if (bIsConnectionHighlighted && conn.getID() == iHighlightedConnection)
 					conn.draw(gl, true);
 				else

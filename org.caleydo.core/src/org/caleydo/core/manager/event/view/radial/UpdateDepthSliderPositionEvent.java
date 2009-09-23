@@ -6,7 +6,8 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * This event specifies the position (the selected value) of the (depth-) slider in the Toolbox of Radial Layout.
+ * This event specifies the position (the selected value) of the (depth-) slider in the Toolbox of Radial
+ * Layout.
  * 
  * @author Christian Partl
  */

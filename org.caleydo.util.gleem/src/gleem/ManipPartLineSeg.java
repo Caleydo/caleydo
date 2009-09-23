@@ -32,13 +32,13 @@ import javax.media.opengl.GL;
 
 /** A line segment from (-1, 0, 0) to (1, 0, 0). */
 @SuppressWarnings("all")
-public class ManipPartLineSeg
-	extends ManipPart {
+public class ManipPartLineSeg extends ManipPart {
 	private Vec3f color;
 	private Vec3f highlightColor;
 	private boolean highlighted;
 	private boolean visible;
-	private static Vec3f[] vertices = new Vec3f[] { new Vec3f(-1, 0, 0), new Vec3f(1, 0, 0) };
+	private static Vec3f[] vertices = new Vec3f[]{new Vec3f(-1, 0, 0),
+			new Vec3f(1, 0, 0)};
 	/** Current transformation matrix */
 	private Mat4f xform;
 	/** Transformed vertices */
@@ -72,7 +72,8 @@ public class ManipPartLineSeg
 		return new Vec3f(highlightColor);
 	}
 
-	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results, Manip caller) {
+	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results,
+			Manip caller) {
 	}
 
 	public void setTransform(Mat4f xform) {
@@ -112,9 +113,9 @@ public class ManipPartLineSeg
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glBegin(GL.GL_LINES);
 		if (highlighted) {
-			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor.z());
-		}
-		else {
+			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor
+					.z());
+		} else {
 			gl.glColor3f(color.x(), color.y(), color.z());
 		}
 		for (Vec3f v : curVertices) {

@@ -68,7 +68,7 @@ public class SwtJoglGLCanvasViewRep
 	public ASerializedView getSerializableRepresentation() {
 		SerializedDummyView serializedForm = new SerializedDummyView(dataDomain);
 		serializedForm.setViewID(this.getID());
-		return serializedForm; 
+		return serializedForm;
 	}
 
 	@Override

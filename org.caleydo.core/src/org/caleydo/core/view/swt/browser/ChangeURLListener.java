@@ -5,6 +5,7 @@ import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 
 /**
  * Handles change-url events by setting the related browser-view's URL
+ * 
  * @author Marc Streit
  */
 public class ChangeURLListener

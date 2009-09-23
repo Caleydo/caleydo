@@ -78,12 +78,12 @@ public class ShowPathwaysByGenesItem
 			pathways.add(new Pair<Integer, PathwayGraph>(hashPathwaysToOccurences.get(pathway), pathway));
 		}
 		Collections.sort(pathways);
-		for (int count = pathways.size()-1; count >= 0; count--) {
+		for (int count = pathways.size() - 1; count >= 0; count--) {
 			Pair<Integer, PathwayGraph> pair = pathways.get(count);
-			if(pair.getFirst() > 1)
-			{
-			LoadPathwaysByPathwayIDItem item = new LoadPathwaysByPathwayIDItem(pair.getSecond().getID(), pair.getFirst());
-			addSubItem(item);
+			if (pair.getFirst() > 1) {
+				LoadPathwaysByPathwayIDItem item =
+					new LoadPathwaysByPathwayIDItem(pair.getSecond().getID(), pair.getFirst());
+				addSubItem(item);
 			}
 		}
 		// setText("Pathways (" + iPathwayCount + ")");

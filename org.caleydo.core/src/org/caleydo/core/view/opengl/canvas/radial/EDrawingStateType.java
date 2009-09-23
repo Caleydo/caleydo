@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlType;
  * List of all types of drawing states
  * 
  * @author Christian Partl
- *
  */
 
 @XmlType

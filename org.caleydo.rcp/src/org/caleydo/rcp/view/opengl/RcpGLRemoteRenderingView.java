@@ -37,7 +37,7 @@ public class RcpGLRemoteRenderingView
 		SerializedRemoteRenderingView serializedView = new SerializedRemoteRenderingView(dataDomain);
 		return serializedView;
 	}
-	
+
 	@Override
 	public void dispose() {
 		GLRemoteRendering glRemoteView =

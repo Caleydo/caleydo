@@ -19,6 +19,7 @@ public interface IVirtualArrayDelta
 
 	/**
 	 * Set the type of the VA
+	 * 
 	 * @param vaType
 	 */
 	public void setVAType(EVAType vaType);

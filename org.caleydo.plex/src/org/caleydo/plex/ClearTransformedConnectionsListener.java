@@ -5,7 +5,8 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.view.selection.ClearTransformedConnectionsEvent;
 
 public class ClearTransformedConnectionsListener
-	extends AEventListener<DeskothequeManager> {
+		extends
+			AEventListener<DeskothequeManager> {
 
 	@Override
 	public void handleEvent(AEvent event) {

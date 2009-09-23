@@ -20,7 +20,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
  * <p>
  * The implementation does not queue any events for thread-safety, all events are bridged immediately.
  * </p>
- *
+ * 
  * @author Werner Puff
  */
 public class EventFilterBridge
@@ -29,7 +29,7 @@ public class EventFilterBridge
 
 	/** human readable name of this object */
 	private String name;
-	
+
 	/** {@link EventPublisher} to bridge incoming events to */
 	private IEventPublisher targetEventPublisher = null;
 
@@ -41,7 +41,7 @@ public class EventFilterBridge
 
 	/** list of event sender to block */
 	private Collection<Object> blockedSender;
-	
+
 	public EventFilterBridge() {
 		name = "no name";
 		targetEventPublisher = null;
@@ -49,26 +49,31 @@ public class EventFilterBridge
 		bridgeRemoteEvents = false;
 		blockedSender = new HashSet<Object>();
 	}
-	
+
 	/**
 	 * Bridges an event by calling {@link EventPublisher.triggerEvent(Event)} of the target-
 	 * {@link EventPublisher}
-	 * @param event event to bridge
+	 * 
+	 * @param event
+	 *            event to bridge
 	 */
 	@Override
 	public void handleEvent(AEvent event) {
 		if (!blockedSender.contains(event.getSender())) {
-			if (event.getSender() instanceof NetworkEventReceiver && bridgeRemoteEvents) { 
-				targetEventPublisher.triggerEvent(event);
-			} else if (!(event.getSender() instanceof NetworkEventReceiver) && bridgeLocalEvents) {
+			if (event.getSender() instanceof NetworkEventReceiver && bridgeRemoteEvents) {
 				targetEventPublisher.triggerEvent(event);
 			}
-		} 
+			else if (!(event.getSender() instanceof NetworkEventReceiver) && bridgeLocalEvents) {
+				targetEventPublisher.triggerEvent(event);
+			}
+		}
 	}
 
 	/**
 	 * Bridges the given event by calling the {@link handleEvent(AEvent)}
-	 * @param event event to bridge
+	 * 
+	 * @param event
+	 *            event to bridge
 	 */
 	@Override
 	public void queueEvent(AEvent event) {
@@ -141,8 +146,9 @@ public class EventFilterBridge
 	}
 
 	/**
-	 * Adds a sender to the list of blocked senders.
-	 * Events with have a sender contained in this list are not dispatched by this bridge.
+	 * Adds a sender to the list of blocked senders. Events with have a sender contained in this list are not
+	 * dispatched by this bridge.
+	 * 
 	 * @param sender
 	 */
 	public void addBlockedSender(Object sender) {

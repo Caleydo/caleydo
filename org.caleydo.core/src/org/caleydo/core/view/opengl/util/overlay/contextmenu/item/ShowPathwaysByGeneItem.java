@@ -40,11 +40,12 @@ public class ShowPathwaysByGeneItem
 	 *            the int code associated with a refseq
 	 */
 	public void setDavid(int david) {
-		
-		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.DAVID, david);
+
+		Set<PathwayGraph> pathwayGraphs =
+			GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(EIDType.DAVID, david);
 
 		int iPathwayCount = 0;
-		
+
 		if (pathwayGraphs != null) {
 
 			iPathwayCount = pathwayGraphs.size();
@@ -53,7 +54,7 @@ public class ShowPathwaysByGeneItem
 				addSubItem(new LoadPathwaysByPathwayIDItem(pathwayGraph.getID()));
 			}
 		}
-		
-		setText("Pathways ("+iPathwayCount+")");		
+
+		setText("Pathways (" + iPathwayCount + ")");
 	}
 }

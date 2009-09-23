@@ -274,7 +274,7 @@ public class GLGlyph
 		grid_ = new GLGlyphGrid(renderStyle, !this.isRenderedRemote());
 
 		if (generalManager.getUseCase(EDataDomain.CLINICAL_DATA) != null)
-				set = generalManager.getUseCase(EDataDomain.CLINICAL_DATA).getSet();
+			set = generalManager.getUseCase(EDataDomain.CLINICAL_DATA).getSet();
 
 		if (set.getSetType() == ESetType.CLINICAL_DATA)
 			grid_.loadData(set);
@@ -901,7 +901,8 @@ public class GLGlyph
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int iExternalID,
+		Pick pick) {
 
 		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
 			switch (pickingMode) {

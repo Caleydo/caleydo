@@ -200,7 +200,7 @@ public class GLPathway
 	@Override
 	public void initRemote(final GL gl, final AGLEventListener glParentView,
 		final GLMouseListener glMouseListener, GLInfoAreaManager infoAreaManager) {
-		
+
 		this.glMouseListener = glMouseListener;
 
 		iGLDisplayListIndexRemote = gl.glGenLists(1);

@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * A {@link Server} should run in an own {@link Thread} to listen for incoming client connections. 
+ * A {@link Server} should run in an own {@link Thread} to listen for incoming client connections.
  */
 public class Server
 	implements Runnable {
@@ -21,9 +21,12 @@ public class Server
 
 	/**
 	 * Creates a new instance for listening on the specified port.
-	 * @param networkManager {@link NetworkManager} that manages this {@link Server} and
-	 * is responsible for creating the {@link Connection}s for incoming client connections.
-	 * @param port port to listen for incoming connections
+	 * 
+	 * @param networkManager
+	 *            {@link NetworkManager} that manages this {@link Server} and is responsible for creating the
+	 *            {@link Connection}s for incoming client connections.
+	 * @param port
+	 *            port to listen for incoming connections
 	 */
 	public Server(NetworkManager networkManager, int port) {
 		this.port = port;
@@ -31,14 +34,15 @@ public class Server
 	}
 
 	/**
-	 * Listens for incoming client-connections and creates {@link Connection}-instances
-	 * with the help of the related {@link NetworkManager}. 
+	 * Listens for incoming client-connections and creates {@link Connection}-instances with the help of the
+	 * related {@link NetworkManager}.
 	 */
 	@Override
 	public void run() {
 		try {
 			serverSocket = new ServerSocket(port);
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			System.out.println();
 			ex.printStackTrace();
 			// TODO handling for shut down
@@ -49,7 +53,8 @@ public class Server
 			try {
 				Socket clientSocket = serverSocket.accept();
 				networkManager.createConnection(clientSocket);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
@@ -57,6 +62,7 @@ public class Server
 
 	/**
 	 * Getter for {@link Server#networkManager}
+	 * 
 	 * @return {@link Server#networkManager}
 	 */
 	public NetworkManager getNetworkManager() {
@@ -65,6 +71,7 @@ public class Server
 
 	/**
 	 * Getter for {@link Server#networkManager}
+	 * 
 	 * @return {@link Server#networkManager}
 	 */
 	public int getPort() {

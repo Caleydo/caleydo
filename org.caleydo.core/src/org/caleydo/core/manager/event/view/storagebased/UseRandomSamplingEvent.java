@@ -13,7 +13,7 @@ public class UseRandomSamplingEvent
 	public UseRandomSamplingEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public UseRandomSamplingEvent(boolean flag) {
 		super(flag);
 	}

@@ -17,14 +17,14 @@ public class ReportBugHandler
 	private final static String URL_REPORT_BUG = "https://trac.icg.tugraz.at/projects/org.caleydo/newticket";
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
+
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpHTMLBrowserView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();
 		}
-		
+
 		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
 		changeURLEvent.setSender(this);
 		changeURLEvent.setUrl(URL_REPORT_BUG);
@@ -33,5 +33,3 @@ public class ReportBugHandler
 		return null;
 	}
 }
-
-

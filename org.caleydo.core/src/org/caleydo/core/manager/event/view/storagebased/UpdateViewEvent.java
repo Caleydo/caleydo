@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 @XmlType
 public class UpdateViewEvent
 	extends AEvent {
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		// nothing to check

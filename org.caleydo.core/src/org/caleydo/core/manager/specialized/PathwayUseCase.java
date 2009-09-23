@@ -29,12 +29,12 @@ public class PathwayUseCase
 		useCaseMode = EDataDomain.PATHWAY_DATA;
 		possibleViews = new ArrayList<EManagedObjectType>();
 		possibleViews.add(EManagedObjectType.GL_PATHWAY);
-		
+
 		possibleIDCategories = new HashMap<EIDCategory, Boolean>();
-//		possibleIDCategories.put(EIDCategory.GENE, null);
+		// possibleIDCategories.put(EIDCategory.GENE, null);
 		possibleIDCategories.put(EIDCategory.PATHWAY, null);
 	}
-	
+
 	@Override
 	public void setSet(ISet set) {
 

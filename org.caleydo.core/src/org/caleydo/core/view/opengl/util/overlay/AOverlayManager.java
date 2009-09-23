@@ -9,7 +9,8 @@ import org.caleydo.core.view.opengl.util.AGLGUIElement;
  * 
  * @author Alexander Lex
  */
-public abstract class AOverlayManager extends AGLGUIElement {
+public abstract class AOverlayManager
+	extends AGLGUIElement {
 
 	/** The 2D coordinates where the mouse was clicked */
 	protected Point pickedPoint;

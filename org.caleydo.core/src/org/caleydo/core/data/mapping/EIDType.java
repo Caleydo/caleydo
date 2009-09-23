@@ -34,15 +34,19 @@ public enum EIDType {
 		"The index of a gene expression value"),
 	// EXPRESSION_EXPERIMENT(EStorageType.INT, "expression-experiment",
 	// "A expression experiment containing gene expression values"),
-	PATHWAY_VERTEX(EIDCategory.GENE, EStorageType.INT, "Pathway vertex ID", "The internal ID of the pathway vertex"),
+	PATHWAY_VERTEX(
+		EIDCategory.GENE,
+		EStorageType.INT,
+		"Pathway vertex ID",
+		"The internal ID of the pathway vertex"),
 	PATHWAY(EIDCategory.PATHWAY, EStorageType.INT, "Pathway ID", "The internal ID of a pathway"),
-	EXPERIMENT(
-		EIDCategory.EXPERIMENT,
-		EStorageType.STRING,
-		"Experiment ID",
-		"The ID of the experiments"),
+	EXPERIMENT(EIDCategory.EXPERIMENT, EStorageType.STRING, "Experiment ID", "The ID of the experiments"),
 	EXPERIMENT_INDEX(EIDCategory.EXPERIMENT, EStorageType.INT, "Experiment Index", "The experiment index"),
-	EXPERIMENT_RECORD(EIDCategory.EXPERIMENT, EStorageType.INT, "Experiment Record", "The other dimension to the experiment index, eg., gender, age etc."),
+	EXPERIMENT_RECORD(
+		EIDCategory.EXPERIMENT,
+		EStorageType.INT,
+		"Experiment Record",
+		"The other dimension to the experiment index, eg., gender, age etc."),
 
 	CELL_COMPONENT(EIDCategory.OTHER, EStorageType.STRING, "GO Cell Component", "The GO cell component"),
 

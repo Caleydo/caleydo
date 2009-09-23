@@ -38,11 +38,11 @@ public class GLInfoAreaManager {
 
 	private Vec3f vecLowerLeft;
 
-//	private InformationContentCreator contentCreator;
-//
-//	private boolean bUpdateViewInfo = true;
-//
-//	private boolean bEnableRendering = true;
+	// private InformationContentCreator contentCreator;
+	//
+	// private boolean bUpdateViewInfo = true;
+	//
+	// private boolean bEnableRendering = true;
 
 	private boolean bRenderInfoArea = false;
 	private boolean bFirstTime = false;
@@ -51,14 +51,13 @@ public class GLInfoAreaManager {
 	 * Constructor.
 	 */
 	public GLInfoAreaManager() {
-		
+
 	}
 
 	public void initInfoInPlace(final IViewFrustum viewFrustum) {
 
 		infoArea = new GLInPlaceInfoRenderer(viewFrustum);
 	}
-
 
 	/**
 	 * Render the data previously set
@@ -107,10 +106,10 @@ public class GLInfoAreaManager {
 		if (!bRenderInfoArea)
 			return;
 		if (bFirstTime) {
-//			 float[] fArWorldCoords =
-//			 GLCoordinateUtils
-//			 .convertWindowToGLCoordinates(iWindowWidth, iWindowHeight, pickedPoint.x, pickedPoint.y,
-//			 frustum);
+			// float[] fArWorldCoords =
+			// GLCoordinateUtils
+			// .convertWindowToGLCoordinates(iWindowWidth, iWindowHeight, pickedPoint.x, pickedPoint.y,
+			// frustum);
 
 			float[] fArWorldCoords =
 				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x,
@@ -128,8 +127,7 @@ public class GLInfoAreaManager {
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXOrigin, fYOrigin, 4);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin, 4);
-		gl.glVertex3f(fXElementOrigin, fYElementOrigin + infoArea.getHeight(),
-			4);
+		gl.glVertex3f(fXElementOrigin, fYElementOrigin + infoArea.getHeight(), 4);
 		gl.glEnd();
 
 		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime, 4);
@@ -160,7 +158,6 @@ public class GLInfoAreaManager {
 		// fHeight = 0;
 		// fWidth = 0;
 	}
-
 
 	public void enable(final boolean bEnableRendering) {
 

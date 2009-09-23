@@ -52,8 +52,7 @@ public class GLSliderMiniView
 	private TextRenderer textRenderer = null;
 	private IBorderRenderStyle borderStyle = null;
 
-	public GLSliderMiniView(GLMouseListener glMouseListener, final int iViewID,
-		final int iSliderID) {
+	public GLSliderMiniView(GLMouseListener glMouseListener, final int iViewID, final int iSliderID) {
 		this.pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
 		this.glMouseListener = glMouseListener;
 		this.iUniqueId = iViewID;
@@ -225,8 +224,8 @@ public class GLSliderMiniView
 
 			if (bDoDragging && iDraggedSeperator == Seperator.getID()) {
 				float[] fArTargetWorldCoordinates =
-					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, 0,
-						glMouseListener.getPickedPoint().y);
+					GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, 0, glMouseListener
+						.getPickedPoint().y);
 				float canvasY = fArTargetWorldCoordinates[1];
 
 				if (canvasY > fHeight) {

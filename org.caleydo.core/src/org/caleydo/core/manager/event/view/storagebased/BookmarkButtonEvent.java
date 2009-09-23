@@ -12,7 +12,6 @@ import org.caleydo.core.manager.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-
 public class BookmarkButtonEvent
 	extends AEvent {
 

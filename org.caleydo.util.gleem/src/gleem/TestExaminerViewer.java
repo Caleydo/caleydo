@@ -42,8 +42,7 @@ public class TestExaminerViewer {
 	private static final int X_SIZE = 400;
 	private static final int Y_SIZE = 400;
 
-	static class HandleBoxManipBSphereProvider
-		implements BSphereProvider {
+	static class HandleBoxManipBSphereProvider implements BSphereProvider {
 		private HandleBoxManip manip;
 
 		private HandleBoxManipBSphereProvider(HandleBoxManip manip) {
@@ -64,8 +63,7 @@ public class TestExaminerViewer {
 		}
 	}
 
-	static class Listener
-		implements GLEventListener {
+	static class Listener implements GLEventListener {
 		private GLU glu = new GLU();
 		private CameraParameters params = new CameraParameters();
 		private ExaminerViewer viewer;
@@ -74,9 +72,9 @@ public class TestExaminerViewer {
 			GL gl = drawable.getGL();
 
 			gl.glClearColor(0, 0, 0, 0);
-			float[] lightPosition = new float[] { 1, 1, 1, 0 };
-			float[] ambient = new float[] { 0.0f, 0.0f, 0.0f, 1.0f };
-			float[] diffuse = new float[] { 1.0f, 1.0f, 1.0f, 1.0f };
+			float[] lightPosition = new float[]{1, 1, 1, 0};
+			float[] ambient = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
+			float[] diffuse = new float[]{1.0f, 1.0f, 1.0f, 1.0f};
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, ambient, 0);
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuse, 0);
 			gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0);
@@ -118,7 +116,8 @@ public class TestExaminerViewer {
 			GL gl = drawable.getGL();
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 			viewer.update(gl);
-			ManipManager.getManipManager().updateCameraParameters(drawable, viewer.getCameraParameters());
+			ManipManager.getManipManager().updateCameraParameters(drawable,
+					viewer.getCameraParameters());
 			ManipManager.getManipManager().render(drawable, gl);
 		}
 
@@ -126,7 +125,8 @@ public class TestExaminerViewer {
 		public void reshape(GLAutoDrawable drawable, int x, int y, int w, int h) {
 		}
 
-		public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+		public void displayChanged(GLAutoDrawable drawable,
+				boolean modeChanged, boolean deviceChanged) {
 		}
 	}
 

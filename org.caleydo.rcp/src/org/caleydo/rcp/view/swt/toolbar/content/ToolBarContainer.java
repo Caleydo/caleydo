@@ -2,19 +2,19 @@ package org.caleydo.rcp.view.swt.toolbar.content;
 
 import java.util.List;
 
-
 /**
- * Holds a ordered group of tool-bar items displayed as one group in the toolbar   
+ * Holds a ordered group of tool-bar items displayed as one group in the toolbar
+ * 
  * @author Werner Puff
  */
 public class ToolBarContainer {
 
 	/** image path to FIXXXME: which image is this??? */
 	private String imagePath;
-	
+
 	/** title of the container */
 	private String title;
-	
+
 	/**  */
 	private static final long serialVersionUID = 1L;
 
@@ -23,6 +23,7 @@ public class ToolBarContainer {
 
 	/**
 	 * Gets the list of actions currently defined within this tool bar container
+	 * 
 	 * @return list of actions
 	 */
 	public List<IToolBarItem> getToolBarItems() {
@@ -31,7 +32,9 @@ public class ToolBarContainer {
 
 	/**
 	 * sets the list of actions for this tool bar container
-	 * @param actions list of actions
+	 * 
+	 * @param actions
+	 *            list of actions
 	 */
 	public void setToolBarItems(List<IToolBarItem> toolBarItems) {
 		this.toolBarItems = toolBarItems;
@@ -39,6 +42,7 @@ public class ToolBarContainer {
 
 	/**
 	 * FIXME: path to which image?
+	 * 
 	 * @return
 	 */
 	public String getImagePath() {
@@ -51,6 +55,7 @@ public class ToolBarContainer {
 
 	/**
 	 * Returns the title to displayed with this toolbar container
+	 * 
 	 * @return title of the container
 	 */
 	public String getTitle() {

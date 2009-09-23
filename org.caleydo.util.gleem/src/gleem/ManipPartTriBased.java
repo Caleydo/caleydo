@@ -32,13 +32,13 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 /**
- * Triangle-based manipulator part. This is the base class for most of the ManipParts that GLEEM uses
- * internally. You can feel free to subclass this if you want to replace geometry in the manipulators, or
- * re-derive from ManipPart. See ManipPartLineSeg for an example.
+ * Triangle-based manipulator part. This is the base class for most of the
+ * ManipParts that GLEEM uses internally. You can feel free to subclass this if
+ * you want to replace geometry in the manipulators, or re-derive from
+ * ManipPart. See ManipPartLineSeg for an example.
  */
 @SuppressWarnings("all")
-public class ManipPartTriBased
-	extends ManipPart {
+public class ManipPartTriBased extends ManipPart {
 	private Vec3f color;
 	private Vec3f highlightColor;
 	private boolean highlighted;
@@ -88,7 +88,8 @@ public class ManipPartTriBased
 		return new Vec3f(highlightColor);
 	}
 
-	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results, Manip caller) {
+	public void intersectRay(Vec3f rayStart, Vec3f rayDirection, List results,
+			Manip caller) {
 		consistencyCheck();
 		if (!pickable)
 			return;
@@ -101,8 +102,9 @@ public class ManipPartTriBased
 			int i0 = vertexIndices[i];
 			int i1 = vertexIndices[i + 1];
 			int i2 = vertexIndices[i + 2];
-			if (RayTriangleIntersection.intersectRayWithTriangle(rayStart, rayDirection, curVertices[i0],
-				curVertices[i1], curVertices[i2], intPt) == RayTriangleIntersection.INTERSECTION) {
+			if (RayTriangleIntersection.intersectRayWithTriangle(rayStart,
+					rayDirection, curVertices[i0], curVertices[i1],
+					curVertices[i2], intPt) == RayTriangleIntersection.INTERSECTION) {
 				// Check for intersections behind the ray
 				if (intPt.getT() >= 0) {
 					hitPt.rayStart = rayStart;
@@ -159,9 +161,9 @@ public class ManipPartTriBased
 		}
 		gl.glBegin(GL.GL_TRIANGLES);
 		if (highlighted) {
-			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor.z());
-		}
-		else {
+			gl.glColor3f(highlightColor.x(), highlightColor.y(), highlightColor
+					.z());
+		} else {
 			gl.glColor3f(color.x(), color.y(), color.z());
 		}
 		int i = 0;
@@ -233,7 +235,8 @@ public class ManipPartTriBased
 
 	private void consistencyCheck() {
 		if (vertexIndices.length != normalIndices.length)
-			throw new RuntimeException("vertexIndices.length != normalIndices.length");
+			throw new RuntimeException(
+					"vertexIndices.length != normalIndices.length");
 
 		if (vertexIndices.length % 3 != 0)
 			throw new RuntimeException("(vertexIndices % 3) != 0");

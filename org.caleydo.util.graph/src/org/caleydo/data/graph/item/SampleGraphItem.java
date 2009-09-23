@@ -11,8 +11,7 @@ import org.caleydo.util.graph.item.GraphItem;
  * 
  * @author Michael Kalkusch
  */
-public class SampleGraphItem
-	extends GraphItem {
+public class SampleGraphItem extends GraphItem {
 
 	/**
 	 * @param kind

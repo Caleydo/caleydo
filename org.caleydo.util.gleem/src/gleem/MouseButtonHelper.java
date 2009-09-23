@@ -27,25 +27,26 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 
 /**
- * Helper class for figuring out how many mouse buttons are available. (Does not seem to be a way of figuring
- * this out with the AWT.)
+ * Helper class for figuring out how many mouse buttons are available. (Does not
+ * seem to be a way of figuring this out with the AWT.)
  */
 @SuppressWarnings("all")
 public class MouseButtonHelper {
 	/**
-	 * Returns the number of buttons on the mouse device. This is only a guess and the implementation may need
-	 * to be extended to support other operating systems (in particular, Mac OS).
+	 * Returns the number of buttons on the mouse device. This is only a guess
+	 * and the implementation may need to be extended to support other operating
+	 * systems (in particular, Mac OS).
 	 */
 	public static int numMouseButtons() {
 		String osName = null;
 		if (System.getSecurityManager() != null) {
-			osName = (String) AccessController.doPrivileged(new PrivilegedAction() {
-				public Object run() {
-					return System.getProperty("os.name");
-				}
-			});
-		}
-		else {
+			osName = (String) AccessController
+					.doPrivileged(new PrivilegedAction() {
+						public Object run() {
+							return System.getProperty("os.name");
+						}
+					});
+		} else {
 			osName = System.getProperty("os.name");
 		}
 		return mouseButtonsForOS(osName);

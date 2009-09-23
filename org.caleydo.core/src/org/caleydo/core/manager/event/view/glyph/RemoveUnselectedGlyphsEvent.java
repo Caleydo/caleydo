@@ -15,12 +15,12 @@ public class RemoveUnselectedGlyphsEvent
 	public RemoveUnselectedGlyphsEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public RemoveUnselectedGlyphsEvent(int iViewID) {
 		super();
 		this.viewID = iViewID;
 	}
-	
+
 	public int getViewID() {
 		return viewID;
 	}

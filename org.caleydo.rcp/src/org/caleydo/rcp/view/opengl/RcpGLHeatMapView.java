@@ -27,7 +27,8 @@ public class RcpGLHeatMapView
 		super.createPartControl(parent);
 
 		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
-		if (usecase != null && usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+		if (usecase != null && usecase instanceof GeneticUseCase
+			&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
 			alert.open();

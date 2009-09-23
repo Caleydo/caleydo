@@ -11,9 +11,8 @@ public interface IDrawAbleConnection
 
 	boolean isPickAble();
 
-	
-	//public void place(List<Vec3f> lPoints);
-	
+	// public void place(List<Vec3f> lPoints);
+
 	// public void setHighlight(boolean b);
 
 	// /**

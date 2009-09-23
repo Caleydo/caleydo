@@ -111,10 +111,14 @@ public class PDDrawingStrategyFixedColor
 	/**
 	 * Sets the color the partial disc shall be filled with.
 	 * 
-	 * @param fColorR Red portion of the fill color.
-	 * @param fColorG Green portion of the fill color.
-	 * @param fColorB Blue portion of the fill color.
-	 * @param fAlpha Transparency value of the fill color.
+	 * @param fColorR
+	 *            Red portion of the fill color.
+	 * @param fColorG
+	 *            Green portion of the fill color.
+	 * @param fColorB
+	 *            Blue portion of the fill color.
+	 * @param fAlpha
+	 *            Transparency value of the fill color.
 	 */
 	public void setFillColor(float fColorR, float fColorG, float fColorB, float fAlpha) {
 		fFillColorR = fColorR;
@@ -126,10 +130,14 @@ public class PDDrawingStrategyFixedColor
 	/**
 	 * Sets the color the partial disc's border shall be drawn with.
 	 * 
-	 * @param fColorR Red portion of the border color.
-	 * @param fColorG Green portion of the border color.
-	 * @param fColorB Blue portion of the border color.
-	 * @param fAlpha Transparency value of the border color.
+	 * @param fColorR
+	 *            Red portion of the border color.
+	 * @param fColorG
+	 *            Green portion of the border color.
+	 * @param fColorB
+	 *            Blue portion of the border color.
+	 * @param fAlpha
+	 *            Transparency value of the border color.
 	 */
 	public void setBorderColor(float fColorR, float fColorG, float fColorB, float fAlpha) {
 		fBorderColorR = fColorR;

@@ -11,7 +11,7 @@ public class DetailOutsideEvent
 	extends AEvent {
 
 	private int elementID;
-	
+
 	public DetailOutsideEvent() {
 		elementID = -1;
 	}

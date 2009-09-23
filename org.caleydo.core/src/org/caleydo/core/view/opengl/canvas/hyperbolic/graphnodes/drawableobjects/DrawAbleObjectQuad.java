@@ -19,14 +19,14 @@ public class DrawAbleObjectQuad
 	@Override
 	public ArrayList<Vec3f> draw(GL gl, boolean bHighlight) {
 		float fSideL = Math.min(fWidth, fHeight) / 2f;
-		if(bIsAbleToPick)
+		if (bIsAbleToPick)
 			if (bHighlight)
 				gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_QUAD_COLORSCHEME_HL, 0);
 			else
 				gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_QUAD_COLORSCHEME, 0);
 		else
 			gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_QUAD_COLORSCHEME_NO_PICK, 0);
-			
+
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(fXCoord + fSideL, fYCoord + fSideL, fZCoord);
 		gl.glVertex3f(fXCoord + fSideL, fYCoord - fSideL, fZCoord);

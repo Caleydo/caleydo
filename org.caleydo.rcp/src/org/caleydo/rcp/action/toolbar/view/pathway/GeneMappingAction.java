@@ -18,7 +18,7 @@ public class GeneMappingAction
 
 	/** mediator to handle actions triggered by instances of this class */
 	private PathwayToolBarMediator pathwayToolbarMediator;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -38,7 +38,8 @@ public class GeneMappingAction
 		geneMappingEnabled = !geneMappingEnabled;
 		if (geneMappingEnabled) {
 			pathwayToolbarMediator.enableGeneMapping();
-		} else {
+		}
+		else {
 			pathwayToolbarMediator.disableGeneMapping();
 		}
 	}

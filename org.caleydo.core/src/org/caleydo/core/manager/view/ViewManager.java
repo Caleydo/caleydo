@@ -233,7 +233,7 @@ public class ViewManager
 			case CREATE_GL_CELL:
 				glEventListener = new GLCell(glCanvas, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_TISSUE:
 				glEventListener = new GLTissue(glCanvas, sLabel, viewFrustum);
 				break;

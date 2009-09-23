@@ -12,7 +12,7 @@ public class ConnectToServerListener
 		if (event instanceof ConnectToServerEvent) {
 			ConnectToServerEvent connectToServerEvent = (ConnectToServerEvent) event;
 			String address = connectToServerEvent.getAddress();
-			
+
 			// int port = connectToServerEvent.getPort();
 
 			handler.createConnection(address);

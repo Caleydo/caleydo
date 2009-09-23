@@ -23,8 +23,8 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.swt.graphics.Point;
 
 /**
- * Transforms and projects selection of standard planar views.
- * The transformation is done by copying the coordinates.   
+ * Transforms and projects selection of standard planar views. The transformation is done by copying the
+ * coordinates.
  * 
  * @author Werner Puff
  */
@@ -32,26 +32,28 @@ public class StandardTransformer
 	implements ISelectionTransformer, IListenerOwner {
 
 	/** reference for common usage */
-	private IEventPublisher eventPublisher; 
-	
+	private IEventPublisher eventPublisher;
+
 	/** viewID of the view related to this {@link ISelectionTransformer} implementation */
 	protected int viewID;
 
 	/** <code>true</code> if all source points are transformed, <code>false</code> otherwise */
 	protected boolean transformationFinished = false;
-	
+
 	private NewConnectionsListener newConnectionsListener;
-	
+
 	/**
 	 * Creates a new instance for a related {@link AGLEventListener} (view).
-	 * @param viewID the viewID of the {@link AGLEventListener} (view) to do transformations for
+	 * 
+	 * @param viewID
+	 *            the viewID of the {@link AGLEventListener} (view) to do transformations for
 	 */
 	public StandardTransformer(int viewID) {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		this.viewID = viewID;
 		registerEventListeners();
 	}
-	
+
 	/**
 	 * Registers the event listeners.
 	 */
@@ -73,7 +75,8 @@ public class StandardTransformer
 	}
 
 	@Override
-	public void project(GL gl, String deskoXID, HashMap<EIDType, ConnectionMap> source, HashMap<EIDType, CanvasConnectionMap> target) {
+	public void project(GL gl, String deskoXID, HashMap<EIDType, ConnectionMap> source,
+		HashMap<EIDType, CanvasConnectionMap> target) {
 		final double mvmatrix[] = new double[16];
 		final double projmatrix[] = new double[16];
 		final int viewport[] = new int[4];
@@ -98,7 +101,7 @@ public class StandardTransformer
 
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
 
-				SelectionPoint2DList points2D = canvasConnectionMap.get(connections.getKey()); 
+				SelectionPoint2DList points2D = canvasConnectionMap.get(connections.getKey());
 				if (points2D == null) {
 					points2D = new SelectionPoint2DList();
 					canvasConnectionMap.put(connections.getKey(), points2D);
@@ -107,7 +110,8 @@ public class StandardTransformer
 				for (SelectedElementRep sel : connections.getValue()) {
 					if (sel.getRemoteViewID() == viewID) {
 						for (Vec3f vec : sel.getPoints()) {
-							glu.gluProject(vec.x(), vec.y(), vec.z(), mvmatrix, 0, projmatrix, 0, viewport, 0, wc, 0);
+							glu.gluProject(vec.x(), vec.y(), vec.z(), mvmatrix, 0, projmatrix, 0, viewport,
+								0, wc, 0);
 							Point p = new Point((int) wc[0], canvasHeight - (int) wc[1]);
 							SelectionPoint2D sp = new SelectionPoint2D(deskoXID, viewID, p);
 							points2D.add(sp);
@@ -125,9 +129,9 @@ public class StandardTransformer
 			return false;
 		}
 		transformationFinished = true;
-		
+
 		for (Entry<EIDType, ConnectionMap> typeConnections : source.entrySet()) {
-			
+
 			ConnectionMap connectionMap = target.get(typeConnections.getKey());
 			if (connectionMap == null) {
 				connectionMap = new ConnectionMap();
@@ -136,7 +140,7 @@ public class StandardTransformer
 
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
 
-				SelectedElementRepList repList = connectionMap.get(connections.getKey()); 
+				SelectedElementRepList repList = connectionMap.get(connections.getKey());
 				if (repList == null) {
 					repList = new SelectedElementRepList();
 					connectionMap.put(connections.getKey(), repList);
@@ -144,11 +148,13 @@ public class StandardTransformer
 
 				for (SelectedElementRep sel : connections.getValue()) {
 					if (viewID == sel.getSourceViewID()) {
-						ArrayList<Vec3f> transformedPoints = new ArrayList<Vec3f>(); 
+						ArrayList<Vec3f> transformedPoints = new ArrayList<Vec3f>();
 						for (Vec3f vec : sel.getPoints()) {
 							transformedPoints.add(vec);
 						}
-						SelectedElementRep trans = new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID, transformedPoints);
+						SelectedElementRep trans =
+							new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID,
+								transformedPoints);
 						repList.add(trans);
 					}
 				}

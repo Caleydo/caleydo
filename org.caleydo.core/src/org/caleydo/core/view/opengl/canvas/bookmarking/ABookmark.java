@@ -36,23 +36,23 @@ public abstract class ABookmark {
 	public int getID() {
 		return id;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		if(obj.hashCode() == hashCode())
+		if (obj.hashCode() == hashCode())
 			return true;
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return id;
 	}
-	
+
 	@Override
 	public String toString() {
-		return Integer.toString(id); 
+		return Integer.toString(id);
 	}
 
 }

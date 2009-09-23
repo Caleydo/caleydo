@@ -45,27 +45,27 @@ public class CollabViewRep
 
 	/** data-name to store the related {@link EventFilterBridge} to a TreeItem */
 	public static final String ITEM_DATA_BRIDGE = "bridge";
-	
+
 	/** data-name to store the related {@link EventPublisher} to a TreeItem */
 	public static final String ITEM_DATA_PUBLISHER = "publisher";
 
 	/** data-name to store the related event-class to a checkbox-button */
 	public static final String ITEM_DATA_EVENT_TYPE = "eventType";
-	
+
 	/** main swt-composite of this view */
 	private Composite baseComposite;
 
 	private NetworkManager networkManager;
-	
+
 	private Text serializationTextField;
 
 	private TestSerializationListener testSerializationListener;
 	private TestSendNetworkMessageListener testSendNetworkMessageListener;
 
 	private RedrawCollabViewListener redrawCollabViewListener;
-	
+
 	private Composite dataControls;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -86,7 +86,7 @@ public class CollabViewRep
 			networkManager = groupwareManager.getNetworkManager();
 		}
 	}
-	
+
 	@Override
 	public void drawView() {
 		if (baseComposite != null) {
@@ -114,11 +114,11 @@ public class CollabViewRep
 		testSerializationListener = new TestSerializationListener();
 		testSerializationListener.setHandler(this);
 		eventPublisher.addListener(TestSerializationEvent.class, testSerializationListener);
-		
+
 		redrawCollabViewListener = new RedrawCollabViewListener();
 		redrawCollabViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawCollabViewEvent.class, redrawCollabViewListener);
-		
+
 	}
 
 	@Override
@@ -257,7 +257,7 @@ public class CollabViewRep
 		}
 		Text target = new Text(testControls, SWT.LEFT);
 		target.setText("Client-1");
-		
+
 		new Composite(testControls, SWT.NULL);
 	}
 
@@ -266,7 +266,7 @@ public class CollabViewRep
 		eventControls.setLayoutData(new GridData(GridData.FILL_BOTH));
 		GridLayout eventLayout = new GridLayout(1, false);
 		eventControls.setLayout(eventLayout);
-		
+
 		final Tree tree = new Tree(eventControls, SWT.VIRTUAL | SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_BOTH);
 		tree.setLayoutData(data);
@@ -296,7 +296,7 @@ public class CollabViewRep
 				outgoingRoot.setText(bridgeName);
 				outgoingRoot.setData(ITEM_DATA_BRIDGE, outgoingBridge);
 				outgoingRoot.setData(ITEM_DATA_PUBLISHER, networkManager.getCentralEventPublisher());
-				
+
 				EventFilterBridge incomingBridge = networkManager.getIncomingEventBridge();
 				TreeItem incomingRoot = new TreeItem(tree, SWT.NULL);
 				bridgeName = incomingBridge.getName();
@@ -305,7 +305,7 @@ public class CollabViewRep
 				incomingRoot.setText(bridgeName);
 				incomingRoot.setData(ITEM_DATA_BRIDGE, incomingBridge);
 				incomingRoot.setData(ITEM_DATA_PUBLISHER, networkManager.getGlobalIncomingPublisher());
-	
+
 				EventPublisher globalNetworkPublisher = networkManager.getGlobalOutgoingPublisher();
 				List<Connection> connections = networkManager.getConnections();
 				for (Connection connection : connections) {
@@ -313,17 +313,17 @@ public class CollabViewRep
 					item.setText(connection.getOutgoingBridge().getName());
 					item.setData(ITEM_DATA_BRIDGE, connection.getOutgoingBridge());
 					item.setData(ITEM_DATA_PUBLISHER, globalNetworkPublisher);
-					
+
 					item = new TreeItem(incomingRoot, SWT.NULL);
 					item.setText(connection.getIncomingBridge().getName());
 					item.setData(ITEM_DATA_BRIDGE, connection.getIncomingBridge());
 					item.setData(ITEM_DATA_PUBLISHER, connection.getIncomingPublisher());
 				}
-				
+
 			}
 		}
 	}
-	
+
 	public void drawDataControls(TreeItem item) {
 		dataControls = new Composite(baseComposite, SWT.NULL);
 		dataControls.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -332,12 +332,12 @@ public class CollabViewRep
 
 		Label dataLabel = new Label(dataControls, SWT.NULL);
 		dataLabel.setText(item.getText());
-		
+
 		EventFilterBridge bridge = (EventFilterBridge) item.getData(ITEM_DATA_BRIDGE);
 		EventPublisher publisher = (EventPublisher) item.getData(ITEM_DATA_PUBLISHER);
 
 		List<Button> buttonList = new ArrayList<Button>();
-		
+
 		IConfigureableEventList config = new ConfigureableEventBridge(bridge, publisher);
 		Collection<Class<? extends AEvent>> selected = config.getSelectedEventTypes();
 		for (Class<? extends AEvent> eventType : config.getAllEventTypes()) {
@@ -357,18 +357,18 @@ public class CollabViewRep
 		saveListener.setPublisher(publisher);
 		saveListener.setEventButtonList(buttonList);
 		saveButton.addSelectionListener(saveListener);
-		
+
 		baseComposite.layout();
 		baseComposite.redraw();
 	}
-	
+
 	public void removeDataControls() {
 		if (dataControls != null) {
 			dataControls.dispose();
 			dataControls = null;
 		}
 	}
-	
+
 	public void addDataControls(Composite composite) {
 		dataControls = new Composite(composite, SWT.NULL);
 		dataControls.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -411,33 +411,16 @@ public class CollabViewRep
 		unregisterEventListeners();
 	}
 
-/*
-	public void addBucketControls(Composite composite) {
-		Composite bucketControls = new Composite(composite, SWT.NULL);
-		bucketControls.setLayoutData(new GridData(GridData.FILL_BOTH));
-		GridLayout bucketLayout = new GridLayout(3, false);
-		bucketControls.setLayout(bucketLayout);
-
-		Button button;
-		Label label;
-		label = new Label(bucketControls, SWT.LEFT);
-		label.setText("");
-		button = new Button(bucketControls, SWT.LEFT);
-		button.setText("top");
-		label = new Label(bucketControls, SWT.LEFT);
-		label.setText("");
-		button = new Button(bucketControls, SWT.LEFT);
-		button.setText("left");
-		button = new Button(bucketControls, SWT.LEFT);
-		button.setText("center");
-		button = new Button(bucketControls, SWT.LEFT);
-		button.setText("right");
-		label = new Label(bucketControls, SWT.LEFT);
-		label.setText("");
-		button = new Button(bucketControls, SWT.LEFT);
-		button.setText("bottom");
-		label = new Label(bucketControls, SWT.LEFT);
-		label.setText("");
-	}
-*/
+	/*
+	 * public void addBucketControls(Composite composite) { Composite bucketControls = new
+	 * Composite(composite, SWT.NULL); bucketControls.setLayoutData(new GridData(GridData.FILL_BOTH));
+	 * GridLayout bucketLayout = new GridLayout(3, false); bucketControls.setLayout(bucketLayout); Button
+	 * button; Label label; label = new Label(bucketControls, SWT.LEFT); label.setText(""); button = new
+	 * Button(bucketControls, SWT.LEFT); button.setText("top"); label = new Label(bucketControls, SWT.LEFT);
+	 * label.setText(""); button = new Button(bucketControls, SWT.LEFT); button.setText("left"); button = new
+	 * Button(bucketControls, SWT.LEFT); button.setText("center"); button = new Button(bucketControls,
+	 * SWT.LEFT); button.setText("right"); label = new Label(bucketControls, SWT.LEFT); label.setText("");
+	 * button = new Button(bucketControls, SWT.LEFT); button.setText("bottom"); label = new
+	 * Label(bucketControls, SWT.LEFT); label.setText(""); }
+	 */
 }

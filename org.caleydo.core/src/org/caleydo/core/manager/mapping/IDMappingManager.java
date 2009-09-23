@@ -457,26 +457,26 @@ public class IDMappingManager
 	@Override
 	public List<EIDType> getIDTypes(EIDCategory category) {
 		ArrayList<EIDType> idTypes = new ArrayList<EIDType>();
-		
-		for(EIDType idType : mappingGraph.vertexSet()) {
-			if(idType.getCategory().equals(category))
+
+		for (EIDType idType : mappingGraph.vertexSet()) {
+			if (idType.getCategory().equals(category))
 				idTypes.add(idType);
 		}
 		return idTypes;
 	}
-	
-//	public void printGraph() {
-//		System.out.println(mappingGraph.toString());
-//	}
-	
+
+	// public void printGraph() {
+	// System.out.println(mappingGraph.toString());
+	// }
+
 	@Override
 	public <T> boolean doesElementExist(EIDType idType, T element) {
 		Set<MappingEdge> edges = mappingGraph.edgesOf(idType);
-		
-		for(MappingEdge edge : edges) {
+
+		for (MappingEdge edge : edges) {
 			Map<?, ?> currentMap = hashType2Mapping.get(edge.getMappingType());
-			if(currentMap != null) {
-				if(currentMap.containsKey(element))
+			if (currentMap != null) {
+				if (currentMap.containsKey(element))
 					return true;
 			}
 		}

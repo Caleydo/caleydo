@@ -31,7 +31,7 @@ public class ToolBarMediator
 	RcpToolBarView toolBarView;
 
 	private List<AToolBarContent> currentToolBarContents;
-	
+
 	protected ViewActivationListener viewActivationListener;
 	protected RemoveViewSpecificItemsEventListener removeViewSpecificItemsEventListener;
 	protected GroupHighlightingListener groupHighlightingListener;
@@ -56,7 +56,7 @@ public class ToolBarMediator
 				}
 				currentToolBarContents = null;
 			}
-			
+
 			currentToolBarContents = contentFactory.getToolBarContent(viewIDs);
 
 			IToolBarRenderer renderer = toolBarView.getToolBarRenderer();

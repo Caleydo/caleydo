@@ -22,37 +22,41 @@ import org.eclipse.swt.widgets.Control;
 
 /**
  * Drop down style toolbar-contribution to select pathway.
+ * 
  * @author Marc Streit
  */
 public class PathwaySearchBox
 	extends ControlContribution
 	implements IToolBarItem {
 
-	/** mediator to handle actions triggered by the contributed element */ 
+	/** mediator to handle actions triggered by the contributed element */
 	PathwayToolBarMediator pathwayToolBarMediator;
-	
+
 	/**
 	 * constructor as requested by ControlContribution
+	 * 
 	 * @param str
 	 */
 	public PathwaySearchBox(String str) {
 		super(str);
 	}
-	
+
 	@Override
 	protected Control createControl(Composite parent) {
-		
+
 		final SearchBox pathwaySearchBox = new SearchBox(parent, SWT.BORDER);
 
 		String items[] = { "No pathways available!" };
 		pathwaySearchBox.setItems(items);
 		pathwaySearchBox.setTextLimit(21);
 
-		if (!GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES).isEmpty()) {
+		if (!GeneralManager.get().getPreferenceStore().getString(
+			PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES).isEmpty()) {
 			pathwaySearchBox.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent e) {
-					if (GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES).isEmpty()) {
+					if (GeneralManager.get().getPreferenceStore().getString(
+						PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES).isEmpty()) {
 						pathwaySearchBox.setEnabled(false);
 						return;
 					}
@@ -96,19 +100,19 @@ public class PathwaySearchBox
 				loadPathway(sSearchEntity);
 			}
 		});
-		
-//		pathwaySearchBox.addKeyListener(new KeyAdapter() {
-//		@Override
-//			public void keyReleased(KeyEvent e) {
-//
-//				if (e.character != SWT.CR)
-//					return;
-//				
-//				String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox.getSelectionIndex());
-//				loadPathway(sSearchEntity);
-//			}	
-//		});
-		
+
+		// pathwaySearchBox.addKeyListener(new KeyAdapter() {
+		// @Override
+		// public void keyReleased(KeyEvent e) {
+		//
+		// if (e.character != SWT.CR)
+		// return;
+		//				
+		// String sSearchEntity = pathwaySearchBox.getItem(pathwaySearchBox.getSelectionIndex());
+		// loadPathway(sSearchEntity);
+		// }
+		// });
+
 		return pathwaySearchBox;
 	}
 
@@ -116,10 +120,10 @@ public class PathwaySearchBox
 	protected int computeWidth(Control control) {
 		if (GenomePerspective.bIsWideScreen)
 			return RcpToolBarView.TOOLBAR_WIDTH - 25;
-		
+
 		return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x;
 	}
-	
+
 	public PathwayToolBarMediator getPathwayToolBarMediator() {
 		return pathwayToolBarMediator;
 	}
@@ -127,12 +131,13 @@ public class PathwaySearchBox
 	public void setPathwayToolBarMediator(PathwayToolBarMediator pathwayToolBarMediator) {
 		this.pathwayToolBarMediator = pathwayToolBarMediator;
 	}
-	
+
 	/**
-	 * Method gets a pathway title and tries to determine the pathway ID.
-	 * If this is successful the load pathway event is triggered.
+	 * Method gets a pathway title and tries to determine the pathway ID. If this is successful the load
+	 * pathway event is triggered.
 	 * 
-	 * @param sEntity Pathway search title
+	 * @param sEntity
+	 *            Pathway search title
 	 * @return
 	 */
 	private boolean loadPathway(String sEntity) {
@@ -156,7 +161,7 @@ public class PathwaySearchBox
 			return false;
 
 		pathwayToolBarMediator.loadPathway(pathway);
-		
+
 		ChangeURLEvent event = new ChangeURLEvent();
 		event.setSender(this);
 		event.setUrl(pathway.getExternalLink());

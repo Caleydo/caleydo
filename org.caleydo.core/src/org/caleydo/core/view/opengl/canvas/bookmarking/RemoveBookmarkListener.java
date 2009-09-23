@@ -9,13 +9,11 @@ public class RemoveBookmarkListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		
+
 		if (event instanceof RemoveBookmarkEvent<?>) {
 			RemoveBookmarkEvent<?> removeBookmarkEvent = (RemoveBookmarkEvent<?>) event;
 			handler.handleRemoveBookmarkEvent(removeBookmarkEvent);
 		}
-		
-		
 
 	}
 

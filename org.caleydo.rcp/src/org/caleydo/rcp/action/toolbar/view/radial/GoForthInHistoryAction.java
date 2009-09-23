@@ -15,7 +15,6 @@ public class GoForthInHistoryAction
 	public static final String TEXT = "Forth";
 	public static final String ICON = "resources/icons/view/general/redo.png";
 
-
 	public GoForthInHistoryAction(int viewID) {
 		super(viewID);
 		setText(TEXT);

@@ -16,7 +16,7 @@ public class ClusterProgressEvent
 	public ClusterProgressEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public ClusterProgressEvent(int percentCompleted, boolean forSimilaritiesBar) {
 		this.percentCompleted = percentCompleted;
 		this.forSimilaritiesBar = forSimilaritiesBar;

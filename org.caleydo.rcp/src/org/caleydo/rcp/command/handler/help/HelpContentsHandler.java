@@ -17,14 +17,14 @@ public class HelpContentsHandler
 	private final static String URL_HELP_CONTENTS = "http://www.caleydo.org/help/help.html";
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		
+
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpHTMLBrowserView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();
 		}
-		
+
 		ChangeURLEvent changeURLEvent = new ChangeURLEvent();
 		changeURLEvent.setSender(this);
 		changeURLEvent.setUrl(URL_HELP_CONTENTS);
@@ -33,5 +33,3 @@ public class HelpContentsHandler
 		return null;
 	}
 }
-
-

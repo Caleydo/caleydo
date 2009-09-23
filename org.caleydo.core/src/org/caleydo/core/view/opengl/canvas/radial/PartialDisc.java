@@ -396,10 +396,10 @@ public class PartialDisc
 			}
 		}
 	}
-	
+
 	/**
-	 * Recursively decorates the drawing strategy of the current partial disc and the
-	 * elements of its sub-tree with copies of the specified decorator.
+	 * Recursively decorates the drawing strategy of the current partial disc and the elements of its sub-tree
+	 * with copies of the specified decorator.
 	 * 
 	 * @param drawingStrategy
 	 *            Drawing strategy which shall be used for drawing the partial discs.
@@ -510,7 +510,7 @@ public class PartialDisc
 	public PartialDisc getLargestChild() {
 		return pdLargestChild;
 	}
-	
+
 	public APDDrawingStrategy getDrawingStrategy() {
 		return drawingStrategy;
 	}
@@ -530,7 +530,7 @@ public class PartialDisc
 	 * @return True, if the partial disc is displayed, false otherwise.
 	 */
 	public boolean isCurrentlyDisplayed(PartialDisc pdCurrentRootElement, int iDisplayedHierarchyDepth) {
-		if(pdCurrentRootElement == this)
+		if (pdCurrentRootElement == this)
 			return true;
 		int iParentPathLength = getParentPathLength(pdCurrentRootElement);
 		if ((iParentPathLength >= iDisplayedHierarchyDepth) || (iParentPathLength == -1)) {
@@ -552,8 +552,8 @@ public class PartialDisc
 	 */
 	public PartialDisc getFirstVisibleElementOnParentPathToRoot(PartialDisc pdCurrentRootElement,
 		int iDisplayedHierarchyDepth) {
-		
-		if(pdCurrentRootElement == this)
+
+		if (pdCurrentRootElement == this)
 			return this;
 
 		ArrayList<PartialDisc> alParentPath = getParentPath(pdCurrentRootElement);

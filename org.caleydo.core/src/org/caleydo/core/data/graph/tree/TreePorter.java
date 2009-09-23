@@ -46,21 +46,25 @@ public class TreePorter {
 
 	/**
 	 * Imports a tree with the aid of {@link JAXBContext}.
-	 * @param fileName name of the file where the tree is saved
+	 * 
+	 * @param fileName
+	 *            name of the file where the tree is saved
 	 * @return returns the imported tree
 	 * @throws FileNotFoundException
 	 * @throws JAXBException
 	 */
 	public Tree<ClusterNode> importTree(String fileName) throws FileNotFoundException, JAXBException {
 		FileReader reader = new FileReader(fileName);
-		Tree <ClusterNode> tree = null;
+		Tree<ClusterNode> tree = null;
 		try {
 			tree = importTree(reader);
-		} finally {
+		}
+		finally {
 			if (reader != null) {
 				try {
 					reader.close();
-				} catch (IOException ex) {
+				}
+				catch (IOException ex) {
 					// nothing to do here, assuming reader is already closed
 				}
 			}
@@ -70,9 +74,12 @@ public class TreePorter {
 
 	/**
 	 * Imports a tree with the aid of {@link JAXBContext}.
-	 * @param reader Reader to read the tree-XML-document from
+	 * 
+	 * @param reader
+	 *            Reader to read the tree-XML-document from
 	 * @return the imported tree
-	 * @throws JAXBException in case of a XML-serialization error
+	 * @throws JAXBException
+	 *             in case of a XML-serialization error
 	 */
 	public Tree<ClusterNode> importTree(Reader reader) throws JAXBException {
 
@@ -114,35 +121,46 @@ public class TreePorter {
 
 	/**
 	 * Export function uses {@link JAXBContext} to export a given tree into an XML file.
-	 * @param fileName name of the file where the exported tree should be saved
-	 * @param tree the tree wanted to export
-	 * @throws JAXBException in case of a XML-serialization error
-	 * @throws IOException in case of an error while writing to the stream
+	 * 
+	 * @param fileName
+	 *            name of the file where the exported tree should be saved
+	 * @param tree
+	 *            the tree wanted to export
+	 * @throws JAXBException
+	 *             in case of a XML-serialization error
+	 * @throws IOException
+	 *             in case of an error while writing to the stream
 	 */
 	public void exportTree(String fileName, Tree<ClusterNode> tree) throws JAXBException, IOException {
 		FileWriter writer = new FileWriter(fileName);
 		try {
 			exportTree(writer, tree);
 			writer.close();
-		} finally {
+		}
+		finally {
 			if (writer != null) {
 				try {
 					writer.close();
-				} catch (IOException ex) {
+				}
+				catch (IOException ex) {
 					// nothing to do here, assuming the writer is closed
 				}
 				writer = null;
 			}
 		}
 	}
-	
-	
+
 	/**
 	 * Export function uses {@link JAXBContext} to export a given tree to a {@link Writer}
-	 * @param writer {@link Writer} to write the serialized tree to.
-	 * @param tree the tree wanted to export
-	 * @throws JAXBException in case of a XML-serialization error
-	 * @throws IOException in case of an error while writing to the stream
+	 * 
+	 * @param writer
+	 *            {@link Writer} to write the serialized tree to.
+	 * @param tree
+	 *            the tree wanted to export
+	 * @throws JAXBException
+	 *             in case of a XML-serialization error
+	 * @throws IOException
+	 *             in case of an error while writing to the stream
 	 */
 	public void exportTree(Writer writer, Tree<ClusterNode> tree) throws JAXBException, IOException {
 

@@ -29,8 +29,9 @@ public class GlyphGridPositionModelRectangle
 		int i = 0, j = 0;
 		for (GlyphEntry g : gg) {
 			if (j >= worldLimit.y()) {
-				generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					"The world is not enough! I've no place to put the glyphs any more."));
+				generalManager.getLogger().log(
+					new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+						"The world is not enough! I've no place to put the glyphs any more."));
 				break;
 			}
 

@@ -24,7 +24,7 @@ public class NewGroupInfoEvent
 	@Override
 	public boolean checkIntegrity() {
 
-		if(eVAType != null && bDeleteTree == true)
+		if (eVAType != null && bDeleteTree == true)
 			return true;
 		else if (eVAType != null && groupList != null && bDeleteTree == false)
 			return true;

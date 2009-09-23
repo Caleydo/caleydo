@@ -13,7 +13,7 @@ public class StartTrackingHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		GeneralManager.get().getTrackDataProvider().startTracking();
-	
+
 		return null;
 	}
 }

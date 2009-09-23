@@ -9,8 +9,7 @@ import java.util.HashMap;
  * @see org.caleydo.util.graph.item.GraphItemDataSequenzer
  * @author Michael Kalkusch
  */
-public abstract class AGraphDataHandler
-	implements IGraphDataHandler {
+public abstract class AGraphDataHandler implements IGraphDataHandler {
 	private static final int iInitialSize = 3;
 
 	protected final HashMap<Integer, Object> key_2_data;

@@ -75,8 +75,8 @@ public class ProjectSaver {
 	public void saveRecentProject() {
 		ZipUtils zipUtils = new ZipUtils();
 		// FIXME - this works only for genetic data now
-		if (!GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getLoadDataParameters().getFileName().startsWith(
-			RECENT_PROJECT_DIR_NAME)) {
+		if (!GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA).getLoadDataParameters().getFileName()
+			.startsWith(RECENT_PROJECT_DIR_NAME)) {
 			zipUtils.deleteDirectory(RECENT_PROJECT_DIR_NAME);
 		}
 		saveProjectData(RECENT_PROJECT_DIR_NAME);
@@ -133,16 +133,20 @@ public class ProjectSaver {
 
 			File useCaseFile = new File(dirName + USECASE_FILE_NAME);
 			marshaller.marshal(useCase, useCaseFile);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Error saving project files (xml serialization)", ex);
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new RuntimeException("Error saving project files (file access)", ex);
 		}
 	}
 
 	/**
 	 * Saves all the view's serialized forms to the given directory. The directory must exist.
-	 * @param dirName name of the directory to save the views to. 
+	 * 
+	 * @param dirName
+	 *            name of the directory to save the views to.
 	 */
 	private void saveViewData(String dirName) {
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
@@ -153,11 +157,12 @@ public class ProjectSaver {
 			ViewList storeViews = createStoreViewList();
 			File viewFile = new File(dirName + VIEWS_FILE_NAME);
 			marshaller.marshal(storeViews, viewFile);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Error saving view files (xml serialization)", ex);
 		}
 	}
-	
+
 	/**
 	 * Creates a {@link ViewList} of all views registered in the central {@link IViewManager}.
 	 * 

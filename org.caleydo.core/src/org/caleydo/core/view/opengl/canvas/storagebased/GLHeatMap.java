@@ -988,11 +988,11 @@ public class GLHeatMap
 			// If rendered remote (hierarchical heat map) - use the remote view ID
 			if (glRemoteRenderingView != null)
 				iViewID = glRemoteRenderingView.getID();
-			
+
 			if (bRenderStorageHorizontally) {
 				elementRep =
-					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID, fXValue
-						+ fAnimationTranslation, fYValue, 0);
+					new SelectedElementRep(EIDType.EXPRESSION_INDEX, iViewID,
+						fXValue + fAnimationTranslation, fYValue, 0);
 
 			}
 			else {

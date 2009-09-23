@@ -37,7 +37,7 @@ public class RcpGLDataFlipperView
 		SerializedDataFlipperView serializedView = new SerializedDataFlipperView(dataDomain);
 		return serializedView;
 	}
-	
+
 	@Override
 	public void dispose() {
 		GLDataFlipper glDataFlipperView =
@@ -45,11 +45,11 @@ public class RcpGLDataFlipperView
 
 		// glRemoteView.clearAll();
 
-		//TODO
-//		for (Integer iContainedViewID : iAlContainedViewIDs) {
-//			glDataFlipperView.removeView(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-//				iContainedViewID));
-//		}
+		// TODO
+		// for (Integer iContainedViewID : iAlContainedViewIDs) {
+		// glDataFlipperView.removeView(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+		// iContainedViewID));
+		// }
 
 		super.dispose();
 	}

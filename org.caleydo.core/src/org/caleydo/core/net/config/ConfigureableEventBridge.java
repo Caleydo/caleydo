@@ -16,7 +16,7 @@ public class ConfigureableEventBridge
 	implements IConfigureableEventList {
 
 	EventFilterBridge bridge;
-	
+
 	EventPublisher publisher;
 
 	public ConfigureableEventBridge(EventFilterBridge bridge, EventPublisher publisher) {

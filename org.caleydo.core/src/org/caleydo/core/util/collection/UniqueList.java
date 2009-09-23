@@ -133,10 +133,9 @@ public class UniqueList<E>
 	public <T> T[] toArray(T[] a) {
 		return alElements.toArray(a);
 	}
-	
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "S: " + alElements.size() + " " + alElements.toString();
 	}
 

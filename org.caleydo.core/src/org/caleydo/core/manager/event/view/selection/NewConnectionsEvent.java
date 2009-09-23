@@ -7,8 +7,8 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.view.ISelectionTransformer;
 
 /**
- * Event to signal to {@link ISelectionTransformer}s that new selections have
- * been created to transform. 
+ * Event to signal to {@link ISelectionTransformer}s that new selections have been created to transform.
+ * 
  * @author Werner Puff
  */
 @XmlRootElement

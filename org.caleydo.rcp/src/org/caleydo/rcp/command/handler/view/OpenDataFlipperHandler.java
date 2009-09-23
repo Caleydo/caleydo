@@ -9,18 +9,18 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenDataFlipperHandler
-extends AbstractHandler
-implements IHandler {
+	extends AbstractHandler
+	implements IHandler {
 
-@Override
-public Object execute(ExecutionEvent event) throws ExecutionException {
-	try {
-		HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLDataFlipperView.ID);
-	}
-	catch (PartInitException e) {
-		e.printStackTrace();
-	}
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLDataFlipperView.ID);
+		}
+		catch (PartInitException e) {
+			e.printStackTrace();
+		}
 
-	return null;
-}
+		return null;
+	}
 }

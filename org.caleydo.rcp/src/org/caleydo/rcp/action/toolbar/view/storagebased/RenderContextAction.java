@@ -38,6 +38,6 @@ public class RenderContextAction
 	public void run() {
 		super.run();
 		bEnable = !bEnable;
-//		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_RENDER_CONTEXT);
+		// triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_RENDER_CONTEXT);
 	};
 }

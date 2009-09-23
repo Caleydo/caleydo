@@ -41,8 +41,9 @@ public class ExceptionHandler {
 	 */
 	public void handleException(RuntimeException exception) {
 		if (HIDE_EXCEPTIONS) {
-			GeneralManager.get().getLogger().log(new Status(Status.ERROR, GeneralManager.PLUGIN_ID,
-				"Caught Exception: " + exception.getMessage(), exception));
+			GeneralManager.get().getLogger().log(
+				new Status(Status.ERROR, GeneralManager.PLUGIN_ID, "Caught Exception: "
+					+ exception.getMessage(), exception));
 			// Log here
 		}
 		else

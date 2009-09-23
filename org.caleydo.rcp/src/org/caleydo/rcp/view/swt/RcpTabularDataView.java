@@ -28,7 +28,7 @@ public class RcpTabularDataView
 		tabularDataView.setSet(useCase.getSet());
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
-		
+
 		parentComposite = parent;
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);

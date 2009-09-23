@@ -159,7 +159,7 @@ public final class SearchBox
 		for (int arrowEvent : arrowEvents) {
 			arrow.addListener(arrowEvent, listener);
 		}
-		
+
 		createPopup(null, -1);
 		initAccessible();
 	}
@@ -825,7 +825,7 @@ public final class SearchBox
 				dropDown(false);
 				text.selectAll();
 				text.setFocus();
-				
+
 				// Added by Marc
 				Event e = new Event();
 				e.time = event.time;
@@ -834,11 +834,11 @@ public final class SearchBox
 				notifyListeners(SWT.Selection, e);
 				event.doit = e.doit;
 				break;
-				
+
 			}
 			case SWT.Selection: {
 
-				// Do nothing here - beause it would also trigger a selection when the user just 
+				// Do nothing here - beause it would also trigger a selection when the user just
 				// browses through the list by using the arrows.
 				// The selection is either trigger on mouse click or SWT.CR
 				break;
@@ -859,7 +859,7 @@ public final class SearchBox
 				}
 				if (event.character == SWT.CR) {
 					dropDown(false);
-					
+
 					// Added by Marc
 					int index = list.getSelectionIndex();
 					if (index == -1)

@@ -14,7 +14,8 @@ public class OpenDendrogramVerticallHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLDendrogramVerticalView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+				RcpGLDendrogramVerticalView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

@@ -12,7 +12,6 @@ import org.caleydo.core.view.opengl.canvas.radial.EPDDrawingStrategyType;
  * Event that should be triggered when cluster nodes are selected.
  * 
  * @author Christian Partl
- *
  */
 @XmlRootElement
 @XmlType
@@ -20,7 +19,7 @@ public class ClusterNodeSelectionEvent
 	extends AEvent {
 
 	private SelectionDelta selectionDelta;
-	
+
 	private EDrawingStateType drawingStateType;
 	private EPDDrawingStrategyType defaultDrawingStrategyType;
 	private int maxDisplayedHierarchyDepth;
@@ -30,7 +29,6 @@ public class ClusterNodeSelectionEvent
 	private float selectedElementStartAngle;
 	private boolean isNewSelection;
 	private boolean isSenderRadialHierarchy;
-
 
 	@Override
 	public boolean checkIntegrity() {

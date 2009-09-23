@@ -140,7 +140,7 @@ public class ViewFrustum
 	public void considerAspectRatio(boolean bConsiderAspectRatio) {
 		this.bConsiderAspectRatio = bConsiderAspectRatio;
 	}
-	
+
 	@Override
 	public void setProjectionMatrix(GL gl, float fAspectRatio) {
 		// fAspectRatio = (float) height / (float) width;

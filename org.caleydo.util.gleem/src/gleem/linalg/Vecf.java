@@ -24,8 +24,8 @@
 package gleem.linalg;
 
 /**
- * Arbitrary-length single-precision vector class. Currently very simple and only supports a few needed
- * operations.
+ * Arbitrary-length single-precision vector class. Currently very simple and
+ * only supports a few needed operations.
  */
 
 public class Vecf {

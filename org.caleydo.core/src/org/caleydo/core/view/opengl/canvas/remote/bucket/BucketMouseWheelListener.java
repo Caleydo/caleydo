@@ -122,7 +122,8 @@ public class BucketMouseWheelListener
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(false);
 		}
-		GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+		GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager()
+			.clearTransformedConnections();
 
 	}
 
@@ -183,7 +184,8 @@ public class BucketMouseWheelListener
 			iAnimationZoomCounter = 0;
 			bZoomActionRunning = false;
 
-			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
+			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clearTransformedConnections();
 			// Turn on picking after zoom action is done
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(true);
 		}
@@ -219,7 +221,7 @@ public class BucketMouseWheelListener
 		// Potential performance problem
 		bucketGLEventListener.getParentGLCanvas().requestFocus();
 	}
-	
+
 	public boolean isZoomActionRunning() {
 		return bZoomActionRunning;
 	}

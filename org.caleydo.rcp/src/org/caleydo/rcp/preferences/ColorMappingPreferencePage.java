@@ -83,7 +83,7 @@ public class ColorMappingPreferencePage
 		gbr.setText("Green, Black, Red");
 		if (iCurrentlyUsedMapping == 0)
 			gbr.setSelection(true);
-		
+
 		gbr.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -101,7 +101,7 @@ public class ColorMappingPreferencePage
 		blby.setText("Blue, Black, Yellow");
 		if (iCurrentlyUsedMapping == 1)
 			blby.setSelection(true);
-		
+
 		blby.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -142,12 +142,12 @@ public class ColorMappingPreferencePage
 		IEventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 		RedrawViewEvent redrawEvent = new RedrawViewEvent();
 		redrawEvent.setSender(this);
-		eventPublisher.triggerEvent(redrawEvent);	
-		
+		eventPublisher.triggerEvent(redrawEvent);
+
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
-		eventPublisher.triggerEvent(event);		 
-		
+		eventPublisher.triggerEvent(event);
+
 		return bReturn;
 	}
 

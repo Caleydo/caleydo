@@ -18,9 +18,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public class GlyphRenderStyle
 	extends GeneralRenderStyle {
 
-
 	/**
 	 * Constructor
+	 * 
 	 * @param viewFrustum
 	 */
 	public GlyphRenderStyle(IViewFrustum viewFrustum) {
@@ -30,6 +30,7 @@ public class GlyphRenderStyle
 
 	/**
 	 * Returns the used Text Renderer
+	 * 
 	 * @return
 	 */
 	public TextRenderer getScatterplotTextRenderer() {

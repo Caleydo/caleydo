@@ -16,7 +16,8 @@ public class OpenCollabHandler
 		// HandlerUtil.getActiveWorkbenchWindow(event).close();
 		try {
 			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpCollabView.ID);
-		} catch (PartInitException e) {
+		}
+		catch (PartInitException e) {
 			e.printStackTrace();
 		}
 

@@ -70,7 +70,7 @@ public class Application
 	 * <code>false</code)
 	 */
 	public static final boolean LAZY_VIEW_LOADING = false;
-	
+
 	/** Temporary solution to store data domain based on the gui dialog */
 	public static EDataDomain dataDomain;
 
@@ -198,9 +198,9 @@ public class Application
 		}
 		else {
 			// Assuming that if an external XML file is provided, the genetic use case applies
-//			IUseCase useCase = new GeneticUseCase();
-//			useCase.setBootsTrapFileName(sCaleydoXMLfile);
-//			GeneralManager.get().addUseCase(useCase);
+			// IUseCase useCase = new GeneticUseCase();
+			// useCase.setBootsTrapFileName(sCaleydoXMLfile);
+			// GeneralManager.get().addUseCase(useCase);
 			isStartedFromXML = true;
 		}
 
@@ -395,12 +395,10 @@ public class Application
 		// TODO - this initializes the VA after the data is written correctly in the set - probably not the
 		// nicest place to do this.
 		// This is only necessary if started from xml. Otherwise this is done in FileLoadDataAction
-		if (isStartedFromXML)
-		{
-			for(IUseCase useCase : GeneralManager.get().getAllUseCases())
-			{
-				useCase.updateSetInViews();	
-			}	
+		if (isStartedFromXML) {
+			for (IUseCase useCase : GeneralManager.get().getAllUseCases()) {
+				useCase.updateSetInViews();
+			}
 		}
 
 		initializeColorMapping();

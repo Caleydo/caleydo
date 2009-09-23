@@ -7,8 +7,8 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * An event that signals that something needs to be removed from the bookmarks. What is specified by the {@link EIDType} and a
- * list of ids.
+ * An event that signals that something needs to be removed from the bookmarks. What is specified by the
+ * {@link EIDType} and a list of ids.
  * 
  * @author Alexander Lex
  * @param <IDDataType>

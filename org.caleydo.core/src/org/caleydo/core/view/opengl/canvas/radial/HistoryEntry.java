@@ -19,6 +19,7 @@ public class HistoryEntry {
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param drawingState
 	 *            Drawing state for the history entry.
 	 * @param pdCurrentRootElement

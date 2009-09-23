@@ -84,7 +84,8 @@ public class PathwayLoaderThread
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		float fProgressFactor = 0;
 
-		EOrganism eOrganism = ((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
+		EOrganism eOrganism =
+			((GeneticUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA)).getOrganism();
 
 		if (pathwayDatabase.getName().equals("KEGG")) {
 
@@ -92,7 +93,7 @@ public class PathwayLoaderThread
 				sFileName =
 					IGeneralManager.CALEYDO_HOME_PATH
 						+ PathwayListGenerator.OUTPUT_FILE_NAME_KEGG_HOMO_SAPIENS;
-				
+
 				// Make sure that old pathway list files without organism specification still work
 				try {
 					new BufferedReader(new FileReader(sFileName));

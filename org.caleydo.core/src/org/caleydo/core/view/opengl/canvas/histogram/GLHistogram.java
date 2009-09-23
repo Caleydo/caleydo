@@ -67,8 +67,8 @@ public class GLHistogram
 
 	float fRenderWidth;
 
-	private ColorMappingManager colorMappingManager; 
-	
+	private ColorMappingManager colorMappingManager;
+
 	/**
 	 * Constructor.
 	 * 
@@ -81,12 +81,12 @@ public class GLHistogram
 
 		viewType = EManagedObjectType.GL_HISTOGRAM;
 
-		colorMappingManager = ColorMappingManager.get(); 
+		colorMappingManager = ColorMappingManager.get();
 		colorMapping = colorMappingManager.getColorMapping(EColorMappingType.GENE_EXPRESSION);
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
-//		registerEventListeners();
+		// registerEventListeners();
 	}
 
 	@Override
@@ -115,12 +115,11 @@ public class GLHistogram
 	}
 
 	@Override
-	public void initData()
-	{
+	public void initData() {
 		super.initData();
 		histogram = set.getHistogram();
 	}
-	
+
 	@Override
 	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
@@ -135,7 +134,7 @@ public class GLHistogram
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
-			colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION); 
+			colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -152,7 +151,7 @@ public class GLHistogram
 	@Override
 	public void displayRemote(GL gl) {
 		if (bIsDisplayListDirtyRemote) {
-			colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION); 
+			colorMapping = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -279,7 +278,7 @@ public class GLHistogram
 				gl.glEnd();
 				gl.glPopName();
 				if (fLeftSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
-				renderCaption(gl, markerPoint.getValue() - fLeftSpread);
+					renderCaption(gl, markerPoint.getValue() - fLeftSpread);
 
 			}
 
@@ -354,8 +353,8 @@ public class GLHistogram
 
 	private void renderCaption(GL gl, float normalizedValue) {
 		DecimalFormat decimalFormat = new DecimalFormat("#####.##");
-		
-		if(getParentGLCanvas().getSize().getWidth() < 500)
+
+		if (getParentGLCanvas().getSize().getWidth() < 500)
 			return;
 
 		textRenderer.begin3DRendering();
@@ -375,7 +374,8 @@ public class GLHistogram
 
 		String text = decimalFormat.format(correspondingValue);
 
-		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth + HistogramRenderStyle.CAPTION_SPACING, HistogramRenderStyle.CAPTION_SPACING, 0.001f,
+		textRenderer.draw3D(text, SIDE_SPACING + normalizedValue * fRenderWidth
+			+ HistogramRenderStyle.CAPTION_SPACING, HistogramRenderStyle.CAPTION_SPACING, 0.001f,
 			GeneralRenderStyle.HEADING_FONT_SCALING_FACTOR);
 		// textRenderer.flush();
 		textRenderer.end3DRendering();
@@ -487,9 +487,9 @@ public class GLHistogram
 		colorMapping.update();
 		colorMappingManager.changeColorMapping(colorMapping);
 
-//		RedrawViewEvent event = new RedrawViewEvent();
-//		event.setSender(this);
-//		eventPublisher.triggerEvent(event);
+		// RedrawViewEvent event = new RedrawViewEvent();
+		// event.setSender(this);
+		// eventPublisher.triggerEvent(event);
 	}
 
 	@Override

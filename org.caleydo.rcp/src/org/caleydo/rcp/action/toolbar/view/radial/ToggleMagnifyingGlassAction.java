@@ -9,20 +9,21 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ToggleMagnifyingGlassAction
-	extends AToolBarAction implements IToolBarItem {
-	
+	extends AToolBarAction
+	implements IToolBarItem {
+
 	public static final String TEXT = "Magnifying glass";
 	public static final String ICON = "resources/icons/general/search.png";
 
 	public ToggleMagnifyingGlassAction() {
 		super(-1);
-		
+
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
 			.getWorkbench().getDisplay(), ICON)));
 	}
-	
+
 	@Override
 	public void run() {
 		super.run();

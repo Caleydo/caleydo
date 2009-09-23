@@ -24,8 +24,9 @@
 package gleem.linalg;
 
 /**
- * 2x2 matrix class useful for simple linear algebra. Representation is (as Mat4f) in row major order and
- * assumes multiplication by column vectors on the right.
+ * 2x2 matrix class useful for simple linear algebra. Representation is (as
+ * Mat4f) in row major order and assumes multiplication by column vectors on the
+ * right.
  */
 
 public class Mat2f {
@@ -43,8 +44,7 @@ public class Mat2f {
 			for (int j = 0; j < 2; j++) {
 				if (i == j) {
 					set(i, j, 1.0f);
-				}
-				else {
+				} else {
 					set(i, j, 0.0f);
 				}
 			}
@@ -52,14 +52,16 @@ public class Mat2f {
 	}
 
 	/**
-	 * Gets the (i,j)th element of this matrix, where i is the row index and j is the column index
+	 * Gets the (i,j)th element of this matrix, where i is the row index and j
+	 * is the column index
 	 */
 	public float get(int i, int j) {
 		return data[2 * i + j];
 	}
 
 	/**
-	 * Sets the (i,j)th element of this matrix, where i is the row index and j is the column index
+	 * Sets the (i,j)th element of this matrix, where i is the row index and j
+	 * is the column index
 	 */
 	public void set(int i, int j, float val) {
 		data[2 * i + j] = val;
@@ -90,8 +92,9 @@ public class Mat2f {
 	}
 
 	/**
-	 * Full matrix inversion in place. If matrix is singular, returns false and matrix contents are untouched.
-	 * If you know the matrix is orthonormal, you can call transpose() instead.
+	 * Full matrix inversion in place. If matrix is singular, returns false and
+	 * matrix contents are untouched. If you know the matrix is orthonormal, you
+	 * can call transpose() instead.
 	 */
 	public boolean invert() {
 		float det = determinant();
@@ -113,7 +116,8 @@ public class Mat2f {
 	}
 
 	/**
-	 * Multiply a 2D vector by this matrix. NOTE: src and dest must be different vectors.
+	 * Multiply a 2D vector by this matrix. NOTE: src and dest must be different
+	 * vectors.
 	 */
 	public void xformVec(Vec2f src, Vec2f dest) {
 		dest.set(get(0, 0) * src.x() + get(0, 1) * src.y(),
@@ -154,6 +158,7 @@ public class Mat2f {
 	@Override
 	public String toString() {
 		String endl = System.getProperty("line.separator");
-		return "(" + get(0, 0) + ", " + get(0, 1) + endl + get(1, 0) + ", " + get(1, 1) + ")";
+		return "(" + get(0, 0) + ", " + get(0, 1) + endl + get(1, 0) + ", "
+				+ get(1, 1) + ")";
 	}
 }

@@ -6,8 +6,8 @@ public interface IGroupsActionHandler
 	extends IListenerOwner {
 
 	public void handleMergeGroups(boolean geneGroup);
-	
+
 	public void handleExportGroups(boolean geneGroup);
-	
+
 	public void handleInterchangeGroups(boolean geneGroup);
 }

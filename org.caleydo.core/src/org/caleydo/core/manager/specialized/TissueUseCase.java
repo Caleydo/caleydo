@@ -29,10 +29,10 @@ public class TissueUseCase
 		useCaseMode = EDataDomain.TISSUE_DATA;
 		possibleViews = new ArrayList<EManagedObjectType>();
 		possibleViews.add(EManagedObjectType.GL_TISSUE);
-		
+
 		possibleIDCategories = new HashMap<EIDCategory, Boolean>();
-//		possibleIDCategories.put(EIDCategory.GENE, null);
-		}
+		// possibleIDCategories.put(EIDCategory.GENE, null);
+	}
 
 	@Override
 	public void setSet(ISet set) {

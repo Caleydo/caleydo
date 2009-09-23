@@ -13,7 +13,7 @@ public class ChangeOrientationParallelCoordinatesEvent
 	public ChangeOrientationParallelCoordinatesEvent() {
 		// nothing to initialize
 	}
-	
+
 	public ChangeOrientationParallelCoordinatesEvent(boolean flag) {
 		super(flag);
 	}

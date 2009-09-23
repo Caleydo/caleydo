@@ -44,9 +44,10 @@ public class CameraParameters {
 	public CameraParameters() {
 	}
 
-	public CameraParameters(Vec3f position, Vec3f forwardDirection, Vec3f upDirection, Rotf orientation,
-		Mat4f modelviewMatrix, Mat4f projectionMatrix, float vertFOV, float imagePlaneAspectRatio, int xSize,
-		int ySize) {
+	public CameraParameters(Vec3f position, Vec3f forwardDirection,
+			Vec3f upDirection, Rotf orientation, Mat4f modelviewMatrix,
+			Mat4f projectionMatrix, float vertFOV, float imagePlaneAspectRatio,
+			int xSize, int ySize) {
 		setPosition(position);
 		setForwardDirection(forwardDirection);
 		setUpDirection(upDirection);
@@ -106,8 +107,8 @@ public class CameraParameters {
 	}
 
 	/**
-	 * Sets 3-space upward direction of camera. This must be orthogonal to the viewing direction, but does not
-	 * need to be normalized.
+	 * Sets 3-space upward direction of camera. This must be orthogonal to the
+	 * viewing direction, but does not need to be normalized.
 	 */
 	public void setUpDirection(Vec3f up) {
 		upDirection.set(up);
@@ -119,8 +120,8 @@ public class CameraParameters {
 	}
 
 	/**
-	 * Sets orientation of camera. NOTE: user is responsible for ensuring this corresponds with the up and
-	 * forward vectors.
+	 * Sets orientation of camera. NOTE: user is responsible for ensuring this
+	 * corresponds with the up and forward vectors.
 	 */
 	public void setOrientation(Rotf orientation) {
 		this.orientation.set(orientation);
@@ -132,53 +133,59 @@ public class CameraParameters {
 	}
 
 	/**
-	 * Sets the modelview matrix corresponding to the orientation and position of the camera. NOTE: user is
-	 * responsible for ensuring this corresponds to the rest of the camera parameters.
+	 * Sets the modelview matrix corresponding to the orientation and position
+	 * of the camera. NOTE: user is responsible for ensuring this corresponds to
+	 * the rest of the camera parameters.
 	 */
 	public void setModelviewMatrix(Mat4f matrix) {
 		modelviewMatrix.set(matrix);
 	}
 
 	/**
-	 * Gets the modelview matrix corresponding to the orientation and position of the camera.
+	 * Gets the modelview matrix corresponding to the orientation and position
+	 * of the camera.
 	 */
 	public Mat4f getModelviewMatrix() {
 		return modelviewMatrix;
 	}
 
 	/**
-	 * Sets the projection matrix corresponding to the camera's field-of-view and aspect ratio parameters.
-	 * NOTE: user is responsible for ensuring this matrix corresponds to these parameters.
+	 * Sets the projection matrix corresponding to the camera's field-of-view
+	 * and aspect ratio parameters. NOTE: user is responsible for ensuring this
+	 * matrix corresponds to these parameters.
 	 */
 	public void setProjectionMatrix(Mat4f matrix) {
 		projectionMatrix.set(matrix);
 	}
 
 	/**
-	 * Gets the projection matrix corresponding to the camera's field-of-view and aspect ratio parameters.
+	 * Gets the projection matrix corresponding to the camera's field-of-view
+	 * and aspect ratio parameters.
 	 */
 	public Mat4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 
 	/**
-	 * Takes HALF of the vertical angular span of the frustum, specified in radians. For example, if your
-	 * <b>fovy</b> argument to gluPerspective() is 90, then this would be Math.PI / 4.
+	 * Takes HALF of the vertical angular span of the frustum, specified in
+	 * radians. For example, if your <b>fovy</b> argument to gluPerspective() is
+	 * 90, then this would be Math.PI / 4.
 	 */
 	public void setVertFOV(float vertFOV) {
 		this.vertFOV = vertFOV;
 	}
 
 	/**
-	 * Returns HALF of the vertical angular span of the frustum, specified in radians.
+	 * Returns HALF of the vertical angular span of the frustum, specified in
+	 * radians.
 	 */
 	public float getVertFOV() {
 		return vertFOV;
 	}
 
 	/**
-	 * Sets the aspect ratio of the image plane. Note that this does not necessarily have to correspond to the
-	 * aspect ratio of the window.
+	 * Sets the aspect ratio of the image plane. Note that this does not
+	 * necessarily have to correspond to the aspect ratio of the window.
 	 */
 	public void setImagePlaneAspectRatio(float ratio) {
 		imagePlaneAspectRatio = ratio;

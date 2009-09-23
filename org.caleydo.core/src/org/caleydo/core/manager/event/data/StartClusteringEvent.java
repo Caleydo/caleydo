@@ -25,7 +25,7 @@ public class StartClusteringEvent
 	public StartClusteringEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public StartClusteringEvent(ClusterState state) {
 		this.ClusterState = state;
 	}

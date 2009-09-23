@@ -9,14 +9,14 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event for distributing the list of all clients to each of the connected clients.
- * This event should be send from the server to its clients whenever a new client
- * connects or an existing client disconnects.
+ * Event for distributing the list of all clients to each of the connected clients. This event should be send
+ * from the server to its clients whenever a new client connects or an existing client disconnects.
+ * 
  * @author Werner Puff
  */
 @XmlType
 @XmlRootElement
-public class ClientListEvent 
+public class ClientListEvent
 	extends AEvent {
 
 	/** list of clients */
@@ -30,8 +30,9 @@ public class ClientListEvent
 		return true;
 	}
 
-	/** 
+	/**
 	 * Getter for {@link ClientListEvent#clientNames}
+	 * 
 	 * @return {@link ClientListEvent#clientNames}
 	 */
 	@XmlElementWrapper
@@ -39,9 +40,11 @@ public class ClientListEvent
 		return clientNames;
 	}
 
-	/** 
+	/**
 	 * Setter for {@link ClientListEvent#clientNames}
-	 * @param clientNames new {@link ClientListEvent#clientNames} to set
+	 * 
+	 * @param clientNames
+	 *            new {@link ClientListEvent#clientNames} to set
 	 */
 	public void setClientNames(List<String> clientNames) {
 		this.clientNames = clientNames;

@@ -74,7 +74,8 @@ public class CmdDataCreateSet
 			GeneralManager.get().getUseCase(EDataDomain.CLINICAL_DATA).setSet(createdObject);
 		}
 		else
-			throw new IllegalStateException("Cannot find use case for set type " + createdObject.getSetType() + ".");
+			throw new IllegalStateException("Cannot find use case for set type " + createdObject.getSetType()
+				+ ".");
 
 		commandManager.runDoCommand(this);
 	}

@@ -33,9 +33,9 @@ public class ColorMapping {
 	 * Default no-arg constructor, especially needed for xml-serialization.
 	 */
 	public ColorMapping() {
-		
+
 	}
-	
+
 	/**
 	 * <p>
 	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first has the smallest value, and
@@ -91,14 +91,23 @@ public class ColorMapping {
 	 */
 	public void initiFromPreferenceStore() {
 		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-		int iNumberOfMarkerPoints = store.getInt(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+		int iNumberOfMarkerPoints =
+			store.getInt(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
 
 		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
 		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
-			float colorMarkerValue = store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
-			String color = store.getString(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
-			float fLeftSpread = store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD + iCount);
-			float fRightSpread = store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD + iCount);
+			float colorMarkerValue =
+				store
+					.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+			String color =
+				store.getString(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_COLOR
+					+ iCount);
+			float fLeftSpread =
+				store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
+					+ iCount);
+			float fRightSpread =
+				store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
+					+ iCount);
 
 			ColorMarkerPoint point =
 				new ColorMarkerPoint(colorMarkerValue, ConversionTools.getFloatColorFromString(color));
@@ -130,7 +139,8 @@ public class ColorMapping {
 			store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
 				+ iCount, point.getLeftSpread());
 			iCount++;
-			store.setValue(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS,	markerPoints.size());
+			store.setValue(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS,
+				markerPoints.size());
 		}
 	}
 

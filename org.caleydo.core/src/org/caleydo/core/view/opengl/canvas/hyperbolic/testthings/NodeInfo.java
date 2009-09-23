@@ -1,18 +1,18 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.testthings;
 
 public class NodeInfo {
-	
+
 	private String sNodeName;
 
 	private boolean bIsRootNode;
-	
+
 	private int iNumberOfKids;
-	
+
 	private int iNumberOfSiblings;
-	
+
 	private int iLayer;
-	
-	public NodeInfo(String sNodename, boolean bIsRootNode, int iLayer ){ 
+
+	public NodeInfo(String sNodename, boolean bIsRootNode, int iLayer) {
 		this.sNodeName = sNodename;
 		this.bIsRootNode = bIsRootNode;
 		this.iLayer = iLayer;

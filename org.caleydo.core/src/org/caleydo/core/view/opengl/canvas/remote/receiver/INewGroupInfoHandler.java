@@ -8,5 +8,5 @@ public interface INewGroupInfoHandler
 	extends IListenerOwner {
 
 	public void handleNewGroupInfo(EVAType eVAType, GroupList groupList, boolean bDeleteTree);
-	
+
 }

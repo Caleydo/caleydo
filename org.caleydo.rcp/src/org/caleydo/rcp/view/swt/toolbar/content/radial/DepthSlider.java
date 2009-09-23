@@ -94,7 +94,7 @@ public class DepthSlider
 
 	@Override
 	public void dispose() {
-		//Unregister event listener
+		// Unregister event listener
 		if (updateSliderPositionListener != null) {
 			GeneralManager.get().getEventPublisher().removeListener(updateSliderPositionListener);
 			updateSliderPositionListener = null;

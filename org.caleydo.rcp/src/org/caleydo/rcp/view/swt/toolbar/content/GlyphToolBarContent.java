@@ -12,7 +12,8 @@ import org.caleydo.rcp.action.toolbar.view.glyph.OpenNewWindowAction;
 import org.caleydo.rcp.action.toolbar.view.glyph.RemoveUnselectedFromViewAction;
 
 /**
- * ToolBarContent implementation for glyph specific toolbar items.  
+ * ToolBarContent implementation for glyph specific toolbar items.
+ * 
  * @author Werner Puff
  */
 public class GlyphToolBarContent
@@ -26,7 +27,7 @@ public class GlyphToolBarContent
 	public Class<?> getViewClass() {
 		return GlyphToolBarContent.class;
 	}
-	
+
 	@Override
 	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
@@ -47,7 +48,7 @@ public class GlyphToolBarContent
 		cvm2a.setAction(null);
 		actionList.add(new ChangeViewModeAction(targetViewID, cvm2a));
 		actionList.add(cvm2a);
-		
+
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
 

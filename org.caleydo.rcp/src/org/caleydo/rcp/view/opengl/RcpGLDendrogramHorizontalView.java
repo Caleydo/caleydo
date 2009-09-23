@@ -21,7 +21,7 @@ public class RcpGLDendrogramHorizontalView
 
 	@Override
 	public void createPartControl(Composite parent) {
-		
+
 		super.createPartControl(parent);
 		createGLCanvas();
 		createGLEventListener(initSerializedView, glCanvas.getID());

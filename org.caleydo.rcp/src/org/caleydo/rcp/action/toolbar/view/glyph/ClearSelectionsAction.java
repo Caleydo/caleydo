@@ -26,7 +26,6 @@ public class ClearSelectionsAction
 	public void run() {
 		super.run();
 
-		
-	GeneralManager.get().getEventPublisher().triggerEvent(new ClearSelectionsEvent());
+		GeneralManager.get().getEventPublisher().triggerEvent(new ClearSelectionsEvent());
 	};
 }

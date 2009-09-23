@@ -26,19 +26,19 @@ public interface IDrawAbleObject {
 	 */
 	public void place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth);
 
-//	/**
-//	 * Place the node on a specific position calcutated by the projection type
-//	 * 
-//	 * @param fXCoord
-//	 * @param fYCoord
-//	 * @param fZCoord
-//	 * @param fHeight
-//	 * @param fWidth
-//	 * @param projection
-//	 */
-//	public void placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth, ITreeProjection projection);
+	// /**
+	// * Place the node on a specific position calcutated by the projection type
+	// *
+	// * @param fXCoord
+	// * @param fYCoord
+	// * @param fZCoord
+	// * @param fHeight
+	// * @param fWidth
+	// * @param projection
+	// */
+	// public void placeAndProject(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth,
+	// ITreeProjection projection);
 
-	
 	/**
 	 * Draw the object in normal representation, taking color mapping from {@link HyperbolicRenderStyle}
 	 * 
@@ -55,7 +55,6 @@ public interface IDrawAbleObject {
 	public ArrayList<Vec3f> getConnectionPoints();
 
 	void setPickAble(boolean bIsAbleToPick);
-
 
 	// /**
 	// * Draw the object in highlight representation, taking

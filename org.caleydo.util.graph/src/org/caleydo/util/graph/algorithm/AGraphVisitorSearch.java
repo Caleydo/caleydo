@@ -4,7 +4,8 @@ import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
 
 /**
- * Abstract base class with setter and getter for IGraph, IGraphItem and searchDepth.
+ * Abstract base class with setter and getter for IGraph, IGraphItem and
+ * searchDepth.
  * 
  * @author Michael Kalkusch
  */
@@ -23,7 +24,8 @@ public abstract class AGraphVisitorSearch {
 	protected IGraphItem itemSource;
 
 	/**
-	 * search depth; -1, default; 0.. local, self references; 1.. primary adjacent IGraphItems, etc.
+	 * search depth; -1, default; 0.. local, self references; 1.. primary
+	 * adjacent IGraphItems, etc.
 	 * 
 	 * @see AGraphVisitorSearch#getSearchDepth()
 	 * @see AGraphVisitorSearch#setSearchDepth(int)

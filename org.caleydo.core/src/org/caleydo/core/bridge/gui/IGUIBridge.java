@@ -18,10 +18,12 @@ public interface IGUIBridge {
 	public String getFileNameCurrentDataSet();
 
 	public Display getDisplay();
-	
+
 	/**
 	 * Creates a GUI-based view from its serialized form
-	 * @param serializedView serialized form of the view to create 
+	 * 
+	 * @param serializedView
+	 *            serialized form of the view to create
 	 */
 	public void createView(ASerializedView serializedView);
 }

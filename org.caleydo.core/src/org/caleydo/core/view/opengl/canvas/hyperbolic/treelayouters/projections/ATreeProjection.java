@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
-
 public abstract class ATreeProjection
 	implements ITreeProjection {
 
@@ -12,10 +11,9 @@ public abstract class ATreeProjection
 	protected float fViewSpaceXAbs = 0;
 	protected float[] fViewSpaceY = {};
 	protected float fViewSpaceYAbs = 0;
-	
-	
-	public ATreeProjection(int iID,float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
-		float fViewSpaceXAbs, float[] fViewSpaceY,float fViewSpaceYAbs){
+
+	public ATreeProjection(int iID, float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
+		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
 		this.iID = iID;
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
@@ -25,24 +23,24 @@ public abstract class ATreeProjection
 		this.fViewSpaceY = fViewSpaceY;
 		this.fViewSpaceYAbs = fViewSpaceYAbs;
 	}
-	
-	public ATreeProjection(int iID){
+
+	public ATreeProjection(int iID) {
 		this.iID = iID;
 	}
-	
+
 	@Override
 	public final int compareTo(ITreeProjection o) {
 		return this.iID - o.getID();
 	}
-	
+
 	@Override
-	public final int getID(){
+	public final int getID() {
 		return iID;
 	}
-	
+
 	@Override
 	public void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
-		float fViewSpaceXAbs, float[] fViewSpaceY,float fViewSpaceYAbs){
+		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
 		this.fHeight = fHeight;
 		this.fWidth = fWidth;
 		this.fDepth = fDepth;

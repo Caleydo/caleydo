@@ -119,7 +119,7 @@ public class FileLoadDataAction
 			numGridCols = 3;
 
 		loadDataParameters.setDataDomain(Application.dataDomain);
-		
+
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(numGridCols, false);
 		composite.setLayout(layout);

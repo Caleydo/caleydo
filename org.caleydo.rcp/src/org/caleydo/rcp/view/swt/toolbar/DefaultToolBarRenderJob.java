@@ -69,7 +69,7 @@ public class DefaultToolBarRenderJob
 			layout.marginHeight = layout.marginWidth = 0;
 			group.setLayout(layout);
 			group.setLayoutData(toolBarRenderer.createStandardGridData());
-			
+
 			viewSpecificGroups.add(group);
 
 			// Needed to simulate toolbar wrapping which is not implemented for linux
@@ -83,19 +83,20 @@ public class DefaultToolBarRenderJob
 			resourceLoader.getImage(display, path);
 
 			// TODO: write horizontal renderer
-			 if (!GenomePerspective.bIsWideScreen) {
-				 Label spacer = new Label(group, SWT.NULL);
-				 spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
-			 }
+			if (!GenomePerspective.bIsWideScreen) {
+				Label spacer = new Label(group, SWT.NULL);
+				spacer.setLayoutData(new GridData(GridData.FILL_BOTH));
+			}
 
 			Label label = new Label(group, SWT.CENTER);
 			label.setText(toolBarContainer.getTitle());
 			label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
-			
-			// Set the group as the labels data to be able to discriminate between spacer when chaning background color
-			label.setData(group); 
-			
+
+			// Set the group as the labels data to be able to discriminate between spacer when chaning
+			// background color
+			label.setData(group);
+
 			group.setData("viewType", toolBarContent.getViewClass().getName());
 			group.setData("viewID", toolBarContent.getTargetViewData().getViewID());
 			group.setData("resource", null);
@@ -141,7 +142,7 @@ public class DefaultToolBarRenderJob
 			}
 			itemIndex++;
 		}
-		
+
 		group.setData("toolBarManagers", toolBarManagers);
 	}
 

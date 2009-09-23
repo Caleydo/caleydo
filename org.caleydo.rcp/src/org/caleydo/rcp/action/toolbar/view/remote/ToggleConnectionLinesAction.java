@@ -19,13 +19,13 @@ public class ToggleConnectionLinesAction
 
 	/** status of this toggle-button */
 	private boolean connectionLinesEnabled = true;
-	
+
 	/**
 	 * Constructor.
 	 */
 	public ToggleConnectionLinesAction(RemoteRenderingToolBarMediator mediator) {
 		remoteRenderingToolBarMediator = mediator;
-		
+
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
@@ -40,7 +40,8 @@ public class ToggleConnectionLinesAction
 		connectionLinesEnabled = !connectionLinesEnabled;
 		if (connectionLinesEnabled) {
 			remoteRenderingToolBarMediator.enableConnectionLines();
-		} else {
+		}
+		else {
 			remoteRenderingToolBarMediator.disableConnectionLines();
 		}
 	}
@@ -53,5 +54,5 @@ public class ToggleConnectionLinesAction
 		this.connectionLinesEnabled = connectionLinesEnabled;
 		setChecked(connectionLinesEnabled);
 	};
-	
+
 }

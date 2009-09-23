@@ -16,7 +16,7 @@ public class GlyphChangePersonalNameEvent
 	public GlyphChangePersonalNameEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public GlyphChangePersonalNameEvent(int iViewID, String personalName) {
 		super();
 		this.iViewID = iViewID;
@@ -26,7 +26,7 @@ public class GlyphChangePersonalNameEvent
 	public String getPersonalName() {
 		return personalName;
 	}
-	
+
 	public int getViewID() {
 		return iViewID;
 	}

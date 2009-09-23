@@ -12,7 +12,8 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.ResetAxisSpaci
 import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.SaveSelectionsAction;
 
 /**
- * ToolBarContent implementation for heatmap specific toolbar items.  
+ * ToolBarContent implementation for heatmap specific toolbar items.
+ * 
  * @author Werner Puff
  */
 public class ParCoordsToolBarContent
@@ -26,7 +27,7 @@ public class ParCoordsToolBarContent
 	public Class<?> getViewClass() {
 		return GLParallelCoordinates.class;
 	}
-	
+
 	@Override
 	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();

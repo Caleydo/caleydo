@@ -13,7 +13,8 @@ public class ConversionTools {
 	 * The string is expected to contain colors in the format "255,255,255" with values ranging from 0 to 255.
 	 * The returned array is of type float with values between 0 and 1.
 	 * 
-	 * @param sColor the string containing the color with values between 0 and 255
+	 * @param sColor
+	 *            the string containing the color with values between 0 and 255
 	 * @return a float array containing the colors with values between 0 and 1
 	 */
 	public static float[] getFloatColorFromString(String sColor) {
@@ -40,16 +41,17 @@ public class ConversionTools {
 		}
 		return fArColor;
 	}
-	
+
 	/**
 	 * The string is expected to contain colors in the format "255,255,255" with values ranging from 0 to 255.
 	 * The returned array is of type float with values between 0 and 1.
 	 * 
-	 * @param sColor the string containing the color with values between 0 and 255
+	 * @param sColor
+	 *            the string containing the color with values between 0 and 255
 	 * @return a float array containing the colors with values between 0 and 1
 	 */
 	public static int[] getIntColorFromString(String color) {
-		
+
 		int[] iArColor = new int[3];
 		if (color.isEmpty()) {
 			iArColor[0] = 0;
@@ -70,8 +72,7 @@ public class ConversionTools {
 				iInnerCount++;
 			}
 		}
-		
-		
+
 		return iArColor;
 	}
 

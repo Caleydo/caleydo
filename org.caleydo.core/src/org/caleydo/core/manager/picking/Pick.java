@@ -65,10 +65,10 @@ public class Pick {
 	 * The 2D screen coordinates of the mouse position where the user started the drag action.
 	 */
 	public Point getDragStartPoint() {
-		
+
 		return dragStartPoint;
 	}
-	
+
 	/**
 	 * The z-value of the picked element
 	 * 

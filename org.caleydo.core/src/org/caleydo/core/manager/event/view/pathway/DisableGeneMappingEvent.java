@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Events that signals that gene mapping within 
- * pathway views should be disabled.
+ * Events that signals that gene mapping within pathway views should be disabled.
+ * 
  * @author Werner Puff
  */
 @XmlRootElement

@@ -98,11 +98,11 @@ public class PathwayUpdatePreferencePage
 	@Override
 	public boolean performCancel() {
 		super.performCancel();
-		
-//		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-//
-//		if(store.getBoolean(PreferenceConstants.PATHWAY_DATA_OK))
-//			return true;
+
+		// PreferenceStore store = GeneralManager.get().getPreferenceStore();
+		//
+		// if(store.getBoolean(PreferenceConstants.PATHWAY_DATA_OK))
+		// return true;
 
 		MessageBox messageBox = new MessageBox(this.getShell(), SWT.OK);
 		messageBox.setText("Pathway Update Notification");

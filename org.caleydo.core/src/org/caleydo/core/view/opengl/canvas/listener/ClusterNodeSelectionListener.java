@@ -8,7 +8,6 @@ import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
  * Listener for {@link ClusterNodeSelectionEvent}.
  * 
  * @author Christian Partl
- *
  */
 public class ClusterNodeSelectionListener
 	extends AEventListener<IClusterNodeEventReceiver> {

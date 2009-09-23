@@ -32,14 +32,14 @@ import org.eclipse.core.runtime.Status;
 public class Connection {
 
 	/** utility object for logging */
-	ILog log = GeneralManager.get().getLogger(); 
-	
+	ILog log = GeneralManager.get().getLogger();
+
 	/** {@link NetworkManager} for managing this connection. */
 	private NetworkManager networkManager;
-	
+
 	/**
-	 * The {@link EventFilterBridge} to bridge events from the central outgoing network
-	 * {@link EventPublisher} to the connected caleydo application.
+	 * The {@link EventFilterBridge} to bridge events from the central outgoing network {@link EventPublisher}
+	 * to the connected caleydo application.
 	 */
 	private EventFilterBridge outgoingBridge;
 
@@ -48,7 +48,7 @@ public class Connection {
 
 	/** {@link Thread} of the {@link NetworkEventPublisher} to send events */
 	private Thread senderThread;
-	
+
 	/**
 	 * The {@link EventFilterBridge} to bridge events from the {@link NetworkEventReceiver} to the central
 	 * incoming network {@link EventPublisher} to the connected caleydo application.
@@ -63,8 +63,8 @@ public class Connection {
 
 	/** Socket to the connected Caleydo application */
 	private Socket socket;
-	
-	/** {@link OutputStream} to the connected Caleydo application*/
+
+	/** {@link OutputStream} to the connected Caleydo application */
 	private OutputStream outputStream;
 
 	/** {@link InputStream} from the connected Caleydo application */
@@ -72,7 +72,7 @@ public class Connection {
 
 	/** network name of the remote application */
 	private String remoteNetworkName;
-	
+
 	/**
 	 * Creates a stand-alone Connection instance ready to be connected to a local event system and the client
 	 * specified by its {@link InetAddress}. The connection between caleydo's event system and this connection
@@ -93,12 +93,12 @@ public class Connection {
 	 */
 	private void init(NetworkManager networkManager) {
 		this.networkManager = networkManager;
-		
+
 		incomingPublisher = new NetworkEventReceiver();
 		incomingPublisher.setName("networkReceiver");
 		incomingPublisher.setNetworkManager(networkManager);
 		incomingPublisher.setConnection(this);
-		
+
 		incomingBridge = new EventFilterBridge();
 		incomingBridge.setName("incomingClientBridge");
 		incomingBridge.setBridgeRemoteEvents(true);
@@ -118,19 +118,22 @@ public class Connection {
 	}
 
 	/**
-	 * Creates an {@link Socket}-connection to a server running on the given address,  
-	 * performs handshakes and initializes this connection.  
-	 * @param clientSocket {@link Socket} to connect through
-	 * @throws ConnectException if a error during handshaking occurs
+	 * Creates an {@link Socket}-connection to a server running on the given address, performs handshakes and
+	 * initializes this connection.
+	 * 
+	 * @param clientSocket
+	 *            {@link Socket} to connect through
+	 * @throws ConnectException
+	 *             if a error during handshaking occurs
 	 */
 	public ApplicationInitData connect(InetAddress address, int port) throws ConnectException {
 		log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "connect(): address=" + address));
 		ApplicationInitData initData;
-		try { 
+		try {
 			socket = new Socket(address, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
-			
+
 			NetworkUtils networkUtils = networkManager.getNetworkUtils();
 
 			ClientHandshake clientHandshake = new ClientHandshake();
@@ -138,15 +141,16 @@ public class Connection {
 			clientHandshake.setVersion(NetworkManager.VERSION);
 			clientHandshake.setRequestType(ClientHandshake.REQUEST_CONNECT);
 			networkUtils.writeHandshake(clientHandshake, outputStream);
-			
+
 			ServerHandshake serverHandshake = (ServerHandshake) networkUtils.readHandshake(inputStream);
-			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "connect(): serverHandshake=" + serverHandshake));
+			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "connect(): serverHandshake="
+				+ serverHandshake));
 
 			if (serverHandshake.getError() != null) {
 				// TODO connection error handling
 				throw new Exception("connection error: " + serverHandshake.getError());
 			}
-			
+
 			networkManager.setNetworkName(serverHandshake.getClientNetworkName());
 			clientHandshake = new ClientHandshake();
 			clientHandshake.setClientNetworkName(networkManager.getNetworkName());
@@ -160,7 +164,8 @@ public class Connection {
 			networkUtils.writeHandshake(clientHandshake, outputStream);
 
 			start(serverHandshake.getServerNetworkName());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new ConnectException(e);
 		}
 
@@ -168,22 +173,27 @@ public class Connection {
 	}
 
 	/**
-	 * Performs handshakes with the client which tries to connect and initializes this connection.  
-	 * @param clientSocket {@link Socket} to connect through
-	 * @throws ConnectException if a error during handshaking occurs
+	 * Performs handshakes with the client which tries to connect and initializes this connection.
+	 * 
+	 * @param clientSocket
+	 *            {@link Socket} to connect through
+	 * @throws ConnectException
+	 *             if a error during handshaking occurs
 	 */
 	public void connect(Socket clientSocket) throws ConnectException {
 		socket = clientSocket;
 		try {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			throw new ConnectException("error while getting input/output streams", ex);
 		}
-		
+
 		try {
 			socket.setSoTimeout(networkManager.getConnectingTimeout());
-		} catch (SocketException ex) {
+		}
+		catch (SocketException ex) {
 			throw new ConnectException("error while trying to set read-timeout", ex);
 		}
 
@@ -200,7 +210,8 @@ public class Connection {
 			clientHandshake = readClientHandshake(inputStream);
 			socket.setSoTimeout(0);
 			start(clientHandshake.getClientNetworkName());
-		} catch (SocketTimeoutException stEx) {
+		}
+		catch (SocketTimeoutException stEx) {
 			byte[] out = "Timeout.\r\n".getBytes();
 			try {
 				outputStream.write(out);
@@ -210,46 +221,60 @@ public class Connection {
 				// client doesnt seem to be connected anymore, nothing to do
 			}
 			throw new ConnectException("Client timed out during handshake.");
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			throw new ConnectException("Communication error during handshake.", ex);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new ConnectException("XML serialization error", ex);
 		}
 	}
 
 	/**
-	 * Reads a incoming handshake message from the client. 
-	 * @param is Socket based stream to read the message from  
+	 * Reads a incoming handshake message from the client.
+	 * 
+	 * @param is
+	 *            Socket based stream to read the message from
 	 * @return message send from the client
-	 * @throws SocketTimeoutException If the client does not respond in time
-	 * @throws IOException If a general error during the read operation occurs
-	 * @throws JAXBException If a XML-serialization error occurs
+	 * @throws SocketTimeoutException
+	 *             If the client does not respond in time
+	 * @throws IOException
+	 *             If a general error during the read operation occurs
+	 * @throws JAXBException
+	 *             If a XML-serialization error occurs
 	 */
 	private ClientHandshake readClientHandshake(InputStream is) throws SocketTimeoutException, IOException,
 		JAXBException {
 
 		NetworkUtils utils = networkManager.getNetworkUtils();
 		ClientHandshake clientHandshake = (ClientHandshake) utils.readHandshake(is);
-		
+
 		return clientHandshake;
 	}
 
 	/**
 	 * Sends a {@link ServerHandshake} message to a client
-	 * @param serverHandshake message to send
-	 * @param outputStream Socket based stream to write the message to
-	 * @throws IOException If a general error during the read operation occurs
-	 * @throws JAXBException If a XML-serialization error occurs
+	 * 
+	 * @param serverHandshake
+	 *            message to send
+	 * @param outputStream
+	 *            Socket based stream to write the message to
+	 * @throws IOException
+	 *             If a general error during the read operation occurs
+	 * @throws JAXBException
+	 *             If a XML-serialization error occurs
 	 */
 	private void sendServerHandshake(ServerHandshake serverHandshake, OutputStream outputStream)
-	throws JAXBException, IOException {
+		throws JAXBException, IOException {
 		NetworkUtils utils = networkManager.getNetworkUtils();
 		utils.writeHandshake(serverHandshake, outputStream);
 	}
 
 	/**
 	 * Collects the data to initialize a new connected client and sends it to the client
-	 * @param outputStream {@link OutputStream} of the socket for sending to client 
+	 * 
+	 * @param outputStream
+	 *            {@link OutputStream} of the socket for sending to client
 	 */
 	private void sendServerInitializationData(OutputStream outputStream) {
 		ApplicationInitData initData = new ApplicationInitData();
@@ -257,16 +282,17 @@ public class Connection {
 		// FIXME this should work for more than one use case now
 		AUseCase useCase = (AUseCase) GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA);
 		ISet set = useCase.getSet();
-		
+
 		initData.setUseCase(useCase);
 		initData.setSetFileContent(SetUtils.loadSetFile(useCase.getLoadDataParameters()));
 		initData.setGeneClusterTree(SetUtils.getGeneClusterXml(set));
 		initData.setExperimentClusterTree(SetUtils.getExperimentClusterXml(set));
-		
-		HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>(); 
+
+		HashMap<EVAType, VirtualArray> virtualArrayMap = new HashMap<EVAType, VirtualArray>();
 		virtualArrayMap.put(EVAType.CONTENT, (VirtualArray) useCase.getVA(EVAType.CONTENT));
 		virtualArrayMap.put(EVAType.CONTENT_CONTEXT, (VirtualArray) useCase.getVA(EVAType.CONTENT_CONTEXT));
-		virtualArrayMap.put(EVAType.CONTENT_EMBEDDED_HM, (VirtualArray) useCase.getVA(EVAType.CONTENT_EMBEDDED_HM));
+		virtualArrayMap.put(EVAType.CONTENT_EMBEDDED_HM, (VirtualArray) useCase
+			.getVA(EVAType.CONTENT_EMBEDDED_HM));
 		virtualArrayMap.put(EVAType.STORAGE, (VirtualArray) useCase.getVA(EVAType.STORAGE));
 		initData.setVirtualArrayMap(virtualArrayMap);
 
@@ -275,19 +301,22 @@ public class Connection {
 	}
 
 	/**
-	 * Checks if the handshake message received from the client is valid and
-	 * creates a {@link ServerHandshake} message for sending to the client.
-	 * @param clientHandshake received handshake message from the client
+	 * Checks if the handshake message received from the client is valid and creates a {@link ServerHandshake}
+	 * message for sending to the client.
+	 * 
+	 * @param clientHandshake
+	 *            received handshake message from the client
 	 * @return new {@link ServerHandshake} message to send to the client
 	 */
 	private ServerHandshake validate(ClientHandshake clientHandshake) {
 		ServerHandshake serverHandshake = new ServerHandshake();
 
-		String newClientName = clientHandshake.getClientNetworkName() + "-" + networkManager.increaseConnectionCounter();
+		String newClientName =
+			clientHandshake.getClientNetworkName() + "-" + networkManager.increaseConnectionCounter();
 		serverHandshake.setClientNetworkName(newClientName);
 		serverHandshake.setServerNetworkName(networkManager.getNetworkName());
 		serverHandshake.setVersion(NetworkManager.VERSION);
-		
+
 		if (!NetworkManager.VERSION.equals(clientHandshake.getVersion())) {
 			serverHandshake.setError(ServerHandshake.ERROR_VERSION_CONFLICT);
 		}
@@ -297,7 +326,9 @@ public class Connection {
 
 	/**
 	 * initializes the names of this {@link Connection} and its {@link EventFilterBridge}s
-	 * @param remoteNetworkName the network name of the remote application
+	 * 
+	 * @param remoteNetworkName
+	 *            the network name of the remote application
 	 */
 	private void start(String remoteNetworkName) {
 		this.remoteNetworkName = remoteNetworkName;
@@ -318,8 +349,7 @@ public class Connection {
 	}
 
 	/**
-	 * Disposes this connection by stopping the sender and receiver thread
-	 * and closing the socket-connections.
+	 * Disposes this connection by stopping the sender and receiver thread and closing the socket-connections.
 	 */
 	public void dispose() {
 		if (senderThread != null && senderThread.isAlive()) {
@@ -339,15 +369,16 @@ public class Connection {
 		if (socket != null || socket.isConnected()) {
 			try {
 				socket.close();
-			} catch (IOException ex) {
+			}
+			catch (IOException ex) {
 				// nothing to do here, we are closing the socket anyways
 			}
 		}
-		
+
 		socket = null;
 		inputStream = null;
 		outputStream = null;
-		
+
 		outgoingBridge = null;
 		outgoingPublisher = null;
 		senderThread = null;
@@ -355,13 +386,14 @@ public class Connection {
 		incomingBridge = null;
 		incomingPublisher = null;
 		receiverThread = null;
-		
+
 		networkManager = null;
 		remoteNetworkName = null;
 	}
-	
+
 	/**
 	 * Getter for {@link Connection#outgoingBridge}
+	 * 
 	 * @return {@link Connection#outgoingBridge}
 	 */
 	public EventFilterBridge getOutgoingBridge() {
@@ -370,6 +402,7 @@ public class Connection {
 
 	/**
 	 * Setter for {@link Connection#outgoingBridge}
+	 * 
 	 * @param {@link Connection#outgoingBridge}
 	 */
 	public void setOutgoingBridge(EventFilterBridge outgoingBridge) {
@@ -378,6 +411,7 @@ public class Connection {
 
 	/**
 	 * Getter for {@link Connection#outgoingPublisher}
+	 * 
 	 * @return {@link Connection#outgoingPublisher}
 	 */
 	public NetworkEventPublisher getOutgoingPublisher() {
@@ -386,6 +420,7 @@ public class Connection {
 
 	/**
 	 * Setter for {@link Connection#outgoingPublisher}
+	 * 
 	 * @param {@link Connection#outgoingPublisher}
 	 */
 	public void setOutgoingPublisher(NetworkEventPublisher publisher) {
@@ -394,6 +429,7 @@ public class Connection {
 
 	/**
 	 * Getter for {@link Connection#incomingPublisher}
+	 * 
 	 * @return {@link Connection#incomingPublisher}
 	 */
 	public NetworkEventReceiver getIncomingPublisher() {
@@ -402,6 +438,7 @@ public class Connection {
 
 	/**
 	 * Setter for {@link Connection#incomingPublisher}
+	 * 
 	 * @param {@link Connection#incomingPublisher}
 	 */
 	public void setIncomingPublisher(NetworkEventReceiver incomingPublisher) {
@@ -410,6 +447,7 @@ public class Connection {
 
 	/**
 	 * Getter for {@link Connection#incomingBridge}
+	 * 
 	 * @return {@link Connection#incomingBridge}
 	 */
 	public EventFilterBridge getIncomingBridge() {
@@ -418,6 +456,7 @@ public class Connection {
 
 	/**
 	 * Setter for {@link Connection#outgoingBridge}
+	 * 
 	 * @param {@link Connection#outgoingBridge}
 	 */
 	public void setIncomingBridge(EventFilterBridge bridge) {
@@ -426,6 +465,7 @@ public class Connection {
 
 	/**
 	 * Getter for {@link Connection#remoteNetworkName}
+	 * 
 	 * @return {@link Connection#remoteNetworkName}
 	 */
 	public String getRemoteNetworkName() {
@@ -434,6 +474,7 @@ public class Connection {
 
 	/**
 	 * Setter for {@link Connection#remoteNetworkName}
+	 * 
 	 * @param {@link Connection#remoteNetworkName}
 	 */
 	public void setRemoteNetworkName(String remoteNetworkName) {

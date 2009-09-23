@@ -50,11 +50,11 @@ public class MovementValue {
 	 *            Time difference since the last call of move, i.e. the last frame.
 	 */
 	public void move(double dTimePassed) {
-		if(!isTargetValueReached())
+		if (!isTargetValueReached())
 			fMovementValue += (fSpeed * dTimePassed);
 		if (isTargetValueReached())
 			fMovementValue = fTargetValue;
-			
+
 	}
 
 	/**
@@ -77,7 +77,8 @@ public class MovementValue {
 	/**
 	 * Sets the target value to the specified value.
 	 * 
-	 * @param fTargetValue Value the target value should be set to.
+	 * @param fTargetValue
+	 *            Value the target value should be set to.
 	 */
 	public void setTargetValue(float fTargetValue) {
 		this.fTargetValue = fTargetValue;
@@ -93,7 +94,8 @@ public class MovementValue {
 	/**
 	 * Sets the movement value to the specified value.
 	 * 
-	 * @param fMovementValue Value the movement value should be set to.
+	 * @param fMovementValue
+	 *            Value the movement value should be set to.
 	 */
 	public void setMovementValue(float fMovementValue) {
 		this.fMovementValue = fMovementValue;
@@ -109,7 +111,8 @@ public class MovementValue {
 	/**
 	 * Sets the movement value's speed to the specified value.
 	 * 
-	 * @param fSpeed Value the movement value's speed should be set to.
+	 * @param fSpeed
+	 *            Value the movement value's speed should be set to.
 	 */
 	public void setSpeed(float fSpeed) {
 		this.fSpeed = fSpeed;
@@ -125,7 +128,8 @@ public class MovementValue {
 	/**
 	 * Sets the criterion type which specifies when the target is counted as reached.
 	 * 
-	 * @param iCreterionType Criterion type.
+	 * @param iCreterionType
+	 *            Criterion type.
 	 */
 	public void setCreterionType(int iCreterionType) {
 		this.iCreterionType = iCreterionType;

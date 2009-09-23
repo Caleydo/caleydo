@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Handshake message sent from a Caleydo Server Application to a Caleydo Client Application
- * after validation of the {@link ClientHandshake} sent by the client. 
+ * Handshake message sent from a Caleydo Server Application to a Caleydo Client Application after validation
+ * of the {@link ClientHandshake} sent by the client.
  * 
  * @author Werner Puff
  */
@@ -20,13 +20,13 @@ public class ServerHandshake {
 
 	/** the network name the client is given by the server */
 	String clientNetworkName;
-	
+
 	/** caleydo version of the server */
 	String version;
 
 	/** possible client handshake message validation error, <code>null</code> for no errors */
 	String error;
-	
+
 	public String getServerNetworkName() {
 		return serverNetworkName;
 	}

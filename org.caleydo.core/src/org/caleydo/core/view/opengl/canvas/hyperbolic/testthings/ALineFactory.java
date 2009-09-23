@@ -14,11 +14,11 @@ public abstract class ALineFactory
 
 	public ALineFactory(ArrayList<Vec3f> pointListA, ArrayList<Vec3f> pointListB) {
 
-		
 	}
 
 	@Override
-	public abstract void findClosestPointsFromPointlists(ArrayList<Vec3f> pointListA, ArrayList<Vec3f> pointListB);
+	public abstract void findClosestPointsFromPointlists(ArrayList<Vec3f> pointListA,
+		ArrayList<Vec3f> pointListB);
 
 	@Override
 	public boolean isPointInUse(Vec3f point) {

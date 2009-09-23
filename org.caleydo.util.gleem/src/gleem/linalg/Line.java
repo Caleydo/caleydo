@@ -33,7 +33,8 @@ public class Line {
 	private Vec3f alongVec;
 
 	/**
-	 * Default constructor initializes line to point (0, 0, 0) and direction (1, 0, 0)
+	 * Default constructor initializes line to point (0, 0, 0) and direction (1,
+	 * 0, 0)
 	 */
 	public Line() {
 		point = new Vec3f(0, 0, 0);
@@ -43,8 +44,9 @@ public class Line {
 	}
 
 	/**
-	 * Line goes in direction <b>direction</b> through the point <b>point</b>. <b>direction</b> does not need
-	 * to be normalized but must not be the zero vector.
+	 * Line goes in direction <b>direction</b> through the point <b>point</b>.
+	 * <b>direction</b> does not need to be normalized but must not be the zero
+	 * vector.
 	 */
 	public Line(Vec3f direction, Vec3f point) {
 		direction = new Vec3f(direction);
@@ -55,8 +57,8 @@ public class Line {
 	}
 
 	/**
-	 * Setter does some work to maintain internal caches. <b>direction</b> does not need to be normalized but
-	 * must not be the zero vector.
+	 * Setter does some work to maintain internal caches. <b>direction</b> does
+	 * not need to be normalized but must not be the zero vector.
 	 */
 	public void setDirection(Vec3f direction) {
 		this.direction.set(direction);
@@ -65,8 +67,8 @@ public class Line {
 	}
 
 	/**
-	 * Direction is normalized internally, so <b>direction</b> is not necessarily equal to
-	 * <code>plane.setDirection(direction);
+	 * Direction is normalized internally, so <b>direction</b> is not
+	 * necessarily equal to <code>plane.setDirection(direction);
       plane.getDirection();</code>
 	 */
 	public Vec3f getDirection() {
@@ -92,10 +94,12 @@ public class Line {
 	}
 
 	/**
-	 * Find closest point on this line to the given ray, specified by start point and direction. If ray is
-	 * parallel to this line, returns false and closestPoint is not modified.
+	 * Find closest point on this line to the given ray, specified by start
+	 * point and direction. If ray is parallel to this line, returns false and
+	 * closestPoint is not modified.
 	 */
-	public boolean closestPointToRay(Vec3f rayStart, Vec3f rayDirection, Vec3f closestPoint) {
+	public boolean closestPointToRay(Vec3f rayStart, Vec3f rayDirection,
+			Vec3f closestPoint) {
 		// Line 1 is this one. Line 2 is the incoming one.
 		Mat2f A = new Mat2f();
 		A.set(0, 0, -direction.lengthSquared());
@@ -114,8 +118,7 @@ public class Line {
 		if (x.y() < 0) {
 			// Means that ray start is closest point to this line
 			closestPoint.set(rayStart);
-		}
-		else {
+		} else {
 			closestPoint.set(direction);
 			closestPoint.scale(x.x());
 			closestPoint.add(point);
@@ -130,7 +133,9 @@ public class Line {
 	private void recalc() {
 		float denom = direction.lengthSquared();
 		if (denom == 0.0f)
-			throw new RuntimeException("Line.recalc: ERROR: direction was the zero vector " + "(not allowed)");
+			throw new RuntimeException(
+					"Line.recalc: ERROR: direction was the zero vector "
+							+ "(not allowed)");
 		alongVec.set(point.minus(direction.times(point.dot(direction))));
 	}
 }

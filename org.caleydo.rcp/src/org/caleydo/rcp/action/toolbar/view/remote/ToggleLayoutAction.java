@@ -28,6 +28,6 @@ public class ToggleLayoutAction
 		super.run();
 
 		// not in use ATM
-//		triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE);
+		// triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE);
 	};
 }

@@ -42,7 +42,6 @@ public enum ECommandType {
 	CREATE_GL_DENDROGRAM_HORIZONTAL("cmd", "type", "-1", "Create horizontal Dendrogram"),
 	CREATE_GL_DENDROGRAM_VERTICAL("cmd", "type", "-1", "Create vertical Dendrogram"),
 
-	
 	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),
 	EXTERNAL_ACTION_TRIGGER("cmd", "type", "-1", "External action trigger"),

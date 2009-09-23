@@ -195,18 +195,18 @@ public class HierarchicalClusterer
 		ArrayList<Double> clusters = new ArrayList<Double>();
 
 		for (int i = 0; i < clusterAssignments.length; i++) {
-			 if (clusters.contains(clusterAssignments[i]) == false)
-			clusters.add(clusterAssignments[i]);
+			if (clusters.contains(clusterAssignments[i]) == false)
+				clusters.add(clusterAssignments[i]);
 		}
 
 		// variant 1
-//		for (double cluster : clusters) {
-//			for (int i = 0; i < data.numInstances(); i++) {
-//				if (clusterAssignments[i] == cluster) {
-//					indices.add(i);
-//				}
-//			}
-//		}
+		// for (double cluster : clusters) {
+		// for (int i = 0; i < data.numInstances(); i++) {
+		// if (clusterAssignments[i] == cluster) {
+		// indices.add(i);
+		// }
+		// }
+		// }
 
 		// variant 2
 		Arrays.sort(clusterAssignments);
@@ -220,7 +220,7 @@ public class HierarchicalClusterer
 				temp++;
 			}
 		}
-		
+
 		processEvents();
 		if (bClusteringCanceled) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));

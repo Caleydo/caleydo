@@ -14,7 +14,7 @@ import org.eclipse.ui.PlatformUI;
 public class ChangeSelectionBrushAction
 	extends AToolBarAction
 	implements IMenuCreator, IToolBarItem {
-	
+
 	public static final String TEXT_SELECTIONBRUSH_DISABLE = "disable selection brush";
 	public static final String TEXT_SELECTIONBRUSH_SELECT_ALL = "select all";
 	public static final String TEXT_SELECTIONBRUSH_DESELECT_ALL = "deselect all";

@@ -27,20 +27,20 @@ import org.eclipse.jface.preference.PreferenceStore;
  * @author Alexander Lex
  */
 public interface IGeneralManager {
-	
+
 	/**
-	 * This is the current version of Caleydo. 
-	 * The value must be the same as specified in the plugin/bundle.
-	 * We need to access the version before the workbench is started.
-	 * Therefore we have to set it hardcoded at this point.
+	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle.
+	 * We need to access the version before the workbench is started. Therefore we have to set it hardcoded at
+	 * this point.
 	 */
 	public static final String VERSION = "1.3";
-	
+
 	public static final String PLUGIN_ID = "org.caleydo.core";
-	
+
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME = "user.home";
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + File.separator + ".caleydo" + File.separator;
+	public static final String CALEYDO_HOME_PATH =
+		System.getProperty(USER_HOME) + File.separator + ".caleydo" + File.separator;
 
 	public static final String sDelimiter_Paser_DataItemBlock = "@";
 	public static final String sDelimiter_Parser_DataItems = " ";
@@ -104,42 +104,49 @@ public interface IGeneralManager {
 	public boolean isWiiModeActive();
 
 	public WiiRemote getWiiRemote();
-	
+
 	public TrackDataProvider getTrackDataProvider();
-	
+
 	/**
-	 * Returns the current use case. The use case determines which views are showing what kind of data 
-	 * and which data set is currently in use.
+	 * Returns the current use case. The use case determines which views are showing what kind of data and
+	 * which data set is currently in use.
 	 */
 	public IUseCase getUseCase(EDataDomain useCaseType);
-	
+
 	/**
 	 * Returns all use cases that are currently registered.
+	 * 
 	 * @return
 	 */
 	public Collection<IUseCase> getAllUseCases();
-	
+
 	/**
 	 * Set a different use case. The use case changes the behavior of the views and its loaded data.
+	 * 
 	 * @param useCase
 	 */
 	public void addUseCase(IUseCase useCase);
-	
-	
+
 	/**
-	 * Obtains the {@link IGroupwareManager} responsible for communication purposes with other calyedo application
-	 * @return the {@link IGroupwareManager} of this caleydo application  
+	 * Obtains the {@link IGroupwareManager} responsible for communication purposes with other calyedo
+	 * application
+	 * 
+	 * @return the {@link IGroupwareManager} of this caleydo application
 	 */
 	public IGroupwareManager getGroupwareManager();
 
 	/**
-	 * Sets the {@link IGroupwareManager} responsible for communication purposes with other calyedo application
-	 * @param groupwareManager the environment specific {@link IGroupwareManager} to use  
+	 * Sets the {@link IGroupwareManager} responsible for communication purposes with other calyedo
+	 * application
+	 * 
+	 * @param groupwareManager
+	 *            the environment specific {@link IGroupwareManager} to use
 	 */
 	public void setGroupwareManager(IGroupwareManager groupwareManager);
 
 	/**
-	 * Obtains the {@link SerializationManager} responsible for xml-serialization related tasks 
+	 * Obtains the {@link SerializationManager} responsible for xml-serialization related tasks
+	 * 
 	 * @return the {@link SerializationManager} of this caleydo application
 	 */
 	public SerializationManager getSerializationManager();

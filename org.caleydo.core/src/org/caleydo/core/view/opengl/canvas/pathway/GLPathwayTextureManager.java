@@ -48,8 +48,9 @@ public class GLPathwayTextureManager {
 			generalManager.getPathwayManager().getPathwayDatabaseByType(type).getImagePath()
 				+ sPathwayTexturePath;
 
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Load pathway texture with ID: " + pathway.getID()));
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Load pathway texture with ID: "
+				+ pathway.getID()));
 
 		pathwayTexture = generalManager.getResourceLoader().getTexture(sPathwayTexturePath);
 

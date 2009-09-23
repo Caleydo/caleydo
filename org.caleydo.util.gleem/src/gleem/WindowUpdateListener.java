@@ -26,9 +26,10 @@ package gleem;
 import javax.media.opengl.GLAutoDrawable;
 
 /**
- * A WindowUpdateListener is used by the ManipManager to transmit repaint() notifications to windows
- * containing Manips. When a Manip is moved, the ManipManager sends update notifications to all
- * GLAutoDrawables in which that Manip is shown.
+ * A WindowUpdateListener is used by the ManipManager to transmit repaint()
+ * notifications to windows containing Manips. When a Manip is moved, the
+ * ManipManager sends update notifications to all GLAutoDrawables in which that
+ * Manip is shown.
  */
 @SuppressWarnings("all")
 public interface WindowUpdateListener {

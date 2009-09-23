@@ -1,8 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
-
 public class DrawAbleNodeInfo {
-	
 
 	private String sNodeName;
 

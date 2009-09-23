@@ -31,11 +31,9 @@ public abstract class AItemContainer
 	public void addContextMenuItem(AContextMenuItem contextMenuItem) {
 		contextMenuEntries.add(contextMenuItem);
 	}
-	
-	public void addItemContainer(AItemContainer container)
-	{
-		for(IContextMenuEntry item : container)
-		{
+
+	public void addItemContainer(AItemContainer container) {
+		for (IContextMenuEntry item : container) {
 			contextMenuEntries.add(item);
 		}
 	}
@@ -43,17 +41,17 @@ public abstract class AItemContainer
 	/**
 	 * Adds a separator to the context menu
 	 */
-	public void addSeparator()
-	{
+	public void addSeparator() {
 		contextMenuEntries.add(new Separator());
 	}
-	
-	public void addHeading(String text)
-	{
+
+	public void addHeading(String text) {
 		contextMenuEntries.add(new Heading(text));
 	}
+
 	/**
 	 * Returns the list of context menu items
+	 * 
 	 * @return
 	 */
 	public ArrayList<IContextMenuEntry> getContextMenuItems() {

@@ -6,9 +6,9 @@ public enum EMediatorType {
 	ALL_REGISTERED,
 	SELECTION_MEDIATOR,
 
-// wpuff: migrated to new event system
-//	PROPAGATION_MEDIATOR,
-//	VIEW_SELECTION,
+	// wpuff: migrated to new event system
+	// PROPAGATION_MEDIATOR,
+	// VIEW_SELECTION,
 
 	// BUCKET_INTERNAL_INCOMING_MEDIATOR,
 	// BUCKET_INTERNAL_OUTGOING_MEDIATOR

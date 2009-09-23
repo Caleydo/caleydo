@@ -220,8 +220,9 @@ public class CommandManager
 			for (ICommand tmpCmd : vecUndo) {
 				out.writeObject(tmpCmd);
 
-				GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-					"Serialize command: [" + tmpCmd.getInfoText() + "]"));
+				GeneralManager.get().getLogger().log(
+					new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Serialize command: ["
+						+ tmpCmd.getInfoText() + "]"));
 			}
 
 			out.close();

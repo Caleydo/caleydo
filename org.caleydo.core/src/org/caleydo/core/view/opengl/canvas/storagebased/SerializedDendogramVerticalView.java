@@ -26,7 +26,7 @@ public class SerializedDendogramVerticalView
 	 */
 	public SerializedDendogramVerticalView() {
 	}
-	
+
 	public SerializedDendogramVerticalView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}

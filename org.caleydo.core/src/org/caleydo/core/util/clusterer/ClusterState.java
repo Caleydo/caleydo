@@ -21,7 +21,7 @@ public class ClusterState {
 	private int kMeansClusterCntExperiments;
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
-	
+
 	private EVAType contentVAType = EVAType.CONTENT;
 	private EVAType storageVAType = EVAType.STORAGE;
 
@@ -38,16 +38,14 @@ public class ClusterState {
 		this.setDistanceMeasure(dist);
 	}
 
-	public void setContentVAType(EVAType contentVAType)
-	{
+	public void setContentVAType(EVAType contentVAType) {
 		this.contentVAType = contentVAType;
 	}
-	
-	public EVAType getContentVAType()
-	{
+
+	public EVAType getContentVAType() {
 		return contentVAType;
 	}
-	
+
 	public void setClustererAlgo(EClustererAlgo eClustererAlgo) {
 		this.clustererAlgo = eClustererAlgo;
 	}

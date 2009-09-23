@@ -50,7 +50,7 @@ public enum EIconTextures {
 
 	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
 	PATHWAY_ICON("resources/icons/view/pathway/pathway.png"),
-	
+
 	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
 	GLYPH_ICON("resources/icons/view/glyph/glyph.png"),
 	GLYPH_SORT_RANDOM("resources/icons/view/glyph/sort_random.png"),
@@ -84,13 +84,15 @@ public enum EIconTextures {
 	DATA_FLIPPER_CONNECTION_STRAIGHT("resources/icons/view/dataflipper/connection_straight.png"),
 	DATA_FLIPPER_CONNECTION_CORNER("resources/icons/view/dataflipper/connection_corner.png"),
 	DATA_FLIPPER_DATA_ICON_BACKGROUND("resources/icons/view/dataflipper/data_icon_background.png"),
-	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED("resources/icons/view/dataflipper/view_icon_background_rounded.png"),
-	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE("resources/icons/view/dataflipper/view_icon_background_square.png"),	
+	DATA_FLIPPER_VIEW_ICON_BACKGROUND_ROUNDED(
+		"resources/icons/view/dataflipper/view_icon_background_rounded.png"),
+	DATA_FLIPPER_VIEW_ICON_BACKGROUND_SQUARE(
+		"resources/icons/view/dataflipper/view_icon_background_square.png"),
 	DATA_FLIPPER_DATA_ICON_PATIENT("resources/icons/view/dataflipper/patient.png"),
 	DATA_FLIPPER_DATA_ICON_PATHWAY("resources/icons/view/dataflipper/pathway.png"),
 	DATA_FLIPPER_DATA_ICON_GENE_EXPRESSION("resources/icons/view/dataflipper/gene_expression.png"),
 	DATA_FLIPPER_DATA_ICON_TISSUE("resources/icons/view/dataflipper/tissue.png"),
-	
+
 	LOADING("resources/loading/loading_background.png"),
 	LOADING_CIRCLE("resources/loading/loading_circle.png"),
 

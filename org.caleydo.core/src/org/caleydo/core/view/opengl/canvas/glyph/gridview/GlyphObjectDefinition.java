@@ -61,6 +61,7 @@ public class GlyphObjectDefinition {
 
 	/**
 	 * Returns the detail level of this Object
+	 * 
 	 * @return
 	 */
 	public int getDetailLevel() {
@@ -89,6 +90,7 @@ public class GlyphObjectDefinition {
 
 	/**
 	 * Sets a description of this detail level.
+	 * 
 	 * @param description
 	 */
 	public void setDescription(String description) {
@@ -97,6 +99,7 @@ public class GlyphObjectDefinition {
 
 	/**
 	 * Returns the description of this object.
+	 * 
 	 * @return description text
 	 */
 	public String getDescription() {
@@ -105,6 +108,7 @@ public class GlyphObjectDefinition {
 
 	/**
 	 * Adds a object part to this Glyph Object.
+	 * 
 	 * @param name
 	 */
 	public void addGlyphPart(String name) {

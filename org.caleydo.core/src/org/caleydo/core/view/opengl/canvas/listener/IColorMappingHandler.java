@@ -10,7 +10,8 @@ import org.caleydo.core.view.opengl.canvas.histogram.listener.UpdateColorMapping
  * 
  * @author Werner Puff
  */
-public interface IColorMappingHandler extends IListenerOwner {
+public interface IColorMappingHandler
+	extends IListenerOwner {
 
 	/**
 	 * Handler method to be called when a {@link ColorMapping} has been changed and the related

@@ -22,10 +22,10 @@ public class LoadPathwaysByGeneListener
 				Set<PathwayGraph> pathwayGraphs =
 					GeneticIDMappingHelper.get().getPathwayGraphsByGeneID(loadEvent.getIdType(),
 						loadEvent.getGeneID());
-				if (pathwayGraphs == null)
-				{
-					GeneralManager.get().getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-						"No mapping found for Gene ID to pathway graphs."));
+				if (pathwayGraphs == null) {
+					GeneralManager.get().getLogger().log(
+						new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+							"No mapping found for Gene ID to pathway graphs."));
 					return;
 				}
 				handler.loadDependentPathways(pathwayGraphs);

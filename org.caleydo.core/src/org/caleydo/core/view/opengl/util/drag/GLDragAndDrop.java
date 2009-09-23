@@ -70,11 +70,11 @@ public class GLDragAndDrop {
 		float fZ = 6;
 		if (bIsZoomedIn == true)
 			fZ = 2;
-		
+
 		gl.glPushMatrix();
 		gl.glTranslatef(fArCurrentMousePos[0] + fOffset, fArCurrentMousePos[1] + fOffset, fZ);
 		gl.glScalef(0.05f, 0.05f, 0.05f);
-		
+
 		int iGLEventListenerID = RemoteElementManager.get().getItem(iDragObjectId).getContainedElementID();
 
 		if (iGLEventListenerID != -1) {

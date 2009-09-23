@@ -82,19 +82,19 @@ public class Vec4f {
 	/** Sets the ith component, 0 <= i < 4 */
 	public void set(int i, float val) {
 		switch (i) {
-			case 0:
+			case 0 :
 				x = val;
 				break;
-			case 1:
+			case 1 :
 				y = val;
 				break;
-			case 2:
+			case 2 :
 				z = val;
 				break;
-			case 3:
+			case 3 :
 				w = val;
 				break;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}
@@ -102,15 +102,15 @@ public class Vec4f {
 	/** Gets the ith component, 0 <= i < 4 */
 	public float get(int i) {
 		switch (i) {
-			case 0:
+			case 0 :
 				return x;
-			case 1:
+			case 1 :
 				return y;
-			case 2:
+			case 2 :
 				return z;
-			case 3:
+			case 3 :
 				return w;
-			default:
+			default :
 				throw new IndexOutOfBoundsException();
 		}
 	}
@@ -257,8 +257,8 @@ public class Vec4f {
 	}
 
 	/**
-	 * Sets each component of this vector to the product of the component with the corresponding component of
-	 * the argument vector.
+	 * Sets each component of this vector to the product of the component with
+	 * the corresponding component of the argument vector.
 	 */
 	public void componentMul(Vec4f arg) {
 		x *= arg.x;

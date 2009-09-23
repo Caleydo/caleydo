@@ -72,10 +72,11 @@ public class PathwayManager
 
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
 
-		GeneralManager.get().getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
-				+ tmpPathwayDatabase.getXMLPath() + "] image-path:[" + tmpPathwayDatabase.getImagePath()
-				+ "] image-map-path:[" + tmpPathwayDatabase.getImageMapPath() + "]"));
+		GeneralManager.get().getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Setting pathway loading path: database-type:["
+				+ type + "] " + "xml-path:[" + tmpPathwayDatabase.getXMLPath() + "] image-path:["
+				+ tmpPathwayDatabase.getImagePath() + "] image-map-path:["
+				+ tmpPathwayDatabase.getImageMapPath() + "]"));
 	}
 
 	@Override
@@ -100,7 +101,8 @@ public class PathwayManager
 	}
 
 	@Override
-	public PathwayGraph searchPathwayByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType) {
+	public PathwayGraph searchPathwayByName(final String sPathwayName,
+		EPathwayDatabaseType ePathwayDatabaseType) {
 		waitUntilPathwayLoadingIsFinished();
 
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathway.keySet().iterator();

@@ -25,12 +25,13 @@ public class RcpGLParCoordsView
 		super();
 	}
 
-	@Override 
+	@Override
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
 
 		if (memento == null) {
-			SerializedParallelCoordinatesView serializedView = new SerializedParallelCoordinatesView(dataDomain);
+			SerializedParallelCoordinatesView serializedView =
+				new SerializedParallelCoordinatesView(dataDomain);
 			initSerializedView = serializedView;
 		}
 	}
@@ -39,9 +40,9 @@ public class RcpGLParCoordsView
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-	
 		IUseCase usecase = GeneralManager.get().getUseCase(dataDomain);
-		if (usecase != null && usecase instanceof GeneticUseCase && ((GeneticUseCase) usecase).isPathwayViewerMode()) {
+		if (usecase != null && usecase instanceof GeneticUseCase
+			&& ((GeneticUseCase) usecase).isPathwayViewerMode()) {
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create parallel coordinates in pathway viewer mode!");
 			alert.open();
@@ -52,7 +53,7 @@ public class RcpGLParCoordsView
 
 		createGLCanvas();
 		createGLEventListener(initSerializedView, glCanvas.getID());
-		
+
 		glEventListener.setViewGUIID(ID);
 	}
 

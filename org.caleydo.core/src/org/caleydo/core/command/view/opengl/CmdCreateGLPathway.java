@@ -33,10 +33,10 @@ public class CmdCreateGLPathway
 		iPathwayID = Integer.valueOf(sAttribute4).intValue();
 	}
 
-	public void setAttributes(final int iPathwayID, final ISet set,
-		final EProjectionMode eProjectionMode, final float fLeft, final float fRight, final float fTop,
-		final float fBottom, final float fNear, final float fFar) {
-		super.setAttributes(dataDomain, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar,  -1);
+	public void setAttributes(final int iPathwayID, final ISet set, final EProjectionMode eProjectionMode,
+		final float fLeft, final float fRight, final float fTop, final float fBottom, final float fNear,
+		final float fFar) {
+		super.setAttributes(dataDomain, eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, -1);
 
 		this.iPathwayID = iPathwayID;
 		this.iExternalID = iUniqueID;
@@ -53,7 +53,7 @@ public class CmdCreateGLPathway
 	public void setPathwayID(int pathwayID) {
 		this.iPathwayID = pathwayID;
 	}
-	
+
 	@Override
 	public final void doCommand() {
 		super.doCommand();

@@ -9,13 +9,11 @@ public class BookmarkListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		
+
 		if (event instanceof BookmarkEvent<?>) {
 			BookmarkEvent<?> bookmarkEvent = (BookmarkEvent<?>) event;
 			handler.handleNewBookmarkEvent(bookmarkEvent);
 		}
-		
-		
 
 	}
 

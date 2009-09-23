@@ -39,15 +39,14 @@ public final class GraphItemDataSequenzer {
 
 		if (identifier_key_value == null) {
 			identifier_key_value = new HashMap<String, Integer>(iInitialSize);
-		}
-		else {
+		} else {
 			successfulInit = false;
 		}
 
 		if (identifier_key_value_reverse == null) {
-			identifier_key_value_reverse = new HashMap<Integer, String>(iInitialSize);
-		}
-		else {
+			identifier_key_value_reverse = new HashMap<Integer, String>(
+					iInitialSize);
+		} else {
 			successfulInit = false;
 		}
 

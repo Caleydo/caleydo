@@ -815,7 +815,8 @@ public class GLPathwayContentCreator {
 						((Integer) iRefSeqID)) == null) {
 						break;
 					}
-					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
+					// FIXME: Due to new mapping system, a mapping involving expression index can return a Set
+					// of
 					// values, depending on the IDType that has been specified when loading expression data.
 					// Possibly a different handling of the Set is required.
 					for (Object iExpressionIndex : idMappingManager.<Integer, Object> getIDAsSet(

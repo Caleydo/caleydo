@@ -31,7 +31,7 @@ public class DrawAbleObjectFallback
 
 	@Override
 	public ArrayList<Vec3f> draw(GL gl, boolean bHighlight) {
-		if(bIsAbleToPick)
+		if (bIsAbleToPick)
 			if (bHighlight)
 				gl.glColor4fv(HyperbolicRenderStyle.DA_OBJ_FALLBACK_COLORSCHEME_HL, 0);
 			else

@@ -28,49 +28,37 @@ public class IDrawAbleNode
 	public String toString() {
 		return nodeName + " " + iComparableValue;
 	}
-	
-	public float getXCoord()
-	{
+
+	public float getXCoord() {
 		return fXCoord;
 	}
-	public float getYCoord()
-	{
+
+	public float getYCoord() {
 		return fYCoord;
 	}
 
-	public void setXCoord( float fx)
-	{
+	public void setXCoord(float fx) {
 		fXCoord = fx;
 	}
-	public void setYCoord(float fy)
-	{
+
+	public void setYCoord(float fy) {
 		fYCoord = fy;
 	}
-	
-	public float getLeftBorderOfXCoord()
-	{
+
+	public float getLeftBorderOfXCoord() {
 		return fLeftXBorder;
 	}
-	
-	public float getRightBorderOfXCoord()
-	{
+
+	public float getRightBorderOfXCoord() {
 		return fRightXBorder;
 	}
-	
-	
-	public void setLeftBorderOfXCoord(float fXBorder)
-	{
+
+	public void setLeftBorderOfXCoord(float fXBorder) {
 		fLeftXBorder = fXBorder;
 	}
-	public void setRightBorderOfXCoord(float fXBorder)
-	{
+
+	public void setRightBorderOfXCoord(float fXBorder) {
 		fRightXBorder = fXBorder;
 	}
-	
-
-
-	
-	
-	
 
 }

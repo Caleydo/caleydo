@@ -11,9 +11,9 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-public class TestButtonListener 
-	implements Listener  {
-		
+public class TestButtonListener
+	implements Listener {
+
 	Object requester;
 
 	@Override
@@ -36,13 +36,14 @@ public class TestButtonListener
 			IView rv = vm.getGLEventListener(rle.getContainedElementID());
 			if (rv != null) {
 				System.out.println(" - " + rv.getClass());
-			} else {
+			}
+			else {
 				System.out.println(" - [empty]");
 			}
 		}
 
 	}
-	
+
 	public void setRequester(Object requester) {
 		this.requester = requester;
 	}

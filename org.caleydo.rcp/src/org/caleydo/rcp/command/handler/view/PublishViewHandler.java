@@ -35,29 +35,32 @@ public class PublishViewHandler
 
 				IGroupwareManager groupwareManager = GeneralManager.get().getGroupwareManager();
 				String targetApplicationID = groupwareManager.getPublicGroupwareClient();
-				
+
 				CreateGUIViewEvent viewEvent = new CreateGUIViewEvent();
 				viewEvent.setSerializedView(glViewPart.getGLEventListener().getSerializableRepresentation());
 				viewEvent.setTargetApplicationID(targetApplicationID);
 				viewEvent.setSender(this);
-				
+
 				groupwareManager.getNetworkManager().getGlobalOutgoingPublisher().triggerEvent(viewEvent);
-				
+
 				IViewReference[] views = activePage.getViewReferences();
-				for(int i=0; i<views.length; i++){
-				    if(glViewPart.getViewGUIID().equals(views[i].getId())) {
-				    	activePage.hideView(views[i]);
-				        break;
-				    }
+				for (int i = 0; i < views.length; i++) {
+					if (glViewPart.getViewGUIID().equals(views[i].getId())) {
+						activePage.hideView(views[i]);
+						break;
+					}
 				}
-			} else {
+			}
+			else {
 				// TODO send non-GL views
 				throw new RuntimeException("sending of non gl-views not supported yet");
 			}
-		} else {
-			throw new IllegalStateException("SendViewHandler invoked for a non-sendable viewpart (" + activePart + ")");
 		}
-		
+		else {
+			throw new IllegalStateException("SendViewHandler invoked for a non-sendable viewpart ("
+				+ activePart + ")");
+		}
+
 		return null;
 	}
 

@@ -33,7 +33,7 @@ public class RemoteRenderingToolBarMediator
 
 	protected EnableConnectionLinesListener enableConnectionLinesListener;
 	protected DisableConnectionLinesListener disableConnectionLinesListener;
-	
+
 	public RemoteRenderingToolBarMediator() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
@@ -50,7 +50,7 @@ public class RemoteRenderingToolBarMediator
 	}
 
 	private void unregisterEventListeners() {
-		
+
 		if (enableConnectionLinesListener != null) {
 			eventPublisher.removeListener(enableConnectionLinesListener);
 			enableConnectionLinesListener = null;
@@ -61,7 +61,7 @@ public class RemoteRenderingToolBarMediator
 		}
 
 	}
-	
+
 	public void enableConnectionLines() {
 		EnableConnectionLinesEvent event = new EnableConnectionLinesEvent();
 		event.setSender(this);
@@ -85,7 +85,7 @@ public class RemoteRenderingToolBarMediator
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void toggleZoom() {
 		ToggleZoomEvent event = new ToggleZoomEvent();
 		event.setSender(this);
@@ -109,10 +109,11 @@ public class RemoteRenderingToolBarMediator
 	public void dispose() {
 		unregisterEventListeners();
 	}
-	
+
 	/**
 	 * Gets the related {@link RemoteRenderingToolBarContent} of this mediator
-	 * @return {@link RemoteRenderingToolBarContent} that is mediated  
+	 * 
+	 * @return {@link RemoteRenderingToolBarContent} that is mediated
 	 */
 	public RemoteRenderingToolBarContent getToolBarContent() {
 		return toolBarContent;
@@ -120,7 +121,9 @@ public class RemoteRenderingToolBarMediator
 
 	/**
 	 * Sets the related {@link RemoteRenderingToolBarContent} for this mediator
-	 * @param toolBarContent {@link RemoteRenderingToolBarContent} to mediate 
+	 * 
+	 * @param toolBarContent
+	 *            {@link RemoteRenderingToolBarContent} to mediate
 	 */
 	public void setToolBarContent(RemoteRenderingToolBarContent toolBarContent) {
 		this.toolBarContent = toolBarContent;
@@ -130,35 +133,35 @@ public class RemoteRenderingToolBarMediator
 	public void setConnectionLinesEnabled(boolean enabled) {
 		toolBarContent.toggleConnectionLinesAction.setConnectionLinesEnabled(enabled);
 	}
-	
+
 	@Override
 	public void addPathwayView(int pathwayID) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setGeneMappingEnabled(boolean geneMappingEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setNeighborhoodEnabled(boolean neighborhoodEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void setPathwayTexturesEnabled(boolean pathwayTexturesEnabled) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

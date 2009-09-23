@@ -30,30 +30,30 @@ import org.eclipse.core.runtime.Status;
  * 
  * @author Werner Puff
  */
-public class NetworkManager 
+public class NetworkManager
 	implements IListenerOwner {
 
 	/** utility object for logging, initialized during constructor */
 	private ILog log;
-	
-	/** Default given network name */ 
+
+	/** Default given network name */
 	public static final String DEFAULT_NETWORK_NAME = "CaleydoApp";
 
-	/** 
-	 * version-id to validate connections of 2 caleydo applications
-	 * TODO version should be read from a global variable, maybe general manager? 
+	/**
+	 * version-id to validate connections of 2 caleydo applications TODO version should be read from a global
+	 * variable, maybe general manager?
 	 */
 	public static final String VERSION = "1.2.3";
 
 	/** port to listen for incoming connections */
 	private int listenPort = 12345;
-	
+
 	/** name of this caleydo application within the network */
 	private String networkName;
 
 	/** helper class for read/write network operations */
 	private NetworkUtils networkUtils;
-	
+
 	/** global {@link EventFilterBridge} to bridge all events to the outgoing network event dispatching system */
 	private EventFilterBridge outgoingEventBridge;
 
@@ -77,28 +77,28 @@ public class NetworkManager
 
 	/** status information indicator */
 	private ENetworkStatus status;
-	
+
 	/** caleydo's network server */
 	private Server server;
-	
+
 	/** {@link Thread} the server runs in */
 	private Thread serverThread;
-	
+
 	/** counter for the number of clients connected used to generate unique network-ids */
 	private int connectionCounter;
 
 	/** {@link AEventListener} to listen for {@link ConnectToServerEvent}s */
 	private ConnectToServerListener connectToServerListener;
-	
+
 	/** {@link AEventListener} to listen for {@link ClientListEvent}s if in client mode */
 	private ClientListListener clientListListener;
-	
-	/** list of names of all clients connected to the same server as this application*/
+
+	/** list of names of all clients connected to the same server as this application */
 	private List<String> clientNames;
-	
+
 	/** timeout in ms for a client to send his {@link ClientHandshake} after connecting to this server */
 	private int connectingTimeout;
-	
+
 	/**
 	 * Default constructor that creates a new initialized {@link NetworkManager}
 	 */
@@ -112,9 +112,9 @@ public class NetworkManager
 		connections = new ArrayList<Connection>();
 		connectingTimeout = 5000;
 		connectionCounter = 0;
-		
+
 		status = ENetworkStatus.STATUS_STOPPED;
-		
+
 		clientNames = null;
 	}
 
@@ -131,7 +131,7 @@ public class NetworkManager
 
 		registerEventListeners();
 		// createTestClientConnection();
-		
+
 		status = ENetworkStatus.STATUS_STARTED;
 		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 		centralEventPublisher.triggerEvent(event);
@@ -161,7 +161,7 @@ public class NetworkManager
 		connectToServerListener.setHandler(this);
 		centralEventPublisher.addListener(ConnectToServerEvent.class, connectToServerListener);
 	}
-	
+
 	/**
 	 * Unregisters the event listeners from the central event publishing system.
 	 */
@@ -175,7 +175,7 @@ public class NetworkManager
 			clientListListener = null;
 		}
 	}
-	
+
 	/**
 	 * Starts the network server listening for incoming connections.
 	 */
@@ -188,7 +188,7 @@ public class NetworkManager
 		RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 		centralEventPublisher.triggerEvent(event);
 	}
-	
+
 	/**
 	 * Creates the {@link EventFilterBridge}s and {@link EventPublisher}s to send and receive network events.
 	 */
@@ -215,7 +215,9 @@ public class NetworkManager
 
 	/**
 	 * Creates connection for a client that tries to connect to this caleydo server.
-	 * @param socket valid {@link Socket} to the client 
+	 * 
+	 * @param socket
+	 *            valid {@link Socket} to the client
 	 */
 	public void createConnection(Socket socket) {
 		Connection connection = new Connection(this);
@@ -226,27 +228,29 @@ public class NetworkManager
 
 			RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 			centralEventPublisher.triggerEvent(event);
-			
+
 			publishClientList();
-		} catch (ConnectException ex) {
+		}
+		catch (ConnectException ex) {
 			try {
 				socket.close();
-			} catch (IOException ioex) {
+			}
+			catch (IOException ioex) {
 				// socket seems dead, nothing to do about it
 			}
 		}
 	}
 
 	/**
-	 * Sends the client list to all connected clients. Should be used
-	 * on a caleydo server application whenever a client connects or disconnects.
+	 * Sends the client list to all connected clients. Should be used on a caleydo server application whenever
+	 * a client connects or disconnects.
 	 */
 	private void publishClientList() {
 		ClientListEvent clientListEvent = new ClientListEvent();
 		ArrayList<String> clientNames = new ArrayList<String>();
 		clientNames.add(networkName);
 		for (Connection con : connections) {
-			clientNames.add(con.getRemoteNetworkName()); 
+			clientNames.add(con.getRemoteNetworkName());
 		}
 		clientListEvent.setClientNames(clientNames);
 		globalOutgoingPublisher.triggerEvent(clientListEvent);
@@ -254,13 +258,16 @@ public class NetworkManager
 
 	/**
 	 * Connects a client to a server running at the given address.
-	 * @param address {@link String}-representation of the internet-address of the caleydo-server-application
+	 * 
+	 * @param address
+	 *            {@link String}-representation of the internet-address of the caleydo-server-application
 	 */
 	public ApplicationInitData createConnection(String address) {
-		InetAddress inetAddress; 
+		InetAddress inetAddress;
 		try {
 			inetAddress = InetAddress.getByName(address);
-		} catch (UnknownHostException ex) {
+		}
+		catch (UnknownHostException ex) {
 			throw new RuntimeException("Could not resolve host '" + address + "'.");
 		}
 		return createConnection(inetAddress);
@@ -268,7 +275,9 @@ public class NetworkManager
 
 	/**
 	 * Connects a client to a server running at the given address.
-	 * @param address {@link InetAddress} of the caleydo-server-application
+	 * 
+	 * @param address
+	 *            {@link InetAddress} of the caleydo-server-application
 	 */
 	public ApplicationInitData createConnection(InetAddress inetAddress) {
 		Connection connection = new Connection(this);
@@ -287,7 +296,8 @@ public class NetworkManager
 
 			RedrawCollabViewEvent event = new RedrawCollabViewEvent();
 			centralEventPublisher.triggerEvent(event);
-		} catch (ConnectException ex) {
+		}
+		catch (ConnectException ex) {
 			log.log(new Status(Status.INFO, GeneralManager.PLUGIN_ID, "Could not connect to server", ex));
 			if (clientListListener != null) {
 				centralEventPublisher.removeListener(clientListListener);
@@ -297,27 +307,31 @@ public class NetworkManager
 		}
 		return initData;
 	}
-	
+
 	/**
 	 * Connects an existing {@link Connection} to the event system of the local caleydo application.
-	 * @param connection the initialized {@link Connection} to the remote caleydo application
+	 * 
+	 * @param connection
+	 *            the initialized {@link Connection} to the remote caleydo application
 	 */
 	private void createEventSystem(Connection connection) {
 		EventFilterBridge outgoingClientBridge = connection.getOutgoingBridge();
 
 		EventFilterBridge incomingClientBridge = connection.getIncomingBridge();
 		NetworkEventReceiver incomingClientPublisher = connection.getIncomingPublisher();
-		
+
 		Collection<Class<? extends AEvent>> eventTypes = getEventBridgeConfiguration(connection);
 		for (Class<? extends AEvent> eventClass : eventTypes) {
 			incomingClientPublisher.addListener(eventClass, incomingClientBridge);
 			globalOutgoingPublisher.addListener(eventClass, outgoingClientBridge);
 		}
 	}
-	
+
 	/**
-	 * Disconnects an {@link Connection} from the event system of the local caleydo application. 
-	 * @param connection a {@link Connection} that needs to shutdown
+	 * Disconnects an {@link Connection} from the event system of the local caleydo application.
+	 * 
+	 * @param connection
+	 *            a {@link Connection} that needs to shutdown
 	 */
 	private void disposeEventSystem(Connection connection) {
 		EventFilterBridge outgoingClientBridge = connection.getOutgoingBridge();
@@ -343,7 +357,7 @@ public class NetworkManager
 		EventFilterBridge incomingClientBridge = connection.getIncomingBridge();
 		incomingClientBridge.setName("incomingTestBridge");
 		NetworkEventReceiver incomingClientPublisher = connection.getIncomingPublisher();
-		
+
 		Collection<Class<? extends AEvent>> eventTypes = getEventBridgeConfiguration(connection);
 		for (Class<? extends AEvent> eventClass : eventTypes) {
 			incomingClientPublisher.addListener(eventClass, incomingClientBridge);
@@ -353,9 +367,11 @@ public class NetworkManager
 	}
 
 	/**
-	 * Disconnects the given {@link Connection} from the remote caleydo-application
-	 * and frees all obtained resources for that {@link Connection}.
-	 * @param connection existing {@link Connection} to disconnect and dispose. 
+	 * Disconnects the given {@link Connection} from the remote caleydo-application and frees all obtained
+	 * resources for that {@link Connection}.
+	 * 
+	 * @param connection
+	 *            existing {@link Connection} to disconnect and dispose.
 	 */
 	public void disposeConnection(Connection connection) {
 		if (!connections.remove(connection)) {
@@ -366,13 +382,13 @@ public class NetworkManager
 		}
 		disposeEventSystem(connection);
 		connection.dispose();
-		
+
 	}
-	
+
 	/**
 	 * Retrieves the global event-bridge configuration. This list contains all events that should be
-	 * transmitted to connected caleydo applications by default.
-	 * TODO read events from configuration file.  
+	 * transmitted to connected caleydo applications by default. TODO read events from configuration file.
+	 * 
 	 * @return event-classes to transmit over the network
 	 */
 	public Collection<Class<? extends AEvent>> getEventBridgeConfiguration() {
@@ -380,12 +396,13 @@ public class NetworkManager
 	}
 
 	/**
-	 * Retrieves client specific event-bridge configuration.
-	 * TODO client specific event-type configuration
-	 * @param connection the {@link Connection} object to get the event-type configuration for.
+	 * Retrieves client specific event-bridge configuration. TODO client specific event-type configuration
+	 * 
+	 * @param connection
+	 *            the {@link Connection} object to get the event-type configuration for.
 	 * @return event-classes to transmit over the network
 	 */
-	public Collection <Class<? extends AEvent>> getEventBridgeConfiguration(Connection connection) {
+	public Collection<Class<? extends AEvent>> getEventBridgeConfiguration(Connection connection) {
 		return getEventBridgeConfiguration();
 	}
 
@@ -396,6 +413,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#outgoingEventBridge}
+	 * 
 	 * @return {@link NetworkManager#outgoingEventBridge}
 	 */
 	public EventFilterBridge getOutgoingEventBridge() {
@@ -404,6 +422,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#outgoingEventBridge}
+	 * 
 	 * @param {@link NetworkManager#outgoingEventBridge}
 	 */
 	public void setOutgoingEventBridge(EventFilterBridge outgoingEventBridge) {
@@ -412,6 +431,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#globalOutgoingPublisher}
+	 * 
 	 * @return {@link NetworkManager#globalOutgoingPublisher}
 	 */
 	public EventPublisher getGlobalOutgoingPublisher() {
@@ -420,6 +440,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#globalOutgoingPublisher}
+	 * 
 	 * @param {@link NetworkManager#globalOutgoingPublisher}
 	 */
 	public void setGlobalOutgoingPublisher(EventPublisher globalOutgoingPublisher) {
@@ -428,6 +449,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#centralEventPublisher}
+	 * 
 	 * @return {@link NetworkManager#centralEventPublisher}
 	 */
 	public IEventPublisher getCentralEventPublisher() {
@@ -436,6 +458,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#centralEventPublisher}
+	 * 
 	 * @param {@link NetworkManager#centralEventPublisher}
 	 */
 	public void setCentralEventPublisher(IEventPublisher centralEventPublisher) {
@@ -444,6 +467,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#connections}
+	 * 
 	 * @return {@link NetworkManager#connections}
 	 */
 	public List<Connection> getConnections() {
@@ -452,6 +476,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#connections}
+	 * 
 	 * @param {@link NetworkManager#connections}
 	 */
 	public void setConnections(List<Connection> connections) {
@@ -460,6 +485,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#incomingEventBridge}
+	 * 
 	 * @return {@link NetworkManager#incomingEventBridge}
 	 */
 	public EventFilterBridge getIncomingEventBridge() {
@@ -468,6 +494,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#incomingEventBridge}
+	 * 
 	 * @param {@link NetworkManager#incomingEventBridge}
 	 */
 	public void setIncomingEventBridge(EventFilterBridge incomingEventBridge) {
@@ -476,6 +503,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#globalIncomingPublisher}
+	 * 
 	 * @return {@link NetworkManager#globalIncomingPublisher}
 	 */
 	public EventPublisher getGlobalIncomingPublisher() {
@@ -484,6 +512,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#globalIncomingPublisher}
+	 * 
 	 * @param {@link NetworkManager#globalIncomingPublisher}
 	 */
 	public void setGlobalIncomingPublisher(EventPublisher globalIncomingPublisher) {
@@ -492,6 +521,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#networkName}
+	 * 
 	 * @return {@link NetworkManager#networkName}
 	 */
 	public String getNetworkName() {
@@ -500,6 +530,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#networkName}
+	 * 
 	 * @param {@link NetworkManager#networkName}
 	 */
 	public void setNetworkName(String networkName) {
@@ -508,6 +539,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#connectionCounter}
+	 * 
 	 * @return {@link NetworkManager#connectionCounter}
 	 */
 	public int getConnectionCounter() {
@@ -523,6 +555,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#networkUtils}
+	 * 
 	 * @return {@link NetworkManager#networkUtils}
 	 */
 	public NetworkUtils getNetworkUtils() {
@@ -531,6 +564,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#networkUtils}
+	 * 
 	 * @param {@link NetworkManager#networkUtils}
 	 */
 	public void setNetworkUtils(NetworkUtils networkUtils) {
@@ -539,6 +573,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#connectingTimeout}
+	 * 
 	 * @return {@link NetworkManager#connectingTimeout}
 	 */
 	public int getConnectingTimeout() {
@@ -547,6 +582,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#connectingTimeout}
+	 * 
 	 * @param {@link NetworkManager#connectingTimeout}
 	 */
 	public void setConnectingTimeout(int connectingTimeout) {
@@ -555,6 +591,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#server}
+	 * 
 	 * @return {@link NetworkManager#server}
 	 */
 	public Server getServer() {
@@ -563,6 +600,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#server}
+	 * 
 	 * @param {@link NetworkManager#server}
 	 */
 	public void setServer(Server server) {
@@ -571,6 +609,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#serverThread}
+	 * 
 	 * @return {@link NetworkManager#serverThread}
 	 */
 	public Thread getServerThread() {
@@ -579,6 +618,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#serverThread}
+	 * 
 	 * @param {@link NetworkManager#serverThread}
 	 */
 	public void setServerThread(Thread serverThread) {
@@ -587,6 +627,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#status}
+	 * 
 	 * @return {@link NetworkManager#status}
 	 */
 	public ENetworkStatus getStatus() {
@@ -595,6 +636,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#status}
+	 * 
 	 * @param {@link NetworkManager#status}
 	 */
 	public void setStatus(ENetworkStatus status) {
@@ -603,6 +645,7 @@ public class NetworkManager
 
 	/**
 	 * Getter for {@link NetworkManager#clientNames}
+	 * 
 	 * @return {@link NetworkManager#clientNames}
 	 */
 	public List<String> getClientNames() {
@@ -611,6 +654,7 @@ public class NetworkManager
 
 	/**
 	 * Setter for {@link NetworkManager#clientNames}
+	 * 
 	 * @param {@link NetworkManager#clientNames}
 	 */
 	public void setClientNames(List<String> clientNames) {

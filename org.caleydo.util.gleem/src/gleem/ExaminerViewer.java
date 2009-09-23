@@ -37,24 +37,30 @@ import javax.media.opengl.GLEventListener;
 
 /**
  * <P>
- * This is an application-level class, not part of the manipulator hierarchy. It is an example of how you
- * might integrate gleem with another application which uses the mouse.
+ * This is an application-level class, not part of the manipulator hierarchy. It
+ * is an example of how you might integrate gleem with another application which
+ * uses the mouse.
  * </P>
  * <P>
- * For the given GLAutoDrawable, the ExaminerViewer takes over the setting of the view position. It passes
- * along mouse events it is not interested in to the ManipManager's mouse routines.
+ * For the given GLAutoDrawable, the ExaminerViewer takes over the setting of
+ * the view position. It passes along mouse events it is not interested in to
+ * the ManipManager's mouse routines.
  * </P>
  * <P>
- * The ExaminerViewer's controls are similar to those of Open Inventor's Examiner Viewer. Alt + Left mouse
- * button causes rotation about the focal point. Alt + Right mouse button causes translation parallel to the
- * image plane. Alt + both mouse buttons, combined with up/down mouse motion, causes zooming out and in along
- * the view vector. (On platforms with a "Meta" key, that key can be substituted in place of the Alt key.) The
- * method <code>setNoAltKeyMode</code> can be used to cause the ExaminerViewer to take control of all mouse
- * interactions in the window, avoiding the need to hold down the Alt key.
+ * The ExaminerViewer's controls are similar to those of Open Inventor's
+ * Examiner Viewer. Alt + Left mouse button causes rotation about the focal
+ * point. Alt + Right mouse button causes translation parallel to the image
+ * plane. Alt + both mouse buttons, combined with up/down mouse motion, causes
+ * zooming out and in along the view vector. (On platforms with a "Meta" key,
+ * that key can be substituted in place of the Alt key.) The method
+ * <code>setNoAltKeyMode</code> can be used to cause the ExaminerViewer to take
+ * control of all mouse interactions in the window, avoiding the need to hold
+ * down the Alt key.
  * </P>
  * <P>
- * NOTE: the current ExaminerViewer implementation assumes a minimum of two mouse buttons. For the Mac OS, the
- * code needs to be adjusted to use e.g., the Control key as the "right" mouse button.
+ * NOTE: the current ExaminerViewer implementation assumes a minimum of two
+ * mouse buttons. For the Mac OS, the code needs to be adjusted to use e.g., the
+ * Control key as the "right" mouse button.
  * </P>
  */
 
@@ -124,17 +130,19 @@ public class ExaminerViewer {
 		public void display(GLAutoDrawable drawable) {
 		}
 
-		public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+				int height) {
 			reshapeMethod(width, height);
 		}
 
-		public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+		public void displayChanged(GLAutoDrawable drawable,
+				boolean modeChanged, boolean deviceChanged) {
 		}
 	};
 
 	/**
-	 * The constructor takes the number of mouse buttons on this system (couldn't figure out how to determine
-	 * this internally)
+	 * The constructor takes the number of mouse buttons on this system
+	 * (couldn't figure out how to determine this internally)
 	 */
 	public ExaminerViewer(int numMouseButtons) {
 		this.numMouseButtons = numMouseButtons;
@@ -143,14 +151,15 @@ public class ExaminerViewer {
 
 	/**
 	 * <P>
-	 * Attaches this ExaminerViewer to the given GLAutoDrawable. This causes the ManipManager's mouse routines
-	 * to be removed from the window (using ManipManager.removeMouseListeners) and the ExaminerViewer's to be
-	 * installed. The GLAutoDrawable should be registered with the ManipManager before the ExaminerViewer is
-	 * attached to it.
+	 * Attaches this ExaminerViewer to the given GLAutoDrawable. This causes the
+	 * ManipManager's mouse routines to be removed from the window (using
+	 * ManipManager.removeMouseListeners) and the ExaminerViewer's to be
+	 * installed. The GLAutoDrawable should be registered with the ManipManager
+	 * before the ExaminerViewer is attached to it.
 	 * </P>
 	 * <P>
-	 * In order for the viewer to do anything useful, you need to provide a BSphereProvider to it to allow
-	 * "view all" functionality.
+	 * In order for the viewer to do anything useful, you need to provide a
+	 * BSphereProvider to it to allow "view all" functionality.
 	 * </P>
 	 */
 	public void attach(GLAutoDrawable window, BSphereProvider provider) {
@@ -161,8 +170,9 @@ public class ExaminerViewer {
 	}
 
 	/**
-	 * Detaches from the given window. This causes the ManipManager's mouse listeners to be reinstalled on the
-	 * GLAutoDrawable and the ExaminerViewer's to be removed.
+	 * Detaches from the given window. This causes the ManipManager's mouse
+	 * listeners to be reinstalled on the GLAutoDrawable and the
+	 * ExaminerViewer's to be removed.
 	 */
 	public void detach() {
 		removeListeners();
@@ -171,32 +181,35 @@ public class ExaminerViewer {
 	}
 
 	/**
-	 * Call this at the end of your display() method to cause the Modelview matrix to be recomputed for the
-	 * next frame.
+	 * Call this at the end of your display() method to cause the Modelview
+	 * matrix to be recomputed for the next frame.
 	 */
 	public void update(GL gl) {
 		recalc(gl);
 	}
 
 	/**
-	 * Call this to apply the inverse rotation matrix of the camera to the current matrix. This is useful for
-	 * drawing a skybox. Does not update which OpenGL matrix is currently being modified or the
-	 * ExaminerViewer's camera parameters.
+	 * Call this to apply the inverse rotation matrix of the camera to the
+	 * current matrix. This is useful for drawing a skybox. Does not update
+	 * which OpenGL matrix is currently being modified or the ExaminerViewer's
+	 * camera parameters.
 	 */
 	public void updateInverseRotation(GL gl) {
 		recalcInverseRotation(gl);
 	}
 
 	/**
-	 * Call this to force the ExaminerViewer to update its CameraParameters without touching the OpenGL state.
+	 * Call this to force the ExaminerViewer to update its CameraParameters
+	 * without touching the OpenGL state.
 	 */
 	public void update() {
 		recalc();
 	}
 
 	/**
-	 * Call this from within your display() method to cause the ExaminerViewer to recompute its position based
-	 * on the visible geometry. A BSphereProvider must have already been set or this method has no effect.
+	 * Call this from within your display() method to cause the ExaminerViewer
+	 * to recompute its position based on the visible geometry. A
+	 * BSphereProvider must have already been set or this method has no effect.
 	 */
 	public void viewAll(GL gl) {
 		if (provider == null)
@@ -205,11 +218,11 @@ public class ExaminerViewer {
 		float vertFOV, horizFOV, minFOV;
 		float adjustedVertFOV = params.getVertFOV() * vertFOVScale;
 		vertFOV = 2.0f * adjustedVertFOV;
-		horizFOV = 2.0f * (float) Math.atan(params.getImagePlaneAspectRatio() * Math.tan(adjustedVertFOV));
+		horizFOV = 2.0f * (float) Math.atan(params.getImagePlaneAspectRatio()
+				* Math.tan(adjustedVertFOV));
 		if (vertFOV < horizFOV) {
 			minFOV = vertFOV;
-		}
-		else {
+		} else {
 			minFOV = horizFOV;
 		}
 		if (minFOV == 0.0f)
@@ -222,17 +235,18 @@ public class ExaminerViewer {
 	}
 
 	/**
-	 * Get the camera parameters out of this Examiner Viewer (for example, to pass to
-	 * ManipManager.updateCameraParameters()). Note that mutating the returned object is not recommended but
-	 * regardless will have no effect on the ExaminerViewer.
+	 * Get the camera parameters out of this Examiner Viewer (for example, to
+	 * pass to ManipManager.updateCameraParameters()). Note that mutating the
+	 * returned object is not recommended but regardless will have no effect on
+	 * the ExaminerViewer.
 	 */
 	public CameraParameters getCameraParameters() {
 		return params;
 	}
 
 	/**
-	 * These routines can be hooked into a GUI by calling them from ActionEvent listeners for buttons
-	 * elsewhere in the application.
+	 * These routines can be hooked into a GUI by calling them from ActionEvent
+	 * listeners for buttons elsewhere in the application.
 	 */
 	public void rotateFaster() {
 		rotateSpeed *= 2.0f;
@@ -275,10 +289,11 @@ public class ExaminerViewer {
 	}
 
 	/**
-	 * Takes HALF of the vertical angular span of the frustum, specified in radians. For example, if your
-	 * <b>fovy</b> argument to gluPerspective() is 90, then this would be Math.PI / 4. Note that the
-	 * ExaminerViewer's algorithms break down if the vertical field of view approaches or exceeds 180 degrees,
-	 * or Math.PI / 2.
+	 * Takes HALF of the vertical angular span of the frustum, specified in
+	 * radians. For example, if your <b>fovy</b> argument to gluPerspective() is
+	 * 90, then this would be Math.PI / 4. Note that the ExaminerViewer's
+	 * algorithms break down if the vertical field of view approaches or exceeds
+	 * 180 degrees, or Math.PI / 2.
 	 */
 	public void setVertFOV(float vertFOV) {
 		vertFOVScale = (float) (vertFOV / (Math.PI / 4));
@@ -303,8 +318,7 @@ public class ExaminerViewer {
 			// conflating the alt/meta key with one of the mouse buttons
 			oldNumMouseButtons = numMouseButtons;
 			numMouseButtons = 3;
-		}
-		else {
+		} else {
 			numMouseButtons = oldNumMouseButtons;
 		}
 	}
@@ -314,25 +328,27 @@ public class ExaminerViewer {
 	}
 
 	/**
-	 * Enables or disables the automatic redrawing of the GLAutoDrawable to which this ExaminerViewer is
-	 * attached. If the GLAutoDrawable is already being animated, disabling auto redraw mode may provide
-	 * better performance. Defaults to on.
+	 * Enables or disables the automatic redrawing of the GLAutoDrawable to
+	 * which this ExaminerViewer is attached. If the GLAutoDrawable is already
+	 * being animated, disabling auto redraw mode may provide better
+	 * performance. Defaults to on.
 	 */
 	public void setAutoRedrawMode(boolean onOrOff) {
 		autoRedrawMode = onOrOff;
 	}
 
 	/**
-	 * Returns whether this ExaminerViewer automatically redraws the GLAutoDrawable to which it is attached
-	 * upon updates.
+	 * Returns whether this ExaminerViewer automatically redraws the
+	 * GLAutoDrawable to which it is attached upon updates.
 	 */
 	public boolean getAutoRedrawMode() {
 		return autoRedrawMode;
 	}
 
 	/**
-	 * Rotates this ExaminerViewer about the focal point by the specified incremental rotation; performs
-	 * postmultiplication, i.e. the incremental rotation is applied after the current orientation.
+	 * Rotates this ExaminerViewer about the focal point by the specified
+	 * incremental rotation; performs postmultiplication, i.e. the incremental
+	 * rotation is applied after the current orientation.
 	 */
 	public void rotateAboutFocalPoint(Rotf rot) {
 		orientation = rot.times(orientation);
@@ -367,16 +383,18 @@ public class ExaminerViewer {
 
 	private boolean modifiersMatch(MouseEvent e, int mods) {
 		if (noAltKeyMode) {
-			if ((mods & MouseEvent.BUTTON1_MASK) != 0 && (mods & MouseEvent.BUTTON2_MASK) == 0
-				&& (mods & MouseEvent.BUTTON3_MASK) == 0)
-				return !e.isAltDown() && !e.isMetaDown() && !e.isControlDown() && !e.isShiftDown();
+			if ((mods & MouseEvent.BUTTON1_MASK) != 0
+					&& (mods & MouseEvent.BUTTON2_MASK) == 0
+					&& (mods & MouseEvent.BUTTON3_MASK) == 0)
+				return !e.isAltDown() && !e.isMetaDown() && !e.isControlDown()
+						&& !e.isShiftDown();
 			else
 				// At least on Windows, meta seems to be declared to be down on
 				// right button presses
 				return !e.isControlDown() && !e.isShiftDown();
-		}
-		else
-			return (e.isAltDown() || e.isMetaDown()) && !e.isControlDown() && !e.isShiftDown();
+		} else
+			return (e.isAltDown() || e.isMetaDown()) && !e.isControlDown()
+					&& !e.isShiftDown();
 	}
 
 	private void init() {
@@ -400,8 +418,7 @@ public class ExaminerViewer {
 	private void motionMethod(MouseEvent e, int x, int y) {
 		if (interactionUnderway && !iOwnInteraction) {
 			ManipManager.getManipManager().mouseDragged(e);
-		}
-		else {
+		} else {
 			int dx = x - lastX;
 			int dy = y - lastY;
 
@@ -411,26 +428,27 @@ public class ExaminerViewer {
 			if (button1Down && !button2Down) {
 
 				// Rotation functionality
-				float xRads = (float) Math.PI * -1.0f * dy * rotateSpeed / 1000.0f;
-				float yRads = (float) Math.PI * -1.0f * dx * rotateSpeed / 1000.0f;
+				float xRads = (float) Math.PI * -1.0f * dy * rotateSpeed
+						/ 1000.0f;
+				float yRads = (float) Math.PI * -1.0f * dx * rotateSpeed
+						/ 1000.0f;
 				Rotf xRot = new Rotf(new Vec3f(1, 0, 0), xRads);
 				Rotf yRot = new Rotf(new Vec3f(0, 1, 0), yRads);
 				Rotf newRot = yRot.times(xRot);
 				orientation = orientation.times(newRot);
 
-			}
-			else if (button2Down && !button1Down) {
+			} else if (button2Down && !button1Down) {
 
 				// Translate functionality
 				// Compute the local coordinate system's difference vector
-				Vec3f localDiff = new Vec3f(dollySpeed * -1.0f * dx / 100.0f, dollySpeed * dy / 100.0f, 0.0f);
+				Vec3f localDiff = new Vec3f(dollySpeed * -1.0f * dx / 100.0f,
+						dollySpeed * dy / 100.0f, 0.0f);
 				// Rotate this by camera's orientation
 				Vec3f worldDiff = orientation.rotateVector(localDiff);
 				// Add on to center
 				center.add(worldDiff);
 
-			}
-			else if (button1Down && button2Down) {
+			} else if (button1Down && button2Down) {
 
 				float diff = dollySpeed * -1.0f * dy / 100.0f;
 				float newDolly = dolly.z() + diff;
@@ -455,40 +473,33 @@ public class ExaminerViewer {
 				interactionUnderway = true;
 				iOwnInteraction = false;
 				ManipManager.getManipManager().mousePressed(e);
-			}
-			else {
+			} else {
 				interactionUnderway = false;
 				iOwnInteraction = false;
 				ManipManager.getManipManager().mouseReleased(e);
 			}
-		}
-		else {
+		} else {
 			if ((mods & MouseEvent.BUTTON1_MASK) != 0) {
 				if (press) {
 					button1Down = true;
-				}
-				else {
+				} else {
 					button1Down = false;
 				}
-			}
-			else {
+			} else {
 				if (numMouseButtons != 3) {
 					if ((mods & MouseEvent.BUTTON2_MASK) != 0) {
 						if (press) {
 							button2Down = true;
-						}
-						else {
+						} else {
 							button2Down = false;
 						}
 					}
-				}
-				else {
+				} else {
 					// FIXME: must test this on 3-button system
 					if ((mods & MouseEvent.BUTTON3_MASK) != 0) {
 						if (press) {
 							button2Down = true;
-						}
-						else {
+						} else {
 							button2Down = false;
 						}
 					}
@@ -501,8 +512,7 @@ public class ExaminerViewer {
 			if (button1Down || button2Down) {
 				interactionUnderway = true;
 				iOwnInteraction = true;
-			}
-			else {
+			} else {
 				interactionUnderway = false;
 				iOwnInteraction = false;
 			}
@@ -519,8 +529,7 @@ public class ExaminerViewer {
 		aspect = (float) w / (float) h;
 		if (w >= h) {
 			theta = 45;
-		}
-		else {
+		} else {
 			theta = (float) Math.toDegrees(Math.atan(1 / aspect));
 		}
 		theta *= vertFOVScale;
@@ -570,20 +579,26 @@ public class ExaminerViewer {
 		params.setProjectionMatrix(tmpMat);
 
 		/********************
-		 * // Recompute position, forward and up vectors params.setPosition(position); Vec3f tmp = new
-		 * Vec3f(); orientation.rotateVector(Vec3f.NEG_Z_AXIS, tmp); params.setForwardDirection(tmp);
-		 * orientation.rotateVector(Vec3f.Y_AXIS, tmp); params.setUpDirection(tmp);
-		 * params.setOrientation(orientation); // Compute modelview matrix based on camera parameters,
-		 * position and // orientation Mat4f tmpMat = new Mat4f(); tmpMat.makeIdent();
-		 * tmpMat.setRotation(orientation); tmpMat.setTranslation(position); tmpMat.invertRigid();
-		 * params.setModelviewMatrix(tmpMat); // Compute perspective matrix given camera parameters float
-		 * deltaZ = zFar - zNear; float aspect = params.getImagePlaneAspectRatio(); float radians =
-		 * params.getVertFOV(); float sine = (float) Math.sin(radians); if ((deltaZ == 0) || (sine == 0) ||
-		 * (aspect == 0)) { tmpMat.makeIdent(); params.setProjectionMatrix(tmpMat); return; } float cotangent
-		 * = (float) Math.cos(radians) / sine; tmpMat.makeIdent(); tmpMat.set(0, 0, cotangent / aspect);
-		 * tmpMat.set(1, 1, cotangent); tmpMat.set(2, 2, -(zFar + zNear) / deltaZ); tmpMat.set(3, 2, -1);
-		 * tmpMat.set(2, 3, -2 * zNear * zFar / deltaZ); tmpMat.set(3, 3, 0);
-		 * params.setProjectionMatrix(tmpMat);
+		 * // Recompute position, forward and up vectors
+		 * params.setPosition(position); Vec3f tmp = new Vec3f();
+		 * orientation.rotateVector(Vec3f.NEG_Z_AXIS, tmp);
+		 * params.setForwardDirection(tmp);
+		 * orientation.rotateVector(Vec3f.Y_AXIS, tmp);
+		 * params.setUpDirection(tmp); params.setOrientation(orientation); //
+		 * Compute modelview matrix based on camera parameters, position and //
+		 * orientation Mat4f tmpMat = new Mat4f(); tmpMat.makeIdent();
+		 * tmpMat.setRotation(orientation); tmpMat.setTranslation(position);
+		 * tmpMat.invertRigid(); params.setModelviewMatrix(tmpMat); // Compute
+		 * perspective matrix given camera parameters float deltaZ = zFar -
+		 * zNear; float aspect = params.getImagePlaneAspectRatio(); float
+		 * radians = params.getVertFOV(); float sine = (float)
+		 * Math.sin(radians); if ((deltaZ == 0) || (sine == 0) || (aspect == 0))
+		 * { tmpMat.makeIdent(); params.setProjectionMatrix(tmpMat); return; }
+		 * float cotangent = (float) Math.cos(radians) / sine;
+		 * tmpMat.makeIdent(); tmpMat.set(0, 0, cotangent / aspect);
+		 * tmpMat.set(1, 1, cotangent); tmpMat.set(2, 2, -(zFar + zNear) /
+		 * deltaZ); tmpMat.set(3, 2, -1); tmpMat.set(2, 3, -2 * zNear * zFar /
+		 * deltaZ); tmpMat.set(3, 3, 0); params.setProjectionMatrix(tmpMat);
 		 **********************/
 	}
 
@@ -605,7 +620,9 @@ public class ExaminerViewer {
 		Vec3f tmp = new Vec3f();
 		float ang = orientation.get(tmp);
 		if (tmp.lengthSquared() > EPSILON) {
-			gl.glRotatef((float) Math.toDegrees(ang), tmp.x(), tmp.y(), tmp.z());
+			gl
+					.glRotatef((float) Math.toDegrees(ang), tmp.x(), tmp.y(),
+							tmp.z());
 		}
 	}
 

@@ -26,7 +26,7 @@ public class SerializedHyperbolicView
 	 */
 	public SerializedHyperbolicView() {
 	}
-	
+
 	public SerializedHyperbolicView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}

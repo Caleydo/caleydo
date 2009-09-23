@@ -23,14 +23,17 @@ public class Slerp {
 		quatResult = new Rotf();
 	}
 
-	public Transform interpolate(Transform transformOrigin, Transform transformDestination, float delta) {
+	public Transform interpolate(Transform transformOrigin,
+			Transform transformDestination, float delta) {
 
-		translationResult =
-			interpolate(transformOrigin.getTranslation(), transformDestination.getTranslation(), delta);
-		scaleResult = interpolate(transformOrigin.getScale(), transformDestination.getScale(), delta);
+		translationResult = interpolate(transformOrigin.getTranslation(),
+				transformDestination.getTranslation(), delta);
+		scaleResult = interpolate(transformOrigin.getScale(),
+				transformDestination.getScale(), delta);
 
 		// Return the interpolated quaternion
-		quatResult = slerp(transformOrigin.getRotation(), transformDestination.getRotation(), delta);
+		quatResult = slerp(transformOrigin.getRotation(), transformDestination
+				.getRotation(), delta);
 
 		Transform resultTransform = new Transform();
 		resultTransform.setTranslation(translationResult);
@@ -40,21 +43,24 @@ public class Slerp {
 		return resultTransform;
 	}
 
-	public void applySlerp(final GL gl, final Transform transform, boolean bIgnoreZRotation) {
+	public void applySlerp(final GL gl, final Transform transform,
+			boolean bIgnoreZRotation) {
 
 		Vec3f translation = transform.getTranslation();
 		Vec3f scale = transform.getScale();
 		Vec3f axis = new Vec3f();
 		float fAngle = transform.getRotation().get(axis);
 
-		gl.glTranslatef(translation.x()-1.5f, translation.y()-1.5f, translation.z());
+		gl.glTranslatef(translation.x() - 1.5f, translation.y() - 1.5f,
+				translation.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
-		
+
 		float fZRot = 0;
 		if (!bIgnoreZRotation)
 			fZRot = axis.z();
-		
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), fZRot);
+
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
+				fZRot);
 	}
 
 	// /**
@@ -122,7 +128,8 @@ public class Slerp {
 	// }
 
 	/**
-	 * <code>slerp</code> sets this quaternion's value as an interpolation between two other quaternions.
+	 * <code>slerp</code> sets this quaternion's value as an interpolation
+	 * between two other quaternions.
 	 * 
 	 * @param q1
 	 *            the first quaternion.
@@ -142,18 +149,19 @@ public class Slerp {
 
 		// Create a local quaternion to store the interpolated quaternion
 		if (vecQ1Axis.x() == vecQ2Axis.x() && vecQ1Axis.y() == vecQ2Axis.y()
-			&& vecQ1Axis.z() == vecQ2Axis.z() && fQ1Angle == fQ2Angle) {
+				&& vecQ1Axis.z() == vecQ2Axis.z() && fQ1Angle == fQ2Angle) {
 			quatResult.set(q1);
 			return quatResult;
 		}
 
-		float result =
-			vecQ1Axis.x() * vecQ2Axis.x() + vecQ1Axis.y() * vecQ2Axis.y() + vecQ1Axis.z() * vecQ2Axis.z()
-				+ fQ1Angle * fQ2Angle;
+		float result = vecQ1Axis.x() * vecQ2Axis.x() + vecQ1Axis.y()
+				* vecQ2Axis.y() + vecQ1Axis.z() * vecQ2Axis.z() + fQ1Angle
+				* fQ2Angle;
 
 		if (result < 0.0f) {
 			// Negate the second quaternion and the result of the dot product
-			q2.set(new Vec3f(-vecQ2Axis.x(), -vecQ2Axis.y(), -vecQ2Axis.z()), -fQ2Angle);
+			q2.set(new Vec3f(-vecQ2Axis.x(), -vecQ2Axis.y(), -vecQ2Axis.z()),
+					-fQ2Angle);
 			fQ2Angle = q2.get(vecQ2Axis);
 			result = -result;
 		}
@@ -178,31 +186,39 @@ public class Slerp {
 		// Calculate the x, y, z and w values for the quaternion by using a
 		// special
 		// form of linear interpolation for quaternions.
-		quatResult.set(new Vec3f(scale0 * vecQ1Axis.x() + scale1 * vecQ2Axis.x(), scale0 * vecQ1Axis.y()
-			+ scale1 * vecQ2Axis.y(), scale0 * vecQ1Axis.z() + scale1 * vecQ2Axis.z()), scale0 * fQ1Angle
-			+ scale1 * fQ2Angle);
+		quatResult.set(new Vec3f(scale0 * vecQ1Axis.x() + scale1
+				* vecQ2Axis.x(), scale0 * vecQ1Axis.y() + scale1
+				* vecQ2Axis.y(), scale0 * vecQ1Axis.z() + scale1
+				* vecQ2Axis.z()), scale0 * fQ1Angle + scale1 * fQ2Angle);
 
 		// Return the interpolated quaternion
 		return quatResult;
 	}
 
 	/**
-	 * Sets this vector to the interpolation by changeAmnt from beginVec to finalVec
-	 * this=(1-changeAmnt)*beginVec + changeAmnt * finalVec
+	 * Sets this vector to the interpolation by changeAmnt from beginVec to
+	 * finalVec this=(1-changeAmnt)*beginVec + changeAmnt * finalVec
 	 * 
 	 * @param beginVec
 	 *            the begin vector (changeAmnt=0)
 	 * @param finalVec
 	 *            The final vector to interpolate towards
 	 * @param changeAmnt
-	 *            An amount between 0.0 - 1.0 representing a percentage change from beginVec towards finalVec
+	 *            An amount between 0.0 - 1.0 representing a percentage change
+	 *            from beginVec towards finalVec
 	 */
 	public Vec3f interpolate(Vec3f beginVec, Vec3f finalVec, float changeAmnt) {
 
 		Vec3f result = new Vec3f();
-		result.setX((1 - changeAmnt) * beginVec.x() + changeAmnt * finalVec.x());
-		result.setY((1 - changeAmnt) * beginVec.y() + changeAmnt * finalVec.y());
-		result.setZ((1 - changeAmnt) * beginVec.z() + changeAmnt * finalVec.z());
+		result
+				.setX((1 - changeAmnt) * beginVec.x() + changeAmnt
+						* finalVec.x());
+		result
+				.setY((1 - changeAmnt) * beginVec.y() + changeAmnt
+						* finalVec.y());
+		result
+				.setZ((1 - changeAmnt) * beginVec.z() + changeAmnt
+						* finalVec.z());
 
 		return result;
 	}

@@ -36,7 +36,8 @@ public class NeighborhoodAction
 		neighborhoodEnabled = !neighborhoodEnabled;
 		if (neighborhoodEnabled) {
 			pathwayToolbarMediator.enableNeighborhood();
-		} else {
+		}
+		else {
 			pathwayToolbarMediator.disableNeighborhood();
 		}
 	}

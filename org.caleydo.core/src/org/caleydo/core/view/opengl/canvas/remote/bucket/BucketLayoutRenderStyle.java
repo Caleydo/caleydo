@@ -40,11 +40,12 @@ public class BucketLayoutRenderStyle
 
 	private float x = 0;
 	private float y = 0;
-//	private float fTargetY = 0;
-//	private boolean bAnimationRunningOut = false;
-//	private boolean bAnimationRunningIn = false;
-//	private boolean bFocusOnTopStackLayer = false;
-//	private boolean bFocusOnBottomStackLayer = false;
+
+	// private float fTargetY = 0;
+	// private boolean bAnimationRunningOut = false;
+	// private boolean bAnimationRunningIn = false;
+	// private boolean bFocusOnTopStackLayer = false;
+	// private boolean bFocusOnBottomStackLayer = false;
 
 	/**
 	 * Constructor.
@@ -419,78 +420,81 @@ public class BucketLayoutRenderStyle
 		fArHeadPosition[0] -= upperLeftScreenPos.x;
 		fArHeadPosition[1] -= upperLeftScreenPos.y;
 
-		x = fArHeadPosition[0] - viewRectScreenCoords.width/2;
-		y = (fArHeadPosition[1] - viewRectScreenCoords.height/2f);
-		
+		x = fArHeadPosition[0] - viewRectScreenCoords.width / 2;
+		y = (fArHeadPosition[1] - viewRectScreenCoords.height / 2f);
+
 		float fRenderX = x / viewRectScreenCoords.width * 4f;
 		float fRenderY = y / viewRectScreenCoords.height * 4f * fAspectRatio;
-		
-//		GLHelperFunctions.drawPointAt(gl, new Vec3f(fArHeadPosition[0] / viewRectScreenCoords.width * 4f -2,
-//			(1f - (fArHeadPosition[1] / viewRectScreenCoords.height) * 4f + 0.5f) * fAspectRatio, 0f));
-//		
-//		x = fArHeadPosition[0];
-//
-//		if (fArHeadPosition[1] < 400 && bAnimationRunningIn == false && !bFocusOnTopStackLayer) {
-//			fTargetY = 100;
-//			bAnimationRunningIn = true;
-//			// y = fArHeadPosition[1];
-//		}
-//////		else if (fArHeadPosition[1] > 600 && bAnimationRunningIn == false && !bFocusOnBottomStackLayer) {
-//////			fTargetY = 750;
-//////			bAnimationRunningIn = true;
-//////			// y = fArHeadPosition[1];
-//////		}
-////
-//		if (fArHeadPosition[1] > 400 && fArHeadPosition[1] < 600 && (bFocusOnBottomStackLayer || bFocusOnTopStackLayer)) {
-//			fTargetY = 500;
-//			bAnimationRunningOut = true;
-//		}
-//
-//		// Top stack layer
-//		if (bAnimationRunningIn && fTargetY == 100 && !bFocusOnTopStackLayer) {
-//			if (fTargetY < y)
-//				y = y - 10;
-//
-//			if (fTargetY >= y) {
-//				bAnimationRunningIn = false;
-//				bFocusOnTopStackLayer = true;
-//			}
-//		}
-//
-//		if (bAnimationRunningOut && fTargetY == 500 && bFocusOnTopStackLayer) {
-//			if (fTargetY > y)
-//				y = y + 10;
-//
-//			if (fTargetY <= y) {
-//				bAnimationRunningOut = false;
-//				bFocusOnTopStackLayer = false;
-//			}
-//		}
 
-//		// Bottom stack layer
-//		if (bAnimationRunningOut && fTargetY == 400 && !bFocusOnBottomStackLayer) {
-//			if (fTargetY < y)
-//				y = y - 10;
-//
-//			if (fTargetY >= y) {
-//				bAnimationRunningOut = false;
-//				bFocusOnBottomStackLayer = false;
-//			}
-//		}
-//
-//		if (bAnimationRunningIn && fTargetY == 750 && bFocusOnBottomStackLayer) {
-//			if (fTargetY > y)
-//				y = y + 10;
-//
-//			if (fTargetY <= y) {
-//				bAnimationRunningIn = false;
-//				bFocusOnBottomStackLayer = true;
-//			}
-//		}
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(fArHeadPosition[0] / viewRectScreenCoords.width * 4f
+		// -2,
+		// (1f - (fArHeadPosition[1] / viewRectScreenCoords.height) * 4f + 0.5f) * fAspectRatio, 0f));
+		//		
+		// x = fArHeadPosition[0];
+		//
+		// if (fArHeadPosition[1] < 400 && bAnimationRunningIn == false && !bFocusOnTopStackLayer) {
+		// fTargetY = 100;
+		// bAnimationRunningIn = true;
+		// // y = fArHeadPosition[1];
+		// }
+		// //// else if (fArHeadPosition[1] > 600 && bAnimationRunningIn == false &&
+		// !bFocusOnBottomStackLayer) {
+		// //// fTargetY = 750;
+		// //// bAnimationRunningIn = true;
+		// //// // y = fArHeadPosition[1];
+		// //// }
+		// //
+		// if (fArHeadPosition[1] > 400 && fArHeadPosition[1] < 600 && (bFocusOnBottomStackLayer ||
+		// bFocusOnTopStackLayer)) {
+		// fTargetY = 500;
+		// bAnimationRunningOut = true;
+		// }
+		//
+		// // Top stack layer
+		// if (bAnimationRunningIn && fTargetY == 100 && !bFocusOnTopStackLayer) {
+		// if (fTargetY < y)
+		// y = y - 10;
+		//
+		// if (fTargetY >= y) {
+		// bAnimationRunningIn = false;
+		// bFocusOnTopStackLayer = true;
+		// }
+		// }
+		//
+		// if (bAnimationRunningOut && fTargetY == 500 && bFocusOnTopStackLayer) {
+		// if (fTargetY > y)
+		// y = y + 10;
+		//
+		// if (fTargetY <= y) {
+		// bAnimationRunningOut = false;
+		// bFocusOnTopStackLayer = false;
+		// }
+		// }
 
-//		if (!bFocusOnStackLayer && !bAnimationRunningIn && !bAnimationRunningOut) {
-//			 y = fArHeadPosition[1];
-//		}
+		// // Bottom stack layer
+		// if (bAnimationRunningOut && fTargetY == 400 && !bFocusOnBottomStackLayer) {
+		// if (fTargetY < y)
+		// y = y - 10;
+		//
+		// if (fTargetY >= y) {
+		// bAnimationRunningOut = false;
+		// bFocusOnBottomStackLayer = false;
+		// }
+		// }
+		//
+		// if (bAnimationRunningIn && fTargetY == 750 && bFocusOnBottomStackLayer) {
+		// if (fTargetY > y)
+		// y = y + 10;
+		//
+		// if (fTargetY <= y) {
+		// bAnimationRunningIn = false;
+		// bFocusOnBottomStackLayer = true;
+		// }
+		// }
+
+		// if (!bFocusOnStackLayer && !bAnimationRunningIn && !bAnimationRunningOut) {
+		// y = fArHeadPosition[1];
+		// }
 
 		fBucketBottomLeft = -1 * fRenderX - BUCKET_WIDTH;
 		fBucketBottomRight = -1 * fRenderX + BUCKET_WIDTH;

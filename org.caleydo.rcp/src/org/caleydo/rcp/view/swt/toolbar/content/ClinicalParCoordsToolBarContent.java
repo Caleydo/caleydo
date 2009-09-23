@@ -16,7 +16,8 @@ import org.caleydo.rcp.action.toolbar.view.storagebased.parcoords.SaveSelections
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
- * ToolBarContent implementation for heatmap specific toolbar items.  
+ * ToolBarContent implementation for heatmap specific toolbar items.
+ * 
  * @author Werner Puff
  */
 public class ClinicalParCoordsToolBarContent
@@ -65,7 +66,7 @@ public class ClinicalParCoordsToolBarContent
 			IToolBarItem useRandomSamplingAction = new UseRandomSamplingAction(targetViewID);
 			actionList.add(useRandomSamplingAction);
 		}
-		
+
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
 

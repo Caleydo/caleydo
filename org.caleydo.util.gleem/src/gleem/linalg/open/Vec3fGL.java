@@ -8,8 +8,7 @@ import javax.media.opengl.GL;
 /**
  * @author Michael Kalkusch
  */
-public final class Vec3fGL
-	extends Vec3f {
+public final class Vec3fGL extends Vec3f {
 
 	public Vec3fGL() {
 		super();

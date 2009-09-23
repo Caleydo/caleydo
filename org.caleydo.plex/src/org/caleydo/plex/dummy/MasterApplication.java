@@ -24,7 +24,7 @@ public class MasterApplication extends _MasterApplicationIDisp {
 
 	public static final int LINE_MODE_UP = 1;
 	public static final int LINE_MODE_DOWN = 2;
-	
+
 	ResourceManager resourceManager = null;
 	ResourceManagerIPrx resourceManagerPrx = null;
 
@@ -33,16 +33,17 @@ public class MasterApplication extends _MasterApplicationIDisp {
 	Communicator communicator;
 
 	Shell connectionLineShell = null;
-	
+
 	Display display = null;
-	
+
 	public MasterApplication() {
 		display = new Display();
 	}
-	
+
 	@Override
 	public ResourceManagerIPrx getResourceManagerProxy(Current __current) {
-		System.out.println("MasterApplication.getResourceManagerProxy() called");
+		System.out
+				.println("MasterApplication.getResourceManagerProxy() called");
 		return resourceManagerPrx;
 	}
 
@@ -51,19 +52,21 @@ public class MasterApplication extends _MasterApplicationIDisp {
 			GroupwareClientAppIPrx client, String id,
 			ServerApplicationIPrx serverApp, int x, int y, int w, int h,
 			Current __current) {
-		
+
 		if (resourceManagerPrx == null) {
 			resourceManager = new ResourceManager();
 			resourceManager.setAdapter(adapter);
 			resourceManager.setCommunicator(communicator);
-			
-			ObjectPrx objPrx = adapter.add(resourceManager, communicator.stringToIdentity("resourceManager"));
+
+			ObjectPrx objPrx = adapter.add(resourceManager, communicator
+					.stringToIdentity("resourceManager"));
 			resourceManagerPrx = ResourceManagerIPrxHelper.checkedCast(objPrx);
 		}
-		
-		System.out.println("MasterApplication.registerGroupwareClient() called");
+
+		System.out
+				.println("MasterApplication.registerGroupwareClient() called");
 		client.dummy("hello, here is dummy_desko speaking");
-		
+
 		GroupwareInformation info = new GroupwareInformation();
 		info.displayID = 0;
 		info.isPrivate = true;
@@ -74,51 +77,59 @@ public class MasterApplication extends _MasterApplicationIDisp {
 	}
 
 	@Override
-	public void drawConnectionLine(ConnectionLineVertex[] vertices, int connectionID, Current __current) {
+	public void drawConnectionLine(ConnectionLineVertex[] vertices,
+			int connectionID, Current __current) {
 
-	    Region region = new Region();
-	    
-	    int minx = Integer.MAX_VALUE;
-	    int miny = Integer.MAX_VALUE;
-	    for (ConnectionLineVertex v : vertices) {
-	    	if (minx > v.x) minx = v.x;
-	    	if (miny > v.y) miny = v.y;
-	    }
+		Region region = new Region();
 
-	    ConnectionLineVertex s = null;
-    	for (ConnectionLineVertex v : vertices) {
-	    	if (s == null) {
-	    		s = v;
-	    	} else {
-	    		int dx = v.x - s.x;
-	    		if (dx < 0) dx = -dx;
-	    		int dy = v.y - s.y;
-	    		if (dy < 0) dy = -dy;
-	    		int ox = 4;
-	    		int oy = 0;
-	    		if (dx > dy) {
-	    			ox = 0;
-	    			oy = 4;
-	    		}
-	    		region.add(new int[] { s.x-minx, s.y-miny, v.x-minx, v.y-miny, v.x+ox-minx, v.y+oy-miny, s.x+ox-minx, s.y+oy-miny });
-	    	}
-	    }
+		int minx = Integer.MAX_VALUE;
+		int miny = Integer.MAX_VALUE;
+		for (ConnectionLineVertex v : vertices) {
+			if (minx > v.x)
+				minx = v.x;
+			if (miny > v.y)
+				miny = v.y;
+		}
+
+		ConnectionLineVertex s = null;
+		for (ConnectionLineVertex v : vertices) {
+			if (s == null) {
+				s = v;
+			} else {
+				int dx = v.x - s.x;
+				if (dx < 0)
+					dx = -dx;
+				int dy = v.y - s.y;
+				if (dy < 0)
+					dy = -dy;
+				int ox = 4;
+				int oy = 0;
+				if (dx > dy) {
+					ox = 0;
+					oy = 4;
+				}
+				region.add(new int[]{s.x - minx, s.y - miny, v.x - minx,
+						v.y - miny, v.x + ox - minx, v.y + oy - miny,
+						s.x + ox - minx, s.y + oy - miny});
+			}
+		}
 
 		if (connectionLineShell != null) {
 			connectionLineShell.dispose();
 			connectionLineShell = null;
 		}
-	    connectionLineShell = new Shell(display, SWT.NO_TRIM | SWT.ON_TOP);
-	    connectionLineShell.setBackground(display.getSystemColor(SWT.COLOR_RED));
+		connectionLineShell = new Shell(display, SWT.NO_TRIM | SWT.ON_TOP);
+		connectionLineShell
+				.setBackground(display.getSystemColor(SWT.COLOR_RED));
 		connectionLineShell.setLocation(minx, miny);
-	    connectionLineShell.setRegion(region);
+		connectionLineShell.setRegion(region);
 
-	    Rectangle size = region.getBounds();
-	    connectionLineShell.setSize(size.width, size.height);
+		Rectangle size = region.getBounds();
+		connectionLineShell.setSize(size.width, size.height);
 
-	    connectionLineShell.open();
+		connectionLineShell.open();
 	}
-	
+
 	public ObjectAdapter getAdapter() {
 		return adapter;
 	}

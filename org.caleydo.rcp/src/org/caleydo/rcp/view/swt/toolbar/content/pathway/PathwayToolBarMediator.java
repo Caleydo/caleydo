@@ -13,12 +13,13 @@ import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * mediator for pathway-related toolbar items
+ * 
  * @author Werner Puff
  */
 public class PathwayToolBarMediator {
 
 	IEventPublisher eventPublisher;
-	
+
 	public PathwayToolBarMediator() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 	}
@@ -29,13 +30,13 @@ public class PathwayToolBarMediator {
 		event.setPathwayID(pathway.getID());
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void enableTextures() {
 		EnableTexturesEvent event = new EnableTexturesEvent();
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void disableTextures() {
 		DisableTexturesEvent event = new DisableTexturesEvent();
 		event.setSender(this);
@@ -47,7 +48,7 @@ public class PathwayToolBarMediator {
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void disableNeighborhood() {
 		DisableNeighborhoodEvent event = new DisableNeighborhoodEvent();
 		event.setSender(this);
@@ -59,7 +60,7 @@ public class PathwayToolBarMediator {
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
-	
+
 	public void disableGeneMapping() {
 		DisableGeneMappingEvent event = new DisableGeneMappingEvent();
 		event.setSender(this);

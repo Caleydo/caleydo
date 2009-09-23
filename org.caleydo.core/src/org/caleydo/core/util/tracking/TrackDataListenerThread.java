@@ -88,7 +88,7 @@ public class TrackDataListenerThread
 
 				if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.RED
 					|| TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.SIMULATED_BY_MOUSE_MOVEMENT) {
-					
+
 					eyePosInputQueue.add(new float[] { x, y });
 					if (eyePosInputQueue.size() > TrackDataProvider.POSITON_SMOOTH_RANGE) {
 						eyePosInputQueue.remove();
@@ -100,7 +100,7 @@ public class TrackDataListenerThread
 					}
 				}
 				else if (TrackDataProvider.eTrackerMode == TrackDataProvider.ETrackerMode.HED) {
-					
+
 					headPosInputQueue.add(new float[] { x, y });
 					if (headPosInputQueue.size() > TrackDataProvider.POSITON_SMOOTH_RANGE) {
 						headPosInputQueue.remove();

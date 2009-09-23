@@ -6,10 +6,9 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event to signal that all transformed selection points should be deleted.
- * The source selections are untouched. This event is used when the selections
- * are unchanged, but actions like animations change the resulting screen coordinates
- * of connection line points.  
+ * Event to signal that all transformed selection points should be deleted. The source selections are
+ * untouched. This event is used when the selections are unchanged, but actions like animations change the
+ * resulting screen coordinates of connection line points.
  * 
  * @author Werner Puff
  */

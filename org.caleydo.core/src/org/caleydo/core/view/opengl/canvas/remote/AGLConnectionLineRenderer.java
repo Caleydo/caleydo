@@ -36,7 +36,8 @@ public abstract class AGLConnectionLineRenderer {
 		connectedElementRepManager =
 			GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
-		hashIDTypeToViewToPointLists = new EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>>(EIDType.class);
+		hashIDTypeToViewToPointLists =
+			new EnumMap<EIDType, HashMap<Integer, ArrayList<ArrayList<Vec3f>>>>(EIDType.class);
 	}
 
 	public void enableRendering(final boolean bEnableRendering) {
@@ -52,14 +53,14 @@ public abstract class AGLConnectionLineRenderer {
 
 		if (connectedElementRepManager.getOccuringIDTypes().size() == 0 || bEnableRendering == false)
 			return;
-		
+
 		gl.glDisable(GL.GL_DEPTH_TEST);
 		renderConnectionLines(gl);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 	}
 
 	protected abstract void renderConnectionLines(final GL gl);
-	
+
 	/**
 	 * Render straight connection lines.
 	 * 
@@ -77,8 +78,8 @@ public abstract class AGLConnectionLineRenderer {
 		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecSrcPoint.x()-1.5f, vecSrcPoint.y()-1.5f, vecSrcPoint.z() - 0.001f);
-		gl.glVertex3f(vecDestPoint.x()-1.5f, vecDestPoint.y()-1.5f, vecDestPoint.z() - 0.001f);
+		gl.glVertex3f(vecSrcPoint.x() - 1.5f, vecSrcPoint.y() - 1.5f, vecSrcPoint.z() - 0.001f);
+		gl.glVertex3f(vecDestPoint.x() - 1.5f, vecDestPoint.y() - 1.5f, vecDestPoint.z() - 0.001f);
 		gl.glEnd();
 
 		// gl.glColor4fv(fArColor, 0);
@@ -88,8 +89,8 @@ public abstract class AGLConnectionLineRenderer {
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 
 		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecSrcPoint.x()-1.5f, vecSrcPoint.y()-1.5f, vecSrcPoint.z());
-		gl.glVertex3f(vecDestPoint.x()-1.5f, vecDestPoint.y()-1.5f, vecDestPoint.z());
+		gl.glVertex3f(vecSrcPoint.x() - 1.5f, vecSrcPoint.y() - 1.5f, vecSrcPoint.z());
+		gl.glVertex3f(vecDestPoint.x() - 1.5f, vecDestPoint.y() - 1.5f, vecDestPoint.z());
 		gl.glEnd();
 	}
 }

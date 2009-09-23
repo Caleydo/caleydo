@@ -26,21 +26,18 @@ public class BookmarkContextMenuItemContainer
 	public void setID(EIDType idType, int id) {
 		createMenuContent(idType, id);
 	}
-	
-	
 
-	private void createMenuContent(EIDType idType, int id) {	
-		
-		if(idType.getCategory() == EIDCategory.GENE)
-		{
+	private void createMenuContent(EIDType idType, int id) {
+
+		if (idType.getCategory() == EIDCategory.GENE) {
 			GeneContextMenuItemContainer geneContainer = new GeneContextMenuItemContainer();
 			geneContainer.setID(EIDType.DAVID, id);
 			addItemContainer(geneContainer);
 			addSeparator();
 		}
-		
+
 		RemoveBookmarkItem removeBookmarkItem = new RemoveBookmarkItem(idType, id);
-		addContextMenuItem(removeBookmarkItem);		
-	
+		addContextMenuItem(removeBookmarkItem);
+
 	}
 }

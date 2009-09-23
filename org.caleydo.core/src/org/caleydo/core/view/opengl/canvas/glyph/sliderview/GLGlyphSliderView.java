@@ -350,7 +350,8 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(EPickingType pickingType, EPickingMode pickingMode, int externalID,
+		Pick pick) {
 		if (pickingType == EPickingType.SLIDER_SELECTION) {
 			for (int i = 0; i < alSlider.size(); ++i) {
 				alSlider.get(i).handleEvents(pickingType, pickingMode, externalID, pick);

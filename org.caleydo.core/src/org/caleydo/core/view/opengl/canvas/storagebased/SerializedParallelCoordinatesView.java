@@ -26,7 +26,7 @@ public class SerializedParallelCoordinatesView
 	 */
 	public SerializedParallelCoordinatesView() {
 	}
-	
+
 	public SerializedParallelCoordinatesView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}

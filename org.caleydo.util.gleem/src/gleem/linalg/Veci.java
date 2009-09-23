@@ -24,7 +24,8 @@
 package gleem.linalg;
 
 /**
- * Arbitrary-length integer vector class. Currently very simple and only supports a few needed operations.
+ * Arbitrary-length integer vector class. Currently very simple and only
+ * supports a few needed operations.
  */
 public class Veci {
 

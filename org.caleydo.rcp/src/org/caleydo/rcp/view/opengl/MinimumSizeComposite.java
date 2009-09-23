@@ -11,10 +11,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 
 public class MinimumSizeComposite
-	extends ScrolledComposite implements IListenerOwner {
+	extends ScrolledComposite
+	implements IListenerOwner {
 
 	SetMinViewSizeEventListener setMinSizeEventListener;
-	
+
 	public MinimumSizeComposite(Composite parent, int style) {
 		super(parent, style);
 		setMinSizeEventListener = new SetMinViewSizeEventListener();
@@ -22,7 +23,7 @@ public class MinimumSizeComposite
 		GeneralManager.get().getEventPublisher().addListener(SetMinViewSizeEvent.class,
 			setMinSizeEventListener);
 	}
-	
+
 	public void setView(AGLEventListener view) {
 		setMinSizeEventListener.setView(view);
 	}

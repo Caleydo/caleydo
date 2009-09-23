@@ -103,8 +103,9 @@ public class ManipManager {
 	}
 
 	/**
-	 * Make the ManipManager aware of the existence of a given window. This causes mouse and mouse motion
-	 * listeners to be installed on this window; see setupMouseListeners, below.
+	 * Make the ManipManager aware of the existence of a given window. This
+	 * causes mouse and mouse motion listeners to be installed on this window;
+	 * see setupMouseListeners, below.
 	 */
 	public synchronized void registerWindow(GLAutoDrawable window) {
 		windowToInfoMap.put(window, new WindowInfo());
@@ -112,7 +113,8 @@ public class ManipManager {
 	}
 
 	/**
-	 * Remove all references to a given window, including removing all manipulators from it.
+	 * Remove all references to a given window, including removing all
+	 * manipulators from it.
 	 */
 	public synchronized void unregisterWindow(GLAutoDrawable window) {
 		if (window == null)
@@ -129,9 +131,11 @@ public class ManipManager {
 	}
 
 	/**
-	 * Make a given manipulator visible and active in a given window. The window must be registered.
+	 * Make a given manipulator visible and active in a given window. The window
+	 * must be registered.
 	 */
-	public synchronized void showManipInWindow(Manip manip, GLAutoDrawable window) {
+	public synchronized void showManipInWindow(Manip manip,
+			GLAutoDrawable window) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
 		if (info == null)
 			throw new RuntimeException("Window not registered");
@@ -145,9 +149,11 @@ public class ManipManager {
 	}
 
 	/**
-	 * Remove a given manipulator from a given window. The window must be registered.
+	 * Remove a given manipulator from a given window. The window must be
+	 * registered.
 	 */
-	public synchronized void removeManipFromWindow(Manip manip, GLAutoDrawable window) {
+	public synchronized void removeManipFromWindow(Manip manip,
+			GLAutoDrawable window) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
 		if (info == null)
 			throw new RuntimeException("Window not registered");
@@ -159,9 +165,11 @@ public class ManipManager {
 	}
 
 	/**
-	 * This must be called for a registered window every time the camera parameters of the window change.
+	 * This must be called for a registered window every time the camera
+	 * parameters of the window change.
 	 */
-	public synchronized void updateCameraParameters(GLAutoDrawable window, CameraParameters params) {
+	public synchronized void updateCameraParameters(GLAutoDrawable window,
+			CameraParameters params) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
 		if (info == null)
 			throw new RuntimeException("Window not registered");
@@ -169,7 +177,8 @@ public class ManipManager {
 	}
 
 	/**
-	 * Allows changing of the screen-to-ray mapping. Default is a RightTruncPyrMapping.
+	 * Allows changing of the screen-to-ray mapping. Default is a
+	 * RightTruncPyrMapping.
 	 */
 	public synchronized void setScreenToRayMapping(ScreenToRayMapping mapping) {
 		this.mapping = mapping;
@@ -181,24 +190,26 @@ public class ManipManager {
 	}
 
 	/**
-	 * Sets the WindowUpdateListener the ManipManager uses to force repainting of windows in which
-	 * manipulators have moved. The default implementation, which can be restored by passing a null listener
-	 * argument to this method, calls repaint() on the GLAutoDrawable if it is not a GLRunnable instance
-	 * (i.e., a GLAnimCanvas or GLAnimJPanel, which redraw themselves automatically).
+	 * Sets the WindowUpdateListener the ManipManager uses to force repainting
+	 * of windows in which manipulators have moved. The default implementation,
+	 * which can be restored by passing a null listener argument to this method,
+	 * calls repaint() on the GLAutoDrawable if it is not a GLRunnable instance
+	 * (i.e., a GLAnimCanvas or GLAnimJPanel, which redraw themselves
+	 * automatically).
 	 */
-	public synchronized void setWindowUpdateListener(WindowUpdateListener listener) {
+	public synchronized void setWindowUpdateListener(
+			WindowUpdateListener listener) {
 		if (listener != null) {
 			windowListener = listener;
-		}
-		else {
+		} else {
 			windowListener = defaultWindowListener;
 		}
 	}
 
 	/**
-	 * Cause the manipulators for a given window to be drawn. The drawing occurs immediately; this routine
-	 * must be called when an OpenGL context is valid, i.e., from within the display() method of a
-	 * GLEventListener.
+	 * Cause the manipulators for a given window to be drawn. The drawing occurs
+	 * immediately; this routine must be called when an OpenGL context is valid,
+	 * i.e., from within the display() method of a GLEventListener.
 	 */
 	public synchronized void render(GLAutoDrawable window, GL gl) {
 		WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
@@ -210,11 +221,13 @@ public class ManipManager {
 	}
 
 	/**
-	 * Sets up a MouseListener and MouseMotionListener for the given window. Since an application-level
-	 * MouseListener or MouseMotionListener might want to intercept events and not pass them on to the
-	 * ManipManager without relying on the ordering of listeners for the canvas (see the ExaminerViewer
-	 * class), the setupMouseListeners and removeMouseListeners routines, as well as the appropriate delegate
-	 * routines, are made public here.
+	 * Sets up a MouseListener and MouseMotionListener for the given window.
+	 * Since an application-level MouseListener or MouseMotionListener might
+	 * want to intercept events and not pass them on to the ManipManager without
+	 * relying on the ordering of listeners for the canvas (see the
+	 * ExaminerViewer class), the setupMouseListeners and removeMouseListeners
+	 * routines, as well as the appropriate delegate routines, are made public
+	 * here.
 	 */
 	public synchronized void setupMouseListeners(GLAutoDrawable window) {
 		window.addMouseMotionListener(mouseMotionListener);
@@ -222,8 +235,9 @@ public class ManipManager {
 	}
 
 	/**
-	 * Removes the automatically-installed mouse listeners for the given window. This allows application code
-	 * to determine the policy for intercepting mouse events.
+	 * Removes the automatically-installed mouse listeners for the given window.
+	 * This allows application code to determine the policy for intercepting
+	 * mouse events.
 	 */
 	public synchronized void removeMouseListeners(GLAutoDrawable window) {
 		window.removeMouseMotionListener(mouseMotionListener);
@@ -231,39 +245,46 @@ public class ManipManager {
 	}
 
 	/**
-	 * The ManipManager watches for the following events: mouseMoved, mouseDragged, mousePressed, and
-	 * mouseReleased. These routines are exposed so application-level code can intercept events when certain
-	 * modifier keys are depressed.
+	 * The ManipManager watches for the following events: mouseMoved,
+	 * mouseDragged, mousePressed, and mouseReleased. These routines are exposed
+	 * so application-level code can intercept events when certain modifier keys
+	 * are depressed.
 	 */
 	public synchronized void mouseMoved(MouseEvent e) {
-		passiveMotionMethod((GLAutoDrawable) e.getComponent(), e.getX(), e.getY());
+		passiveMotionMethod((GLAutoDrawable) e.getComponent(), e.getX(), e
+				.getY());
 	}
 
 	/**
-	 * The ManipManager watches for the following events: mouseMoved, mouseDragged, mousePressed, and
-	 * mouseReleased. These routines are exposed so application-level code can intercept events when certain
-	 * modifier keys are depressed.
+	 * The ManipManager watches for the following events: mouseMoved,
+	 * mouseDragged, mousePressed, and mouseReleased. These routines are exposed
+	 * so application-level code can intercept events when certain modifier keys
+	 * are depressed.
 	 */
 	public synchronized void mouseDragged(MouseEvent e) {
 		motionMethod((GLAutoDrawable) e.getComponent(), e.getX(), e.getY());
 	}
 
 	/**
-	 * The ManipManager watches for the following events: mouseMoved, mouseDragged, mousePressed, and
-	 * mouseReleased. These routines are exposed so application-level code can intercept events when certain
-	 * modifier keys are depressed.
+	 * The ManipManager watches for the following events: mouseMoved,
+	 * mouseDragged, mousePressed, and mouseReleased. These routines are exposed
+	 * so application-level code can intercept events when certain modifier keys
+	 * are depressed.
 	 */
 	public synchronized void mousePressed(MouseEvent e) {
-		mouseMethod((GLAutoDrawable) e.getComponent(), e.getModifiers(), true, e.getX(), e.getY());
+		mouseMethod((GLAutoDrawable) e.getComponent(), e.getModifiers(), true,
+				e.getX(), e.getY());
 	}
 
 	/**
-	 * The ManipManager watches for the following events: mouseMoved, mouseDragged, mousePressed, and
-	 * mouseReleased. These routines are exposed so application-level code can intercept events when certain
-	 * modifier keys are depressed.
+	 * The ManipManager watches for the following events: mouseMoved,
+	 * mouseDragged, mousePressed, and mouseReleased. These routines are exposed
+	 * so application-level code can intercept events when certain modifier keys
+	 * are depressed.
 	 */
 	public synchronized void mouseReleased(MouseEvent e) {
-		mouseMethod((GLAutoDrawable) e.getComponent(), e.getModifiers(), false, e.getX(), e.getY());
+		mouseMethod((GLAutoDrawable) e.getComponent(), e.getModifiers(), false,
+				e.getX(), e.getY());
 	}
 
 	// ----------------------------------------------------------------------
@@ -307,25 +328,26 @@ public class ManipManager {
 			}
 		}
 		if (info.curHighlightedManip != null
-			&& (hp == null || hp.manipulator != info.curHighlightedManip || hp.manipPart != info.curHighlightedManipPart)) {
+				&& (hp == null || hp.manipulator != info.curHighlightedManip || hp.manipPart != info.curHighlightedManipPart)) {
 			info.curHighlightedManip.clearHighlight();
 			fireUpdate(info.curHighlightedManip);
 		}
 		if (hp != null) {
-			if (hp.manipulator != info.curHighlightedManip || hp.manipPart != info.curHighlightedManipPart) {
+			if (hp.manipulator != info.curHighlightedManip
+					|| hp.manipPart != info.curHighlightedManipPart) {
 				// Highlight manip
 				info.curHighlightedManip = hp.manipulator;
 				info.curHighlightedManipPart = hp.manipPart;
 				info.curHighlightedManip.highlight(hp);
 				fireUpdate(info.curHighlightedManip);
 			}
-		}
-		else {
+		} else {
 			info.curHighlightedManip = null;
 		}
 	}
 
-	private void mouseMethod(GLAutoDrawable window, int modifiers, boolean isPress, int x, int y) {
+	private void mouseMethod(GLAutoDrawable window, int modifiers,
+			boolean isPress, int x, int y) {
 		if ((modifiers & InputEvent.BUTTON1_MASK) != 0) {
 			WindowInfo info = (WindowInfo) windowToInfoMap.get(window);
 
@@ -337,7 +359,8 @@ public class ManipManager {
 				// Compute all hits
 				List hits = new ArrayList();
 				for (Iterator iter = info.manips.iterator(); iter.hasNext();) {
-					((Manip) iter.next()).intersectRay(rayStart, rayDirection, hits);
+					((Manip) iter.next()).intersectRay(rayStart, rayDirection,
+							hits);
 				}
 				// Find closest one
 				HitPoint hp = null;
@@ -363,8 +386,7 @@ public class ManipManager {
 					info.dragging = true;
 					fireUpdate(info.curManip);
 				}
-			}
-			else {
+			} else {
 				if (info.curManip != null) {
 					info.curManip.makeInactive();
 					info.dragging = false;
@@ -377,16 +399,20 @@ public class ManipManager {
 		}
 	}
 
-	private Vec2f screenToNormalizedCoordinates(CameraParameters params, int x, int y) {
+	private Vec2f screenToNormalizedCoordinates(CameraParameters params, int x,
+			int y) {
 		// AWT's origin is upper left
-		return new Vec2f(((float) x / (float) (params.xSize - 1) - 0.5f) * 2.0f, (0.5f - (float) y
-			/ (float) (params.ySize - 1)) * 2.0f);
+		return new Vec2f(
+				((float) x / (float) (params.xSize - 1) - 0.5f) * 2.0f,
+				(0.5f - (float) y / (float) (params.ySize - 1)) * 2.0f);
 	}
 
-	private void computeRay(CameraParameters params, int x, int y, Vec3f raySource, Vec3f rayDirection) {
+	private void computeRay(CameraParameters params, int x, int y,
+			Vec3f raySource, Vec3f rayDirection) {
 		if (mapping == null)
 			throw new RuntimeException("Screen to ray mapping was unspecified");
-		mapping.mapScreenToRay(screenToNormalizedCoordinates(params, x, y), params, raySource, rayDirection);
+		mapping.mapScreenToRay(screenToNormalizedCoordinates(params, x, y),
+				params, raySource, rayDirection);
 	}
 
 	private void fireUpdate(Manip manip) {

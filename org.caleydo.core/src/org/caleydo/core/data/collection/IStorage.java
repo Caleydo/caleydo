@@ -218,8 +218,5 @@ public interface IStorage
 	 * @param dataRep
 	 */
 	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep);
-	
-	
-
 
 }

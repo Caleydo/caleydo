@@ -11,8 +11,9 @@ import org.caleydo.core.manager.usecase.AUseCase;
 import org.caleydo.core.view.opengl.canvas.storagebased.EVAType;
 
 /**
- * Simple bean that holds the initialization data for new started caleydo application.
- * Used to store and restore project or to sync remote clients. 
+ * Simple bean that holds the initialization data for new started caleydo application. Used to store and
+ * restore project or to sync remote clients.
+ * 
  * @author Werner Puff
  */
 @XmlType
@@ -21,22 +22,22 @@ public class ApplicationInitData {
 
 	/** defines the type of usage of the application */
 	private AUseCase useCase;
-	
+
 	/** content of the set file the application is based on, only used to sync remote clients */
 	private byte[] setFileContent;
-	
+
 	/** gene cluster information, only used to sync remote clients */
 	private String geneClusterTree;
-	
+
 	/** experiment cluster information, only used to sync remote clients */
 	private String experimentClusterTree;
-	
+
 	/** virtual arrays of this application stored in relation with their their-key */
 	private HashMap<EVAType, VirtualArray> virtualArrayMap;
-	
-	/** list of views in use, not used to sync remote clients */ 
+
+	/** list of views in use, not used to sync remote clients */
 	private List<ASerializedView> views;
-	
+
 	public AUseCase getUseCase() {
 		return useCase;
 	}

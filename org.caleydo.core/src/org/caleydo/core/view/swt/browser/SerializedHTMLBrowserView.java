@@ -15,7 +15,7 @@ public class SerializedHTMLBrowserView
 
 	public SerializedHTMLBrowserView() {
 	}
-	
+
 	public SerializedHTMLBrowserView(EDataDomain dataDomain) {
 		super(dataDomain);
 	}

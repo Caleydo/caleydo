@@ -2,8 +2,8 @@ package org.caleydo.core.net;
 
 /**
  * Thrown when initiatian a client/server connection between 2 caleydo applications fails.
+ * 
  * @author Werner Puff
- *
  */
 public class ConnectException
 	extends Exception {

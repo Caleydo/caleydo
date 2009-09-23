@@ -15,11 +15,10 @@ public class ResetViewListener
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if ( event instanceof ResetRemoteRendererEvent)
+		if (event instanceof ResetRemoteRendererEvent)
 			handler.resetView();
-		
-		if(event instanceof ResetAllViewsEvent)
-		{
+
+		if (event instanceof ResetAllViewsEvent) {
 			System.out.println("WWWWWWWWWWWWWWWWWAAAAAAAAAAAAAAA");
 		}
 	}

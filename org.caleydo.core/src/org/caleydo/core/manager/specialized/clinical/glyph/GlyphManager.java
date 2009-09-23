@@ -50,8 +50,8 @@ public class GlyphManager {
 	}
 
 	public void loadGlyphDefinitaion(String xmlPath) {
-		generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
-			"loadGlyphDefinitaion"));
+		generalManager.getLogger().log(
+			new Status(Status.INFO, GeneralManager.PLUGIN_ID, "loadGlyphDefinitaion"));
 		generalManager.getXmlParserManager().parseXmlFileByName(xmlPath);
 
 		bIsActive = true;
@@ -112,8 +112,9 @@ public class GlyphManager {
 		int index = type.getExternalColumnNumber();
 		if (dataTypesExt.containsKey(index)) {
 			dataTypesExt.remove(index);
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"GlyphManager::addColumnAttributeType() - double column definition, dropping first one"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"GlyphManager::addColumnAttributeType() - double column definition, dropping first one"));
 		}
 		dataTypesExt.put(index, type);
 	}

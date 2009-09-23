@@ -34,7 +34,7 @@ public class GLConnectionLineRendererBucket
 
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -44,7 +44,7 @@ public class GLConnectionLineRendererBucket
 	public GLConnectionLineRendererBucket(final RemoteLevel focusLevel, final RemoteLevel stackLevel) {
 
 		super();
-		
+
 		this.focusLevel = focusLevel;
 		this.stackLevel = stackLevel;
 	}
@@ -53,32 +53,36 @@ public class GLConnectionLineRendererBucket
 	protected void renderConnectionLines(final GL gl) {
 		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 
-		for (Entry<EIDType, ConnectionMap> typeConnections : connectedElementRepManager.getTransformedConnectionsByType().entrySet()) {
+		for (Entry<EIDType, ConnectionMap> typeConnections : connectedElementRepManager
+			.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
-			
+
 			EIDType idType = typeConnections.getKey();
-			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList = hashIDTypeToViewToPointLists.get(idType);
-			
-			if(viewToPointList == null) {
+			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList =
+				hashIDTypeToViewToPointLists.get(idType);
+
+			if (viewToPointList == null) {
 				viewToPointList = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 				hashIDTypeToViewToPointLists.put(idType, viewToPointList);
 			}
 
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
 				for (SelectedElementRep selectedElementRep : connections.getValue()) {
-					
-					if(selectedElementRep.getIDType() != idType)
-						throw new IllegalStateException("Current ID Type does not match the selected elemen rep's");
+
+					if (selectedElementRep.getIDType() != idType)
+						throw new IllegalStateException(
+							"Current ID Type does not match the selected elemen rep's");
 
 					AGLEventListener glView =
 						viewGLCanvasManager.getGLEventListener(selectedElementRep.getSourceViewID());
 
 					if (glView == null) {
 						// TODO: investigate! view must not be null here.
-//						GeneralManager.get().getLogger().log(Level.WARNING, "View in connection line manager is null!");
+						// GeneralManager.get().getLogger().log(Level.WARNING,
+						// "View in connection line manager is null!");
 						continue;
 					}
-					
+
 					RemoteLevelElement remoteLevelElement = glView.getRemoteLevelElement();
 					if (remoteLevelElement == null) {
 						// ignore views that are not rendered remote
@@ -89,7 +93,7 @@ public class GLConnectionLineRendererBucket
 
 					if (activeLevel == stackLevel || activeLevel == focusLevel) {
 						int viewID = selectedElementRep.getSourceViewID();
-						
+
 						alPointLists = hashIDTypeToViewToPointLists.get(idType).get(viewID);
 						if (alPointLists == null) {
 							alPointLists = new ArrayList<ArrayList<Vec3f>>();
@@ -106,13 +110,14 @@ public class GLConnectionLineRendererBucket
 			}
 		}
 	}
-	
+
 	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
 		for (Integer iKey : keySet) {
-			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
+			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType)
+				.get(iKey)));
 		}
 
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
@@ -258,7 +263,7 @@ public class GLConnectionLineRendererBucket
 		}
 		gl.glEnd();
 	}
-	
+
 	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
 	// vecDestPoint,
 	// final int iNumberOfLines, Vec3f vecViewCenterPoint)

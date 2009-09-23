@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Button;
 public class SaveEventBridgeConfigurationListener
 	implements SelectionListener {
 
-	/** Te {@link EventFilterBridge} to be configured */ 
+	/** Te {@link EventFilterBridge} to be configured */
 	EventFilterBridge bridge;
 
 	/** The {@link EventPublisher} the {@link EventFilterBridge} is listening to */

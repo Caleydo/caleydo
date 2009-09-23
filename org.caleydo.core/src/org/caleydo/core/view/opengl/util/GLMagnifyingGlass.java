@@ -66,15 +66,13 @@ public class GLMagnifyingGlass {
 
 		if (currentPoint != null) {
 
-			
-			
 			IntBuffer buffer = BufferUtil.newIntBuffer(4);
 			gl.glGetIntegerv(GL.GL_VIEWPORT, buffer);
 			int xOrigin = buffer.get(0);
 			int yOrigin = buffer.get(1);
 			int currentWidth = buffer.get(2);
 			int currentHeight = buffer.get(3);
-			
+
 			gl.glLoadIdentity();
 
 			gl.glReadBuffer(GL.GL_BACK);
@@ -85,9 +83,9 @@ public class GLMagnifyingGlass {
 			gl.glRasterPos2f(Math.max(fArTargetWorldCoordinates[0], 0), Math.max(
 				fArTargetWorldCoordinates[1], 0));
 			gl.glPixelZoom(zoomFactorX, zoomFactorY);
-			gl.glCopyPixels(Math.max(currentPoint.x - (int) (capturedRegionWidth / zoomFactorX), 0), Math.max(
-				(yOrigin + currentHeight) - currentPoint.y - (int) (capturedRegionHeight / zoomFactorY), 0),
-				capturedRegionWidth, capturedRegionHeight, GL.GL_COLOR);
+			gl.glCopyPixels(Math.max(currentPoint.x - (int) (capturedRegionWidth / zoomFactorX), 0), Math
+				.max((yOrigin + currentHeight) - currentPoint.y - (int) (capturedRegionHeight / zoomFactorY),
+					0), capturedRegionWidth, capturedRegionHeight, GL.GL_COLOR);
 			gl.glPixelZoom(1.0f, 1.0f);
 		}
 		gl.glEnable(GL.GL_DEPTH_TEST);
@@ -111,8 +109,10 @@ public class GLMagnifyingGlass {
 	/**
 	 * Sets the size of the region around the mouse that will be captured and zoomed.
 	 * 
-	 * @param capturedRegionWidth Width of the captured region.
-	 * @param capturedRegionHeight Height of the captured region.
+	 * @param capturedRegionWidth
+	 *            Width of the captured region.
+	 * @param capturedRegionHeight
+	 *            Height of the captured region.
 	 */
 	public void setCapturedRegion(int capturedRegionWidth, int capturedRegionHeight) {
 		this.capturedRegionWidth = capturedRegionWidth;

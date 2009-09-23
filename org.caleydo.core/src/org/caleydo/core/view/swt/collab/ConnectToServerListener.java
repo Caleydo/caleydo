@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * Listener for the "connect to" button that triggers a connection to a running caleydo server
- *  
+ * 
  * @author Werner Puff
  */
 public class ConnectToServerListener
@@ -16,7 +16,7 @@ public class ConnectToServerListener
 
 	/** text field for the ip address to connect to */
 	private Text addressField;
-	
+
 	@Override
 	public void handleEvent(Event event) {
 		System.out.println("connect to " + addressField.getText());

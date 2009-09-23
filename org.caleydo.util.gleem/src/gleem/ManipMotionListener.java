@@ -24,8 +24,8 @@
 package gleem;
 
 /**
- * The interface which clients to the gleem library implement to receive notification that a manipulator has
- * moved.
+ * The interface which clients to the gleem library implement to receive
+ * notification that a manipulator has moved.
  */
 
 public interface ManipMotionListener {

@@ -10,8 +10,7 @@ import gleem.linalg.Veci;
  * 
  * @author Michael Kalkusch
  */
-public class Vec3i
-	extends Veci {
+public class Vec3i extends Veci {
 
 	// protected int[] data;
 

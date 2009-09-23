@@ -19,8 +19,6 @@ public class LoadDataParameters {
 	/** The data domain associated with the loading process */
 	private EDataDomain dataDomain;
 
-
-
 	/** TODO doc */
 	private ArrayList<Integer> storageIds;
 
@@ -84,7 +82,7 @@ public class LoadDataParameters {
 	public void setDataDomain(EDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
-	
+
 	public EDataDomain getDataDomain() {
 		return dataDomain;
 	}

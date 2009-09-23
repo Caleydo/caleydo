@@ -14,7 +14,7 @@ public class OpenRemoteHandler
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
-				HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLRemoteRenderingView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpGLRemoteRenderingView.ID);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

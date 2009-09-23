@@ -72,9 +72,8 @@ public class GlyphGridPositionModelScatterplot
 
 		if (xdata == null || ydata == null) {
 			generalManager.getLogger().log(
-				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"Scatterplot axix definition corrupt! (" + iScatterParameterX + ", " + iScatterParameterY
-					+ ")"));
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "Scatterplot axix definition corrupt! ("
+					+ iScatterParameterX + ", " + iScatterParameterY + ")"));
 			return;
 		}
 
@@ -251,8 +250,9 @@ public class GlyphGridPositionModelScatterplot
 		GlyphAttributeType ty = gman.getGlyphAttributeTypeWithInternalColumnNumber(iScatterParameterY);
 
 		if (tx == null || ty == null) {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!"));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
+					"setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!"));
 			return;
 		}
 

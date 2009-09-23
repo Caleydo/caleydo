@@ -13,6 +13,7 @@ public class Heading
 
 	/**
 	 * Construct a heading by setting its text
+	 * 
 	 * @param text
 	 */
 	public Heading(String text) {
@@ -21,6 +22,7 @@ public class Heading
 
 	/**
 	 * Returns the text of the heading
+	 * 
 	 * @return the text of the heading
 	 */
 	public String getText() {

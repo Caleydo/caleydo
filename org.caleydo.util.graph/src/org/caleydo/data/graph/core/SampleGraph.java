@@ -10,8 +10,7 @@ import org.caleydo.util.graph.core.Graph;
  * 
  * @author Michael Kalkusch
  */
-public class SampleGraph
-	extends Graph {
+public class SampleGraph extends Graph {
 
 	/**
 	 * 

@@ -16,17 +16,17 @@ public class GlyphSelectionBrushEvent
 	public GlyphSelectionBrushEvent() {
 		// nothing to initialize here
 	}
-	
+
 	public GlyphSelectionBrushEvent(int iViewID, int brushSize) {
 		super();
 		this.iViewID = iViewID;
 		this.brushSize = brushSize;
 	}
-	
+
 	public int getBrushSize() {
 		return brushSize;
 	}
-	
+
 	public int getViewID() {
 		return iViewID;
 	}

@@ -49,15 +49,17 @@ public class GlyphAttributeGroup {
 			hmMappingNominalOrdinal.put(sValue, fValue);
 		}
 		else {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"double nominal value (" + sValue + ") found in " + sKey));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "double nominal value (" + sValue
+					+ ") found in " + sKey));
 		}
 		if (!hmMappingOrdinalNominal.containsKey(fValue)) {
 			hmMappingOrdinalNominal.put(fValue, sValue);
 		}
 		else {
-			generalManager.getLogger().log(new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-				"double ordinal value (" + sValue + ") found in " + sKey));
+			generalManager.getLogger().log(
+				new Status(Status.WARNING, GeneralManager.PLUGIN_ID, "double ordinal value (" + sValue
+					+ ") found in " + sKey));
 		}
 
 		alAttributes.add(sValue);

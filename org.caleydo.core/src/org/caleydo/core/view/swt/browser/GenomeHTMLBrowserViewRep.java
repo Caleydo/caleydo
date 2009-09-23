@@ -58,15 +58,15 @@ public class GenomeHTMLBrowserViewRep
 		super.initViewSWTComposite(parentComposite);
 
 		useCase = generalManager.getUseCase(EDataDomain.GENETIC_DATA);
-		
+
 		final Combo queryTypeCombo = new Combo(subContributionComposite, SWT.READ_ONLY);
-	
+
 		if (useCase instanceof GeneticUseCase) {
 			queryTypeCombo.add(EBrowserQueryType.EntrezGene.toString());
-			queryTypeCombo.add(EBrowserQueryType.PubMed.toString());			
-			queryTypeCombo.add(EBrowserQueryType.GeneCards.toString());			
-			
-			EOrganism organism = ((GeneticUseCase)useCase).getOrganism();
+			queryTypeCombo.add(EBrowserQueryType.PubMed.toString());
+			queryTypeCombo.add(EBrowserQueryType.GeneCards.toString());
+
+			EOrganism organism = ((GeneticUseCase) useCase).getOrganism();
 			if (organism == EOrganism.HOMO_SAPIENS) {
 				queryTypeCombo.add(EBrowserQueryType.Ensembl_HomoSapiens.toString());
 				queryTypeCombo.add(EBrowserQueryType.KEGG_HomoSapiens.toString());
@@ -84,13 +84,11 @@ public class GenomeHTMLBrowserViewRep
 		queryTypeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
-				String sQueryTypeTitle = queryTypeCombo.getItem(queryTypeCombo
-					.getSelectionIndex());
-				
+
+				String sQueryTypeTitle = queryTypeCombo.getItem(queryTypeCombo.getSelectionIndex());
+
 				for (EBrowserQueryType eBrowserQueryType : EBrowserQueryType.values()) {
-					if (eBrowserQueryType.getTitle().equals(sQueryTypeTitle))
-					{
+					if (eBrowserQueryType.getTitle().equals(sQueryTypeTitle)) {
 						changeQueryType(eBrowserQueryType);
 						break;
 					}
@@ -129,8 +127,10 @@ public class GenomeHTMLBrowserViewRep
 
 						int expressionIndex = selectionDeltaItem.getPrimaryID();
 
-						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-						// values, depending on the IDType that has been specified when loading expression data.
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a
+						// Set of
+						// values, depending on the IDType that has been specified when loading expression
+						// data.
 						// Possibly a different handling of the Set is required.
 						Set<String> setRefSeqIDs =
 							generalManager.getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
@@ -140,9 +140,11 @@ public class GenomeHTMLBrowserViewRep
 						if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
 							sRefSeqID = (String) setRefSeqIDs.toArray()[0];
 						}
-						
-						// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-						// values, depending on the IDType that has been specified when loading expression data.
+
+						// FIXME: Due to new mapping system, a mapping involving expression index can return a
+						// Set of
+						// values, depending on the IDType that has been specified when loading expression
+						// data.
 						// Possibly a different handling of the Set is required.
 						Set<Integer> setDavidIDs =
 							generalManager.getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,

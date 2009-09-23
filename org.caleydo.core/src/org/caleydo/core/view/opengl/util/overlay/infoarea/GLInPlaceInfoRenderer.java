@@ -45,7 +45,7 @@ public class GLInPlaceInfoRenderer {
 
 	private float fSpacing = 0;
 
-//	private float fZValue = 0.005f;
+	// private float fZValue = 0.005f;
 
 	private InfoAreaRenderStyle renderStyle;
 
@@ -76,7 +76,6 @@ public class GLInPlaceInfoRenderer {
 		vecSize = new Vec2f();
 		calculateWidthAndHeight();
 	}
-
 
 	/**
 	 * Render the data previously set

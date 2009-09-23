@@ -8,7 +8,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.view.SelectionPoint2DList;
 
 /**
- * Sends new 2d connection line vertices from a caleydo-client to a server. 
+ * Sends new 2d connection line vertices from a caleydo-client to a server.
  * 
  * @author Werner Puff
  */
@@ -20,9 +20,9 @@ public class AddConnectionLineVerticesEvent
 	private EIDType idType;
 
 	private Integer connectionID;
-	
+
 	private SelectionPoint2DList points;
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		// TODO

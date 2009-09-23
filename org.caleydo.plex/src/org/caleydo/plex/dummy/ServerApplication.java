@@ -7,27 +7,29 @@ import Ice.Communicator;
 import Ice.Current;
 import Ice.ObjectAdapter;
 
-public class ServerApplication extends _ServerApplicationIDisp{
+public class ServerApplication extends _ServerApplicationIDisp {
 
 	private static final long serialVersionUID = -213820085531228465L;
 
 	MasterApplicationIPrx masterApplicationPrx = null;
-	
+
 	ObjectAdapter adapter;
-	
+
 	Communicator communicator;
-	
+
 	@Override
 	public MasterApplicationIPrx getMasterProxy(Current __current) {
 		System.out.println("ServerApplication.getMasterProxy() called");
-		
+
 		if (masterApplicationPrx == null) {
 			MasterApplication masterApplication = new MasterApplication();
 			masterApplication.setAdapter(adapter);
 			masterApplication.setCommunicator(communicator);
-	
-			Ice.ObjectPrx objPrx = adapter.add(masterApplication, communicator.stringToIdentity("GroupwareClientAppI"));
-			masterApplicationPrx = MasterApplicationIPrxHelper.checkedCast(objPrx);
+
+			Ice.ObjectPrx objPrx = adapter.add(masterApplication, communicator
+					.stringToIdentity("GroupwareClientAppI"));
+			masterApplicationPrx = MasterApplicationIPrxHelper
+					.checkedCast(objPrx);
 		}
 
 		return masterApplicationPrx;

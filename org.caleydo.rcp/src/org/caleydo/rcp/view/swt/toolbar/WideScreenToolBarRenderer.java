@@ -74,7 +74,7 @@ public class WideScreenToolBarRenderer
 		if (GeneralManager.get().getUseCase(EDataDomain.GENETIC_DATA) != null) {
 			toolBarManager2.add(new OpenSearchViewAction());
 		}
-		
+
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());
 

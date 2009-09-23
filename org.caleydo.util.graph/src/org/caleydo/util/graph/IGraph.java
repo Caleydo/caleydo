@@ -10,8 +10,7 @@ import java.util.List;
  * 
  * @author Michael Kalkusch
  */
-public interface IGraph
-	extends IGraphComponent {
+public interface IGraph extends IGraphComponent {
 
 	/* --- IGraphItem --- */
 
@@ -25,7 +24,8 @@ public interface IGraph
 	public boolean addItem(IGraphItem item);
 
 	/**
-	 * Updates state of IGraphItem like EGraphItemKind. If item was not registered false is returned.
+	 * Updates state of IGraphItem like EGraphItemKind. If item was not
+	 * registered false is returned.
 	 * 
 	 * @param item
 	 *            IGraphItem to be updated
@@ -37,7 +37,8 @@ public interface IGraph
 	 * Removes item
 	 * 
 	 * @param item
-	 *            IGraphItem to be removed * @return TURE if item was removed and existed inside graph.
+	 *            IGraphItem to be removed * @return TURE if item was removed
+	 *            and existed inside graph.
 	 */
 	public boolean removeItem(IGraphItem item);
 
@@ -51,11 +52,12 @@ public interface IGraph
 	public boolean containsItem(IGraphItem item);
 
 	/**
-	 * Get all items matching a EGraphItemKind; if EGraphItemKind prop==null all stored IGraphItem will be
-	 * returned.
+	 * Get all items matching a EGraphItemKind; if EGraphItemKind prop==null all
+	 * stored IGraphItem will be returned.
 	 * 
 	 * @param kind
-	 *            define which items, if prop==null all IGraphItem objects will be returned.
+	 *            define which items, if prop==null all IGraphItem objects will
+	 *            be returned.
 	 * @return list of IGraphItem
 	 */
 	public List<IGraphItem> getAllItemsByKind(EGraphItemKind kind);
@@ -68,29 +70,34 @@ public interface IGraph
 	 * @param graph
 	 *            add reference this graph
 	 * @param type
-	 *            define EGraphItemHierarchy; EGraphItemHierarchy.GRAPH_NONE is invalid and cause a
-	 *            GraphRuntimeException
+	 *            define EGraphItemHierarchy; EGraphItemHierarchy.GRAPH_NONE is
+	 *            invalid and cause a GraphRuntimeException
 	 * @return TRUE if graph was added and was not already part of this graph
 	 */
-	public boolean addGraph(IGraph graph, EGraphItemHierarchy type) throws GraphRuntimeException;
+	public boolean addGraph(IGraph graph, EGraphItemHierarchy type)
+			throws GraphRuntimeException;
 
 	/**
-	 * Removes a reference to another graph depending on the EGraphItemHierarchy type. Note: only if
-	 * (type,graph) matches, the graph is removed and TRUE is returned. If
+	 * Removes a reference to another graph depending on the EGraphItemHierarchy
+	 * type. Note: only if (type,graph) matches, the graph is removed and TRUE
+	 * is returned. If
 	 * 
 	 * @param graph
 	 *            graph to be removed
 	 * @param type
-	 *            define type; only if type,graph matches the graph is removed and TRUE is returned; if
-	 *            type==null or EGraphItemHierarchy.GRAPH_NONE graph is removed from any lists.
+	 *            define type; only if type,graph matches the graph is removed
+	 *            and TRUE is returned; if type==null or
+	 *            EGraphItemHierarchy.GRAPH_NONE graph is removed from any
+	 *            lists.
 	 * @return TRUE if graph was found and removed
 	 */
 	public boolean removeGraph(IGraph graph, EGraphItemHierarchy type);
 
 	/**
-	 * Remove all references to graph objects and sub-graphs. Note: All IGraphItem objects are called and the
-	 * reference to this graph is removed. Attention: Only required, if nodes and edges used inside this graph
-	 * are used inside other graphs to.
+	 * Remove all references to graph objects and sub-graphs. Note: All
+	 * IGraphItem objects are called and the reference to this graph is removed.
+	 * Attention: Only required, if nodes and edges used inside this graph are
+	 * used inside other graphs to.
 	 */
 	public void clearGraph();
 
@@ -107,14 +114,16 @@ public interface IGraph
 	/**
 	 * Test if graph contain any GraphItems or references to other graphs.
 	 * 
-	 * @return TRUE if this graph does not contain any GraphItems nor references to other graphs.
+	 * @return TRUE if this graph does not contain any GraphItems nor references
+	 *         to other graphs.
 	 */
 	public boolean isEmpty();
 
 	/**
 	 * Test if graph has a certain EGraphProperty.
 	 * 
-	 * @see org.caleydo.util.graph.IGraph#setGraphProperty(EGraphProperty, boolean)
+	 * @see org.caleydo.util.graph.IGraph#setGraphProperty(EGraphProperty,
+	 *      boolean)
 	 * @param test
 	 *            property to be tested
 	 * @return TRUE if property is set, FALSE else

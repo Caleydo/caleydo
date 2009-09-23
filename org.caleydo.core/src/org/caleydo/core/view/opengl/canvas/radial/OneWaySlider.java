@@ -123,7 +123,6 @@ public class OneWaySlider
 
 		beginGUIElement(gl, scalingPivot);
 
-		
 		gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.RAD_HIERARCHY_SLIDER_BODY_SELECTION,
 			iSliderBodyID));
 		gl.glPushAttrib(GL.GL_COLOR_BUFFER_BIT | GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);

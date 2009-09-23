@@ -18,9 +18,9 @@ public class URLGenerator {
 			// TODO: only the first is handled in the case of multiple
 			// how should we handle this here?
 			sURL +=
-				(String) (GeneralManager.get().getIDMappingManager().<Integer, Set<Object>>getID(
-					eBrowserQueryType.getMappingType().getTypeOrigin(),
-					eBrowserQueryType.getMappingType().getTypeTarget(), iDavidID)).toArray()[0];
+				(String) (GeneralManager.get().getIDMappingManager().<Integer, Set<Object>> getID(
+					eBrowserQueryType.getMappingType().getTypeOrigin(), eBrowserQueryType.getMappingType()
+						.getTypeTarget(), iDavidID)).toArray()[0];
 		}
 
 		return sURL;
