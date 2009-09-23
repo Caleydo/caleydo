@@ -55,6 +55,7 @@ public abstract class ATreeLayouter
 	private ITreeProjection treeProjector = null;
 
 	protected Tree<IDrawAbleNode> tree = null;
+	protected ArrayList<Integer> alMaxSiblingsInLayer = null;
 
 	protected Map<Integer, Vec3f> mLayoutAnimationStart = null;
 	protected Map<Integer, Vec3f> mLayoutAnimationEnd = null;
@@ -66,6 +67,7 @@ public abstract class ATreeLayouter
 		this.iViewID = iViewID;
 		this.nodeLayout = new ArrayList<IDrawAbleNode>();
 		this.connectionLayout = new ArrayList<IDrawAbleConnection>();
+		this.alMaxSiblingsInLayer = new ArrayList<Integer>();
 		this.treeProjector = treeProjector;
 		updateSizeInfo();
 	}
@@ -248,6 +250,33 @@ public abstract class ATreeLayouter
 
 	public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
 		// storeAnimationInfosIntoMap()
+	}
+
+	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {
+//		IDrawAbleNode rootNode = tree.getRoot();
+//		iCurrentLayer = 1;
+		if (tree.hasChildren(node)) {
+			int iSiblings = 0;
+			for (IDrawAbleNode child : tree.getChildren(node)) {
+				alMaxSiblingsInLayer.set(1, 1);
+//				alMaxSiblingsInLayer.add(1, 1);
+				if (tree.hasChildren(child) || iCurrentLayer != iTargetLayer) {
+					iSiblings = getMaxNumberOfSiblingsInLayer(child, iTargetLayer, iCurrentLayer + 1);
+				}
+				else {
+					iSiblings = tree.getChildren(tree.getParent(child)).size();
+					if (iSiblings > alMaxSiblingsInLayer.get(iCurrentLayer + 1)) {
+						alMaxSiblingsInLayer.add(iCurrentLayer + 1, iSiblings);
+					}
+					return iSiblings;
+				}
+				tree.getNumberOfElementsInLayer(iCurrentLayer);
+			}
+		}
+		else
+			return 1;
+		return alMaxSiblingsInLayer.get(iCurrentLayer);
+			
 	}
 
 	// protected final Vec3f[] findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){

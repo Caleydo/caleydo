@@ -129,7 +129,7 @@ public class GLHyperbolic
 		// tree.addChild(test, test2);
 		// layouter = new LinearTreeLayouter(viewFrustum);
 
-		tree = buildTestTree(7, 5);
+		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 7);
 		System.out.println(tree.getGraph().toString());
 		layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.setTree(tree);
@@ -419,9 +419,8 @@ public class GLHyperbolic
 				for (IDrawAbleNode node : nodesOnLayer) {
 					if (nodes.isEmpty())
 						continue;
-					int s =
-						Math.min(nodes.size(), (int) Math
-							.round((Math.random() * (double) iMaxNodesOnLayer) / 4));
+					int s = Math.min(nodes.size(), (int) Math.round((Math.random() * (double) iMaxNodesOnLayer) / 0.9f));
+
 					for (int j = 0; j < s; ++j) {
 						tree.addChild(node, nodes.get(0));
 						nodes.remove(0);

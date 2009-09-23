@@ -1,6 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -26,7 +28,9 @@ public final class HTLayouter
 	float fCenterZ = 0.0f;
 	int iLineIDDummy = 0;
 	float fDepth = 6.0f;
-	float fRadius = 0.7f;
+	float fRadius = 0;
+	
+	Map<IDrawAbleNode, Integer> mNodeSpaceRec;
 
 	public HTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
 		super(frustum, pickingManager, iViewID, new HyperbolicGlobeProjection(1));
@@ -35,7 +39,10 @@ public final class HTLayouter
 
 	@Override
 	public void renderTreeLayout() {
+//		fRadius = (fViewSpaceYAbs/2)/HyperbolicRenderStyle.MAX_DEPTH;
+		fRadius = 0.7f;
 		updateSizeInfo();
+		mNodeSpaceRec = new HashMap<IDrawAbleNode, Integer>();
 		fDepth = tree.getDepth();
 		// TODO: put it into abstract class
 		setFCenterX(fWidth / 2);
@@ -57,20 +64,27 @@ public final class HTLayouter
 		placeNode(rootNode, fCenterX, fCenterY, fCenterZ, fNodeSize, fNodeSize);
 
 		// RECURSIVE TREE LAYOUTER
-		float fLayer = 2.0f;
+		int fLayer = 2;
 		// float fRadius = 0.7f;
 		// float fRadius = 3.0f;
 
 		// float fNumberOfNodesInLayer = 3.0f;// + layer;//node.getNumberOfNodesInLayer(layer);
 		float fNumberOfNodesInLayer = tree.getNumberOfElementsInLayer((int) fLayer);
 		float fCurrentNodeCount = 0.0f;
+		
+		int overall = 0;
+		if(tree.hasChildren(rootNode))
+			overall = updateNodespace(tree.getChildren(rootNode), 2);
+		mNodeSpaceRec.put(rootNode, overall);
+		
 		if (tree.hasChildren(rootNode)) {
 			ArrayList<IDrawAbleNode> childs = new ArrayList<IDrawAbleNode>();
 			childs = tree.getChildren(rootNode);
+//			getMaxNumberOfSiblingsInLayer(rootNode, fLayer+1, fLayer);
 			for (IDrawAbleNode tmpChild : childs) {
 
 				fCurrentNodeCount++;
-				float fFirstLayerAngle = calculateCircle((fRadius), fCurrentNodeCount, fNumberOfNodesInLayer);
+				float fFirstLayerAngle = calculateCircle((calculateNewRadius(tree.getNumberOfElementsInLayer(fLayer))), fCurrentNodeCount, fNumberOfNodesInLayer);
 				// float space = calculateChildSpace(fRadius + 0.2f, fNumberOfNodesInLayer);
 
 				fNodeSize =
@@ -121,7 +135,7 @@ public final class HTLayouter
 	}
 
 	public float calculateRecursiveLayout(IDrawAbleNode node, float fRadius, float fParentAngle,
-		float fLayer, float fNodeSize, float fXCoordOfParent, float fYCoordOfParent) {
+		int fLayer, float fNodeSize, float fXCoordOfParent, float fYCoordOfParent) {
 		if (fLayer <= fDepth) {
 			// float fNumberOfNodesInNewLayer = fNumberOfNodesInLayer;// +
 			// layer;//node.getNumberOfNodesInLayer(layer);
@@ -129,6 +143,7 @@ public final class HTLayouter
 
 			// float fChildSpace = calculateChildSpace(fRadius, fNumberOfNodesInNewLayer);
 
+			float fRadiusUpdate = 0;
 			if (tree.hasChildren(node)) {
 
 				// float fDeltaRadius = 5.0f/(fLayer*6);
@@ -136,10 +151,14 @@ public final class HTLayouter
 
 				ArrayList<IDrawAbleNode> childsOfCurrentNode = new ArrayList<IDrawAbleNode>();
 				childsOfCurrentNode = tree.getChildren(node);
-				// float fDeltaRadius = fRadius/1.95f;
 				float fDeltaRadius = fRadius;
-				float fChildSpace = (fDeltaRadius * (float) Math.PI) / (childsOfCurrentNode.size() + 1);
+//				float fDeltaRadius = calculateNewRadius(tree.getNumberOfElementsInLayer(fLayer));
 				float fNumberOfChildsOfNode = childsOfCurrentNode.size();
+				float fChildSpace = (fDeltaRadius * (float) Math.PI) / (fNumberOfChildsOfNode + 1);
+//				float fChildSpace = (fDeltaRadius * (float) Math.PI) / ((fNumberOfChildsOfNode + 1));
+//				float fChildSpace = (fDeltaRadius * (float) Math.PI) / ((tree.getNumberOfElementsInLayer(fLayer+1)/100)*fNumberOfChildsOfNode + 1);
+//				float fChildSpace = (fRadius* (float) Math.PI * ((tree.getNumberOfElementsInLayer(fLayer+1)/2)/fNumberOfChildsOfNode));
+				
 				float fChildCount = 0.0f;
 				float fChildAngle = 0.0f;
 				// for (float numChilds = 1; numChilds <= childs; numChilds++) {
@@ -155,7 +174,8 @@ public final class HTLayouter
 					// calculateChildAngle(parentAngle , space/fNumberOfNodesInNewLayer , radius, numChilds)
 					// + alphaHalfOffset;
 
-					fChildAngle = calculateChildAngle(fParentAngle, fChildSpace, fDeltaRadius, fChildCount);// +
+					fChildAngle = (calculateChildAngle(fParentAngle, fChildSpace, fDeltaRadius, fLayer-1))/(fLayer-1);
+//					fChildAngle = calculateChildAngle(fParentAngle, fChildSpace, fDeltaRadius, fLayer-1);// +
 					// alphaHalfOffset;
 					// calcualteChildPosition(radius, parentAngle + childAngle*numChilds, numChilds);
 					// float realChildAngle = parentAngle + (childAngle*(numChilds - 1));
@@ -181,7 +201,7 @@ public final class HTLayouter
 						// calcualteChildPosition(childRadius, childAngle, numChilds);
 						fNodeSize =
 							HyperbolicRenderStyle.MAX_NODE_SIZE
-								* (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer);
+								* (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, fLayer+1);
 						tmpChild.setDetailLevel(EDrawAbleNodeDetailLevel.Low);
 						// DrawAbleHyperbolicGeometryGlobeProjection p = new
 						// DrawAbleHyperbolicGeometryGlobeProjection(node, tmpChild, fvViewCenterPoint,
@@ -233,6 +253,10 @@ public final class HTLayouter
 					}
 
 				}
+			}
+			else
+			{
+				fRadiusUpdate = fRadius * (float) Math.PI * (tree.getNumberOfElementsInLayer(fLayer)/2)/tree.getChildren(tree.getParent(node)).size();
 			}
 
 		}
@@ -306,6 +330,33 @@ public final class HTLayouter
 		setFYCoord((float) (fParentYCoord + fRadius * Math.sin(fAngle)));
 
 	}
+	private float calculateNewRadius(int fNumberOfNodesInLayer){
+		
+//		float fNewRadius = this.fRadius * fViewSpaceXAbs/100 * fDepth;
+//		float fNewRadius = fViewSpaceXAbs/100 * fDepth;
+//		float fNewRadius = this.fRadius * fNumberOfNodesInLayer * 0.1f;
+		float fNewRadius = this.fRadius * fNumberOfNodesInLayer * 0.1f;
+		if(fNewRadius < 0.3)
+			return (float)Math.min(fViewSpaceXAbs, fViewSpaceYAbs)/100 * fRadius * 10.0f;
+		else
+			return fNewRadius;
+	}
+	
+	
+	private int updateNodespace(ArrayList<IDrawAbleNode> children, int iLayer) {
+		if(iLayer > HyperbolicRenderStyle.MAX_DEPTH)
+			return 0;
+		int overall = children.size();
+		for(IDrawAbleNode node : children){
+			int temp = 0;
+			if(tree.hasChildren(node))
+				temp = updateNodespace(tree.getChildren(node), iLayer + 1);
+			mNodeSpaceRec.put(node, temp);
+			overall = (temp > overall ? temp : overall);
+		}
+		return overall;
+	}
+
 
 	// private void drawLine(float fFirstXCoord, float fFirstYCoord, float fSecondXCoord, float
 	// fSecondYCoord){
