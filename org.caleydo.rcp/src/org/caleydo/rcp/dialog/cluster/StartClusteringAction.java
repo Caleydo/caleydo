@@ -476,7 +476,7 @@ public class StartClusteringAction
 
 		try {
 			temp = Float.parseFloat(text.getText());
-			if (temp >= 1f && temp < 10) {
+			if (temp >= 1f && temp <= 10) {
 				if (bGeneFactor == true)
 					fclusterFactorGenes = temp;
 				else

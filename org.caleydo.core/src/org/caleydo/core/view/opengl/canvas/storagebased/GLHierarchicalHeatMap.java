@@ -846,6 +846,13 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta) {
+		
+		if(delta.getVAType() == contentVAType)
+			contentVA.setGroupList(null);
+		
+		if(delta.getVAType() == storageVAType)
+			storageVA.setGroupList(null);
+		
 		glHeatMapView.handleVirtualArrayUpdate(delta, getShortInfo());
 		bRedrawTextures = true;
 

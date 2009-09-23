@@ -359,7 +359,7 @@ public class GLHeatMap
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-		if (getRemoteRenderingGLCanvas() == null)
+		if (getRemoteRenderingGLCanvas() instanceof GLHierarchicalHeatMap)
 			renderStyle.disableFishEye();
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);

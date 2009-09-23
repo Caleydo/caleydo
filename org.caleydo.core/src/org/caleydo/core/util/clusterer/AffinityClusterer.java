@@ -257,6 +257,8 @@ public class AffinityClusterer
 		// Arraylist holding number of elements per cluster
 		ArrayList<Integer> alClusterSizes = new ArrayList<Integer>();
 
+		// long original = System.currentTimeMillis();
+
 		int iNrIterations = 0, decit = iConvIterations;
 		boolean bIterate = true;
 		boolean bConverged = false;
@@ -457,6 +459,10 @@ public class AffinityClusterer
 					idx[j] = j;
 					alExamples.add(j);
 				}
+			// long end = System.currentTimeMillis();
+			// long duration = end-original;
+			// System.out.println("runtime: " + duration + "ms");
+			// System.out.println("Cluster factor: " + fClusterFactor);
 			// System.out.println("Number of identified clusters: " + iNrClusters);
 			// System.out.println("Number of iterations: " + iNrIterations);
 		}
