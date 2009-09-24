@@ -130,7 +130,8 @@ public class HyperbolicGlobeProjection
 //		return radius * (float)Math.toRadians(90);
 //	}
 	public float getProtectedLineFromCenterToBorder(){
-		return radius * (float)Math.toRadians(90);
+		float fLine = radius * ((float)Math.PI/2);
+		return fLine;
 	}
 
 	@Override

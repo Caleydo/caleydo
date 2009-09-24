@@ -133,7 +133,7 @@ public class GLHyperbolic
 
 		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 7);
 		System.out.println(tree.getGraph().toString());
-		layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
+		layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.setTree(tree);
 	}
 
