@@ -52,7 +52,7 @@ public abstract class ATreeLayouter
 	private int iGLDisplayListNode;
 	private int iGLDisplayListConnection;
 
-	private ITreeProjection treeProjector = null;
+	protected ITreeProjection treeProjector = null;
 
 	protected Tree<IDrawAbleNode> tree = null;
 	protected ArrayList<Integer> alMaxSiblingsInLayer = null;

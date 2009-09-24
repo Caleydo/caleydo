@@ -116,7 +116,7 @@ public class HyperbolicGlobeProjection
 	// return newPoint;
 	// }
 
-	private float calculateLineLenth(float fCenterPoint, float fLinePoint) {
+	private float calculateLineLength(float fCenterPoint, float fLinePoint) {
 
 		float fDistanceFromCenterToPointOnGlobe = Math.abs(fCenterPoint - fLinePoint);
 
@@ -124,6 +124,13 @@ public class HyperbolicGlobeProjection
 		float fProjectedDistance = (float) Math.sin(fAngle);
 
 		return fProjectedDistance;
+	}
+	
+//	public float getGlobeSurfaceLengthFromEquatorToPole(){
+//		return radius * (float)Math.toRadians(90);
+//	}
+	public float getProtectedLineFromCenterToBorder(){
+		return radius * (float)Math.toRadians(90);
 	}
 
 	@Override

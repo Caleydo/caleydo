@@ -33,14 +33,15 @@ public final class HTLayouter
 	Map<IDrawAbleNode, Integer> mNodeSpaceRec;
 
 	public HTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
-		super(frustum, pickingManager, iViewID, new HyperbolicGlobeProjection(1));
+		super(frustum, pickingManager, iViewID, new HyperbolicGlobeProjection(1) );
 
 	}
 
 	@Override
 	public void renderTreeLayout() {
 //		fRadius = (fViewSpaceYAbs/2)/HyperbolicRenderStyle.MAX_DEPTH;
-		fRadius = 0.7f;
+//		fRadius = 0.7f;
+		fRadius = treeProjector.getProtectedLineFromCenterToBorder()/HyperbolicRenderStyle.MAX_DEPTH;
 		updateSizeInfo();
 		mNodeSpaceRec = new HashMap<IDrawAbleNode, Integer>();
 		fDepth = tree.getDepth();
@@ -84,7 +85,8 @@ public final class HTLayouter
 			for (IDrawAbleNode tmpChild : childs) {
 
 				fCurrentNodeCount++;
-				float fFirstLayerAngle = calculateCircle((calculateNewRadius(tree.getNumberOfElementsInLayer(fLayer))), fCurrentNodeCount, fNumberOfNodesInLayer);
+				float fFirstLayerAngle = calculateCircle(fRadius, fCurrentNodeCount, fNumberOfNodesInLayer);
+//				float fFirstLayerAngle = calculateCircle((calculateNewRadius(tree.getNumberOfElementsInLayer(fLayer))), fCurrentNodeCount, fNumberOfNodesInLayer);
 				// float space = calculateChildSpace(fRadius + 0.2f, fNumberOfNodesInLayer);
 
 				fNodeSize =

@@ -49,4 +49,8 @@ public abstract class ATreeProjection
 		this.fViewSpaceY = fViewSpaceY;
 		this.fViewSpaceYAbs = fViewSpaceYAbs;
 	}
+	@Override
+	public float getProtectedLineFromCenterToBorder(){
+		return Math.min(fViewSpaceXAbs, fViewSpaceYAbs);
+	}
 }

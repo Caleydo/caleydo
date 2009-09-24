@@ -12,6 +12,8 @@ public interface ITreeProjection
 	public int getID();
 
 	public void drawCanvas(GL gl);
+	
+	public float getProtectedLineFromCenterToBorder();
 
 	void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
 		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs);
