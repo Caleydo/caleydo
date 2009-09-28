@@ -87,6 +87,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.SerializedHeatMapView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedParallelCoordinatesView;
 import org.caleydo.core.view.opengl.canvas.storagebased.SerializedPathwayView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
@@ -97,6 +98,7 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
+import org.caleydo.core.view.opengl.util.vislink.VisLink;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Point;
 
@@ -217,6 +219,9 @@ public class GLRemoteRendering
 	protected SelectionUpdateListener selectionUpdateListener = null;
 
 	private Point upperLeftScreenPos = new Point(0, 0);
+	
+	/**	to keep track of mouse-over changes for animation*/
+	private int tempID = 0; // FIXME: added, maybe also possible with dirty-flag
 
 	/**
 	 * Constructor.
@@ -534,6 +539,7 @@ public class GLRemoteRendering
 
 		// comment here for connection lines
 		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
+			glConnectionLineRenderer.setActiveViewID(iActiveViewID); // FIXME: added
 			glConnectionLineRenderer.render(gl);
 		}
 
@@ -1966,6 +1972,11 @@ public class GLRemoteRendering
 						}
 
 						iActiveViewID = iExternalID;
+						
+//						if (tempID != iActiveViewID){ // FIXME: added for animation, maybe also possible with dirty-flag
+//							tempID = iActiveViewID;
+							VisLink.setAnimationStartTime(System.currentTimeMillis());
+//						}
 
 						setDisplayListDirty();
 
