@@ -165,7 +165,7 @@ public class GLHyperbolic
 	private void buildDrawAbleTree() {
 		// TODO: Just testing!!!
 		if (clusteredTree == null) {
-			drawAbleTree = buildTestTree(3, 4);
+			drawAbleTree = buildTestTree(5, 20);
 			return;
 		}
 		drawAbleTree = new Tree<IDrawAbleNode>();

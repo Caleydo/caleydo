@@ -3,6 +3,8 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 import gleem.linalg.Vec3f;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -54,7 +56,7 @@ public class DrawAbleHyperbolicLayoutConnector
 		return ((left << 12) | (left >> (32 - 12))) ^ right;
 	}
 
-	protected final Vec3f[] findClosestCorrespondendingPoints() {
+	private final Vec3f[] findClosestCorrespondendingPoints() {
 		float fMin = Float.MAX_VALUE;
 		Vec3f foundA = null;
 		Vec3f foundB = null;
@@ -72,7 +74,7 @@ public class DrawAbleHyperbolicLayoutConnector
 		return vaPoints;
 	}
 
-	protected final Vec3f[] findClosestCorrespondingPointsOfOriginalPosition() {
+	private final Vec3f[] findClosestCorrespondingPointsOfOriginalPosition() {
 		float fMin = Float.MAX_VALUE;
 		Vec3f foundA = null;
 		Vec3f foundB = null;
@@ -90,7 +92,7 @@ public class DrawAbleHyperbolicLayoutConnector
 		return vaPoints;
 	}
 
-	protected final void calculateSplinePoints() {
+	private final void calculateSplinePoints() {
 		Vec3f[] endPoints = findClosestCorrespondendingPoints();
 		// first point
 		Vec3f pStartP = endPoints[0];
@@ -148,7 +150,7 @@ public class DrawAbleHyperbolicLayoutConnector
 		gl.glEnd();
 	}
 
-	public Vec3f getSplinePoint() {
+	private Vec3f getSplinePoint() {
 		Vec3f[] endPoints = findClosestCorrespondingPointsOfOriginalPosition();
 
 		Vec3f pStartP = endPoints[0];
@@ -168,6 +170,19 @@ public class DrawAbleHyperbolicLayoutConnector
 	@Override
 	public final boolean isPickAble() {
 		return bIsPickAble;
+	}
+	
+	@Override
+	public final IDrawAbleNode[] getConnectedNodes(){
+		IDrawAbleNode[] nodes = new IDrawAbleNode[2];
+		if(iNodeA.getID() < iNodeB.getID()){
+			nodes[0] = iNodeA;
+			nodes[1] = iNodeB;}
+		else{
+			nodes[0] = iNodeB;
+			nodes[1] = iNodeA;}
+		
+		return nodes;
 	}
 
 	// @Override

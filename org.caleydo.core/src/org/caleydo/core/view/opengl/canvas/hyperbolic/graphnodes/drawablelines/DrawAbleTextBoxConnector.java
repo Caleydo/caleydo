@@ -3,6 +3,8 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 import gleem.linalg.Vec3f;
 
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -108,6 +110,18 @@ public class DrawAbleTextBoxConnector
 	public boolean isPickAble() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public final IDrawAbleNode[] getConnectedNodes(){
+		IDrawAbleNode[] nodes = new IDrawAbleNode[2];
+		if(iNodeA.getID() < iNodeB.getID()){
+			nodes[0] = iNodeA;
+			nodes[1] = iNodeB;}
+		else{
+			nodes[0] = iNodeB;
+			nodes[1] = iNodeA;}	
+		return nodes;
 	}
 		
 

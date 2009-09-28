@@ -30,6 +30,8 @@ public final class LTLayouter
 
 	@Override
 	public void renderTreeLayout() {
+		
+		// TODO: NOT A NICE LAYOUT!
 		updateSizeInfo();
 		if (tree == null)
 			return;

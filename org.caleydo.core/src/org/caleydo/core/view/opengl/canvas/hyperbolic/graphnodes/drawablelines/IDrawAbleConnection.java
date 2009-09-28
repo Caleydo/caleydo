@@ -1,6 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines;
 
+import java.util.List;
+
 import javax.media.opengl.GL;
+
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 
 public interface IDrawAbleConnection
 	extends Comparable<IDrawAbleConnection> {
@@ -11,6 +15,8 @@ public interface IDrawAbleConnection
 	
 
 	boolean isPickAble();
+
+	IDrawAbleNode[] getConnectedNodes();
 
 	// public void place(List<Vec3f> lPoints);
 

@@ -22,6 +22,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TextRenderingNo
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicLayoutConnector;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleTextBoxConnector;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationConnectionHandler;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationVec3f;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.osgi.framework.internal.core.Msg;
@@ -67,12 +69,13 @@ public abstract class ATreeLayouter
 	protected Tree<IDrawAbleNode> tree = null;
 	protected ArrayList<Integer> alMaxSiblingsInLayer = null;
 
-	protected Map<Integer, AnimationVec3f> mLayoutAnimationVector = null;
-	protected Map<IDrawAbleNode, AnimationVec3f> mAnimationNodes = null;
-	protected Map<IDrawAbleNode, IDrawAbleNode> mAnimationConnections = null;
-
+	private Map<IDrawAbleNode, AnimationVec3f> mAnimationNodes = null;
+	private AnimationConnectionHandler animationConnectionHandler = null;
+	
 	IDrawAbleNode textNode = null;
 	IDrawAbleNode currentSelectedNode = null;
+	
+	
 
 	// protected CaleydoTextRenderer textRenderer = null;
 
@@ -180,16 +183,9 @@ public abstract class ATreeLayouter
 	private void drawTextBox(GL gl) {
 		textNode = new TextRenderingNode(currentSelectedNode.getNodeName(), currentSelectedNode.getID());
 		float fxcoord, fycoord;
-		Vec3f coordsNode = currentSelectedNode.getProjectedCoordinates();
 		Vec2f dimBox = textNode.getDimension();
-		// if(coordsNode.x() > viewFrustum.getRight()/2.0f)
 		fxcoord = viewFrustum.getLeft() + dimBox.y() / 4.0f;
-		// else
-		// fxcoord = viewFrustum.getRight()/2.0f - dimBox.y() - dimBox.y()/2.0f;
-		// if(coordsNode.y() > viewFrustum.getHeight()/2.0f)
 		fycoord = viewFrustum.getHeight() - dimBox.x() - dimBox.x() / 4.0f;
-		// else
-		// fycoord = viewFrustum.getHeight()/2.0f - dimBox.x()- dimBox.x()/2.0f;
 		textNode.place(fxcoord, fycoord, 2.0f, dimBox.x(), dimBox.y(), null);
 		textNode.draw(gl, false);
 	}
@@ -259,19 +255,28 @@ public abstract class ATreeLayouter
 						dummy.add(node);
 						if(node.getRealCoordinates().length() > 0)
 							nodeLayout.add(node);
+						else
+							animationConnectionHandler.clearAllOccurencesOfNode(node);
 					}
 					node.draw(gl, false);
 
 				}
 			if(!dummy.isEmpty())
-				for(IDrawAbleNode node : dummy)
+				for(IDrawAbleNode node : dummy){
 					mAnimationNodes.remove(node);
+				}
+			for(IDrawAbleConnection conn : animationConnectionHandler.getAllConnections(treeProjector))
+				conn.draw(gl, false);
 			if(!nodeLayout.isEmpty())
 				for(IDrawAbleNode node : nodeLayout)
 					node.draw(gl, false);
-			bIsNodeListDirty = true;
-			// if(!bIsAnimating)
-			// buildDisplayLists(gl);
+			if(!bIsAnimating){
+				connectionLayout.addAll(animationConnectionHandler.getAllConnections(treeProjector));
+				mAnimationNodes = null;
+				animationConnectionHandler = null;
+				bIsNodeListDirty = true;
+				bIsConnectionListDirty = true;
+				}
 		}
 		else {
 			// TODO: Really bad!
@@ -281,7 +286,6 @@ public abstract class ATreeLayouter
 
 			if (bIsNodeHighlighted) {
 				drawTextBox(gl);
-				// TODO: Define an new connection type
 				IDrawAbleConnection conn =
 					new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
 				conn.draw(gl, true);
@@ -341,18 +345,24 @@ public abstract class ATreeLayouter
 			return;
 		bIsAnimating = true;
 
-		mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
+		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
+		this.animationConnectionHandler = new AnimationConnectionHandler();
 
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
 
 		for (IDrawAbleNode node : nodeLayout)
 			mLayoutAnimationStart.put(node, node.getRealCoordinates());
+		for (IDrawAbleConnection conn : connectionLayout)
+			animationConnectionHandler.addConnectionInformation(conn);
 		this.tree = tree;
 		clearDisplay();
 		renderTreeLayout();
 		for (IDrawAbleNode node : nodeLayout)
 			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
+		for (IDrawAbleConnection conn : connectionLayout)
+			animationConnectionHandler.addConnectionInformation(conn);
+
 
 		// TODO: find nicer placing!
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
