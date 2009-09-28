@@ -1,9 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -22,19 +24,17 @@ public abstract class ADrawAbleNode
 	implements IDrawAbleNode {
 	private String sNodeName;
 	private int iID;
-	private ESelectionType eSelectionType;
 	private EDrawAbleNodeDetailLevel eDetailLevel;
-	private float fXCoord = 0;
-	private float fYCoord = 0;
-	private float fZCoord = 0;
-	private float fHeight = 0;
-	private float fWidth = 0;
-	private ITreeProjection projection;
+	protected float fXCoord = 0;
+	protected float fYCoord = 0;
+	protected float fZCoord = 0;
+	protected float fHeight = 0;
+	protected float fWidth = 0;
 	private float fProjectedXCoord = 0;
 	private float fProjectedYCoord = 0;
 	private float fProjectedZCoord = 0;
-	private ArrayList<Vec3f> alOriginalCorrespondingPoints = null;
-	protected boolean bIsAbleToPick = true;
+	private List<Vec3f> alOriginalCorrespondingPoints = null;
+	private boolean bIsAbleToPick = true;
 
 	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
 
@@ -57,6 +57,8 @@ public abstract class ADrawAbleNode
 	public final int compareTo(IDrawAbleNode node) {
 		return iID - node.getID();
 	}
+	
+	
 
 	// @Override
 	// public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float
@@ -74,7 +76,7 @@ public abstract class ADrawAbleNode
 	// }
 
 	@Override
-	public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight,
+	public final List<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight,
 		float fWidth, ITreeProjection treeProjection) {
 		this.fXCoord = fXCoord;
 		this.fYCoord = fYCoord;
@@ -92,19 +94,27 @@ public abstract class ADrawAbleNode
 			this.fProjectedYCoord = this.fYCoord;
 			this.fProjectedZCoord = this.fZCoord;
 		}
-		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+		if(mRepresantations != null){
+			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
 		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
 		alOriginalCorrespondingPoints = daObj.getConnectionPoints();
-		daObj.place(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord, fHeight, fWidth);
+		daObj.place(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord, fHeight, fWidth);}
+		else{
+			alOriginalCorrespondingPoints = getConnectionPointsSpecialNode();
+		}
 		bIsAbleToPick = fProjectedZCoord >= 0.0f;
 		return alOriginalCorrespondingPoints;
 	}
 
 	@Override
-	public final void draw(GL gl, boolean bHighlight) {
-		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-		daObj.setPickAble(bIsAbleToPick);
-		daObj.draw(gl, bHighlight);
+	public void draw(GL gl, boolean bHighlight) {
+		if (mRepresantations != null) {
+			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+			daObj.setPickAble(bIsAbleToPick);
+			daObj.draw(gl, bHighlight);
+		}
+		else
+			drawSpecialNode(gl);
 	}
 
 	@Override
@@ -118,12 +128,17 @@ public abstract class ADrawAbleNode
 	}
 
 	@Override
-	public final ArrayList<Vec3f> getConnectionPoints() {
-		IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-		return daObj.getConnectionPoints();
+	public final List<Vec3f> getConnectionPoints() {
+		if (mRepresantations != null) {
+			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
+			return daObj.getConnectionPoints();
+		}
+		else
+			return getConnectionPointsSpecialNode();
 	}
 
-	public final ArrayList<Vec3f> getConnectionPointsOfOriginalPosition() {
+	@Override
+	public final List<Vec3f> getConnectionPointsOfOriginalPosition() {
 		// IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
 		// return daObj.getConnectionPoints();
 		// daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
@@ -140,23 +155,41 @@ public abstract class ADrawAbleNode
 	public ADrawAbleNode(String sNodeName, int iNodeID, String[] sTypes) {
 		this.sNodeName = sNodeName;
 		this.iID = iNodeID;
-		mRepresantations =
-			new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
-		eSelectionType = ESelectionType.DESELECTED;
-		int i = 0;
-		for (EDrawAbleNodeDetailLevel e : EDrawAbleNodeDetailLevel.values()) {
-			mRepresantations.put(e, DrawAbleObjectsFactory.getDrawAbleObject(sTypes[i++]));
+		if (sTypes != null) {
+			mRepresantations =
+				new EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject>(EDrawAbleNodeDetailLevel.class);
+			int i = 0;
+			for (EDrawAbleNodeDetailLevel e : EDrawAbleNodeDetailLevel.values()) {
+				mRepresantations.put(e, DrawAbleObjectsFactory.getDrawAbleObject(sTypes[i++]));
+			}
 		}
 	}
 
 	@Override
-	public final Vec3f getCoordinates() {
+	public final Vec3f getRealCoordinates() {
 		return new Vec3f(fXCoord, fYCoord, fZCoord);
+	}
+	
+	@Override
+	public final Vec3f getProjectedCoordinates() {
+		return new Vec3f(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord);
 	}
 
 	@Override
 	public final boolean isPickAble() {
 		return bIsAbleToPick;
+	}
+
+	protected List<Vec3f> getConnectionPointsSpecialNode() {
+		return null;
+	}
+
+	protected void drawSpecialNode(GL gl) {
+	}
+	
+	@Override
+	public Vec2f getDimension(){
+		return new Vec2f(fHeight, fWidth);
 	}
 }
 

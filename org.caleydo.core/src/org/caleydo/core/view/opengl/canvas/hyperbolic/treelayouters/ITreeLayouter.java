@@ -30,4 +30,8 @@ public interface ITreeLayouter
 	void buildDisplayLists(GL gl);
 
 	int getID();
+
+	boolean isAnimating();
+
+	//void changeCanvasDrawing();
 }

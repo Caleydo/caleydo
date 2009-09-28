@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobject
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -17,7 +18,7 @@ public class DrawAbleObjectQuad
 	extends ADrawAbleObject {
 
 	@Override
-	public ArrayList<Vec3f> draw(GL gl, boolean bHighlight) {
+	public List<Vec3f> draw(GL gl, boolean bHighlight) {
 		float fSideL = Math.min(fWidth, fHeight) / 2f;
 		if (bIsAbleToPick)
 			if (bHighlight)
@@ -37,7 +38,7 @@ public class DrawAbleObjectQuad
 	}
 
 	@Override
-	public ArrayList<Vec3f> getConnectionPoints() {
+	public List<Vec3f> getConnectionPoints() {
 		ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
 		int iSegPerLine = HyperbolicRenderStyle.DA_OBJ_NUM_CONTACT_POINTS / 4;
 		float fSideL = Math.min(fWidth, fHeight) / 2f;

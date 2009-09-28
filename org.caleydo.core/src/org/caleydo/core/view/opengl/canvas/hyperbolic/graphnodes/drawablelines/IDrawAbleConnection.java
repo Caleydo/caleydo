@@ -8,6 +8,7 @@ public interface IDrawAbleConnection
 	public int getID();
 
 	public void draw(GL gl, boolean bHighlight);
+	
 
 	boolean isPickAble();
 

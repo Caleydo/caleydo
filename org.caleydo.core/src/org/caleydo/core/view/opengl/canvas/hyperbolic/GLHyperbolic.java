@@ -9,6 +9,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.ChangeCanvasDrawingEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -25,6 +26,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeCanvasDrawingListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeTreeTypeListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
@@ -35,6 +37,8 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
+
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Rendering the hyperbolic view.
@@ -56,7 +60,8 @@ public class GLHyperbolic
 
 	boolean bIsSomethingHighlighted = false;
 
-	Tree<IDrawAbleNode> tree = null;
+	Tree<ClusterNode> clusteredTree = null;
+	Tree<IDrawAbleNode> drawAbleTree = null;
 
 	ITreeLayouter layouter = null;
 
@@ -70,6 +75,8 @@ public class GLHyperbolic
 	private int iGLDisplayListConnection;
 
 	private ChangeTreeTypeListener changeTreeTypeListener;
+
+	private ChangeCanvasDrawingListener changeCanvasDrawingListener;
 
 	/**
 	 * Constructor.
@@ -131,22 +138,56 @@ public class GLHyperbolic
 		// tree.addChild(test, test2);
 		// layouter = new LinearTreeLayouter(viewFrustum);
 
-		tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 7);
-		System.out.println(tree.getGraph().toString());
-		layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
-		layouter.setTree(tree);
+		// tree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 7);
+		// System.out.println(tree.getGraph().toString());
+		// layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
+		// layouter.setTree(tree);
 	}
 
 	@Override
 	public void init(GL gl) {
-		Tree<ClusterNode> tree = set.getClusteredTreeGenes();
 		iGLDisplayListNode = gl.glGenLists(1);
 		iGLDisplayListConnection = gl.glGenLists(1);
-		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
-		if (tree == null)
-			return;
 		if (set == null)
 			return;
+		clusteredTree = set.getClusteredTreeExps();
+		// clusteredTree = set.getClusteredTreeGenes();
+		// TODO: outtaken for test reasons
+		// if (clusteredTree == null)
+		// return;
+
+		layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
+		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
+		buildDrawAbleTree();
+		layouter.setTree(drawAbleTree);
+	}
+
+	private void buildDrawAbleTree() {
+		// TODO: Just testing!!!
+		if (clusteredTree == null) {
+			drawAbleTree = buildTestTree(3, 4);
+			return;
+		}
+		drawAbleTree = new Tree<IDrawAbleNode>();
+		ClusterNode clRootNode = clusteredTree.getRoot();
+		// TODO: maybe do not build whole tree add once... performance??
+		IDrawAbleNode daRootNode = convertClusterNodeToDrawAbleNode(clRootNode);
+		drawAbleTree.setRootNode(daRootNode);
+		buildDrawAbleTreeWorker(clRootNode, daRootNode);
+	}
+
+	private void buildDrawAbleTreeWorker(ClusterNode clRootNode, IDrawAbleNode daRootNode) {
+		if (clusteredTree.hasChildren(clRootNode))
+			for (ClusterNode clNode : clusteredTree.getChildren(clRootNode)) {
+				IDrawAbleNode daNode = convertClusterNodeToDrawAbleNode(clNode);
+				drawAbleTree.addChild(daRootNode, daNode);
+				buildDrawAbleTreeWorker(clNode, daNode);
+			}
+	}
+
+	private IDrawAbleNode convertClusterNodeToDrawAbleNode(ClusterNode node) {
+		// TODO: maybe add different NodeTypes... but they need to be defined first
+		return new TestNode(node.getNodeName(), node.getClusterNr());
 	}
 
 	@Override
@@ -186,6 +227,10 @@ public class GLHyperbolic
 
 	@Override
 	public void displayLocal(GL gl) {
+		if (layouter == null) {
+			return;
+		}
+
 		pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
@@ -255,9 +300,11 @@ public class GLHyperbolic
 
 				switch (pickingMode) {
 					case CLICKED:
-						tree = convertTreeToNewOne(iExternalID);
-						// layouter.animateToNewTree(tree);
-						layouter.setTree(tree);
+						if (!layouter.isAnimating()) {
+							drawAbleTree = convertTreeToNewOne(iExternalID);
+							layouter.animateToNewTree(drawAbleTree);
+						}
+						// layouter.setTree(drawAbleTree);
 						break;
 					case MOUSE_OVER:
 						bIsSomethingHighlighted = true;
@@ -298,11 +345,10 @@ public class GLHyperbolic
 	}
 
 	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
-		IDrawAbleNode rootNode = tree.getNodeByNumber(iExternalID);
-		if (tree.getRoot().compareTo(rootNode) == 0)
-			return tree;
+		IDrawAbleNode rootNode = drawAbleTree.getNodeByNumber(iExternalID);
+		if (drawAbleTree.getRoot().compareTo(rootNode) == 0)
+			return drawAbleTree;
 		Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>();
-
 		newTree.setRootNode(rootNode);
 		convertTreeToNewOneWorker(rootNode, newTree);
 		return newTree;
@@ -310,7 +356,7 @@ public class GLHyperbolic
 
 	private void convertTreeToNewOneWorker(IDrawAbleNode rootNode, Tree<IDrawAbleNode> newTree) {
 
-		IDrawAbleNode theirRoot = tree.getParent(rootNode);
+		IDrawAbleNode theirRoot = drawAbleTree.getParent(rootNode);
 		IDrawAbleNode ourRoot = newTree.getParent(rootNode);
 		if (theirRoot != null) {
 			if (ourRoot == null || theirRoot.compareTo(ourRoot) != 0) {
@@ -318,10 +364,8 @@ public class GLHyperbolic
 				convertTreeToNewOneWorker(theirRoot, newTree);
 			}
 		}
-		// IDrawAbleNode ourRoot=null;
-		// if(newTree.getRoot().compareTo(rootNode) != 0)
-		if (tree.hasChildren(rootNode))
-			for (IDrawAbleNode node : tree.getChildren(rootNode)) {
+		if (drawAbleTree.hasChildren(rootNode))
+			for (IDrawAbleNode node : drawAbleTree.getChildren(rootNode)) {
 				if (ourRoot != null)
 					if (node.compareTo(ourRoot) == 0)
 						continue;
@@ -368,11 +412,15 @@ public class GLHyperbolic
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
-		
+
+		changeCanvasDrawingListener = new ChangeCanvasDrawingListener();
+		changeCanvasDrawingListener.setHandler(this);
+		eventPublisher.addListener(ChangeCanvasDrawingEvent.class, changeCanvasDrawingListener);
+
 		changeTreeTypeListener = new ChangeTreeTypeListener();
 		changeTreeTypeListener.setHandler(this);
 		eventPublisher.addListener(ChangeTreeTypeEvent.class, changeTreeTypeListener);
-		
+
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
@@ -426,7 +474,9 @@ public class GLHyperbolic
 				for (IDrawAbleNode node : nodesOnLayer) {
 					if (nodes.isEmpty())
 						continue;
-					int s = Math.min(nodes.size(), (int) Math.round((Math.random() * (double) iMaxNodesOnLayer) / 0.9f));
+					int s =
+						Math.min(nodes.size(), (int) Math
+							.round((Math.random() * (double) iMaxNodesOnLayer) / 0.9f));
 
 					for (int j = 0; j < s; ++j) {
 						tree.addChild(node, nodes.get(0));
@@ -452,13 +502,19 @@ public class GLHyperbolic
 	}
 
 	public void changeTreeType() {
-		if(layouter instanceof LTLayouter)
+		if (layouter == null)
+			return;
+		if (layouter instanceof LTLayouter)
 			layouter = new HTLayouter(viewFrustum, pickingManager, iUniqueID);
 		else
 			layouter = new LTLayouter(viewFrustum, pickingManager, iUniqueID);
 		layouter.init(iGLDisplayListNode, iGLDisplayListConnection);
-		layouter.setTree(tree);
+		layouter.setTree(drawAbleTree);
 		setDisplayListDirty();
+	}
+
+	public void changeCanvasDrawing() {
+		HyperbolicRenderStyle.PROJECTION_DRAW_CANVAS = !HyperbolicRenderStyle.PROJECTION_DRAW_CANVAS;
 	}
 
 }

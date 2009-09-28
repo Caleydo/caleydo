@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
 import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
+import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeCanvasDrawingAction;
 import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeTreeTypeAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
 import org.caleydo.rcp.view.swt.toolbar.content.ActionToolBarContainer;
@@ -31,6 +32,8 @@ public class HyperbolicToolBarContent
 		SerializedHyperbolicView serializedView = (SerializedHyperbolicView) getTargetViewData();
 		int targetViewID = serializedView.getViewID();
 
+		IToolBarItem goChangeCanvasDrawing = new ChangeCanvasDrawingAction(targetViewID);
+		actionList.add(goChangeCanvasDrawing);
 		IToolBarItem goChangeTreeType = new ChangeTreeTypeAction(targetViewID);
 		actionList.add(goChangeTreeType);
 		// IToolBarItem goBackInHistory = new GoBackInHistoryAction(targetViewID);

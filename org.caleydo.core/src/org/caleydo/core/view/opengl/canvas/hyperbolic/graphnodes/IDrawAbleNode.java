@@ -1,8 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -41,7 +43,7 @@ public interface IDrawAbleNode
 	 * @param fHeight
 	 * @param fWidth
 	 */
-	ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth,
+	List<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth,
 		ITreeProjection treeProjection);
 
 	/**
@@ -85,18 +87,22 @@ public interface IDrawAbleNode
 	 * 
 	 * @return
 	 */
-	ArrayList<Vec3f> getConnectionPoints();
+	List<Vec3f> getConnectionPoints();
 
 	/**
 	 * Returns the connection points for the original representation and placing
 	 * 
 	 * @return
 	 */
-	ArrayList<Vec3f> getConnectionPointsOfOriginalPosition();
+	List<Vec3f> getConnectionPointsOfOriginalPosition();
 
-	Vec3f getCoordinates();
+	Vec3f getRealCoordinates();
 
 	boolean isPickAble();
+
+	Vec3f getProjectedCoordinates();
+
+	Vec2f getDimension();
 
 	// /**
 	// * Set how the node is selected

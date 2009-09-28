@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobject
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 
@@ -45,14 +46,14 @@ public interface IDrawAbleObject {
 	 * @param gl
 	 * @return ArrayList<Vec3f>
 	 */
-	public ArrayList<Vec3f> draw(GL gl, boolean bHighlight);
+	public List<Vec3f> draw(GL gl, boolean bHighlight);
 
 	/**
 	 * Returns the connection points for the current representation and placing
 	 * 
 	 * @return
 	 */
-	public ArrayList<Vec3f> getConnectionPoints();
+	public List<Vec3f> getConnectionPoints();
 
 	void setPickAble(boolean bIsAbleToPick);
 

@@ -9,6 +9,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.DefaultProjection;
 
 public final class LTLayouter
 	extends ATreeLayouter {
@@ -17,9 +18,14 @@ public final class LTLayouter
 	Map<IDrawAbleNode, Integer> mNodeSpaceRec;
 	float fCalcMaxNodeSize;
 	float fCurNodeRealSize;
+	
+	int iDepth;
+	
+	float[] fYLayers;
+	
 
 	public LTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
-		super(frustum, pickingManager, iViewID, null);
+		super(frustum, pickingManager, iViewID, new DefaultProjection(1));
 	}
 
 	@Override
@@ -27,7 +33,29 @@ public final class LTLayouter
 		updateSizeInfo();
 		if (tree == null)
 			return;
+		iNumLayers = Math.min(tree.getDepth(), HyperbolicRenderStyle.MAX_DEPTH);
+		fYLayers = new float[iNumLayers];
+		float[] fYNodeSize = new float[iNumLayers];
+		float fCurNodeSz;
+		float fHelp = 1;
+		for(int i = 1; i<iNumLayers; ++i)
+			fHelp += (float) Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, i);
+		float fSizeCur = fViewSpaceYAbs / fHelp;
+		fCurNodeSz = fSizeCur * HyperbolicRenderStyle.NODE_SCALING_PER_LAYER;
+		float flasty = fViewSpaceY[1];
+		for(int i = 0; i<iNumLayers; ++i){
+			fYLayers[i] = flasty - fSizeCur / 2.0f;
+			fYNodeSize[i] = fCurNodeSz;
+			flasty -= fSizeCur;
+			fSizeCur *= HyperbolicRenderStyle.NODE_SCALING_PER_LAYER;
+			fCurNodeSz *= HyperbolicRenderStyle.NODE_SCALING_PER_LAYER;
+		}
 
+		
+		
+		
+		iDepth = Math.min(tree.getDepth(), HyperbolicRenderStyle.MAX_DEPTH);
+		
 		mNodeSpaceRec = new HashMap<IDrawAbleNode, Integer>();
 		IDrawAbleNode rootNode = tree.getRoot();
 		int overall = 0;
@@ -35,21 +63,21 @@ public final class LTLayouter
 			overall = updateNodespace(tree.getChildren(rootNode), 2);
 		mNodeSpaceRec.put(rootNode, overall);
 
-		float fLayerH = fViewSpaceYAbs / HyperbolicRenderStyle.MAX_DEPTH;
+		float fLayerH = fViewSpaceYAbs / iDepth;
 		fCalcMaxNodeSize = fViewSpaceXAbs / overall;
 		float fCurNodeSize =
 			(HyperbolicRenderStyle.MAX_NODE_SIZE < fCalcMaxNodeSize ? HyperbolicRenderStyle.MAX_NODE_SIZE
 				: fCalcMaxNodeSize);
 		fCurNodeRealSize = fCurNodeSize - 0.05f;
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryHigh);
-		iNodesPlacedInLayer = new int[HyperbolicRenderStyle.MAX_DEPTH];
+		iNodesPlacedInLayer = new int[iDepth];
 		placeNode(rootNode, fViewSpaceX[1] / 2, fViewSpaceY[1] - fLayerH / 2.0f, 0.1f, fCurNodeSize,
 			fCurNodeSize);
 		placeRecursive(rootNode, 2, fLayerH, fViewSpaceX[0]);
 	}
 
 	private int updateNodespace(ArrayList<IDrawAbleNode> children, int iLayer) {
-		if (iLayer > HyperbolicRenderStyle.MAX_DEPTH)
+		if (iLayer > iDepth)
 			return 0;
 		int overall = children.size();
 		for (IDrawAbleNode node : children) {
@@ -63,7 +91,7 @@ public final class LTLayouter
 	}
 
 	private void placeRecursive(IDrawAbleNode rootNode, int iCurrentLayer, float fLayerHigh, float viewSpace) {
-		if (iCurrentLayer > HyperbolicRenderStyle.MAX_DEPTH)
+		if (iCurrentLayer > iDepth)
 			return;
 		if (!tree.hasChildren(rootNode))
 			return;

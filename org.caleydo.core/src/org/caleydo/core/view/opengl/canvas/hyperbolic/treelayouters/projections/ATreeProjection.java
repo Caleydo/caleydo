@@ -1,5 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
+import gleem.linalg.Vec3f;
+
+import java.util.List;
+
 public abstract class ATreeProjection
 	implements ITreeProjection {
 
@@ -11,18 +15,18 @@ public abstract class ATreeProjection
 	protected float fViewSpaceXAbs = 0;
 	protected float[] fViewSpaceY = {};
 	protected float fViewSpaceYAbs = 0;
-
-	public ATreeProjection(int iID, float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
-		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
-		this.iID = iID;
-		this.fHeight = fHeight;
-		this.fWidth = fWidth;
-		this.fDepth = fDepth;
-		this.fViewSpaceX = fViewSpaceX;
-		this.fViewSpaceXAbs = fViewSpaceXAbs;
-		this.fViewSpaceY = fViewSpaceY;
-		this.fViewSpaceYAbs = fViewSpaceYAbs;
-	}
+	
+//	public ATreeProjection(int iID, float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
+//		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
+//		this.iID = iID;
+//		this.fHeight = fHeight;
+//		this.fWidth = fWidth;
+//		this.fDepth = fDepth;
+//		this.fViewSpaceX = fViewSpaceX;
+//		this.fViewSpaceXAbs = fViewSpaceXAbs;
+//		this.fViewSpaceY = fViewSpaceY;
+//		this.fViewSpaceYAbs = fViewSpaceYAbs;
+//	}
 
 	public ATreeProjection(int iID) {
 		this.iID = iID;
@@ -53,4 +57,5 @@ public abstract class ATreeProjection
 	public float getProtectedLineFromCenterToBorder(){
 		return Math.min(fViewSpaceXAbs, fViewSpaceYAbs);
 	}
+
 }

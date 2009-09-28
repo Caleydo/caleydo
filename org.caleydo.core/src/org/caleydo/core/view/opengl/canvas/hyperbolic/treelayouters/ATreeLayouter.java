@@ -1,8 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +16,15 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TextRenderingNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleHyperbolicLayoutConnector;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.DrawAbleTextBoxConnector;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.IDrawAbleConnection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.eclipse.osgi.framework.internal.core.Msg;
 
 public abstract class ATreeLayouter
 	implements ITreeLayouter {
@@ -43,6 +51,8 @@ public abstract class ATreeLayouter
 
 	private boolean bIsAnimating = false;
 
+	protected int iNumLayers;
+
 	// TODO: Maybe replace by maps!
 	private List<IDrawAbleNode> nodeLayout;
 	private List<IDrawAbleConnection> connectionLayout;
@@ -57,8 +67,14 @@ public abstract class ATreeLayouter
 	protected Tree<IDrawAbleNode> tree = null;
 	protected ArrayList<Integer> alMaxSiblingsInLayer = null;
 
-	protected Map<Integer, Vec3f> mLayoutAnimationStart = null;
-	protected Map<Integer, Vec3f> mLayoutAnimationEnd = null;
+	protected Map<Integer, AnimationVec3f> mLayoutAnimationVector = null;
+	protected Map<IDrawAbleNode, AnimationVec3f> mAnimationNodes = null;
+	protected Map<IDrawAbleNode, IDrawAbleNode> mAnimationConnections = null;
+
+	IDrawAbleNode textNode = null;
+	IDrawAbleNode currentSelectedNode = null;
+
+	// protected CaleydoTextRenderer textRenderer = null;
 
 	public ATreeLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID,
 		ITreeProjection treeProjector) {
@@ -69,6 +85,9 @@ public abstract class ATreeLayouter
 		this.connectionLayout = new ArrayList<IDrawAbleConnection>();
 		this.alMaxSiblingsInLayer = new ArrayList<Integer>();
 		this.treeProjector = treeProjector;
+		// this.textRenderer =
+		// new CaleydoTextRenderer(new Font(HyperbolicRenderStyle.LABEL_FONT_NAME,
+		// HyperbolicRenderStyle.LABEL_FONT_STYLE, HyperbolicRenderStyle.LABEL_FONT_SIZE), false);
 		updateSizeInfo();
 	}
 
@@ -143,8 +162,10 @@ public abstract class ATreeLayouter
 			if (node.isPickAble()) {
 				gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION,
 					node.getID()));
-				if (bIsNodeHighlighted && node.getID() == iHighlightedNode)
+				if (bIsNodeHighlighted && node.getID() == iHighlightedNode) {
+					currentSelectedNode = node;
 					node.draw(gl, true);
+				}
 				else
 					node.draw(gl, false);
 				gl.glPopName();
@@ -154,6 +175,23 @@ public abstract class ATreeLayouter
 			}
 		}
 		gl.glEndList();
+	}
+
+	private void drawTextBox(GL gl) {
+		textNode = new TextRenderingNode(currentSelectedNode.getNodeName(), currentSelectedNode.getID());
+		float fxcoord, fycoord;
+		Vec3f coordsNode = currentSelectedNode.getProjectedCoordinates();
+		Vec2f dimBox = textNode.getDimension();
+		// if(coordsNode.x() > viewFrustum.getRight()/2.0f)
+		fxcoord = viewFrustum.getLeft() + dimBox.y() / 4.0f;
+		// else
+		// fxcoord = viewFrustum.getRight()/2.0f - dimBox.y() - dimBox.y()/2.0f;
+		// if(coordsNode.y() > viewFrustum.getHeight()/2.0f)
+		fycoord = viewFrustum.getHeight() - dimBox.x() - dimBox.x() / 4.0f;
+		// else
+		// fycoord = viewFrustum.getHeight()/2.0f - dimBox.x()- dimBox.x()/2.0f;
+		textNode.place(fxcoord, fycoord, 2.0f, dimBox.x(), dimBox.y(), null);
+		textNode.draw(gl, false);
 	}
 
 	private final void buildDisplayListConnections(GL gl) {
@@ -203,10 +241,52 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void display(GL gl) {
-		// TODO: Really bad!
-		// gl.glCallList(iGLDisplayListConnection);
-		buildDisplayListConnections(gl);
-		gl.glCallList(iGLDisplayListNode);
+		if (bIsAnimating) {
+			bIsNodeHighlighted = false;
+			bIsAnimating = false;
+			List<IDrawAbleNode> dummy = new ArrayList<IDrawAbleNode>();
+			if (!mAnimationNodes.isEmpty())
+				for (IDrawAbleNode node : mAnimationNodes.keySet()) {
+					AnimationVec3f vec = mAnimationNodes.get(node);
+					if (!vec.nextStep()) {
+						bIsAnimating = true;
+						node.place(vec.getCurrentPos().x(), vec.getCurrentPos().y(), vec.getCurrentPos().z(),
+							node.getDimension().x(), node.getDimension().y(), treeProjector);
+					}
+					else {
+						node.place(vec.getFinalPos().x(), vec.getFinalPos().y(), vec.getFinalPos().z(), node
+							.getDimension().x(), node.getDimension().y(), treeProjector);
+						dummy.add(node);
+						if(node.getRealCoordinates().length() > 0)
+							nodeLayout.add(node);
+					}
+					node.draw(gl, false);
+
+				}
+			if(!dummy.isEmpty())
+				for(IDrawAbleNode node : dummy)
+					mAnimationNodes.remove(node);
+			if(!nodeLayout.isEmpty())
+				for(IDrawAbleNode node : nodeLayout)
+					node.draw(gl, false);
+			bIsNodeListDirty = true;
+			// if(!bIsAnimating)
+			// buildDisplayLists(gl);
+		}
+		else {
+			// TODO: Really bad!
+			// gl.glCallList(iGLDisplayListConnection);
+			buildDisplayListConnections(gl);
+			gl.glCallList(iGLDisplayListNode);
+
+			if (bIsNodeHighlighted) {
+				drawTextBox(gl);
+				// TODO: Define an new connection type
+				IDrawAbleConnection conn =
+					new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
+				conn.draw(gl, true);
+			}
+		}
 		if (treeProjector != null)
 			treeProjector.drawCanvas(gl);
 	}
@@ -248,18 +328,61 @@ public abstract class ATreeLayouter
 		return iComparableValue;
 	}
 
+	@Override
+	public final boolean isAnimating() {
+		return bIsAnimating;
+	}
+
 	public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
-		// storeAnimationInfosIntoMap()
+		// nothing to do
+		if (this.tree.getRoot().compareTo(tree.getRoot()) == 0)
+			return;
+		if (bIsAnimating)
+			return;
+		bIsAnimating = true;
+
+		mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
+
+		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
+		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
+
+		for (IDrawAbleNode node : nodeLayout)
+			mLayoutAnimationStart.put(node, node.getRealCoordinates());
+		this.tree = tree;
+		clearDisplay();
+		renderTreeLayout();
+		for (IDrawAbleNode node : nodeLayout)
+			mLayoutAnimationEnd.put(node, node.getRealCoordinates());
+
+		// TODO: find nicer placing!
+		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
+			if (!mLayoutAnimationEnd.containsKey(i)) {
+				mLayoutAnimationEnd.put(i, new Vec3f(0, 0, 0));
+			}
+		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
+			if (!mLayoutAnimationStart.containsKey(i)) {
+				mLayoutAnimationStart.put(i, new Vec3f(0, 0, 0));
+			}
+
+		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
+			mAnimationNodes.put(i, new AnimationVec3f(mLayoutAnimationStart.get(i), mLayoutAnimationEnd
+				.get(i), 0.1f));
+		}
+		clearDisplay();
+		//nodeLayout.clear();
+		// mLayoutAnimationEnd = null;
+		// mLayoutAnimationEnd = null;
+
 	}
 
 	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {
-//		IDrawAbleNode rootNode = tree.getRoot();
-//		iCurrentLayer = 1;
+		// IDrawAbleNode rootNode = tree.getRoot();
+		// iCurrentLayer = 1;
 		if (tree.hasChildren(node)) {
 			int iSiblings = 0;
 			for (IDrawAbleNode child : tree.getChildren(node)) {
 				alMaxSiblingsInLayer.set(1, 1);
-//				alMaxSiblingsInLayer.add(1, 1);
+				// alMaxSiblingsInLayer.add(1, 1);
 				if (tree.hasChildren(child) || iCurrentLayer != iTargetLayer) {
 					iSiblings = getMaxNumberOfSiblingsInLayer(child, iTargetLayer, iCurrentLayer + 1);
 				}
@@ -276,7 +399,7 @@ public abstract class ATreeLayouter
 		else
 			return 1;
 		return alMaxSiblingsInLayer.get(iCurrentLayer);
-			
+
 	}
 
 	// protected final Vec3f[] findClosestCorrespondendingPoints(List<Vec3f> pointsA, List<Vec3f> pointsB){

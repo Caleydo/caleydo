@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
+import java.util.List;
+
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL;
@@ -16,14 +18,14 @@ public class HyperbolicGlobeProjection
 		super(iID);
 	}
 
-	public HyperbolicGlobeProjection(int iID, float height, float width, float depth, float[] viewSpaceX,
-		float viewSpaceXAbs, float[] viewSpaceY, float viewSpaceYAbs) {
-		super(iID, height, width, depth, viewSpaceX, viewSpaceXAbs, viewSpaceY, viewSpaceYAbs);
-
-		fCenterPoint = new Vec3f(width / 2.0f, height / 2.0f, depth);
-		radius = Math.min(viewSpaceXAbs, viewSpaceYAbs) / 2.0f;
-		// radius = viewSpaceYAbs / 2.0f;
-	}
+	// public HyperbolicGlobeProjection(int iID, float height, float width, float depth, float[] viewSpaceX,
+	// float viewSpaceXAbs, float[] viewSpaceY, float viewSpaceYAbs) {
+	// super(iID, height, width, depth, viewSpaceX, viewSpaceXAbs, viewSpaceY, viewSpaceYAbs);
+	//
+	// fCenterPoint = new Vec3f(width / 2.0f, height / 2.0f, depth);
+	// radius = Math.min(viewSpaceXAbs, viewSpaceYAbs) / 2.0f;
+	// // radius = viewSpaceYAbs / 2.0f;
+	// }
 
 	public void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
 		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
@@ -125,17 +127,36 @@ public class HyperbolicGlobeProjection
 
 		return fProjectedDistance;
 	}
-	
-//	public float getGlobeSurfaceLengthFromEquatorToPole(){
-//		return radius * (float)Math.toRadians(90);
-//	}
-	public float getProtectedLineFromCenterToBorder(){
-		float fLine = radius * ((float)Math.PI/2);
+
+	// public float getGlobeSurfaceLengthFromEquatorToPole(){
+	// return radius * (float)Math.toRadians(90);
+	// }
+	public float getProtectedLineFromCenterToBorder() {
+		float fLine = radius * ((float) Math.PI / 2);
 		return fLine;
 	}
 
 	@Override
 	public void drawCanvas(GL gl) {
+
+		if (HyperbolicRenderStyle.PROJECTION_DRAW_CANVAS) {
+			gl.glEnable(GL.GL_BLEND);
+			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			gl.glColor4fv(HyperbolicRenderStyle.DA_TREE_PROJECTION_COLORSHEME, 0);
+			gl.glBegin(GL.GL_POLYGON);
+		}
+		else {
+			gl.glColor4fv(HyperbolicRenderStyle.DA_TREE_PROJECTION_CANVAS_COLORSCHEME, 0);
+			gl.glLineWidth(HyperbolicRenderStyle.DA_TREE_PROJECTION_CANVAS_THICKNESS);
+			gl.glBegin(GL.GL_LINE_LOOP);
+		}
+
+		for (int i = 0; i < 360; i++) {
+			float angle = (float) (i * 2 * Math.PI / 180f);
+			gl.glVertex3f((float) (fCenterPoint.x() + Math.cos(angle) * radius),
+				(float) (fCenterPoint.y() + Math.sin(angle) * radius), -0.1f);
+		}
+		gl.glEnd();
 
 		// gl.glAlphaFunc(1, 0);
 
@@ -247,20 +268,12 @@ public class HyperbolicGlobeProjection
 		// gl.glFlush();
 		//		
 
-		gl.glEnable(GL.GL_BLEND);
-		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		gl.glColor4fv(HyperbolicRenderStyle.DA_HB_GEOM_GLOBE_COLORSHEME_HL, 0);
-		gl.glLineWidth(HyperbolicRenderStyle.DA_HB_GEOM_GLOBE_THICKNESS_HL);
+	}
 
-		gl.glBegin(GL.GL_POLYGON);
-		// gl.glBegin(GL.GL_LINE_LOOP);
-		for (int i = 0; i < 180; i++) {
-			float angle = (float) (i * 2 * Math.PI / 180f);
-			gl.glVertex3f((float) (fCenterPoint.x() + Math.cos(angle) * radius),
-				(float) (fCenterPoint.y() + Math.sin(angle) * radius), -0.1f);
-		}
-		gl.glEnd();
-
+	@Override
+	public List<Vec3f> getEuclidianCanvas() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
