@@ -11,9 +11,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 public class HyperbolicGlobeProjection
 	extends ATreeProjection {
 
-	Vec3f fCenterPoint;
-	float radius;
-
 	public HyperbolicGlobeProjection(int iID) {
 		super(iID);
 	}
@@ -31,8 +28,6 @@ public class HyperbolicGlobeProjection
 		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
 		super.updateFrustumInfos(fHeight, fWidth, fDepth, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY,
 			fViewSpaceYAbs);
-		fCenterPoint = new Vec3f(fWidth / 2.0f, fHeight / 2.0f, fDepth);
-		radius = Math.min(fViewSpaceXAbs, fViewSpaceYAbs) / 2.0f;
 	}
 
 	@Override
@@ -271,7 +266,7 @@ public class HyperbolicGlobeProjection
 	}
 
 	@Override
-	public Vec3f[] getEuclidianCanvas() {
+	public float[][] getEuclidianCanvas() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -279,7 +274,7 @@ public class HyperbolicGlobeProjection
 	@Override
 	public Vec3f getNearestPointOnEuclidianBorder(Vec3f point) {
 		// TODO Auto-generated method stub
-		return new Vec3f(0,0,0);
+		return new Vec3f(0, 0, 0);
 	}
 
 }

@@ -20,7 +20,7 @@ public interface ITreeProjection
 	void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
 		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs);
 
-	Vec3f[] getEuclidianCanvas();
+	float[][] getEuclidianCanvas();
 
 	Vec3f getNearestPointOnEuclidianBorder(Vec3f point);
 

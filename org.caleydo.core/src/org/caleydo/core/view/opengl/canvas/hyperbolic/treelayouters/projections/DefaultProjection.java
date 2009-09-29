@@ -12,6 +12,8 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 public class DefaultProjection
 	extends ATreeProjection {
 
+	private boolean bIsRadialCanvasRequested;
+
 	// public DefaultProjection(int iID, float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
 	// float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
 	// super(iID, fHeight, fWidth, fDepth, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
@@ -34,12 +36,20 @@ public class DefaultProjection
 			gl.glLineWidth(HyperbolicRenderStyle.DA_TREE_PROJECTION_CANVAS_THICKNESS);
 			gl.glBegin(GL.GL_LINE_LOOP);
 		}
-
+		
+		if(bIsRadialCanvasRequested){
+			for (int i = 0; i < 360; i++) {
+				float angle = (float) (i * 2 * Math.PI / 180f);
+				gl.glVertex3f((float) (fCenterPoint.x() + Math.cos(angle) * radius),
+					(float) (fCenterPoint.y() + Math.sin(angle) * radius), -0.1f);
+			}
+		}
+		else{
 		gl.glVertex3f(fViewSpaceX[0], fViewSpaceY[0], -0.1f);
 		gl.glVertex3f(fViewSpaceX[1], fViewSpaceY[0], -0.1f);
 		gl.glVertex3f(fViewSpaceX[1], fViewSpaceY[1], -0.1f);
 		gl.glVertex3f(fViewSpaceX[0], fViewSpaceY[1], -0.1f);
-
+		}
 		gl.glEnd();
 
 	}
@@ -50,10 +60,9 @@ public class DefaultProjection
 	}
 
 	@Override
-	public Vec3f[] getEuclidianCanvas() {
-		// Vec3f[] border = new Vec3f[2];
-		// TODO: do we need it?
-		return null;
+	public float[][] getEuclidianCanvas() {
+		float[][] canvas =  {fViewSpaceX, fViewSpaceY};
+		return canvas;
 	}
 
 	@Override
@@ -72,6 +81,12 @@ public class DefaultProjection
 			return new Vec3f(point.x(), fViewSpaceY[0], point.z());
 		else
 			return new Vec3f(point.x(), fViewSpaceY[1], point.z());
+	}
+
+	@Override
+	public float getProjectedLineFromCenterToBorder() {
+		bIsRadialCanvasRequested = true;
+		return Math.min(fViewSpaceXAbs, fViewSpaceYAbs);
 	}
 
 }
