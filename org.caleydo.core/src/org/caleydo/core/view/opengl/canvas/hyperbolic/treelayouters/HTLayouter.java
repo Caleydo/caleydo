@@ -31,7 +31,7 @@ public final class HTLayouter
 	float fCenterY = 0.0f;
 	float fCenterZ = 0.0f;
 	int iLineIDDummy = 0;
-	float fDepth = 0.0f;
+	int iDepth = 0;
 	float fRadius = 0;
 	float fViewAbleSpaceRadius = 0.0f;
 
@@ -47,10 +47,11 @@ public final class HTLayouter
 		updateSizeInfo();
 		// fRadius = (fViewSpaceYAbs/2)/HyperbolicRenderStyle.MAX_DEPTH;
 		// fRadius = 0.7f;
-		fDepth = tree.getDepth();
+//		iDepth = tree.getDepth();
+		iDepth = Math.min(tree.getDepth(), HyperbolicRenderStyle.MAX_DEPTH);
 		fViewAbleSpaceRadius = treeProjector.getProjectedLineFromCenterToBorder();
 		// fRadius = fViewAbleSpaceRadius/fDepth;
-		fRadius = fViewAbleSpaceRadius / (HyperbolicRenderStyle.MAX_DEPTH - 1);
+		fRadius = fViewAbleSpaceRadius / (iDepth - 1);
 		mNodeSpaceRec = new HashMap<IDrawAbleNode, Integer>();
 
 		setFCenterX(fWidth / 2);
@@ -134,7 +135,7 @@ public final class HTLayouter
 		// float fChildSpace = calculateChildSpace(fRadius, fNumberOfNodesInNewLayer);
 
 		float fRadiusUpdate = 0;
-		if (tree.hasChildren(node) && fLayer <= HyperbolicRenderStyle.MAX_DEPTH && fLayer <= fDepth) {
+		if (tree.hasChildren(node) && fLayer <= iDepth) {
 
 			// float fDeltaRadius = 5.0f/(fLayer*6);
 			// float childs = 3.0f; // node.getNumberOfChildren()

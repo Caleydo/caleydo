@@ -3,8 +3,9 @@ package org.caleydo.rcp.view.swt.toolbar.content.hyperbolic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.view.opengl.canvas.hyperbolic.GLHyperbolic;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.SerializedHyperbolicView;
-import org.caleydo.core.view.opengl.canvas.radial.GLRadialHierarchy;
 import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeCanvasDrawingAction;
 import org.caleydo.rcp.action.toolbar.view.hyperbolic.ChangeTreeTypeAction;
 import org.caleydo.rcp.view.swt.toolbar.content.AToolBarContent;
@@ -40,14 +41,13 @@ public class HyperbolicToolBarContent
 		// IToolBarItem goForthInHistory = new GoForthInHistoryAction(targetViewID);
 		// IToolBarItem changeColorMode = new ChangeColorModeAction(targetViewID);
 		// IToolBarItem magnifyingGlass = new ToggleMagnifyingGlassAction();
-		// if (depthSlider == null) {
-		// depthSlider = new DepthSlider("", serializedView.getMaxDisplayedHierarchyDepth());
-		// }
+		 depthSlider = new MaxLayoutDepthSlider("Change maximum displayed depth", HyperbolicRenderStyle.MAX_DEPTH);
+		 
 		// actionList.add(goBackInHistory);
 		// actionList.add(goForthInHistory);
 		// actionList.add(changeColorMode);
 		// actionList.add(magnifyingGlass);
-		// actionList.add(depthSlider);
+		 actionList.add(depthSlider);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
@@ -57,7 +57,7 @@ public class HyperbolicToolBarContent
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLRadialHierarchy.class;
+		return GLHyperbolic.class;
 	}
 
 }

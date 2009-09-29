@@ -11,6 +11,7 @@ import org.caleydo.core.data.selection.delta.ISelectionDelta;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeCanvasDrawingEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
 import org.caleydo.core.manager.event.view.storagebased.RedrawViewEvent;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -28,6 +29,7 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeCanvasDrawingListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeTreeTypeListener;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SetMaxLayoutDepthListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.HTLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.ITreeLayouter;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.LTLayouter;
@@ -77,6 +79,8 @@ public class GLHyperbolic
 	private ChangeTreeTypeListener changeTreeTypeListener;
 
 	private ChangeCanvasDrawingListener changeCanvasDrawingListener;
+	
+	private SetMaxLayoutDepthListener setMaxLayoutDepthListener;
 
 	/**
 	 * Constructor.
@@ -412,6 +416,10 @@ public class GLHyperbolic
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
+		
+		setMaxLayoutDepthListener = new SetMaxLayoutDepthListener();
+		setMaxLayoutDepthListener.setHandler(this);
+		eventPublisher.addListener(SetMaxLayoutDepthEvent.class, setMaxLayoutDepthListener);
 
 		changeCanvasDrawingListener = new ChangeCanvasDrawingListener();
 		changeCanvasDrawingListener.setHandler(this);
@@ -515,6 +523,12 @@ public class GLHyperbolic
 
 	public void changeCanvasDrawing() {
 		HyperbolicRenderStyle.PROJECTION_DRAW_CANVAS = !HyperbolicRenderStyle.PROJECTION_DRAW_CANVAS;
+	}
+	public void setMaxLayoutDepth(int iMaxLayoutDepth){
+		HyperbolicRenderStyle.MAX_DEPTH = iMaxLayoutDepth;
+		if(layouter != null)
+			layouter.setLayoutDirty();
+		
 	}
 
 }

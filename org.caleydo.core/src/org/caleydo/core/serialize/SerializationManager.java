@@ -64,6 +64,7 @@ import org.caleydo.core.manager.event.view.storagebased.UseRandomSamplingEvent;
 import org.caleydo.core.manager.event.view.storagebased.VirtualArrayUpdateEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeCanvasDrawingEvent;
 import org.caleydo.core.manager.event.view.hyperbolic.ChangeTreeTypeEvent;
+import org.caleydo.core.manager.event.view.hyperbolic.SetMaxLayoutDepthEvent;
 import org.caleydo.core.net.event.ClientListEvent;
 
 /**
@@ -209,6 +210,7 @@ public class SerializationManager {
 		eventTypes.add(ClearConnectionsEvent.class);
 		eventTypes.add(ChangeTreeTypeEvent.class);
 		eventTypes.add(ChangeCanvasDrawingEvent.class);
+		eventTypes.add(SetMaxLayoutDepthEvent.class);
 
 		// eventTypes.add(NewSetEvent.class);
 
