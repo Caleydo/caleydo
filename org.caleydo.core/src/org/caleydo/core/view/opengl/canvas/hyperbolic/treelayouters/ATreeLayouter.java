@@ -72,6 +72,8 @@ public abstract class ATreeLayouter
 	private Map<IDrawAbleNode, AnimationVec3f> mAnimationNodes = null;
 	private AnimationConnectionHandler animationConnectionHandler = null;
 	
+	private List<IDrawAbleNode> lAnimationNodesLeave = null; 
+	
 	IDrawAbleNode textNode = null;
 	IDrawAbleNode currentSelectedNode = null;
 	
@@ -253,10 +255,13 @@ public abstract class ATreeLayouter
 						node.place(vec.getFinalPos().x(), vec.getFinalPos().y(), vec.getFinalPos().z(), node
 							.getDimension().x(), node.getDimension().y(), treeProjector);
 						dummy.add(node);
-						if(node.getRealCoordinates().length() > 0)
+						
+						if(!lAnimationNodesLeave.contains(node))
 							nodeLayout.add(node);
-						else
+						else{
 							animationConnectionHandler.clearAllOccurencesOfNode(node);
+							lAnimationNodesLeave.remove(node);
+						}
 					}
 					node.draw(gl, false);
 
@@ -347,7 +352,8 @@ public abstract class ATreeLayouter
 
 		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
 		this.animationConnectionHandler = new AnimationConnectionHandler();
-
+		this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
+		
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
 
@@ -367,11 +373,12 @@ public abstract class ATreeLayouter
 		// TODO: find nicer placing!
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
 			if (!mLayoutAnimationEnd.containsKey(i)) {
-				mLayoutAnimationEnd.put(i, new Vec3f(0, 0, 0));
+				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(i.getRealCoordinates()));
+				lAnimationNodesLeave.add(i);
 			}
 		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
 			if (!mLayoutAnimationStart.containsKey(i)) {
-				mLayoutAnimationStart.put(i, new Vec3f(0, 0, 0));
+				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(i.getRealCoordinates()));
 			}
 
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {

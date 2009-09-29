@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections;
 
+import java.util.Arrays;
 import java.util.List;
 
 import gleem.linalg.Vec3f;
@@ -11,10 +12,10 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 public class DefaultProjection
 	extends ATreeProjection {
 
-//	public DefaultProjection(int iID, float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
-//		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
-//		super(iID, fHeight, fWidth, fDepth, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
-//	}
+	// public DefaultProjection(int iID, float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
+	// float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs) {
+	// super(iID, fHeight, fWidth, fDepth, fViewSpaceX, fViewSpaceXAbs, fViewSpaceY, fViewSpaceYAbs);
+	// }
 
 	public DefaultProjection(int iID) {
 		super(iID);
@@ -38,7 +39,7 @@ public class DefaultProjection
 		gl.glVertex3f(fViewSpaceX[1], fViewSpaceY[0], -0.1f);
 		gl.glVertex3f(fViewSpaceX[1], fViewSpaceY[1], -0.1f);
 		gl.glVertex3f(fViewSpaceX[0], fViewSpaceY[1], -0.1f);
-		
+
 		gl.glEnd();
 
 	}
@@ -47,12 +48,30 @@ public class DefaultProjection
 	public Vec3f projectCoordinates(Vec3f fvCoords) {
 		return fvCoords;
 	}
-	
+
 	@Override
-	public List<Vec3f> getEuclidianCanvas() {
+	public Vec3f[] getEuclidianCanvas() {
+		// Vec3f[] border = new Vec3f[2];
+		// TODO: do we need it?
 		return null;
 	}
-	
-	
+
+	@Override
+	public Vec3f getNearestPointOnEuclidianBorder(Vec3f point) {
+		Vec3f borderPoint = new Vec3f();
+		float[] fDist = new float[4];
+		fDist[0] = Math.abs(fViewSpaceX[0] - point.x());
+		fDist[1] = Math.abs(fViewSpaceX[1] - point.x());
+		fDist[2] = Math.abs(fViewSpaceY[0] - point.y());
+		fDist[3] = Math.abs(fViewSpaceY[1] - point.y());
+		if (fDist[0] <= fDist[1] && fDist[0] <= fDist[2] && fDist[0] <= fDist[3])
+			return new Vec3f(fViewSpaceX[0], point.y(), point.z());
+		else if (fDist[1] <= fDist[0] && fDist[1] <= fDist[2] && fDist[1] <= fDist[3])
+			return new Vec3f(fViewSpaceX[1], point.y(), point.z());
+		else if (fDist[2] <= fDist[0] && fDist[2] <= fDist[1] && fDist[2] <= fDist[3])
+			return new Vec3f(point.x(), fViewSpaceY[0], point.z());
+		else
+			return new Vec3f(point.x(), fViewSpaceY[1], point.z());
+	}
 
 }

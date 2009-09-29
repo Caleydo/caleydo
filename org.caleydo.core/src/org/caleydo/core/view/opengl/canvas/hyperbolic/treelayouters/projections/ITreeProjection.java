@@ -15,12 +15,14 @@ public interface ITreeProjection
 
 	public void drawCanvas(GL gl);
 	
-	public float getProtectedLineFromCenterToBorder();
+	public float getProjectedLineFromCenterToBorder();
 
 	void updateFrustumInfos(float fHeight, float fWidth, float fDepth, float[] fViewSpaceX,
 		float fViewSpaceXAbs, float[] fViewSpaceY, float fViewSpaceYAbs);
 
-	List<Vec3f> getEuclidianCanvas();
+	Vec3f[] getEuclidianCanvas();
+
+	Vec3f getNearestPointOnEuclidianBorder(Vec3f point);
 
 
 }

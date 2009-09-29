@@ -131,9 +131,9 @@ public class HyperbolicGlobeProjection
 	// public float getGlobeSurfaceLengthFromEquatorToPole(){
 	// return radius * (float)Math.toRadians(90);
 	// }
-	public float getProtectedLineFromCenterToBorder() {
-		float fLine = radius * ((float) Math.PI / 2);
-		return fLine;
+	@Override
+	public float getProjectedLineFromCenterToBorder() {
+		return radius * ((float) Math.PI / 2);
 	}
 
 	@Override
@@ -271,9 +271,15 @@ public class HyperbolicGlobeProjection
 	}
 
 	@Override
-	public List<Vec3f> getEuclidianCanvas() {
+	public Vec3f[] getEuclidianCanvas() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Vec3f getNearestPointOnEuclidianBorder(Vec3f point) {
+		// TODO Auto-generated method stub
+		return new Vec3f(0,0,0);
 	}
 
 }

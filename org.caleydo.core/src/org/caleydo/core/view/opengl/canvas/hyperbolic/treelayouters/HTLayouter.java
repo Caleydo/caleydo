@@ -48,7 +48,7 @@ public final class HTLayouter
 		// fRadius = (fViewSpaceYAbs/2)/HyperbolicRenderStyle.MAX_DEPTH;
 		// fRadius = 0.7f;
 		fDepth = tree.getDepth();
-		fViewAbleSpaceRadius = treeProjector.getProtectedLineFromCenterToBorder();
+		fViewAbleSpaceRadius = treeProjector.getProjectedLineFromCenterToBorder();
 		// fRadius = fViewAbleSpaceRadius/fDepth;
 		fRadius = fViewAbleSpaceRadius / (HyperbolicRenderStyle.MAX_DEPTH - 1);
 		mNodeSpaceRec = new HashMap<IDrawAbleNode, Integer>();
