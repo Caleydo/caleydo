@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.EDrawAbleNodeDetailLevel;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.DefaultProjection;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.HyperbolicGlobeProjection;
 
 // import gleem.linalg.Vec3f;
@@ -38,7 +39,7 @@ public final class HTLayouter
 	Map<IDrawAbleNode, Integer> mNodeSpaceRec;
 
 	public HTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
-		super(frustum, pickingManager, iViewID, new HyperbolicGlobeProjection(1));
+		super(frustum, pickingManager, iViewID, new DefaultProjection(1));//new HyperbolicGlobeProjection(1));
 
 	}
 

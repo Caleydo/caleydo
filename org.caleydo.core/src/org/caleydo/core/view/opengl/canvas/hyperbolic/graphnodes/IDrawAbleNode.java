@@ -104,6 +104,14 @@ public interface IDrawAbleNode
 
 	Vec2f getDimension();
 
+	float getXCoord();
+
+	void setXCoord(float fXCoord);
+
+	float getYCoord();
+
+	void setYCoord(float fYCoord);
+
 	// /**
 	// * Set how the node is selected
 	// *

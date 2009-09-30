@@ -154,8 +154,8 @@ public class GLHyperbolic
 		iGLDisplayListConnection = gl.glGenLists(1);
 		if (set == null)
 			return;
-		clusteredTree = set.getClusteredTreeExps();
-		// clusteredTree = set.getClusteredTreeGenes();
+		//clusteredTree = set.getClusteredTreeExps();
+		 clusteredTree = set.getClusteredTreeGenes();
 		// TODO: outtaken for test reasons
 		// if (clusteredTree == null)
 		// return;
@@ -166,10 +166,11 @@ public class GLHyperbolic
 		layouter.setTree(drawAbleTree);
 	}
 
+	private int ids = 0;
 	private void buildDrawAbleTree() {
 		// TODO: Just testing!!!
 		if (clusteredTree == null) {
-			drawAbleTree = buildTestTree(5, 20);
+			drawAbleTree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 6);
 			return;
 		}
 		drawAbleTree = new Tree<IDrawAbleNode>();
@@ -177,15 +178,17 @@ public class GLHyperbolic
 		// TODO: maybe do not build whole tree add once... performance??
 		IDrawAbleNode daRootNode = convertClusterNodeToDrawAbleNode(clRootNode);
 		drawAbleTree.setRootNode(daRootNode);
-		buildDrawAbleTreeWorker(clRootNode, daRootNode);
+		buildDrawAbleTreeWorker(clRootNode, daRootNode, 0);
 	}
 
-	private void buildDrawAbleTreeWorker(ClusterNode clRootNode, IDrawAbleNode daRootNode) {
+	private void buildDrawAbleTreeWorker(ClusterNode clRootNode, IDrawAbleNode daRootNode, int level) {
+		if(level == HyperbolicRenderStyle.MAX_DEPTH)
+			return;
 		if (clusteredTree.hasChildren(clRootNode))
 			for (ClusterNode clNode : clusteredTree.getChildren(clRootNode)) {
 				IDrawAbleNode daNode = convertClusterNodeToDrawAbleNode(clNode);
 				drawAbleTree.addChild(daRootNode, daNode);
-				buildDrawAbleTreeWorker(clNode, daNode);
+				buildDrawAbleTreeWorker(clNode, daNode, level + 1);
 			}
 	}
 
@@ -305,7 +308,11 @@ public class GLHyperbolic
 				switch (pickingMode) {
 					case CLICKED:
 						if (!layouter.isAnimating()) {
-							drawAbleTree = convertTreeToNewOne(iExternalID);
+							if(drawAbleTree.getRoot().getID() == iExternalID)
+								break;
+							clusteredTree = convertTreeToNewOne(iExternalID);
+							buildDrawAbleTree();
+							//drawAbleTree = convertTreeToNewOne(iExternalID);
 							layouter.animateToNewTree(drawAbleTree);
 						}
 						// layouter.setTree(drawAbleTree);
@@ -348,28 +355,28 @@ public class GLHyperbolic
 		}
 	}
 
-	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
-		IDrawAbleNode rootNode = drawAbleTree.getNodeByNumber(iExternalID);
-		if (drawAbleTree.getRoot().compareTo(rootNode) == 0)
-			return drawAbleTree;
-		Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>();
+	private Tree<ClusterNode> convertTreeToNewOne(int iExternalID) {
+		ClusterNode rootNode = clusteredTree.getNodeByNumber(iExternalID);
+		if (clusteredTree.getRoot().compareTo(rootNode) == 0)
+			return clusteredTree;
+		Tree<ClusterNode> newTree = new Tree<ClusterNode>();
 		newTree.setRootNode(rootNode);
 		convertTreeToNewOneWorker(rootNode, newTree);
 		return newTree;
 	}
+	
+	private void convertTreeToNewOneWorker(ClusterNode rootNode, Tree<ClusterNode> newTree) {
 
-	private void convertTreeToNewOneWorker(IDrawAbleNode rootNode, Tree<IDrawAbleNode> newTree) {
-
-		IDrawAbleNode theirRoot = drawAbleTree.getParent(rootNode);
-		IDrawAbleNode ourRoot = newTree.getParent(rootNode);
+		ClusterNode theirRoot = clusteredTree.getParent(rootNode);
+		ClusterNode ourRoot = newTree.getParent(rootNode);
 		if (theirRoot != null) {
 			if (ourRoot == null || theirRoot.compareTo(ourRoot) != 0) {
 				newTree.addChild(rootNode, theirRoot);
 				convertTreeToNewOneWorker(theirRoot, newTree);
 			}
 		}
-		if (drawAbleTree.hasChildren(rootNode))
-			for (IDrawAbleNode node : drawAbleTree.getChildren(rootNode)) {
+		if (clusteredTree.hasChildren(rootNode))
+			for (ClusterNode node : clusteredTree.getChildren(rootNode)) {
 				if (ourRoot != null)
 					if (node.compareTo(ourRoot) == 0)
 						continue;
@@ -377,6 +384,46 @@ public class GLHyperbolic
 				convertTreeToNewOneWorker(node, newTree);
 			}
 	}
+	
+//	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
+//		IDrawAbleNode rootNode = drawAbleTree.getNodeByNumber(iExternalID);
+//		if (drawAbleTree.getRoot().compareTo(rootNode) == 0)
+//			return drawAbleTree;
+//		Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>();
+//		newTree.setRootNode(rootNode);
+//		convertTreeToNewOneWorker(rootNode, newTree);
+//		return newTree;
+//	}
+	
+/*	private Tree<IDrawAbleNode> convertTreeToNewOne(int iExternalID) {
+		IDrawAbleNode rootNode = drawAbleTree.getNodeByNumber(iExternalID);
+		if (drawAbleTree.getRoot().compareTo(rootNode) == 0)
+			return drawAbleTree;
+		Tree<IDrawAbleNode> newTree = new Tree<IDrawAbleNode>();
+		newTree.setRootNode(rootNode);
+		convertTreeToNewOneWorker(rootNode, newTree);
+		return newTree;
+	}*/
+
+//	private void convertTreeToNewOneWorker(IDrawAbleNode rootNode, Tree<IDrawAbleNode> newTree) {
+//
+//		IDrawAbleNode theirRoot = drawAbleTree.getParent(rootNode);
+//		IDrawAbleNode ourRoot = newTree.getParent(rootNode);
+//		if (theirRoot != null) {
+//			if (ourRoot == null || theirRoot.compareTo(ourRoot) != 0) {
+//				newTree.addChild(rootNode, theirRoot);
+//				convertTreeToNewOneWorker(theirRoot, newTree);
+//			}
+//		}
+//		if (drawAbleTree.hasChildren(rootNode))
+//			for (IDrawAbleNode node : drawAbleTree.getChildren(rootNode)) {
+//				if (ourRoot != null)
+//					if (node.compareTo(ourRoot) == 0)
+//						continue;
+//				newTree.addChild(rootNode, node);
+//				convertTreeToNewOneWorker(node, newTree);
+//			}
+//	}
 
 	public boolean isInListMode() {
 		return bIsInListMode;

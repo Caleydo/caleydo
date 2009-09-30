@@ -10,40 +10,36 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.
 
 public class AnimationConnectionHandler {
 	
-	List<IDrawAbleNode[]> nodeMapping = null;
+	List<IDrawAbleConnection> nodeMapping = null;
 	
 	public AnimationConnectionHandler(){
-		this.nodeMapping = new ArrayList<IDrawAbleNode[]>();
+		this.nodeMapping = new ArrayList<IDrawAbleConnection>();
 	}
 	
 	public void addConnectionInformation(IDrawAbleConnection conn){
 		if(!nodeMapping.isEmpty())
 			if(checkForAccidense(conn))
 				return;
-		nodeMapping.add(conn.getConnectedNodes());
+		nodeMapping.add(conn);
 	}
 
 	private boolean checkForAccidense(IDrawAbleConnection conn) {
-		IDrawAbleNode[] newMapping = conn.getConnectedNodes();
-		for(IDrawAbleNode[] mapping : nodeMapping)
-			if(mapping[0].compareTo(newMapping[0]) == 0 && mapping[1].compareTo(newMapping[1]) == 0)
+		for(IDrawAbleConnection mapping : nodeMapping)
+			if(conn.compareTo(mapping)== 0)
 				return true;
 		return false;
 	}
 	
 	public void clearAllOccurencesOfNode(IDrawAbleNode node){
-		List<IDrawAbleNode[]> toDelete = new ArrayList<IDrawAbleNode[]>();
-		for(IDrawAbleNode[] mapping : nodeMapping)
-			if(mapping[0].compareTo(node) == 0 || mapping[1].compareTo(node) == 0)
+		List<IDrawAbleConnection> toDelete = new ArrayList<IDrawAbleConnection>();
+		for(IDrawAbleConnection mapping : nodeMapping)
+			if(mapping.getConnectedNodes()[0].compareTo(node) == 0 || mapping.getConnectedNodes()[1].compareTo(node) == 0)
 				toDelete.add(mapping);
-		for(IDrawAbleNode[] mapping : toDelete)
+		for(IDrawAbleConnection mapping : toDelete)
 			nodeMapping.remove(mapping);			
 	}
 	
-	public List<IDrawAbleConnection> getAllConnections(ITreeProjection treeProjection){
-		List<IDrawAbleConnection> connList = new ArrayList<IDrawAbleConnection>();
-		for(IDrawAbleNode[] mapping : nodeMapping)
-			connList.add(new DrawAbleHyperbolicLayoutConnector(mapping[0], mapping[1], treeProjection));
-		return connList;
+	public List<IDrawAbleConnection> getAllConnections(){
+		return nodeMapping;
 	}
 }

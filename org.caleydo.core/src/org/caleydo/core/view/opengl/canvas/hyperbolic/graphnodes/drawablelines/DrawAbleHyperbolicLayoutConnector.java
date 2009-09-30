@@ -23,9 +23,15 @@ public class DrawAbleHyperbolicLayoutConnector
 	FloatBuffer fbSplinePoints = null;
 
 	public DrawAbleHyperbolicLayoutConnector(IDrawAbleNode iNodeA, IDrawAbleNode iNodeB) {
+		if(iNodeA.getID() > iNodeB.getID()){
 		this.iNodeA = iNodeA;
 		this.iNodeB = iNodeB;
-		this.iID = generateID(iNodeA.getID(), iNodeB.getID());
+		}
+		else{
+			this.iNodeA = iNodeB;
+			this.iNodeB = iNodeA;
+		}
+		generateID();
 		this.treeProjector = null;
 		// isPickable = in
 		calculateSplinePoints();
@@ -35,9 +41,9 @@ public class DrawAbleHyperbolicLayoutConnector
 		ITreeProjection treeProjector) {
 		this.iNodeA = iNodeA;
 		this.iNodeB = iNodeB;
-		this.iID = generateID(iNodeA.getID(), iNodeB.getID());
+		this.iID = generateID();
 		this.treeProjector = treeProjector;
-		calculateSplinePoints();
+		//calculateSplinePoints();
 	}
 
 	@Override
@@ -50,9 +56,9 @@ public class DrawAbleHyperbolicLayoutConnector
 		return iID - conn.getID();
 	}
 
-	private int generateID(int iID1, int iID2) {
-		int left = (iID1 >= iID2 ? iID1 : iID2);
-		int right = (iID1 < iID2 ? iID1 : iID2);
+	private int generateID() {
+		int left = iNodeA.hashCode();
+		int right = iNodeB.hashCode();
 		return ((left << 12) | (left >> (32 - 12))) ^ right;
 	}
 
@@ -127,6 +133,7 @@ public class DrawAbleHyperbolicLayoutConnector
 
 	@Override
 	public void draw(GL gl, boolean bHighlight) {
+		calculateSplinePoints();
 		if (bIsPickAble)
 			if (bHighlight) {
 				gl.glColor4fv(HyperbolicRenderStyle.DA_HB_GEOM_CONNECTION_COLORSHEME_HL, 0);

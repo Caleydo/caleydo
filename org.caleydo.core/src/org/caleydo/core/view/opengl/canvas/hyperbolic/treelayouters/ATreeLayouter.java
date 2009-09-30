@@ -56,7 +56,7 @@ public abstract class ATreeLayouter
 	protected int iNumLayers;
 
 	// TODO: Maybe replace by maps!
-	private List<IDrawAbleNode> nodeLayout;
+	protected List<IDrawAbleNode> nodeLayout;
 	private List<IDrawAbleConnection> connectionLayout;
 
 	private PickingManager pickingManager;
@@ -76,6 +76,7 @@ public abstract class ATreeLayouter
 	
 	IDrawAbleNode textNode = null;
 	IDrawAbleNode currentSelectedNode = null;
+	private boolean bIsBusy = false;
 	
 	
 
@@ -183,7 +184,7 @@ public abstract class ATreeLayouter
 	}
 
 	private void drawTextBox(GL gl) {
-		textNode = new TextRenderingNode(currentSelectedNode.getNodeName(), currentSelectedNode.getID());
+		textNode = new TextRenderingNode(currentSelectedNode.getNodeName() + " ID: " + currentSelectedNode.getID(), currentSelectedNode.getID());
 		float fxcoord, fycoord;
 		Vec2f dimBox = textNode.getDimension();
 		fxcoord = viewFrustum.getLeft() + dimBox.y() / 4.0f;
@@ -239,7 +240,12 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void display(GL gl) {
+//		if(bIsBusy == true)
+//			return;
+//		bIsBusy = true;
 		if (bIsAnimating) {
+			bIsNodeListDirty = true;
+			bIsConnectionListDirty = true;
 			bIsNodeHighlighted = false;
 			bIsAnimating = false;
 			List<IDrawAbleNode> dummy = new ArrayList<IDrawAbleNode>();
@@ -270,13 +276,13 @@ public abstract class ATreeLayouter
 				for(IDrawAbleNode node : dummy){
 					mAnimationNodes.remove(node);
 				}
-			for(IDrawAbleConnection conn : animationConnectionHandler.getAllConnections(treeProjector))
+			for(IDrawAbleConnection conn : animationConnectionHandler.getAllConnections())
 				conn.draw(gl, false);
 			if(!nodeLayout.isEmpty())
 				for(IDrawAbleNode node : nodeLayout)
 					node.draw(gl, false);
 			if(!bIsAnimating){
-				connectionLayout.addAll(animationConnectionHandler.getAllConnections(treeProjector));
+				connectionLayout= animationConnectionHandler.getAllConnections();
 				mAnimationNodes = null;
 				animationConnectionHandler = null;
 				bIsNodeListDirty = true;
@@ -289,7 +295,7 @@ public abstract class ATreeLayouter
 			buildDisplayListConnections(gl);
 			gl.glCallList(iGLDisplayListNode);
 
-			if (bIsNodeHighlighted) {
+			if (bIsNodeHighlighted && currentSelectedNode != null) {
 				drawTextBox(gl);
 				IDrawAbleConnection conn =
 					new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
@@ -298,6 +304,7 @@ public abstract class ATreeLayouter
 		}
 		if (treeProjector != null)
 			treeProjector.drawCanvas(gl);
+		bIsBusy = false;
 	}
 
 	private final void clearDisplay() {
@@ -314,6 +321,10 @@ public abstract class ATreeLayouter
 	protected final void placeNode(IDrawAbleNode node, float fXCoord, float fYCoord, float fZCoord,
 		float fHeight, float fWidth) {
 		node.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth, treeProjector);
+		nodeLayout.add(node);
+	}
+	
+	protected final void placeNode(IDrawAbleNode node){
 		nodeLayout.add(node);
 	}
 
@@ -386,10 +397,6 @@ public abstract class ATreeLayouter
 				.get(i), 0.1f));
 		}
 		clearDisplay();
-		//nodeLayout.clear();
-		// mLayoutAnimationEnd = null;
-		// mLayoutAnimationEnd = null;
-
 	}
 
 	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {

@@ -191,6 +191,26 @@ public abstract class ADrawAbleNode
 	public Vec2f getDimension(){
 		return new Vec2f(fHeight, fWidth);
 	}
+	
+	@Override
+	public float getXCoord(){
+		return fXCoord;
+	}
+	
+	@Override
+	public void setXCoord(float fXCoord){
+		this.fXCoord = fXCoord;
+	}
+	
+	@Override
+	public float getYCoord(){
+		return fYCoord;
+	}
+	
+	@Override
+	public void setYCoord(float fYCoord){
+		this.fYCoord = fYCoord;
+	}
 }
 
 // private boolean bHighlight;
