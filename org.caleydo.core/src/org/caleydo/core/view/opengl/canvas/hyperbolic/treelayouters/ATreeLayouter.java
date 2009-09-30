@@ -71,14 +71,12 @@ public abstract class ATreeLayouter
 
 	private Map<IDrawAbleNode, AnimationVec3f> mAnimationNodes = null;
 	private AnimationConnectionHandler animationConnectionHandler = null;
-	
-	private List<IDrawAbleNode> lAnimationNodesLeave = null; 
-	
+
+	private List<IDrawAbleNode> lAnimationNodesLeave = null;
+
 	IDrawAbleNode textNode = null;
 	IDrawAbleNode currentSelectedNode = null;
 	private boolean bIsBusy = false;
-	
-	
 
 	// protected CaleydoTextRenderer textRenderer = null;
 
@@ -184,7 +182,9 @@ public abstract class ATreeLayouter
 	}
 
 	private void drawTextBox(GL gl) {
-		textNode = new TextRenderingNode(currentSelectedNode.getNodeName() + " ID: " + currentSelectedNode.getID(), currentSelectedNode.getID());
+		textNode =
+			new TextRenderingNode(currentSelectedNode.getNodeName() + " ID: " + currentSelectedNode.getID(),
+				currentSelectedNode.getID());
 		float fxcoord, fycoord;
 		Vec2f dimBox = textNode.getDimension();
 		fxcoord = viewFrustum.getLeft() + dimBox.y() / 4.0f;
@@ -240,13 +240,10 @@ public abstract class ATreeLayouter
 
 	@Override
 	public final void display(GL gl) {
-//		if(bIsBusy == true)
-//			return;
-//		bIsBusy = true;
+		// if(bIsBusy == true)
+		// return;
+		// bIsBusy = true;
 		if (bIsAnimating) {
-			bIsNodeListDirty = true;
-			bIsConnectionListDirty = true;
-			bIsNodeHighlighted = false;
 			bIsAnimating = false;
 			List<IDrawAbleNode> dummy = new ArrayList<IDrawAbleNode>();
 			if (!mAnimationNodes.isEmpty())
@@ -261,33 +258,37 @@ public abstract class ATreeLayouter
 						node.place(vec.getFinalPos().x(), vec.getFinalPos().y(), vec.getFinalPos().z(), node
 							.getDimension().x(), node.getDimension().y(), treeProjector);
 						dummy.add(node);
-						
-						if(!lAnimationNodesLeave.contains(node))
-							nodeLayout.add(node);
-						else{
+
+						if (lAnimationNodesLeave.contains(node)) {
 							animationConnectionHandler.clearAllOccurencesOfNode(node);
 							lAnimationNodesLeave.remove(node);
 						}
+						else
+							nodeLayout.add(node);
+
 					}
 					node.draw(gl, false);
 
 				}
-			if(!dummy.isEmpty())
-				for(IDrawAbleNode node : dummy){
+			if (!dummy.isEmpty())
+				for (IDrawAbleNode node : dummy) {
 					mAnimationNodes.remove(node);
 				}
-			for(IDrawAbleConnection conn : animationConnectionHandler.getAllConnections())
+			for (IDrawAbleConnection conn : animationConnectionHandler.getAllConnections())
 				conn.draw(gl, false);
-			if(!nodeLayout.isEmpty())
-				for(IDrawAbleNode node : nodeLayout)
+			if (!nodeLayout.isEmpty())
+				for (IDrawAbleNode node : nodeLayout)
 					node.draw(gl, false);
-			if(!bIsAnimating){
-				connectionLayout= animationConnectionHandler.getAllConnections();
+			if (!bIsAnimating) {
+				connectionLayout = animationConnectionHandler.getAllConnections();
 				mAnimationNodes = null;
 				animationConnectionHandler = null;
 				bIsNodeListDirty = true;
 				bIsConnectionListDirty = true;
-				}
+				clearDisplay();
+				renderTreeLayout();
+			}
+
 		}
 		else {
 			// TODO: Really bad!
@@ -297,14 +298,14 @@ public abstract class ATreeLayouter
 
 			if (bIsNodeHighlighted && currentSelectedNode != null) {
 				drawTextBox(gl);
-				IDrawAbleConnection conn =
-					new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
+				IDrawAbleConnection conn = new DrawAbleTextBoxConnector(textNode, currentSelectedNode);
 				conn.draw(gl, true);
 			}
 		}
 		if (treeProjector != null)
 			treeProjector.drawCanvas(gl);
 		bIsBusy = false;
+		bIsConnectionListDirty = true;
 	}
 
 	private final void clearDisplay() {
@@ -323,8 +324,8 @@ public abstract class ATreeLayouter
 		node.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth, treeProjector);
 		nodeLayout.add(node);
 	}
-	
-	protected final void placeNode(IDrawAbleNode node){
+
+	protected final void placeNode(IDrawAbleNode node) {
 		nodeLayout.add(node);
 	}
 
@@ -354,19 +355,20 @@ public abstract class ATreeLayouter
 	}
 
 	public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
+		
+		// TODO: Maybe send an event to all controls!
 		// nothing to do
-		if (this.tree.getRoot().compareTo(tree.getRoot()) == 0)
-			return;
 		if (bIsAnimating)
 			return;
-		bIsAnimating = true;
 
 		this.mAnimationNodes = new HashMap<IDrawAbleNode, AnimationVec3f>();
 		this.animationConnectionHandler = new AnimationConnectionHandler();
 		this.lAnimationNodesLeave = new ArrayList<IDrawAbleNode>();
-		
+
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationStart = new HashMap<IDrawAbleNode, Vec3f>();
 		Map<IDrawAbleNode, Vec3f> mLayoutAnimationEnd = new HashMap<IDrawAbleNode, Vec3f>();
+
+		bIsAnimating = true;
 
 		for (IDrawAbleNode node : nodeLayout)
 			mLayoutAnimationStart.put(node, node.getRealCoordinates());
@@ -380,16 +382,17 @@ public abstract class ATreeLayouter
 		for (IDrawAbleConnection conn : connectionLayout)
 			animationConnectionHandler.addConnectionInformation(conn);
 
-
 		// TODO: find nicer placing!
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet())
 			if (!mLayoutAnimationEnd.containsKey(i)) {
-				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(i.getRealCoordinates()));
+				mLayoutAnimationEnd.put(i, treeProjector.getNearestPointOnEuclidianBorder(i
+					.getRealCoordinates()));
 				lAnimationNodesLeave.add(i);
 			}
 		for (IDrawAbleNode i : mLayoutAnimationEnd.keySet())
 			if (!mLayoutAnimationStart.containsKey(i)) {
-				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(i.getRealCoordinates()));
+				mLayoutAnimationStart.put(i, treeProjector.getNearestPointOnEuclidianBorder(i
+					.getRealCoordinates()));
 			}
 
 		for (IDrawAbleNode i : mLayoutAnimationStart.keySet()) {
@@ -397,6 +400,10 @@ public abstract class ATreeLayouter
 				.get(i), 0.1f));
 		}
 		clearDisplay();
+		bIsNodeListDirty = true;
+		bIsConnectionListDirty = true;
+		bIsNodeHighlighted = false;
+		bIsConnectionHighlighted = false;
 	}
 
 	protected int getMaxNumberOfSiblingsInLayer(IDrawAbleNode node, int iTargetLayer, int iCurrentLayer) {

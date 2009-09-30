@@ -36,7 +36,7 @@ public final class LTLayouter
 	@Override
 	public void renderTreeLayout() {
 
-		// TODO: NOT A NICE LAYOUT!
+		// TODO: Nice, but shrink it to canvas size!
 		updateSizeInfo();
 		if (tree == null)
 			return;
@@ -48,10 +48,11 @@ public final class LTLayouter
 		IDrawAbleNode rootNode = tree.getRoot();
 		firstwalk(rootNode, 0);
 		float add = fViewSpaceX[1] - mostright;
-		if(add>0)
+		
 			for (IDrawAbleNode node : nodes)
 			{
-				node.setXCoord(node.getXCoord() + add/2.0f);
+				if(add>0)
+					node.place(node.getXCoord() + add/2.0f, node.getYCoord(), 0.1f, 0.1f, 0.1f, treeProjector);
 				placeNode(node);
 			}
 

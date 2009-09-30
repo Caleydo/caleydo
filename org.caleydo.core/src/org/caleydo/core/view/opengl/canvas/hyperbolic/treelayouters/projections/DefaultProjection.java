@@ -67,6 +67,9 @@ public class DefaultProjection
 
 	@Override
 	public Vec3f getNearestPointOnEuclidianBorder(Vec3f point) {
+
+		if(point != null)
+		return new Vec3f(point.x(), fViewSpaceY[0], point.z());
 		float[] fDist = new float[4];
 		fDist[0] = Math.abs(fViewSpaceX[0] - point.x());
 		fDist[1] = Math.abs(fViewSpaceX[1] - point.x());
