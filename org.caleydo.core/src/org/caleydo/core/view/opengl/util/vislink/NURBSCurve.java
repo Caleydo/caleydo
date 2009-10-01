@@ -20,9 +20,6 @@ public class NURBSCurve {
 	protected ArrayList<Vec3f> controlPoints;
 	protected int numberOfSegments;
 	
-	/** there are numberOfSegments + 1 curve points (vertices) */
-	protected int numberOfCurvePoints;
-	
 	protected ArrayList<Vec3f> curvePoints;
 	
 	/** knot vector, there are (n + d + 1) knot values */
@@ -47,8 +44,7 @@ public class NURBSCurve {
 	 * @param bundlingPoint defines the middle of the spine (control point 2).
 	 * @param destPoint defines the last vertex of the spline (control point 3).
 	 * @param numberOfSegments defines the subintervals of the spline. Note that for
-	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
-	 * the curve and n+1 vertices connecting the n segments. 
+	 * n subintervals there are n+1 curve points.
 	 */
 	public NURBSCurve(Vec3f sourcePoint, Vec3f bundlingPoint, Vec3f destPoint, int numberOfSegments) {
 		
@@ -60,19 +56,18 @@ public class NURBSCurve {
 		
 		this.n = 2; // 3 control points
 		this.d = 3;
-		this.numberOfCurvePoints = numberOfSegments + 3; // n segments -> n+1 vertices + src & dest
 		this.numberOfSegments = numberOfSegments;
 		
 		float[] knots = {0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f};
 		this.knots = knots;
 		
-		 this.u_min = (float) (this.knots[this.d-1]);
-		 this.u_max = (float) (this.knots[this.n+1]);
-		 this.u = 0.0f;
-		 this.step_length = (float) (this.knots[this.n+1] - this.knots[this.d-1]) / (float) (this.numberOfSegments);
+		this.u_min = (float) (this.knots[this.d-1]);
+		this.u_max = (float) (this.knots[this.n+1]);
+		this.u = 0.0f;
+		this.step_length = (float) (this.knots[this.n+1] - this.knots[this.d-1]) / (float) (this.numberOfSegments);
 		 
 		
-		ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>(numberOfSegments+1);
 		curvePoints.add(sourcePoint);	
 		this.curvePoints = curvePoints;
 		this.evaluateCurve();
@@ -85,8 +80,7 @@ public class NURBSCurve {
 	 * 
 	 * @param controlPoints a set of control points of which the spline is generated.
 	 * @param numberOfSegments defines the subintervals of the spline. Note that for
-	 * n subintervals there are n+3 curve points. The begin of the curve, the end of
-	 * the curve and n+1 vertices connecting the n segments. 
+	 * n subintervals there are n+1 curve points.
 	 */
 	
 	public NURBSCurve(ArrayList<Vec3f> controlPoints, int numberOfSegments) {
@@ -95,7 +89,6 @@ public class NURBSCurve {
 		
 		this.n = controlPoints.size() - 1;
 		this.d = 3;
-		this.numberOfCurvePoints = numberOfSegments + 3; // n segments -> n+1 vertices + src & dest
 		this.numberOfSegments = numberOfSegments;
 		
 		float[] knots = {0.0f, 0.0f, 1.0f, 2.0f, 3.0f, 3.0f};
@@ -107,7 +100,7 @@ public class NURBSCurve {
 		 this.step_length = (float) (this.knots[this.n+1] - this.knots[this.d-1]) / (float) (this.numberOfSegments);
 		 
 		
-		ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> curvePoints = new ArrayList<Vec3f>(numberOfSegments+1);
 		curvePoints.add(controlPoints.get(0));
 		this.curvePoints = curvePoints;
 		this.evaluateCurve();
@@ -117,19 +110,21 @@ public class NURBSCurve {
 	
 	/**
 	 * Evaluates the curve and calculates the curve points.
-	 * After this function has been called, the points are hold
-	 * in the variable curvePoints and can be obtained by
+	 * After this function has been called, curvePoints stores
+	 * the points of the curve. The points can be obtained by
 	 * the method getCurvePoints().
 	 */
 	public void evaluateCurve() {
+		
+		int numberOfPoints = (numberOfSegments - 2);
         
-        for(int step = 0; step <= this.numberOfSegments; step++)
+        for(int step = 0; step <= numberOfPoints; step++)
         {
           Vec3f point = new Vec3f();
           for(int k = 0; k <= n; k++)
           {
             this.u = this.u_min + this.step_length * step;
-            if(step == this.numberOfSegments) // because of rounding errors we call the last blending function with exact u_max to avoid u outside the definition
+            if(step == numberOfPoints) // because of rounding errors we call the last blending function with exact u_max to avoid u outside the definition
               this.u = this.u_max;
             point = point.addScaled( this.coxDeBoor(k, this.d), this.controlPoints.get(k) );
           }
@@ -190,7 +185,7 @@ public class NURBSCurve {
 	 * Returns an array with the curvePoints.
 	 */
 	public ArrayList<Vec3f> getCurvePoints() {
-		return this.curvePoints;
+		return curvePoints;
 	}
 	
 	
@@ -198,7 +193,7 @@ public class NURBSCurve {
 	 * Returns the number of curve points.
 	 */
 	public int getNumberOfCurvePoints() {
-		return this.numberOfCurvePoints;
+		return curvePoints.size();
 	}
 	
 	
