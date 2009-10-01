@@ -128,7 +128,7 @@ public class DrawAbleHyperbolicLayoutConnector
 					pEndP.z() };
 		fbSplinePoints.put(fA);
 		fbSplinePoints.rewind();
-		this.bIsPickAble = iNodeA.isPickAble() && iNodeB.isPickAble();
+		//this.bIsPickAble = iNodeA.isPickAble() && iNodeB.isPickAble();
 	}
 
 	@Override

@@ -25,9 +25,9 @@ public class TextRenderingNode
 	public TextRenderingNode(String sNodeName, int iNodeID) {
 		super(sNodeName, iNodeID, null);
 		textRenderer = new TextRenderer(new Font(HyperbolicRenderStyle.LABEL_FONT_NAME, HyperbolicRenderStyle.LABEL_FONT_STYLE, HyperbolicRenderStyle.LABEL_FONT_SIZE));
-		Rectangle2D rect = textRenderer.getBounds(this.getNodeName());
-		fHeight = (float) rect.getHeight() * scaling;
-		fWidth = (float) rect.getWidth() * scaling;
+		//Rectangle2D rect = textRenderer.getBounds(this.getNodeName());
+		//fHeight = (float) rect.getHeight() * scaling;
+		//fWidth = (float) rect.getWidth() * scaling;
 	}
 	
 	protected List<Vec3f> getConnectionPointsSpecialNode() {
@@ -54,6 +54,8 @@ public class TextRenderingNode
 
 	protected void drawSpecialNode(GL gl) {
 		//Vec3f coords = this.getProjectedCoordinates();
+		Rectangle2D rect = textRenderer.getBounds(this.getNodeName());
+		scaling = (float) Math.min(fHeight/rect.getHeight(), fWidth/rect.getWidth());
 		textRenderer.setColor(0, 0, 0, 1);
 		
 		gl.glColor4f(0.2f, 0.2f, 0.2f, 0.2f);

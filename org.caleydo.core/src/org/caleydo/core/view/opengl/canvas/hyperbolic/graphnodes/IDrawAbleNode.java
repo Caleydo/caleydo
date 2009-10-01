@@ -98,7 +98,7 @@ public interface IDrawAbleNode
 
 	Vec3f getRealCoordinates();
 
-	boolean isPickAble();
+	public void setAlternativeNodeExpression(boolean bAlternativeNodeExpression);
 
 	Vec3f getProjectedCoordinates();
 
@@ -111,6 +111,14 @@ public interface IDrawAbleNode
 	float getYCoord();
 
 	void setYCoord(float fYCoord);
+
+	public float getHeight();
+
+	public float getWidth();
+
+	boolean isAlternativeNodeExpression();
+
+	void placeNodeName(int iPosition);
 
 	// /**
 	// * Set how the node is selected

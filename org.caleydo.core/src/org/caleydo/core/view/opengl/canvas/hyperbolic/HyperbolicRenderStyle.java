@@ -27,14 +27,19 @@ public class HyperbolicRenderStyle
 
 	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1f };
 	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME_HL = { 0.8f, 0.4f, 0.2f, 1f };
-	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME_NO_PICK = { 0.5f, 0.5f, 0.5f, 0.2f };
+//	public static final float[] DA_OBJ_FALLBACK_COLORSCHEME_NO_PICK = { 0.5f, 0.5f, 0.5f, 0.2f };
 
 	public static final float[] DA_OBJ_QUAD_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1f };
 	public static final float[] DA_OBJ_QUAD_COLORSCHEME_HL = { 0.4f, 0.6f, 0.2f, 1f };
-	public static final float[] DA_OBJ_QUAD_COLORSCHEME_NO_PICK = { 0.5f, 0.5f, 0.5f, 0.2f };
+//	public static final float[] DA_OBJ_QUAD_COLORSCHEME_NO_PICK = { 0.5f, 0.5f, 0.5f, 0.2f };
 
+	public static float[] DA_OBJ_CIRCLE_WITH_NAME_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1f };
+	public static float[] DA_OBJ_CIRCLE_WITH_NAME_COLORSCHEME_HL = { 0.8f, 0.4f, 0.2f, 1f };
+	
 	public static final String[] DA_TEST_NODE_DL_OBJ =
-		{ "Fallback", "Fallback", "Fallback", "Fallback", "Fallback" };
+		{ "Fallback", "Quad", "Fallback", "Quad", "Fallback" };
+	
+	public static String[] DA_GEN_NODE_DL_OBJ = { "Fallback", "Quad", "Fallback", "Quad", "Fallback" };
 
 	public static final float[] DA_LINEAR_CONNECTION_COLORSHEME = { 1f, 0f, 0f, 1f };
 	public static final float DA_LINEAR_CONNECTION_THICKNESS = 1f;
@@ -57,6 +62,8 @@ public class HyperbolicRenderStyle
 	public static final float[] DA_TREE_PROJECTION_CANVAS_COLORSCHEME = { 0.0f, 0.0f, 0.0f, 1.0f };
 	public static final float DA_TREE_PROJECTION_CANVAS_THICKNESS = 1.5f;
 	
+	
+	
 	public static boolean PROJECTION_DRAW_CANVAS = true;
 	// public static final String LINEAR_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
 	// public static final String HYPERBOLIC_TREE_LAYOUTER_CONNECTION_TYPE = "Spline";
@@ -64,6 +71,11 @@ public class HyperbolicRenderStyle
 	public static String LABEL_FONT_NAME = "Arial";
 	public static int LABEL_FONT_STYLE = 0;
 	public static int LABEL_FONT_SIZE = 32;
+	
+	public static String NODE_FONT_NAME = "Arial";
+	public static int NODE_FONT_STYLE = 0;
+	public static int NODE_FONT_SIZE = 16;
+	
 	
 	/**
 	 * Specify how many contact points a DA object should return. value must be a multiple of 4 (4, 8, 12,

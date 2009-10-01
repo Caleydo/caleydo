@@ -28,6 +28,7 @@ public final class LTLayouter
 	int iDepth;
 
 	float[] fYLayers;
+	float[] fNodeSizes;
 
 	public LTLayouter(IViewFrustum frustum, PickingManager pickingManager, int iViewID) {
 		super(frustum, pickingManager, iViewID, new DefaultProjection(1));
@@ -44,6 +45,27 @@ public final class LTLayouter
 		lastPlacedinlayer = new IDrawAbleNode[tree.getDepth()];
 		nodesplacedinlayer = new int [tree.getDepth()];
 		nodes = new ArrayList<IDrawAbleNode>();
+		// find Y-Layer for placing
+		iDepth = tree.getDepth();
+		fYLayers = new float[iDepth];
+		fNodeSizes = new float[iDepth];
+		
+		float fScale = 1;
+		for(int i = 1; i<=iDepth; ++i){
+			fScale += Math.pow(HyperbolicRenderStyle.NODE_SCALING_PER_LAYER, i);
+		}
+		
+		float fFirstLayer = 1/(fScale) * fViewSpaceYAbs;
+		float fCurYPos = fViewSpaceYAbs + (fViewSpaceY[1] - fViewSpaceYAbs)/2.0f;
+		
+		//fYLayers[0] = fCurYPos - fFirstLayer / 2.0f;
+		
+		for(int i=0; i<iDepth; ++i){
+			fYLayers[i] = fCurYPos - fFirstLayer / 2.0f;
+			fCurYPos -= fFirstLayer;
+			fFirstLayer *= HyperbolicRenderStyle.NODE_SCALING_PER_LAYER;
+			fNodeSizes[i] = 0.2f;
+		}
 		
 		IDrawAbleNode rootNode = tree.getRoot();
 		firstwalk(rootNode, 0);
@@ -52,7 +74,7 @@ public final class LTLayouter
 			for (IDrawAbleNode node : nodes)
 			{
 				if(add>0)
-					node.place(node.getXCoord() + add/2.0f, node.getYCoord(), 0.1f, 0.1f, 0.1f, treeProjector);
+					node.place(node.getXCoord() + add/2.0f, node.getYCoord(), 0.1f, node.getHeight(), node.getWidth(), treeProjector);
 				placeNode(node);
 			}
 
@@ -60,6 +82,10 @@ public final class LTLayouter
 
 	private void firstwalk(IDrawAbleNode rootNode, int level) {
 		rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.High);
+		if (level < HyperbolicRenderStyle.DETAIL_LEVEL_GRADING.length)
+			rootNode.setDetailLevel(HyperbolicRenderStyle.DETAIL_LEVEL_GRADING[level]);
+		else
+			  rootNode.setDetailLevel(EDrawAbleNodeDetailLevel.VeryLow);
 		rootNode.setXCoord(0.0f);
 		List<IDrawAbleNode> childs = null;
 		rootNode.setXCoord(mostright + 0.15f);
@@ -88,8 +114,8 @@ public final class LTLayouter
 			
 			
 		}
-		rootNode.setYCoord(fViewSpaceY[1] - level * 0.5f);
-		rootNode.place(rootNode.getXCoord(), rootNode.getYCoord(), 0.01f, 0.1f, 0.1f, treeProjector);
+		rootNode.setYCoord(fYLayers[level]);
+		rootNode.place(rootNode.getXCoord(), rootNode.getYCoord(), 0.01f, fNodeSizes[level], fNodeSizes[level], treeProjector);
 		//placeNode(rootNode);
 		nodes.add(rootNode);
 		if (childs != null)

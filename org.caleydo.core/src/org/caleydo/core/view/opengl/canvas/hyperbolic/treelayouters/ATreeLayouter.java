@@ -25,8 +25,6 @@ import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawablelines.I
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationConnectionHandler;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.animation.AnimationVec3f;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.osgi.framework.internal.core.Msg;
 
 public abstract class ATreeLayouter
 	implements ITreeLayouter {
@@ -163,20 +161,21 @@ public abstract class ATreeLayouter
 	private final void buildDisplayListNodes(GL gl) {
 		gl.glNewList(iGLDisplayListNode, GL.GL_COMPILE);
 		for (IDrawAbleNode node : nodeLayout) {
-			if (node.isPickAble()) {
-				gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION,
-					node.getID()));
-				if (bIsNodeHighlighted && node.getID() == iHighlightedNode) {
-					currentSelectedNode = node;
-					node.draw(gl, true);
-				}
-				else
-					node.draw(gl, false);
-				gl.glPopName();
+			// if (node.isPickAble()) {
+			gl.glPushName(pickingManager.getPickingID(iViewID, EPickingType.HYPERBOLIC_NODE_SELECTION, node
+				.getID()));
+			if (bIsNodeHighlighted && node.getID() == iHighlightedNode) {
+				currentSelectedNode = node;
+				node.draw(gl, true);
 			}
-			else {
+			else
 				node.draw(gl, false);
-			}
+			node.placeNodeName(0);
+			gl.glPopName();
+			// }
+			// else {
+			// node.draw(gl, false);
+			// }
 		}
 		gl.glEndList();
 	}
@@ -243,6 +242,8 @@ public abstract class ATreeLayouter
 		// if(bIsBusy == true)
 		// return;
 		// bIsBusy = true;
+		if (treeProjector != null)
+			treeProjector.drawCanvas(gl);
 		if (bIsAnimating) {
 			bIsAnimating = false;
 			List<IDrawAbleNode> dummy = new ArrayList<IDrawAbleNode>();
@@ -302,8 +303,7 @@ public abstract class ATreeLayouter
 				conn.draw(gl, true);
 			}
 		}
-		if (treeProjector != null)
-			treeProjector.drawCanvas(gl);
+		
 		bIsBusy = false;
 		bIsConnectionListDirty = true;
 	}
@@ -355,7 +355,7 @@ public abstract class ATreeLayouter
 	}
 
 	public final void animateToNewTree(Tree<IDrawAbleNode> tree) {
-		
+
 		// TODO: Maybe send an event to all controls!
 		// nothing to do
 		if (bIsAnimating)

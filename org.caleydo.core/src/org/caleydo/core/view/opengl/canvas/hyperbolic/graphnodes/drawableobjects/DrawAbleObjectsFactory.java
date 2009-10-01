@@ -16,7 +16,7 @@ public final class DrawAbleObjectsFactory {
 	public static IDrawAbleObject getDrawAbleObject(String str) {
 		if (str == "Fallback")
 			return new DrawAbleObjectFallback();
-		else if (str == "Square")
+		else if (str == "Quad")
 			return new DrawAbleObjectQuad();
 		return null;
 	}

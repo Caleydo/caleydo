@@ -3,6 +3,8 @@ package org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
+import java.awt.Font;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -10,9 +12,12 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.HyperbolicRenderStyle;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.DrawAbleObjectsFactory;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.drawableobjects.IDrawAbleObject;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.treelayouters.projections.ITreeProjection;
+
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Abstract of draw able node type. This type defines node objects which are self drawing.
@@ -34,9 +39,10 @@ public abstract class ADrawAbleNode
 	private float fProjectedYCoord = 0;
 	private float fProjectedZCoord = 0;
 	private List<Vec3f> alOriginalCorrespondingPoints = null;
-	private boolean bIsAbleToPick = true;
+	private TextRenderer textRenderer = null;
 
 	private EnumMap<EDrawAbleNodeDetailLevel, IDrawAbleObject> mRepresantations = null;
+	private boolean bAlternativeNodeExpression = false;
 
 	@Override
 	public final String getNodeName() {
@@ -57,8 +63,6 @@ public abstract class ADrawAbleNode
 	public final int compareTo(IDrawAbleNode node) {
 		return iID - node.getID();
 	}
-	
-	
 
 	// @Override
 	// public final ArrayList<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float
@@ -76,8 +80,8 @@ public abstract class ADrawAbleNode
 	// }
 
 	@Override
-	public final List<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight,
-		float fWidth, ITreeProjection treeProjection) {
+	public final List<Vec3f> place(float fXCoord, float fYCoord, float fZCoord, float fHeight, float fWidth,
+		ITreeProjection treeProjection) {
 		this.fXCoord = fXCoord;
 		this.fYCoord = fYCoord;
 		this.fZCoord = fZCoord;
@@ -94,15 +98,16 @@ public abstract class ADrawAbleNode
 			this.fProjectedYCoord = this.fYCoord;
 			this.fProjectedZCoord = this.fZCoord;
 		}
-		if(mRepresantations != null){
+		if (mRepresantations != null) {
 			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-		daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
-		alOriginalCorrespondingPoints = daObj.getConnectionPoints();
-		daObj.place(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord, fHeight, fWidth);}
-		else{
+			daObj.place(fXCoord, fYCoord, fZCoord, fHeight, fWidth);
+			alOriginalCorrespondingPoints = daObj.getConnectionPoints();
+			daObj.place(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord, fHeight, fWidth);
+		}
+		else {
 			alOriginalCorrespondingPoints = getConnectionPointsSpecialNode();
 		}
-		bIsAbleToPick = fProjectedZCoord >= 0.0f;
+		// bIsAbleToPick = fProjectedZCoord >= 0.0f;
 		return alOriginalCorrespondingPoints;
 	}
 
@@ -110,7 +115,7 @@ public abstract class ADrawAbleNode
 	public void draw(GL gl, boolean bHighlight) {
 		if (mRepresantations != null) {
 			IDrawAbleObject daObj = mRepresantations.get(eDetailLevel);
-			daObj.setPickAble(bIsAbleToPick);
+			daObj.setAlternativeNodeExpression(bAlternativeNodeExpression);
 			daObj.draw(gl, bHighlight);
 		}
 		else
@@ -163,53 +168,104 @@ public abstract class ADrawAbleNode
 				mRepresantations.put(e, DrawAbleObjectsFactory.getDrawAbleObject(sTypes[i++]));
 			}
 		}
+		this.textRenderer =
+			new TextRenderer(new Font(HyperbolicRenderStyle.NODE_FONT_NAME,
+				HyperbolicRenderStyle.NODE_FONT_STYLE, HyperbolicRenderStyle.NODE_FONT_SIZE), true, true);
 	}
 
 	@Override
 	public final Vec3f getRealCoordinates() {
 		return new Vec3f(fXCoord, fYCoord, fZCoord);
 	}
-	
+
 	@Override
 	public final Vec3f getProjectedCoordinates() {
 		return new Vec3f(fProjectedXCoord, fProjectedYCoord, fProjectedZCoord);
 	}
 
-	@Override
-	public final boolean isPickAble() {
-		return bIsAbleToPick;
-	}
+	// @Override
+	// public final boolean isPickAble() {
+	// return bIsAbleToPick;
+	// }
 
 	protected List<Vec3f> getConnectionPointsSpecialNode() {
 		return null;
 	}
 
+	// TODO: KILL THIS METHOD!!! --> KILL TEXTRENDERING NODE (should be replaced by an Label)
 	protected void drawSpecialNode(GL gl) {
 	}
-	
+
 	@Override
-	public Vec2f getDimension(){
+	public final Vec2f getDimension() {
 		return new Vec2f(fHeight, fWidth);
 	}
-	
+
 	@Override
-	public float getXCoord(){
+	public final float getXCoord() {
 		return fXCoord;
 	}
-	
+
 	@Override
-	public void setXCoord(float fXCoord){
+	public final void setXCoord(float fXCoord) {
 		this.fXCoord = fXCoord;
 	}
-	
+
 	@Override
-	public float getYCoord(){
+	public final float getYCoord() {
 		return fYCoord;
 	}
-	
+
 	@Override
-	public void setYCoord(float fYCoord){
+	public final void setYCoord(float fYCoord) {
 		this.fYCoord = fYCoord;
+	}
+
+	@Override
+	public final float getHeight() {
+		return fHeight;
+	}
+
+	@Override
+	public final float getWidth() {
+		return fWidth;
+	}
+
+	public final void setAlternativeNodeExpression(boolean bAlternativeNodeExpression) {
+		this.bAlternativeNodeExpression = bAlternativeNodeExpression;
+	}
+
+	@Override
+	public final boolean isAlternativeNodeExpression() {
+		return bAlternativeNodeExpression;
+	}
+
+	// TODO: Maybe replace iPostion with an Enum someday!
+	@Override
+	public final void placeNodeName(int iPosition){
+		Rectangle2D rect = textRenderer.getBounds(this.getNodeName());
+		float fTextHeight = (float)rect.getHeight();
+		float fTextWidth = (float)rect.getWidth();
+		float fTextScaling = fHeight/fTextHeight / 2.0f;
+		float fTextXPos = fXCoord - fTextWidth * fTextScaling / 2.0f;
+		float fTextYPos;
+		switch (iPosition){
+			case 0:
+				fTextYPos = fYCoord - fWidth / 2.0f - fTextHeight * fTextScaling;
+				break;
+			case 1:
+				fTextYPos = fYCoord + fWidth / 2.0f + fTextHeight * fTextScaling;
+				break;
+			default:
+					fTextYPos = fYCoord;
+					break;
+		}	
+		// TODO: Specify this color in RendeStyle
+		textRenderer.setColor(0, 0, 0, 1);
+		textRenderer.setSmoothing(true);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D(this.getNodeName(), fTextXPos, fTextYPos, fZCoord, fTextScaling);
+		textRenderer.end3DRendering();			
 	}
 }
 

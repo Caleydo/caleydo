@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.ADrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.IDrawAbleNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TestNode;
+import org.caleydo.core.view.opengl.canvas.hyperbolic.graphnodes.TextRenderingNode;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeCanvasDrawingListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.ChangeTreeTypeListener;
 import org.caleydo.core.view.opengl.canvas.hyperbolic.listeners.SetMaxLayoutDepthListener;
@@ -186,22 +187,15 @@ public class GLHyperbolic
 	}
 
 	private void buildDrawAbleTree() {
-		// TODO: Just testing!!!
-		if (clusteredTree == null) {
-			drawAbleTree = buildTestTree(HyperbolicRenderStyle.MAX_DEPTH, 6);
-			return;
-		}
 		drawAbleTree = new Tree<IDrawAbleNode>();
 		ClusterNode clRootNode = clusteredTree.getRoot();
-		// TODO: maybe do not build whole tree add once... performance??
-		IDrawAbleNode daRootNode = convertClusterNodeToDrawAbleNode(clRootNode);
+		IDrawAbleNode daRootNode = convertClusterNodeToDrawAbleNode(clRootNode); 
+		//TextRenderingNode(clRootNode.getNodeName(), clRootNode.getClusterNr());//
 		drawAbleTree.setRootNode(daRootNode);
 		buildDrawAbleTreeWorker(clRootNode, daRootNode, 0);
 	}
 
 	private void buildDrawAbleTreeWorker(ClusterNode clRootNode, IDrawAbleNode daRootNode, int level) {
-	//	if(level == HyperbolicRenderStyle.MAX_DEPTH)
-	//		return;
 		if (clusteredTree.hasChildren(clRootNode))
 			for (ClusterNode clNode : clusteredTree.getChildren(clRootNode)) {
 				IDrawAbleNode daNode = convertClusterNodeToDrawAbleNode(clNode);
@@ -525,42 +519,42 @@ public class GLHyperbolic
 
 	}
 
-	private Tree<IDrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {
-		int iComp = 1;
-		Tree<IDrawAbleNode> tree = new Tree<IDrawAbleNode>();
-		ADrawAbleNode root = new TestNode("root node: " + iComp + " Layer: " + 1, iComp);
-		tree.setRootNode(root);
-		for (int j = 0; j <= iMaxNodesOnLayer; ++j) {
-			++iComp;
-			tree.addChild(root, new TestNode("child node: " + iComp + " Layer: " + 2, iComp));
-		}
-		ArrayList<IDrawAbleNode> nodesOnLayer = tree.getChildren(root);
-		for (int i = 2; i <= iDepth; ++i) {
-
-			ArrayList<IDrawAbleNode> nodes = new ArrayList<IDrawAbleNode>();
-			for (int j = 0; j < iMaxNodesOnLayer; ++j) {
-				++iComp;
-				nodes.add(new TestNode("child node: " + iComp + " Layer: " + i, iComp));
-			}
-			ArrayList<IDrawAbleNode> nStore = new ArrayList<IDrawAbleNode>(nodes);
-			while (!nodes.isEmpty())
-				for (IDrawAbleNode node : nodesOnLayer) {
-					if (nodes.isEmpty())
-						continue;
-					int s =
-						Math.min(nodes.size(), (int) Math
-							.round((Math.random() * (double) iMaxNodesOnLayer) / 0.9f));
-
-					for (int j = 0; j < s; ++j) {
-						tree.addChild(node, nodes.get(0));
-						nodes.remove(0);
-					}
-				}
-			nodesOnLayer = nStore;
-		}
-
-		return tree;
-	}
+//	private Tree<IDrawAbleNode> buildTestTree(int iDepth, int iMaxNodesOnLayer) {
+//		int iComp = 1;
+//		Tree<IDrawAbleNode> tree = new Tree<IDrawAbleNode>();
+//		ADrawAbleNode root = new TestNode("root node: " + iComp + " Layer: " + 1, iComp);
+//		tree.setRootNode(root);
+//		for (int j = 0; j <= iMaxNodesOnLayer; ++j) {
+//			++iComp;
+//			tree.addChild(root, new TestNode("child node: " + iComp + " Layer: " + 2, iComp));
+//		}
+//		ArrayList<IDrawAbleNode> nodesOnLayer = tree.getChildren(root);
+//		for (int i = 2; i <= iDepth; ++i) {
+//
+//			ArrayList<IDrawAbleNode> nodes = new ArrayList<IDrawAbleNode>();
+//			for (int j = 0; j < iMaxNodesOnLayer; ++j) {
+//				++iComp;
+//				nodes.add(new TestNode("child node: " + iComp + " Layer: " + i, iComp));
+//			}
+//			ArrayList<IDrawAbleNode> nStore = new ArrayList<IDrawAbleNode>(nodes);
+//			while (!nodes.isEmpty())
+//				for (IDrawAbleNode node : nodesOnLayer) {
+//					if (nodes.isEmpty())
+//						continue;
+//					int s =
+//						Math.min(nodes.size(), (int) Math
+//							.round((Math.random() * (double) iMaxNodesOnLayer) / 0.9f));
+//
+//					for (int j = 0; j < s; ++j) {
+//						tree.addChild(node, nodes.get(0));
+//						nodes.remove(0);
+//					}
+//				}
+//			nodesOnLayer = nStore;
+//		}
+//
+//		return tree;
+//	}
 
 	@Override
 	public void handleClusterNodeSelection(ClusterNodeSelectionEvent event) {
