@@ -129,7 +129,8 @@ public class CommandFactory
 			case CREATE_GL_HYPERBOLIC:
 			case CREATE_GL_HISTOGRAM:
 			case CREATE_GL_DENDROGRAM_VERTICAL:
-			case CREATE_GL_DENDROGRAM_HORIZONTAL: {
+			case CREATE_GL_DENDROGRAM_HORIZONTAL:
+			case CREATE_GL_SCATTERPLOT: {
 				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
 			}

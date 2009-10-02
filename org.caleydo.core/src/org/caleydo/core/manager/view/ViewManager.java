@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.GLDendrogram;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLScatterplot;
 import org.caleydo.core.view.opengl.canvas.tissue.GLTissue;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
@@ -206,7 +207,9 @@ public class ViewManager
 
 				glEventListener = new GLHeatMap(glCanvas, sLabel, viewFrustum);
 				break;
-
+			case CREATE_GL_SCATTERPLOT:
+				glEventListener = new GLScatterplot(glCanvas, sLabel, viewFrustum);
+				break;
 			case CREATE_GL_PROPAGATION_HEAT_MAP_3D:
 				glEventListener = new GLBookmarkManager(glCanvas, sLabel, viewFrustum);
 				break;

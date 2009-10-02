@@ -41,6 +41,7 @@ public enum ECommandType {
 	CREATE_GL_HISTOGRAM("cmd", "type", "-1", "Create Hyperbolic"),
 	CREATE_GL_DENDROGRAM_HORIZONTAL("cmd", "type", "-1", "Create horizontal Dendrogram"),
 	CREATE_GL_DENDROGRAM_VERTICAL("cmd", "type", "-1", "Create vertical Dendrogram"),
+	CREATE_GL_SCATTERPLOT("cmd", "type", "-1", "Create Scatterplot"),
 
 	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),

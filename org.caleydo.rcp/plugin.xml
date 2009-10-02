@@ -194,6 +194,14 @@
             id="org.caleydo.rcp.views.opengl.GLDataFlipperView"
             name="Data Flippper">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.view.opengl.RcpGLScatterplotView"
+            icon="resources/icons/view/heatmap.png"
+            id="org.caleydo.rcp.views.opengl.GLScatterplotView"
+            name="Scatterplot">
+      </view>
 
       
    </extension>   
@@ -408,6 +416,11 @@
             id="org.caleydo.rcp.command.cluster"
             name="Cluster">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenScatterplotHandler"
+            id="org.caleydo.rcp.command.openviews.scatterplot"
+            name="Open Scatterplot">
+      </command>
       		
    </extension>
    <extension
@@ -570,6 +583,12 @@
                   commandId="org.caleydo.rcp.command.openviews.dataflipper"
                   icon="resources/icons/view/browser.png"
                   label="Data Flipper"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.caleydo.rcp.command.openviews.scatterplot"
+                  icon="resources/icons/view/heatmap.png"
+                  label="Scatterplot"
                   style="push">
             </command>
          </menu>
