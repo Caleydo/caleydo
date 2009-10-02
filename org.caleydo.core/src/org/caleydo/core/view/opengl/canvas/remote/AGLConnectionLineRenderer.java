@@ -18,7 +18,8 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.vislink.VisLink;
+//import org.caleydo.core.view.opengl.util.vislink.VisLink;
+import org.caleydo.core.view.opengl.util.vislink.VisLinkEnvironment;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp. planes) between views in the
@@ -78,16 +79,20 @@ public abstract class AGLConnectionLineRenderer {
 	protected void renderLineBundling(final GL gl, EIDType idType, float[] fArColor) {
 		Set<Integer> keySet = hashIDTypeToViewToPointLists.get(idType).keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
-
+		
 		for (Integer iKey : keySet) {
 			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType).get(iKey)));
 		}
 
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
-		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+//		ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+//		ArrayList<ArrayList<Vec3f>> connectionLinesCurrentView = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<ArrayList<ArrayList<Vec3f>>> connectionLinesAllViews = new ArrayList<ArrayList<ArrayList<Vec3f>>>(keySet.size());
 
 		for (Integer iKey : keySet) {
 			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
+			ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
+			
 
 			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
 				if (alCurrentPoints.size() > 1) {
@@ -96,11 +101,34 @@ public abstract class AGLConnectionLineRenderer {
 				else
 					pointsToDepthSort.add(alCurrentPoints.get(0));
 			}
-			for(Vec3f currentPoint : depthSort(pointsToDepthSort))				
-				renderLine(gl, vecViewBundlingPoint, currentPoint, 0, hashViewToCenterPoint.get(iKey), fArColor);
-			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
-			pointsToDepthSort.clear();
+//			for(Vec3f currentPoint : depthSort(pointsToDepthSort))				
+//				renderLine(gl, vecViewBundlingPoint, currentPoint, 0, hashViewToCenterPoint.get(iKey), fArColor);
+			
+			ArrayList<ArrayList<Vec3f>> connectionLinesCurrentView = new ArrayList<ArrayList<Vec3f>>(pointsToDepthSort.size()); //FIXME:added
+			
+			for(Vec3f currentPoint : depthSort(pointsToDepthSort)) {			
+				connectionLinesCurrentView.add( createControlPoints( vecViewBundlingPoint, currentPoint, hashViewToCenterPoint.get(iKey) ) );
+			}
+			
+//			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
+			ArrayList<Vec3f> bundlingToCenter = new ArrayList<Vec3f>(2);
+			bundlingToCenter.add(vecViewBundlingPoint);
+			bundlingToCenter.add(vecCenter);
+			connectionLinesCurrentView.add(bundlingToCenter);
+			connectionLinesAllViews.add(connectionLinesCurrentView);
+			
+//			connectionLinesCurrentView.clear();
 		}
+		VisLinkEnvironment visLinkEnvironment = new VisLinkEnvironment(connectionLinesAllViews);
+		visLinkEnvironment.renderLines(gl);
+	}
+	
+	private ArrayList<Vec3f> createControlPoints(Vec3f vecSrcPoint, Vec3f vecDstPoint, Vec3f vecViewCenterPoint) {
+		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>(3);
+		controlPoints.add(vecDstPoint);
+		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
+		controlPoints.add(vecSrcPoint);
+		return controlPoints;
 	}
 
 	private Vec3f calculateBundlingPoint(Vec3f vecViewCenter, Vec3f vecCenter) {
@@ -175,39 +203,39 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param iNumberOfLines
 	 * @param fArColor
 	 */
-	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
-		final int iNumberOfLines, float[] fArColor) {
-//		// Line shadow
-//		// gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
-//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
-//		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
-//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
-//		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
-//		gl.glEnd();
-//
-//		// gl.glColor4fv(fArColor, 0);
-//
-//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-//		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
-//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-//
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
-//		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
-//		gl.glEnd();
-		
-		
-//		VisLink.renderLine(gl, vecSrcPoint, vecDestPoint, true);
-		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
-		controlPoints.add(vecSrcPoint);
-		controlPoints.add(vecDestPoint);
-//		VisLink.renderLine(gl, controlPoints, 0, 10, true);
-//		VisLink.renderPolygonLine(gl, controlPoints, 0, 10, true, true);
-//		VisLink.renderPolygonLineWithHalo(gl, controlPoints, 0);
-		VisLink.renderAnimatedPolygonLine(gl, controlPoints, 0, 10, true, true);
-	}
+//	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
+//		final int iNumberOfLines, float[] fArColor) {
+////		// Line shadow
+////		// gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
+////		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
+////		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+////		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
+////		gl.glBegin(GL.GL_LINES);
+////		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
+////		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
+////		gl.glEnd();
+////
+////		// gl.glColor4fv(fArColor, 0);
+////
+////		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+////		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+////		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+////
+////		gl.glBegin(GL.GL_LINES);
+////		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
+////		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
+////		gl.glEnd();
+//		
+//		
+////		VisLink.renderLine(gl, vecSrcPoint, vecDestPoint, true);
+//		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
+//		controlPoints.add(vecSrcPoint);
+//		controlPoints.add(vecDestPoint);
+////		VisLink.renderLine(gl, controlPoints, 0, 10, true);
+////		VisLink.renderPolygonLine(gl, controlPoints, 0, 10, true, true);
+////		VisLink.renderPolygonLineWithHalo(gl, controlPoints, 0);
+//		VisLink.renderAnimatedPolygonLine(gl, controlPoints, 0, 10, true, true);
+//	}
 
 	/**
 	 * Render curved connection lines.
@@ -219,68 +247,68 @@ public abstract class AGLConnectionLineRenderer {
 	 * @param vecViewCenterPoint
 	 * @param fArColor
 	 */
-	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
-		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
-//		Vec3f[] arSplinePoints = new Vec3f[3];
-//
-//		arSplinePoints[0] = vecSrcPoint.copy();
-//		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint);
-//		arSplinePoints[2] = vecDestPoint.copy();
-//
-//		FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
-//		// float[] fArPoints =
-//		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
-//		float[] fArPoints =
-//			{ arSplinePoints[0].x(), arSplinePoints[0].y(), arSplinePoints[0].z(), arSplinePoints[1].x(),
-//					arSplinePoints[1].y(), arSplinePoints[1].z(), arSplinePoints[2].x(),
-//					arSplinePoints[2].y(), arSplinePoints[2].z() };
-//		splinePoints.put(fArPoints);
-//		splinePoints.rewind();
-//
-//		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
-//
-//		// Line shadow
-//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
-//		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
-//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
-//		gl.glBegin(GL.GL_LINE_STRIP);
-//		for (int i = 0; i <= 10; i++) {
-//			gl.glEvalCoord1f((float) i / 10);
-//		}
-//		gl.glEnd();
-//
-//		// gl.glColor4fv(fArColor, 0);
-//		// Point to mask artefacts
-//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-//		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
-//
-//		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
-//		gl.glBegin(GL.GL_POINTS);
-//		for (int i = 0; i <= 10; i++) {
-//			gl.glEvalCoord1f((float) i / 10);
-//		}
-//		gl.glEnd();
-//
-//		// The spline
-//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-//
-//		gl.glBegin(GL.GL_LINE_STRIP);
-//		for (int i = 0; i <= 10; i++) {
-//			gl.glEvalCoord1f((float) i / 10);
-//		}
-//		gl.glEnd();
-		
-		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
-		controlPoints.add(vecDestPoint); // TEST
-//		controlPoints.add(vecSrcPoint);
-		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
-		controlPoints.add(vecSrcPoint); // TEST
-//		controlPoints.add(vecDestPoint);
-//		VisLink.renderLine(gl, controlPoints, 0, 10, true);
-//		VisLink.renderPolygonLine(gl, controlPoints, 0, 10, true, true);
-//		VisLink.renderPolygonLineWithHalo(gl, controlPoints, 0);
-		VisLink.renderAnimatedPolygonLine(gl, controlPoints, 0, 10, true, true);
-	}
+//	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
+//		final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor) {
+////		Vec3f[] arSplinePoints = new Vec3f[3];
+////
+////		arSplinePoints[0] = vecSrcPoint.copy();
+////		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint);
+////		arSplinePoints[2] = vecDestPoint.copy();
+////
+////		FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
+////		// float[] fArPoints =
+////		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
+////		float[] fArPoints =
+////			{ arSplinePoints[0].x(), arSplinePoints[0].y(), arSplinePoints[0].z(), arSplinePoints[1].x(),
+////					arSplinePoints[1].y(), arSplinePoints[1].z(), arSplinePoints[2].x(),
+////					arSplinePoints[2].y(), arSplinePoints[2].z() };
+////		splinePoints.put(fArPoints);
+////		splinePoints.rewind();
+////
+////		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
+////
+////		// Line shadow
+////		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
+////		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+////		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
+////		gl.glBegin(GL.GL_LINE_STRIP);
+////		for (int i = 0; i <= 10; i++) {
+////			gl.glEvalCoord1f((float) i / 10);
+////		}
+////		gl.glEnd();
+////
+////		// gl.glColor4fv(fArColor, 0);
+////		// Point to mask artefacts
+////		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+////		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+////
+////		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
+////		gl.glBegin(GL.GL_POINTS);
+////		for (int i = 0; i <= 10; i++) {
+////			gl.glEvalCoord1f((float) i / 10);
+////		}
+////		gl.glEnd();
+////
+////		// The spline
+////		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+////
+////		gl.glBegin(GL.GL_LINE_STRIP);
+////		for (int i = 0; i <= 10; i++) {
+////			gl.glEvalCoord1f((float) i / 10);
+////		}
+////		gl.glEnd();
+//		
+//		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>();
+//		controlPoints.add(vecDestPoint); // TEST
+////		controlPoints.add(vecSrcPoint);
+//		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
+//		controlPoints.add(vecSrcPoint); // TEST
+////		controlPoints.add(vecDestPoint);
+////		VisLink.renderLine(gl, controlPoints, 0, 10, true);
+////		VisLink.renderPolygonLine(gl, controlPoints, 0, 10, true, true);
+////		VisLink.renderPolygonLineWithHalo(gl, controlPoints, 0);
+//		VisLink.renderAnimatedPolygonLine(gl, controlPoints, 0, 10, true, true);
+//	}
 
 	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
 	// vecDestPoint,

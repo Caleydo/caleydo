@@ -51,31 +51,30 @@ public class VisLink {
 	private IGeneralManager generalManager;
 	
 	private static long animationStartTime = -1;
+	private static int animationSpeed;
 	private static boolean animationDone = false;
 	
 	
 	/**
-	 * Constructor
+	 * Constructor (for straight lines)
 	 * 
-	 * @param controlPoints Specifies the set of control points of which the spline is generated.
-	 * @param offset Specifies the offset in controlPoints
+	 * @param srcPoint Specifies the source point
+	 * @param dstPoint Specifies the destination point
 	 */
-	protected VisLink(final ArrayList<Vec3f> controlPoints, final int offset) {
+	protected VisLink(final Vec3f srcPoint, final Vec3f dstPoint) {
 		
 //		this.blurTexture = new int[1];
 //		this.frameBufferObject = new int[1];
 		
-		ArrayList<Vec3f> points = new ArrayList<Vec3f>(controlPoints.subList(offset, controlPoints.size()));
-		if(points.size() == 2) {
-			this.linePoints = points;
-		}
-		else {
-			NURBSCurve curve = new NURBSCurve(points, 10);
-			this.linePoints = curve.getCurvePoints();
-		}
+		ArrayList<Vec3f> points = new ArrayList<Vec3f>(2);
+		points.add(srcPoint);
+		points.add(dstPoint);
+		this.linePoints = points;
+		
 		this.generalManager = GeneralManager.get();
 		if(timer == null)
 			timer = new Timer();
+		animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / 2;
 	}
 	
 	
@@ -104,6 +103,7 @@ public class VisLink {
 		this.generalManager = GeneralManager.get();
 		if(timer == null)
 			timer = new Timer();
+		animationSpeed = ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS / numberOfSegments;
 	}
 	
 	
@@ -141,36 +141,7 @@ public class VisLink {
 	
 	
 	/**
-	 * 		Creates a visual link. Static method.
-	 * When the number of control points is 2, this method renders a straight line.
-	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
-	 *
-	 * @param gl the GL object
-	 * 
-	 * @param controlPoints set of control points for the NURBS spline
-	 * 
-	 * @param offset specifies the offset of control points
-	 * 
-	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
-	 * 
-	 * @throws IllegalArgumentException if there are < 2 control points
-	 */	
-	public static void renderLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow)
-		throws IllegalArgumentException
-	{
-		if(controlPoints.size() == (offset + 2))
-			line(gl, controlPoints.get(offset), controlPoints.get(offset + 1), shadow);
-		else if(controlPoints.size() > (offset + 2)) {
-			VisLink visLink = new VisLink(controlPoints, offset);
-			visLink.spline(gl, shadow);
-		}
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
-	}
-	
-	
-	/**
-	 * 		Creates a visual link. Static method.
+	 * 		Creates a straight visual link. Static method.
 	 *
 	 * @param gl the GL object
 	 * 
@@ -219,7 +190,7 @@ public class VisLink {
 	
 	
 	/**
-	 * 		Called for creating a curved visual link. Only draws a specified number of line-segments.
+	 * 		Called for creating an animated curved visual link.
 	 * 		This method is not recommended when drawing visual links with higher
 	 * 		width, which would case v-shaped gaps to appear at the intersections.
 	 *
@@ -227,7 +198,9 @@ public class VisLink {
 	 * 
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
 	 */
-	protected void spline(final GL gl, boolean shadow, long limit) {
+	protected void animatedSpline(final GL gl, boolean shadow) {
+		
+		long limit = numberOfSegmentsToDraw();
 		
 		// line shadow
 		if(shadow == true) {
@@ -321,35 +294,7 @@ public class VisLink {
 	
 	
 	/**
-	 * 		Creates a polygon visual link.
-	 * When the number of control points is 2, this method renders a straight line.
-	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
-	 *
-	 * @param gl the GL object
-	 * @param controlPoints the control points for the NURBS spline
-	 * @param offset specifies the offset of control points
-	 * @param shadow turns shadow on/off
-	 * @param antiAliasing turns AA on/off
-	 * 
-	 * @throws IllegalArgumentException if there are < 2 control points
-	 */	
-	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, boolean shadow, boolean antiAliasing)
-		throws IllegalArgumentException
-	{
-		if(controlPoints.size() >= (offset + 2)) {
-			VisLink visLink = new VisLink(controlPoints, offset);
-			if(antiAliasing == true)
-				visLink.polygonLineAA(gl, shadow);
-			else
-				visLink.polygonLine(gl, shadow);
-		}
-		else
-			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 
-	}
-	
-	
-	/**
-	 * 		Creates a polygon visual link.
+	 * 		Creates a straight polygon visual link.
 	 *
 	 * @param gl the GL object
 	 * @param srcPoint the lines point of origin
@@ -358,10 +303,7 @@ public class VisLink {
 	 * @param antiAliasing turns AA on/off
 	 */	
 	public static void renderPolygonLine(final GL gl, Vec3f srcPoint, Vec3f destPoint, boolean shadow, boolean antiAliasing) {
-		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
-		points.add(srcPoint);
-		points.add(destPoint);
-		VisLink visLink = new VisLink(points, 0);
+		VisLink visLink = new VisLink(srcPoint, destPoint);
 		if(antiAliasing == true)
 			visLink.polygonLineAA(gl, shadow);
 		else
@@ -370,7 +312,7 @@ public class VisLink {
 	
 	
 	/**
-	 * 		Creates a polygon visual link. Only draws a specified number of line-segments.
+	 * 		Creates an animated polygon visual link
 	 * When the number of control points is 2, this method renders a straight line.
 	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
 	 *
@@ -382,7 +324,6 @@ public class VisLink {
 	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
 	 * @param shadow turns shadow on/off
 	 * @param antiAliasing turns AA on/off
-	 * @param drawSegments specifies the number of segments to be drawn (the first n segments of the line are drawn)
 	 * 
 	 * @throws IllegalArgumentException if there are < 2 control points
 	 */	
@@ -404,6 +345,47 @@ public class VisLink {
 					visLink.animatedPolygonLineAA(gl, shadow);
 				else
 					visLink.animatedPolygonLine(gl, shadow);
+			}
+		}
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" ); 			
+	}
+	
+	
+	/**
+	 * 		Creates an animated polygon visual link in reverse order.
+	 * When the number of control points is 2, this method renders a straight line.
+	 * If the number of control points is greater then 2, a curved line (using NURBS) is rendered.
+	 *
+	 * @param gl the GL object
+	 * @param controlPoints the control points for the NURBS spline
+	 * @param offset specifies the offset of control points
+	 * @param numberOfSegments the number of sub-intervals the spline is evaluated with
+	 * (affects u in the Cox-de Boor recursive formula when evaluating the spline)
+	 * Note: For straight lines (only 2 control points), this value doesn't effect the resulting line.
+	 * @param shadow turns shadow on/off
+	 * @param antiAliasing turns AA on/off
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */	
+	public static void renderAnimatedPolygonLineReverse(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset, final int numberOfSegments, boolean shadow, boolean antiAliasing)
+		throws IllegalArgumentException
+	{
+		if(controlPoints.size() > (offset + 2) ) {
+			VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
+			if(antiAliasing == true)
+				visLink.animatedPolygonLineAAReverse(gl, shadow);
+			else
+				visLink.animatedPolygonLineReverse(gl, shadow);
+			
+		}
+		else if(controlPoints.size() == (offset + 2) ) {
+			if(animationDone == true) {
+				VisLink visLink = new VisLink(controlPoints, offset, numberOfSegments);
+				if(antiAliasing == true)
+					visLink.animatedPolygonLineAAReverse(gl, shadow);
+				else
+					visLink.animatedPolygonLineReverse(gl, shadow);
 			}
 		}
 		else
@@ -443,7 +425,7 @@ public class VisLink {
 	
 	
 	/**
-	 * 		Renders a polygon line. Recommended for lines with higher width.
+	 * 		Renders an animated polygon line. Recommended for lines with higher width.
 	 * 
 	 * @param gl the GL object
 	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
@@ -470,6 +452,37 @@ public class VisLink {
 			drawPolygonLineBySegments(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw());
 		
 		drawPolygonLineBySegments(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw());
+	}
+	
+	
+	/**
+	 * 		Renders an animated polygon line in reverse order. Recommended for lines with higher width.
+	 * 
+	 * @param gl the GL object
+	 * @param shadow turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * @param drawSegments specifies the number of segments to be drawn (for animation)
+	 */
+	protected void animatedPolygonLineReverse(final GL gl, boolean shadow) {
+		
+		if(shadow == true)
+			drawPolygonLineBySegmentsReverse(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), 1, numberOfSegmentsToDraw());
+		
+		drawPolygonLineBySegmentsReverse(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, 1, numberOfSegmentsToDraw());
+	}
+	
+	
+	/**
+	 * 		Renders a polygon line with AA in reverse order. Recommended for lines with higher width.
+	 * 
+	 * @param gl The GL object
+	 * @param shadow Turns shadow on/off (boolean: true = shadow on, false = shadow off)
+	 * @param drawSegments specifies the number of segments to be drawn (for animation)
+	 */
+	protected void animatedPolygonLineAAReverse(final GL gl, boolean shadow) {
+		if(shadow == true)
+			drawPolygonLineBySegmentsReverse(gl, ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, (ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH * 1.5f), ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw());
+		
+		drawPolygonLineBySegmentsReverse(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY, numberOfSegmentsToDraw());
 	}
 	
 	
@@ -682,6 +695,58 @@ public class VisLink {
 	
 	
 	/**
+	 * 		Draws the last [segments] segments of the line (AA-Quality can be specified)
+	 * 
+	 * @param gl The GL object
+	 * @param RGBA Specifies the color of the line
+	 * @param width Specifies the width of the line
+	 * @param quality Specifies the AA-Quality of the line. Higher value is better quality but costs performance.
+	 */
+	protected void drawPolygonLineBySegmentsReverse(final GL gl, float[] RGBA, float width, int quality, long drawSegments)
+		throws IllegalArgumentException
+	{
+		
+		try {
+			checkRGBA(RGBA);
+		} catch(IllegalArgumentException iae) {throw iae;}
+		
+		float red = RGBA[0];
+		float green = RGBA[1];
+		float blue = RGBA[2];
+		float alpha = RGBA[3];
+		float alphaChange = alpha / quality;
+		float unit = width / quality;
+		float lineWidth = width - (((quality - 1) * unit) / 2);
+		long limit = drawSegments * 2;
+		
+		ArrayList<Vec3f> vertices = new ArrayList<Vec3f>();
+		
+		for(int j = 1; j <= quality; j++) {
+			// The spline attributes
+			gl.glColor4fv(new float[]{red, green, blue, alpha}, 0);
+			
+			vertices.clear();
+			vertices = generatePolygonVertices(gl, linePoints, lineWidth);
+			
+			if(limit > vertices.size()) {
+				limit = vertices.size();
+				throw new IllegalArgumentException("Parameter segments is higher than the number of curve-segments. Capped it to max.");
+			}
+			
+			// the spline
+			gl.glBegin(GL.GL_QUAD_STRIP);
+			for(int i = (vertices.size() - 1); i >= (vertices.size() - limit); i--) {
+				gl.glVertex3f(vertices.get(i).x(), vertices.get(i).y(), vertices.get(i).z());
+			}
+			gl.glEnd();
+			
+			alpha -= alphaChange;
+			lineWidth += unit;
+		}	
+	}
+	
+	
+	/**
 	 * Checks if the given array is a valid rgba value.
 	 * If the values are < 0 or > 1 they are capped to this limits.
 	 * If the array contains less then 4 values, IllegalArgumentException is thrown.
@@ -713,8 +778,22 @@ public class VisLink {
 	}
 	
 	
+	/**
+	 * Returns the number of line-points
+	 * @return The number of line-points
+	 */
+	public int getNumberOfLinePoints() {
+		return this.linePoints.size();
+	}
+	
+	
+	/**
+	 * Calculates the number of segments to be drawn for animation
+	 * 
+	 * @return number of segments to be drawn
+	 */
 	public long numberOfSegmentsToDraw() {
-		long segments = (System.currentTimeMillis() - animationStartTime) / ConnectionLineRenderStyle.ANIMATION_SPEED_IN_MILLIS_PER_SEGMENT;
+		long segments = (System.currentTimeMillis() - animationStartTime) / animationSpeed;
 		if(segments > (getNumberOfSegments() + 1) )
 			segments = (getNumberOfSegments() + 1);
 		if(segments == (getNumberOfSegments() + 1))
@@ -725,10 +804,20 @@ public class VisLink {
 	}
 	
 	
+	/**
+	 * Sets the time the animation started
+	 * @param time the time the animation started
+	 */
 	public static void setAnimationStartTime(long time) {
-		animationStartTime = time; 
+		animationStartTime = time;
 	}
 	
+	
+	/**
+	 * Checks if the animation is completed (all segments are drawn)
+	 * 
+	 * @return true if animation is completed, false otherwise
+	 */
 	public boolean isAnimationDone() {
 		return animationDone;
 	}
@@ -739,16 +828,66 @@ public class VisLink {
 // Halo ...
 //---------------------------------------------------------------------------------------------------------------------
 	
-	public static void renderPolygonLineWithHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
+	/**
+	 * Renders the polygon line w/o further options
+	 * 
+	 * @param gl the GL object
+	 * @param controlPoints the control points for the NURBS spline
+	 * @param offset specifies the offset of control points
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */
+	public static void renderPolygonLine(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
 		throws IllegalArgumentException
 	{
 		if(controlPoints.size() >= (offset + 2)) {
 			VisLink visLink = new VisLink(controlPoints, offset, 10);			
-			visLink.polygonLineWithHalo(gl);
-//			visLink.polygonLineWithHaloTexture(gl);
+			visLink.polygonLine(gl);
 		}
 		else
 			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+	}
+	
+	/**
+	 * Renders the halo of the polygon line
+	 * 
+	 * @param gl the GL object
+	 * @param controlPoints the control points for the NURBS spline
+	 * @param offset specifies the offset of control points
+	 * 
+	 * @throws IllegalArgumentException if there are < 2 control points
+	 */
+	public static void renderPolygonLineHalo(final GL gl, final ArrayList<Vec3f> controlPoints, final int offset)
+		throws IllegalArgumentException
+	{
+		if(controlPoints.size() >= (offset + 2)) {
+			VisLink visLink = new VisLink(controlPoints, offset, 10);			
+			visLink.polygonLineHalo(gl);
+		}
+		else
+			throw new IllegalArgumentException( "Need at least two points to render a line!" );
+	}
+	
+	/**
+	 * This method is called by renderPolygonLineHalo
+	 * @param gl the GL Object
+	 */
+	protected void polygonLineHalo(final GL gl) {
+		float[] halo = new float[4];
+		halo[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
+		halo[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
+		halo[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
+		halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2f;
+		
+		drawPolygonLine(gl, halo, 4f, 5);
+	}
+	
+	/**
+	 * This method is called by renderPolygonLine
+	 * @param gl the GL Object
+	 */
+	protected void polygonLine(final GL gl) {
+		drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 1f, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
 	}
 	
 	
@@ -787,43 +926,43 @@ public class VisLink {
 		texture.disable();
 	}
 	
-	protected void polygonLineWithHalo(final GL gl) {
-		try {
-			float[] halo = new float[4];
-			halo[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
-			halo[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
-			halo[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
-			halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2;
-			
-			int[] curBlendFunc = new int[5];
-			gl.glGetIntegerv(GL.GL_BLEND_SRC_RGB, curBlendFunc, 0);
-			gl.glGetIntegerv(GL.GL_BLEND_DST_RGB, curBlendFunc, 1);
-			gl.glGetIntegerv(GL.GL_BLEND_SRC_ALPHA, curBlendFunc, 2);
-			gl.glGetIntegerv(GL.GL_BLEND_DST_ALPHA, curBlendFunc, 3);
-			gl.glGetIntegerv(GL.GL_BLEND_EQUATION, curBlendFunc, 4);
-			
-//			System.out.println(curBlendFunc[0] + "  " + curBlendFunc[1] + "  " + curBlendFunc[2] + "  " + curBlendFunc[3]);
-
-//			gl.glBlendFunc(GL.GL_SRC_ALPHA_SATURATE, GL.GL_ONE);
-			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//			gl.glBlendColor(halo[0], halo[1], halo[2], halo[3]);
-//			gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//			gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA); // standard
-			
-			gl.glLogicOp(GL.GL_SET);
-//			gl.glBlendEquation(GL.GL_LOGIC_OP);
-			gl.glBlendEquationSeparate(GL.GL_MAX, GL.GL_LOGIC_OP);
-			
-			drawPolygonLine(gl, halo, 4f, 5);
-			drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 1f, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
-			
-//			gl.glBlendFunc(curBlendFunc[0], curBlendFunc[1]);
-			gl.glBlendFuncSeparate(curBlendFunc[0], curBlendFunc[1], curBlendFunc[2], curBlendFunc[3]);
-			gl.glBlendEquation(curBlendFunc[4]);
-		} catch(IllegalArgumentException iae) {
-			iae.printStackTrace();
-		}
-	}
+//	protected void polygonLineWithHalo(final GL gl) {
+//		try {
+//			float[] halo = new float[4];
+//			halo[0] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[0];
+//			halo[1] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[1];
+//			halo[2] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[2];
+//			halo[3] = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR[3] / 2;
+//			
+////			int[] curBlendFunc = new int[5];
+////			gl.glGetIntegerv(GL.GL_BLEND_SRC_RGB, curBlendFunc, 0);
+////			gl.glGetIntegerv(GL.GL_BLEND_DST_RGB, curBlendFunc, 1);
+////			gl.glGetIntegerv(GL.GL_BLEND_SRC_ALPHA, curBlendFunc, 2);
+////			gl.glGetIntegerv(GL.GL_BLEND_DST_ALPHA, curBlendFunc, 3);
+////			gl.glGetIntegerv(GL.GL_BLEND_EQUATION, curBlendFunc, 4);
+//			
+////			System.out.println(curBlendFunc[0] + "  " + curBlendFunc[1] + "  " + curBlendFunc[2] + "  " + curBlendFunc[3]);
+//
+////			gl.glBlendFunc(GL.GL_SRC_ALPHA_SATURATE, GL.GL_ONE);
+////			gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+////			gl.glBlendColor(halo[0], halo[1], halo[2], halo[3]);
+////			gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+////			gl.glBlendFuncSeparate(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA, GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA); // standard
+//			
+////			gl.glLogicOp(GL.GL_SET);
+////			gl.glBlendEquation(GL.GL_LOGIC_OP);
+////			gl.glBlendEquationSeparate(GL.GL_MAX, GL.GL_LOGIC_OP);
+//			
+//			drawPolygonLine(gl, halo, 4f, 5);
+//			drawPolygonLine(gl, ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 1f, ConnectionLineRenderStyle.LINE_ANTI_ALIASING_QUALITY);
+//			
+////			gl.glBlendFunc(curBlendFunc[0], curBlendFunc[1]);
+////			gl.glBlendFuncSeparate(curBlendFunc[0], curBlendFunc[1], curBlendFunc[2], curBlendFunc[3]);
+////			gl.glBlendEquation(curBlendFunc[4]);
+//		} catch(IllegalArgumentException iae) {
+//			iae.printStackTrace();
+//		}
+//	}
 	
 	
 	
